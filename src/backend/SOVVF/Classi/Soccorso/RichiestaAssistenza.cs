@@ -27,14 +27,18 @@ namespace Modello.Classi.Soccorso
         /// <summary>
         /// Il codice intervento è un codice parlante che si utilizza per identificare
         /// univocamente una richiesta. Si può per esempio utilizzare nelle comunicazioni
-        /// verbali.
+        /// verbali o annotare su un foglietto.
         /// 
-        /// Il codice è costituito da tre terzine.
+        /// Il codice deve essere progettato con l'obiettivo di garantire i seguenti requisiti:
+        ///  * facilità rinumerazione dei vecchi interventi;
+        ///  * leggibilità del codice (per es. facilità di annotazione);
+        ///  * facilità di comunicarlo verbalmente.
+        ///  
+        /// Si stabilisce di utilizzare un sistema del tipo 223.117.949, ossia un numero progressivo
+        /// raggruppato in terzine. Il codice è comunque di tipo stringa.
         /// 
-        /// I codici generati da SOVVF sono esclusivamente numerici e strettamente
-        /// crescenti, incrementandosi di 1 a mano a mano che vengono generati dalla
-        /// apposita routine di generazione. In questo modo si ha un totale di un
-        /// miliardo di combinazioni disponibili.
+        /// Il criterio di mapping dei codici dei vecchi interventi SO115 sarà del tipo:
+        /// RM1.700.700 (RM= sigla provincia, 1.7=anno e 00700=numero intervento)
         /// 
         /// Gli interventi importati da SO115 verranno mappati su una maschera del tipo:
         /// RM1.700.000
@@ -47,14 +51,21 @@ namespace Modello.Classi.Soccorso
         public string Codice { get; set; }
 
         /// <summary>
-        /// Contiene la lista degli eventi considerati di interesse per la richiesta
+        /// Contiene la lista degli eventi considerati di interesse per la richiesta. Ogni evento è
+        /// caratterizzato dall'istante in cui si verifica ed un identificativo univoco della sorgente
+        /// dell'informazione (per es. l'operatore di SO, l'id di un sensore che individua una
+        /// geo-localizzazione, ecc.). A seconda della natura del particolare evento, l'istanza concreta
+        /// conterrà gli ulteriori attributi del caso.
         /// </summary>
         public IList<Evento> Eventi { get; set; }
-        
+
         #endregion
 
         #region Metodi
 
+        /// <summary>
+        /// Es
+        /// </summary>
         public IList<Chiamata> Chiamate
         {
             get
