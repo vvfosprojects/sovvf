@@ -51,11 +51,7 @@ namespace Modello.Classi.Soccorso
         public string Codice { get; set; }
 
         /// <summary>
-        /// Contiene la lista degli eventi considerati di interesse per la richiesta. Ogni evento è
-        /// caratterizzato dall'istante in cui si verifica ed un identificativo univoco della sorgente
-        /// dell'informazione (per es. l'operatore di SO, l'id di un sensore che individua una
-        /// geo-localizzazione, ecc.). A seconda della natura del particolare evento, l'istanza concreta
-        /// conterrà gli ulteriori attributi del caso.
+        /// Contiene la lista degli eventi considerati di interesse per la richiesta.
         /// </summary>
         public IList<Evento> Eventi { get; set; }
 
