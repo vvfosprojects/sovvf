@@ -41,6 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classi\Geo\Cerchio.cs" />
+    <Compile Include="Classi\Geo\Geolocalizzazione.cs" />
+    <Compile Include="Classi\Geo\Poligonale.cs" />
+    <Compile Include="Classi\Geo\Punto.cs" />
     <Compile Include="Classi\Soccorso\Chiamata.cs" />
     <Compile Include="Classi\Soccorso\Evento.cs" />
     <Compile Include="Classi\Soccorso\RichiestaAssistenza.cs" />
