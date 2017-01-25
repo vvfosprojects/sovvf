@@ -1,1 +1,2 @@
+#Ignoriamo i files di lock prodotti da Libre Office
 *.~lock*

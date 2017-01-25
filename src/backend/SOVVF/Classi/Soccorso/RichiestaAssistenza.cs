@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Modello.Classi.Soccorso.Segnalazioni;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -62,13 +63,13 @@ namespace Modello.Classi.Soccorso
         /// <summary>
         /// Es
         /// </summary>
-        public IList<Chiamata> Chiamate
+        public IList<Telefonata> Telefonate
         {
             get
             {
                 return Eventi
-                    .Where(e => e is Chiamata)
-                    .Select(e => e as Chiamata)
+                    .Where(e => e is Telefonata)
+                    .Select(e => e as Telefonata)
                     .ToList();
             }
         }

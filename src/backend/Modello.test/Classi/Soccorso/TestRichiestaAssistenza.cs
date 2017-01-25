@@ -1,4 +1,5 @@
 ﻿using Modello.Classi.Soccorso;
+using Modello.Classi.Soccorso.Segnalazioni;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Modello.test.Classi.Soccorso
         {
             var richiesta = new RichiestaAssistenza();
 
-            var chiamate = richiesta.Chiamate;
+            var chiamate = richiesta.Telefonate;
 
             Assert.That(chiamate.Count, Is.Zero);
         }
@@ -25,12 +26,12 @@ namespace Modello.test.Classi.Soccorso
         public void UnaSingolaChiamataECorrettamenteInserita()
         {
             var richiesta = new RichiestaAssistenza();
-            var chiamata = new Chiamata();
-            richiesta.Eventi.Add(chiamata);
+            var telefonata = new Telefonata();
+            richiesta.Eventi.Add(telefonata);
 
-            var chiamate = richiesta.Chiamate;
+            var telefonate = richiesta.Telefonate;
 
-            Assert.That(chiamate.Count, Is.EqualTo(1));
+            Assert.That(telefonate.Count, Is.EqualTo(1));
         }
     }
 }
