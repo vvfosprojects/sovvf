@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Modello.Classi.Geo
 {
     /// <summary>
-    /// Modella una poligonale sul globo
+    ///   Modella una poligonale sul globo
     /// </summary>
     public class Poligonale : Geolocalizzazione
     {
