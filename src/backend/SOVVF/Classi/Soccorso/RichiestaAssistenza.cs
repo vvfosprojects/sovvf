@@ -51,6 +51,15 @@ namespace Modello.Classi.Soccorso
         /// </summary>
         public IList<Evento> Eventi { get; set; }
 
+        /// <summary>
+        ///   E' la lista ordinata (per importanza decrescente) delle tipologie di soccorso.
+        /// </summary>
+        /// <remarks>
+        ///   Per es. è la lista { valanga, soccorso a persona, ricerca disperso, messa in sicurezza
+        ///   } in un sinistro simile al Rigopiano
+        /// </remarks>
+        public IList<string> Tipologie { get; set; }
+
         #endregion Attributi
 
         #region Metodi
