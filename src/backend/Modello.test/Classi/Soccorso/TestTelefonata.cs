@@ -7,55 +7,55 @@ namespace Modello.test.Classi.Soccorso
     public class TestTelefonata
     {
         [Test]
-        public void LaTelefonataCheContieneTestoInIninfluentePercheEIninfluente()
+        public void LaTelefonataCheContieneTestoInInutilePercheEInutile()
         {
             var telefonata = new Telefonata()
             {
-                IninfluentePerche = "Duplicata"
+                InutilePerche = "Duplicata"
             };
 
-            var ininfluente = telefonata.Ininfluente;
+            var inutile = !telefonata.Utile;
 
-            Assert.That(ininfluente, Is.True);
+            Assert.That(inutile, Is.True);
         }
 
         [Test]
-        public void LaTelefonataCheContieneSoloSpaziInIninfluentePercheEInfluente()
+        public void LaTelefonataCheContieneSoloSpaziInInutilePercheEUtile()
         {
             var telefonata = new Telefonata()
             {
-                IninfluentePerche = "  "
+                InutilePerche = "  "
             };
 
-            var influente = !telefonata.Ininfluente;
+            var utile = telefonata.Utile;
 
-            Assert.That(influente, Is.True);
+            Assert.That(utile, Is.True);
         }
 
         [Test]
-        public void LaTelefonataCheContieneSoloNullInIninfluentePercheEInfluente()
+        public void LaTelefonataCheContieneSoloNullInInutilePercheEUtile()
         {
             var telefonata = new Telefonata()
             {
-                IninfluentePerche = null
+                InutilePerche = null
             };
 
-            var influente = !telefonata.Ininfluente;
+            var utile = telefonata.Utile;
 
-            Assert.That(influente, Is.True);
+            Assert.That(utile, Is.True);
         }
 
         [Test]
-        public void LaTelefonataCheContieneStringaVuotaInIninfluentePercheEInfluente()
+        public void LaTelefonataCheContieneStringaVuotaInInutilePercheEUtile()
         {
             var telefonata = new Telefonata()
             {
-                IninfluentePerche = string.Empty
+                InutilePerche = string.Empty
             };
 
-            var influente = !telefonata.Ininfluente;
+            var utile = telefonata.Utile;
 
-            Assert.That(influente, Is.True);
+            Assert.That(utile, Is.True);
         }
     }
 }

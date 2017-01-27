@@ -32,20 +32,20 @@ namespace Modello.Classi.Soccorso.Segnalazioni
         public string Motivazione { get; set; }
 
         /// <summary>
-        ///   Indica la motivazione percui questa segnalazione è considerata ininfluente. Se il campo
-        ///   è null la segnalazione è considerata influente.
+        ///   Indica la motivazione percui questa segnalazione è considerata inutile. Se il campo è
+        ///   null la segnalazione è considerata inutile.
         /// </summary>
         /// <remarks>
-        ///   Una segnalazione, pur se messa agli atti, è considerata ininfluente quando non
-        ///   influisce sulle azioni di soccorso.
+        ///   Una segnalazione, pur se messa agli atti, è considerata inutile quando non influisce
+        ///   sulle azioni di soccorso.
         /// </remarks>
-        public string IninfluentePerche { get; set; }
+        public string InutilePerche { get; set; }
 
-        public bool Ininfluente
+        public bool Utile
         {
             get
             {
-                return !string.IsNullOrWhiteSpace(IninfluentePerche);
+                return string.IsNullOrWhiteSpace(InutilePerche);
             }
         }
     }
