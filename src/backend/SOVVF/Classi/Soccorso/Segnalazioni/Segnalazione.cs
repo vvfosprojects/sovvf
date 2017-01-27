@@ -1,4 +1,5 @@
 ﻿using Modello.Classi.Geo;
+using System;
 
 namespace Modello.Classi.Soccorso.Segnalazioni
 {
@@ -30,5 +31,18 @@ namespace Modello.Classi.Soccorso.Segnalazioni
         ///   Indica la motivazione per la quale è stata inoltrata segnalazione ai VVF
         /// </summary>
         public string Motivazione { get; set; }
+
+        /// <summary>
+        ///   E' l'esito che l'operatore assegna alla segnalazione.
+        /// </summary>
+        /// <remarks>
+        ///   Al momento è un testo libero che non è elaborato dal sistema, ma è una semplice annotazione.
+        /// </remarks>
+        public string Esito { get; set; }
+
+        /// <summary>
+        ///   Indica la data in cui viene definito l'esito della segnalazione.
+        /// </summary>
+        public DateTime IstanteDefinizioneEsito { get; set; }
     }
 }
