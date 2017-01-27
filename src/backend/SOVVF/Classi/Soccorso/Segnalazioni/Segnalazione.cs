@@ -30,23 +30,5 @@ namespace Modello.Classi.Soccorso.Segnalazioni
         ///   Indica la motivazione per la quale è stata inoltrata segnalazione ai VVF
         /// </summary>
         public string Motivazione { get; set; }
-
-        /// <summary>
-        ///   Indica la motivazione percui questa segnalazione è considerata inutile. Se il campo è
-        ///   null la segnalazione è considerata inutile.
-        /// </summary>
-        /// <remarks>
-        ///   Una segnalazione, pur se messa agli atti, è considerata inutile quando non influisce
-        ///   sulle azioni di soccorso.
-        /// </remarks>
-        public string InutilePerche { get; set; }
-
-        public bool Utile
-        {
-            get
-            {
-                return string.IsNullOrWhiteSpace(InutilePerche);
-            }
-        }
     }
 }
