@@ -15,6 +15,15 @@ namespace Modello.Classi.Soccorso
     /// </summary>
     public class RichiestaAssistenza
     {
+        /// <summary>
+        ///   E' la priorità della richiesta. Questa informazione è di ausilio nell'accodamento delle richieste.
+        /// </summary>
+        /// <remarks>
+        ///   Al momento non è sensato assegnare una priorità a richieste del tipo vigilanza. Questo
+        ///   aspetto deve essere valutato successivamente.
+        /// </remarks>
+        public enum Priorita { Bassa, Media, Alta }
+
         public RichiestaAssistenza()
         {
             this.Eventi = new List<Evento>();

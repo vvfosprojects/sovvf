@@ -19,7 +19,7 @@ namespace Modello.Classi.Soccorso.Eventi
         /// <summary>
         ///   E' l'identificativo univoco della fonte informativa sull'evento, che ha anche la
         ///   responsabilità di garantirne la veridicità. Può essere per esempio un operatore SO, un
-        ///   sensore, un altro sistema informativo.
+        ///   sensore, un altro sistema informativo, lo stesso SOVVF.
         /// </summary>
         public string CodiceFonte { get; set; }
     }
