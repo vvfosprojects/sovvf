@@ -1,4 +1,4 @@
-﻿namespace Modello.Classi.Soccorso.Segnalazioni
+﻿namespace Modello.Classi.Soccorso.Eventi.Segnalazioni
 {
     /// <summary>
     ///   Modella una chiamata telefonica proveniente ad una linea della sala operativa.

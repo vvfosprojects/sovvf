@@ -1,5 +1,5 @@
 ﻿using Modello.Classi.Soccorso;
-using Modello.Classi.Soccorso.Segnalazioni;
+using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using NUnit.Framework;
 
 namespace Modello.test.Classi.Soccorso

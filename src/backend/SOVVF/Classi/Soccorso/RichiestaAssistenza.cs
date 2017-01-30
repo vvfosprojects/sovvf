@@ -1,4 +1,5 @@
-﻿using Modello.Classi.Soccorso.Segnalazioni;
+﻿using Modello.Classi.Soccorso.Eventi;
+using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using System.Collections.Generic;
 using System.Linq;
 

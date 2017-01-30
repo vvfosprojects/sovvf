@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Modello.Classi.Soccorso
+namespace Modello.Classi.Soccorso.Eventi
 {
     /// <summary>
     ///   L'evento è una classe astratta che modella il generico evento di interesse per la richiesta

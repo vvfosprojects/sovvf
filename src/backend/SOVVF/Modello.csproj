@@ -45,11 +45,11 @@
     <Compile Include="Classi\Geo\Geolocalizzazione.cs" />
     <Compile Include="Classi\Geo\Poligonale.cs" />
     <Compile Include="Classi\Geo\Punto.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\Evento.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\Segnalazioni\Segnalazione.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\Segnalazioni\Telefonata.cs" />
     <Compile Include="Classi\Soccorso\SchedaContatto.cs" />
-    <Compile Include="Classi\Soccorso\Segnalazioni\Segnalazione.cs" />
-    <Compile Include="Classi\Soccorso\Evento.cs" />
     <Compile Include="Classi\Soccorso\RichiestaAssistenza.cs" />
-    <Compile Include="Classi\Soccorso\Segnalazioni\Telefonata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

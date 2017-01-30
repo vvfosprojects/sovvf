@@ -1,7 +1,7 @@
 ﻿using Modello.Classi.Geo;
 using System;
 
-namespace Modello.Classi.Soccorso.Segnalazioni
+namespace Modello.Classi.Soccorso.Eventi.Segnalazioni
 {
     /// <summary>
     ///   Modella una segnalazione per assistenza da parte dei VVF. Può essere una telefonata, un
