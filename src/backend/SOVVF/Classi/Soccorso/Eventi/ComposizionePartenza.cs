@@ -17,7 +17,7 @@ namespace Modello.Classi.Soccorso.Eventi
     ///   Questo evento implicitamente associa il personale al mezzo/attrezzatura. Probabilmente
     ///   mezzi e attrezzature possono essere ricondotti ad un'unica categoria (risorsa strumentale).
     /// </remarks>
-    public class ComposizionePartenza
+    public class ComposizionePartenza : Evento
     {
         /// <summary>
         ///   E' il codice della squadra coinvolta nella partenza, così come codificata nel modulo
