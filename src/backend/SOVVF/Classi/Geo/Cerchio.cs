@@ -5,7 +5,14 @@
     /// </summary>
     public class Cerchio : Geolocalizzazione
     {
+        /// <summary>
+        ///   E' il centro del cerchio
+        /// </summary>
         public Punto Centro { get; set; }
+
+        /// <summary>
+        ///   E' il raggio del cerchio
+        /// </summary>
         public double Raggio { get; set; }
     }
 }

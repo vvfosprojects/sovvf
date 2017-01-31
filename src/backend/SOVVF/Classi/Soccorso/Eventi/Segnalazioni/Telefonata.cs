@@ -14,7 +14,7 @@
         {
             get
             {
-                return NumeroTelefono;
+                return this.NumeroTelefono;
             }
         }
 

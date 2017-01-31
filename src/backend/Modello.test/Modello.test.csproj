@@ -7,8 +7,8 @@
     <ProjectGuid>{B56AA882-5F96-4DD1-9729-2A99C12EC224}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Modello.test</RootNamespace>
-    <AssemblyName>Modello.test</AssemblyName>
+    <RootNamespace>Modello.Test</RootNamespace>
+    <AssemblyName>Modello.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

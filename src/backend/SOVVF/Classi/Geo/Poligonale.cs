@@ -7,6 +7,12 @@ namespace Modello.Classi.Geo
     /// </summary>
     public class Poligonale : Geolocalizzazione
     {
+        /// <summary>
+        ///   Rappresenta la lista dei vertigi della poligonale
+        /// </summary>
+        /// <remarks>
+        ///   Non è richiesto che il primo e l'ultimo vertice corrispondano, chiudendo così la poligonale.
+        /// </remarks>
         public IList<Punto> Vertici { get; set; }
     }
 }

@@ -1,5 +1,5 @@
-﻿using Modello.Classi.Geo;
-using System;
+﻿using System;
+using Modello.Classi.Geo;
 
 namespace Modello.Classi.Soccorso.Eventi.Segnalazioni
 {

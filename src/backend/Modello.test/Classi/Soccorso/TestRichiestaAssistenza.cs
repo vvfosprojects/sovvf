@@ -2,7 +2,7 @@
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using NUnit.Framework;
 
-namespace Modello.test.Classi.Soccorso
+namespace Modello.Test.Classi.Soccorso
 {
     [TestFixture]
     public class TestRichiestaAssistenza
