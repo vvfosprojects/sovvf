@@ -3,10 +3,14 @@
 namespace Modello.Classi.Soccorso.Eventi
 {
     /// <summary>
-    ///   Modella il componente di una partenza, con i suoi ruoli ed il mezzo sul quale è collocato.
+    ///   Modella il componente di una partenza, con i suoi ruoli, il mezzo sul quale è collocato e
+    ///   le attrezzature che ha in carico.
     /// </summary>
     public class Componente
     {
+        /// <summary>
+        ///   Indica i possibili ruoli con i quali si partecipa ad una partenza.
+        /// </summary>
         public enum Ruolo
         {
             /// <summary>
@@ -30,11 +34,19 @@ namespace Modello.Classi.Soccorso.Eventi
         /// </summary>
         public string CodiceFiscale { get; set; }
 
+        /// <summary>
+        ///   E' il codice del mezzo su cui è collocato il componente
+        /// </summary>
         public string CodiceMezzo { get; set; }
 
         /// <summary>
         ///   E' la lista dei ruoli assegnati al soggetto contestualmente alla richiesta in corso
         /// </summary>
-        public IList<Ruolo> Ruoli { get; set; }
+        public ISet<Ruolo> Ruoli { get; set; }
+
+        /// <summary>
+        ///   E' la lista dei codici delle attrezzature in carico al componente
+        /// </summary>
+        public IList<string> CodiciAttrezzature { get; set; }
     }
 }
