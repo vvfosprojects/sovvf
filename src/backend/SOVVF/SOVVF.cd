@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Modello.Classi.Geo.Cerchio">
+    <Position X="0.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Geo\Cerchio.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Geo.Geolocalizzazione">
+    <Position X="3" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Geo\Geolocalizzazione.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Geo.Poligonale">
+    <Position X="3" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Classi\Geo\Poligonale.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Geo.Punto">
+    <Position X="5.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Geo\Punto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.AssegnazionePriorita">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\AssegnazionePriorita.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.ComposizionePartenza">
+    <Position X="7.5" Y="2.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\ComposizionePartenza.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Evento">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Evento.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.PresaInCarico" Collapsed="true">
+    <Position X="5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\PresaInCarico.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Segnalazioni.Segnalazione">
+    <Position X="2.75" Y="2.75" Width="1.5" />
+    <InheritanceLine Type="Modello.Classi.Soccorso.Eventi.Evento" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="1.796" />
+        <Point X="5" Y="2.375" />
+        <Point X="3.625" Y="2.375" />
+        <Point X="3.625" Y="2.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAACAABAAAAAAAAQAAAAAAAAAAAAQAAAAACAABAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Segnalazioni\Segnalazione.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Segnalazioni.Telefonata">
+    <Position X="5.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAQAAAAAAAAAQAACIAAIAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Segnalazioni\Telefonata.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.RichiestaAssistenza">
+    <Position X="11" Y="1.5" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Modello.Classi.Soccorso.RichiestaAssistenza.Priorita">
+        <TypeIdentifier>
+          <NewMemberFileName>Classi\Soccorso\RichiestaAssistenza.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAABAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\RichiestaAssistenza.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.SchedaContatto">
+    <Position X="11.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\SchedaContatto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Componente">
+    <Position X="8" Y="4.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Modello.Classi.Soccorso.Eventi.Componente.Ruolo">
+        <TypeIdentifier>
+          <NewMemberFileName>Classi\Soccorso\Eventi\Componente.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAIAAAAAABAABAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Componente.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
