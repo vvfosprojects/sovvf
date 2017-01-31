@@ -46,8 +46,10 @@
     <Compile Include="Classi\Geo\Poligonale.cs" />
     <Compile Include="Classi\Geo\Punto.cs" />
     <Compile Include="Classi\Soccorso\Eventi\AssegnazionePriorita.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\Componente.cs" />
     <Compile Include="Classi\Soccorso\Eventi\ComposizionePartenza.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Evento.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\PartenzaMezzo.cs" />
     <Compile Include="Classi\Soccorso\Eventi\PresaInCarico.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Segnalazioni\Segnalazione.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Segnalazioni\Telefonata.cs" />
