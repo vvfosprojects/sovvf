@@ -52,15 +52,26 @@ namespace Modello.Classi.Soccorso.Eventi
         /// <summary>
         ///   Per la classe, un Componente è uguale ad un altro Componente se hanno lo stesso codice fiscale
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="obj">Oggetto da confrontare</param>
         /// <returns>true se il Componente passato è uguale</returns>
         public override bool Equals(object obj)
         {
             if (!(obj is Componente))
+            {
                 return false;
+            }
 
             var c = (Componente)obj;
             return c.CodiceFiscale.Equals(this.CodiceFiscale);
+        }
+
+        /// <summary>
+        ///   Implementato hascode che restituisce l'hascode del codice fiscale
+        /// </summary>
+        /// <returns>Hashcode della classe</returns>
+        public override int GetHashCode()
+        {
+            return this.CodiceFiscale.GetHashCode();
         }
     }
 }

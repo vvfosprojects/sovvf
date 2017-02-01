@@ -40,7 +40,9 @@ namespace Modello.Classi.Soccorso.Eventi
                 var componenteCapopartenza = this.Componenti.FirstOrDefault(c => c.Ruoli.Contains(Componente.Ruolo.CapoPartenza));
 
                 if (componenteCapopartenza != null)
+                {
                     return componenteCapopartenza.CodiceFiscale;
+                }
 
                 return null;
             }
