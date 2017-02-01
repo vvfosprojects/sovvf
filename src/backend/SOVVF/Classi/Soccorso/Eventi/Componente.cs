@@ -48,5 +48,19 @@ namespace Modello.Classi.Soccorso.Eventi
         ///   E' la lista dei codici delle attrezzature in carico al componente
         /// </summary>
         public IList<string> CodiciAttrezzature { get; set; }
+
+        /// <summary>
+        ///   Per la classe, un Componente è uguale ad un altro Componente se hanno lo stesso codice fiscale
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns>true se il Componente passato è uguale</returns>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Componente))
+                return false;
+
+            var c = (Componente)obj;
+            return c.CodiceFiscale.Equals(this.CodiceFiscale);
+        }
     }
 }

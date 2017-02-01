@@ -28,6 +28,46 @@ namespace Modello.Classi.Soccorso.Eventi
         /// <summary>
         ///   E' la lista dei componenti della partenza
         /// </summary>
-        public IList<Componente> Componenti { get; set; }
+        public ISet<Componente> Componenti { get; set; }
+
+        /// <summary>
+        ///   Restituisce il codice fiscale del capopartenza presente all'interno dei componenti.
+        /// </summary>
+        public string CodiceFiscaleCapopartenza
+        {
+            get
+            {
+                var componenteCapopartenza = this.Componenti.FirstOrDefault(c => c.Ruoli.Contains(Componente.Ruolo.CapoPartenza));
+
+                if (componenteCapopartenza != null)
+                    return componenteCapopartenza.CodiceFiscale;
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///   Restituisce l'insieme dei codici fiscali relativi alla partenza
+        /// </summary>
+        public ISet<string> CodiciFiscaliComponenti
+        {
+            get
+            {
+                return new HashSet<string>(this
+                    .Componenti
+                    .Select(c => c.CodiceFiscale));
+            }
+        }
+
+        /// <summary>
+        ///   Restituisce il numero di componenti della <see cref="ComposizionePartenza" />
+        /// </summary>
+        public int NumeroComponenti
+        {
+            get
+            {
+                return this.Componenti.Count;
+            }
+        }
     }
 }
