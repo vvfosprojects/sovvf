@@ -1,4 +1,5 @@
 ﻿using Modello.Classi.Soccorso.Eventi;
+using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -105,6 +106,23 @@ namespace Modello.Test.Classi.Soccorso
 
             //Assert
             Assert.That(numeroComponenti, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void AccessoAlCodiceFiscalPartenzaSollevaEccezioneSeEPiuDiUno()
+        {
+            //Arrange
+            var cp = this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista;
+            cp.Componenti.Add(
+                    new Componente()
+                    {
+                        CodiceFiscale = "ZZY",
+                        CodiceMezzo = "M1",
+                        Ruoli = new HashSet<Componente.Ruolo>() { Componente.Ruolo.CapoPartenza }
+                    });
+            //Act & Assert
+            Assert.That(() => cp.CodiceFiscaleCapopartenza,
+              Throws.Exception.TypeOf<ComposizionePartenzaException>());
         }
     }
 }

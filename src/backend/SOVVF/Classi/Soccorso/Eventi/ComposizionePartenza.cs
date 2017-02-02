@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Modello.Classi.Soccorso.Eventi.Eccezioni;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,14 +38,20 @@ namespace Modello.Classi.Soccorso.Eventi
         {
             get
             {
-                var componenteCapopartenza = this.Componenti.FirstOrDefault(c => c.Ruoli.Contains(Componente.Ruolo.CapoPartenza));
-
-                if (componenteCapopartenza != null)
+                try
                 {
-                    return componenteCapopartenza.CodiceFiscale;
-                }
+                    var componenteCapopartenza = this.Componenti.SingleOrDefault(c => c.Ruoli.Contains(Componente.Ruolo.CapoPartenza));
 
-                return null;
+                    if (componenteCapopartenza != null)
+                    {
+                        return componenteCapopartenza.CodiceFiscale;
+                    }
+                    return null;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    throw new ComposizionePartenzaException("Esiste più di un Capo Partenza", ex);
+                }
             }
         }
 
