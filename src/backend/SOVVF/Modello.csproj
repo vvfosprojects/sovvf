@@ -53,6 +53,7 @@
     <Compile Include="Classi\Soccorso\Eventi\PresaInCarico.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Segnalazioni\Segnalazione.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Segnalazioni\Telefonata.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\UscitaPartenza.cs" />
     <Compile Include="Classi\Soccorso\SchedaContatto.cs" />
     <Compile Include="Classi\Soccorso\RichiestaAssistenza.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
