@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Modello.Classi.Soccorso.Eventi
 {
-    internal class UscitaPartenza : Evento
+    public class UscitaPartenza : Evento
     {
     }
 }
