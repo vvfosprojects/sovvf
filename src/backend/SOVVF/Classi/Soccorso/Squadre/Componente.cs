@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Modello.Classi.Soccorso.Eventi
+namespace Modello.Classi.Soccorso.Squadre
 {
     /// <summary>
     ///   Modella il componente di una partenza, con i suoi ruoli, il mezzo sul quale è collocato e
@@ -35,25 +35,16 @@ namespace Modello.Classi.Soccorso.Eventi
         public string CodiceFiscale { get; set; }
 
         /// <summary>
-        ///   E' il codice del mezzo su cui è collocato il componente
-        /// </summary>
-        public string CodiceMezzo { get; set; }
-
-        /// <summary>
         ///   E' la lista dei ruoli assegnati al soggetto contestualmente alla richiesta in corso
         /// </summary>
         public ISet<Ruolo> Ruoli { get; set; }
-
-        /// <summary>
-        ///   E' la lista dei codici delle attrezzature in carico al componente
-        /// </summary>
-        public IList<string> CodiciAttrezzature { get; set; }
 
         /// <summary>
         ///   Per la classe, un Componente è uguale ad un altro Componente se hanno lo stesso codice fiscale
         /// </summary>
         /// <param name="obj">Oggetto da confrontare</param>
         /// <returns>true se il Componente passato è uguale</returns>
+
         public override bool Equals(object obj)
         {
             if (!(obj is Componente))
