@@ -18,5 +18,10 @@ namespace Modello.Classi.Geo
     /// </summary>
     public abstract class Geolocalizzazione
     {
+        /// <summary>
+        ///   Restituisce il baricentro della geolocalizzazione, allo scopo di consentirne anche una
+        ///   rappresentazione sintetica su mappa mediante un segnaposto puntuale.
+        /// </summary>
+        public abstract Punto Baricentro { get; }
     }
 }

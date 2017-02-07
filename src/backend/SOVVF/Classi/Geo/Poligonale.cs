@@ -11,6 +11,7 @@
 // You should have received a copy of the GNU Affero General Public License along with this program.
 // If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Collections.Generic;
 
 namespace Modello.Classi.Geo
@@ -20,6 +21,18 @@ namespace Modello.Classi.Geo
     /// </summary>
     public class Poligonale : Geolocalizzazione
     {
+        /// <summary>
+        ///   Restituisce il baricentro della poligonale
+        /// </summary>
+        public override Punto Baricentro
+        {
+            get
+            {
+#warning Metodo da scrivere
+                throw new NotImplementedException();
+            }
+        }
+
         /// <summary>
         ///   Rappresenta la lista dei vertigi della poligonale
         /// </summary>

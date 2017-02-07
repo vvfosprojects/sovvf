@@ -11,6 +11,8 @@
 // You should have received a copy of the GNU Affero General Public License along with this program.
 // If not, see <http://www.gnu.org/licenses/>.
 
+using System;
+
 namespace Modello.Classi.Geo
 {
     /// <summary>
@@ -18,6 +20,17 @@ namespace Modello.Classi.Geo
     /// </summary>
     public class Punto : Geolocalizzazione
     {
+        /// <summary>
+        ///   Restituisce il punto stesso
+        /// </summary>
+        public override Punto Baricentro
+        {
+            get
+            {
+                return this;
+            }
+        }
+
         /// <summary>
         ///   E' la latitudine del punto, che su una mappatura planare corrisponde alla Y
         /// </summary>
