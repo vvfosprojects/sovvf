@@ -32,6 +32,8 @@ namespace Modello.Classi.Soccorso.Squadre
         public Squadra()
         {
             this.Ticket = Guid.NewGuid().ToString();
+            this.ComposizionePrevista = new HashSet<Componente>();
+            this.ComposizioneDisponibile = new HashSet<Componente>();
         }
 
         /// <summary>

@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Classi\Soccorso\TestComposizionePartenza.cs" />
     <Compile Include="Classi\Soccorso\TestRichiestaAssistenza.cs" />
+    <Compile Include="Classi\Soccorso\TestSquadra.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
