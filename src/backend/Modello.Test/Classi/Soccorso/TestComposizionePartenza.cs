@@ -13,6 +13,7 @@
 
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Eccezioni;
+using Modello.Classi.Soccorso.Squadre;
 using NUnit.Framework;
 using System.Collections.Generic;
 
@@ -36,31 +37,26 @@ namespace Modello.Test.Classi.Soccorso
                     new Componente()
                     {
                         CodiceFiscale = "XXX",
-                        CodiceMezzo = "M1",
                         Ruoli = new HashSet<Componente.Ruolo>() { Componente.Ruolo.CapoPartenza }
                     },
                     new Componente()
                     {
                         CodiceFiscale = "YYY",
-                        CodiceMezzo = "M2",
                         Ruoli = new HashSet<Componente.Ruolo>() { Componente.Ruolo.Autista }
                     },
                     new Componente()
                     {
                         CodiceFiscale = "ZZZ",
-                        CodiceMezzo = "M1",
                         Ruoli = new HashSet<Componente.Ruolo>() { Componente.Ruolo.Vigile }
                     },
                     new Componente()
                     {
                         CodiceFiscale = "KKK",
-                        CodiceMezzo = "M1",
                         Ruoli = new HashSet<Componente.Ruolo>() { Componente.Ruolo.Vigile }
                     },
                     new Componente()
                     {
                         CodiceFiscale = "LLL",
-                        CodiceMezzo = "M1",
                         Ruoli = new HashSet<Componente.Ruolo>() { Componente.Ruolo.Vigile }
                     }
                 }
@@ -129,7 +125,6 @@ namespace Modello.Test.Classi.Soccorso
                     new Componente()
                     {
                         CodiceFiscale = "ZZY",
-                        CodiceMezzo = "M1",
                         Ruoli = new HashSet<Componente.Ruolo>() { Componente.Ruolo.CapoPartenza }
                     });
             //Act & Assert

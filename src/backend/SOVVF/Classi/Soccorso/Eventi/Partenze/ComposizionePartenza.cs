@@ -11,10 +11,11 @@
 // You should have received a copy of the GNU Affero General Public License along with this program.
 // If not, see <http://www.gnu.org/licenses/>.
 
-using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Modello.Classi.Soccorso.Eventi.Eccezioni;
+using Modello.Classi.Soccorso.Squadre;
 
 namespace Modello.Classi.Soccorso.Eventi
 {
@@ -32,17 +33,6 @@ namespace Modello.Classi.Soccorso.Eventi
     public class ComposizionePartenza : Evento
     {
         /// <summary>
-        ///   E' il codice della squadra coinvolta nella partenza, così come codificata nel modulo
-        ///   relativo alla composizione dei servizi.
-        /// </summary>
-        public string CodiceSquadra { get; set; }
-
-        /// <summary>
-        ///   E' la lista dei componenti della partenza
-        /// </summary>
-        public ISet<Componente> Componenti { get; set; }
-
-        /// <summary>
         ///   Restituisce il codice fiscale del capopartenza presente all'interno dei componenti.
         /// </summary>
         public string CodiceFiscaleCapopartenza
@@ -57,6 +47,7 @@ namespace Modello.Classi.Soccorso.Eventi
                     {
                         return componenteCapopartenza.CodiceFiscale;
                     }
+
                     return null;
                 }
                 catch (InvalidOperationException ex)
@@ -65,6 +56,12 @@ namespace Modello.Classi.Soccorso.Eventi
                 }
             }
         }
+
+        /// <summary>
+        ///   E' il codice della squadra coinvolta nella partenza, così come codificata nel modulo
+        ///   relativo alla composizione dei servizi.
+        /// </summary>
+        public string CodiceSquadra { get; set; }
 
         /// <summary>
         ///   Restituisce l'insieme dei codici fiscali relativi alla partenza
@@ -78,6 +75,11 @@ namespace Modello.Classi.Soccorso.Eventi
                     .Select(c => c.CodiceFiscale));
             }
         }
+
+        /// <summary>
+        ///   E' la lista dei componenti della partenza
+        /// </summary>
+        public ISet<Componente> Componenti { get; set; }
 
         /// <summary>
         ///   Restituisce il numero di componenti della <see cref="ComposizionePartenza" />

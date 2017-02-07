@@ -13,14 +13,25 @@
 
 namespace Modello.Classi.Soccorso.Squadre
 {
+    /// <summary>
+    ///   Identifica una squadra utilizzata per evadere le segnalazioni relative ad una richiesta di
+    ///   assistenza di soccorso ordinario.
+    /// </summary>
     public class SquadraSoccorsoOrdinario : Squadra
     {
+        /// <summary>
+        ///   Classificazione dei Turni Operativi Standard.
+        /// </summary>
         public enum TurnoEnum { A, B, C, D }
 
-        public string CodiceUnitaOperativa { get; set; }
-
+        /// <summary>
+        ///   Ordine di partenza della squadra (es.: 1^ partenza, 2^ partenza,...).
+        /// </summary>
         public int OrdinePartenza { get; set; }
 
+        /// <summary>
+        ///   Turno Operativo assegnato alla squadra.
+        /// </summary>
         public TurnoEnum Turno { get; set; }
     }
 }

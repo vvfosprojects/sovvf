@@ -57,7 +57,6 @@ namespace Modello.Classi.Soccorso.Squadre
         /// </summary>
         /// <param name="obj">Oggetto da confrontare</param>
         /// <returns>true se il Componente passato è uguale</returns>
-
         public override bool Equals(object obj)
         {
             if (!(obj is Componente))

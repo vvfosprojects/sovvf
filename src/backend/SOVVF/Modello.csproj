@@ -56,7 +56,6 @@
     <Compile Include="Classi\Soccorso\SchedaContatto.cs" />
     <Compile Include="Classi\Soccorso\RichiestaAssistenza.cs" />
     <Compile Include="Classi\Soccorso\Squadre\Componente.cs" />
-    <Compile Include="Classi\Soccorso\Squadre\ComposizioneSquadra.cs" />
     <Compile Include="Classi\Soccorso\Squadre\SezioneOperativa.cs" />
     <Compile Include="Classi\Soccorso\Squadre\Squadra.cs" />
     <Compile Include="Classi\Soccorso\Squadre\SquadraEmergenza.cs" />

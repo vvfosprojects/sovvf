@@ -13,6 +13,12 @@
 
 namespace Modello.Classi.Soccorso.Eventi
 {
+    /// <summary>
+    ///   Modella l'uscita di una <see cref="ComposizionePartenza" />.
+    /// </summary>
+    /// <remarks>
+    ///   L'uscita consiste per esempio nel varcare il cancello di uscita del Comando Provinciale
+    /// </remarks>
     public class UscitaPartenza : Evento
     {
     }

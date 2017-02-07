@@ -15,12 +15,24 @@ using System;
 
 namespace Modello.Classi.Soccorso.Eventi.Eccezioni
 {
+    /// <summary>
+    ///   Classe base per le eccezioni sulla composizione della partenza
+    /// </summary>
     public class ComposizionePartenzaException : ApplicationException
     {
+        /// <summary>
+        ///   Costruttore che accetta il messaggio
+        /// </summary>
+        /// <param name="message">Messaggio dell'eccezione</param>
         public ComposizionePartenzaException(string message) : base(message)
         {
         }
 
+        /// <summary>
+        ///   Costruttore che accetta il messaggio e l'eccezione interna
+        /// </summary>
+        /// <param name="message">Messaggio dell'eccezione</param>
+        /// <param name="inner">Eccezione interna</param>
         public ComposizionePartenzaException(string message, Exception inner) : base(message, inner)
         {
         }

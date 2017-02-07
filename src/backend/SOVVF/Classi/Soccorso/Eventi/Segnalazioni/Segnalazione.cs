@@ -11,8 +11,8 @@
 // You should have received a copy of the GNU Affero General Public License along with this program.
 // If not, see <http://www.gnu.org/licenses/>.
 
-using Modello.Classi.Geo;
 using System;
+using Modello.Classi.Geo;
 
 namespace Modello.Classi.Soccorso.Eventi.Segnalazioni
 {

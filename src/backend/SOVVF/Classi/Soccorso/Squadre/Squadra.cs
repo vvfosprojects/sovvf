@@ -12,17 +12,61 @@
 // If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
 
 namespace Modello.Classi.Soccorso.Squadre
 {
+    /// <summary>
+    ///   Identifica con un Ticket la previsione e l'effettiva disponibilità dei componenti di una
+    ///   generica Squadra.
+    /// </summary>
+    /// <remarks>
+    ///   L'insieme delle squadre correntemente disponibili possono essere utilizzate in fase di
+    ///   composizione della partenza nell'evasione di una segnalazione.
+    /// </remarks>
     public abstract class Squadra
     {
+        /// <summary>
+        ///   Costruttore della squadra. Inizializza il ticket.
+        /// </summary>
+        public Squadra()
+        {
+            this.Ticket = Guid.NewGuid().ToString();
+        }
+
+        /// <summary>
+        ///   Identificativo assegnato alla squadra al momento della sua definizione.
+        /// </summary>
         public string Ticket { get; set; }
 
+        /// <summary>
+        ///   E' il codice della squadra che la identifica all'interno dell'Unità Organizzativa.
+        /// </summary>
         public string Sigla { get; set; }
 
+        /// <summary>
+        ///   Unità operativa responsabile della gestione operativa della squadra
+        /// </summary>
+        public string CodiceUnitaOperativaResponsabile { get; set; }
+
+        /// <summary>
+        ///   E' l'istante in cui è previsto che la squadra prenda servizio.
+        /// </summary>
         public DateTime IstantePrevistoInizioServizio { get; set; }
 
+        /// <summary>
+        ///   E' l'istante in cui è previsto che la squadra termini il servizio.
+        /// </summary>
         public DateTime IstantePrevistoFineServizio { get; set; }
+
+        /// <summary>
+        ///   E' l'insieme dei componenti della squadra che prenderanno servizio.
+        /// </summary>
+        public ISet<Componente> ComposizionePrevista { get; set; }
+
+        /// <summary>
+        ///   E' l'insieme dei componenti attualmente disponibili nella squadra.
+        /// </summary>
+        public ISet<Componente> ComposizioneDisponibile { get; set; }
     }
 }

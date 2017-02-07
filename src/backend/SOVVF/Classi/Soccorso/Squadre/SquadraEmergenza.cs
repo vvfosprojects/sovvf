@@ -13,6 +13,10 @@
 
 namespace Modello.Classi.Soccorso.Squadre
 {
+    /// <summary>
+    ///   Identifica una squadra utilizzata per evadere le segnalazioni relative ad una richiesta di
+    ///   assistenza di soccorso in fase di emergenza.
+    /// </summary>
     public class SquadraEmergenza : Squadra
     {
     }
