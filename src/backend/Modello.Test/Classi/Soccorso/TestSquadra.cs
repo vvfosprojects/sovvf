@@ -24,6 +24,18 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
+        [Repeat(100)]
+        public void UnaSquadraAppenaCreataHaUnTicketConformeAdUnGuid()
+        {
+            var s = new SquadraSoccorsoOrdinario();
+
+            Guid guid;
+            var correttamenteConvertito = Guid.TryParse(s.Ticket, out guid);
+
+            Assert.That(correttamenteConvertito, Is.True);
+        }
+
+        [Test]
         public void UnaSquadraAppenaCreataHaUnaComposizionePartenzaNonNull()
         {
             var s = new SquadraSoccorsoOrdinario();
