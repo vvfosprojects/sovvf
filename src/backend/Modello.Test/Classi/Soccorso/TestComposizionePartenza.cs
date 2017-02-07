@@ -11,11 +11,11 @@
 // You should have received a copy of the GNU Affero General Public License along with this program.
 // If not, see <http://www.gnu.org/licenses/>.
 
+using System.Collections.Generic;
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using Modello.Classi.Soccorso.Squadre;
 using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace Modello.Test.Classi.Soccorso
 {
@@ -66,60 +66,60 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnUnicoCapopartenzaECorrettamenteIndividuatoNellaListaDeiComponenti()
         {
-            //Arrange
+            // Arrange
             var cp = this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista;
 
-            //Act
+            // Act
             var codiceFiscaleCapopartenza = cp.CodiceFiscaleCapopartenza;
 
-            //Assert
+            // Assert
             Assert.That(codiceFiscaleCapopartenza, Is.EqualTo("XXX"));
         }
 
         [Test]
         public void ICodiciFiscaliDeiComponentiSonoCorrettamenteRestituiti()
         {
-            //Arrange
+            // Arrange
             var cp = this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista;
 
-            //Act
+            // Act
             var codiciFiscaliComponenti = cp.CodiciFiscaliComponenti;
 
-            //Assert
+            // Assert
             CollectionAssert.AreEquivalent(codiciFiscaliComponenti, new string[] { "ZZZ", "KKK", "XXX", "YYY", "LLL" });
         }
 
         [Test]
         public void ICodiciFiscaliDeiComponentiSonoCorrettamenteRestituitiSeNonCiSonoComponenti()
         {
-            //Arrange
+            // Arrange
             var cp = this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista;
             cp.Componenti.Clear();
 
-            //Act
+            // Act
             var codiciFiscaliComponenti = cp.CodiciFiscaliComponenti;
 
-            //Assert
+            // Assert
             CollectionAssert.IsEmpty(codiciFiscaliComponenti);
         }
 
         [Test]
         public void IlNumeroDeiComponentiECorrettamenteRestituito()
         {
-            //Arrange
+            // Arrange
             var cp = this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista;
 
-            //Act
+            // Act
             var numeroComponenti = cp.NumeroComponenti;
 
-            //Assert
+            // Assert
             Assert.That(numeroComponenti, Is.EqualTo(5));
         }
 
         [Test]
         public void AccessoAlCodiceFiscalPartenzaSollevaEccezioneSeEPiuDiUno()
         {
-            //Arrange
+            // Arrange
             var cp = this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista;
             cp.Componenti.Add(
                     new Componente()
@@ -127,9 +127,11 @@ namespace Modello.Test.Classi.Soccorso
                         CodiceFiscale = "ZZY",
                         Ruoli = new HashSet<Componente.Ruolo>() { Componente.Ruolo.CapoPartenza }
                     });
-            //Act & Assert
-            Assert.That(() => cp.CodiceFiscaleCapopartenza,
-              Throws.Exception.TypeOf<ComposizionePartenzaException>());
+
+            // Act & Assert
+            Assert.That(
+                () => cp.CodiceFiscaleCapopartenza,
+                Throws.Exception.TypeOf<ComposizionePartenzaException>());
         }
     }
 }

@@ -13,6 +13,15 @@
 
 namespace Modello.Classi.Soccorso.Squadre
 {
+    /// <summary>
+    ///   Modella la sezione oeprativa (ex colonna mobile)
+    /// </summary>
+    /// <remarks>
+    ///   La composizione della sezione operativa è sistematica e predispone delle squadre allo scopo
+    ///   di far fronte con tempestività ad emergenze non ancora manifestatesi. In questo senso si
+    ///   può considerare assimilabile ad un turno di reperibilità. I turni di sezione operativa si
+    ///   sovrappongono con le normali turnazioni del soccorso ordinario e delle altre attività pianificate.
+    /// </remarks>
     public class SezioneOperativa : Squadra
     {
     }

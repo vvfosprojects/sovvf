@@ -22,7 +22,28 @@ namespace Modello.Classi.Soccorso.Squadre
         /// <summary>
         ///   Classificazione dei Turni Operativi Standard.
         /// </summary>
-        public enum TurnoEnum { A, B, C, D }
+        public enum TurnoEnum
+        {
+            /// <summary>
+            ///   Indica il turno A del soccorso ordinario
+            /// </summary>
+            A,
+
+            /// <summary>
+            ///   Indica il turno B del soccorso ordinario
+            /// </summary>
+            B,
+
+            /// <summary>
+            ///   Indica il turno C del soccorso ordinario
+            /// </summary>
+            C,
+
+            /// <summary>
+            ///   Indica il turno D del soccorso ordinario
+            /// </summary>
+            D
+        }
 
         /// <summary>
         ///   Ordine di partenza della squadra (es.: 1^ partenza, 2^ partenza,...).

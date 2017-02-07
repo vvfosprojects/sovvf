@@ -13,6 +13,10 @@
 
 namespace Modello.Classi.Soccorso.Squadre
 {
+    /// <summary>
+    ///   Modella una squadra che partecipa ad una vigilanza (per es. manifestazioni sportive,
+    ///   teatrali, ecc.)
+    /// </summary>
     public class SquadraVigilanza : Squadra
     {
     }
