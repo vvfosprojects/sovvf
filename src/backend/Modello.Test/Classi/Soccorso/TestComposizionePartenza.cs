@@ -133,5 +133,15 @@ namespace Modello.Test.Classi.Soccorso
                 () => cp.CodiceFiscaleCapopartenza,
                 Throws.Exception.TypeOf<ComposizionePartenzaException>());
         }
+
+        [Test]
+        public void UnaComposizionePartenzaAppenaCreataHaLAttributoComponentiNonNull()
+        {
+            var cp = new ComposizionePartenza();
+
+            var componenti = cp.Componenti;
+
+            Assert.That(componenti, Is.Not.Null);
+        }
     }
 }

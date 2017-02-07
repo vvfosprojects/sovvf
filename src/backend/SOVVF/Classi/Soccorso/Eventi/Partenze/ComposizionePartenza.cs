@@ -33,6 +33,14 @@ namespace Modello.Classi.Soccorso.Eventi
     public class ComposizionePartenza : Evento
     {
         /// <summary>
+        ///   Costruttore che inizializza l'attributo Componenti.
+        /// </summary>
+        public ComposizionePartenza()
+        {
+            this.Componenti = new HashSet<Componente>();
+        }
+
+        /// <summary>
         ///   Restituisce il codice fiscale del capopartenza presente all'interno dei componenti.
         /// </summary>
         public string CodiceFiscaleCapopartenza
