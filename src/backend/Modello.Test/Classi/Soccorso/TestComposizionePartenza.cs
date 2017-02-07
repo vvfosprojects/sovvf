@@ -14,7 +14,6 @@
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 
 namespace Modello.Test.Classi.Soccorso
