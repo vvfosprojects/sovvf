@@ -15,20 +15,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Modello.Classi.Soccorso.Eventi.Eccezioni;
-using Modello.Classi.Soccorso.Squadre;
 
 namespace Modello.Classi.Soccorso.Eventi
 {
     /// <summary>
-    ///   Questa classe modella la composizione di una partenza. Si compongono le seguenti risorse:
-    ///   * Codice Squadra
-    ///   * Elenco persone relativi ruoli
-    ///   * Elenco mezzi
-    ///   * Elenco attrezzature
+    ///   Questa classe rappresenta l'assegnazione di risorse per l'evasione di una richiesta di
+    ///   assistenza. Le risorse sono costituite da componenti con i relativi ruoli, Mezzi e Squadra
     /// </summary>
     /// <remarks>
-    ///   Questo evento implicitamente associa il personale al mezzo/attrezzatura. Probabilmente
-    ///   mezzi e attrezzature possono essere ricondotti ad un'unica categoria (risorsa strumentale).
+    ///   Questo evento associa il personale all'effettivo mezzo e squadra che interverranno per il
+    ///   soccorso. Valuteremo se i mezzi e le attrezzature possono essere ricondotti ad un'unica
+    ///   categoria (risorsa strumentale).
     /// </remarks>
     public class ComposizionePartenza : Evento
     {
@@ -37,7 +34,7 @@ namespace Modello.Classi.Soccorso.Eventi
         /// </summary>
         public ComposizionePartenza()
         {
-            this.Componenti = new HashSet<Componente>();
+            this.Componenti = new HashSet<ComponentePartenza>();
         }
 
         /// <summary>
@@ -49,7 +46,7 @@ namespace Modello.Classi.Soccorso.Eventi
             {
                 try
                 {
-                    var componenteCapopartenza = this.Componenti.SingleOrDefault(c => c.Ruoli.Contains(Componente.Ruolo.CapoPartenza));
+                    var componenteCapopartenza = this.Componenti.SingleOrDefault(c => c.Ruoli.Contains(ComponentePartenza.Ruolo.CapoPartenza));
 
                     if (componenteCapopartenza != null)
                     {
@@ -64,12 +61,6 @@ namespace Modello.Classi.Soccorso.Eventi
                 }
             }
         }
-
-        /// <summary>
-        ///   E' il codice della squadra coinvolta nella partenza, così come codificata nel modulo
-        ///   relativo alla composizione dei servizi.
-        /// </summary>
-        public string CodiceSquadra { get; set; }
 
         /// <summary>
         ///   Restituisce l'insieme dei codici fiscali relativi alla partenza
@@ -87,7 +78,7 @@ namespace Modello.Classi.Soccorso.Eventi
         /// <summary>
         ///   E' la lista dei componenti della partenza
         /// </summary>
-        public ISet<Componente> Componenti { get; set; }
+        public ISet<ComponentePartenza> Componenti { get; set; }
 
         /// <summary>
         ///   Restituisce il numero di componenti della <see cref="ComposizionePartenza" />

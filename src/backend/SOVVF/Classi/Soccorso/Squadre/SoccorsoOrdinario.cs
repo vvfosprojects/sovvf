@@ -17,7 +17,7 @@ namespace Modello.Classi.Soccorso.Squadre
     ///   Identifica una squadra utilizzata per evadere le segnalazioni relative ad una richiesta di
     ///   assistenza di soccorso ordinario.
     /// </summary>
-    public class SquadraSoccorsoOrdinario : Squadra
+    public class SoccorsoOrdinario : DisponibilitaSquadra
     {
         /// <summary>
         ///   Classificazione dei Turni Operativi Standard.
@@ -27,22 +27,22 @@ namespace Modello.Classi.Soccorso.Squadre
             /// <summary>
             ///   Indica il turno A del soccorso ordinario
             /// </summary>
-            A,
+            TurnoA,
 
             /// <summary>
             ///   Indica il turno B del soccorso ordinario
             /// </summary>
-            B,
+            TurnoB,
 
             /// <summary>
             ///   Indica il turno C del soccorso ordinario
             /// </summary>
-            C,
+            TurnoC,
 
             /// <summary>
             ///   Indica il turno D del soccorso ordinario
             /// </summary>
-            D
+            TurnoD
         }
 
         /// <summary>

@@ -32,32 +32,32 @@ namespace Modello.Test.Classi.Soccorso
         {
             this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista = new ComposizionePartenza()
             {
-                Componenti = new HashSet<Componente>()
+                Componenti = new HashSet<ComponentePartenza>()
                 {
-                    new Componente()
+                    new ComponentePartenza()
                     {
                         CodiceFiscale = "XXX",
-                        Ruoli = new HashSet<Componente.Ruolo>() { Componente.Ruolo.CapoPartenza }
+                        Ruoli = new HashSet<ComponentePartenza.Ruolo>() { ComponentePartenza.Ruolo.CapoPartenza }
                     },
-                    new Componente()
+                    new ComponentePartenza()
                     {
                         CodiceFiscale = "YYY",
-                        Ruoli = new HashSet<Componente.Ruolo>() { Componente.Ruolo.Autista }
+                        Ruoli = new HashSet<ComponentePartenza.Ruolo>() { ComponentePartenza.Ruolo.Autista }
                     },
-                    new Componente()
+                    new ComponentePartenza()
                     {
                         CodiceFiscale = "ZZZ",
-                        Ruoli = new HashSet<Componente.Ruolo>() { Componente.Ruolo.Vigile }
+                        Ruoli = new HashSet<ComponentePartenza.Ruolo>() { ComponentePartenza.Ruolo.Vigile }
                     },
-                    new Componente()
+                    new ComponentePartenza()
                     {
                         CodiceFiscale = "KKK",
-                        Ruoli = new HashSet<Componente.Ruolo>() { Componente.Ruolo.Vigile }
+                        Ruoli = new HashSet<ComponentePartenza.Ruolo>() { ComponentePartenza.Ruolo.Vigile }
                     },
-                    new Componente()
+                    new ComponentePartenza()
                     {
                         CodiceFiscale = "LLL",
-                        Ruoli = new HashSet<Componente.Ruolo>() { Componente.Ruolo.Vigile }
+                        Ruoli = new HashSet<ComponentePartenza.Ruolo>() { ComponentePartenza.Ruolo.Vigile }
                     }
                 }
             };
@@ -117,12 +117,12 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void AccessoAlCodiceFiscalPartenzaSollevaEccezioneSeEPiuDiUno()
+        public void AccessoAlCodiceFiscalePartenzaSollevaEccezioneSeEPiuDiUno()
         {
             // Arrange
             var cp = this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista;
             cp.Componenti.Add(
-                    new Componente()
+                    new ComponentePartenza()
                     {
                         CodiceFiscale = "ZZY",
                         Ruoli = new HashSet<Componente.Ruolo>() { Componente.Ruolo.CapoPartenza }

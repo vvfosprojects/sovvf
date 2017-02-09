@@ -17,19 +17,19 @@ using System.Collections.Generic;
 namespace Modello.Classi.Soccorso.Squadre
 {
     /// <summary>
-    ///   Identifica con un Ticket la previsione e l'effettiva disponibilità dei componenti di una
-    ///   generica Squadra.
+    ///   Identifica con un Ticket una squadra disponibile per il soccorso. L'istanza di questa
+    ///   classe viene creata quando la squadra si rende effettivamente disponibile.
     /// </summary>
     /// <remarks>
     ///   L'insieme delle squadre correntemente disponibili possono essere utilizzate in fase di
     ///   composizione della partenza nell'evasione di una segnalazione.
     /// </remarks>
-    public abstract class Squadra
+    public abstract class DisponibilitaSquadra
     {
         /// <summary>
         ///   Costruttore della squadra. Inizializza il ticket.
         /// </summary>
-        public Squadra()
+        public DisponibilitaSquadra()
         {
             this.Ticket = Guid.NewGuid().ToString();
             this.ComposizionePrevista = new HashSet<Componente>();
@@ -62,7 +62,14 @@ namespace Modello.Classi.Soccorso.Squadre
         public DateTime IstantePrevistoFineServizio { get; set; }
 
         /// <summary>
-        ///   E' l'insieme dei componenti della squadra che prenderanno servizio.
+        ///   E' l'istante in cui è effettivamente terminato il servizio della squadra. E' null se la
+        ///   squadra è correntemente in servizio.
+        /// </summary>
+        public DateTime? IstanteEffettivoFineServizio { get; set; }
+
+        /// <summary>
+        ///   E' l'insieme dei componenti che è previsto che siano in squadra. Per es. per le squadre
+        ///   di soccorso ordinario la previsione proveniente dalla Composizione servizi del personale.
         /// </summary>
         public ISet<Componente> ComposizionePrevista { get; set; }
 

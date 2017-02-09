@@ -16,8 +16,7 @@ using System.Collections.Generic;
 namespace Modello.Classi.Soccorso.Squadre
 {
     /// <summary>
-    ///   Modella il componente di una partenza, con i suoi ruoli, il mezzo sul quale è collocato e
-    ///   le attrezzature che ha in carico.
+    ///   Modella il componente di una squadra, con i suoi ruoli
     /// </summary>
     public class Componente
     {
@@ -39,7 +38,14 @@ namespace Modello.Classi.Soccorso.Squadre
             /// <summary>
             ///   E' il ruolo base che non implica mansioni speciali
             /// </summary>
-            Vigile
+            Vigile,
+
+            /// <summary>
+            ///   E' il ruolo assegnato al vigile quando effettua servizio in una sede diversa da
+            ///   quella di assegnazione
+            /// </summary>
+            /// <remarks>Il rimpiazzo può esssere programmato o non programmato</remarks>
+            Rimpiazzo
         }
 
         /// <summary>

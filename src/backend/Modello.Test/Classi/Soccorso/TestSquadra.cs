@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace Modello.Test.Classi.Soccorso
 {
     /// <summary>
-    ///   Unit test relativa alla classe <see cref="Squadra" />
+    ///   Unit test relativa alla classe <see cref="DisponibilitaSquadra" />
     /// </summary>
     [TestFixture]
     public class TestSquadra
@@ -18,7 +18,7 @@ namespace Modello.Test.Classi.Soccorso
         [Repeat(100)]
         public void UnaSquadraAppenaCreataHaUnTicketImpostato()
         {
-            var s = new SquadraSoccorsoOrdinario();
+            var s = new SoccorsoOrdinario();
 
             Assert.That(s.Ticket, Is.Not.Empty);
         }
@@ -27,7 +27,7 @@ namespace Modello.Test.Classi.Soccorso
         [Repeat(10)]
         public void UnaSquadraAppenaCreataHaUnTicketConformeAdUnGuid()
         {
-            var s = new SquadraSoccorsoOrdinario();
+            var s = new SoccorsoOrdinario();
 
             Guid guid;
             var correttamenteConvertito = Guid.TryParse(s.Ticket, out guid);
@@ -39,7 +39,7 @@ namespace Modello.Test.Classi.Soccorso
         [Repeat(10)]
         public void UnaSquadraAppenaCreataHaUnTicketCheNonEUnGuidVuoto()
         {
-            var s = new SquadraSoccorsoOrdinario();
+            var s = new SoccorsoOrdinario();
 
             Guid guid = Guid.Parse(s.Ticket);
 
@@ -49,7 +49,7 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaSquadraAppenaCreataHaUnaComposizionePartenzaNonNull()
         {
-            var s = new SquadraSoccorsoOrdinario();
+            var s = new SoccorsoOrdinario();
 
             Assert.That(s.ComposizionePrevista, Is.Not.Null);
         }
@@ -57,7 +57,7 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaSquadraAppenaCreataHaUnaComposizioneDisponibileNonNull()
         {
-            var s = new SquadraSoccorsoOrdinario();
+            var s = new SoccorsoOrdinario();
 
             Assert.That(s.ComposizioneDisponibile, Is.Not.Null);
         }

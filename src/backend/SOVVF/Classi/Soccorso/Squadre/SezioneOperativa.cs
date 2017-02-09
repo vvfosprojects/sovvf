@@ -22,7 +22,7 @@ namespace Modello.Classi.Soccorso.Squadre
     ///   può considerare assimilabile ad un turno di reperibilità. I turni di sezione operativa si
     ///   sovrappongono con le normali turnazioni del soccorso ordinario e delle altre attività pianificate.
     /// </remarks>
-    public class SezioneOperativa : Squadra
+    public class SezioneOperativa : DisponibilitaSquadra
     {
     }
 }
