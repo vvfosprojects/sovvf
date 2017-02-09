@@ -24,7 +24,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        [Repeat(100)]
+        [Repeat(10)]
         public void UnaSquadraAppenaCreataHaUnTicketConformeAdUnGuid()
         {
             var s = new SquadraSoccorsoOrdinario();
@@ -33,6 +33,17 @@ namespace Modello.Test.Classi.Soccorso
             var correttamenteConvertito = Guid.TryParse(s.Ticket, out guid);
 
             Assert.That(correttamenteConvertito, Is.True);
+        }
+
+        [Test]
+        [Repeat(10)]
+        public void UnaSquadraAppenaCreataHaUnTicketCheNonEUnGuidVuoto()
+        {
+            var s = new SquadraSoccorsoOrdinario();
+
+            Guid guid = Guid.Parse(s.Ticket);
+
+            Assert.That(guid, Is.Not.EqualTo(Guid.Empty));
         }
 
         [Test]
