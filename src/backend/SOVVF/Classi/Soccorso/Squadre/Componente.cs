@@ -44,7 +44,7 @@ namespace Modello.Classi.Soccorso.Squadre
             ///   E' il ruolo assegnato al vigile quando effettua servizio in una sede diversa da
             ///   quella di assegnazione
             /// </summary>
-            /// <remarks>Il rimpiazzo può esssere programmato o non programmato</remarks>
+            /// <remarks>Il rimpiazzo può essere programmato o non programmato</remarks>
             Rimpiazzo
         }
 

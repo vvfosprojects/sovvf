@@ -62,6 +62,13 @@ namespace Modello.Classi.Soccorso.Squadre
         public DateTime IstantePrevistoFineServizio { get; set; }
 
         /// <summary>
+        ///   E' l'istante in cui è effettivamente inizia il servizio della squadra. Per default sarà
+        ///   uguale a quello previsto. Può essere utile nel caso un Turno venga chiamato in servizio
+        ///   prima dell'orario previsto di inizio turno.
+        /// </summary>
+        public DateTime IstanteEffettivoInizioServizio { get; set; }
+
+        /// <summary>
         ///   E' l'istante in cui è effettivamente terminato il servizio della squadra. E' null se la
         ///   squadra è correntemente in servizio.
         /// </summary>
@@ -71,6 +78,10 @@ namespace Modello.Classi.Soccorso.Squadre
         ///   E' l'insieme dei componenti che è previsto che siano in squadra. Per es. per le squadre
         ///   di soccorso ordinario la previsione proveniente dalla Composizione servizi del personale.
         /// </summary>
+        /*///
+        /// <remarks>qualcosa del genere da inserire nello strato dei servizi public ISet<Componente>
+        /// ComposizionePrevista(); </remarks>
+        */
         public ISet<Componente> ComposizionePrevista { get; set; }
 
         /// <summary>
