@@ -11,7 +11,7 @@
 // You should have received a copy of the GNU Affero General Public License along with this program.
 // If not, see <http://www.gnu.org/licenses/>.
 
-namespace Modello.Classi.Soccorso.Eventi
+namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
     ///   Eventuale dirottamento in fase di rientro della <see cref="ComposizionePartenza"></see>

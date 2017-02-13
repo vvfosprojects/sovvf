@@ -1,6 +1,6 @@
 ﻿using Modello.Classi.Soccorso.Squadre;
 
-namespace Modello.Classi.Soccorso.Eventi
+namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
     ///   Modella il componente di una partenza, con i suoi ruoli, il mezzo sul quale è collocato e

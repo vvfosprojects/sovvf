@@ -11,19 +11,27 @@
 // You should have received a copy of the GNU Affero General Public License along with this program.
 // If not, see <http://www.gnu.org/licenses/>.
 
-namespace Modello.Classi.Soccorso.Eventi.Partenze
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Modello.Classi.Soccorso.Eventi.Eccezioni;
+
+namespace Modello.Classi.Soccorso.Risorse
 {
     /// <summary>
-    ///   Modella il rientro dal luogo della richiesta di assistenza di una <see cref="ComposizionePartenza" />.
+    ///   Questa classe rappresenta la selezione di una risorsa ad una <see cref="RichiestaAssistenza" />.
     /// </summary>
-    /// <remarks>
-    ///   Il "rientro" consiste per esempio nel lasciare il luogo della richiesta di assistenza
-    /// </remarks>
-    public class PartenzaInRientro : Evento
+    /// <remarks>La risorsa selezionata non sarà selezionabile da altri operatori.</remarks>
+    public class SelezioneRisorsa
     {
         /// <summary>
-        ///   E' l'identificativo del mezzo da cui è arrivato l'evento
+        ///   Istante di selezione della risorsa.
         /// </summary>
-        public string CodiceMezzo { get; set; }
+        public DateTime IstanteSelezione { get; set; }
+
+        /// <summary>
+        ///   Operatore che effettua la selezione.
+        /// </summary>
+        public string Operatore { get; set; }
     }
 }

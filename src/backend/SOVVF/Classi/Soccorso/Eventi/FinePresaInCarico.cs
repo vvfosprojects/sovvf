@@ -14,10 +14,10 @@
 namespace Modello.Classi.Soccorso.Eventi
 {
     /// <summary>
-    ///   Questo evento indica che la richiesta di assistenza alla quale appartiene deve essere presa
-    ///   in carico per la gestione operativa
+    ///   Questo evento indica che la richiesta di assistenza alla quale appartiene ha terminato di
+    ///   essere in carico per la gestione operativa
     /// </summary>
-    public class PresaInCarico : Evento
+    public class FinePresaInCarico : Evento
     {
     }
 }

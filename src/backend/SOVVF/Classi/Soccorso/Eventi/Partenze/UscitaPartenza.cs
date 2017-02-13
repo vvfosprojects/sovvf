@@ -11,7 +11,7 @@
 // You should have received a copy of the GNU Affero General Public License along with this program.
 // If not, see <http://www.gnu.org/licenses/>.
 
-namespace Modello.Classi.Soccorso.Eventi
+namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
     ///   Modella l'uscita di una <see cref="ComposizionePartenza" />.
@@ -21,5 +21,9 @@ namespace Modello.Classi.Soccorso.Eventi
     /// </remarks>
     public class UscitaPartenza : Evento
     {
+        /// <summary>
+        ///   E' l'identificativo del mezzo da cui è arrivato l'evento
+        /// </summary>
+        public string CodiceMezzo { get; set; }
     }
 }

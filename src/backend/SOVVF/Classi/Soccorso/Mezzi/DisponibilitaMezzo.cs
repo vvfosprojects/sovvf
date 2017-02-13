@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Modello.Classi.Soccorso.Risorse;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,5 +27,12 @@ namespace Modello.Classi.Soccorso.Mezzi
         ///   E' l'istante in cui non è più disponibile il mezzo.
         /// </summary>
         public DateTime? IstanteFineDisponibilita { get; set; }
+
+        /// <summary>
+        ///   Indica l'eventuale stato di selezione del Mezzo. Un Mezzo selezionato è disponibile per
+        ///   la Composizione Partenza solo all'operatore che ha effettuato la selezione. Risolve la
+        ///   contesa della risorsa <see cref="DisponibilitaMezzo" /> con la semantica Test and Set.
+        /// </summary>
+        public SelezioneRisorsa Selezionata { get; set; }
     }
 }

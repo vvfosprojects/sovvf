@@ -11,6 +11,7 @@
 // You should have received a copy of the GNU Affero General Public License along with this program.
 // If not, see <http://www.gnu.org/licenses/>.
 
+using Modello.Classi.Soccorso.Risorse;
 using System;
 using System.Collections.Generic;
 
@@ -42,7 +43,7 @@ namespace Modello.Classi.Soccorso.Squadre
         public string Ticket { get; set; }
 
         /// <summary>
-        ///   E' il codice della squadra che la identifica all'interno dell'Unità Organizzativa.
+        ///   E' il codice parlante della squadra che la identifica all'interno dell'Unità Organizzativa.
         /// </summary>
         public string Sigla { get; set; }
 
@@ -88,5 +89,13 @@ namespace Modello.Classi.Soccorso.Squadre
         ///   E' l'insieme dei componenti attualmente disponibili nella squadra.
         /// </summary>
         public ISet<Componente> ComposizioneDisponibile { get; set; }
+
+        /// <summary>
+        ///   Indica l'eventuale stato di selezione della squadra. Una squadra selezionata è
+        ///   disponibile per la Composizione Partenza solo all'operatore che ha effettuato la
+        ///   selezione. Risolve la contesa della risorsa <see cref="DisponibilitaSquadra" /> con la
+        ///   semantica Test and Set.
+        /// </summary>
+        public SelezioneRisorsa Selezionata { get; set; }
     }
 }

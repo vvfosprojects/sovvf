@@ -11,19 +11,17 @@
 // You should have received a copy of the GNU Affero General Public License along with this program.
 // If not, see <http://www.gnu.org/licenses/>.
 
-namespace Modello.Classi.Soccorso.Eventi.Partenze
+namespace Modello.Classi.Soccorso.Eventi
 {
     /// <summary>
-    ///   Modella il rientro dal luogo della richiesta di assistenza di una <see cref="ComposizionePartenza" />.
+    ///   Questo evento indica che la richiesta di assistenza alla quale appartiene è presa in
+    ///   gestione da un operatore. Risolve la concorrenza nell'accesso alla
+    ///   <see cref="RichiestaAssistenza" /> da parte di più operatori.
     /// </summary>
     /// <remarks>
-    ///   Il "rientro" consiste per esempio nel lasciare il luogo della richiesta di assistenza
+    ///   Un solo operatore può gestire la Richiesta, gli altri potranno solo consultarla in lettura.
     /// </remarks>
-    public class PartenzaInRientro : Evento
+    public class InizioPresaInCarico : Evento
     {
-        /// <summary>
-        ///   E' l'identificativo del mezzo da cui è arrivato l'evento
-        /// </summary>
-        public string CodiceMezzo { get; set; }
     }
 }
