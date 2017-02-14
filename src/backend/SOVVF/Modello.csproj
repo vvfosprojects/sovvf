@@ -71,8 +71,11 @@
     <Compile Include="Classi\Soccorso\Squadre\SoccorsoOrdinario.cs" />
     <Compile Include="Classi\Soccorso\Squadre\Vigilanza.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servizi\GestioneSoccorso\IGetDisponibilitaSquadraByTicket.cs" />
+    <Compile Include="Servizi\GestioneSoccorso\ITestAndSetSelezioneDisponibilitaSquadra.cs" />
     <Compile Include="Servizi\GestioneSoccorso\SelezioneMezzo.cs" />
     <Compile Include="Servizi\GestioneSoccorso\SelezioneSquadra.cs" />
+    <Compile Include="Servizi\Infrastruttura\Autenticazione\IGetOperatoreAutenticato.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

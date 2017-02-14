@@ -24,14 +24,20 @@ namespace Modello.Classi.Soccorso.Risorse
     /// <remarks>La risorsa selezionata non sarà selezionabile da altri operatori.</remarks>
     public class SelezioneRisorsa
     {
+        public SelezioneRisorsa(string operatore)
+        {
+            this.IstanteSelezione = DateTime.UtcNow;
+            this.Operatore = operatore;
+        }
+
         /// <summary>
         ///   Istante di selezione della risorsa.
         /// </summary>
-        public DateTime IstanteSelezione { get; set; }
+        public DateTime IstanteSelezione { get; private set; }
 
         /// <summary>
         ///   Operatore che effettua la selezione.
         /// </summary>
-        public string Operatore { get; set; }
+        public string Operatore { get; private set; }
     }
 }
