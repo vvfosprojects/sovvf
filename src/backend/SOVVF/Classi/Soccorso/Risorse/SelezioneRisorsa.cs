@@ -12,9 +12,6 @@
 // If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Modello.Classi.Soccorso.Eventi.Eccezioni;
 
 namespace Modello.Classi.Soccorso.Risorse
 {

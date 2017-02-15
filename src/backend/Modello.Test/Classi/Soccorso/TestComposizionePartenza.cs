@@ -12,8 +12,8 @@
 // If not, see <http://www.gnu.org/licenses/>.
 
 using System.Collections.Generic;
-using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Eventi.Eccezioni;
+using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Squadre;
 using NUnit.Framework;
 
