@@ -15,8 +15,16 @@ using Modello.Classi.Soccorso.Squadre;
 
 namespace Modello.Servizi.GestioneSoccorso
 {
+    /// <summary>
+    ///   Servizio che recupera l'entità <see cref="DisponibilitaSquadra" /> attraverso il suo Ticket.
+    /// </summary>
     public interface IGetDisponibilitaSquadraByTicket
     {
+        /// <summary>
+        ///   Preleva l'entità <see cref="DisponibilitaSquadra" /> attraverso il suo Ticket.
+        /// </summary>
+        /// <param name="ticket">Il ticket identificativo della <see cref="DisponibilitaSquadra" />.</param>
+        /// <returns>La <see cref="DisponibilitaSquadra" /> prelevata.</returns>
         DisponibilitaSquadra Get(string ticket);
     }
 }

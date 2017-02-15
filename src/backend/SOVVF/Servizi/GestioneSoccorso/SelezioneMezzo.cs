@@ -23,8 +23,8 @@ namespace Modello.Servizi.GestioneSoccorso
         /// <summary>
         ///   Seleziona un Mezzo.
         /// </summary>
-        /// <param name="CodiceMezzo">Codice del Mezzo selezionato</param>
-        public void Seleziona(string CodiceMezzo)
+        /// <param name="codiceMezzo">Codice del Mezzo selezionato</param>
+        public void Seleziona(string codiceMezzo)
         {
         }
     }

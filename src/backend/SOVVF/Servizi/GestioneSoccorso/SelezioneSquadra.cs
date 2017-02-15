@@ -23,10 +23,27 @@ namespace Modello.Servizi.GestioneSoccorso
     /// </summary>
     public class SelezioneSquadra
     {
+        /// <summary>
+        ///   Dipendenza che preleva la DisponibilitaSquadra per ticket.
+        /// </summary>
         private readonly IGetDisponibilitaSquadraByTicket getDisponibilitaSquadraByTicket;
+
+        /// <summary>
+        ///   Dipendenza che restituisce l'operatore correntemente autenticato.
+        /// </summary>
         private readonly IGetOperatoreAutenticato getOperatoreAutenticato;
+
+        /// <summary>
+        ///   Servizio che imposta la selezione di una DisponibilitaSquadra per la risoluzione delle contese.
+        /// </summary>
         private readonly ITestAndSetSelezioneDisponibilitaSquadra testAndSetSelezioneDisponibilitaSquadra;
 
+        /// <summary>
+        ///   Costruttore del servizio
+        /// </summary>
+        /// <param name="getDisponibilitaSquadraByTicket">Istanza del servizio <see cref="IGetDisponibilitaSquadraByTicket" />.</param>
+        /// <param name="getOperatoreAutenticato">Istanza del servizio <see cref="IGetOperatoreAutenticato" />.</param>
+        /// <param name="testAndSetSelezioneDisponibilitaSquadra">Istanza del servizio <see cref="ITestAndSetSelezioneDisponibilitaSquadra" />.</param>
         public SelezioneSquadra(
             IGetDisponibilitaSquadraByTicket getDisponibilitaSquadraByTicket,
             IGetOperatoreAutenticato getOperatoreAutenticato,
@@ -48,17 +65,16 @@ namespace Modello.Servizi.GestioneSoccorso
         /// </remarks>
         public SelezioneRisorsa Seleziona(string ticket)
         {
-            //carica la squadra disponibile da DisponibilitaSquadra
-            var disponibilitaSquadra = getDisponibilitaSquadraByTicket.Get(ticket);
+            // carica la squadra disponibile da DisponibilitaSquadra
+            var disponibilitaSquadra = this.getDisponibilitaSquadraByTicket.Get(ticket);
 
-            //set SelezioneRisorsa della squadra selezionata
+            // set SelezioneRisorsa della squadra selezionata
             disponibilitaSquadra.Seleziona(this.getOperatoreAutenticato.Get());
 
-            //Test And Set SelezioneRisorsa su DisponibilitaSquadra
-            //ritorna il valore corrente di SelezioneRisorsa
-            var selezioneRisorsa = testAndSetSelezioneDisponibilitaSquadra.Esegui(disponibilitaSquadra);
-            //notifica selezione avvenuta
+            // Test And Set SelezioneRisorsa su DisponibilitaSquadra ritorna il valore corrente di SelezioneRisorsa
+            var selezioneRisorsa = this.testAndSetSelezioneDisponibilitaSquadra.Esegui(disponibilitaSquadra);
 
+            // notifica selezione avvenuta. Anzi, no: la notifica avviene con servizi ortogonali
             return selezioneRisorsa;
         }
     }

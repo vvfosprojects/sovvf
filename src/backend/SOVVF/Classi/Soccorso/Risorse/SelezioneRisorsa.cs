@@ -21,6 +21,11 @@ namespace Modello.Classi.Soccorso.Risorse
     /// <remarks>La risorsa selezionata non sarà selezionabile da altri operatori.</remarks>
     public class SelezioneRisorsa
     {
+        /// <summary>
+        ///   Crea un'istanza di SelezioneRisorsa, assegnando la selezione ad un operatore.
+        /// </summary>
+        /// <param name="operatore">L'operatore che esegue la selezione.</param>
+        /// <remarks>La selezione risale temporalmente all'istante della creazione dell'istanza.</remarks>
         public SelezioneRisorsa(string operatore)
         {
             this.IstanteSelezione = DateTime.UtcNow;

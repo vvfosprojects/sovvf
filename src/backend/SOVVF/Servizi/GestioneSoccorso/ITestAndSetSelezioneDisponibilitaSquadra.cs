@@ -16,8 +16,25 @@ using Modello.Classi.Soccorso.Squadre;
 
 namespace Modello.Servizi.GestioneSoccorso
 {
+    /// <summary>
+    ///   Servizio di selezione sulla <see cref="DisponibilitaSquadra" />. Quando una
+    ///   <see cref="DisponibilitaSquadra" /> viene selezionata diventa non disponibile per la
+    ///   selezione da parte di altri operatori. L'operazione effettuata da questo servizio è atomica
+    ///   (test and set). Il servizio effettua l'operazione solo se la squadra non risulta già
+    ///   selezionata (risoluzione della contesa).
+    /// </summary>
     public interface ITestAndSetSelezioneDisponibilitaSquadra
     {
+        /// <summary>
+        ///   Seleziona una <see cref="DisponibilitaSquadra" /> non già selezionata, con semantica atomica.
+        /// </summary>
+        /// <param name="disponibilitaSquadra">La disponibilità squadra contenente la nuova selezione</param>
+        /// <returns>La selezione che risulta impostata.</returns>
+        /// <remarks>
+        ///   In caso di successo del test and set, la <see cref="SelezioneRisorsa" /> restituita è
+        ///   quella specificata nel parametro <paramref name="disponibilitaSquadra" />. In caso di
+        ///   fallimento (risorsa già selezionata) viene restituita la selezione corrente.
+        /// </remarks>
         SelezioneRisorsa Esegui(DisponibilitaSquadra disponibilitaSquadra);
     }
 }

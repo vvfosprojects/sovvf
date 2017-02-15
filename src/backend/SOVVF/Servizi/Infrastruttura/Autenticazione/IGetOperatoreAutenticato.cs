@@ -13,8 +13,17 @@
 
 namespace Modello.Servizi.Infrastruttura.Autenticazione
 {
+    /// <summary>
+    ///   Servizio di accesso all'operatore correntemente autenticato nel corrente thread di esecuzione.
+    /// </summary>
     public interface IGetOperatoreAutenticato
     {
+        /// <summary>
+        ///   Restituisce l'operatore autenticato
+        /// </summary>
+        /// <returns>La username dell'operatore autenticato. Per es.: mario.rossi</returns>
+#warning Questo servizio deve restituire una classe Operatore.
+
         string Get();
     }
 }

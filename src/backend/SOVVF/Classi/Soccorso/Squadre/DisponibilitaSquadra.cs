@@ -28,6 +28,14 @@ namespace Modello.Classi.Soccorso.Squadre
     public abstract class DisponibilitaSquadra
     {
         /// <summary>
+        ///   Indica l'eventuale stato di selezione della squadra. Una squadra selezionata è
+        ///   disponibile per la Composizione Partenza solo all'operatore che ha effettuato la
+        ///   selezione. Risolve la contesa della risorsa <see cref="DisponibilitaSquadra" /> con la
+        ///   semantica Test and Set.
+        /// </summary>
+        private SelezioneRisorsa selezionata;
+
+        /// <summary>
         ///   Costruttore della squadra. Inizializza il ticket.
         /// </summary>
         public DisponibilitaSquadra()
@@ -89,14 +97,6 @@ namespace Modello.Classi.Soccorso.Squadre
         ///   E' l'insieme dei componenti attualmente disponibili nella squadra.
         /// </summary>
         public ISet<Componente> ComposizioneDisponibile { get; set; }
-
-        /// <summary>
-        ///   Indica l'eventuale stato di selezione della squadra. Una squadra selezionata è
-        ///   disponibile per la Composizione Partenza solo all'operatore che ha effettuato la
-        ///   selezione. Risolve la contesa della risorsa <see cref="DisponibilitaSquadra" /> con la
-        ///   semantica Test and Set.
-        /// </summary>
-        private SelezioneRisorsa selezionata;
 
         /// <summary>
         ///   Seleziona la squadra.
