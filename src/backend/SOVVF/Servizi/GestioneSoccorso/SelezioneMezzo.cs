@@ -11,6 +11,9 @@
 // You should have received a copy of the GNU Affero General Public License along with this program.
 // If not, see <http://www.gnu.org/licenses/>.
 
+using Modello.Classi.Soccorso.Risorse;
+using Modello.Servizi.Infrastruttura.Autenticazione;
+
 namespace Modello.Servizi.GestioneSoccorso
 {
     /// <summary>
@@ -21,11 +24,46 @@ namespace Modello.Servizi.GestioneSoccorso
     public class SelezioneMezzo
     {
         /// <summary>
+        ///   Dipendenza che restituisce l'operatore correntemente autenticato.
+        /// </summary>
+        private readonly IGetOperatoreAutenticato getOperatoreAutenticato;
+
+        /// <summary>
+        ///   Servizio che imposta la selezione di una DisponibilitaMezzo per la risoluzione delle contese.
+        /// </summary>
+        private readonly ITestAndSetSelezioneDisponibilitaMezzo testAndSetSelezioneDisponibilitaMezzo;
+
+        /// <summary>
+        ///   Costruttore del servizio
+        /// </summary>
+        /// <param name="getOperatoreAutenticato">Istanza del servizio <see cref="IGetOperatoreAutenticato" />.</param>
+        /// <param name="testAndSetSelezioneDisponibilitaMezzo">Istanza del servizio <see cref="ITestAndSetSelezioneDisponibilitaMezzo" />.</param>
+        public SelezioneMezzo(
+            IGetOperatoreAutenticato getOperatoreAutenticato,
+            ITestAndSetSelezioneDisponibilitaMezzo testAndSetSelezioneDisponibilitaMezzo)
+        {
+            this.getOperatoreAutenticato = getOperatoreAutenticato;
+            this.testAndSetSelezioneDisponibilitaMezzo = testAndSetSelezioneDisponibilitaMezzo;
+        }
+
+        /// <summary>
         ///   Seleziona un Mezzo.
         /// </summary>
+        /// <returns>La <see cref="SelezioneRisorsa" /> corrente.</returns>
         /// <param name="codiceMezzo">Codice del Mezzo selezionato</param>
-        public void Seleziona(string codiceMezzo)
+        /// <remarks>
+        ///   Per controllare che la selezione sia andata a buon fine, sul client verrà controllato
+        ///   che l'operatore della SelezioneRisorsa sia se stesso
+        /// </remarks>
+        public SelezioneRisorsa Seleziona(string codiceMezzo)
         {
+            var operatore = this.getOperatoreAutenticato.Get();
+
+            // Test And Set SelezioneRisorsa su DisponibilitaSquadra ritorna il valore corrente di SelezioneRisorsa
+            var selezioneRisorsa = this.testAndSetSelezioneDisponibilitaMezzo.Esegui(operatore, codiceMezzo);
+
+            // notifica selezione avvenuta. Anzi, no: la notifica avviene con servizi ortogonali
+            return selezioneRisorsa;
         }
     }
 }

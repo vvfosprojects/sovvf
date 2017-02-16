@@ -17,27 +17,26 @@ using Modello.Classi.Soccorso.Squadre;
 namespace Modello.Servizi.GestioneSoccorso
 {
     /// <summary>
-    ///   Servizio di selezione sulla <see cref="DisponibilitaSquadra" />. L'operazione effettuata da
-    ///   questo servizio è atomica (test and set). Il servizio effettua l'operazione solo se la
-    ///   squadra non risulta già selezionata (risoluzione della contesa).
+    ///   Servizio di selezione sulla <see cref="DisponibilitaMezzo" />. L'operazione effettuata da
+    ///   questo servizio è atomica (test and set). Il servizio effettua l'operazione solo se il
+    ///   Mezzo non risulta già selezionato (risoluzione della contesa).
     /// </summary>
     /// <remarks>
-    ///   Quando una <see cref="DisponibilitaSquadra" /> viene selezionata diventa non disponibile
-    ///   per la selezione da parte di altri operatori.
+    ///   Quando una <see cref="DisponibilitaMezzo" /> viene selezionata diventa non disponibile per
+    ///   la selezione da parte di altri operatori.
     /// </remarks>
-    public interface ITestAndSetSelezioneDisponibilitaSquadra
+    public interface ITestAndSetSelezioneDisponibilitaMezzo
     {
         /// <summary>
-        ///   Seleziona una <see cref="DisponibilitaSquadra" /> non già selezionata, con semantica atomica.
+        ///   Seleziona una <see cref="DisponibilitaMezzo" /> non già selezionata, con semantica atomica.
         /// </summary>
-        /// <returns>La selezione che risulta impostata.</returns>
         /// <param name="operatore">Operatore che richiede la selezione.</param>
-        /// <param name="ticket">Ticket della squadra selezionata.</param>
+        /// <param name="codiceMezzo">Codice del Mezzo selezionato.</param>
         /// <returns>
         ///   In caso di successo del test and set, la <see cref="SelezioneRisorsa" /> restituita è
         ///   quella relativa alla prenotazione risorsa appena fatta. In caso di fallimento (risorsa
         ///   già selezionata) viene restituita la selezione corrente.
         /// </returns>
-        SelezioneRisorsa Esegui(string operatore, string ticket);
+        SelezioneRisorsa Esegui(string operatore, string codiceMezzo);
     }
 }

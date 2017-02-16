@@ -28,14 +28,6 @@ namespace Modello.Classi.Soccorso.Squadre
     public abstract class DisponibilitaSquadra
     {
         /// <summary>
-        ///   Indica l'eventuale stato di selezione della squadra. Una squadra selezionata è
-        ///   disponibile per la Composizione Partenza solo all'operatore che ha effettuato la
-        ///   selezione. Risolve la contesa della risorsa <see cref="DisponibilitaSquadra" /> con la
-        ///   semantica Test and Set.
-        /// </summary>
-        private SelezioneRisorsa selezionata;
-
-        /// <summary>
         ///   Costruttore della squadra. Inizializza il ticket.
         /// </summary>
         public DisponibilitaSquadra()
@@ -99,24 +91,11 @@ namespace Modello.Classi.Soccorso.Squadre
         public ISet<Componente> ComposizioneDisponibile { get; set; }
 
         /// <summary>
-        ///   Seleziona la squadra.
+        ///   Indica l'eventuale stato di selezione della squadra. Una squadra selezionata è
+        ///   disponibile per la Composizione Partenza solo all'operatore che ha effettuato la
+        ///   selezione. Risolve la contesa della risorsa <see cref="DisponibilitaSquadra" /> con la
+        ///   semantica Test and Set.
         /// </summary>
-        /// <param name="operatore">Operatore che effettua la selezione.</param>
-        /// <remarks>
-        ///   Questa operazione è svolta in un contesto di contesa sulla risora e si adotta a livello
-        ///   di sistema, un lock pessimistico con la semantica Test And Set. Una eventuale selezione
-        ///   in corso da un altro operatore viene pertanto sovrascritta da questo metodo.
-        /// </remarks>
-        public void Seleziona(string operatore)
-        {
-            this.selezionata = new SelezioneRisorsa(operatore);
-        }
-
-        /// <summary>
-        ///   Deseleziona la squadra rendendola nuovamente disponbile per altre selezioni
-        /// </summary>
-        public void Deseleziona()
-        {
-        }
+        public SelezioneRisorsa Selezionata { get; private set; }
     }
 }

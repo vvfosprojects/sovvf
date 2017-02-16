@@ -42,6 +42,6 @@ namespace Modello.Classi.Soccorso.Mezzi
         ///   la Composizione Partenza solo all'operatore che ha effettuato la selezione. Risolve la
         ///   contesa della risorsa <see cref="DisponibilitaMezzo" /> con la semantica Test and Set.
         /// </summary>
-        public SelezioneRisorsa Selezionata { get; set; }
+        public SelezioneRisorsa Selezionata { get; private set; }
     }
 }

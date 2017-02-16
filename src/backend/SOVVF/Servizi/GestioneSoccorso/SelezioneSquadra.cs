@@ -12,6 +12,7 @@
 // If not, see <http://www.gnu.org/licenses/>.
 
 using Modello.Classi.Soccorso.Risorse;
+using Modello.Classi.Soccorso.Squadre;
 using Modello.Servizi.Infrastruttura.Autenticazione;
 
 namespace Modello.Servizi.GestioneSoccorso
@@ -23,11 +24,6 @@ namespace Modello.Servizi.GestioneSoccorso
     /// </summary>
     public class SelezioneSquadra
     {
-        /// <summary>
-        ///   Dipendenza che preleva la DisponibilitaSquadra per ticket.
-        /// </summary>
-        private readonly IGetDisponibilitaSquadraByTicket getDisponibilitaSquadraByTicket;
-
         /// <summary>
         ///   Dipendenza che restituisce l'operatore correntemente autenticato.
         /// </summary>
@@ -41,15 +37,12 @@ namespace Modello.Servizi.GestioneSoccorso
         /// <summary>
         ///   Costruttore del servizio
         /// </summary>
-        /// <param name="getDisponibilitaSquadraByTicket">Istanza del servizio <see cref="IGetDisponibilitaSquadraByTicket" />.</param>
         /// <param name="getOperatoreAutenticato">Istanza del servizio <see cref="IGetOperatoreAutenticato" />.</param>
         /// <param name="testAndSetSelezioneDisponibilitaSquadra">Istanza del servizio <see cref="ITestAndSetSelezioneDisponibilitaSquadra" />.</param>
         public SelezioneSquadra(
-            IGetDisponibilitaSquadraByTicket getDisponibilitaSquadraByTicket,
             IGetOperatoreAutenticato getOperatoreAutenticato,
             ITestAndSetSelezioneDisponibilitaSquadra testAndSetSelezioneDisponibilitaSquadra)
         {
-            this.getDisponibilitaSquadraByTicket = getDisponibilitaSquadraByTicket;
             this.getOperatoreAutenticato = getOperatoreAutenticato;
             this.testAndSetSelezioneDisponibilitaSquadra = testAndSetSelezioneDisponibilitaSquadra;
         }
@@ -65,14 +58,10 @@ namespace Modello.Servizi.GestioneSoccorso
         /// </remarks>
         public SelezioneRisorsa Seleziona(string ticket)
         {
-            // carica la squadra disponibile da DisponibilitaSquadra
-            var disponibilitaSquadra = this.getDisponibilitaSquadraByTicket.Get(ticket);
-
-            // set SelezioneRisorsa della squadra selezionata
-            disponibilitaSquadra.Seleziona(this.getOperatoreAutenticato.Get());
+            var operatore = this.getOperatoreAutenticato.Get();
 
             // Test And Set SelezioneRisorsa su DisponibilitaSquadra ritorna il valore corrente di SelezioneRisorsa
-            var selezioneRisorsa = this.testAndSetSelezioneDisponibilitaSquadra.Esegui(disponibilitaSquadra);
+            var selezioneRisorsa = this.testAndSetSelezioneDisponibilitaSquadra.Esegui(operatore, ticket);
 
             // notifica selezione avvenuta. Anzi, no: la notifica avviene con servizi ortogonali
             return selezioneRisorsa;
