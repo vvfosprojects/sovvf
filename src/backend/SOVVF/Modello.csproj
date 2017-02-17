@@ -71,14 +71,14 @@
     <Compile Include="Classi\Soccorso\Squadre\SoccorsoOrdinario.cs" />
     <Compile Include="Classi\Soccorso\Squadre\Vigilanza.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Servizi\GestioneSoccorso\DeselezioneMezzo.cs" />
-    <Compile Include="Servizi\GestioneSoccorso\ITestAndSetDeselezioneDisponibilitaMezzo.cs" />
-    <Compile Include="Servizi\GestioneSoccorso\ITestAndSetDeselezioneDisponibilitaSquadra.cs" />
-    <Compile Include="Servizi\GestioneSoccorso\ITestAndSetSelezioneDisponibilitaMezzo.cs" />
-    <Compile Include="Servizi\GestioneSoccorso\ITestAndSetSelezioneDisponibilitaSquadra.cs" />
-    <Compile Include="Servizi\GestioneSoccorso\SelezioneMezzo.cs" />
-    <Compile Include="Servizi\GestioneSoccorso\DeselezioneSquadra.cs" />
-    <Compile Include="Servizi\GestioneSoccorso\SelezioneSquadra.cs" />
+    <Compile Include="Servizi\GestioneSoccorso\SelezioneRisorse\DeselezioneMezzo.cs" />
+    <Compile Include="Servizi\GestioneSoccorso\SelezioneRisorse\DeselezioneSquadra.cs" />
+    <Compile Include="Servizi\GestioneSoccorso\SelezioneRisorse\ITestAndSetDeselezioneDisponibilitaMezzo.cs" />
+    <Compile Include="Servizi\GestioneSoccorso\SelezioneRisorse\ITestAndSetDeselezioneDisponibilitaSquadra.cs" />
+    <Compile Include="Servizi\GestioneSoccorso\SelezioneRisorse\ITestAndSetSelezioneDisponibilitaMezzo.cs" />
+    <Compile Include="Servizi\GestioneSoccorso\SelezioneRisorse\ITestAndSetSelezioneDisponibilitaSquadra.cs" />
+    <Compile Include="Servizi\GestioneSoccorso\SelezioneRisorse\SelezioneMezzo.cs" />
+    <Compile Include="Servizi\GestioneSoccorso\SelezioneRisorse\SelezioneSquadra.cs" />
     <Compile Include="Servizi\Infrastruttura\Autenticazione\IGetOperatoreAutenticato.cs" />
   </ItemGroup>
   <ItemGroup />

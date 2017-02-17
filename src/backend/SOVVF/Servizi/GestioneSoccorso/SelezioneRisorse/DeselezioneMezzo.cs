@@ -15,14 +15,14 @@ using Modello.Classi.Soccorso.Risorse;
 using Modello.Classi.Soccorso.Squadre;
 using Modello.Servizi.Infrastruttura.Autenticazione;
 
-namespace Modello.Servizi.GestioneSoccorso
+namespace Modello.Servizi.GestioneSoccorso.SelezioneRisorse
 {
     /// <summary>
-    ///   Deseleziona una squadra selezionata se la selezione appartiene all'operatore corrente. La
-    ///   deselezione rende nuovamante disponibile la risorsa squadra dall'uso da parte di tutte le
+    ///   Deseleziona un Mezzo selezionato se la selezione appartiene all'operatore corrente. La
+    ///   deselezione rende nuovamante disponibile la risorsa Mezzo dall'uso da parte di tutte le
     ///   altre postazioni concorrenti.
     /// </summary>
-    public class DeselezioneSquadra
+    public class DeselezioneMezzo
     {
         /// <summary>
         ///   Dipendenza che restituisce l'operatore correntemente autenticato.
@@ -30,10 +30,9 @@ namespace Modello.Servizi.GestioneSoccorso
         private readonly IGetOperatoreAutenticato getOperatoreAutenticato;
 
         /// <summary>
-        ///   Servizio che imposta la deselezione di una DisponibilitaSquadra per la risoluzione
-        ///   delle contese.
+        ///   Servizio che imposta la deselezione di una DisponibilitaMezzo per la risoluzione delle contese.
         /// </summary>
-        private readonly ITestAndSetDeselezioneDisponibilitaSquadra testAndSetDeselezioneDisponibilitaSquadra;
+        private readonly ITestAndSetDeselezioneDisponibilitaMezzo testAndSetDeselezioneDisponibilitaMezzo;
 
         /// <summary>
         ///   Costruttore del servizio
@@ -41,27 +40,27 @@ namespace Modello.Servizi.GestioneSoccorso
         /// <param name="getOperatoreAutenticato">
         ///   Servizio che restituisce l'operatore correntemente autenticato.
         /// </param>
-        /// <param name="testAndSetDeselezioneDisponibilitaSquadra">Istanza del servizio <see cref="ITestAndSetSelezioneDisponibilitaSquadra" />.</param>
-        public DeselezioneSquadra(
+        /// <param name="testAndSetDeselezioneDisponibilitaMezzo">Istanza del servizio <see cref="ITestAndSetDeselezioneDisponibilitaMezzo" />.</param>
+        public DeselezioneMezzo(
             IGetOperatoreAutenticato getOperatoreAutenticato,
-            ITestAndSetDeselezioneDisponibilitaSquadra testAndSetDeselezioneDisponibilitaSquadra)
+            ITestAndSetDeselezioneDisponibilitaMezzo testAndSetDeselezioneDisponibilitaMezzo)
         {
             this.getOperatoreAutenticato = getOperatoreAutenticato;
-            this.testAndSetDeselezioneDisponibilitaSquadra = testAndSetDeselezioneDisponibilitaSquadra;
+            this.testAndSetDeselezioneDisponibilitaMezzo = testAndSetDeselezioneDisponibilitaMezzo;
         }
 
         /// <summary>
-        ///   Deseleziona la squadra.
+        ///   Deseleziona il Mezzo.
         /// </summary>
-        /// <param name="ticket">Ticket della squadra su cui rimuovere la selezione.</param>
+        /// <param name="codiceMezzo">Codice del Mezzo su cui rimuovere la selezione.</param>
         /// <remarks>
         ///   In caso di fallimento (risorsa selezionata da un altro operatore) verrà sollevata un'eccezione.
         /// </remarks>
-        public void Deseleziona(string ticket)
+        public void Deseleziona(string codiceMezzo)
         {
             var operatore = this.getOperatoreAutenticato.Get();
 
-            this.testAndSetDeselezioneDisponibilitaSquadra.Esegui(operatore, ticket);
+            this.testAndSetDeselezioneDisponibilitaMezzo.Esegui(operatore, codiceMezzo);
 
             // notifica Deselezione avvenuta. Anzi, no: la notifica avviene con servizi ortogonali
         }

@@ -14,28 +14,28 @@
 using Modello.Classi.Soccorso.Risorse;
 using Modello.Classi.Soccorso.Squadre;
 
-namespace Modello.Servizi.GestioneSoccorso
+namespace Modello.Servizi.GestioneSoccorso.SelezioneRisorse
 {
     /// <summary>
-    ///   Servizio di deselezione sulla <see cref="DisponibilitaSquadra" />. L'operazione effettuata
-    ///   da questo servizio è atomica (test and set). Il servizio effettua l'operazione solo se la
-    ///   squadra risulta selezionata dallo stesso operatore che richiede la deselezione.
+    ///   Servizio di deselezione sulla <see cref="DisponibilitaMezzo" />. L'operazione effettuata da
+    ///   questo servizio è atomica (test and set). Il servizio effettua l'operazione solo se il
+    ///   Mezzo risulta selezionato dallo stesso operatore che richiede la deselezione.
     /// </summary>
     /// <remarks>
-    ///   Quando una <see cref="DisponibilitaSquadra" /> viene deselezionata ritorna disponibile per
-    ///   la selezione da parte di altri operatori.
+    ///   Quando una <see cref="DisponibilitaMezzo" /> viene deselezionata ritorna disponibile per la
+    ///   selezione da parte di altri operatori.
     /// </remarks>
-    public interface ITestAndSetDeselezioneDisponibilitaSquadra
+    public interface ITestAndSetDeselezioneDisponibilitaMezzo
     {
         /// <summary>
-        ///   Deseleziona una <see cref="DisponibilitaSquadra" /> selezionata dall'operatore
-        ///   corrente, con semantica atomica.
+        ///   Deseleziona una <see cref="DisponibilitaMezzo" /> selezionata dall'operatore corrente,
+        ///   con semantica atomica.
         /// </summary>
         /// <param name="operatore">Operatore che richiede la deselezione.</param>
-        /// <param name="ticket">Ticket della squadra selezionata.</param>
+        /// <param name="codiceMezzo">Codice del Mezzo selezionato.</param>
         /// <remarks>
         ///   In caso di fallimento (risorsa selezionata da un altro operatore) verrà sollevata un'eccezione.
         /// </remarks>
-        void Esegui(string operatore, string ticket);
+        void Esegui(string operatore, string codiceMezzo);
     }
 }
