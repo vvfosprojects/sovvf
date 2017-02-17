@@ -15,7 +15,7 @@ using Modello.Classi.Soccorso.Risorse;
 using Modello.Classi.Soccorso.Squadre;
 using Modello.Servizi.Infrastruttura.Autenticazione;
 
-namespace Modello.Servizi.GestioneSoccorso.SelezioneRisorse
+namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneRisorse
 {
     /// <summary>
     ///   Deseleziona un Mezzo selezionato se la selezione appartiene all'operatore corrente. La

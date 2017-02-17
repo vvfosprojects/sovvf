@@ -22,6 +22,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
     ///   Questa classe rappresenta l'assegnazione di risorse per l'evasione di una richiesta di
     ///   assistenza. Le risorse sono costituite da componenti con i relativi ruoli, Mezzi e Squadra
     /// </summary>
+    /// no
     /// <remarks>
     ///   Questo evento associa il personale all'effettivo mezzo e squadra che interverranno per il
     ///   soccorso. Valuteremo se i mezzi e le attrezzature possono essere ricondotti ad un'unica

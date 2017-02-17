@@ -14,28 +14,29 @@
 using Modello.Classi.Soccorso.Risorse;
 using Modello.Classi.Soccorso.Squadre;
 
-namespace Modello.Servizi.GestioneSoccorso.SelezioneRisorse
+namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneRisorse
 {
     /// <summary>
-    ///   Servizio di deselezione sulla <see cref="DisponibilitaMezzo" />. L'operazione effettuata da
+    ///   Servizio di selezione sulla <see cref="DisponibilitaMezzo" />. L'operazione effettuata da
     ///   questo servizio è atomica (test and set). Il servizio effettua l'operazione solo se il
-    ///   Mezzo risulta selezionato dallo stesso operatore che richiede la deselezione.
+    ///   Mezzo non risulta già selezionato (risoluzione della contesa).
     /// </summary>
     /// <remarks>
-    ///   Quando una <see cref="DisponibilitaMezzo" /> viene deselezionata ritorna disponibile per la
-    ///   selezione da parte di altri operatori.
+    ///   Quando una <see cref="DisponibilitaMezzo" /> viene selezionata diventa non disponibile per
+    ///   la selezione da parte di altri operatori.
     /// </remarks>
-    public interface ITestAndSetDeselezioneDisponibilitaMezzo
+    public interface ITestAndSetSelezioneDisponibilitaMezzo
     {
         /// <summary>
-        ///   Deseleziona una <see cref="DisponibilitaMezzo" /> selezionata dall'operatore corrente,
-        ///   con semantica atomica.
+        ///   Seleziona una <see cref="DisponibilitaMezzo" /> non già selezionata, con semantica atomica.
         /// </summary>
-        /// <param name="operatore">Operatore che richiede la deselezione.</param>
+        /// <param name="operatore">Operatore che richiede la selezione.</param>
         /// <param name="codiceMezzo">Codice del Mezzo selezionato.</param>
-        /// <remarks>
-        ///   In caso di fallimento (risorsa selezionata da un altro operatore) verrà sollevata un'eccezione.
-        /// </remarks>
-        void Esegui(string operatore, string codiceMezzo);
+        /// <returns>
+        ///   In caso di successo del test and set, la <see cref="SelezioneRisorsa" /> restituita è
+        ///   quella relativa alla prenotazione risorsa appena fatta. In caso di fallimento (risorsa
+        ///   già selezionata) viene restituita la selezione corrente.
+        /// </returns>
+        SelezioneRisorsa Esegui(string operatore, string codiceMezzo);
     }
 }
