@@ -21,6 +21,10 @@ namespace Modello.Classi.Soccorso.Risorse
     /// <remarks>La risorsa selezionata non sarà selezionabile da altri operatori.</remarks>
     public class SelezioneRisorsa
     {
+        public SelezioneRisorsa()
+        {
+        }
+
         /// <summary>
         ///   Crea un'istanza di SelezioneRisorsa, assegnando la selezione ad un operatore.
         /// </summary>

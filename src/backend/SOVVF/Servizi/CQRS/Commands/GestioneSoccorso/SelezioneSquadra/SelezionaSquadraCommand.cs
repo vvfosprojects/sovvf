@@ -6,17 +6,8 @@ using System.Threading.Tasks;
 
 namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra
 {
-    internal class SelezionaSquadraCommand
+    public class SelezionaSquadraCommand
     {
-        private readonly string ticket;
-
-        private SelezionaSquadraCommand(string ticket)
-        {
-            this.ticket = ticket;
-        }
-
-        private void Execute()
-        {
-        }
+        public string Ticket { get; set; }
     }
 }

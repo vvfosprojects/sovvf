@@ -76,10 +76,14 @@
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneRisorse\ITestAndSetDeselezioneDisponibilitaMezzo.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneRisorse\ITestAndSetDeselezioneDisponibilitaSquadra.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneRisorse\ITestAndSetSelezioneDisponibilitaMezzo.cs" />
-    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneRisorse\ITestAndSetSelezioneDisponibilitaSquadra.cs" />
+    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\ITestAndSetSelezioneDisponibilitaSquadra.cs" />
+    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\SelezionaSquadraCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneRisorse\SelezioneMezzo.cs" />
-    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneRisorse\SelezioneSquadra.cs" />
+    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\SelezionaSquadraCommandHandler.cs" />
     <Compile Include="Servizi\CQRS\Commands\ICommandHandler.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\DisponibilitaMezziQuery.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\DisponibilitaMezziResult.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\DisponibilitaMezziQueryHandler.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\DisponibilitaSquadreQuery.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\DisponibilitaSquadreQueryHandler.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\DisponibilitaSquadreResult.cs" />

@@ -14,7 +14,7 @@
 using Modello.Classi.Soccorso.Risorse;
 using Modello.Classi.Soccorso.Squadre;
 
-namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneRisorse
+namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra
 {
     /// <summary>
     ///   Servizio di selezione sulla <see cref="DisponibilitaSquadra" />. L'operazione effettuata da
