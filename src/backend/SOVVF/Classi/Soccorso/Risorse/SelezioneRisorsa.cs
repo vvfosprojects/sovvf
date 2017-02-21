@@ -21,6 +21,9 @@ namespace Modello.Classi.Soccorso.Risorse
     /// <remarks>La risorsa selezionata non sarà selezionabile da altri operatori.</remarks>
     public class SelezioneRisorsa
     {
+        /// <summary>
+        ///   Costruttore vuoto
+        /// </summary>
         public SelezioneRisorsa()
         {
         }

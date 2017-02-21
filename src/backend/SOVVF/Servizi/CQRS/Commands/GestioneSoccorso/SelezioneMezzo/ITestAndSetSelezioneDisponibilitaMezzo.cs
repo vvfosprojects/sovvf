@@ -11,10 +11,10 @@
 // You should have received a copy of the GNU Affero General Public License along with this program.
 // If not, see <http://www.gnu.org/licenses/>.
 
+using Modello.Classi.Soccorso.Mezzi;
 using Modello.Classi.Soccorso.Risorse;
-using Modello.Classi.Soccorso.Squadre;
 
-namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneRisorse
+namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneMezzo
 {
     /// <summary>
     ///   Servizio di selezione sulla <see cref="DisponibilitaMezzo" />. L'operazione effettuata da

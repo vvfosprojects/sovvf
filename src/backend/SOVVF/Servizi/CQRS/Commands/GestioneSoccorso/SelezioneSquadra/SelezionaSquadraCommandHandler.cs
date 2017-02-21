@@ -65,8 +65,10 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra
             if (selezioneRisorsa.Operatore != operatore)
             {
 #warning Aggiungere una nuova eccezione dedicata
+
                 throw new InvalidOperationException("Risorsa già selezionata da " + selezioneRisorsa.Operatore);
             }
+
             // notifica selezione avvenuta. Anzi, no: la notifica avviene con servizi ortogonali
         }
     }

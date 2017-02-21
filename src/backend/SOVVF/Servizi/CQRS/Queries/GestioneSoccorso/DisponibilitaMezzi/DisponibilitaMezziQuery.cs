@@ -1,9 +1,9 @@
 ﻿using System;
-using Modello.Servizi.CQRS.Queries;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Modello.Servizi.CQRS.Queries;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi
 {

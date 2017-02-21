@@ -13,8 +13,11 @@ namespace Modello.Servizi.CQRS.Commands
     public interface ICommandHandler<TCommand>
     {
         /// <summary>
+        ///   Interfaccia per la gestione dei Comandi afferente al paradigma CQRS
         /// </summary>
-        /// <param name="command"></param>
+        /// <param name="command">
+        ///   Oggetto contenente i parametri necessari all'esecuzione del comando.
+        /// </param>
         void Handle(TCommand command);
     }
 }
