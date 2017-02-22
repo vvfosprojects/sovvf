@@ -10,28 +10,23 @@
 //
 // You should have received a copy of the GNU Affero General Public License along with this program.
 // If not, see <http://www.gnu.org/licenses/>.
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Modello.Servizi.CQRS.Queries;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre
+namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaSquadra
 {
     /// <summary>
-    ///   DTO che alimenta la ricerca delle squadre disponibili. Le squadre possono essere filtrate
-    ///   per unità operativa.
+    ///   Oggetto Command per la deselezione di una squadra che definisce i parametri necessari
+    ///   all'esecuzione del comando di deselezione squadra.
     /// </summary>
-    public class DisponibilitaSquadreQuery : IQuery<DisponibilitaSquadreResult>
+    public class DeselezionaSquadraCommand
     {
         /// <summary>
-        ///   Filtra solo le squadre appartenenti all'unità operativa indicata.
+        ///   Identificativo univoco della squadra.
         /// </summary>
-        /// <remarks>
-        ///   L'unità operativa indicata sarà una di quelle su cui l'operatore ha privilegi di gestione.
-        /// </remarks>
-        public string FiltroCodiceUnitaOperativa { get; set; }
+        public string Ticket { get; set; }
     }
 }
