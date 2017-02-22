@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi.DTO
+namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi.ResultDTO
 {
     /// <summary>
     ///   Modella il mezzo disponibile
     /// </summary>
-    public class MezzoDisponibileDTO
+    public class MezzoDisponibile
     {
         /// <summary>
         ///   E' l'identificativo del mezzo

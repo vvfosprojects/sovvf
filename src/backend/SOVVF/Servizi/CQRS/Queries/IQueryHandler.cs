@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Modello.Servizi.CQRS.Queries
+﻿namespace Modello.Servizi.CQRS.Queries
 {
     /// <summary>
     ///   Interfaccia per la gestione delle query del modello CQRS https://cuttingedge.it/blogs/steven/pivot/entry.php?id=92

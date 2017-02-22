@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Modello.Classi.Soccorso.Eventi.Partenze;
+﻿using System.Collections.Generic;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre.DTO
+namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre.ResultDTO
 {
     /// <summary>
     ///   Modella la squadra disponibile
     /// </summary>
-    public class SquadraDisponibileDTO
+    public class SquadraDisponibile
     {
         /// <summary>
         ///   E' il ticket della squadra
@@ -33,7 +31,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre.DTO
         /// <summary>
         ///   Elenco dei membri che compongono la squadra
         /// </summary>
-        public IEnumerable<MembroDTO> Membri { get; set; }
+        public IEnumerable<Membro> Membri { get; set; }
 
         /// <summary>
         ///   Indica se la squadra è stata selezionata (se è vuoto indica che la squadra non è selezionata)

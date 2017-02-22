@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi.DTO
+namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre.ResultDTO
 {
     /// <summary>
-    ///   Modella la selezione del mezzo del DTO
+    ///   Modella la selezione della squadra
     /// </summary>
-    public class SelezioneMezzo
+    public class SelezioneSquadra
     {
         /// <summary>
-        ///   Istante di selezione del mezzo.
+        ///   Istante di selezione della squadra.
         /// </summary>
         public DateTime IstanteSelezione { get; private set; }
 

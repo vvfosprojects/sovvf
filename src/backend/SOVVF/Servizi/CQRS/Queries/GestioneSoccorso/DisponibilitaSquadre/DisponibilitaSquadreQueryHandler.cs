@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre
+﻿namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre
 {
     /// <summary>
     ///   Servizio che restituisce l'elenco delle squadre disponibili, prenotabili dall'operatore in

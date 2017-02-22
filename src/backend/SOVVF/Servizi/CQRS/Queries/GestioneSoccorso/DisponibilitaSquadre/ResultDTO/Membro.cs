@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre.DTO
+namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre.ResultDTO
 {
     /// <summary>
     ///   Modella il membro della squadra disponibile
     /// </summary>
-    public class MembroDTO
+    public class Membro
     {
         /// <summary>
         ///   Codice fiscale del membro

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Modello.Classi.Soccorso.Eventi.Partenze;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre.DTO;
+﻿using System.Collections.Generic;
+using Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre.ResultDTO;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre
 {
@@ -13,6 +11,6 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre
         /// <summary>
         ///   Contiene le informazioni relativamente alle squadre disponibili.
         /// </summary>
-        public IEnumerable<SquadraDisponibileDTO> Squadre { get; set; }
+        public IEnumerable<SquadraDisponibile> Squadre { get; set; }
     }
 }

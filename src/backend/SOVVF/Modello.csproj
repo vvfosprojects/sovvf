@@ -82,17 +82,17 @@
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\SelezionaSquadraCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\SelezionaSquadraCommandHandler.cs" />
     <Compile Include="Servizi\CQRS\Commands\ICommandHandler.cs" />
-    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\DisponibilitaMezziQuery.cs" />
-    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\DisponibilitaMezziResult.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\ResultDTO\DisponibilitaMezziResult.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\DisponibilitaMezziQueryHandler.cs" />
-    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\DTO\MezzoDisponibileDTO.cs" />
-    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\DTO\SelezioneMezzo.cs" />
-    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\DisponibilitaSquadreQuery.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\QueryDTO\DisponibilitaMezziQuery.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\ResultDTO\MezzoDisponibile.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\ResultDTO\SelezioneMezzo.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\DisponibilitaSquadreQueryHandler.cs" />
-    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\DTO\MembroDTO.cs" />
-    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\DTO\SelezioneSquadra.cs" />
-    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\DTO\SquadraDisponibileDTO.cs" />
-    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\DisponibilitaSquadreResult.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\QueryDTO\DisponibilitaSquadreQuery.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\ResultDTO\DisponibilitaSquadreResult.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\ResultDTO\Membro.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\ResultDTO\SelezioneSquadra.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\ResultDTO\SquadraDisponibile.cs" />
     <Compile Include="Servizi\CQRS\Queries\IQueryHandler.cs" />
     <Compile Include="Servizi\Infrastruttura\Autenticazione\IGetOperatoreAutenticato.cs" />
   </ItemGroup>

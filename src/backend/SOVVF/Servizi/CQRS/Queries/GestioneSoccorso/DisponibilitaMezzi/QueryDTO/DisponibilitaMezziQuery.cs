@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Modello.Servizi.CQRS.Queries;
-
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi
+﻿namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi
 {
     /// <summary>
     ///   DTO che alimenta la ricerca dei mezzi disponibili. I mezzi possono essere filtrati per ...

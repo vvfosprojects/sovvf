@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre.DTO
+namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi.ResultDTO
 {
     /// <summary>
-    ///   Modella la selezione della squadra del DTO
+    ///   Modella la selezione del mezzo del DTO
     /// </summary>
-    public class SelezioneSquadra
+    public class SelezioneMezzo
     {
         /// <summary>
-        ///   Istante di selezione della squadra.
+        ///   Istante di selezione del mezzo.
         /// </summary>
         public DateTime IstanteSelezione { get; private set; }
 

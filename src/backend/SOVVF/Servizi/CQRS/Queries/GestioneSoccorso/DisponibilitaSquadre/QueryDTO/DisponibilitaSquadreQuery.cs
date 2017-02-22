@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Modello.Servizi.CQRS.Queries;
-
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre
+﻿namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre
 {
     /// <summary>
     ///   DTO che alimenta la ricerca delle squadre disponibili. Le squadre possono essere filtrate
