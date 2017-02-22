@@ -100,7 +100,9 @@
     <Compile Include="Servizi\CQRS\Queries\IQueryHandler.cs" />
     <Compile Include="Servizi\Infrastruttura\Autenticazione\IGetOperatoreAutenticato.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaSquadra\CommandDTO\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\SOVVF.licenseheader">
       <Link>SOVVF.licenseheader</Link>
