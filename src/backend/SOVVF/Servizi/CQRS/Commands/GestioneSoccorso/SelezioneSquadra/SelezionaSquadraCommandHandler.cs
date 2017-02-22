@@ -12,11 +12,8 @@
 // If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using Modello.Classi.Soccorso.Risorse;
-using Modello.Classi.Soccorso.Squadre;
-using Modello.Servizi.CQRS.Commands;
-using Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra;
 using Modello.Servizi.Infrastruttura.Autenticazione;
+using Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra.CommandDTO;
 
 namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra
 {

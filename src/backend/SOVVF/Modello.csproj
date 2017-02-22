@@ -75,15 +75,13 @@
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaSquadra\CommandDTO\DeselezionaSquadraCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaSquadra\CommandDTO\ITestAndSetDeselezioneDisponibilitaSquadra.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaSquadra\DeselezionaSquadraCommandHandler.cs" />
-    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneMezzo\ITestAndSetSelezioneDisponibilitaMezzo.cs" />
-    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneMezzo\SelezionaMezzoCommand.cs" />
+    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneMezzo\CommandDTO\ITestAndSetSelezioneDisponibilitaMezzo.cs" />
+    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneMezzo\CommandDTO\SelezionaMezzoCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneMezzo\SelezionaMezzoCommandHandler.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneRisorse\DeselezioneMezzo.cs" />
-    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneRisorse\DeselezioneSquadra.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneRisorse\ITestAndSetDeselezioneDisponibilitaMezzo.cs" />
-    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneRisorse\ITestAndSetDeselezioneDisponibilitaSquadra.cs" />
-    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\ITestAndSetSelezioneDisponibilitaSquadra.cs" />
-    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\SelezionaSquadraCommand.cs" />
+    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\CommandDTO\ITestAndSetSelezioneDisponibilitaSquadra.cs" />
+    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\CommandDTO\SelezionaSquadraCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\SelezionaSquadraCommandHandler.cs" />
     <Compile Include="Servizi\CQRS\Commands\ICommandHandler.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\ResultDTO\DisponibilitaMezziResult.cs" />
@@ -100,10 +98,7 @@
     <Compile Include="Servizi\CQRS\Queries\IQueryHandler.cs" />
     <Compile Include="Servizi\Infrastruttura\Autenticazione\IGetOperatoreAutenticato.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneMezzo\CommandDTO\" />
-    <Folder Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\CommandDTO\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="..\SOVVF.licenseheader">
       <Link>SOVVF.licenseheader</Link>

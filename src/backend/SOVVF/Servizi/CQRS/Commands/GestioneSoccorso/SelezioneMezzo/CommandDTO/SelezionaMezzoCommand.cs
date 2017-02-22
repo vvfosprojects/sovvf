@@ -17,7 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneMezzo
+namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneMezzo.CommandDTO
 {
     /// <summary>
     ///   Oggetto Command per la selezione di un mezzo che definisce i parametri necessari

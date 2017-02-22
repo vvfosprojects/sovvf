@@ -12,11 +12,8 @@
 // If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Modello.Servizi.Infrastruttura.Autenticazione;
+using Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneMezzo.CommandDTO;
 
 namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneMezzo
 {

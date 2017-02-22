@@ -14,7 +14,7 @@
 using Modello.Classi.Soccorso.Mezzi;
 using Modello.Classi.Soccorso.Risorse;
 
-namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneMezzo
+namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneMezzo.CommandDTO
 {
     /// <summary>
     ///   Servizio di selezione sulla <see cref="DisponibilitaMezzo" />. L'operazione effettuata da

@@ -17,7 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra
+namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra.CommandDTO
 {
     /// <summary>
     ///   Oggetto Command per la selezione di una squadra che definisce i parametri necessari
