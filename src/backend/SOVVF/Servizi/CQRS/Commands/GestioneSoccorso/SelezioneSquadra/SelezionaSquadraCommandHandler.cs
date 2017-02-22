@@ -10,10 +10,9 @@
 //
 // You should have received a copy of the GNU Affero General Public License along with this program.
 // If not, see <http://www.gnu.org/licenses/>.
-
 using System;
-using Modello.Servizi.Infrastruttura.Autenticazione;
 using Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra.CommandDTO;
+using Modello.Servizi.Infrastruttura.Autenticazione;
 
 namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra
 {

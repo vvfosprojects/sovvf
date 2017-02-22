@@ -81,8 +81,6 @@
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneMezzo\CommandDTO\ITestAndSetSelezioneDisponibilitaMezzo.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneMezzo\CommandDTO\SelezionaMezzoCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneMezzo\SelezionaMezzoCommandHandler.cs" />
-    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneRisorse\DeselezioneMezzo.cs" />
-    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneRisorse\ITestAndSetDeselezioneDisponibilitaMezzo.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\CommandDTO\ITestAndSetSelezioneDisponibilitaSquadra.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\CommandDTO\SelezionaSquadraCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\SelezionaSquadraCommandHandler.cs" />
