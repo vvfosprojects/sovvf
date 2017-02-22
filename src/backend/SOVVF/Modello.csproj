@@ -72,9 +72,9 @@
     <Compile Include="Classi\Soccorso\Squadre\Vigilanza.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\CommandDTO\ComponiPartenzaCommand.cs" />
-    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaSquadra\DeselezionaSquadraCommand.cs" />
+    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaSquadra\CommandDTO\DeselezionaSquadraCommand.cs" />
+    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaSquadra\CommandDTO\ITestAndSetDeselezioneDisponibilitaSquadra.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaSquadra\DeselezionaSquadraCommandHandler.cs" />
-    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaSquadra\ITestAndSetDeselezioneDisponibilitaSquadra.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneMezzo\ITestAndSetSelezioneDisponibilitaMezzo.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneMezzo\SelezionaMezzoCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneMezzo\SelezionaMezzoCommandHandler.cs" />
@@ -101,7 +101,8 @@
     <Compile Include="Servizi\Infrastruttura\Autenticazione\IGetOperatoreAutenticato.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaSquadra\CommandDTO\" />
+    <Folder Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneMezzo\CommandDTO\" />
+    <Folder Include="Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\CommandDTO\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SOVVF.licenseheader">
