@@ -17,7 +17,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Modello.Servizi.Infrastruttura.Autenticazione;
 
-
 namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaSquadra
 {
     /// <summary>
@@ -33,7 +32,8 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaSquadra
         private readonly IGetOperatoreAutenticato getOperatoreAutenticato;
 
         /// <summary>
-        ///   Servizio che imposta la deselezione di una DisponibilitaSquadra per la risoluzione delle contese.
+        ///   Servizio che imposta la deselezione di una DisponibilitaSquadra per la risoluzione
+        ///   delle contese.
         /// </summary>
         private readonly ITestAndSetDeselezioneDisponibilitaSquadra testAndSetDeselezioneDisponibilitaSquadra;
 

@@ -12,6 +12,7 @@
 // If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi.DTO;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi.ResultDTO
 {
