@@ -71,7 +71,10 @@
     <Compile Include="Classi\Soccorso\Squadre\SoccorsoOrdinario.cs" />
     <Compile Include="Classi\Soccorso\Squadre\Vigilanza.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\CommandDTO\Componente.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\CommandDTO\ComponiPartenzaCommand.cs" />
+    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\CommandDTO\Mezzo.cs" />
+    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\ComponiPartenzaCommandHandler.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaMezzo\CommandDTO\DeselezionaMezzoCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaMezzo\CommandDTO\ITestAndSetDeselezioneDisponibilitaMezzo.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaMezzo\DeselezionaMezzoCommandHandler.cs" />
