@@ -79,10 +79,6 @@ namespace Modello.Classi.Soccorso.Squadre
         ///   E' l'insieme dei componenti che è previsto che siano in squadra. Per es. per le squadre
         ///   di soccorso ordinario la previsione proveniente dalla Composizione servizi del personale.
         /// </summary>
-        /*///
-        /// <remarks>qualcosa del genere da inserire nello strato dei servizi public ISet<Componente>
-        /// ComposizionePrevista(); </remarks>
-        */
         public ISet<Componente> ComposizionePrevista { get; set; }
 
         /// <summary>

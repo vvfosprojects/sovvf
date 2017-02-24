@@ -8,6 +8,11 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.ComponiPartenza.Command
     public class ComponiPartenzaCommand
     {
         /// <summary>
+        ///   E' l'id che identifica sul database la richiesta di assistenza.
+        /// </summary>
+        public string IdRichiestaAssistenza { get; set; }
+
+        /// <summary>
         ///   Elenco dei mezzi che partecipano alla partenza.
         /// </summary>
         public IEnumerable<Mezzo> Mezzi { get; set; }
