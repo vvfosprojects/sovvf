@@ -28,8 +28,7 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaMezzo
         private readonly IGetOperatoreAutenticato getOperatoreAutenticato;
 
         /// <summary>
-        ///   Servizio che imposta la deselezione di una DisponibilitaMezzo per la risoluzione
-        ///   delle contese.
+        ///   Servizio che imposta la deselezione di una DisponibilitaMezzo per la risoluzione delle contese.
         /// </summary>
         private readonly ITestAndSetDeselezioneDisponibilitaMezzo testAndSetDeselezioneDisponibilitaMezzo;
 

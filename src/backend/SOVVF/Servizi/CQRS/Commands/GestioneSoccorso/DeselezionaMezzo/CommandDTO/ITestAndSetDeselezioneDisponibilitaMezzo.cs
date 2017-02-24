@@ -14,19 +14,19 @@
 namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaMezzo.CommandDTO
 {
     /// <summary>
-    ///   Servizio di deselezione sulla <see cref="DisponibilitaMezzo" />. L'operazione effettuata
-    ///   da questo servizio è atomica (test and set). Il servizio effettua l'operazione solo se il
+    ///   Servizio di deselezione sulla <see cref="DisponibilitaMezzo" />. L'operazione effettuata da
+    ///   questo servizio è atomica (test and set). Il servizio effettua l'operazione solo se il
     ///   mezzo risulta selezionata dallo stesso operatore che richiede la deselezione.
     /// </summary>
     /// <remarks>
-    ///   Quando una <see cref="DisponibilitaMezzo" /> viene deselezionata ritorna disponibile per
-    ///   la selezione da parte di altri operatori.
+    ///   Quando una <see cref="DisponibilitaMezzo" /> viene deselezionata ritorna disponibile per la
+    ///   selezione da parte di altri operatori.
     /// </remarks>
     public interface ITestAndSetDeselezioneDisponibilitaMezzo
     {
         /// <summary>
-        ///   Deseleziona una <see cref="DisponibilitaMezzo" /> selezionata dall'operatore
-        ///   corrente, con semantica atomica.
+        ///   Deseleziona una <see cref="DisponibilitaMezzo" /> selezionata dall'operatore corrente,
+        ///   con semantica atomica.
         /// </summary>
         /// <param name="operatore">Operatore che richiede la deselezione.</param>
         /// <param name="codiceMezzo">Identificativo del mezzo selezionato.</param>
