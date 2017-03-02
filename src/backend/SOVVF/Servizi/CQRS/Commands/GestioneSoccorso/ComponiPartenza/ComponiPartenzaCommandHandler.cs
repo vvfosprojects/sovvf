@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Modello.Servizi.CQRS.Commands.GestioneSoccorso.ComponiPartenza.CommandDTO;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 
 namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.ComponiPartenza
 {
@@ -12,18 +13,42 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.ComponiPartenza
     public class ComponiPartenzaCommandHandler : ICommandHandler<ComponiPartenzaCommand>
     {
         /// <summary>
+        ///   Servizio che eroga il contenuto di una Richiesta di Assistenza
+        /// </summary>
+        private readonly IGetRichiestaAssistenzaById getRichiestaAssistenzaById;
+
+        /// <summary>
+        ///   Servizio che salva una Richiesta di Assistenza
+        /// </summary>
+        private readonly ISaveRichiestaAssistenza saveRichiestaAssistenza;
+
+        /// <summary>
+        ///   Costruttore del servizio
+        /// </summary>
+        /// <param name="getRichiestaAssistenzaById">Istanza del servizio <see cref="getRichiestaAssistenzaById" />.</param>
+        /// <param name="saveRichiestaAssistenza">Istanza del servizio <see cref="saveRichiestaAssistenza" /></param>
+        public ComponiPartenzaCommandHandler(
+            IGetRichiestaAssistenzaById getRichiestaAssistenzaById,
+            ISaveRichiestaAssistenza saveRichiestaAssistenza)
+        {
+            this.getRichiestaAssistenzaById = getRichiestaAssistenzaById;
+            this.saveRichiestaAssistenza = saveRichiestaAssistenza;
+        }
+
+        /// <summary>
         ///   Metodo per l'esecuzione del command.
         /// </summary>
         /// <param name="command">Il DTO del command.</param>
         public void Handle(ComponiPartenzaCommand command)
         {
-            //var richiestaAssistenza = getRichiestaAssistenzaById(command.IdRichiestaAssistenza);
+            var richiestaAssistenza = this.getRichiestaAssistenzaById.Get(command.IdRichiestaAssistenza);
 
-            //// divido i mezzi tra quelli con capo-partenza e quelli senza
-            //var mezziConCapopartenza = command.Mezzi.Where(m => m.Componenti.Any(c => c.CapoPartenza));
-            //var mezziSenzaCapopartenza = command.Mezzi.Except(mezziConCapopartenza);
+            foreach (var cp in command.ComposizioniPartenza)
+            {
+                richiestaAssistenza.Eventi.Add(cp);
+            }
 
-            throw new NotImplementedException();
+            this.saveRichiestaAssistenza.Save(richiestaAssistenza);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.ComponiPartenza.CommandDTO
 {
@@ -13,13 +14,9 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.ComponiPartenza.Command
         public string IdRichiestaAssistenza { get; set; }
 
         /// <summary>
-        ///   Elenco dei mezzi che partecipano alla partenza.
+        ///   E' l'attributo che identifica la collezione di <see cref="ComposizionePartenza" /> già
+        ///   definita nelle classi del dominio
         /// </summary>
-        public IEnumerable<Mezzo> Mezzi { get; set; }
-
-        /// <summary>
-        ///   Elenco dei componenti che partecipano alla partenza ma privi di mezzo.
-        /// </summary>
-        public IEnumerable<Componente> ComponentiSenzaMezzo { get; set; }
+        public IEnumerable<ComposizionePartenza> ComposizioniPartenza { get; set; }
     }
 }
