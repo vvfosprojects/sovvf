@@ -1,0 +1,24 @@
+import { Component, OnInit, Input } from '@angular/core';
+
+import { Squadra } from '../squadra/squadra.model';
+
+@Component({
+  selector: 'app-squadra',
+  templateUrl: './squadra.component.html',
+  styleUrls: ['./squadra.component.css']
+})
+export class SquadraComponent implements OnInit {
+  @Input() squadra: Squadra;
+
+  private espansa: boolean = false;
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+  toggleEspansa(event) {
+    this.espansa = !this.espansa;
+    event.stopPropagation();
+  }
+}
