@@ -3,7 +3,7 @@
     <h3 class="panel-title">Porta qui squadre, persone e mezzi...</h3>
   </div>
   <div class="panel-body">
-    <div class="text-muted well"><i class="fa fa-2x fa-plus-square-o"></i></div>
+    <div class="text-muted well" canDrop [target]="this"><i class="fa fa-2x fa-plus-square-o"></i></div>
     <app-mezzo-in-partenza *ngFor="let m of mezziInPartenza" [mezzo]="m"></app-mezzo-in-partenza>
   </div>
   <div class="panel-footer text-right">

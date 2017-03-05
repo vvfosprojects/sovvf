@@ -18,6 +18,9 @@ import { MezzoInPartenzaComponent } from './mezzo-in-partenza/mezzo-in-partenza.
 import { ComponenteInPartenzaComponent } from './componente-in-partenza/componente-in-partenza.component';
 import { TagCapopartenzaComponent } from './shared/components/tag-capopartenza/tag-capopartenza.component';
 import { TagAutistaComponent } from './shared/components/tag-autista/tag-autista.component';
+import { CanDragDirective } from './shared/directives/dnd/can-drag.directive';
+import { CanDropDirective } from './shared/directives/dnd/can-drop.directive';
+import { DndHandlerService } from './compositore/dnd-handler.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,9 @@ import { TagAutistaComponent } from './shared/components/tag-autista/tag-autista
     MezzoInPartenzaComponent,
     ComponenteInPartenzaComponent,
     TagCapopartenzaComponent,
-    TagAutistaComponent
+    TagAutistaComponent,
+    CanDragDirective,
+    CanDropDirective
   ],
   imports: [
     BrowserModule,
@@ -42,7 +47,8 @@ import { TagAutistaComponent } from './shared/components/tag-autista/tag-autista
   providers: [ 
     ListaSquadreService, 
     ListaMezziService,
-    CompositoreService ],
+    CompositoreService,
+    DndHandlerService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
