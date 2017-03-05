@@ -5,6 +5,7 @@ export class Squadra {
 
     constructor(
         public readonly nome: string,
+        public readonly unitaOperativa: string,
         public componenti: ReadonlyArray<ComponenteSquadra>
     ) {
 

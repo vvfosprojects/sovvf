@@ -3,10 +3,10 @@
     <span *ngIf="componente.capoPartenza" title="Capopartenza" class="label label-info">CP</span>
     <span *ngIf="componente.autista" title="Autista" class="label label-info">A</span>
     <span *ngIf="componente.impegnato" title="{{ componente.descrizioneImpegno }}" class="label label-warning">IMP</span>
-    <span *ngIf="componente.inPartenza" title="In partenza..." class="label label-warning">PAR</span>
+    <span *ngIf="componente.inPartenza" title="In partenza..." class="label label-primary">PAR</span>
   </div>
   <div>
     <i class="fa fa-user" aria-hidden="true"></i>
-    <span title="{{ componente.nominativoEsteso }}">{{ componente.nominativo | truncate:20 }}</span>
+    <span title="{{ componente.nominativoEsteso }}">{{ componente.nominativo | truncate:18 }}</span>
   </div>
 </div>

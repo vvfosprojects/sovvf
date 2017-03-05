@@ -1,0 +1,16 @@
+<ul class="list-group">
+  <li class="list-group-item " *ngFor="let m of mezzi"
+    [class.list-group-item-success]="!m.inPartenza && !m.impegnato" 
+    [class.list-group-item-warning]="!m.inPartenza && m.impegnato" 
+    [class.list-group-item-info]="m.inPartenza" >
+    <app-mezzo [mezzo]="m"></app-mezzo>
+    </li>
+</ul>
+
+<div class="well">
+  <h6 class="header">Simulatore eventi esterni</h6>
+  <button (click)="impegnaAPS()">Impegna APS</button>
+  <button (click)="liberaAPS()">Libera APS</button>
+  <button (click)="APSInPartenza()">APS in partenza</button>
+  <button (click)="APSFuoriPartenza()">APS fuori partenza</button>
+</div>

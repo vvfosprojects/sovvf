@@ -9,6 +9,10 @@ import { SquadraComponent } from './squadra/squadra.component';
 import { ListaSquadreComponent } from './lista-squadre/lista-squadre.component';
 import { ListaSquadreService } from './lista-squadre/lista-squadre.service';
 import { TruncatePipe } from './shared/pipes/truncate.pipe';
+import { MezzoComponent } from './mezzo/mezzo.component';
+import { ListaMezziComponent } from './lista-mezzi/lista-mezzi.component';
+import { ListaMezziService } from './lista-mezzi/lista-mezzi.service';
+import { CompositoreComponent } from './compositore/compositore.component';
 
 @NgModule({
   declarations: [
@@ -16,14 +20,17 @@ import { TruncatePipe } from './shared/pipes/truncate.pipe';
     ComponenteSquadraComponent,
     SquadraComponent,
     ListaSquadreComponent,
-    TruncatePipe
+    TruncatePipe,
+    MezzoComponent,
+    ListaMezziComponent,
+    CompositoreComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule
   ],
-  providers: [ ListaSquadreService ],
+  providers: [ ListaSquadreService, ListaMezziService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
