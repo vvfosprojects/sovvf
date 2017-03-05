@@ -8,14 +8,15 @@
         <button type="button" class="btn btn-xs" *ngIf="espansa"><i class="fa fa-chevron-up"></i></button>
       </span>
   </div>
-  <h5>
-    <i class="fa fa-group"></i>{{ squadra.nome }}
-    <i class="fa fa-home"></i>{{ squadra.unitaOperativa }}
-  </h5>
+  <h4>
+    <i class="fa fa-group"></i> {{ squadra.nome }}
+  </h4>
+  <h6 class="text-muted">
+    <i class="fa fa-home"></i> {{ squadra.unitaOperativa }}
+  </h6>
   <div *ngIf="espansa">
     <ul class="list-group">
-      <li *ngFor="let c of squadra.componenti" class="list-group-item"
-        [class.list-group-item-warning]="!c.inPartenza && c.impegnato"
+      <li *ngFor="let c of squadra.componenti" class="list-group-item" [class.list-group-item-warning]="!c.inPartenza && c.impegnato"
         [class.list-group-item-info]="c.inPartenza">
         <app-componente-squadra [componente]="c"></app-componente-squadra>
       </li>

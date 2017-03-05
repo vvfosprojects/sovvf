@@ -1,0 +1,39 @@
+<div class="panel panel-info text-center">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <i class="fa fa-truck"></i> {{ mezzo.mezzo.nome }}
+      <button type="button" (click)="doClose()" class="close" aria-label="Close" title="Elimina questo mezzo">
+      <span aria-hidden="true">
+        <i class="fa fa-window-close"></i>
+      </span>
+    </button>
+    </h3>
+  </div>
+  <div class="panel-body row">
+    <div class="col-md-3">
+      <div class="well">
+        <app-tag-autista *ngIf="!esisteAutista"></app-tag-autista>
+        <div *ngIf="mezzo.esisteAutista">
+          <div>
+            <i class="fa fa-2x fa-user"></i>
+            <app-tag-autista></app-tag-autista>
+          </div>
+          <h6 title="{{ nominativoEstesoAutista }}">{{ nominativoAutista | truncate:18 }}</h6>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="row">
+        <div class="col-md-3" *ngFor="let c of componenti">
+          <div>
+            <i class="fa fa-2x fa-user"></i>
+            <app-tag-capopartenza *ngIf="c.capoPartenza"></app-tag-capopartenza>
+            <app-tag-autista *ngIf="c.autista"></app-tag-autista>
+          </div>
+          <h6 title="{{ c.nominativo }}">{{ c.nominativo | truncate:18 }}</h6>
+        </div>
+        <div class="well text-muted col-md-3"><i class="fa fa-2x fa-plus-square-o"></i></div>
+      </div>
+    </div>
+  </div>
+</div>

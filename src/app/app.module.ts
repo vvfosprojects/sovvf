@@ -13,6 +13,11 @@ import { MezzoComponent } from './mezzo/mezzo.component';
 import { ListaMezziComponent } from './lista-mezzi/lista-mezzi.component';
 import { ListaMezziService } from './lista-mezzi/lista-mezzi.service';
 import { CompositoreComponent } from './compositore/compositore.component';
+import { CompositoreService } from './compositore/compositore.service';
+import { MezzoInPartenzaComponent } from './mezzo-in-partenza/mezzo-in-partenza.component';
+import { ComponenteInPartenzaComponent } from './componente-in-partenza/componente-in-partenza.component';
+import { TagCapopartenzaComponent } from './shared/components/tag-capopartenza/tag-capopartenza.component';
+import { TagAutistaComponent } from './shared/components/tag-autista/tag-autista.component';
 
 @NgModule({
   declarations: [
@@ -23,14 +28,21 @@ import { CompositoreComponent } from './compositore/compositore.component';
     TruncatePipe,
     MezzoComponent,
     ListaMezziComponent,
-    CompositoreComponent
+    CompositoreComponent,
+    MezzoInPartenzaComponent,
+    ComponenteInPartenzaComponent,
+    TagCapopartenzaComponent,
+    TagAutistaComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule
   ],
-  providers: [ ListaSquadreService, ListaMezziService ],
+  providers: [ 
+    ListaSquadreService, 
+    ListaMezziService,
+    CompositoreService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

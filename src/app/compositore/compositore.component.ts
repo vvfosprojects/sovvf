@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { CompositoreService } from '../compositore/compositore.service';
+
 @Component({
   selector: 'app-compositore',
   templateUrl: './compositore.component.html',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CompositoreComponent implements OnInit {
 
-  constructor() { }
+  constructor(private compositoreService: CompositoreService) { }
 
   ngOnInit() {
+  }
+
+  private get mezziInPartenza() {
+    return this.compositoreService.mezziInPartenza;
   }
 
 }

@@ -1,3 +1,18 @@
-<p>
-  compositore works!
-</p>
+<div class="panel panel-primary text-center">
+  <div class="panel-heading text-center">
+    <h3 class="panel-title">Porta qui squadre, persone e mezzi...</h3>
+  </div>
+  <div class="panel-body">
+    <div class="text-muted well"><i class="fa fa-2x fa-plus-square-o"></i></div>
+    <app-mezzo-in-partenza *ngFor="let m of mezziInPartenza" [mezzo]="m"></app-mezzo-in-partenza>
+  </div>
+  <div class="panel-footer text-right">
+    <button class="btn btn-primary disabled">Conferma</button>
+    <button class="btn btn-default disabled">Annulla</button>
+  </div>
+</div>
+<!--<div>
+  <pre class="text-left">
+  {{ mezzi() | json }}
+  </pre>
+</div>-->
