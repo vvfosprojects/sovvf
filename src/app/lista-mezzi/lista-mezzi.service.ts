@@ -7,13 +7,13 @@ export class ListaMezziService {
   private _mezzi: Mezzo[];
   constructor() { 
     this._mezzi = [
-      new Mezzo("APS 14335"),
-      new Mezzo("APS 32131"),
-      new Mezzo("APS 24196"),
-      new Mezzo("AS 31840"),
-      new Mezzo("AS 27591"),
-      new Mezzo("ABP 38514"),
-      new Mezzo("ABP 41328"),
+      new Mezzo("APS 14335", "EUR"),
+      new Mezzo("APS 32131", "EUR"),
+      new Mezzo("APS 24196", "Tuscolano"),
+      new Mezzo("AS 31840", "Tuscolano"),
+      new Mezzo("AS 27591", "Trastevere"),
+      new Mezzo("ABP 38514", "Ostia"),
+      new Mezzo("ABP 41328", "Trastevere"),
     ];
   }
 

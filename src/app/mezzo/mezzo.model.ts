@@ -7,7 +7,8 @@ export class Mezzo {
     private _inPartenza: boolean;
 
     constructor(
-        public readonly nome: string) {}
+        public readonly nome: string,
+        public readonly unitaOperativa: string) {}
 
     //indica se il mezzo è correntemente impegnato
     public get impegnato(): boolean {

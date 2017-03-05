@@ -1,5 +1,8 @@
 <div>
   <div class="pull-right">
+    <span class="h6 text-muted">
+      <i class="fa fa-home"></i> {{ squadra.unitaOperativa | truncate:7 }}
+    </span>
     <span class="badge">
         {{ squadra.numeroComponenti == squadra.numeroComponentiLiberi ? squadra.numeroComponenti : squadra.numeroComponentiLiberi + ' di ' + squadra.numeroComponenti}}
       </span>
@@ -11,9 +14,6 @@
   <h4>
     <i class="fa fa-group"></i> {{ squadra.nome }}
   </h4>
-  <h6 class="text-muted">
-    <i class="fa fa-home"></i> {{ squadra.unitaOperativa }}
-  </h6>
   <div *ngIf="espansa">
     <ul class="list-group">
       <li *ngFor="let c of squadra.componenti" class="list-group-item" [class.list-group-item-warning]="!c.inPartenza && c.impegnato"
