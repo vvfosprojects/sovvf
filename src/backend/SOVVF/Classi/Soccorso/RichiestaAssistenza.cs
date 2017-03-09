@@ -13,6 +13,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Modello.Classi.Geo;
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 
@@ -107,6 +108,14 @@ namespace Modello.Classi.Soccorso
         ///   } in un sinistro simile al Rigopiano
         /// </remarks>
         public IList<string> Tipologie { get; set; }
+
+#warning Realizzare la classe TipologiaRichiesta per modellare la classificazione delle Tipologie della Richiesta
+#warning Definire un metodo per estrarre la Tipologia di Richiesta principale, da mostrare in GUI
+
+        /// <summary>
+        ///   E' la geolocalizzazione dell'evento calamitoso, vigilanza, ecc.
+        /// </summary>
+        public Geolocalizzazione Geolocalizzazione { get; set; }
 
         #endregion Attributi
 

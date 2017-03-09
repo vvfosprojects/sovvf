@@ -55,6 +55,17 @@ namespace Modello.Classi.Soccorso.Eventi.Segnalazioni
         public string Motivazione { get; set; }
 
         /// <summary>
+        ///   Note aggiuntive relative alla segnalazione ritenute pubblicamente divulgabili
+        /// </summary>
+        public string NotePubbliche { get; set; }
+
+        /// <summary>
+        ///   Note aggiuntive relative alla segnalazione da non divulgurare pubblicamente per motivi
+        ///   di riservatezza dell'informazione.
+        /// </summary>
+        public string NotePrivate { get; set; }
+
+        /// <summary>
         ///   E' l'esito che l'operatore assegna alla segnalazione.
         /// </summary>
         /// <remarks>
