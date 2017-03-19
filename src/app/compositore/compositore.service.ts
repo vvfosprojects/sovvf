@@ -36,7 +36,7 @@ export class CompositoreService {
    * @param mezzo Il modello del mezzo da aggiungere
    */
   public addMezzo(mezzo: Mezzo): MezzoInPartenza {
-    let mezzoInPartenza = new MezzoInPartenza(mezzo);
+    let mezzoInPartenza = new MezzoInPartenza(mezzo, this);
     this._mezziInPartenza.unshift(mezzoInPartenza);
     mezzo.inPartenza = true;
     return mezzoInPartenza;

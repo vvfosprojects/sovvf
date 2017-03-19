@@ -21,4 +21,12 @@ export class SquadraComponent implements OnInit {
     this.espansa = !this.espansa;
     event.stopPropagation();
   }
+
+  public askIfYouCanBeDroppedOn(target: any): boolean {
+        if ('canYouAcceptSquadra' in target) {
+            return target.canYouAcceptSquadra(this);
+        }
+
+        return false;
+    }
 }

@@ -31,4 +31,19 @@ export class Squadra {
     get numeroComponentiLiberi(): number {
         return this.componenti.filter(c => !c.impegnato).length;
     }
+
+    public askIfYouCanBeDroppedOn(target: any): boolean {
+        if ('canYouAcceptSquadra' in target) {
+            return target.canYouAcceptSquadra(this);
+        }
+
+        return false;
+    }
+
+    public dropOn(target: any): void {
+        if (!('canYouAcceptSquadra' in target) || !target.canYouAcceptSquadra(this))
+            return
+        
+        target.acceptSquadra(this);
+    }
 }

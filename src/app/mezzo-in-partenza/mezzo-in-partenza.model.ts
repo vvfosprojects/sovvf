@@ -1,11 +1,13 @@
 import { ComponenteInPartenza } from '../componente-in-partenza/componente-in-partenza.model';
 import { Squadra } from '../squadra/squadra.model';
 import { Mezzo } from '../mezzo/mezzo.model';
+import { CompositoreService } from '../compositore/compositore.service';
 
 export class MezzoInPartenza {
     public autista: ComponenteInPartenza;
     public componenti: ComponenteInPartenza[] = [];
-    constructor(public mezzo: Mezzo) {}
+    constructor(public mezzo: Mezzo,
+        private compositoreService: CompositoreService) { }
 
     /**
      * Sostituisce l'autista corrente con un nuovo autista. Il vecchio autista resta tra i componenti del mezzo in partenza.
@@ -51,8 +53,7 @@ export class MezzoInPartenza {
         //aggiunta dell'autista se non già esistente
         if (!this.esisteAutista) {
             var primoAutista = componentiInPartenza.find(c => c.componente.autista);
-            if (primoAutista !== undefined)
-            {
+            if (primoAutista !== undefined) {
                 componentiInPartenza = componentiInPartenza.filter(c => c !== primoAutista);
                 this.addAutista(primoAutista);
             }
@@ -84,5 +85,21 @@ export class MezzoInPartenza {
     public removeComponente(componente: ComponenteInPartenza): void {
         componente.componente.inPartenza = false;
         this.componenti = this.componenti.filter(c => c !== componente);
+    }
+
+    /**
+     * Indicates whether a squadra can be accepted
+     * @param target The instance of squadra to be accepted
+     */
+    public canYouAcceptSquadra(target: any): boolean {
+        return true;
+    }
+
+    /**
+     * Accept a squadra
+     * @param The squadra being accepted
+     */
+    public acceptSquadra(target: any): void {
+        this.compositoreService.addSquadraAMezzo(target, this);
     }
 }

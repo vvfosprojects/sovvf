@@ -21,6 +21,7 @@ import { TagAutistaComponent } from './shared/components/tag-autista/tag-autista
 import { CanDragDirective } from './shared/directives/dnd/can-drag.directive';
 import { CanDropDirective } from './shared/directives/dnd/can-drop.directive';
 import { DndHandlerService } from './compositore/dnd-handler.service';
+import { DropAreaComponent } from './drop-area/drop-area.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { DndHandlerService } from './compositore/dnd-handler.service';
     TagCapopartenzaComponent,
     TagAutistaComponent,
     CanDragDirective,
-    CanDropDirective
+    CanDropDirective,
+    DropAreaComponent
   ],
   imports: [
     BrowserModule,

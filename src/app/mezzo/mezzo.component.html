@@ -1,4 +1,4 @@
-<div canDrag [dragging]="this">
+<div>
     <div class="pull-right">
         <span class="h6 text-muted"><i class="fa fa-home"></i> {{ mezzo.unitaOperativa | truncate:10}}</span>
         <span *ngIf="mezzo.impegnato" title="{{ mezzo.descrizioneImpegno }}" class="label label-warning">IMP</span>

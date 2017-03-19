@@ -8,7 +8,7 @@ export class Mezzo {
 
     constructor(
         public readonly nome: string,
-        public readonly unitaOperativa: string) {}
+        public readonly unitaOperativa: string) { }
 
     //indica se il mezzo è correntemente impegnato
     public get impegnato(): boolean {
@@ -39,5 +39,19 @@ export class Mezzo {
     //restituisce se il mezzo è in partenza o meno
     public get inPartenza(): boolean {
         return this._inPartenza;
+    }
+
+    public askIfYouCanBeDroppedOn(target: any): boolean {
+        if ('canYouAcceptMezzo' in target) {
+            return target.canYouAcceptMezzo(this);
+        }
+
+        return false;
+    }
+
+    public dropOn(target: any) {
+        if (!('canYouAcceptMezzo' in target) || !target.canYouAcceptMezzo(this))
+            return;
+        target.acceptMezzo(this);
     }
 }

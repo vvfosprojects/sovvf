@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { CompositoreComponent } from './compositore.component';
+import { DropAreaComponent } from './drop-area.component';
 
-describe('CompositoreComponent', () => {
-  let component: CompositoreComponent;
-  let fixture: ComponentFixture<CompositoreComponent>;
+describe('DropAreaComponent', () => {
+  let component: DropAreaComponent;
+  let fixture: ComponentFixture<DropAreaComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CompositoreComponent ]
+      declarations: [ DropAreaComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CompositoreComponent);
+    fixture = TestBed.createComponent(DropAreaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

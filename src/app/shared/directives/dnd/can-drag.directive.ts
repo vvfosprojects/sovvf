@@ -1,4 +1,4 @@
-import { Directive, Input, ElementRef, HostListener} from '@angular/core';
+import { Directive, Input, ElementRef, HostListener, Renderer} from '@angular/core';
 
 import { DndHandlerService } from '../../../compositore/dnd-handler.service';
 
@@ -6,14 +6,15 @@ import { DndHandlerService } from '../../../compositore/dnd-handler.service';
   selector: '[canDrag]'
 })
 export class CanDragDirective {
-  @Input("dragging") dragging: Object;
+  @Input("dragging") dragging: any;
 
   constructor(
-    elementRef: ElementRef,
+    private elementRef: ElementRef,
+    private renderer: Renderer,
     private dndHandlerService: DndHandlerService) { }
 
   @HostListener('click') click($event) {
-    this.dndHandlerService.startDrag(this.dragging);
+    this.dndHandlerService.startDrag(this.renderer, this.elementRef, this.dragging);
     event.stopPropagation();
   }
 }

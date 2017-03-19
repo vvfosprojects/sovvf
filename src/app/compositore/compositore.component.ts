@@ -8,7 +8,6 @@ import { CompositoreService } from '../compositore/compositore.service';
   styleUrls: ['./compositore.component.css']
 })
 export class CompositoreComponent implements OnInit {
-
   constructor(private compositoreService: CompositoreService) { }
 
   ngOnInit() {
@@ -17,5 +16,4 @@ export class CompositoreComponent implements OnInit {
   private get mezziInPartenza() {
     return this.compositoreService.mezziInPartenza;
   }
-
 }
