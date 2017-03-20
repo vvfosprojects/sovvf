@@ -1,1 +1,1 @@
-Prototipo della scheda Telefonata realizzata da Luigi.
+Prototipo della scheda Telefonata realizzata da Luigi Frasca.
