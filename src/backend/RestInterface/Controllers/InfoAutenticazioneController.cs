@@ -13,7 +13,8 @@ namespace RestInterface.Controllers
     {
         private readonly IGetOperatoreAutenticato getOperatoreAutenticato;
 
-        public InfoAutenticazioneController(IGetOperatoreAutenticato getOperatoreAutenticato)
+        public InfoAutenticazioneController(
+            IGetOperatoreAutenticato getOperatoreAutenticato)
         {
             this.getOperatoreAutenticato = getOperatoreAutenticato;
         }
@@ -28,7 +29,8 @@ namespace RestInterface.Controllers
 
             return new InfoUtenteAutenticato()
             {
-                Username = username
+                Username = username,
+                IstanteAutenticazione = DateTime.Now.AddHours(-3)
             };
         }
     }
