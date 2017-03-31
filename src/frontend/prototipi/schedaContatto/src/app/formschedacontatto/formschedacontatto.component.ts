@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormschedacontattoModel} from './formschedacontatto.model';
 
 @Component({
   selector: 'app-formschedacontatto',
@@ -6,8 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./formschedacontatto.component.css']
 })
 export class FormschedacontattoComponent implements OnInit {
+fs : FormschedacontattoModel;
 
-  constructor() { }
+  constructor() {
+       this.fs = new FormschedacontattoModel(798495);
+
+   }
 
   ngOnInit() {
   }
