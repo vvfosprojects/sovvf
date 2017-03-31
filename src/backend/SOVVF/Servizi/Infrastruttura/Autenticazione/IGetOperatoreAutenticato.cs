@@ -22,8 +22,6 @@ namespace Modello.Servizi.Infrastruttura.Autenticazione
         ///   Restituisce l'operatore autenticato
         /// </summary>
         /// <returns>La username dell'operatore autenticato. Per es.: mario.rossi</returns>
-#warning Questo servizio deve restituire una classe Operatore.
-
         string Get();
     }
 }
