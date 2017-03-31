@@ -11,7 +11,7 @@ namespace SOVVF.FakeImplementations.Modello.Autenticazione
     {
         public string Get()
         {
-            return "mario.rossi";
+            return "mario.rossi.fake";
         }
     }
 }
