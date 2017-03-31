@@ -73,6 +73,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\CommandDTO\ComponiPartenzaCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\ComponiPartenzaCommandHandler.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\IndicatoriStatoSoccorsoQueryHandler.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\QueryDTO\IndicatoriStatoSoccorsoQuery.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\QueryDTO\Nodo.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\ResultDTO\IndicatoriStatoSoccorsoResult.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\ISaveRichiestaAssistenza.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiestaAssistenzaById.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaMezzo\CommandDTO\DeselezionaMezzoCommand.cs" />
