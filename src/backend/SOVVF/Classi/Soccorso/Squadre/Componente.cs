@@ -75,9 +75,9 @@ namespace Modello.Classi.Soccorso.Squadre
         }
 
         /// <summary>
-        ///   Implementato hascode che restituisce l'hascode del codice fiscale
+        ///   Restituisce l'hascode del codice fiscale
         /// </summary>
-        /// <returns>Hashcode della classe</returns>
+        /// <returns>Hashcode dell'istanza</returns>
         public override int GetHashCode()
         {
             return this.CodiceFiscale.GetHashCode();
