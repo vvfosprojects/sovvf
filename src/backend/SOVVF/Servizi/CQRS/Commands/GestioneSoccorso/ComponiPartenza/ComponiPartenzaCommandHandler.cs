@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Modello.Servizi.CQRS.Commands.GestioneSoccorso.ComponiPartenza.CommandDTO;
+﻿using Modello.Servizi.CQRS.Commands.GestioneSoccorso.ComponiPartenza.CommandDTO;
 using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 
 namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.ComponiPartenza
