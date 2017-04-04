@@ -31,13 +31,13 @@ export class FormChiamataComponent implements OnInit {
   ngOnInit() {
     console.log("ngoninit!");
     this.myForm = this.fb.group({
-      'nome': [this.formChiamataModel.nome],
-      'cognome': [this.formChiamataModel.cognome, Validators.compose([Validators.required, this.validaCognome])],
+      //'nome': [this.formChiamataModel.nome],
+      //'cognome': [this.formChiamataModel.cognome, Validators.compose([Validators.required, this.validaCognome])],
       'tipo_interv': [this.formChiamataModel.tipo_interv],
       'indirizzo': [this.formChiamataModel.indirizzo],
       'formRagSoc': this.formRagSoc,
-      'ragione_sociale': [this.formChiamataModel.ragione_sociale],
-      // 'telefono': [this.formChiamataModel.telefono],
+      //'ragione_sociale': [this.formChiamataModel.ragione_sociale],
+      'telefono': [this.formChiamataModel.telefono],
       'zona_emergenza': [this.formChiamataModel.zona_emergenza],
       'tag': [this.formChiamataModel.tag],
       'motivazione': [this.formChiamataModel.motivazione],
@@ -55,8 +55,10 @@ export class FormChiamataComponent implements OnInit {
      * il validatore multi campo agisce a livello di gruppo.
      */
     this.formRagSoc = this.fb2.group({
-      //   'ragione_sociale': [this.formChiamataModel.ragione_sociale],
-      'telefono': [this.formChiamataModel.telefono]
+      'nome': [this.formChiamataModel.nome],
+      'cognome': [this.formChiamataModel.cognome],
+      'ragione_sociale': [this.formChiamataModel.ragione_sociale],
+      //'telefono': [this.formChiamataModel.telefono]
     }, { validator: this.validaRichiedente.bind(this) }); 
 
 
@@ -71,41 +73,55 @@ export class FormChiamataComponent implements OnInit {
   }
 
   validaRichiedente(group: FormGroup): { [s: string]: boolean } {
-     var val = group.controls['telefono'].value;
-     var valido = (val !== "pippo");
-     console.log(valido);
+    // var val_telefono = group.controls['telefono'].value;
+     var val_nome = group.controls['nome'].value;
+     var val_cognome = group.controls['cognome'].value;
+     var val_ragione_sociale = group.controls['ragione_sociale'].value;
+   /*
+     console.log("telfono "+val_telefono);
+     console.log("nome "+val_nome);
+     console.log("cognome "+val_cognome);
+     console.log("val_ragione_sociale "+val_ragione_sociale);
 
-    if (valido) 
-      return { nonPippo: true };
+     if (val_telefono || val_nome) 
+          console.log("eccomi !");
+*/
+/*
+     var valido = (val_nome !== "pippo");
+     console.log("valida richiedetente è NON valido ?"+valido);
+*/
+    if (val_nome || val_cognome || val_ragione_sociale ) 
+      return { campoVuoto: true };
   }
 
-
+/*
 validaCognome(control: FormGroup): { [s: string]: boolean } {
   //    console.log(control.status);
   if (control.value != "AAAA") {
     return { nonAAAA: true };
   }
 }
+*/
 
 onClickCC(){
   this.formChiamataModel.ragione_sociale = "Carabinieri";
   console.log("onClickCC !!");
-  this.myForm.controls['ragione_sociale'].setValue("Carabinieri");
+  this.formRagSoc.controls['ragione_sociale'].setValue("Carabinieri");
 }
 onClickPS(){
   this.formChiamataModel.ragione_sociale = "Polizia di Stato";
-  this.myForm.controls['ragione_sociale'].setValue("Polizia di Stato");
+  this.formRagSoc.controls['ragione_sociale'].setValue("Polizia di Stato");
   console.log("onClickPS !!");
 
 }
 onClickSSU(){
   this.formChiamataModel.ragione_sociale = "Servizio Sanitario Urgenze";
-  this.myForm.controls['ragione_sociale'].setValue("Servizio Sanitario Urgenze");
+  this.formRagSoc.controls['ragione_sociale'].setValue("Servizio Sanitario Urgenze");
   console.log("onClickSSU !!");
 }
 onClickPM(){
   this.formChiamataModel.ragione_sociale = "Polizia Municipale";
-  this.myForm.controls['ragione_sociale'].setValue("Polizia Municipale");
+  this.formRagSoc.controls['ragione_sociale'].setValue("Polizia Municipale");
   console.log("onClickPM !!");
 }
 
