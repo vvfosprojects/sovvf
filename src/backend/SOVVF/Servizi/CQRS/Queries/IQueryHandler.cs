@@ -1,8 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="IQueryHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
-// </copyright>
-//-----------------------------------------------------------------------
 //
 // This file is part of SOVVF.
 // SOVVF is free software: you can redistribute it and/or modify
@@ -16,18 +14,11 @@
 // GNU Affero General Public License for more details.
 //
 // You should have received a copy of the GNU Affero General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+//-----------------------------------------------------------------------
 namespace Modello.Servizi.CQRS.Queries
 {
-    /// <summary>
-    ///   Interfaccia per la gestione delle query del modello CQRS https://cuttingedge.it/blogs/steven/pivot/entry.php?id=92
-    /// </summary>
-    /// <typeparam name="TResult">Oggetto risultato restituito</typeparam>
-    public interface IQuery<TResult>
-    {
-    }
-
     /// <summary>
     ///   Interfaccia di gestione delle query afferente al modello CQRS https://cuttingedge.it/blogs/steven/pivot/entry.php?id=92
     /// </summary>
@@ -43,5 +34,13 @@ namespace Modello.Servizi.CQRS.Queries
         /// <param name="query">Parametro di filtraggio per il recupero informazioni.</param>
         /// <returns>DTO con valorizzazione risultati.</returns>
         TResult Handle(TQuery query);
+    }
+
+    /// <summary>
+    ///   Interfaccia per la gestione delle query del modello CQRS https://cuttingedge.it/blogs/steven/pivot/entry.php?id=92
+    /// </summary>
+    /// <typeparam name="TResult">Oggetto risultato restituito</typeparam>
+    public interface IQuery<TResult>
+    {
     }
 }
