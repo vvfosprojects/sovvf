@@ -1,5 +1,9 @@
 ﻿extensions: .cs
+//-----------------------------------------------------------------------
+// <copyright file="%FileName%" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
+// </copyright>
+//-----------------------------------------------------------------------
 //
 // This file is part of SOVVF.
 // SOVVF is free software: you can redistribute it and/or modify
