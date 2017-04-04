@@ -125,6 +125,11 @@ onClickPM(){
   console.log("onClickPM !!");
 }
 
+onClickAnnulla() {
+       this.myForm.reset();
+       this.formRagSoc.reset();
+   }
+
 onSubmit(value: any): void {
   console.log("nome ", value.nome);
   console.log("cognome ", value.cognome);
