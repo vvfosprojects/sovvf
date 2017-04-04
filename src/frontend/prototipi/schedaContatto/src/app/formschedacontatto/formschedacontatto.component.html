@@ -1,188 +1,99 @@
 <!--<p> formschedacontatto works! </p>-->
 <html>
- <head>
- </head>
- <body>
-    <div class="section">
-      <div class="container">
-        <br>
-        <br>
-        <div class="row">
-          <div class="col-md-3">
-            <div class="input-group" data-toggle="tooltip" data-html="true" title="ID Scheda">
-              <span class="input-group-addon">
-                <i class="fa fa-hashtag" aria-hidden="true"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="id scheda"value="{{fs.idScheda}}"
-              readonly="">
+
+<head>
+</head>
+
+<body>
+  <div class="section">
+    <div class="container">
+      <div class="card card-outline-primary mb-3 text-left">
+        <h5 class="card-header font-italic ">Scheda Contatto</h5>
+        <div class="card-block">
+          <div class="row">
+            <div class="col-md-2">
+              <span class="titolo"><i class="fa fa-hashtag" aria-hidden="true"></i> N.Scheda<hr></span>
+              <p class="h3">{{fs.idScheda}}</p>
+            </div>
+            <div class="offset-md-1 col-md-2">
+              <span class="titolo"><i class="fa fa-calendar" aria-hidden="true"></i> Data Inserimento<hr></span>
+              <p class="h5">21-03-2017</p>
+            </div>
+            <div class="col-md-2">
+              <span class="titolo"><i class="fa fa-clock-o" aria-hidden="true"></i> Ora Inserimento<hr></span>
+              <p class="h5">18:05:08</p>
+            </div>
+            <div class="offset-md-1 col-md-2">
+              <span class="titolo"><i class="fa fa-id-card-o" aria-hidden="true"></i> Gestore<hr></span>
+              <p class="h5">205</p>
+            </div>
+            <div class="col-md-2">
+              <span class="titolo"><i class="fa fa-desktop" aria-hidden="true"></i> Id. Postazione<hr></span>
+              <p class="h5">121156A</p>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="input-group" data-toggle="tooltip" data-html="true" title="Data Ora Inserimento">
-              <span class="input-group-addon">
-                <i class="fa fa-calendar" aria-hidden="true"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Data Ora Inserimento"
-              value="21-03-2017 18:05:08" readonly="">
+          <br>
+          <div class="row">
+            <div class="col-md-5">
+              <span class="titolo"><i class="fa fa-user-o" aria-hidden="true"></i> Utente<hr></span>
+              <p class="h5">MARIO ROSSI</p>
+            </div>
+            <div class="col-md-2">
+              <span class="titolo"><i class="fa fa-phone" aria-hidden="true"></i> Telefono<hr></span>
+              <p class="h5">3351234567</p>
+            </div>
+            <div class="offset-md-1 col-md-4">
+              <span class="titolo"><i class="fa fa-info-circle" aria-hidden="true"></i> Info Addizionali<hr></span>
+              <p class="h5">Portone Uffici Centrali VVF </p>
             </div>
           </div>
-          <div class="offset-md-2 col-md-2">
-            <div class="input-group" data-toggle="tooltip" data-html="true" title="Id. Oper.">
-              <span class="input-group-addon">
-                <i class="fa fa-id-badge" aria-hidden="true"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Id. Oper." value="205"
-              readonly="">
+          <br>
+          <div class="row">
+            <div class="col-md-10">
+              <span class="titolo"><i class="fa fa-map-marker" aria-hidden="true"></i> Indirizzo<hr></span>
+              <p class="h5">Via Cavour, 5, Roma, RM</p>
             </div>
           </div>
-          <div class="col-md-2">
-            <div class="input-group" data-toggle="tooltip" data-html="true" title="Id. Post.">
-              <span class="input-group-addon">
-                <i class="fa fa-desktop" aria-hidden="true"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Id. Post." value="121156A"
-              readonly="">
+          <br>
+          <div class="row">
+            <div class="col-md-12">
+              <img src="https://maps.googleapis.com/maps/api/staticmap?center=Roma&amp;zoom=14&amp;size=400x400">
             </div>
           </div>
-        </div>
-        <br>
-        <br>
-        <div class="row">
-          <div class="col-md-8">
-            <div class="input-group" data-toggle="tooltip" data-html="true" title="Utente">
-              <span class="input-group-addon">
-                <i class="fa fa-user-o" aria-hidden="true"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Utente" value="MARIO ROSSI"
-              readonly="">
+          <br>
+          <div class="row">
+            <div class="col-md-4">
+              <span class="titolo"><i class="fa fa-list" aria-hidden="true"></i> Classificazione del NUE<hr></span>
+              <p class="h5">Incendio </p>
+            </div>
+            <div class="col-md-6">
+              <span class="titolo"><i class="fa fa-indent" aria-hidden="true"></i> Attributi di classificazione<hr></span>
+              <p class="h5">Attributi di classificazione </p>
+            </div>
+            <div class="col-md-2">
+              <span class="titolo"><i class="fa fa-university" aria-hidden="true"></i> Competenza<hr></span>
+              <p class="h5">VVF </p>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="input-group" data-toggle="tooltip" data-html="true" title="Telefono">
-              <span class="input-group-addon">
-                <i class="fa fa-phone" aria-hidden="true"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Telefono" value="3351234567"
-              readonly="">
+          <div class="row">
+            <div class="col-md-8">
+              <span class="titolo"><i class="fa fa-file-text-o" aria-hidden="true"></i> Note<hr></span>
+              <p class="h5">Note </p>
+            </div>
+            <div class="col-md-2">
+              <span class="titolo"><i class="fa fa-thermometer-quarter" aria-hidden="true"></i> Priorità<hr></span>
+              <p class="h5">HIGH </p>
+            </div>
+            <div class="col-md-2">
+              <span class="titolo"><i class="fa fa-users" aria-hidden="true"></i> Pers. coinvolte<hr></span>
+              <p class="h5">2 </p>
             </div>
           </div>
-        </div>
-        <br>
-        <br>
-        <div class="row align-items-center">
-          <div class="col-md-8">
-            <div class="input-group" data-toggle="tooltip" data-html="true" title="Indirizzo">
-              <span class="input-group-addon">
-                <i class="fa fa-map-marker" aria-hidden="true"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Indirizzo" readonly=""
-              value="Via Cavour, 5, Roma, RM">
-            </div>
-            <br>
-            <br>
-            <div class="input-group" data-toggle="tooltip" data-html="true" title="Inf. Addizionali">
-              <span class="input-group-addon">
-                <i class="fa fa-info-circle" aria-hidden="true"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Inf. Addizionali"
-              readonly="" value="Portone Uffici Centrali VVF ">
-            </div>
-          </div>
-          <div class="col-md-4">
-            <img src="https://maps.googleapis.com/maps/api/staticmap?center=Roma&amp;zoom=14&amp;size=200x200">
-          </div>
-        </div>
-        <!-- <div class="col-12 col-md-auto">
-          <div class="input-group" data-toggle="tooltip" data-html="true" title="X (Long.)">
-            <span class="input-group-addon">
-                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
-            </span>
-            <input type="text" class="form-control" placeholder="X (Long.)" aria-describedby="basic-addon1" readonly="">
-          </div>
-        </div>
-        <div class="col-12 col-md-auto">
-          <div class="input-group" data-toggle="tooltip" data-html="true" title="Y (Lat.)">
-            <span class="input-group-addon">
-                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
-            </span>
-            <input type="text" class="form-control" placeholder="Y (Lat.)" aria-describedby="basic-addon1" readonly="">
-          </div>
-        </div>
-      </div>-->
-        <br>
-        <br>
-        <div class="row">
-          <div class="col-md-2">
-            <h5>
-              <span class="badge badge-default">Altri Elementi Scheda Contatto:</span>
-            </h5>
-          </div>
-          <div class="col-md-10"></div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="input-group" data-toggle="tooltip" data-html="true" title="Classificazione del NUE">
-              <span class="input-group-addon">
-                <i class="fa fa-list" aria-hidden="true"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Class.del NUE" readonly=""
-              value="Incendio">
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="input-group" data-toggle="tooltip" data-html="true" title="Attributi di classificazione">
-              <span class="input-group-addon">
-                <i class="fa fa-indent" aria-hidden="true"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Attributi di classificazione"
-              readonly="" value="Attributi di classificazione">
-            </div>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="input-group" data-toggle="tooltip" data-html="true" title="Note">
-              <span class="input-group-addon">
-                <i class="fa fa-file-text-o" aria-hidden="true"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Note" readonly=""
-              value="Notes">
-            </div>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-2">
-            <div class="input-group" data-toggle="tooltip" data-html="true" title="Priorità">
-              <span class="input-group-addon">
-                <i class="fa fa-thermometer-quarter" aria-hidden="true"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Priorità" readonly=""
-              value="HIGH">
-            </div>
-          </div>
-          <div class="offset-md-2 col-3">
-            <div class="input-group" data-toggle="tooltip" data-html="true" title="Persone coinvolte">
-              <span class="input-group-addon">
-                <i class="fa fa-users" aria-hidden="true"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Persone coinvolte"
-              readonly="" value="2">
-            </div>
-          </div>
-          <div class="offset-md-2 col-3">
-            <div class="input-group" data-toggle="tooltip" data-html="true" title="Competenza">
-              <span class="input-group-addon">
-                <i class="fa fa-university" aria-hidden="true"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Competenza" readonly=""
-              value="VVF">
-            </div>
+          <div class="row">
           </div>
         </div>
       </div>
     </div>
-  </body>
-
+  </div>
+</body>
 </html>
