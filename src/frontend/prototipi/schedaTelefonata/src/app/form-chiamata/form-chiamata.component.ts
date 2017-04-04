@@ -127,18 +127,23 @@ onClickPM(){
 
 onSubmit(value: any): void {
   console.log("nome ", value.nome);
-  console.log("cognome ", this.myForm.controls.cognome.value);
+  console.log("cognome ", value.cognome);
+  console.log("ragione_sociale ", value.ragione_sociale);
+  
+  //console.log("nome ", value.nome);
+  //console.log("cognome ", this.myForm.controls.cognome.value);
   console.log("tipo ", this.myForm.controls.tipo_interv.value);
-  console.log("cognome value ", value.cognome);
-  console.log("indirizzo value ", value.indirizzo);
-  console.log("ragione sociale ", this.myForm.controls.ragione_sociale.value);
-  console.log("telefono ", this.formRagSoc.controls.telefono.value);
+  //console.log("cognome value ", value.cognome);
+  console.log("indirizzo value ", this.myForm.controls.indirizzo.value);
+  //console.log("ragione sociale ", this.myForm.controls.ragione_sociale.value);
+  console.log("telefono ", this.myForm.controls.telefono.value);
   console.log("zona_emergenza ", this.myForm.controls.zona_emergenza.value);
   console.log("tag ", this.myForm.controls.tag.value);
   console.log("motivazione ", this.myForm.controls.motivazione.value);
   console.log("note_indirizzo ", this.myForm.controls.note_indirizzo.value);
   console.log("note_pubbliche ", this.myForm.controls.note_pubbliche.value);
   console.log("note_private ", this.myForm.controls.note_private.value);
+  
   // let formChiamataModel = new FormChiamataModel();
   
  }
