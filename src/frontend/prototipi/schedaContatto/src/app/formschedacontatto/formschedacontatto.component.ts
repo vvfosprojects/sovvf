@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormschedacontattoModel} from './formschedacontatto.model';
+import { SchedaContatto} from './scheda-contatto.model';
+import { SchedaContattoService} from './scheda-contatto.service';
+
 
 @Component({
   selector: 'app-formschedacontatto',
@@ -7,14 +9,36 @@ import { FormschedacontattoModel} from './formschedacontatto.model';
   styleUrls: ['./formschedacontatto.component.css']
 })
 export class FormschedacontattoComponent implements OnInit {
-fs : FormschedacontattoModel;
+//fs : SchedaContatto;
 
-  constructor() {
-       this.fs = new FormschedacontattoModel(798495);
-
-   }
+  constructor(private schedaContattoService : SchedaContattoService) {  
+  }
 
   ngOnInit() {
   }
 
+    get fs(): SchedaContatto {
+
+          return this.schedaContattoService.Get();
+
+    }
+ 
 }
+/*
+export class ListaPostComponent implements OnInit {
+  constructor(private listaPostService: ListaPostService) { }
+
+  ngOnInit() {
+  }
+
+  public numeroPosts(): number {
+    return this.listaPostService.posts.length;
+  }
+
+  get posts(): Post[] {
+    return this.listaPostService.posts;
+  }
+}
+
+*/
+
