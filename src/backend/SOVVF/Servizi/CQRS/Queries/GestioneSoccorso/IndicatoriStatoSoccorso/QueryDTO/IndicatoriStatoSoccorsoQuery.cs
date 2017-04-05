@@ -31,9 +31,9 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.
         ///   E' l'insieme dei nodi dell'organigramma coinvolti nel calcolo degli indicatori
         /// </summary>
         /// <remarks>
-        ///   Se NodiOrganigramma è un set vuoto allora il calcolo degli indicatori verrà effettuato
-        ///   in base ai privilegi assegnati all'utente autenticato
+        ///   Se UnitaOperative è un set vuoto allora il calcolo degli indicatori verrà effettuato in
+        ///   base ai privilegi assegnati all'utente autenticato
         /// </remarks>
-        public ISet<Nodo> NodiOrganigramma { get; set; }
+        public ISet<InfoUnitaOperativa> UnitaOperative { get; set; }
     }
 }

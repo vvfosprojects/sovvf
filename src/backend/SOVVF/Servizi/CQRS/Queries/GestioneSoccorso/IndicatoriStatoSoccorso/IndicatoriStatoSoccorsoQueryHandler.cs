@@ -19,8 +19,11 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Modello.Classi.Soccorso;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.ResultDTO;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 using Modello.Servizi.Infrastruttura.Organigramma;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
@@ -31,9 +34,24 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
     public class IndicatoriStatoSoccorsoQueryHandler : IQueryHandler<IndicatoriStatoSoccorsoQuery, IndicatoriStatoSoccorsoResult>
     {
         /// <summary>
-        ///   Handler del servizio che restituisce i codici dei sottoalberi in organigramma
+        ///   Handler del servizio
         /// </summary>
-        private readonly IGetNodiFigliPerCodiceUnitaOperativa getNodiFigliPerCodiceUnitaOperativa;
+        private readonly IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice;
+
+        /// <summary>
+        ///   Handler del servizio
+        /// </summary>
+        private readonly IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative getRichiesteAssistenzaPerIndicatoriPerUnitaOperative;
+
+        /// <summary>
+        ///   Handler del servizio
+        /// </summary>
+        private readonly IGetNumeroMezziSoccorsoOraInServizio getNumeroMezziSoccorsoOraInServizio;
+
+        /// <summary>
+        ///   Handler del servizio
+        /// </summary>
+        private readonly IGetNumeroSquadreSoccorsoOraInServizio getNumeroSquadreSoccorsoOraInServizio;
 
         /// <summary>
         ///   Metodi di esecuzione della query
@@ -43,11 +61,13 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
         public IndicatoriStatoSoccorsoResult Handle(IndicatoriStatoSoccorsoQuery query)
         {
             var listaCodiciUnitaOperative = new HashSet<string>();
-            foreach (var nodo in query.NodiOrganigramma)
+            foreach (var uo in query.UnitaOperative)
             {
-                if (nodo.Ricorsivo)
+                if (uo.Ricorsivo)
                 {
-                    var nodi = this.getNodiFigliPerCodiceUnitaOperativa.Get(nodo.CodiceUnitaOperativa);
+                    var nodo = this.getUnitaOperativaPerCodice.Get(uo.Codice);
+                    var nodi = nodo.GetSottoAlbero();
+
                     foreach (var singoloNodo in nodi)
                     {
                         listaCodiciUnitaOperative.Add(singoloNodo.Codice);
@@ -55,14 +75,28 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
                 }
                 else
                 {
-                    listaCodiciUnitaOperative.Add(nodo.CodiceUnitaOperativa);
+                    listaCodiciUnitaOperative.Add(uo.Codice);
                 }
             }
 
-            // estrarre le richieste di assistenza relative alle Unità Operative interessate
+            // estrarre le richieste di assistenza in corso relative alle Unità Operative interessate
+            var richiesteAssistenza = this.getRichiesteAssistenzaPerIndicatoriPerUnitaOperative.Get(listaCodiciUnitaOperative).ToArray();
 
             // calcolare i valori degli indicatori.
-            throw new NotImplementedException();
+            var result = new IndicatoriStatoSoccorsoResult()
+            {
+                NumeroRichiesteInCorso = richiesteAssistenza.Count(),
+                NumeroRichiesteSospese = richiesteAssistenza.Count(r => r.Sospesa),
+                NumeroRichiesteInAttesa = richiesteAssistenza.Count(r => r.InAttesa),
+                NumeroMezziSoccorsoImpegnati = richiesteAssistenza.Sum(r => r.NumeroMezziImpegnati),
+                NumeroMezziSoccorsoInRientro = richiesteAssistenza.Sum(r => r.NumeroMezziInRientro),
+                NumeroMezziSoccorsoInViaggio = richiesteAssistenza.Sum(r => r.NumeroMezziInViaggio),
+                NumeroSquadreSoccorsoImpegnate = richiesteAssistenza.Sum(r => r.NumeroSquadreImpegnate)
+            };
+
+            result.NumeroTotaleMezziSoccorso = this.getNumeroMezziSoccorsoOraInServizio.Get(listaCodiciUnitaOperative);
+            result.NumeroTotaleSquadreSoccorso = this.getNumeroSquadreSoccorsoOraInServizio.Get(listaCodiciUnitaOperative);
+            return result;
         }
     }
 }

@@ -142,6 +142,17 @@ namespace Modello.Classi.Soccorso
             }
         }
 
+        public bool Sospesa { get; }
+        public bool InAttesa { get; }
+        public int NumeroMezziImpegnati { get; }
+        public int NumeroMezziInViaggio { get; }
+        public int NumeroMezziInRientro { get; }
+
+        /// <summary>
+        ///   Restituisce il numero di Capi Partenza assegnati alla Richiesta di Assistenza
+        /// </summary>
+        public int NumeroSquadreImpegnate { get; }
+
         #endregion Metodi
     }
 }

@@ -23,16 +23,16 @@ using Modello.Classi.Organigramma;
 namespace Modello.Servizi.Infrastruttura.Organigramma
 {
     /// <summary>
-    ///   Servizio che restituisce tutti i nodi in organigramma a partire da un nodo avente codice dato.
+    ///   Servizio che restituisce il nodo in organigramma avente un codice dato.
     /// </summary>
-    /// <remarks>Viene restituita anche la radice del sottoalbero.</remarks>
-    public interface IGetNodiFigliPerCodiceUnitaOperativa
+
+    public interface IGetUnitaOperativaPerCodice
     {
         /// <summary>
-        ///   Restituisce tutti i nodi in organigramma a partire da un nodo avente codice dato.
+        ///   Restituisce il nodo in organigramma avente un codice dato.
         /// </summary>
-        /// <param name="codiceUnitaOperativa">Il codice dell'unità operativa radice del sottoalbero.</param>
-        /// <returns>L'insieme dei nodi che fanno parte del sottoalbero, radice compresa.</returns>
-        IEnumerable<UnitaOperativa> Get(string codiceUnitaOperativa);
+        /// <param name="codice">Il codice dell'unità operativa richiesto.</param>
+        /// <returns>Il nodo avente il codice specificato.</returns>
+        UnitaOperativa Get(string codice);
     }
 }
