@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SchedaContatto} from './scheda-contatto.model';
-import * as moment from 'moment';
+
 
 @Injectable()
 export class SchedaContattoService {

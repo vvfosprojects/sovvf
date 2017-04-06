@@ -11,8 +11,3 @@ export class AppComponent {
   title = 'app works!';
 }
 
-// constructor(private schedacontattoService: SchedaContattoService) { 
-  //  this.SchedaContatto = SchedaContattoService.getSchedaContatto(); 
-  //}
-     
- //} 
