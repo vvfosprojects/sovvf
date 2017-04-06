@@ -50,6 +50,7 @@
     <Compile Include="Classi\Soccorso\Eventi\Eccezioni\ComposizionePartenzaException.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Evento.cs" />
     <Compile Include="Classi\Soccorso\Eventi\InizioPresaInCarico.cs" />
+    <Compile Include="Classi\Soccorso\CapoPartenzaCoinvolto.cs" />
     <Compile Include="Classi\Soccorso\Risorse\SelezioneRisorsa.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\ComposizionePartenza.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\PartenzaRientrata.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Classi\Soccorso\Mezzi\DisponibilitaMezzo.cs" />
     <Compile Include="Classi\Soccorso\SchedaContatto.cs" />
     <Compile Include="Classi\Soccorso\RichiestaAssistenza.cs" />
+    <Compile Include="Classi\Soccorso\MezzoCoinvolto.cs" />
     <Compile Include="Classi\Soccorso\Squadre\Componente.cs" />
     <Compile Include="Classi\Soccorso\Squadre\DisponibilitaSquadra.cs" />
     <Compile Include="Classi\Soccorso\Squadre\Emergenza.cs" />

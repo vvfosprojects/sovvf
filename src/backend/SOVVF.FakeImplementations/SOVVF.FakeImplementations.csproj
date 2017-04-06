@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Bindings.cs" />
     <Compile Include="Modello\Autenticazione\GetOperatoreAutenticato.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GetRichiesteAssistenzaPerIndicatoriPerUnitaOperative.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

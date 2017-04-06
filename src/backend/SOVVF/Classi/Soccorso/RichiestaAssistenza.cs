@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Modello.Classi.Geo;
@@ -144,14 +145,30 @@ namespace Modello.Classi.Soccorso
 
         public bool Sospesa { get; }
         public bool InAttesa { get; }
-        public int NumeroMezziImpegnati { get; }
-        public int NumeroMezziInViaggio { get; }
-        public int NumeroMezziInRientro { get; }
 
         /// <summary>
-        ///   Restituisce il numero di Capi Partenza assegnati alla Richiesta di Assistenza
+        ///   Restituisce l'elenco dei Mezzi coinvolti nella Richiesta di Assistenza
         /// </summary>
-        public int NumeroSquadreImpegnate { get; }
+        public IEnumerable<MezzoCoinvolto> MezziCoinvolti
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        ///   Restituisce l'elenco dei Capi Partenza assegnati alla Richiesta di Assistenza
+        /// </summary>
+        public IEnumerable<CapoPartenzaCoinvolto> CapiPartenzaCoinvolti
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+#warning realizzare i metodi che restituiscono "n.richieste evase" e "n.mezzi intervenuti (RientratoInSede)" e utilizzarli per gli indicatori di soccorso
 
         #endregion Metodi
     }

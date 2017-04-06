@@ -46,7 +46,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.
         /// <summary>
         ///   E' il numero dei mezzi sul posto per le richieste
         /// </summary>
-        public int NumeroMezziSoccorsoImpegnati { get; set; }
+        public int NumeroMezziSoccorsoSulPosto { get; set; }
 
         /// <summary>
         ///   E' il numero dei mezzi in viaggio per le richieste

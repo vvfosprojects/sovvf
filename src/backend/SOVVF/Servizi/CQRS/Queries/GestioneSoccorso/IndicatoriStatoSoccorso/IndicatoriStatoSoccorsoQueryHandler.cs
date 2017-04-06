@@ -54,6 +54,25 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
         private readonly IGetNumeroSquadreSoccorsoOraInServizio getNumeroSquadreSoccorsoOraInServizio;
 
         /// <summary>
+        ///   Costruttore del servizio
+        /// </summary>
+        /// <param name="getUnitaOperativaPerCodice">Istanza del servizio</param>
+        /// <param name="getRichiesteAssistenzaPerIndicatoriPerUnitaOperative">Istanza del servizio</param>
+        /// <param name="getNumeroMezziSoccorsoOraInServizio">Istanza del servizio</param>
+        /// <param name="getNumeroSquadreSoccorsoOraInServizio">Istanza del servizio</param>
+        public IndicatoriStatoSoccorsoQueryHandler(
+                IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice,
+                IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative getRichiesteAssistenzaPerIndicatoriPerUnitaOperative,
+                IGetNumeroMezziSoccorsoOraInServizio getNumeroMezziSoccorsoOraInServizio,
+                IGetNumeroSquadreSoccorsoOraInServizio getNumeroSquadreSoccorsoOraInServizio)
+        {
+            this.getUnitaOperativaPerCodice = getUnitaOperativaPerCodice;
+            this.getRichiesteAssistenzaPerIndicatoriPerUnitaOperative = getRichiesteAssistenzaPerIndicatoriPerUnitaOperative;
+            this.getNumeroMezziSoccorsoOraInServizio = getNumeroMezziSoccorsoOraInServizio;
+            this.getNumeroSquadreSoccorsoOraInServizio = getNumeroSquadreSoccorsoOraInServizio;
+        }
+
+        /// <summary>
         ///   Metodi di esecuzione della query
         /// </summary>
         /// <param name="query">Il DTO di ingresso della query</param>
@@ -88,10 +107,10 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
                 NumeroRichiesteInCorso = richiesteAssistenza.Count(),
                 NumeroRichiesteSospese = richiesteAssistenza.Count(r => r.Sospesa),
                 NumeroRichiesteInAttesa = richiesteAssistenza.Count(r => r.InAttesa),
-                NumeroMezziSoccorsoImpegnati = richiesteAssistenza.Sum(r => r.NumeroMezziImpegnati),
-                NumeroMezziSoccorsoInRientro = richiesteAssistenza.Sum(r => r.NumeroMezziInRientro),
-                NumeroMezziSoccorsoInViaggio = richiesteAssistenza.Sum(r => r.NumeroMezziInViaggio),
-                NumeroSquadreSoccorsoImpegnate = richiesteAssistenza.Sum(r => r.NumeroSquadreImpegnate)
+                NumeroMezziSoccorsoSulPosto = richiesteAssistenza.Sum(r => r.MezziCoinvolti.Count(m => m.StatoDelMezzo == MezzoCoinvolto.StatoMezzo.SulPosto)),
+                NumeroMezziSoccorsoInRientro = richiesteAssistenza.Sum(r => r.MezziCoinvolti.Count(m => m.StatoDelMezzo == MezzoCoinvolto.StatoMezzo.InRientro)),
+                NumeroMezziSoccorsoInViaggio = richiesteAssistenza.Sum(r => r.MezziCoinvolti.Count(m => m.StatoDelMezzo == MezzoCoinvolto.StatoMezzo.InViaggio)),
+                NumeroSquadreSoccorsoImpegnate = richiesteAssistenza.Sum(r => r.CapiPartenzaCoinvolti.Count(m => m.StatoDelCapoPartenza != CapoPartenzaCoinvolto.StatoCapoPartenza.RientratoInSede))
             };
 
             result.NumeroTotaleMezziSoccorso = this.getNumeroMezziSoccorsoOraInServizio.Get(listaCodiciUnitaOperative);
