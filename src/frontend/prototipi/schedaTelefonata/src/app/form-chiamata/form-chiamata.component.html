@@ -111,6 +111,9 @@
               </div>
             </div>
           </div> &nbsp; </div>
+
+              
+
         <div class="row">
           <div class="col-md-6">
             <div [formGroup]="myForm">
@@ -119,11 +122,12 @@
                   placeholder="Zona emergenza" formControlName="zona_emergenza"> </div>
             </div>
           </div>
+
           <div class="col-md-6">
             <div [formGroup]="myForm">
               <div class="input-group">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="tag" style="min-width: 50px;"> <i class="fa fa-tag" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="tag" placeholder="tag"
-                  formControlName="tag">
+                <span class="input-group-addon" data-toggle="tooltip" data-animation="false" title="tag" style="min-width: 50px;"> <i class="fa fa-tag" aria-hidden="true"></i> </span> 
+                <ss-multiselect-dropdown [options]="myOptions" [settings]="mySettings" formControlName="optionsModel" class="btn-block" ></ss-multiselect-dropdown>
               </div>
             </div>
           </div>

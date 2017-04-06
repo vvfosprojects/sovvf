@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
+import { IMultiSelectOption, IMultiSelectSettings } from 'angular-2-dropdown-multiselect';
 import { FormChiamataModel } from './form-chiamata.model';
 import {
   FormBuilder,
@@ -18,6 +19,34 @@ export class FormChiamataComponent implements OnInit {
   myForm: FormGroup;
   formRagSoc: FormGroup;
 
+  model: number[];
+  /**
+   * opzioni per la multiselect del tag
+   */
+  myOptions: IMultiSelectOption[] = [
+        { id: 1, name: 'tag 1' },
+        { id: 2, name: 'tag 2' },
+        { id: 3, name: 'tag 3' },
+        { id: 4, name: 'tag 4' },
+        { id: 5, name: 'tag 5' },
+        { id: 6, name: 'tag 6' },
+    ];
+
+mySettings: IMultiSelectSettings = {
+    pullRight: false,
+    enableSearch: true,
+    checkedStyle: 'checkboxes',
+    buttonClasses: 'btn btn-default btn-secondary btn-block',
+    selectionLimit: 0,
+    closeOnSelect: false,
+    autoUnselect: false,
+    showCheckAll: true,
+    showUncheckAll: true,
+   // fixedTitle: false,
+    dynamicTitleMaxItems: 6,
+    maxHeight: '300px',
+};
+
 
   constructor( @Inject(FormBuilder) private fb: FormBuilder, private fb2: FormBuilder) {
     this.formChiamataModel = new FormChiamataModel();
@@ -35,6 +64,7 @@ export class FormChiamataComponent implements OnInit {
       //'cognome': [this.formChiamataModel.cognome, Validators.compose([Validators.required, this.validaCognome])],
       'tipo_interv': [this.formChiamataModel.tipo_interv],
       'indirizzo': [this.formChiamataModel.indirizzo],
+      'optionsModel': [], // Default model
       'formRagSoc': this.formRagSoc,
       //'ragione_sociale': [this.formChiamataModel.ragione_sociale],
       'telefono': [this.formChiamataModel.telefono],
@@ -50,6 +80,15 @@ export class FormChiamataComponent implements OnInit {
       //     'indirizzo': [this.formChiamataModel.indirizzo, Validators.compose([Validators.required])],
       //   'motivazione': [this.formChiamataModel.motivazione, Validators.required]
     });
+
+    /**
+     * multiselect per il campo tag
+     */
+    this.myForm.controls['optionsModel'].valueChanges
+            .subscribe((selectedOptions) => {
+                // changes
+                console.log("valore multiselect cambiato ! "+this.myForm.controls['optionsModel'].value);
+            });
 
     /**
      * il validatore multi campo agisce a livello di gruppo.
@@ -138,7 +177,7 @@ onSubmit(value: any): void {
   console.log("indirizzo value ", this.myForm.controls.indirizzo.value);
   console.log("telefono ", this.myForm.controls.telefono.value);
   console.log("zona_emergenza ", this.myForm.controls.zona_emergenza.value);
-  console.log("tag ", this.myForm.controls.tag.value);
+  console.log("ciao! "+this.myForm.controls['optionsModel'].value);
   console.log("motivazione ", this.myForm.controls.motivazione.value);
   console.log("note_indirizzo ", this.myForm.controls.note_indirizzo.value);
   console.log("note_pubbliche ", this.myForm.controls.note_pubbliche.value);

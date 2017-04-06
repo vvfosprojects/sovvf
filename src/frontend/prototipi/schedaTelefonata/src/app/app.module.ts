@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { FormChiamataComponent } from './form-chiamata/form-chiamata.component';
+import { MultiselectDropdownModule  } from 'angular-2-dropdown-multiselect';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { FormChiamataComponent } from './form-chiamata/form-chiamata.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MultiselectDropdownModule 
   ],
   providers: [],
   bootstrap: [AppComponent]
