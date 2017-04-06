@@ -5,11 +5,13 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { FormschedacontattoComponent } from './formschedacontatto/formschedacontatto.component';
+import { FriendlyDatePipe } from './shared/pipes/friendly-date.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FormschedacontattoComponent
+    FormschedacontattoComponent,
+    FriendlyDatePipe
   ],
   imports: [
     BrowserModule,

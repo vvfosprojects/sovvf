@@ -5,6 +5,10 @@
 </head>
 
 <body>
+<!--  <script src="moment.js"></script>
+<script>
+    moment().format();
+</script>-->
   <div class="section">
     <div class="container">
       <div class="card card-outline-primary mb-3 text-left">
@@ -17,11 +21,11 @@
             </div>
             <div class="offset-md-1 col-md-2">
               <span class="titolo"><i class="fa fa-calendar" aria-hidden="true"></i> Data Inserimento<hr></span>
-              <p class="h5">21-03-2017</p>
+              <p class="h5">{{fs.dataOrainserimento | friendlyDate }}</p>
             </div>
             <div class="col-md-2">
               <span class="titolo"><i class="fa fa-clock-o" aria-hidden="true"></i> Ora Inserimento<hr></span>
-              <p class="h5">18:05:08</p>
+              <p class="h5">{{ fs.dataOrainserimento }}</p>
             </div>
             <div class="offset-md-1 col-md-2">
               <span class="titolo"><i class="fa fa-id-card-o" aria-hidden="true"></i> Gestore<hr></span>

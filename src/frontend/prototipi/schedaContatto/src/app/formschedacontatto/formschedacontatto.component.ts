@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SchedaContatto} from './scheda-contatto.model';
 import { SchedaContattoService} from './scheda-contatto.service';
+import { FriendlyDatePipe } from '../shared/pipes/friendly-date.pipe';
 
 
 @Component({
@@ -24,21 +25,5 @@ export class FormschedacontattoComponent implements OnInit {
     }
  
 }
-/*
-export class ListaPostComponent implements OnInit {
-  constructor(private listaPostService: ListaPostService) { }
 
-  ngOnInit() {
-  }
-
-  public numeroPosts(): number {
-    return this.listaPostService.posts.length;
-  }
-
-  get posts(): Post[] {
-    return this.listaPostService.posts;
-  }
-}
-
-*/
 

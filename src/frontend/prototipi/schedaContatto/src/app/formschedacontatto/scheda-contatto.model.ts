@@ -2,7 +2,7 @@ export class SchedaContatto {
 
 
      constructor(public idScheda: Number,
-        public dataOrainserimento: String,
+        public dataOrainserimento: Date,
         public idOperatore: Number,
         public idPostazione: string,
         public nomeUtente: string,
