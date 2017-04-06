@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SchedaContatto} from './scheda-contatto.model';
 import { SchedaContattoService} from './scheda-contatto.service';
 import { FriendlyDatePipe } from '../shared/pipes/friendly-date.pipe';
+import { FriendlyHourPipe } from '../shared/pipes/friendly-hour.pipe';
 
 
 @Component({

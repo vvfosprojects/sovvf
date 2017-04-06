@@ -6,12 +6,14 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { FormschedacontattoComponent } from './formschedacontatto/formschedacontatto.component';
 import { FriendlyDatePipe } from './shared/pipes/friendly-date.pipe';
+import { FriendlyHourPipe } from './shared/pipes/friendly-hour.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     FormschedacontattoComponent,
-    FriendlyDatePipe
+    FriendlyDatePipe,
+    FriendlyHourPipe
   ],
   imports: [
     BrowserModule,
