@@ -22,12 +22,12 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.
     /// <summary>
     ///   Indica un nodo dell'organigramma e la necessità o meno di considerare anche tutti i nodi figli
     /// </summary>
-    public class Nodo
+    public class InfoUnitaOperativa
     {
         /// <summary>
         ///   E' il codice dell'unità operativa
         /// </summary>
-        public string CodiceUnitaOperativa { get; set; }
+        public string Codice { get; set; }
 
         /// <summary>
         ///   Indica se va considerato l'intero sottoalbero del nodo
@@ -41,13 +41,13 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.
         /// <returns>true se il nodo passato è uguale</returns>
         public override bool Equals(object obj)
         {
-            if (!(obj is Nodo))
+            if (!(obj is InfoUnitaOperativa))
             {
                 return false;
             }
 
-            var n = (Nodo)obj;
-            return n.CodiceUnitaOperativa.Equals(this.CodiceUnitaOperativa);
+            var n = (InfoUnitaOperativa)obj;
+            return n.Codice.Equals(this.Codice);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.
         /// <returns>Hashcode dell'istanza</returns>
         public override int GetHashCode()
         {
-            return this.CodiceUnitaOperativa.GetHashCode();
+            return this.Codice.GetHashCode();
         }
     }
 }

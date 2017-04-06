@@ -17,6 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+
 namespace Modello.Classi.Organigramma
 {
     /// <summary>
@@ -28,5 +31,10 @@ namespace Modello.Classi.Organigramma
         ///   Codice dell'unità operativa
         /// </summary>
         public string Codice { get; set; }
+
+        public IEnumerable<UnitaOperativa> GetSottoAlbero()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
