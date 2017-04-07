@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
-import { IMultiSelectOption, IMultiSelectSettings } from 'angular-2-dropdown-multiselect';
+import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 import { FormChiamataModel } from './form-chiamata.model';
 import {
   FormBuilder,
@@ -19,21 +19,31 @@ export class FormChiamataComponent implements OnInit {
   myForm: FormGroup;
   formRagSoc: FormGroup;
 
-  model: number[];
+  model: number[] = [];
   /**
    * opzioni per la multiselect del tag
    */
   myOptions: IMultiSelectOption[] = [
-        { id: 1, name: 'tag 1' },
-        { id: 2, name: 'tag 2' },
-        { id: 3, name: 'tag 3' },
+        { id: 1, name: 'tag 1 lungo' },
+        { id: 2, name: 'tag 2 lungo' },
+        { id: 3, name: 'tag 3 lungo' },
         { id: 4, name: 'tag 4' },
         { id: 5, name: 'tag 5' },
         { id: 6, name: 'tag 6' },
     ];
 
+    myTexts: IMultiSelectTexts = {
+    checkAll: 'Seleziona tutti',
+    uncheckAll: 'Deseleziona tutti',
+    checked: 'Selezionato',
+    checkedPlural: 'Selezionati',
+    searchPlaceholder: 'Cerca...',
+    defaultTitle: 'Seleziona tag',
+    allSelected: 'Tutti selezionati',
+};
+
 mySettings: IMultiSelectSettings = {
-    pullRight: false,
+    pullRight: true,
     enableSearch: true,
     checkedStyle: 'checkboxes',
     buttonClasses: 'btn btn-default btn-secondary btn-block',
@@ -43,7 +53,7 @@ mySettings: IMultiSelectSettings = {
     showCheckAll: true,
     showUncheckAll: true,
    // fixedTitle: false,
-    dynamicTitleMaxItems: 6,
+    dynamicTitleMaxItems: 2,
     maxHeight: '300px',
 };
 
@@ -64,7 +74,7 @@ mySettings: IMultiSelectSettings = {
       //'cognome': [this.formChiamataModel.cognome, Validators.compose([Validators.required, this.validaCognome])],
       'tipo_interv': [this.formChiamataModel.tipo_interv],
       'indirizzo': [this.formChiamataModel.indirizzo],
-      'optionsModel': [], // Default model
+      'optionsModel': [this.model], // Default model
       'formRagSoc': this.formRagSoc,
       //'ragione_sociale': [this.formChiamataModel.ragione_sociale],
       'telefono': [this.formChiamataModel.telefono],
