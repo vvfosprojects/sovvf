@@ -143,7 +143,19 @@ namespace Modello.Classi.Soccorso
             }
         }
 
+        /// <summary>
+        ///   Indica se la richiesta è sospesa
+        /// </summary>
+        /// <remarks>
+        ///   La richiesta è sospesa se, prima del termine della sua evasione, tutte le risorse le
+        ///   sono state sottratte e dirottate presso altro intervento
+        /// </remarks>
         public bool Sospesa { get; }
+
+        /// <summary>
+        ///   Indica se la richiesta è in attesa
+        /// </summary>
+        /// <remarks>La richiesta è in attesa se non le è stata ancora assegnata alcuna partenza</remarks>
         public bool InAttesa { get; }
 
         /// <summary>

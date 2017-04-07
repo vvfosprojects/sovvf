@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IGetNodiFigliPerCodiceUnitaOperativa.cs" company="CNVVF">
+// <copyright file="IGetUnitaOperativaPerCodice.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -25,7 +25,6 @@ namespace Modello.Servizi.Infrastruttura.Organigramma
     /// <summary>
     ///   Servizio che restituisce il nodo in organigramma avente un codice dato.
     /// </summary>
-
     public interface IGetUnitaOperativaPerCodice
     {
         /// <summary>

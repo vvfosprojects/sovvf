@@ -32,6 +32,10 @@ namespace Modello.Classi.Organigramma
         /// </summary>
         public string Codice { get; set; }
 
+        /// <summary>
+        ///   Restituisce tutte le unità operative presenti nel sottoalbero, radice compresa
+        /// </summary>
+        /// <returns>Le unità operative</returns>
         public IEnumerable<UnitaOperativa> GetSottoAlbero()
         {
             throw new NotImplementedException();
