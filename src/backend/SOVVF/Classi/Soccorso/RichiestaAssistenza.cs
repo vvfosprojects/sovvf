@@ -103,6 +103,25 @@ namespace Modello.Classi.Soccorso
         public string Codice { get; set; }
 
         /// <summary>
+        ///   E' il codice dell'unità operativa competente per l'intervento
+        /// </summary>
+        /// <remarks>
+        ///   La competenza di un intervento può cambiare durante la vita della richiesta. Il cambio
+        ///   è documentato da un apposito evento della richiesta.
+        /// </remarks>
+        public string CodiceUnitaOperativaCompetente { get; set; }
+
+        /// <summary>
+        ///   E' il set dei codici delle unità operative che sono chiamate a supporto.
+        /// </summary>
+        /// <remarks>
+        ///   Le unità allertate possono partecipare alla gestione dell'intervento limitatamente a
+        ///   determinati specifici casi d'uso (per es. composizione partenza, apposizione nota
+        ///   intervento, ecc.)
+        /// </remarks>
+        public ISet<string> CodiciUnitaOperativeAllertate { get; set; }
+
+        /// <summary>
         ///   Contiene la lista degli eventi considerati di interesse per la richiesta.
         /// </summary>
         public IList<Evento> Eventi { get; set; }
