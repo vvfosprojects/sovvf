@@ -45,8 +45,9 @@ export class FormChiamataComponent implements OnInit {
 mySettings: IMultiSelectSettings = {
     pullRight: true,
     enableSearch: true,
-    checkedStyle: 'checkboxes',
+    checkedStyle: 'fontawesome',
     buttonClasses: 'btn btn-default btn-secondary btn-block',
+    itemClasses: '',
     selectionLimit: 0,
     closeOnSelect: false,
     autoUnselect: false,
