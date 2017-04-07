@@ -30,6 +30,11 @@ namespace Modello.Classi.Soccorso
         public enum StatoMezzo
         {
             /// <summary>
+            ///   Assegnato ma non ancora partito
+            /// </summary>
+            Assegnato,
+
+            /// <summary>
             ///   In viaggio verso il luogo del sinistro.
             /// </summary>
             InViaggio,
