@@ -4,10 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import { MezzoinservizioComponent } from './mezzoinservizio/mezzoinservizio.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MezzoinservizioComponent
   ],
   imports: [
     BrowserModule,
