@@ -31,6 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SimpleInjector, Version=4.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.4.0.0\lib\net45\SimpleInjector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SimpleInjector.Packaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.Packaging.4.0.0\lib\net40\SimpleInjector.Packaging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -87,6 +95,8 @@
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetNumeroSquadreSoccorsoOraInServizio.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetNumeroMezziSoccorsoOraInServizio.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative.cs" />
+    <Compile Include="Servizi\Infrastruttura\Organigramma\Bindings.cs" />
+    <Compile Include="Servizi\Infrastruttura\Organigramma\GetUnitaOperativaPerCodice.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\IGetUnitaOperativaPerCodice.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\IndicatoriStatoSoccorsoQueryHandler.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\QueryDTO\IndicatoriStatoSoccorsoQuery.cs" />
@@ -120,12 +130,14 @@
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\ResultDTO\SquadraDisponibile.cs" />
     <Compile Include="Servizi\CQRS\Queries\IQueryHandler.cs" />
     <Compile Include="Servizi\Infrastruttura\Autenticazione\IGetOperatoreAutenticato.cs" />
+    <Compile Include="Servizi\Infrastruttura\Organigramma\IGetUnitaOperativaRadice.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <None Include="..\SOVVF.licenseheader">
       <Link>SOVVF.licenseheader</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -23,15 +23,15 @@ using Modello.Classi.Organigramma;
 namespace Modello.Servizi.Infrastruttura.Organigramma
 {
     /// <summary>
-    ///   Servizio che restituisce il nodo in organigramma avente un codice dato.
+    ///   Servizio che restituisce il l'unità operativa in organigramma avente un codice dato.
     /// </summary>
     public interface IGetUnitaOperativaPerCodice
     {
         /// <summary>
-        ///   Restituisce il nodo in organigramma avente un codice dato.
+        ///   Restituisce l'unità operativa in organigramma avente un codice dato.
         /// </summary>
         /// <param name="codice">Il codice dell'unità operativa richiesto.</param>
-        /// <returns>Il nodo avente il codice specificato.</returns>
+        /// <returns>L'unità operativa avente il codice specificato.</returns>
         UnitaOperativa Get(string codice);
     }
 }

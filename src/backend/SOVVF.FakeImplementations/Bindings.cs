@@ -17,10 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Modello.Servizi.Infrastruttura.Autenticazione;
 using SimpleInjector;
 using SimpleInjector.Packaging;
-using SOVVF.FakeImplementations.Modello.Autenticazione;
 
 namespace SOVVF.FakeImplementations
 {
@@ -35,7 +33,11 @@ namespace SOVVF.FakeImplementations
         /// <param name="container">Il container sul quale le registrazioni hanno effetto</param>
         public void RegisterServices(Container container)
         {
-            container.Register<IGetOperatoreAutenticato, GetOperatoreAutenticato>();
+            container.Register<global::Modello.Servizi.Infrastruttura.Autenticazione.IGetOperatoreAutenticato,
+                Modello.Autenticazione.GetOperatoreAutenticato>();
+
+            container.Register<global::Modello.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaRadice,
+                Modello.Organigramma.GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato>();
         }
     }
 }

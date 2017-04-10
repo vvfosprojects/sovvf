@@ -35,7 +35,6 @@ namespace Modello.Test.Classi.Organigramma
             {
                 Codice = "1",
                 Nome = "1",
-                Padre = null
             };
 
             var uo1_1 = new UnitaOperativa()
@@ -127,7 +126,6 @@ namespace Modello.Test.Classi.Organigramma
             {
                 Codice = "1",
                 Nome = "1",
-                Padre = null
             };
 
             var unitaOperativeSottoalbero = albero.GetSottoAlbero();
