@@ -28,9 +28,33 @@ namespace Modello.Classi.Organigramma
     public class UnitaOperativa
     {
         /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        public UnitaOperativa()
+        {
+            this.Figli = new HashSet<UnitaOperativa>();
+        }
+
+        /// <summary>
         ///   Codice dell'unità operativa
         /// </summary>
         public string Codice { get; set; }
+
+        /// <summary>
+        ///   Il nome dell'inità operativa
+        /// </summary>
+        public string Nome { get; set; }
+
+        /// <summary>
+        ///   Le unità operative figlie nell'organigramma
+        /// </summary>
+        public ISet<UnitaOperativa> Figli { get; set; }
+
+        /// <summary>
+        ///   L'unità operativa padre
+        /// </summary>
+        /// <remarks>Il valore è null per le unità operative radice</remarks>
+        public UnitaOperativa Padre { get; set; }
 
         /// <summary>
         ///   Restituisce tutte le unità operative presenti nel sottoalbero, radice compresa
@@ -38,7 +62,54 @@ namespace Modello.Classi.Organigramma
         /// <returns>Le unità operative</returns>
         public IEnumerable<UnitaOperativa> GetSottoAlbero()
         {
-            throw new NotImplementedException();
+            yield return this;
+
+            foreach (var uo in this.Figli)
+            {
+                foreach (var _uo in uo.GetSottoAlbero())
+                    yield return _uo;
+            }
+
+            yield break;
+        }
+
+        /// <summary>
+        ///   Aggiunge un'unità operativa figlia preservando l'invariante sul legame padre-figlio
+        /// </summary>
+        /// <param name="unitaOperativa">L'unità operativa da aggiungere ai figli</param>
+        public void AddFiglio(UnitaOperativa unitaOperativa)
+        {
+            this.Figli.Add(unitaOperativa);
+            unitaOperativa.Padre = this;
+        }
+
+        /// <summary>
+        ///   Per la classe, un'UnitaOperativa è uguale ad un'altra UnitaOperativa se hanno lo stesso codice
+        /// </summary>
+        /// <param name="obj">Oggetto da confrontare</param>
+        /// <returns>true se l'UnitaOpertaiva passata è uguale</returns>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is UnitaOperativa))
+                return false;
+
+            var uo = (UnitaOperativa)obj;
+
+            return uo.Codice.Equals(this.Codice);
+        }
+
+        /// <summary>
+        ///   Restituisce l'hascode del codice
+        /// </summary>
+        /// <returns>Hashcode dell'istanza</returns>
+        public override int GetHashCode()
+        {
+            return this.Codice.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} (Figli: {1})", this.Codice, this.Figli.Count);
         }
     }
 }

@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classi\Organigramma\TestUnitaOperativa.cs" />
     <Compile Include="Classi\Soccorso\TestComposizionePartenza.cs" />
     <Compile Include="Classi\Soccorso\TestRichiestaAssistenza.cs" />
     <Compile Include="Classi\Soccorso\TestSquadra.cs" />
