@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Modello.Classi.Soccorso.StatiMezzo;
+
 namespace Modello.Classi.Soccorso
 {
     /// <summary>
@@ -25,37 +27,6 @@ namespace Modello.Classi.Soccorso
     public class MezzoCoinvolto
     {
         /// <summary>
-        ///   Enumera gli stati in cui un mezzo partecipante ad una richiesta può trovarsi
-        /// </summary>
-        public enum StatoMezzo
-        {
-            /// <summary>
-            ///   Assegnato ma non ancora partito
-            /// </summary>
-            Assegnato,
-
-            /// <summary>
-            ///   In viaggio verso il luogo del sinistro.
-            /// </summary>
-            InViaggio,
-
-            /// <summary>
-            ///   Giunto sul luogo del sinistro
-            /// </summary>
-            SulPosto,
-
-            /// <summary>
-            ///   In viaggio verso la sede di servizio
-            /// </summary>
-            InRientro,
-
-            /// <summary>
-            ///   Rientrato presso la sede di servizio
-            /// </summary>
-            RientratoInSede
-        }
-
-        /// <summary>
         ///   Il codice del mezzo
         /// </summary>
         public string CodiceMezzo { get; set; }
@@ -63,6 +34,6 @@ namespace Modello.Classi.Soccorso
         /// <summary>
         ///   Lo stato del mezzo
         /// </summary>
-        public StatoMezzo StatoDelMezzo { get; set; }
+        public IStatoMezzo StatoDelMezzo { get; set; }
     }
 }

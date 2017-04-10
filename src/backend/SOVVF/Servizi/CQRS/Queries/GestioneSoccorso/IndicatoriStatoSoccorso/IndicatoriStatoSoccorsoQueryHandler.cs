@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Modello.Classi.Soccorso;
+using Modello.Classi.Soccorso.StatiMezzo;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.ResultDTO;
 using Modello.Servizi.Infrastruttura.GestioneSoccorso;
@@ -103,15 +104,19 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
             // estrarre le richieste di assistenza in corso relative alle Unità Operative interessate
             var richiesteAssistenza = this.getRichiesteAssistenzaPerIndicatoriPerUnitaOperative.Get(listaCodiciUnitaOperative).ToArray();
 
+            // estrae una lista che include una lista di eventi per ogni richiesta
+            var eventi = richiesteAssistenza.Select(r => r.Eventi);
+
             // calcolare i valori degli indicatori.
             var result = new IndicatoriStatoSoccorsoResult()
             {
                 NumeroRichiesteInCorso = richiesteAssistenza.Count(),
                 NumeroRichiesteSospese = richiesteAssistenza.Count(r => r.Sospesa),
                 NumeroRichiesteInAttesa = richiesteAssistenza.Count(r => r.InAttesa),
-                NumeroMezziSoccorsoSulPosto = richiesteAssistenza.Sum(r => r.MezziCoinvolti.Count(m => m.StatoDelMezzo == MezzoCoinvolto.StatoMezzo.SulPosto)),
-                NumeroMezziSoccorsoInRientro = richiesteAssistenza.Sum(r => r.MezziCoinvolti.Count(m => m.StatoDelMezzo == MezzoCoinvolto.StatoMezzo.InRientro)),
-                NumeroMezziSoccorsoInViaggio = richiesteAssistenza.Sum(r => r.MezziCoinvolti.Count(m => m.StatoDelMezzo == MezzoCoinvolto.StatoMezzo.InViaggio)),
+
+                NumeroMezziSoccorsoSulPosto = richiesteAssistenza.Sum(r => r.MezziCoinvolti.Count(m => m.StatoDelMezzo is SulPosto)),
+                NumeroMezziSoccorsoInRientro = richiesteAssistenza.Sum(r => r.MezziCoinvolti.Count(m => m.StatoDelMezzo is InRientro)),
+                NumeroMezziSoccorsoInViaggio = richiesteAssistenza.Sum(r => r.MezziCoinvolti.Count(m => m.StatoDelMezzo is InViaggio)),
                 NumeroSquadreSoccorsoImpegnate = richiesteAssistenza.Sum(r => r.CapiPartenzaCoinvolti.Count(m => m.StatoDelCapoPartenza != CapoPartenzaCoinvolto.StatoCapoPartenza.RientratoInSede))
             };
 
