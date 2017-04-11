@@ -64,10 +64,12 @@ namespace Modello.Classi.Organigramma
         {
             yield return this;
 
-            foreach (var uo in this.Figli)
+            foreach (var figlio in this.Figli)
             {
-                foreach (var _uo in uo.GetSottoAlbero())
-                    yield return _uo;
+                foreach (var uo in figlio.GetSottoAlbero())
+                {
+                    yield return uo;
+                }
             }
 
             yield break;
@@ -91,7 +93,9 @@ namespace Modello.Classi.Organigramma
         public override bool Equals(object obj)
         {
             if (!(obj is UnitaOperativa))
+            {
                 return false;
+            }
 
             var uo = (UnitaOperativa)obj;
 
@@ -107,9 +111,13 @@ namespace Modello.Classi.Organigramma
             return this.Codice.GetHashCode();
         }
 
+        /// <summary>
+        ///   Fornisce una rappresentazione di comodo dell'unità operativa.
+        /// </summary>
+        /// <returns>La stringa descrittiva dell'unità operativa.</returns>
         public override string ToString()
         {
-            return string.Format("{0} (Figli: {1})", this.Codice, this.Figli.Count);
+            return string.Format("{0} - {1} (Figli: {2})", this.Codice, this.Nome, this.Figli.Count);
         }
     }
 }

@@ -1,5 +1,25 @@
-﻿using System;
+﻿//-----------------------------------------------------------------------
+// <copyright file="TestUnitaOperativa.cs" company="CNVVF">
+// Copyright (C) 2017 - CNVVF
+//
+// This file is part of SOVVF.
+// SOVVF is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// SOVVF is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+//-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,22 +32,24 @@ namespace Modello.Test.Classi.Organigramma
     public class TestUnitaOperativa
     {
         /// <summary>
-        ///   Crea l'albero
-        ///   +--  1
-        ///   -----+-- 1.1
-        ///   -----+-- 1.2
-        ///   ---------+-- 1.2.1
-        ///   ---------+-- 1.2.2
-        ///   ---------+-- 1.2.3
-        ///   -----+-- 1.3
-        ///   ---------+-- 1.3.1
-        ///   ---------+-- 1.3.2
-        ///   -------------+--1.3.2.1
-        ///   -------------+-- 1.3.2.2
-        ///   ---------+-- 1.3.3
-        ///
-        ///   Il test verifica che i nodi del sottoalbero 1.3 siano correttamente restituiti.
+        ///   <para>
+        ///     Crea l'albero
+        ///     +--  1
+        ///     -----+-- 1.1
+        ///     -----+-- 1.2
+        ///     ---------+-- 1.2.1
+        ///     ---------+-- 1.2.2
+        ///     ---------+-- 1.2.3
+        ///     -----+-- 1.3
+        ///     ---------+-- 1.3.1
+        ///     ---------+-- 1.3.2
+        ///     -------------+--1.3.2.1
+        ///     -------------+-- 1.3.2.2
+        ///     ---------+-- 1.3.3
+        ///   </para>
+        ///   <para>Il test verifica che i nodi del sottoalbero 1.3 siano correttamente restituiti.</para>
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1631:DocumentationMustMeetCharacterPercentage", Justification = "Reviewed.")]
         [Test]
         public void UnSottoalberoNonVuotoECorrettamenteRestituito()
         {

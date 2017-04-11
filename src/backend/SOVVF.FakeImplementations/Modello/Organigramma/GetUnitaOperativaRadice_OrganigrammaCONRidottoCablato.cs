@@ -1,4 +1,23 @@
-﻿using System;
+﻿//-----------------------------------------------------------------------
+// <copyright file="GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato.cs" company="CNVVF">
+// Copyright (C) 2017 - CNVVF
+//
+// This file is part of SOVVF.
+// SOVVF is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// SOVVF is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+//-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +27,17 @@ using Modello.Servizi.Infrastruttura.Organigramma;
 
 namespace SOVVF.FakeImplementations.Modello.Organigramma
 {
+    /// <summary>
+    ///   Questa classe fake implementa un organigramma con radice nel CON, che ha tutte le Direzioni
+    ///   Regionali come figli. La sola Direzione Regionale Lazio è popolata con i suoi Comandi
+    ///   Provinciali. Non vi sono altre unità operative.
+    /// </summary>
     internal class GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato : IGetUnitaOperativaRadice
     {
+        /// <summary>
+        ///   Restituisce l'unità operativa del CON correttamente popolata.
+        /// </summary>
+        /// <returns>L'unità operativa del CON.</returns>
         public UnitaOperativa Get()
         {
             var con = new UnitaOperativa()
@@ -17,8 +45,6 @@ namespace SOVVF.FakeImplementations.Modello.Organigramma
                 Codice = "CON",
                 Nome = "Centro Operativo Nazionale"
             };
-
-            #region Le 18 Direzioni Regionali
 
             var dirRegPiemonte = new UnitaOperativa()
             {
@@ -146,10 +172,6 @@ namespace SOVVF.FakeImplementations.Modello.Organigramma
             };
             con.AddFiglio(dirRegSardegna);
 
-            #endregion Le 18 Direzioni Regionali
-
-            #region I Comandi Provinciali del Lazio
-
             var comProRM = new UnitaOperativa()
             {
                 Codice = "CP_RM",
@@ -184,8 +206,6 @@ namespace SOVVF.FakeImplementations.Modello.Organigramma
                 Nome = "Comando Provinciale Viterbo"
             };
             dirRegLazio.AddFiglio(comProVT);
-
-            #endregion I Comandi Provinciali del Lazio
 
             return con;
         }

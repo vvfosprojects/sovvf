@@ -33,11 +33,9 @@ namespace SOVVF.FakeImplementations
         /// <param name="container">Il container sul quale le registrazioni hanno effetto</param>
         public void RegisterServices(Container container)
         {
-            container.Register<global::Modello.Servizi.Infrastruttura.Autenticazione.IGetOperatoreAutenticato,
-                Modello.Autenticazione.GetOperatoreAutenticato>();
+            container.Register<global::Modello.Servizi.Infrastruttura.Autenticazione.IGetOperatoreAutenticato, Modello.Autenticazione.GetOperatoreAutenticato>();
 
-            container.Register<global::Modello.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaRadice,
-                Modello.Organigramma.GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato>();
+            container.Register<global::Modello.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaRadice, Modello.Organigramma.GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato>();
         }
     }
 }
