@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
 using Modello.Classi.Organigramma;
 
 namespace Modello.Servizi.Infrastruttura.Organigramma

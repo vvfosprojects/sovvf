@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
-using Modello.Classi.Organigramma;
 using Modello.Classi.Soccorso;
 
 namespace Modello.Servizi.Infrastruttura.GestioneSoccorso
