@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InViaggio.cs" company="CNVVF">
+// <copyright file="SulPosto.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,12 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Modello.Classi.Soccorso.StatiMezzo
+namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
     /// <summary>
-    ///   In viaggio verso il luogo del sinistro.
+    ///   Presente sul luogo del sinistro
     /// </summary>
-    public class InViaggio : IStatoMezzo
+    public class SulPosto : IStatoMezzo
     {
         /// <summary>
         ///   Indica se il mezzo è disponibile in questo stato

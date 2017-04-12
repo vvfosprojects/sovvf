@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InSede.cs" company="CNVVF">
+// <copyright file="InRientro.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,12 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Modello.Classi.Soccorso.StatiMezzo
+namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
     /// <summary>
-    ///   Presente presso la sede di servizio
+    ///   In viaggio verso la sede di servizio
     /// </summary>
-    public class InSede : IStatoMezzo
+    public class InRientro : IStatoMezzo
     {
         /// <summary>
         ///   Indica se il mezzo è disponibile in questo stato

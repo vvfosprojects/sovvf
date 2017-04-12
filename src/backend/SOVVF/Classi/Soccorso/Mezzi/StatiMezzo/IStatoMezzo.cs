@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InRientro.cs" company="CNVVF">
+// <copyright file="IStatoMezzo.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,23 +17,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
-namespace Modello.Classi.Soccorso.StatiMezzo
+namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
     /// <summary>
-    ///   In viaggio verso la sede di servizio
+    ///   Stati in cui un mezzo partecipante ad una richiesta può trovarsi
     /// </summary>
-    public class InRientro : IStatoMezzo
+    public interface IStatoMezzo
     {
         /// <summary>
         ///   Indica se il mezzo è disponibile in questo stato
         /// </summary>
-        public bool Disponibile
-        {
-            get
-            {
-                return true;
-            }
-        }
+        /// <remarks>
+        ///   Un mezzo disponibile può essere utilizzato per una composizione partenza, e ci si
+        ///   attende una partenza immediata verso il luogo del sinistro in seguito all'assegnazione.
+        /// </remarks>
+        bool Disponibile { get; }
     }
 }

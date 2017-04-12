@@ -17,9 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Modello.Classi.Soccorso.Risorse;
 
-namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneMezzo.CommandDTO
+namespace Modello.Classi.Soccorso.Risorse
 {
     /// <summary>
     ///   Servizio di selezione sulla <see cref="DisponibilitaMezzo" />. L'operazione effettuata da

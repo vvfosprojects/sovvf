@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using Modello.Classi.Soccorso.Risorse;
 using Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneMezzo.CommandDTO;
 using Modello.Servizi.Infrastruttura.Autenticazione;
 

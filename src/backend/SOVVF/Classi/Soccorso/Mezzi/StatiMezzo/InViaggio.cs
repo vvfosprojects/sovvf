@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ImpegnatoPerIstituto.cs" company="CNVVF">
+// <copyright file="InViaggio.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,12 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Modello.Classi.Soccorso.StatiMezzo
+namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
     /// <summary>
-    ///   Impegnato per motivi di Istituto
+    ///   In viaggio verso il luogo del sinistro.
     /// </summary>
-    public class ImpegnatoPerIstituto : IStatoMezzo
+    public class InViaggio : IStatoMezzo
     {
         /// <summary>
         ///   Indica se il mezzo è disponibile in questo stato
@@ -32,7 +32,7 @@ namespace Modello.Classi.Soccorso.StatiMezzo
         {
             get
             {
-                return true;
+                return false;
             }
         }
     }

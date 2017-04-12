@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SulPosto.cs" company="CNVVF">
+// <copyright file="InSede.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,12 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Modello.Classi.Soccorso.StatiMezzo
+namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
     /// <summary>
-    ///   Presente sul luogo del sinistro
+    ///   Presente presso la sede di servizio
     /// </summary>
-    public class SulPosto : IStatoMezzo
+    public class InSede : IStatoMezzo
     {
         /// <summary>
         ///   Indica se il mezzo è disponibile in questo stato
@@ -32,7 +32,7 @@ namespace Modello.Classi.Soccorso.StatiMezzo
         {
             get
             {
-                return false;
+                return true;
             }
         }
     }

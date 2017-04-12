@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Assegnato.cs" company="CNVVF">
+// <copyright file="FuoriServizio.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,12 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Modello.Classi.Soccorso.StatiMezzo
+namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
     /// <summary>
-    ///   Assegnato ad una Richiesta
+    ///   Fuori Servizio
     /// </summary>
-    public class Assegnato : IStatoMezzo
+    public class Fuoriservizio : IStatoMezzo
     {
         /// <summary>
         ///   Indica se il mezzo è disponibile in questo stato

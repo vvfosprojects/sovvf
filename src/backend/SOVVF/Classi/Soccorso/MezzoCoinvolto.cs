@@ -17,7 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Modello.Classi.Soccorso.StatiMezzo;
+using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace Modello.Classi.Soccorso
 {
