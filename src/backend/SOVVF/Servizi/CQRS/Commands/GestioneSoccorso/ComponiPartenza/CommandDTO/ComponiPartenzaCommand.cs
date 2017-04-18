@@ -33,9 +33,9 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.ComponiPartenza.Command
         public string IdRichiestaAssistenza { get; set; }
 
         /// <summary>
-        ///   E' l'attributo che identifica la collezione di <see cref="ComposizionePartenza" /> già
+        ///   E' l'attributo che identifica la collezione di <see cref="ComposizionePartenze" /> già
         ///   definita nelle classi del dominio
         /// </summary>
-        public IEnumerable<ComposizionePartenza> ComposizioniPartenza { get; set; }
+        public IEnumerable<ComposizionePartenze> ComposizioniPartenza { get; set; }
     }
 }

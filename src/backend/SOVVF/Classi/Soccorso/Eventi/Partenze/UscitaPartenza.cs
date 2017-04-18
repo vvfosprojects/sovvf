@@ -17,19 +17,35 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
+
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    ///   Modella l'uscita di una <see cref="ComposizionePartenza" />.
+    ///   Modella l'uscita di una <see cref="ComposizionePartenze" />.
     /// </summary>
     /// <remarks>
     ///   L'uscita consiste per esempio nel varcare il cancello di uscita del Comando Provinciale
     /// </remarks>
-    public class UscitaPartenza : Evento
+    public class UscitaPartenza : Evento, IPartenza
     {
         /// <summary>
         ///   E' l'identificativo del mezzo da cui è arrivato l'evento
         /// </summary>
         public string CodiceMezzo { get; set; }
+
+        string[] IPartenza.CodiciMezzo
+        {
+            get
+            {
+                return new string[] { this.CodiceMezzo };
+            }
+        }
+
+        IStatoMezzo IPartenza.GetStatoMezzo()
+        {
+            return new InViaggio();
+        }
     }
 }

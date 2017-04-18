@@ -17,15 +17,32 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
+
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    ///   Eventuale dirottamento in fase di rientro della <see cref="ComposizionePartenza"></see>
+    ///   Eventuale dirottamento in fase di rientro della <see cref="ComposizionePartenze"></see>
     ///   presso un'altra Richiesta di assistenza, piuttosto che rientrare in sede. (valido da dopo
     ///   PartenzaInRientro )
     /// </summary>
     /// <remarks>Lo sganciamento ha senso solo per <see cref="SoccorsoOrdinario"></see>.</remarks>
-    public class Subentro : Evento
+    public class Subentro : Evento, IPartenza
     {
+#warning Questa classe va implementata
+
+        string[] IPartenza.CodiciMezzo
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        IStatoMezzo IPartenza.GetStatoMezzo()
+        {
+            return new InViaggio();
+        }
     }
 }

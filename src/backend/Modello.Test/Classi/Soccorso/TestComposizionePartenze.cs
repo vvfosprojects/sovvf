@@ -26,17 +26,17 @@ using NUnit.Framework;
 namespace Modello.Test.Classi.Soccorso
 {
     /// <summary>
-    ///   Unit test relativa alla classe <see cref="ComposizionePartenza" />
+    ///   Unit test relativa alla classe <see cref="ComposizionePartenze" />
     /// </summary>
     [TestFixture]
-    public class TestComposizionePartenza
+    public class TestComposizionePartenze
     {
-        private ComposizionePartenza partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista;
+        private ComposizionePartenze partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista;
 
         [SetUp]
         public void CreaComposizionePartenzaStandard()
         {
-            this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista = new ComposizionePartenza()
+            this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista = new ComposizionePartenze()
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
@@ -143,7 +143,7 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaComposizionePartenzaAppenaCreataHaLAttributoComponentiNonNull()
         {
-            var cp = new ComposizionePartenza();
+            var cp = new ComposizionePartenze();
 
             var componenti = cp.Componenti;
 

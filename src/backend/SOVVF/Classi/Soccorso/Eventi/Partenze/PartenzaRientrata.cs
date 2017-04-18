@@ -17,19 +17,35 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
+
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    ///   Modella il rientro in sede di una <see cref="ComposizionePartenza" />.
+    ///   Modella il rientro in sede di una <see cref="ComposizionePartenze" />.
     /// </summary>
     /// <remarks>
     ///   Il rientro in sede consiste per esempio nel varcare il cancello di entrata del Comando Provinciale
     /// </remarks>
-    public class PartenzaRientrata : Evento
+    public class PartenzaRientrata : Evento, IPartenza
     {
         /// <summary>
         ///   E' l'identificativo del mezzo da cui è arrivato l'evento
         /// </summary>
         public string CodiceMezzo { get; set; }
+
+        string[] IPartenza.CodiciMezzo
+        {
+            get
+            {
+                return new string[] { this.CodiceMezzo };
+            }
+        }
+
+        IStatoMezzo IPartenza.GetStatoMezzo()
+        {
+            return new InSede();
+        }
     }
 }

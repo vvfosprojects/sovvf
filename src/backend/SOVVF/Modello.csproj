@@ -57,10 +57,12 @@
     <Compile Include="Classi\Soccorso\Eventi\AssegnazionePriorita.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Eccezioni\ComposizionePartenzaException.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Evento.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\IEvento.cs" />
     <Compile Include="Classi\Soccorso\Eventi\InizioPresaInCarico.cs" />
     <Compile Include="Classi\Soccorso\CapoPartenzaCoinvolto.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\Partenze\IPartenza.cs" />
     <Compile Include="Classi\Soccorso\Risorse\SelezioneRisorsa.cs" />
-    <Compile Include="Classi\Soccorso\Eventi\Partenze\ComposizionePartenza.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\Partenze\ComposizionePartenze.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\PartenzaRientrata.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\PartenzaInRientro.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\ComponentePartenza.cs" />
@@ -92,6 +94,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\CommandDTO\ComponiPartenzaCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\ComponiPartenzaCommandHandler.cs" />
+    <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiestePerSituazioneMezzi.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\QueryDTO\InfoUnitaOperativa.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\QueryDTO\SituazioneMezziQuery.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\ResultDTO\SituazioneMezzo.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\SituazioneMezziQueryHandler.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\ResultDTO\SituazioneMezziResult.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetNumeroSquadreSoccorsoOraInServizio.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetNumeroMezziSoccorsoOraInServizio.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative.cs" />

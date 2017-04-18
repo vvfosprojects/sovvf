@@ -17,10 +17,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
+
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    ///   Eventuale dirottamento della <see cref="ComposizionePartenza"></see> verso un'altra
+    ///   Eventuale dirottamento della <see cref="ComposizionePartenze"></see> verso un'altra
     ///   Richiesta di assistenza. (valido da dopo l'UscitaPartenza fino a PartenzaInRientro esclusa)
     /// </summary>
     /// <remarks>
@@ -28,7 +31,21 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
     ///   potrebbe mettere la Richiesta di assistenza da cui proviene in uno stato "sospeso" se
     ///   risultava essere l'unica partenza assegnata.
     /// </remarks>
-    public class Sganciamento : Evento
+    public class Sganciamento : Evento, IPartenza
     {
+#warning Questa classe va implementata
+
+        string[] IPartenza.CodiciMezzo
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        IStatoMezzo IPartenza.GetStatoMezzo()
+        {
+            return new InViaggio();
+        }
     }
 }
