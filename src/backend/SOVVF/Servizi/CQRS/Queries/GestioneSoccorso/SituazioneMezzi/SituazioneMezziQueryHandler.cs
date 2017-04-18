@@ -83,14 +83,13 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi
             }
 
             var richiesteDiAssistenza = this.getRichiestePerSituazioneMezzi.Get(listaCodiciUnitaOperative);
-            var eventiMarcati = richiesteDiAssistenza.SelectMany(r => r.Eventi.Select(e => new
+            var eventiConCodiceRichiesta = richiesteDiAssistenza.SelectMany(r => r.Eventi.Select(e => new
             {
                 CodiceRichiesta = r.Codice,
                 Evento = e
-            }))
-            .OrderByDescending(em => em.Evento.Istante);
+            }));
 
-            var eventiPartenzaMarcati = eventiMarcati
+            var eventiPartenza = eventiConCodiceRichiesta
                 .Where(em => em.Evento is IPartenza)
                 .Select(em => new
                 {
@@ -98,15 +97,30 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi
                     Evento = em.Evento as IPartenza
                 });
 
-            var codiciMezzo = eventiPartenzaMarcati.SelectMany(e => e.Evento.CodiciMezzo).Distinct();
+            var eventiConCodiceMezzo = eventiPartenza.SelectMany(
+                e => e.Evento.CodiciMezzo.Distinct(),
+                (evento, codiceMezzo) => new
+                {
+                    CodiceRichiesta = evento.CodiceRichiesta,
+                    Evento = evento.Evento,
+                    CodiceMezzo = codiceMezzo
+                });
 
-            foreach (var c in codiciMezzo)
+            var eventiPerCodiceMezzo = eventiConCodiceMezzo.GroupBy(e => e.CodiceMezzo);
+
+            return new SituazioneMezziResult()
             {
-                var eventoPiuRecente = eventiPartenzaMarcati.First(e => e.Evento.CodiciMezzo.Contains(c));
-                var stato = eventoPiuRecente.Evento.GetStatoMezzo();
-                var istante = eventoPiuRecente.Evento.Istante;
-                var codiceRichiestaAssistenza = eventoPiuRecente.CodiceRichiesta;
-            }
+                SituazioneMezzi =
+                    from gruppo in eventiPerCodiceMezzo
+                    let eventoPiuRecente = gruppo.OrderByDescending(e => e.Evento.Istante).First()
+                    select new SituazioneMezzo()
+                    {
+                        CodiceMezzo = gruppo.Key,
+                        CodiceRichiestaAssistenza = eventoPiuRecente.CodiceRichiesta,
+                        DataAggiornamento = eventoPiuRecente.Evento.Istante,
+                        StatoMezzo = eventoPiuRecente.Evento.GetStatoMezzo()
+                    }
+            };
         }
     }
 }
