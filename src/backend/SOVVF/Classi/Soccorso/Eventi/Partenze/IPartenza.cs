@@ -37,7 +37,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         string[] CodiciMezzo { get; }
 
         /// <summary>
-        ///   Restituisce lo stato che il mezzo assume a seguito del verifiarsi dell'evento
+        ///   Restituisce lo stato che il mezzo assume a seguito del verificarsi dell'evento
         /// </summary>
         /// <returns>Lo stato del mezzo</returns>
         IStatoMezzo GetStatoMezzo();
