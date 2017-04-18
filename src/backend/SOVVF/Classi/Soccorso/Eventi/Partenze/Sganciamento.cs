@@ -24,7 +24,8 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
     ///   Eventuale dirottamento della <see cref="ComposizionePartenze"></see> verso un'altra
-    ///   Richiesta di assistenza. (valido da dopo l'UscitaPartenza fino a PartenzaInRientro esclusa)
+    ///   Richiesta di assistenza. (valido da dopo la <see cref="UscitaPartenza" /> fino a
+    ///   <see cref="PartenzaInRientro" /> esclusa)
     /// </summary>
     /// <remarks>
     ///   Lo sganciamento ha senso solo per <see cref="SoccorsoOrdinario"></see>. Questo evento
@@ -33,7 +34,15 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
     /// </remarks>
     public class Sganciamento : Evento, IPartenza
     {
-#warning Questa classe va implementata
+        /// <summary>
+        ///   E' l'identificativo del mezzo a cui è associato l'evento
+        /// </summary>
+        public string CodiceMezzo { get; set; }
+
+        /// <summary>
+        ///   Il codice della richiesta verso cui si dirotta la partenza.
+        /// </summary>
+        public string CodiceRichiesta { get; set; }
 
         /// <summary>
         ///   Restituisce i codici dei mezzi coinvolti in questo evento

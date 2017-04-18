@@ -30,7 +30,15 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
     /// <remarks>Lo sganciamento ha senso solo per <see cref="SoccorsoOrdinario"></see>.</remarks>
     public class Subentro : Evento, IPartenza
     {
-#warning Questa classe va implementata
+        /// <summary>
+        ///   E' l'identificativo del mezzo a cui è associato l'evento
+        /// </summary>
+        public string CodiceMezzo { get; set; }
+
+        /// <summary>
+        ///   Il codice della richiesta verso cui si dirotta la partenza.
+        /// </summary>
+        public string CodiceRichiesta { get; set; }
 
         /// <summary>
         ///   Restituisce i codici dei mezzi coinvolti in questo evento

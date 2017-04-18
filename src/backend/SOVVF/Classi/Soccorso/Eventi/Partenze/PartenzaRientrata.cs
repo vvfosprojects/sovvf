@@ -31,7 +31,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
     public class PartenzaRientrata : Evento, IPartenza
     {
         /// <summary>
-        ///   E' l'identificativo del mezzo da cui è arrivato l'evento
+        ///   E' l'identificativo del mezzo a cui è associato l'evento
         /// </summary>
         public string CodiceMezzo { get; set; }
 
