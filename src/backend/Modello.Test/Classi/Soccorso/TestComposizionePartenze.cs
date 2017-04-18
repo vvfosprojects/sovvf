@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="TestComposizionePartenza.cs" company="CNVVF">
+// <copyright file="TestComposizionePartenze.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.

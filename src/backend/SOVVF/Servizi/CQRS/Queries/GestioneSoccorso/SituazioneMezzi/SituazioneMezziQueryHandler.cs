@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IndicatoriStatoSoccorsoQueryHandler.cs" company="CNVVF">
+// <copyright file="SituazioneMezziQueryHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,11 +18,13 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO;
 using Modello.Servizi.Infrastruttura.GestioneSoccorso;
+using Modello.Servizi.Infrastruttura.Organigramma;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi
 {
@@ -31,13 +33,27 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi
     /// </summary>
     public class SituazioneMezziQueryHandler : IQueryHandler<SituazioneMezziQuery, SituazioneMezziResult>
     {
+        /// <summary>
+        ///   Handler del servizio
+        /// </summary>
         private readonly IGetRichiestePerSituazioneMezzi getRichiestePerSituazioneMezzi;
+
+        /// <summary>
+        ///   Handler del servizio
+        /// </summary>
+        private readonly IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice;
 
         /// <summary>
         ///   Costruttore del servizio
         /// </summary>
-        public SituazioneMezziQueryHandler()
+        /// <param name="getRichiestePerSituazioneMezzi">Istanza del servizio <see cref="IGetRichiestePerSituazioneMezzi" /></param>
+        /// <param name="getUnitaOperativaPerCodice">Istanza del servizio <see cref="IGetUnitaOperativaPerCodice" /></param>
+        public SituazioneMezziQueryHandler(
+            IGetRichiestePerSituazioneMezzi getRichiestePerSituazioneMezzi,
+            IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice)
         {
+            this.getRichiestePerSituazioneMezzi = getRichiestePerSituazioneMezzi;
+            this.getUnitaOperativaPerCodice = getUnitaOperativaPerCodice;
         }
 
         /// <summary>
@@ -47,8 +63,27 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi
         /// <returns>Il DTO di uscita della query</returns>
         public SituazioneMezziResult Handle(SituazioneMezziQuery query)
         {
-            var richieste = getRichiestePerSituazioneMezzi.Get();
-            var eventiMarcati = richieste.SelectMany(r => r.Eventi.Select(e => new
+            var listaCodiciUnitaOperative = new HashSet<string>();
+            foreach (var uo in query.UnitaOperative)
+            {
+                if (uo.Ricorsivo)
+                {
+                    var nodo = this.getUnitaOperativaPerCodice.Get(uo.Codice);
+                    var nodi = nodo.GetSottoAlbero();
+
+                    foreach (var singoloNodo in nodi)
+                    {
+                        listaCodiciUnitaOperative.Add(singoloNodo.Codice);
+                    }
+                }
+                else
+                {
+                    listaCodiciUnitaOperative.Add(uo.Codice);
+                }
+            }
+
+            var richiesteDiAssistenza = this.getRichiestePerSituazioneMezzi.Get(listaCodiciUnitaOperative);
+            var eventiMarcati = richiesteDiAssistenza.SelectMany(r => r.Eventi.Select(e => new
             {
                 CodiceRichiesta = r.Codice,
                 Evento = e

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ComposizionePartenza.cs" company="CNVVF">
+// <copyright file="ComposizionePartenze.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -99,6 +99,9 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
             }
         }
 
+        /// <summary>
+        ///   Restituisce i codici dei mezzi coinvolti in questo evento
+        /// </summary>
         string[] IPartenza.CodiciMezzo
         {
             get
@@ -111,6 +114,10 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
             }
         }
 
+        /// <summary>
+        ///   Restituisce lo stato che il mezzo assume a seguito del verifiarsi dell'evento
+        /// </summary>
+        /// <returns>Lo stato del mezzo</returns>
         IStatoMezzo IPartenza.GetStatoMezzo()
         {
             return new Assegnato();

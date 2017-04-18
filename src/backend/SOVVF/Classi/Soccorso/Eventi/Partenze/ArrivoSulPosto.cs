@@ -35,6 +35,9 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// </summary>
         public string CodiceMezzo { get; set; }
 
+        /// <summary>
+        ///   Restituisce i codici dei mezzi coinvolti in questo evento
+        /// </summary>
         string[] IPartenza.CodiciMezzo
         {
             get
@@ -43,6 +46,10 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
             }
         }
 
+        /// <summary>
+        ///   Restituisce lo stato che il mezzo assume a seguito del verifiarsi dell'evento
+        /// </summary>
+        /// <returns>Lo stato del mezzo</returns>
         IStatoMezzo IPartenza.GetStatoMezzo()
         {
             return new SulPosto();
