@@ -123,7 +123,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi
                 {
                     CodiceMezzo = gruppo.Key,
                     CodiceRichiestaAssistenza = eventoPiuRecente.CodiceRichiesta,
-                    DataAggiornamento = eventoPiuRecente.Evento.Istante,
+                    IstanteAggiornamento = eventoPiuRecente.Evento.Istante,
                     StatoMezzo = eventoPiuRecente.Evento.GetStatoMezzo()
                 };
 
