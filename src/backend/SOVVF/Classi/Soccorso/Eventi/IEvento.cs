@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InRientro.cs" company="CNVVF">
+// <copyright file="IEvento.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,22 +17,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
+using System;
+
+namespace Modello.Classi.Soccorso.Eventi
 {
     /// <summary>
-    ///   In viaggio verso la sede di servizio
+    ///   Interfaccia implementata da tutti gli eventi di una richiesta di assistenza
     /// </summary>
-    public class InRientro : IStatoMezzo
+    public interface IEvento
     {
         /// <summary>
-        ///   Indica se il mezzo è disponibile in questo stato
+        ///   E' l'istante in cui si è verificato l'evento.
         /// </summary>
-        public bool Disponibile
-        {
-            get
-            {
-                return true;
-            }
-        }
+        string CodiceFonte { get; set; }
+
+        /// <summary>
+        ///   E' l'identificativo univoco della fonte informativa sull'evento, che ha anche la
+        ///   responsabilità di garantirne la veridicità. Può essere per esempio un operatore SO, un
+        ///   sensore, un altro sistema informativo, lo stesso SOVVF.
+        /// </summary>
+        DateTime Istante { get; set; }
     }
 }

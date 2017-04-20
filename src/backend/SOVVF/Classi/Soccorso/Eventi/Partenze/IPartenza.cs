@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Subentro.cs" company="CNVVF">
+// <copyright file="IPartenza.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,46 +18,28 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    ///   Eventuale dirottamento in fase di rientro della <see cref="ComposizionePartenze"></see>
-    ///   presso un'altra Richiesta di assistenza, piuttosto che rientrare in sede. (valido da dopo
-    ///   PartenzaInRientro )
+    ///   Indica che è un evento legato ad una partenza
     /// </summary>
-    /// <remarks>Lo sganciamento ha senso solo per <see cref="SoccorsoOrdinario"></see>.</remarks>
-    public class Subentro : Evento, IPartenza
+    public interface IPartenza : IEvento
     {
-        /// <summary>
-        ///   E' l'identificativo del mezzo a cui è associato l'evento
-        /// </summary>
-        public string CodiceMezzo { get; set; }
-
-        /// <summary>
-        ///   Il codice della richiesta verso cui si dirotta la partenza.
-        /// </summary>
-        public string CodiceRichiesta { get; set; }
-
         /// <summary>
         ///   Restituisce i codici dei mezzi coinvolti in questo evento
         /// </summary>
-        string[] IPartenza.CodiciMezzo
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        string[] CodiciMezzo { get; }
 
         /// <summary>
         ///   Restituisce lo stato che il mezzo assume a seguito del verificarsi dell'evento
         /// </summary>
         /// <returns>Lo stato del mezzo</returns>
-        IStatoMezzo IPartenza.GetStatoMezzo()
-        {
-            return new InViaggio();
-        }
+        IStatoMezzo GetStatoMezzo();
     }
 }

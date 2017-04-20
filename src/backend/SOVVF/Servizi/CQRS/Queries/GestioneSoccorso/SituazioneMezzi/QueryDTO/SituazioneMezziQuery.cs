@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InRientro.cs" company="CNVVF">
+// <copyright file="SituazioneMezziQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,22 +17,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
+using System.Collections.Generic;
+using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO;
+
+namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO
 {
     /// <summary>
-    ///   In viaggio verso la sede di servizio
+    ///   DTO di input della query
     /// </summary>
-    public class InRientro : IStatoMezzo
+    public class SituazioneMezziQuery : IQuery<SituazioneMezziResult>
     {
         /// <summary>
-        ///   Indica se il mezzo è disponibile in questo stato
+        ///   E' l'insieme dei nodi dell'organigramma coinvolti nel calcolo degli indicatori
         /// </summary>
-        public bool Disponibile
-        {
-            get
-            {
-                return true;
-            }
-        }
+        /// <remarks>
+        ///   Se UnitaOperative è un set vuoto allora il calcolo degli indicatori verrà effettuato in
+        ///   base ai privilegi assegnati all'utente autenticato
+        /// </remarks>
+        public ISet<InfoUnitaOperativa> UnitaOperative { get; set; }
     }
 }

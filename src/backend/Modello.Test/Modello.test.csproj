@@ -31,6 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.0.0\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Moq, Version=4.7.8.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.7.8\lib\net45\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.6.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -46,7 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classi\Organigramma\TestUnitaOperativa.cs" />
-    <Compile Include="Classi\Soccorso\TestComposizionePartenza.cs" />
+    <Compile Include="Classi\Soccorso\CQRS\Query\TestSituazioneMezzi.cs" />
+    <Compile Include="Classi\Soccorso\TestComposizionePartenze.cs" />
     <Compile Include="Classi\Soccorso\TestRichiestaAssistenza.cs" />
     <Compile Include="Classi\Soccorso\TestSquadra.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

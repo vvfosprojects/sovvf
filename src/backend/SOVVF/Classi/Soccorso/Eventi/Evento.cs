@@ -28,7 +28,7 @@ namespace Modello.Classi.Soccorso.Eventi
     ///   un sensore che individua una geo-localizzazione, ecc.). A seconda della natura del
     ///   particolare evento, esiste una classe concreta derivata da Evento, con gli attributi del caso.
     /// </summary>
-    public abstract class Evento
+    public abstract class Evento : IEvento
     {
         /// <summary>
         ///   E' l'istante in cui si è verificato l'evento.

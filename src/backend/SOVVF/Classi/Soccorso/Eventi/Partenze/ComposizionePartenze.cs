@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ComposizionePartenza.cs" company="CNVVF">
+// <copyright file="ComposizionePartenze.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Modello.Classi.Soccorso.Eventi.Eccezioni;
+using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
@@ -34,12 +35,12 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
     ///   soccorso. Valuteremo se i mezzi e le attrezzature possono essere ricondotti ad un'unica
     ///   categoria (risorsa strumentale).
     /// </remarks>
-    public class ComposizionePartenza : Evento
+    public class ComposizionePartenze : Evento, IPartenza
     {
         /// <summary>
         ///   Costruttore che inizializza l'attributo Componenti.
         /// </summary>
-        public ComposizionePartenza()
+        public ComposizionePartenze()
         {
             this.Componenti = new HashSet<ComponentePartenza>();
         }
@@ -88,7 +89,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         public ISet<ComponentePartenza> Componenti { get; set; }
 
         /// <summary>
-        ///   Restituisce il numero di componenti della <see cref="ComposizionePartenza" />
+        ///   Restituisce il numero di componenti della <see cref="ComposizionePartenze" />
         /// </summary>
         public int NumeroComponenti
         {
@@ -96,6 +97,30 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
             {
                 return this.Componenti.Count;
             }
+        }
+
+        /// <summary>
+        ///   Restituisce i codici dei mezzi coinvolti in questo evento
+        /// </summary>
+        string[] IPartenza.CodiciMezzo
+        {
+            get
+            {
+                return this.Componenti
+                    .Select(c => c.CodiceMezzo)
+                    .Where(cm => cm != null)
+                    .Distinct()
+                    .ToArray();
+            }
+        }
+
+        /// <summary>
+        ///   Restituisce lo stato che il mezzo assume a seguito del verificarsi dell'evento
+        /// </summary>
+        /// <returns>Lo stato del mezzo</returns>
+        IStatoMezzo IPartenza.GetStatoMezzo()
+        {
+            return new Assegnato();
         }
     }
 }

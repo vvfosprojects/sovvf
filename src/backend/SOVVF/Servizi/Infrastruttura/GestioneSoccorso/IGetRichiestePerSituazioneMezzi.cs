@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InRientro.cs" company="CNVVF">
+// <copyright file="IGetRichiestePerSituazioneMezzi.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,22 +17,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
+using System.Collections.Generic;
+using Modello.Classi.Soccorso;
+
+namespace Modello.Servizi.Infrastruttura.GestioneSoccorso
 {
     /// <summary>
-    ///   In viaggio verso la sede di servizio
+    ///   Servizio che restituisce l'elenco delle richieste di Assistenza utilizzate per il calcolo
+    ///   della situazione dei mezzi di soccorso
     /// </summary>
-    public class InRientro : IStatoMezzo
+    public interface IGetRichiestePerSituazioneMezzi
     {
         /// <summary>
-        ///   Indica se il mezzo è disponibile in questo stato
+        ///   Restituisce l'elenco delle Richieste di Assistenza
         /// </summary>
-        public bool Disponibile
-        {
-            get
-            {
-                return true;
-            }
-        }
+        /// <param name="codiciUnitaOperative">Elenco dei codici dell'Unità Operativa</param>
+        /// <returns>Elenco delle Richieste</returns>
+        IEnumerable<RichiestaAssistenza> Get(IEnumerable<string> codiciUnitaOperative);
     }
 }

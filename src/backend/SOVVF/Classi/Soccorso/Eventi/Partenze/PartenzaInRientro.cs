@@ -17,19 +17,42 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
+
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    ///   Modella il rientro dal luogo della richiesta di assistenza di una <see cref="ComposizionePartenza" />.
+    ///   Modella il rientro dal luogo della richiesta di assistenza di una partenza.
     /// </summary>
     /// <remarks>
     ///   Il "rientro" consiste per esempio nel lasciare il luogo della richiesta di assistenza
     /// </remarks>
-    public class PartenzaInRientro : Evento
+    public class PartenzaInRientro : Evento, IPartenza
     {
         /// <summary>
-        ///   E' l'identificativo del mezzo da cui è arrivato l'evento
+        ///   E' l'identificativo del mezzo a cui è associato l'evento
         /// </summary>
         public string CodiceMezzo { get; set; }
+
+        /// <summary>
+        ///   Restituisce i codici dei mezzi coinvolti in questo evento
+        /// </summary>
+        string[] IPartenza.CodiciMezzo
+        {
+            get
+            {
+                return new string[] { this.CodiceMezzo };
+            }
+        }
+
+        /// <summary>
+        ///   Restituisce lo stato che il mezzo assume a seguito del verificarsi dell'evento
+        /// </summary>
+        /// <returns>Lo stato del mezzo</returns>
+        IStatoMezzo IPartenza.GetStatoMezzo()
+        {
+            return new InRientro();
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InRientro.cs" company="CNVVF">
+// <copyright file="SituazioneMezziResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,22 +17,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
+using System.Collections.Generic;
+
+namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO
 {
     /// <summary>
-    ///   In viaggio verso la sede di servizio
+    ///   DTO di output della query
     /// </summary>
-    public class InRientro : IStatoMezzo
+    public class SituazioneMezziResult
     {
         /// <summary>
-        ///   Indica se il mezzo è disponibile in questo stato
+        ///   La situazione di tutti i mezzi
         /// </summary>
-        public bool Disponibile
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public IEnumerable<SituazioneMezzo> SituazioneMezzi { get; set; }
     }
 }
