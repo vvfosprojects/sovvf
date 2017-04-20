@@ -12,10 +12,10 @@ export class MezzoInServizioService {
             'M_34564',
             'APS',
             '34564',
-            'InSede',
+            'SulPosto',
             new Date(2016, 3, 4, 10, 10, 0),
             '13423',
-            false);
+            true);
     }
     
     public Get(): MezzoInServizio {

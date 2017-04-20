@@ -1,7 +1,5 @@
-import { DescStatoMap } from './desc-stato-map.class';
-
 export class MezzoInServizio {
-  private mapperDescStato = new DescStatoMap();
+  
 
   constructor(public Codice: string,
    public CodiceUnitaOperativa: string,
@@ -13,9 +11,4 @@ export class MezzoInServizio {
    public CodiceRichiestaAssistenza: string,
    public Disponibile: boolean
    ) {}
-
-   private getDescrizioneStato(codice: string): string {
-     return this.mapperDescStato.map(codice);
-   }
-
  }

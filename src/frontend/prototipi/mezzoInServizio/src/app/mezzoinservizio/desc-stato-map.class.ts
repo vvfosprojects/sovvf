@@ -5,6 +5,7 @@ export class DescStatoMap {
         this.dict = {};
         this.dict["InSede"] = "In sede";
         this.dict["InViaggio"] = "In viaggio";
+        this.dict["SulPosto"] = "Sul posto";
         ///qui tutti gli altri stati
     }
     public map(codiceStato: string): string {

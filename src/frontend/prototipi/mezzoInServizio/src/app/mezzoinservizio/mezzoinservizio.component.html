@@ -9,12 +9,19 @@
         <div class="col-md-1">
          <span class="fa-stack fa-3x">
             <i class="fa fa-truck fa-stack-1x"></i>
-            <i class="fa fa-circle-thin fa-stack-2x text-success"></i>
-        </span>
+            <i class="fa fa-circle-thin fa-stack-2x"
+              [ngClass]="{'text-success': fs.Disponibile, 'text-info': !fs.Disponibile}"></i> 
+         </span>
         </div>
         <div class="col-md-2">
           <div class="card-text">{{fs.Sigla}}</div>
-          <h5><span class="badge badge-success">{{fs.CodiceStato}}: Oggi 12:20</span></h5>
+      
+         <!-- <h5><span class="badge badge-success">{{fs.CodiceStato}}: Oggi 12:20</span></h5> -->
+         <h5><span class="badge"
+         [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede', 
+                     'badge-danger'  : fs.CodiceStato == 'InViaggio',
+                     'badge-warning' : fs.CodiceStato == 'SulPosto'}">{{getDescrizioneStato(fs.CodiceStato)}}: Oggi 12:20</span></h5>
+          <!--<h5><span class="badge badge-success">{{getDescrizioneStato(fs.CodiceStato)}} : Oggi 12:20</span></h5>-->
           <button type="button" class="btn btn-primary btn-sm">Rich. Ass.</button>
         </div>
         <div class="col-md-2">
@@ -24,5 +31,13 @@
         </div>
     </div>
   </div>
+
+  <button type="button" (click)="setDisponibile(true)" >Disponibile</button>
+  <button type="button" (click)="setDisponibile(false)" >Non Disponibile</button>
+  <br>
+  <br>
+  <button type="button" (click)="setCodiceStato('InViaggio')" >In Viaggio</button>
+  <button type="button" (click)="setCodiceStato('InSede')" >In Sede</button>
+  <button type="button" (click)="setCodiceStato('SulPosto')" >Sul Posto</button>
 </body>
 </html>
