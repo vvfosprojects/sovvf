@@ -78,14 +78,12 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             return richiestaConUnicoEventoDiAssegnazione;
         }
 
-        private SituazioneMezziQueryHandler CreaQueryConUnicoEventoDiComposizione(out SituazioneMezzo expected)
+        private SituazioneMezziQueryHandler CreaQuery(IEnumerable<RichiestaAssistenza> richieste)
         {
-            var richiesta = this.CreaRichiestaContenenteUnicoEventoDiComposizione(out expected);
-
             var mockGetRichiestePerSituazioneMezzi = new Mock<IGetRichiestePerSituazioneMezzi>();
             mockGetRichiestePerSituazioneMezzi
                 .Setup(m => m.Get(It.IsAny<IEnumerable<string>>()))
-                .Returns(new List<RichiestaAssistenza>() { richiesta });
+                .Returns(richieste);
 
             var mockGetUnitaOperativaPerCodice = new Mock<IGetUnitaOperativaPerCodice>();
             mockGetUnitaOperativaPerCodice
@@ -103,7 +101,9 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
         public void UnaUnicaRichiestaContenenteUnicoEventoDiComposizioneRestituisceUnaSolaSituazioneMezzo()
         {
             SituazioneMezzo expected;
-            var query = this.CreaQueryConUnicoEventoDiComposizione(out expected);
+            var richiesta = this.CreaRichiestaContenenteUnicoEventoDiComposizione(out expected);
+            var richieste = new List<RichiestaAssistenza>() { richiesta };
+            var query = this.CreaQuery(richieste);
 
             var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
 
@@ -114,15 +114,121 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
         public void UnaUnicaRichiestaContenenteUnicoEventoDiComposizioneRestituisceGiustaSituazioneMezzo()
         {
             SituazioneMezzo expected;
-            var query = this.CreaQueryConUnicoEventoDiComposizione(out expected);
+            var richiesta = this.CreaRichiestaContenenteUnicoEventoDiComposizione(out expected);
+            var richieste = new List<RichiestaAssistenza>() { richiesta };
+            var query = this.CreaQuery(richieste);
 
             var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
-            var situazione = resultDto.SituazioneMezzi.First();
+            var situazione = resultDto.SituazioneMezzi.Single(sm => sm.CodiceMezzo == "M1");
 
             Assert.That(situazione.CodiceMezzo, Is.EqualTo(expected.CodiceMezzo));
             Assert.That(situazione.CodiceRichiestaAssistenza, Is.EqualTo(expected.CodiceRichiestaAssistenza));
             Assert.That(situazione.IstanteAggiornamento, Is.EqualTo(expected.IstanteAggiornamento));
-            Assert.That(situazione.StatoMezzo, Is.TypeOf<Assegnato>());
+            Assert.That(situazione.StatoMezzo, Is.TypeOf(expected.StatoMezzo.GetType()));
+        }
+
+        private RichiestaAssistenza Crea_Richiesta_Con_M1_e_M2_assegnati_e_M1_in_viaggio_e_sul_posto(out IEnumerable<SituazioneMezzo> expected)
+        {
+            var componentePartenza1 = new ComponentePartenza()
+            {
+                CodiceFiscale = "CF1",
+                CodiceMezzo = "M1"
+            };
+
+            var componentePartenza2 = new ComponentePartenza()
+            {
+                CodiceFiscale = "CF2",
+                CodiceMezzo = "M2"
+            };
+
+            var istanteEvento1 = DateTime.Now.AddMinutes(-10);
+            var eventoComposizione = new ComposizionePartenze()
+            {
+                Componenti = new HashSet<ComponentePartenza>() { componentePartenza1, componentePartenza2 },
+                Istante = istanteEvento1
+            };
+
+            var istanteEvento2 = DateTime.Now.AddMinutes(-7);
+            var eventoUscita = new UscitaPartenza()
+            {
+                CodiceMezzo = "M1",
+                Istante = istanteEvento2
+            };
+
+            var istanteEvento3 = DateTime.Now.AddMinutes(-4);
+            var eventoSulPosto = new ArrivoSulPosto()
+            {
+                CodiceMezzo = "M1",
+                Istante = istanteEvento3
+            };
+
+            var richiesta = new RichiestaAssistenza()
+            {
+                Codice = "R1",
+                Eventi = new List<Evento>()
+                {
+                    eventoComposizione,
+                    eventoUscita,
+                    eventoSulPosto
+                }
+            };
+
+            expected = new SituazioneMezzo[] {
+                new SituazioneMezzo()
+                {
+                    CodiceMezzo = "M1",
+                    IstanteAggiornamento = istanteEvento3,
+                    StatoMezzo = new SulPosto(),
+                    CodiceRichiestaAssistenza = "R1"
+                },
+                new SituazioneMezzo()
+                {
+                    CodiceMezzo = "M2",
+                    IstanteAggiornamento = istanteEvento1,
+                    StatoMezzo = new Assegnato(),
+                    CodiceRichiestaAssistenza = "R1"
+                }
+            };
+
+            return richiesta;
+        }
+
+        [Test]
+        public void Richiesta_Con_M1_e_M2_assegnati_e_M1_in_viaggio_e_sul_posto_restituisce_2_situazioni()
+        {
+            IEnumerable<SituazioneMezzo> expected;
+            var richiesta = this.Crea_Richiesta_Con_M1_e_M2_assegnati_e_M1_in_viaggio_e_sul_posto(out expected);
+            var richieste = new List<RichiestaAssistenza>() { richiesta };
+            var query = this.CreaQuery(richieste);
+
+            var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
+
+            Assert.That(resultDto.SituazioneMezzi.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void Richiesta_Con_M1_e_M2_assegnati_e_M1_in_viaggio_e_sul_posto_restituisce_le_giuste_situazioni_mezzo()
+        {
+            IEnumerable<SituazioneMezzo> expected;
+            var richiesta = this.Crea_Richiesta_Con_M1_e_M2_assegnati_e_M1_in_viaggio_e_sul_posto(out expected);
+            var richieste = new List<RichiestaAssistenza>() { richiesta };
+            var query = this.CreaQuery(richieste);
+
+            var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
+            var situazioneM1 = resultDto.SituazioneMezzi.Single(sm => sm.CodiceMezzo == "M1");
+            var situazioneM2 = resultDto.SituazioneMezzi.Single(sm => sm.CodiceMezzo == "M2");
+            var expectedM1 = expected.Single(sm => sm.CodiceMezzo == "M1");
+            var expectedM2 = expected.Single(sm => sm.CodiceMezzo == "M2");
+
+            Assert.That(situazioneM1.CodiceMezzo, Is.EqualTo(expectedM1.CodiceMezzo));
+            Assert.That(situazioneM1.CodiceRichiestaAssistenza, Is.EqualTo(expectedM1.CodiceRichiestaAssistenza));
+            Assert.That(situazioneM1.IstanteAggiornamento, Is.EqualTo(expectedM1.IstanteAggiornamento));
+            Assert.That(situazioneM1.StatoMezzo, Is.TypeOf(expectedM1.StatoMezzo.GetType()));
+
+            Assert.That(situazioneM2.CodiceMezzo, Is.EqualTo(expectedM2.CodiceMezzo));
+            Assert.That(situazioneM2.CodiceRichiestaAssistenza, Is.EqualTo(expectedM2.CodiceRichiestaAssistenza));
+            Assert.That(situazioneM2.IstanteAggiornamento, Is.EqualTo(expectedM2.IstanteAggiornamento));
+            Assert.That(situazioneM2.StatoMezzo, Is.TypeOf(expectedM2.StatoMezzo.GetType()));
         }
     }
 }
