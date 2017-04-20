@@ -43,8 +43,7 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             Assert.That(resultDto.SituazioneMezzi, Is.Empty);
         }
 
-        [Test]
-        public void RestituisceUnMezzoAssegnatoConUnicaRichiestaContenenteUnicoEventoDiComposizione()
+        private RichiestaAssistenza CreaRichiestaContenenteUnicoEventoDiComposizione(out SituazioneMezzo expected)
         {
             var componentePartenza = new ComponentePartenza()
             {
@@ -68,10 +67,25 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
                 }
             };
 
+            expected = new SituazioneMezzo()
+            {
+                CodiceMezzo = "M1",
+                IstanteAggiornamento = istanteEvento,
+                StatoMezzo = new Assegnato(),
+                CodiceRichiestaAssistenza = "R1"
+            };
+
+            return richiestaConUnicoEventoDiAssegnazione;
+        }
+
+        private SituazioneMezziQueryHandler CreaQueryConUnicoEventoDiComposizione(out SituazioneMezzo expected)
+        {
+            var richiesta = this.CreaRichiestaContenenteUnicoEventoDiComposizione(out expected);
+
             var mockGetRichiestePerSituazioneMezzi = new Mock<IGetRichiestePerSituazioneMezzi>();
             mockGetRichiestePerSituazioneMezzi
                 .Setup(m => m.Get(It.IsAny<IEnumerable<string>>()))
-                .Returns(new List<RichiestaAssistenza>() { richiestaConUnicoEventoDiAssegnazione });
+                .Returns(new List<RichiestaAssistenza>() { richiesta });
 
             var mockGetUnitaOperativaPerCodice = new Mock<IGetUnitaOperativaPerCodice>();
             mockGetUnitaOperativaPerCodice
@@ -82,19 +96,33 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
                 mockGetRichiestePerSituazioneMezzi.Object,
                 mockGetUnitaOperativaPerCodice.Object);
 
+            return query;
+        }
+
+        [Test]
+        public void UnaUnicaRichiestaContenenteUnicoEventoDiComposizioneRestituisceUnaSolaSituazioneMezzo()
+        {
+            SituazioneMezzo expected;
+            var query = this.CreaQueryConUnicoEventoDiComposizione(out expected);
+
             var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
 
             Assert.That(resultDto.SituazioneMezzi.Count(), Is.EqualTo(1));
-            var actual = resultDto.SituazioneMezzi.First();
-            var expected = new SituazioneMezzo()
-            {
-                CodiceMezzo = "M1",
-                IstanteAggiornamento = istanteEvento,
-                StatoMezzo = new Assegnato(),
-                CodiceRichiestaAssistenza = "R1"
-            };
+        }
 
-            Assert.That(actual, Is.EqualTo(expected));
+        [Test]
+        public void UnaUnicaRichiestaContenenteUnicoEventoDiComposizioneRestituisceGiustaSituazioneMezzo()
+        {
+            SituazioneMezzo expected;
+            var query = this.CreaQueryConUnicoEventoDiComposizione(out expected);
+
+            var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
+            var situazione = resultDto.SituazioneMezzi.First();
+
+            Assert.That(situazione.CodiceMezzo, Is.EqualTo(expected.CodiceMezzo));
+            Assert.That(situazione.CodiceRichiestaAssistenza, Is.EqualTo(expected.CodiceRichiestaAssistenza));
+            Assert.That(situazione.IstanteAggiornamento, Is.EqualTo(expected.IstanteAggiornamento));
+            Assert.That(situazione.StatoMezzo, Is.TypeOf<Assegnato>());
         }
     }
 }
