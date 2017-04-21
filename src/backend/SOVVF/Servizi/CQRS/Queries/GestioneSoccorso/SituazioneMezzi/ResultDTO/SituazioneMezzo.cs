@@ -47,13 +47,18 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDT
         /// </summary>
         public DateTime IstanteAggiornamento { get; set; }
 
+        /// <summary>
+        ///   Rappresentazione dell'oggetto in forma testuale
+        /// </summary>
+        /// <returns>La rappresentazione</returns>
         public override string ToString()
         {
-            return string.Format("{0} {1} {2} {3}",
-                CodiceMezzo,
-                StatoMezzo,
-                CodiceRichiestaAssistenza,
-                IstanteAggiornamento);
+            return string.Format(
+                "{0} {1} {2} {3}",
+                this.CodiceMezzo,
+                this.StatoMezzo,
+                this.CodiceRichiestaAssistenza,
+                this.IstanteAggiornamento);
         }
     }
 }
