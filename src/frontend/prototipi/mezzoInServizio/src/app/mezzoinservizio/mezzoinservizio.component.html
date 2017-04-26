@@ -9,24 +9,44 @@
         <div class="col-md-1">
          <span class="fa-stack fa-3x">
             <i class="fa fa-truck fa-stack-1x"></i>
-            <i class="fa fa-circle-thin fa-stack-2x"
-              [ngClass]="{'text-success': fs.Disponibile, 'text-info': !fs.Disponibile}"></i> 
-         </span>
-        </div>
-        <div class="col-md-2">
-          <div class="card-text">{{fs.Sigla}}</div>
-      
+            <i class="fa fa-circle-thin fa-stack-2x text-success"></i>
+          <div *ngIf="fs.Disponibile">
+           <i class="text-success"></i>
+          </div>
+          <div *ngIf="!fs.Disponibile">
+           <i class="fa fa-ban fa-stack-2x text-info"></i>
+          </div>
+        </span>     
+        </div> 
+        <div class="col-md-3">
+          <h5><div class="badge"
+          [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede', 
+                     'badge-danger'  : fs.CodiceStato == 'InViaggio',
+                     'badge-warning' : fs.CodiceStato == 'SulPosto'}">{{fs.Sigla}} </div></h5>
          <!-- <h5><span class="badge badge-success">{{fs.CodiceStato}}: Oggi 12:20</span></h5> -->
          <h5><span class="badge"
          [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede', 
                      'badge-danger'  : fs.CodiceStato == 'InViaggio',
-                     'badge-warning' : fs.CodiceStato == 'SulPosto'}">{{getDescrizioneStato(fs.CodiceStato)}}: Oggi 12:20</span></h5>
-          <!--<h5><span class="badge badge-success">{{getDescrizioneStato(fs.CodiceStato)}} : Oggi 12:20</span></h5>-->
+                     'badge-warning' : fs.CodiceStato == 'SulPosto'}">{{getDescrizioneStato(fs.CodiceStato)}}</span> 
+         <span class="badge"
+         [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede', 
+                     'badge-danger'  : fs.CodiceStato == 'InViaggio',
+                     'badge-warning' : fs.CodiceStato == 'SulPosto'}">{{fs.DataOra | friendlyDate}}</span> 
+         <span> {{fs.DataOra | friendlyHour}}</span>
+         </h5>
+     <!--<h5><span class="badge badge-success">{{getDescrizioneStato(fs.CodiceStato)}} : Oggi 12:20</span></h5>-->
           <button type="button" class="btn btn-primary btn-sm">Rich. Ass.</button>
         </div>
         <div class="col-md-2">
-          <div class="card-text">{{fs.Genere}} - {{fs.Targa}}</div>
-          <div class="card-text">{{fs.CodiceUnitaOperativa}}</div>
+        <h5><span class="badge"
+         [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede', 
+                     'badge-danger'  : fs.CodiceStato == 'InViaggio',
+                     'badge-warning' : fs.CodiceStato == 'SulPosto'}">{{fs.Genere}}</span> 
+          <span class="card-text">{{fs.Targa}}</span>
+          <span class="badge"
+         [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede', 
+                     'badge-danger'  : fs.CodiceStato == 'InViaggio',
+                     'badge-warning' : fs.CodiceStato == 'SulPosto'}">{{fs.CodiceUnitaOperativa}}</span></h5> 
         </div>
         </div>
     </div>

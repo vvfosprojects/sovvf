@@ -5,11 +5,15 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { MezzoinservizioComponent } from './mezzoinservizio/mezzoinservizio.component';
+import { FriendlyDatePipe } from './shared/pipes/friendly-date.pipe';
+import { FriendlyHourPipe } from './shared/pipes/friendly-hour.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MezzoinservizioComponent
+    MezzoinservizioComponent,
+    FriendlyDatePipe,
+    FriendlyHourPipe
   ],
   imports: [
     BrowserModule,
