@@ -1,123 +1,664 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Modello.Classi.Geo.Cerchio">
-    <Position X="0.75" Y="6.75" Width="1.5" />
+  <Class Name="Modello.Classi.Geo.Cerchio" Collapsed="true">
+    <Position X="0.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ABAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ABAAAAAABAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Classi\Geo\Cerchio.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Modello.Classi.Geo.Geolocalizzazione">
-    <Position X="3" Y="5.5" Width="1.5" />
+  <Class Name="Modello.Classi.Geo.Geolocalizzazione" Collapsed="true">
+    <Position X="3" Y="6.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Classi\Geo\Geolocalizzazione.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Modello.Classi.Geo.Poligonale">
-    <Position X="3" Y="6.75" Width="1.5" />
+  <Class Name="Modello.Classi.Geo.Poligonale" Collapsed="true">
+    <Position X="3" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
       <FileName>Classi\Geo\Poligonale.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Modello.Classi.Geo.Punto">
-    <Position X="5.25" Y="6.75" Width="1.5" />
+  <Class Name="Modello.Classi.Geo.Punto" Collapsed="true">
+    <Position X="5.25" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>BgAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Classi\Geo\Punto.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Modello.Classi.Soccorso.Eventi.AssegnazionePriorita">
-    <Position X="0.5" Y="2.75" Width="1.5" />
+  <Class Name="Modello.Classi.Organigramma.UnitaOperativa" Collapsed="true">
+    <Position X="33.5" Y="6.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Classi\Soccorso\Eventi\AssegnazionePriorita.cs</FileName>
+      <HashCode>AAAQAAAAABAQAAAEgAAAAAAAAAAAAIAAAAEIAAEAAAA=</HashCode>
+      <FileName>Classi\Organigramma\UnitaOperativa.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Modello.Classi.Soccorso.Eventi.ComposizionePartenza">
-    <Position X="7.5" Y="2.75" Width="2.5" />
+  <Class Name="Modello.Classi.Soccorso.CapoPartenzaCoinvolto" Collapsed="true">
+    <Position X="30" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Classi\Soccorso\Eventi\ComposizionePartenza.cs</FileName>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\CapoPartenzaCoinvolto.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Modello.Classi.Soccorso.Eventi.Evento">
-    <Position X="4.25" Y="0.5" Width="1.5" />
+  <Class Name="Modello.Classi.Soccorso.MezzoCoinvolto" Collapsed="true">
+    <Position X="28.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Classi\Soccorso\Eventi\Evento.cs</FileName>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\MezzoCoinvolto.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Modello.Classi.Soccorso.Eventi.PresaInCarico" Collapsed="true">
-    <Position X="5" Y="2.75" Width="1.5" />
+  <Class Name="Modello.Classi.Soccorso.RichiestaAssistenza" Collapsed="true">
+    <Position X="31.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Classi\Soccorso\Eventi\PresaInCarico.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Modello.Classi.Soccorso.Eventi.Segnalazioni.Segnalazione">
-    <Position X="2.75" Y="2.75" Width="1.5" />
-    <InheritanceLine Type="Modello.Classi.Soccorso.Eventi.Evento" FixedToPoint="true">
-      <Path>
-        <Point X="5" Y="1.796" />
-        <Point X="5" Y="2.375" />
-        <Point X="3.625" Y="2.375" />
-        <Point X="3.625" Y="2.75" />
-      </Path>
-    </InheritanceLine>
-    <TypeIdentifier>
-      <HashCode>AAAAAACAABAAAAAAAAQAAAAAAAAAAAAQAAAAACAABAA=</HashCode>
-      <FileName>Classi\Soccorso\Eventi\Segnalazioni\Segnalazione.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Modello.Classi.Soccorso.Eventi.Segnalazioni.Telefonata">
-    <Position X="5.5" Y="3.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAIAAAAQAAAAAAAAAQAACIAAIAAAA=</HashCode>
-      <FileName>Classi\Soccorso\Eventi\Segnalazioni\Telefonata.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Modello.Classi.Soccorso.RichiestaAssistenza">
-    <Position X="11" Y="1.5" Width="2.75" />
-    <Compartments>
-      <Compartment Name="Nested Types" Collapsed="false" />
-    </Compartments>
-    <NestedTypes>
-      <Enum Name="Modello.Classi.Soccorso.RichiestaAssistenza.Priorita">
-        <TypeIdentifier>
-          <NewMemberFileName>Classi\Soccorso\RichiestaAssistenza.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-    </NestedTypes>
-    <TypeIdentifier>
-      <HashCode>AAAAAEAAABAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAKEAAABAAQAAAAAQAwAAAAgAAAAQAABAAAAAAAAA=</HashCode>
       <FileName>Classi\Soccorso\RichiestaAssistenza.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Modello.Classi.Soccorso.SchedaContatto">
-    <Position X="11.5" Y="6" Width="1.5" />
+  <Class Name="Modello.Classi.Soccorso.SchedaContatto" Collapsed="true">
+    <Position X="33.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Classi\Soccorso\SchedaContatto.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Modello.Classi.Soccorso.Eventi.Componente">
-    <Position X="8" Y="4.5" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Nested Types" Collapsed="false" />
-    </Compartments>
-    <NestedTypes>
-      <Enum Name="Modello.Classi.Soccorso.Eventi.Componente.Ruolo">
-        <TypeIdentifier>
-          <NewMemberFileName>Classi\Soccorso\Eventi\Componente.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-    </NestedTypes>
+  <Class Name="Modello.Classi.Soccorso.Eventi.AssegnazionePriorita" Collapsed="true">
+    <Position X="21.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAEAAAAAAAAIAAAAAABAABAAAAAAAAAAA=</HashCode>
-      <FileName>Classi\Soccorso\Eventi\Componente.cs</FileName>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\AssegnazionePriorita.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Evento" Collapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Evento.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.FinePresaInCarico" Collapsed="true">
+    <Position X="3.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\FinePresaInCarico.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.InizioPresaInCarico" Collapsed="true">
+    <Position X="10.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\InizioPresaInCarico.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Eccezioni.ComposizionePartenzaException" Collapsed="true">
+    <Position X="35.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Eccezioni\ComposizionePartenzaException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Partenze.ArrivoSulPosto" Collapsed="true">
+    <Position X="17.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAoAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Partenze\ArrivoSulPosto.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Partenze.ComponentePartenza" Collapsed="true">
+    <Position X="8.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Partenze\ComponentePartenza.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Partenze.ComposizionePartenze" Collapsed="true">
+    <Position X="19.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAAAAAAAAgAAAAAACAgAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Partenze\ComposizionePartenze.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Partenze.PartenzaInRientro" Collapsed="true">
+    <Position X="24" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAoAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Partenze\PartenzaInRientro.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Partenze.PartenzaRientrata" Collapsed="true">
+    <Position X="1.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAoAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Partenze\PartenzaRientrata.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Partenze.Sganciamento" Collapsed="true">
+    <Position X="6" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAgAAAAAAAAoAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Partenze\Sganciamento.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Partenze.Subentro" Collapsed="true">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAgAAAAAAAAoAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Partenze\Subentro.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Partenze.UscitaPartenza" Collapsed="true">
+    <Position X="12.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAoAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Partenze\UscitaPartenza.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Segnalazioni.Segnalazione" Collapsed="true">
+    <Position X="15" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAABAAAAAAAAQAAgAAAAABAAAQAAAAACAABAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Segnalazioni\Segnalazione.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Eventi.Segnalazioni.Telefonata" Collapsed="true">
+    <Position X="15" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAQAAAAAAAAAQAACIAAIAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Segnalazioni\Telefonata.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Mezzi.DisponibilitaMezzo" Collapsed="true">
+    <Position X="37" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAIAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Mezzi\DisponibilitaMezzo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Mezzi.StatiMezzo.Assegnato" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Mezzi\StatiMezzo\Assegnato.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Mezzi.StatiMezzo.Fuoriservizio" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Mezzi\StatiMezzo\FuoriServizio.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Mezzi.StatiMezzo.ImpegnatoPerIstituto" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Mezzi\StatiMezzo\ImpegnatoPerIstituto.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Mezzi.StatiMezzo.InRientro" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Mezzi\StatiMezzo\InRientro.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Mezzi.StatiMezzo.InSede" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Mezzi\StatiMezzo\InSede.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Mezzi.StatiMezzo.InViaggio" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="37" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Mezzi\StatiMezzo\InViaggio.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Mezzi.StatiMezzo.SulPosto" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Mezzi\StatiMezzo\SulPosto.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Risorse.SelezioneRisorsa" Collapsed="true">
+    <Position X="31.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAIAA=</HashCode>
+      <FileName>Classi\Soccorso\Risorse\SelezioneRisorsa.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Squadre.Componente" Collapsed="true">
+    <Position X="8.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAgAAAAAAAAAAAAIABAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Squadre\Componente.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Squadre.DisponibilitaSquadra" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAGAAAAAgAACAAAAAAAAAAgAAAAGAABAgAAAAAI=</HashCode>
+      <FileName>Classi\Soccorso\Squadre\DisponibilitaSquadra.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Squadre.Emergenza" Collapsed="true">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Squadre\Emergenza.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Squadre.SezioneOperativa" Collapsed="true">
+    <Position X="0.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Squadre\SezioneOperativa.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Squadre.SoccorsoOrdinario" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Squadre\SoccorsoOrdinario.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Classi.Soccorso.Squadre.Vigilanza" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Squadre\Vigilanza.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Commands.GestioneSoccorso.ComponiPartenza.CommandDTO.ComponiPartenzaCommand" Collapsed="true">
+    <Position X="31.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\CommandDTO\ComponiPartenzaCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Commands.GestioneSoccorso.ComponiPartenza.ComponiPartenzaCommandHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAAAIAAAAAAAAAAAQ=</HashCode>
+      <FileName>Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\ComponiPartenzaCommandHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaMezzo.CommandDTO.DeselezionaMezzoCommand" Collapsed="true">
+    <Position X="37" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaMezzo\CommandDTO\DeselezionaMezzoCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaMezzo.DeselezionaMezzoCommandHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAIAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaMezzo\DeselezionaMezzoCommandHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaSquadra.CommandDTO.DeselezionaSquadraCommand" Collapsed="true">
+    <Position X="28.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaSquadra\CommandDTO\DeselezionaSquadraCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaSquadra.DeselezionaSquadraCommandHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAIAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaSquadra\DeselezionaSquadraCommandHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneMezzo.CommandDTO.SelezionaMezzoCommand" Collapsed="true">
+    <Position X="35.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Commands\GestioneSoccorso\SelezioneMezzo\CommandDTO\SelezionaMezzoCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneMezzo.SelezionaMezzoCommandHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="37" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAQAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Commands\GestioneSoccorso\SelezioneMezzo\SelezionaMezzoCommandHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra.CommandDTO.SelezionaSquadraCommand" Collapsed="true">
+    <Position X="26.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\CommandDTO\SelezionaSquadraCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra.SelezionaSquadraCommandHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAIAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\SelezionaSquadraCommandHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi.DisponibilitaMezziQueryHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\DisponibilitaMezziQueryHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi.DisponibilitaMezziQuery" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\QueryDTO\DisponibilitaMezziQuery.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi.DisponibilitaMezziResult" Collapsed="true">
+    <Position X="35.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\ResultDTO\DisponibilitaMezziResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi.ResultDTO.MezzoDisponibile" Collapsed="true">
+    <Position X="30" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAIAAAAAAAAAAAEBAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\ResultDTO\MezzoDisponibile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi.DTO.SelezioneMezzo" Collapsed="true">
+    <Position X="30" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAIAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaMezzi\ResultDTO\SelezioneMezzo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre.DisponibilitaSquadreQueryHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\DisponibilitaSquadreQueryHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre.DisponibilitaSquadreQuery" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\QueryDTO\DisponibilitaSquadreQuery.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre.DisponibilitaSquadreResult" Collapsed="true">
+    <Position X="30" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\ResultDTO\DisponibilitaSquadreResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre.ResultDTO.Membro" Collapsed="true">
+    <Position X="26.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAgAAAAEAAAAAAABAAAAAAAAAABAACAAAEAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\ResultDTO\Membro.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre.ResultDTO.SelezioneSquadra" Collapsed="true">
+    <Position X="33.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAIAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\ResultDTO\SelezioneSquadra.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaSquadre.ResultDTO.SquadraDisponibile" Collapsed="true">
+    <Position X="30" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAACAAAAAAAAAAgAAAAAEAAAIAAABAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\DisponibilitaSquadre\ResultDTO\SquadraDisponibile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.IndicatoriStatoSoccorsoQueryHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAACBAAAAACAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\IndicatoriStatoSoccorsoQueryHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.QueryDTO.IndicatoriStatoSoccorsoQuery" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="37" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\QueryDTO\IndicatoriStatoSoccorsoQuery.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.QueryDTO.InfoUnitaOperativa" Collapsed="true">
+    <Position X="31.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAgAAAAgAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\QueryDTO\InfoUnitaOperativa.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.ResultDTO.IndicatoriStatoSoccorsoResult" Collapsed="true">
+    <Position X="28.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAACAAAAAAAEAEQAAAACEiAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\ResultDTO\IndicatoriStatoSoccorsoResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO.InfoUnitaOperativa" Collapsed="true">
+    <Position X="30" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAgAAAAgAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\QueryDTO\InfoUnitaOperativa.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO.SituazioneMezziQuery" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\QueryDTO\SituazioneMezziQuery.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO.SituazioneMezziResult" Collapsed="true">
+    <Position X="26.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\ResultDTO\SituazioneMezziResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO.SituazioneMezzo" Collapsed="true">
+    <Position X="28.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAASAAAAAAAAAAAAAIAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\ResultDTO\SituazioneMezzo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.SituazioneMezziQueryHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="37" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\SituazioneMezziQueryHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Servizi.Infrastruttura.Organigramma.Bindings" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\Infrastruttura\Organigramma\Bindings.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Modello.Servizi.Infrastruttura.Organigramma.GetUnitaOperativaPerCodice" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Servizi\Infrastruttura\Organigramma\GetUnitaOperativaPerCodice.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="Modello.Classi.Soccorso.Eventi.IEvento" Collapsed="true">
+    <Position X="0.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\IEvento.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Classi.Soccorso.Eventi.Partenze.IPartenza" Collapsed="true">
+    <Position X="0.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Eventi\Partenze\IPartenza.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Classi.Soccorso.Mezzi.StatiMezzo.IStatoMezzo" Collapsed="true">
+    <Position X="35.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classi\Soccorso\Mezzi\StatiMezzo\IStatoMezzo.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Classi.Soccorso.Risorse.ITestAndSetSelezioneDisponibilitaMezzo" Collapsed="true">
+    <Position X="28.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Classi\Soccorso\Risorse\ITestAndSetSelezioneDisponibilitaMezzo.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaMezzo.CommandDTO.ITestAndSetDeselezioneDisponibilitaMezzo" Collapsed="true">
+    <Position X="37" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaMezzo\CommandDTO\ITestAndSetDeselezioneDisponibilitaMezzo.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaSquadra.CommandDTO.ITestAndSetDeselezioneDisponibilitaSquadra" Collapsed="true">
+    <Position X="26.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Servizi\CQRS\Commands\GestioneSoccorso\DeselezionaSquadra\CommandDTO\ITestAndSetDeselezioneDisponibilitaSquadra.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra.CommandDTO.ITestAndSetSelezioneDisponibilitaSquadra" Collapsed="true">
+    <Position X="30" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Servizi\CQRS\Commands\GestioneSoccorso\SelezioneSquadra\CommandDTO\ITestAndSetSelezioneDisponibilitaSquadra.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Servizi.CQRS.Commands.ICommandHandler&lt;TCommand&gt;" Collapsed="true">
+    <Position X="26.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Commands\ICommandHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Servizi.CQRS.Queries.IQueryHandler&lt;TQuery, TResult&gt;" Collapsed="true">
+    <Position X="31.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\IQueryHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Servizi.CQRS.Queries.IQuery&lt;TResult&gt;" Collapsed="true">
+    <Position X="30" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\CQRS\Queries\IQueryHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Servizi.Infrastruttura.Autenticazione.IGetOperatoreAutenticato" Collapsed="true">
+    <Position X="31.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\Infrastruttura\Autenticazione\IGetOperatoreAutenticato.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Servizi.Infrastruttura.GestioneSoccorso.IGetNumeroMezziSoccorsoOraInServizio" Collapsed="true">
+    <Position X="28.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\Infrastruttura\GestioneSoccorso\IGetNumeroMezziSoccorsoOraInServizio.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Servizi.Infrastruttura.GestioneSoccorso.IGetNumeroSquadreSoccorsoOraInServizio" Collapsed="true">
+    <Position X="30" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\Infrastruttura\GestioneSoccorso\IGetNumeroSquadreSoccorsoOraInServizio.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaAssistenzaById" Collapsed="true">
+    <Position X="33.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\Infrastruttura\GestioneSoccorso\IGetRichiestaAssistenzaById.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative" Collapsed="true">
+    <Position X="35.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\Infrastruttura\GestioneSoccorso\IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestePerSituazioneMezzi" Collapsed="true">
+    <Position X="37" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\Infrastruttura\GestioneSoccorso\IGetRichiestePerSituazioneMezzi.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza" Collapsed="true">
+    <Position X="33.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\Infrastruttura\GestioneSoccorso\ISaveRichiestaAssistenza.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice" Collapsed="true">
+    <Position X="26.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\Infrastruttura\Organigramma\IGetUnitaOperativaPerCodice.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Modello.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaRadice" Collapsed="true">
+    <Position X="28.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servizi\Infrastruttura\Organigramma\IGetUnitaOperativaRadice.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
