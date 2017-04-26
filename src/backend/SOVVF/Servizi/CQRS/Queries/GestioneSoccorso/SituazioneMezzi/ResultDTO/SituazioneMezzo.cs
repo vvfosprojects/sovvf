@@ -47,34 +47,18 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDT
         /// </summary>
         public DateTime IstanteAggiornamento { get; set; }
 
-        public override int GetHashCode()
-        {
-            return CodiceMezzo.GetHashCode() * 2 +
-                StatoMezzo.GetType().GetHashCode() * 5 +
-                CodiceRichiestaAssistenza.GetHashCode() * 3 +
-                IstanteAggiornamento.GetHashCode() * 4;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (!(obj is SituazioneMezzo))
-                return false;
-
-            var other = (SituazioneMezzo)obj;
-
-            return this.CodiceMezzo == other.CodiceMezzo &&
-                this.CodiceRichiestaAssistenza == other.CodiceRichiestaAssistenza &&
-                this.IstanteAggiornamento == other.IstanteAggiornamento &&
-                this.StatoMezzo.GetType() == other.StatoMezzo.GetType();
-        }
-
+        /// <summary>
+        ///   Rappresentazione dell'oggetto in forma testuale
+        /// </summary>
+        /// <returns>La rappresentazione</returns>
         public override string ToString()
         {
-            return string.Format("{0} {1} {2} {3}",
-                CodiceMezzo,
-                StatoMezzo,
-                CodiceRichiestaAssistenza,
-                IstanteAggiornamento);
+            return string.Format(
+                "{0} {1} {2} {3}",
+                this.CodiceMezzo,
+                this.StatoMezzo,
+                this.CodiceRichiestaAssistenza,
+                this.IstanteAggiornamento);
         }
     }
 }
