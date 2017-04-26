@@ -128,6 +128,67 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             Assert.That(situazioneM2.StatoMezzo, Is.TypeOf(expectedM2.StatoMezzo.GetType()));
         }
 
+        /// <summary>
+        /// </summary>
+        [Test]
+        public void Due_Richieste_Con_4_Mezzi_Assegnati_restituisce_4_situazioni()
+        {
+            IEnumerable<SituazioneMezzo> expected;
+            var richiesta1 = this.Crea_Richiesta_Con_M1_e_M2_assegnati_e_M1_in_viaggio_e_sul_posto(out expected);
+            var richiesta2 = this.Crea_Richiesta_Con_M3_e_M4_assegnati_e_M3_sul_posto_e_in_viaggio(out expected);
+            var richieste = new List<RichiestaAssistenza>() { richiesta1, richiesta2 };
+            var query = this.CreaQuery(richieste);
+
+            var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
+
+            Assert.That(resultDto.SituazioneMezzi.Count(), Is.EqualTo(4));
+        }
+
+        [Test]
+        public void Richiesta_Con_M1_M2_M3_M4_assegnati_e_M1_M3_in_viaggio_e_M2_M4_sul_posto_restituisce_le_giuste_situazioni_mezzo()
+        {
+            IEnumerable<SituazioneMezzo> expected1;
+            IEnumerable<SituazioneMezzo> expected2;
+            var richiesta1 = this.Crea_Richiesta_Con_M1_e_M2_assegnati_e_M1_in_viaggio_e_sul_posto(out expected1);
+            var richiesta2 = this.Crea_Richiesta_Con_M3_e_M4_assegnati_e_M3_sul_posto_e_in_viaggio(out expected2);
+            var richieste = new List<RichiestaAssistenza>() { richiesta1, richiesta2 };
+            var query = this.CreaQuery(richieste);
+
+            var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
+            var situazioneM1 = resultDto.SituazioneMezzi.Single(sm => sm.CodiceMezzo == "M1");
+            var situazioneM2 = resultDto.SituazioneMezzi.Single(sm => sm.CodiceMezzo == "M2");
+            var situazioneM3 = resultDto.SituazioneMezzi.Single(sm => sm.CodiceMezzo == "M3");
+            var situazioneM4 = resultDto.SituazioneMezzi.Single(sm => sm.CodiceMezzo == "M4");
+            var expectedM1 = expected1.Single(sm => sm.CodiceMezzo == "M1");
+            var expectedM2 = expected1.Single(sm => sm.CodiceMezzo == "M2");
+            var expectedM3 = expected2.Single(sm => sm.CodiceMezzo == "M3");
+            var expectedM4 = expected2.Single(sm => sm.CodiceMezzo == "M4");
+
+            Assert.That(situazioneM1.CodiceMezzo, Is.EqualTo(expectedM1.CodiceMezzo));
+            Assert.That(situazioneM1.CodiceRichiestaAssistenza, Is.EqualTo(expectedM1.CodiceRichiestaAssistenza));
+            Assert.That(situazioneM1.IstanteAggiornamento, Is.EqualTo(expectedM1.IstanteAggiornamento));
+            Assert.That(situazioneM1.StatoMezzo, Is.TypeOf(expectedM1.StatoMezzo.GetType()));
+
+            Assert.That(situazioneM2.CodiceMezzo, Is.EqualTo(expectedM2.CodiceMezzo));
+            Assert.That(situazioneM2.CodiceRichiestaAssistenza, Is.EqualTo(expectedM2.CodiceRichiestaAssistenza));
+            Assert.That(situazioneM2.IstanteAggiornamento, Is.EqualTo(expectedM2.IstanteAggiornamento));
+            Assert.That(situazioneM2.StatoMezzo, Is.TypeOf(expectedM2.StatoMezzo.GetType()));
+
+            Assert.That(situazioneM3.CodiceMezzo, Is.EqualTo(expectedM3.CodiceMezzo));
+            Assert.That(situazioneM3.CodiceRichiestaAssistenza, Is.EqualTo(expectedM3.CodiceRichiestaAssistenza));
+            Assert.That(situazioneM3.IstanteAggiornamento, Is.EqualTo(expectedM3.IstanteAggiornamento));
+            Assert.That(situazioneM3.StatoMezzo, Is.TypeOf(expectedM3.StatoMezzo.GetType()));
+
+            Assert.That(situazioneM4.CodiceMezzo, Is.EqualTo(expectedM4.CodiceMezzo));
+            Assert.That(situazioneM4.CodiceRichiestaAssistenza, Is.EqualTo(expectedM4.CodiceRichiestaAssistenza));
+            Assert.That(situazioneM4.IstanteAggiornamento, Is.EqualTo(expectedM4.IstanteAggiornamento));
+            Assert.That(situazioneM4.StatoMezzo, Is.TypeOf(expectedM4.StatoMezzo.GetType()));
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="expected"></param>
+        /// <returns></returns>
         private RichiestaAssistenza CreaRichiestaContenenteUnicoEventoDiComposizione(out SituazioneMezzo expected)
         {
             var componentePartenza = new ComponentePartenza()
@@ -243,6 +304,188 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
                     IstanteAggiornamento = istanteEvento1,
                     StatoMezzo = new Assegnato(),
                     CodiceRichiestaAssistenza = "R1"
+                }
+            };
+
+            return richiesta;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="expected"></param>
+        /// <returns></returns>
+        private RichiestaAssistenza Crea_Richiesta_Con_M3_e_M4_assegnati_e_M3_sul_posto_e_in_viaggio(out IEnumerable<SituazioneMezzo> expected)
+        {
+            var componentePartenza1 = new ComponentePartenza()
+            {
+                CodiceFiscale = "CF3",
+                CodiceMezzo = "M3"
+            };
+
+            var componentePartenza2 = new ComponentePartenza()
+            {
+                CodiceFiscale = "CF4",
+                CodiceMezzo = "M4"
+            };
+
+            var istanteEvento1 = DateTime.Now.AddMinutes(-10);
+            var eventoComposizione = new ComposizionePartenze()
+            {
+                Componenti = new HashSet<ComponentePartenza>() { componentePartenza1, componentePartenza2 },
+                Istante = istanteEvento1
+            };
+
+            var istanteEvento2 = DateTime.Now.AddMinutes(-7);
+            var eventoUscita = new UscitaPartenza()
+            {
+                CodiceMezzo = "M4",
+                Istante = istanteEvento2
+            };
+
+            var istanteEvento3 = DateTime.Now.AddMinutes(-4);
+            var eventoSulPosto = new ArrivoSulPosto()
+            {
+                CodiceMezzo = "M4",
+                Istante = istanteEvento3
+            };
+
+            var richiesta = new RichiestaAssistenza()
+            {
+                Codice = "R2",
+                Eventi = new List<Evento>()
+                {
+                    eventoComposizione,
+                    eventoUscita,
+                    eventoSulPosto
+                }
+            };
+
+            expected = new SituazioneMezzo[]
+            {
+                new SituazioneMezzo()
+                {
+                    CodiceMezzo = "M4",
+                    IstanteAggiornamento = istanteEvento3,
+                    StatoMezzo = new SulPosto(),
+                    CodiceRichiestaAssistenza = "R2"
+                },
+                new SituazioneMezzo()
+                {
+                    CodiceMezzo = "M3",
+                    IstanteAggiornamento = istanteEvento1,
+                    StatoMezzo = new Assegnato(),
+                    CodiceRichiestaAssistenza = "R2"
+                }
+            };
+
+            return richiesta;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="expected"></param>
+        /// <returns></returns>
+        private RichiestaAssistenza Crea_Richiesta_Con_M3_e_M4_assegnati_e_M4_in_sede_e_M3_in_rientro(out IEnumerable<SituazioneMezzo> expected)
+        {
+            var componentePartenza1 = new ComponentePartenza()
+            {
+                CodiceFiscale = "CF3",
+                CodiceMezzo = "M3"
+            };
+
+            var componentePartenza2 = new ComponentePartenza()
+            {
+                CodiceFiscale = "CF4",
+                CodiceMezzo = "M4"
+            };
+
+            var istanteEventoAssegnazione = DateTime.Now.AddMinutes(-10);
+            var eventoComposizione = new ComposizionePartenze()
+            {
+                Componenti = new HashSet<ComponentePartenza>() { componentePartenza1, componentePartenza2 },
+                Istante = istanteEventoAssegnazione
+            };
+
+            var istanteEventoUscitaM3 = DateTime.Now.AddMinutes(-7);
+            var eventoUscitaM3 = new UscitaPartenza()
+            {
+                CodiceMezzo = "M3",
+                Istante = istanteEventoUscitaM3
+            };
+
+            var istanteSulPostoM3 = DateTime.Now.AddMinutes(-4);
+            var eventoSulPostoM3 = new ArrivoSulPosto()
+            {
+                CodiceMezzo = "M3",
+                Istante = istanteSulPostoM3
+            };
+
+            var istanteInRientroM3 = DateTime.Now.AddMinutes(-4);
+            var eventoInRientroM3 = new ArrivoSulPosto()
+            {
+                CodiceMezzo = "M3",
+                Istante = istanteInRientroM3
+            };
+
+            var istanteEventoUscitaM4 = DateTime.Now.AddMinutes(-7);
+            var eventoUscitaM4 = new UscitaPartenza()
+            {
+                CodiceMezzo = "M4",
+                Istante = istanteEventoUscitaM4
+            };
+
+            var istanteSulPostoM4 = DateTime.Now.AddMinutes(-4);
+            var eventoSulPostoM4 = new ArrivoSulPosto()
+            {
+                CodiceMezzo = "M4",
+                Istante = istanteSulPostoM4
+            };
+
+            var istanteInRientroM4 = DateTime.Now.AddMinutes(-4);
+            var eventoInRientroM4 = new PartenzaInRientro()
+            {
+                CodiceMezzo = "M4",
+                Istante = istanteInRientroM4
+            };
+
+            var istanteRientratoM4 = DateTime.Now.AddMinutes(-4);
+            var eventoRientratoM4 = new PartenzaRientrata()
+            {
+                CodiceMezzo = "M4",
+                Istante = istanteRientratoM4
+            };
+
+            var richiesta = new RichiestaAssistenza()
+            {
+                Codice = "R2",
+                Eventi = new List<Evento>()
+                {
+                    eventoComposizione,
+                    eventoUscitaM3,
+                    eventoSulPostoM3,
+                    eventoInRientroM3,
+                    eventoUscitaM4,
+                    eventoSulPostoM4,
+                    eventoInRientroM4,
+                    eventoRientratoM4
+                }
+            };
+
+            expected = new SituazioneMezzo[]
+            {
+                new SituazioneMezzo()
+                {
+                    CodiceMezzo = "M3",
+                    IstanteAggiornamento = istanteSulPostoM3,
+                    StatoMezzo = new InRientro(),
+                    CodiceRichiestaAssistenza = "R2"
+                },
+                new SituazioneMezzo()
+                {
+                    CodiceMezzo = "M4",
+                    IstanteAggiornamento = istanteRientratoM4,
+                    StatoMezzo = new InSede(),
+                    CodiceRichiestaAssistenza = "R2"
                 }
             };
 
