@@ -67,7 +67,7 @@ export class CompositoreService {
    * @param squadra La squadra da aggiungere
    * @param mezzo Il mezzo in partenza al quale la squadra si aggiunge
    */
-  public addSquadraAMezzo(squadra: Squadra, mezzo: MezzoInPartenza): void {
-    mezzo.addSquadra(squadra);
+  public addSquadraAMezzo(squadra: Squadra, mezzoInPartenza: MezzoInPartenza): void {
+    mezzoInPartenza.addSquadra(squadra);
   }
 }

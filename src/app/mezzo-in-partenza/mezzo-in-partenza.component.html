@@ -26,13 +26,13 @@
       <div class="row">
         <div class="col-md-3" *ngFor="let c of componenti">
           <div>
-            <i class="fa fa-2x fa-user"></i>
+            <i class="fa fa-lg fa-user"></i>
             <app-tag-capopartenza *ngIf="c.capoPartenza"></app-tag-capopartenza>
             <app-tag-autista *ngIf="c.autista"></app-tag-autista>
           </div>
           <h6 title="{{ c.nominativo }}">{{ c.nominativo | truncate:18 }}</h6>
         </div>
-        <div class="well text-muted col-md-3"><i class="fa fa-2x fa-plus-square-o"></i></div>
+        <div class="well text-muted col-md-3"><i class="fa fa-lg fa-plus-square-o"></i></div>
       </div>
     </div>
   </div>

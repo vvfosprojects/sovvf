@@ -12,4 +12,11 @@ export class ComponenteInPartenza {
     constructor(public componente: ComponenteSquadra) {
         componente.inPartenza = true;
     }
+
+    /**
+     * Restituisce il nominativo del componente in partenza
+     */
+    get nominativo(): string {
+        return this.componente.nominativo;
+    }
 }
