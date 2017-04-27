@@ -70,4 +70,21 @@ export class CompositoreService {
   public addSquadraAMezzo(squadra: Squadra, mezzoInPartenza: MezzoInPartenza): void {
     mezzoInPartenza.addSquadra(squadra);
   }
+
+  /**
+   * Aggiunge un componente ad un mezzo in partenza
+   * @param squadra La squadra da aggiungere
+   * @param mezzo Il mezzo in partenza al quale la squadra si aggiunge
+   */
+  public addComponenteAMezzo(componente: ComponenteSquadra, mezzoInPartenza: MezzoInPartenza): void {
+    // se il componente è già nel mezzo, non fa nulla
+    if (mezzoInPartenza.esisteComponente(componente.codiceFiscale))
+      return;
+
+    // se il componente è già in altri mezzi, lo sottrae (in questo caso si tratta al netto di uno spostamento tra mezzi in partenza)
+    
+
+    // agisci!
+    mezzoInPartenza.addComponente(componente);
+  }
 }

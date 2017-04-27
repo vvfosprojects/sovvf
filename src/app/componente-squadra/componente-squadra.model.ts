@@ -49,7 +49,22 @@ export class ComponenteSquadra {
         return this._inPartenza;
     }
 
+    //Restituisce il nominativo esteso del componente
     public get nominativoEsteso() {
         return this.nominativo + ' (' + this.codiceFiscale + ')';
+    }
+
+    public askIfYouCanBeDroppedOn(target: any): boolean {
+        if ('canYouAcceptComponente' in target) {
+            return target.canYouAcceptComponente(this);
+        }
+
+        return false;
+    }
+
+    public dropOn(target: any) {
+        if (!('canYouAcceptComponente' in target) || !target.canYouAcceptComponente(this))
+            return;
+        target.acceptComponente(this);
     }
 }

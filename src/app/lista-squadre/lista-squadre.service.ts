@@ -11,31 +11,31 @@ export class ListaSquadreService {
     this._squadre = [
       new Squadra("Gialla", "EUR", [
         new ComponenteSquadra("Mario Grisi", "MRRGRS94T66H3332", true, false),
-        new ComponenteSquadra("Michele Genta", "MGHYTT76T55R435E", false, true),
-        new ComponenteSquadra("Antonio Falchini Moletti", "OOOGGG78Y66T454F", false, false),
-        new ComponenteSquadra("Tonia Annamaria Facci", "LLLOOO98I98G656V", false, false),
-        new ComponenteSquadra("Ugo Fantozzi", "KJHGFD45T62N343D", false, false)
+        new ComponenteSquadra("Michele Genta", "GNTMHL76T55R435E", false, true),
+        new ComponenteSquadra("Antonio Falchini Moletti", "MLTANT78Y66T454F", false, false),
+        new ComponenteSquadra("Tonia Annamaria Facci", "FACTON98I98G656V", false, false),
+        new ComponenteSquadra("Ugo Fantozzi", "FANUGO45T62N343D", false, false)
       ]),
       new Squadra("Verde", "EUR", [
-        new ComponenteSquadra("Duccio Corona", "MRRGRS94T66H3332", true, false),
-        new ComponenteSquadra("Valentina Pezzoni", "GSPVGD76T55R435E", false, true),
-        new ComponenteSquadra("Ciro Amato Ambrosio", "OPASGD78Y66T454F", false, true),
-        new ComponenteSquadra("Sebastiano Carocci", "POAGSH98I98G656V", false, false),
+        new ComponenteSquadra("Duccio Corona", "CORDUC94T66H3332", true, false),
+        new ComponenteSquadra("Valentina Pezzoni", "PEZVAL76T55R435E", false, true),
+        new ComponenteSquadra("Ciro Amato Ambrosio", "AMBCIR78Y66T454F", false, true),
+        new ComponenteSquadra("Sebastiano Carocci", "CARSEB98I98G656V", false, false),
         //new ComponenteSquadra("Celestino Bigi", "OPDFAG45T62N343D", false, false)
       ]),
       new Squadra("Rossa", "Trastevere", [
-        new ComponenteSquadra("Ottavio Turco", "LKDTWH94T66H3332", true, false),
-        new ComponenteSquadra("Daniele Mirra", "MKDFFH76T55R435E", false, true),
+        new ComponenteSquadra("Ottavio Turco", "TUROTT94T66H3332", true, false),
+        new ComponenteSquadra("Daniele Mirra", "MIRDAN76T55R435E", false, true),
         new ComponenteSquadra("Mino Antonio Rettangolo", "OIDHFJ78Y66T454F", false, false),
-        new ComponenteSquadra("Osvaldo Capozzi", "MKJFIR78I98G656V", false, false),
-        new ComponenteSquadra("Sigismondo Ferrante", "LKAQRW45T62N343D", false, false)
+        new ComponenteSquadra("Osvaldo Capozzi", "CAPOSV78I98G656V", false, false),
+        new ComponenteSquadra("Sigismondo Ferrante", "FERSIG45T62N343D", false, false)
       ]),
       new Squadra("Blu", "Tuscolano", [
-        new ComponenteSquadra("Marina Carrisi", "MARCAR94T66H3332", true, false),
-        new ComponenteSquadra("Mario Baldi", "MARBAL76T55R435E", false, true),
-        new ComponenteSquadra("Giuseppe Bordoni", "GIUBOR78Y66T454F", false, false),
-        new ComponenteSquadra("Giangiacomo Ginelli", "GIAGIN78I98G656V", false, true),
-        new ComponenteSquadra("Mirko Ferraro", "MKKTGT78T62N343D", false, false)
+        new ComponenteSquadra("Marina Carrisi", "CARMAR94T66H3332", true, false),
+        new ComponenteSquadra("Mario Baldi", "BALMAR76T55R435E", false, true),
+        new ComponenteSquadra("Giuseppe Bordoni", "BORGIU78Y66T454F", false, false),
+        new ComponenteSquadra("Giangiacomo Ginelli", "GINGIA78I98G656V", false, true),
+        new ComponenteSquadra("Mirko Ferraro", "FARMIR78T62N343D", false, false)
       ])
     ];
   }

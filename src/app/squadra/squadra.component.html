@@ -17,7 +17,8 @@
   <div *ngIf="espansa">
     <ul class="list-group">
       <li *ngFor="let c of squadra.componenti" class="list-group-item" [class.list-group-item-warning]="!c.inPartenza && c.impegnato"
-        [class.list-group-item-info]="c.inPartenza">
+        [class.list-group-item-info]="c.inPartenza"
+        canDrag [dragging]="c">
         <app-componente-squadra [componente]="c"></app-componente-squadra>
       </li>
     </ul>

@@ -15,15 +15,15 @@ export class MezzoInPartenzaComponent implements OnInit {
   }
 
   public get nominativoEstesoAutista() {
-    return this.mezzo.autista.componente.nominativoEsteso;
+    return this.mezzo.getAutista.componente.nominativoEsteso;
   }
 
   public get nominativoAutista() {
-    return this.mezzo.autista.componente.nominativo;
+    return this.mezzo.getAutista.componente.nominativo;
   }
 
   public get componenti() {
-    return this.mezzo.componenti;
+    return this.mezzo.getComponentiNonAutisti;
   }
 
   public get esisteAutista() {
