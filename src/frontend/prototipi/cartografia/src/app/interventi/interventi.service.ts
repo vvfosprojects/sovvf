@@ -19,4 +19,8 @@ export class InterventiService {
   public getInterventi(): Observable<Intervento[]> {
     return Observable.of(this.interventi);
   }
+
+  public eliminaIntervento(codice: string): void {
+    this.interventi = this.interventi.filter(i => i.codice != codice);
+  }
 }
