@@ -7,57 +7,72 @@
     <div class="container">
       <div class="row">
         <div class="col-md-1">
-         <span class="fa-stack fa-3x">
+        </div>
+        <div class="col-md-1">
+          <h5>
+            <div class="badge badge-info">{{fs.Sigla}} </div>
+          </h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-1 h5">
+          <div class="badge badge-info">{{fs.Genere}}</div>
+          <br/>
+          <div class="card-text">{{fs.Targa}}</div>
+        </div>
+        <div class="col-md-1 p-0">
+          <span class="fa-stack fa-3x">
             <i class="fa fa-truck fa-stack-1x"></i>
-            <i class="fa fa-circle-thin fa-stack-2x text-success"></i>
+            <i class="fa fa-circle-o fa-stack-2x text-success"></i>
           <div *ngIf="fs.Disponibile">
            <i class="text-success"></i>
           </div>
           <div *ngIf="!fs.Disponibile">
-           <i class="fa fa-ban fa-stack-2x text-info"></i>
+           <i class="fa fa-ban fa-stack-2x text-danger"></i>
           </div>
-        </span>     
-        </div> 
-        <div class="col-md-3">
-          <h5><div class="badge"
-          [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede', 
-                     'badge-danger'  : fs.CodiceStato == 'InViaggio',
-                     'badge-warning' : fs.CodiceStato == 'SulPosto'}">{{fs.Sigla}} </div></h5>
-         <!-- <h5><span class="badge badge-success">{{fs.CodiceStato}}: Oggi 12:20</span></h5> -->
-         <h5><span class="badge"
-         [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede', 
-                     'badge-danger'  : fs.CodiceStato == 'InViaggio',
-                     'badge-warning' : fs.CodiceStato == 'SulPosto'}">{{getDescrizioneStato(fs.CodiceStato)}}</span> 
-         <span class="badge"
-         [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede', 
-                     'badge-danger'  : fs.CodiceStato == 'InViaggio',
-                     'badge-warning' : fs.CodiceStato == 'SulPosto'}">{{fs.DataOra | friendlyDate}}</span> 
-         <span> {{fs.DataOra | friendlyHour}}</span>
-         </h5>
-     <!--<h5><span class="badge badge-success">{{getDescrizioneStato(fs.CodiceStato)}} : Oggi 12:20</span></h5>-->
-          <button type="button" class="btn btn-primary btn-sm">Rich. Ass.</button>
+        </span>
         </div>
-        <div class="col-md-2">
-        <h5><span class="badge"
-         [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede', 
+        <div class="col-md-3 h5">
+          <div class="badge" [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede', 
                      'badge-danger'  : fs.CodiceStato == 'InViaggio',
-                     'badge-warning' : fs.CodiceStato == 'SulPosto'}">{{fs.Genere}}</span> 
-          <span class="card-text">{{fs.Targa}}</span>
-          <span class="badge"
-         [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede', 
+                     'badge-warning' : fs.CodiceStato == 'SulPosto',
+                     'badge-primary' : fs.CodiceStato == 'InRientro',
+                     'badge-default' : fs.CodiceStato == 'FuoriServizio'}">{{getDescrizioneStato(fs.CodiceStato)}}
+          </div><br/>
+          <span class="badge" [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede', 
                      'badge-danger'  : fs.CodiceStato == 'InViaggio',
-                     'badge-warning' : fs.CodiceStato == 'SulPosto'}">{{fs.CodiceUnitaOperativa}}</span></h5> 
+                     'badge-warning' : fs.CodiceStato == 'SulPosto',
+                     'badge-primary' : fs.CodiceStato == 'InRientro',
+                     'badge-default' : fs.CodiceStato == 'FuoriServizio'}">{{fs.DataOra | friendlyDate}}</span>
+          <span> {{fs.DataOra | friendlyHour}}</span>
+          <br> <br>
+          <div *ngIf="(fs.CodiceStato == 'InViaggio' || fs.CodiceStato == 'SulPosto') && (fs.Disponibile)">
+            <button type="button" class="btn btn-primary btn-sm">Rich. Ass.</button>
+          </div>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-md-1">
         </div>
+        <div class="col-md-1">
+          <h5>
+            <div class="badge badge-info">{{fs.CodiceUnitaOperativa}} </div>
+          </h5>
+        </div>
+
+      </div>
     </div>
   </div>
 
-  <button type="button" (click)="setDisponibile(true)" >Disponibile</button>
-  <button type="button" (click)="setDisponibile(false)" >Non Disponibile</button>
+  <button type="button" (click)="setDisponibile(true)">Disponibile</button>
+  <button type="button" (click)="setDisponibile(false)">Non Disponibile</button>
   <br>
   <br>
-  <button type="button" (click)="setCodiceStato('InViaggio')" >In Viaggio</button>
-  <button type="button" (click)="setCodiceStato('InSede')" >In Sede</button>
-  <button type="button" (click)="setCodiceStato('SulPosto')" >Sul Posto</button>
+  <button type="button" (click)="setCodiceStato('InSede')">In Sede</button>
+  <button type="button" (click)="setCodiceStato('InViaggio')">In Viaggio</button>
+  <button type="button" (click)="setCodiceStato('SulPosto')">Sul Posto</button>
+  <button type="button" (click)="setCodiceStato('InRientro')">In Rientro</button>
+  <button type="button" (click)="setCodiceStato('FuoriServizio')">FuoriServizio</button>
 </body>
+
 </html>
