@@ -21,6 +21,6 @@ export class InterventiService {
   }
 
   public eliminaIntervento(codice: string): void {
-    this.interventi = this.interventi.filter(i => i.codice != codice);
+    this.interventi = this.interventi.filter(i => i.codice !== codice);
   }
 }
