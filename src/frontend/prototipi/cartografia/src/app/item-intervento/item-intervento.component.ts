@@ -19,4 +19,12 @@ export class ItemInterventoComponent implements OnInit {
   private clickEliminaIntervento() {
     this.eliminaIntervento.emit(this.intervento.codice);
   }
+
+  private myMouseEnter() {
+    console.log("Mouse enter", this.intervento.codice);
+  }
+
+  private myMouseExit() {
+    console.log("Mouse exit", this.intervento.codice);
+  }
 }
