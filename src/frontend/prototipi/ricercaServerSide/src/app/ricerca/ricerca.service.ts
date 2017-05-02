@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import 'rxjs/add/of';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 import { RisultatoRicerca } from "./risultato-ricerca";
 
