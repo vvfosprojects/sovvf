@@ -22,6 +22,7 @@ export class AppComponent {
         var sub = this._ricercaService.ricerca('pippo').subscribe(
             risultatiRicerca => {
                 this.risultati = risultatiRicerca;
+                console.log('risultati in json: ' + JSON.stringify(risultatiRicerca));
             },
             error => {
                 console.log('Error: ' + error);
