@@ -7,7 +7,9 @@ import { RisultatoRicerca } from "./risultato-ricerca";
 @Injectable()
 export class RicercaService {
 
-  constructor() { }
+  constructor() {
+    
+  }
 
   /**
    * Servizio fake di restituzione di risultati di ricerca da una chiave
@@ -30,5 +32,8 @@ export class RicercaService {
 
   private replica3(s: string): string {
     return s + " " + s + " " + s;
+    
   }
+  
 }
+

@@ -3,4 +3,6 @@ export class RisultatoRicerca {
         public testo: string,
         public tooltip: string
     ) { }
+
+       
 }
