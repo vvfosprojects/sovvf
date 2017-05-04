@@ -6,6 +6,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { RicercaService } from "./ricerca/ricerca.service";
+import { Ng2CompleterModule } from "ng2-completer";
+
 
 @NgModule({
   declarations: [
@@ -14,6 +16,7 @@ import { RicercaService } from "./ricerca/ricerca.service";
   imports: [
     NgbModule.forRoot(),
     BrowserModule,
+    Ng2CompleterModule,
     FormsModule,
     HttpModule
   ],
