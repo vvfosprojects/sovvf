@@ -15,6 +15,7 @@ export class MezzoinservizioComponent implements OnInit {
 
   ngOnInit() {
   }
+
   get fs(): MezzoInServizio {
 
     return this.mezzoInServizioService.Get();

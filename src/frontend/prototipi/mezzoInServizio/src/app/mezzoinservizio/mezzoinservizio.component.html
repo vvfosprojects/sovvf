@@ -2,9 +2,20 @@
 <head>
 </head>
 <body>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script>
+
   <p></p>
   <div class="section">
     <div class="container">
+
+      <h3>Popover Example</h3>
+  <a href="#" data-toggle="popover" title="Popover Header" data-content="Some content inside the popover">Toggle popover</a>
+      
       <div class="row">
         <div class="col-md-1">
         </div>
@@ -22,6 +33,7 @@
         </div>
         <div class="col-md-1 p-0">
           <span class="fa-stack fa-3x">
+         
             <i class="fa fa-truck fa-stack-1x"></i>
             <i class="fa fa-circle-o fa-stack-2x text-success"></i>
           <div *ngIf="fs.Disponibile">
@@ -73,6 +85,7 @@
   <button type="button" (click)="setCodiceStato('SulPosto')">Sul Posto</button>
   <button type="button" (click)="setCodiceStato('InRientro')">In Rientro</button>
   <button type="button" (click)="setCodiceStato('FuoriServizio')">FuoriServizio</button>
-</body>
 
+</body>
 </html>
+
