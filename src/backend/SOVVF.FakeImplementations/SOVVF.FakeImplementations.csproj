@@ -31,12 +31,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SimpleInjector, Version=4.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.4.0.0\lib\net45\SimpleInjector.dll</HintPath>
+    <Reference Include="Bogus, Version=15.0.1.0, Culture=neutral, PublicKeyToken=fa1bb3f3f218129a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bogus.15.0.1\lib\net40\Bogus.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SimpleInjector.Packaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.Packaging.4.0.0\lib\net40\SimpleInjector.Packaging.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SimpleInjector, Version=4.0.6.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.4.0.6\lib\net45\SimpleInjector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SimpleInjector.Packaging, Version=4.0.6.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.Packaging.4.0.6\lib\net40\SimpleInjector.Packaging.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -51,6 +59,26 @@
   <ItemGroup>
     <Compile Include="Bindings.cs" />
     <Compile Include="Modello\Autenticazione\GetOperatoreAutenticato.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\AzioniSuRichiesta\AggiungiComposizionePartenza.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\AzioniSuRichiesta\AggiungiArrivoSulPosto.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\AzioniSuRichiesta\AggiungiPartenzaDalPosto.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\AzioniSuRichiesta\AggiungiPartenzaDallaSede.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\AzioniSuRichiesta\AggiungiRientroInSede.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\AzioniSuRichiesta\IAzioneSuRichiesta.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\Gaussiana.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\GeneratoreRichieste.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\Mezzo.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\ParametriMezzo.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\ParametriRichiesta.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\ParcoMezzi.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\RichiestaConParametri.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\StatoMezzo\Assegnato.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\StatoMezzo\ContestoMezzo.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\StatoMezzo\InRientro.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\StatoMezzo\InSede.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\StatoMezzo\InViaggio.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\StatoMezzo\IStatoMezzo.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\StatoMezzo\SulPosto.cs" />
     <Compile Include="Modello\GestioneSoccorso\GetRichiesteAssistenzaPerIndicatoriPerUnitaOperative.cs" />
     <Compile Include="Modello\Organigramma\GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,7 +93,6 @@
     <None Include="..\SOVVF.licenseheader">
       <Link>SOVVF.licenseheader</Link>
     </None>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
