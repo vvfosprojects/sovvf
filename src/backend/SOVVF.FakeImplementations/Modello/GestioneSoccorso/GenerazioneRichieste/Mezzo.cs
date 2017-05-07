@@ -18,26 +18,73 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Bogus;
 using SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.StatoMezzo;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
 {
+    /// <summary>
+    ///   Il mezzo utilizzato per evadere una richiesta
+    /// </summary>
     internal class Mezzo
     {
-        private static Random rnd = new Random();
-        private static Faker<Mezzo> fakerMezzo = null;
+        /// <summary>
+        ///   Il generatore random utilizzato
+        /// </summary>
+        private static readonly Random RND = new Random();
+
+        /// <summary>
+        ///   Il generatore di valori fake
+        /// </summary>
         private static Faker faker = null;
 
+        /// <summary>
+        ///   Il generatore di istanze fake del mezzo
+        /// </summary>
+        private static Faker<Mezzo> fakerMezzo = null;
+
+        /// <summary>
+        ///   Il costruttore della classe
+        /// </summary>
         public Mezzo()
         {
             ContestoMezzo = new ContestoMezzo();
         }
 
+        /// <summary>
+        ///   Il codice del mezzo
+        /// </summary>
+        public string Codice { get; set; }
+
+        /// <summary>
+        ///   Lo stato del mezzo (pattern state)
+        /// </summary>
+        public ContestoMezzo ContestoMezzo { get; }
+
+        /// <summary>
+        ///   I membri dell'equipaggio del mezzo
+        /// </summary>
+        public string[] Membri { get; set; }
+
+        /// <summary>
+        ///   Indica se il mezzo è occupato
+        /// </summary>
+        public bool Occupato
+        {
+            get
+            {
+                return !this.ContestoMezzo.State.Disponibile;
+            }
+        }
+
+        /// <summary>
+        ///   Metodo per la creazione di un mezzo fake
+        /// </summary>
+        /// <param name="codiceUnitaOperativa">
+        ///   L'unità operativa utilizzata nella generazione delle informazioni
+        /// </param>
+        /// <returns>Il mezzo fake creato</returns>
         public static Mezzo CreateMezzoFake(string codiceUnitaOperativa)
         {
             if (fakerMezzo == null)
@@ -52,19 +99,10 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             return fakerMezzo.Generate();
         }
 
-        public string Codice { get; set; }
-        public string[] Membri { get; set; }
-
-        public bool Occupato
-        {
-            get
-            {
-                return !this.ContestoMezzo.State.Disponibile;
-            }
-        }
-
-        public ContestoMezzo ContestoMezzo { get; }
-
+        /// <summary>
+        ///   Generazione di un codice fiscale italiano fake
+        /// </summary>
+        /// <returns>Il codice fiscale</returns>
         private static string GeneraCodiceFiscale()
         {
             return faker.Random.Replace("??????##?##?###?");

@@ -18,17 +18,21 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Bogus;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
 {
+    /// <summary>
+    ///   Indica i parametri di una richiesta di assistenza, calcolati in maniera random secondo la
+    ///   caratterizzazione scelta
+    /// </summary>
     internal class ParametriRichiesta
     {
-        private static Faker faker = null;
+        /// <summary>
+        ///   Il generatore di dati casuali
+        /// </summary>
+        private static readonly Faker FAKER = new Faker();
 
         /// <summary>
         ///   Indica la data alla quale giunge la segnalazione dell'intervento
@@ -40,6 +44,35 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         /// </summary>
         public ParametriMezzo[] ParametriMezzi { get; set; }
 
+        /// <summary>
+        ///   Metodo per la generazione di parametri di una richiesta fake
+        /// </summary>
+        /// <param name="dataMin">
+        ///   L'estremo inferiore dell'intervallo in cui le richieste possono essere generate
+        /// </param>
+        /// <param name="dataMax">
+        ///   L'estremo superiore dell'intervallo in cui le richieste possono essere generate
+        /// </param>
+        /// <param name="pesiNumeroMezziPartecipanti">
+        ///   Pesi del numero di mezzi partecipanti ad un intervento (per es. se i pesi sono[0.75,
+        ///   0.20, 0.05] significa che al 75% un intervento ha un solo mezzo, al 20% ne ha due, al
+        ///   5% ne ha tre).
+        /// </param>
+        /// <param name="secondiPartenzeSuccessive">
+        ///   Gaussiana per la generazione del tempo dopo il quale vengono inviate le partenza
+        ///   successive alla prima
+        /// </param>
+        /// <param name="secondiArrivoSulPosto">
+        ///   Gaussiana per la generazione del tempo di viaggio verso il luogo del sinistro
+        /// </param>
+        /// <param name="secondiPermanenzaSulPosto">
+        ///   Gaussiana per la generazione del tempo di permanenza del mezzo sul posto
+        /// </param>
+        /// <param name="secondiInRientro">
+        ///   Gaussiana per la generazione del tempo di viaggio dal luogo del sinistro verso la sede
+        ///   (sempre che il mezzo non venga rediretto su altra richiesta)
+        /// </param>
+        /// <returns>L'istanza fake creata</returns>
         public static ParametriRichiesta GetParametriFake(
             DateTime dataMin,
             DateTime dataMax,
@@ -49,20 +82,14 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             Gaussiana secondiPermanenzaSulPosto,
             Gaussiana secondiInRientro)
         {
-            if (faker == null)
-            {
-                faker = new Faker();
-            }
-
-            var numeroMezzi = faker.Random.WeightedRandom(Enumerable.Range(1, pesiNumeroMezziPartecipanti.Length).ToArray(), pesiNumeroMezziPartecipanti);
-            var dataSegnalazione = faker.Date.Between(dataMin, dataMax);
+            var numeroMezzi = FAKER.Random.WeightedRandom(Enumerable.Range(1, pesiNumeroMezziPartecipanti.Length).ToArray(), pesiNumeroMezziPartecipanti);
+            var dataSegnalazione = FAKER.Date.Between(dataMin, dataMax);
             var parametriRichiesta = new ParametriRichiesta()
             {
                 DataSegnalazione = dataSegnalazione,
                 ParametriMezzi = Enumerable.Range(1, numeroMezzi)
                     .Select(i =>
                         ParametriMezzo.GenerateFake(
-                            dataSegnalazione,
                             i == 1, // la prima partenza è sempre immediata
                             secondiPartenzeSuccessive,
                             secondiArrivoSulPosto,
@@ -73,14 +100,6 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             };
 
             return parametriRichiesta;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("Data: {0} {1} - Mezzi: {2}",
-                this.DataSegnalazione.ToShortDateString(),
-                this.DataSegnalazione.ToShortTimeString(),
-                string.Join(", ", this.ParametriMezzi.Select(p => p.SecondiComposizione.ToString())));
         }
     }
 }

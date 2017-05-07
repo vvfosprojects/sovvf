@@ -17,46 +17,65 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.StatoMezzo
 {
+    /// <summary>
+    ///   Il contesto in cui un mezzo si trova (pattern state)
+    /// </summary>
     internal class ContestoMezzo
     {
+        /// <summary>
+        ///   Il costruttore della classe
+        /// </summary>
         public ContestoMezzo()
         {
             this.State = new InSede();
         }
 
+        /// <summary>
+        ///   L'istanza dello stato corrente per il mezzo
+        /// </summary>
         public IStatoMezzo State { get; set; }
 
+        /// <summary>
+        ///   Invia al mezzo l'evento di composizione
+        /// </summary>
         public void Composizione()
         {
-            State.Composizione(this);
+            this.State.Composizione(this);
         }
 
+        /// <summary>
+        ///   Invia al mezzo l'evento di arrivo in sede
+        /// </summary>
         public void InSede()
         {
-            State.InSede(this);
+            this.State.InSede(this);
         }
 
+        /// <summary>
+        ///   Invia al mezzo l'evento di uscita dalla sede
+        /// </summary>
         public void Uscita()
         {
-            State.Uscita(this);
+            this.State.Uscita(this);
         }
 
+        /// <summary>
+        ///   Invia al mezzo l'evento di rientro in sede
+        /// </summary>
         public void Rientro()
         {
-            State.Rientro(this);
+            this.State.Rientro(this);
         }
 
+        /// <summary>
+        ///   Invia al mezzo l'evento di arrivo sul luogo del sinistro
+        /// </summary>
         public void SulPosto()
         {
-            State.SulPosto(this);
+            this.State.SulPosto(this);
         }
     }
 }

@@ -17,26 +17,47 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.StatoMezzo
 {
+    /// <summary>
+    ///   Indica lo stato corrente del mezzo
+    /// </summary>
     internal interface IStatoMezzo
     {
+        /// <summary>
+        ///   Indica se il mezzo è disponibile nello stato corrente
+        /// </summary>
         bool Disponibile { get; }
 
+        /// <summary>
+        ///   Invia al mezzo l'evento di composizione
+        /// </summary>
+        /// <param name="context">Il contesto corrente del mezzo</param>
         void Composizione(ContestoMezzo context);
 
-        void Uscita(ContestoMezzo context);
+        /// <summary>
+        ///   Invia al mezzo l'evento di arrivo in sede
+        /// </summary>
+        /// <param name="context">Il contesto corrente del mezzo</param>
+        void InSede(ContestoMezzo context);
 
-        void SulPosto(ContestoMezzo context);
-
+        /// <summary>
+        ///   Invia al mezzo l'evento di rientro in sede
+        /// </summary>
+        /// <param name="context">Il contesto corrente del mezzo</param>
         void Rientro(ContestoMezzo context);
 
-        void InSede(ContestoMezzo context);
+        /// <summary>
+        ///   Invia al mezzo l'evento di arrivo sul luogo del sinistro
+        /// </summary>
+        /// <param name="context">Il contesto corrente del mezzo</param>
+        void SulPosto(ContestoMezzo context);
+
+        /// <summary>
+        ///   Invia al mezzo l'evento di uscita dalla sede
+        /// </summary>
+        /// <param name="context">Il contesto corrente del mezzo</param>
+        void Uscita(ContestoMezzo context);
     }
 }

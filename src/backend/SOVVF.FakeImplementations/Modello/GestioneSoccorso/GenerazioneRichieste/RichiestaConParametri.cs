@@ -21,9 +21,21 @@ using Modello.Classi.Soccorso;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
 {
+    /// <summary>
+    ///   Una richiesta ed i relativi parametri casuali, utilizzati per la creazione degli eventi
+    ///   nella richiesta, in competizione per le risorse disponibili con tutte le altre richieste.
+    /// </summary>
     internal class RichiestaConParametri
     {
+        /// <summary>
+        ///   I parametri della richiesta
+        /// </summary>
         public ParametriRichiesta Parametri { get; set; }
+
+        /// <summary>
+        ///   La richiesta alla quale vanno aggiunti gli eventi secondo i parametri e secondo
+        ///   l'evoluzione di tutte le altre richieste in competizione per l'acquisizione delle risorse.
+        /// </summary>
         public RichiestaAssistenza Richiesta { get; set; }
     }
 }

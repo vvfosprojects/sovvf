@@ -17,31 +17,46 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
 {
+    /// <summary>
+    ///   Classe per la simulazione di un parco mezzi. Crea una serie di mezzi fake secondo i
+    ///   parametri indicati e consente di prelevare il mezzo disponibile tra tutti quelli in servizio.
+    /// </summary>
     internal class ParcoMezzi
     {
+        /// <summary>
+        ///   L'array dei mezzi fake
+        /// </summary>
         private Mezzo[] mezzi;
 
+        /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="numeroMezzi">Il numero dei mezzi costituente il parco</param>
+        /// <param name="codiceUnitaOperativa">
+        ///   L'unità operativa alla quale appartengono i mezzi (l'etichetta viene usata per creare
+        ///   il codice di un mezzo)
+        /// </param>
         public ParcoMezzi(int numeroMezzi, string codiceUnitaOperativa)
         {
             this.mezzi = new Mezzo[numeroMezzi];
 
             for (int i = 0; i < numeroMezzi; i++)
             {
-                mezzi[i] = Mezzo.CreateMezzoFake(codiceUnitaOperativa);
+                this.mezzi[i] = Mezzo.CreateMezzoFake(codiceUnitaOperativa);
             }
         }
 
+        /// <summary>
+        ///   Restituisce il primo mezzo disponibile, se esistente
+        /// </summary>
+        /// <returns>Il primo mezzo disponibile, null se nessun mezzo è disponibile</returns>
         public Mezzo GetPrimoMezzoDisponibile()
         {
-            return mezzi.FirstOrDefault(m => m.ContestoMezzo.State.Disponibile);
+            return this.mezzi.FirstOrDefault(m => m.ContestoMezzo.State.Disponibile);
         }
     }
 }

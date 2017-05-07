@@ -19,21 +19,51 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.AzioniSuRichiesta
 {
+    /// <summary>
+    ///   Azione di aggiunta dell'evento di partenza dalla sede in una richiesta di assistenza
+    /// </summary>
     internal class AggiungiPartenzaDallaSede : IAzioneSuRichiesta
     {
+        /// <summary>
+        ///   Istante previsto di esecuzione dell'azione
+        /// </summary>
         private readonly DateTime istantePrevisto;
+
+        /// <summary>
+        ///   Parametri del mezzo
+        /// </summary>
         private readonly ParametriMezzo parametriMezzo;
+
+        /// <summary>
+        ///   La richiesta con parametri su cui l'azione agisce
+        /// </summary>
         private readonly RichiestaConParametri richiesta;
-        private readonly ParcoMezzi parcoMezzi;
+
+        /// <summary>
+        ///   Indica se l'azione è stata eseguita
+        /// </summary>
         private bool eseguita = false;
 
+        /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="istantePrevisto">L'istante previsto di esecuzione dell'azione</param>
+        /// <param name="richiesta">La richiesta con parametri su cui l'azione agisce</param>
+        /// <param name="parametriMezzo">I parametri del mezzo utilizzati dall'azione</param>
+        public AggiungiPartenzaDallaSede(DateTime istantePrevisto, RichiestaConParametri richiesta, ParametriMezzo parametriMezzo)
+        {
+            this.istantePrevisto = istantePrevisto;
+            this.richiesta = richiesta;
+            this.parametriMezzo = parametriMezzo;
+        }
+
+        /// <summary>
+        ///   L'istante previsto di esecuzione dell'azione
+        /// </summary>
         public DateTime IstantePrevisto
         {
             get
@@ -42,26 +72,27 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             }
         }
 
-        public AggiungiPartenzaDallaSede(DateTime istantePrevisto, RichiestaConParametri richiesta, ParametriMezzo parametriMezzo, ParcoMezzi parcoMezzi)
-        {
-            this.istantePrevisto = istantePrevisto;
-            this.richiesta = richiesta;
-            this.parametriMezzo = parametriMezzo;
-            this.parcoMezzi = parcoMezzi;
-        }
-
+        /// <summary>
+        ///   Esegue l'azione
+        /// </summary>
+        /// <param name="istanteEffettivo">
+        ///   L'istante effettivo (simulato) in cui l'azione viene eseguita
+        /// </param>
+        /// <returns>Le azioni da eseguire a seguito dell'esecuzione della presente azione</returns>
         public IEnumerable<IAzioneSuRichiesta> Esegui(DateTime istanteEffettivo)
         {
             var mezzo = this.parametriMezzo.MezzoUtilizzato;
 
             if (mezzo == null)
+            {
                 yield break;
+            }
 
             mezzo.ContestoMezzo.Uscita();
             this.richiesta.Richiesta.Eventi.Add(
                 new UscitaPartenza()
                 {
-                    CodiceMezzo = parametriMezzo.MezzoUtilizzato.Codice,
+                    CodiceMezzo = this.parametriMezzo.MezzoUtilizzato.Codice,
                     Istante = istanteEffettivo
                 });
 
@@ -69,11 +100,14 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
 
             yield return new AggiungiArrivoSulPosto(
                 istanteEffettivo.AddSeconds(this.parametriMezzo.SecondiArrivoSulPosto),
-                richiesta,
-                parametriMezzo,
-                parcoMezzi);
+                this.richiesta,
+                this.parametriMezzo);
         }
 
+        /// <summary>
+        ///   Predicato che indica se l'azione è stata eseguita
+        /// </summary>
+        /// <returns>L'indicazione richiesta</returns>
         public bool Eseguita()
         {
             return this.eseguita;

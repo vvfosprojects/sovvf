@@ -22,15 +22,15 @@ using Bogus;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
 {
+    /// <summary>
+    ///   Indica il profilo di comportamento di un mezzo in una richiesta, estratto in maniera casuale
+    /// </summary>
     internal class ParametriMezzo
     {
-        private static Faker faker = new Faker();
-        private readonly DateTime dataSegnalazione;
-
-        public ParametriMezzo(DateTime dataSegnalazione)
-        {
-            this.dataSegnalazione = dataSegnalazione;
-        }
+        /// <summary>
+        ///   Il generatore random
+        /// </summary>
+        private static readonly Faker FAKER = new Faker();
 
         /// <summary>
         ///   Indica il numero di secondi dalla data della segnalazione dopo i quali viene eseguita
@@ -59,22 +59,46 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         /// </summary>
         public Mezzo MezzoUtilizzato { get; set; }
 
+        /// <summary>
+        ///   Genera un'istanza della classe in modo casuale
+        /// </summary>
+        /// <param name="partenzaImmediata">
+        ///   Indica se la partenza deve essere immediata, oppure se è un mezzo inviato in seguito
+        ///   alla richiesta
+        /// </param>
+        /// <param name="secondiPartenzeSuccessive">
+        ///   Gaussiana per la generazione del tempo dopo il quale vengono inviate le partenza
+        ///   successive alla prima
+        /// </param>
+        /// <param name="secondiArrivoSulPosto">
+        ///   Gaussiana per la generazione del tempo di viaggio verso il luogo del sinistro
+        /// </param>
+        /// <param name="secondiPermanenzaSulPosto">
+        ///   Gaussiana per la generazione del tempo di permanenza del mezzo sul posto
+        /// </param>
+        /// <param name="secondiInRientro">
+        ///   Gaussiana per la generazione del tempo di viaggio dal luogo del sinistro verso la sede
+        ///   (sempre che il mezzo non venga rediretto su altra richiesta)
+        /// </param>
+        /// <returns>L'istanza casuale creata</returns>
         internal static ParametriMezzo GenerateFake(
-            DateTime dataSegnalazione,
             bool partenzaImmediata,
             Gaussiana secondiPartenzeSuccessive,
             Gaussiana secondiArrivoSulPosto,
             Gaussiana secondiPermanenzaSulPosto,
-            Gaussiana secondiInRientro
-            )
+            Gaussiana secondiInRientro)
         {
-            partenzaImmediata = partenzaImmediata || faker.Random.Number(1, 100) < 90;
-            var parametri = new ParametriMezzo(dataSegnalazione);
+            partenzaImmediata = partenzaImmediata || FAKER.Random.Number(1, 100) < 90;
+            var parametri = new ParametriMezzo();
 
             if (partenzaImmediata)
+            {
                 parametri.SecondiComposizione = (int)new Gaussiana(60, 20).Genera();
+            }
             else
+            {
                 parametri.SecondiComposizione = (int)secondiPartenzeSuccessive.Genera();
+            }
 
             parametri.SecondiArrivoSulPosto = (int)secondiArrivoSulPosto.Genera();
             parametri.SecondiPermanenzaSulPosto = (int)secondiPermanenzaSulPosto.Genera();

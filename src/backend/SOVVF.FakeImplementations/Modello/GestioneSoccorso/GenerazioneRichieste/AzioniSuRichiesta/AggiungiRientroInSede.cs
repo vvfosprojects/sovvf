@@ -19,29 +19,51 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.AzioniSuRichiesta
 {
+    /// <summary>
+    ///   Azione di aggiunta dell'evento di rientro in sede in una richiesta di assistenza
+    /// </summary>
     internal class AggiungiRientroInSede : IAzioneSuRichiesta
     {
-        private bool eseguita;
+        /// <summary>
+        ///   Istante previsto di esecuzione dell'azione
+        /// </summary>
         private readonly DateTime istantePrevisto;
+
+        /// <summary>
+        ///   Parametri del mezzo
+        /// </summary>
         private readonly ParametriMezzo parametriMezzo;
-        private readonly ParcoMezzi parcoMezzi;
+
+        /// <summary>
+        ///   La richiesta con parametri su cui l'azione agisce
+        /// </summary>
         private readonly RichiestaConParametri richiesta;
 
-        public AggiungiRientroInSede(DateTime istantePrevisto, RichiestaConParametri richiesta, ParametriMezzo parametriMezzo, ParcoMezzi parcoMezzi)
+        /// <summary>
+        ///   Indica se l'azione è stata eseguita
+        /// </summary>
+        private bool eseguita;
+
+        /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="istantePrevisto">L'istante previsto di esecuzione dell'azione</param>
+        /// <param name="richiesta">La richiesta con parametri su cui l'azione agisce</param>
+        /// <param name="parametriMezzo">I parametri del mezzo utilizzati dall'azione</param>
+        public AggiungiRientroInSede(DateTime istantePrevisto, RichiestaConParametri richiesta, ParametriMezzo parametriMezzo)
         {
             this.istantePrevisto = istantePrevisto;
             this.richiesta = richiesta;
             this.parametriMezzo = parametriMezzo;
-            this.parcoMezzi = parcoMezzi;
         }
 
+        /// <summary>
+        ///   L'istante previsto di esecuzione dell'azione
+        /// </summary>
         public DateTime IstantePrevisto
         {
             get
@@ -50,12 +72,21 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             }
         }
 
+        /// <summary>
+        ///   Esegue l'azione
+        /// </summary>
+        /// <param name="istanteEffettivo">
+        ///   L'istante effettivo (simulato) in cui l'azione viene eseguita
+        /// </param>
+        /// <returns>Le azioni da eseguire a seguito dell'esecuzione della presente azione</returns>
         public IEnumerable<IAzioneSuRichiesta> Esegui(DateTime istanteEffettivo)
         {
             var mezzo = this.parametriMezzo.MezzoUtilizzato;
 
             if (mezzo == null)
+            {
                 yield break;
+            }
 
             try
             {
@@ -63,7 +94,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 this.richiesta.Richiesta.Eventi.Add(
                     new PartenzaRientrata()
                     {
-                        CodiceMezzo = parametriMezzo.MezzoUtilizzato.Codice,
+                        CodiceMezzo = this.parametriMezzo.MezzoUtilizzato.Codice,
                         Istante = istanteEffettivo
                     });
             }
@@ -76,6 +107,10 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             yield break;
         }
 
+        /// <summary>
+        ///   Predicato che indica se l'azione è stata eseguita
+        /// </summary>
+        /// <returns>L'indicazione richiesta</returns>
         public bool Eseguita()
         {
             return this.eseguita;

@@ -18,15 +18,17 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.StatoMezzo
 {
+    /// <summary>
+    ///   Indica lo stato in viaggio verso il luogo del sinistro per un mezzo (pattern state)
+    /// </summary>
     internal class InViaggio : IStatoMezzo
     {
+        /// <summary>
+        ///   Indica se il mezzo, in questo stato, è da considerarsi disponibile.
+        /// </summary>
         public bool Disponibile
         {
             get
@@ -35,29 +37,49 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             }
         }
 
+        /// <summary>
+        ///   Invia al mezzo l'evento di composizione
+        /// </summary>
+        /// <param name="context">Il contesto corrente del mezzo</param>
         public void Composizione(ContestoMezzo context)
         {
             throw new InvalidOperationException();
         }
 
+        /// <summary>
+        ///   Invia al mezzo l'evento di arrivo in sede
+        /// </summary>
+        /// <param name="context">Il contesto corrente del mezzo</param>
         public void InSede(ContestoMezzo context)
         {
             throw new InvalidOperationException();
         }
 
-        public void Uscita(ContestoMezzo context)
-        {
-            throw new InvalidOperationException();
-        }
-
+        /// <summary>
+        ///   Invia al mezzo l'evento di rientro in sede
+        /// </summary>
+        /// <param name="context">Il contesto corrente del mezzo</param>
         public void Rientro(ContestoMezzo context)
         {
             throw new InvalidOperationException();
         }
 
+        /// <summary>
+        ///   Invia al mezzo l'evento di arrivo sul luogo del sinistro
+        /// </summary>
+        /// <param name="context">Il contesto corrente del mezzo</param>
         public void SulPosto(ContestoMezzo context)
         {
             context.State = new SulPosto();
+        }
+
+        /// <summary>
+        ///   Invia al mezzo l'evento di uscita dalla sede
+        /// </summary>
+        /// <param name="context">Il contesto corrente del mezzo</param>
+        public void Uscita(ContestoMezzo context)
+        {
+            throw new InvalidOperationException();
         }
     }
 }

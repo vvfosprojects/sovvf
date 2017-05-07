@@ -34,7 +34,8 @@ namespace SOVVF.FakeImplementations.Test
         [Test]
         public void GeneraRichieste()
         {
-            var gi = new GeneratoreRichieste("MI",
+            var gi = new GeneratoreRichieste(
+                "MI",
                 5,
                 DateTime.Now.AddMonths(-2),
                 DateTime.Now,

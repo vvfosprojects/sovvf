@@ -19,18 +19,36 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.AzioniSuRichiesta
 {
+    /// <summary>
+    ///   Interfaccia dell'azione di aggiunta evento che può essere eseguita su una richiesta
+    /// </summary>
     internal interface IAzioneSuRichiesta
     {
+        /// <summary>
+        ///   L'istante in cui è previsto che l'azione sia aggiunta. L'istante effettivo può essere
+        ///   successivo all'istante previsto nel caso in cui non vi sia disponibilità di una risorsa
+        ///   all'istante previsto e bisogna attendere che si liberi.
+        /// </summary>
         DateTime IstantePrevisto { get; }
 
+        /// <summary>
+        ///   Metodo di esecuzione dell'azione
+        /// </summary>
+        /// <param name="istanteEffettivo">
+        ///   L'istante effettivo in cui l'azione viene eseguita. L'istante effettivo può essere
+        ///   successivo all'istante previsto nel caso in cui non vi sia disponibilità di una risorsa
+        ///   all'istante previsto e bisogna attendere che si liberi.
+        /// </param>
+        /// <returns>Le azioni da eseguire a seguito dell'esecuzione della presente azione</returns>
         IEnumerable<IAzioneSuRichiesta> Esegui(DateTime istanteEffettivo);
 
+        /// <summary>
+        ///   Predicato che indica se l'azione è stata eseguita.
+        /// </summary>
+        /// <returns>L'indicazione richiesta</returns>
         bool Eseguita();
     }
 }

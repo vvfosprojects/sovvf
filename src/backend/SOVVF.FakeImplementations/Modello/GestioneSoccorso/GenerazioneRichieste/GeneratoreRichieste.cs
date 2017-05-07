@@ -20,37 +20,121 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Bogus;
 using Modello.Classi.Geo;
 using Modello.Classi.Soccorso;
-using Modello.Classi.Soccorso.Eventi.Partenze;
 using SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.AzioniSuRichiesta;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
 {
+    /// <summary>
+    ///   Classe deputata alla generazione di richieste pseudo-random. Le richieste generate
+    ///   rispettano la fisica realizzabilità, rispetto ad un parco mezzi fornito in ingresso al
+    ///   costruttore e dotato di uno specifico numero di mezzi.
+    /// </summary>
     internal class GeneratoreRichieste
     {
-        private static readonly Random rnd = new Random();
+        /// <summary>
+        ///   Il generatore random utilizzato dall'implementazione dei metodi
+        /// </summary>
+        private static readonly Random RND = new Random();
+
+        /// <summary>
+        ///   L'unità operativa con cui vengono etichettate le richieste generate
+        /// </summary>
         private readonly string codiceUnitaOperativa;
-        private readonly int numeroMezzi;
-        private readonly DateTime dataMin;
+
+        /// <summary>
+        ///   L'estremo superiore dell'intervallo in cui le richieste possono essere generate
+        /// </summary>
         private readonly DateTime dataMax;
-        private readonly int richiesteMedieAlGiorno;
-        private readonly int mediaSecondiPartenzaDallaSede;
+
+        /// <summary>
+        ///   L'estremo inferiore dell'intervallo in cui le richieste possono essere generate
+        /// </summary>
+        private readonly DateTime dataMin;
+
+        /// <summary>
+        ///   Numero medio di secondi di durata del viaggio di un mezzo verso il luogo del sinistro
+        /// </summary>
         private readonly int mediaSecondiArrivoSulPosto;
+
+        /// <summary>
+        ///   Numero medio di secondi di durata della permanenza di un mezzo sul luogo del sinistro
+        /// </summary>
         private readonly int mediaSecondiDurataIntervento;
+
+        /// <summary>
+        ///   Il numero medio di secondi dopo i quali una partenza ritardata (cioè successiva alle
+        ///   prime immediatamente inviate) esce dalla sede
+        /// </summary>
+        private readonly int mediaSecondiPartenzaDallaSedeSuccessive;
+
+        /// <summary>
+        ///   Numero medio di secondi di durata del viaggio di rientro di un mezzo verso la sede (se
+        ///   non viene rediretto su altra richiesta)
+        /// </summary>
         private readonly int mediaSecondiRientroInSede;
+
+        /// <summary>
+        ///   Il numero di mezzi considerati disponibili nel parco mezzi
+        /// </summary>
+        private readonly int numeroMezzi;
+
+        /// <summary>
+        ///   Pesi del numero di mezzi partecipanti ad un intervento (per es. se i pesi sono[0.75,
+        ///   0.20, 0.05] significa che al 75% un intervento ha un solo mezzo, al 20% ne ha due, al
+        ///   5% ne ha tre).
+        /// </summary>
         private readonly float[] pesiNumeroMezziPartecipanti;
 
+        /// <summary>
+        ///   Numero medio di richieste generate in ogni giorno
+        /// </summary>
+        private readonly int richiesteMedieAlGiorno;
+
+        /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="codiceUnitaOperativa">
+        ///   L'unità operativa con cui vengono etichettate le richieste generate
+        /// </param>
+        /// <param name="numeroMezziDisponibili">
+        ///   Il numero di mezzi considerati disponibili nel parco mezzi
+        /// </param>
+        /// <param name="dataMin">
+        ///   L'estremo inferiore dell'intervallo in cui le richieste possono essere generate
+        /// </param>
+        /// <param name="dataMax">
+        ///   L'estremo superiore dell'intervallo in cui le richieste possono essere generate
+        /// </param>
+        /// <param name="richiesteMedieAlGiorno">Numero medio di richieste generate in ogni giorno</param>
+        /// <param name="mediaSecondiPartenzaDallaSedeSuccessive">
+        ///   Il numero medio di secondi dopo i quali una partenza ritardata (cioè successiva alle
+        ///   prime immediatamente inviate) esce dalla sede
+        /// </param>
+        /// <param name="mediaSecondiArrivoSulPosto">
+        ///   Numero medio di secondi di durata del viaggio di un mezzo verso il luogo del sinistro
+        /// </param>
+        /// <param name="mediaSecondiDurataIntervento">
+        ///   Numero medio di secondi di durata della permanenza di un mezzo sul luogo del sinistro
+        /// </param>
+        /// <param name="mediaSecondiRientroInSede">
+        ///   Numero medio di secondi di durata del viaggio di rientro di un mezzo verso la sede (se
+        ///   non viene rediretto su altra richiesta)
+        /// </param>
+        /// <param name="pesiNumeroMezziPartecipanti">
+        ///   Pesi del numero di mezzi partecipanti ad un intervento (per es. se i pesi sono[0.75,
+        ///   0.20, 0.05] significa che al 75% un intervento ha un solo mezzo, al 20% ne ha due, al
+        ///   5% ne ha tre).
+        /// </param>
         public GeneratoreRichieste(
             string codiceUnitaOperativa,
             int numeroMezziDisponibili,
             DateTime dataMin,
             DateTime dataMax,
             int richiesteMedieAlGiorno,
-            int mediaSecondiPartenzaDallaSede,
+            int mediaSecondiPartenzaDallaSedeSuccessive,
             int mediaSecondiArrivoSulPosto,
             int mediaSecondiDurataIntervento,
             int mediaSecondiRientroInSede,
@@ -61,13 +145,17 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             this.dataMin = dataMin;
             this.dataMax = dataMax;
             this.richiesteMedieAlGiorno = richiesteMedieAlGiorno;
-            this.mediaSecondiPartenzaDallaSede = mediaSecondiPartenzaDallaSede;
+            this.mediaSecondiPartenzaDallaSedeSuccessive = mediaSecondiPartenzaDallaSedeSuccessive;
             this.mediaSecondiArrivoSulPosto = mediaSecondiArrivoSulPosto;
             this.mediaSecondiDurataIntervento = mediaSecondiDurataIntervento;
             this.mediaSecondiRientroInSede = mediaSecondiRientroInSede;
             this.pesiNumeroMezziPartecipanti = pesiNumeroMezziPartecipanti;
         }
 
+        /// <summary>
+        ///   Genera le richieste secondo i parametri specificati nel costruttore della classe.
+        /// </summary>
+        /// <returns>Le richieste pseudo-random</returns>
         public IEnumerable<RichiestaAssistenza> Genera()
         {
             var fakerGeolocalizzazione = new Faker<Punto>()
@@ -77,11 +165,11 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
 
             var fakerRichiesteAssistenza = new Faker<RichiestaAssistenza>()
                 .StrictMode(true)
-                .RuleFor(ra => ra.Codice, f => (f.IndexGlobal).ToString())
+                .RuleFor(ra => ra.Codice, f => f.IndexGlobal.ToString())
                 .RuleFor(ra => ra.CodiceUnitaOperativaCompetente, f => this.codiceUnitaOperativa)
                 .RuleFor(ra => ra.CodiciUnitaOperativeAllertate, f => new HashSet<string> { this.codiceUnitaOperativa })
                 .RuleFor(ra => ra.Geolocalizzazione, f => fakerGeolocalizzazione.Generate())
-                .RuleFor(ra => ra.Tipologie, f => GeneraTipologie())
+                .RuleFor(ra => ra.Tipologie, f => this.GeneraTipologie())
                 .Ignore(ra => ra.Eventi);
 
             var numeroInterventi = (int)(this.dataMax.Subtract(this.dataMin).TotalDays * this.richiesteMedieAlGiorno);
@@ -92,34 +180,38 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                      this.dataMin,
                      this.dataMax,
                      this.pesiNumeroMezziPartecipanti,
-                     new Gaussiana(mediaSecondiPartenzaDallaSede, mediaSecondiPartenzaDallaSede / 5),
-                     new Gaussiana(mediaSecondiArrivoSulPosto, mediaSecondiArrivoSulPosto / 5),
-                     new Gaussiana(mediaSecondiDurataIntervento, mediaSecondiDurataIntervento / 5),
-                     new Gaussiana(mediaSecondiRientroInSede, mediaSecondiRientroInSede / 5)),
+                     new Gaussiana(this.mediaSecondiPartenzaDallaSedeSuccessive, this.mediaSecondiPartenzaDallaSedeSuccessive / 3),
+                     new Gaussiana(this.mediaSecondiArrivoSulPosto, this.mediaSecondiArrivoSulPosto / 3),
+                     new Gaussiana(this.mediaSecondiDurataIntervento, this.mediaSecondiDurataIntervento / 3),
+                     new Gaussiana(this.mediaSecondiRientroInSede, this.mediaSecondiRientroInSede / 3)),
                      Richiesta = fakerRichiesteAssistenza.Generate()
                  }).ToList();
 
-            var parcoMezzi = new ParcoMezzi(numeroMezzi, codiceUnitaOperativa);
+            var parcoMezzi = new ParcoMezzi(this.numeroMezzi, this.codiceUnitaOperativa);
             var azioni = richiesteConParametri
-                .SelectMany(r => GetAzioni(r, parcoMezzi))
+                .SelectMany(r => this.GetAzioni(r, parcoMezzi))
                 .OrderBy(a => a.IstantePrevisto)
                 .ToList();
 
-            var dataSimulata = dataMin;
-            while (azioni.Any(a => !a.Eseguita()) && azioni.Any(a => a.IstantePrevisto <= dataMax))
+            var dataSimulata = this.dataMin;
+            while (azioni.Any(a => !a.Eseguita()) && azioni.Any(a => a.IstantePrevisto <= this.dataMax))
             {
                 for (int i = 0; i < azioni.Count; i++)
                 {
-                    if (!azioni[i].Eseguita() && azioni[i].IstantePrevisto <= dataMax)
+                    if (!azioni[i].Eseguita() && azioni[i].IstantePrevisto <= this.dataMax)
                     {
                         var azione = azioni[i];
                         if (azione.IstantePrevisto > dataSimulata)
+                        {
                             dataSimulata = azione.IstantePrevisto;
+                        }
 
                         azioni.AddRange(azione.Esegui(dataSimulata));
 
                         if (azione.Eseguita())
+                        {
                             break;
+                        }
                     }
                 }
 
@@ -132,6 +224,43 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             return richiesteConParametri.Select(r => r.Richiesta);
         }
 
+        /// <summary>
+        ///   Restituisce una lista di tipologie. Con probabilità 75% la lista contiene una sola
+        ///   tipologia. Con probabilità 20% la lista contiene due tipologie. Con probabilità 5% la
+        ///   lista contiene tre tipologie.
+        /// </summary>
+        /// <returns>La lista delle tipologie</returns>
+        private List<string> GeneraTipologie()
+        {
+            var tipologie =
+                new string[]
+                {
+                    "Soccorso a persona",
+                    "Incendio generico",
+                    "Incendio boschivo",
+                    "Danni d'acqua",
+                    "Alluvione",
+                    "Esplosione",
+                    "Incidente stradale",
+                    "Apertura porta"
+                };
+
+            var f = new Faker();
+            var numeroTipologie = f.Random.WeightedRandom<int>(new int[] { 1, 2, 3 }, new float[] { .7F, .2F, .1F });
+            var range = Enumerable.Range(1, numeroTipologie).Select(x => f.PickRandom(tipologie));
+            var set = new HashSet<string>(range); // elimina i duplicati
+
+            return set.ToList();
+        }
+
+        /// <summary>
+        ///   Restituisce l'elenco delle azioni iniziali da aggiungere ad una richiesta. L'azione si
+        ///   limita alla composizione partenza, poiché ogni azione, all'atto della sua esecuzione,
+        ///   restituisce l'azione successiva da eseguire.
+        /// </summary>
+        /// <param name="richiesta">La richiesta alla quale aggiungere l'azione</param>
+        /// <param name="parcoMezzi">Il parco mezzi sul quale insistono le richieste</param>
+        /// <returns>L'elenco delle azioni da aggiungere</returns>
         private IEnumerable<IAzioneSuRichiesta> GetAzioni(RichiestaConParametri richiesta, ParcoMezzi parcoMezzi)
         {
             foreach (var parametriMezzo in richiesta.Parametri.ParametriMezzi)
@@ -142,33 +271,6 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                     parametriMezzo,
                     parcoMezzi);
             }
-        }
-
-        /// <summary>
-        ///   Restituisce una lista di tipologie. Con probabilità 75% la lista contiene una sola
-        ///   tipologia. Con probabilità 20% la lista contiene due tipologie. Con probabilità 5% la
-        ///   lista contiene tre tipologie.
-        /// </summary>
-        /// <returns>La lista delle tipologie</returns>
-        private List<string> GeneraTipologie()
-        {
-            var tipologie = new string[] {
-                "Soccorso a persona",
-                "Incendio generico",
-                "Incendio boschivo",
-                "Danni d'acqua",
-                "Alluvione",
-                "Esplosione",
-                "Incidente stradale",
-                "Apertura porta"
-            };
-
-            var f = new Faker();
-            var numeroTipologie = f.Random.WeightedRandom<int>(new int[] { 1, 2, 3 }, new float[] { .7F, .2F, .1F });
-            var range = Enumerable.Range(1, numeroTipologie).Select(x => f.PickRandom(tipologie));
-            var set = new HashSet<string>(range); // elimina i duplicati
-
-            return set.ToList();
         }
     }
 }
