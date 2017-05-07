@@ -9,6 +9,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
 {
     internal class AggiungiPartenzaDallaSede : IAzioneSuRichiesta
     {
+        private readonly DateTime istantePrevisto;
         private readonly ParametriMezzo parametriMezzo;
         private readonly RichiestaConParametri richiesta;
         private readonly ParcoMezzi parcoMezzi;
@@ -18,23 +19,24 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         {
             get
             {
-                return this.parametriMezzo.DataPrevistaComposizione; // non c'è delay tra composizione e attivazione della partenza
+                return this.istantePrevisto;
             }
         }
 
-        public AggiungiPartenzaDallaSede(RichiestaConParametri richiesta, ParametriMezzo parametriMezzo, ParcoMezzi parcoMezzi)
+        public AggiungiPartenzaDallaSede(DateTime istantePrevisto, RichiestaConParametri richiesta, ParametriMezzo parametriMezzo, ParcoMezzi parcoMezzi)
         {
+            this.istantePrevisto = istantePrevisto;
             this.richiesta = richiesta;
             this.parametriMezzo = parametriMezzo;
             this.parcoMezzi = parcoMezzi;
         }
 
-        public void Esegui(DateTime istanteEffettivo)
+        public IEnumerable<IAzioneSuRichiesta> Esegui(DateTime istanteEffettivo)
         {
             var mezzo = this.parametriMezzo.MezzoUtilizzato;
 
             if (mezzo == null)
-                return;
+                yield break;
 
             mezzo.ContestoMezzo.Uscita();
             this.richiesta.Richiesta.Eventi.Add(
@@ -45,6 +47,12 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 });
 
             this.eseguita = true;
+
+            yield return new AggiungiArrivoSulPosto(
+                istanteEffettivo.AddSeconds(this.parametriMezzo.SecondiArrivoSulPosto),
+                richiesta,
+                parametriMezzo,
+                parcoMezzi);
         }
 
         public bool Eseguita()

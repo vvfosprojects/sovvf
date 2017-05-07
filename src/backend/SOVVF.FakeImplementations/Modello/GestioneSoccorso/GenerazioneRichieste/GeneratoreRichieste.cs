@@ -87,18 +87,27 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .ToList();
 
             var dataSimulata = dataMin;
-            while (azioni.Any(a => !a.Eseguita()))
+            while (azioni.Any(a => !a.Eseguita()) && azioni.Any(a => a.IstantePrevisto <= dataMax))
             {
-                foreach (var a in azioni.Where(a => !a.Eseguita()))
+                for (int i = 0; i < azioni.Count; i++)
                 {
-                    if (a.IstantePrevisto > dataSimulata)
-                        dataSimulata = a.IstantePrevisto;
+                    if (!azioni[i].Eseguita() && azioni[i].IstantePrevisto <= dataMax)
+                    {
+                        var azione = azioni[i];
+                        if (azione.IstantePrevisto > dataSimulata)
+                            dataSimulata = azione.IstantePrevisto;
 
-                    a.Esegui(dataSimulata);
+                        azioni.AddRange(azione.Esegui(dataSimulata));
 
-                    if (a.Eseguita())
-                        break;
+                        if (azione.Eseguita())
+                            break;
+                    }
                 }
+
+                azioni = azioni
+                    .Where(a => !a.Eseguita())
+                    .OrderBy(a => a.IstantePrevisto)
+                    .ToList();
             }
 
             return richiesteConParametri.Select(r => r.Richiesta);
@@ -108,11 +117,11 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         {
             foreach (var parametriMezzo in richiesta.Parametri.ParametriMezzi)
             {
-                yield return new AggiungiComposizionePartenza(richiesta, parametriMezzo, parcoMezzi);
-                yield return new AggiungiPartenzaDallaSede(richiesta, parametriMezzo, parcoMezzi);
-                yield return new AggiungiArrivoSulPosto(richiesta, parametriMezzo, parcoMezzi);
-                yield return new AggiungiPartenzaDalPosto(richiesta, parametriMezzo, parcoMezzi);
-                yield return new AggiungiRientroInSede(richiesta, parametriMezzo, parcoMezzi);
+                yield return new AggiungiComposizionePartenza(
+                    richiesta.Parametri.DataSegnalazione.AddSeconds(parametriMezzo.SecondiComposizione),
+                    richiesta,
+                    parametriMezzo,
+                    parcoMezzi);
             }
         }
 

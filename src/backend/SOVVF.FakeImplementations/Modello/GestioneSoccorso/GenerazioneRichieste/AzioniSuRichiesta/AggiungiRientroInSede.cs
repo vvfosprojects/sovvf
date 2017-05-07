@@ -10,12 +10,14 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
     internal class AggiungiRientroInSede : IAzioneSuRichiesta
     {
         private bool eseguita;
+        private readonly DateTime istantePrevisto;
         private readonly ParametriMezzo parametriMezzo;
         private readonly ParcoMezzi parcoMezzi;
         private readonly RichiestaConParametri richiesta;
 
-        public AggiungiRientroInSede(RichiestaConParametri richiesta, ParametriMezzo parametriMezzo, ParcoMezzi parcoMezzi)
+        public AggiungiRientroInSede(DateTime istantePrevisto, RichiestaConParametri richiesta, ParametriMezzo parametriMezzo, ParcoMezzi parcoMezzi)
         {
+            this.istantePrevisto = istantePrevisto;
             this.richiesta = richiesta;
             this.parametriMezzo = parametriMezzo;
             this.parcoMezzi = parcoMezzi;
@@ -25,16 +27,16 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         {
             get
             {
-                return this.parametriMezzo.DataPrevistaRientroInSede;
+                return this.istantePrevisto;
             }
         }
 
-        public void Esegui(DateTime istanteEffettivo)
+        public IEnumerable<IAzioneSuRichiesta> Esegui(DateTime istanteEffettivo)
         {
             var mezzo = this.parametriMezzo.MezzoUtilizzato;
 
             if (mezzo == null)
-                return;
+                yield break;
 
             try
             {
@@ -51,6 +53,8 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             }
 
             this.eseguita = true;
+
+            yield break;
         }
 
         public bool Eseguita()

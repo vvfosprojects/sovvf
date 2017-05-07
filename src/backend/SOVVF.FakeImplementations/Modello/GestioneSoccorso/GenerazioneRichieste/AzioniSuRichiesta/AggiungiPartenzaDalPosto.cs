@@ -10,12 +10,14 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
     internal class AggiungiPartenzaDalPosto : IAzioneSuRichiesta
     {
         private bool eseguita;
+        private readonly DateTime istantePrevisto;
         private readonly ParametriMezzo parametriMezzo;
         private readonly ParcoMezzi parcoMezzi;
         private readonly RichiestaConParametri richiesta;
 
-        public AggiungiPartenzaDalPosto(RichiestaConParametri richiesta, ParametriMezzo parametriMezzo, ParcoMezzi parcoMezzi)
+        public AggiungiPartenzaDalPosto(DateTime istantePrevisto, RichiestaConParametri richiesta, ParametriMezzo parametriMezzo, ParcoMezzi parcoMezzi)
         {
+            this.istantePrevisto = istantePrevisto;
             this.richiesta = richiesta;
             this.parametriMezzo = parametriMezzo;
             this.parcoMezzi = parcoMezzi;
@@ -25,16 +27,16 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         {
             get
             {
-                return this.parametriMezzo.DataPrevistaPartenzaDalPosto;
+                return this.istantePrevisto;
             }
         }
 
-        public void Esegui(DateTime istanteEffettivo)
+        public IEnumerable<IAzioneSuRichiesta> Esegui(DateTime istanteEffettivo)
         {
             var mezzo = this.parametriMezzo.MezzoUtilizzato;
 
             if (mezzo == null)
-                return;
+                yield break;
 
             mezzo.ContestoMezzo.Rientro();
             this.richiesta.Richiesta.Eventi.Add(
@@ -45,6 +47,12 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 });
 
             this.eseguita = true;
+
+            yield return new AggiungiRientroInSede(
+                istanteEffettivo.AddSeconds(this.parametriMezzo.SecondiInRientro),
+                richiesta,
+                parametriMezzo,
+                parcoMezzi);
         }
 
         public bool Eseguita()

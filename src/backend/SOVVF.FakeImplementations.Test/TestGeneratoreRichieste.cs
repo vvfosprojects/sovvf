@@ -13,13 +13,14 @@ namespace SOVVF.FakeImplementations.Test
     public class TestGeneratoreRichieste
     {
         [Test]
+        [Repeat(10)]
         public void GeneraRichieste()
         {
             var gi = new GeneratoreRichieste("MI",
-                1,
-                DateTime.Now.AddHours(-2),
+                5,
+                DateTime.Now.AddMonths(-2),
                 DateTime.Now,
-                50,
+                25,
                 30 * 60,
                 15 * 60,
                 45 * 60,

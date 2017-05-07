@@ -11,10 +11,6 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
     {
         private static Faker faker = null;
 
-        private ParametriRichiesta()
-        {
-        }
-
         /// <summary>
         ///   Indica la data alla quale giunge la segnalazione dell'intervento
         /// </summary>

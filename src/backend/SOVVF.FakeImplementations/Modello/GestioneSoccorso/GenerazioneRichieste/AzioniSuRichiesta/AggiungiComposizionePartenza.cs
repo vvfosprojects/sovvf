@@ -11,13 +11,15 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
 {
     internal class AggiungiComposizionePartenza : IAzioneSuRichiesta
     {
+        private readonly DateTime istantePrevisto;
         private readonly ParcoMezzi parcoMezzi;
         private readonly ParametriMezzo parametriMezzo;
         private readonly RichiestaConParametri richiesta;
         private bool eseguita;
 
-        public AggiungiComposizionePartenza(RichiestaConParametri richiesta, ParametriMezzo parametriMezzo, ParcoMezzi parcoMezzi)
+        public AggiungiComposizionePartenza(DateTime istantePrevisto, RichiestaConParametri richiesta, ParametriMezzo parametriMezzo, ParcoMezzi parcoMezzi)
         {
+            this.istantePrevisto = istantePrevisto;
             this.richiesta = richiesta;
             this.parametriMezzo = parametriMezzo;
             this.parcoMezzi = parcoMezzi;
@@ -27,15 +29,15 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         {
             get
             {
-                return this.parametriMezzo.DataPrevistaComposizione;
+                return this.istantePrevisto;
             }
         }
 
-        public void Esegui(DateTime istanteEffettivo)
+        public IEnumerable<IAzioneSuRichiesta> Esegui(DateTime istanteEffettivo)
         {
             var mezzoSelezionato = this.parcoMezzi.GetPrimoMezzoDisponibile();
             if (mezzoSelezionato == null)
-                return;
+                yield break;
 
             mezzoSelezionato.ContestoMezzo.Composizione();
             this.parametriMezzo.MezzoUtilizzato = mezzoSelezionato; // questa assegnazione alimenta l'esecuzione di tutti gli altri eventi successivi
@@ -53,6 +55,12 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             };
             this.richiesta.Richiesta.Eventi.Add(composizione);
             eseguita = true;
+
+            yield return new AggiungiPartenzaDallaSede(
+                istanteEffettivo.AddMinutes(1), //la partenza avviene un minuto dopo la composizione
+                richiesta,
+                parametriMezzo,
+                parcoMezzi);
         }
 
         public bool Eseguita()

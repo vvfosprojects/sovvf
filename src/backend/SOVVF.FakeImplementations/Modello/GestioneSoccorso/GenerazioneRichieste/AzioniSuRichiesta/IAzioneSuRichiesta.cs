@@ -10,7 +10,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
     {
         DateTime IstantePrevisto { get; }
 
-        void Esegui(DateTime istanteEffettivo);
+        IEnumerable<IAzioneSuRichiesta> Esegui(DateTime istanteEffettivo);
 
         bool Eseguita();
     }
