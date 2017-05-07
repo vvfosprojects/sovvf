@@ -13,7 +13,6 @@ namespace SOVVF.FakeImplementations.Test
     public class TestGeneratoreRichieste
     {
         [Test]
-        [Repeat(10)]
         public void GeneraRichieste()
         {
             var gi = new GeneratoreRichieste("MI",
@@ -28,9 +27,6 @@ namespace SOVVF.FakeImplementations.Test
                 new float[] { .85F, .7F, .4F, .3F, .1F });
 
             var richieste = gi.Genera();
-
-            foreach (var r in richieste)
-                r.ToString();
         }
     }
 }
