@@ -173,6 +173,23 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(ra => ra.Tipologie, f => this.GeneraTipologie())
                 .Ignore(ra => ra.Eventi);
 
+            var fakerTelefonata = new Faker<Telefonata>()
+                .StrictMode(true)
+                .RuleFor(t => t.Codice, f => f.IndexGlobal.ToString())
+                .RuleFor(t => t.CodiceFonte, f => "Simulazione")
+                .RuleFor(t => t.CodiceSchedaContatto, f => f.Random.Replace("??###"))
+                .RuleFor(t => t.CognomeChiamante, f => f.Name.LastName())
+                .RuleFor(t => t.Esito, f => "Avente seguito")
+                .RuleFor(t => t.Geolocalizzazione, f => fakerGeolocalizzazione.Generate())
+                .RuleFor(t => t.Motivazione, f => f.Lorem.Text())
+                .RuleFor(t => t.NomeChiamante, f => f.Name.FirstName())
+                .RuleFor(t => t.NotePrivate, f => f.Lorem.Sentence(10))
+                .RuleFor(t => t.NotePubbliche, f => f.Lorem.Sentence(10))
+                .RuleFor(t => t.NumeroTelefono, f => f.Phone.PhoneNumber())
+                .RuleFor(t => t.RagioneSociale, f => f.Company.CompanyName())
+                .Ignore(t => t.Istante)
+                .Ignore(t => t.IstantePresaInCarico);
+
             var numeroInterventi = (int)(this.dataMax.Subtract(this.dataMin).TotalDays * this.richiesteMedieAlGiorno);
             var richiesteConParametri = Enumerable.Range(1, numeroInterventi)
                  .Select(i => new RichiestaConParametri
@@ -191,11 +208,10 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             // Aggiunta eventi telefonata in base ai parametri selezionati per ogni richiesta
             foreach (var r in richiesteConParametri)
             {
-                r.Richiesta.Eventi.Add(
-                    new Telefonata()
-                    {
-                        Istante = r.Parametri.DataSegnalazione
-                    });
+                var t = fakerTelefonata.Generate();
+                t.Istante = r.Parametri.DataSegnalazione;
+                t.IstantePresaInCarico = r.Parametri.DataSegnalazione;
+                r.Richiesta.Eventi.Add(t);
             }
 
             var parcoMezzi = new ParcoMezzi(this.numeroMezzi, this.codiceUnitaOperativa);
