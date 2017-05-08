@@ -23,6 +23,7 @@ using System.Linq;
 using Bogus;
 using Modello.Classi.Geo;
 using Modello.Classi.Soccorso;
+using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.AzioniSuRichiesta;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
@@ -186,6 +187,16 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                      new Gaussiana(this.mediaSecondiRientroInSede, this.mediaSecondiRientroInSede / 3)),
                      Richiesta = fakerRichiesteAssistenza.Generate()
                  }).ToList();
+
+            // Aggiunta eventi telefonata in base ai parametri selezionati per ogni richiesta
+            foreach (var r in richiesteConParametri)
+            {
+                r.Richiesta.Eventi.Add(
+                    new Telefonata()
+                    {
+                        Istante = r.Parametri.DataSegnalazione
+                    });
+            }
 
             var parcoMezzi = new ParcoMezzi(this.numeroMezzi, this.codiceUnitaOperativa);
             var azioni = richiesteConParametri
