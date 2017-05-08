@@ -38,10 +38,10 @@ namespace SOVVF.FakeImplementations.Test
         {
             var gi = new GeneratoreRichieste(
                 "MI",
-                3,
+                5,
                 DateTime.Now.AddHours(-12),
                 DateTime.Now,
-                100,
+                25,
                 30 * 60,
                 15 * 60,
                 45 * 60,
