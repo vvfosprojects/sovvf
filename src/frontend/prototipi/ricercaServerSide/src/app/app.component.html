@@ -12,6 +12,8 @@
 </div>
 -->
 
+<p-autoComplete [(ngModel)]="text" [suggestions]="results" (completeMethod)="search($event)"></p-autoComplete>
+
 	  <b>Angular 2 Component Using Observables!</b>
 	 
 	  <h6 style="margin-bottom: 0">VALUES:</h6>
