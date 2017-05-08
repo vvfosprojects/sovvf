@@ -4,6 +4,8 @@ import { RicercaService } from "./ricerca/ricerca.service";
 import { RisultatoRicerca } from "./ricerca/risultato-ricerca";
 import { CompleterCmp, CompleterData, CompleterService, CompleterItem, RemoteData } from 'ng2-completer';
 
+import {AutoCompleteModule} from 'primeng/primeng';
+
 declare var require: any
 @Component({
     selector: 'app-root',
@@ -13,6 +15,9 @@ declare var require: any
 export class AppComponent {
     title = 'app works!';
     risultati: RisultatoRicerca[];
+
+    text: string;
+    results: string[];
 
   protected searchStr: string;
   public countries = require("data/countries.json");
@@ -63,6 +68,12 @@ export class AppComponent {
 this.dataRemote2.dataField("Search");
 
 
+    }
+
+    search(event) {
+        this._ricercaService.getCountries().then(data => {
+            this.results = data;
+        });
     }
 
     public onCountrySelected(selected: CompleterItem) {

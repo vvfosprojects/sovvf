@@ -7,6 +7,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { RicercaService } from "./ricerca/ricerca.service";
 import { Ng2CompleterModule } from "ng2-completer";
+import {AutoCompleteModule} from 'primeng/primeng';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { Ng2CompleterModule } from "ng2-completer";
     NgbModule.forRoot(),
     BrowserModule,
     Ng2CompleterModule,
+    AutoCompleteModule,
     FormsModule,
     HttpModule
   ],

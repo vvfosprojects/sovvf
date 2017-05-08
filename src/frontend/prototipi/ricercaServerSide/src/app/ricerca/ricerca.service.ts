@@ -3,11 +3,13 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
 import { RisultatoRicerca } from "./risultato-ricerca";
+import { Http } from "@angular/http";
+import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class RicercaService {
 
-  constructor() {
+  constructor(private http: Http) {
     
   }
 
@@ -29,6 +31,13 @@ export class RicercaService {
 
     return Observable.of(risultati);
   }
+
+  getCountries() {
+        return this.http.get('showcase/resources/data/countries.json')
+                    .toPromise()
+                    .then(res => <any[]> res.json().data)
+                    .then(data => { return data; });
+    }
 
   private replica3(s: string): string {
     return s + " " + s + " " + s;
