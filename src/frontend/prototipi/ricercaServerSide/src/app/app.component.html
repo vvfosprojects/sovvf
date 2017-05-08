@@ -71,7 +71,7 @@
 											 [placeholder]="'Ricerca nazione'"
 											 [clearSelected]="true" 
 											 (selected)="onCountrySelected($event)"
-											 [inputClass]="'form-control'"
+											 [inputClass]="'form-control form-control-success'"
 											 [textSearching]="'Attendere...'"
                        [textNoResults]="'Nessun dato trovato.'">
                        
@@ -79,6 +79,29 @@
 			</div>
 			<div class="col-6">
 				<p class="form-control-static"><b> {{countryName2}}</b></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<h3>Remote data with URL Formater and Headers</h3>
+<p>Remote data from <a href="http://www.omdbapi.com">The Open Movie Database</a> with
+	<code>urlFormater</code> and <code>dataField</code></p>
+
+<div class="card">
+	<div class="card-block">
+		<div class="form-group row">
+			<div class="col-5">
+				<ng2-completer [(ngModel)]="countryName5"
+											 [datasource]="dataRemote2"
+											 [minSearchLength]="3"
+											 [placeholder]="'Search movie title'"
+											 [textSearching]="'Please wait...'"
+											 [inputClass]="'form-control'">
+				</ng2-completer>
+			</div>
+			<div class="col-6">
+				<p class="form-control-static"><b>{{countryName5}}</b></p>
 			</div>
 		</div>
 	</div>

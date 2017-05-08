@@ -20,6 +20,7 @@ export class AppComponent {
   protected dataService: CompleterData;
   private dataService2: CompleterData;
   private dataRemote: CompleterData;
+  private dataRemote2: RemoteData;
   protected searchData = [
     { color: 'red', value: '#f00' },
     { color: 'green', value: '#0f0' },
@@ -50,6 +51,16 @@ export class AppComponent {
             "https://raw.githubusercontent.com/oferh/ng2-completer/master/demo/res/data/countries.json?",
             "name",
             "name");
+
+            this.dataRemote2 = completerService.remote(
+            null,
+            null,
+"Title");
+
+            this.dataRemote2.urlFormater(term => {
+            return `http://www.omdbapi.com/?s=${term}&type=movie`;
+        });
+this.dataRemote2.dataField("Search");
 
 
     }
