@@ -23,11 +23,11 @@ using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following set of attributes.
 // Change these attribute values to modify the information associated with an assembly.
-[assembly: AssemblyTitle("SOVVF.FakeImplementations")]
+[assembly: AssemblyTitle("SOVVF.FakeImplementations.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SOVVF.FakeImplementations")]
+[assembly: AssemblyProduct("SOVVF.FakeImplementations.Test")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -37,7 +37,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("01c504e1-0eb9-42b6-8c2e-9668fa5dd053")]
+[assembly: Guid("971b0a3a-43d0-4912-ab06-b6b3f29996be")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -47,4 +47,3 @@ using System.Runtime.InteropServices;
 // as shown below: [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: InternalsVisibleTo("SOVVF.FakeImplementations.Test")]

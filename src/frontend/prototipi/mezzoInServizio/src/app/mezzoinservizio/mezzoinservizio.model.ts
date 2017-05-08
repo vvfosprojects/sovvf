@@ -1,6 +1,6 @@
-export class MezzoInServizio {
-  
+import { PersonaSulMezzo } from "./persona-sul-mezzo.model";
 
+export class MezzoInServizio {
   constructor(public Codice: string,
    public CodiceUnitaOperativa: string,
    public Sigla: string,
@@ -12,15 +12,11 @@ export class MezzoInServizio {
    public Disponibile: boolean,
    public SiglaSquadra: string,
    public Turno: string,
-   public DataServizio: Date
+   public DataServizio: Date,
+   
+   /**
+    * Rappresenta l'elenco delle persone che sono presenti sul mezzo
+    */
+   public personeSulMezzo: PersonaSulMezzo[]
    ) {}
  }
-
-
-
-export class SquadraSulMezzo {
-   constructor ( public Qualifica: string,
-   public CodiceFiscale : string,
-   public Ruolo: string,
-   public Nominativo: string) {}
-}

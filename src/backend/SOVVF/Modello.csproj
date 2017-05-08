@@ -31,12 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SimpleInjector, Version=4.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.4.0.0\lib\net45\SimpleInjector.dll</HintPath>
+    <Reference Include="SimpleInjector, Version=4.0.6.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.4.0.6\lib\net45\SimpleInjector.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SimpleInjector.Packaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.Packaging.4.0.0\lib\net40\SimpleInjector.Packaging.dll</HintPath>
+    <Reference Include="SimpleInjector.Packaging, Version=4.0.6.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.Packaging.4.0.6\lib\net40\SimpleInjector.Packaging.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

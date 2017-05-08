@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B56AA882-5F96-4DD1-9729-2A99C12EC224}</ProjectGuid>
+    <ProjectGuid>{971B0A3A-43D0-4912-AB06-B6B3F29996BE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Modello.Test</RootNamespace>
-    <AssemblyName>Modello.Test</AssemblyName>
+    <RootNamespace>SOVVF.FakeImplementations.Test</RootNamespace>
+    <AssemblyName>SOVVF.FakeImplementations.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -31,14 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.4.0.0\lib\net45\Castle.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Moq, Version=4.7.8.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.7.8\lib\net45\Moq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -53,18 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classi\Organigramma\TestUnitaOperativa.cs" />
-    <Compile Include="Classi\Soccorso\CQRS\Query\TestSituazioneMezzi.cs" />
-    <Compile Include="Classi\Soccorso\TestComposizionePartenze.cs" />
-    <Compile Include="Classi\Soccorso\TestRichiestaAssistenza.cs" />
-    <Compile Include="Classi\Soccorso\TestSquadra.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SOVVF\Modello.csproj">
-      <Project>{24ff6bb3-effc-499f-9f86-f849454a7217}</Project>
-      <Name>Modello</Name>
-    </ProjectReference>
+    <Compile Include="TestGeneratoreRichieste.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SOVVF.licenseheader">
@@ -73,7 +55,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Servizi\" />
+    <ProjectReference Include="..\SOVVF.FakeImplementations\SOVVF.FakeImplementations.csproj">
+      <Project>{01c504e1-0eb9-42b6-8c2e-9668fa5dd053}</Project>
+      <Name>SOVVF.FakeImplementations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SOVVF\Modello.csproj">
+      <Project>{24ff6bb3-effc-499f-9f86-f849454a7217}</Project>
+      <Name>Modello</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
