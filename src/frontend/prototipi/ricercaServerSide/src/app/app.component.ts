@@ -15,9 +15,12 @@ declare var require: any
 export class AppComponent {
     title = 'app works!';
     risultati: RisultatoRicerca[];
+    voce: RisultatoRicerca = new RisultatoRicerca("id0", "risultato iniziale", "tooltip");
 
     text: string;
     results: string[];
+
+    filteredCountriesSingle: any[];
 
   protected searchStr: string;
   public countries = require("data/countries.json");
@@ -70,12 +73,33 @@ this.dataRemote2.dataField("Search");
 
     }
 
-    search(event) {
-        this._ricercaService.getCountries().then(data => {
-            this.results = data;
+    searchFake(event) {
+        this._ricercaService.ricerca(event.query)
+            .subscribe(data => {
+                this.risultati = data;
+            });
+    }    
+
+    filterCountrySingle(event) {
+        let query = event.query;        
+        this._ricercaService.getCountries().subscribe(countries => {
+            this.filteredCountriesSingle = this.filterCountry(query, countries);
         });
     }
 
+    filterCountry(query, countries: any[]):any[] {
+        //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
+        let filtered : any[] = [];
+        for(let i = 0; i < countries.length; i++) {
+            let country = countries[i];
+            if(country.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+                filtered.push(country);
+            }
+        }
+        return filtered;
+    }
+
+  
     public onCountrySelected(selected: CompleterItem) {
         if (selected) {
             this.countryName2 = selected.title;

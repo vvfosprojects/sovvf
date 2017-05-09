@@ -11,9 +11,15 @@
   </div>
 </div>
 -->
-
-<p-autoComplete [(ngModel)]="text" [suggestions]="results" (completeMethod)="search($event)"></p-autoComplete>
-
+<h3 class="first">Basic</h3>
+<p-autoComplete [(ngModel)]="voce" placeholder="Scrivi cosa cerchi..." [autoHighlight]="true" [suggestions]="risultati" (completeMethod)="searchFake($event)" field="testo" [size]="30"
+    [minLength]="1">
+	<ng-template let-brand pTemplate="itemdddd">
+        <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+            <div title="{{ brand.tooltip }}"><span class="h6">{{ brand.id }}:</span> {{ brand.testo }}</div>
+        </div>
+    </ng-template>	
+</p-autoComplete>
 	  <b>Angular 2 Component Using Observables!</b>
 	 
 	  <h6 style="margin-bottom: 0">VALUES:</h6>
@@ -24,6 +30,7 @@
 	  
 	  <h6 style="margin-bottom: 0">FINISHED:</h6>
 	  <div>Finished: {{ finished }}</div>
+	<div>Hai selezionato: {{ !!voce ? voce.id||voce : "Niente" }}</div>
 	  
 <!--	  <button style="margin-top: 2rem;" (click)="init()">Init</button> -->
 <h1>NG2-completer test</h1>
