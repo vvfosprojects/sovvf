@@ -171,7 +171,8 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(ra => ra.CodiciUnitaOperativeAllertate, f => new HashSet<string> { this.codiceUnitaOperativa })
                 .RuleFor(ra => ra.Geolocalizzazione, f => fakerGeolocalizzazione.Generate())
                 .RuleFor(ra => ra.Tipologie, f => this.GeneraTipologie())
-                .Ignore(ra => ra.Eventi);
+                .Ignore(ra => ra.Eventi)
+                .RuleFor(ra => ra.IstanteChiusura, f => null);
 
             var fakerTelefonata = new Faker<Telefonata>()
                 .StrictMode(true)

@@ -409,10 +409,11 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
                 Istante = istanteSulPostoM1
             };
             var istanteSganciatoM1 = DateTime.Now.AddMinutes(-2);
-            var eventoSganciatoM1 = new Sganciamento()
+            var eventoSganciatoM1 = new Riassegnazione()
             {
                 CodiceMezzo = "M1",
-                Istante = istanteSganciatoM1
+                Istante = istanteSganciatoM1,
+                CodiceRichiesta = "R1"
             };
             var istanteEventoUscitaM2 = DateTime.Now.AddMinutes(-8);
             var eventoUscitaM2 = new UscitaPartenza()

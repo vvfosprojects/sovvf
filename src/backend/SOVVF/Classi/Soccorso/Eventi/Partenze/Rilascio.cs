@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Subentro.cs" company="CNVVF">
+// <copyright file="Sganciamento.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,27 +18,22 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Linq;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    ///   Eventuale dirottamento in fase di rientro della <see cref="ComposizionePartenze"></see>
-    ///   presso un'altra Richiesta di assistenza, piuttosto che rientrare in sede. (valido da dopo
-    ///   PartenzaInRientro )
+    ///   Indica il rilascio della <see cref="ComposizionePartenze"></see> da una Richiesta di
+    ///   assistenza. (valido da dopo la <see cref="ComposizionePartenze" /> fino a
+    ///   <see cref="PartenzaInRientro" /> inclusa)
     /// </summary>
-    /// <remarks>Lo sganciamento ha senso solo per <see cref="SoccorsoOrdinario"></see>.</remarks>
-    public class Subentro : Evento, IPartenza
+    public abstract class Rilascio : Evento, IPartenza
     {
         /// <summary>
         ///   E' l'identificativo del mezzo a cui è associato l'evento
         /// </summary>
         public string CodiceMezzo { get; set; }
-
-        /// <summary>
-        ///   Il codice della richiesta verso cui si dirotta la partenza.
-        /// </summary>
-        public string CodiceRichiesta { get; set; }
 
         /// <summary>
         ///   Restituisce i codici dei mezzi coinvolti in questo evento
@@ -47,7 +42,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         {
             get
             {
-                throw new NotImplementedException();
+                return Enumerable.Repeat(CodiceMezzo, 1).ToArray();
             }
         }
 
