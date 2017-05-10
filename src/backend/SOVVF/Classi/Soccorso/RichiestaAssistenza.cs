@@ -204,6 +204,28 @@ namespace Modello.Classi.Soccorso
         /// </summary>
         public DateTime? IstanteChiusura { get; internal set; }
 
+        /// <summary>
+        ///   Indica se la richiesta è aperta
+        /// </summary>
+        public bool Chiusa
+        {
+            get
+            {
+                return this.IstanteChiusura.HasValue;
+            }
+        }
+
+        /// <summary>
+        ///   Indica se la richiesta è chiusa
+        /// </summary>
+        public bool Aperta
+        {
+            get
+            {
+                return !this.Chiusa;
+            }
+        }
+
 #warning realizzare i metodi che restituiscono "n.richieste evase" e "n.mezzi intervenuti (RientratoInSede)" e utilizzarli per gli indicatori di soccorso
 
         #endregion Metodi

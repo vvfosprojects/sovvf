@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FinePresaInCarico.cs" company="CNVVF">
+// <copyright file="RiaperturaRichiesta.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -24,6 +24,10 @@ namespace Modello.Classi.Soccorso.Eventi
     /// </summary>
     public class RiaperturaRichiesta : Evento
     {
+        /// <summary>
+        ///   Costruttore della classe. A seguito della chiamata, la richiesta risulta aperta.
+        /// </summary>
+        /// <param name="richiesta">La richiesta alla quale l'evento deve essere aggiunto</param>
         public RiaperturaRichiesta(RichiestaAssistenza richiesta) : base()
 #warning questo metodo dovrebbe prima verificare che sia corretto chiudere la richiesta, ad esempio verificando che non ci siano ancora partenze in loco
         {

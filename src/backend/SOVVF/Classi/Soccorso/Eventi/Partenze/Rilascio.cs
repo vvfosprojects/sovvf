@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Sganciamento.cs" company="CNVVF">
+// <copyright file="Rilascio.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -42,7 +42,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         {
             get
             {
-                return Enumerable.Repeat(CodiceMezzo, 1).ToArray();
+                return Enumerable.Repeat(this.CodiceMezzo, 1).ToArray();
             }
         }
 

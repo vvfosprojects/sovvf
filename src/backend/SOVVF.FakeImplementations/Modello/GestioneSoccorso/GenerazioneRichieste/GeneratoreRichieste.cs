@@ -218,7 +218,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             var parcoMezzi = new ParcoMezzi(this.numeroMezzi, this.codiceUnitaOperativa);
             var azioni = richiesteConParametri
                 .SelectMany(r => this.GetAzioni(r, parcoMezzi))
-                .Where(a => a.IstantePrevisto <= dataMax)
+                .Where(a => a.IstantePrevisto <= this.dataMax)
                 .OrderBy(a => a.IstantePrevisto)
                 .ToList();
 
@@ -237,7 +237,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                             dataSimulata = azione.IstantePrevisto;
                         }
 
-                        azioni.AddRange(azione.Esegui(dataSimulata).Where(a => a.IstantePrevisto <= dataMax));
+                        azioni.AddRange(azione.Esegui(dataSimulata).Where(a => a.IstantePrevisto <= this.dataMax));
 
                         if (azione.Eseguita())
                         {
