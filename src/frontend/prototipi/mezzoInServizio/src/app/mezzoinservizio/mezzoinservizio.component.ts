@@ -33,6 +33,10 @@ export class MezzoinservizioComponent implements OnInit {
     this.fs.CodiceStato = isSet;
   }
  
+  private numeroPersone(): number {
+    return this.fs.personeSulMezzo.length;
+  }
+
 }
 
 
