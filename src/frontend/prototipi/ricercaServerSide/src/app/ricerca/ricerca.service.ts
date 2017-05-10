@@ -3,11 +3,13 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
 import { RisultatoRicerca } from "./risultato-ricerca";
+import { Http } from "@angular/http";
+import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class RicercaService {
 
-  constructor() {
+  constructor(private http: Http) {
     
   }
 
@@ -22,13 +24,22 @@ export class RicercaService {
    */
   public ricerca(chiave: string): Observable<RisultatoRicerca[]> {
     var risultati: RisultatoRicerca[] = [
-      new RisultatoRicerca(this.replica3(chiave + "1"), "Questa è la chiave1 di " + chiave),
-      new RisultatoRicerca(this.replica3(chiave + "2"), "Questa è la chiave2 di " + chiave),
-      new RisultatoRicerca(this.replica3(chiave + "3"), "Questa è la chiave3 di " + chiave),
+      new RisultatoRicerca("id1", this.replica3(chiave + "1"), "Questa è la chiave1 di " + chiave),
+      new RisultatoRicerca("id2", this.replica3(chiave + "2"), "Questa è la chiave2 di " + chiave),
+      new RisultatoRicerca("id3", this.replica3(chiave + "3"), "Questa è la chiave3 di " + chiave),
     ];
 
     return Observable.of(risultati);
   }
+
+  getCountries() {
+     /*   return this.http.get('https://raw.githubusercontent.com/oferh/ng2-completer/master/demo/res/data/countries.json')
+                    .toPromise()
+                    .then(res => <any[]> res.json().data)
+                    .then(data => { return data; });*/
+         return this.http.get("https://raw.githubusercontent.com/oferh/ng2-completer/master/demo/res/data/countries.json")
+                         .map(response => response.json());                    
+    }
 
   private replica3(s: string): string {
     return s + " " + s + " " + s;

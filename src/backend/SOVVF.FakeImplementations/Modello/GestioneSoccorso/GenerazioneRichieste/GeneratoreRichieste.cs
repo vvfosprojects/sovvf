@@ -23,6 +23,7 @@ using System.Linq;
 using Bogus;
 using Modello.Classi.Geo;
 using Modello.Classi.Soccorso;
+using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.AzioniSuRichiesta;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
@@ -173,6 +174,23 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .Ignore(ra => ra.Eventi)
                 .RuleFor(ra => ra.IstanteChiusura, f => null);
 
+            var fakerTelefonata = new Faker<Telefonata>()
+                .StrictMode(true)
+                .RuleFor(t => t.Codice, f => f.IndexGlobal.ToString())
+                .RuleFor(t => t.CodiceFonte, f => "Simulazione")
+                .RuleFor(t => t.CodiceSchedaContatto, f => f.Random.Replace("??###"))
+                .RuleFor(t => t.CognomeChiamante, f => f.Name.LastName())
+                .RuleFor(t => t.Esito, f => "Avente seguito")
+                .RuleFor(t => t.Geolocalizzazione, f => fakerGeolocalizzazione.Generate())
+                .RuleFor(t => t.Motivazione, f => f.Lorem.Text())
+                .RuleFor(t => t.NomeChiamante, f => f.Name.FirstName())
+                .RuleFor(t => t.NotePrivate, f => f.Lorem.Sentence(10))
+                .RuleFor(t => t.NotePubbliche, f => f.Lorem.Sentence(10))
+                .RuleFor(t => t.NumeroTelefono, f => f.Phone.PhoneNumber())
+                .RuleFor(t => t.RagioneSociale, f => f.Company.CompanyName())
+                .Ignore(t => t.Istante)
+                .Ignore(t => t.IstantePresaInCarico);
+
             var numeroInterventi = (int)(this.dataMax.Subtract(this.dataMin).TotalDays * this.richiesteMedieAlGiorno);
             var richiesteConParametri = Enumerable.Range(1, numeroInterventi)
                  .Select(i => new RichiestaConParametri
@@ -188,18 +206,30 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                      Richiesta = fakerRichiesteAssistenza.Generate()
                  }).ToList();
 
+            // Aggiunta eventi telefonata in base ai parametri selezionati per ogni richiesta
+            foreach (var r in richiesteConParametri)
+            {
+                var t = fakerTelefonata.Generate();
+                t.Istante = r.Parametri.DataSegnalazione;
+                t.IstantePresaInCarico = r.Parametri.DataSegnalazione;
+                r.Richiesta.Eventi.Add(t);
+            }
+
             var parcoMezzi = new ParcoMezzi(this.numeroMezzi, this.codiceUnitaOperativa);
             var azioni = richiesteConParametri
                 .SelectMany(r => this.GetAzioni(r, parcoMezzi))
+                .Where(a => a.IstantePrevisto <= dataMax)
                 .OrderBy(a => a.IstantePrevisto)
                 .ToList();
 
             var dataSimulata = this.dataMin;
-            while (azioni.Any(a => !a.Eseguita()) && azioni.Any(a => a.IstantePrevisto <= this.dataMax))
+            var simulazioneTerminata = false;
+            while (azioni.Any(a => !a.Eseguita()) && !simulazioneTerminata)
             {
                 for (int i = 0; i < azioni.Count; i++)
                 {
-                    if (!azioni[i].Eseguita() && azioni[i].IstantePrevisto <= this.dataMax)
+                    simulazioneTerminata = true;
+                    if (!azioni[i].Eseguita())
                     {
                         var azione = azioni[i];
                         if (azione.IstantePrevisto > dataSimulata)
@@ -207,10 +237,11 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                             dataSimulata = azione.IstantePrevisto;
                         }
 
-                        azioni.AddRange(azione.Esegui(dataSimulata));
+                        azioni.AddRange(azione.Esegui(dataSimulata).Where(a => a.IstantePrevisto <= dataMax));
 
                         if (azione.Eseguita())
                         {
+                            simulazioneTerminata = false;
                             break;
                         }
                     }

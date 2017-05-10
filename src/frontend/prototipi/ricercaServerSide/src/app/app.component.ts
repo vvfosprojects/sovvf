@@ -4,6 +4,8 @@ import { RicercaService } from "./ricerca/ricerca.service";
 import { RisultatoRicerca } from "./ricerca/risultato-ricerca";
 import { CompleterCmp, CompleterData, CompleterService, CompleterItem, RemoteData } from 'ng2-completer';
 
+import {AutoCompleteModule} from 'primeng/primeng';
+
 declare var require: any
 @Component({
     selector: 'app-root',
@@ -13,6 +15,12 @@ declare var require: any
 export class AppComponent {
     title = 'app works!';
     risultati: RisultatoRicerca[];
+    voce: RisultatoRicerca = new RisultatoRicerca("id0", "risultato iniziale", "tooltip");
+
+    text: string;
+    results: string[];
+
+    filteredCountriesSingle: any[];
 
   protected searchStr: string;
   public countries = require("data/countries.json");
@@ -20,6 +28,7 @@ export class AppComponent {
   protected dataService: CompleterData;
   private dataService2: CompleterData;
   private dataRemote: CompleterData;
+  private dataRemote2: RemoteData;
   protected searchData = [
     { color: 'red', value: '#f00' },
     { color: 'green', value: '#0f0' },
@@ -51,9 +60,46 @@ export class AppComponent {
             "name",
             "name");
 
+            this.dataRemote2 = completerService.remote(
+            null,
+            null,
+"Title");
+
+            this.dataRemote2.urlFormater(term => {
+            return `http://www.omdbapi.com/?s=${term}&type=movie`;
+        });
+this.dataRemote2.dataField("Search");
+
 
     }
 
+    searchFake(event) {
+        this._ricercaService.ricerca(event.query)
+            .subscribe(data => {
+                this.risultati = data;
+            });
+    }    
+
+    filterCountrySingle(event) {
+        let query = event.query;        
+        this._ricercaService.getCountries().subscribe(countries => {
+            this.filteredCountriesSingle = this.filterCountry(query, countries);
+        });
+    }
+
+    filterCountry(query, countries: any[]):any[] {
+        //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
+        let filtered : any[] = [];
+        for(let i = 0; i < countries.length; i++) {
+            let country = countries[i];
+            if(country.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+                filtered.push(country);
+            }
+        }
+        return filtered;
+    }
+
+  
     public onCountrySelected(selected: CompleterItem) {
         if (selected) {
             this.countryName2 = selected.title;
