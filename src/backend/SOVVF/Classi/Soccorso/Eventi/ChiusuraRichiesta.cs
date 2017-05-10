@@ -20,10 +20,17 @@
 namespace Modello.Classi.Soccorso.Eventi
 {
     /// <summary>
-    ///   Questo evento indica che la richiesta di assistenza alla quale appartiene ha terminato di
-    ///   essere in carico per la gestione operativa
+    ///   Questo evento indica che sono terminate le operazioni di assistenza alla richiesta da parte
+    ///   dei VVF. Viene generato per esempio in caso di trasferimento della Richiesta ad altro Ente,
+    ///   oppure di chiusura dell'intervento effettuato, di intervento non più necessario, di falso
+    ///   allarme, di fine della vigilanza, etc.
     /// </summary>
-    public class FinePresaInCarico : Evento
+    public class ChiusuraRichiesta : Evento
     {
+        public ChiusuraRichiesta(RichiestaAssistenza richiesta) : base()
+#warning questo metodo dovrebbe prima verificare che sia corretto chiudere la richiesta, ad esempio verificando che non ci siano ancora partenze in loco
+        {
+            richiesta.IstanteChiusura = this.Istante;
+        }
     }
 }

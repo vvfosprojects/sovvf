@@ -199,6 +199,11 @@ namespace Modello.Classi.Soccorso
             }
         }
 
+        /// <summary>
+        ///   Indica l'istante di chiusura della richiesta, impostato dall'evento <see cref="ChiusuraRichiesta" />
+        /// </summary>
+        public DateTime? IstanteChiusura { get; internal set; }
+
 #warning realizzare i metodi che restituiscono "n.richieste evase" e "n.mezzi intervenuti (RientratoInSede)" e utilizzarli per gli indicatori di soccorso
 
         #endregion Metodi
