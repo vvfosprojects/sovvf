@@ -31,8 +31,31 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
     public class FuoriServizio : Rilascio
     {
         /// <summary>
+        ///   Costruttore della classe.
+        /// </summary>
+        /// <param name="codiceMezzo">Il codice del mezzo</param>
+        /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
+        /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
+        /// <param name="motivazione">
+        ///   E' la motivazione che giustifica la transizione di stato verso Fuori Servizio
+        /// </param>
+        public FuoriServizio(
+            string codiceMezzo,
+            DateTime istante,
+            string codiceFonte,
+            string motivazione) : base(codiceMezzo, istante, codiceFonte)
+        {
+            if (string.IsNullOrWhiteSpace(motivazione))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(motivazione));
+            }
+
+            this.Motivazione = motivazione;
+        }
+
+        /// <summary>
         ///   E' la motivazione che giustifica la transizione di stato verso Fuori Servizio
         /// </summary>
-        public string Motivazione { get; set; }
+        public string Motivazione { get; private set; }
     }
 }

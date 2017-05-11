@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+
 namespace Modello.Classi.Soccorso.Eventi
 {
     /// <summary>
@@ -30,11 +32,22 @@ namespace Modello.Classi.Soccorso.Eventi
     public class AssegnazionePriorita : Evento
     {
         /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="priorita">E' la priorità da impostare</param>
+        /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
+        /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
+        public AssegnazionePriorita(RichiestaAssistenza.Priorita priorita, DateTime istante, string codiceFonte) : base(istante, codiceFonte)
+        {
+            this.Priorita = priorita;
+        }
+
+        /// <summary>
         ///   E' la priorità che l'operatore assegna alla richiesta presa in carico
         /// </summary>
         /// <remarks>
         ///   L'ultimo evento di questa classe indica qual è la priorità dell'istanza di RichiestaAssistenza
         /// </remarks>
-        public RichiestaAssistenza.Priorita Priorita { get; set; }
+        public RichiestaAssistenza.Priorita Priorita { get; private set; }
     }
 }

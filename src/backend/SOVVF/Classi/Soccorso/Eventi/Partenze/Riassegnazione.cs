@@ -31,8 +31,25 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
     public class Riassegnazione : Rilascio
     {
         /// <summary>
+        ///   Costruttore della classe.
+        /// </summary>
+        /// <param name="codiceRichiesta">
+        ///   Il codice della richiesta alla quale viene riassegnato il mezzo
+        /// </param>
+        /// <param name="codiceMezzo">Il codice del mezzo</param>
+        /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
+        /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
+        public Riassegnazione(string codiceRichiesta, string codiceMezzo, DateTime istante, string codiceFonte) : base(codiceMezzo, istante, codiceFonte)
+        {
+            if (string.IsNullOrWhiteSpace(codiceRichiesta))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceRichiesta));
+            }
+        }
+
+        /// <summary>
         ///   E' l'identificativo della Richiesta di Assistenza a cui viene riassegnata la Partenza
         /// </summary>
-        public string CodiceRichiesta { get; set; }
+        public string CodiceRichiesta { get; private set; }
     }
 }

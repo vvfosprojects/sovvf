@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+
 namespace Modello.Classi.Soccorso.Eventi
 {
     /// <summary>
@@ -29,5 +31,13 @@ namespace Modello.Classi.Soccorso.Eventi
     /// </remarks>
     public class InizioPresaInCarico : Evento
     {
+        /// <summary>
+        ///   Costruttore della classe.
+        /// </summary>
+        /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
+        /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
+        public InizioPresaInCarico(DateTime istante, string codiceFonte) : base(istante, codiceFonte)
+        {
+        }
     }
 }

@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using Modello.Classi.Soccorso.Squadre;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
@@ -27,6 +28,48 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
     /// </summary>
     public class ComponentePartenza : Componente
     {
+        /// <summary>
+        ///   Costruttore della classe.
+        /// </summary>
+        public ComponentePartenza()
+        {
+        }
+
+        /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="codiceMezzo">Il codice del mezzo</param>
+        public ComponentePartenza(string codiceMezzo)
+        {
+            if (string.IsNullOrWhiteSpace(codiceMezzo))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceMezzo));
+            }
+
+            this.CodiceMezzo = codiceMezzo;
+        }
+
+        /// <summary>
+        ///   Costruttore della classe.
+        /// </summary>
+        /// <param name="codiceMezzo">E' il codice del mezzo</param>
+        /// <param name="ticket">E' il ticket associato alla squadra a bordo del mezzo</param>
+        public ComponentePartenza(string codiceMezzo, string ticket)
+        {
+            if (string.IsNullOrWhiteSpace(codiceMezzo))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceMezzo));
+            }
+
+            if (string.IsNullOrWhiteSpace(ticket))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(ticket));
+            }
+
+            this.CodiceMezzo = codiceMezzo;
+            this.Ticket = ticket;
+        }
+
         /// <summary>
         ///   E' l'identificativo del mezzo
         /// </summary>

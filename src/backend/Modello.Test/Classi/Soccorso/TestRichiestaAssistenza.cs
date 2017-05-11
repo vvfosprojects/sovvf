@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using Modello.Classi.Soccorso;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using NUnit.Framework;
@@ -40,7 +41,7 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaSingolaChiamataECorrettamenteInserita()
         {
             var richiesta = new RichiestaAssistenza();
-            var telefonata = new Telefonata();
+            var telefonata = new Telefonata("ABC", DateTime.Now, "Fonte");
             richiesta.Eventi.Add(telefonata);
 
             var telefonate = richiesta.Telefonate;

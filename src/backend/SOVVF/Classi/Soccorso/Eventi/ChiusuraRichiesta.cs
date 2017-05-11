@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 using System;
 
 namespace Modello.Classi.Soccorso.Eventi
@@ -33,12 +32,14 @@ namespace Modello.Classi.Soccorso.Eventi
         /// <summary>
         ///   Costruttore della classe. A seguito della chiamata, la richiesta risulta chiusa.
         /// </summary>
-        /// <param name="richiesta">La richiesta alla quale l'evento deve essere aggiunto</param>
-        public ChiusuraRichiesta(RichiestaAssistenza richiesta) : base()
+        /// <param name="richiesta">E' la richiesta alla quale l'evento deve essere aggiunto</param>
+        /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
+        /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
+        public ChiusuraRichiesta(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte) : base(istante, codiceFonte)
         {
             if (richiesta == null)
             {
-                throw new ArgumentException("Cannot be null", nameof(richiesta));
+                throw new ArgumentNullException(nameof(richiesta));
             }
 
             richiesta.IstanteChiusura = this.Istante;

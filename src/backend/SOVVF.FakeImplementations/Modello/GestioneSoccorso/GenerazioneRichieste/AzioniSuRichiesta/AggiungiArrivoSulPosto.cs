@@ -89,13 +89,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             }
 
             mezzo.ContestoMezzo.SulPosto();
-            this.richiesta.Richiesta.Eventi.Add(
-                new ArrivoSulPosto()
-                {
-                    CodiceMezzo = this.parametriMezzo.MezzoUtilizzato.Codice,
-                    Istante = istanteEffettivo
-                });
-
+            this.richiesta.Richiesta.Eventi.Add(new ArrivoSulPosto(this.parametriMezzo.MezzoUtilizzato.Codice, istanteEffettivo, "Fonte"));
             this.eseguita = true;
 
             yield return new AggiungiPartenzaDalPosto(
