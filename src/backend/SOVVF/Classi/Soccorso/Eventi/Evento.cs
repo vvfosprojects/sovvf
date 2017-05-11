@@ -33,7 +33,7 @@ namespace Modello.Classi.Soccorso.Eventi
         /// <summary>
         ///   Costruttore della classe.
         /// </summary>
-        /// <param name="istante">L'istante in cui avviene l'evento</param>
+        /// <param name="istante">L'istante in cui avviene l'evento.</param>
         /// <param name="codiceFonte">Il codice della fonte informativa dell'evento.</param>
         public Evento(DateTime istante, string codiceFonte)
         {
@@ -42,9 +42,9 @@ namespace Modello.Classi.Soccorso.Eventi
                 throw new ArgumentOutOfRangeException(nameof(istante), "Date cannot be equal to DateTime.MinValue");
             }
 
-            if (codiceFonte == null)
+            if (string.IsNullOrWhiteSpace(codiceFonte))
             {
-                throw new ArgumentNullException(nameof(codiceFonte));
+                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceFonte));
             }
 
             this.Istante = istante;
