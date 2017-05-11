@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { RicercaService } from "./ricerca/ricerca.service";
 import { RisultatoRicerca } from "./ricerca/risultato-ricerca";
 import { CompleterCmp, CompleterData, CompleterService, CompleterItem, RemoteData } from 'ng2-completer';
+import {ViewEncapsulation} from '@angular/core';
 
 import { AutoCompleteModule } from 'primeng/primeng';
 
@@ -10,7 +11,8 @@ declare var require: any
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+    styleUrls: ['./app.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
     title = 'app works!';

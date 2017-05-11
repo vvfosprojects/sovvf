@@ -25,9 +25,9 @@
 <h3 class="first">Multiple PrimeNG</h3>
 <p-autoComplete [(ngModel)]="risultatiMultipli" [multiple]="true" placeholder="Scrivi cosa cerchi..." [suggestions]="risultati" (completeMethod)="searchFake($event)" field="testo" [size]="30"
     [minLength]="1">
-	<ng-template let-brand pTemplate="itemdddd">
+	<ng-template  let-brand pTemplate="itemdddd">
         <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
-            <div title="{{ brand.tooltip }}"><span class="h6">{{ brand.id }}:</span> {{ brand.testo }}</div>
+            <div title="{{ brand.tooltip }}"><span  class="h6">{{ brand.id }}:</span> {{ brand.testo }}</div>
         </div>
     </ng-template>	
 </p-autoComplete>
