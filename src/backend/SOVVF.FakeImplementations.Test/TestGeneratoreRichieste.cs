@@ -18,14 +18,9 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Modello.Classi.Soccorso.Eventi;
-using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using NUnit.Framework;
-using SOVVF.FakeImplementations.Modello.GestioneSoccorso;
 using SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste;
 
 namespace SOVVF.FakeImplementations.Test
