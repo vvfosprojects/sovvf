@@ -29,8 +29,9 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
     public class ComponentePartenza : Componente
     {
         /// <summary>
-        ///   Costruttore della classe.
+        ///   Costruttore della classe
         /// </summary>
+        /// <param name="codiceFiscale">E' il codice fiscale</param>
         public ComponentePartenza(string codiceFiscale) : base(codiceFiscale)
         {
         }
@@ -38,6 +39,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
+        /// <param name="codiceFiscale">Il codice fiscale</param>
         /// <param name="codiceMezzo">Il codice del mezzo</param>
         public ComponentePartenza(string codiceFiscale, string codiceMezzo) : base(codiceFiscale)
         {
@@ -52,6 +54,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// <summary>
         ///   Costruttore della classe.
         /// </summary>
+        /// <param name="codiceFiscale">E' il codice fiscale</param>
         /// <param name="codiceMezzo">E' il codice del mezzo</param>
         /// <param name="ticket">E' il ticket associato alla squadra a bordo del mezzo</param>
         public ComponentePartenza(string codiceFiscale, string codiceMezzo, string ticket) : this(codiceFiscale, codiceMezzo)

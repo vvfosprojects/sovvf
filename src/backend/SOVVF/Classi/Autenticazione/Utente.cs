@@ -79,9 +79,24 @@ namespace Modello.Classi.Autenticazione
             this.ValidoDa = validoDa;
         }
 
+        /// <summary>
+        ///   La username
+        /// </summary>
         public string Username { get; private set; }
+
+        /// <summary>
+        ///   La data di inizio della validità dell'account. Se è null, la validità inizia dal big bang.
+        /// </summary>
         public DateTime? ValidoDa { get; set; }
+
+        /// <summary>
+        ///   La data di fine della validità dell'account. Se è null, la validità ha durata indefinita.
+        /// </summary>
         public DateTime? ValidoFinoA { get; set; }
+
+        /// <summary>
+        ///   Indica se l'account è attivo.
+        /// </summary>
         public bool Attivo { get; set; }
     }
 }

@@ -30,6 +30,7 @@ namespace Modello.Classi.Soccorso.Squadre
         /// <summary>
         ///   Costruttore della classe.
         /// </summary>
+        /// <param name="codiceFiscale">Il codice fiscale</param>
         public Componente(string codiceFiscale)
         {
             if (string.IsNullOrWhiteSpace(codiceFiscale))

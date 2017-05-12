@@ -44,7 +44,8 @@ namespace Modello.Test.Classi.Autenticazione
         [Test]
         public void Un_utente_con_username_whitespace_non_puo_essere_creato()
         {
-            Assert.That(() => new Utente(" "),
+            Assert.That(
+                () => new Utente(" "),
                 Throws.ArgumentException);
         }
 
@@ -63,7 +64,8 @@ namespace Modello.Test.Classi.Autenticazione
         [Test]
         public void Un_utente_con_username_e_data_fine_validita_di_default_non_puo_essere_creato()
         {
-            Assert.That(() => new Utente("username", new DateTime()),
+            Assert.That(
+                () => new Utente("username", new DateTime()),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
@@ -84,7 +86,8 @@ namespace Modello.Test.Classi.Autenticazione
         public void Un_utente_con_username_data_inizio_validita_di_default_e_data_fine_validita_non_puo_essere_creato()
         {
             var fine = DateTime.Now.AddDays(1);
-            Assert.That(() => new Utente("username", new DateTime(), fine),
+            Assert.That(
+                () => new Utente("username", new DateTime(), fine),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
@@ -92,7 +95,8 @@ namespace Modello.Test.Classi.Autenticazione
         public void Un_utente_con_username_data_inizio_validita_e_data_fine_validita_di_default_non_puo_essere_creato()
         {
             var inizio = DateTime.Now;
-            Assert.That(() => new Utente("username", inizio, new DateTime()),
+            Assert.That(
+                () => new Utente("username", inizio, new DateTime()),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
     }
