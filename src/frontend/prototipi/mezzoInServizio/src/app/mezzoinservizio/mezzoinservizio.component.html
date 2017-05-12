@@ -1,29 +1,14 @@
 <html>
-
 <head>
 </head>
-
 <body>
-  <p></p>
   <div class="section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-1">
-          <h5>
-            <div class="badge badge-info">{{fs.Sigla}} </div>
-          </h5>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-1 h5">
-          <div class="badge badge-info" style="align-items: right">{{fs.Genere}}</div>
-          <div class="card-text">{{fs.Targa}}</div>
-        </div>
+  <div class="container-fluid">
+  <!--   <div class="row">  -->
+       <div class="col-md-7 card-header">
+     <div class="row">
         <div class="col-md-1 p-0">
           <span class="fa-stack fa-2x">
-         
             <i class="fa fa-truck fa-stack-1x"></i>
             <i class="fa fa-circle-o fa-stack-2x text-success"></i>
           <div *ngIf="fs.Disponibile">
@@ -33,29 +18,67 @@
            <i class="fa fa-ban fa-stack-2x text-danger"></i>
           </div>
         </span>
+       </div>
+        <div class="col-md-1 p-0">
+         <h5>
+            <div class="badge badge-info">{{fs.Sigla}} </div>
+             <div class="card-text">{{fs.Targa}}</div>
+          </h5>
         </div>
-        <div class="col-md-3 h5">
+     
+      <div class="col-md-1 h5">
+          <div class="badge badge-info" style="align-items: right">{{fs.Genere}}</div>
+          <div class="badge badge-info">{{fs.CodiceUnitaOperativa}} </div>
+      </div>
+       <div class="col-md-2 h5">
           <div class="badge" [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede' || fs.CodiceStato == 'Istituto', 
                      'badge-danger'  : fs.CodiceStato == 'InViaggio' || fs.CodiceStato == 'SulPosto',
                      'badge-primary' : fs.CodiceStato == 'InRientro',
                      'badge-default' : fs.CodiceStato == 'FuoriServizio'}">{{getDescrizioneStato(fs.CodiceStato)}}
           </div>
-          <span> {{fs.DataOra | friendlyDate}}</span>
-          <span> {{fs.DataOra | friendlyHour}}</span>
-          <div *ngIf="(fs.CodiceStato == 'InViaggio' || fs.CodiceStato == 'SulPosto') && (fs.Disponibile)">
-            <button type="button" class="btn btn-primary btn-sm">Rich. Ass.</button>
+          <div> {{fs.DataOra | friendlyDate}}  {{fs.DataOra | friendlyHour}}</div>
           </div>
+         <div class="col-md-2">
+              <div *ngIf="(fs.CodiceStato == 'InViaggio' || fs.CodiceStato == 'SulPosto') && (fs.Disponibile)">
+                <button type="button" class="btn btn-primary btn-sm">Rich. Ass.</button>
+                  <div  *ngIf="numeroPersone() > 0">
+              <h5>
+                <span class="fa fa-users" aria-hidden="true"></span>
+                <span class="badge badge-info">{{numeroPersone()}} </span>
+                <span class="fa fa-level-down" (click)="fs.hideMostraPersone()"></span>
+                <div *ngIf="fs.mostraPersone">
+                  <div class="card">
+                  <div class="card-header">{{fs.SiglaSquadra}}
+                  <div class="card-text" *ngFor="let p of fs.personeSulMezzo">
+                    {{p.descrizione}}
+                    <span *ngIf="p.capoPartenza"> Capo Partenza </span>
+                    <span *ngIf="p.autista"> Autista </span> 
+                  </div>
+                  </div>
+                  </div>
+                </div>
+              </h5>
+            </div>
+              </div>
+         </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-1">
-        </div>
+  <!--   <div class="row">
+        <span class="col-md-1">
+        </span>
+        <span class="col-md-1 h5">
+          <span class="card-text">{{fs.Targa}}</span>
+      </span>
         <div class="col-md-1">
           <h5>
             <div class="badge badge-info">{{fs.CodiceUnitaOperativa}} </div>
           </h5>
         </div>
-        <div class="col-md-3" *ngIf="numeroPersone() > 0">
+        <div class="col-md-1 h5">
+          <span> {{fs.DataOra | friendlyDate}}</span>
+          <span> {{fs.DataOra | friendlyHour}}</span>
+      
+        </div>
+         <div class="col-md-2" *ngIf="numeroPersone() > 0">
           <h5>
             <span class="fa fa-users" aria-hidden="true"></span>
             <span class="badge badge-info">{{numeroPersone()}} </span>
@@ -73,11 +96,11 @@
              </div>
           </h5>
         </div>
+     </div> -->
       </div>
-    </div>
-  </div>
-
-  <button type="button" (click)="setDisponibile(true)">Disponibile</button>
+     <div class="col-md-5">
+      </div>
+     <button type="button" (click)="setDisponibile(true)">Disponibile</button>
   <button type="button" (click)="setDisponibile(false)">Non Disponibile</button>
   <br>
   <br>
@@ -86,9 +109,11 @@
   <button type="button" (click)="setCodiceStato('SulPosto')">Sul Posto</button>
   <button type="button" (click)="setCodiceStato('InRientro')">In Rientro</button>
   <button type="button" (click)="setCodiceStato('FuoriServizio')">FuoriServizio</button>
-  <button type="button" (click)="setCodiceStato('Istituto')">Istituto</button>
+  <button type="button" (click)="setCodiceStato('Istituto')">Istituto</button>  
+  </div>
+ </div>  
 
 
-</body>
 
+ </body>
 </html>
