@@ -263,7 +263,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_composizione_partenze_con_data_di_default_non_puo_essere_creato()
         {
             Assert.That(
-                () => new ComposizionePartenze(new DateTime(), " "),
+                () => new ComposizionePartenze(new DateTime(), "Fonte"),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
