@@ -324,7 +324,22 @@ export const PAGES_MENU = [
             target: '_blank'
           }
         }
+      },
+
+      {
+        path: 'new',  // path for our page
+        data: { // custom menu declaration
+          menu: {
+            title: 'Riga Semplificata', // menu title
+            icon: 'ion-android-home', // menu icon
+            selected: false,
+            expanded: false,
+            order: 1000
+          }
+        }
       }
+
+
     ]
   }
 ];
