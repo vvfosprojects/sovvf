@@ -11,8 +11,8 @@ declare var require: any
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css'],
-    encapsulation: ViewEncapsulation.None
+    styleUrls: ['./app.component.css']
+   // encapsulation: ViewEncapsulation.None //consente di ridefinire lo stile css
 })
 export class AppComponent {
     title = 'app works!';
