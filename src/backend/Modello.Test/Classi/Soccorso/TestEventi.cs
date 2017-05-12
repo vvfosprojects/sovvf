@@ -1,6 +1,7 @@
 ﻿using System;
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Partenze;
+using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using NUnit.Framework;
 
 namespace Modello.Test.Classi.Soccorso
@@ -328,7 +329,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_uscita_partenza_con_mezzo_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new UscitaPartenza(" ", DateTime.Now, " "),
+                () => new UscitaPartenza(" ", DateTime.Now, "Fonte"),
                 Throws.ArgumentException);
         }
 
@@ -345,6 +346,41 @@ namespace Modello.Test.Classi.Soccorso
         {
             Assert.That(
                 () => new UscitaPartenza("M1", DateTime.Now, " "),
+                Throws.ArgumentException);
+        }
+
+        [Test]
+        public void Un_evento_di_telefonata_con_parametri_corretti_e_correttamente_creato()
+        {
+            var now = DateTime.Now;
+            var evento = new Telefonata("ABC123", now, "Fonte");
+
+            Assert.That(evento.Codice, Is.EqualTo("ABC123"));
+            Assert.That(evento.Istante, Is.EqualTo(now));
+            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
+        }
+
+        [Test]
+        public void Un_evento_di_telefonata_con_codice_whitespace_non_puo_essere_creato()
+        {
+            Assert.That(
+                () => new Telefonata(" ", DateTime.Now, "Fonte"),
+                Throws.ArgumentException);
+        }
+
+        [Test]
+        public void Un_evento_di_telefonata_con_data_di_default_non_puo_essere_creato()
+        {
+            Assert.That(
+                () => new Telefonata("ABC123", new DateTime(), "Fonte"),
+                Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
+
+        [Test]
+        public void Un_evento_di_telefonata_con_fonte_whitespace_non_puo_essere_creato()
+        {
+            Assert.That(
+                () => new UscitaPartenza("ABC123", DateTime.Now, " "),
                 Throws.ArgumentException);
         }
     }
