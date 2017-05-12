@@ -41,19 +41,24 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void Un_evento_di_inizio_presa_in_carico_con_parametri_corretti_puo_essere_creato()
+        public void Un_evento_di_inizio_presa_in_carico_con_parametri_corretti_e_correttamente_creato()
         {
-            var evento = new InizioPresaInCarico(DateTime.Now, "Fonte");
+            var now = DateTime.Now;
+            var evento = new InizioPresaInCarico(now, "Fonte");
 
-            Assert.Pass();
+            Assert.That(evento.Istante, Is.EqualTo(now));
+            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
         }
 
         [Test]
-        public void Un_evento_di_arrivo_sul_posto_con_parametri_corretti_puo_essere_creato()
+        public void Un_evento_di_arrivo_sul_posto_con_parametri_corretti_e_correttamente_creato()
         {
-            var evento = new ArrivoSulPosto("M1", DateTime.Now, "Fonte");
+            var now = DateTime.Now;
+            var evento = new ArrivoSulPosto("M1", now, "Fonte");
 
-            Assert.Pass();
+            Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
+            Assert.That(evento.Istante, Is.EqualTo(now));
+            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
         }
 
         [Test]
@@ -81,11 +86,14 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void Un_evento_di_partenza_in_rientro_con_parametri_corretti_puo_essere_creato()
+        public void Un_evento_di_partenza_in_rientro_con_parametri_corretti_e_correttamente_creato()
         {
-            var evento = new PartenzaInRientro("M1", DateTime.Now, "Fonte");
+            var now = DateTime.Now;
+            var evento = new PartenzaInRientro("M1", now, "Fonte");
 
-            Assert.Pass();
+            Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
+            Assert.That(evento.Istante, Is.EqualTo(now));
+            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
         }
 
         [Test]
@@ -113,11 +121,14 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void Un_evento_di_partenza_rientrata_con_parametri_corretti_puo_essere_creato()
+        public void Un_evento_di_partenza_rientrata_con_parametri_corretti_e_correttamente_creato()
         {
-            var evento = new PartenzaRientrata("M1", DateTime.Now, "Fonte");
+            var now = DateTime.Now;
+            var evento = new PartenzaRientrata("M1", now, "Fonte");
 
-            Assert.Pass();
+            Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
+            Assert.That(evento.Istante, Is.EqualTo(now));
+            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
         }
 
         [Test]
@@ -145,11 +156,15 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void Un_evento_di_riassegnazione_con_parametri_corretti_puo_essere_creato()
+        public void Un_evento_di_riassegnazione_con_parametri_corretti_e_correttamente_creato()
         {
+            var now = DateTime.Now;
             var evento = new Riassegnazione("R1", "M1", DateTime.Now, "Fonte");
 
-            Assert.Pass();
+            Assert.That(evento.CodiceRichiesta, Is.EqualTo("R1"));
+            Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
+            Assert.That(evento.Istante, Is.EqualTo(now));
+            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
         }
 
         [Test]
@@ -185,19 +200,23 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void Un_componente_partenza_con_parametri_corretti_puo_essere_creato()
+        public void Un_componente_partenza_con_parametri_corretti_e_correttamente_creato()
         {
             var evento = new ComponentePartenza("M1", "ticket");
 
-            Assert.Pass();
+            Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
+            Assert.That(evento.Ticket, Is.EqualTo("ticket"));
         }
 
         [Test]
-        public void Un_componente_partenza_senza_parametri_puo_essere_creato()
+        public void Un_componente_partenza_senza_parametri_e_correttamente_creato()
         {
             var evento = new ComponentePartenza();
 
-            Assert.Pass();
+            Assert.That(evento.CodiceFiscale, Is.Null);
+            Assert.That(evento.CodiceMezzo, Is.Null);
+            Assert.That(evento.Ruoli, Is.Not.Null);
+            Assert.That(evento.Ticket, Is.Null);
         }
 
         [Test]
@@ -217,11 +236,13 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void Un_evento_di_composizione_partenze_con_parametri_corretti_puo_essere_creato()
+        public void Un_evento_di_composizione_partenze_con_parametri_corretti_e_correttamente_creato()
         {
-            var evento = new ComposizionePartenze(DateTime.Now, "Fonte");
+            var now = DateTime.Now;
+            var evento = new ComposizionePartenze(now, "Fonte");
 
-            Assert.Pass();
+            Assert.That(evento.Istante, Is.EqualTo(now));
+            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
         }
 
         [Test]
@@ -245,6 +266,85 @@ namespace Modello.Test.Classi.Soccorso
         {
             Assert.That(
                 () => new ComposizionePartenze(DateTime.Now, " "),
+                Throws.ArgumentException);
+        }
+
+        [Test]
+        public void Un_evento_di_fuori_servizio_con_mezzo_whitespace_non_puo_essere_creato()
+        {
+            Assert.That(
+                () => new FuoriServizio(" ", DateTime.Now, "Fonte", "motivazione"),
+                Throws.ArgumentException);
+        }
+
+        [Test]
+        public void Un_evento_di_fuori_servizio_con_data_di_default_non_puo_essere_creato()
+        {
+            Assert.That(
+                () => new FuoriServizio("M1", new DateTime(), "Fonte", "motivazione"),
+                Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
+
+        [Test]
+        public void Un_evento_di_fuori_servizio_con_fonte_whitespace_non_puo_essere_creato()
+        {
+            Assert.That(
+                () => new FuoriServizio("M1", DateTime.Now, " ", "motivazione"),
+                Throws.ArgumentException);
+        }
+
+        [Test]
+        public void Un_evento_di_fuori_servizio_con_motivazione_whitespace_non_puo_essere_creato()
+        {
+            Assert.That(
+                () => new FuoriServizio("M1", DateTime.Now, "Fonte", " "),
+                Throws.ArgumentException);
+        }
+
+        [Test]
+        public void Un_evento_di_fuori_servizio_con_parametri_corretti_puo_essere_creato()
+        {
+            var now = DateTime.Now;
+            var evento = new FuoriServizio("M1", now, "Fonte", "motivazione");
+
+            Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
+            Assert.That(evento.Istante, Is.EqualTo(now));
+            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
+            Assert.That(evento.Motivazione, Is.EqualTo("motivazione"));
+        }
+
+        [Test]
+        public void Un_evento_di_uscita_partenza_con_parametri_corretti_e_correttamente_creato()
+        {
+            var now = DateTime.Now;
+            var evento = new UscitaPartenza("M1", now, "Fonte");
+
+            Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
+            Assert.That(evento.Istante, Is.EqualTo(now));
+            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
+        }
+
+        [Test]
+        public void Un_evento_di_uscita_partenza_con_mezzo_whitespace_non_puo_essere_creato()
+        {
+            Assert.That(
+                () => new UscitaPartenza(" ", DateTime.Now, " "),
+                Throws.ArgumentException);
+        }
+
+        [Test]
+        public void Un_evento_di_uscita_partenza_con_data_di_default_non_puo_essere_creato()
+        {
+            Assert.That(
+                () => new UscitaPartenza("M1", new DateTime(), "Fonte"),
+                Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
+
+        [Test]
+        public void Un_evento_di_uscita_partenza_con_fonte_whitespace_non_puo_essere_creato()
+        {
+            Assert.That(
+                () => new UscitaPartenza("M1", DateTime.Now, " "),
                 Throws.ArgumentException);
         }
     }

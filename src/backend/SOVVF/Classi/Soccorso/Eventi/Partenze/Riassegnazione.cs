@@ -41,6 +41,8 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
             {
                 throw new ArgumentException("Cannot be null or whitespace", nameof(codiceRichiesta));
             }
+
+            this.CodiceRichiesta = codiceRichiesta;
         }
 
         /// <summary>

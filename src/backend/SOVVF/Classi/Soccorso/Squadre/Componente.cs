@@ -27,6 +27,14 @@ namespace Modello.Classi.Soccorso.Squadre
     public class Componente
     {
         /// <summary>
+        ///   Costruttore della classe.
+        /// </summary>
+        public Componente()
+        {
+            this.Ruoli = new HashSet<Ruolo>();
+        }
+
+        /// <summary>
         ///   Indica i possibili ruoli con i quali si partecipa ad una partenza.
         /// </summary>
         public enum Ruolo
