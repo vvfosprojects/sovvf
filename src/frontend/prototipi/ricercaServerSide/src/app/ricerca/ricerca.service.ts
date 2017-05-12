@@ -31,7 +31,9 @@ export class RicercaService {
 
     return Observable.of(risultati);
   }
-
+  /**
+   * Esempio di chiamata a servizio remoto.
+   */
   getCountries() {
      /*   return this.http.get('https://raw.githubusercontent.com/oferh/ng2-completer/master/demo/res/data/countries.json')
                     .toPromise()

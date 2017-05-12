@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FinePresaInCarico.cs" company="CNVVF">
+// <copyright file="RiaperturaRichiesta.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+
 namespace Modello.Classi.Soccorso.Eventi
 {
     /// <summary>
@@ -24,9 +26,19 @@ namespace Modello.Classi.Soccorso.Eventi
     /// </summary>
     public class RiaperturaRichiesta : Evento
     {
-        public RiaperturaRichiesta(RichiestaAssistenza richiesta) : base()
-#warning questo metodo dovrebbe prima verificare che sia corretto chiudere la richiesta, ad esempio verificando che non ci siano ancora partenze in loco
+        /// <summary>
+        ///   Costruttore della classe. A seguito della chiamata, la richiesta risulta aperta.
+        /// </summary>
+        /// <param name="richiesta">La richiesta alla quale l'evento deve essere aggiunto</param>
+        /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
+        /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
+        public RiaperturaRichiesta(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte) : base(istante, codiceFonte)
         {
+            if (richiesta == null)
+            {
+                throw new ArgumentNullException(nameof(richiesta));
+            }
+
             richiesta.IstanteChiusura = null;
         }
     }

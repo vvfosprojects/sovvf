@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Modello.Classi.Soccorso.Eventi.Partenze;
@@ -119,13 +118,11 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi
             var situazioneMezzi =
                 from gruppo in eventiPerCodiceMezzo
                 let eventoPiuRecente = gruppo.OrderByDescending(e => e.Evento.Istante).First()
-                select new SituazioneMezzo()
-                {
-                    CodiceMezzo = gruppo.Key,
-                    CodiceRichiestaAssistenza = eventoPiuRecente.CodiceRichiesta,
-                    IstanteAggiornamento = eventoPiuRecente.Evento.Istante,
-                    StatoMezzo = eventoPiuRecente.Evento.GetStatoMezzo()
-                };
+                select new SituazioneMezzo(
+                    gruppo.Key,
+                    eventoPiuRecente.Evento.GetStatoMezzo(),
+                    eventoPiuRecente.CodiceRichiesta,
+                    eventoPiuRecente.Evento.Istante);
 
             return new SituazioneMezziResult()
             {

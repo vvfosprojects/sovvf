@@ -69,8 +69,6 @@ namespace Modello.Classi.Soccorso
             Alta
         }
 
-        #region Attributi
-
         /// <summary>
         ///   <para>
         ///     Il codice intervento è un codice parlante che si utilizza per identificare
@@ -143,10 +141,6 @@ namespace Modello.Classi.Soccorso
         /// </summary>
         public Geolocalizzazione Geolocalizzazione { get; set; }
 
-        #endregion Attributi
-
-        #region Metodi
-
         /// <summary>
         ///   Restituisce le sole istanze della classe Telefonata presenti all'interno della lista
         ///   degli eventi.
@@ -204,8 +198,44 @@ namespace Modello.Classi.Soccorso
         /// </summary>
         public DateTime? IstanteChiusura { get; internal set; }
 
+        /// <summary>
+        ///   Indica se la richiesta è aperta
+        /// </summary>
+        public bool Chiusa
+        {
+            get
+            {
+                return this.IstanteChiusura.HasValue;
+            }
+        }
+
+        /// <summary>
+        ///   Indica se la richiesta è chiusa
+        /// </summary>
+        public bool Aperta
+        {
+            get
+            {
+                return !this.Chiusa;
+            }
+        }
+
 #warning realizzare i metodi che restituiscono "n.richieste evase" e "n.mezzi intervenuti (RientratoInSede)" e utilizzarli per gli indicatori di soccorso
 
-        #endregion Metodi
+        /// <summary>
+        ///   Restituisce la priorità della richiesta. Se non è esplicitamente impostata è uguale a <see cref="Priorita.Media" />.
+        /// </summary>
+        public Priorita PrioritaRichiesta
+        {
+            get
+            {
+                var eventoAssegnazionePriorita = this.Eventi
+                    .Where(e => e is AssegnazionePriorita)
+                    .OrderByDescending(e => e.Istante)
+                    .FirstOrDefault() as AssegnazionePriorita;
+
+                return eventoAssegnazionePriorita != null ? eventoAssegnazionePriorita.Priorita : RichiestaAssistenza.Priorita.Media;
+            }
+        }
     }
 }

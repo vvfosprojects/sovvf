@@ -73,7 +73,9 @@
     <Compile Include="Classi\Soccorso\Eventi\Partenze\ComponentePartenza.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\ArrivoSulPosto.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\UscitaPartenza.cs" />
-    <Compile Include="Classi\Soccorso\Eventi\ChiusuraRichiesta.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\ChiusuraRichiesta.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Classi\Soccorso\Eventi\Segnalazioni\Segnalazione.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Segnalazioni\Telefonata.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\DisponibilitaMezzo.cs" />

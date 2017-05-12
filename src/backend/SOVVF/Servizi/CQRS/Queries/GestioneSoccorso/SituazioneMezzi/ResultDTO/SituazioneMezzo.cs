@@ -28,24 +28,65 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDT
     public class SituazioneMezzo
     {
         /// <summary>
+        ///   Costruttore della classe.
+        /// </summary>
+        /// <param name="codiceMezzo">Il codice del mezzo</param>
+        /// <param name="statoMezzo">E' lo stato del mezzo</param>
+        /// <param name="codiceRichiestaAssistenza">
+        ///   E' il codice della richiesta di assistenza che ha determinato lo stato indicato
+        /// </param>
+        /// <param name="istanteAggiornamento">E' l'istante al quale risale l'informazione</param>
+        public SituazioneMezzo(
+            string codiceMezzo,
+            IStatoMezzo statoMezzo,
+            string codiceRichiestaAssistenza,
+            DateTime istanteAggiornamento)
+        {
+            if (string.IsNullOrWhiteSpace(codiceMezzo))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceMezzo));
+            }
+
+            if (statoMezzo == null)
+            {
+                throw new ArgumentNullException(nameof(statoMezzo));
+            }
+
+            if (string.IsNullOrWhiteSpace(codiceRichiestaAssistenza))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceRichiestaAssistenza));
+            }
+
+            if (istanteAggiornamento == DateTime.MinValue)
+            {
+                throw new ArgumentOutOfRangeException("Cannot be equal to DateTime.MinValue", nameof(istanteAggiornamento));
+            }
+
+            this.CodiceMezzo = codiceMezzo;
+            this.StatoMezzo = statoMezzo;
+            this.CodiceRichiestaAssistenza = codiceRichiestaAssistenza;
+            this.IstanteAggiornamento = istanteAggiornamento;
+        }
+
+        /// <summary>
         ///   Il codice del mezzo
         /// </summary>
-        public string CodiceMezzo { get; set; }
+        public string CodiceMezzo { get; private set; }
 
         /// <summary>
         ///   Lo stato corrente del mezzo
         /// </summary>
-        public IStatoMezzo StatoMezzo { get; set; }
+        public IStatoMezzo StatoMezzo { get; private set; }
 
         /// <summary>
         ///   Il codice della richiesta di assistenza che determina la situazione
         /// </summary>
-        public string CodiceRichiestaAssistenza { get; set; }
+        public string CodiceRichiestaAssistenza { get; private set; }
 
         /// <summary>
         ///   La data di aggiornamento della corrente informazione sulla situazione
         /// </summary>
-        public DateTime IstanteAggiornamento { get; set; }
+        public DateTime IstanteAggiornamento { get; private set; }
 
         /// <summary>
         ///   Rappresentazione dell'oggetto in forma testuale

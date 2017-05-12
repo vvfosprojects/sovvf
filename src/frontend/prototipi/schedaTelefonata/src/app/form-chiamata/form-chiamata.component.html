@@ -99,15 +99,39 @@
               <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Coordinate" style="min-width: 50px;"> <i class="fa fa-map-marker" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="coordinate"
                 placeholder="Coordinate" readonly=""> </div>
           </div>
-          <div class="col-md-7 align-self-center text-center"> <img class="center-block img-fluid" src="https://maps.googleapis.com/maps/api/staticmap?center=via+cavou+5+roma&amp;zoom=18&amp;size=1000x310&amp;sensor=false">            </div>
+          <div class="col-md-7 align-self-center text-center"> 
+            <!--<img class="center-block img-fluid" src="https://maps.googleapis.com/maps/api/staticmap?center=via+cavou+5+roma&amp;zoom=18&amp;size=1000x310&amp;sensor=false">            -->
+                  <agm-map [latitude]="latitude" 
+               [longitude]="longitude" 
+               [scrollwheel]="true" 
+               [streetViewControl]="true" 
+               [mapTypeControl]="false" 
+               [scaleControl]="true" 
+               [zoom]="zoom">
+        <agm-marker [latitude]="latitude" 
+                    [longitude]="longitude" 
+                    [label]="'C'" 
+                    [title]="pippo" 
+                    [openInfoWindow]="true"></agm-marker>
+                    
+      <!--
+      </agm-map>
+      <agm-map [latitude]="lat" [longitude]="lng">
+      <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+      -->
+      </agm-map>
+
+          </div>
         </div>
         <div class="row">
           <div class="col-md-12"> &nbsp; </div>
           <div class="col-md-12">
+            
             <div [formGroup]="myForm">
               <div class="input-group">
                 <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="indirizzo" style="min-width: 50px;"> <i class="fa fa-map" aria-hidden="true"></i> </div>
-                <input type="text" class="form-control" id="indirizzo" placeholder="Indirizzo" name="indirizzo" formControlName="indirizzo">
+                <input placeholder="Ricerca" autocorrect="on" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
+                <!--<input type="text" class="form-control" id="indirizzo" placeholder="Indirizzo" name="indirizzo" formControlName="indirizzo">-->
               </div>
             </div>
           </div> &nbsp; </div>

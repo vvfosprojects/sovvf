@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, NgModule, NgZone, OnInit, Input, Inject, ViewChild, ElementRef } from '@angular/core';
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 import { FormChiamataModel } from './form-chiamata.model';
 import {
@@ -8,12 +8,24 @@ import {
   Validators
 } from '@angular/forms';
 
+import { AgmCoreModule, MapsAPILoader } from '@agm/core';
+import {} from '@types/googlemaps';
+
 @Component({
   selector: 'app-form-chiamata',
   templateUrl: './form-chiamata.component.html',
   styleUrls: ['./form-chiamata.component.css']
 })
 export class FormChiamataComponent implements OnInit {
+   public latitude: number;
+  public longitude: number;
+  public searchControl: FormControl;
+  public zoom: number;
+
+  @ViewChild("search")
+    public searchElementRef: ElementRef;
+
+
   @Input() formChiamataModel: FormChiamataModel;
 
   myForm: FormGroup;
@@ -59,7 +71,8 @@ mySettings: IMultiSelectSettings = {
 };
 
 
-  constructor( @Inject(FormBuilder) private fb: FormBuilder, private fb2: FormBuilder) {
+  constructor( @Inject(FormBuilder) private fb: FormBuilder, private fb2: FormBuilder, private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone) {
     this.formChiamataModel = new FormChiamataModel();
     this.formChiamataModel.numero_chiamata = "123.4567.890";
     this.formChiamataModel.operatore = "Mario Rossi";
@@ -74,7 +87,7 @@ mySettings: IMultiSelectSettings = {
       //'nome': [this.formChiamataModel.nome],
       //'cognome': [this.formChiamataModel.cognome, Validators.compose([Validators.required, this.validaCognome])],
       'tipo_interv': [this.formChiamataModel.tipo_interv],
-      'indirizzo': [this.formChiamataModel.indirizzo],
+      'indirizzo': [this.searchControl],
       'optionsModel': [this.model], // Default model
       'formRagSoc': this.formRagSoc,
       //'ragione_sociale': [this.formChiamataModel.ragione_sociale],
@@ -115,8 +128,53 @@ mySettings: IMultiSelectSettings = {
     //  console.log("fine init nome vale "+this.formChiamataModel.nome);
     console.log('myForm status ' + this.myForm.status);
     console.log('formRagSoc status ' + this.formRagSoc.status);
-  }
+
+    //----------------------maps--------------------------------//
+
+     //set google maps defaults
+    this.zoom = 18;
+    this.latitude = 39.8282;
+    this.longitude = -98.5795;
+    
+    //create search FormControl
+    this.searchControl = new FormControl();
+    
+    //set current position
+    this.setCurrentPosition();
+    
+    //load Places Autocomplete
+    this.mapsAPILoader.load().then(() => {
+      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
+        types: ["geocode"]
+      });
+      autocomplete.addListener("place_changed", () => {
+        this.ngZone.run(() => {
+          //get the place result
+          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
   
+          //verify result
+          if (place.geometry === undefined || place.geometry === null) {
+            return;
+          }
+          
+          //set latitude, longitude and zoom
+          this.latitude = place.geometry.location.lat();
+          this.longitude = place.geometry.location.lng();
+          this.zoom = 18;
+        });
+      });
+    });
+  }
+
+   private setCurrentPosition() {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
+        this.zoom = 18;
+      });
+    }
+  }  
 
   get formValido(): boolean {
     return this.formRagSoc.valid;

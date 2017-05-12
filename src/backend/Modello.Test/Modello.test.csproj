@@ -56,6 +56,7 @@
     <Compile Include="Classi\Organigramma\TestUnitaOperativa.cs" />
     <Compile Include="Classi\Soccorso\CQRS\Query\TestSituazioneMezzi.cs" />
     <Compile Include="Classi\Soccorso\TestComposizionePartenze.cs" />
+    <Compile Include="Classi\Soccorso\TestEventi.cs" />
     <Compile Include="Classi\Soccorso\TestRichiestaAssistenza.cs" />
     <Compile Include="Classi\Soccorso\TestSquadra.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

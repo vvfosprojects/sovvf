@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using Modello.Classi.Soccorso.Eventi.Partenze;
@@ -36,7 +37,7 @@ namespace Modello.Test.Classi.Soccorso
         [SetUp]
         public void CreaComposizionePartenzaStandard()
         {
-            this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista = new ComposizionePartenze()
+            this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista = new ComposizionePartenze(DateTime.Now, "Fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
@@ -143,7 +144,7 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaComposizionePartenzaAppenaCreataHaLAttributoComponentiNonNull()
         {
-            var cp = new ComposizionePartenze();
+            var cp = new ComposizionePartenze(DateTime.Now, "Fonte");
 
             var componenti = cp.Componenti;
 
