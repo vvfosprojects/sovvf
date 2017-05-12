@@ -1,4 +1,4 @@
-body .ui-state-active, body .ui-state-highlight {
+:host /deep/ li.ui-autocomplete-token {
 	background-color: #a5a8aa;
 	color: #292b2c;    
 }
