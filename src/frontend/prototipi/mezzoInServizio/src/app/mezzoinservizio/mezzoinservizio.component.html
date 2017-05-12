@@ -55,15 +55,22 @@
             <div class="badge badge-info">{{fs.CodiceUnitaOperativa}} </div>
           </h5>
         </div>
-        <div class="col-md-7" *ngIf="numeroPersone() > 0">
+        <div class="col-md-3" *ngIf="numeroPersone() > 0">
           <h5>
             <span class="fa fa-users" aria-hidden="true"></span>
             <span class="badge badge-info">{{numeroPersone()}} </span>
             <span class="fa fa-level-down" (click)="fs.hideMostraPersone()"></span>
             <div *ngIf="fs.mostraPersone">
-               vero
+              <div class="card">
+              <div class="card-header">{{fs.SiglaSquadra}}
+               <div class="card-text" *ngFor="let p of fs.personeSulMezzo">
+                {{p.descrizione}}
+                <span *ngIf="p.capoPartenza"> Capo Partenza </span>
+                <span *ngIf="p.autista"> Autista </span> 
+               </div>
               </div>
-
+              </div>
+             </div>
           </h5>
         </div>
       </div>
