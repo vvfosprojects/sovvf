@@ -31,7 +31,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// <summary>
         ///   Costruttore della classe.
         /// </summary>
-        public ComponentePartenza()
+        public ComponentePartenza(string codiceFiscale) : base(codiceFiscale)
         {
         }
 
@@ -39,7 +39,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         ///   Costruttore della classe
         /// </summary>
         /// <param name="codiceMezzo">Il codice del mezzo</param>
-        public ComponentePartenza(string codiceMezzo)
+        public ComponentePartenza(string codiceFiscale, string codiceMezzo) : base(codiceFiscale)
         {
             if (string.IsNullOrWhiteSpace(codiceMezzo))
             {
@@ -54,26 +54,20 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// </summary>
         /// <param name="codiceMezzo">E' il codice del mezzo</param>
         /// <param name="ticket">E' il ticket associato alla squadra a bordo del mezzo</param>
-        public ComponentePartenza(string codiceMezzo, string ticket)
+        public ComponentePartenza(string codiceFiscale, string codiceMezzo, string ticket) : this(codiceFiscale, codiceMezzo)
         {
-            if (string.IsNullOrWhiteSpace(codiceMezzo))
-            {
-                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceMezzo));
-            }
-
             if (string.IsNullOrWhiteSpace(ticket))
             {
                 throw new ArgumentException("Cannot be null or whitespace", nameof(ticket));
             }
 
-            this.CodiceMezzo = codiceMezzo;
             this.Ticket = ticket;
         }
 
         /// <summary>
         ///   E' l'identificativo del mezzo
         /// </summary>
-        public string CodiceMezzo { get; set; }
+        public string CodiceMezzo { get; private set; }
 
         /// <summary>
         ///   Identificativo assegnato alla squadra al momento della sua definizione. Rappresenta la

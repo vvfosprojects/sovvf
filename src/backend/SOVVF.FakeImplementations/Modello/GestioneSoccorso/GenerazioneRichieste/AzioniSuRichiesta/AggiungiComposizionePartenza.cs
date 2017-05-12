@@ -106,9 +106,8 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             {
                 Componenti = new HashSet<ComponentePartenza>(mezzoSelezionato.Membri
                     .Select((m, i) =>
-                        new ComponentePartenza(mezzoSelezionato.Codice, "Ticket")
+                        new ComponentePartenza(m, mezzoSelezionato.Codice, "Ticket")
                         {
-                            CodiceFiscale = m,
                             Ruoli = i == 0 ? new HashSet<Ruolo>() { Ruolo.CapoPartenza } : i == 1 ? new HashSet<Ruolo> { Ruolo.Autista } : new HashSet<Ruolo> { Ruolo.Vigile }
                         }))
             };

@@ -165,16 +165,8 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
 
         private RichiestaAssistenza Crea_Richiesta_Con_M1_e_M2_assegnati_e_M1_in_viaggio_e_sul_posto(out IEnumerable<SituazioneMezzo> expected)
         {
-            var componentePartenza1 = new ComponentePartenza()
-            {
-                CodiceFiscale = "CF1",
-                CodiceMezzo = "M1"
-            };
-            var componentePartenza2 = new ComponentePartenza()
-            {
-                CodiceFiscale = "CF2",
-                CodiceMezzo = "M2"
-            };
+            var componentePartenza1 = new ComponentePartenza("CF1", "M1");
+            var componentePartenza2 = new ComponentePartenza("CF2", "M2");
             var istanteEvento1 = DateTime.Now.AddMinutes(-10);
             var eventoComposizione = new ComposizionePartenze(istanteEvento1, "Fonte")
             {
@@ -204,14 +196,8 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
 
         private RichiestaAssistenza Crea_Richiesta_Con_M3_e_M4_assegnati_e_M3_sul_posto_e_in_viaggio(out IEnumerable<SituazioneMezzo> expected)
         {
-            var componentePartenza1 = new ComponentePartenza("M3")
-            {
-                CodiceFiscale = "CF3"
-            };
-            var componentePartenza2 = new ComponentePartenza("M4")
-            {
-                CodiceFiscale = "CF4"
-            };
+            var componentePartenza1 = new ComponentePartenza("CF3", "M3");
+            var componentePartenza2 = new ComponentePartenza("CF4", "M4");
             var istanteEvento1 = DateTime.Now.AddMinutes(-10);
             var eventoComposizione = new ComposizionePartenze(istanteEvento1, "Fonte")
             {
@@ -241,14 +227,8 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
 
         private RichiestaAssistenza Crea_Richiesta_Con_M3_e_M4_assegnati_e_M4_in_sede_e_M3_in_rientro(out IEnumerable<SituazioneMezzo> expected)
         {
-            var componentePartenza1 = new ComponentePartenza("M3")
-            {
-                CodiceFiscale = "CF3"
-            };
-            var componentePartenza2 = new ComponentePartenza("M4")
-            {
-                CodiceFiscale = "CF4"
-            };
+            var componentePartenza1 = new ComponentePartenza("CF3", "M3");
+            var componentePartenza2 = new ComponentePartenza("CF4", "M4");
             var istanteEventoAssegnazione = DateTime.Now.AddMinutes(-10);
             var eventoComposizione = new ComposizionePartenze(istanteEventoAssegnazione, "Fonte")
             {
@@ -293,14 +273,8 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
 
         private RichiestaAssistenza Crea_Richiesta_R1_Con_M1_e_M2_assegnati_e_M1_sganciato_e_M2_in_viaggio(out IEnumerable<SituazioneMezzo> expected)
         {
-            var componentePartenza1 = new ComponentePartenza("M1")
-            {
-                CodiceFiscale = "CF1"
-            };
-            var componentePartenza2 = new ComponentePartenza("M2")
-            {
-                CodiceFiscale = "CF2"
-            };
+            var componentePartenza1 = new ComponentePartenza("CF1", "M1");
+            var componentePartenza2 = new ComponentePartenza("CF2", "M2");
             var istanteEventoAssegnazione = DateTime.Now.AddMinutes(-10);
             var eventoComposizione = new ComposizionePartenze(istanteEventoAssegnazione, "Fonte")
             {
@@ -352,11 +326,7 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
 
         private RichiestaAssistenza CreaRichiestaContenenteUnicoEventoDiComposizione(out SituazioneMezzo expected)
         {
-            var componentePartenza = new ComponentePartenza()
-            {
-                CodiceFiscale = "CF1",
-                CodiceMezzo = "M1"
-            };
+            var componentePartenza = new ComponentePartenza("CF1", "M1");
             var istanteEvento = DateTime.Now.AddMinutes(-10);
             var eventoComposizione = new ComposizionePartenze(istanteEvento, "Fonte")
             {

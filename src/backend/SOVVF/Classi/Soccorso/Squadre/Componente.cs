@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 
 namespace Modello.Classi.Soccorso.Squadre
@@ -29,8 +30,14 @@ namespace Modello.Classi.Soccorso.Squadre
         /// <summary>
         ///   Costruttore della classe.
         /// </summary>
-        public Componente()
+        public Componente(string codiceFiscale)
         {
+            if (string.IsNullOrWhiteSpace(codiceFiscale))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceFiscale));
+            }
+
+            this.CodiceFiscale = codiceFiscale;
             this.Ruoli = new HashSet<Ruolo>();
         }
 
@@ -65,7 +72,7 @@ namespace Modello.Classi.Soccorso.Squadre
         /// <summary>
         ///   E' il codice fiscale del membro appartenente alla partenza
         /// </summary>
-        public string CodiceFiscale { get; set; }
+        public string CodiceFiscale { get; private set; }
 
         /// <summary>
         ///   E' la lista dei ruoli assegnati al soggetto contestualmente alla richiesta in corso

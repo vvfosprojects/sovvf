@@ -18,22 +18,6 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void Un_evento_di_inizio_presa_in_carico_non_può_avere_una_fonte_null()
-        {
-            Assert.That(
-                () => new InizioPresaInCarico(DateTime.Now, null),
-                Throws.ArgumentException);
-        }
-
-        [Test]
-        public void Un_evento_di_inizio_presa_in_carico_non_può_avere_una_fonte_empty()
-        {
-            Assert.That(
-                () => new InizioPresaInCarico(DateTime.Now, string.Empty),
-                Throws.ArgumentException);
-        }
-
-        [Test]
         public void Un_evento_di_inizio_presa_in_carico_non_può_avere_una_fonte_whitespace()
         {
             Assert.That(
@@ -201,27 +185,40 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void Un_componente_partenza_con_parametri_corretti_e_correttamente_creato()
+        public void Un_componente_partenza_con_codice_fiscale_e_correttamente_creato()
         {
-            var evento = new ComponentePartenza("M1", "ticket");
+            var evento = new ComponentePartenza("CF1");
 
-            Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
-            Assert.That(evento.Ticket, Is.EqualTo("ticket"));
-        }
-
-        [Test]
-        public void Un_componente_partenza_senza_parametri_e_correttamente_creato()
-        {
-            var evento = new ComponentePartenza();
-
-            Assert.That(evento.CodiceFiscale, Is.Null);
+            Assert.That(evento.CodiceFiscale, Is.EqualTo("CF1"));
             Assert.That(evento.CodiceMezzo, Is.Null);
-            Assert.That(evento.Ruoli, Is.Not.Null);
             Assert.That(evento.Ticket, Is.Null);
+            Assert.That(evento.Ruoli, Is.Not.Null);
         }
 
         [Test]
-        public void Un_componente_partenza_con_codice_mezzo_whitespace_non_puo_essere_creato()
+        public void Un_componente_partenza_con_codice_fiscale_e_mezzo_e_correttamente_creato()
+        {
+            var evento = new ComponentePartenza("CF1", "M1");
+
+            Assert.That(evento.CodiceFiscale, Is.EqualTo("CF1"));
+            Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
+            Assert.That(evento.Ticket, Is.Null);
+            Assert.That(evento.Ruoli, Is.Not.Null);
+        }
+
+        [Test]
+        public void Un_componente_partenza_con_codice_fiscale_mezzo_e_ticket_e_correttamente_creato()
+        {
+            var evento = new ComponentePartenza("CF1", "M1", "Ticket");
+
+            Assert.That(evento.CodiceFiscale, Is.EqualTo("CF1"));
+            Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
+            Assert.That(evento.Ticket, Is.EqualTo("Ticket"));
+            Assert.That(evento.Ruoli, Is.Not.Null);
+        }
+
+        [Test]
+        public void Un_componente_partenza_con_codice_fiscale_whitespace_non_puo_essere_creato()
         {
             Assert.That(
                 () => new ComponentePartenza(" "),
@@ -229,10 +226,18 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
+        public void Un_componente_partenza_con_mezzo_whitespace_non_puo_essere_creato()
+        {
+            Assert.That(
+                () => new ComponentePartenza("CF1", " "),
+                Throws.ArgumentException);
+        }
+
+        [Test]
         public void Un_componente_partenza_con_ticket_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new ComponentePartenza("M1", " "),
+                () => new ComponentePartenza("CF1", "M1", " "),
                 Throws.ArgumentException);
         }
 
