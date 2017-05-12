@@ -3,28 +3,33 @@
   <ba-card *ngFor="let chart of charts" class="pie-chart-item-container col-xlg-3 col-lg-3 col-md-6 col-sm-12 col-12">
 
     <div class="pie-chart-item">
-      <div class="chart" [attr.data-rel]="chart.color" data-percent="60">
+      <div *ngIf="chart.description!=='dashboard.meteo'" class="chart" [attr.data-rel]="chart.color" data-percent="60">
         <span class="percent"></span>
       </div>
 
+<!--
+    <div class="pie-chart-item">
+      <div class="chart" [attr.data-rel]="chart.color" data-percent="60">
+        <span class="percent"></span>
+      </div>
+-->
 <!--
       <div class="description">
         <div translate>{{ chart.description }}</div>
         <div class="description-stats">{{ chart.stats }}</div>
       </div>
-  
 -->
       <div class="description">
         <div translate>{{ chart.description }}</div>
 
         <div class="subdescription">
-          <div class="subdescription-det" translate>{{ chart.subdescription }}</div>
-          <div class="subdescription-det">{{ chart.stats }}</div>
+            <span translate>{{ chart.subdescription }}</span>
+            {{ chart.stats }}
         </div>
 
         <div class="subdescription">
-          <div class="subdescription-det" translate>{{ chart.subdescription1 }}</div>
-          <div class="subdescription-det">{{ chart.stats1 }}</div>
+            <span translate>{{ chart.subdescription1 }}</span>
+            {{ chart.stats1 }}
         </div>
       </div>
 
