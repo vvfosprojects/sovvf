@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classi\Autenticazione\Utente.cs" />
     <Compile Include="Classi\Geo\Cerchio.cs" />
     <Compile Include="Classi\Geo\Geolocalizzazione.cs" />
     <Compile Include="Classi\Geo\Poligonale.cs" />
@@ -145,7 +146,9 @@
     <Compile Include="Servizi\Infrastruttura\Autenticazione\IGetOperatoreAutenticato.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\IGetUnitaOperativaRadice.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Classi\Autorizzazioni\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\SOVVF.licenseheader">
       <Link>SOVVF.licenseheader</Link>
