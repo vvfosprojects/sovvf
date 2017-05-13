@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classi\Organigramma\TagNodo.cs" />
     <Compile Include="Classi\Utenti\Autenticazione\Utente.cs" />
     <Compile Include="Classi\Geo\Cerchio.cs" />
     <Compile Include="Classi\Geo\Geolocalizzazione.cs" />

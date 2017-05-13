@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Modello.Classi.Organigramma
@@ -72,6 +73,44 @@ namespace Modello.Classi.Organigramma
             }
 
             yield break;
+        }
+
+        /// <summary>
+        ///   Restituisce tutte le unità operative presenti nel sottoalbero che corrispondono
+        ///   all'insieme dei tags
+        /// </summary>
+        /// <returns>
+        ///   I tags che individuano le unità operative da restituire, ciascuno indicante l'eventuale ricorsività
+        /// </returns>
+        public IEnumerable<UnitaOperativa> GetSottoAlbero(IEnumerable<TagNodo> tags)
+        {
+            var tag = tags.SingleOrDefault(t => t.Codice == this.Codice);
+            if (tag != null)
+            {
+                if (tag.Ricorsivo)
+                {
+                    foreach (var n in this.GetSottoAlbero())
+                        yield return n;
+                }
+                else
+                {
+                    yield return this;
+
+                    foreach (var f in this.Figli)
+                    {
+                        foreach (var n in f.GetSottoAlbero(tags))
+                            yield return n;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var f in this.Figli)
+                {
+                    foreach (var n in f.GetSottoAlbero(tags))
+                        yield return n;
+                }
+            }
         }
 
         /// <summary>
