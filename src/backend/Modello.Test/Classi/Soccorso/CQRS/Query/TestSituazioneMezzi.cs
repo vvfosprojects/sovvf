@@ -62,7 +62,7 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             var mockUnitaOperativa = new Mock<UnitaOperativa>();
             mockUnitaOperativa
                 .Setup(m => m.GetSottoAlbero(It.IsAny<IEnumerable<TagNodo>>()))
-                .Returns(Enumerable.Repeat<UnitaOperativa>(new UnitaOperativa { Codice = "MI", Nome = "MI" }, 1));
+                .Returns(Enumerable.Repeat<UnitaOperativa>(new UnitaOperativa("MI", "MI"), 1));
 
             var mockEspandiTagsNodoSuOrganigramma = new Mock<IEspandiTagsNodoSuOrganigramma>();
             mockEspandiTagsNodoSuOrganigramma
@@ -367,7 +367,7 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             var mockUnitaOperativa = new Mock<UnitaOperativa>();
             mockUnitaOperativa
                 .Setup(m => m.GetSottoAlbero(It.IsAny<IEnumerable<TagNodo>>()))
-                .Returns(Enumerable.Repeat<UnitaOperativa>(new UnitaOperativa { Codice = "MI", Nome = "MI" }, 1));
+                .Returns(Enumerable.Repeat<UnitaOperativa>(new UnitaOperativa("MI", "MI"), 1));
 
             var mockEspandiTagsNodoSuOrganigramma = new Mock<IEspandiTagsNodoSuOrganigramma>();
             mockEspandiTagsNodoSuOrganigramma

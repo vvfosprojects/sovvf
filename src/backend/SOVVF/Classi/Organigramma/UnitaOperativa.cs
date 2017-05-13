@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,20 +31,34 @@ namespace Modello.Classi.Organigramma
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UnitaOperativa()
+        /// <param name="codice">Il codice dell'unità operativa</param>
+        /// <param name="nome">Il nome dell'unità operativa</param>
+        public UnitaOperativa(string codice, string nome)
         {
+            if (string.IsNullOrWhiteSpace(codice))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(codice));
+            }
+
+            if (string.IsNullOrWhiteSpace(nome))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(nome));
+            }
+
+            this.Codice = codice;
+            this.Nome = nome;
             this.Figli = new HashSet<UnitaOperativa>();
         }
 
         /// <summary>
         ///   Codice dell'unità operativa
         /// </summary>
-        public string Codice { get; set; }
+        public string Codice { get; private set; }
 
         /// <summary>
         ///   Il nome dell'inità operativa
         /// </summary>
-        public string Nome { get; set; }
+        public string Nome { get; private set; }
 
         /// <summary>
         ///   Le unità operative figlie nell'organigramma
