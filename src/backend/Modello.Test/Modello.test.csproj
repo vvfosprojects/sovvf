@@ -53,13 +53,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classi\Autenticazione\TestUtente.cs" />
+    <Compile Include="Classi\Utenti\Autenticazione\TestUtente.cs" />
     <Compile Include="Classi\Organigramma\TestUnitaOperativa.cs" />
     <Compile Include="Classi\Soccorso\CQRS\Query\TestSituazioneMezzi.cs" />
     <Compile Include="Classi\Soccorso\TestComposizionePartenze.cs" />
     <Compile Include="Classi\Soccorso\TestEventi.cs" />
     <Compile Include="Classi\Soccorso\TestRichiestaAssistenza.cs" />
     <Compile Include="Classi\Soccorso\TestSquadra.cs" />
+    <Compile Include="Classi\Utenti\Profilo\TestRegola.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,7 +76,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Classi\Autorizzazione\" />
     <Folder Include="Servizi\" />
   </ItemGroup>
   <ItemGroup>

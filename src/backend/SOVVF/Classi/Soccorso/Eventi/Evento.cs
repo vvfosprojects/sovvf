@@ -39,7 +39,7 @@ namespace Modello.Classi.Soccorso.Eventi
         {
             if (istante == DateTime.MinValue)
             {
-                throw new ArgumentOutOfRangeException(nameof(istante), "Date cannot be equal to DateTime.MinValue");
+                throw new ArgumentOutOfRangeException(nameof(istante));
             }
 
             if (string.IsNullOrWhiteSpace(codiceFonte))

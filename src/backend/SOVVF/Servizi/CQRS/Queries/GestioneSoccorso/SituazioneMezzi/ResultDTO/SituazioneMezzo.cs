@@ -59,7 +59,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDT
 
             if (istanteAggiornamento == DateTime.MinValue)
             {
-                throw new ArgumentOutOfRangeException("Cannot be equal to DateTime.MinValue", nameof(istanteAggiornamento));
+                throw new ArgumentOutOfRangeException(nameof(istanteAggiornamento));
             }
 
             this.CodiceMezzo = codiceMezzo;

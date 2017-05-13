@@ -97,6 +97,9 @@
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\InViaggio.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\IStatoMezzo.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\SulPosto.cs" />
+    <Compile Include="Classi\Utenti\Profilo\Regola.cs" />
+    <Compile Include="Classi\Utenti\Profilo\RegolaSuUnitaOperativa.cs" />
+    <Compile Include="Classi\Utenti\Profilo\VisibilitaPredefinitaSoccorso.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\CommandDTO\ComponiPartenzaCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\ComponiPartenzaCommandHandler.cs" />
@@ -146,9 +149,7 @@
     <Compile Include="Servizi\Infrastruttura\Autenticazione\IGetOperatoreAutenticato.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\IGetUnitaOperativaRadice.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Classi\Utenti\Profilo\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="..\SOVVF.licenseheader">
       <Link>SOVVF.licenseheader</Link>
