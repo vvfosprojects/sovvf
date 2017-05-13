@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Modello.Classi.Organigramma;
@@ -53,18 +54,66 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
         [Test]
         public void RestituisceUnaSituazioneVuotaSeNonCiSonoRichieste()
         {
+            var mockGetCodiciUnitaOperativeVisibiliPerSoccorso = new Mock<IGetUnitaOperativeVisibiliPerSoccorso>();
+            mockGetCodiciUnitaOperativeVisibiliPerSoccorso
+                .Setup(m => m.Get())
+                .Returns(Enumerable.Empty<string>);
+
+            var mockUnitaOperativa = new Mock<UnitaOperativa>();
+            mockUnitaOperativa
+                .Setup(m => m.GetSottoAlbero(It.IsAny<IEnumerable<TagNodo>>()))
+                .Returns(Enumerable.Repeat<UnitaOperativa>(new UnitaOperativa { Codice = "MI", Nome = "MI" }, 1));
+
+            var mockEspandiTagsNodoSuOrganigramma = new Mock<IEspandiTagsNodoSuOrganigramma>();
+            mockEspandiTagsNodoSuOrganigramma
+                .Setup(m => m.Espandi(It.IsAny<IEnumerable<TagNodo>>()))
+                .Returns(Enumerable.Repeat<string>("MI", 1));
+
             var mockGetRichiestePerSituazioneMezzi = new Mock<IGetRichiestePerSituazioneMezzi>();
             mockGetRichiestePerSituazioneMezzi
                 .Setup(m => m.Get(It.IsAny<IEnumerable<string>>()))
-                .Returns(Enumerable.Empty<RichiestaAssistenza>);
-            var mockGetUnitaOperativaPerCodice = new Mock<IGetUnitaOperativaPerCodice>();
-            mockGetUnitaOperativaPerCodice
-                .Setup(m => m.Get(It.IsAny<string>()))
-                .Returns((string codice) => new UnitaOperativa() { Codice = codice, Nome = codice });
+                .Returns(Enumerable.Empty<RichiestaAssistenza>());
+
             var query = new SituazioneMezziQueryHandler(
-                mockGetRichiestePerSituazioneMezzi.Object,
-                mockGetUnitaOperativaPerCodice.Object);
+                mockGetCodiciUnitaOperativeVisibiliPerSoccorso.Object,
+                mockEspandiTagsNodoSuOrganigramma.Object,
+                mockGetRichiestePerSituazioneMezzi.Object);
+
             var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
+
+            Assert.That(resultDto.SituazioneMezzi, Is.Empty);
+        }
+
+        [Test]
+        public void RestituisceUnaSituazioneVuotaSeNonCiSonoUnitaOperativeDaAnalizzare()
+        {
+            var mockGetCodiciUnitaOperativeVisibiliPerSoccorso = new Mock<IGetUnitaOperativeVisibiliPerSoccorso>();
+            mockGetCodiciUnitaOperativeVisibiliPerSoccorso
+                .Setup(m => m.Get())
+                .Throws(new InvalidOperationException());
+
+            var mockUnitaOperativa = new Mock<UnitaOperativa>();
+            mockUnitaOperativa
+                .Setup(m => m.GetSottoAlbero(It.IsAny<IEnumerable<TagNodo>>()))
+                .Returns(Enumerable.Empty<UnitaOperativa>());
+
+            var mockEspandiTagsNodoSuOrganigramma = new Mock<IEspandiTagsNodoSuOrganigramma>();
+            mockEspandiTagsNodoSuOrganigramma
+                .Setup(m => m.Espandi(It.IsAny<IEnumerable<TagNodo>>()))
+                .Returns(Enumerable.Empty<string>());
+
+            var mockGetRichiestePerSituazioneMezzi = new Mock<IGetRichiestePerSituazioneMezzi>();
+            mockGetRichiestePerSituazioneMezzi
+                .Setup(m => m.Get(It.IsAny<IEnumerable<string>>()))
+                .Returns(Enumerable.Empty<RichiestaAssistenza>());
+
+            var query = new SituazioneMezziQueryHandler(
+                mockGetCodiciUnitaOperativeVisibiliPerSoccorso.Object,
+                mockEspandiTagsNodoSuOrganigramma.Object,
+                mockGetRichiestePerSituazioneMezzi.Object);
+
+            var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
+
             Assert.That(resultDto.SituazioneMezzi, Is.Empty);
         }
 
@@ -310,17 +359,31 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
 
         private SituazioneMezziQueryHandler CreaQuery(IEnumerable<RichiestaAssistenza> richieste)
         {
+            var mockGetCodiciUnitaOperativeVisibiliPerSoccorso = new Mock<IGetUnitaOperativeVisibiliPerSoccorso>();
+            mockGetCodiciUnitaOperativeVisibiliPerSoccorso
+                .Setup(m => m.Get())
+                .Returns(Enumerable.Empty<string>);
+
+            var mockUnitaOperativa = new Mock<UnitaOperativa>();
+            mockUnitaOperativa
+                .Setup(m => m.GetSottoAlbero(It.IsAny<IEnumerable<TagNodo>>()))
+                .Returns(Enumerable.Repeat<UnitaOperativa>(new UnitaOperativa { Codice = "MI", Nome = "MI" }, 1));
+
+            var mockEspandiTagsNodoSuOrganigramma = new Mock<IEspandiTagsNodoSuOrganigramma>();
+            mockEspandiTagsNodoSuOrganigramma
+                .Setup(m => m.Espandi(It.IsAny<IEnumerable<TagNodo>>()))
+                .Returns(Enumerable.Repeat<string>("MI", 1));
+
             var mockGetRichiestePerSituazioneMezzi = new Mock<IGetRichiestePerSituazioneMezzi>();
             mockGetRichiestePerSituazioneMezzi
                 .Setup(m => m.Get(It.IsAny<IEnumerable<string>>()))
                 .Returns(richieste);
-            var mockGetUnitaOperativaPerCodice = new Mock<IGetUnitaOperativaPerCodice>();
-            mockGetUnitaOperativaPerCodice
-                .Setup(m => m.Get(It.IsAny<string>()))
-                .Returns((string codice) => new UnitaOperativa() { Codice = codice, Nome = codice });
+
             var query = new SituazioneMezziQueryHandler(
-                mockGetRichiestePerSituazioneMezzi.Object,
-                mockGetUnitaOperativaPerCodice.Object);
+                mockGetCodiciUnitaOperativeVisibiliPerSoccorso.Object,
+                mockEspandiTagsNodoSuOrganigramma.Object,
+                mockGetRichiestePerSituazioneMezzi.Object);
+
             return query;
         }
 

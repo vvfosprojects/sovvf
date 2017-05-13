@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IGetRichiestePerSituazioneMezzi.cs" company="CNVVF">
+// <copyright file="IGetUnitaOperativeVisibiliPerSoccorso.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,22 +17,26 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
-using Modello.Classi.Soccorso;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Modello.Servizi.Infrastruttura.GestioneSoccorso
+namespace Modello.Servizi.Infrastruttura.Organigramma
 {
     /// <summary>
-    ///   Servizio che restituisce l'elenco delle richieste di Assistenza utilizzate per il calcolo
-    ///   della situazione dei mezzi di soccorso
+    ///   Questo servizio restituisce la lista dei codici delle unità operative visibili per soccorso
+    ///   dall'utente correntemente autenticato. Nel caso di utente non autenticato restituisce una
+    ///   lista vuota.
     /// </summary>
-    public interface IGetRichiestePerSituazioneMezzi
+    public interface IGetUnitaOperativeVisibiliPerSoccorso
     {
         /// <summary>
-        ///   Restituisce l'elenco delle Richieste di Assistenza
+        ///   Restituisce la lista dei codici delle unità operative visibili per soccorso dall'utente
+        ///   correntemente autenticato.
         /// </summary>
-        /// <param name="codiciUnitaOperative">Elenco dei codici dell'Unità Operativa.</param>
-        /// <returns>Elenco delle Richieste</returns>
-        IEnumerable<RichiestaAssistenza> Get(IEnumerable<string> codiciUnitaOperative);
+        /// <returns>La lista dei codici.</returns>
+        IEnumerable<string> Get();
     }
 }

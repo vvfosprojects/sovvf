@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Modello.Classi.Organigramma;
 
-namespace Modello.Servizi.Infrastruttura.Organigramma
+namespace Modello.Servizi.Infrastruttura.Organigramma.Implementazioni
 {
     /// <summary>
     ///   Implementa l'interfaccia <see cref="IGetUnitaOperativaPerCodice" /> attraverso una mappa

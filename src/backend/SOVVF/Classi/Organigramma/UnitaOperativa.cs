@@ -17,8 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Modello.Classi.Organigramma
 {
@@ -60,7 +60,7 @@ namespace Modello.Classi.Organigramma
         ///   Restituisce tutte le unità operative presenti nel sottoalbero, radice compresa
         /// </summary>
         /// <returns>Le unità operative</returns>
-        public IEnumerable<UnitaOperativa> GetSottoAlbero()
+        public virtual IEnumerable<UnitaOperativa> GetSottoAlbero()
         {
             yield return this;
 
@@ -79,10 +79,11 @@ namespace Modello.Classi.Organigramma
         ///   Restituisce tutte le unità operative presenti nel sottoalbero che corrispondono
         ///   all'insieme dei tags
         /// </summary>
+        /// <param name="tags">I tags da espandere</param>
         /// <returns>
         ///   I tags che individuano le unità operative da restituire, ciascuno indicante l'eventuale ricorsività
         /// </returns>
-        public IEnumerable<UnitaOperativa> GetSottoAlbero(IEnumerable<TagNodo> tags)
+        public virtual IEnumerable<UnitaOperativa> GetSottoAlbero(IEnumerable<TagNodo> tags)
         {
             var tag = tags.SingleOrDefault(t => t.Codice == this.Codice);
             if (tag != null)
@@ -90,7 +91,9 @@ namespace Modello.Classi.Organigramma
                 if (tag.Ricorsivo)
                 {
                     foreach (var n in this.GetSottoAlbero())
+                    {
                         yield return n;
+                    }
                 }
                 else
                 {
@@ -99,7 +102,9 @@ namespace Modello.Classi.Organigramma
                     foreach (var f in this.Figli)
                     {
                         foreach (var n in f.GetSottoAlbero(tags))
+                        {
                             yield return n;
+                        }
                     }
                 }
             }
@@ -108,7 +113,9 @@ namespace Modello.Classi.Organigramma
                 foreach (var f in this.Figli)
                 {
                     foreach (var n in f.GetSottoAlbero(tags))
+                    {
                         yield return n;
+                    }
                 }
             }
         }

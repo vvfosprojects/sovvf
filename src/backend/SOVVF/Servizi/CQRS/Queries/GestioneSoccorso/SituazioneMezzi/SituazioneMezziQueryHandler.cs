@@ -17,8 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Modello.Classi.Organigramma;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO;
@@ -33,26 +35,34 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi
     public class SituazioneMezziQueryHandler : IQueryHandler<SituazioneMezziQuery, SituazioneMezziResult>
     {
         /// <summary>
+        ///   L'istanza del servizio <see cref="IGetUnitaOperativeVisibiliPerSoccorso" />
+        /// </summary>
+        private readonly IGetUnitaOperativeVisibiliPerSoccorso getCodiciUnitaOperativeVisibiliPerSoccorso;
+
+        /// <summary>
+        ///   L'istanza del servizio <see cref="IEspandiTagsNodoSuOrganigramma" />
+        /// </summary>
+        private readonly IEspandiTagsNodoSuOrganigramma espandiTagsNodoSuOrganigramma;
+
+        /// <summary>
         ///   Handler del servizio
         /// </summary>
         private readonly IGetRichiestePerSituazioneMezzi getRichiestePerSituazioneMezzi;
 
         /// <summary>
-        ///   Handler del servizio
-        /// </summary>
-        private readonly IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice;
-
-        /// <summary>
         ///   Costruttore del servizio
         /// </summary>
+        /// <param name="getCodiciUnitaOperativeVisibiliPerSoccorso">Istanza del servizio <see cref="IGetUnitaOperativeVisibiliPerSoccorso" /></param>
+        /// <param name="espandiTagsNodoSuOrganigramma">Istanza del servizio <see cref="IEspandiTagsNodoSuOrganigramma" /></param>
         /// <param name="getRichiestePerSituazioneMezzi">Istanza del servizio <see cref="IGetRichiestePerSituazioneMezzi" /></param>
-        /// <param name="getUnitaOperativaPerCodice">Istanza del servizio <see cref="IGetUnitaOperativaPerCodice" /></param>
         public SituazioneMezziQueryHandler(
-            IGetRichiestePerSituazioneMezzi getRichiestePerSituazioneMezzi,
-            IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice)
+            IGetUnitaOperativeVisibiliPerSoccorso getCodiciUnitaOperativeVisibiliPerSoccorso,
+            IEspandiTagsNodoSuOrganigramma espandiTagsNodoSuOrganigramma,
+            IGetRichiestePerSituazioneMezzi getRichiestePerSituazioneMezzi)
         {
+            this.getCodiciUnitaOperativeVisibiliPerSoccorso = getCodiciUnitaOperativeVisibiliPerSoccorso;
+            this.espandiTagsNodoSuOrganigramma = espandiTagsNodoSuOrganigramma;
             this.getRichiestePerSituazioneMezzi = getRichiestePerSituazioneMezzi;
-            this.getUnitaOperativaPerCodice = getUnitaOperativaPerCodice;
         }
 
         /// <summary>
@@ -62,23 +72,29 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi
         /// <returns>Il DTO di uscita della query</returns>
         public SituazioneMezziResult Handle(SituazioneMezziQuery query)
         {
-            var listaCodiciUnitaOperative = new HashSet<string>();
-            foreach (var uo in query.UnitaOperative)
-            {
-                if (uo.Ricorsivo)
-                {
-                    var nodo = this.getUnitaOperativaPerCodice.Get(uo.Codice);
-                    var nodi = nodo.GetSottoAlbero();
+            IEnumerable<string> listaCodiciUnitaOperative;
 
-                    foreach (var singoloNodo in nodi)
-                    {
-                        listaCodiciUnitaOperative.Add(singoloNodo.Codice);
-                    }
-                }
-                else
+            // se il DTO contiene un riferimento null, si usa il profilo di default dell'utente autenticato
+            if (query.UnitaOperative == null)
+            {
+                listaCodiciUnitaOperative = this.getCodiciUnitaOperativeVisibiliPerSoccorso.Get();
+            }
+            else
+            { // altrimenti si espande l'elenco dei tags
+                var tagsNodi = query.UnitaOperative
+                    .Select(t => new TagNodo(t.Codice, t.Ricorsivo));
+
+                listaCodiciUnitaOperative = this.espandiTagsNodoSuOrganigramma.Espandi(tagsNodi);
+            }
+
+            // nel caso la lista delle unità operative di interesse sia vuoto, si restituisce un
+            // result set vuoto.
+            if (!listaCodiciUnitaOperative.Any())
+            {
+                return new SituazioneMezziResult()
                 {
-                    listaCodiciUnitaOperative.Add(uo.Codice);
-                }
+                    SituazioneMezzi = Enumerable.Empty<SituazioneMezzo>()
+                };
             }
 
             // Preleva le richieste

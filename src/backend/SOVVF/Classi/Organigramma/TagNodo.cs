@@ -50,7 +50,14 @@ namespace Modello.Classi.Organigramma
             this.Ricorsivo = ricorsivo;
         }
 
+        /// <summary>
+        ///   Il codice del nodo
+        /// </summary>
         public string Codice { get; private set; }
+
+        /// <summary>
+        ///   Indica se il tag intende intercettare anche tutti i nodi figli
+        /// </summary>
         public bool Ricorsivo { get; private set; }
     }
 }

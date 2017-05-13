@@ -27,6 +27,147 @@ namespace Modello.Test.Classi.Organigramma
     [TestFixture]
     public class TestUnitaOperativa
     {
+        [Test]
+        public void DueTagCongiuntiRicorsiviSonoCorrettamenteRestituiti()
+        {
+            var albero = this.GetAlberoFake();
+
+            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
+            {
+                new TagNodo("1.2", true),
+                new TagNodo("1.2.1", true),
+            })
+            .Select(n => n.Codice)
+            .ToArray();
+
+            Assert.That(codiciNodo.Length, Is.EqualTo(4));
+            Assert.That(codiciNodo, Contains.Item("1.2"));
+            Assert.That(codiciNodo, Contains.Item("1.2.1"));
+            Assert.That(codiciNodo, Contains.Item("1.2.2"));
+            Assert.That(codiciNodo, Contains.Item("1.2.3"));
+        }
+
+        [Test]
+        public void DueTagDisgiuntiDiCuiUnoRicorsivoSonoCorrettamenteRestituiti()
+        {
+            var albero = this.GetAlberoFake();
+
+            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
+            {
+                new TagNodo("1.2", true),
+                new TagNodo("1.3.2", false),
+            })
+            .Select(n => n.Codice)
+            .ToArray();
+
+            Assert.That(codiciNodo.Length, Is.EqualTo(5));
+            Assert.That(codiciNodo, Contains.Item("1.2"));
+            Assert.That(codiciNodo, Contains.Item("1.2.1"));
+            Assert.That(codiciNodo, Contains.Item("1.2.2"));
+            Assert.That(codiciNodo, Contains.Item("1.2.3"));
+            Assert.That(codiciNodo, Contains.Item("1.3.2"));
+        }
+
+        [Test]
+        public void DueTagDisgiuntiRicorsiviSonoCorrettamenteRestituiti()
+        {
+            var albero = this.GetAlberoFake();
+
+            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
+            {
+                new TagNodo("1.3", true),
+                new TagNodo("1.3.2", true),
+            })
+            .Select(n => n.Codice)
+            .ToArray();
+
+            Assert.That(codiciNodo.Length, Is.EqualTo(6));
+            Assert.That(codiciNodo, Contains.Item("1.3"));
+            Assert.That(codiciNodo, Contains.Item("1.3.1"));
+            Assert.That(codiciNodo, Contains.Item("1.3.2"));
+            Assert.That(codiciNodo, Contains.Item("1.3.2.1"));
+            Assert.That(codiciNodo, Contains.Item("1.3.2.2"));
+            Assert.That(codiciNodo, Contains.Item("1.3.3"));
+        }
+
+        [Test]
+        public void DueTagSuLineaGerarchicaDiCuiLAntenatoNonRicorsivoSonoCorrettamenteRestituiti()
+        {
+            var albero = this.GetAlberoFake();
+
+            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
+            {
+                new TagNodo("1", false), // antenato non ricorsivo
+                new TagNodo("1.3.2", true), // discendente ricorsivo
+            })
+            .Select(n => n.Codice)
+            .ToArray();
+
+            Assert.That(codiciNodo.Length, Is.EqualTo(4));
+            Assert.That(codiciNodo, Contains.Item("1"));
+            Assert.That(codiciNodo, Contains.Item("1.3.2"));
+            Assert.That(codiciNodo, Contains.Item("1.3.2.1"));
+            Assert.That(codiciNodo, Contains.Item("1.3.2.2"));
+        }
+
+        [Test]
+        public void DueTagSuLineaGerarchicaNonRicorsiviSonoCorrettamenteRestituiti()
+        {
+            var albero = this.GetAlberoFake();
+
+            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
+            {
+                new TagNodo("1", false),
+                new TagNodo("1.2", false),
+            })
+            .Select(n => n.Codice)
+            .ToArray();
+
+            Assert.That(codiciNodo.Length, Is.EqualTo(2));
+            Assert.That(codiciNodo, Contains.Item("1"));
+            Assert.That(codiciNodo, Contains.Item("1.2"));
+        }
+
+        [Test]
+        public void TagConCodiceInesistenteRestituisceListaVuota()
+        {
+            var albero = this.GetAlberoFake();
+
+            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
+            {
+                new TagNodo("inesistente", false)
+            })
+            .Select(n => n.Codice)
+            .ToArray();
+
+            Assert.That(codiciNodo.Length, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void UnSottoalberoNonVuotoECorrettamenteRestituito()
+        {
+            var albero = this.GetAlberoFake();
+
+            var unitaOperativeSottoalbero = albero.Figli.Single(uo => uo.Codice == "1.3").GetSottoAlbero();
+
+            Assert.That(unitaOperativeSottoalbero.Select(uo => uo.Codice), Is.EquivalentTo(new string[] { "1.3", "1.3.1", "1.3.2", "1.3.3", "1.3.2.1", "1.3.2.2" }));
+        }
+
+        [Test]
+        public void UnSottoalberoVuotoECorrettamenteRestituito()
+        {
+            var albero = new UnitaOperativa()
+            {
+                Codice = "1",
+                Nome = "1",
+            };
+
+            var unitaOperativeSottoalbero = albero.GetSottoAlbero();
+
+            Assert.That(unitaOperativeSottoalbero.Count(), Is.EqualTo(unitaOperativeSottoalbero.Count()));
+            Assert.That("1", Is.EqualTo(unitaOperativeSottoalbero.Single().Codice));
+        }
+
         /// <summary>
         ///   <para>
         ///     Crea l'albero
@@ -45,6 +186,7 @@ namespace Modello.Test.Classi.Organigramma
         ///   </para>
         ///   <para>Il test verifica che i nodi del sottoalbero 1.3 siano correttamente restituiti.</para>
         /// </summary>
+        /// <returns>L'albero fake</returns>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1631:DocumentationMustMeetCharacterPercentage", Justification = "Reviewed.")]
         private UnitaOperativa GetAlberoFake()
         {
@@ -132,132 +274,6 @@ namespace Modello.Test.Classi.Organigramma
             uo1_3_2.AddFiglio(uo1_3_2_2);
 
             return albero;
-        }
-
-        [Test]
-        public void UnSottoalberoNonVuotoECorrettamenteRestituito()
-        {
-            var albero = GetAlberoFake();
-
-            var unitaOperativeSottoalbero = albero.Figli.Single(uo => uo.Codice == "1.3").GetSottoAlbero();
-
-            Assert.That(unitaOperativeSottoalbero.Select(uo => uo.Codice), Is.EquivalentTo(new string[] { "1.3", "1.3.1", "1.3.2", "1.3.3", "1.3.2.1", "1.3.2.2" }));
-        }
-
-        [Test]
-        public void UnSottoalberoVuotoECorrettamenteRestituito()
-        {
-            var albero = new UnitaOperativa()
-            {
-                Codice = "1",
-                Nome = "1",
-            };
-
-            var unitaOperativeSottoalbero = albero.GetSottoAlbero();
-
-            Assert.That(unitaOperativeSottoalbero.Count(), Is.EqualTo(unitaOperativeSottoalbero.Count()));
-            Assert.That("1", Is.EqualTo(unitaOperativeSottoalbero.Single().Codice));
-        }
-
-        [Test]
-        public void DueTagDisgiuntiRicorsiviSonoCorrettamenteRestituiti()
-        {
-            var albero = GetAlberoFake();
-
-            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
-            {
-                new TagNodo("1.3", true),
-                new TagNodo("1.3.2", true),
-            })
-            .Select(n => n.Codice)
-            .ToArray();
-
-            Assert.That(codiciNodo.Length, Is.EqualTo(6));
-            Assert.That(codiciNodo, Contains.Item("1.3"));
-            Assert.That(codiciNodo, Contains.Item("1.3.1"));
-            Assert.That(codiciNodo, Contains.Item("1.3.2"));
-            Assert.That(codiciNodo, Contains.Item("1.3.2.1"));
-            Assert.That(codiciNodo, Contains.Item("1.3.2.2"));
-            Assert.That(codiciNodo, Contains.Item("1.3.3"));
-        }
-
-        [Test]
-        public void DueTagCongiuntiRicorsiviSonoCorrettamenteRestituiti()
-        {
-            var albero = GetAlberoFake();
-
-            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
-            {
-                new TagNodo("1.2", true),
-                new TagNodo("1.2.1", true),
-            })
-            .Select(n => n.Codice)
-            .ToArray();
-
-            Assert.That(codiciNodo.Length, Is.EqualTo(4));
-            Assert.That(codiciNodo, Contains.Item("1.2"));
-            Assert.That(codiciNodo, Contains.Item("1.2.1"));
-            Assert.That(codiciNodo, Contains.Item("1.2.2"));
-            Assert.That(codiciNodo, Contains.Item("1.2.3"));
-        }
-
-        [Test]
-        public void DueTagSuLineaGerarchicaNonRicorsiviSonoCorrettamenteRestituiti()
-        {
-            var albero = GetAlberoFake();
-
-            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
-            {
-                new TagNodo("1", false),
-                new TagNodo("1.2", false),
-            })
-            .Select(n => n.Codice)
-            .ToArray();
-
-            Assert.That(codiciNodo.Length, Is.EqualTo(2));
-            Assert.That(codiciNodo, Contains.Item("1"));
-            Assert.That(codiciNodo, Contains.Item("1.2"));
-        }
-
-        [Test]
-        public void DueTagDisgiuntiDiCuiUnoRicorsivoSonoCorrettamenteRestituiti()
-        {
-            var albero = GetAlberoFake();
-
-            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
-            {
-                new TagNodo("1.2", true),
-                new TagNodo("1.3.2", false),
-            })
-            .Select(n => n.Codice)
-            .ToArray();
-
-            Assert.That(codiciNodo.Length, Is.EqualTo(5));
-            Assert.That(codiciNodo, Contains.Item("1.2"));
-            Assert.That(codiciNodo, Contains.Item("1.2.1"));
-            Assert.That(codiciNodo, Contains.Item("1.2.2"));
-            Assert.That(codiciNodo, Contains.Item("1.2.3"));
-            Assert.That(codiciNodo, Contains.Item("1.3.2"));
-        }
-
-        [Test]
-        public void DueTagSuLineaGerarchicaDiCuiLAntenatoNonRicorsivoSonoCorrettamenteRestituiti()
-        {
-            var albero = GetAlberoFake();
-
-            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
-            {
-                new TagNodo("1", false), // antenato non ricorsivo
-                new TagNodo("1.3.2", true), // discendente ricorsivo
-            })
-            .Select(n => n.Codice)
-            .ToArray();
-
-            Assert.That(codiciNodo.Length, Is.EqualTo(4));
-            Assert.That(codiciNodo, Contains.Item("1"));
-            Assert.That(codiciNodo, Contains.Item("1.3.2"));
-            Assert.That(codiciNodo, Contains.Item("1.3.2.1"));
-            Assert.That(codiciNodo, Contains.Item("1.3.2.2"));
         }
     }
 }
