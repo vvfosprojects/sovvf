@@ -81,6 +81,7 @@
     <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\StatoMezzo\SulPosto.cs" />
     <Compile Include="Modello\GestioneSoccorso\GetRichiesteAssistenzaPerIndicatoriPerUnitaOperative.cs" />
     <Compile Include="Modello\Organigramma\GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato.cs" />
+    <Compile Include="Modello\Organigramma\GetUnitaOperativeVisibiliPerSoccorso_OperatoreDirezioneRegionaleLazio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
