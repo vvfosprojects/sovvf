@@ -11,6 +11,42 @@
   </div>
 </div>
 -->
+<div class="container">
+  <div class="row">
+    <div class="col">
+     <p-autoComplete  [(ngModel)]="risultatiMultipli" 
+	 			placeholder="Scrivi cosa cerchi..." 
+				[suggestions]="risultati" 
+				(completeMethod)="searchFake($event)" 
+				field="testo" 
+				[style]="{'width':'100%'}" 
+				[inputStyle]="{'width':'100%','font-size': '16px'}"
+				[multiple]='true' 
+				[minLength]="1">
+				
+		   <ng-template  let-brand pTemplate="itemdddd">
+						<div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+								<div title="{{ brand.tooltip }}"><span style="font-size:10px" >{{ brand.id }}:</span> {{ brand.testo }}</div>
+						</div>
+				</ng-template>	
+		</p-autoComplete>
+    </div>
+    <div class="col">
+      1 of 2
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      1 of 3
+    </div>
+    <div class="col">
+      1 of 3
+    </div>
+    <div class="col">
+      1 of 3
+    </div>
+  </div>
+</div>
 <h3 class="first">Basic PrimeNG</h3>
 <p-autoComplete [(ngModel)]="voce" placeholder="Scrivi cosa cerchi..." [autoHighlight]="true" [suggestions]="risultati" (completeMethod)="searchFake($event)" field="testo" [size]="30"
     [minLength]="1">
@@ -23,8 +59,15 @@
 <span>Hai selezionato: {{ !!voce ? voce.id||voce : "Niente" }}</span>
 <br>
 <h3 class="first">Multiple PrimeNG</h3>
-<p-autoComplete [(ngModel)]="risultatiMultipli" [multiple]='true' placeholder="Scrivi cosa cerchi..." [suggestions]="risultati" (completeMethod)="searchFake($event)" field="testo" [size]="30"
-    [minLength]="1">
+<p-autoComplete [(ngModel)]="risultatiMultipli" 
+                placeholder="Scrivi cosa cerchi..." 
+				[suggestions]="risultati" 
+				(completeMethod)="searchFake($event)" 
+				field="testo" 
+				[style]="{'width':'100%'}" 
+				[inputStyle]="{'width':'100%','font-size': '16px'}"
+				[multiple]='true' 
+				[minLength]="1">
 	<ng-template  let-brand pTemplate="itemdddd">
         <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
             <div title="{{ brand.tooltip }}"><span  class="h6">{{ brand.id }}:</span> {{ brand.testo }}</div>
