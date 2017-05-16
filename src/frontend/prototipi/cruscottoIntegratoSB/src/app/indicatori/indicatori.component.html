@@ -1,0 +1,16 @@
+<h2 class="text-muted">Dashboard <small> ===> indicatori SO VVF</small></h2>
+
+<div class="row">
+    <div class="col-xl-3 col-lg-6">
+        <app-stat [bgClass]="'card-primary'" [icon]="'fa-phone'" [count]="10" [label]="'Chiamate in coda'"  [count1]="3"  [label1]="'Interventi in corso'"></app-stat>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <app-stat [bgClass]="'card-info'"    [icon]="'fa-car'"   [count]="4"  [label]="'Mezzi impegnati'"   [count1]="23" [label1]="'Mezzi totali in Servizio'"></app-stat>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <app-stat [bgClass]="'card-success'" [icon]="'fa-users'" [count]="2"  [label]="'Squadre Impegnate'" [count1]="4"  [label1]="'Squadre in Servizio'"></app-stat>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <app-stat [bgClass]="'card-danger'"  [icon]="'fa-sun-o'" [count]=""   [label]="'Previsioni del Tempo!'"></app-stat>
+    </div>
+</div>
