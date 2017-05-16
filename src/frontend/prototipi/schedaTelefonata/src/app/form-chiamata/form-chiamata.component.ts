@@ -140,8 +140,8 @@ export class FormChiamataComponent implements OnInit {
 
     //set google maps defaults
     this.zoom = 18;
-    this.latitude = 39.8282;
-    this.longitude = -98.5795;
+    this.latitude = 41.9005719;
+    this.longitude = 12.499365500000067;
 
     //create search FormControl
     this.searchControl = new FormControl();
@@ -168,6 +168,7 @@ export class FormChiamataComponent implements OnInit {
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
           this.zoom = 18;
+          console.log(this.latitude+" "+this.longitude);
         });
       });
     });

@@ -76,7 +76,7 @@
                 <input type="text" class="form-control" id="ragione_sociale" placeholder="Ragione sociale" value="{{formChiamataModel.ragione_sociale}}" formControlName="ragione_sociale"  >
               </div>
             </div>
-            <div class="row">
+            <div class="row" style="margin-top: 5px;">
               <div class="col-lg-3"> <button type="button" (click)="onClickCC()" class="btn btn-block btn-secondary btn-xs btn-sm" data-toggle="tooltip" data-animation="false"
                   title="Carabinieri" data-placement="bottom">CC</button> </div>
               <div class="col-lg-3"> <button type="button" (click)="onClickPS()" class="btn btn-block btn-secondary btn-xs btn-sm" data-toggle="tooltip" data-animation="false"
@@ -97,7 +97,7 @@
             <br>
             <div class="input-group">
               <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Coordinate" style="min-width: 50px;"> <i class="fa fa-map-marker" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="coordinate"
-                placeholder="Coordinate" readonly="" value="Lat. {{this.latitude | number : '1.3-3'}}, Long. {{this.longitude | number : '1.3-3'}}"> </div>
+                placeholder="Coordinate" readonly="" value="Lat. {{this.latitude | number : '2.3-3'}}, Long. {{this.longitude | number : '2.3-3'}}"> </div>
           </div>
           <div class="col-md-7 align-self-center text-center"> 
             <!--<img class="center-block img-fluid" src="https://maps.googleapis.com/maps/api/staticmap?center=via+cavou+5+roma&amp;zoom=18&amp;size=1000x310&amp;sensor=false">            -->
