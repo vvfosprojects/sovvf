@@ -50,6 +50,9 @@
 	</script>
 	<div class="container">
 		<h1>&nbsp;</h1>
+		<!-- -----------
+		Inizio riga
+		----------- -->
 		<div class="card status_red row_text p-3">
 
 			<div class="row align-items-center">
@@ -91,7 +94,7 @@
 									<div class="h5">
 										<i class="fa fa-tag fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Tipologia Evento"></i>
 										<span class="h4" style="color:chocolate">Incendio Normale</span>
-										<a href="#" ><span class="h6 ml-2" style="font-weight:bold;color:chocolate">[più altri 2]</span></a>
+										<a href="#"><span class="h6 ml-2" style="font-weight:bold;color:chocolate">[più altri 2]</span></a>
 
 										<h5 style="color:#bbbbbb">
 											<i class="fa fa-fw" aria-hidden="true"></i>
@@ -166,7 +169,7 @@
 									</div>
 									<div class="h5">
 										<i class="fa fa-id-card-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Codice scheda NUE"></i>
-										<a href="#" ><span style="color: darkorange">184831295</span></a>
+										<a href="#"><span style="color: darkorange">184831295</span></a>
 									</div>
 									<div class="h5">
 										<i class="fa fa-paper-plane-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Stato Fonogramma"></i>
@@ -188,7 +191,14 @@
 													<span style="font-weight: bold">Prima Partenza A</span>
 												</div>
 												<div class="col-md-2">
-													<a tabindex="0" data-toggle="popover" data-trigger="focus" title="<b>Componenti Squadra<b>" data-html="true" data-content="<b>CR</b>  Giuseppe Verdi</br></div><b>VE</b>  Giacomo Leopardi<br/><b>VE</b>  Torquato Tasso<br/><b>VQ</b>  Ippolito Pindemonte<br/><b>VP</b>  Alessandro Manzoni<br/>">
+													<a tabindex="0" data-toggle="popover" data-trigger="focus" title="<b>Componenti Squadra<b>" data-html="true" data-content="
+														<div>
+														<i class='fa fa-user fa-fw' style='color:darkorange!important;font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Capo Partenza'/>&nbsp;<b>CR</b>  Giuseppe Verdi</br>
+														<i class='fa fa-user fa-fw' style='color:lightblue!important;font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Autista'/>&nbsp;<b>VE</b>  Giacomo Leopardi<br/>
+														<i class='fa fa-user fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Membro'/>&nbsp;<b>VE</b>  Torquato Tasso<br/>
+														<i class='fa fa-user fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Membro'/>&nbsp;<b>VQ</b>  Ippolito Pindemonte<br/>
+														<i class='fa fa-user fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Membro'/>&nbsp;<b>VP</b>  Alessandro Manzoni<br/>
+														</div>">
 													<i class="fa fa-tags fa-fw" style="color:cadetblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Componenti Squadra"></i>	
 												</a>
 												</div>
@@ -200,7 +210,15 @@
 													<span style="font-weight: bold">Seconda Partenza A</span>
 												</div>
 												<div class="col-md-2">
-													<a tabindex="0" data-toggle="popover" data-trigger="focus" title="<b>Componenti Squadra<b>" data-html="true" data-content="<b>CR</b>  Giuseppe Garibaldi</br></div><b>VE</b>  Giacomo Puccini<br/><b>VE</b>  Italo Svevo<br/><b>VQ</b>  Ugo Foscolo<br/><b>VP</b>  Dante Alighieri<br/>">
+													<a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Componenti Squadra<b>" data-html="true" data-content="
+														<span class='badge badge-warning'>CAPOPARTENZA</span><br/>
+														<b>CR</b>  Giuseppe Garibaldi </br>
+														<span class='badge badge-info'>AUTISTA</span><br/>
+														<b>VE</b>  Giacomo Puccini<br/>
+														<span class='badge badge-default'>MEMBRI</span><br/>
+														<b>VE</b>  Italo Svevo<br/>
+														<b>VQ</b>  Ugo Foscolo<br/>
+														<b>VP</b>  Dante Alighieri<br/>">
 													<i class="fa fa-tags fa-fw" style="color:cadetblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Componenti Squadra"></i>	
 												</a>
 												</div>
@@ -222,18 +240,31 @@
 													<span style="font-weight: bold">AMR123SA</span>
 													<span class="badge badge-default m-0">aps</span>
 													<span class="badge badge-warning m-0">in viaggio</span>
-													
+
 												</div>
 												<div class="col-md-2 p-0 pl-2">
+													<a href="#" tabindex="0" data-toggle="popover" data-trigger="focus" title="<b>Indicatori Mezzo<b>" data-html="true" data-content="
+														<div style='font-size:1.3em'>
+														<i class='fa fa-cogs fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Stato di efficienza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-success'> OTTIMO </span><br/>
+														<i class='fa fa-tachometer fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Livello Carburante'/> &nbsp;&nbsp; <span class='badge badge-success'> ALTO </span><br/>
+														<i class='fa fa-tint fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Livello Estinguente'/> &nbsp;&nbsp; <span class='badge badge-success'> ALTO </span><br/>
+														<i class='fa fa-external-link fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Appartenenza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-info'> PROPRIO </span><br/>
+														</div>">														
 													<i class="fa fa-briefcase fa-fw" style="color:green!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
 													 title="Condizione del Mezzo: 100%"></i>
-													<a tabindex="0" data-toggle="popover" data-trigger="focus" title="<b>Persone sul Mezzo<b>" data-html="true" data-content="<b>CR</b>  Giuseppe Garibaldi</br></div><b>VE</b>  Giacomo Puccini<br/><b>VE</b>  Italo Svevo<br/><b>VQ</b>  Ugo Foscolo<br/><b>VP</b>  Dante Alighieri<br/>">
+													<a tabindex="0" data-toggle="popover" data-trigger="focus" title="<b>Persone sul Mezzo<b>" data-html="true" data-content="
+														<i class='fa fa-star fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Capo Partenza'/>&nbsp;<b>CR</b>  Giuseppe Verdi</br>
+														<i class='fa fa-truck fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Autista'/>&nbsp;<b>VE</b>  Giacomo Leopardi<br/>
+														<i class='fa fa-fire-extinguisher fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Membro'/>&nbsp;<b>VE</b>  Torquato Tasso<br/>
+														<i class='fa fa-fire-extinguisher fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Membro'/>&nbsp;<b>VQ</b>  Ippolito Pindemonte<br/>
+														<i class='fa fa-fire-extinguisher fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Membro'/>&nbsp;<b>VP</b>  Alessandro Manzoni<br/>
+														</div>">
 													<i class="fa fa-user fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
 												</a>
 													<a style="font-weight: bold" href="#">
 													<i class="fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione Mezzo"></i>	
 												</a>
-												<a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Notifiche mezzo<b>" data-html="true" data-content="Nessuna notifica">
+													<a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Notifiche mezzo<b>" data-html="true" data-content="Nessuna notifica">
 													<i class="fa fa-bell fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
 												</a>
 												</div>
@@ -249,13 +280,18 @@
 												<div class="col-md-2 p-0 pl-2">
 													<i class="fa fa-briefcase fa-fw" style="color:darkorange!important" aria-hidden="true" data-toggle="tooltip" data-placement="top"
 													 title="Condizione del Mezzo: 70%"></i>
-													<a tabindex="0" data-toggle="popover" data-trigger="focus" title="<b>Persone sul Mezzo<b>" data-html="true" data-content="<b>CR</b>  Giuseppe Garibaldi</br></div><b>VE</b>  Giacomo Puccini<br/><b>VE</b>  Italo Svevo<br/><b>VQ</b>  Ugo Foscolo<br/><b>VP</b>  Dante Alighieri<br/>">
+													<a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Persone sul Mezzo<b>" data-html="true" data-content="
+														<b>CR</b>  Giuseppe Garibaldi <span class='badge badge-warning'>CAPOPARTENZA</span></br>
+														</div><b>VE</b>  Giacomo Puccini <span class='badge badge-info'>AUTISTA</span><br/>
+														<b>VE</b>  Italo Svevo<br/>
+														<b>VQ</b>  Ugo Foscolo<br/>
+														<b>VP</b>  Dante Alighieri<br/>">
 													<i class="fa fa-user fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
 												</a>
 													<a style="font-weight: bold" href="#">
 													<i class="fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione Mezzo"></i>	
 												</a>
-												<a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Notifiche mezzo<b>" data-html="true" data-content="Nessuna notifica">
+													<a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Notifiche mezzo<b>" data-html="true" data-content="Nessuna notifica">
 													<i class="fa fa-bell fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
 												</a>
 												</div>
@@ -287,6 +323,11 @@
 				</div>
 			</div>
 		</div>
+		<!-- -----------
+		Fine riga
+		----------- -->
+
+
 	</div>
 
 </body>
