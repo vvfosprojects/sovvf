@@ -1,7 +1,6 @@
 import { PersonaSulMezzo } from "./persona-sul-mezzo.model";
 
 export class MezzoInServizio {
-  private _mostraPersone: boolean = false;
 
   constructor(public Codice: string,
    public CodiceUnitaOperativa: string,
@@ -21,17 +20,4 @@ export class MezzoInServizio {
     */
    public personeSulMezzo: PersonaSulMezzo[]
    ) {}
-
-
-   public hideMostraPersone(): void {
-        if (this._mostraPersone) 
-           this._mostraPersone = false;
-        else
-           this._mostraPersone = true;
-    }
-
-    get mostraPersone(): boolean {
-        return this._mostraPersone;
-    }
-
  }

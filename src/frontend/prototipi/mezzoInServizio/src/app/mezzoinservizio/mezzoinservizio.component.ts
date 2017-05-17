@@ -11,6 +11,8 @@ import { DescStatoMap } from './desc-stato-map.class';
 })
 export class MezzoinservizioComponent implements OnInit {
   private mapperDescStato = new DescStatoMap();
+  private _mostraPersone: boolean = false;
+
   constructor(private mezzoInServizioService: MezzoInServizioService) { }
 
   ngOnInit() {
@@ -29,12 +31,20 @@ export class MezzoinservizioComponent implements OnInit {
   private setDisponibile(isSet: boolean): void {
     this.fs.Disponibile = isSet;
   }
- private setCodiceStato(isSet: string): void {
+  private setCodiceStato(isSet: string): void {
     this.fs.CodiceStato = isSet;
   }
- 
+
   private numeroPersone(): number {
     return this.fs.personeSulMezzo.length;
+  }
+
+  public hideMostraPersone(): void {
+    this._mostraPersone = !this._mostraPersone;
+  }
+
+  get mostraPersone(): boolean {
+    return this._mostraPersone;
   }
 
 }
