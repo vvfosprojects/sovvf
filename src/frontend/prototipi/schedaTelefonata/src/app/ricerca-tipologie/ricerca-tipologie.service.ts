@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { TipologiaIntervento } from "app/ricerca-tipologie/tipologia-intervento.model";
 
+
 @Injectable()
 export class RicercaTipologieService {
   tipologie: TipologiaIntervento[] = [
@@ -113,6 +114,7 @@ export class RicercaTipologieService {
   constructor() { }
 
   public search(key: string): TipologiaIntervento[] {
+    
     return this.tipologie
       .filter(i => 
         !!i.descrizione.match("/" + key + "/i") ||

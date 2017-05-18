@@ -1,3 +1,19 @@
+     <p-autoComplete  [(ngModel)]="risultatiMultipli" 
+	 			placeholder="Scrivi cosa cerchi..." 
+				[suggestions]="risultati" 
+				(completeMethod)="searchTipologia($event)" 
+				field="testo" 
+				[style]="{'width':'100%'}" 
+				[inputStyle]="{'width':'100%','font-size': '16px'}"
+				[multiple]='true' 
+				[minLength]="1">
+				
+		   <ng-template  let-brand pTemplate="itemdddd">
+						<div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+								<div title="{{ brand.tooltip }}"><span style="font-size:10px" >{{ brand.id }}:</span> {{ brand.testo }}</div>
+						</div>
+				</ng-template>	
+		</p-autoComplete>
 <div class="section">
   <div class="container">
     <!-- prima riga -->

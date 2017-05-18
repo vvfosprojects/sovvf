@@ -179,8 +179,9 @@ export class FormChiamataComponent implements OnInit {
    * @param event 
    */
   searchTipologia(event) {
-
+    console.log("ricerca "+event.query);
     this.risultati = this._ricercaTipologieService.search(event.query);
+    console.log("lunghezza "+this.risultati.length);
 
   }
 
