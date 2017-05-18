@@ -89,12 +89,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             }
 
             mezzo.ContestoMezzo.Uscita();
-            this.richiesta.Richiesta.Eventi.Add(
-                new UscitaPartenza()
-                {
-                    CodiceMezzo = this.parametriMezzo.MezzoUtilizzato.Codice,
-                    Istante = istanteEffettivo
-                });
+            this.richiesta.Richiesta.Eventi.Add(new UscitaPartenza(this.parametriMezzo.MezzoUtilizzato.Codice, istanteEffettivo, "Fonte"));
 
             this.eseguita = true;
 

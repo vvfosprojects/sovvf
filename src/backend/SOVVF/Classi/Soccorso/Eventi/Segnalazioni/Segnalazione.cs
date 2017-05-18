@@ -29,10 +29,29 @@ namespace Modello.Classi.Soccorso.Eventi.Segnalazioni
     public abstract class Segnalazione : Evento
     {
         /// <summary>
+        ///   Costruttore della classe.
+        /// </summary>
+        /// <param name="codice">
+        ///   E' l'identificativo univoco della segnalazione, utilizzabile anche a scopi
+        ///   giuridici/amministrativi. Potrebbe essere un codice del tipo AX554HN.
+        /// </param>
+        /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
+        /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
+        public Segnalazione(string codice, DateTime istante, string codiceFonte) : base(istante, codiceFonte)
+        {
+            if (string.IsNullOrWhiteSpace(codice))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(codice));
+            }
+
+            this.Codice = codice;
+        }
+
+        /// <summary>
         ///   E' l'identificativo univoco della segnalazione, utilizzabile anche a scopi
         ///   giuridici/amministrativi. Potrebbe essere un codice del tipo AX554HN.
         /// </summary>
-        public string Codice { get; set; }
+        public string Codice { get; private set; }
 
         /// <summary>
         ///   E' un codice che identifica univocamente la sorgente da cui proviene la segnalazione.

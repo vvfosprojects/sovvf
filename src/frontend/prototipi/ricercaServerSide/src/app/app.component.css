@@ -1,0 +1,11 @@
+:host /deep/ li.ui-autocomplete-token {
+	background-color: #a5a8aa;
+	color: #292b2c;    
+}
+
+/**
+* stile del campo di ricerca multipla.
+*/
+:host /deep/ ul.ui-autocomplete-multiple-container.ui-widget.ui-inputtext.ui-state-default.ui-corner-all{
+	width: 100%;
+}

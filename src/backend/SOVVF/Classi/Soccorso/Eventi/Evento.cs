@@ -31,15 +31,36 @@ namespace Modello.Classi.Soccorso.Eventi
     public abstract class Evento : IEvento
     {
         /// <summary>
+        ///   Costruttore della classe.
+        /// </summary>
+        /// <param name="istante">L'istante in cui avviene l'evento.</param>
+        /// <param name="codiceFonte">Il codice della fonte informativa dell'evento.</param>
+        public Evento(DateTime istante, string codiceFonte)
+        {
+            if (istante == DateTime.MinValue)
+            {
+                throw new ArgumentOutOfRangeException(nameof(istante));
+            }
+
+            if (string.IsNullOrWhiteSpace(codiceFonte))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceFonte));
+            }
+
+            this.Istante = istante;
+            this.CodiceFonte = codiceFonte;
+        }
+
+        /// <summary>
         ///   E' l'istante in cui si è verificato l'evento.
         /// </summary>
-        public DateTime Istante { get; set; }
+        public DateTime Istante { get; private set; }
 
         /// <summary>
         ///   E' l'identificativo univoco della fonte informativa sull'evento, che ha anche la
         ///   responsabilità di garantirne la veridicità. Può essere per esempio un operatore SO, un
         ///   sensore, un altro sistema informativo, lo stesso SOVVF.
         /// </summary>
-        public string CodiceFonte { get; set; }
+        public string CodiceFonte { get; private set; }
     }
 }

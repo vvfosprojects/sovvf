@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using Modello.Classi.Soccorso.Eventi.Partenze;
@@ -36,33 +37,28 @@ namespace Modello.Test.Classi.Soccorso
         [SetUp]
         public void CreaComposizionePartenzaStandard()
         {
-            this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista = new ComposizionePartenze()
+            this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista = new ComposizionePartenze(DateTime.Now, "Fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
-                    new ComponentePartenza()
+                    new ComponentePartenza("XXX")
                     {
-                        CodiceFiscale = "XXX",
                         Ruoli = new HashSet<ComponentePartenza.Ruolo>() { ComponentePartenza.Ruolo.CapoPartenza }
                     },
-                    new ComponentePartenza()
+                    new ComponentePartenza("YYY")
                     {
-                        CodiceFiscale = "YYY",
                         Ruoli = new HashSet<ComponentePartenza.Ruolo>() { ComponentePartenza.Ruolo.Autista }
                     },
-                    new ComponentePartenza()
+                    new ComponentePartenza("ZZZ")
                     {
-                        CodiceFiscale = "ZZZ",
                         Ruoli = new HashSet<ComponentePartenza.Ruolo>() { ComponentePartenza.Ruolo.Vigile }
                     },
-                    new ComponentePartenza()
+                    new ComponentePartenza("KKK")
                     {
-                        CodiceFiscale = "KKK",
                         Ruoli = new HashSet<ComponentePartenza.Ruolo>() { ComponentePartenza.Ruolo.Vigile }
                     },
-                    new ComponentePartenza()
+                    new ComponentePartenza("LLL")
                     {
-                        CodiceFiscale = "LLL",
                         Ruoli = new HashSet<ComponentePartenza.Ruolo>() { ComponentePartenza.Ruolo.Vigile }
                     }
                 }
@@ -128,9 +124,8 @@ namespace Modello.Test.Classi.Soccorso
             // Arrange
             var cp = this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista;
             cp.Componenti.Add(
-                    new ComponentePartenza()
+                    new ComponentePartenza("ZZY")
                     {
-                        CodiceFiscale = "ZZY",
                         Ruoli = new HashSet<Componente.Ruolo>() { Componente.Ruolo.CapoPartenza }
                     });
 
@@ -143,7 +138,7 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaComposizionePartenzaAppenaCreataHaLAttributoComponentiNonNull()
         {
-            var cp = new ComposizionePartenze();
+            var cp = new ComposizionePartenze(DateTime.Now, "Fonte");
 
             var componenti = cp.Componenti;
 

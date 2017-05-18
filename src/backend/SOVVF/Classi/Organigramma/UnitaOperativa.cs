@@ -17,7 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Modello.Classi.Organigramma
 {
@@ -29,20 +31,34 @@ namespace Modello.Classi.Organigramma
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UnitaOperativa()
+        /// <param name="codice">Il codice dell'unità operativa</param>
+        /// <param name="nome">Il nome dell'unità operativa</param>
+        public UnitaOperativa(string codice, string nome)
         {
+            if (string.IsNullOrWhiteSpace(codice))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(codice));
+            }
+
+            if (string.IsNullOrWhiteSpace(nome))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(nome));
+            }
+
+            this.Codice = codice;
+            this.Nome = nome;
             this.Figli = new HashSet<UnitaOperativa>();
         }
 
         /// <summary>
         ///   Codice dell'unità operativa
         /// </summary>
-        public string Codice { get; set; }
+        public string Codice { get; private set; }
 
         /// <summary>
         ///   Il nome dell'inità operativa
         /// </summary>
-        public string Nome { get; set; }
+        public string Nome { get; private set; }
 
         /// <summary>
         ///   Le unità operative figlie nell'organigramma
@@ -59,7 +75,7 @@ namespace Modello.Classi.Organigramma
         ///   Restituisce tutte le unità operative presenti nel sottoalbero, radice compresa
         /// </summary>
         /// <returns>Le unità operative</returns>
-        public IEnumerable<UnitaOperativa> GetSottoAlbero()
+        public virtual IEnumerable<UnitaOperativa> GetSottoAlbero()
         {
             yield return this;
 
@@ -72,6 +88,51 @@ namespace Modello.Classi.Organigramma
             }
 
             yield break;
+        }
+
+        /// <summary>
+        ///   Restituisce tutte le unità operative presenti nel sottoalbero che corrispondono
+        ///   all'insieme dei tags
+        /// </summary>
+        /// <param name="tags">I tags da espandere</param>
+        /// <returns>
+        ///   I tags che individuano le unità operative da restituire, ciascuno indicante l'eventuale ricorsività
+        /// </returns>
+        public virtual IEnumerable<UnitaOperativa> GetSottoAlbero(IEnumerable<TagNodo> tags)
+        {
+            var tag = tags.SingleOrDefault(t => t.Codice == this.Codice);
+            if (tag != null)
+            {
+                if (tag.Ricorsivo)
+                {
+                    foreach (var n in this.GetSottoAlbero())
+                    {
+                        yield return n;
+                    }
+                }
+                else
+                {
+                    yield return this;
+
+                    foreach (var f in this.Figli)
+                    {
+                        foreach (var n in f.GetSottoAlbero(tags))
+                        {
+                            yield return n;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (var f in this.Figli)
+                {
+                    foreach (var n in f.GetSottoAlbero(tags))
+                    {
+                        yield return n;
+                    }
+                }
+            }
         }
 
         /// <summary>

@@ -20,7 +20,7 @@
 namespace Modello.Classi.Soccorso.Squadre
 {
     /// <summary>
-    ///   Modella la sezione oeprativa (ex colonna mobile)
+    ///   Modella la sezione operativa (ex colonna mobile)
     /// </summary>
     /// <remarks>
     ///   La composizione della sezione operativa è sistematica e predispone delle squadre allo scopo

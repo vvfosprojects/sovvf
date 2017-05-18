@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using Modello.Classi.Soccorso.Squadre;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
@@ -28,9 +29,48 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
     public class ComponentePartenza : Componente
     {
         /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="codiceFiscale">E' il codice fiscale</param>
+        public ComponentePartenza(string codiceFiscale) : base(codiceFiscale)
+        {
+        }
+
+        /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="codiceFiscale">Il codice fiscale</param>
+        /// <param name="codiceMezzo">Il codice del mezzo</param>
+        public ComponentePartenza(string codiceFiscale, string codiceMezzo) : base(codiceFiscale)
+        {
+            if (string.IsNullOrWhiteSpace(codiceMezzo))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceMezzo));
+            }
+
+            this.CodiceMezzo = codiceMezzo;
+        }
+
+        /// <summary>
+        ///   Costruttore della classe.
+        /// </summary>
+        /// <param name="codiceFiscale">E' il codice fiscale</param>
+        /// <param name="codiceMezzo">E' il codice del mezzo</param>
+        /// <param name="ticket">E' il ticket associato alla squadra a bordo del mezzo</param>
+        public ComponentePartenza(string codiceFiscale, string codiceMezzo, string ticket) : this(codiceFiscale, codiceMezzo)
+        {
+            if (string.IsNullOrWhiteSpace(ticket))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(ticket));
+            }
+
+            this.Ticket = ticket;
+        }
+
+        /// <summary>
         ///   E' l'identificativo del mezzo
         /// </summary>
-        public string CodiceMezzo { get; set; }
+        public string CodiceMezzo { get; private set; }
 
         /// <summary>
         ///   Identificativo assegnato alla squadra al momento della sua definizione. Rappresenta la

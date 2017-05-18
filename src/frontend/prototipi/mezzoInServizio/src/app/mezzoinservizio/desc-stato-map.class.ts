@@ -8,6 +8,7 @@ export class DescStatoMap {
         this.dict["SulPosto"] = "Sul posto";
         this.dict["InRientro"] = "In Rientro";
         this.dict["FuoriServizio"] = "Fuori Servizio";
+        this.dict["Istituto"] = "Istituto";
         ///qui tutti gli altri stati
     }
     public map(codiceStato: string): string {

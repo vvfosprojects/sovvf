@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classi\Organigramma\TagNodo.cs" />
+    <Compile Include="Classi\Utenti\Autenticazione\Utente.cs" />
     <Compile Include="Classi\Geo\Cerchio.cs" />
     <Compile Include="Classi\Geo\Geolocalizzazione.cs" />
     <Compile Include="Classi\Geo\Poligonale.cs" />
@@ -73,7 +75,9 @@
     <Compile Include="Classi\Soccorso\Eventi\Partenze\ComponentePartenza.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\ArrivoSulPosto.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\UscitaPartenza.cs" />
-    <Compile Include="Classi\Soccorso\Eventi\ChiusuraRichiesta.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\ChiusuraRichiesta.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Classi\Soccorso\Eventi\Segnalazioni\Segnalazione.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Segnalazioni\Telefonata.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\DisponibilitaMezzo.cs" />
@@ -94,6 +98,9 @@
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\InViaggio.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\IStatoMezzo.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\SulPosto.cs" />
+    <Compile Include="Classi\Utenti\Profilo\Regola.cs" />
+    <Compile Include="Classi\Utenti\Profilo\RegolaSuUnitaOperativa.cs" />
+    <Compile Include="Classi\Utenti\Profilo\VisibilitaPredefinitaSoccorso.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\CommandDTO\ComponiPartenzaCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\ComponiPartenzaCommandHandler.cs" />
@@ -110,7 +117,10 @@
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetNumeroMezziSoccorsoOraInServizio.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\Bindings.cs" />
-    <Compile Include="Servizi\Infrastruttura\Organigramma\GetUnitaOperativaPerCodice.cs" />
+    <Compile Include="Servizi\Infrastruttura\Organigramma\Implementazioni\EspandiTagsNodoSuOrganigramma.cs" />
+    <Compile Include="Servizi\Infrastruttura\Organigramma\Implementazioni\GetUnitaOperativaPerCodice.cs" />
+    <Compile Include="Servizi\Infrastruttura\Organigramma\IEspandiTagsNodoSuOrganigramma.cs" />
+    <Compile Include="Servizi\Infrastruttura\Organigramma\IGetUnitaOperativeVisibiliPerSoccorso.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\IGetUnitaOperativaPerCodice.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\IndicatoriStatoSoccorsoQueryHandler.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\QueryDTO\IndicatoriStatoSoccorsoQuery.cs" />

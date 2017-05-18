@@ -31,7 +31,7 @@ namespace Modello.Servizi.Infrastruttura.GestioneSoccorso
         /// <summary>
         ///   Restituisce l'elenco delle Richieste di Assistenza
         /// </summary>
-        /// <param name="codiciUnitaOperative">Elenco dei codici dell'Unità Operativa</param>
+        /// <param name="codiciUnitaOperative">Elenco dei codici dell'Unità Operativa.</param>
         /// <returns>Elenco delle Richieste</returns>
         IEnumerable<RichiestaAssistenza> Get(IEnumerable<string> codiciUnitaOperative);
     }

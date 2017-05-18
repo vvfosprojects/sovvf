@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Sganciamento.cs" company="CNVVF">
+// <copyright file="Rilascio.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -31,9 +31,25 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
     public abstract class Rilascio : Evento, IPartenza
     {
         /// <summary>
+        ///   Costruttore della classe.
+        /// </summary>
+        /// <param name="codiceMezzo">Il codice del mezzo</param>
+        /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
+        /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
+        public Rilascio(string codiceMezzo, DateTime istante, string codiceFonte) : base(istante, codiceFonte)
+        {
+            if (string.IsNullOrWhiteSpace(codiceMezzo))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceMezzo));
+            }
+
+            this.CodiceMezzo = codiceMezzo;
+        }
+
+        /// <summary>
         ///   E' l'identificativo del mezzo a cui è associato l'evento
         /// </summary>
-        public string CodiceMezzo { get; set; }
+        public string CodiceMezzo { get; private set; }
 
         /// <summary>
         ///   Restituisce i codici dei mezzi coinvolti in questo evento
@@ -42,7 +58,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         {
             get
             {
-                return Enumerable.Repeat(CodiceMezzo, 1).ToArray();
+                return Enumerable.Repeat(this.CodiceMezzo, 1).ToArray();
             }
         }
 

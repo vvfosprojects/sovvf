@@ -35,171 +35,52 @@ namespace SOVVF.FakeImplementations.Modello.Organigramma
         /// <returns>L'unità operativa del CON.</returns>
         public UnitaOperativa Get()
         {
-            var con = new UnitaOperativa()
-            {
-                Codice = "CON",
-                Nome = "Centro Operativo Nazionale"
-            };
-
-            var dirRegPiemonte = new UnitaOperativa()
-            {
-                Codice = "DR_PIE",
-                Nome = "Direzione Regionale Piemonte"
-            };
+            var con = new UnitaOperativa("CON", "Centro Operativo Nazionale");
+            var dirRegPiemonte = new UnitaOperativa("DR_PIE", "Direzione Regionale Piemonte");
             con.AddFiglio(dirRegPiemonte);
-
-            var dirRegLombardia = new UnitaOperativa()
-            {
-                Codice = "DR_LOM",
-                Nome = "Direzione Regionale Lombardia"
-            };
+            var dirRegLombardia = new UnitaOperativa("DR_LOM", "Direzione Regionale Lombardia");
             con.AddFiglio(dirRegLombardia);
-
-            var dirRegLiguria = new UnitaOperativa()
-            {
-                Codice = "DR_LIG",
-                Nome = "Direzione Regionale Liguria"
-            };
+            var dirRegLiguria = new UnitaOperativa("DR_LIG", "Direzione Regionale Liguria");
             con.AddFiglio(dirRegLiguria);
-
-            var dirRegVeneto = new UnitaOperativa()
-            {
-                Codice = "DR_VEN",
-                Nome = "Direzione Regionale Veneto"
-            };
+            var dirRegVeneto = new UnitaOperativa("DR_VEN", "Direzione Regionale Veneto");
             con.AddFiglio(dirRegVeneto);
-
-            var dirRegFvg = new UnitaOperativa()
-            {
-                Codice = "DR_FVF",
-                Nome = "Direzione Regionale Friuli Venezia Giulia"
-            };
+            var dirRegFvg = new UnitaOperativa("DR_FVF", "Direzione Regionale Friuli Venezia Giulia");
             con.AddFiglio(dirRegFvg);
-
-            var dirRegToscana = new UnitaOperativa()
-            {
-                Codice = "DR_TOS",
-                Nome = "Direzione Regionale Toscana"
-            };
+            var dirRegToscana = new UnitaOperativa("DR_TOS", "Direzione Regionale Toscana");
             con.AddFiglio(dirRegToscana);
-
-            var dirRegEmilia = new UnitaOperativa()
-            {
-                Codice = "DR_EMI",
-                Nome = "Direzione Regionale Emilia Romagna"
-            };
+            var dirRegEmilia = new UnitaOperativa("DR_EMI", "Direzione Regionale Emilia Romagna");
             con.AddFiglio(dirRegEmilia);
-
-            var dirRegLazio = new UnitaOperativa()
-            {
-                Codice = "DR_LAZ",
-                Nome = "Direzione Regionale Lazio"
-            };
+            var dirRegLazio = new UnitaOperativa("DR_LAZ", "Direzione Regionale Lazio");
             con.AddFiglio(dirRegLazio);
-
-            var dirRegUmbria = new UnitaOperativa()
-            {
-                Codice = "DR_UMB",
-                Nome = "Direzione Regionale Umbria"
-            };
+            var dirRegUmbria = new UnitaOperativa("DR_UMB", "Direzione Regionale Umbria");
             con.AddFiglio(dirRegUmbria);
-
-            var dirRegAbruzzo = new UnitaOperativa()
-            {
-                Codice = "DR_ABR",
-                Nome = "Direzione Regionale Abruzzo"
-            };
+            var dirRegAbruzzo = new UnitaOperativa("DR_ABR", "Direzione Regionale Abruzzo");
             con.AddFiglio(dirRegAbruzzo);
-
-            var dirRegMarche = new UnitaOperativa()
-            {
-                Codice = "DR_MAR",
-                Nome = "Direzione Regionale Marche"
-            };
+            var dirRegMarche = new UnitaOperativa("DR_MAR", "Direzione Regionale Marche");
             con.AddFiglio(dirRegMarche);
-
-            var dirRegMolise = new UnitaOperativa()
-            {
-                Codice = "DR_MOL",
-                Nome = "Direzione Regionale Molise"
-            };
+            var dirRegMolise = new UnitaOperativa("DR_MOL", "Direzione Regionale Molise");
             con.AddFiglio(dirRegMolise);
-
-            var dirRegCampania = new UnitaOperativa()
-            {
-                Codice = "DR_CAM",
-                Nome = "Direzione Regionale Campania"
-            };
+            var dirRegCampania = new UnitaOperativa("DR_CAM", "Direzione Regionale Campania");
             con.AddFiglio(dirRegCampania);
-
-            var dirRegPuglia = new UnitaOperativa()
-            {
-                Codice = "DR_PUG",
-                Nome = "Direzione Regionale Puglia"
-            };
+            var dirRegPuglia = new UnitaOperativa("DR_PUG", "Direzione Regionale Puglia");
             con.AddFiglio(dirRegPuglia);
-
-            var dirRegBasilicata = new UnitaOperativa()
-            {
-                Codice = "DR_BAS",
-                Nome = "Direzione Regionale Basilicata"
-            };
+            var dirRegBasilicata = new UnitaOperativa("DR_BAS", "Direzione Regionale Basilicata");
             con.AddFiglio(dirRegBasilicata);
-
-            var dirRegCalabria = new UnitaOperativa()
-            {
-                Codice = "DR_CAL",
-                Nome = "Direzione Regionale Calabria"
-            };
+            var dirRegCalabria = new UnitaOperativa("DR_CAL", "Direzione Regionale Calabria");
             con.AddFiglio(dirRegCalabria);
-
-            var dirRegSicilia = new UnitaOperativa()
-            {
-                Codice = "DR_SIC",
-                Nome = "Direzione Regionale Sicilia"
-            };
+            var dirRegSicilia = new UnitaOperativa("DR_SIC", "Direzione Regionale Sicilia");
             con.AddFiglio(dirRegSicilia);
-
-            var dirRegSardegna = new UnitaOperativa()
-            {
-                Codice = "DR_SAR",
-                Nome = "Direzione Regionale Sardegna"
-            };
+            var dirRegSardegna = new UnitaOperativa("DR_SAR", "Direzione Regionale Sardegna");
             con.AddFiglio(dirRegSardegna);
-
-            var comProRM = new UnitaOperativa()
-            {
-                Codice = "CP_RM",
-                Nome = "Comando Provinciale Roma"
-            };
+            var comProRM = new UnitaOperativa("CP_RM", "Comando Provinciale Roma");
             dirRegLazio.AddFiglio(comProRM);
-
-            var comProLT = new UnitaOperativa()
-            {
-                Codice = "CP_LT",
-                Nome = "Comando Provinciale Latina"
-            };
+            var comProLT = new UnitaOperativa("CP_LT", "Comando Provinciale Latina");
             dirRegLazio.AddFiglio(comProLT);
-
-            var comProFR = new UnitaOperativa()
-            {
-                Codice = "CP_FR",
-                Nome = "Comando Provinciale Frosinone"
-            };
+            var comProFR = new UnitaOperativa("CP_FR", "Comando Provinciale Frosinone");
             dirRegLazio.AddFiglio(comProFR);
-
-            var comProRI = new UnitaOperativa()
-            {
-                Codice = "CP_RI",
-                Nome = "Comando Provinciale Rieti"
-            };
+            var comProRI = new UnitaOperativa("CP_RI", "Comando Provinciale Rieti");
             dirRegLazio.AddFiglio(comProRI);
-
-            var comProVT = new UnitaOperativa()
-            {
-                Codice = "CP_VT",
-                Nome = "Comando Provinciale Viterbo"
-            };
+            var comProVT = new UnitaOperativa("CP_VT", "Comando Provinciale Viterbo");
             dirRegLazio.AddFiglio(comProVT);
 
             return con;

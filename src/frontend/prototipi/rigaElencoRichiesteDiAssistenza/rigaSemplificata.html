@@ -16,31 +16,43 @@
 		.status_red {
 			border-left: 10px solid red;
 		}
-		
+
 		.row_text {
 			color: #666666;
 		}
-		
+
 		.fa {
 			color: #bbbbbb!important;
 		}
-		
+
 		.big_numbers {
 			color: #a72920;
 			font-weight: bold;
 		}
-		
+
 		.bg_diagonal_grey {
-			background: repeating-linear-gradient( 135deg, white, white 1em, #F0F0F0 1em, #E9EEFB 2em);
+			background: repeating-linear-gradient( 135deg, white, white 0.1em, #F0F0F0 0.4em, #E9EEFB 0.1em);
+		}
+
+		.bg_card_title {
+			background-color: beige;
 		}
 	</style>
+
 	<meta charset="utf-8">
 </head>
 
 <body>
-
+	<script>
+		$(function () {
+			$('[data-toggle="popover"]').popover()
+		})
+	</script>
 	<div class="container">
 		<h1>&nbsp;</h1>
+		<!-- -----------
+		Inizio riga
+		----------- -->
 		<div class="card status_red row_text p-3">
 
 			<div class="row align-items-center">
@@ -74,6 +86,7 @@
 									<div class="h5">
 										<i class="fa fa-thermometer-half fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Priorità della richiesta"></i>
 										<span class="h5" style="font-family: FontAwesome; font-style: normal; color:#006633">&#xf111;&#xf111;&#xf111;&#xf10c;&#xf10c;</span>
+										<!--<span class="h5" style="font-family: FontAwesome; font-style: normal; color:#006633">&#xf0c8;&#xf0c8;&#xf0c8;&#xf096;&#xf096;</span>-->
 									</div>
 
 								</div>
@@ -81,6 +94,7 @@
 									<div class="h5">
 										<i class="fa fa-tag fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Tipologia Evento"></i>
 										<span class="h4" style="color:chocolate">Incendio Normale</span>
+										<a href="#"><span class="h6 ml-2" style="font-weight:bold;color:chocolate">[più altri 2]</span></a>
 
 										<h5 style="color:#bbbbbb">
 											<i class="fa fa-fw" aria-hidden="true"></i>
@@ -92,8 +106,8 @@
 									<div class="h5">
 										<i class="fa fa-address-book-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Riferimento Chiamante"></i>										Carabinieri
 									</div>
-									<div class="h5">
-										<i class="fa fa-phone fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Chiamante"></i>										065193943
+									<div class="h5 pt-1">
+										<i class="fa fa-phone fa-fw mr-1" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Chiamante"></i>065193943
 									</div>
 
 								</div>
@@ -115,11 +129,14 @@
 							</div>
 						</div>
 						<div class="col-md-12">
-							<div class="row align-items-center card m-0" style="background-color: gainsboro;">
+							<div class="row card m-0" style="background-color: gainsboro;">
 								<div class="col-md-12">
 									<div class="h3">
 										<i class="fa fa-map-marker fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione"></i>
 										<span class="h5">Via le Mani dal naso, 15 - Roma (RM)</span>
+										<span class="pull-right"><a href="#">
+										<i class="fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione Richiesta Intervento"></i>	
+									</a></span>
 									</div>
 								</div>
 							</div>
@@ -142,17 +159,155 @@
 									</div>
 								</div>
 							</div>
-							<div class="card-block mt-3 p-2">
-								<h4 class="card-title p-1" style="background-color: #a3d8ad;">Dettaglio Richiesta</h4>
-								<div class="card-text row">
-									<div class="col-md-12 h5 pull-right">
-										<span class="badge badge-default pull-right m-1">Incendi</span>
-										<span class="badge badge-default pull-right m-1">Fuori Città</span>
+							<div class="row mt-3">
+								<!--<h4 class="card-title p-1" style="background-color: #a3d8ad;">Dettaglio Richiesta</h4>-->
+
+								<div class="col-md-3">
+									<div class="h5">
+										<i class="fa fa-calendar-check-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Data e Ora Presa in Carico"></i>
+										<span class="badge badge-info">oggi</span> - 15.13
+									</div>
+									<div class="h5">
+										<i class="fa fa-id-card-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Codice scheda NUE"></i>
+										<a href="#"><span style="color: darkorange">184831295</span></a>
+									</div>
+									<div class="h5">
+										<i class="fa fa-paper-plane-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Stato Fonogramma"></i>
+										<span class="h4 badge badge-success">fonogramma inviato</span>
+									</div>
+
+								</div>
+								<div class="col-md-4">
+									<div class="card">
+										<div class="card-block bg_card_title">
+											<i class="fa fa-users fa-2x fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Squadre Coinvolte"></i>
+											<span class="h4 card-title">Squadre Coinvolte</span>
+										</div>
+										<ul class="list-group list-group-flush">
+											<li class="list-group-item pl-2 pr-2">
+												<div class="col-md-10">
+													<i class="fa fa-fire-extinguisher fa-fw mr-2" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+													 title="Squadra"></i>
+													<span style="font-weight: bold">Prima Partenza A</span>
+												</div>
+												<div class="col-md-2">
+													<a tabindex="0" data-toggle="popover" data-trigger="focus" title="<b>Componenti Squadra<b>" data-html="true" data-content="
+														<div>
+														<i class='fa fa-user fa-fw' style='color:darkorange!important;font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Capo Partenza'/>&nbsp;<b>CR</b>  Giuseppe Verdi</br>
+														<i class='fa fa-user fa-fw' style='color:lightblue!important;font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Autista'/>&nbsp;<b>VE</b>  Giacomo Leopardi<br/>
+														<i class='fa fa-user fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Membro'/>&nbsp;<b>VE</b>  Torquato Tasso<br/>
+														<i class='fa fa-user fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Membro'/>&nbsp;<b>VQ</b>  Ippolito Pindemonte<br/>
+														<i class='fa fa-user fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Membro'/>&nbsp;<b>VP</b>  Alessandro Manzoni<br/>
+														</div>">
+													<i class="fa fa-tags fa-fw" style="color:cadetblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Componenti Squadra"></i>	
+												</a>
+												</div>
+											</li>
+											<li class="list-group-item pl-2 pr-2">
+												<div class="col-md-10">
+													<i class="fa fa-fire-extinguisher fa-fw mr-2" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+													 title="Squadra"></i>
+													<span style="font-weight: bold">Seconda Partenza A</span>
+												</div>
+												<div class="col-md-2">
+													<a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Componenti Squadra<b>" data-html="true" data-content="
+														<span class='badge badge-warning'>CAPOPARTENZA</span><br/>
+														<b>CR</b>  Giuseppe Garibaldi </br>
+														<span class='badge badge-info'>AUTISTA</span><br/>
+														<b>VE</b>  Giacomo Puccini<br/>
+														<span class='badge badge-default'>MEMBRI</span><br/>
+														<b>VE</b>  Italo Svevo<br/>
+														<b>VQ</b>  Ugo Foscolo<br/>
+														<b>VP</b>  Dante Alighieri<br/>">
+													<i class="fa fa-tags fa-fw" style="color:cadetblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Componenti Squadra"></i>	
+												</a>
+												</div>
+											</li>
+										</ul>
 									</div>
 								</div>
-								<div class="col-md-12 h5">
-									<i class="fa fa-paper-plane-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Stato Fonogramma"></i>
-									<span class="h4 badge badge-success">inviato</span>
+								<div class="col-md-5">
+									<div class="card">
+										<div class="card-block bg_card_title">
+											<i class="fa fa-truck fa-2x fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Mezzi Coinvolti"></i>
+											<span class="h4 card-title">&nbsp;Mezzi Coinvolti</span>
+										</div>
+										<ul class="list-group list-group-flush">
+											<li class="list-group-item p-0">
+												<div class="col-md-10">
+													<i class="fa fa-tachometer fa-fw mr-0" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+													 title="Mezzo"></i>
+													<span style="font-weight: bold">AMR123SA</span>
+													<span class="badge badge-default m-0">aps</span>
+													<span class="badge badge-warning m-0">in viaggio</span>
+
+												</div>
+												<div class="col-md-2 p-0 pl-2">
+													<a href="#" tabindex="0" data-toggle="popover" data-trigger="focus" title="<b>Indicatori Mezzo<b>" data-html="true" data-content="
+														<div style='font-size:1.3em'>
+														<i class='fa fa-cogs fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Stato di efficienza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-success'> OTTIMO </span><br/>
+														<i class='fa fa-tachometer fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Livello Carburante'/> &nbsp;&nbsp; <span class='badge badge-success'> ALTO </span><br/>
+														<i class='fa fa-tint fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Livello Estinguente'/> &nbsp;&nbsp; <span class='badge badge-success'> ALTO </span><br/>
+														<i class='fa fa-external-link fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Appartenenza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-info'> PROPRIO </span><br/>
+														</div>">														
+													<i class="fa fa-briefcase fa-fw" style="color:green!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+													 title="Condizione del Mezzo: 100%"></i>
+													<a tabindex="0" data-toggle="popover" data-trigger="focus" title="<b>Persone sul Mezzo<b>" data-html="true" data-content="
+														<i class='fa fa-star fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Capo Partenza'/>&nbsp;<b>CR</b>  Giuseppe Verdi</br>
+														<i class='fa fa-truck fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Autista'/>&nbsp;<b>VE</b>  Giacomo Leopardi<br/>
+														<i class='fa fa-fire-extinguisher fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Membro'/>&nbsp;<b>VE</b>  Torquato Tasso<br/>
+														<i class='fa fa-fire-extinguisher fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Membro'/>&nbsp;<b>VQ</b>  Ippolito Pindemonte<br/>
+														<i class='fa fa-fire-extinguisher fa-fw' style='font-size:1.5em' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Membro'/>&nbsp;<b>VP</b>  Alessandro Manzoni<br/>
+														</div>">
+													<i class="fa fa-user fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
+												</a>
+													<a style="font-weight: bold" href="#">
+													<i class="fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione Mezzo"></i>	
+												</a>
+													<a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Notifiche mezzo<b>" data-html="true" data-content="Nessuna notifica">
+													<i class="fa fa-bell fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
+												</a>
+												</div>
+											</li>
+											<li class="list-group-item p-0">
+												<div class="col-md-10">
+													<i class="fa fa-tachometer fa-fw mr-0" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+													 title="Mezzo"></i>
+													<span style="font-weight: bold">AMD456DE</span>
+													<span class="badge badge-default m-0">autoscala</span>
+													<span class="badge badge-danger m-0">in sede</span>
+												</div>
+												<div class="col-md-2 p-0 pl-2">
+													<i class="fa fa-briefcase fa-fw" style="color:darkorange!important" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+													 title="Condizione del Mezzo: 70%"></i>
+													<a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Persone sul Mezzo<b>" data-html="true" data-content="
+														<b>CR</b>  Giuseppe Garibaldi <span class='badge badge-warning'>CAPOPARTENZA</span></br>
+														</div><b>VE</b>  Giacomo Puccini <span class='badge badge-info'>AUTISTA</span><br/>
+														<b>VE</b>  Italo Svevo<br/>
+														<b>VQ</b>  Ugo Foscolo<br/>
+														<b>VP</b>  Dante Alighieri<br/>">
+													<i class="fa fa-user fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
+												</a>
+													<a style="font-weight: bold" href="#">
+													<i class="fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione Mezzo"></i>	
+												</a>
+													<a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Notifiche mezzo<b>" data-html="true" data-content="Nessuna notifica">
+													<i class="fa fa-bell fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
+												</a>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div>
+								<!-- TAGS-->
+
+								<div class="card-text col-md-12">
+									<div class="card mt-3" style="background-color: lavender">
+										<div class="col-md-12 h5 pull-right mt-2">
+											<span class="badge badge-default pull-right m-1">Incendi Estivi</span>
+											<span class="badge badge-default pull-right m-1">Fuori Città</span>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -161,13 +316,18 @@
 				<div class="col-md-1 container-fluid">
 					<div class="ml-4 mr-0 pr-0 h2">
 						<a href="#">
-							<i class="fa fa-arrow-circle-o-right" style="color:lightblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+							<i class="fa fa-arrow-circle-o-right" style="color:lightblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
 							 title="Vai alla pagina di dettaglio"></i>
 						</a>
 					</div>
 				</div>
 			</div>
 		</div>
+		<!-- -----------
+		Fine riga
+		----------- -->
+
+
 	</div>
 
 </body>

@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+
 namespace Modello.Classi.Soccorso.Eventi.Segnalazioni
 {
     /// <summary>
@@ -26,6 +28,19 @@ namespace Modello.Classi.Soccorso.Eventi.Segnalazioni
 
     public class Telefonata : Segnalazione
     {
+        /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="codice">
+        ///   E' l'identificativo univoco della telefonata, utilizzabile anche a scopi
+        ///   giuridici/amministrativi. Potrebbe essere un codice del tipo AX554HN.
+        /// </param>
+        /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
+        /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
+        public Telefonata(string codice, DateTime istante, string codiceFonte) : base(codice, istante, codiceFonte)
+        {
+        }
+
         /// <summary>
         ///   Il codice origine è mappato sul numero di telefono per una telefonata
         /// </summary>

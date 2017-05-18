@@ -36,6 +36,8 @@ namespace SOVVF.FakeImplementations
             container.Register<global::Modello.Servizi.Infrastruttura.Autenticazione.IGetOperatoreAutenticato, Modello.Autenticazione.GetOperatoreAutenticato>();
 
             container.Register<global::Modello.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaRadice, Modello.Organigramma.GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato>();
+
+            container.Register<global::Modello.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativeVisibiliPerSoccorso, Modello.Organigramma.GetUnitaOperativeVisibiliPerSoccorso_OperatoreDirezioneRegionaleLazio>();
         }
     }
 }
