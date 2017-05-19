@@ -183,6 +183,11 @@ export class FormChiamataComponent implements OnInit {
     this.risultati = this._ricercaTipologieService.search(event.query);
     console.log("lunghezza "+this.risultati.length);
 
+    this.risultati.forEach(a => {
+      console.log(a.descrizione);
+      
+    })
+
   }
 
   /**

@@ -1,11 +1,11 @@
-     <p-autoComplete  [(ngModel)]="risultatiMultipli" 
+     <p-autoComplete  [(ngModel)]="risultati" 
 	 			placeholder="Scrivi cosa cerchi..." 
 				[suggestions]="risultati" 
 				(completeMethod)="searchTipologia($event)" 
-				field="testo" 
+				field="descrizione" 
 				[style]="{'width':'100%'}" 
 				[inputStyle]="{'width':'100%','font-size': '16px'}"
-				[multiple]='true' 
+				[multiple]='false' 
 				[minLength]="1">
 				
 		   <ng-template  let-brand pTemplate="itemdddd">
