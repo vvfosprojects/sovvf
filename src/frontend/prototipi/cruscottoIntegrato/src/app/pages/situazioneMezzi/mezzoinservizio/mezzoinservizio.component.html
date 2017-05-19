@@ -1,0 +1,88 @@
+<div class="section">
+  <div class="row">
+    <div class="col col-md-12 card card-block m-1 h6">
+      <div class="row">
+
+        <div class="col col-md-2">
+          <span class="fa-stack fa-2x">
+            <i class="fa fa-truck fa-stack-1x " [ngClass]="{'text-success' : fs.CodiceStato == 'InSede' || fs.CodiceStato == 'Istituto', 
+                     'text-danger'  : fs.CodiceStato == 'InViaggio' || fs.CodiceStato == 'SulPosto',
+                     'text-primary' : fs.CodiceStato == 'InRientro',
+                     'text-default' : fs.CodiceStato == 'FuoriServizio'}"></i>
+            <i class="fa fa-circle-o fa-stack-2x text-success"></i>
+          <div *ngIf="fs.Disponibile">
+           <i class="text-success"></i>
+          </div>
+          <div *ngIf="!fs.Disponibile">
+           <i class="fa fa-ban fa-stack-2x text-danger"></i>
+          </div>
+        </span>
+        </div>
+        <!--<div class="col col-md-2 text-center">
+          <div class="badge badge-info">{{fs.Sigla}} </div>
+          <div class="card-text"></div>
+        </div>-->
+
+        <div class="col col-md-3 text-center">
+          <div><span class="badge badge-info">{{fs.Genere}}</span> {{fs.Targa}}</div>
+          <div class="card-text">{{fs.DescrizioneUnitaOperativa}} </div>
+        </div>
+        <div class="col col-md-2 text-center">
+          <div class="badge" [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede' || fs.CodiceStato == 'Istituto', 
+                     'badge-danger'  : fs.CodiceStato == 'InViaggio' || fs.CodiceStato == 'SulPosto',
+                     'badge-primary' : fs.CodiceStato == 'InRientro',
+                     'badge-default' : fs.CodiceStato == 'FuoriServizio'}">{{getDescrizioneStato(fs.CodiceStato)}}
+          </div>
+          <div> {{fs.DataOra | friendlyDate:20}} {{fs.DataOra | friendlyHour}}</div>
+        </div>
+        <div class="col col-md-3 text-right">
+          <div *ngIf="numeroPersone() > 0">
+            <span class="fa fa-users" aria-hidden="true"></span>
+            <span class="badge badge-info">{{numeroPersone()}} </span>
+            <button *ngIf="!mostraPersone" type="button" class="btn btn-sm" (click)="hideMostraPersone()">
+                <i class="fa fa-chevron-down" aria-hidden="true"></i>
+              </button>
+            <button *ngIf="mostraPersone" type="button" class="btn btn-sm" (click)="hideMostraPersone()">
+                <i class="fa fa-chevron-up" aria-hidden="true"></i>
+              </button>
+          </div>
+        </div>
+        <div class="col col-md-2 text-right">
+          <button type="button" class="btn btn-primary">
+                <span class="fa fa-list" aria-hidden="true"></span>              
+            </button>
+        </div>
+        <div hidden>
+          <div class="col col-md-4">
+            <button type="button" class="btn btn-sm" (click)="setDisponibile(true)">Disponibile</button>
+            <button type="button" class="btn btn-sm" (click)="setDisponibile(false)">Non Disponibile</button>
+          </div>
+          <div class="col col-md-8">
+            <button type="button" class="btn btn-sm" (click)="setCodiceStato('InSede')">InSede</button>
+            <button type="button" class="btn btn-sm" (click)="setCodiceStato('InViaggio')">InViaggio</button>
+            <button type="button" class="btn btn-sm" (click)="setCodiceStato('SulPosto')">SulPosto</button>
+            <button type="button" class="btn btn-sm" (click)="setCodiceStato('InRientro')">InRientro</button>
+            <button type="button" class="btn btn-sm" (click)="setCodiceStato('FuoriServizio')">F.S.</button>
+            <button type="button" class="btn btn-sm" (click)="setCodiceStato('Istituto')">Ist.to</button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 offset-md-4 h6">
+          <div *ngIf="mostraPersone">
+            <div class="card">
+              <div class="card-header">{{fs.SiglaSquadra}}</div>
+              <div class="card-block">
+                <p class="card-text" *ngFor="let p of fs.personeSulMezzo" data-toggle="tooltip" data-placement="top" title={{p.codiceFiscale}}>
+                  {{p.descrizione}}
+                  <span *ngIf="p.capoPartenza"> Capo Partenza </span>
+                  <span *ngIf="p.autista"> Autista </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
