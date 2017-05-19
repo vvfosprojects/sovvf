@@ -48,6 +48,7 @@
 			$('[data-toggle="popover"]').popover()
 		})
 	</script>
+	<!--<div class="container" style="width:1600px">-->
 	<div class="container">
 		<h1>&nbsp;</h1>
 		<!-- -----------
@@ -92,15 +93,31 @@
 								</div>
 								<div class="col-md-8">
 									<div class="h5">
-										<i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Tipologia Evento"></i>
+										<i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Tipologia Eventi"></i>
 										<span class="h4" style="color:chocolate">Incendio Normale</span>
-										<a href="#"><span class="h6 ml-2" style="font-weight:bold;color:chocolate">[più altri 2]</span></a>
-
-										<h5 style="color:#bbbbbb">
+										<a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Tipologie Eventi<b>" data-placement="bottom" data-html="true"
+										 data-content="
+														<div class='h5' style='color:#bbbbbb;'>
+														<span class='badge badge-danger'>Incendio Normale</span><br/>
+														Incendio zona rotonda prima del centro abitato [...]<br/><br/>
+														<span class='badge badge-danger'>Incidente Stradale</span><br/>
+														Auto nel fossato per fumo albero in fiamme [...]<br/><br/>
+														<span class='badge badge-danger'>Soccorso a persona</span><br/>
+														Persona Investita da auto finita nel fossato [...]<br/><br/>
+														</div>">
+										<span class="h6 ml-2" style="font-weight:bold;color:chocolate">[più altri 2]</span></a>
+										</a>
+										<h5>
+											<a style="color:#bbbbbb;	 " tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Descrizione dettagliata evento<b>"
+											 data-html="true" data-content="
+														<div style='font-size:1em'>
+														Incendio zona rotonda prima del centro abitato, cassonetto incendiato che ha coinvolto anche un albero in prossimità
+														</div>">	
 											<i class="fa fa-fw" aria-hidden="true"></i>
-											<span data-toggle="tooltip" title="Incendio zona rotonda prima del centro abitato, cassonetto incendiato che ha coinvolto anche un albero in prossimità">
+											<!--<span data-toggle="tooltip" title="Incendio zona rotonda prima del centro abitato, cassonetto incendiato che ha coinvolto anche un albero in prossimità">-->
 												Incendio zona rotonda prima del centro abitato [...]
-											</span>
+												<!--</span>-->
+											</a>
 										</h5>
 									</div>
 									<div class="h5">
@@ -114,7 +131,22 @@
 								<div class="col-md-1 p-2">
 									<div class="h5">
 										<i class="fa fa-users fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Squadre"></i>
+										<a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b><Squadre></Squadre><b>" data-placement="bottom" data-html="true" data-content="
+														<div>
+														<b>CR</b>  Giuseppe Verdi <span class='badge badge-warning'>CP</span></br>
+														<b>CR</b>  Giuseppe Garibaldi <span class='badge badge-warning'>CP</span></br>
+														</div><b>VE</b>  Giacomo Leopardi <span class='badge badge-info'>A</span><br/>
+														</div><b>VE</b>  Giacomo Puccini <span class='badge badge-info'>A</span><br/>
+														<b>VE</b>  Torquato Tasso<br/>
+														<b>VQ</b>  Ippolito Pindemonte<br/>
+														<b>VP</b>  Alessandro Manzoni<br/>
+														<b>VE</b>  Italo Svevo<br/>
+														<b>VQ</b>  Ugo Foscolo<br/>
+														<b>VP</b>  Dante Alighieri<br/>
+														</div>">
+										
 										<span class="h3 big_numbers">2</span>
+										</a>
 									</div>
 									<div class="h5">
 										<i class="fa fa-truck fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Mezzi"></i>
@@ -122,7 +154,21 @@
 									</div>
 									<div class="h5">
 										<i class="fa fa-user fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone Impiegate"></i>
+										<a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Persone Impiegate<b>" data-html="true" data-content="
+														<div>
+														<b>CR</b>  Giuseppe Verdi <span class='badge badge-warning'>CP</span></br>
+														<b>CR</b>  Giuseppe Garibaldi <span class='badge badge-warning'>CP</span></br>
+														</div><b>VE</b>  Giacomo Leopardi <span class='badge badge-info'>A</span><br/>
+														</div><b>VE</b>  Giacomo Puccini <span class='badge badge-info'>A</span><br/>
+														<b>VE</b>  Torquato Tasso<br/>
+														<b>VQ</b>  Ippolito Pindemonte<br/>
+														<b>VP</b>  Alessandro Manzoni<br/>
+														<b>VE</b>  Italo Svevo<br/>
+														<b>VQ</b>  Ugo Foscolo<br/>
+														<b>VP</b>  Dante Alighieri<br/>
+														</div>">
 										<span class="h3 big_numbers">10</span>
+										</a>
 									</div>
 
 								</div>
@@ -176,7 +222,7 @@
 										<span class="h4 badge badge-success">fonogramma inviato</span>
 									</div>
 									<div class="h5">
-										<i class="fa fa-archive fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Eventi Generati"></i>
+										<i class="fa fa-list fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Eventi Generati"></i>
 										<b><a href="#" >133</a></b>
 										<span class="h4 badge badge-danger">complesso</span>
 									</div>
@@ -246,7 +292,7 @@
 
 												</div>
 												<div class="col-md-2 p-0 pl-2">
-													<a href="#" tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Indicatori Mezzo<b>" data-html="true" data-content="
+													<a href="#" tabindex="0" data-toggle="popover" data-trigger="focus" title="<b>Indicatori Mezzo<b>" data-html="true" data-content="
 														<div style='font-size:1.3em'>
 														<i class='fa fa-cogs fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Stato di efficienza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-success'> OTTIMO </span><br/>
 														<i class='fa fa-tachometer fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Livello Carburante'/> &nbsp;&nbsp; <span class='badge badge-success'> ALTO </span><br/>
