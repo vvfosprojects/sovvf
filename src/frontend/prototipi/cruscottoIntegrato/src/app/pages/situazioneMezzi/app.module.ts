@@ -10,6 +10,7 @@ import { FriendlyDatePipe } from './shared/pipes/friendly-date.pipe';
 import { FriendlyHourPipe } from './shared/pipes/friendly-hour.pipe';
 import { ListaMezziComponent } from './lista-mezzi/lista-mezzi.component';
 import { ListaMezziService } from "./lista-mezzi/lista-mezzi.service";
+import { AgmCoreModule } from "@agm/core";
 
 @NgModule({
   declarations: [

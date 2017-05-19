@@ -39,6 +39,7 @@
   },
   "private": true,
   "dependencies": {
+    "@agm/core": "^1.0.0-beta.0",
     "@angular/animations": "4.0.1",
     "@angular/common": "4.0.1",
     "@angular/compiler": "4.0.1",
@@ -51,6 +52,7 @@
     "@ng-bootstrap/ng-bootstrap": "1.0.0-alpha.23",
     "@ngx-translate/core": "6.0.1",
     "@ngx-translate/http-loader": "0.0.3",
+	"@types/googlemaps": "^3.26.11",
     "amcharts3": "github:amcharts/amcharts3",
     "ammap3": "github:amcharts/ammap3",
     "animate.css": "3.5.2",
@@ -76,6 +78,7 @@
     "ng2-tree": "2.0.0-alpha.5",
     "ngx-uploader": "2.2.5",
     "normalize.css": "6.0.0",
+	"primeng": "^4.0.1",
     "roboto-fontface": "0.7.0",
     "rxjs": "5.1.0",
     "zone.js": "0.8.4"
@@ -84,6 +87,7 @@
     "@angular/cli": "1.0.0",
     "@angular/compiler-cli": "4.0.1",
     "@angular/platform-server": "4.0.1",
+	"angular-2-dropdown-multiselect": "1.0.7",
     "@types/electron": "1.4.35",
     "@types/fullcalendar": "2.7.40",
     "@types/jasmine": "2.5.38",
