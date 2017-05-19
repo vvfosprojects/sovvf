@@ -5,6 +5,7 @@ import { TipologiaIntervento } from "app/ricerca-tipologie/tipologia-intervento.
 
 @Injectable()
 export class RicercaTipologieService {
+  risultati: TipologiaIntervento[] = new Array();
   tipologie: TipologiaIntervento[] = [
     new TipologiaIntervento("0", "0", "Falso allarme (0)", "Falso allarme"),
     new TipologiaIntervento("1", "1", "Incendio normale (generico) (1)", "Incendi ed esplosioni"),
@@ -111,13 +112,22 @@ export class RicercaTipologieService {
     new TipologiaIntervento("361", "361", "Monitoraggio strumentale presenza di sostanze pericolose (361)", "Fuoriuscite - dispersioni - emissioni - inquinamenti"),
   ];
 
-  constructor() { }
+  constructor() { 
+    
+  }
 
   public search(key: string): TipologiaIntervento[] {
-    
-    return this.tipologie
-      .filter(i => 
-        !!i.descrizione.match("/" + key + "/i") ||
-        !!i.codice.match(key));
+    console.log("ciao! "+key+" LUNGHEZZA "+this.tipologie);
+    this.risultati.length = 0;
+    this.tipologie.forEach(a => {
+      if (a.descrizione.indexOf(key)>-1) this.risultati.push(a);
+    })
+
+    return this.risultati;
+   // console.log("incendio generico".match("/gene/i"));
+   // return this.tipologie;
+      // .filter(i => 
+      //   !!i.descrizione.match("/" + key + "/i") ||
+      //   !!i.codice.match(key));
   }
 }
