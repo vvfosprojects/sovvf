@@ -3,7 +3,7 @@ import { PersonaSulMezzo } from "./persona-sul-mezzo.model";
 export class MezzoInServizio {
 
   constructor(public Codice: string,
-   public CodiceUnitaOperativa: string,
+   public DescrizioneUnitaOperativa: string,
    public Sigla: string,
    public Genere: string,
    public Targa: string,

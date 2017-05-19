@@ -8,13 +8,16 @@ import { AppComponent } from './app.component';
 import { MezzoinservizioComponent } from './mezzoinservizio/mezzoinservizio.component';
 import { FriendlyDatePipe } from './shared/pipes/friendly-date.pipe';
 import { FriendlyHourPipe } from './shared/pipes/friendly-hour.pipe';
+import { ListaMezziComponent } from './lista-mezzi/lista-mezzi.component';
+import { ListaMezziService } from "app/lista-mezzi/lista-mezzi.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     MezzoinservizioComponent,
     FriendlyDatePipe,
-    FriendlyHourPipe
+    FriendlyHourPipe,
+    ListaMezziComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +25,7 @@ import { FriendlyHourPipe } from './shared/pipes/friendly-hour.pipe';
     HttpModule,
     NgbModule.forRoot()
   ],
-  providers: [],
+  providers: [ListaMezziService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

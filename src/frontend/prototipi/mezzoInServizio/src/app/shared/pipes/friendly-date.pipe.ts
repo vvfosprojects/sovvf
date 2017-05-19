@@ -6,7 +6,14 @@ import * as moment from 'moment';
 })
 export class FriendlyDatePipe implements PipeTransform {
 
-  transform(date: Date): string {
+  /**
+   * Restituisce la data in forma friendly. La data odierna diventa 'oggi', la data di ieri diventa 'ieri', altrimenti scrive la data nel formato 'dd/mm' se è di quest'anno, nel formato 'dd/mm/yy' se è in un anno diverso.
+   * @param date la data da trasformare
+   * @param oreMin se diverso da zero, indica il numero di ore al di sotto del quale l'indicazione della data viene completamente soppressa
+   */
+  transform(date: Date, oreMin: number = 0): string {
+    if (moment(date).isBefore(moment(Date.now).subtract(oreMin, 'hours').calendar))
+      return "";
     if (moment(date).isSame(Date.now(), 'day'))
       return "Oggi";
     else
@@ -19,7 +26,8 @@ export class FriendlyDatePipe implements PipeTransform {
           .isSame(Date.now(), 'year'))
           return moment(date).format("DD/MM");
         else
-          return moment(date).format("DD/MM/YYYY");
+          return moment(date).format("DD/MM/YY");
   }
 
 }
+

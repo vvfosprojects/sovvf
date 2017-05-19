@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { MezzoInServizio } from './mezzoinservizio.model';
-import { MezzoInServizioService } from './mezzo-in-servizio.service';
 import { DescStatoMap } from './desc-stato-map.class';
 
 @Component({
@@ -12,15 +11,16 @@ import { DescStatoMap } from './desc-stato-map.class';
 export class MezzoinservizioComponent implements OnInit {
   private mapperDescStato = new DescStatoMap();
   private _mostraPersone: boolean = false;
+  @Input() mezzo: MezzoInServizio;
 
-  constructor(private mezzoInServizioService: MezzoInServizioService) { }
+  constructor() { }
 
   ngOnInit() {
   }
 
   get fs(): MezzoInServizio {
 
-    return this.mezzoInServizioService.Get();
+    return this.mezzo;
 
   }
 
