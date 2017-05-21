@@ -22,6 +22,13 @@ export class MezzoInPartenza {
     }
 
     /**
+     * Rimuove un mezzo in partenza dalla composizione
+     */
+    public rimuovi(): void {
+        this.compositoreService.removeMezzo(this);
+    }
+
+    /**
      * Sposta un componente nella lista dei componenti
      * @param oldIndex E' l'indice del componente da spostare
      * @param newIndex E' il nuovo indice acquisito dal componente dopo lo spostamento

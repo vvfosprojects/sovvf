@@ -29,4 +29,8 @@ export class MezzoInPartenzaComponent implements OnInit {
   public get esisteAutista() {
     return this.mezzo.esisteAutista;
   }
+
+  private rimuoviMezzoInPartenza(): void {
+    this.mezzo.rimuovi();
+  }
 }
