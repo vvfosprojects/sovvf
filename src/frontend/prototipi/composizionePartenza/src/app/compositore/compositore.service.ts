@@ -11,7 +11,7 @@ export class CompositoreService {
   private _mezziInPartenza: MezzoInPartenza[] = [];
   private _componentiSenzaMezzo: ComponenteInPartenza[] = [];
 
-  constructor() {}
+  constructor() { }
 
   public get mezziInPartenza() {
     return this._mezziInPartenza;
@@ -82,7 +82,11 @@ export class CompositoreService {
       return;
 
     // se il componente è già in altri mezzi, lo sottrae (in questo caso si tratta al netto di uno spostamento tra mezzi in partenza)
-    
+    this._mezziInPartenza.forEach(m => {
+      if (m.esisteComponente(componente.codiceFiscale)) {
+        m.removeComponenteByCf(componente.codiceFiscale);
+      }
+    });
 
     // agisci!
     mezzoInPartenza.addComponente(componente);

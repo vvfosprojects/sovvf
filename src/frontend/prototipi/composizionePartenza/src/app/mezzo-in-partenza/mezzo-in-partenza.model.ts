@@ -88,7 +88,7 @@ export class MezzoInPartenza {
         }
     }
 
-    private setPrimoCapopartenzaSeNonEsistente(): void {    
+    private setPrimoCapopartenzaSeNonEsistente(): void {
         //impostazione del capopartenza se non già esistente
         var esisteCapoPartenza = !!this.componenti.find(c => c.capoPartenza);
         if (!esisteCapoPartenza) {
@@ -140,6 +140,19 @@ export class MezzoInPartenza {
 
         this.setPrimoAutistaSeNonEsistente();
         this.setPrimoCapopartenzaSeNonEsistente();
+    }
+
+    /**
+     * Rimuove un componente dal mezzo e lo imposta come non inPartenza.
+     * Elegge un nuovo autista e un nuovo capoPartenza se necessario.
+     * @param componente Il componente da rimuovere.
+     */
+    public removeComponenteByCf(componenteCf: string): void {
+        let componente = this.componenti.find(c => c.componente.codiceFiscale === componenteCf);
+
+        if (!!componente) {
+            this.removeComponente(componente);
+        }
     }
 
     /**
