@@ -26,6 +26,30 @@ export const PAGES_MENU = [
           }
         }
       },
+      {
+        path: 'schedaTelefonata',
+        data: {
+          menu: {
+            title: 'general.menu.schedaTelefonata',
+            icon: 'fa fa-phone',
+            selected: false,
+            expanded: false,
+            order: 100,
+          }
+        }
+      },
+      {
+        path: 'composizionePartenza',
+        data: {
+          menu: {
+            title: 'general.menu.composizionePartenza',
+            icon: 'fa fa-send-o',
+            selected: false,
+            expanded: false,
+            order: 100,
+          }
+        }
+      },
       // {
       //   path: 'editors',
       //   data: {

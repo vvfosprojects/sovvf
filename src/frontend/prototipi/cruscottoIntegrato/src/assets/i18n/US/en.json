@@ -20,6 +20,8 @@
     "menu": {
       "dashboard": "Dashboard",
       "situazioneMezzi": "Situazione Mezzi",
+      "schedaTelefonata": "Telefonata",
+      "composizionePartenza": "Composizione",
       "editors": "Editors",
       "ck_editor": "CKEditor",
       "components": "Components",

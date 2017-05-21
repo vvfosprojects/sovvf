@@ -22,6 +22,7 @@ export const routes: Routes = [
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
       { path: 'situazioneMezzi', loadChildren: './situazioneMezzi/new.module#NewModule' },
       { path: 'schedaTelefonata', loadChildren: './schedaTelefonata/scheda-telefonata.module#NewModule' },
+      { path: 'composizionePartenza', loadChildren: './composizionePartenza/composizionePartenza.module#NewModule' },
       { path: 'editors', loadChildren: './editors/editors.module#EditorsModule' },
       { path: 'components', loadChildren: './components/components.module#ComponentsModule' },
       { path: 'charts', loadChildren: './charts/charts.module#ChartsModule' },
