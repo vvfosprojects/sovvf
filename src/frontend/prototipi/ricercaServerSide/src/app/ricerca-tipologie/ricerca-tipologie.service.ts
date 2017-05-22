@@ -122,6 +122,7 @@ export class RicercaTipologieService {
     /**
      * In base alla chiave di ricerca filtro l'array delle tipologie --> nell'array dei risultati che viene ritornato:
      */
+    
     this.risultati.length = 0;
     this.tipologie.forEach(a => {
       if (a.descrizione.toLocaleLowerCase().indexOf(new String(key).toLocaleLowerCase())>-1)

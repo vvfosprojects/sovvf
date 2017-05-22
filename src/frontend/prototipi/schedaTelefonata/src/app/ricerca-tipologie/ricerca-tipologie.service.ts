@@ -112,22 +112,21 @@ export class RicercaTipologieService {
     new TipologiaIntervento("361", "361", "Monitoraggio strumentale presenza di sostanze pericolose (361)", "Fuoriuscite - dispersioni - emissioni - inquinamenti"),
   ];
 
-  constructor() { 
-    
+  constructor() {
+
   }
 
   public search(key: string): TipologiaIntervento[] {
-    console.log("ciao! "+key+" LUNGHEZZA "+this.tipologie);
+    /**
+     * In base alla chiave di ricerca filtro l'array delle tipologie --> nell'array dei risultati che viene ritornato:
+     */
     this.risultati.length = 0;
     this.tipologie.forEach(a => {
-      if (a.descrizione.indexOf(key)>-1) this.risultati.push(a);
+      if (a.descrizione.toLocaleLowerCase().indexOf(new String(key).toLocaleLowerCase()) > -1)
+        this.risultati.push(a);
     })
 
     return this.risultati;
-   // console.log("incendio generico".match("/gene/i"));
-   // return this.tipologie;
-      // .filter(i => 
-      //   !!i.descrizione.match("/" + key + "/i") ||
-      //   !!i.codice.match(key));
+
   }
 }

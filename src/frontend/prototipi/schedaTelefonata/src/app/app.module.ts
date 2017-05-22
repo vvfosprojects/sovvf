@@ -11,6 +11,7 @@ import { AgmCoreModule } from "@agm/core";
 import {AutoCompleteModule} from 'primeng/primeng';
 
 import { RicercaTipologieService } from "./ricerca-tipologie/ricerca-tipologie.service";
+import { RicercaService } from "app/ricerca/ricerca.service";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,7 @@ import { RicercaTipologieService } from "./ricerca-tipologie/ricerca-tipologie.s
     MultiselectDropdownModule,
     AutoCompleteModule 
   ],
-  providers: [RicercaTipologieService],
+  providers: [RicercaService, RicercaTipologieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

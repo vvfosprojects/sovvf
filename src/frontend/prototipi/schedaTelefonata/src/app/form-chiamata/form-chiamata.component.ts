@@ -13,6 +13,8 @@ import { AutoCompleteModule } from 'primeng/primeng';
 
 import { RicercaTipologieService } from ".././ricerca-tipologie/ricerca-tipologie.service";
 import { TipologiaIntervento } from ".././ricerca-tipologie/tipologia-intervento.model";
+import { RicercaService } from "app/ricerca/ricerca.service";
+import { RisultatoRicerca } from "app/ricerca/risultato-ricerca";
 
 
 @Component({
@@ -21,7 +23,10 @@ import { TipologiaIntervento } from ".././ricerca-tipologie/tipologia-intervento
   styleUrls: ['./form-chiamata.component.css']
 })
 export class FormChiamataComponent implements OnInit {
-  risultati: TipologiaIntervento[];
+ // risultati: TipologiaIntervento[];
+
+  risultati: RisultatoRicerca[];
+  risultatiMultipli: RisultatoRicerca[];
 
   //------- Maps ------//
   public latitude: number;
@@ -79,7 +84,7 @@ export class FormChiamataComponent implements OnInit {
   //------- End multiselect ------//
 
   constructor( @Inject(FormBuilder) private fb: FormBuilder, private fb2: FormBuilder, private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone, private _ricercaTipologieService: RicercaTipologieService, ) {
+    private ngZone: NgZone, private _ricercaTipologieService: RicercaTipologieService, private _ricercaService: RicercaService, ) {
     this.formChiamataModel = new FormChiamataModel();
     this.formChiamataModel.numero_chiamata = "123.4567.890";
     this.formChiamataModel.operatore = "Mario Rossi";
@@ -178,17 +183,12 @@ export class FormChiamataComponent implements OnInit {
    * Valorizza l'array tipologie per il componente PrimeNG (Autocomplete) filtrato per chiave di ricerca.
    * @param event 
    */
-  searchTipologia(event) {
-    console.log("ricerca "+event.query);
-    this.risultati = this._ricercaTipologieService.search(event.query);
-    console.log("lunghezza "+this.risultati.length);
-
-    this.risultati.forEach(a => {
-      console.log(a.descrizione);
-      
-    })
-
-  }
+    searchFake(event) {
+        this._ricercaService.ricerca(event.query)
+            .subscribe(data => {
+                this.risultati = data;
+            });
+    }
 
   /**
    * Setta la posizione geografica corrente e il livello di zoom iniziale nella mappa.
@@ -269,7 +269,10 @@ export class FormChiamataComponent implements OnInit {
     console.log("nome ", value.nome);
     console.log("cognome ", value.cognome);
     console.log("ragione_sociale ", value.ragione_sociale);
-    console.log("tipo ", this.myForm.controls.tipo_interv.value);
+    //console.log("tipo ", this.myForm.controls.tipo_interv.value);
+    this.risultatiMultipli.forEach(element => {
+      console.log(element.testo);
+    });
     console.log("indirizzo value ", this.myForm.controls.indirizzo.value);
     console.log("telefono ", this.myForm.controls.telefono.value);
     console.log("zona_emergenza ", this.myForm.controls.zona_emergenza.value);

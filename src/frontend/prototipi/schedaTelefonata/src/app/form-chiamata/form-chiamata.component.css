@@ -1,3 +1,43 @@
 .sebm-google-map-container {
   height: 320px;
 }
+
+/**
+* stile del tag multiplo.
+*/
+
+:host /deep/ li.ui-autocomplete-token {
+	background-color: #a5a8aa;
+	color: #292b2c;    
+}
+
+/**
+* stile del campo di ricerca multipla.
+*/
+:host /deep/ ul.ui-autocomplete-multiple-container.ui-widget.ui-inputtext.ui-state-default.ui-corner-all{
+	width: 100%;
+}
+
+:host /deep/ span.ui-autocomplete.ui-widget{
+	width: 100%;
+}
+
+:host /deep/ input.ui-inputtext.ui-widget.ui-state-default.ui-corner-all{
+	width: 100%;
+}
+
+:host /deep/ p-autocomplete.ng-untouched.ng-pristine.ng-valid{
+	width: 100%;
+}
+
+:host /deep/ p-autocomplete.ng-valid.ui-inputwrapper-filled.ng-dirty.ng-touched{
+	width: 100%;
+}
+
+:host /deep/ p-autocomplete.ng-valid.ng-dirty.ng-touched{
+	width: 100%;
+}
+
+:host /deep/ p-autocomplete.ng-valid.ui-inputwrapper-filled.ng-dirty.ng-touched{
+	width: 100%;
+}
