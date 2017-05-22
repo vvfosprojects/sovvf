@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { RicercaService } from "./ricerca/ricerca.service";
 import { Ng2CompleterModule } from "ng2-completer";
 import {AutoCompleteModule} from 'primeng/primeng';
+import { RicercaTipologieService } from "app/ricerca-tipologie/ricerca-tipologie.service";
 
 
 @NgModule({
@@ -22,7 +23,7 @@ import {AutoCompleteModule} from 'primeng/primeng';
     FormsModule,
     HttpModule
   ],
-  providers: [ RicercaService ],
+  providers: [ RicercaService, RicercaTipologieService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
