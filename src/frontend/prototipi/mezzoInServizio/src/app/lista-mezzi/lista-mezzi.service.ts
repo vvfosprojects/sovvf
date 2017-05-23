@@ -19,7 +19,7 @@ export class ListaMezziService {
       //"333.565.331",
       null,
       true,
-      "A1",
+      "A/1",
       "A",
       new Date(),
       /*[
@@ -44,7 +44,7 @@ export class ListaMezziService {
       new Date(),
       [
         new PersonaSulMezzo("MNBHJU78Y65T453R", "CS Mario Rossi", "Mariolino", true, false),
-        new PersonaSulMezzo("MNBHJU78Y65T453R", "CS Giuseppe Verdi", "Peppino", false, true),
+        new PersonaSulMezzo("MNBHJU78Y65T453R", "CS Giuseppe Bernardini", "Peppino", false, true),
         new PersonaSulMezzo("MNBHJU78Y65T453R", "CS Giacomo Puccini", "Giacomino", false, false),
         new PersonaSulMezzo("MNBHJU78Y65T453R", "CS Galileo Galilei", "Gelotto", false, false),
         new PersonaSulMezzo("MNBHJU78Y65T453R", "CS Leonardo Da Vinci", "Leonarduccio", false, false)
@@ -56,12 +56,12 @@ export class ListaMezziService {
       'APS',
       '34564',
       'SulPosto',
-      new Date(2017, 4, 17, 12, 10, 0),
+      new Date(2017, 4, 21, 18, 9, 20),
       '13423',
       true,
       'APS-01',
       'D',
-      new Date(2017, 3, 26, 10, 10, 0),
+      new Date(2017, 4, 20, 7, 10, 20),
       [
         new PersonaSulMezzo(
           "FRJKDJD12333",
