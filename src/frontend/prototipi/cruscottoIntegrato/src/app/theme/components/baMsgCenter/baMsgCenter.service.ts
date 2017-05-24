@@ -5,6 +5,11 @@ export class BaMsgCenterService {
 
   private _notifications = [
     {
+      name: 'Romano',
+      text: 'Oggi c\'è la demo della nuova SALA OPERATIVA.',
+      time: 'today'
+    },
+    {
       name: 'Vlad',
       text: 'Vlad posted a new article.',
       time: '1 min ago'
@@ -42,6 +47,11 @@ export class BaMsgCenterService {
   ];
 
   private _messages = [
+    {
+      name: 'Romano',
+      text: 'Demo Sala Operativa VVF ...',
+      time: 'today'
+    },
     {
       name: 'Nasta',
       text: 'After you get up and running, you can place Font Awesome icons just about...',

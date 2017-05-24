@@ -8,12 +8,12 @@ export class PieChartService {
   }
 
   getData() {
-    let pieColor = this._baConfig.get().colors.custom.dashboardPieChart;
+    let pieColor = "#920000";//this._baConfig.get().colors.custom.dashboardPieChart;
     return [
       {
         color: pieColor,
         ////description: 'dashboard.new_visits',
-        description: 'dashboard.chiamate',
+        //description: 'dashboard.chiamate',
         subdescription: 'dashboard.chiamateincoda',
         stats: '15',
         subdescription1: 'dashboard.interventiincorso',        
@@ -23,7 +23,7 @@ export class PieChartService {
       }, {
         color: pieColor,
         ////description: 'dashboard.purchases',
-        description: 'dashboard.mezzi',
+        //description: 'dashboard.mezzi',
         subdescription: 'dashboard.mezziimpegnati',        
         stats: '4',
         subdescription1: 'dashboard.mezziinservizio',        
@@ -33,7 +33,7 @@ export class PieChartService {
       }, {
         color: pieColor,
         ////description: 'dashboard.active_users',
-        description: 'dashboard.squadre',
+        //description: 'dashboard.squadre',
         subdescription: 'dashboard.squadreimpegnate',        
         stats: '3',
         subdescription1: 'dashboard.squadreinservizio',                

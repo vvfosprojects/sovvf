@@ -5,6 +5,15 @@ export class FeedService {
 
   private _data = [
     {
+      type: 'geo-message',
+      author: 'Romano',
+      surname: 'Giuseppe',
+      text: 'Direttore centrale per l’emergenza e il soccorso tecnico dei Vigili del Fuoco ',
+      preview: 'app/feed/viminale.png',      
+      link: 'https://www.google.by/maps/place/Piazza+del+Viminale,+00184+Roma,+Italia/@41.899775,12.4941623,46m',
+      ago: 'today',
+      expanded: false,
+    }, {
       type: 'text-message',
       author: 'Kostya',
       surname: 'Danovsky',
