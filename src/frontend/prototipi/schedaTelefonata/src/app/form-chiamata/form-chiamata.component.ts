@@ -23,7 +23,7 @@ import { RisultatoRicerca } from "app/ricerca/risultato-ricerca";
   styleUrls: ['./form-chiamata.component.css']
 })
 export class FormChiamataComponent implements OnInit {
- // risultati: TipologiaIntervento[];
+  // risultati: TipologiaIntervento[];
 
   risultati: RisultatoRicerca[];
   risultatiMultipli: RisultatoRicerca[];
@@ -173,22 +173,34 @@ export class FormChiamataComponent implements OnInit {
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
           this.zoom = 18;
-          console.log(this.latitude+" "+this.longitude);
+          console.log(this.latitude + " " + this.longitude);
         });
       });
     });
-     //-------------end settaggi iniziali di maps onInit----------------------------//
+    //-------------end settaggi iniziali di maps onInit----------------------------//
   }
   /**
    * Valorizza l'array tipologie per il componente PrimeNG (Autocomplete) filtrato per chiave di ricerca.
    * @param event 
    */
-    searchFake(event) {
-        this._ricercaService.ricerca(event.query)
-            .subscribe(data => {
-                this.risultati = data;
-            });
-    }
+  searchFake(event) {
+    this._ricercaService.ricerca(event.query)
+      .subscribe(data => {
+        this.risultati = data;
+      });
+  }
+
+  handleDropdownClick(event) {
+    console.log("Dropdown click!");
+    this._ricercaService.ricercaFrequent()
+      .subscribe(data => {
+        this.risultati = [];
+        setTimeout(() => {
+          this.risultati = data;
+        }, 100)
+
+      });
+  }
 
   /**
    * Setta la posizione geografica corrente e il livello di zoom iniziale nella mappa.

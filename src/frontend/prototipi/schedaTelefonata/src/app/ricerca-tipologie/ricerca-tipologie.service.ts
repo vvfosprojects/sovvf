@@ -5,6 +5,7 @@ import { TipologiaIntervento } from "app/ricerca-tipologie/tipologia-intervento.
 
 @Injectable()
 export class RicercaTipologieService {
+  risultatiFreq: TipologiaIntervento[] = new Array();
   risultati: TipologiaIntervento[] = new Array();
   tipologie: TipologiaIntervento[] = [
     new TipologiaIntervento("0", "0", "Falso allarme (0)", "Falso allarme"),
@@ -127,6 +128,23 @@ export class RicercaTipologieService {
     })
 
     return this.risultati;
+
+  }
+
+  /**
+   * Il metodo ritorna le tipologie intervento che storicamente vengono utilizzate 
+   * più frequentemente dal Comando.
+   */
+  public searchFrequent(): TipologiaIntervento[] {
+    
+    let key = "apert" //ricerca fake l'array verrà popolato da servizio REST.
+    this.risultatiFreq.length = 0;
+    this.tipologie.forEach(a => {
+      if (a.descrizione.toLocaleLowerCase().indexOf(new String(key).toLocaleLowerCase()) > -1)
+        this.risultatiFreq.push(a);
+    })
+
+    return this.risultatiFreq;
 
   }
 }

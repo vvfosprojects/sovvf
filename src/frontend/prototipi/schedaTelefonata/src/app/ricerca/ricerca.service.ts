@@ -34,10 +34,23 @@ export class RicercaService {
 
     return Observable.of(this.ricercaTipologieService.search(chiave)
       .map(ti => new RisultatoRicerca(
-        ti.id, 
+        ti.id,
         ti.descrizione,
         "")));
   }
+
+  /**
+   * Il metodo restituisce un Observable di risultati ricerca tipologie frequenti
+   * in base allo storico interventi del Comando.
+   */
+  public ricercaFrequent(): Observable<RisultatoRicerca[]> {
+    return Observable.of(this.ricercaTipologieService.searchFrequent()
+      .map(ti => new RisultatoRicerca(
+        ti.id,
+        ti.descrizione,
+        "")));
+  }
+
   /**
    * Esempio di chiamata a servizio remoto.
    */
@@ -50,10 +63,10 @@ export class RicercaService {
   //     .map(response => response.json());
   // }
 
-  private replica3(s: string): string {
-    return s + " " + s + " " + s;
+  // private replica3(s: string): string {
+  //   return s + " " + s + " " + s;
 
-  }
+  // }
 
 }
 

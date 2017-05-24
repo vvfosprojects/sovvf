@@ -25,9 +25,24 @@
 * stile del campo di ricerca multipla.
 */
 :host /deep/ ul.ui-autocomplete-multiple-container.ui-widget.ui-inputtext.ui-state-default.ui-corner-all{
-	width: 100%;
+	width: calc(100% - 2em); /* valore per impostato per risolvere bug di visualizzazione del bottone dropdown del componente autocomplete che altrimente andrebbe a capo */
 	max-height: 40px;
 	vertical-align: middle;
+	border-top-left-radius: 0; /* angoli del componente dritti in modo che siano identici a quelli degli altri campi. */
+	border-bottom-left-radius: 0;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+/* Stile e colore del bottone dropdown del componente autocomplete (tipologia) */
+:host /deep/ .ui-button{
+	color: #464a4c;
+	background-color: #eceeef;
+	border: 1px solid #c9cbcb;
+	padding: 0.2em;
+	font-size: 1em;
+	transition: background-color 0.3s;
+	max-height: 40px;
 }
 
 /*-----------------------------------------*/
@@ -42,10 +57,10 @@
 
 /* per rendere il componente p-autocomplete largo il 100% della colonna*/
 :host /deep/ p-autocomplete.ng-untouched.ng-pristine.ng-valid,
-						 p-autocomplete.ng-valid.ui-inputwrapper-filled.ng-dirty.ng-touched,
-						 p-autocomplete.ng-valid.ng-dirty.ng-touched,
-						 p-autocomplete.ng-pristine.ng-valid.ng-touched,
-						 p-autocomplete.ng-untouched.ng-valid.ui-inputwrapper-focus.ui-inputwrapper-filled.ng-dirty
+		     p-autocomplete.ng-valid.ui-inputwrapper-filled.ng-dirty.ng-touched,
+			 p-autocomplete.ng-valid.ng-dirty.ng-touched,
+			 p-autocomplete.ng-pristine.ng-valid.ng-touched,
+			 p-autocomplete.ng-untouched.ng-valid.ui-inputwrapper-focus.ui-inputwrapper-filled.ng-dirty
 {
 	width: 100%;
 }

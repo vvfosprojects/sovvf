@@ -66,13 +66,14 @@
                   (completeMethod)="searchFake($event)" 
                   field="testo" 
                   [multiple]='true' 
-                  [dropdown]='false'
+                  [dropdown]='true'
+                  (onDropdownClick)="handleDropdownClick($event)"
                   [minLength]="1">
-                <!--<ng-template  let-brand pTemplate="itemdddd">
+                <ng-template  let-brand pTemplate="itemdddd">
                       <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
                           <div title="{{ brand.tooltip }}"><span style="font-size:10px" >{{ brand.id }}:</span> {{ brand.testo }}</div>
                       </div>
-                  </ng-template>	-->
+                  </ng-template>
               </p-autoComplete>
 
             <!--<input type="text" class="form-control" id="tipo_interv" placeholder="Tipologia intervento" formControlName="tipo_interv">-->
