@@ -10,6 +10,7 @@ import {
 import { AgmCoreModule, MapsAPILoader } from '@agm/core';
 import { } from '@types/googlemaps';
 import { AutoCompleteModule } from 'primeng/primeng';
+import { Message } from 'primeng/primeng';
 
 import { RicercaTipologieService } from ".././ricerca-tipologie/ricerca-tipologie.service";
 import { TipologiaIntervento } from ".././ricerca-tipologie/tipologia-intervento.model";
@@ -27,6 +28,8 @@ export class FormChiamataComponent implements OnInit {
 
   risultati: RisultatoRicerca[];
   risultatiMultipli: RisultatoRicerca[];
+
+  msgs: Message[] = []; //Messaggi (conferma, info, ecc...)
 
   //------- Maps ------//
   public latitude: number;
@@ -178,7 +181,20 @@ export class FormChiamataComponent implements OnInit {
       });
     });
     //-------------end settaggi iniziali di maps onInit----------------------------//
+  } // end onInit()
+
+  //Messaggi 
+  showMsgInserimentoChiamataSuccesso() {
+    this.msgs = [];
+    this.msgs.push({ severity: 'success', summary: 'Conferma ', detail: 'Inserimento chiamata avvenuto correttamente.' });
   }
+
+  showMsgInserimentoChiamataInfo() {
+    this.msgs = [];
+    this.msgs.push({ severity: 'info', summary: 'Info ', detail: 'Inserimento chiamata annullato.' });
+  }
+  // fine metodi messaggi
+
   /**
    * Valorizza l'array tipologie per il componente PrimeNG (Autocomplete) filtrato per chiave di ricerca.
    * @param event 
@@ -190,6 +206,7 @@ export class FormChiamataComponent implements OnInit {
       });
   }
 
+  // gestione dropdown sul pulsante tipologie di intervento frquenti.
   handleDropdownClick(event) {
     console.log("Dropdown click!");
     this._ricercaService.ricercaFrequent()
@@ -275,6 +292,8 @@ export class FormChiamataComponent implements OnInit {
   onClickAnnulla() {
     this.myForm.reset();
     this.formRagSoc.reset();
+    this.risultatiMultipli = [];
+    this.showMsgInserimentoChiamataInfo();
   }
 
   onSubmit(value: any): void {
@@ -282,9 +301,12 @@ export class FormChiamataComponent implements OnInit {
     console.log("cognome ", value.cognome);
     console.log("ragione_sociale ", value.ragione_sociale);
     //console.log("tipo ", this.myForm.controls.tipo_interv.value);
-    this.risultatiMultipli.forEach(element => {
-      console.log(element.testo);
-    });
+    if (this.risultatiMultipli != null) {
+      this.risultatiMultipli.forEach(element => {
+        console.log(element.testo);
+      });
+    }
+
     console.log("indirizzo value ", this.myForm.controls.indirizzo.value);
     console.log("telefono ", this.myForm.controls.telefono.value);
     console.log("zona_emergenza ", this.myForm.controls.zona_emergenza.value);
@@ -294,6 +316,12 @@ export class FormChiamataComponent implements OnInit {
     console.log("note_pubbliche ", this.myForm.controls.note_pubbliche.value);
     console.log("note_private ", this.myForm.controls.note_private.value);
 
+    this.showMsgInserimentoChiamataSuccesso();
+
+    // resetto il form
+    this.myForm.reset();
+    this.formRagSoc.reset();
+    this.risultatiMultipli = [];
     // let formChiamataModel = new FormChiamataModel();
 
   }

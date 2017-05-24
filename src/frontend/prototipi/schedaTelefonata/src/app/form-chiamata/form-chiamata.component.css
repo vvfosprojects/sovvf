@@ -4,11 +4,25 @@
 }
 
 /* colore della selezione */
-:host /deep/ .ui-state-highlight{
+/*:host /deep/ .ui-state-highlight{
 	background-color: #a5a8aa;
 	color: #292b2c; 
-}
+}*/
 
+/* Colore del messaggio di conferma */
+/*:host /deep/ .ui-growl-item {
+	position: relative;
+	display: block;
+	padding: .5em 1em;
+	color: white;
+	background-color: green;
+}*/
+
+/* colore della lista tipologia intervento quando viene evidenziata*/
+:host /deep/ li.ui-autocomplete-list-item.ui-corner-all.ui-state-highlight{
+	background-color: #a5a8aa!important;
+	color: #292b2c!important;    
+}
 
 /* Colore dell'elemento multiplo selezionato*/
 :host /deep/ li.ui-autocomplete-token {

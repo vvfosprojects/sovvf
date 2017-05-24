@@ -8,7 +8,7 @@ import { FormChiamataComponent } from './form-chiamata/form-chiamata.component';
 import { MultiselectDropdownModule  } from 'angular-2-dropdown-multiselect';
 
 import { AgmCoreModule } from "@agm/core";
-import {AutoCompleteModule} from 'primeng/primeng';
+import {AutoCompleteModule, GrowlModule} from 'primeng/primeng';
 
 import { RicercaTipologieService } from "./ricerca-tipologie/ricerca-tipologie.service";
 import { RicercaService } from "app/ricerca/ricerca.service";
@@ -28,7 +28,8 @@ import { RicercaService } from "app/ricerca/ricerca.service";
     HttpModule,
     ReactiveFormsModule,
     MultiselectDropdownModule,
-    AutoCompleteModule 
+    AutoCompleteModule,
+    GrowlModule 
   ],
   providers: [RicercaService, RicercaTipologieService],
   bootstrap: [AppComponent]

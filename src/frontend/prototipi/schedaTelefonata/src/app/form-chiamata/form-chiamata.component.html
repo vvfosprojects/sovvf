@@ -250,9 +250,12 @@
 						  --></div>
                 <div class="col-md-6">
                   <div class="col-md-12 text-right">
+                    
                     <form [formGroup]="formRagSoc" (ngSubmit)="onSubmit(formRagSoc.value)">
                       <!-- Split button -->
-                      <div class="btn-group btn-group-sm"> <button type="submit" class="btn btn-secondary" [disabled]="formRagSoc.valid" >Conferma <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                      <div class="btn-group btn-group-sm"> 
+                                            <p-growl [(value)]="msgs" [life]=3000></p-growl>
+                                            <button type="submit" class="btn btn-secondary" [disabled]="formRagSoc.valid" >Conferma <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                                             </button> <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-animation="false"
                           aria-haspopup="true" aria-expanded="false" [disabled]="formRagSoc.valid"> <span class="caret"></span>
  <span class="sr-only">Toggle Dropdown</span>
