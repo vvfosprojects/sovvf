@@ -1,4 +1,4 @@
- <p-autoComplete  [(ngModel)]="risultatiMultipli" 
+ <!--<p-autoComplete  [(ngModel)]="risultatiMultipli" 
 	 			placeholder="Scrivi cosa cerchi..." 
 				[suggestions]="risultati" 
 				(completeMethod)="searchFake($event)" 
@@ -13,7 +13,7 @@
 								<div title="{{ brand.tooltip }}"><span style="font-size:10px" >{{ brand.id }}:</span> {{ brand.testo }}</div>
 						</div>
 				</ng-template>	
-		</p-autoComplete>
+		</p-autoComplete>-->
 <div class="section">
   <div class="container">
     <!-- prima riga -->
@@ -56,16 +56,17 @@
         
         <div [formGroup]="myForm">
           <div class="input-group" [ngClass]="{'has-warning':!myForm.controls['tipo_interv'].valid}">
-            <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Tipologia intervento" style="min-width: 50px;" data_placement="bottom">
-            <i class="fa fa-fire-extinguisher fa-lg" aria-hidden="true"></i> </div>ddddddd
+            <div class="input-group-addon"  data-toggle="tooltip" data-animation="false" title="Tipologia intervento" style="min-width: 50px; max-height:40px" data_placement="bottom">
+            <i class="fa fa-fire-extinguisher fa-lg" aria-hidden="true"></i> </div>
 
               <p-autoComplete  
                   [(ngModel)]="risultatiMultipli" [ngModelOptions]="{standalone: true}"
-                  placeholder="Scrivi cosa cerchi..." 
+                  placeholder="Tipologia intervento" 
                   [suggestions]="risultati" 
                   (completeMethod)="searchFake($event)" 
                   field="testo" 
-                  [multiple]='false' 
+                  [multiple]='true' 
+                  [dropdown]='false'
                   [minLength]="1">
                 <!--<ng-template  let-brand pTemplate="itemdddd">
                       <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
