@@ -8,7 +8,6 @@ export class FeedService {
       type: 'geo-message',
       author: 'Romano',
       surname: 'Giuseppe',
-      header: 'Link VVF',
       text: 'Direttore centrale per l’emergenza e il soccorso tecnico dei Vigili del Fuoco ',
       preview: 'app/feed/viminale.png',      
       link: 'https://www.google.by/maps/place/Piazza+del+Viminale,+00184+Roma,+Italia/@41.899775,12.4941623,46m',
