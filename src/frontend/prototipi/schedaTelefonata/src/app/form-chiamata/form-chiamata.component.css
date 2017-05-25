@@ -3,6 +3,11 @@
   height: 320px;
 }
 
+/* dropdown multiselect (campo TAG)*/
+:host /deep/ ul.dropdown-menu.pull-right.dropdown-menu-right{
+	width: 100%;
+}
+
 /* colore della selezione */
 /*:host /deep/ .ui-state-highlight{
 	background-color: #a5a8aa;
@@ -19,10 +24,10 @@
 }*/
 
 /* colore della lista tipologia intervento quando viene evidenziata*/
-:host /deep/ li.ui-autocomplete-list-item.ui-corner-all.ui-state-highlight{
+/*:host /deep/ li.ui-autocomplete-list-item.ui-corner-all.ui-state-highlight{
 	background-color: #a5a8aa!important;
 	color: #292b2c!important;    
-}
+}*/
 
 /* Colore dell'elemento multiplo selezionato*/
 :host /deep/ li.ui-autocomplete-token {

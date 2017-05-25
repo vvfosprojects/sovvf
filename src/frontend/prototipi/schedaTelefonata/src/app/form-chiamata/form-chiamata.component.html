@@ -61,7 +61,7 @@
 
               <p-autoComplete  
                   [(ngModel)]="risultatiMultipli" [ngModelOptions]="{standalone: true}"
-                  placeholder="Tipologia intervento" 
+                  placeholder="Ricerca tipologia" 
                   [suggestions]="risultati" 
                   (completeMethod)="searchFake($event)" 
                   field="testo" 
@@ -167,7 +167,7 @@
             <div [formGroup]="myForm">
               <div class="input-group">
                 <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="indirizzo" style="min-width: 50px;"> <i class="fa fa-map" aria-hidden="true"></i> </div>
-                <input placeholder="Ricerca" autocorrect="on" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
+                <input placeholder="Ricerca indirizzo" autocorrect="on" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
                 <!--<input type="text" class="form-control" id="indirizzo" placeholder="Indirizzo" name="indirizzo" formControlName="indirizzo">-->
               </div>
             </div>

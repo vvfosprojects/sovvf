@@ -81,8 +81,8 @@ export class FormChiamataComponent implements OnInit {
     showCheckAll: true,
     showUncheckAll: true,
     // fixedTitle: false,
-    dynamicTitleMaxItems: 2,
-    maxHeight: '300px',
+    dynamicTitleMaxItems: 4,
+    maxHeight: '200px',
   };
   //------- End multiselect ------//
 
