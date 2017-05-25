@@ -1,16 +1,17 @@
-<div class="panel panel-primary text-center">
-  <div class="panel-heading text-center">
-    <h3 class="panel-title">Porta qui squadre, persone e mezzi...</h3>
+<div class="card text-center">
+  <div class="card-header">
+    Porta qui squadre, persone e mezzi...
   </div>
-  <div class="panel-body">
+  <div class="card-block">
     <app-drop-area></app-drop-area>
     <app-mezzo-in-partenza *ngFor="let m of mezziInPartenza" [mezzo]="m"></app-mezzo-in-partenza>
   </div>
-  <div class="panel-footer text-right">
+  <div class="card-footer text-muted">
     <button class="btn btn-primary disabled">Conferma</button>
     <button class="btn btn-default disabled">Annulla</button>
   </div>
 </div>
+
 <!--<div>
   <pre class="text-left">
   {{ mezzi() | json }}
