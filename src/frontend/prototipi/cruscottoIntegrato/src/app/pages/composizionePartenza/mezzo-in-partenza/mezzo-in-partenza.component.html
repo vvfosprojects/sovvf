@@ -1,17 +1,15 @@
-<div class="panel panel-info text-center" canDrop [target]="mezzo">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <i class="fa fa-truck"></i> {{ mezzo.mezzo.nome }}
-      <button type="button" (click)="rimuoviMezzoInPartenza()" class="close" aria-label="Close" title="Elimina questo mezzo">
+<div class="card text-center" canDrop [target]="mezzo">
+  <h4 class="card-header">
+    <i class="fa fa-truck"></i> {{ mezzo.mezzo.nome }}
+    <button type="button" (click)="rimuoviMezzoInPartenza()" class="close" aria-label="Close" title="Elimina questo mezzo">
       <span aria-hidden="true">
         <i class="fa fa-window-close"></i>
       </span>
     </button>
-    </h3>
-  </div>
-  <div class="panel-body row">
+  </h4>
+  <div class="card-block row">
     <div class="col-md-3">
-      <div class="well">
+      <div class="card">
         <app-tag-autista *ngIf="!esisteAutista"></app-tag-autista>
         <div *ngIf="mezzo.esisteAutista">
           <div>
