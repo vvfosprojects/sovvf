@@ -29,6 +29,12 @@
 	color: #292b2c!important;    
 }*/
 
+/* stile del dropdown multiselect (TAG) */
+:host /deep/ button.dropdown-toggle.btn.btn-default.btn-secondary.btn-block{
+	border-top-left-radius: 0; /* angoli (sx) del componente dritti in modo che siano identici a quelli degli altri campi. */
+	border-bottom-left-radius: 0;
+}
+
 /* Colore dell'elemento multiplo selezionato*/
 :host /deep/ li.ui-autocomplete-token {
 	background-color: #a5a8aa;
