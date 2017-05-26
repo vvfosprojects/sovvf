@@ -10,6 +10,8 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { AgmCoreModule } from "@agm/core";
 import { AutoCompleteModule } from 'primeng/primeng';
 import { RicercaTipologieService } from "./ricerca-tipologie/ricerca-tipologie.service";
+import { GrowlModule } from "primeng/components/growl/growl";
+import { RicercaService } from "app/pages/schedaTelefonata/ricerca/ricerca.service";
 
 @NgModule({
   imports: [
@@ -23,12 +25,13 @@ import { RicercaTipologieService } from "./ricerca-tipologie/ricerca-tipologie.s
     AgmCoreModule.forRoot({
       apiKey: "AIzaSyCUyaLim6v4CB_eo-oJmeDlvPCQxwHha70",
       libraries: ["places"]
-    })
+    }),
+    GrowlModule
   ],
   declarations: [
     AppComponent,
     FormChiamataComponent
   ],
-  providers: [ RicercaTipologieService ],
+  providers: [ RicercaTipologieService, RicercaService ],
 })
 export class NewModule { }

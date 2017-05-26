@@ -1,11 +1,11 @@
-     <p-autoComplete  [(ngModel)]="risultati" 
+ <!--<p-autoComplete  [(ngModel)]="risultatiMultipli" 
 	 			placeholder="Scrivi cosa cerchi..." 
 				[suggestions]="risultati" 
-				(completeMethod)="searchTipologia($event)" 
-				field="descrizione" 
+				(completeMethod)="searchFake($event)" 
+				field="testo" 
 				[style]="{'width':'100%'}" 
 				[inputStyle]="{'width':'100%','font-size': '16px'}"
-				[multiple]='false' 
+				[multiple]='true' 
 				[minLength]="1">
 				
 		   <ng-template  let-brand pTemplate="itemdddd">
@@ -13,7 +13,7 @@
 								<div title="{{ brand.tooltip }}"><span style="font-size:10px" >{{ brand.id }}:</span> {{ brand.testo }}</div>
 						</div>
 				</ng-template>	
-		</p-autoComplete>
+		</p-autoComplete>-->
 <div class="section">
   <div class="container">
     <!-- prima riga -->
@@ -53,14 +53,35 @@
     </div>
     <div class="row">
       <div class="col-md-12">
+        
         <div [formGroup]="myForm">
           <div class="input-group" [ngClass]="{'has-warning':!myForm.controls['tipo_interv'].valid}">
-            <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Tipologia intervento" style="min-width: 50px;" data_placement="bottom">
+            <div class="input-group-addon"  data-toggle="tooltip" data-animation="false" title="Tipologia intervento" style="min-width: 50px; max-height:40px" data_placement="bottom">
             <i class="fa fa-fire-extinguisher fa-lg" aria-hidden="true"></i> </div>
-            <input type="text" class="form-control" id="tipo_interv" placeholder="Tipologia intervento" formControlName="tipo_interv">
+
+              <p-autoComplete  
+                  [(ngModel)]="risultatiMultipli" [ngModelOptions]="{standalone: true}"
+                  placeholder="Ricerca tipologia" 
+                  [suggestions]="risultati" 
+                  (completeMethod)="searchFake($event)" 
+                  field="testo" 
+                  [multiple]='true' 
+                  [dropdown]='true'
+                  (onDropdownClick)="handleDropdownClick($event)"
+                  [minLength]="1">
+                <ng-template  let-brand pTemplate="itemdddd">
+                      <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                          <div title="{{ brand.tooltip }}"><span style="font-size:10px" >{{ brand.id }}:</span> {{ brand.testo }}</div>
+                      </div>
+                  </ng-template>
+              </p-autoComplete>
+
+            <!--<input type="text" class="form-control" id="tipo_interv" placeholder="Tipologia intervento" formControlName="tipo_interv">-->
           </div>
         </div>
-      </div> &nbsp; </div>
+      </div> 
+      &nbsp; 
+      </div>
   </div>
 </div>
 <div class="section">
@@ -117,25 +138,36 @@
           </div>
           <div class="col-md-7 align-self-center text-center"> 
             <!--<img class="center-block img-fluid" src="https://maps.googleapis.com/maps/api/staticmap?center=via+cavou+5+roma&amp;zoom=18&amp;size=1000x310&amp;sensor=false">            -->
-                  <agm-map [latitude]="latitude" 
+            <agm-map [latitude]="latitude" 
                [longitude]="longitude" 
                [scrollwheel]="true" 
                [streetViewControl]="true" 
-               [mapTypeControl]="false" 
+               [mapTypeControl]="true" 
                [scaleControl]="true" 
                [zoom]="zoom">
-        <agm-marker [latitude]="latitude" 
-                    [longitude]="longitude" 
-                    [label]="'C'" 
-                    [title]="pippo" 
-                    [openInfoWindow]="true"></agm-marker>
+              <agm-marker [latitude]="latitude" 
+                          [longitude]="longitude" 
+                          [label]="'C'" 
+                          [title]="pippo" 
+                          [openInfoWindow]=true>
+                          <agm-info-window>
+                            <strong>Chiamata numero {{formChiamataModel.numero_chiamata}}</strong>
+                          </agm-info-window>
+
+                          <agm-circle [latitude]="41.9016819" [longitude]="12.50012449999997" 
+                              [radius]="7"
+                              [fillColor]="'red'"
+                              [circleDraggable]="true"
+                              [editable]="true">
+                          </agm-circle>
+              </agm-marker>
                     
-      <!--
-      </agm-map>
-      <agm-map [latitude]="lat" [longitude]="lng">
-      <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-      -->
-      </agm-map>
+              <!--
+              </agm-map>
+              <agm-map [latitude]="lat" [longitude]="lng">
+              <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+              -->
+           </agm-map>
 
           </div>
         </div>
@@ -146,7 +178,7 @@
             <div [formGroup]="myForm">
               <div class="input-group">
                 <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="indirizzo" style="min-width: 50px;"> <i class="fa fa-map" aria-hidden="true"></i> </div>
-                <input placeholder="Ricerca" autocorrect="on" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
+                <input placeholder="Ricerca indirizzo" autocorrect="on" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
                 <!--<input type="text" class="form-control" id="indirizzo" placeholder="Indirizzo" name="indirizzo" formControlName="indirizzo">-->
               </div>
             </div>
@@ -229,9 +261,12 @@
 						  --></div>
                 <div class="col-md-6">
                   <div class="col-md-12 text-right">
+                    
                     <form [formGroup]="formRagSoc" (ngSubmit)="onSubmit(formRagSoc.value)">
                       <!-- Split button -->
-                      <div class="btn-group btn-group-sm"> <button type="submit" class="btn btn-secondary" [disabled]="formRagSoc.valid" >Conferma <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                      <div class="btn-group btn-group-sm"> 
+                                            <p-growl [(value)]="msgs" [life]=3000></p-growl>
+                                            <button type="submit" class="btn btn-secondary" [disabled]="formRagSoc.valid" >Conferma <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                                             </button> <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-animation="false"
                           aria-haspopup="true" aria-expanded="false" [disabled]="formRagSoc.valid"> <span class="caret"></span>
  <span class="sr-only">Toggle Dropdown</span>

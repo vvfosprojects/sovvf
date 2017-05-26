@@ -5,6 +5,7 @@ import { TipologiaIntervento } from "./tipologia-intervento.model";
 
 @Injectable()
 export class RicercaTipologieService {
+  risultatiFreq: TipologiaIntervento[] = new Array();
   risultati: TipologiaIntervento[] = new Array();
   tipologie: TipologiaIntervento[] = [
     new TipologiaIntervento("0", "0", "Falso allarme (0)", "Falso allarme"),
@@ -112,22 +113,38 @@ export class RicercaTipologieService {
     new TipologiaIntervento("361", "361", "Monitoraggio strumentale presenza di sostanze pericolose (361)", "Fuoriuscite - dispersioni - emissioni - inquinamenti"),
   ];
 
-  constructor() { 
-    
+  constructor() {
+
   }
 
   public search(key: string): TipologiaIntervento[] {
-    console.log("ciao! "+key+" LUNGHEZZA "+this.tipologie);
+    /**
+     * In base alla chiave di ricerca filtro l'array delle tipologie --> nell'array dei risultati che viene ritornato:
+     */
     this.risultati.length = 0;
     this.tipologie.forEach(a => {
-      if (a.descrizione.indexOf(key)>-1) this.risultati.push(a);
+      if (a.descrizione.toLocaleLowerCase().indexOf(new String(key).toLocaleLowerCase()) > -1)
+        this.risultati.push(a);
     })
 
     return this.risultati;
-   // console.log("incendio generico".match("/gene/i"));
-   // return this.tipologie;
-      // .filter(i => 
-      //   !!i.descrizione.match("/" + key + "/i") ||
-      //   !!i.codice.match(key));
+
+  }
+
+  /**
+   * Il metodo ritorna le tipologie intervento che storicamente vengono utilizzate 
+   * più frequentemente dal Comando.
+   */
+  public searchFrequent(): TipologiaIntervento[] {
+    
+    let key = "apert" //ricerca fake l'array verrà popolato da servizio REST.
+    this.risultatiFreq.length = 0;
+    this.tipologie.forEach(a => {
+      if (a.descrizione.toLocaleLowerCase().indexOf(new String(key).toLocaleLowerCase()) > -1)
+        this.risultatiFreq.push(a);
+    })
+
+    return this.risultatiFreq;
+
   }
 }
