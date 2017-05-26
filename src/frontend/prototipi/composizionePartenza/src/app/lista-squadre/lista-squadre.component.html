@@ -1,13 +1,15 @@
 <ul class="list-group">
-  <li class="list-group-item list-group-item-success" *ngFor="let s of squadre" canDrag [dragging]="s" >
+  <li class="list-group-item list-group-item-success" *ngFor="let s of squadre" canDrag [dragging]="s">
     <app-squadra [squadra]="s"></app-squadra>
   </li>
 </ul>
 
-<div class="well">
-  <h6 class="header">Simulatore eventi esterni</h6>
-  <button (click)="impegnaMino()">Impegna Mino</button>
-  <button (click)="liberaMino()">Libera Mino</button>
-  <button (click)="minoInPartenza()">Mino in partenza</button>
-  <button (click)="minoFuoriPartenza()">Mino fuori partenza</button>
+<div class="card">
+  <div class="card-header">Simulatore eventi esterni</div>
+  <div class="card-block">
+    <button (click)="impegnaMino()">Impegna Mino</button>
+    <button (click)="liberaMino()">Libera Mino</button>
+    <button (click)="minoInPartenza()">Mino in partenza</button>
+    <button (click)="minoFuoriPartenza()">Mino fuori partenza</button>
+  </div>
 </div>
