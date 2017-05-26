@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { PieChartService } from './pieChart.service';
 
 import 'easy-pie-chart/dist/jquery.easypiechart.js';
+import { DatiBoxRiepilogo } from "app/pages/dashboard/pieChart/dati-box-riepilogo.model";
 
 @Component({
   selector: 'pie-chart',
@@ -11,14 +12,13 @@ import 'easy-pie-chart/dist/jquery.easypiechart.js';
 })
 // TODO: move easypiechart to component
 export class PieChart {
-
-  public charts: Array<Object>;
+  private datiBoxRiepilogo: DatiBoxRiepilogo;
   private _init = false;
 
   constructor(private _pieChartService: PieChartService) {
     this._pieChartService.getData().subscribe(value => {
-      this.charts = value;
-      this._updatePieCharts();
+      this.datiBoxRiepilogo = value;
+      //this._updatePieCharts();
     });
   }
 
@@ -51,12 +51,8 @@ export class PieChart {
   }
 
   private _updatePieCharts() {
-    let getRandomArbitrary = (min, max) => { return Math.random() * (max - min) + min; };
-    
-    if (this.charts !== undefined) {
-      jQuery('.pie-charts .chart').each(function (index, chart) {
-        jQuery(chart).data('easyPieChart').update(getRandomArbitrary(60, 65));
-      });
-    }
+    jQuery('#chartRichieste').data('easyPieChart').update(this.datiBoxRiepilogo.percentualeRichieste);
+    jQuery('#chartMezzi').data('easyPieChart').update(this.datiBoxRiepilogo.percentualeMezzi);
+    jQuery('#chartSquadre').data('easyPieChart').update(this.datiBoxRiepilogo.percentualeSquadre);
   }
 }

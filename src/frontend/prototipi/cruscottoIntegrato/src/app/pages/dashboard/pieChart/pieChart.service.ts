@@ -2,86 +2,44 @@ import { Injectable } from '@angular/core';
 import { BaThemeConfigProvider, colorHelper } from '../../../theme';
 import { Observable } from "rxjs/Observable";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { DatiBoxRiepilogo, StatoMeteo } from "app/pages/dashboard/pieChart/dati-box-riepilogo.model";
 
 @Injectable()
 export class PieChartService {
-  private observableArray: BehaviorSubject<any[]>;
-  private array: any[];
+  private observable: BehaviorSubject<DatiBoxRiepilogo>;
 
   constructor(private _baConfig: BaThemeConfigProvider) {
-    this.array = this.getOriginalArray();
-    this.observableArray = new BehaviorSubject(this.array);
+    let datiFake = DatiBoxRiepilogo.getFake();
+    this.observable = new BehaviorSubject(datiFake);
 
-    this.updateIndicatori();
+    this.modificaIndicatori();
   }
 
-  getData(): Observable<any[]> {
-    return this.observableArray.asObservable();
+  getData(): Observable<DatiBoxRiepilogo> {
+    return this.observable.asObservable();
   }
 
-  updateIndicatori() {
-    let rnd = Math.random();
-    if (rnd > .3) {
-      let idx = Math.floor(Math.random() * 3);
-      Math.random() > .5 ? this.array[idx].stats++ : this.array[idx].stats--;
-      if (this.array[idx].stats < 0)
-        this.array[idx].stats = 2;
-      this.observableArray.next(this.array);
-    }
+  private modificaIndicatori(): void {
+    let datiCorrenti = this.observable.getValue();
+    let nextDati = new DatiBoxRiepilogo(
+      datiCorrenti.richiesteInCoda,
+      datiCorrenti.richiesteInCorso,
+      datiCorrenti.erroreBoxRichieste,
+      datiCorrenti.mezziImpegnati,
+      datiCorrenti.mezziInServizio,
+      datiCorrenti.erroreBoxMezzi,
+      datiCorrenti.squadreImpegnate,
+      datiCorrenti.squadreInServizio,
+      datiCorrenti.erroreBoxSquadre,
+      datiCorrenti.descrizioneMeteo,
+      datiCorrenti.statoMeteo,
+      datiCorrenti.erroreBoxMeteo
+    );
+    nextDati.modificaRandom();
+    this.observable.next(nextDati);
 
     setTimeout(() => {
-      this.updateIndicatori();
-    }, 1000);
-  }
-
-  getOriginalArray() {
-    //let pieColor = this._baConfig.get().colors.custom.dashboardPieChart;
-    return [
-      {
-        color: "#920000",
-        ////description: 'dashboard.new_visits',
-        //description: 'dashboard.chiamate',
-        subdescription: 'dashboard.chiamateincoda',
-        stats: '15',
-        subdescription1: 'dashboard.interventiincorso',
-        stats1: '5',
-        ////icon: 'person',
-        icon: 'chiamata',
-        chartValue: () => 7
-      }, {
-        color: "#92F000",
-        ////description: 'dashboard.purchases',
-        //description: 'dashboard.mezzi',
-        subdescription: 'dashboard.mezziimpegnati',
-        stats: '4',
-        subdescription1: 'dashboard.mezziinservizio',
-        stats1: '22',
-        ////icon: 'money',
-        icon: 'mezzo',
-        chartValue: () => 6
-      }, {
-        color: "#92F000",
-        ////description: 'dashboard.active_users',
-        //description: 'dashboard.squadre',
-        subdescription: 'dashboard.squadreimpegnate',
-        stats: '3',
-        subdescription1: 'dashboard.squadreinservizio',
-        stats1: '5',
-        ////icon: 'face',
-        icon: 'squadra',
-        chartValue: () => 6
-      }, {
-        color: "#920000",
-        ////description: 'dashboard.returned',
-        description: 'dashboard.meteo',
-        subdescription: 'dashboard.previsionedeltempo',
-        stats: '',
-        subdescription1: 'dashboard.vuoto',
-        stats1: '',
-        ////icon: 'refresh',
-        icon: 'meteo',
-        chartValue: () => 6
-      }
-    ];
+      this.modificaIndicatori();
+    }, 3000);
   }
 }
