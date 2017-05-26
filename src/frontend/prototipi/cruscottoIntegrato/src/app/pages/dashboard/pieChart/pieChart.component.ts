@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
-import {PieChartService} from './pieChart.service';
+import { PieChartService } from './pieChart.service';
 
 import 'easy-pie-chart/dist/jquery.easypiechart.js';
 
@@ -16,7 +16,10 @@ export class PieChart {
   private _init = false;
 
   constructor(private _pieChartService: PieChartService) {
-    this.charts = this._pieChartService.getData();
+    this._pieChartService.getData().subscribe(value => {
+      this.charts = value;
+      this._updatePieCharts();
+    });
   }
 
   ngAfterViewInit() {
@@ -49,9 +52,11 @@ export class PieChart {
 
   private _updatePieCharts() {
     let getRandomArbitrary = (min, max) => { return Math.random() * (max - min) + min; };
-
-    jQuery('.pie-charts .chart').each(function(index, chart) {
-      jQuery(chart).data('easyPieChart').update(getRandomArbitrary(55, 90));
-    });
+    
+    if (this.charts !== undefined) {
+      jQuery('.pie-charts .chart').each(function (index, chart) {
+        jQuery(chart).data('easyPieChart').update(getRandomArbitrary(60, 65));
+      });
+    }
   }
 }
