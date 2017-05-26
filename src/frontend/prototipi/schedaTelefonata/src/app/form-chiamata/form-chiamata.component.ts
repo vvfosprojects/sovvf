@@ -43,6 +43,8 @@ export class FormChiamataComponent implements OnInit {
 
   @Input() formChiamataModel: FormChiamataModel;
 
+  chiamataDaSalvare: FormChiamataModel;
+
   myForm: FormGroup;
   formRagSoc: FormGroup;
 
@@ -166,6 +168,8 @@ export class FormChiamataComponent implements OnInit {
         this.ngZone.run(() => {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          console.log(autocomplete.getPlace().formatted_address);
+          this.myForm.controls['indirizzo'].setValue(autocomplete.getPlace().formatted_address);
 
           //verify result
           if (place.geometry === undefined || place.geometry === null) {
@@ -302,9 +306,10 @@ export class FormChiamataComponent implements OnInit {
     console.log("ragione_sociale ", value.ragione_sociale);
     //console.log("tipo ", this.myForm.controls.tipo_interv.value);
     if (this.risultatiMultipli != null) {
-      this.risultatiMultipli.forEach(element => {
-        console.log(element.testo);
-      });
+       console.log(this.risultatiMultipli.map(r => r.testo).join());
+      // this.risultatiMultipli.forEach(element => {
+      //   console.log(element.testo);
+      // });
     }
 
     console.log("indirizzo value ", this.myForm.controls.indirizzo.value);
@@ -317,6 +322,21 @@ export class FormChiamataComponent implements OnInit {
     console.log("note_private ", this.myForm.controls.note_private.value);
 
     this.showMsgInserimentoChiamataSuccesso();
+
+    this.chiamataDaSalvare = new FormChiamataModel();
+    this.chiamataDaSalvare.nome = value.nome;
+    this.chiamataDaSalvare.cognome = value.cognome;
+    this.chiamataDaSalvare.ragione_sociale = value.ragione_sociale;
+    this.chiamataDaSalvare.tipo_interv = this.risultatiMultipli;
+    this.chiamataDaSalvare.indirizzo = this.myForm.controls.indirizzo.value;
+    this.chiamataDaSalvare.telefono = this.myForm.controls.telefono.value;
+    this.chiamataDaSalvare.zona_emergenza = this.myForm.controls.zona_emergenza.value;
+    this.chiamataDaSalvare.motivazione = this.myForm.controls.motivazione.value;
+    this.chiamataDaSalvare.note_indirizzo = this.myForm.controls.note_indirizzo.value;
+    this.chiamataDaSalvare.note_pubbliche = this.myForm.controls.note_pubbliche.value;
+    this.chiamataDaSalvare.note_private = this.myForm.controls.note_private.value;
+
+    console.log("JSON : "+JSON.stringify(this.chiamataDaSalvare));
 
     // resetto il form
     this.myForm.reset();
