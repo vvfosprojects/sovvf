@@ -111,6 +111,12 @@ export class RicercaTipologieService {
     new TipologiaIntervento("359", "359", "Messa in sicurezza serbatoi GPL (359)", "Vari"),
     new TipologiaIntervento("360", "360", "Messa in sicurezza impianti tecnologici di servizio (acqua, energia elettrica, gas) (360)", "Vari"),
     new TipologiaIntervento("361", "361", "Monitoraggio strumentale presenza di sostanze pericolose (361)", "Fuoriuscite - dispersioni - emissioni - inquinamenti"),
+    /**
+     * TODO: Rimuovere le seguenti 3 tipologie a fine demo.
+     */
+    new TipologiaIntervento("362", "361", "Intervento frequente 1 (361)", "Fuoriuscite - dispersioni - emissioni - inquinamenti"),
+    new TipologiaIntervento("362", "363", "Intervento frequente 2 (362)", "Fuoriuscite - dispersioni - emissioni - inquinamenti"),
+    new TipologiaIntervento("363", "364", "Intervento frequente 3 (363)", "Fuoriuscite - dispersioni - emissioni - inquinamenti")
   ];
 
   constructor() {
@@ -136,8 +142,8 @@ export class RicercaTipologieService {
    * più frequentemente dal Comando.
    */
   public searchFrequent(): TipologiaIntervento[] {
-    
-    let key = "apert" //ricerca fake l'array verrà popolato da servizio REST.
+    //TODO: implementare il metodo da un servizio remoto.
+    let key = "frequente" //ricerca fake l'array verrà popolato da servizio REST.
     this.risultatiFreq.length = 0;
     this.tipologie.forEach(a => {
       if (a.descrizione.toLocaleLowerCase().indexOf(new String(key).toLocaleLowerCase()) > -1)
