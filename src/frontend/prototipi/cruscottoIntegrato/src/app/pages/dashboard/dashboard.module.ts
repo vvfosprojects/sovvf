@@ -23,6 +23,16 @@ import { TodoService } from './todo/todo.service';
 import { TrafficChartService } from './trafficChart/trafficChart.service';
 import { UsersMapService } from './usersMap/usersMap.service';
 
+///INIZIO
+import { Maps }              from '../maps/maps.component';
+import { BubbleMaps }        from '../maps/components/bubbleMaps/bubbleMaps.component';
+import { GoogleMaps }        from '../maps/components/googleMaps/googleMaps.component';
+import { LeafletMaps }       from '../maps/components/leafletMaps/leafletMaps.component';
+import { LineMaps }          from '../maps/components/lineMaps/lineMaps.component';
+import { BubbleMapsService } from '../maps/components/bubbleMaps/bubbleMaps.service';
+import { LineMapsService }   from '../maps/components/lineMaps/lineMaps.service';
+///FINE
+
 @NgModule({
   imports: [
     CommonModule,
@@ -36,11 +46,19 @@ import { UsersMapService } from './usersMap/usersMap.service';
     PieChart,
     TrafficChart,
     UsersMap,
+    
     LineChart,
     Feed,
     Todo,
     Calendar,
-    Dashboard
+    Dashboard,
+
+    Maps,
+    BubbleMaps,
+    GoogleMaps,
+    LeafletMaps,
+    LineMaps
+
   ],
   providers: [
     CalendarService,
@@ -49,7 +67,10 @@ import { UsersMapService } from './usersMap/usersMap.service';
     PieChartService,
     TodoService,
     TrafficChartService,
-    UsersMapService
+    UsersMapService,
+
+    BubbleMapsService,
+    LineMapsService
   ]
 })
 export class DashboardModule {}
