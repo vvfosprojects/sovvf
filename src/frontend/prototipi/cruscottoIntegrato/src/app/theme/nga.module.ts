@@ -50,7 +50,8 @@ import {
   BaImageLoaderService,
   BaMenuService,
   BaThemePreloader,
-  BaThemeSpinner
+  BaThemeSpinner,
+  BaServerLinkService
 } from './services';
 
 import {
@@ -94,7 +95,8 @@ const NGA_SERVICES = [
   BaImageLoaderService,
   BaThemePreloader,
   BaThemeSpinner,
-  BaMenuService
+  BaMenuService,
+  BaServerLinkService
 ];
 
 const NGA_VALIDATORS = [
@@ -106,7 +108,7 @@ const NGA_VALIDATORS = [
   declarations: [
     ...NGA_PIPES,
     ...NGA_DIRECTIVES,
-    ...NGA_COMPONENTS
+    ...NGA_COMPONENTS,
   ],
   imports: [
     CommonModule,

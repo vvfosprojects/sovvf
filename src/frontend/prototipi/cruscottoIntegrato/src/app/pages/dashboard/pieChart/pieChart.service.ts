@@ -23,7 +23,6 @@ export class PieChartService {
   }
 
   private modificaIndicatori(): void {
-    console.log("Updating...");
     let datiCorrenti = this.observable.getValue();
     datiCorrenti.modificaRandom();
     this.observable.next(datiCorrenti);
