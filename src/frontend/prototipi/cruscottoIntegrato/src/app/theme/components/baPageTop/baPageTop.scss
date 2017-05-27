@@ -168,6 +168,17 @@
     }
   }
 
+  .link-state {
+    text-shadow: none;
+    font-size: 13px;
+    line-height: 25px;
+    transition: all 0.5s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    float: left;
+    margin: 20px 0 0 30px;
+  }
+
   @media screen and (max-width: $resS) {
     .search {
       display: none;

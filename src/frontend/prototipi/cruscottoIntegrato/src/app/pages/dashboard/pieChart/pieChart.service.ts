@@ -13,6 +13,9 @@ export class PieChartService {
     this.observable = new BehaviorSubject(datiFake);
 
     this.modificaIndicatori();
+    setInterval(() => {
+      this.modificaIndicatori();
+    }, 3000);
   }
 
   getData(): Observable<DatiBoxRiepilogo> {
@@ -20,26 +23,9 @@ export class PieChartService {
   }
 
   private modificaIndicatori(): void {
+    console.log("Updating...");
     let datiCorrenti = this.observable.getValue();
-    let nextDati = new DatiBoxRiepilogo(
-      datiCorrenti.richiesteInCoda,
-      datiCorrenti.richiesteInCorso,
-      datiCorrenti.erroreBoxRichieste,
-      datiCorrenti.mezziImpegnati,
-      datiCorrenti.mezziInServizio,
-      datiCorrenti.erroreBoxMezzi,
-      datiCorrenti.squadreImpegnate,
-      datiCorrenti.squadreInServizio,
-      datiCorrenti.erroreBoxSquadre,
-      datiCorrenti.descrizioneMeteo,
-      datiCorrenti.statoMeteo,
-      datiCorrenti.erroreBoxMeteo
-    );
-    nextDati.modificaRandom();
-    this.observable.next(nextDati);
-
-    setTimeout(() => {
-      this.modificaIndicatori();
-    }, 3000);
+    datiCorrenti.modificaRandom();
+    this.observable.next(datiCorrenti);
   }
 }
