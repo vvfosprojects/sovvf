@@ -2,11 +2,12 @@ import { Injectable, OnInit } from '@angular/core';
 import { BaServerLinkModel } from "./baServerLink.model";
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
+import { ReplaySubject } from "rxjs/ReplaySubject";
 
 @Injectable()
 export class BaServerLinkService {
   private state: BaServerLinkModel;
-  private subject: Subject<BaServerLinkModel> = new Subject<BaServerLinkModel>();
+  private subject: Subject<BaServerLinkModel> = new ReplaySubject<BaServerLinkModel>();
 
   constructor() {
     setTimeout(() => {
@@ -44,8 +45,8 @@ export class BaServerLinkService {
       connessioneOk || !this.state ? new Date() : this.state.istanteUltimaConversazioneRiuscita,
       !connessioneOk || !this.state ? new Date() : this.state.istanteUltimoErrore,
       "Server down",
-      Math.random() * 300 + 100,
-      Math.random() * 80 + 10
+      Math.floor(Math.random() * 300 + 100),
+      Math.floor(Math.random() * 80 + 10)
     );
 
     this.state = newState;
