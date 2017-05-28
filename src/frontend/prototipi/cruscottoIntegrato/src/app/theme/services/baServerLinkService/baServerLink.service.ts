@@ -12,11 +12,11 @@ export class BaServerLinkService {
   constructor() {
     setTimeout(() => {
       this.checkConnessione();
-    }, 2500);
 
-    setInterval(() => {
-      this.checkConnessione();
-    }, 10000);
+      setInterval(() => {
+        this.checkConnessione();
+      }, 10000);
+    }, 2500);
   }
 
   public get stateObserver(): Observable<BaServerLinkModel> {
@@ -26,10 +26,10 @@ export class BaServerLinkService {
   private checkConnessione(): void {
     let connessioneOk = Math.random() > .1;
     let risultavaConnesso = connessioneOk ? Math.random() > .1 : false;
-    let istanteInizialeConnessione;
 
+    let istanteInizialeConnessione;
     if (connessioneOk) {
-      if (risultavaConnesso && !!this.state) {
+      if (risultavaConnesso && !!this.state && this.state.connesso) {
         istanteInizialeConnessione = this.state.istanteInizialeConnessione;
       }
       else {
@@ -39,12 +39,38 @@ export class BaServerLinkService {
       istanteInizialeConnessione = undefined;
     }
 
+    let istanteUltimaConversazioneRiuscita;
+    if (connessioneOk) {
+      istanteUltimaConversazioneRiuscita = new Date();
+    } else {
+      if (!!this.state) {
+        istanteUltimaConversazioneRiuscita = this.state.istanteUltimaConversazioneRiuscita;
+      } else {
+        istanteUltimaConversazioneRiuscita = undefined;
+      }
+    }
+
+    let istanteUltimoErrore;
+    let descrizioneUltimoErrore;
+    if (connessioneOk) {
+      if (!!this.state) {
+        istanteUltimoErrore = this.state.istanteUltimoErrore;
+        descrizioneUltimoErrore = this.state.descrizioneUltimoErrore;
+      } else {
+        istanteUltimoErrore = undefined;
+        descrizioneUltimoErrore = undefined;
+      }
+    } else {
+      istanteUltimoErrore = new Date();
+      descrizioneUltimoErrore = "Server error";
+    }
+
     let newState = new BaServerLinkModel(
       connessioneOk,
       istanteInizialeConnessione,
-      connessioneOk || !this.state ? new Date() : this.state.istanteUltimaConversazioneRiuscita,
-      !connessioneOk || !this.state ? new Date() : this.state.istanteUltimoErrore,
-      "Server down",
+      istanteUltimaConversazioneRiuscita,
+      istanteUltimoErrore,
+      descrizioneUltimoErrore,
       Math.floor(Math.random() * 300 + 100),
       Math.floor(Math.random() * 80 + 10)
     );
