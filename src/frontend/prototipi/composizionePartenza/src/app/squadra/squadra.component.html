@@ -1,5 +1,5 @@
 <div>
-  <h4 class="clearfix">
+  <h5 class="clearfix">
     <i class="fa fa-group"></i> {{ squadra.nome }}
     <div class="float-right h6">
       <span class="text-muted">
@@ -13,7 +13,7 @@
         <button type="button" class="btn btn-sm" *ngIf="espansa"><i class="fa fa-chevron-up"></i></button>
       </span>
     </div>
-  </h4>
+  </h5>
   <div *ngIf="espansa">
     <ul class="list-group">
       <li *ngFor="let c of squadra.componenti" class="list-group-item" [class.list-group-item-warning]="!c.inPartenza && c.impegnato"

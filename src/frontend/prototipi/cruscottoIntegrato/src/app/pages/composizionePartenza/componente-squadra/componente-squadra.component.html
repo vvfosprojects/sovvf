@@ -1,7 +1,7 @@
 <div class="text-left" >
   <div class="float-right">
-    <span *ngIf="componente.capoPartenza" title="Capopartenza" class="badge badge-info">CP</span>
-    <span *ngIf="componente.autista" title="Autista" class="badge badge-info">A</span>
+    <app-tag-capopartenza *ngIf="componente.capoPartenza" ></app-tag-capopartenza>
+    <app-tag-autista *ngIf="componente.autista" ></app-tag-autista>
     <span *ngIf="componente.impegnato" title="{{ componente.descrizioneImpegno }}" class="badge badge-warning">IMP</span>
     <span *ngIf="componente.inPartenza" title="In partenza..." class="badge badge-primary">PAR</span>
   </div>

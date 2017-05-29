@@ -2,9 +2,9 @@
     <h5>
         <i class="fa fa-truck"></i> {{ mezzo.nome }}
         <div class="float-right">
-            <span class="h6 text-muted pull-right"><i class="fa fa-home"></i>{{ mezzo.unitaOperativa | truncate:8 }}</span>
+            <span class="h6 text-muted"><i class="fa fa-home"></i>{{ mezzo.unitaOperativa | truncate:8 }}</span>
         </div>
-        <span *ngIf="mezzo.impegnato" title="{{ mezzo.descrizioneImpegno }}" class="label label-warning">IMP</span>
-        <span *ngIf="mezzo.inPartenza" title="In partenza..." class="label label-primary">PAR</span>
+        <span *ngIf="mezzo.impegnato" title="{{ mezzo.descrizioneImpegno }}" class="float-right badge badge-warning">IMP</span>
+        <span *ngIf="mezzo.inPartenza" title="In partenza..." class="float-right badge badge-primary">PAR</span>
     </h5>
 </div>
