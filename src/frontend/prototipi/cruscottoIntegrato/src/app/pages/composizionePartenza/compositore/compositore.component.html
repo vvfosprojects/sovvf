@@ -1,14 +1,14 @@
 <div class="card text-center">
   <div class="card-header">
-    Porta qui squadre, persone e mezzi...
+    <span class="float-right">
+      <button class="btn btn-primary disabled">Conferma</button>
+      <button class="btn btn-default">Annulla</button>
+    </span>
+    <span class="text-left">Porta qui squadre, mezzi e persone...</span>
   </div>
   <div class="card-block">
     <app-drop-area></app-drop-area>
     <app-mezzo-in-partenza *ngFor="let m of mezziInPartenza" [mezzo]="m"></app-mezzo-in-partenza>
-  </div>
-  <div class="card-footer text-muted">
-    <button class="btn btn-primary disabled">Conferma</button>
-    <button class="btn btn-default disabled">Annulla</button>
   </div>
 </div>
 
