@@ -29,8 +29,8 @@
         "../node_modules/fullcalendar/dist/fullcalendar.css",
         "app/theme/theme.scss",
         "styles.scss",
-	"../node_modules/primeng/resources/primeng.min.css",
-	"../node_modules/primeng/resources/themes/bootstrap/theme.css"
+				"../node_modules/primeng/resources/primeng.min.css",
+				"../node_modules/primeng/resources/themes/bootstrap/theme.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",

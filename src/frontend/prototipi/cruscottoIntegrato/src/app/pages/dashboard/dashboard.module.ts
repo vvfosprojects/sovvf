@@ -1,27 +1,21 @@
 import { NgModule }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule }   from '@angular/forms';
 import { AppTranslationModule } from '../../app.translation.module';
-import { NgaModule } from '../../theme/nga.module';
+import { NgaModule }     from '../../theme/nga.module';
 
 import { Dashboard } from './dashboard.component';
-import { routing }       from './dashboard.routing';
+import { routing }   from './dashboard.routing';
 
 import { PieChart } from './pieChart';
-import { Feed } from './feed';
+import { Feed }     from './feed';
 import { Calendar } from './calendar';
 
-import { CalendarService } from './calendar/calendar.service';
-import { FeedService } from './feed/feed.service';
 import { PieChartService } from './pieChart/pieChart.service';
+import { FeedService }     from './feed/feed.service';
+import { CalendarService } from './calendar/calendar.service';
 
-///INIZIO
-import { Maps }              from '../maps/maps.component';
-import { GoogleMaps }        from '../maps/components/googleMaps/googleMaps.component';
-
-import { rigaElencoRichiesteDiAssistenzaComponent } from '../rigaElencoRichiesteDiAssistenza/rigaElencoRichiesteDiAssistenza.component';
-//import { PagesModule } from '../pages.module';
-///FINE
+import { SharedModule } from '../shared.module';
 
 @NgModule({
   imports: [
@@ -29,20 +23,14 @@ import { rigaElencoRichiesteDiAssistenzaComponent } from '../rigaElencoRichieste
     FormsModule,
     AppTranslationModule,
     NgaModule,
-    routing//,
-    //PagesModule
+    routing,
+    SharedModule    
   ],
   declarations: [
     PieChart,
     Feed,
     Calendar,
-    Dashboard,
-
-    Maps,
-    GoogleMaps
-
-    ,rigaElencoRichiesteDiAssistenzaComponent
-    
+    Dashboard
   ],
   providers: [
     CalendarService,
