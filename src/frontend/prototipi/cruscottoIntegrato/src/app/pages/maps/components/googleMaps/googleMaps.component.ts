@@ -37,7 +37,7 @@ export class GoogleMaps {
               var punto = punti[i];
               var marker = new google.maps.Marker({
                 title: punto[0],
-                zIndex: punto[1],
+                //zIndex: punto[1],
                 position: {lat: punto[2], lng: punto[3]},
                 icon: punto[4],
                 map: map

@@ -50,6 +50,20 @@ export const PAGES_MENU = [
           }
         }
       },
+
+      {
+        path: 'rigaElencoRichiesteDiAssistenza',
+        data: {
+          menu: {
+            title: 'general.menu.rigaElencoRichiesteDiAssistenza',
+            icon: 'fa fa-send-o',
+            selected: false,
+            expanded: false,
+            order: 100,
+          }
+        }
+      }
+
       // {
       //   path: 'editors',
       //   data: {
