@@ -19,8 +19,8 @@ import { PieChartService } from './pieChart/pieChart.service';
 import { Maps }              from '../maps/maps.component';
 import { GoogleMaps }        from '../maps/components/googleMaps/googleMaps.component';
 
-import { PagesModule } from '../pages.module';
-
+import { rigaElencoRichiesteDiAssistenzaComponent } from '../rigaElencoRichiesteDiAssistenza/rigaElencoRichiesteDiAssistenza.component';
+//import { PagesModule } from '../pages.module';
 ///FINE
 
 @NgModule({
@@ -29,8 +29,8 @@ import { PagesModule } from '../pages.module';
     FormsModule,
     AppTranslationModule,
     NgaModule,
-    routing,
-    PagesModule
+    routing//,
+    //PagesModule
   ],
   declarations: [
     PieChart,
@@ -40,6 +40,8 @@ import { PagesModule } from '../pages.module';
 
     Maps,
     GoogleMaps
+
+    ,rigaElencoRichiesteDiAssistenzaComponent
     
   ],
   providers: [
