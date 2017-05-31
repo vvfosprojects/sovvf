@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { GoogleMaps } from './maps/components/googleMaps/googleMaps.component';
+//import { GoogleMaps } from './maps/components/googleMaps/googleMaps.component';
 import { rigaElencoRichiesteDiAssistenzaComponent } from './rigaElencoRichiesteDiAssistenza/rigaElencoRichiesteDiAssistenza.component';
 
 @NgModule({
@@ -8,12 +8,12 @@ import { rigaElencoRichiesteDiAssistenzaComponent } from './rigaElencoRichiesteD
   ],
   
   declarations: [
-      GoogleMaps,
+      //GoogleMaps,
       rigaElencoRichiesteDiAssistenzaComponent
   ],
   
   exports: [
-    GoogleMaps,
+    //GoogleMaps,
     rigaElencoRichiesteDiAssistenzaComponent
   ]
 })

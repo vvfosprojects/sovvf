@@ -10,6 +10,7 @@ import { routing }   from './dashboard.routing';
 import { PieChart } from './pieChart';
 import { Feed }     from './feed';
 import { Calendar } from './calendar';
+import { mappaSOVVF } from './mappaSOVVF';
 
 import { PieChartService } from './pieChart/pieChart.service';
 import { FeedService }     from './feed/feed.service';
@@ -30,7 +31,8 @@ import { SharedModule } from '../shared.module';
     PieChart,
     Feed,
     Calendar,
-    Dashboard
+    Dashboard,
+    mappaSOVVF
   ],
   providers: [
     CalendarService,
