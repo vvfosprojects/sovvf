@@ -21,29 +21,29 @@
     <div class="row">
       <div class="col-lg-3">
         <div class="input-group">
-          <div class="input-group-addon" data-toggle="tooltip" data-animation="false" style="min-width: 50px;" title="Numero chiamata" data-placement="bottom">
+          <div class="input-group-addon" pTooltip="Numero chiamata" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;">
           <i class="fa fa-hashtag fa-lg" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="num_chiamata"
             aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.numero_chiamata}}" style="text-align: center;">          </div>
       </div>
       <div class="col-lg-2">
         <div class="input-group">
-          <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Data chiamata" style="min-width: 50px;" data-placement="bottom">
+          <div class="input-group-addon" pTooltip="Data chiamata" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;">
           <i class="fa fa-calendar fa-lg" aria-hidden="true"></i> </div> <input type="text" style="text-align: center;" class="form-control"
             id="data_chiam" aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.data_chiamata | date:'dd/MM/y'}}">          </div>
       </div>
       <div class="col-lg-2">
         <div class="input-group">
-          <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Ora chiamata" style="min-width: 50px;" data-placement="bottom">
+          <div class="input-group-addon" pTooltip="Ora chiamata" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;">
           <i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> </div> <input type="text" style="text-align: center;" class="form-control"
             id="ora_chiam" aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.data_chiamata | date:'HH:mm'}}">          </div>
       </div>
       <div class="col-lg-4">
         <div class="input-group">
-          <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Operatore" style="min-width: 50px;" data-placement="bottom">
+          <div class="input-group-addon" pTooltip="Operatore" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;">
           <i class="fa fa-user fa-lg" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="operatore"
             aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.operatore}}"> </div>
       </div>
-      <div class="col-lg-1"> <i class="fa fa-compress text-muted" style="font-size: 33px;" data-toggle="tooltip" title="Scheda contatto N° {{formChiamataModel.scheda_contatto}}"
+      <div class="col-lg-1"> <i class="fa fa-compress text-muted" style="font-size: 33px;" pTooltip="Scheda contatto N° {{formChiamataModel.scheda_contatto}}" tooltipPosition="bottom"
           data-placement="bottom"> </i> </div>
     </div>
     <!-- fine prima riga -->
@@ -56,7 +56,7 @@
         
         <div [formGroup]="myForm">
           <div class="input-group" [ngClass]="{'has-warning':!myForm.controls['tipo_interv'].valid}">
-            <div class="input-group-addon"  data-toggle="tooltip" data-animation="false" title="Tipologia intervento" style="min-width: 50px; max-height:40px" data_placement="bottom">
+            <div class="input-group-addon" pTooltip="Tipologia intervento" tooltipPosition="bottom" data-animation="false" style="min-width: 50px; max-height:40px">
             <i class="fa fa-fire-extinguisher fa-lg" aria-hidden="true"></i> </div>
 
               <p-autoComplete  
@@ -88,14 +88,14 @@
           <div class="col-md-5">
             <div [formGroup]="formRagSoc">
               <div class="input-group" [ngClass]="{'has-warning':formValido }" >
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Cognome" style="min-width: 50px;"> <i class="fa fa-address-card" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="cognome"
+                <div class="input-group-addon" pTooltip="Cognome" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;"> <i class="fa fa-address-card" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="cognome"
                   placeholder="Cognome" formControlName="cognome"  > 
               </div> 
               
               <br>
               
               <div class="input-group" [ngClass]="{'has-warning':formValido  } ">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Nome" style="min-width: 50px;"> <i class="fa fa-address-card-o" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="nome"
+                <div class="input-group-addon" pTooltip="Nome" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;"> <i class="fa fa-address-card-o" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="nome"
                   placeholder="Nome" formControlName="nome" >
               </div>
 
@@ -104,32 +104,28 @@
             <br>
             <div [formGroup]="formRagSoc">
               <div class="input-group" [ngClass]="{'has-warning':formValido }">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Ragione sociale" style="min-width: 50px;"> <i class="fa fa-industry" aria-hidden="true"></i> 
+                <div class="input-group-addon" pTooltip="Ragione sociale" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;"> <i class="fa fa-industry" aria-hidden="true"></i> 
                 </div> 
                 <input type="text" class="form-control" id="ragione_sociale" placeholder="Ragione sociale" value="{{formChiamataModel.ragione_sociale}}" formControlName="ragione_sociale"  >
               </div>
             </div>
             <div class="row" style="margin-top: 1px;">
-              <div class="col-lg-3"> <button type="button" (click)="onClickCC()" class="btn btn-block btn-secondary btn-xs btn-sm" data-toggle="tooltip" data-animation="false"
-                  title="Carabinieri" data-placement="bottom">CC</button> </div>
-              <div class="col-lg-3"> <button type="button" (click)="onClickPS()" class="btn btn-block btn-secondary btn-xs btn-sm" data-toggle="tooltip" data-animation="false"
-                  title="Polizia di Stato" data-placement="bottom">PS</button> </div>
-              <div class="col-lg-3"> <button type="button" (click)="onClickPM()" class="btn btn-block btn-xs btn-secondary btn-sm" data-toggle="tooltip" data-animation="false"
-                  title="Polizia Municipale" data-placement="bottom">PM</button> </div>
-              <div class="col-lg-3"> <button type="button" (click)="onClickSSU()" class="btn btn-block btn-secondary btn-xs btn-sm" data-toggle="tooltip" data-animation="false"
-                  title="Servizio Sanitario Urgenze" data-placement="bottom">SSU</button> </div>
+              <div class="col-lg-3"> <button type="button" (click)="onClickCC()" class="btn btn-block btn-secondary btn-xs btn-sm" pTooltip="Carabinieri" tooltipPosition="bottom" data-animation="false">CC</button> </div>
+              <div class="col-lg-3"> <button type="button" (click)="onClickPS()" class="btn btn-block btn-secondary btn-xs btn-sm" pTooltip="Polizia di Stato" tooltipPosition="bottom" data-animation="false" data-placement="bottom">PS</button> </div>
+              <div class="col-lg-3"> <button type="button" (click)="onClickPM()" class="btn btn-block btn-xs btn-secondary btn-sm" pTooltip="Polizia Municipale" tooltipPosition="bottom" data-animation="false">PM</button> </div>
+              <div class="col-lg-3"> <button type="button" (click)="onClickSSU()" class="btn btn-block btn-secondary btn-xs btn-sm" pTooltip="Servizio Sanitario Urgenze" tooltipPosition="bottom" data-animation="false" data-placement="bottom">SSU</button> </div>
             </div> <br>
             <div [formGroup]="myForm">
               <!-- per la validazione chiamare il metofo formValido che ritorna boolean-->
               <div class="input-group">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Telefono" style="min-width: 50px;"> <i class="fa fa-phone" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="telefono"
+                <div class="input-group-addon" pTooltip="Telefono" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;"> <i class="fa fa-phone" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="telefono"
                   placeholder="Telefono" formControlName="telefono" >
               </div>
               <!-- -->
             </div>
             <br>
             <div class="input-group">
-              <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Coordinate" style="min-width: 50px;"> <i class="fa fa-map-marker" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="coordinate"
+              <div class="input-group-addon" pTooltip="Coordinate" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;"> <i class="fa fa-map-marker" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="coordinate"
                 placeholder="Coordinate" readonly="" value="Lat. {{this.latitude | number : '2.3-3'}}, Long. {{this.longitude | number : '2.3-3'}}"> </div>
           </div>
           <div class="col-md-7"> 
@@ -173,7 +169,7 @@
             
             <div [formGroup]="myForm">
               <div class="input-group">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="indirizzo" style="min-width: 50px;"> <i class="fa fa-map" aria-hidden="true"></i> </div>
+                <div class="input-group-addon" pTooltip="Ricerca indirizzo" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;"> <i class="fa fa-map" aria-hidden="true"></i> </div>
                 <input placeholder="Ricerca indirizzo" autocorrect="on" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
                 <!--<input type="text" class="form-control" id="indirizzo" placeholder="Indirizzo" name="indirizzo" formControlName="indirizzo">-->
               </div>
@@ -186,7 +182,7 @@
           <div class="col-md-6">
             <div [formGroup]="myForm">
               <div class="input-group">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Zona emergenza" style="min-width: 50px;"> <i class="fa fa-map-pin" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="zona_emergenza"
+                <div class="input-group-addon" pTooltip="Zona emergenza" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;"> <i class="fa fa-map-pin" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="zona_emergenza"
                   placeholder="Zona emergenza" formControlName="zona_emergenza"> </div>
             </div>
           </div>
@@ -194,7 +190,7 @@
           <div class="col-md-6">
             <div [formGroup]="myForm">
               <div class="input-group">
-                <span class="input-group-addon" data-toggle="tooltip" data-animation="false" title="tag" style="min-width: 50px;"> <i class="fa fa-tag" aria-hidden="true"></i> </span> 
+                <span class="input-group-addon" pTooltip="Tag" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;"> <i class="fa fa-tag" aria-hidden="true"></i> </span> 
                 <ss-multiselect-dropdown [options]="myOptions" [texts]="myTexts" [settings]="mySettings" formControlName="optionsModel" class="btn-block" ></ss-multiselect-dropdown>
               </div>
             </div>
@@ -206,14 +202,14 @@
           <div class="col-md-6">
             <div [formGroup]="myForm">
               <div class="input-group">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Motivazione" style="min-width: 50px;"> <i class="fa fa-commenting" aria-hidden="true"></i> </div> <textarea class="form-control" id="motivazione"
+                <div class="input-group-addon" pTooltip="Motivazione" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;"> <i class="fa fa-commenting" aria-hidden="true"></i> </div> <textarea class="form-control" id="motivazione"
                   style="resize: none;" placeholder="Motivazione" formControlName="motivazione">Motivazione</textarea> </div>
             </div>
           </div>
           <div class="col-md-6">
             <div [formGroup]="myForm">
               <div class="input-group">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Note indirizzo" style="min-width: 50px;"> <i class="fa fa-commenting" aria-hidden="true"></i> </div> <textarea class="form-control" id="note_indirizzo"
+                <div class="input-group-addon" pTooltip="Note indirizzo" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;"> <i class="fa fa-commenting" aria-hidden="true"></i> </div> <textarea class="form-control" id="note_indirizzo"
                   style="resize: none;" placeholder="Note indirizzo" formControlName="note_indirizzo">Note indirizzo</textarea>                </div>
             </div>
           </div>
@@ -222,14 +218,14 @@
           <div class="col-md-6">
             <div [formGroup]="myForm">
               <div class="input-group">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Note pubbliche" style="min-width: 50px;"> <i class="fa fa-bullhorn" aria-hidden="true"></i> </div> <textarea class="form-control" id="note_pubbliche"
+                <div class="input-group-addon" pTooltip="Note pubbliche" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;"> <i class="fa fa-bullhorn" aria-hidden="true"></i> </div> <textarea class="form-control" id="note_pubbliche"
                   style="resize: none;" placeholder="Note pubbliche" formControlName="note_pubbliche">Note pubbliche</textarea>                </div>
             </div>
           </div>
           <div class="col-md-6">
             <div [formGroup]="myForm">
               <div class="input-group">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Note private" style="min-width: 50px;"> <i class="fa fa-headphones " aria-hidden="true"></i> </div> <textarea class="form-control" id="note_private"
+                <div class="input-group-addon" pTooltip="Note private" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;"> <i class="fa fa-headphones " aria-hidden="true"></i> </div> <textarea class="form-control" id="note_private"
                   style="resize: none;" placeholder="Note private" formControlName="note_private">Note private</textarea> </div>
             </div>
           </div>
