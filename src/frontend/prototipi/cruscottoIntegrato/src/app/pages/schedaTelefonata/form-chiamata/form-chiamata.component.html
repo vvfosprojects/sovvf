@@ -188,12 +188,11 @@
           </div>
 
           <div class="col-md-6">
-            <div [formGroup]="myForm">
-              <div class="input-group">
-                <span class="input-group-addon" pTooltip="Tag" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;"> <i class="fa fa-tag" aria-hidden="true"></i> </span> 
-                <ss-multiselect-dropdown [options]="myOptions" [texts]="myTexts" [settings]="mySettings" formControlName="optionsModel" class="btn-block" ></ss-multiselect-dropdown>
-              </div>
-            </div>
+            <div class="input-group">
+<span class="input-group-addon" pTooltip="Tag" tooltipPosition="bottom" style="min-width: 50px;"> <i class="fa fa-tag" aria-hidden="true"></i> </span> 
+                <!--<ss-multiselect-dropdown [options]="myOptions" [texts]="myTexts" [settings]="mySettings" formControlName="optionsModel" class="btn-block" ></ss-multiselect-dropdown>-->
+                <p-chips [(ngModel)]="tags" ></p-chips>
+</div>
           </div>
 
         </div> &nbsp;
