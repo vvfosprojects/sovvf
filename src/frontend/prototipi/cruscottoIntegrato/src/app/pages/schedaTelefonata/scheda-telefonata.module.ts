@@ -11,6 +11,7 @@ import { AgmCoreModule } from "@agm/core";
 import { AutoCompleteModule } from 'primeng/primeng';
 import { RicercaTipologieService } from "./ricerca-tipologie/ricerca-tipologie.service";
 import { GrowlModule } from "primeng/components/growl/growl";
+import { TooltipModule } from "primeng/primeng";
 import { RicercaService } from "app/pages/schedaTelefonata/ricerca/ricerca.service";
 
 @NgModule({
@@ -26,7 +27,8 @@ import { RicercaService } from "app/pages/schedaTelefonata/ricerca/ricerca.servi
       apiKey: "AIzaSyCUyaLim6v4CB_eo-oJmeDlvPCQxwHha70",
       libraries: ["places"]
     }),
-    GrowlModule
+    GrowlModule,
+    TooltipModule
   ],
   declarations: [
     AppComponent,

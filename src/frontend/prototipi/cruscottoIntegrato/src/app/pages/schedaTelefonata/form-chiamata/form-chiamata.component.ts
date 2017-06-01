@@ -11,6 +11,7 @@ import { AgmCoreModule, MapsAPILoader } from '@agm/core';
 import { } from '@types/googlemaps';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { Message } from 'primeng/primeng';
+import { TooltipModule } from 'primeng/primeng';
 
 import { RicercaTipologieService } from ".././ricerca-tipologie/ricerca-tipologie.service";
 import { TipologiaIntervento } from ".././ricerca-tipologie/tipologia-intervento.model";
