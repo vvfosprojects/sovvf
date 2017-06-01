@@ -90,7 +90,6 @@ export class FormChiamataComponent implements OnInit {
     maxHeight: '200px',
   };
   //------- End multiselect ------//
-
   constructor( @Inject(FormBuilder) private fb: FormBuilder, private fb2: FormBuilder, private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone, private _ricercaTipologieService: RicercaTipologieService, private _ricercaService: RicercaService, ) {
     this.formChiamataModel = new FormChiamataModel();
