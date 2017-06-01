@@ -101,6 +101,19 @@
 	width: 100%;
 }
 
+:host /deep/ .ui-chips > ul.ui-inputtext {
+	clear: left;
+	cursor: text;
+	list-style-type: none;
+	margin: 0;
+	overflow: hidden;
+	padding: 0 .25em;
+	min-height: 34px;
+	vertical-align: middle;ff
+	border-top-left-radius: 0; /* angoli del componente dritti in modo che siano identici a quelli degli altri campi. */
+	border-bottom-left-radius: 0;
+	
+}
 
 /*:host /deep/ p-autocomplete.ng-untouched.ng-pristine.ng-valid{
 	width: 100%;
