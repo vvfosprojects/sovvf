@@ -63,6 +63,35 @@ export const PAGES_MENU = [
           }
         }
       }
+//,      
+//      {
+//        path: 'new',
+//        data: {
+//          menu: {
+//            title: 'New Page',
+//            icon: 'ion-android-home',
+//            pathMatch: 'prefix',            
+//            selected: false,
+//            expanded: false,
+//            order: 100,
+//          }
+//        }
+//      }
+//      ,
+//      {
+//        path: 'new',
+//        data: {
+//          menu: {
+//            title: 'daniela',
+//           icon: 'ion-android-home',
+//           pathMatch: 'prefix',            
+//            selected: false,
+//            expanded: false,
+//            order: 100,
+//          }
+//        }
+//      }
+   
 
       // {
       //   path: 'editors',

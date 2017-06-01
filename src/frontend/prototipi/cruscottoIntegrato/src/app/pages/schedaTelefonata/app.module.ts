@@ -35,4 +35,4 @@ import { RicercaService } from "./ricerca/ricerca.service";
   providers: [RicercaService, RicercaTipologieService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule1 { }

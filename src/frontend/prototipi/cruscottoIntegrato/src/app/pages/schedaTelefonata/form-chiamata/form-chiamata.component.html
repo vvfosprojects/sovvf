@@ -43,8 +43,17 @@
           <i class="fa fa-user fa-lg" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="operatore"
             aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.operatore}}"> </div>
       </div>
-      <div class="col-lg-1"> <i class="fa fa-compress text-muted" style="font-size: 33px;" pTooltip="Scheda contatto N° {{formChiamataModel.scheda_contatto}}" tooltipPosition="bottom"
-          data-placement="bottom"> </i> </div>
+
+      <div class="col-lg-1">
+<!--
+        <i class="fa fa-compress text-muted" style="font-size: 33px;" pTooltip="Scheda contatto N° {{formChiamataModel.scheda_contatto}}" tooltipPosition="bottom"
+          data-placement="bottom"></i>
+            <a [routerLink]="['schedaContatto', '../../schedaContatto/app.module#AppModule']">Scheda Contatto</a>          
+-->
+            <a [routerLink]="['schedaContatto']">Scheda Contatto</a>
+
+
+      </div>
     </div>
     <!-- fine prima riga -->
     <div class="row">
