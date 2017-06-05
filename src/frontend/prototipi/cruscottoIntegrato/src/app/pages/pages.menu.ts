@@ -63,20 +63,20 @@ export const PAGES_MENU = [
           }
         }
       }
-//,      
-//      {
-//        path: 'new',
-//        data: {
-//          menu: {
-//            title: 'New Page',
-//            icon: 'ion-android-home',
-//            pathMatch: 'prefix',            
-//            selected: false,
-//            expanded: false,
-//            order: 100,
-//          }
-//        }
-//      }
+,      
+      {
+        path: 'schedaContatto',
+        data: {
+          menu: {
+            title: 'Daniela',
+            icon: 'ion-android-home',
+            pathMatch: 'prefix',            
+            selected: false,
+            expanded: false,
+            order: 100,
+          }
+        }
+      }
 //      ,
 //      {
 //        path: 'new',
