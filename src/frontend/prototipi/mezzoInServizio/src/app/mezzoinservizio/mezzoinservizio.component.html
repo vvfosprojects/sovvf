@@ -30,7 +30,7 @@
           </div>
           <div> {{fs.DataOra | friendlyDate:20}} {{fs.DataOra | friendlyHour}}</div>
         </div>
-        <div class="col col-md-3 text-right">
+        <div class="col col-md-5 text-left">
           <div *ngIf="numeroPersone() > 0">
             <span class="fa fa-users" aria-hidden="true"></span>
             <span class="badge badge-info">{{numeroPersone()}} </span>
@@ -40,14 +40,12 @@
             <button *ngIf="mostraPersone" type="button" class="btn btn-sm" (click)="hideMostraPersone()">
                 <i class="fa fa-chevron-up" aria-hidden="true"></i>
               </button>
-          </div>
+            <span><a  href="#" style="width:10px;min-width:50%;" class="btn btn-link btn btn-sm text-left" >{{fs.CodiceRichiestaAssistenza}}
+              </a></span> 
+             </div>
+         
         </div>
-        <div class="col col-md-2 text-right">
-          <button type="button" class="btn btn-primary">
-                <span class="fa fa-list" aria-hidden="true"></span>              
-            </button>
-        </div>
-        <div hidden>
+       <div hidden>
           <div class="col col-md-4">
             <button type="button" class="btn btn-sm" (click)="setDisponibile(true)">Disponibile</button>
             <button type="button" class="btn btn-sm" (click)="setDisponibile(false)">Non Disponibile</button>
@@ -71,8 +69,8 @@
               <div class="card-block">
                 <p class="card-text" *ngFor="let p of fs.personeSulMezzo" data-toggle="tooltip" data-placement="top" title={{p.codiceFiscale}}>
                   <span class="fa fa fa-user" aria-hidden="true" ></span> {{p.descrizione | truncate:18 }}
-                  <span *ngIf="p.capoPartenza" title="Capopartenza" class="badge badge-info text-left pull-right">CP</span>
-                  <span *ngIf="p.autista" title="Autista" class="badge badge-info text-left pull-right">A</span>
+                   <app-tag-capopartenza *ngIf="p.capoPartenza"></app-tag-capopartenza>
+                   <app-tag-autista *ngIf="p.autista"></app-tag-autista>
                  </p>
               </div>
             </div>
