@@ -96,10 +96,18 @@
 		     p-chips.ng-valid.ui-inputwrapper-filled.ng-dirty.ng-touched,
 			 p-chips.ng-valid.ng-dirty.ng-touched,
 			 p-chips.ng-pristine.ng-valid.ng-touched,
-			 p-chips.ng-untouched.ng-valid.ui-inputwrapper-focus.ui-inputwrapper-filled.ng-dirty
+			 p-chips.ng-untouched.ng-valid.ui-inputwrapper-focus.ui-inputwrapper-filled.ng-dirty,
+			 p-chips.ng-untouched.ng-valid.ng-dirty
+
 {
 	width: 100%;
 }
+
+:host /deep/ ul.ui-inputtext.ui-state-default.ui-corner-all{
+	border-top-left-radius: 0; /* angoli del componente dritti in modo che siano identici a quelli degli altri campi. */
+	border-bottom-left-radius: 0;
+}
+
 
 :host /deep/ .ui-chips > ul.ui-inputtext {
 	clear: left;
@@ -109,10 +117,7 @@
 	overflow: hidden;
 	padding: 0 .25em;
 	min-height: 34px;
-	vertical-align: middle;ff
-	border-top-left-radius: 0; /* angoli del componente dritti in modo che siano identici a quelli degli altri campi. */
-	border-bottom-left-radius: 0;
-	
+	vertical-align: middle;	
 }
 
 /*:host /deep/ p-autocomplete.ng-untouched.ng-pristine.ng-valid{
