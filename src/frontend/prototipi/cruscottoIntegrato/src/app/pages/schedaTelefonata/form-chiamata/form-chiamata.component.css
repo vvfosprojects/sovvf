@@ -41,6 +41,12 @@
 	color: #292b2c;    
 }
 
+:host /deep/ .ui-chips-token{
+	background-color: #a5a8aa;
+	color: #292b2c;    
+	vertical-align: middle;
+}
+
 /* spaziatura dell'elemento multiplo*/
 :host /deep/ li.ui-autocomplete-input-token{
 	padding: 0 .25em .25em 0;
@@ -117,6 +123,10 @@
 	overflow: hidden;
 	padding: 0 .25em;
 	min-height: 34px;
+	vertical-align: middle;	
+}
+
+:host /deep/ .ui-chips-input-token input{
 	vertical-align: middle;	
 }
 
