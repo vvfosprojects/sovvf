@@ -18,11 +18,6 @@
           </div>
         </span>
         </div>
-        <!--<div class="col col-md-2 text-center">
-          <div class="badge badge-info">{{fs.Sigla}} </div>
-          <div class="card-text"></div>
-        </div>-->
-
         <div class="col col-md-3 text-center">
           <div><span class="badge badge-info">{{fs.Genere}}</span> {{fs.Targa}}</div>
           <div class="card-text">{{fs.DescrizioneUnitaOperativa}} </div>
@@ -35,7 +30,7 @@
           </div>
           <div> {{fs.DataOra | friendlyDate:20}} {{fs.DataOra | friendlyHour}}</div>
         </div>
-        <div class="col col-md-3 text-right">
+        <div class="col col-md-5 text-right">
           <div *ngIf="numeroPersone() > 0">
             <span class="fa fa-users" aria-hidden="true"></span>
             <span class="badge badge-info">{{numeroPersone()}} </span>
@@ -45,14 +40,12 @@
             <button *ngIf="mostraPersone" type="button" class="btn btn-sm" (click)="hideMostraPersone()">
                 <i class="fa fa-chevron-up" aria-hidden="true"></i>
               </button>
-          </div>
+            <span><a  href="#" >{{fs.CodiceRichiestaAssistenza}}
+              </a></span> 
+             </div>
+         
         </div>
-        <div class="col col-md-2 text-right">
-          <button type="button" class="btn btn-primary">
-                <span class="fa fa-list" aria-hidden="true"></span>              
-            </button>
-        </div>
-        <div hidden>
+       <div hidden>
           <div class="col col-md-4">
             <button type="button" class="btn btn-sm" (click)="setDisponibile(true)">Disponibile</button>
             <button type="button" class="btn btn-sm" (click)="setDisponibile(false)">Non Disponibile</button>
@@ -71,13 +64,14 @@
         <div class="col-md-6 offset-md-4 h6">
           <div *ngIf="mostraPersone">
             <div class="card">
-              <div class="card-header">{{fs.SiglaSquadra}}</div>
+              <div class="card-header card-inverse" style="background-color: lightgray; border-color:lightgray; color: black;">{{fs.SiglaSquadra}}</div>
+              
               <div class="card-block">
                 <p class="card-text" *ngFor="let p of fs.personeSulMezzo" data-toggle="tooltip" data-placement="top" title={{p.codiceFiscale}}>
-                  {{p.descrizione}}
-                  <span *ngIf="p.capoPartenza"> Capo Partenza </span>
-                  <span *ngIf="p.autista"> Autista </span>
-                </p>
+                  <span class="fa fa fa-user" aria-hidden="true" ></span> {{p.descrizione | truncate:18 }}
+                   <app-tag-capopartenza *ngIf="p.capoPartenza"></app-tag-capopartenza>
+                   <app-tag-autista *ngIf="p.autista"></app-tag-autista>
+                 </p>
               </div>
             </div>
           </div>
@@ -86,3 +80,4 @@
     </div>
   </div>
 </div>
+
