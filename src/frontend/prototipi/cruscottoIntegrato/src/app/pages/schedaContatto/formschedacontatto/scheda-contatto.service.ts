@@ -16,13 +16,13 @@ export class SchedaContattoService {
               '121156A', 
               'MARIO ROSSI', 
               3351234567, 
-              'Via Cavour, 5, Roma, RM',
-              'Portone Uffici Centrali VVF', 
-              'Incendio', 
-              'Attributi di classificazione',
-              'Note',
+              'Via Giovanni Giolitti 4, Roma, RM',
+              'SCALA:1 PIANO:T CIT.ROSSO', 
+              'SOCCORSO TECNICO URGENTE - INCENDIO', 
+              'Soccorso a persone',
+              'INCENDIO IN APPARTAMENTO',
               'HIGH',
-              '2',
+              '3',
               'VVF');
 }
 }
