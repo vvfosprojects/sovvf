@@ -8,13 +8,22 @@ import { AppComponent } from './app.component';
 import { MezzoinservizioComponent } from './mezzoinservizio/mezzoinservizio.component';
 import { FriendlyDatePipe } from './shared/pipes/friendly-date.pipe';
 import { FriendlyHourPipe } from './shared/pipes/friendly-hour.pipe';
+import { TruncatePipe } from './shared/pipes/truncate.pipe';
+import { TagCapopartenzaComponent } from './shared/components/tag-capopartenza/tag-capopartenza.component';
+import { TagAutistaComponent } from './shared/components/tag-autista/tag-autista.component';
+import { ListaMezziComponent } from './lista-mezzi/lista-mezzi.component';
+import { ListaMezziService } from "app/lista-mezzi/lista-mezzi.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     MezzoinservizioComponent,
     FriendlyDatePipe,
-    FriendlyHourPipe
+    FriendlyHourPipe,
+    TruncatePipe,
+    TagCapopartenzaComponent,
+    TagAutistaComponent,
+    ListaMezziComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +31,7 @@ import { FriendlyHourPipe } from './shared/pipes/friendly-hour.pipe';
     HttpModule,
     NgbModule.forRoot()
   ],
-  providers: [],
+  providers: [ListaMezziService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

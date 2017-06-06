@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { MezzoInServizio } from './mezzoinservizio.model';
-import { MezzoInServizioService } from './mezzo-in-servizio.service';
 import { DescStatoMap } from './desc-stato-map.class';
 
 @Component({
@@ -11,14 +10,17 @@ import { DescStatoMap } from './desc-stato-map.class';
 })
 export class MezzoinservizioComponent implements OnInit {
   private mapperDescStato = new DescStatoMap();
-  constructor(private mezzoInServizioService: MezzoInServizioService) { }
+  private _mostraPersone: boolean = false;
+  @Input() mezzo: MezzoInServizio;
+
+  constructor() { }
 
   ngOnInit() {
   }
 
   get fs(): MezzoInServizio {
 
-    return this.mezzoInServizioService.Get();
+    return this.mezzo;
 
   }
 
@@ -29,12 +31,20 @@ export class MezzoinservizioComponent implements OnInit {
   private setDisponibile(isSet: boolean): void {
     this.fs.Disponibile = isSet;
   }
- private setCodiceStato(isSet: string): void {
+  private setCodiceStato(isSet: string): void {
     this.fs.CodiceStato = isSet;
   }
- 
+
   private numeroPersone(): number {
     return this.fs.personeSulMezzo.length;
+  }
+
+  public hideMostraPersone(): void {
+    this._mostraPersone = !this._mostraPersone;
+  }
+
+  get mostraPersone(): boolean {
+    return this._mostraPersone;
   }
 
 }

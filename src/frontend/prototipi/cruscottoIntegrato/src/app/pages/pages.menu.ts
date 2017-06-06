@@ -63,6 +63,35 @@ export const PAGES_MENU = [
           }
         }
       }
+,      
+      {
+        path: 'schedaContatto',
+        data: {
+          menu: {
+            title: 'Scheda Contatto',
+            icon: 'ion-android-home',
+            pathMatch: 'prefix',            
+            selected: false,
+            expanded: false,
+            order: 100,
+          }
+        }
+      }
+//      ,
+//      {
+//        path: 'new',
+//        data: {
+//          menu: {
+//            title: 'daniela',
+//           icon: 'ion-android-home',
+//           pathMatch: 'prefix',            
+//            selected: false,
+//            expanded: false,
+//            order: 100,
+//          }
+//        }
+//      }
+   
 
       // {
       //   path: 'editors',
