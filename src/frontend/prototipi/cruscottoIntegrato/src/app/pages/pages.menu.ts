@@ -68,7 +68,7 @@ export const PAGES_MENU = [
         path: 'schedaContatto',
         data: {
           menu: {
-            title: 'Daniela',
+            title: 'Scheda Contatto',
             icon: 'ion-android-home',
             pathMatch: 'prefix',            
             selected: false,

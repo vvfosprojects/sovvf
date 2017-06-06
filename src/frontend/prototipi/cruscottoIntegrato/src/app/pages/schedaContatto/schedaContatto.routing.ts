@@ -5,7 +5,7 @@ import { schedaContattoComponent } from './schedaContatto.component';
 const routes: Routes = [
   {
     path: '',
-    component:schedaContattoComponent
+    component: schedaContattoComponent
   }
 ];
 
