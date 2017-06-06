@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using Modello.Classi.Soccorso;
 using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Squadre;
@@ -37,7 +38,8 @@ namespace Modello.Test.Classi.Soccorso
         [SetUp]
         public void CreaComposizionePartenzaStandard()
         {
-            this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista = new ComposizionePartenze(DateTime.Now, "Fonte")
+            var richiesta = new RichiestaAssistenza();
+            this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista = new ComposizionePartenze(richiesta, DateTime.Now, "Fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
@@ -138,7 +140,8 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaComposizionePartenzaAppenaCreataHaLAttributoComponentiNonNull()
         {
-            var cp = new ComposizionePartenze(DateTime.Now, "Fonte");
+            var richiesta = new RichiestaAssistenza();
+            var cp = new ComposizionePartenze(richiesta, DateTime.Now, "Fonte");
 
             var componenti = cp.Componenti;
 

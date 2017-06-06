@@ -31,13 +31,18 @@ namespace Modello.Classi.Soccorso.Eventi.Segnalazioni
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
+        /// <param name="richiesta">E' la richiesta di assistenza a cui si aggiunge l'evento</param>
         /// <param name="codice">
         ///   E' l'identificativo univoco della telefonata, utilizzabile anche a scopi
         ///   giuridici/amministrativi. Potrebbe essere un codice del tipo AX554HN.
         /// </param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public Telefonata(string codice, DateTime istante, string codiceFonte) : base(codice, istante, codiceFonte)
+        public Telefonata(
+            RichiestaAssistenza richiesta,
+            string codice,
+            DateTime istante,
+            string codiceFonte) : base(richiesta, codice, istante, codiceFonte)
         {
         }
 

@@ -30,7 +30,6 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Quer
         /// <summary>
         ///   E' il codice della Richiesta da estrarre
         /// </summary>
-
         public string IdRichiesta { get; set; }
     }
 }

@@ -29,13 +29,19 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// <summary>
         ///   Costruttore della classe.
         /// </summary>
+        /// <param name="richiesta">E' la richiesta di assistenza a cui si aggiunge l'evento</param>
         /// <param name="codiceRichiesta">
         ///   Il codice della richiesta alla quale viene riassegnato il mezzo
         /// </param>
         /// <param name="codiceMezzo">Il codice del mezzo</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public Riassegnazione(string codiceRichiesta, string codiceMezzo, DateTime istante, string codiceFonte) : base(codiceMezzo, istante, codiceFonte)
+        public Riassegnazione(
+            RichiestaAssistenza richiesta,
+            string codiceRichiesta,
+            string codiceMezzo,
+            DateTime istante,
+            string codiceFonte) : base(richiesta, codiceMezzo, istante, codiceFonte)
         {
             if (string.IsNullOrWhiteSpace(codiceRichiesta))
             {

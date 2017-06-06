@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using Modello.Classi.Soccorso;
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
@@ -28,11 +29,13 @@ namespace Modello.Test.Classi.Soccorso
     [TestFixture]
     public class TestEventi
     {
+        private RichiestaAssistenza richiesta = new RichiestaAssistenza();
+
         [Test]
         public void Un_evento_di_inizio_presa_in_carico_non_puo_avere_una_data_di_default()
         {
             Assert.That(
-                () => new InizioPresaInCarico(new DateTime(), "Fonte"),
+                () => new InizioPresaInCarico(this.richiesta, new DateTime(), "Fonte"),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
@@ -40,7 +43,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_inizio_presa_in_carico_non_può_avere_una_fonte_whitespace()
         {
             Assert.That(
-                () => new InizioPresaInCarico(DateTime.Now, " "),
+                () => new InizioPresaInCarico(this.richiesta, DateTime.Now, " "),
                 Throws.ArgumentException);
         }
 
@@ -48,7 +51,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_inizio_presa_in_carico_con_parametri_corretti_e_correttamente_creato()
         {
             var now = DateTime.Now;
-            var evento = new InizioPresaInCarico(now, "Fonte");
+            var evento = new InizioPresaInCarico(this.richiesta, now, "Fonte");
 
             Assert.That(evento.Istante, Is.EqualTo(now));
             Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
@@ -58,7 +61,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_arrivo_sul_posto_con_parametri_corretti_e_correttamente_creato()
         {
             var now = DateTime.Now;
-            var evento = new ArrivoSulPosto("M1", now, "Fonte");
+            var evento = new ArrivoSulPosto(this.richiesta, "M1", now, "Fonte");
 
             Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
             Assert.That(evento.Istante, Is.EqualTo(now));
@@ -69,7 +72,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_arrivo_sul_posto_con_mezzo_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new ArrivoSulPosto(" ", DateTime.Now, "Fonte"),
+                () => new ArrivoSulPosto(this.richiesta, " ", DateTime.Now, "Fonte"),
                 Throws.ArgumentException);
         }
 
@@ -77,7 +80,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_arrivo_sul_posto_con_data_di_default_non_puo_essere_creato()
         {
             Assert.That(
-                () => new ArrivoSulPosto("M1", new DateTime(), "Fonte"),
+                () => new ArrivoSulPosto(this.richiesta, "M1", new DateTime(), "Fonte"),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
@@ -85,7 +88,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_arrivo_sul_posto_con_fonte_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new ArrivoSulPosto("M1", DateTime.Now, " "),
+                () => new ArrivoSulPosto(this.richiesta, "M1", DateTime.Now, " "),
                 Throws.ArgumentException);
         }
 
@@ -93,7 +96,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_partenza_in_rientro_con_parametri_corretti_e_correttamente_creato()
         {
             var now = DateTime.Now;
-            var evento = new PartenzaInRientro("M1", now, "Fonte");
+            var evento = new PartenzaInRientro(this.richiesta, "M1", now, "Fonte");
 
             Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
             Assert.That(evento.Istante, Is.EqualTo(now));
@@ -104,7 +107,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_partenza_in_rientro_con_mezzo_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new PartenzaInRientro(" ", DateTime.Now, "Fonte"),
+                () => new PartenzaInRientro(this.richiesta, " ", DateTime.Now, "Fonte"),
                 Throws.ArgumentException);
         }
 
@@ -112,7 +115,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_partenza_in_rientro_con_data_di_default_non_puo_essere_creato()
         {
             Assert.That(
-                () => new PartenzaInRientro("M1", new DateTime(), "Fonte"),
+                () => new PartenzaInRientro(this.richiesta, "M1", new DateTime(), "Fonte"),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
@@ -120,7 +123,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_partenza_in_rientro_con_fonte_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new PartenzaInRientro("M1", DateTime.Now, " "),
+                () => new PartenzaInRientro(this.richiesta, "M1", DateTime.Now, " "),
                 Throws.ArgumentException);
         }
 
@@ -128,7 +131,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_partenza_rientrata_con_parametri_corretti_e_correttamente_creato()
         {
             var now = DateTime.Now;
-            var evento = new PartenzaRientrata("M1", now, "Fonte");
+            var evento = new PartenzaRientrata(this.richiesta, "M1", now, "Fonte");
 
             Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
             Assert.That(evento.Istante, Is.EqualTo(now));
@@ -139,7 +142,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_partenza_rientrata_con_mezzo_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new PartenzaRientrata(" ", DateTime.Now, "Fonte"),
+                () => new PartenzaRientrata(this.richiesta, " ", DateTime.Now, "Fonte"),
                 Throws.ArgumentException);
         }
 
@@ -147,7 +150,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_partenza_rientrata_con_data_di_default_non_puo_essere_creato()
         {
             Assert.That(
-                () => new PartenzaRientrata("M1", new DateTime(), "Fonte"),
+                () => new PartenzaRientrata(this.richiesta, "M1", new DateTime(), "Fonte"),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
@@ -155,7 +158,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_partenza_rientrata_con_fonte_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new PartenzaRientrata("M1", DateTime.Now, " "),
+                () => new PartenzaRientrata(this.richiesta, "M1", DateTime.Now, " "),
                 Throws.ArgumentException);
         }
 
@@ -163,7 +166,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_riassegnazione_con_parametri_corretti_e_correttamente_creato()
         {
             var now = DateTime.Now;
-            var evento = new Riassegnazione("R1", "M1", DateTime.Now, "Fonte");
+            var evento = new Riassegnazione(this.richiesta, "R1", "M1", DateTime.Now, "Fonte");
 
             Assert.That(evento.CodiceRichiesta, Is.EqualTo("R1"));
             Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
@@ -175,7 +178,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_riassegnazione_con_richiesta_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new Riassegnazione(" ", "M1", DateTime.Now, " "),
+                () => new Riassegnazione(this.richiesta, " ", "M1", DateTime.Now, " "),
                 Throws.ArgumentException);
         }
 
@@ -183,7 +186,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_riassegnazione_con_mezzo_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new Riassegnazione("R1", " ", DateTime.Now, "Fonte"),
+                () => new Riassegnazione(this.richiesta, "R1", " ", DateTime.Now, "Fonte"),
                 Throws.ArgumentException);
         }
 
@@ -191,7 +194,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_riassegnazione_con_data_di_default_non_puo_essere_creato()
         {
             Assert.That(
-                () => new Riassegnazione("R1", "M1", new DateTime(), "Fonte"),
+                () => new Riassegnazione(this.richiesta, "R1", "M1", new DateTime(), "Fonte"),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
@@ -199,7 +202,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_riassegnazione_con_fonte_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new Riassegnazione("R1", "M1", DateTime.Now, " "),
+                () => new Riassegnazione(this.richiesta, "R1", "M1", DateTime.Now, " "),
                 Throws.ArgumentException);
         }
 
@@ -264,7 +267,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_composizione_partenze_con_parametri_corretti_e_correttamente_creato()
         {
             var now = DateTime.Now;
-            var evento = new ComposizionePartenze(now, "Fonte");
+            var evento = new ComposizionePartenze(this.richiesta, now, "Fonte");
 
             Assert.That(evento.Istante, Is.EqualTo(now));
             Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
@@ -273,7 +276,7 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void Un_evento_di_composizione_partenze_ha_i_componenti_non_null()
         {
-            var evento = new ComposizionePartenze(DateTime.Now, "Fonte");
+            var evento = new ComposizionePartenze(this.richiesta, DateTime.Now, "Fonte");
 
             Assert.That(evento.Componenti, Is.Not.Null);
         }
@@ -282,7 +285,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_composizione_partenze_con_data_di_default_non_puo_essere_creato()
         {
             Assert.That(
-                () => new ComposizionePartenze(new DateTime(), "Fonte"),
+                () => new ComposizionePartenze(this.richiesta, new DateTime(), "Fonte"),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
@@ -290,7 +293,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_composizione_partenze_con_fonte_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new ComposizionePartenze(DateTime.Now, " "),
+                () => new ComposizionePartenze(this.richiesta, DateTime.Now, " "),
                 Throws.ArgumentException);
         }
 
@@ -298,7 +301,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_fuori_servizio_con_mezzo_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new FuoriServizio(" ", DateTime.Now, "Fonte", "motivazione"),
+                () => new FuoriServizio(this.richiesta, " ", DateTime.Now, "Fonte", "motivazione"),
                 Throws.ArgumentException);
         }
 
@@ -306,7 +309,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_fuori_servizio_con_data_di_default_non_puo_essere_creato()
         {
             Assert.That(
-                () => new FuoriServizio("M1", new DateTime(), "Fonte", "motivazione"),
+                () => new FuoriServizio(this.richiesta, "M1", new DateTime(), "Fonte", "motivazione"),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
@@ -314,7 +317,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_fuori_servizio_con_fonte_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new FuoriServizio("M1", DateTime.Now, " ", "motivazione"),
+                () => new FuoriServizio(this.richiesta, "M1", DateTime.Now, " ", "motivazione"),
                 Throws.ArgumentException);
         }
 
@@ -322,7 +325,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_fuori_servizio_con_motivazione_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new FuoriServizio("M1", DateTime.Now, "Fonte", " "),
+                () => new FuoriServizio(this.richiesta, "M1", DateTime.Now, "Fonte", " "),
                 Throws.ArgumentException);
         }
 
@@ -330,7 +333,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_fuori_servizio_con_parametri_corretti_puo_essere_creato()
         {
             var now = DateTime.Now;
-            var evento = new FuoriServizio("M1", now, "Fonte", "motivazione");
+            var evento = new FuoriServizio(this.richiesta, "M1", now, "Fonte", "motivazione");
 
             Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
             Assert.That(evento.Istante, Is.EqualTo(now));
@@ -342,7 +345,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_uscita_partenza_con_parametri_corretti_e_correttamente_creato()
         {
             var now = DateTime.Now;
-            var evento = new UscitaPartenza("M1", now, "Fonte");
+            var evento = new UscitaPartenza(this.richiesta, "M1", now, "Fonte");
 
             Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
             Assert.That(evento.Istante, Is.EqualTo(now));
@@ -353,7 +356,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_uscita_partenza_con_mezzo_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new UscitaPartenza(" ", DateTime.Now, "Fonte"),
+                () => new UscitaPartenza(this.richiesta, " ", DateTime.Now, "Fonte"),
                 Throws.ArgumentException);
         }
 
@@ -361,7 +364,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_uscita_partenza_con_data_di_default_non_puo_essere_creato()
         {
             Assert.That(
-                () => new UscitaPartenza("M1", new DateTime(), "Fonte"),
+                () => new UscitaPartenza(this.richiesta, "M1", new DateTime(), "Fonte"),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
@@ -369,7 +372,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_uscita_partenza_con_fonte_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new UscitaPartenza("M1", DateTime.Now, " "),
+                () => new UscitaPartenza(this.richiesta, "M1", DateTime.Now, " "),
                 Throws.ArgumentException);
         }
 
@@ -377,7 +380,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_telefonata_con_parametri_corretti_e_correttamente_creato()
         {
             var now = DateTime.Now;
-            var evento = new Telefonata("ABC123", now, "Fonte");
+            var evento = new Telefonata(this.richiesta, "ABC123", now, "Fonte");
 
             Assert.That(evento.Codice, Is.EqualTo("ABC123"));
             Assert.That(evento.Istante, Is.EqualTo(now));
@@ -388,7 +391,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_telefonata_con_codice_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new Telefonata(" ", DateTime.Now, "Fonte"),
+                () => new Telefonata(this.richiesta, " ", DateTime.Now, "Fonte"),
                 Throws.ArgumentException);
         }
 
@@ -396,7 +399,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_telefonata_con_data_di_default_non_puo_essere_creato()
         {
             Assert.That(
-                () => new Telefonata("ABC123", new DateTime(), "Fonte"),
+                () => new Telefonata(this.richiesta, "ABC123", new DateTime(), "Fonte"),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
@@ -404,7 +407,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_telefonata_con_fonte_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new UscitaPartenza("ABC123", DateTime.Now, " "),
+                () => new UscitaPartenza(this.richiesta, "ABC123", DateTime.Now, " "),
                 Throws.ArgumentException);
         }
     }

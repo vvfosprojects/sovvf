@@ -35,13 +35,8 @@ namespace Modello.Classi.Soccorso.Eventi
         /// <param name="richiesta">E' la richiesta alla quale l'evento deve essere aggiunto</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public ChiusuraRichiesta(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte) : base(istante, codiceFonte)
+        public ChiusuraRichiesta(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte) : base(richiesta, istante, codiceFonte)
         {
-            if (richiesta == null)
-            {
-                throw new ArgumentNullException(nameof(richiesta));
-            }
-
             richiesta.IstanteChiusura = this.Istante;
         }
     }

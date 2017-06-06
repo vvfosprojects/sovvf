@@ -102,7 +102,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
 
             mezzoSelezionato.ContestoMezzo.Composizione();
             this.parametriMezzo.MezzoUtilizzato = mezzoSelezionato; // questa assegnazione alimenta l'esecuzione di tutti gli altri eventi successivi
-            var composizione = new ComposizionePartenze(istanteEffettivo, "Fonte")
+            var composizione = new ComposizionePartenze(this.richiesta.Richiesta, istanteEffettivo, "Fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>(mezzoSelezionato.Membri
                     .Select((m, i) =>
@@ -111,7 +111,6 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                             Ruoli = i == 0 ? new HashSet<Ruolo>() { Ruolo.CapoPartenza } : i == 1 ? new HashSet<Ruolo> { Ruolo.Autista } : new HashSet<Ruolo> { Ruolo.Vigile }
                         }))
             };
-            this.richiesta.Richiesta.Eventi.Add(composizione);
             this.eseguita = true;
 
             yield return new AggiungiPartenzaDallaSede(

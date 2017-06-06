@@ -33,10 +33,15 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// <summary>
         ///   Costruttore della classe.
         /// </summary>
+        /// <param name="richiesta">E' la richiesta di assistenza a cui si aggiunge l'evento</param>
         /// <param name="codiceMezzo">Il codice del mezzo</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public Rilascio(string codiceMezzo, DateTime istante, string codiceFonte) : base(istante, codiceFonte)
+        public Rilascio(
+            RichiestaAssistenza richiesta,
+            string codiceMezzo,
+            DateTime istante,
+            string codiceFonte) : base(richiesta, istante, codiceFonte)
         {
             if (string.IsNullOrWhiteSpace(codiceMezzo))
             {

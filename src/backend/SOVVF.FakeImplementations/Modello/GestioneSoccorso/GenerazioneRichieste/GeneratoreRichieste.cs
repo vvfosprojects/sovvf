@@ -207,11 +207,10 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             foreach (var r in richiesteConParametri)
             {
                 var t = fakerTelefonata
-                    .CustomInstantiator(f => new Telefonata(f.Random.Replace("??###"), r.Parametri.DataSegnalazione, "FonteTelefonata"))
+                    .CustomInstantiator(f => new Telefonata(r.Richiesta, f.Random.Replace("??###"), r.Parametri.DataSegnalazione, "FonteTelefonata"))
                     .Generate();
 
                 t.IstantePresaInCarico = r.Parametri.DataSegnalazione;
-                r.Richiesta.Eventi.Add(t);
             }
 
             var parcoMezzi = new ParcoMezzi(this.numeroMezzi, this.codiceUnitaOperativa);

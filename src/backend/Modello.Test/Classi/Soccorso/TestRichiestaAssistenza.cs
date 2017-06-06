@@ -41,8 +41,7 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaSingolaChiamataECorrettamenteInserita()
         {
             var richiesta = new RichiestaAssistenza();
-            var telefonata = new Telefonata("ABC", DateTime.Now, "Fonte");
-            richiesta.Eventi.Add(telefonata);
+            var telefonata = new Telefonata(richiesta, "ABC", DateTime.Now, "Fonte");
 
             var telefonate = richiesta.Telefonate;
 

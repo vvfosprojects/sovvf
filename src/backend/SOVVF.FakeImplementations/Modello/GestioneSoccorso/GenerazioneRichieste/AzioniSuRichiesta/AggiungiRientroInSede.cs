@@ -91,7 +91,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             try
             {
                 mezzo.ContestoMezzo.InSede();
-                this.richiesta.Richiesta.Eventi.Add(new PartenzaRientrata(this.parametriMezzo.MezzoUtilizzato.Codice, istanteEffettivo, "Fonte"));
+                new PartenzaRientrata(this.richiesta.Richiesta, this.parametriMezzo.MezzoUtilizzato.Codice, istanteEffettivo, "Fonte");
             }
             catch
             {

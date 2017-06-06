@@ -40,9 +40,13 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// <summary>
         ///   Costruttore che inizializza l'attributo Componenti.
         /// </summary>
+        /// <param name="richiesta">E' la richiesta di assistenza a cui si aggiunge l'evento</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public ComposizionePartenze(DateTime istante, string codiceFonte) : base(istante, codiceFonte)
+        public ComposizionePartenze(
+            RichiestaAssistenza richiesta,
+            DateTime istante,
+            string codiceFonte) : base(richiesta, istante, codiceFonte)
         {
             this.Componenti = new HashSet<ComponentePartenza>();
         }

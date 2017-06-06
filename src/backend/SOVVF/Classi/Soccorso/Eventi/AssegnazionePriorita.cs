@@ -34,10 +34,15 @@ namespace Modello.Classi.Soccorso.Eventi
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
+        /// <param name="richiesta">E' la richiesta di assistenza a cui si aggiunge l'evento</param>
         /// <param name="priorita">E' la priorità da impostare</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public AssegnazionePriorita(RichiestaAssistenza.Priorita priorita, DateTime istante, string codiceFonte) : base(istante, codiceFonte)
+        public AssegnazionePriorita(
+            RichiestaAssistenza richiesta,
+            RichiestaAssistenza.Priorita priorita,
+            DateTime istante,
+            string codiceFonte) : base(richiesta, istante, codiceFonte)
         {
             this.Priorita = priorita;
         }

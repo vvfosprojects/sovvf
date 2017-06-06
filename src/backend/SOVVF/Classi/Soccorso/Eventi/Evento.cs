@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Linq;
 
 namespace Modello.Classi.Soccorso.Eventi
 {
@@ -33,10 +34,16 @@ namespace Modello.Classi.Soccorso.Eventi
         /// <summary>
         ///   Costruttore della classe.
         /// </summary>
+        /// <param name="richiesta">E' la richiesta di assistenza a cui si aggiunge l'evento</param>
         /// <param name="istante">L'istante in cui avviene l'evento.</param>
         /// <param name="codiceFonte">Il codice della fonte informativa dell'evento.</param>
-        public Evento(DateTime istante, string codiceFonte)
+        public Evento(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte)
         {
+            if (richiesta == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(richiesta));
+            }
+
             if (istante == DateTime.MinValue)
             {
                 throw new ArgumentOutOfRangeException(nameof(istante));
@@ -49,6 +56,13 @@ namespace Modello.Classi.Soccorso.Eventi
 
             this.Istante = istante;
             this.CodiceFonte = codiceFonte;
+            richiesta.Eventi.Add(this);
+
+            // Eventuale riordinamento sull'istante degli eventi.
+            if (richiesta.Eventi.Count > 1 && this.Istante < richiesta.Eventi.Last().Istante)
+            {
+                richiesta.Eventi = richiesta.Eventi.OrderBy(e => e.Istante).ToList();
+            }
         }
 
         /// <summary>
