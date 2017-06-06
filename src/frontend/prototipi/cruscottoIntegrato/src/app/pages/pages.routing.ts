@@ -32,8 +32,7 @@ export const routes: Routes = [
       //,{ path: 'tables', loadChildren: './tables/tables.module#TablesModule' }
       //,{ path: 'maps', loadChildren: './maps/maps.module#MapsModule' }
       ,{ path: 'rigaElencoRichiesteDiAssistenza',  loadChildren: './rigaElencoRichiesteDiAssistenza/rigaElencoRichiesteDiAssistenza.module#rigaElencoRichiesteDiAssistenzaModule' }      
-      ,{ path: 'new',  loadChildren: './schedaContatto/app.module#AppModule' }
-      ,{ path: 'schedaContatto',  loadChildren: './schedaContatto/app.module#AppModule' }      
+      ,{ path: 'schedaContatto', loadChildren: './schedaContatto/schedaContatto.module#NewModule' }      
     ]
   }
 

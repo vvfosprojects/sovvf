@@ -7,6 +7,6 @@ import * as moment from 'moment';
 export class FriendlyHourPipe implements PipeTransform {
 
  transform(date: Date): string {
-     return moment(date).format("hh:mm:ss");
+     return moment(date).format("HH:mm:ss");
   }
 }

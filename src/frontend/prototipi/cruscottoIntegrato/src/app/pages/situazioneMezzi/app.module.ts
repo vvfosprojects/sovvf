@@ -8,8 +8,11 @@ import { AppComponent } from './app.component';
 import { MezzoinservizioComponent } from './mezzoinservizio/mezzoinservizio.component';
 import { FriendlyDatePipe } from './shared/pipes/friendly-date.pipe';
 import { FriendlyHourPipe } from './shared/pipes/friendly-hour.pipe';
+import { TruncatePipe } from './shared/pipes/truncate.pipe';
 import { ListaMezziComponent } from './lista-mezzi/lista-mezzi.component';
 import { ListaMezziService } from "./lista-mezzi/lista-mezzi.service";
+import { TagAutistaComponent } from "./shared/components/tag-autista/tag-autista.component";
+import { TagCapopartenzaComponent } from "./shared/components/tag-capopartenza/tag-capopartenza.component";
 import { AgmCoreModule } from "@agm/core";
 
 @NgModule({
@@ -18,6 +21,9 @@ import { AgmCoreModule } from "@agm/core";
     MezzoinservizioComponent,
     FriendlyDatePipe,
     FriendlyHourPipe,
+    TruncatePipe,
+    TagAutistaComponent,
+    TagCapopartenzaComponent,
     ListaMezziComponent
   ],
   imports: [

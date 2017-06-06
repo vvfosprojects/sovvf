@@ -50,7 +50,7 @@
           data-placement="bottom"></i>
             <a [routerLink]="['schedaContatto', '../../schedaContatto/app.module#AppModule']">Scheda Contatto</a>          
 -->
-            <a [routerLink]="['schedaContatto']">Scheda Contatto</a>
+          <a [routerLink]="['../../schedaContatto']">Scheda Contatto</a>
 
 
       </div>
@@ -195,12 +195,12 @@
           </div>
 
           <div class="col-md-6">
-            <div [formGroup]="myForm">
-              <div class="input-group">
-                <span class="input-group-addon" pTooltip="Tag" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;"> <i class="fa fa-tag" aria-hidden="true"></i> </span> 
-                <ss-multiselect-dropdown [options]="myOptions" [texts]="myTexts" [settings]="mySettings" formControlName="optionsModel" class="btn-block" ></ss-multiselect-dropdown>
-              </div>
-            </div>
+            <div class="input-group">
+              <div class="input-group-addon" pTooltip="Tag" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;"> <i class="fa fa-tag" aria-hidden="true"></i> </div>
+ 
+                <!--<ss-multiselect-dropdown [options]="myOptions" [texts]="myTexts" [settings]="mySettings" formControlName="optionsModel" class="btn-block" ></ss-multiselect-dropdown>-->
+                <p-chips placeholder="Tag" [(ngModel)]="tags" ></p-chips>
+</div>
           </div>
 
         </div> &nbsp;

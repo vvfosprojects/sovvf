@@ -12,6 +12,7 @@ import { } from '@types/googlemaps';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { Message } from 'primeng/primeng';
 import { TooltipModule } from 'primeng/primeng';
+import { ChipsModule } from 'primeng/primeng';
 
 import { RicercaTipologieService } from ".././ricerca-tipologie/ricerca-tipologie.service";
 import { TipologiaIntervento } from ".././ricerca-tipologie/tipologia-intervento.model";
@@ -25,6 +26,9 @@ import { RisultatoRicerca } from "../ricerca/risultato-ricerca";
   styleUrls: ['./form-chiamata.component.css']
 })
 export class FormChiamataComponent implements OnInit {
+  //array per il componente tags
+  tags: string[];
+
   // risultati: TipologiaIntervento[];
 
   risultati: RisultatoRicerca[];

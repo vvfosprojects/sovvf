@@ -1,0 +1,87 @@
+<!--<p> formschedacontatto works! </p>-->
+<div class="card card-outline-primary mb-3 text-left">
+  <h5 class="card-header font-italic ">Scheda Contatto</h5>
+  <div class="card-block">
+    <div class="row">
+      <div class="col-md-2">
+        <span class="titolo"><i class="fa fa-hashtag" aria-hidden="true"></i> N.Scheda<hr></span>
+        <p class="h3">{{fs.idScheda}}</p>
+      </div>
+      <div class="offset-md-1 col-md-2">
+        <span class="titolo"><i class="fa fa-calendar" aria-hidden="true"></i> Data Inserimento<hr></span>
+        <p class="h5">{{fs.dataOrainserimento | friendlyDate }}</p>
+      </div>
+      <div class="col-md-2">
+        <span class="titolo"><i class="fa fa-clock-o" aria-hidden="true"></i> Ora Inserimento<hr></span>
+        <p class="h5">{{fs.dataOrainserimento | friendlyHour }}</p>
+      </div>
+      <div class="offset-md-1 col-md-2">
+        <span class="titolo"><i class="fa fa-id-card-o" aria-hidden="true"></i> Gestore<hr></span>
+        <p class="h5">{{fs.idOperatore}}</p>
+      </div>
+      <div class="col-md-2">
+        <span class="titolo"><i class="fa fa-desktop" aria-hidden="true"></i> Id. Postazione<hr></span>
+        <p class="h5">{{fs.idPostazione}}</p>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-5">
+        <span class="titolo"><i class="fa fa-user-o" aria-hidden="true"></i> Utente<hr></span>
+        <p class="h5">{{fs.nomeUtente}}</p>
+      </div>
+      <div class="col-md-2">
+        <span class="titolo"><i class="fa fa-phone" aria-hidden="true"></i> Telefono<hr></span>
+        <p class="h5">{{fs.numTelefono}}</p>
+      </div>
+      <div class="offset-md-1 col-md-4">
+        <span class="titolo"><i class="fa fa-info-circle" aria-hidden="true"></i> Info Addizionali<hr></span>
+        <p class="h5">{{fs.infoAddizionali}}</p>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-10">
+        <span class="titolo"><i class="fa fa-map-marker" aria-hidden="true"></i> Indirizzo<hr></span>
+        <p class="h5">{{fs.indirizzo}}</p>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-12 text-right">
+        <img src="https://maps.googleapis.com/maps/api/staticmap?center=Roma&amp;zoom=14&amp;size=400x400">
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-4">
+        <span class="titolo"><i class="fa fa-list" aria-hidden="true"></i> Classificazione del NUE<hr></span>
+        <p class="h5">{{fs.classificazioneNUE}}</p>
+      </div>
+      <div class="col-md-6">
+        <span class="titolo"><i class="fa fa-indent" aria-hidden="true"></i> Attributi di classificazione<hr></span>
+        <p class="h5">{{fs.attributiClassificazione}}</p>
+      </div>
+      <div class="col-md-2">
+        <span class="titolo"><i class="fa fa-university" aria-hidden="true"></i> Competenza<hr></span>
+        <p class="h5">{{fs.competenza}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <span class="titolo"><i class="fa fa-file-text-o" aria-hidden="true"></i> Note<hr></span>
+        <p class="h5">{{fs.note}}</p>
+      </div>
+      <div class="col-md-2">
+        <span class="titolo"><i class="fa fa-thermometer-quarter" aria-hidden="true"></i> Priorità<hr></span>
+        <p class="h5">{{fs.priorita}}</p>
+      </div>
+      <div class="col-md-2">
+        <span class="titolo"><i class="fa fa-users" aria-hidden="true"></i> Pers. coinvolte<hr></span>
+        <p class="h5">{{fs.numPersoneCoinvolte}}</p>
+      </div>
+    </div>
+    <div class="row">
+    </div>
+  </div>
+</div>
