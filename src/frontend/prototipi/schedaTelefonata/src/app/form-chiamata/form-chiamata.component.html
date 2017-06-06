@@ -1,4 +1,4 @@
- <!--<p-autoComplete  [(ngModel)]="risultatiMultipli" 
+<!--<p-autoComplete  [(ngModel)]="risultatiMultipli" 
 	 			placeholder="Scrivi cosa cerchi..." 
 				[suggestions]="risultati" 
 				(completeMethod)="searchFake($event)" 
@@ -14,75 +14,71 @@
 						</div>
 				</ng-template>	
 		</p-autoComplete>-->
-<div class="section">
-  <div class="container">
-    <!-- prima riga -->
-    <!-- TODO sfruttare meglio lo spazio con grid nidificate -->
-    <div class="row">
-      <div class="col-lg-3">
-        <div class="input-group">
-          <div class="input-group-addon" data-toggle="tooltip" data-animation="false" style="min-width: 50px;" title="Numero chiamata" data-placement="bottom">
-          <i class="fa fa-hashtag fa-lg" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="num_chiamata"
-            aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.numero_chiamata}}" style="text-align: center;">          </div>
-      </div>
-      <div class="col-lg-2">
-        <div class="input-group">
-          <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Data chiamata" style="min-width: 50px;" data-placement="bottom">
-          <i class="fa fa-calendar fa-lg" aria-hidden="true"></i> </div> <input type="text" style="text-align: center;" class="form-control"
-            id="data_chiam" aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.data_chiamata | date:'dd/MM/y'}}">          </div>
-      </div>
-      <div class="col-lg-2">
-        <div class="input-group">
-          <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Ora chiamata" style="min-width: 50px;" data-placement="bottom">
-          <i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> </div> <input type="text" style="text-align: center;" class="form-control"
-            id="ora_chiam" aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.data_chiamata | date:'HH:mm'}}">          </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="input-group">
-          <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Operatore" style="min-width: 50px;" data-placement="bottom">
-          <i class="fa fa-user fa-lg" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="operatore"
-            aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.operatore}}"> </div>
-      </div>
-      <div class="col-lg-1"> <i class="fa fa-compress text-muted" style="font-size: 33px;" data-toggle="tooltip" title="Scheda contatto N° {{formChiamataModel.scheda_contatto}}"
-          data-placement="bottom"> </i> </div>
-    </div>
-    <!-- fine prima riga -->
-    <div class="row">
-      <div class="col-lg-12">
-        <hr> </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        
-        <div [formGroup]="myForm">
-          <div class="input-group" [ngClass]="{'has-warning':!myForm.controls['tipo_interv'].valid}">
-            <div class="input-group-addon"  data-toggle="tooltip" data-animation="false" title="Tipologia intervento" style="min-width: 50px; max-height:40px" data_placement="bottom">
-            <i class="fa fa-fire-extinguisher fa-lg" aria-hidden="true"></i> </div>
 
-              <p-autoComplete  
-                  [(ngModel)]="risultatiMultipli" [ngModelOptions]="{standalone: true}"
-                  placeholder="Ricerca tipologia" 
-                  [suggestions]="risultati" 
-                  (completeMethod)="searchFake($event)" 
-                  field="testo" 
-                  [multiple]='true' 
-                  [dropdown]='true'
-                  (onDropdownClick)="handleDropdownClick($event)"
-                  [minLength]="1">
-                <ng-template  let-brand pTemplate="itemdddd">
-                      <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
-                          <div title="{{ brand.tooltip }}"><span style="font-size:10px" >{{ brand.id }}:</span> {{ brand.testo }}</div>
-                      </div>
-                  </ng-template>
-              </p-autoComplete>
-
-            <!--<input type="text" class="form-control" id="tipo_interv" placeholder="Tipologia intervento" formControlName="tipo_interv">-->
-          </div>
-        </div>
-      </div> 
-      &nbsp; 
-      </div>
+<!-- prima riga -->
+<!-- TODO sfruttare meglio lo spazio con grid nidificate -->
+<div class="row">
+  <div class="col-lg-3">
+    <div class="input-group">
+      <div class="input-group-addon" data-toggle="tooltip" data-animation="false" style="min-width: 50px;" title="Numero chiamata"
+        data-placement="bottom">
+        <i class="fa fa-hashtag fa-lg" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="num_chiamata"
+        aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.numero_chiamata}}" style="text-align: center;">      </div>
   </div>
+  <div class="col-lg-2">
+    <div class="input-group">
+      <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Data chiamata" style="min-width: 50px;"
+        data-placement="bottom">
+        <i class="fa fa-calendar fa-lg" aria-hidden="true"></i> </div> <input type="text" style="text-align: center;" class="form-control"
+        id="data_chiam" aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.data_chiamata | date:'dd/MM/y'}}">      </div>
+  </div>
+  <div class="col-lg-2">
+    <div class="input-group">
+      <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Ora chiamata" style="min-width: 50px;"
+        data-placement="bottom">
+        <i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> </div> <input type="text" style="text-align: center;" class="form-control"
+        id="ora_chiam" aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.data_chiamata | date:'HH:mm'}}">      </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="input-group">
+      <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Operatore" style="min-width: 50px;" data-placement="bottom">
+        <i class="fa fa-user fa-lg" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="operatore"
+        aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.operatore}}"> </div>
+  </div>
+  <div class="col-lg-1"> <i class="fa fa-compress text-muted" style="font-size: 33px;" data-toggle="tooltip" title="Scheda contatto N° {{formChiamataModel.scheda_contatto}}"
+      data-placement="bottom"> </i> </div>
+</div>
+<!-- fine prima riga -->
+<div class="row">
+  <div class="col-lg-12">
+    <hr> </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+
+    <div [formGroup]="myForm">
+      <div class="input-group" [ngClass]="{'has-warning':!myForm.controls['tipo_interv'].valid}">
+        <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Tipologia intervento" style="min-width: 50px; max-height:40px"
+          data_placement="bottom">
+          <i class="fa fa-fire-extinguisher fa-lg" aria-hidden="true"></i> </div>
+
+        <p-autoComplete [(ngModel)]="risultatiMultipli" [ngModelOptions]="{standalone: true}" placeholder="Ricerca tipologia" [suggestions]="risultati"
+          (completeMethod)="searchFake($event)" field="testo" [multiple]='true' [dropdown]='true' (onDropdownClick)="handleDropdownClick($event)"
+          [minLength]="1">
+          <ng-template let-brand pTemplate="itemdddd">
+            <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+              <div title="{{ brand.tooltip }}"><span style="font-size:10px">{{ brand.id }}:</span> {{ brand.testo }}</div>
+            </div>
+          </ng-template>
+        </p-autoComplete>
+
+        <!--<input type="text" class="form-control" id="tipo_interv" placeholder="Tipologia intervento" formControlName="tipo_interv">-->
+      </div>
+    </div>
+  </div>
+  &nbsp;
+</div>
+</div>
 </div>
 <div class="section">
   <div class="container">
@@ -91,106 +87,99 @@
         <div class="row">
           <div class="col-md-5">
             <div [formGroup]="formRagSoc">
-              <div class="input-group" [ngClass]="{'has-warning':formValido }" >
+              <div class="input-group" [ngClass]="{'has-warning':formValido }">
                 <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Cognome" style="min-width: 50px;"> <i class="fa fa-address-card" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="cognome"
-                  placeholder="Cognome" formControlName="cognome"  > 
-              </div> 
-              
-              <br>
-              
-              <div class="input-group" [ngClass]="{'has-warning':formValido  } ">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Nome" style="min-width: 50px;"> <i class="fa fa-address-card-o" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="nome"
-                  placeholder="Nome" formControlName="nome" >
+                  placeholder="Cognome" formControlName="cognome">
               </div>
 
-              
+              <br>
+
+              <div class="input-group" [ngClass]="{'has-warning':formValido  } ">
+                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Nome" style="min-width: 50px;"> <i class="fa fa-address-card-o" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="nome"
+                  placeholder="Nome" formControlName="nome">
+              </div>
+
+
             </div>
             <br>
             <div [formGroup]="formRagSoc">
               <div class="input-group" [ngClass]="{'has-warning':formValido }">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Ragione sociale" style="min-width: 50px;"> <i class="fa fa-industry" aria-hidden="true"></i> 
-                </div> 
-                <input type="text" class="form-control" id="ragione_sociale" placeholder="Ragione sociale" value="{{formChiamataModel.ragione_sociale}}" formControlName="ragione_sociale"  >
+                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Ragione sociale" style="min-width: 50px;">
+                <i class="fa fa-industry" aria-hidden="true"></i>
+                </div>
+                <input type="text" class="form-control" id="ragione_sociale" placeholder="Ragione sociale" value="{{formChiamataModel.ragione_sociale}}"
+                  formControlName="ragione_sociale">
               </div>
             </div>
             <div class="row" style="margin-top: 5px;">
-              <div class="col-lg-3"> <button type="button" (click)="onClickCC()" class="btn btn-block btn-secondary btn-xs btn-sm" data-toggle="tooltip" data-animation="false"
-                  title="Carabinieri" data-placement="bottom">CC</button> </div>
-              <div class="col-lg-3"> <button type="button" (click)="onClickPS()" class="btn btn-block btn-secondary btn-xs btn-sm" data-toggle="tooltip" data-animation="false"
-                  title="Polizia di Stato" data-placement="bottom">PS</button> </div>
-              <div class="col-lg-3"> <button type="button" (click)="onClickPM()" class="btn btn-block btn-xs btn-secondary btn-sm" data-toggle="tooltip" data-animation="false"
-                  title="Polizia Municipale" data-placement="bottom">PM</button> </div>
-              <div class="col-lg-3"> <button type="button" (click)="onClickSSU()" class="btn btn-block btn-secondary btn-xs btn-sm" data-toggle="tooltip" data-animation="false"
-                  title="Servizio Sanitario Urgenze" data-placement="bottom">SSU</button> </div>
+              <div class="col-lg-3"> <button type="button" (click)="onClickCC()" class="btn btn-block btn-secondary btn-xs btn-sm" data-toggle="tooltip"
+                  data-animation="false" title="Carabinieri" data-placement="bottom">CC</button> </div>
+              <div class="col-lg-3"> <button type="button" (click)="onClickPS()" class="btn btn-block btn-secondary btn-xs btn-sm" data-toggle="tooltip"
+                  data-animation="false" title="Polizia di Stato" data-placement="bottom">PS</button> </div>
+              <div class="col-lg-3"> <button type="button" (click)="onClickPM()" class="btn btn-block btn-xs btn-secondary btn-sm" data-toggle="tooltip"
+                  data-animation="false" title="Polizia Municipale" data-placement="bottom">PM</button> </div>
+              <div class="col-lg-3"> <button type="button" (click)="onClickSSU()" class="btn btn-block btn-secondary btn-xs btn-sm" data-toggle="tooltip"
+                  data-animation="false" title="Servizio Sanitario Urgenze" data-placement="bottom">SSU</button> </div>
             </div> <br>
             <div [formGroup]="myForm">
               <!-- per la validazione chiamare il metofo formValido che ritorna boolean-->
               <div class="input-group">
                 <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Telefono" style="min-width: 50px;"> <i class="fa fa-phone" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="telefono"
-                  placeholder="Telefono" formControlName="telefono" >
+                  placeholder="Telefono" formControlName="telefono">
               </div>
               <!-- -->
             </div>
             <br>
             <div class="input-group">
-              <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Coordinate" style="min-width: 50px;"> <i class="fa fa-map-marker" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="coordinate"
-                placeholder="Coordinate" readonly="" value="Lat. {{this.latitude | number : '2.3-3'}}, Long. {{this.longitude | number : '2.3-3'}}"> </div>
+              <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Coordinate" style="min-width: 50px;">
+              <i class="fa fa-map-marker" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="coordinate"
+                placeholder="Coordinate" readonly="" value="Lat. {{this.latitude | number : '2.3-3'}}, Long. {{this.longitude | number : '2.3-3'}}">              </div>
           </div>
-          <div class="col-md-7 align-self-center text-center"> 
+          <div class="col-md-7 align-self-center text-center">
             <!--<img class="center-block img-fluid" src="https://maps.googleapis.com/maps/api/staticmap?center=via+cavou+5+roma&amp;zoom=18&amp;size=1000x310&amp;sensor=false">            -->
-            <agm-map [latitude]="latitude" 
-               [longitude]="longitude" 
-               [scrollwheel]="true" 
-               [streetViewControl]="true" 
-               [mapTypeControl]="true" 
-               [scaleControl]="true" 
-               [zoom]="zoom">
-              <agm-marker [latitude]="latitude" 
-                          [longitude]="longitude" 
-                          [label]="'C'" 
-                          [title]="pippo" 
-                          [openInfoWindow]=true>
-                          <agm-info-window>
-                            <strong>Chiamata numero {{formChiamataModel.numero_chiamata}}</strong>
-                          </agm-info-window>
+            <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [streetViewControl]="true" [mapTypeControl]="true"
+              [scaleControl]="true" [zoom]="zoom">
+              <agm-marker [latitude]="latitude" [longitude]="longitude" [label]="'C'" [title]="pippo" [openInfoWindow]=true>
+                <agm-info-window>
+                  <strong>Chiamata numero {{formChiamataModel.numero_chiamata}}</strong>
+                </agm-info-window>
 
-                          <agm-circle [latitude]="41.9016819" [longitude]="12.50012449999997" 
-                              [radius]="7"
-                              [fillColor]="'red'"
-                              [circleDraggable]="true"
-                              [editable]="true">
-                          </agm-circle>
+                <agm-circle [latitude]="41.9016819" [longitude]="12.50012449999997" [radius]="7" [fillColor]="'red'" [circleDraggable]="true"
+                  [editable]="true">
+                </agm-circle>
               </agm-marker>
-                    
+
               <!--
               </agm-map>
               <agm-map [latitude]="lat" [longitude]="lng">
               <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
               -->
-           </agm-map>
+            </agm-map>
 
           </div>
         </div>
         <div class="row">
           <div class="col-md-12"> &nbsp; </div>
           <div class="col-md-12">
-            
+
             <div [formGroup]="myForm">
               <div class="input-group">
                 <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="indirizzo" style="min-width: 50px;"> <i class="fa fa-map" aria-hidden="true"></i> </div>
-                <input placeholder="Ricerca indirizzo" autocorrect="on" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
+                <input placeholder="Ricerca indirizzo" autocorrect="on" autocapitalize="off" spellcheck="off" type="text" class="form-control"
+                  #search [formControl]="searchControl">
                 <!--<input type="text" class="form-control" id="indirizzo" placeholder="Indirizzo" name="indirizzo" formControlName="indirizzo">-->
               </div>
             </div>
           </div> &nbsp; </div>
 
-              
+
 
         <div class="row">
           <div class="col-md-6">
             <div [formGroup]="myForm">
               <div class="input-group">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Zona emergenza" style="min-width: 50px;"> <i class="fa fa-map-pin" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="zona_emergenza"
+                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Zona emergenza" style="min-width: 50px;">
+                <i class="fa fa-map-pin" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="zona_emergenza"
                   placeholder="Zona emergenza" formControlName="zona_emergenza"> </div>
             </div>
           </div>
@@ -198,8 +187,8 @@
           <div class="col-md-6">
             <div [formGroup]="myForm">
               <div class="input-group">
-                <span class="input-group-addon" data-toggle="tooltip" data-animation="false" title="tag" style="min-width: 50px;"> <i class="fa fa-tag" aria-hidden="true"></i> </span> 
-                <ss-multiselect-dropdown [options]="myOptions" [texts]="myTexts" [settings]="mySettings" formControlName="optionsModel" class="btn-block" ></ss-multiselect-dropdown>
+                <span class="input-group-addon" data-toggle="tooltip" data-animation="false" title="tag" style="min-width: 50px;"> <i class="fa fa-tag" aria-hidden="true"></i> </span>
+                <ss-multiselect-dropdown [options]="myOptions" [texts]="myTexts" [settings]="mySettings" formControlName="optionsModel" class="btn-block"></ss-multiselect-dropdown>
               </div>
             </div>
           </div>
@@ -210,14 +199,16 @@
           <div class="col-md-6">
             <div [formGroup]="myForm">
               <div class="input-group">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Motivazione" style="min-width: 50px;"> <i class="fa fa-commenting" aria-hidden="true"></i> </div> <textarea class="form-control" id="motivazione"
+                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Motivazione" style="min-width: 50px;">
+                <i class="fa fa-commenting" aria-hidden="true"></i> </div> <textarea class="form-control" id="motivazione"
                   style="resize: none;" placeholder="Motivazione" formControlName="motivazione">Motivazione</textarea> </div>
             </div>
           </div>
           <div class="col-md-6">
             <div [formGroup]="myForm">
               <div class="input-group">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Note indirizzo" style="min-width: 50px;"> <i class="fa fa-commenting" aria-hidden="true"></i> </div> <textarea class="form-control" id="note_indirizzo"
+                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Note indirizzo" style="min-width: 50px;">
+                <i class="fa fa-commenting" aria-hidden="true"></i> </div> <textarea class="form-control" id="note_indirizzo"
                   style="resize: none;" placeholder="Note indirizzo" formControlName="note_indirizzo">Note indirizzo</textarea>                </div>
             </div>
           </div>
@@ -226,14 +217,16 @@
           <div class="col-md-6">
             <div [formGroup]="myForm">
               <div class="input-group">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Note pubbliche" style="min-width: 50px;"> <i class="fa fa-bullhorn" aria-hidden="true"></i> </div> <textarea class="form-control" id="note_pubbliche"
+                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Note pubbliche" style="min-width: 50px;">
+                <i class="fa fa-bullhorn" aria-hidden="true"></i> </div> <textarea class="form-control" id="note_pubbliche"
                   style="resize: none;" placeholder="Note pubbliche" formControlName="note_pubbliche">Note pubbliche</textarea>                </div>
             </div>
           </div>
           <div class="col-md-6">
             <div [formGroup]="myForm">
               <div class="input-group">
-                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Note private" style="min-width: 50px;"> <i class="fa fa-headphones " aria-hidden="true"></i> </div> <textarea class="form-control" id="note_private"
+                <div class="input-group-addon" data-toggle="tooltip" data-animation="false" title="Note private" style="min-width: 50px;">
+                <i class="fa fa-headphones " aria-hidden="true"></i> </div> <textarea class="form-control" id="note_private"
                   style="resize: none;" placeholder="Note private" formControlName="note_private">Note private</textarea> </div>
             </div>
           </div>
@@ -261,14 +254,14 @@
 						  --></div>
                 <div class="col-md-6">
                   <div class="col-md-12 text-right">
-                    
+
                     <form [formGroup]="formRagSoc" (ngSubmit)="onSubmit(formRagSoc.value)">
                       <!-- Split button -->
-                      <div class="btn-group btn-group-sm"> 
-                                            <p-growl [(value)]="msgs" [life]=3000></p-growl>
-                                            <button type="submit" class="btn btn-secondary" [disabled]="formRagSoc.valid" >Conferma <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                                            </button> <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-animation="false"
-                          aria-haspopup="true" aria-expanded="false" [disabled]="formRagSoc.valid"> <span class="caret"></span>
+                      <div class="btn-group btn-group-sm">
+                        <p-growl [(value)]="msgs" [life]=3000></p-growl>
+                        <button type="submit" class="btn btn-secondary" [disabled]="formRagSoc.valid">Conferma <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                            </button> <button type="button" class="btn btn-secondary dropdown-toggle"
+                          data-toggle="dropdown" data-animation="false" aria-haspopup="true" aria-expanded="false" [disabled]="formRagSoc.valid"> <span class="caret"></span>
                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
                         <ul class="dropdown-menu">
@@ -286,5 +279,3 @@
         </form>
       </div>
     </div>
-  </div>
-</div>
