@@ -41,7 +41,7 @@ namespace Modello.Classi.Soccorso.Eventi
         {
             if (richiesta == null)
             {
-                throw new ArgumentOutOfRangeException(nameof(richiesta));
+                throw new ArgumentNullException(nameof(richiesta));
             }
 
             if (istante == DateTime.MinValue)
@@ -59,9 +59,9 @@ namespace Modello.Classi.Soccorso.Eventi
             richiesta.Eventi.Add(this);
 
             // Eventuale riordinamento sull'istante degli eventi.
-            if (richiesta.Eventi.Count > 1 && this.Istante < richiesta.Eventi.Last().Istante)
+            if (richiesta.Eventi.Count > 1 && this.Istante < richiesta.Eventi.Reverse().Skip(1).Take(1).Single().Istante)
             {
-                richiesta.Eventi = richiesta.Eventi.OrderBy(e => e.Istante).ToList();
+                throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
             }
         }
 

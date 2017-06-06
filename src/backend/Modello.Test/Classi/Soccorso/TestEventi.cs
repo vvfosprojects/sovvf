@@ -410,5 +410,40 @@ namespace Modello.Test.Classi.Soccorso
                 () => new UscitaPartenza(this.richiesta, "ABC123", DateTime.Now, " "),
                 Throws.ArgumentException);
         }
+
+        [Test]
+        public void Un_evento_con_richiesta_null_non_puo_essere_creato()
+        {
+            Assert.That(
+                () => new UscitaPartenza(null, "ABC123", DateTime.Now, "Fonte"),
+                Throws.ArgumentNullException);
+        }
+
+        [Test]
+        public void Un_evento_non_puo_essere_creato_per_una_richiesta_che_ne_ha_gia_uno_piu_recente()
+        {
+            var istantePrecedente = DateTime.Now;
+            var istanteSuccessivo = istantePrecedente.AddSeconds(1);
+
+            var richiesta = new RichiestaAssistenza();
+            new UscitaPartenza(richiesta, "M1", istanteSuccessivo, "Fonte");
+
+            Assert.That(
+                () => new ArrivoSulPosto(richiesta, "M1", istantePrecedente, "Fonte"),
+                Throws.InstanceOf<InvalidOperationException>());
+        }
+
+        [Test]
+        public void Un_evento_puo_essere_creato_per_una_richiesta_che_ne_ha_gia_uno_meno_recente()
+        {
+            var istantePrecedente = DateTime.Now;
+            var istanteSuccessivo = istantePrecedente.AddSeconds(1);
+
+            var richiesta = new RichiestaAssistenza();
+            new UscitaPartenza(richiesta, "M1", istantePrecedente, "Fonte");
+            new ArrivoSulPosto(richiesta, "M1", istanteSuccessivo, "Fonte");
+
+            Assert.Pass();
+        }
     }
 }
