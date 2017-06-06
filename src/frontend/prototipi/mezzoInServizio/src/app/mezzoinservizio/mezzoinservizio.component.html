@@ -30,7 +30,7 @@
           </div>
           <div> {{fs.DataOra | friendlyDate:20}} {{fs.DataOra | friendlyHour}}</div>
         </div>
-        <div class="col col-md-5 text-left">
+        <div class="col col-md-5 text-right">
           <div *ngIf="numeroPersone() > 0">
             <span class="fa fa-users" aria-hidden="true"></span>
             <span class="badge badge-info">{{numeroPersone()}} </span>
@@ -40,12 +40,14 @@
             <button *ngIf="mostraPersone" type="button" class="btn btn-sm" (click)="hideMostraPersone()">
                 <i class="fa fa-chevron-up" aria-hidden="true"></i>
               </button>
-            <span><a  href="#" style="width:10px;min-width:50%;" class="btn btn-link btn btn-sm text-left" >{{fs.CodiceRichiestaAssistenza}}
-              </a></span> 
-             </div>
-         
+
+          </div>
+          <div>
+            <a href="#">{{fs.CodiceRichiestaAssistenza}}
+              </a>
+          </div>
         </div>
-       <div hidden>
+        <div hidden>
           <div class="col col-md-4">
             <button type="button" class="btn btn-sm" (click)="setDisponibile(true)">Disponibile</button>
             <button type="button" class="btn btn-sm" (click)="setDisponibile(false)">Non Disponibile</button>
@@ -65,13 +67,13 @@
           <div *ngIf="mostraPersone">
             <div class="card">
               <div class="card-header card-inverse" style="background-color: lightgray; border-color:lightgray; color: black;">{{fs.SiglaSquadra}}</div>
-              
+
               <div class="card-block">
                 <p class="card-text" *ngFor="let p of fs.personeSulMezzo" data-toggle="tooltip" data-placement="top" title={{p.codiceFiscale}}>
-                  <span class="fa fa fa-user" aria-hidden="true" ></span> {{p.descrizione | truncate:18 }}
-                   <app-tag-capopartenza *ngIf="p.capoPartenza"></app-tag-capopartenza>
-                   <app-tag-autista *ngIf="p.autista"></app-tag-autista>
-                 </p>
+                  <span class="fa fa fa-user" aria-hidden="true"></span> {{p.descrizione | truncate:18 }}
+                  <app-tag-capopartenza *ngIf="p.capoPartenza"></app-tag-capopartenza>
+                  <app-tag-autista *ngIf="p.autista"></app-tag-autista>
+                </p>
               </div>
             </div>
           </div>
@@ -80,4 +82,3 @@
     </div>
   </div>
 </div>
-

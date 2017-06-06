@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ListaMezziService } from "app/lista-mezzi/lista-mezzi.service";
-import { MezzoInServizio } from "app/mezzoinservizio/mezzoinservizio.model";
+import { ListaMezziService } from "./lista-mezzi.service";
+import { MezzoInServizio } from "../mezzoinservizio/mezzoinservizio.model";
 
 @Component({
   selector: 'app-lista-mezzi',

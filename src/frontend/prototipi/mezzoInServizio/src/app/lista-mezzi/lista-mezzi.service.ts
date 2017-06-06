@@ -3,7 +3,7 @@ import { Observable } from "rxjs/Observable";
 import 'rxjs/add/observable/of';
 
 import { MezzoInServizio } from '../mezzoinservizio/mezzoinservizio.model';
-import { PersonaSulMezzo } from "app/mezzoinservizio/persona-sul-mezzo.model";
+import { PersonaSulMezzo } from "../mezzoinservizio/persona-sul-mezzo.model";
 
 @Injectable()
 export class ListaMezziService {
