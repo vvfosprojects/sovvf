@@ -13,6 +13,7 @@ import { RicercaTipologieService } from "./ricerca-tipologie/ricerca-tipologie.s
 import { GrowlModule } from "primeng/components/growl/growl";
 import { TooltipModule } from "primeng/primeng";
 import { RicercaService } from "app/pages/schedaTelefonata/ricerca/ricerca.service";
+import { ChipsModule } from 'primeng/primeng';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { RicercaService } from "app/pages/schedaTelefonata/ricerca/ricerca.servi
       libraries: ["places"]
     }),
     GrowlModule,
-    TooltipModule
+    TooltipModule,
+    ChipsModule
   ],
   declarations: [
     AppComponent,
