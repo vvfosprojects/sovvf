@@ -13,6 +13,7 @@ import { TagCapopartenzaComponent } from './shared/components/tag-capopartenza/t
 import { TagAutistaComponent } from './shared/components/tag-autista/tag-autista.component';
 import { ListaMezziComponent } from './lista-mezzi/lista-mezzi.component';
 import { ListaMezziService } from "app/lista-mezzi/lista-mezzi.service";
+import { ListaMezziService_Fake } from "app/lista-mezzi/lista-mezzi-fake.service";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { ListaMezziService } from "app/lista-mezzi/lista-mezzi.service";
     HttpModule,
     NgbModule.forRoot()
   ],
-  providers: [ListaMezziService],
+  providers: [{ provide: ListaMezziService, useClass: ListaMezziService_Fake }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
