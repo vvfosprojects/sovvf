@@ -37,11 +37,16 @@ namespace Modello.Classi.Soccorso
     public class RichiestaAssistenza
     {
         /// <summary>
+        ///   Contiene la lista degli eventi considerati di interesse per la richiesta.
+        /// </summary>
+        private List<Evento> eventi;
+
+        /// <summary>
         ///   Costruisce una nuova istanza di <see cref="RichiestaAssistenza" />
         /// </summary>
         public RichiestaAssistenza()
         {
-            this.Eventi = new List<Evento>();
+            this.eventi = new List<Evento>();
         }
 
         /// <summary>
@@ -120,18 +125,15 @@ namespace Modello.Classi.Soccorso
         public ISet<string> CodiciUnitaOperativeAllertate { get; set; }
 
         /// <summary>
-        ///   Contiene la lista degli eventi considerati di interesse per la richiesta.
+        ///   Espone la lista degli eventi considerati di interesse per la richiesta.
         /// </summary>
-        public IList<Evento> Eventi { get; set; }
-
-        /// <summary>
-        ///   E' la lista ordinata (per importanza decrescente) delle tipologie di soccorso.
-        /// </summary>
-        /// <remarks>
-        ///   Per es. è la lista { valanga, soccorso a persona, ricerca disperso, messa in sicurezza
-        ///   } in un sinistro simile al Rigopiano
-        /// </remarks>
-        public IList<string> Tipologie { get; set; }
+        public IReadOnlyList<Evento> Eventi
+        {
+            get
+            {
+                return this.eventi;
+            }
+        }
 
 #warning Realizzare la classe TipologiaRichiesta per modellare la classificazione delle Tipologie della Richiesta
 #warning Definire un metodo per estrarre la Tipologia di Richiesta principale, da mostrare in GUI
@@ -199,6 +201,15 @@ namespace Modello.Classi.Soccorso
         public DateTime? IstanteChiusura { get; internal set; }
 
         /// <summary>
+        ///   E' la lista ordinata (per importanza decrescente) delle tipologie di soccorso.
+        /// </summary>
+        /// <remarks>
+        ///   Per es. è la lista { valanga, soccorso a persona, ricerca disperso, messa in sicurezza
+        ///   } in un sinistro simile al Rigopiano
+        /// </remarks>
+        public IList<string> Tipologie { get; set; }
+
+        /// <summary>
         ///   Indica se la richiesta è aperta
         /// </summary>
         public bool Chiusa
@@ -236,6 +247,22 @@ namespace Modello.Classi.Soccorso
 
                 return eventoAssegnazionePriorita != null ? eventoAssegnazionePriorita.Priorita : RichiestaAssistenza.Priorita.Media;
             }
+        }
+
+        /// <summary>
+        ///   Aggiunge un evento alla lista degli eventi. L'evento deve essersi verificato in un
+        ///   istante superiore a quello dell'ultimo evento in lista. In caso contrario il metodo
+        ///   solleva un'eccezione.
+        /// </summary>
+        /// <param name="evento">L'evento da aggiungere</param>
+        public void AddEvento(Evento evento)
+        {
+            if (this.eventi.Any() && this.eventi.Last().Istante > evento.Istante)
+            {
+                throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
+            }
+
+            this.eventi.Add(evento);
         }
     }
 }

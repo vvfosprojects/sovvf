@@ -56,13 +56,7 @@ namespace Modello.Classi.Soccorso.Eventi
 
             this.Istante = istante;
             this.CodiceFonte = codiceFonte;
-            richiesta.Eventi.Add(this);
-
-            // Eventuale riordinamento sull'istante degli eventi.
-            if (richiesta.Eventi.Count > 1 && this.Istante < richiesta.Eventi.Reverse().Skip(1).Take(1).Single().Istante)
-            {
-                throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
-            }
+            richiesta.AddEvento(this);
         }
 
         /// <summary>
