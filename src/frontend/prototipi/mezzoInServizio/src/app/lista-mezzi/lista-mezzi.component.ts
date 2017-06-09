@@ -9,13 +9,19 @@ import { MezzoInServizio } from "../mezzoinservizio/mezzoinservizio.model";
 })
 export class ListaMezziComponent implements OnInit {
   private mezzi: MezzoInServizio[];
+  private errorMessage: string;
+  
   constructor(private listaMezziService: ListaMezziService) { }
 
   ngOnInit() {
-    this.listaMezziService.getMezzi().subscribe(
-      mezzi => {
-        this.mezzi = mezzi;
-      }
+    this.getMezzi();
+  }
+
+  private getMezzi() {
+    this.listaMezziService.getMezzi()
+    .subscribe(
+      mezzi => this.mezzi = mezzi,
+      error =>  this.errorMessage = <any>error
     )
   }
 
