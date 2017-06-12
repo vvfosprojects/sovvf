@@ -1,0 +1,16 @@
+<p>
+  gestionepermessi works!
+</p>
+
+<h3>Single Selection 1</h3>
+<p-tree [value]="files" selectionMode="single" [(selection)]="selectedFile"></p-tree>
+
+
+<!--<h3>Single Selection 2</h3>-->
+
+<p-growl [value]="msgs"></p-growl>
+
+<!--<p-tree [value]="filesTree2" selectionMode="single" [(selection)]="selectedFile" 
+    (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+    
+<div style="margin-top:8px">Selected Node: {{ '{' }} selectedFile ? selectedFile.label : 'none'{{ '}' }}</div>-->
