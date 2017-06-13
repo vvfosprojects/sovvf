@@ -107,6 +107,7 @@
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\RichiestaAssistenza\QueryDTO\SintesiRichiestaAssistenzaQuery.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\RichiestaAssistenza\ResultDTO\SintesiRichiestaAssistenzaResult.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\RichiestaAssistenza\SintesiRichiestaAssistenzaQueryHandler.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\ResultDTO\PersonaSulMezzo.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiestePerSituazioneMezzi.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\QueryDTO\InfoUnitaOperativa.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\QueryDTO\SituazioneMezziQuery.cs" />

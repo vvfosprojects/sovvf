@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
     /// <summary>
@@ -26,6 +28,17 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     /// </summary>
     public class Riassegnato : IStatoMezzo
     {
+        /// <summary>
+        ///   Codice identificativo dello stato
+        /// </summary>
+        public string Codice
+        {
+            get
+            {
+                return "Riassegnato";
+            }
+        }
+
         /// <summary>
         ///   Indica se il mezzo è disponibile in questo stato.
         /// </summary>

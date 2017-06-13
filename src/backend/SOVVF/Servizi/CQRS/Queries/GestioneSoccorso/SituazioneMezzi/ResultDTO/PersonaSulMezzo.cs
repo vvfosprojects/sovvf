@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FuoriServizio.cs" company="CNVVF">
+// <copyright file="PersonaSulMezzo.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,35 +17,41 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-
-namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
+namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO
 {
     /// <summary>
-    ///   Fuori Servizio
+    ///   Modella una persona a bordo di un mezzo
     /// </summary>
-    public class Fuoriservizio : IStatoMezzo
+    public class PersonaSulMezzo
     {
         /// <summary>
-        ///   Codice identificativo dello stato
+        ///   Il codice fiscale del soggetto
         /// </summary>
-        public string Codice
-        {
-            get
-            {
-                return "FuoriServizio";
-            }
-        }
+        public string CodiceFiscale { get; set; }
 
         /// <summary>
-        ///   Indica se il mezzo è disponibile in questo stato
+        ///   Il messaggio descrittivo del soggetto
         /// </summary>
-        public bool Disponibile
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public string Descrizione { get; set; }
+
+        /// <summary>
+        ///   Il tooltip che appare sulla descrizione del soggetto
+        /// </summary>
+        public string Tooltip { get; set; }
+
+        /// <summary>
+        ///   Indica se il soggetto è un capopartenza
+        /// </summary>
+        public bool CapoPartenza { get; set; }
+
+        /// <summary>
+        ///   Indica se il soggetto è un autista
+        /// </summary>
+        public bool Autista { get; set; }
+
+        /// <summary>
+        ///   Indica se il soggetto è un rimpiazzo
+        /// </summary>
+        public bool Rimpiazzo { get; set; }
     }
 }

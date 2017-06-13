@@ -134,11 +134,13 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi
             var situazioneMezzi =
                 from gruppo in eventiPerCodiceMezzo
                 let eventoPiuRecente = gruppo.OrderByDescending(e => e.Evento.Istante).First()
-                select new SituazioneMezzo(
-                    gruppo.Key,
-                    eventoPiuRecente.Evento.GetStatoMezzo(),
-                    eventoPiuRecente.CodiceRichiesta,
-                    eventoPiuRecente.Evento.Istante);
+                select new SituazioneMezzo()
+                {
+                    Codice = gruppo.Key,
+                    CodiceStato = eventoPiuRecente.Evento.GetStatoMezzo().Codice,
+                    CodiceRichiestaAssistenza = eventoPiuRecente.CodiceRichiesta,
+                    IstanteAggiornamentoStato = eventoPiuRecente.Evento.Istante
+                };
 
             return new SituazioneMezziResult()
             {
