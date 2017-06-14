@@ -28,78 +28,59 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDT
     public class SituazioneMezzo
     {
         /// <summary>
-        ///   Costruttore della classe.
-        /// </summary>
-        /// <param name="codiceMezzo">Il codice del mezzo</param>
-        /// <param name="statoMezzo">E' lo stato del mezzo</param>
-        /// <param name="codiceRichiestaAssistenza">
-        ///   E' il codice della richiesta di assistenza che ha determinato lo stato indicato
-        /// </param>
-        /// <param name="istanteAggiornamento">E' l'istante al quale risale l'informazione</param>
-        public SituazioneMezzo(
-            string codiceMezzo,
-            IStatoMezzo statoMezzo,
-            string codiceRichiestaAssistenza,
-            DateTime istanteAggiornamento)
-        {
-            if (string.IsNullOrWhiteSpace(codiceMezzo))
-            {
-                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceMezzo));
-            }
-
-            if (statoMezzo == null)
-            {
-                throw new ArgumentNullException(nameof(statoMezzo));
-            }
-
-            if (string.IsNullOrWhiteSpace(codiceRichiestaAssistenza))
-            {
-                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceRichiestaAssistenza));
-            }
-
-            if (istanteAggiornamento == DateTime.MinValue)
-            {
-                throw new ArgumentOutOfRangeException(nameof(istanteAggiornamento));
-            }
-
-            this.CodiceMezzo = codiceMezzo;
-            this.StatoMezzo = statoMezzo;
-            this.CodiceRichiestaAssistenza = codiceRichiestaAssistenza;
-            this.IstanteAggiornamento = istanteAggiornamento;
-        }
-
-        /// <summary>
         ///   Il codice del mezzo
         /// </summary>
-        public string CodiceMezzo { get; private set; }
+        public string Codice { get; set; }
 
         /// <summary>
-        ///   Lo stato corrente del mezzo
+        ///   La descrizione del mezzo
         /// </summary>
-        public IStatoMezzo StatoMezzo { get; private set; }
+        public string Descrizione { get; set; }
 
         /// <summary>
-        ///   Il codice della richiesta di assistenza che determina la situazione
+        ///   La targa del mezzo
         /// </summary>
-        public string CodiceRichiestaAssistenza { get; private set; }
+        public string Targa { get; set; }
 
         /// <summary>
-        ///   La data di aggiornamento della corrente informazione sulla situazione
+        ///   La descrizione dell'unità operativa a cui è associato il mezzo
         /// </summary>
-        public DateTime IstanteAggiornamento { get; private set; }
+        public string DescrizioneUnitaOperativa { get; set; }
 
         /// <summary>
-        ///   Rappresentazione dell'oggetto in forma testuale
+        ///   Il codice dello stato in cui si trova il mezzo
         /// </summary>
-        /// <returns>La rappresentazione</returns>
-        public override string ToString()
-        {
-            return string.Format(
-                "{0} {1} {2} {3}",
-                this.CodiceMezzo,
-                this.StatoMezzo,
-                this.CodiceRichiestaAssistenza,
-                this.IstanteAggiornamento);
-        }
+        public string CodiceStato { get; set; }
+
+        /// <summary>
+        ///   L'istante in cui è avvenuto l'aggiornamento dello stato del mezzo, contenuto nella
+        ///   proprietà <see cref="CodiceStato" />
+        /// </summary>
+        public DateTime IstanteAggiornamentoStato { get; set; }
+
+        /// <summary>
+        ///   Il codice della richiesta di assistenza alla quale il mezzo è associato
+        /// </summary>
+        public string CodiceRichiestaAssistenza { get; set; }
+
+        /// <summary>
+        ///   Indica se il mezzo è disponibile
+        /// </summary>
+        public bool Disponibile { get; set; }
+
+        /// <summary>
+        ///   La descrizione della squadra impegnata sul mezzo
+        /// </summary>
+        public string DescrizioneSquadra { get; set; }
+
+        /// <summary>
+        ///   Il tooltip che appare sulla descrizione della squadra
+        /// </summary>
+        public string TooltipSquadra { get; set; }
+
+        /// <summary>
+        ///   Le persone a bordo del mezzo
+        /// </summary>
+        public PersonaSulMezzo[] PersoneSulMezzo { get; set; }
     }
 }

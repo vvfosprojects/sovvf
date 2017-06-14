@@ -25,6 +25,11 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     public interface IStatoMezzo
     {
         /// <summary>
+        ///   Codice identificativo dello stato
+        /// </summary>
+        string Codice { get; }
+
+        /// <summary>
         ///   Indica se il mezzo è disponibile in questo stato
         /// </summary>
         /// <remarks>

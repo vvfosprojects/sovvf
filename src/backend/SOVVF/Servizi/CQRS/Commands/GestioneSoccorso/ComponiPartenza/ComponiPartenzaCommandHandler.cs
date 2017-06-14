@@ -62,7 +62,7 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.ComponiPartenza
 
             foreach (var cp in command.ComposizioniPartenza)
             {
-                richiestaAssistenza.Eventi.Add(cp);
+                richiestaAssistenza.AddEvento(cp);
             }
 
             this.saveRichiestaAssistenza.Save(richiestaAssistenza);

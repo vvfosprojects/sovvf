@@ -21,8 +21,10 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Compilation;
 using System.Web.Http;
+using Newtonsoft.Json.Serialization;
 using SimpleInjector;
 using SimpleInjector.Integration.WebApi;
+using SimpleInjector.Lifestyles;
 
 namespace RestInterface
 {
@@ -39,7 +41,7 @@ namespace RestInterface
         {
             // Create the container as usual.
             var container = new Container();
-            container.Options.DefaultScopedLifestyle = new WebApiRequestLifestyle();
+            container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
             // Scan all the referenced assemblies for packages containing DI wiring rules
             var assemblies = BuildManager.GetReferencedAssemblies().Cast<Assembly>();
@@ -57,6 +59,10 @@ namespace RestInterface
 
             // Here your usual Web API configuration stuff.
             GlobalConfiguration.Configure(WebApiConfig.Register);
+
+            // Configurazione serializzazione Json
+            HttpConfiguration config = GlobalConfiguration.Configuration;
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
     }
 }

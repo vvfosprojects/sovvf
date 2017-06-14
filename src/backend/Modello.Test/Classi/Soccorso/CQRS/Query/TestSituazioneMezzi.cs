@@ -136,18 +136,18 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             var richieste = new List<RichiestaAssistenza>() { richiesta };
             var query = this.CreaQuery(richieste);
             var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
-            var situazioneM1 = resultDto.SituazioneMezzi.Single(sm => sm.CodiceMezzo == "M1");
-            var situazioneM2 = resultDto.SituazioneMezzi.Single(sm => sm.CodiceMezzo == "M2");
-            var expectedM1 = expected.Single(sm => sm.CodiceMezzo == "M1");
-            var expectedM2 = expected.Single(sm => sm.CodiceMezzo == "M2");
-            Assert.That(situazioneM1.CodiceMezzo, Is.EqualTo(expectedM1.CodiceMezzo));
+            var situazioneM1 = resultDto.SituazioneMezzi.Single(sm => sm.Codice == "M1");
+            var situazioneM2 = resultDto.SituazioneMezzi.Single(sm => sm.Codice == "M2");
+            var expectedM1 = expected.Single(sm => sm.Codice == "M1");
+            var expectedM2 = expected.Single(sm => sm.Codice == "M2");
+            Assert.That(situazioneM1.Codice, Is.EqualTo(expectedM1.Codice));
             Assert.That(situazioneM1.CodiceRichiestaAssistenza, Is.EqualTo(expectedM1.CodiceRichiestaAssistenza));
-            Assert.That(situazioneM1.IstanteAggiornamento, Is.EqualTo(expectedM1.IstanteAggiornamento));
-            Assert.That(situazioneM1.StatoMezzo, Is.TypeOf(expectedM1.StatoMezzo.GetType()));
-            Assert.That(situazioneM2.CodiceMezzo, Is.EqualTo(expectedM2.CodiceMezzo));
+            Assert.That(situazioneM1.IstanteAggiornamentoStato, Is.EqualTo(expectedM1.IstanteAggiornamentoStato));
+            Assert.That(situazioneM1.CodiceStato, Is.EqualTo(expectedM1.CodiceStato));
+            Assert.That(situazioneM2.Codice, Is.EqualTo(expectedM2.Codice));
             Assert.That(situazioneM2.CodiceRichiestaAssistenza, Is.EqualTo(expectedM2.CodiceRichiestaAssistenza));
-            Assert.That(situazioneM2.IstanteAggiornamento, Is.EqualTo(expectedM2.IstanteAggiornamento));
-            Assert.That(situazioneM2.StatoMezzo, Is.TypeOf(expectedM2.StatoMezzo.GetType()));
+            Assert.That(situazioneM2.IstanteAggiornamentoStato, Is.EqualTo(expectedM2.IstanteAggiornamentoStato));
+            Assert.That(situazioneM2.CodiceStato, Is.EqualTo(expectedM2.CodiceStato));
         }
 
         [Test]
@@ -160,30 +160,30 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             var richieste = new List<RichiestaAssistenza>() { richiesta1, richiesta2 };
             var query = this.CreaQuery(richieste);
             var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
-            var situazioneM1 = resultDto.SituazioneMezzi.Single(sm => sm.CodiceMezzo == "M1");
-            var situazioneM2 = resultDto.SituazioneMezzi.Single(sm => sm.CodiceMezzo == "M2");
-            var situazioneM3 = resultDto.SituazioneMezzi.Single(sm => sm.CodiceMezzo == "M3");
-            var situazioneM4 = resultDto.SituazioneMezzi.Single(sm => sm.CodiceMezzo == "M4");
-            var expectedM1 = expected1.Single(sm => sm.CodiceMezzo == "M1");
-            var expectedM2 = expected1.Single(sm => sm.CodiceMezzo == "M2");
-            var expectedM3 = expected2.Single(sm => sm.CodiceMezzo == "M3");
-            var expectedM4 = expected2.Single(sm => sm.CodiceMezzo == "M4");
-            Assert.That(situazioneM1.CodiceMezzo, Is.EqualTo(expectedM1.CodiceMezzo));
+            var situazioneM1 = resultDto.SituazioneMezzi.Single(sm => sm.Codice == "M1");
+            var situazioneM2 = resultDto.SituazioneMezzi.Single(sm => sm.Codice == "M2");
+            var situazioneM3 = resultDto.SituazioneMezzi.Single(sm => sm.Codice == "M3");
+            var situazioneM4 = resultDto.SituazioneMezzi.Single(sm => sm.Codice == "M4");
+            var expectedM1 = expected1.Single(sm => sm.Codice == "M1");
+            var expectedM2 = expected1.Single(sm => sm.Codice == "M2");
+            var expectedM3 = expected2.Single(sm => sm.Codice == "M3");
+            var expectedM4 = expected2.Single(sm => sm.Codice == "M4");
+            Assert.That(situazioneM1.Codice, Is.EqualTo(expectedM1.Codice));
             Assert.That(situazioneM1.CodiceRichiestaAssistenza, Is.EqualTo(expectedM1.CodiceRichiestaAssistenza));
-            Assert.That(situazioneM1.IstanteAggiornamento, Is.EqualTo(expectedM1.IstanteAggiornamento));
-            Assert.That(situazioneM1.StatoMezzo, Is.TypeOf(expectedM1.StatoMezzo.GetType()));
-            Assert.That(situazioneM2.CodiceMezzo, Is.EqualTo(expectedM2.CodiceMezzo));
+            Assert.That(situazioneM1.IstanteAggiornamentoStato, Is.EqualTo(expectedM1.IstanteAggiornamentoStato));
+            Assert.That(situazioneM1.CodiceStato, Is.EqualTo(expectedM1.CodiceStato));
+            Assert.That(situazioneM2.Codice, Is.EqualTo(expectedM2.Codice));
             Assert.That(situazioneM2.CodiceRichiestaAssistenza, Is.EqualTo(expectedM2.CodiceRichiestaAssistenza));
-            Assert.That(situazioneM2.IstanteAggiornamento, Is.EqualTo(expectedM2.IstanteAggiornamento));
-            Assert.That(situazioneM2.StatoMezzo, Is.TypeOf(expectedM2.StatoMezzo.GetType()));
-            Assert.That(situazioneM3.CodiceMezzo, Is.EqualTo(expectedM3.CodiceMezzo));
+            Assert.That(situazioneM2.IstanteAggiornamentoStato, Is.EqualTo(expectedM2.IstanteAggiornamentoStato));
+            Assert.That(situazioneM2.CodiceStato, Is.EqualTo(expectedM2.CodiceStato));
+            Assert.That(situazioneM3.Codice, Is.EqualTo(expectedM3.Codice));
             Assert.That(situazioneM3.CodiceRichiestaAssistenza, Is.EqualTo(expectedM3.CodiceRichiestaAssistenza));
-            Assert.That(situazioneM3.IstanteAggiornamento, Is.EqualTo(expectedM3.IstanteAggiornamento));
-            Assert.That(situazioneM3.StatoMezzo, Is.TypeOf(expectedM3.StatoMezzo.GetType()));
-            Assert.That(situazioneM4.CodiceMezzo, Is.EqualTo(expectedM4.CodiceMezzo));
+            Assert.That(situazioneM3.IstanteAggiornamentoStato, Is.EqualTo(expectedM3.IstanteAggiornamentoStato));
+            Assert.That(situazioneM3.CodiceStato, Is.EqualTo(expectedM3.CodiceStato));
+            Assert.That(situazioneM4.Codice, Is.EqualTo(expectedM4.Codice));
             Assert.That(situazioneM4.CodiceRichiestaAssistenza, Is.EqualTo(expectedM4.CodiceRichiestaAssistenza));
-            Assert.That(situazioneM4.IstanteAggiornamento, Is.EqualTo(expectedM4.IstanteAggiornamento));
-            Assert.That(situazioneM4.StatoMezzo, Is.TypeOf(expectedM4.StatoMezzo.GetType()));
+            Assert.That(situazioneM4.IstanteAggiornamentoStato, Is.EqualTo(expectedM4.IstanteAggiornamentoStato));
+            Assert.That(situazioneM4.CodiceStato, Is.EqualTo(expectedM4.CodiceStato));
         }
 
         [Test]
@@ -194,11 +194,11 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             var richieste = new List<RichiestaAssistenza>() { richiesta };
             var query = this.CreaQuery(richieste);
             var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
-            var situazione = resultDto.SituazioneMezzi.Single(sm => sm.CodiceMezzo == "M1");
-            Assert.That(situazione.CodiceMezzo, Is.EqualTo(expected.CodiceMezzo));
+            var situazione = resultDto.SituazioneMezzi.Single(sm => sm.Codice == "M1");
+            Assert.That(situazione.Codice, Is.EqualTo(expected.Codice));
             Assert.That(situazione.CodiceRichiestaAssistenza, Is.EqualTo(expected.CodiceRichiestaAssistenza));
-            Assert.That(situazione.IstanteAggiornamento, Is.EqualTo(expected.IstanteAggiornamento));
-            Assert.That(situazione.StatoMezzo, Is.TypeOf(expected.StatoMezzo.GetType()));
+            Assert.That(situazione.IstanteAggiornamentoStato, Is.EqualTo(expected.IstanteAggiornamentoStato));
+            Assert.That(situazione.CodiceStato, Is.TypeOf(expected.CodiceStato.GetType()));
         }
 
         [Test]
@@ -232,8 +232,20 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             var eventoSulPosto = new ArrivoSulPosto(richiesta, "M1", istanteEvento3, "Fonte");
             expected = new SituazioneMezzo[]
             {
-                new SituazioneMezzo("M1", new SulPosto(), "R1", istanteEvento3),
-                new SituazioneMezzo("M2", new Assegnato(), "R1", istanteEvento1)
+                new SituazioneMezzo()
+                {
+                    Codice = "M1",
+                    CodiceStato = new SulPosto().Codice,
+                    CodiceRichiestaAssistenza = "R1",
+                    IstanteAggiornamentoStato = istanteEvento3
+                },
+                new SituazioneMezzo()
+                {
+                    Codice = "M2",
+                    CodiceStato = new Assegnato().Codice,
+                    CodiceRichiestaAssistenza = "R1",
+                    IstanteAggiornamentoStato = istanteEvento1
+                }
             };
             return richiesta;
         }
@@ -247,19 +259,31 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
 
             var componentePartenza1 = new ComponentePartenza("CF3", "M3");
             var componentePartenza2 = new ComponentePartenza("CF4", "M4");
-            var istanteEvento1 = DateTime.Now.AddMinutes(-10);
+            var istanteEvento1 = DateTime.Now.AddMinutes(-11);
             var eventoComposizione = new ComposizionePartenze(richiesta, istanteEvento1, "Fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>() { componentePartenza1, componentePartenza2 }
             };
-            var istanteEvento2 = DateTime.Now.AddMinutes(-7);
+            var istanteEvento2 = DateTime.Now.AddMinutes(-6);
             var eventoUscita = new UscitaPartenza(richiesta, "M4", istanteEvento2, "Fonte");
-            var istanteEvento3 = DateTime.Now.AddMinutes(-4);
+            var istanteEvento3 = DateTime.Now.AddMinutes(-3);
             var eventoSulPosto = new ArrivoSulPosto(richiesta, "M4", istanteEvento3, "Fonte");
             expected = new SituazioneMezzo[]
             {
-                new SituazioneMezzo("M4", new SulPosto(), "R2", istanteEvento3),
-                new SituazioneMezzo("M3", new Assegnato(), "R2", istanteEvento1)
+                new SituazioneMezzo()
+                {
+                    Codice = "M4",
+                    CodiceStato = new SulPosto().Codice,
+                    CodiceRichiestaAssistenza = "R2",
+                    IstanteAggiornamentoStato = istanteEvento3
+                },
+                new SituazioneMezzo()
+                {
+                    Codice = "M3",
+                    CodiceStato = new Assegnato().Codice,
+                    CodiceRichiestaAssistenza = "R2",
+                    IstanteAggiornamentoStato = istanteEvento1
+                },
             };
             return richiesta;
         }
@@ -293,8 +317,20 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             var eventoRientratoM4 = new PartenzaRientrata(richiesta, "M4", istanteRientratoM4, "Fonte");
             expected = new SituazioneMezzo[]
             {
-                new SituazioneMezzo("M3", new InRientro(), "R2", istanteSulPostoM3),
-                new SituazioneMezzo("M4", new InSede(), "R2", istanteRientratoM4)
+                new SituazioneMezzo()
+                {
+                    Codice = "M3",
+                    CodiceStato = new InRientro().Codice,
+                    CodiceRichiestaAssistenza = "R2",
+                    IstanteAggiornamentoStato = istanteSulPostoM3
+                },
+                new SituazioneMezzo()
+                {
+                    Codice = "M4",
+                    CodiceStato = new InSede().Codice,
+                    CodiceRichiestaAssistenza = "R2",
+                    IstanteAggiornamentoStato = istanteRientratoM4
+                },
             };
             return richiesta;
         }
@@ -322,8 +358,20 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             var eventoUscitaM2 = new UscitaPartenza(richiesta, "M2", istanteEventoUscitaM2, "Fonte");
             expected = new SituazioneMezzo[]
             {
-                new SituazioneMezzo("M1", new InViaggio(), "R1", istanteSganciatoM1),
-                new SituazioneMezzo("M2", new InViaggio(), "R2", istanteEventoUscitaM2)
+                new SituazioneMezzo()
+                {
+                    Codice = "M1",
+                    CodiceStato = new InViaggio().Codice,
+                    CodiceRichiestaAssistenza = "R1",
+                    IstanteAggiornamentoStato = istanteSganciatoM1
+                },
+                new SituazioneMezzo()
+                {
+                    Codice = "M2",
+                    CodiceStato = new InViaggio().Codice,
+                    CodiceRichiestaAssistenza = "R2",
+                    IstanteAggiornamentoStato = istanteEventoUscitaM2
+                },
             };
             return richiesta;
         }
@@ -370,7 +418,13 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             {
                 Componenti = new HashSet<ComponentePartenza>() { componentePartenza }
             };
-            expected = new SituazioneMezzo("M1", new Assegnato(), "R1", istanteEvento);
+            expected = new SituazioneMezzo()
+            {
+                Codice = "M1",
+                CodiceStato = new Assegnato().Codice,
+                CodiceRichiestaAssistenza = "R1",
+                IstanteAggiornamentoStato = istanteEvento
+            };
             return richiestaConUnicoEventoDiAssegnazione;
         }
     }
