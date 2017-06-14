@@ -10,6 +10,7 @@ import { GestionePermessiFakeService } from "./gestione-permessi-fake.service";
 })
 export class GestionepermessiComponent implements OnInit {
 
+  msgs: Message[];
   files: TreeNode[];
   selectedFile: TreeNode;
 
@@ -19,4 +20,34 @@ export class GestionepermessiComponent implements OnInit {
     this.gestionePermessiService.getFiles().then(files => this.files = files);
   }
 
+  nodeSelect(event){
+    this.msgs=[];
+    this.msgs.push({severity:'info', summary:'Node Selected', detail: event.node.label});
+  }
+
+  nodeUnselected(event){
+    this.msgs=[];
+    this.msgs.push({severity:'info', summary:'Node Selected', detail: event.node.label})
+  }
+
+  expandAll(){
+        this.files.forEach( node => {
+            this.expandRecursive(node, true);
+        } );
+    }
+
+    collapseAll(){
+        this.files.forEach( node => {
+            this.expandRecursive(node, false);
+        } );
+    }
+
+    private expandRecursive(node:TreeNode, isExpand:boolean){
+        node.expanded = isExpand;
+        if(node.children){
+            node.children.forEach( childNode => {
+                this.expandRecursive(childNode, isExpand);
+            } );
+        }
+    }
 }
