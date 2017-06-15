@@ -38,6 +38,7 @@ namespace RestInterface.Controllers.Soccorso
         /// <returns>Lo stato dei mezzi</returns>
         public SituazioneMezziResult Get()
         {
+            var rnd = new Random();
             return new SituazioneMezziResult()
             {
                 SituazioneMezzi = new SituazioneMezzo[]
@@ -51,7 +52,7 @@ namespace RestInterface.Controllers.Soccorso
                         Targa = "12345",
                         DescrizioneSquadra = "Squadra1",
                         DescrizioneUnitaOperativa = "Centrale",
-                        Disponibile = false,
+                        Disponibile = true,
                         IstanteAggiornamentoStato = DateTime.Now.AddMinutes(-5),
                         TooltipSquadra = "A 12/06/17",
                         PersoneSulMezzo = new PersonaSulMezzo[]
@@ -97,7 +98,7 @@ namespace RestInterface.Controllers.Soccorso
                                 CodiceFiscale = "CVCSFS43R23W232K",
                                 Descrizione = "Samantha Grossi",
                                 Tooltip = "CVCSFS43R23W232K",
-                                CapoPartenza = true,
+                                CapoPartenza = false,
                                 Autista = false,
                                 Rimpiazzo = true
                             }
@@ -158,7 +159,7 @@ namespace RestInterface.Controllers.Soccorso
                                 CodiceFiscale = "CVCSFS43R23W232K",
                                 Descrizione = "Wolfgang Amadeus Mozart",
                                 Tooltip = "CVCSFS43R23W232K",
-                                CapoPartenza = true,
+                                CapoPartenza = false,
                                 Autista = false,
                                 Rimpiazzo = true
                             }

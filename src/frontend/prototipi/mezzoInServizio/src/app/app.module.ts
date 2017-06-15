@@ -14,6 +14,8 @@ import { TagAutistaComponent } from './shared/components/tag-autista/tag-autista
 import { ListaMezziComponent } from './lista-mezzi/lista-mezzi.component';
 import { ListaMezziService } from "app/lista-mezzi/lista-mezzi.service";
 import { ListaMezziService_Fake } from "app/lista-mezzi/lista-mezzi-fake.service";
+import { APP_CONFIG } from './app.config';
+import { APP_DI_CONFIG } from './app-config';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,10 @@ import { ListaMezziService_Fake } from "app/lista-mezzi/lista-mezzi-fake.service
     HttpModule,
     NgbModule.forRoot()
   ],
-  providers: [{ provide: ListaMezziService, useClass: ListaMezziService }],
+  providers: [
+    { provide: ListaMezziService, useClass: ListaMezziService_Fake },
+    { provide: APP_CONFIG, useValue: APP_DI_CONFIG }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
