@@ -29,10 +29,10 @@ export class MezzoinservizioComponent implements OnInit {
   }
 
   private setDisponibile(isSet: boolean): void {
-    this.fs.Disponibile = isSet;
+    this.fs.disponibile = isSet;
   }
   private setCodiceStato(isSet: string): void {
-    this.fs.CodiceStato = isSet;
+    this.fs.codiceStato = isSet;
   }
 
   private numeroPersone(): number {

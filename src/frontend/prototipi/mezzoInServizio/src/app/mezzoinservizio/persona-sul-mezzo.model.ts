@@ -23,5 +23,10 @@ export class PersonaSulMezzo {
         /**
          * Indica se la persona ha il ruolo di autista sul mezzo
          */
-        public autista: boolean) { }
+        public autista: boolean,
+        /**
+         * Indica se la persona ha il ruolo di autista sul mezzo
+         */
+        public rimpiazzo: boolean
+        ) { }
 }

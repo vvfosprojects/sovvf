@@ -32,7 +32,7 @@ import { ListaMezziService_Fake } from "app/lista-mezzi/lista-mezzi-fake.service
     HttpModule,
     NgbModule.forRoot()
   ],
-  providers: [{ provide: ListaMezziService, useClass: ListaMezziService_Fake }],
+  providers: [{ provide: ListaMezziService, useClass: ListaMezziService }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

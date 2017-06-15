@@ -5,30 +5,30 @@
 
         <div class="col col-md-2">
           <span class="fa-stack fa-2x">
-            <i class="fa fa-truck fa-stack-1x " [ngClass]="{'text-success' : fs.CodiceStato == 'InSede' || fs.CodiceStato == 'Istituto', 
-                     'text-danger'  : fs.CodiceStato == 'InViaggio' || fs.CodiceStato == 'SulPosto',
-                     'text-primary' : fs.CodiceStato == 'InRientro',
-                     'text-default' : fs.CodiceStato == 'FuoriServizio'}"></i>
+            <i class="fa fa-truck fa-stack-1x " [ngClass]="{'text-success' : fs.codiceStato == 'InSede' || fs.codiceStato == 'Istituto', 
+                     'text-danger'  : fs.codiceStato == 'InViaggio' || fs.codiceStato == 'SulPosto',
+                     'text-primary' : fs.codiceStato == 'InRientro',
+                     'text-default' : fs.codiceStato == 'FuoriServizio'}"></i>
             <i class="fa fa-circle-o fa-stack-2x text-success"></i>
-          <div *ngIf="fs.Disponibile">
+          <div *ngIf="fs.disponibile">
            <i class="text-success"></i>
           </div>
-          <div *ngIf="!fs.Disponibile">
+          <div *ngIf="!fs.disponibile">
            <i class="fa fa-ban fa-stack-2x text-danger"></i>
           </div>
         </span>
         </div>
         <div class="col col-md-3 text-center">
-          <div><span class="badge badge-info">{{fs.Genere}}</span> {{fs.Targa}}</div>
-          <div class="card-text">{{fs.DescrizioneUnitaOperativa}} </div>
+          <div><span class="badge badge-info">{{fs.descrizione}}</span> {{fs.targa}}</div>
+          <div class="card-text">{{fs.descrizioneUnitaOperativa}} </div>
         </div>
         <div class="col col-md-2 text-center">
-          <div class="badge" [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede' || fs.CodiceStato == 'Istituto', 
-                     'badge-danger'  : fs.CodiceStato == 'InViaggio' || fs.CodiceStato == 'SulPosto',
-                     'badge-primary' : fs.CodiceStato == 'InRientro',
-                     'badge-default' : fs.CodiceStato == 'FuoriServizio'}">{{getDescrizioneStato(fs.CodiceStato)}}
+          <div class="badge" [ngClass]="{'badge-success' : fs.codiceStato == 'InSede' || fs.codiceStato == 'Istituto', 
+                     'badge-danger'  : fs.codiceStato == 'InViaggio' || fs.codiceStato == 'SulPosto',
+                     'badge-primary' : fs.codiceStato == 'InRientro',
+                     'badge-default' : fs.codiceStato == 'FuoriServizio'}">{{getDescrizioneStato(fs.codiceStato)}}
           </div>
-          <div> {{fs.DataOra | friendlyDate:20}} {{fs.DataOra | friendlyHour}}</div>
+          <div> {{fs.istanteAggiornamentoStato | friendlyDate:20}} {{fs.istanteAggiornamentoStato | friendlyHour}}</div>
         </div>
         <div class="col col-md-5 text-right">
           <div *ngIf="numeroPersone() > 0">
@@ -43,7 +43,7 @@
 
           </div>
           <div>
-            <a href="#">{{fs.CodiceRichiestaAssistenza}}
+            <a href="#">{{fs.codiceRichiestaAssistenza}}
               </a>
           </div>
         </div>
@@ -66,7 +66,7 @@
         <div class="col-md-6 offset-md-4 h6">
           <div *ngIf="mostraPersone">
             <div class="card">
-              <div class="card-header card-inverse" style="background-color: lightgray; border-color:lightgray; color: black;">{{fs.SiglaSquadra}}</div>
+              <div class="card-header card-inverse" style="background-color: lightgray; border-color:lightgray; color: black;">{{fs.descrizioneSquadra}}</div>
 
               <div class="card-block">
                 <p class="card-text" *ngFor="let p of fs.personeSulMezzo" data-toggle="tooltip" data-placement="top" title={{p.codiceFiscale}}>

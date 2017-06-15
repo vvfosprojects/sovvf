@@ -11,75 +11,68 @@ export class ListaMezziService_Fake {
     new MezzoInServizio(
       "121",
       "Centrale",
-      "M_43445",
-      "APS",
+      "M_43445   APS",
       "43445",
       "InViaggio",
       new Date(),
       "134.565.331",
       true,
       "1/A",
-      "A",
-      new Date(),
+      "A 12/06/2017",
       [
-        new PersonaSulMezzo("RSSMRI78Y65T453R", "CS Mario Rossi", "Mariolino", true, false),
-        new PersonaSulMezzo("VRDGSP78Y65T453R", "CS Giuseppe Verdi", "Peppino", false, true),
-        new PersonaSulMezzo("PCCGCM78Y65T453R", "CS Giacomo Puccini", "Giacomino", false, false),
-        new PersonaSulMezzo("GLLGLL78Y65T453R", "CS Galileo Galilei", "Gelotto", false, false),
-        new PersonaSulMezzo("DVCLND78Y65T453R", "CS Leonardo Da Vinci", "Leonarduccio", false, false)
+        new PersonaSulMezzo("RSSMRI78Y65T453R", "CS Mario Rossi", "Mariolino", true, false, false),
+        new PersonaSulMezzo("VRDGSP78Y65T453R", "CS Giuseppe Verdi", "Peppino", false, true, true),
+        new PersonaSulMezzo("PCCGCM78Y65T453R", "CS Giacomo Puccini", "Giacomino", false, false, false),
+        new PersonaSulMezzo("GLLGLL78Y65T453R", "CS Galileo Galilei", "Gelotto", false, false, true),
+        new PersonaSulMezzo("DVCLND78Y65T453R", "CS Leonardo Da Vinci", "Leonarduccio", false, false, false)
       ]),
        new MezzoInServizio(
       "123",
       "Centrale",
-      "M_13445",
-      "APS",
+      "M_13445   APS",
       "13445",
       "InViaggio",
       new Date(2017, 5, 5, 10, 15, 20),
       "134.565.332",
       true,
       "2/A",
-      "A",
-       new Date(2017, 5, 5, 8, 0, 0),
+      "A 11/06/2017",
       [
-        new PersonaSulMezzo("RSSMRI78Y65T453R", "CS Mario Rossi", "Mariolino", true, false),
-        new PersonaSulMezzo("VRDGSP78Y65T453R", "CS Giuseppe Verdi", "Peppino", false, true),
-        new PersonaSulMezzo("PCCGCM78Y65T453R", "CS Giacomo Puccini", "Giacomino", false, false),
-        new PersonaSulMezzo("GLLGLL78Y65T453R", "CS Galileo Galilei", "Gelotto", false, false),
-        new PersonaSulMezzo("DVCLND78Y65T453R", "CS Leonardo Da Vinci", "Leonarduccio", false, false)
+        new PersonaSulMezzo("RSSMRI78Y65T453R", "CS Mario Rossi", "Mariolino", true, false, true),
+        new PersonaSulMezzo("VRDGSP78Y65T453R", "CS Giuseppe Verdi", "Peppino", false, true, false),
+        new PersonaSulMezzo("PCCGCM78Y65T453R", "CS Giacomo Puccini", "Giacomino", false, false, false),
+        new PersonaSulMezzo("GLLGLL78Y65T453R", "CS Galileo Galilei", "Gelotto", false, false, true),
+        new PersonaSulMezzo("DVCLND78Y65T453R", "CS Leonardo Da Vinci", "Leonarduccio", false, false, false)
       ]),
-    new MezzoInServizio(
+      new MezzoInServizio(
       "54",
       "Tuscolano I",
-      "M_53245",
-      "ABP",
+      "M_53245   ABP",
       "53245",
       "InViaggio",
       new Date(),
       "134.333.222",
       true,
       "3/A",
-      "A",
-      new Date(),
-      [
-        new PersonaSulMezzo("MNBHJU78Y65T453R", "CS Mario Bianchi", "Mariolino", true, false),
-        new PersonaSulMezzo("BRNGSP78Y65T453R", "CS Giuseppe Bernardi", "Peppino", false, true),
-        new PersonaSulMezzo("VRDGSP78Y65T453R", "CS Giacomo Verdi", "Giacomino", false, false),
-        new PersonaSulMezzo("PLTGSP78Y65T453R", "CS Giuseppe Paoletti", "Giuseppino", false, false),
-        new PersonaSulMezzo("RSSPAL78Y65T453R", "CS Paolo Rossi", "Paolino", false, false)
-      ]),
-    new MezzoInServizio(
+      "A 12/06/2017",
+       [
+        new PersonaSulMezzo("MNBHJU78Y65T453R", "CS Mario Bianchi", "Mariolino", true, false, false),
+        new PersonaSulMezzo("BRNGSP78Y65T453R", "CS Giuseppe Bernardi", "Peppino", false, true, true),
+        new PersonaSulMezzo("VRDGSP78Y65T453R", "CS Giacomo Verdi", "Giacomino", false, false, true),
+        new PersonaSulMezzo("PLTGSP78Y65T453R", "CS Giuseppe Paoletti", "Giuseppino", false, false, false),
+        new PersonaSulMezzo("RSSPAL78Y65T453R", "CS Paolo Rossi", "Paolino", false, false, false)
+      ])
+     /* new MezzoInServizio(
       '12',
       'Centrale',
-      'M_34564',
-      'APS',
+      'M_34564   APS',
       '34564',
       'SulPosto',
       new Date(2017, 5, 5, 10, 9, 20),
       '134.345.123',
       true,
       '1/C',
-      'C',
+      'C new Date(2017, 5, 5, 8, 0, 0)',
       new Date(2017, 5, 5, 8, 0, 0),
       [
        new PersonaSulMezzo("MNBHJU78Y65T453R", "CS Mario Bertolo", "Mariolino", true, false),
@@ -282,8 +275,8 @@ export class ListaMezziService_Fake {
       false,
       '',
       '',
-      null,
-      [])
+      null,  
+      [])  */
   ];
 
   constructor() { }

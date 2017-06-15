@@ -2,19 +2,17 @@ import { PersonaSulMezzo } from "./persona-sul-mezzo.model";
 
 export class MezzoInServizio {
 
-  constructor(public Codice: string,
-   public DescrizioneUnitaOperativa: string,
-   public Sigla: string,
-   public Genere: string,
-   public Targa: string,
-   public CodiceStato: string,
-   public DataOra: Date,
-   public CodiceRichiestaAssistenza: string,
-   public Disponibile: boolean,
-   public SiglaSquadra: string,
-   public Turno: string,
-   public DataServizio: Date,
-   
+  constructor(public codice: string,
+   public descrizioneUnitaOperativa: string,
+   public descrizione: string,  /// descrizione è la sigla ed il genere mezzo
+   public targa: string,      
+   public codiceStato: string,    
+   public istanteAggiornamentoStato: Date,    
+   public codiceRichiestaAssistenza: string,
+   public disponibile: boolean,
+   public descrizioneSquadra: string,  /// è il turno e la data servizio
+   public tooltipSquadra : string,  
+  
    /**
     * Rappresenta l'elenco delle persone che sono presenti sul mezzo
     */
