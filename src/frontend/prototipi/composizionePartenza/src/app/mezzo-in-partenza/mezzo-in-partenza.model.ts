@@ -180,8 +180,8 @@ export class MezzoInPartenza {
     }
 
     /**
-     * Accept a squadra
-     * @param The squadra being accepted
+     * Accept a componente
+     * @param The componente being accepted
      */
     public acceptComponente(target: any): void {
         this.compositoreService.addComponenteAMezzo(target, this);
