@@ -14,10 +14,10 @@
                     "children": [{
                         "label": "UCL1", 
                         "icon": "fa fa-home", 
-                        "data": "Expenses Document"}, 
+                        "data": "UCL 1"}, 
                        {"label": "UCL2",
                         "icon": "fa fa-home",
-                        "data": "Resume Document"}]
+                        "data": "UCL 2"}]
                 },
                 {
                     "label": "LOMBARDIA",
@@ -27,11 +27,13 @@
                     "children": [{
                         "label": "BERGAMO",
                          "icon": "fa fa-home",
-                         "data": "Invoices for this month"},
+                         "data": "Bergamo"},
                         {"label": "LODI",
-                        "icon":"fga fa-home"},
+                        "icon":"fga fa-home",
+                        "data": "Lodi"},
                         {"label": "MILANO",
-                        "icon": "fa fa-home"}
+                        "icon": "fa fa-home",
+                        "data": "Milano"}
                          ]
                 }]
         }        
