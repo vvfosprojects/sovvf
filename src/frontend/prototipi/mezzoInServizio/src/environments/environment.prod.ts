@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: 'http://localhost:2661/api',
+  title: 'soVVF'
 };

@@ -6,19 +6,18 @@ import 'rxjs/add/operator/catch';
 
 import { MezzoInServizio } from '../mezzoinservizio/mezzoinservizio.model';
 import { PersonaSulMezzo } from "../mezzoinservizio/persona-sul-mezzo.model";
-import { APP_CONFIG } from '../app.config';
-import { AppConfig } from '../app-config';
+import { environment } from 'environments/environment';
+
+const API_URL = environment.apiUrl;
 
 @Injectable()
 export class ListaMezziService {
   //private url: string = "http://localhost:2661/api/situazioneMezzi";
 
-  constructor(
-    private http: Http,
-    @Inject(APP_CONFIG) private config: AppConfig) { }
+  constructor(private http: Http) { }
 
   public getMezzi(): Observable<MezzoInServizio[]> {
-    return this.http.get(this.config.apiEndpoint + 'situazioneMezzi')
+    return this.http.get(API_URL + '/situazioneMezzi')
       .map(this.extractData)
       .catch(this.handleError);
   }
