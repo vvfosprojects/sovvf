@@ -47,6 +47,8 @@ namespace Modello.Classi.Soccorso
         public RichiestaAssistenza()
         {
             this.eventi = new List<Evento>();
+            this.Tipologie = new List<TipologiaRichiesta>();
+            this.Tags = new HashSet<string>();
         }
 
         /// <summary>
@@ -207,7 +209,22 @@ namespace Modello.Classi.Soccorso
         ///   Per es. è la lista { valanga, soccorso a persona, ricerca disperso, messa in sicurezza
         ///   } in un sinistro simile al Rigopiano
         /// </remarks>
-        public IList<string> Tipologie { get; set; }
+        public IList<TipologiaRichiesta> Tipologie { get; set; }
+
+        /// <summary>
+        ///   E' l'indirizzo della richiesta
+        /// </summary>
+        public string Indirizzo { get; set; }
+
+        /// <summary>
+        ///   E' la zona di emergenza a cui la richiesta è legata
+        /// </summary>
+        public string ZonaEmergenza { get; set; }
+
+        /// <summary>
+        ///   Sono i tags legati alla richiesta di assistenza
+        /// </summary>
+        public ISet<string> Tags { get; set; }
 
         /// <summary>
         ///   Indica se la richiesta è aperta

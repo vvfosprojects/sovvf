@@ -32,12 +32,19 @@ namespace Modello.Classi.Soccorso.Eventi
         /// <summary>
         ///   Costruttore della classe. A seguito della chiamata, la richiesta risulta chiusa.
         /// </summary>
+        /// <param name="motivazione">E' la motivazione della chiusura</param>
         /// <param name="richiesta">E' la richiesta alla quale l'evento deve essere aggiunto</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public ChiusuraRichiesta(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte) : base(richiesta, istante, codiceFonte)
+        public ChiusuraRichiesta(string motivazione, RichiestaAssistenza richiesta, DateTime istante, string codiceFonte) : base(richiesta, istante, codiceFonte)
         {
             richiesta.IstanteChiusura = this.Istante;
+            this.Motivazione = motivazione;
         }
+
+        /// <summary>
+        ///   Indica la motivazione della chiusura
+        /// </summary>
+        public string Motivazione { get; }
     }
 }

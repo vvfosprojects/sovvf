@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classi\Organigramma\TagNodo.cs" />
+    <Compile Include="Classi\Soccorso\TipologiaRichiesta.cs" />
     <Compile Include="Classi\Utenti\Autenticazione\Utente.cs" />
     <Compile Include="Classi\Geo\Cerchio.cs" />
     <Compile Include="Classi\Geo\Geolocalizzazione.cs" />
@@ -104,10 +105,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\CommandDTO\ComponiPartenzaCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\ComponiPartenza\ComponiPartenzaCommandHandler.cs" />
+    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\InserisciTelefonata\CommandDTO\Azione.cs" />
+    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\InserisciTelefonata\CommandDTO\InserisciTelefonataCommand.cs" />
+    <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\InserisciTelefonata\InserisciTelefonataCommandHandler.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\RichiestaAssistenza\QueryDTO\SintesiRichiestaAssistenzaQuery.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\RichiestaAssistenza\ResultDTO\SintesiRichiestaAssistenzaResult.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\RichiestaAssistenza\SintesiRichiestaAssistenzaQueryHandler.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\ResultDTO\PersonaSulMezzo.cs" />
+    <Compile Include="Servizi\Infrastruttura\Anagrafiche\IGetTipoInterventoByCodice.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiestePerSituazioneMezzi.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\QueryDTO\InfoUnitaOperativa.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\QueryDTO\SituazioneMezziQuery.cs" />
@@ -117,6 +122,7 @@
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetNumeroSquadreSoccorsoOraInServizio.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetNumeroMezziSoccorsoOraInServizio.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative.cs" />
+    <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IInserisciNuovaRichiesta.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\Bindings.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\Implementazioni\EspandiTagsNodoSuOrganigramma.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\Implementazioni\GetUnitaOperativaPerCodice.cs" />

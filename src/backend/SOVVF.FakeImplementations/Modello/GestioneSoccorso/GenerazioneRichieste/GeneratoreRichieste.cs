@@ -171,7 +171,10 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(ra => ra.CodiciUnitaOperativeAllertate, f => new HashSet<string> { this.codiceUnitaOperativa })
                 .RuleFor(ra => ra.Geolocalizzazione, f => fakerGeolocalizzazione.Generate())
                 .RuleFor(ra => ra.Tipologie, f => this.GeneraTipologie())
-                .RuleFor(ra => ra.IstanteChiusura, f => null);
+                .RuleFor(ra => ra.IstanteChiusura, f => null)
+                .RuleFor(ra => ra.Indirizzo, f => f.Address.StreetAddress())
+                .RuleFor(ra => ra.ZonaEmergenza, f => string.Empty)
+                .Ignore(ra => ra.Tags);
 
             var fakerTelefonata = new Faker<Telefonata>()
                 .StrictMode(true)
@@ -184,8 +187,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(t => t.NotePrivate, f => f.Lorem.Sentence(10))
                 .RuleFor(t => t.NotePubbliche, f => f.Lorem.Sentence(10))
                 .RuleFor(t => t.NumeroTelefono, f => f.Phone.PhoneNumber())
-                .RuleFor(t => t.RagioneSociale, f => f.Company.CompanyName())
-                .Ignore(t => t.IstantePresaInCarico);
+                .RuleFor(t => t.RagioneSociale, f => f.Company.CompanyName());
 
             var numeroInterventi = (int)(this.dataMax.Subtract(this.dataMin).TotalDays * this.richiesteMedieAlGiorno);
             var richiesteConParametri = Enumerable.Range(1, numeroInterventi)
@@ -208,8 +210,6 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 var t = fakerTelefonata
                     .CustomInstantiator(f => new Telefonata(r.Richiesta, f.Random.Replace("??###"), r.Parametri.DataSegnalazione, "FonteTelefonata"))
                     .Generate();
-
-                t.IstantePresaInCarico = r.Parametri.DataSegnalazione;
             }
 
             var parcoMezzi = new ParcoMezzi(this.numeroMezzi, this.codiceUnitaOperativa);
@@ -259,25 +259,25 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         ///   lista contiene tre tipologie.
         /// </summary>
         /// <returns>La lista delle tipologie</returns>
-        private List<string> GeneraTipologie()
+        private List<TipologiaRichiesta> GeneraTipologie()
         {
             var tipologie =
-                new string[]
+                new TipologiaRichiesta[]
                 {
-                    "Soccorso a persona",
-                    "Incendio generico",
-                    "Incendio boschivo",
-                    "Danni d'acqua",
-                    "Alluvione",
-                    "Esplosione",
-                    "Incidente stradale",
-                    "Apertura porta"
+                    new TipologiaRichiesta("Soccorso a persona", "Soccorso a persona"),
+                    new TipologiaRichiesta("Incendio generico", "Incendio generico"),
+                    new TipologiaRichiesta("Incendio boschivo", "Incendio boschivo"),
+                    new TipologiaRichiesta("Danni d'acqua", "Danni d'acqua"),
+                    new TipologiaRichiesta("Alluvione", "Alluvione"),
+                    new TipologiaRichiesta("Esplosione", "Esplosione"),
+                    new TipologiaRichiesta("Incidente stradale", "Incidente stradale"),
+                    new TipologiaRichiesta("Apertura porta", "Apertura porta"),
                 };
 
             var f = new Faker();
             var numeroTipologie = f.Random.WeightedRandom<int>(new int[] { 1, 2, 3 }, new float[] { .7F, .2F, .1F });
             var range = Enumerable.Range(1, numeroTipologie).Select(x => f.PickRandom(tipologie));
-            var set = new HashSet<string>(range); // elimina i duplicati
+            var set = new HashSet<TipologiaRichiesta>(range); // elimina i duplicati
 
             return set.ToList();
         }
