@@ -68,11 +68,6 @@ namespace Modello.Classi.Soccorso.Eventi.Segnalazioni
         public abstract string CodiceOrigine { get; }
 
         /// <summary>
-        ///   E' l'istante in cui la segnalazione è stata presa in carico.
-        /// </summary>
-        public DateTime IstantePresaInCarico { get; set; }
-
-        /// <summary>
         ///   E' la geolocalizzazione della segnalazione. Proviene per esempio dall'integrazione col
         ///   112 (scheda contatto) nella forma di un punto, una poligonale, un cerchio, ecc.
         ///   Nota: non è la geolocalizzazione dell'evento calamitoso, vigilanza, ecc.
