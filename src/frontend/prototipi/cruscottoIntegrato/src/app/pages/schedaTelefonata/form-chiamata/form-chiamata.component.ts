@@ -93,9 +93,9 @@ export class FormChiamataComponent implements OnInit {
   constructor( @Inject(FormBuilder) private fb: FormBuilder, private fb2: FormBuilder, private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone, private _ricercaTipologieService: RicercaTipologieService, private _ricercaService: RicercaService, ) {
     this.formChiamataModel = new FormChiamataModel();
-    this.formChiamataModel.numero_chiamata = "123.4567.890";
+    this.formChiamataModel.numeroChiamata = "123.4567.890";
     this.formChiamataModel.operatore = "Mario Rossi";
-    this.formChiamataModel.scheda_contatto = "123.456.789";
+    this.formChiamataModel.schedaContatto = "123.456.789";
     // this.formChiamataModel.nome = "primo";
 
   }
@@ -105,18 +105,18 @@ export class FormChiamataComponent implements OnInit {
     this.myForm = this.fb.group({
       //'nome': [this.formChiamataModel.nome],
       //'cognome': [this.formChiamataModel.cognome, Validators.compose([Validators.required, this.validaCognome])],
-      'tipo_interv': [this.formChiamataModel.tipo_interv],
+      'tipo_interv': [this.formChiamataModel.tipoInterv],
       'indirizzo': [this.searchControl],
       'optionsModel': [this.model], // Default model
       'formRagSoc': this.formRagSoc,
       //'ragione_sociale': [this.formChiamataModel.ragione_sociale],
       'telefono': [this.formChiamataModel.telefono],
-      'zona_emergenza': [this.formChiamataModel.zona_emergenza],
+      'zona_emergenza': [this.formChiamataModel.zonaEmergenza],
       'tag': [this.formChiamataModel.tag],
       'motivazione': [this.formChiamataModel.motivazione],
-      'note_indirizzo': [this.formChiamataModel.note_indirizzo],
-      'note_pubbliche': [this.formChiamataModel.note_pubbliche],
-      'note_private': [this.formChiamataModel.note_private]
+      'note_indirizzo': [this.formChiamataModel.noteIndirizzo],
+      'note_pubbliche': [this.formChiamataModel.noteIndirizzo],
+      'note_private': [this.formChiamataModel.notePrivate]
 
       //,
       //     'cognome': [this.formChiamataModel.cognome, Validators.required],
@@ -139,7 +139,7 @@ export class FormChiamataComponent implements OnInit {
     this.formRagSoc = this.fb2.group({
       'nome': [this.formChiamataModel.nome],
       'cognome': [this.formChiamataModel.cognome],
-      'ragione_sociale': [this.formChiamataModel.ragione_sociale],
+      'ragione_sociale': [this.formChiamataModel.ragioneSociale],
       //'telefono': [this.formChiamataModel.telefono]
     }, { validator: this.validaRichiedente.bind(this) });
 
@@ -272,23 +272,23 @@ export class FormChiamataComponent implements OnInit {
   */
 
   onClickCC() {
-    this.formChiamataModel.ragione_sociale = "Carabinieri";
+    this.formChiamataModel.ragioneSociale = "Carabinieri";
     console.log("onClickCC !!");
     this.formRagSoc.controls['ragione_sociale'].setValue("Carabinieri");
   }
   onClickPS() {
-    this.formChiamataModel.ragione_sociale = "Polizia di Stato";
+    this.formChiamataModel.ragioneSociale = "Polizia di Stato";
     this.formRagSoc.controls['ragione_sociale'].setValue("Polizia di Stato");
     console.log("onClickPS !!");
 
   }
   onClickSSU() {
-    this.formChiamataModel.ragione_sociale = "Servizio Sanitario Urgenze";
+    this.formChiamataModel.ragioneSociale = "Servizio Sanitario Urgenze";
     this.formRagSoc.controls['ragione_sociale'].setValue("Servizio Sanitario Urgenze");
     console.log("onClickSSU !!");
   }
   onClickPM() {
-    this.formChiamataModel.ragione_sociale = "Polizia Municipale";
+    this.formChiamataModel.ragioneSociale = "Polizia Municipale";
     this.formRagSoc.controls['ragione_sociale'].setValue("Polizia Municipale");
     console.log("onClickPM !!");
   }

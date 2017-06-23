@@ -1,22 +1,22 @@
 export class FormChiamataModel {
-    numero_chiamata : string;
-    data_chiamata : number = Date.now();
-    ora_chiamata : number = Date.now();
+    numeroChiamata : string;
+    dataChiamata : number = Date.now();
+    oraChiamata : number = Date.now();
     operatore : string;
-    ragione_sociale: string;
-    scheda_contatto: string;
-    tipo_interv: string;
+    ragioneSociale: string;
+    schedaContatto: string;
+    tipoInterv: string;
     cognome: string;
     nome: string;
     telefono : string;
     coordinate : string;
     indirizzo: string;
-    zona_emergenza : string;
+    zonaEmergenza : string;
     tag: string;
     motivazione: string;
-    note_indirizzo: string;
-    note_pubbliche: string;
-    note_private: string;
+    noteIndirizzo: string;
+    notePubbliche: string;
+    notePrivate: string;
 
     constructor(){
     }
