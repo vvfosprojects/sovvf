@@ -20,7 +20,7 @@
 using System;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO
+namespace Modello.Classi.Soccorso.Mezzi.SituazioneMezzo
 {
     /// <summary>
     ///   Contiene la situazione di un mezzo di soccorso, cioè lo stato in cui si trova

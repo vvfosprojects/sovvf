@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Modello.Classi.Organigramma;
 using Modello.Classi.Soccorso.Eventi.Partenze;
+using Modello.Classi.Soccorso.Mezzi.SituazioneMezzo;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO;
 using Modello.Servizi.Infrastruttura.GestioneSoccorso;
