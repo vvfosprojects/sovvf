@@ -23,19 +23,19 @@
     <div class="input-group">
       <div class="input-group-addon" pTooltip="Numero chiamata" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;">
         <i class="fa fa-hashtag fa-lg" aria-hidden="true"></i> </div> <input type="text" class="form-control" id="num_chiamata"
-        aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.numero_chiamata}}" style="text-align: center;">      </div>
+        aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.numeroChiamata}}" style="text-align: center;">      </div>
   </div>
   <div class="col-lg-2">
     <div class="input-group">
       <div class="input-group-addon" pTooltip="Data chiamata" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;">
         <i class="fa fa-calendar fa-lg" aria-hidden="true"></i> </div> <input type="text" style="text-align: center;" class="form-control"
-        id="data_chiam" aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.data_chiamata | date:'dd/MM/y'}}">      </div>
+        id="data_chiam" aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.dataChiamata | date:'dd/MM/y'}}">      </div>
   </div>
   <div class="col-lg-2">
     <div class="input-group">
       <div class="input-group-addon" pTooltip="Ora chiamata" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;">
         <i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> </div> <input type="text" style="text-align: center;" class="form-control"
-        id="ora_chiam" aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.data_chiamata | date:'HH:mm'}}">      </div>
+        id="ora_chiam" aria-describedby="basic-addon3" readonly="" placeholder="{{formChiamataModel.dataChiamata | date:'HH:mm'}}">      </div>
   </div>
   <div class="col-lg-4">
     <div class="input-group">
@@ -111,7 +111,7 @@
             <div class="input-group-addon" pTooltip="Ragione sociale" tooltipPosition="bottom" data-animation="false" style="min-width: 50px;">
             <i class="fa fa-industry" aria-hidden="true"></i>
             </div>
-            <input type="text" class="form-control" id="ragione_sociale" placeholder="Ragione sociale" value="{{formChiamataModel.ragione_sociale}}"
+            <input type="text" class="form-control" id="ragione_sociale" placeholder="Ragione sociale" value="{{formChiamataModel.ragioneSociale}}"
               formControlName="ragione_sociale">
           </div>
         </div>
@@ -146,7 +146,7 @@
           [scaleControl]="true" [zoom]="zoom">
           <agm-marker [latitude]="latitude" [longitude]="longitude" [label]="'C'" [title]="pippo" [openInfoWindow]=true>
             <agm-info-window>
-              <strong>Chiamata numero {{formChiamataModel.numero_chiamata}}</strong>
+              <strong>Chiamata numero {{formChiamataModel.numeroChiamata}}</strong>
             </agm-info-window>
 
             <agm-circle [latitude]="41.9016819" [longitude]="12.50012449999997" [radius]="7" [fillColor]="'red'" [circleDraggable]="true"
