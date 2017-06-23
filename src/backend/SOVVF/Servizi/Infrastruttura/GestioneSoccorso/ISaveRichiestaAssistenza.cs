@@ -22,7 +22,9 @@ using Modello.Classi.Soccorso;
 namespace Modello.Servizi.Infrastruttura.GestioneSoccorso
 {
     /// <summary>
-    ///   Servizio di salvataggio di una Richiesta di Assistenza
+    ///   Servizio di salvataggio di una richiesta di assistenza. Nel caso in cui sia una nuova
+    ///   richiesta, identificata dall'assenza di un codice, imposta il codice della richiesta e il
+    ///   codice dell'unità operativa competente in base all'utente autenticato.
     /// </summary>
     public interface ISaveRichiestaAssistenza
     {

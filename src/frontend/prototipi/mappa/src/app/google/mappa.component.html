@@ -1,0 +1,13 @@
+<h1>
+  {{title}}
+</h1>
+
+<div class="section">
+ <div class="row">
+      <div class="col col-md-2" *ngFor="let i of puntiMappaGoogle">
+          {{i.codice}} - {{i.tipologia}} - {{i.latitudine}}  - {{i.longitudine}}
+      </div>
+  
+      <div class="col col-md-2 google-mappa"></div>
+</div>      
+</div>      
