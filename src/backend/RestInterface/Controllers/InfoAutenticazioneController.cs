@@ -55,6 +55,7 @@ namespace RestInterface.Controllers
 
             // una volta avuta la username, usiamo altro servizio per recuperare i dati anagrafici
             // per username: var nominativo = servizio2.Get(username);
+#warning Implementare servizio di risoluzione dell'operatore autenticato
             return new InfoUtenteAutenticato()
             {
                 Username = username,
