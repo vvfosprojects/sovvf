@@ -13,7 +13,7 @@ export class ListaMezziService_Fake {
       "Centrale",
       "M_43445   APS",
       "43445",
-      "InViaggio",
+      "InSede",
       new Date(),
       "134.565.331",
       true,

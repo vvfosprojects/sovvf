@@ -1,3 +1,41 @@
 <div class="row">
-    <app-mezzoinservizio *ngFor="let m of mezzi" [mezzo]="m" class="col col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4"></app-mezzoinservizio>
+    <div class="col-3">
+        <div class="card">
+            <div class="card-block">
+                <h6>Filtro sede</h6>
+                <div *ngFor="let sede of sedi">
+                    <input [ngModel]="sede.checked" type="checkbox" (click)="selSede($event, sede)" /> {{ sede.nome }}
+                    <span class="badge badge-pill badge-info">{{ sede.count }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!--
+            Sarebbe bella una cosa del tipo...
+            <filter [nomeFiltro]="Sede" [daFiltrare]="tuttiIMezzi" [nomeProp]="descrizioneSedeOperativa"></filter>
+            <filter [nomeFiltro]="Stato" [daFiltrare]="tuttiIMezzi" [nomeProp]="descrizioneSedeOperativa"></filter>
+            <filter [nomeFiltro]="Genere" [daFiltrare]="tuttiIMezzi" [nomeProp]="genereMezzo"></filter>
+            Ma va generalizzato il componente per il filtro.
+        -->
+
+        <div class="card">
+            <!--<div class="card-header">
+                Filtro stato
+            </div>-->
+            <div class="card-block">
+                <h6>Filtro stato</h6>
+                <div>
+                    <input type="checkbox" /> In Sede
+                    <span class="badge badge-pill badge-info">1</span>
+                </div>
+                <div>
+                    <input type="checkbox" /> In viaggio
+                    <span class="badge badge-pill badge-info">2</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col-9">
+        <app-mezzoinservizio *ngFor="let m of mezzi" [mezzo]="m" class="col col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4"></app-mezzoinservizio>
+    </div>
 </div>
