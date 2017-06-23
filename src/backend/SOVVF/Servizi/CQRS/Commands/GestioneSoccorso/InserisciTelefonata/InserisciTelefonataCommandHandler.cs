@@ -50,7 +50,7 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata
         /// <summary>
         ///   Istanza del servizio
         /// </summary>
-        private readonly IInserisciNuovaRichiesta inserisciNuovaRichiesta;
+        private readonly ISaveRichiestaAssistenza saveRichiestaAssistenza;
 
         /// <summary>
         ///   Il costruttore
@@ -58,18 +58,20 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata
         /// <param name="getTipoInterventoByCodice">
         ///   Istanza del servizio di risoluzione del tipo intervento dal codice
         /// </param>
-        /// <param name="getOperatoreAutenticato">Istanza del servizio che da' l'operatiore autenticato</param>
-        /// <param name="inserisciNuovaRichiesta">
-        ///   Istanza del servizio che inserisce una nuova richiesta
+        /// <param name="getOperatoreAutenticato">
+        ///   Istanza del servizio che restituisce l'operatore autenticato
+        /// </param>
+        /// <param name="saveRichiestaAssistenza">
+        ///   Istanza del servizio che salva una richiesta di assistenza
         /// </param>
         public InserisciTelefonataCommandHandler(
             IGetTipoInterventoByCodice getTipoInterventoByCodice,
             IGetOperatoreAutenticato getOperatoreAutenticato,
-            IInserisciNuovaRichiesta inserisciNuovaRichiesta)
+            ISaveRichiestaAssistenza saveRichiestaAssistenza)
         {
             this.getTipoInterventoByCodice = getTipoInterventoByCodice;
             this.getOperatoreAutenticato = getOperatoreAutenticato;
-            this.inserisciNuovaRichiesta = inserisciNuovaRichiesta;
+            this.saveRichiestaAssistenza = saveRichiestaAssistenza;
         }
 
         /// <summary>
@@ -115,7 +117,7 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata
                     fonte);
             }
 
-            this.inserisciNuovaRichiesta.Inserisci(richiesta);
+            this.saveRichiestaAssistenza.Save(richiesta);
         }
     }
 }
