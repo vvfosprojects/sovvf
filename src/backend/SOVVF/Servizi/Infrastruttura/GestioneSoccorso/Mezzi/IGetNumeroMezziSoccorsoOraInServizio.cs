@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
 
-namespace Modello.Servizi.Infrastruttura.GestioneSoccorso
+namespace Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi
 {
     /// <summary>
     ///   Servizio che restituise il numero totale dei Mezzi disponibili per il soccorso

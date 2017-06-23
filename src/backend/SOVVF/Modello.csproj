@@ -120,7 +120,7 @@
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\SituazioneMezziQueryHandler.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\ResultDTO\SituazioneMezziResult.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetNumeroSquadreSoccorsoOraInServizio.cs" />
-    <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetNumeroMezziSoccorsoOraInServizio.cs" />
+    <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\Mezzi\IGetNumeroMezziSoccorsoOraInServizio.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\Bindings.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\Implementazioni\EspandiTagsNodoSuOrganigramma.cs" />
