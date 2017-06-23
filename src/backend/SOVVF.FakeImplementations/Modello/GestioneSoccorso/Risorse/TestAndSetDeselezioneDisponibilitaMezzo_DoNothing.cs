@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SituazioneMezziQuery.cs" company="CNVVF">
+// <copyright file="TestAndSetDeselezioneDisponibilitaMezzo_DoNothing.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using Modello.Classi.Organigramma;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO;
+using System;
+using Modello.Classi.Soccorso.Risorse;
+using Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaMezzo.CommandDTO;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO
+namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse
 {
     /// <summary>
-    ///   DTO di input della query
+    ///   Servizio fake di deselezione sulla <see cref="DisponibilitaMezzo" />.
     /// </summary>
-    public class SituazioneMezziQuery : IQuery<SituazioneMezziResult>
+    internal class TestAndSetDeselezioneDisponibilitaMezzo_DoNothing : ITestAndSetDeselezioneDisponibilitaMezzo
     {
         /// <summary>
-        ///   E' l'insieme dei nodi dell'organigramma coinvolti nel calcolo degli indicatori
+        ///   Metodo vuoto
         /// </summary>
-        /// <remarks>
-        ///   Se UnitaOperative è un set vuoto allora il calcolo degli indicatori verrà effettuato in
-        ///   base alle regole di profilo assegnate all'utente autenticato
-        /// </remarks>
-        public ISet<InfoUnitaOperativa> UnitaOperative { get; set; }
+        /// <param name="operatore">L'operatore (non usato)</param>
+        /// <param name="codiceMezzo">Il codice mezzo (non usato)</param>
+        public void Esegui(string operatore, string codiceMezzo)
+        {
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SituazioneMezziQuery.cs" company="CNVVF">
+// <copyright file="Bindings.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,37 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
-using Modello.Classi.Organigramma;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Modello.Servizi.CQRS.Commands;
+using Modello.Servizi.CQRS.Queries;
+using SimpleInjector;
+using SimpleInjector.Packaging;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO
+namespace Modello
 {
     /// <summary>
-    ///   DTO di input della query
+    ///   Package per la dependency injection del modello. Questo package associa alle interfacce dei
+    ///   servizi le relative implementazioni (internal) presenti nello stesso assembly.
     /// </summary>
-    public class SituazioneMezziQuery : IQuery<SituazioneMezziResult>
+    public class Bindings : IPackage
     {
         /// <summary>
-        ///   E' l'insieme dei nodi dell'organigramma coinvolti nel calcolo degli indicatori
+        ///   Registrazione dei servizi
         /// </summary>
-        /// <remarks>
-        ///   Se UnitaOperative è un set vuoto allora il calcolo degli indicatori verrà effettuato in
-        ///   base alle regole di profilo assegnate all'utente autenticato
-        /// </remarks>
-        public ISet<InfoUnitaOperativa> UnitaOperative { get; set; }
+        /// <param name="container">Il container</param>
+        public void RegisterServices(Container container)
+        {
+            container.Register(
+                typeof(ICommandHandler<>),
+                new[] { typeof(ICommandHandler<>).Assembly });
+
+            container.Register(
+                typeof(IQueryHandler<,>),
+                new[] { typeof(IQueryHandler<,>).Assembly });
+        }
     }
 }

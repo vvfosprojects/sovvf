@@ -17,14 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using Modello.Classi.Soccorso.Mezzi;
-using Modello.Classi.Soccorso.Mezzi.SituazioneMezzo;
+using Modello.Classi.Organigramma;
+using Modello.Servizi.CQRS.Queries;
+using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO;
 
 namespace RestInterface.Controllers.Soccorso
@@ -35,140 +32,35 @@ namespace RestInterface.Controllers.Soccorso
     public class SituazioneMezziController : ApiController
     {
         /// <summary>
+        ///   L'istanza dell'handler della query
+        /// </summary>
+        private readonly IQueryHandler<SituazioneMezziQuery, SituazioneMezziResult> handler;
+
+        /// <summary>
+        ///   Il costruttore
+        /// </summary>
+        /// <param name="handler">L'handler della query</param>
+        public SituazioneMezziController(IQueryHandler<SituazioneMezziQuery, SituazioneMezziResult> handler)
+        {
+            this.handler = handler;
+        }
+
+        /// <summary>
         ///   Restituisce la situazione dei mezzi di interesse per l'utente autenticato
         /// </summary>
+        /// <param name="query">La query</param>
         /// <returns>Lo stato dei mezzi</returns>
-        public SituazioneMezziResult Get()
+        public SituazioneMezziResult Get(SituazioneMezziQuery query)
         {
-            var rnd = new Random();
-            return new SituazioneMezziResult()
+            if (query == null)
             {
-                SituazioneMezzi = new SituazioneMezzo[]
+                query = new SituazioneMezziQuery()
                 {
-                    new SituazioneMezzo()
-                    {
-                        Codice = "CODICEMEZZO1",
-                        CodiceRichiestaAssistenza = "123.456.789",
-                        CodiceStato = "InViaggio",
-                        Descrizione = "APS/11",
-                        Targa = "12345",
-                        DescrizioneSquadra = "Squadra1",
-                        DescrizioneUnitaOperativa = "Centrale",
-                        Disponibile = true,
-                        IstanteAggiornamentoStato = DateTime.Now.AddMinutes(-5),
-                        TooltipSquadra = "A 12/06/17",
-                        PersoneSulMezzo = new PersonaSulMezzo[]
-                        {
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "AAABBB65T74Y777R",
-                                Descrizione = "Michele Giorgi",
-                                Tooltip = "AAABBB65T74Y777R",
-                                CapoPartenza = true,
-                                Autista = false,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "XXXPPP67T54T777R",
-                                Descrizione = "Antonio Carli",
-                                Tooltip = "XXXPPP67T54T777R",
-                                CapoPartenza = false,
-                                Autista = true,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "LLLKKK65T34R454T",
-                                Descrizione = "Antonio Miceli",
-                                Tooltip = "LLLKKK65T34R454T",
-                                CapoPartenza = false,
-                                Autista = false,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "OOOTTT65R45E232W",
-                                Descrizione = "Gennaro Vitale",
-                                Tooltip = "OOOTTT65R45E232W",
-                                CapoPartenza = false,
-                                Autista = false,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "CVCSFS43R23W232K",
-                                Descrizione = "Samantha Grossi",
-                                Tooltip = "CVCSFS43R23W232K",
-                                CapoPartenza = false,
-                                Autista = false,
-                                Rimpiazzo = true
-                            }
-                        }
-                    },
-                    new SituazioneMezzo()
-                    {
-                        Codice = "CODICEMEZZO2",
-                        CodiceRichiestaAssistenza = "987.654.321",
-                        CodiceStato = "InSede",
-                        Descrizione = "APS/10",
-                        Targa = "44444",
-                        DescrizioneSquadra = "Squadra2",
-                        DescrizioneUnitaOperativa = "Tuscolano",
-                        Disponibile = true,
-                        IstanteAggiornamentoStato = DateTime.Now.AddMinutes(-15),
-                        TooltipSquadra = "A 12/06/17",
-                        PersoneSulMezzo = new PersonaSulMezzo[]
-                        {
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "AAABBB65T74Y777R",
-                                Descrizione = "Gioacchino Verdi",
-                                Tooltip = "AAABBB65T74Y777R",
-                                CapoPartenza = true,
-                                Autista = false,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "XXXPPP67T54T777R",
-                                Descrizione = "Giacomo Puccini",
-                                Tooltip = "XXXPPP67T54T777R",
-                                CapoPartenza = false,
-                                Autista = true,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "LLLKKK65T34R454T",
-                                Descrizione = "Giovanni Pascoli",
-                                Tooltip = "LLLKKK65T34R454T",
-                                CapoPartenza = false,
-                                Autista = false,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "OOOTTT65R45E232W",
-                                Descrizione = "Ludovico Van Beethoven",
-                                Tooltip = "OOOTTT65R45E232W",
-                                CapoPartenza = false,
-                                Autista = false,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "CVCSFS43R23W232K",
-                                Descrizione = "Wolfgang Amadeus Mozart",
-                                Tooltip = "CVCSFS43R23W232K",
-                                CapoPartenza = false,
-                                Autista = false,
-                                Rimpiazzo = true
-                            }
-                        }
-                    }
-                }
-            };
+                    UnitaOperative = new HashSet<InfoUnitaOperativa>()
+                };
+            }
+
+            return this.handler.Handle(query);
         }
     }
 }

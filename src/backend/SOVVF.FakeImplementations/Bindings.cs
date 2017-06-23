@@ -38,6 +38,28 @@ namespace SOVVF.FakeImplementations
             container.Register<global::Modello.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaRadice, Modello.Organigramma.GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato>();
 
             container.Register<global::Modello.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativeVisibiliPerSoccorso, Modello.Organigramma.GetUnitaOperativeVisibiliPerSoccorso_OperatoreDirezioneRegionaleLazio>();
+
+            container.Register<global::Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetSituazioneMezzi, Modello.GestioneSoccorso.Mezzi.GetSituazioneMezzi_RandomFake>();
+
+            container.Register<global::Modello.Servizi.Infrastruttura.Anagrafiche.IGetTipoInterventoByCodice, Modello.Infrastruttura.Anagrafiche.GetTipoInterventoByCodice_Fake>();
+
+            container.Register<global::Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra.CommandDTO.ITestAndSetSelezioneDisponibilitaSquadra, Modello.GestioneSoccorso.Risorse.TestAndSetSelezioneDisponibilitaSquadra_Fake>();
+
+            container.Register<global::Modello.Classi.Soccorso.Risorse.ITestAndSetSelezioneDisponibilitaMezzo, Modello.GestioneSoccorso.Risorse.TestAndSetSelezioneDisponibilitaMezzo_Fake>();
+
+            container.Register<global::Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaSquadra.CommandDTO.ITestAndSetDeselezioneDisponibilitaSquadra, Modello.GestioneSoccorso.Risorse.TestAndSetDeselezioneDisponibilitaSquadra_DoNothing>();
+
+            container.Register<global::Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaMezzo.CommandDTO.ITestAndSetDeselezioneDisponibilitaMezzo, Modello.GestioneSoccorso.Risorse.TestAndSetDeselezioneDisponibilitaMezzo_DoNothing>();
+
+            container.Register<global::Modello.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza, Modello.GestioneSoccorso.SaveRichiestaDiAssistenza_Fake>();
+
+            container.Register<global::Modello.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaAssistenzaById, Modello.GestioneSoccorso.GetRichiestaAssistenzaById_Fake>();
+
+            container.Register<global::Modello.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative, Modello.GestioneSoccorso.GetRichiesteAssistenzaPerIndicatoriPerUnitaOperative_Empty>();
+
+            container.Register<global::Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetNumeroMezziSoccorsoOraInServizio, Modello.GestioneSoccorso.Mezzi.GetNumeroMezziSoccorsoOraInServizio_Fake>();
+
+            container.Register<global::Modello.Servizi.Infrastruttura.GestioneSoccorso.IGetNumeroSquadreSoccorsoOraInServizio, Modello.GestioneSoccorso.Mezzi.GetNumeroSquadreSoccorsoOraInServizio_Fake>();
         }
     }
 }

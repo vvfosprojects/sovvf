@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bindings.cs" />
     <Compile Include="Classi\Organigramma\TagNodo.cs" />
     <Compile Include="Classi\Soccorso\TipologiaRichiesta.cs" />
     <Compile Include="Classi\Utenti\Autenticazione\Utente.cs" />
@@ -114,7 +115,7 @@
     <Compile Include="Classi\Soccorso\Mezzi\SituazioneMezzo\PersonaSulMezzo.cs" />
     <Compile Include="Servizi\Infrastruttura\Anagrafiche\IGetTipoInterventoByCodice.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiestePerSituazioneMezzi.cs" />
-    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\QueryDTO\InfoUnitaOperativa.cs" />
+    <Compile Include="Classi\Organigramma\InfoUnitaOperativa.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\QueryDTO\SituazioneMezziQuery.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\SituazioneMezzo\SituazioneMezzo.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\SituazioneMezziQueryHandler.cs" />
@@ -122,6 +123,8 @@
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetNumeroSquadreSoccorsoOraInServizio.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\Mezzi\IGetNumeroMezziSoccorsoOraInServizio.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative.cs" />
+    <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\Mezzi\IGetSituazioneMezzi.cs" />
+    <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\Mezzi\Implementation\GetSituazioneMezzi.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\Bindings.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\Implementazioni\EspandiTagsNodoSuOrganigramma.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\Implementazioni\GetUnitaOperativaPerCodice.cs" />

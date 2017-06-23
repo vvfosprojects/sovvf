@@ -17,7 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO
+namespace Modello.Classi.Organigramma
 {
     /// <summary>
     ///   Indica un nodo dell'organigramma e la necessità o meno di considerare anche tutti i nodi figli

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SituazioneMezziQuery.cs" company="CNVVF">
+// <copyright file="GetNumeroMezziSoccorsoOraInServizio_Fake.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
-using Modello.Classi.Organigramma;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO
+namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi
 {
     /// <summary>
-    ///   DTO di input della query
+    ///   Servizio fake che restituise il numero totale dei mezzi disponibili per il soccorso
     /// </summary>
-    public class SituazioneMezziQuery : IQuery<SituazioneMezziResult>
+    internal class GetNumeroMezziSoccorsoOraInServizio_Fake : IGetNumeroMezziSoccorsoOraInServizio
     {
         /// <summary>
-        ///   E' l'insieme dei nodi dell'organigramma coinvolti nel calcolo degli indicatori
+        ///   Restituisce il numero totale dei Mezzi disponibili per il soccorso
         /// </summary>
-        /// <remarks>
-        ///   Se UnitaOperative è un set vuoto allora il calcolo degli indicatori verrà effettuato in
-        ///   base alle regole di profilo assegnate all'utente autenticato
-        /// </remarks>
-        public ISet<InfoUnitaOperativa> UnitaOperative { get; set; }
+        /// <param name="codice">elenco dei codici dell'Unità Operativa</param>
+        /// <returns>Il numero totale dei Mezzi</returns>
+        public int Get(IEnumerable<string> codice)
+        {
+            return 10;
+        }
     }
 }

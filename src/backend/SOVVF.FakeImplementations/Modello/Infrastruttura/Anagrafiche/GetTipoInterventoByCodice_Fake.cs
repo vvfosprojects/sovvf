@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SituazioneMezziQuery.cs" company="CNVVF">
+// <copyright file="GetTipoInterventoByCodice_Fake.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,29 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
-using Modello.Classi.Organigramma;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Modello.Classi.Soccorso;
+using Modello.Servizi.Infrastruttura.Anagrafiche;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO
+namespace SOVVF.FakeImplementations.Modello.Infrastruttura.Anagrafiche
 {
     /// <summary>
-    ///   DTO di input della query
+    ///   Servizio fake che restituisce il tipo intervento a partire dal suo codice
     /// </summary>
-    public class SituazioneMezziQuery : IQuery<SituazioneMezziResult>
+    internal class GetTipoInterventoByCodice_Fake : IGetTipoInterventoByCodice
     {
         /// <summary>
-        ///   E' l'insieme dei nodi dell'organigramma coinvolti nel calcolo degli indicatori
+        ///   Restituisce il tipo di intervento
         /// </summary>
-        /// <remarks>
-        ///   Se UnitaOperative è un set vuoto allora il calcolo degli indicatori verrà effettuato in
-        ///   base alle regole di profilo assegnate all'utente autenticato
-        /// </remarks>
-        public ISet<InfoUnitaOperativa> UnitaOperative { get; set; }
+        /// <param name="codice">Il codice del tipo di intervento richiesto</param>
+        /// <returns>Il tipo di intervento fake</returns>
+        public TipologiaRichiesta Get(string codice)
+        {
+            return new TipologiaRichiesta(codice, "Tipologia fake " + codice);
+        }
     }
 }
