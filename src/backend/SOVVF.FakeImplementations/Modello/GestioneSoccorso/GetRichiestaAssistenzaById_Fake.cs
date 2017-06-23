@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SituazioneMezziQuery.cs" company="CNVVF">
+// <copyright file="GetRichiestaAssistenzaById_Fake.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,32 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
-using Modello.Classi.Organigramma;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Modello.Classi.Soccorso;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO
+namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso
 {
     /// <summary>
-    ///   DTO di input della query
+    ///   Servizio per il recupero di una richiesta di assistenza per id
     /// </summary>
-    public class SituazioneMezziQuery : IQuery<SituazioneMezziResult>
+    internal class GetRichiestaAssistenzaById_Fake : IGetRichiestaAssistenzaById
     {
         /// <summary>
-        ///   E' l'insieme dei nodi dell'organigramma coinvolti nel calcolo degli indicatori
+        ///   Restituisce la richiesta
         /// </summary>
-        /// <remarks>
-        ///   Se UnitaOperative è un set vuoto allora il calcolo degli indicatori verrà effettuato in
-        ///   base alle regole di profilo assegnate all'utente autenticato
-        /// </remarks>
-        public ISet<InfoUnitaOperativa> UnitaOperative { get; set; }
+        /// <param name="idRichiestaAssistenza">L'id della richiesta</param>
+        /// <returns>La richiesta</returns>
+        public RichiestaAssistenza Get(string idRichiestaAssistenza)
+        {
+            return new RichiestaAssistenza()
+            {
+                Codice = idRichiestaAssistenza
+            };
+        }
     }
 }

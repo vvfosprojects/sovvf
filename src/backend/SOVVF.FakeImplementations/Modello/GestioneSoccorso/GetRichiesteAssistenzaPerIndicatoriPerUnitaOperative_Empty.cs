@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SituazioneMezziQuery.cs" company="CNVVF">
+// <copyright file="GetRichiesteAssistenzaPerIndicatoriPerUnitaOperative_Empty.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,30 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
-using Modello.Classi.Organigramma;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Modello.Classi.Soccorso;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO
+namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso
 {
     /// <summary>
-    ///   DTO di input della query
+    ///   Implementazione del servizio che restituisce l'elenco delle richieste di Assistenza
+    ///   utilizzate per il calcolo degli indicatori per le Unità Operative indicate
     /// </summary>
-    public class SituazioneMezziQuery : IQuery<SituazioneMezziResult>
+    internal class GetRichiesteAssistenzaPerIndicatoriPerUnitaOperative_Empty : IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative
     {
         /// <summary>
-        ///   E' l'insieme dei nodi dell'organigramma coinvolti nel calcolo degli indicatori
+        ///   Restituisce le richieste
         /// </summary>
-        /// <remarks>
-        ///   Se UnitaOperative è un set vuoto allora il calcolo degli indicatori verrà effettuato in
-        ///   base alle regole di profilo assegnate all'utente autenticato
-        /// </remarks>
-        public ISet<InfoUnitaOperativa> UnitaOperative { get; set; }
+        /// <param name="codiciUnitaOperative">I codici delle unità operative implicate</param>
+        /// <returns>Le richieste</returns>
+        public IEnumerable<RichiestaAssistenza> Get(IEnumerable<string> codiciUnitaOperative)
+        {
+            return Enumerable.Empty<RichiestaAssistenza>();
+        }
     }
 }

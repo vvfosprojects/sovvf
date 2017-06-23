@@ -27,15 +27,13 @@ using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Mezzi.SituazioneMezzo;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO;
 using Modello.Servizi.Infrastruttura.GestioneSoccorso;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.Implementation;
 using Modello.Servizi.Infrastruttura.Organigramma;
 using Moq;
 using NUnit.Framework;
 
-namespace Modello.Test.Classi.Soccorso.CQRS.Query
+namespace Modello.Test.Classi.Soccorso
 {
     [TestFixture]
     public class TestSituazioneMezzi
@@ -47,9 +45,10 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             var richiesta1 = this.Crea_Richiesta_Con_M1_e_M2_assegnati_e_M1_in_viaggio_e_sul_posto(out expected);
             var richiesta2 = this.Crea_Richiesta_Con_M3_e_M4_assegnati_e_M3_sul_posto_e_in_viaggio(out expected);
             var richieste = new List<RichiestaAssistenza>() { richiesta1, richiesta2 };
-            var query = this.CreaQuery(richieste);
-            var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
-            Assert.That(resultDto.SituazioneMezzi.Count(), Is.EqualTo(4));
+            var getSituazioneMezzi = this.CreaServizio(richieste);
+            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<InfoUnitaOperativa>());
+
+            Assert.That(situazioneMezzi.Count(), Is.EqualTo(4));
         }
 
         [Test]
@@ -75,47 +74,14 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
                 .Setup(m => m.Get(It.IsAny<IEnumerable<string>>()))
                 .Returns(Enumerable.Empty<RichiestaAssistenza>());
 
-            var query = new SituazioneMezziQueryHandler(
+            var getSituazioneMezzi = new GetSituazioneMezzi(
                 mockGetCodiciUnitaOperativeVisibiliPerSoccorso.Object,
                 mockEspandiTagsNodoSuOrganigramma.Object,
                 mockGetRichiestePerSituazioneMezzi.Object);
 
-            var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
+            var result = getSituazioneMezzi.Get(new HashSet<InfoUnitaOperativa>());
 
-            Assert.That(resultDto.SituazioneMezzi, Is.Empty);
-        }
-
-        [Test]
-        public void RestituisceUnaSituazioneVuotaSeNonCiSonoUnitaOperativeDaAnalizzare()
-        {
-            var mockGetCodiciUnitaOperativeVisibiliPerSoccorso = new Mock<IGetUnitaOperativeVisibiliPerSoccorso>();
-            mockGetCodiciUnitaOperativeVisibiliPerSoccorso
-                .Setup(m => m.Get())
-                .Throws(new InvalidOperationException());
-
-            var mockUnitaOperativa = new Mock<UnitaOperativa>();
-            mockUnitaOperativa
-                .Setup(m => m.GetSottoAlbero(It.IsAny<IEnumerable<TagNodo>>()))
-                .Returns(Enumerable.Empty<UnitaOperativa>());
-
-            var mockEspandiTagsNodoSuOrganigramma = new Mock<IEspandiTagsNodoSuOrganigramma>();
-            mockEspandiTagsNodoSuOrganigramma
-                .Setup(m => m.Espandi(It.IsAny<IEnumerable<TagNodo>>()))
-                .Returns(Enumerable.Empty<string>());
-
-            var mockGetRichiestePerSituazioneMezzi = new Mock<IGetRichiestePerSituazioneMezzi>();
-            mockGetRichiestePerSituazioneMezzi
-                .Setup(m => m.Get(It.IsAny<IEnumerable<string>>()))
-                .Returns(Enumerable.Empty<RichiestaAssistenza>());
-
-            var query = new SituazioneMezziQueryHandler(
-                mockGetCodiciUnitaOperativeVisibiliPerSoccorso.Object,
-                mockEspandiTagsNodoSuOrganigramma.Object,
-                mockGetRichiestePerSituazioneMezzi.Object);
-
-            var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
-
-            Assert.That(resultDto.SituazioneMezzi, Is.Empty);
+            Assert.That(result, Is.Empty);
         }
 
         [Test]
@@ -124,9 +90,10 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             IEnumerable<SituazioneMezzo> expected;
             var richiesta = this.Crea_Richiesta_Con_M1_e_M2_assegnati_e_M1_in_viaggio_e_sul_posto(out expected);
             var richieste = new List<RichiestaAssistenza>() { richiesta };
-            var query = this.CreaQuery(richieste);
-            var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
-            Assert.That(resultDto.SituazioneMezzi.Count(), Is.EqualTo(2));
+            var getSituazioneMezzi = this.CreaServizio(richieste);
+            var resultDto = getSituazioneMezzi.Get(new HashSet<InfoUnitaOperativa>());
+
+            Assert.That(resultDto.Count(), Is.EqualTo(2));
         }
 
         [Test]
@@ -135,12 +102,13 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             IEnumerable<SituazioneMezzo> expected;
             var richiesta = this.Crea_Richiesta_Con_M1_e_M2_assegnati_e_M1_in_viaggio_e_sul_posto(out expected);
             var richieste = new List<RichiestaAssistenza>() { richiesta };
-            var query = this.CreaQuery(richieste);
-            var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
-            var situazioneM1 = resultDto.SituazioneMezzi.Single(sm => sm.Codice == "M1");
-            var situazioneM2 = resultDto.SituazioneMezzi.Single(sm => sm.Codice == "M2");
+            var getSituazioneMezzi = this.CreaServizio(richieste);
+            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<InfoUnitaOperativa>());
+            var situazioneM1 = situazioneMezzi.Single(sm => sm.Codice == "M1");
+            var situazioneM2 = situazioneMezzi.Single(sm => sm.Codice == "M2");
             var expectedM1 = expected.Single(sm => sm.Codice == "M1");
             var expectedM2 = expected.Single(sm => sm.Codice == "M2");
+
             Assert.That(situazioneM1.Codice, Is.EqualTo(expectedM1.Codice));
             Assert.That(situazioneM1.CodiceRichiestaAssistenza, Is.EqualTo(expectedM1.CodiceRichiestaAssistenza));
             Assert.That(situazioneM1.IstanteAggiornamentoStato, Is.EqualTo(expectedM1.IstanteAggiornamentoStato));
@@ -159,16 +127,17 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             var richiesta1 = this.Crea_Richiesta_Con_M1_e_M2_assegnati_e_M1_in_viaggio_e_sul_posto(out expected1);
             var richiesta2 = this.Crea_Richiesta_Con_M3_e_M4_assegnati_e_M3_sul_posto_e_in_viaggio(out expected2);
             var richieste = new List<RichiestaAssistenza>() { richiesta1, richiesta2 };
-            var query = this.CreaQuery(richieste);
-            var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
-            var situazioneM1 = resultDto.SituazioneMezzi.Single(sm => sm.Codice == "M1");
-            var situazioneM2 = resultDto.SituazioneMezzi.Single(sm => sm.Codice == "M2");
-            var situazioneM3 = resultDto.SituazioneMezzi.Single(sm => sm.Codice == "M3");
-            var situazioneM4 = resultDto.SituazioneMezzi.Single(sm => sm.Codice == "M4");
+            var getSituazioneMezzi = this.CreaServizio(richieste);
+            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<InfoUnitaOperativa>());
+            var situazioneM1 = situazioneMezzi.Single(sm => sm.Codice == "M1");
+            var situazioneM2 = situazioneMezzi.Single(sm => sm.Codice == "M2");
+            var situazioneM3 = situazioneMezzi.Single(sm => sm.Codice == "M3");
+            var situazioneM4 = situazioneMezzi.Single(sm => sm.Codice == "M4");
             var expectedM1 = expected1.Single(sm => sm.Codice == "M1");
             var expectedM2 = expected1.Single(sm => sm.Codice == "M2");
             var expectedM3 = expected2.Single(sm => sm.Codice == "M3");
             var expectedM4 = expected2.Single(sm => sm.Codice == "M4");
+
             Assert.That(situazioneM1.Codice, Is.EqualTo(expectedM1.Codice));
             Assert.That(situazioneM1.CodiceRichiestaAssistenza, Is.EqualTo(expectedM1.CodiceRichiestaAssistenza));
             Assert.That(situazioneM1.IstanteAggiornamentoStato, Is.EqualTo(expectedM1.IstanteAggiornamentoStato));
@@ -193,9 +162,10 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             SituazioneMezzo expected;
             var richiesta = this.CreaRichiestaContenenteUnicoEventoDiComposizione(out expected);
             var richieste = new List<RichiestaAssistenza>() { richiesta };
-            var query = this.CreaQuery(richieste);
-            var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
-            var situazione = resultDto.SituazioneMezzi.Single(sm => sm.Codice == "M1");
+            var getSituazioneMezzi = this.CreaServizio(richieste);
+            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<InfoUnitaOperativa>());
+            var situazione = situazioneMezzi.Single(sm => sm.Codice == "M1");
+
             Assert.That(situazione.Codice, Is.EqualTo(expected.Codice));
             Assert.That(situazione.CodiceRichiestaAssistenza, Is.EqualTo(expected.CodiceRichiestaAssistenza));
             Assert.That(situazione.IstanteAggiornamentoStato, Is.EqualTo(expected.IstanteAggiornamentoStato));
@@ -208,9 +178,10 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             SituazioneMezzo expected;
             var richiesta = this.CreaRichiestaContenenteUnicoEventoDiComposizione(out expected);
             var richieste = new List<RichiestaAssistenza>() { richiesta };
-            var query = this.CreaQuery(richieste);
-            var resultDto = query.Handle(new SituazioneMezziQuery() { UnitaOperative = new HashSet<InfoUnitaOperativa>() });
-            Assert.That(resultDto.SituazioneMezzi.Count(), Is.EqualTo(1));
+            var getSituazioneMezzi = this.CreaServizio(richieste);
+            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<InfoUnitaOperativa>());
+
+            Assert.That(situazioneMezzi.Count(), Is.EqualTo(1));
         }
 
         private RichiestaAssistenza Crea_Richiesta_Con_M1_e_M2_assegnati_e_M1_in_viaggio_e_sul_posto(out IEnumerable<SituazioneMezzo> expected)
@@ -377,7 +348,7 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
             return richiesta;
         }
 
-        private SituazioneMezziQueryHandler CreaQuery(IEnumerable<RichiestaAssistenza> richieste)
+        private GetSituazioneMezzi CreaServizio(IEnumerable<RichiestaAssistenza> richieste)
         {
             var mockGetCodiciUnitaOperativeVisibiliPerSoccorso = new Mock<IGetUnitaOperativeVisibiliPerSoccorso>();
             mockGetCodiciUnitaOperativeVisibiliPerSoccorso
@@ -399,12 +370,12 @@ namespace Modello.Test.Classi.Soccorso.CQRS.Query
                 .Setup(m => m.Get(It.IsAny<IEnumerable<string>>()))
                 .Returns(richieste);
 
-            var query = new SituazioneMezziQueryHandler(
+            var getSituezioneMezzi = new GetSituazioneMezzi(
                 mockGetCodiciUnitaOperativeVisibiliPerSoccorso.Object,
                 mockEspandiTagsNodoSuOrganigramma.Object,
                 mockGetRichiestePerSituazioneMezzi.Object);
 
-            return query;
+            return getSituezioneMezzi;
         }
 
         private RichiestaAssistenza CreaRichiestaContenenteUnicoEventoDiComposizione(out SituazioneMezzo expected)

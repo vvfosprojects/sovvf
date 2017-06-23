@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="GetRichiesteAssistenzaPerIndicatoriPerUnitaOperative.cs" company="CNVVF">
+// <copyright file="IGetSituazioneMezzi.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -19,27 +19,25 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
-using Modello.Classi.Soccorso;
-using Modello.Servizi.Infrastruttura.GestioneSoccorso;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Modello.Classi.Organigramma;
+using Modello.Classi.Soccorso.Mezzi.SituazioneMezzo;
 
-namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso
+namespace Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi
 {
     /// <summary>
-    ///   Implementazione fake del servizio che restituisce l'elenco delle richieste di Assistenza
-    ///   utilizzate per il calcolo degli indicatori per le Unità Operative indicate
+    ///   Servizio che restituisce la situazione dei mezzi in servizio
     /// </summary>
-    internal class GetRichiesteAssistenzaPerIndicatoriPerUnitaOperative : IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative
+    public interface IGetSituazioneMezzi
     {
         /// <summary>
-        ///   Restituisce l'elenco delle richieste di Assistenza
+        ///   Restituisce la situazione dei mezzi in servizio con riferimento alle unità operative
+        ///   indicate. Se la lista è vuota viene restituita la situazione di interesse per l'utente autenticato.
         /// </summary>
-        /// <param name="codiciUnitaOperative">
-        ///   I codici delle unità operative competenti per gli interventi
-        /// </param>
-        /// <returns>Elenco delle richieste</returns>
-        public IEnumerable<RichiestaAssistenza> Get(IEnumerable<string> codiciUnitaOperative)
-        {
-            throw new NotImplementedException();
-        }
+        /// <param name="codiciUnitaOperative">I codici delle unità operative di interesse</param>
+        /// <returns>La situazione dei mezzi</returns>
+        IEnumerable<SituazioneMezzo> Get(ISet<InfoUnitaOperativa> codiciUnitaOperative);
     }
 }

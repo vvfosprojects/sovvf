@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SituazioneMezziQuery.cs" company="CNVVF">
+// <copyright file="GetNumeroSquadreSoccorsoOraInServizio_Fake.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,23 +18,23 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
-using Modello.Classi.Organigramma;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO
+namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi
 {
     /// <summary>
-    ///   DTO di input della query
+    ///   Servizio fake
     /// </summary>
-    public class SituazioneMezziQuery : IQuery<SituazioneMezziResult>
+    internal class GetNumeroSquadreSoccorsoOraInServizio_Fake : IGetNumeroSquadreSoccorsoOraInServizio
     {
         /// <summary>
-        ///   E' l'insieme dei nodi dell'organigramma coinvolti nel calcolo degli indicatori
+        ///   Restituisce il numero di squadre in servizio
         /// </summary>
-        /// <remarks>
-        ///   Se UnitaOperative è un set vuoto allora il calcolo degli indicatori verrà effettuato in
-        ///   base alle regole di profilo assegnate all'utente autenticato
-        /// </remarks>
-        public ISet<InfoUnitaOperativa> UnitaOperative { get; set; }
+        /// <param name="codice">Le unità operative implicate nel calcolo</param>
+        /// <returns>Il numero di unità squadra in servizio</returns>
+        public int Get(IEnumerable<string> codice)
+        {
+            return 10;
+        }
     }
 }

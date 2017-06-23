@@ -17,13 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using Modello.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata;
+using Modello.Servizi.CQRS.Commands;
 using Modello.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata.CommandDTO;
 
 namespace RestInterface.Controllers.Soccorso
@@ -31,18 +26,18 @@ namespace RestInterface.Controllers.Soccorso
     /// <summary>
     ///   Controller relativo alla segnalazione chiamata
     /// </summary>
-    public class ChiamataController : ApiController
+    public class TelefonataController : ApiController
     {
         /// <summary>
         ///   Istanza del command
         /// </summary>
-        private readonly InserisciTelefonataCommandHandler handler;
+        private readonly ICommandHandler<InserisciTelefonataCommand> handler;
 
         /// <summary>
         ///   Il costruttore
         /// </summary>
         /// <param name="handler">L'handler del command</param>
-        public ChiamataController(InserisciTelefonataCommandHandler handler)
+        public TelefonataController(ICommandHandler<InserisciTelefonataCommand> handler)
         {
             this.handler = handler;
         }
