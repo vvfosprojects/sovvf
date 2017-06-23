@@ -23,6 +23,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Modello.Classi.Soccorso.Mezzi;
+using Modello.Classi.Soccorso.Mezzi.SituazioneMezzo;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO;
 
 namespace RestInterface.Controllers.Soccorso

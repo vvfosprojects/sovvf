@@ -25,6 +25,7 @@ using Modello.Classi.Organigramma;
 using Modello.Classi.Soccorso;
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Partenze;
+using Modello.Classi.Soccorso.Mezzi.SituazioneMezzo;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO;
