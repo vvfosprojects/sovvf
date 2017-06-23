@@ -22,7 +22,7 @@ using System.Collections.Generic;
 namespace Modello.Servizi.Infrastruttura.GestioneSoccorso
 {
     /// <summary>
-    ///   Servizio che restituise il numero totale delle Squadre disponibili per il soccorso
+    ///   Servizio che restituisce il numero totale delle Squadre disponibili per il soccorso
     /// </summary>
     public interface IGetNumeroSquadreSoccorsoOraInServizio
     {
