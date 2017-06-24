@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InSede.cs" company="CNVVF">
+// <copyright file="TestAndSetSelezioneDisponibilitaMezzo_Fake.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,34 +17,30 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Modello.Classi.Soccorso.Risorse;
+using Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra.CommandDTO;
 
-namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
+namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse
 {
     /// <summary>
-    ///   Presente presso la sede di servizio
+    ///   Classe fake per la selezione della disponibilita di un mezzo
     /// </summary>
-    public class InSede : IStatoMezzo
+    internal class TestAndSetSelezioneDisponibilitaMezzo_Fake : ITestAndSetSelezioneDisponibilitaMezzo
     {
         /// <summary>
-        ///   Codice identificativo dello stato
+        ///   Metodo vuoto
         /// </summary>
-        public string Codice
+        /// <param name="operatore">Il operatore</param>
+        /// <param name="ticket">Il ticket</param>
+        /// <returns>Il risultato fake della selezione</returns>
+        public SelezioneRisorsa Esegui(string operatore, string ticket)
         {
-            get
-            {
-                return "InSede";
-            }
-        }
-
-        /// <summary>
-        ///   Indica se il mezzo è disponibile in questo stato
-        /// </summary>
-        public bool Disponibile
-        {
-            get
-            {
-                return true;
-            }
+            return new SelezioneRisorsa(operatore);
         }
     }
 }

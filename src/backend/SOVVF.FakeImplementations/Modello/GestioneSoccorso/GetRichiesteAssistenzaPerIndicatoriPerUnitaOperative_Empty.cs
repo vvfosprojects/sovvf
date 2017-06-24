@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IGetUnitaOperativeVisibiliPerSoccorso.cs" company="CNVVF">
+// <copyright file="GetRichiesteAssistenzaPerIndicatoriPerUnitaOperative_Empty.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,22 +17,30 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Modello.Classi.Soccorso;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 
-namespace Modello.Servizi.Infrastruttura.Organigramma
+namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso
 {
     /// <summary>
-    ///   Questo servizio restituisce la lista dei codici delle unità operative visibili per soccorso
-    ///   dall'utente correntemente autenticato. Nel caso di utente non autenticato restituisce una
-    ///   lista vuota.
+    ///   Implementazione del servizio che restituisce l'elenco delle richieste di Assistenza
+    ///   utilizzate per il calcolo degli indicatori per le Unità Operative indicate
     /// </summary>
-    public interface IGetUnitaOperativeVisibiliPerSoccorso
+    internal class GetRichiesteAssistenzaPerIndicatoriPerUnitaOperative_Empty : IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative
     {
         /// <summary>
-        ///   Restituisce la lista dei codici delle unità operative visibili per soccorso dall'utente
-        ///   correntemente autenticato.
+        ///   Restituisce le richieste
         /// </summary>
-        /// <returns>La lista dei codici.</returns>
-        IEnumerable<string> Get();
+        /// <param name="codiciUnitaOperative">I codici delle unità operative implicate</param>
+        /// <returns>Le richieste</returns>
+        public IEnumerable<RichiestaAssistenza> Get(IEnumerable<string> codiciUnitaOperative)
+        {
+            return Enumerable.Empty<RichiestaAssistenza>();
+        }
     }
 }

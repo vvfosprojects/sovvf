@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InSede.cs" company="CNVVF">
+// <copyright file="TestAndSetDeselezioneDisponibilitaMezzo_DoNothing.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,34 +17,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using Modello.Classi.Soccorso.Risorse;
+using Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaMezzo.CommandDTO;
 
-namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
+namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse
 {
     /// <summary>
-    ///   Presente presso la sede di servizio
+    ///   Servizio fake di deselezione sulla <see cref="DisponibilitaMezzo" />.
     /// </summary>
-    public class InSede : IStatoMezzo
+    internal class TestAndSetDeselezioneDisponibilitaMezzo_DoNothing : ITestAndSetDeselezioneDisponibilitaMezzo
     {
         /// <summary>
-        ///   Codice identificativo dello stato
+        ///   Metodo vuoto
         /// </summary>
-        public string Codice
+        /// <param name="operatore">L'operatore (non usato)</param>
+        /// <param name="codiceMezzo">Il codice mezzo (non usato)</param>
+        public void Esegui(string operatore, string codiceMezzo)
         {
-            get
-            {
-                return "InSede";
-            }
-        }
-
-        /// <summary>
-        ///   Indica se il mezzo è disponibile in questo stato
-        /// </summary>
-        public bool Disponibile
-        {
-            get
-            {
-                return true;
-            }
         }
     }
 }

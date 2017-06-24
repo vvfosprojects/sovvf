@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InSede.cs" company="CNVVF">
+// <copyright file="GetNumeroMezziSoccorsoOraInServizio_Fake.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,34 +17,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 
-namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
+namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi
 {
     /// <summary>
-    ///   Presente presso la sede di servizio
+    ///   Servizio fake che restituise il numero totale dei mezzi disponibili per il soccorso
     /// </summary>
-    public class InSede : IStatoMezzo
+    internal class GetNumeroMezziSoccorsoOraInServizio_Fake : IGetNumeroMezziSoccorsoOraInServizio
     {
         /// <summary>
-        ///   Codice identificativo dello stato
+        ///   Restituisce il numero totale dei Mezzi disponibili per il soccorso
         /// </summary>
-        public string Codice
+        /// <param name="codice">elenco dei codici dell'Unità Operativa</param>
+        /// <returns>Il numero totale dei Mezzi</returns>
+        public int Get(IEnumerable<string> codice)
         {
-            get
-            {
-                return "InSede";
-            }
-        }
-
-        /// <summary>
-        ///   Indica se il mezzo è disponibile in questo stato
-        /// </summary>
-        public bool Disponibile
-        {
-            get
-            {
-                return true;
-            }
+            return 10;
         }
     }
 }

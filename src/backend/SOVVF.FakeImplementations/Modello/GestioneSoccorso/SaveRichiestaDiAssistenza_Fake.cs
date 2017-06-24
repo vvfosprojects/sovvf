@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InSede.cs" company="CNVVF">
+// <copyright file="SaveRichiestaDiAssistenza_Fake.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,33 +17,31 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Modello.Classi.Soccorso;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 
-namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
+namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso
 {
     /// <summary>
-    ///   Presente presso la sede di servizio
+    ///   Servizio fake di salvataggio di una richiesta di assistenza
     /// </summary>
-    public class InSede : IStatoMezzo
+    internal class SaveRichiestaDiAssistenza_Fake : ISaveRichiestaAssistenza
     {
         /// <summary>
-        ///   Codice identificativo dello stato
+        ///   Assegna un codice e un'unità operativa competente se il codice non è presente
         /// </summary>
-        public string Codice
+        /// <param name="richiestaAssistenza">La richiesta da salvare</param>
+        public void Save(RichiestaAssistenza richiestaAssistenza)
         {
-            get
+            if (string.IsNullOrWhiteSpace(richiestaAssistenza.Codice))
             {
-                return "InSede";
-            }
-        }
-
-        /// <summary>
-        ///   Indica se il mezzo è disponibile in questo stato
-        /// </summary>
-        public bool Disponibile
-        {
-            get
-            {
-                return true;
+                richiestaAssistenza.Codice = Guid.NewGuid().ToString();
+                richiestaAssistenza.CodiceUnitaOperativaCompetente = "RM";
             }
         }
     }

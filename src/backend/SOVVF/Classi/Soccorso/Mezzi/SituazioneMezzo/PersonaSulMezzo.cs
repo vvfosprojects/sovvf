@@ -17,7 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO
+namespace Modello.Classi.Soccorso.Mezzi.SituazioneMezzo
 {
     /// <summary>
     ///   Modella una persona a bordo di un mezzo

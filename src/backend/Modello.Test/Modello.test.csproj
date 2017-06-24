@@ -55,7 +55,7 @@
   <ItemGroup>
     <Compile Include="Classi\Utenti\Autenticazione\TestUtente.cs" />
     <Compile Include="Classi\Organigramma\TestUnitaOperativa.cs" />
-    <Compile Include="Classi\Soccorso\CQRS\Query\TestSituazioneMezzi.cs" />
+    <Compile Include="Classi\Soccorso\TestSituazioneMezzi.cs" />
     <Compile Include="Classi\Soccorso\TestComposizionePartenze.cs" />
     <Compile Include="Classi\Soccorso\TestEventi.cs" />
     <Compile Include="Classi\Soccorso\TestRichiestaAssistenza.cs" />

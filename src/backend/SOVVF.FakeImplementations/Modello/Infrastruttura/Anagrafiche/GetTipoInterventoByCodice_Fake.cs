@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InSede.cs" company="CNVVF">
+// <copyright file="GetTipoInterventoByCodice_Fake.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,34 +17,29 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Modello.Classi.Soccorso;
+using Modello.Servizi.Infrastruttura.Anagrafiche;
 
-namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
+namespace SOVVF.FakeImplementations.Modello.Infrastruttura.Anagrafiche
 {
     /// <summary>
-    ///   Presente presso la sede di servizio
+    ///   Servizio fake che restituisce il tipo intervento a partire dal suo codice
     /// </summary>
-    public class InSede : IStatoMezzo
+    internal class GetTipoInterventoByCodice_Fake : IGetTipoInterventoByCodice
     {
         /// <summary>
-        ///   Codice identificativo dello stato
+        ///   Restituisce il tipo di intervento
         /// </summary>
-        public string Codice
+        /// <param name="codice">Il codice del tipo di intervento richiesto</param>
+        /// <returns>Il tipo di intervento fake</returns>
+        public TipologiaRichiesta Get(string codice)
         {
-            get
-            {
-                return "InSede";
-            }
-        }
-
-        /// <summary>
-        ///   Indica se il mezzo è disponibile in questo stato
-        /// </summary>
-        public bool Disponibile
-        {
-            get
-            {
-                return true;
-            }
+            return new TipologiaRichiesta(codice, "Tipologia fake " + codice);
         }
     }
 }

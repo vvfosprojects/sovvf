@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InSede.cs" company="CNVVF">
+// <copyright file="GetRichiestaAssistenzaById_Fake.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,34 +17,32 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Modello.Classi.Soccorso;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 
-namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
+namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso
 {
     /// <summary>
-    ///   Presente presso la sede di servizio
+    ///   Servizio per il recupero di una richiesta di assistenza per id
     /// </summary>
-    public class InSede : IStatoMezzo
+    internal class GetRichiestaAssistenzaById_Fake : IGetRichiestaAssistenzaById
     {
         /// <summary>
-        ///   Codice identificativo dello stato
+        ///   Restituisce la richiesta
         /// </summary>
-        public string Codice
+        /// <param name="idRichiestaAssistenza">L'id della richiesta</param>
+        /// <returns>La richiesta</returns>
+        public RichiestaAssistenza Get(string idRichiestaAssistenza)
         {
-            get
+            return new RichiestaAssistenza()
             {
-                return "InSede";
-            }
-        }
-
-        /// <summary>
-        ///   Indica se il mezzo è disponibile in questo stato
-        /// </summary>
-        public bool Disponibile
-        {
-            get
-            {
-                return true;
-            }
+                Codice = idRichiestaAssistenza
+            };
         }
     }
 }

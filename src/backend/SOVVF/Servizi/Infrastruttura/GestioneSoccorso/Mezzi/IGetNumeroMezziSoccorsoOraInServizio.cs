@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InSede.cs" company="CNVVF">
+// <copyright file="IGetNumeroMezziSoccorsoOraInServizio.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,34 +17,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Collections.Generic;
 
-namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
+namespace Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi
 {
     /// <summary>
-    ///   Presente presso la sede di servizio
+    ///   Servizio che restituise il numero totale dei Mezzi disponibili per il soccorso
     /// </summary>
-    public class InSede : IStatoMezzo
+    public interface IGetNumeroMezziSoccorsoOraInServizio
     {
         /// <summary>
-        ///   Codice identificativo dello stato
+        ///   Restituisce il numero totale dei Mezzi disponibili per il soccorso
         /// </summary>
-        public string Codice
-        {
-            get
-            {
-                return "InSede";
-            }
-        }
-
-        /// <summary>
-        ///   Indica se il mezzo è disponibile in questo stato
-        /// </summary>
-        public bool Disponibile
-        {
-            get
-            {
-                return true;
-            }
-        }
+        /// <param name="codice">elenco dei codici dell'Unità Operativa</param>
+        /// <returns>Il numero totale dei Mezzi</returns>
+        int Get(IEnumerable<string> codice);
     }
 }

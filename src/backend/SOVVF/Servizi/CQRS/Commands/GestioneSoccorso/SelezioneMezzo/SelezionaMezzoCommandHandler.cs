@@ -48,7 +48,9 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneMezzo
         /// <param name="testAndSetSelezioneDisponibilitaMezzo">
         ///   Servizio per la selezione del mezzo
         /// </param>
-        private SelezionaMezzoCommandHandler(IGetOperatoreAutenticato getOperatoreAutenticato, ITestAndSetSelezioneDisponibilitaMezzo testAndSetSelezioneDisponibilitaMezzo)
+        public SelezionaMezzoCommandHandler(
+            IGetOperatoreAutenticato getOperatoreAutenticato,
+            ITestAndSetSelezioneDisponibilitaMezzo testAndSetSelezioneDisponibilitaMezzo)
         {
             this.getOperatoreAutenticato = getOperatoreAutenticato;
             this.testAndSetSelezioneDisponibilitaMezzo = testAndSetSelezioneDisponibilitaMezzo;

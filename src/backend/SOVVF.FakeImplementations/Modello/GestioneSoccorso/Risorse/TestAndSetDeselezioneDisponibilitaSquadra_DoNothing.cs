@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IGetNumeroMezziSoccorsoOraInServizio.cs" company="CNVVF">
+// <copyright file="TestAndSetDeselezioneDisponibilitaSquadra_DoNothing.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,20 +17,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
+using System;
+using Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaSquadra.CommandDTO;
 
-namespace Modello.Servizi.Infrastruttura.GestioneSoccorso
+namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse
 {
     /// <summary>
-    ///   Servizio che restituise il numero totale dei Mezzi disponibili per il soccorso
+    ///   Classe fake per la deselezione disponibilità squadra
     /// </summary>
-    public interface IGetNumeroMezziSoccorsoOraInServizio
+    internal class TestAndSetDeselezioneDisponibilitaSquadra_DoNothing : ITestAndSetDeselezioneDisponibilitaSquadra
     {
         /// <summary>
-        ///   Restituisce il numero totale dei Mezzi disponibili per il soccorso
+        ///   Metodo vuoto
         /// </summary>
-        /// <param name="codice">elenco dei codici dell'Unità Operativa</param>
-        /// <returns>Il numero totale dei Mezzi</returns>
-        int Get(IEnumerable<string> codice);
+        /// <param name="operatore">Il operatore</param>
+        /// <param name="ticket">Il ticket</param>
+        public void Esegui(string operatore, string ticket)
+        {
+        }
     }
 }

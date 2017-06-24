@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InSede.cs" company="CNVVF">
+// <copyright file="Bindings.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,34 +17,37 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Modello.Servizi.CQRS.Commands;
+using Modello.Servizi.CQRS.Queries;
+using SimpleInjector;
+using SimpleInjector.Packaging;
 
-namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
+namespace Modello
 {
     /// <summary>
-    ///   Presente presso la sede di servizio
+    ///   Package per la dependency injection del modello. Questo package associa alle interfacce dei
+    ///   servizi le relative implementazioni (internal) presenti nello stesso assembly.
     /// </summary>
-    public class InSede : IStatoMezzo
+    public class Bindings : IPackage
     {
         /// <summary>
-        ///   Codice identificativo dello stato
+        ///   Registrazione dei servizi
         /// </summary>
-        public string Codice
+        /// <param name="container">Il container</param>
+        public void RegisterServices(Container container)
         {
-            get
-            {
-                return "InSede";
-            }
-        }
+            container.Register(
+                typeof(ICommandHandler<>),
+                new[] { typeof(ICommandHandler<>).Assembly });
 
-        /// <summary>
-        ///   Indica se il mezzo è disponibile in questo stato
-        /// </summary>
-        public bool Disponibile
-        {
-            get
-            {
-                return true;
-            }
+            container.Register(
+                typeof(IQueryHandler<,>),
+                new[] { typeof(IQueryHandler<,>).Assembly });
         }
     }
 }
