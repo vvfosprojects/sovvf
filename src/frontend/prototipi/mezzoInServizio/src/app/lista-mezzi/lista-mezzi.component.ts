@@ -69,7 +69,6 @@ export class ListaMezziComponent implements OnInit {
     // altrimenti si vedono solo quelli delle categorie spuntate
     this.mezzi = this.tuttiIMezzi.filter((m) => {
       var el = this.sedi.find(x => x.nome === m.descrizioneUnitaOperativa);
-      console.log(el);
       return el.checked;
     });
   }

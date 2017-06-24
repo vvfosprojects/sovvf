@@ -4,8 +4,10 @@
             <div class="card-block">
                 <h6>Filtro sede</h6>
                 <div *ngFor="let sede of sedi">
-                    <input [ngModel]="sede.checked" type="checkbox" (click)="selSede($event, sede)" /> {{ sede.nome }}
-                    <span class="badge badge-pill badge-info">{{ sede.count }}</span>
+                    <label>
+                        <input [ngModel]="sede.checked" type="checkbox" (click)="selSede($event, sede)" /> {{ sede.nome }}
+                        <span class="badge badge-pill badge-info">{{ sede.count }}</span>
+                    </label>
                 </div>
             </div>
         </div>
