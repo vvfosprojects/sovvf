@@ -19,6 +19,8 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Bogus;
 using Modello.Classi.Organigramma;
 using Modello.Classi.Soccorso.Mezzi.SituazioneMezzo;
 using Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
@@ -31,139 +33,38 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi
     internal class GetSituazioneMezzi_RandomFake : IGetSituazioneMezzi
     {
         /// <summary>
-        ///   Restituisce la situazione dei mezzi in servizio con riferimento alle unità operative
-        ///   indicate. Se la lista è vuota viene restituita la situazione di interesse per l'utente autenticato.
+        ///   Restituisce una situazione dei mezzi fake
         /// </summary>
-        /// <param name="codiciUnitaOperative">I codici delle unità operative di interesse</param>
+        /// <param name="codiciUnitaOperative">Not used</param>
         /// <returns>La situazione dei mezzi</returns>
         public IEnumerable<SituazioneMezzo> Get(ISet<InfoUnitaOperativa> codiciUnitaOperative)
         {
-            var rnd = new Random();
-            return new SituazioneMezzo[]
-                {
-                    new SituazioneMezzo()
-                    {
-                        Codice = "CODICEMEZZO1",
-                        CodiceRichiestaAssistenza = "123.456.789",
-                        CodiceStato = "InViaggio",
-                        Descrizione = "APS/11",
-                        Targa = "12345",
-                        DescrizioneSquadra = "Squadra1",
-                        DescrizioneUnitaOperativa = "Centrale",
-                        Disponibile = true,
-                        IstanteAggiornamentoStato = DateTime.Now.AddMinutes(-5),
-                        TooltipSquadra = "A 12/06/17",
-                        PersoneSulMezzo = new PersonaSulMezzo[]
-                        {
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "AAABBB65T74Y777R",
-                                Descrizione = "Michele Giorgi",
-                                Tooltip = "AAABBB65T74Y777R",
-                                CapoPartenza = true,
-                                Autista = false,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "XXXPPP67T54T777R",
-                                Descrizione = "Antonio Carli",
-                                Tooltip = "XXXPPP67T54T777R",
-                                CapoPartenza = false,
-                                Autista = true,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "LLLKKK65T34R454T",
-                                Descrizione = "Antonio Miceli",
-                                Tooltip = "LLLKKK65T34R454T",
-                                CapoPartenza = false,
-                                Autista = false,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "OOOTTT65R45E232W",
-                                Descrizione = "Gennaro Vitale",
-                                Tooltip = "OOOTTT65R45E232W",
-                                CapoPartenza = false,
-                                Autista = false,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "CVCSFS43R23W232K",
-                                Descrizione = "Samantha Grossi",
-                                Tooltip = "CVCSFS43R23W232K",
-                                CapoPartenza = false,
-                                Autista = false,
-                                Rimpiazzo = true
-                            }
-                        }
-                    },
-                    new SituazioneMezzo()
-                    {
-                        Codice = "CODICEMEZZO2",
-                        CodiceRichiestaAssistenza = "987.654.321",
-                        CodiceStato = "InSede",
-                        Descrizione = "APS/10",
-                        Targa = "44444",
-                        DescrizioneSquadra = "Squadra2",
-                        DescrizioneUnitaOperativa = "Tuscolano",
-                        Disponibile = true,
-                        IstanteAggiornamentoStato = DateTime.Now.AddMinutes(-15),
-                        TooltipSquadra = "A 12/06/17",
-                        PersoneSulMezzo = new PersonaSulMezzo[]
-                        {
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "AAABBB65T74Y777R",
-                                Descrizione = "Gioacchino Verdi",
-                                Tooltip = "AAABBB65T74Y777R",
-                                CapoPartenza = true,
-                                Autista = false,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "XXXPPP67T54T777R",
-                                Descrizione = "Giacomo Puccini",
-                                Tooltip = "XXXPPP67T54T777R",
-                                CapoPartenza = false,
-                                Autista = true,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "LLLKKK65T34R454T",
-                                Descrizione = "Giovanni Pascoli",
-                                Tooltip = "LLLKKK65T34R454T",
-                                CapoPartenza = false,
-                                Autista = false,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "OOOTTT65R45E232W",
-                                Descrizione = "Ludovico Van Beethoven",
-                                Tooltip = "OOOTTT65R45E232W",
-                                CapoPartenza = false,
-                                Autista = false,
-                                Rimpiazzo = false
-                            },
-                            new PersonaSulMezzo()
-                            {
-                                CodiceFiscale = "CVCSFS43R23W232K",
-                                Descrizione = "Wolfgang Amadeus Mozart",
-                                Tooltip = "CVCSFS43R23W232K",
-                                CapoPartenza = false,
-                                Autista = false,
-                                Rimpiazzo = true
-                            }
-                        }
-                    }
-            };
+            var stati = new[] { "InSede", "InViaggio", "SulPosto", "InRientro" };
+            var generiMezzo = new[] { "APS", "ABP", "AS", "AV" };
+            var unitaOperativa = new[] { "Centrale", "Tuscolano I", "Tuscolano II", "EUR", "Fiumicino", "Ostia", "Ostiense", "Nomentano" };
+            var fakerPersonaSulMezzo = new Faker<PersonaSulMezzo>()
+                .StrictMode(true)
+                .RuleFor(p => p.Autista, f => f.Random.Bool())
+                .RuleFor(p => p.CapoPartenza, f => f.Random.Bool())
+                .RuleFor(p => p.CodiceFiscale, f => f.Random.Replace("??????##?##?###?"))
+                .RuleFor(p => p.Descrizione, f => f.Parse("{{name.firstName}} {{name.lastName}}"))
+                .RuleFor(p => p.Rimpiazzo, f => f.Random.Bool())
+                .RuleFor(p => p.Tooltip, f => f.Random.Replace("??????##?##?###?"));
+            var fakerSituazioneMezzo = new Faker<SituazioneMezzo>("it")
+                .StrictMode(true)
+                .RuleFor(sm => sm.Codice, f => f.Random.Replace("???#####"))
+                .RuleFor(sm => sm.CodiceRichiestaAssistenza, f => f.Random.Replace("###.###.###"))
+                .RuleFor(sm => sm.CodiceStato, f => f.PickRandom(stati))
+                .RuleFor(sm => sm.Descrizione, f => f.PickRandom(generiMezzo) + "/" + f.Random.ReplaceNumbers("###"))
+                .RuleFor(sm => sm.DescrizioneSquadra, f => f.Random.Replace("A##"))
+                .RuleFor(sm => sm.DescrizioneUnitaOperativa, f => f.PickRandom(unitaOperativa))
+                .RuleFor(sm => sm.Disponibile, f => f.Random.Bool())
+                .RuleFor(sm => sm.IstanteAggiornamentoStato, f => f.Date.Recent())
+                .RuleFor(sm => sm.PersoneSulMezzo, f => fakerPersonaSulMezzo.Generate(5).ToArray())
+                .RuleFor(sm => sm.Targa, f => f.Random.ReplaceNumbers("#####"))
+                .RuleFor(sm => sm.TooltipSquadra, f => f.Random.Replace("A##"));
+
+            return fakerSituazioneMezzo.Generate(100);
         }
     }
 }

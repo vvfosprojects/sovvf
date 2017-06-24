@@ -17,8 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using Modello.Classi.Soccorso.Risorse;
 using Modello.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaMezzo.CommandDTO;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse

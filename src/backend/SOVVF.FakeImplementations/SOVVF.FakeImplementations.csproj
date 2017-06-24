@@ -84,6 +84,7 @@
     <Compile Include="Modello\GestioneSoccorso\Mezzi\GetNumeroSquadreSoccorsoOraInServizio_Fake.cs" />
     <Compile Include="Modello\GestioneSoccorso\Mezzi\GetNumeroMezziSoccorsoOraInServizio_Fake.cs" />
     <Compile Include="Modello\GestioneSoccorso\Mezzi\GetSituazioneMezzi_RandomFake.cs" />
+    <Compile Include="Modello\GestioneSoccorso\Mezzi\GetSituazioneMezzi_Fake.cs" />
     <Compile Include="Modello\GestioneSoccorso\Risorse\TestAndSetDeselezioneDisponibilitaSquadra_DoNothing.cs" />
     <Compile Include="Modello\GestioneSoccorso\Risorse\TestAndSetDeselezioneDisponibilitaMezzo_DoNothing.cs" />
     <Compile Include="Modello\GestioneSoccorso\Risorse\TestAndSetSelezioneDisponibilitaMezzo_Fake.cs" />

@@ -20,8 +20,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Modello.Classi.Organigramma;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Mezzi.SituazioneMezzo;

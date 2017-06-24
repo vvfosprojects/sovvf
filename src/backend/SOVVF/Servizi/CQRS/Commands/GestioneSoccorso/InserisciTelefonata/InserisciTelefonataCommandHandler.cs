@@ -18,10 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Modello.Classi.Soccorso;
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;

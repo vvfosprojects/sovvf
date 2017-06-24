@@ -17,17 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Modello.Classi.Organigramma;
-using Modello.Classi.Soccorso.Eventi.Partenze;
-using Modello.Classi.Soccorso.Mezzi.SituazioneMezzo;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.ResultDTO;
-using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 using Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
-using Modello.Servizi.Infrastruttura.Organigramma;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi
 {
