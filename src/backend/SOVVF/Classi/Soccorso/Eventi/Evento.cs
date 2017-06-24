@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
-using System.Linq;
 
 namespace Modello.Classi.Soccorso.Eventi
 {

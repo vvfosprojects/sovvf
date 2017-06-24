@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
-using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace Modello.Classi.Soccorso.Mezzi.SituazioneMezzo
 {

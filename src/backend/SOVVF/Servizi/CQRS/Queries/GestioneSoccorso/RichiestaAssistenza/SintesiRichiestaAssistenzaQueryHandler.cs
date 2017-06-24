@@ -17,14 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Linq;
-using Modello.Classi.Soccorso;
-using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.ResultDTO;
 using Modello.Servizi.Infrastruttura.GestioneSoccorso;
-using Modello.Servizi.Infrastruttura.Organigramma;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza
 {
