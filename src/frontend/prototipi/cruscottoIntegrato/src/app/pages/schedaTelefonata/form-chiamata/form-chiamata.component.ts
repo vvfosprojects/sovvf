@@ -18,6 +18,7 @@ import { RicercaTipologieService } from ".././ricerca-tipologie/ricerca-tipologi
 import { TipologiaIntervento } from ".././ricerca-tipologie/tipologia-intervento.model";
 import { RicercaService } from "../ricerca/ricerca.service";
 import { RisultatoRicerca } from "../ricerca/risultato-ricerca";
+import { Punto } from "app/pages/shared/classes/geo/punto";
 
 
 @Component({
@@ -34,6 +35,7 @@ export class FormChiamataComponent implements OnInit {
   risultati: RisultatoRicerca[];
   risultatiMultipli: RisultatoRicerca[];
 
+  
   msgs: Message[] = []; //Messaggi (conferma, info, ecc...)
 
   //------- Maps ------//
@@ -42,6 +44,7 @@ export class FormChiamataComponent implements OnInit {
   public searchControl: FormControl;
   public zoom: number;
 
+ 
   @ViewChild("search")
   public searchElementRef: ElementRef;
   //------- End Maps ------//
@@ -95,7 +98,7 @@ export class FormChiamataComponent implements OnInit {
     this.formChiamataModel = new FormChiamataModel();
     this.formChiamataModel.numeroChiamata = "123.4567.890";
     this.formChiamataModel.operatore = "Mario Rossi";
-    this.formChiamataModel.schedaContatto = "123.456.789";
+    this.formChiamataModel.codiceSchedaContatto = "123.456.789";
     // this.formChiamataModel.nome = "primo";
 
   }
@@ -105,14 +108,14 @@ export class FormChiamataComponent implements OnInit {
     this.myForm = this.fb.group({
       //'nome': [this.formChiamataModel.nome],
       //'cognome': [this.formChiamataModel.cognome, Validators.compose([Validators.required, this.validaCognome])],
-      'tipo_interv': [this.formChiamataModel.tipoInterv],
+      'tipo_interv': [this.formChiamataModel.codiciTipoIntervento],
       'indirizzo': [this.searchControl],
       'optionsModel': [this.model], // Default model
       'formRagSoc': this.formRagSoc,
       //'ragione_sociale': [this.formChiamataModel.ragione_sociale],
       'telefono': [this.formChiamataModel.telefono],
       'zona_emergenza': [this.formChiamataModel.zonaEmergenza],
-      'tag': [this.formChiamataModel.tag],
+      'tag': [this.formChiamataModel.tags],
       'motivazione': [this.formChiamataModel.motivazione],
       'note_indirizzo': [this.formChiamataModel.noteIndirizzo],
       'note_pubbliche': [this.formChiamataModel.noteIndirizzo],
@@ -181,6 +184,8 @@ export class FormChiamataComponent implements OnInit {
           this.longitude = place.geometry.location.lng();
           this.zoom = 18;
           console.log(this.latitude + " " + this.longitude);
+          console.log(place.formatted_address);
+          this.myForm.controls.indirizzo.setValue(place.formatted_address);
         });
       });
     });
@@ -321,6 +326,11 @@ export class FormChiamataComponent implements OnInit {
     console.log("note_private ", this.myForm.controls.note_private.value);
 
     this.showMsgInserimentoChiamataSuccesso();
+    
+    let punto = new Punto();
+
+    punto.latitudine = 98988.99876;
+  
 
     // resetto il form
     this.myForm.reset();

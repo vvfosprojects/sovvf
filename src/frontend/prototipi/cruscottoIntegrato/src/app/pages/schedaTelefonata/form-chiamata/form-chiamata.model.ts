@@ -1,22 +1,25 @@
+import { Geolocalizzazione } from "app/pages/shared/classes/geo/geolocalizzazione";
+
 export class FormChiamataModel {
     numeroChiamata : string;
-    dataChiamata : number = Date.now();
-    oraChiamata : number = Date.now();
+    istanteChiamata : number = Date.now();
     operatore : string;
     ragioneSociale: string;
-    schedaContatto: string;
-    tipoInterv: string;
+    codiceSchedaContatto: string;
+    codiciTipoIntervento: string[];
     cognome: string;
     nome: string;
     telefono : string;
-    coordinate : string;
+   // coordinate : string;
+    geolocalizzazione : Geolocalizzazione;
     indirizzo: string;
     zonaEmergenza : string;
-    tag: string;
+    tags: string[];
     motivazione: string;
     noteIndirizzo: string;
     notePubbliche: string;
     notePrivate: string;
+    azione: number;
 
     constructor(){
     }
