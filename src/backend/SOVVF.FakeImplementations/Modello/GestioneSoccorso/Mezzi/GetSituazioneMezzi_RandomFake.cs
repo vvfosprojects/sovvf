@@ -38,32 +38,69 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi
         /// <returns>La situazione dei mezzi</returns>
         public IEnumerable<SituazioneMezzo> Get(ISet<InfoUnitaOperativa> codiciUnitaOperative)
         {
-            var stati = new[] { "InSede", "InViaggio", "SulPosto", "InRientro" };
+            var statiSenzaSquadra = new[] { "InSede", };
+            var statiConSquadra = new[] { "InViaggio", "SulPosto", "InRientro" };
             var generiMezzo = new[] { "APS", "ABP", "AS", "AV" };
             var unitaOperativa = new[] { "Centrale", "Tuscolano I", "Tuscolano II", "EUR", "Fiumicino", "Ostia", "Ostiense", "Nomentano" };
-            var fakerPersonaSulMezzo = new Faker<PersonaSulMezzo>()
+            var fakerPersonaSulMezzo = new Faker<PersonaSulMezzo>("it")
+                .RuleSet("CapoPartenza",
+                    (set) =>
+                    {
+                        set.RuleFor(p => p.CapoPartenza, f => true);
+                        set.RuleFor(p => p.Autista, f => false);
+                    })
+                .RuleSet("Autista",
+                    (set) =>
+                    {
+                        set.RuleFor(p => p.CapoPartenza, f => false);
+                        set.RuleFor(p => p.Autista, f => true);
+                    })
                 .StrictMode(true)
-                .RuleFor(p => p.Autista, f => f.Random.Bool())
-                .RuleFor(p => p.CapoPartenza, f => f.Random.Bool())
                 .RuleFor(p => p.CodiceFiscale, f => f.Random.Replace("??????##?##?###?"))
                 .RuleFor(p => p.Descrizione, f => f.Parse("{{name.firstName}} {{name.lastName}}"))
-                .RuleFor(p => p.Rimpiazzo, f => f.Random.Bool())
+                .RuleFor(p => p.CapoPartenza, f => false)
+                .RuleFor(p => p.Autista, f => false)
+                .RuleFor(p => p.Rimpiazzo, f => f.Random.Number(10) < 1)
                 .RuleFor(p => p.Tooltip, f => f.Random.Replace("??????##?##?###?"));
             var fakerSituazioneMezzo = new Faker<SituazioneMezzo>("it")
+                .RuleSet("statiSenzaSquadra",
+                    (set) =>
+                    {
+                        set.RuleFor(sm => sm.CodiceStato, f => f.PickRandom(statiSenzaSquadra));
+                        set.RuleFor(sm => sm.CodiceRichiestaAssistenza, f => string.Empty);
+                        set.RuleFor(sm => sm.PersoneSulMezzo, f => new PersonaSulMezzo[0]);
+                    })
+                .RuleSet("statiConSquadra",
+                    (set) =>
+                    {
+                        set.RuleFor(sm => sm.CodiceStato, f => f.PickRandom(statiConSquadra));
+                        set.RuleFor(sm => sm.CodiceRichiestaAssistenza, f => f.Random.Replace("###.###.###"));
+                        set.RuleFor(sm => sm.PersoneSulMezzo, f => fakerPersonaSulMezzo.Generate(1, "default,CapoPartenza")
+                            .Concat(fakerPersonaSulMezzo.Generate(1, "default,Autista"))
+                            .Concat(fakerPersonaSulMezzo.Generate(3, "default"))
+                            .ToArray());
+                    })
+                .RuleSet("nonDisponibile",
+                    (set) =>
+                    {
+                        set.RuleFor(sm => sm.Disponibile, f => false);
+                    })
                 .StrictMode(true)
                 .RuleFor(sm => sm.Codice, f => f.Random.Replace("???#####"))
                 .RuleFor(sm => sm.CodiceRichiestaAssistenza, f => f.Random.Replace("###.###.###"))
-                .RuleFor(sm => sm.CodiceStato, f => f.PickRandom(stati))
+                .RuleFor(sm => sm.CodiceStato, f => f.PickRandom(statiConSquadra))
                 .RuleFor(sm => sm.Descrizione, f => f.PickRandom(generiMezzo) + "/" + f.Random.ReplaceNumbers("###"))
                 .RuleFor(sm => sm.DescrizioneSquadra, f => f.Random.Replace("A##"))
                 .RuleFor(sm => sm.DescrizioneUnitaOperativa, f => f.PickRandom(unitaOperativa))
-                .RuleFor(sm => sm.Disponibile, f => f.Random.Bool())
+                .RuleFor(sm => sm.Disponibile, f => true)
                 .RuleFor(sm => sm.IstanteAggiornamentoStato, f => f.Date.Recent())
-                .RuleFor(sm => sm.PersoneSulMezzo, f => fakerPersonaSulMezzo.Generate(5).ToArray())
+                .RuleFor(sm => sm.PersoneSulMezzo, f => new PersonaSulMezzo[0])
                 .RuleFor(sm => sm.Targa, f => f.Random.ReplaceNumbers("#####"))
                 .RuleFor(sm => sm.TooltipSquadra, f => f.Random.Replace("A##"));
 
-            return fakerSituazioneMezzo.Generate(100);
+            return fakerSituazioneMezzo.Generate(15, "default,statiConSquadra")
+                .Concat(fakerSituazioneMezzo.Generate(65, "default,statiSenzaSquadra"))
+                .Concat(fakerSituazioneMezzo.Generate(20, "default,statiSenzaSquadra,nonDisponibile"));
         }
     }
 }
