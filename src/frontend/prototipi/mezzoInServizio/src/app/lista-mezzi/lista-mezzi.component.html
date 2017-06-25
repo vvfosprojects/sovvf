@@ -3,22 +3,14 @@
         <div class="card filtro">
             <div class="card-block">
                 <h6>Sede</h6>
-                <div *ngFor="let sede of sedi">
+                <div *ngFor="let key of getSediKeys()">
                     <label>
-                        <input [ngModel]="sede.checked" type="checkbox" (click)="selSede($event, sede)" /> {{ sede.nome }}
-                        <span class="badge badge-pill badge-info">{{ sede.count }}</span>
+                        <input [ngModel]="filtroSedi[key].checked" type="checkbox" (click)="selSede($event, key)" /> {{ key }}
+                        <span class="badge badge-pill badge-info">{{ filtroSedi[key].count }}</span>
                     </label>
                 </div>
             </div>
         </div>
-
-        <!--
-            Sarebbe bella una cosa del tipo...
-            <filter [nomeFiltro]="Sede" [daFiltrare]="tuttiIMezzi" [nomeProp]="descrizioneSedeOperativa"></filter>
-            <filter [nomeFiltro]="Stato" [daFiltrare]="tuttiIMezzi" [nomeProp]="descrizioneSedeOperativa"></filter>
-            <filter [nomeFiltro]="Genere" [daFiltrare]="tuttiIMezzi" [nomeProp]="genereMezzo"></filter>
-            Ma va generalizzato il componente per il filtro.
-        -->
 
         <div class="card filtro">
             <div class="card-block">

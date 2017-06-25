@@ -1931,5 +1931,4 @@ export class ListaMezziService_FakeJson {
   public getMezzi(): Observable<MezzoInServizio[]> {
     return Observable.of(this.mezzi);
   }
-
 }
