@@ -1,11 +1,13 @@
 <div class="section">
   <div class="row">
-    <div class="col col-md-12 card card-block m-1 h6">
+    <div class="col col-md-12 card card-block alert-success m-1 h6"
+    [ngClass]="{'alert-success'  : fs.codiceStato == 'InViaggio' || fs.codiceStato == 'SulPosto',
+        'alert-danger'  : !fs.disponibile}">
       <div class="row">
         <div class="col col-md-2">
           <span class="fa-stack fa-2x">
             <i class="fa fa-truck fa-stack-1x " [ngClass]="{'text-success' : fs.codiceStato == 'InSede' || fs.codiceStato == 'Istituto', 
-                     'text-danger'  : fs.codiceStato == 'InViaggio' || fs.codiceStato == 'SulPosto',
+                     'text-danger'  : !fs.disponibile || fs.codiceStato == 'InViaggio' || fs.codiceStato == 'SulPosto',
                      'text-primary' : fs.codiceStato == 'InRientro',
                      'text-default' : fs.codiceStato == 'FuoriServizio'}"></i>
             <i class="fa fa-circle-o fa-stack-2x text-success"></i>

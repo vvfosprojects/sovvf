@@ -36,7 +36,7 @@ export class MezzoinservizioComponent implements OnInit {
   }
 
   private numeroPersone(): number {
-    return this.fs.personeSulMezzo.length;
+    return !!this.fs.personeSulMezzo && this.fs.personeSulMezzo.length;
   }
 
   public hideMostraPersone(): void {

@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="col-3">
-        <div class="card">
+    <div class="col-2">
+        <div class="card filtro">
             <div class="card-block">
-                <h6>Filtro sede</h6>
+                <h6>Sede</h6>
                 <div *ngFor="let sede of sedi">
                     <label>
                         <input [ngModel]="sede.checked" type="checkbox" (click)="selSede($event, sede)" /> {{ sede.nome }}
@@ -20,24 +20,43 @@
             Ma va generalizzato il componente per il filtro.
         -->
 
-        <div class="card">
-            <!--<div class="card-header">
-                Filtro stato
-            </div>-->
+        <div class="card filtro">
             <div class="card-block">
-                <h6>Filtro stato</h6>
+                <h6>Stato</h6>
                 <div>
                     <input type="checkbox" /> In Sede
-                    <span class="badge badge-pill badge-info">1</span>
+                    <span class="badge badge-pill badge-info">30</span>
                 </div>
                 <div>
                     <input type="checkbox" /> In viaggio
-                    <span class="badge badge-pill badge-info">2</span>
+                    <span class="badge badge-pill badge-info">20</span>
+                </div>
+                <div>
+                    <input type="checkbox" /> Sul posto
+                    <span class="badge badge-pill badge-info">15</span>
+                </div>
+                <div>
+                    <input type="checkbox" /> In rientro
+                    <span class="badge badge-pill badge-info">30</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card filtro">
+            <div class="card-block">
+                <h6>Disponibile</h6>
+                <div>
+                    <input type="checkbox" /> Disponibile
+                    <span class="badge badge-pill badge-info">90</span>
+                </div>
+                <div>
+                    <input type="checkbox" /> Non disponibile
+                    <span class="badge badge-pill badge-info">10</span>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row col-9">
+    <div class="row col-10">
         <app-mezzoinservizio *ngFor="let m of mezzi" [mezzo]="m" class="col col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4"></app-mezzoinservizio>
     </div>
 </div>
