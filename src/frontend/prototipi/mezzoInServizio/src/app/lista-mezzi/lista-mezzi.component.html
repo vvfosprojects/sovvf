@@ -14,6 +14,24 @@
 
         <div class="card filtro">
             <div class="card-block">
+                <h6>Disponibilità</h6>
+                <div>
+                    <label>
+                        <input [ngModel]="filtroDisponibilita.disponibile.checked" type="checkbox" (click)="selDisponibilita($event, 1)" /> Disponibile
+                        <span class="badge badge-pill badge-info">{{ filtroDisponibilita.disponibile.count }}</span>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input [ngModel]="filtroDisponibilita.nonDisponibile.checked" type="checkbox" (click)="selDisponibilita($event, 0)" /> Non disponibile
+                        <span class="badge badge-pill badge-info">{{ filtroDisponibilita.nonDisponibile.count }}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="card filtro">
+            <div class="card-block">
                 <h6>Stato</h6>
                 <div>
                     <input type="checkbox" /> In Sede
@@ -30,20 +48,6 @@
                 <div>
                     <input type="checkbox" /> In rientro
                     <span class="badge badge-pill badge-info">30</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="card filtro">
-            <div class="card-block">
-                <h6>Disponibile</h6>
-                <div>
-                    <input type="checkbox" /> Disponibile
-                    <span class="badge badge-pill badge-info">90</span>
-                </div>
-                <div>
-                    <input type="checkbox" /> Non disponibile
-                    <span class="badge badge-pill badge-info">10</span>
                 </div>
             </div>
         </div>

@@ -11,6 +11,7 @@ export class ListaMezziComponent implements OnInit {
   private tuttiIMezzi: MezzoInServizio[];
   private mezzi: MezzoInServizio[];
   private filtroSedi = {};
+  private filtroDisponibilita = { disponibile: { count: 0, checked: 0}, nonDisponibile: { count: 0, checked: 0} };
   private errorMessage: string;
 
   constructor(private listaMezziService: ListaMezziService) { }
@@ -32,6 +33,7 @@ export class ListaMezziComponent implements OnInit {
       mezzi => {
         this.tuttiIMezzi = mezzi;
         this.aggiornaOggettoFiltroSedi();
+        this.aggiornaOggettoFiltroDisponibilita();
         this.aggiornaMezziFiltrati();
       },
       error => this.errorMessage = <any>error
@@ -75,12 +77,36 @@ export class ListaMezziComponent implements OnInit {
     });
   }
 
+  private aggiornaOggettoFiltroDisponibilita() {
+    //azzera tutti i valori correnti di count
+    this.filtroDisponibilita.disponibile.count = 0;
+    this.filtroDisponibilita.nonDisponibile.count = 0;
+
+    this.tuttiIMezzi.forEach(m => {
+      if (m.disponibile)
+        this.filtroDisponibilita.disponibile.count++;
+      else
+        this.filtroDisponibilita.nonDisponibile.count++;
+    });
+  }
+
   /**
    * Questo metodo viene invocato sul click di una casella di filtraggio. Il valore di sede è la chiave
    * della sede selezionata.
    */
   private selSede(event, sede) {
     this.filtroSedi[sede].checked = event.target.checked;
+    this.aggiornaMezziFiltrati();
+  }
+
+  /**
+   * Questo metodo viene invocato sul click di una casella di filtraggio per la disponibilità.
+   */
+  private selDisponibilita(event, disponibile) {
+    if (disponibile)
+      this.filtroDisponibilita.disponibile.checked = event.target.checked;
+    else
+      this.filtroDisponibilita.nonDisponibile.checked = event.target.checked;
     this.aggiornaMezziFiltrati();
   }
 
@@ -97,16 +123,27 @@ export class ListaMezziComponent implements OnInit {
    * nella lista dei mezzi.
    */
   private aggiornaMezziFiltrati() {
+    var mezzi;
+    //filtro su sedi
+
     // se nessuna checkbox è spuntata, si vedono tutti i mezzi
     if (Object.keys(this.filtroSedi)
       .map(key => this.filtroSedi[key])
       .every(x => !x.checked)) {
-      this.mezzi = this.tuttiIMezzi;
+      mezzi = this.tuttiIMezzi;
     } else {
       // altrimenti si vedono solo quelli delle categorie spuntate
-      this.mezzi = this.tuttiIMezzi.filter((m) => {
+      mezzi = this.tuttiIMezzi.filter(m => {
         return this.filtroSedi[m.descrizioneUnitaOperativa].checked;
       });
     }
+
+    if (this.filtroDisponibilita.disponibile.checked || this.filtroDisponibilita.nonDisponibile.checked)
+      mezzi = mezzi.filter(m => 
+        m.disponibile && this.filtroDisponibilita.disponibile.checked ||
+        !m.disponibile && this.filtroDisponibilita.nonDisponibile.checked
+      );
+
+    this.mezzi = mezzi; 
   }
 }
