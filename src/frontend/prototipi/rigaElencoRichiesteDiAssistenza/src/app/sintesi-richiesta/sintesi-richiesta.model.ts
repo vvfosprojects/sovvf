@@ -34,7 +34,8 @@ export class SintesiRichiesta {
         public istantePrimaAssegnazione: Date,
 
         /**
-         * priorita della richiesta (da 1 a 5)
+         * priorita della richiesta (da 1 a 5). 1 = Altissima, 2 = Alta, 3 = Media,
+         * 4 = Bassa, 5 = Bassissima.
          */
         public priorita: number,
 
@@ -129,6 +130,6 @@ export class SintesiRichiesta {
         /**
          * etichette associate all'intervento (per es. aPagamento, imp, ecc.)
          */
-        etichette: string[]
+        public etichette: string[]
     ) {}
 }

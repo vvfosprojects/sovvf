@@ -1,4 +1,4 @@
-import { PersonaSulMezzo } from "app/sintesi-richiesta/persona-sul-mezzo.model";
+import { Componente } from "app/sintesi-richiesta/componente.model";
 
 /**
  * Modella un mezzo impegnato su una richiesta di assistenza
@@ -77,9 +77,9 @@ export class Mezzo {
         public descrizioneAppartenenzaMezzo: string,
 
         /**
-         * Elenco delle persone presenti sul mezzo
+         * Elenco dei componenti presenti sul mezzo
          */
-        public personeSulMezzo: PersonaSulMezzo[],
+        public personeSulMezzo: Componente[],
 
         /**
          * Elenco delle notifiche legate al mezzo
