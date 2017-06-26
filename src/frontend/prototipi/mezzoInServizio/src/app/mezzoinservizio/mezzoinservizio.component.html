@@ -1,4 +1,4 @@
-<div class="section">
+<div class="section text-muted">
   <div class="row">
     <div class="col col-md-12 card card-block alert-success m-1 h6"
     [ngClass]="{'alert-success'  : fs.codiceStato == 'InViaggio' || fs.codiceStato == 'SulPosto',
@@ -10,7 +10,7 @@
                      'text-danger'  : !fs.disponibile || fs.codiceStato == 'InViaggio' || fs.codiceStato == 'SulPosto',
                      'text-primary' : fs.codiceStato == 'InRientro',
                      'text-default' : fs.codiceStato == 'FuoriServizio'}"></i>
-            <i class="fa fa-circle-o fa-stack-2x text-success"></i>
+            <!--<i class="fa fa-circle-o fa-stack-2x text-success"></i>-->
           <div *ngIf="fs.disponibile">
            <i class="text-success"></i>
           </div>
@@ -20,7 +20,7 @@
         </span>
         </div>
         <div class="col col-md-3 text-center">
-          <div><span class="badge badge-info">{{fs.descrizione}}</span> {{fs.targa}}</div>
+          <div><span class="h5">{{fs.descrizione}}</span> {{fs.targa}}</div>
           <div class="card-text">{{fs.descrizioneUnitaOperativa}} </div>
         </div>
         <div class="col col-md-2 text-center">
@@ -29,7 +29,7 @@
                      'badge-primary' : fs.codiceStato == 'InRientro',
                      'badge-default' : fs.codiceStato == 'FuoriServizio'}">{{getDescrizioneStato(fs.codiceStato)}}
           </div>
-          <div> {{fs.istanteAggiornamentoStato | friendlyDate:20}} {{fs.istanteAggiornamentoStato | friendlyHour}}</div>
+          <div class="text-muted"> <small> {{fs.istanteAggiornamentoStato | friendlyDate:20}} {{fs.istanteAggiornamentoStato | friendlyHour}} </small> </div>
         </div>
         <div class="col col-md-5 text-right">
           <div *ngIf="numeroPersone() > 0">
@@ -48,7 +48,7 @@
               </a>
           </div>
         </div>
-        <div hidden>
+        <!--<div hidden>
           <div class="col col-md-4">
             <button type="button" class="btn btn-sm" (click)="setDisponibile(true)">Disponibile</button>
             <button type="button" class="btn btn-sm" (click)="setDisponibile(false)">Non Disponibile</button>
@@ -61,7 +61,7 @@
             <button type="button" class="btn btn-sm" (click)="setCodiceStato('FuoriServizio')">F.S.</button>
             <button type="button" class="btn btn-sm" (click)="setCodiceStato('Istituto')">Ist.to</button>
           </div>
-        </div>
+        </div>-->
       </div>
       <div class="row">
         <div class="col-md-6 offset-md-4 h6">

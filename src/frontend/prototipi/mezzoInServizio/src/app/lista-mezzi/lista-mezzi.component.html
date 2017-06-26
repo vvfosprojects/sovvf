@@ -1,4 +1,9 @@
 <div class="row">
+    
+    <div class="row col-10">
+        <app-mezzoinservizio *ngFor="let m of mezzi" [mezzo]="m" class="col col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4"></app-mezzoinservizio>
+    </div>
+
     <div class="col-2">
         <div class="card filtro">
             <div class="card-block">
@@ -52,7 +57,5 @@
             </div>
         </div>
     </div>
-    <div class="row col-10">
-        <app-mezzoinservizio *ngFor="let m of mezzi" [mezzo]="m" class="col col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4"></app-mezzoinservizio>
-    </div>
+    
 </div>
