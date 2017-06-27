@@ -137,9 +137,6 @@ namespace Modello.Classi.Soccorso
             }
         }
 
-#warning Realizzare la classe TipologiaRichiesta per modellare la classificazione delle Tipologie della Richiesta
-#warning Definire un metodo per estrarre la Tipologia di Richiesta principale, da mostrare in GUI
-
         /// <summary>
         ///   E' la geolocalizzazione dell'evento calamitoso, vigilanza, ecc.
         /// </summary>

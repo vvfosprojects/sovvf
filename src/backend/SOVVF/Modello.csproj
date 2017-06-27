@@ -110,7 +110,10 @@
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\InserisciTelefonata\CommandDTO\InserisciTelefonataCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\InserisciTelefonata\InserisciTelefonataCommandHandler.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\RichiestaAssistenza\QueryDTO\SintesiRichiestaAssistenzaQuery.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\RichiestaAssistenza\ResultDTO\Componente.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\RichiestaAssistenza\ResultDTO\Mezzo.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\RichiestaAssistenza\ResultDTO\SintesiRichiestaAssistenzaResult.cs" />
+    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\RichiestaAssistenza\ResultDTO\Squadra.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\RichiestaAssistenza\SintesiRichiestaAssistenzaQueryHandler.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\SituazioneMezzo\PersonaSulMezzo.cs" />
     <Compile Include="Servizi\Infrastruttura\Anagrafiche\IGetTipoInterventoByCodice.cs" />

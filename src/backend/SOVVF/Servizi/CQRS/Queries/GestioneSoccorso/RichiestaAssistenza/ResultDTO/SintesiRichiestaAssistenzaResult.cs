@@ -17,16 +17,137 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.ResultDTO
 {
     /// <summary>
-    ///   Contiene le informazioni di sintesi di una Richiesta di Assistenza
+    ///   Contiene le informazioni di sintesi di una Richiesta di Assistenza, utile ad alimentare il
+    ///   primo ed il secondo livello di dettaglio del componente richiesta di assistenza sul frontend.
     /// </summary>
     public class SintesiRichiestaAssistenzaResult
     {
+        public enum Priorita { Altissima = 1, Alta, Media, Bassa, Bassissima }
+
+        public string Id { get; set; }
+
         /// <summary>
         ///   E' il codice della Richiesta di Assistenza
         /// </summary>
-        public string CodiceRichiesta { get; set; }
+        public string Codice { get; set; }
+
+        /// <summary>
+        ///   Indica se la richiesta è stata marcata come rilevante dall'operatore
+        /// </summary>
+        public bool Rilevante { get; set; }
+
+        /// <summary>
+        ///   Ricezione della richiesta (via telefono, ecc.)
+        /// </summary>
+        public DateTime IstanteRicezioneRichiesta { get; set; }
+
+        /// <summary>
+        ///   Eventuale istante di prima assegnazione di risorse alla richiesta
+        /// </summary>
+        public DateTime IstantePrimaAssegnazione { get; set; }
+
+        /// <summary>
+        ///   Priorita della richiesta
+        /// </summary>
+        public Priorita PrioritaRichiesta { get; set; }
+
+        /// <summary>
+        ///   Descrizione delle tipologie
+        /// </summary>
+        public string[] Tipologie { get; set; }
+
+        /// <summary>
+        ///   Descrizione della richiesta
+        /// </summary>
+        public string Descrizione { get; set; }
+
+        /// <summary>
+        ///   Descrizione del richiedente
+        /// </summary>
+        public string Richiedente { get; set; }
+
+        /// <summary>
+        ///   Numero telefonico del richiedente (se appropriato)
+        /// </summary>
+        public string NumeroRichiedente { get; set; }
+
+        /// <summary>
+        ///   Descrizione della località della richiesta
+        /// </summary>
+        public string DescrizioneLocalita { get; set; }
+
+        /// <summary>
+        ///   Descrizione delle sedi di prima, seconda e terza competenza
+        /// </summary>
+        public string DescrizioneCompetenze { get; set; }
+
+        /// <summary>
+        ///   Note sulla località della richiesta (per es. "accanto a ingresso carico/scarico del
+        ///   supermercato Spendibene")
+        /// </summary>
+        public string NoteLocalita { get; set; }
+
+        /// <summary>
+        ///   Descrizione delle zone di emergenza
+        /// </summary>
+        public string[] ZoneEmergenza { get; set; }
+
+        /// <summary>
+        ///   Eventuale istante di presa in carico della richiesta
+        /// </summary>
+        public DateTime IstantePresaInCarico { get; set; }
+
+        /// <summary>
+        ///   Codice della scheda nue
+        /// </summary>
+        public string CodiceSchedaNue { get; set; }
+
+        /// <summary>
+        ///   Codice dello stato di invio del fonogramma (per es. daInviare, inviato, nonNecessario).
+        ///   Utile a calcolare il colore della segnalazione.
+        /// </summary>
+        public string CodiceStatoFonogramma { get; set; }
+
+        /// <summary>
+        ///   Segnalazione sullo stato di invio del fonogramma.
+        /// </summary>
+        public string DescrizioneStatoFonogramma { get; set; }
+
+        /// <summary>
+        ///   Numero di eventi collegati alla richiesta (che è un'indicazione di massima sulla stima
+        ///   della complessità dell'intervento)
+        /// </summary>
+        public int NumeroEventiGenerati { get; set; }
+
+        /// <summary>
+        ///   Codice della complessità dell'intervento (per es. bassa, media, alta). Utile a
+        ///   calcolare il colore della segnalazione sulla complessità.
+        /// </summary>
+        public string CodiceComplessita { get; set; }
+
+        /// <summary>
+        ///   Segnalazione sulla complessità dell'intervento.
+        /// </summary>
+        public string DescrizioneComplessita { get; set; }
+
+        /// <summary>
+        ///   Dati sulle squadre coinvolte nella richiesta
+        /// </summary>
+        public Squadra[] Squadre { get; set; }
+
+        /// <summary>
+        ///   Dati sui mezzi impegnati sull'intervento
+        /// </summary>
+        public Mezzo[] Mezzi { get; set; }
+
+        /// <summary>
+        ///   Etichette associate all'intervento (per es. aPagamento, imp, ecc.)
+        /// </summary>
+        public string[] Etichette { get; set; }
     }
 }
