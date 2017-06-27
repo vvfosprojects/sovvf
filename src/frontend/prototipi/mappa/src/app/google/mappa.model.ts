@@ -1,14 +1,23 @@
 
-export class PuntiMappaGoogle {
+export class PuntiMappaGoogleInput {
 
      constructor(
         public codice: string,
         public tipologia: string,
         public indirizzo: string,
         public descrizione: string,
-        public longitudine: number,
         public latitudine: number,
+        public longitudine: number,
         public marker: string
+     ) { }
+
+}
+
+export class PuntiMappaGoogleOutput {
+
+     constructor(
+        public latitudine: number,
+        public longitudine: number,
      ) { }
 
 }

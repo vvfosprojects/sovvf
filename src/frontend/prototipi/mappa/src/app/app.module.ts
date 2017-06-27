@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { MappaService } from "./google/mappa.service";
-import { PuntiMappaGoogle } from "./google/mappa.model";
+import { PuntiMappaGoogleInput, PuntiMappaGoogleOutput } from "./google/mappa.model";
 import { MappaComponent } from './google/mappa.component'
 
 @NgModule({
