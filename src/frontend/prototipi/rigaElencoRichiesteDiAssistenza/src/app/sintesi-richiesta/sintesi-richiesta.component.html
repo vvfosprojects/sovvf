@@ -35,20 +35,20 @@
                 </ng-template>
 
               </div>
+
               <div class="h5">
                 <i class="fa fa-thermometer-half fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Priorità della richiesta"></i>
                 <span class="h5" style="font-family: FontAwesome; font-style: normal; color:#006633">
                   <span *ngFor="let n of vettorePallini()">&#xf111;</span><span *ngFor="let n of vettoreBuchini()">&#xf10c;</span>
                 </span>
-                <!--<span class="h5" style="font-family: FontAwesome; font-style: normal; color:#006633">&#xf0c8;&#xf0c8;&#xf0c8;&#xf096;&#xf096;</span>-->
               </div>
 
             </div>
             <div class="col-md-8">
               <div class="h5">
                 <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Tipologia Eventi"></i>
-                <span class="h4" style="color:chocolate">Incendio Normale</span>
-                <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Tipologie Eventi<b>" data-placement="bottom" data-html="true"
+                <span *ngIf="richiesta.tipologie.length > 0" class="h4" style="color:chocolate">{{ richiesta.tipologie[0] }}</span>
+                <a *ngIf="richiesta.tipologie.length > 1" tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Tipologie<b>" data-placement="bottom" data-html="true"
                   data-content="
 														<div class='h5' style='color:#bbbbbb;'>
 														<span class='badge badge-danger'>Incendio Normale</span><br/>
@@ -58,7 +58,7 @@
 														<span class='badge badge-danger'>Soccorso a persona</span><br/>
 														Persona Investita da auto finita nel fossato [...]<br/><br/>
 														</div>">
-										<span class="h6 ml-2" style="font-weight:bold;color:chocolate">[più altri 2]</span></a>
+										<span class="h6 ml-2" style="font-weight:bold;color:chocolate">[più altri {{ richiesta.tipologie.length - 1 }}]</span></a>
 
                 <h5>
                   <a style="color:#bbbbbb;" tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Descrizione dettagliata evento<b>"
