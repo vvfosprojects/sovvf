@@ -24,7 +24,7 @@ export class Mezzo {
          * Codice dello stato del mezzo. Per es. inSede, inViaggio, sulPosto, inRientro,
          * istituto, disimpegnato, ecc. Utile a definire il colore del segnale di stato.
          */
-        public codiceStato: string,
+        public statoMezzo: string,
         
         /**
          * Testo del segnale di stato.
@@ -35,7 +35,7 @@ export class Mezzo {
          * Codice dello stato di efficienza del mezzo. Utile a definire il colore
          * della segnalazione delolo stato di efficienza.
          */
-        public codiceStatoEfficienza: string,
+        public statoEfficienzaMezzo: string,
 
         /**
          * Testo dello stato di efficienza
@@ -46,7 +46,7 @@ export class Mezzo {
          * Codice del livello di carburante. Utile a definire il colore
          * della segnalazione sul livello di carburante.
          */
-        public codiceLivelloCarburante: string,
+        public livelloCarburante: string,
 
         /**
          * Testo del livello di carburante.
@@ -57,7 +57,7 @@ export class Mezzo {
          * Codice del livello di estinguente. Utile a definire il colore
          * della segnalazione del livello di estinguente.
          */
-        public codiceLivelloEstinguente: string,
+        public livelloEstinguente: string,
 
         /**
          * Testo della segnalazione sul livello di estinguente
@@ -69,7 +69,7 @@ export class Mezzo {
          * ALTRASEDE, ecc. Utile a definire il colore della segnalazione
          * sullo stato di appartenenza.
          */
-        public codiceAppartenenzaMezzo: string,
+        public appartenenzaMezzo: string,
 
         /**
          * Testo della segnalazione sullo stato di appartenenza.

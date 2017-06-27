@@ -5,84 +5,92 @@
     /// </summary>
     public class Mezzo
     {
+        public enum Stato { InSede = 0, InViaggio, SulPosto, InRientro, Istituto }
+
+        public enum StatoEfficienza { FuoriUso = 0, Mediocre, Buona, Ottima }
+
+        public enum Livello { Vuoto = 0, Basso, Medio, Alto }
+
+        public enum Appartenenza { Proprio = 0, AltraSede }
+
         /// <summary>
         ///   Codice
         /// </summary>
-        public string codice { get; set; }
+        public string Codice { get; set; }
 
         /// <summary>
         ///   Descrizione
         /// </summary>
-        public string descrizione { get; set; }
+        public string Descrizione { get; set; }
 
         /// <summary>
         ///   Genere. Per es. APS, ABP, AS, CA, ecc.
         /// </summary>
-        public string genereMezzo { get; set; }
+        public string GenereMezzo { get; set; }
 
         /// <summary>
         ///   Codice dello stato del mezzo. Per es. inSede, inViaggio, sulPosto, inRientro, istituto,
-        ///   disimpegnato, ecc. Utile a definire il colore del segnale di stato.
+        ///   ecc. Utile a definire il colore del segnale di stato.
         /// </summary>
-        public string codiceStato { get; set; }
+        public Stato StatoMezzo { get; set; }
 
         /// <summary>
         ///   Testo del segnale di stato.
         /// </summary>
-        public string descrizioneStato { get; set; }
+        public string DescrizioneStato { get; set; }
 
         /// <summary>
         ///   Codice dello stato di efficienza del mezzo. Utile a definire il colore della
         ///   segnalazione delolo stato di efficienza.
         /// </summary>
-        public string codiceStatoEfficienza { get; set; }
+        public StatoEfficienza StatoEfficienzaMezzo { get; set; }
 
         /// <summary>
         ///   Testo dello stato di efficienza
         /// </summary>
-        public string descrizioneStatoEfficienza { get; set; }
+        public string DescrizioneStatoEfficienza { get; set; }
 
         /// <summary>
         ///   Codice del livello di carburante. Utile a definire il colore della segnalazione sul
         ///   livello di carburante.
         /// </summary>
-        public string codiceLivelloCarburante { get; set; }
+        public Livello LivelloCarburante { get; set; }
 
         /// <summary>
         ///   Testo del livello di carburante.
         /// </summary>
-        public string descrizioneLivelloCarburante { get; set; }
+        public string DescrizioneLivelloCarburante { get; set; }
 
         /// <summary>
         ///   Codice del livello di estinguente. Utile a definire il colore della segnalazione del
         ///   livello di estinguente.
         /// </summary>
-        public string codiceLivelloEstinguente { get; set; }
+        public Livello LivelloEstinguente { get; set; }
 
         /// <summary>
         ///   Testo della segnalazione sul livello di estinguente
         /// </summary>
-        public string descrizioneLivelloEstinguente { get; set; }
+        public string DescrizioneLivelloEstinguente { get; set; }
 
         /// <summary>
         ///   Codice dello stato di appartenenza del mezzo. Per es. PROPRIO, ALTRASEDE, ecc. Utile a
         ///   definire il colore della segnalazione sullo stato di appartenenza.
         /// </summary>
-        public string codiceAppartenenzaMezzo { get; set; }
+        public Appartenenza AppartenenzaMezzo { get; set; }
 
         /// <summary>
         ///   Testo della segnalazione sullo stato di appartenenza.
         /// </summary>
-        public string descrizioneAppartenenzaMezzo { get; set; }
+        public string DescrizioneAppartenenzaMezzo { get; set; }
 
         /// <summary>
         ///   Elenco dei componenti presenti sul mezzo
         /// </summary>
-        public Componente[] personeSulMezzo { get; set; }
+        public Componente[] PersoneSulMezzo { get; set; }
 
         /// <summary>
         ///   Elenco delle notifiche legate al mezzo
         /// </summary>
-        public string[] notificheMezzo { get; set; }
+        public string[] NotificheMezzo { get; set; }
     }
 }

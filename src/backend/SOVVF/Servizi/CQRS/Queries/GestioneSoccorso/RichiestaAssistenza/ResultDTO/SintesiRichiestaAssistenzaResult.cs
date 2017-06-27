@@ -27,7 +27,11 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
     /// </summary>
     public class SintesiRichiestaAssistenzaResult
     {
-        public enum Priorita { Altissima = 1, Alta, Media, Bassa, Bassissima }
+        public enum Priorita { Altissima = 0, Alta, Media, Bassa, Bassissima }
+
+        public enum StatoFonogramma { NonNecessario = 0, NonInviato, DaInviare }
+
+        public enum Complessita { Alta = 0, Media, Bassa }
 
         public string Id { get; set; }
 
@@ -111,7 +115,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
         ///   Codice dello stato di invio del fonogramma (per es. daInviare, inviato, nonNecessario).
         ///   Utile a calcolare il colore della segnalazione.
         /// </summary>
-        public string CodiceStatoFonogramma { get; set; }
+        public StatoFonogramma StatoFonogrammaRichiesta { get; set; }
 
         /// <summary>
         ///   Segnalazione sullo stato di invio del fonogramma.
@@ -128,7 +132,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
         ///   Codice della complessità dell'intervento (per es. bassa, media, alta). Utile a
         ///   calcolare il colore della segnalazione sulla complessità.
         /// </summary>
-        public string CodiceComplessita { get; set; }
+        public Complessita ComplessitaRichiesta { get; set; }
 
         /// <summary>
         ///   Segnalazione sulla complessità dell'intervento.
