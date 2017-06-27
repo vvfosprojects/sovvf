@@ -27,12 +27,82 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
     /// </summary>
     public class SintesiRichiestaAssistenzaResult
     {
-        public enum Priorita { Altissima = 0, Alta, Media, Bassa, Bassissima }
+        /// <summary>
+        ///   Priorità della richiesta
+        /// </summary>
+        public enum Priorita
+        {
+            /// <summary>
+            ///   Priorità altissima
+            /// </summary>
+            Altissima = 0,
 
-        public enum StatoFonogramma { NonNecessario = 0, NonInviato, DaInviare }
+            /// <summary>
+            ///   Priorità alta
+            /// </summary>
+            Alta,
 
-        public enum Complessita { Alta = 0, Media, Bassa }
+            /// <summary>
+            ///   Priorità media
+            /// </summary>
+            Media,
 
+            /// <summary>
+            ///   Priorità bassa
+            /// </summary>
+            Bassa,
+
+            /// <summary>
+            ///   Priorità bassissima
+            /// </summary>
+            Bassissima
+        }
+
+        /// <summary>
+        ///   Indicazione dello stato del fonogramma
+        /// </summary>
+        public enum StatoFonogramma
+        {
+            /// <summary>
+            ///   Il fonogramma non è necessario
+            /// </summary>
+            NonNecessario = 0,
+
+            /// <summary>
+            ///   Il fonogramma deve essere inviato ma non è stato inviato (rosso)
+            /// </summary>
+            NonInviato,
+
+            /// <summary>
+            ///   Il fonogramma è stato inviato
+            /// </summary>
+            DaInviare
+        }
+
+        /// <summary>
+        ///   Indicazione della complessità di una richiesta di assistenza
+        /// </summary>
+        public enum Complessita
+        {
+            /// <summary>
+            ///   Complessità alta
+            /// </summary>
+            Alta = 0,
+
+            /// <summary>
+            ///   Complessità media
+            /// </summary>
+            Media,
+
+            /// <summary>
+            ///   Complessità bassa
+            /// </summary>
+            Bassa
+        }
+
+        /// <summary>
+        ///   L'id della richiesta
+        /// </summary>
         public string Id { get; set; }
 
         /// <summary>

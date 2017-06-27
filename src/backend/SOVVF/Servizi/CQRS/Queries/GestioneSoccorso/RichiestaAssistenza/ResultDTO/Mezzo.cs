@@ -1,25 +1,140 @@
-﻿namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.ResultDTO
+﻿//-----------------------------------------------------------------------
+// <copyright file="Mezzo.cs" company="CNVVF">
+// Copyright (C) 2017 - CNVVF
+//
+// This file is part of SOVVF.
+// SOVVF is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// SOVVF is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+//-----------------------------------------------------------------------
+namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.ResultDTO
 {
     /// <summary>
     ///   Modella il mezzo
     /// </summary>
     public class Mezzo
     {
-        public enum Stato { InSede = 0, InViaggio, SulPosto, InRientro, Istituto }
+        /// <summary>
+        ///   Stato del mezzo
+        /// </summary>
+        public enum Stato
+        {
+            /// <summary>
+            ///   Il mezzo è in sede
+            /// </summary>
+            InSede = 0,
 
-        public enum StatoEfficienza { FuoriUso = 0, Mediocre, Buona, Ottima }
+            /// <summary>
+            ///   Il mezzo è in viaggio verso il luogo del sinistro
+            /// </summary>
+            InViaggio,
 
-        public enum Livello { Vuoto = 0, Basso, Medio, Alto }
+            /// <summary>
+            ///   Il mezzo è sul posto
+            /// </summary>
+            SulPosto,
 
-        public enum Appartenenza { Proprio = 0, AltraSede }
+            /// <summary>
+            ///   Il mezzo è in rientro
+            /// </summary>
+            InRientro,
+
+            /// <summary>
+            ///   Il mezzo è impegnato per motivi di istituto
+            /// </summary>
+            Istituto
+        }
 
         /// <summary>
-        ///   Codice
+        ///   Stato di efficienza del mezzo
+        /// </summary>
+        public enum StatoEfficienza
+        {
+            /// <summary>
+            ///   Il mezzo è fuori uso
+            /// </summary>
+            FuoriUso,
+
+            /// <summary>
+            ///   Lo stato è mediocre
+            /// </summary>
+            Mediocre,
+
+            /// <summary>
+            ///   Lo stato è buono
+            /// </summary>
+            Buono,
+
+            /// <summary>
+            ///   Lo stato è ottimo
+            /// </summary>
+            Ottimo
+        }
+
+        /// <summary>
+        ///   Indicatore sul livello dei rifornimenti
+        /// </summary>
+        public enum Livello
+        {
+            /// <summary>
+            ///   Il livello non è stato rilevato (per es. per indisponibilità di un apposito sensore)
+            /// </summary>
+            NonRilevato = 0,
+
+            /// <summary>
+            ///   Materiale (combustibile, ossigeno, estinguente) Esaurito
+            /// </summary>
+            Vuoto,
+
+            /// <summary>
+            ///   Livello basso
+            /// </summary>
+            Basso,
+
+            /// <summary>
+            ///   Livello medio
+            /// </summary>
+            Medio,
+
+            /// <summary>
+            ///   Livello alto
+            /// </summary>
+            Alto
+        }
+
+        /// <summary>
+        ///   Appartenenza del mezzo
+        /// </summary>
+        public enum Appartenenza
+        {
+            /// <summary>
+            ///   Mezzo proprio (dal punto di vista dell'utente che visualizza l'informazione
+            /// </summary>
+            Proprio = 0,
+
+            /// <summary>
+            ///   Mezzo di altra sede (dal punto di vista dell'utente che visualizza l'informazione
+            /// </summary>
+            AltraSede
+        }
+
+        /// <summary>
+        ///   Codice del mezzo
         /// </summary>
         public string Codice { get; set; }
 
         /// <summary>
-        ///   Descrizione
+        ///   Descrizione del mezzo (come appare in GUI)
         /// </summary>
         public string Descrizione { get; set; }
 
