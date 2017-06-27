@@ -8,27 +8,38 @@
               <div class="h5">
                 <i class="fa fa-hashtag fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Identificativo richiesta assistenza"></i>
                 <span class="h4">
-											<a data-toggle="collapse" style="color:#444444!important; font-weight: bold" href="#collapse1">
-										123.456.789	</a>
-										</span>
-                <span>
-										<i class="fa fa-exclamation-circle fa-fw" style="color:red!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-										 title="Intervento Rilevante"></i>
-										 </span>
+								  <a data-toggle="collapse" style="color:#444444!important; font-weight: bold" href="#collapse1">
+									  {{ richiesta.codice }}
+                  </a>
+								</span>
+                <span *ngIf="richiesta.rilevante">
+                  <i class="fa fa-exclamation-circle fa-fw" style="color:red!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                  title="Intervento Rilevante"></i>
+                </span>
               </div>
 
               <div class="h5">
                 <i class="fa fa-calendar fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Data e Ora ricezione richiesta"></i>
-                <span class="badge badge-info">oggi</span> - 15.12
+                {{ richiesta.istanteRicezioneRichiesta | friendlyDate }} - {{ richiesta.istanteRicezioneRichiesta | friendlyHour }}
               </div>
               <div class="h5">
-                <i class="fa fa-bolt fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Orario Prima assegnazione"></i>15.20
-                <!--<span class="badge badge-success">presidiato</span> -->
-                <span class="badge badge-warning">non presidiato</span>
+                <i class="fa fa-bolt fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Orario Prima assegnazione"></i>
+                {{ richiesta.istantePrimaAssegnazione | friendlyHour }}
+                
+                <!-- presidiato / non presidiato -->
+                <span *ngIf="richiesta.presidiato;else nonPresidiato">
+                  <span class="badge badge-success">presidiato</span>
+                </span>
+                <ng-template #nonPresidiato>
+                  <span class="badge badge-warning">non presidiato</span>
+                </ng-template>
+
               </div>
               <div class="h5">
                 <i class="fa fa-thermometer-half fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Priorità della richiesta"></i>
-                <span class="h5" style="font-family: FontAwesome; font-style: normal; color:#006633">&#xf111;&#xf111;&#xf111;&#xf10c;&#xf10c;</span>
+                <span class="h5" style="font-family: FontAwesome; font-style: normal; color:#006633">
+                  <span *ngFor="let n of vettorePallini()">&#xf111;</span><span *ngFor="let n of vettoreBuchini()">&#xf10c;</span>
+                </span>
                 <!--<span class="h5" style="font-family: FontAwesome; font-style: normal; color:#006633">&#xf0c8;&#xf0c8;&#xf0c8;&#xf096;&#xf096;</span>-->
               </div>
 

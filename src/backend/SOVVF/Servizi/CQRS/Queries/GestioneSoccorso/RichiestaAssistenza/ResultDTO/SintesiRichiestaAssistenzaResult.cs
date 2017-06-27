@@ -126,6 +126,11 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
         public DateTime IstantePrimaAssegnazione { get; set; }
 
         /// <summary>
+        ///   Indica se il luogo del sinistro è presidiato con squadra VVF
+        /// </summary>
+        public bool Presidiato { get; set; }
+
+        /// <summary>
         ///   Priorita della richiesta
         /// </summary>
         public Priorita PrioritaRichiesta { get; set; }
