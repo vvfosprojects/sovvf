@@ -8,36 +8,47 @@
               <div class="h5">
                 <i class="fa fa-hashtag fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Identificativo richiesta assistenza"></i>
                 <span class="h4">
-											<a data-toggle="collapse" style="color:#444444!important; font-weight: bold" href="#collapse1">
-										123.456.789	</a>
-										</span>
-                <span>
-										<i class="fa fa-exclamation-circle fa-fw" style="color:red!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-										 title="Intervento Rilevante"></i>
-										 </span>
+								  <a data-toggle="collapse" style="color:#444444!important; font-weight: bold" href="#collapse1">
+									  {{ richiesta.codice }}
+                  </a>
+								</span>
+                <span *ngIf="richiesta.rilevante">
+                  <i class="fa fa-exclamation-circle fa-fw" style="color:red!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                  title="Intervento Rilevante"></i>
+                </span>
               </div>
 
               <div class="h5">
                 <i class="fa fa-calendar fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Data e Ora ricezione richiesta"></i>
-                <span class="badge badge-info">oggi</span> - 15.12
+                {{ richiesta.istanteRicezioneRichiesta | friendlyDate }} - {{ richiesta.istanteRicezioneRichiesta | friendlyHour }}
               </div>
               <div class="h5">
-                <i class="fa fa-bolt fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Orario Prima assegnazione"></i>15.20
-                <!--<span class="badge badge-success">presidiato</span> -->
-                <span class="badge badge-warning">non presidiato</span>
+                <i class="fa fa-bolt fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Orario Prima assegnazione"></i>
+                {{ richiesta.istantePrimaAssegnazione | friendlyHour }}
+                
+                <!-- presidiato / non presidiato -->
+                <span *ngIf="richiesta.presidiato;else nonPresidiato">
+                  <span class="badge badge-success">presidiato</span>
+                </span>
+                <ng-template #nonPresidiato>
+                  <span class="badge badge-warning">non presidiato</span>
+                </ng-template>
+
               </div>
+
               <div class="h5">
                 <i class="fa fa-thermometer-half fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Priorità della richiesta"></i>
-                <span class="h5" style="font-family: FontAwesome; font-style: normal; color:#006633">&#xf111;&#xf111;&#xf111;&#xf10c;&#xf10c;</span>
-                <!--<span class="h5" style="font-family: FontAwesome; font-style: normal; color:#006633">&#xf0c8;&#xf0c8;&#xf0c8;&#xf096;&#xf096;</span>-->
+                <span class="h5" style="font-family: FontAwesome; font-style: normal; color:#006633">
+                  <span *ngFor="let n of vettorePallini()">&#xf111;</span><span *ngFor="let n of vettoreBuchini()">&#xf10c;</span>
+                </span>
               </div>
 
             </div>
             <div class="col-md-8">
               <div class="h5">
                 <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Tipologia Eventi"></i>
-                <span class="h4" style="color:chocolate">Incendio Normale</span>
-                <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Tipologie Eventi<b>" data-placement="bottom" data-html="true"
+                <span *ngIf="richiesta.tipologie.length > 0" class="h4" style="color:chocolate">{{ richiesta.tipologie[0] }}</span>
+                <a *ngIf="richiesta.tipologie.length > 1" tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Tipologie<b>" data-placement="bottom" data-html="true"
                   data-content="
 														<div class='h5' style='color:#bbbbbb;'>
 														<span class='badge badge-danger'>Incendio Normale</span><br/>
@@ -47,7 +58,7 @@
 														<span class='badge badge-danger'>Soccorso a persona</span><br/>
 														Persona Investita da auto finita nel fossato [...]<br/><br/>
 														</div>">
-										<span class="h6 ml-2" style="font-weight:bold;color:chocolate">[più altri 2]</span></a>
+										<span class="h6 ml-2" style="font-weight:bold;color:chocolate">[più altri {{ richiesta.tipologie.length - 1 }}]</span></a>
 
                 <h5>
                   <a style="color:#bbbbbb;" tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Descrizione dettagliata evento<b>"
@@ -326,7 +337,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-1 container-fluid">
+    <div class="col-md-1">
       <div class="ml-4 mr-0 pr-0 h2">
         <a href="#">
 							<i class="fa fa-arrow-circle-o-right" style="color:lightblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"

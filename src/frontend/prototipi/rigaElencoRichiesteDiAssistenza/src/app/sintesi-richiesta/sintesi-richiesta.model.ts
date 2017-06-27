@@ -34,7 +34,13 @@ export class SintesiRichiesta {
         public istantePrimaAssegnazione: Date,
 
         /**
-         * priorita della richiesta (da 1 a 5)
+         * Indica se il luogo del sinistro è presidiato con squadra VVF
+         */
+        public presidiato: boolean,
+
+        /**
+         * priorita della richiesta (da 1 a 5). 1 = Altissima, 2 = Alta, 3 = Media,
+         * 4 = Bassa, 5 = Bassissima.
          */
         public priorita: number,
 
@@ -92,7 +98,7 @@ export class SintesiRichiesta {
          * codice dello stato di invio del fonogramma (per es. daInviare, inviato, nonNecessario). Utile a calcolare
          * il colore della segnalazione.
          */
-        public codiceStatoFonogramma: string,
+        public statoFonogrammaRichiesta: string,
 
         /**
          * segnalazione sullo stato di invio del fonogramma.
@@ -109,7 +115,7 @@ export class SintesiRichiesta {
          * codice della complessità dell'intervento (per es. bassa, media, alta). Utile
          * a calcolare il colore della segnalazione sulla complessità.
          */
-        public codiceComplessita: string,
+        public complessitaRichiesta: string,
 
         /**
          * segnalazione sulla complessità dell'intervento.
@@ -129,6 +135,6 @@ export class SintesiRichiesta {
         /**
          * etichette associate all'intervento (per es. aPagamento, imp, ecc.)
          */
-        etichette: string[]
+        public etichette: string[]
     ) {}
 }

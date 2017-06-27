@@ -53,7 +53,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza
             // estrae la richieste di assistenza indicata
             var richiesteAssistenza = this.getRichiestaAssistenzaById.Get(query.IdRichiesta);
             var result = new SintesiRichiestaAssistenzaResult();
-            result.CodiceRichiesta = richiesteAssistenza.Codice;
+            result.Codice = richiesteAssistenza.Codice;
 
             return result;
         }

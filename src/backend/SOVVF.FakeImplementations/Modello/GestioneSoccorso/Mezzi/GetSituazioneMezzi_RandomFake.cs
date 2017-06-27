@@ -43,13 +43,15 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi
             var generiMezzo = new[] { "APS", "ABP", "AS", "AV" };
             var unitaOperativa = new[] { "Centrale", "Tuscolano I", "Tuscolano II", "EUR", "Fiumicino", "Ostia", "Ostiense", "Nomentano" };
             var fakerPersonaSulMezzo = new Faker<PersonaSulMezzo>("it")
-                .RuleSet("CapoPartenza",
+                .RuleSet(
+                    "CapoPartenza",
                     (set) =>
                     {
                         set.RuleFor(p => p.CapoPartenza, f => true);
                         set.RuleFor(p => p.Autista, f => false);
                     })
-                .RuleSet("Autista",
+                .RuleSet(
+                    "Autista",
                     (set) =>
                     {
                         set.RuleFor(p => p.CapoPartenza, f => false);
@@ -63,24 +65,29 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi
                 .RuleFor(p => p.Rimpiazzo, f => f.Random.Number(10) < 1)
                 .RuleFor(p => p.Tooltip, f => f.Random.Replace("??????##?##?###?"));
             var fakerSituazioneMezzo = new Faker<SituazioneMezzo>("it")
-                .RuleSet("statiSenzaSquadra",
+                .RuleSet(
+                    "statiSenzaSquadra",
                     (set) =>
                     {
                         set.RuleFor(sm => sm.CodiceStato, f => f.PickRandom(statiSenzaSquadra));
                         set.RuleFor(sm => sm.CodiceRichiestaAssistenza, f => string.Empty);
                         set.RuleFor(sm => sm.PersoneSulMezzo, f => new PersonaSulMezzo[0]);
                     })
-                .RuleSet("statiConSquadra",
+                .RuleSet(
+                    "statiConSquadra",
                     (set) =>
                     {
                         set.RuleFor(sm => sm.CodiceStato, f => f.PickRandom(statiConSquadra));
                         set.RuleFor(sm => sm.CodiceRichiestaAssistenza, f => f.Random.Replace("###.###.###"));
-                        set.RuleFor(sm => sm.PersoneSulMezzo, f => fakerPersonaSulMezzo.Generate(1, "default,CapoPartenza")
+                        set.RuleFor(
+                            sm => sm.PersoneSulMezzo,
+                            f => fakerPersonaSulMezzo.Generate(1, "default,CapoPartenza")
                             .Concat(fakerPersonaSulMezzo.Generate(1, "default,Autista"))
                             .Concat(fakerPersonaSulMezzo.Generate(3, "default"))
                             .ToArray());
                     })
-                .RuleSet("nonDisponibile",
+                .RuleSet(
+                    "nonDisponibile",
                     (set) =>
                     {
                         set.RuleFor(sm => sm.Disponibile, f => false);
