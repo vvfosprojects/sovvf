@@ -29,7 +29,7 @@ export class MappaComponent implements OnInit {
   }
 
   public setCoordinataFake() {
-        //alert("ok");
+        alert("ok: " + this.lat);
         //alert("Lat1: " + this.lat);
         //this.mappaService.setPuntiMappaGoogleFake(new PuntiMappaGoogleOutput(41.897989, 12.504349));
         //this.lat=41.897989;
@@ -78,6 +78,13 @@ export class MappaComponent implements OnInit {
                   infowindow.open(map,marker);
             } 
 
+            google.maps.event.addListener(map, 'click', function($scope, e) {
+                  alert("1");
+                 $scope.lati=1111;
+                  alert("2");
+            });
+
          });
+//FINE LOADER MAP GOOGLE
   }  
 }
