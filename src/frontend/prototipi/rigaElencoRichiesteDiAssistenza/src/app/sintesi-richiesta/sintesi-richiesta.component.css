@@ -7,8 +7,9 @@
 .row_text {
 	color: #666666;
 }
-.fa {
-	color: #bbbbbb!important;
+/* icone di guida */
+.guida {
+	color: #bbbbbb;
 }
 .big_numbers {
 	color: #a72920;
@@ -22,4 +23,7 @@
 }
 .bg_card_title {
 	background-color: beige;
+}
+.nospace {
+	white-space: nowrap;
 }

@@ -7,6 +7,7 @@ import { SintesiRichiestaComponent } from './sintesi-richiesta/sintesi-richiesta
 import { ListaRichiesteComponent } from './lista-richieste/lista-richieste.component';
 import { FriendlyDatePipe } from "app/shared/pipes/friendly-date.pipe";
 import { FriendlyHourPipe } from "app/shared/pipes/friendly-hour.pipe";
+import { TruncatePipe } from "app/shared/pipes/truncate.pipe";
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { FriendlyHourPipe } from "app/shared/pipes/friendly-hour.pipe";
     ListaRichiesteComponent,
     FriendlyDatePipe,
     FriendlyHourPipe,
+    TruncatePipe,
   ],
   imports: [
     BrowserModule,

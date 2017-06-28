@@ -5,25 +5,25 @@
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-3">
-              <div class="h5">
-                <i class="fa fa-hashtag fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Identificativo richiesta assistenza"></i>
+              <div class="h5 nospace">
+                <i class="guida fa fa-hashtag fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Identificativo richiesta assistenza"></i>
                 <span class="h4">
 								  <a style="color:#444444!important; font-weight: bold" (click)="toggleEspanso()">
 									  {{ richiesta.codice }}
                   </a>
 								</span>
                 <span *ngIf="richiesta.rilevante">
-                  <i class="fa fa-exclamation-circle fa-fw" style="color:red!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                  <i class="guida fa fa-exclamation-circle fa-fw" style="color:red!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
                   title="Intervento Rilevante"></i>
                 </span>
               </div>
 
-              <div class="h5">
-                <i class="fa fa-calendar fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Data e Ora ricezione richiesta"></i>                {{ richiesta.istanteRicezioneRichiesta | friendlyDate }} - {{ richiesta.istanteRicezioneRichiesta | friendlyHour
-                }}
+              <div class="h5 nospace">
+                <i class="guida fa fa-calendar fa-fw" aria-hidden="true" title="Istante ricezione richiesta"></i> {{ richiesta.istanteRicezioneRichiesta
+                | friendlyDate }} - {{ richiesta.istanteRicezioneRichiesta | friendlyHour }}
               </div>
-              <div class="h5">
-                <i class="fa fa-bolt fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Orario Prima assegnazione"></i>                {{ richiesta.istantePrimaAssegnazione | friendlyHour }}
+              <div class="h5 nospace">
+                <i class="guida fa fa-bolt fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Orario Prima assegnazione"></i>                {{ richiesta.istantePrimaAssegnazione | friendlyHour }}
 
                 <!-- presidiato / non presidiato -->
                 <span *ngIf="richiesta.presidiato;else nonPresidiato">
@@ -35,37 +35,37 @@
 
               </div>
 
-              <div class="h5">
-                <i class="fa fa-thermometer-half fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Priorità della richiesta"></i>
-                <span class="h5" style="font-family: FontAwesome; font-style: normal; color:#006633">
-                  <span *ngFor="let n of vettorePallini()">&#xf111;</span><span *ngFor="let n of vettoreBuchini()">&#xf10c;</span>
+              <div class="h5 nospace">
+                <i class="guida fa fa-thermometer-half fa-fw" aria-hidden="true" title="Priorità della richiesta"></i>
+                <span class="h5" [ngClass]="{'text-success':richiesta.priorita <= 2, 'text-warning':richiesta.priorita > 2 && richiesta.priorita <= 4, 'text-danger': richiesta.priorita == 5}">
+                  <i *ngFor="let n of vettorePallini()" class="fa fa-circle" aria-hidden="true"></i><i *ngFor="let n of vettoreBuchini()" class="fa fa-circle-o" aria-hidden="true"></i>  
                 </span>
               </div>
 
             </div>
 
             <div class="col-md-8">
-              <div class="h5">
-                <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true" title="Tipologia Eventi"></i>
+              <div class="h5 nospace">
+                <i class="guida fa fa-exclamation-triangle fa-fw" aria-hidden="true" title="Tipologia Eventi"></i>
                 <span *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="h4" style="color:chocolate">{{ richiesta.tipologie[0] }}</span>
                 <span *ngIf="richiesta.tipologie.length > 1" pTooltip="{{ altreTipologie() }}" tooltipPosition="bottom">[più altri {{ richiesta.tipologie.length - 1 }}]</span>
 
                 <h5>
-                  <i class="fa fa-fw" aria-hidden="true"></i>
-                  <span pTooltip="{{ richiesta.descrizione }}" tooltipPosition="bottom">{{ richiesta.descrizione }}</span>
+                  <i class="guida fa fa-fw" aria-hidden="true"></i>
+                  <span pTooltip="{{ richiesta.descrizione }}" tooltipPosition="bottom">{{ richiesta.descrizione | truncate:33 }}</span>
                 </h5>
               </div>
-              <div class="h5">
-                <i class="fa fa-address-book-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Riferimento Chiamante"></i>                Carabinieri
+              <div class="h5 nospace">
+                <i class="guida fa fa-address-book-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Riferimento Chiamante"></i>                Carabinieri
               </div>
-              <div class="h5 pt-1">
-                <i class="fa fa-phone fa-fw mr-1" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Chiamante"></i>065193943
+              <div class="h5 pt-1 nospace">
+                <i class="guida fa fa-phone fa-fw mr-1" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Chiamante"></i>065193943
               </div>
 
             </div>
             <div class="col-md-1 p-2">
-              <div class="h5">
-                <i class="fa fa-users fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Squadre"></i>
+              <div class="h5 nospace">
+                <i class="guida fa fa-users fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Squadre"></i>
                 <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Squadre<b>" data-placement="bottom" data-html="true"
                   data-content="
 														<div style='font-size:1.3em'>
@@ -75,8 +75,8 @@
 										<span class="h3 big_numbers">2</span>
 										</a>
               </div>
-              <div class="h5">
-                <i class="fa fa-truck fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Mezzi"></i>
+              <div class="h5 nospace">
+                <i class="guida fa fa-truck fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Mezzi"></i>
                 <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Mezzi<b>" data-placement="bottom" data-html="true" data-content="
 													<div>
 														<div>
@@ -92,8 +92,8 @@
 										<span class="h3 big_numbers">2</span>
 										</a>
               </div>
-              <div class="h5">
-                <i class="fa fa-user fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone Impiegate"></i>
+              <div class="h5 nospace">
+                <i class="guida fa fa-user fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone Impiegate"></i>
                 <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Persone Impiegate<b>" data-placement="left" data-html="true"
                   data-content="
 														<div>
@@ -118,11 +118,11 @@
           <div class="card">
             <div class="row m-0" style="background-color: gainsboro;">
               <div class="col-md-10 h3">
-                <i class="fa fa-map-marker fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione"></i>
+                <i class="guida fa fa-map-marker fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione"></i>
                 <span class="h5">
 												Via Gustavo Lafrutta, 15 - Roma (RM)
 											 <a href="#">
-												<i class="fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione Richiesta Intervento"></i>	
+												<i class="guida fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione Richiesta Intervento"></i>	
 											</a>
 											</span>
               </div>
@@ -140,7 +140,7 @@
             <div class="row card bt-0" style="background-color: white">
               <div class="col-md-12 bg_diagonal_grey">
                 <div class="h3">
-                  <!--<i class="fa fa-info-circle fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Informazioni aggiuntive sulla localizzazione"></i>-->
+                  <!--<i class="guida fa fa-info-circle fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Informazioni aggiuntive sulla localizzazione"></i>-->
                   <div class="h6 p-2">
                     200 mt prima della rotonda, segnalato dal paracarro Km 1202
                   </div>
@@ -157,19 +157,19 @@
 
             <div class="col-md-3">
               <div class="h5">
-                <i class="fa fa-calendar-check-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Data e Ora Presa in Carico"></i>
+                <i class="guida fa fa-calendar-check-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Data e Ora Presa in Carico"></i>
                 <span class="badge badge-info">oggi</span> - 15.13
               </div>
               <div class="h5">
-                <i class="fa fa-id-card-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Codice scheda NUE"></i>
+                <i class="guida fa fa-id-card-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Codice scheda NUE"></i>
                 <a href="#"><span style="color: darkorange">184831295</span></a>
               </div>
               <div class="h5">
-                <i class="fa fa-paper-plane-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Stato Fonogramma"></i>
+                <i class="guida fa fa-paper-plane-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Stato Fonogramma"></i>
                 <span class="h4 badge badge-success">fonogramma inviato</span>
               </div>
               <div class="h5">
-                <i class="fa fa-list fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Eventi Generati"></i>
+                <i class="guida fa fa-list fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Eventi Generati"></i>
                 <b><a href="#" >133</a></b>
                 <span class="h4 badge badge-danger">complesso</span>
               </div>
@@ -178,13 +178,13 @@
             <div class="col-md-4">
               <div class="card">
                 <div class="card-block bg_card_title">
-                  <i class="fa fa-users fa-2x fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Squadre Coinvolte"></i>
+                  <i class="guida fa fa-users fa-2x fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Squadre Coinvolte"></i>
                   <span class="h4 card-title">Squadre Coinvolte</span>
                 </div>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item pl-2 pr-2">
                     <div class="col-md-10">
-                      <i class="fa fa-fire-extinguisher fa-fw mr-2" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                      <i class="guida fa fa-fire-extinguisher fa-fw mr-2" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
                         title="Squadra"></i>
                       <span style="font-weight: bold">Prima Partenza A</span>
                     </div>
@@ -197,13 +197,13 @@
 														<b>VQ</b>  Ippolito Pindemonte<br/>
 														<b>VP</b>  Alessandro Manzoni<br/>
 														</div>">
-													<i class="fa fa-tags fa-fw" style="color:cadetblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Componenti Squadra"></i>	
+													<i class="guida fa fa-tags fa-fw" style="color:cadetblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Componenti Squadra"></i>	
 												</a>
                     </div>
                   </li>
                   <li class="list-group-item pl-2 pr-2">
                     <div class="col-md-10">
-                      <i class="fa fa-fire-extinguisher fa-fw mr-2" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                      <i class="guida fa fa-fire-extinguisher fa-fw mr-2" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
                         title="Squadra"></i>
                       <span style="font-weight: bold">Seconda Partenza A</span>
                     </div>
@@ -215,7 +215,7 @@
 														<b>VQ</b>  Ugo Foscolo<br/>
 														<b>VP</b>  Dante Alighieri<br/>
 														">
-													<i class="fa fa-tags fa-fw" style="color:cadetblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Componenti Squadra"></i>	
+													<i class="guida fa fa-tags fa-fw" style="color:cadetblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Componenti Squadra"></i>	
 												</a>
                     </div>
                   </li>
@@ -225,13 +225,13 @@
             <div class="col-md-5">
               <div class="card">
                 <div class="card-block bg_card_title">
-                  <i class="fa fa-truck fa-2x fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Mezzi Coinvolti"></i>
+                  <i class="guida fa fa-truck fa-2x fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Mezzi Coinvolti"></i>
                   <span class="h4 card-title">&nbsp;Mezzi Coinvolti</span>
                 </div>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item p-0">
                     <div class="col-md-10">
-                      <i class="fa fa-tachometer fa-fw mr-0" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                      <i class="guida fa fa-tachometer fa-fw mr-0" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
                         title="Mezzo"></i>
                       <span style="font-weight: bold">AMR123SA</span>
                       <span class="badge badge-default m-0">APS</span>
@@ -246,7 +246,7 @@
 														<i class='fa fa-tint fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Livello Estinguente'/> &nbsp;&nbsp; <span class='badge badge-success'> ALTO </span><br/>
 														<i class='fa fa-flag fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Appartenenza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-info'> PROPRIO </span><br/>
 														</div>">														
-													<i class="fa fa-briefcase fa-fw" style="color:green!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+													<i class="guida fa fa-briefcase fa-fw" style="color:green!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
 													 title="Condizione del Mezzo"></i>
 													 </a>
                       <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Persone sul Mezzo<b>" data-html="true" data-content="
@@ -256,19 +256,19 @@
 														<b>VQ</b>  Ippolito Pindemonte<br/>
 														<b>VP</b>  Alessandro Manzoni<br/>
 														</div>">
-													<i class="fa fa-user fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
+													<i class="guida fa fa-user fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
 												</a>
                       <a style="font-weight: bold" href="#">
-													<i class="fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione Mezzo"></i>	
+													<i class="guida fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione Mezzo"></i>	
 												</a>
                       <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Notifiche mezzo<b>" data-html="true" data-content="Nessuna notifica">
-													<i class="fa fa-bell fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
+													<i class="guida fa fa-bell fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
 												</a>
                     </div>
                   </li>
                   <li class="list-group-item p-0">
                     <div class="col-md-10">
-                      <i class="fa fa-tachometer fa-fw mr-0" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                      <i class="guida fa fa-tachometer fa-fw mr-0" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
                         title="Mezzo"></i>
                       <span style="font-weight: bold">AMD456DE</span>
                       <span class="badge badge-default m-0">autoscala</span>
@@ -282,7 +282,7 @@
 														<i class='fa fa-tint fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Livello Estinguente'/> &nbsp;&nbsp; <span class='badge badge-success'> ALTO </span><br/>
 														<i class='fa fa-flag fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Appartenenza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-warning'> ALTRA SEDE </span><br/>
 														</div>">	
-													<i class="fa fa-briefcase fa-fw" style="color:red!important" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+													<i class="guida fa fa-briefcase fa-fw" style="color:red!important" aria-hidden="true" data-toggle="tooltip" data-placement="top"
 													 title="Condizione del Mezzo"></i>
 													 </a>
                       <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Persone sul Mezzo<b>" data-html="true" data-content="
@@ -292,13 +292,13 @@
 														<b>VQ</b>  Ugo Foscolo<br/>
 														<b>VP</b>  Dante Alighieri<br/>
 														">
-													<i class="fa fa-user fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
+													<i class="guida fa fa-user fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
 												</a>
                       <a style="font-weight: bold" href="#">
-													<i class="fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione Mezzo"></i>	
+													<i class="guida fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione Mezzo"></i>	
 												</a>
                       <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Notifiche mezzo<b>" data-html="true" data-content="Nessuna notifica">
-													<i class="fa fa-bell fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
+													<i class="guida fa fa-bell fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
 												</a>
                     </div>
                   </li>
@@ -311,7 +311,7 @@
                 <div class="col-md-12 h5 pull-right mt-2">
                   <span class="badge badge-default pull-right m-1">Incendi Estivi</span>
                   <span class="badge badge-default pull-right m-1">Fuori Città</span>
-                  <i class="fa fa-tags fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Etichette"></i>
+                  <i class="guida fa fa-tags fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Etichette"></i>
                 </div>
               </div>
             </div>
@@ -322,7 +322,7 @@
     <div class="col-md-1">
       <div class="ml-4 mr-0 pr-0 h2">
         <a href="#">
-							<i class="fa fa-arrow-circle-o-right" style="color:lightblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+							<i class="guida fa fa-arrow-circle-o-right" style="color:lightblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
 							 title="Vai alla pagina di dettaglio"></i>
 						</a>
       </div>
