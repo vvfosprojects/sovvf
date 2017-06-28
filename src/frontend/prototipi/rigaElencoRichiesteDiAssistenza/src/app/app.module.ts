@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { TooltipModule } from 'primeng/primeng';
 
 import { AppComponent } from './app.component';
 import { SintesiRichiestaComponent } from './sintesi-richiesta/sintesi-richiesta.component';
@@ -16,7 +17,8 @@ import { FriendlyHourPipe } from "app/shared/pipes/friendly-hour.pipe";
     FriendlyHourPipe,
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    TooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]

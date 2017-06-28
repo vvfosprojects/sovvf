@@ -8,6 +8,11 @@ import { SintesiRichiesta } from "./sintesi-richiesta.model";
   styleUrls: ['./sintesi-richiesta.component.css']
 })
 export class SintesiRichiestaComponent implements OnInit {
+  /**
+   * Indica se la visualizzazione della richiesta si ferma al primo livello di dettaglio (false) oppure arriva al secondo (true)
+   */
+  private espanso: boolean = false;
+
   @Input() richiesta: SintesiRichiesta;
   @Output() showDettagli: EventEmitter<SintesiRichiesta> = new EventEmitter();
 
@@ -33,4 +38,19 @@ export class SintesiRichiestaComponent implements OnInit {
     return new Array(MAX_PRIORITA - this.richiesta.priorita);
   }
 
+  /**
+   * Restituisce tutte le tipologie eccetto la prima
+   */
+  private altreTipologie() {
+    return this.richiesta.tipologie
+      .filter((t, i) => i != 0)
+      .join(", ");
+  }
+
+  /**
+   * Espande/comprime il livello di dettaglio visualizzato per la richiesta
+   */
+  private toggleEspanso() {
+    this.espanso = !this.espanso;
+  }
 }

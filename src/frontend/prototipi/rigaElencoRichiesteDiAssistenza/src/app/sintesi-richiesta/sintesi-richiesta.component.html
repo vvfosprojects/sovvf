@@ -8,7 +8,7 @@
               <div class="h5">
                 <i class="fa fa-hashtag fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Identificativo richiesta assistenza"></i>
                 <span class="h4">
-								  <a data-toggle="collapse" style="color:#444444!important; font-weight: bold" href="#collapse1">
+								  <a style="color:#444444!important; font-weight: bold" (click)="toggleEspanso()">
 									  {{ richiesta.codice }}
                   </a>
 								</span>
@@ -19,13 +19,12 @@
               </div>
 
               <div class="h5">
-                <i class="fa fa-calendar fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Data e Ora ricezione richiesta"></i>
-                {{ richiesta.istanteRicezioneRichiesta | friendlyDate }} - {{ richiesta.istanteRicezioneRichiesta | friendlyHour }}
+                <i class="fa fa-calendar fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Data e Ora ricezione richiesta"></i>                {{ richiesta.istanteRicezioneRichiesta | friendlyDate }} - {{ richiesta.istanteRicezioneRichiesta | friendlyHour
+                }}
               </div>
               <div class="h5">
-                <i class="fa fa-bolt fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Orario Prima assegnazione"></i>
-                {{ richiesta.istantePrimaAssegnazione | friendlyHour }}
-                
+                <i class="fa fa-bolt fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Orario Prima assegnazione"></i>                {{ richiesta.istantePrimaAssegnazione | friendlyHour }}
+
                 <!-- presidiato / non presidiato -->
                 <span *ngIf="richiesta.presidiato;else nonPresidiato">
                   <span class="badge badge-success">presidiato</span>
@@ -44,33 +43,16 @@
               </div>
 
             </div>
+
             <div class="col-md-8">
               <div class="h5">
-                <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Tipologia Eventi"></i>
-                <span *ngIf="richiesta.tipologie.length > 0" class="h4" style="color:chocolate">{{ richiesta.tipologie[0] }}</span>
-                <a *ngIf="richiesta.tipologie.length > 1" tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Tipologie<b>" data-placement="bottom" data-html="true"
-                  data-content="
-														<div class='h5' style='color:#bbbbbb;'>
-														<span class='badge badge-danger'>Incendio Normale</span><br/>
-														Incendio zona rotonda prima del centro abitato [...]<br/><br/>
-														<span class='badge badge-danger'>Incidente Stradale</span><br/>
-														Auto nel fossato per fumo albero in fiamme [...]<br/><br/>
-														<span class='badge badge-danger'>Soccorso a persona</span><br/>
-														Persona Investita da auto finita nel fossato [...]<br/><br/>
-														</div>">
-										<span class="h6 ml-2" style="font-weight:bold;color:chocolate">[più altri {{ richiesta.tipologie.length - 1 }}]</span></a>
+                <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true" title="Tipologia Eventi"></i>
+                <span *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="h4" style="color:chocolate">{{ richiesta.tipologie[0] }}</span>
+                <span *ngIf="richiesta.tipologie.length > 1" pTooltip="{{ altreTipologie() }}" tooltipPosition="bottom">[più altri {{ richiesta.tipologie.length - 1 }}]</span>
 
                 <h5>
-                  <a style="color:#bbbbbb;" tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Descrizione dettagliata evento<b>"
-                    data-html="true" data-content="
-														<div style='font-size:1em'>
-														Incendio zona rotonda prima del centro abitato, cassonetto incendiato che ha coinvolto anche un albero in prossimità
-														</div>">	
-											<i class="fa fa-fw" aria-hidden="true"></i>
-											<!--<span data-toggle="tooltip" title="Incendio zona rotonda prima del centro abitato, cassonetto incendiato che ha coinvolto anche un albero in prossimità">-->
-												Incendio zona rotonda prima del centro abitato [...]
-												<!--</span>-->
-											</a>
+                  <i class="fa fa-fw" aria-hidden="true"></i>
+                  <span pTooltip="{{ richiesta.descrizione }}" tooltipPosition="bottom">{{ richiesta.descrizione }}</span>
                 </h5>
               </div>
               <div class="h5">
@@ -153,7 +135,7 @@
           </div>
         </div>
 
-        <div id="collapse1" class="col-md-12 panel-collapse collapse">
+        <div *ngIf="espanso" class="col-md-12">
           <div class="col-md-12">
             <div class="row card bt-0" style="background-color: white">
               <div class="col-md-12 bg_diagonal_grey">
