@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
         1,
         ["Incendio generico", "Soccorso a persona", "Incidente stradale"],
         "Incendio zona rotonda prima del centro abitato",
-        "Mario Rossi",
+        "Carabinieri",
         "06 41 42 342",
         "Via Cavour, 5",
         ["TUS", "EUR", "OST"],

@@ -56,10 +56,12 @@
                 </h5>
               </div>
               <div class="h5 nospace">
-                <i class="guida fa fa-address-book-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Riferimento Chiamante"></i>                Carabinieri
+                <i class="guida fa fa-address-book-o fa-fw" aria-hidden="true" title="Riferimento Chiamante"></i>
+                <span pTooltip="{{ richiesta.richiedente }}" tooltipPosition="bottom">{{ richiesta.richiedente | truncate:33 }}</span>
               </div>
               <div class="h5 pt-1 nospace">
-                <i class="guida fa fa-phone fa-fw mr-1" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Chiamante"></i>065193943
+                <i class="guida fa fa-phone fa-fw mr-1" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Chiamante"></i>
+                {{ richiesta.numeroRichiedente }}
               </div>
 
             </div>
