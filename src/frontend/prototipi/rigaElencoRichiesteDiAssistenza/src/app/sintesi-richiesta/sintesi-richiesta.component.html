@@ -7,10 +7,8 @@
             <div class="col-md-3">
               <div class="h5 nospace">
                 <i class="guida fa fa-hashtag fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Identificativo richiesta assistenza"></i>
-                <span class="h4">
-								  <a style="color:#444444!important; font-weight: bold" (click)="toggleEspanso()">
+                <span class="h4 num-int" (click)="toggleEspanso()">
 									  {{ richiesta.codice }}
-                  </a>
 								</span>
                 <span *ngIf="richiesta.rilevante">
                   <i class="guida fa fa-exclamation-circle fa-fw" style="color:red!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
@@ -19,7 +17,7 @@
               </div>
 
               <div class="h5 nospace">
-                <i class="guida fa fa-calendar fa-fw" aria-hidden="true" title="Istante ricezione richiesta"></i> {{ richiesta.istanteRicezioneRichiesta
+                <i class="guida fa fa-clock-o fa-fw" aria-hidden="true" title="Istante ricezione richiesta"></i> {{ richiesta.istanteRicezioneRichiesta
                 | friendlyDate }} - {{ richiesta.istanteRicezioneRichiesta | friendlyHour }}
               </div>
               <div class="h5 nospace">
@@ -44,11 +42,21 @@
 
             </div>
 
+            <!-- overlay altre tipologie -->
+            <p-overlayPanel #overlayAltreTip [appendTo]="caz">
+              <div class="h4" *ngFor="let t of altreTipologie(); let i = index">
+                {{ i + 2 }}.
+                <span class="tipologia">{{ t }}</span>
+              </div>
+            </p-overlayPanel>
+
             <div class="col-md-8">
               <div class="h5 nospace">
                 <i class="guida fa fa-exclamation-triangle fa-fw" aria-hidden="true" title="Tipologia Eventi"></i>
-                <span *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="h4" style="color:chocolate">{{ richiesta.tipologie[0] }}</span>
-                <span *ngIf="richiesta.tipologie.length > 1" pTooltip="{{ altreTipologie() }}" tooltipPosition="bottom">[più altri {{ richiesta.tipologie.length - 1 }}]</span>
+                <span *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="h4 tipologia">{{ richiesta.tipologie[0] }}</span>
+                <span #caz *ngIf="richiesta.tipologie.length > 1" class="altre-tip" (click)="overlayAltreTip.toggle($event)">
+                  [più altre {{ richiesta.tipologie.length - 1 }}]
+                </span>
 
                 <h5>
                   <i class="guida fa fa-fw" aria-hidden="true"></i>
@@ -56,12 +64,11 @@
                 </h5>
               </div>
               <div class="h5 nospace">
-                <i class="guida fa fa-address-book-o fa-fw" aria-hidden="true" title="Riferimento Chiamante"></i>
+                <i class="guida fa fa-address-book-o fa-fw" aria-hidden="true" title="Richiedente"></i>
                 <span pTooltip="{{ richiesta.richiedente }}" tooltipPosition="bottom">{{ richiesta.richiedente | truncate:33 }}</span>
               </div>
               <div class="h5 pt-1 nospace">
-                <i class="guida fa fa-phone fa-fw mr-1" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Chiamante"></i>
-                {{ richiesta.numeroRichiedente }}
+                <i class="guida fa fa-phone fa-fw mr-1" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero richiedente"></i>                {{ richiesta.numeroRichiedente }}
               </div>
 
             </div>

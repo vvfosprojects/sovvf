@@ -27,3 +27,18 @@
 .nospace {
 	white-space: nowrap;
 }
+.altre-tip:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+.tipologia {
+	color:chocolate;
+}
+.num-int {
+	color:#444444;
+	font-weight: bold;
+	cursor: pointer;
+}
+.num-int:hover {
+	text-decoration: underline;
+}

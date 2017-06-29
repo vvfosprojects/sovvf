@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
         null,
         false,
         3,
-        ["Danni d'acqua"],
+        ["Danni d'acqua", "Tipologia 2", "Tipologia 3", "Tipologia 4"],
         "Allagamento del secondo piano del condominio per rottura tubazione",
         "Mario Rossi",
         "06 41 42 342",

@@ -43,8 +43,7 @@ export class SintesiRichiestaComponent implements OnInit {
    */
   private altreTipologie() {
     return this.richiesta.tipologie
-      .filter((t, i) => i != 0)
-      .join(", ");
+      .filter((t, i) => i != 0);
   }
 
   /**
