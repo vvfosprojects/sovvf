@@ -1,0 +1,64 @@
+Installazione e configurazione di PrimeNG:
+
+----- 1 -----
+
+Lanciare il seguente comando dalla directory del prototipo in modo da scaricare primeng e 
+salvarlo nel file package.json:
+
+npm install primeng --save
+
+----- 2 -----
+
+Importare nel componente del prototipo i componenti di primeng da utilizzare:
+
+import { AutoCompleteModule } from 'primeng/primeng';
+import { TooltipModule } from 'primeng/primeng';
+import { ChipsModule } from 'primeng/primeng';
+...
+
+----- 3 -----
+
+Nel file app.module.ts eseguire l'import dei componenti utilizzati:
+
+import {AutoCompleteModule, TooltipModule, ChipsModule} from 'primeng/primeng';
+
+e aggiungerli nelle dichiarazioni:
+
+imports: [
+...
+    AutoCompleteModule,    
+    TooltipModule,
+    ChipsModule
+  ],
+...
+
+----- 4 -----
+
+Configurare primeng per bootstrap (tema gratuito incluso) in modo che i componenti primeng utilizzati assumano
+l'aspetto grafico di bootstrap e risultino graficamente cooerenti con il resto dell'applicazione:
+
+verificare che primeng e fontawsome siano presenti come dipendenze nel file package.json:
+
+	"dependencies": {
+ 	 //...
+ 	 "primeng": "^4.0.0",
+   "font-awesome": "^4.7.0"
+	},
+
+aggiungere lo stile di bootstrap e fontawsome nel file .angular-cli.json:
+
+"styles": [
+        //...
+        "../node_modules/font-awesome/scss/font-awesome.scss",
+        "../node_modules/primeng/resources/primeng.min.css",
+	      "../node_modules/primeng/resources/themes/bootstrap/theme.css"
+      ],
+
+La configurazione � completa.
+
+Riferimenti utili:
+
+https://www.primefaces.org/primeng/#/
+
+Forum:
+https://forum.primefaces.org/viewforum.php?f=35&sid=45e34922772fa61d6741489375083cde
