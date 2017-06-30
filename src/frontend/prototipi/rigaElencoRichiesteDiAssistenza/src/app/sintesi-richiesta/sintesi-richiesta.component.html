@@ -42,21 +42,21 @@
 
             </div>
 
-            <!-- overlay altre tipologie -->
-            <p-overlayPanel #overlayAltreTip [appendTo]="altreTip">
-              <div class="h4" *ngFor="let t of altreTipologie(); let i = index">
-                {{ i + 2 }}.
-                <span class="tipologia">{{ t }}</span>
-              </div>
-            </p-overlayPanel>
-
             <div class="col-md-8">
               <div class="h5 nowrap">
                 <i class="guida fa fa-exclamation-triangle fa-fw" aria-hidden="true" title="Tipologia Eventi"></i>
                 <span *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="h4 tipologia">{{ richiesta.tipologie[0] }}</span>
-                <a #altreTip *ngIf="richiesta.tipologie.length > 1" class="altre-tip" (click)="overlayAltreTip.toggle($event)">
+                <a *ngIf="richiesta.tipologie.length > 1" [popover]="popAltreTip" placement="bottom" popoverTitle="Altre tipologie" triggers="mouseenter:mouseleave">
                   [più altre {{ richiesta.tipologie.length - 1 }}]
                 </a>
+
+                <!-- popover altre tipologie -->
+                <ng-template #popAltreTip>
+                  <div class="h4" *ngFor="let t of altreTipologie(); let i = index">
+                    {{ i + 2 }}.
+                    <span class="tipologia">{{ t }}</span>
+                  </div>
+                </ng-template>
 
                 <h5>
                   <i class="guida fa fa-fw" aria-hidden="true"></i>
@@ -73,16 +73,21 @@
 
             </div>
             <div class="col-md-1 p-2">
-              <div #squadra class="h5 nowrap">
+              <div class="h5 nowrap">
                 <i class="guida fa fa-users fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Squadre"></i>
-                <a title="Squadre">
-										<span class="h3 big_numbers" (click)="numeroSquadre() > 0 && overlaySquadra.toggle($event)">{{ numeroSquadre() }}</span>
+                <a>
+										<span class="h3 big_numbers"  [popover]="popSquadre" placement="bottom" popoverTitle="Squadre" triggers="mouseenter:mouseleave">
+                      {{ numeroSquadre() }}
+                    </span>
                 </a>
-                <p-overlayPanel #overlaySquadra [appendTo]="squadra">
+
+                <!-- popover squadre -->
+                <ng-template #popSquadre>
                   <div class="h4">
-                    <div *ngFor="let s of nomiSquadre(); let i = index">{{ i + 1 }}: {{ s }}</div>
+                    <div *ngFor="let s of nomiSquadre()">{{ s }}</div>
                   </div>
-                </p-overlayPanel>
+                </ng-template>
+
               </div>
               <div class="h4 nowrap">
                 <i class="guida fa fa-truck fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Mezzi"></i>

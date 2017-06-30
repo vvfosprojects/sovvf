@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { TooltipModule, OverlayPanelModule } from 'primeng/primeng';
+import { TooltipModule } from 'primeng/primeng';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 
 import { AppComponent } from './app.component';
 import { SintesiRichiestaComponent } from './sintesi-richiesta/sintesi-richiesta.component';
@@ -21,7 +22,7 @@ import { TruncatePipe } from "app/shared/pipes/truncate.pipe";
   imports: [
     BrowserModule,
     TooltipModule,
-    OverlayPanelModule,
+    PopoverModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]
