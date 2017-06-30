@@ -18,7 +18,13 @@ import { ChipsModule } from 'primeng/primeng';
 
 ----- 3 -----
 
-Nel file app.module.ts eseguire l'import dei componenti utilizzati:
+Nel file: 
+
+<nome_componente>.module.ts (nel caso del cruscotto integrato)
+oppure
+app.module.ts (nel caso del prototipo singolo)
+
+eseguire l'import dei componenti utilizzati:
 
 import {AutoCompleteModule, TooltipModule, ChipsModule} from 'primeng/primeng';
 
