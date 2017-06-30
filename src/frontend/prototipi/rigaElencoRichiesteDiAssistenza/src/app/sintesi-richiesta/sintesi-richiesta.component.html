@@ -1,11 +1,11 @@
-<div class="card status_non_presidiato row_text p-3">
+<div class="card row_text p-3" [ngClass]="{'status_presidiato': richiesta.presidiato, 'status_non_presidiato': !richiesta.presidiato}">
   <div class="row align-items-center">
     <div class="col-md-11">
       <div class="row">
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-3">
-              <div class="h5 nospace">
+              <div class="h5 nowrap">
                 <i class="guida fa fa-hashtag fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Identificativo richiesta assistenza"></i>
                 <span class="h4 num-int" (click)="toggleEspanso()">
 									  {{ richiesta.codice }}
@@ -16,11 +16,11 @@
                 </span>
               </div>
 
-              <div class="h5 nospace">
+              <div class="h5 nowrap">
                 <i class="guida fa fa-clock-o fa-fw" aria-hidden="true" title="Istante ricezione richiesta"></i> {{ richiesta.istanteRicezioneRichiesta
                 | friendlyDate }} - {{ richiesta.istanteRicezioneRichiesta | friendlyHour }}
               </div>
-              <div class="h5 nospace">
+              <div class="h5 nowrap">
                 <i class="guida fa fa-bolt fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Orario Prima assegnazione"></i>                {{ richiesta.istantePrimaAssegnazione | friendlyHour }}
 
                 <!-- presidiato / non presidiato -->
@@ -33,7 +33,7 @@
 
               </div>
 
-              <div class="h5 nospace">
+              <div class="h5 nowrap">
                 <i class="guida fa fa-thermometer-half fa-fw" aria-hidden="true" title="Priorità della richiesta"></i>
                 <span class="h5" [ngClass]="{'text-success':richiesta.priorita <= 2, 'text-warning':richiesta.priorita > 2 && richiesta.priorita <= 4, 'text-danger': richiesta.priorita == 5}">
                   <i *ngFor="let n of vettorePallini()" class="fa fa-circle" aria-hidden="true"></i><i *ngFor="let n of vettoreBuchini()" class="fa fa-circle-o" aria-hidden="true"></i>  
@@ -51,7 +51,7 @@
             </p-overlayPanel>
 
             <div class="col-md-8">
-              <div class="h5 nospace">
+              <div class="h5 nowrap">
                 <i class="guida fa fa-exclamation-triangle fa-fw" aria-hidden="true" title="Tipologia Eventi"></i>
                 <span *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="h4 tipologia">{{ richiesta.tipologie[0] }}</span>
                 <span #caz *ngIf="richiesta.tipologie.length > 1" class="altre-tip" (click)="overlayAltreTip.toggle($event)">
@@ -63,17 +63,17 @@
                   <span pTooltip="{{ richiesta.descrizione }}" tooltipPosition="bottom">{{ richiesta.descrizione | truncate:33 }}</span>
                 </h5>
               </div>
-              <div class="h5 nospace">
+              <div class="h5 nowrap">
                 <i class="guida fa fa-address-book-o fa-fw" aria-hidden="true" title="Richiedente"></i>
                 <span pTooltip="{{ richiesta.richiedente }}" tooltipPosition="bottom">{{ richiesta.richiedente | truncate:33 }}</span>
               </div>
-              <div class="h5 pt-1 nospace">
+              <div class="h5 pt-1 nowrap">
                 <i class="guida fa fa-phone fa-fw mr-1" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero richiedente"></i>                {{ richiesta.numeroRichiedente }}
               </div>
 
             </div>
             <div class="col-md-1 p-2">
-              <div class="h5 nospace">
+              <div class="h5 nowrap">
                 <i class="guida fa fa-users fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Squadre"></i>
                 <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Squadre<b>" data-placement="bottom" data-html="true"
                   data-content="
@@ -84,7 +84,7 @@
 										<span class="h3 big_numbers">2</span>
 										</a>
               </div>
-              <div class="h5 nospace">
+              <div class="h5 nowrap">
                 <i class="guida fa fa-truck fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Mezzi"></i>
                 <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Mezzi<b>" data-placement="bottom" data-html="true" data-content="
 													<div>
@@ -101,7 +101,7 @@
 										<span class="h3 big_numbers">2</span>
 										</a>
               </div>
-              <div class="h5 nospace">
+              <div class="h5 nowrap">
                 <i class="guida fa fa-user fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone Impiegate"></i>
                 <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Persone Impiegate<b>" data-placement="left" data-html="true"
                   data-content="
@@ -135,7 +135,7 @@
 											</a>
 											</span>
               </div>
-              <div class="col-md-2 h6 pt-2">
+              <div class="col-md-2 h6 pt-2 text-right">
                 <span class="badge badge-primary">Tus</span>
                 <span class="badge badge-info">Ost</span>
                 <span class="badge badge-default">Cent</span>
@@ -331,8 +331,7 @@
     <div class="col-md-1">
       <div class="ml-4 mr-0 pr-0 h2">
         <a href="#">
-							<i class="guida fa fa-arrow-circle-o-right" style="color:lightblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-							 title="Vai alla pagina di dettaglio"></i>
+							<i class="tasto-dettaglio fa fa-arrow-circle-o-right" aria-hidden="true" title="Vai alla pagina di dettaglio"></i>
 						</a>
       </div>
     </div>

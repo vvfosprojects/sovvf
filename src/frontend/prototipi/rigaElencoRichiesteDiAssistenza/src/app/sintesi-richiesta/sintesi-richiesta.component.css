@@ -24,7 +24,7 @@
 .bg_card_title {
 	background-color: beige;
 }
-.nospace {
+.nowrap {
 	white-space: nowrap;
 }
 .altre-tip:hover {
@@ -41,4 +41,8 @@
 }
 .num-int:hover {
 	text-decoration: underline;
+}
+.tasto-dettaglio {
+	color:lightblue !important;
+	font-size: 1.5em;
 }
