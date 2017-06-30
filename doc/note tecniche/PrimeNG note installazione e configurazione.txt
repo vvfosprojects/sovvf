@@ -7,14 +7,20 @@ salvarlo nel file package.json:
 
 npm install primeng --save
 
------ 2 -----
+----- 2 ----- 
 
-Importare nel componente del prototipo i componenti di primeng da utilizzare:
+Importare nel componente del prototipo i componenti di primeng da utilizzare
+che hanno bisogno della parte typescript ad esempio:
 
-import { AutoCompleteModule } from 'primeng/primeng';
-import { TooltipModule } from 'primeng/primeng';
-import { ChipsModule } from 'primeng/primeng';
-...
+import { Message } from 'primeng/primeng';
+
+Il componente di primeng Message ha bisogno di essere configurato con un 
+array di messaggi da visualizzare (conferma, errore, info, ecc... ) quindi
+l'import è necessario.
+
+Per i componenti che hanno solo la parte HTML ad es: 
+AutoCompleteModule, TooltipModule, ChipsModule non è strettamente necessaria
+l'import ma è sufficiente la dichiarazione nel file .module.ts (vedi punto 3).
 
 ----- 3 -----
 
@@ -64,7 +70,8 @@ La configurazione � completa.
 
 Riferimenti utili:
 
+Home primeng:
 https://www.primefaces.org/primeng/#/
 
-Forum:
+Forum primeng:
 https://forum.primefaces.org/viewforum.php?f=35&sid=45e34922772fa61d6741489375083cde
