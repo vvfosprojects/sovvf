@@ -41,7 +41,7 @@ export class SintesiRichiestaComponent implements OnInit {
   /**
    * Restituisce tutte le tipologie eccetto la prima
    */
-  private altreTipologie() {
+  private altreTipologie(): string[] {
     return this.richiesta.tipologie
       .filter((t, i) => i != 0);
   }
@@ -49,7 +49,15 @@ export class SintesiRichiestaComponent implements OnInit {
   /**
    * Espande/comprime il livello di dettaglio visualizzato per la richiesta
    */
-  private toggleEspanso() {
+  private toggleEspanso(): void {
     this.espanso = !this.espanso;
+  }
+
+  private nomiSquadre(): string[] {
+    return this.richiesta.squadre.map(s => s.nome);
+  }
+
+  private numeroSquadre(): number {
+    return this.richiesta.squadre.length;
   }
 }

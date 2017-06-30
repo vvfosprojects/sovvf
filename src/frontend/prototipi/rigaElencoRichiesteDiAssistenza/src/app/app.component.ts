@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+
 import { SintesiRichiesta } from "app/sintesi-richiesta/sintesi-richiesta.model";
+import { Squadra } from "app/sintesi-richiesta/squadra.model";
 
 @Component({
   selector: 'app-root',
@@ -34,7 +36,10 @@ export class AppComponent implements OnInit {
         133,
         "0",
         "alta",
-        [],
+        [
+          new Squadra("1A", []),
+          new Squadra("2A", []),
+        ],
         [],
         ["pagamento"]
       ),

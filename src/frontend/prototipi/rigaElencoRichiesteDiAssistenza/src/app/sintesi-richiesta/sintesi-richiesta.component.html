@@ -7,9 +7,9 @@
             <div class="col-md-3">
               <div class="h5 nowrap">
                 <i class="guida fa fa-hashtag fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Identificativo richiesta assistenza"></i>
-                <span class="h4 num-int" (click)="toggleEspanso()">
+                <a class="h4 num-int" (click)="toggleEspanso()">
 									  {{ richiesta.codice }}
-								</span>
+								</a>
                 <span *ngIf="richiesta.rilevante">
                   <i class="guida fa fa-exclamation-circle fa-fw" style="color:red!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
                   title="Intervento Rilevante"></i>
@@ -43,7 +43,7 @@
             </div>
 
             <!-- overlay altre tipologie -->
-            <p-overlayPanel #overlayAltreTip [appendTo]="caz">
+            <p-overlayPanel #overlayAltreTip [appendTo]="altreTip">
               <div class="h4" *ngFor="let t of altreTipologie(); let i = index">
                 {{ i + 2 }}.
                 <span class="tipologia">{{ t }}</span>
@@ -54,9 +54,9 @@
               <div class="h5 nowrap">
                 <i class="guida fa fa-exclamation-triangle fa-fw" aria-hidden="true" title="Tipologia Eventi"></i>
                 <span *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="h4 tipologia">{{ richiesta.tipologie[0] }}</span>
-                <span #caz *ngIf="richiesta.tipologie.length > 1" class="altre-tip" (click)="overlayAltreTip.toggle($event)">
+                <a #altreTip *ngIf="richiesta.tipologie.length > 1" class="altre-tip" (click)="overlayAltreTip.toggle($event)">
                   [più altre {{ richiesta.tipologie.length - 1 }}]
-                </span>
+                </a>
 
                 <h5>
                   <i class="guida fa fa-fw" aria-hidden="true"></i>
@@ -73,18 +73,18 @@
 
             </div>
             <div class="col-md-1 p-2">
-              <div class="h5 nowrap">
+              <div #squadra class="h5 nowrap">
                 <i class="guida fa fa-users fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Squadre"></i>
-                <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Squadre<b>" data-placement="bottom" data-html="true"
-                  data-content="
-														<div style='font-size:1.3em'>
-														<span class='badge badge-success'>Prima Partenza A</span></br>
-														<span class='badge badge-info'>Seconda Partenza A</span></br>
-														</div>">
-										<span class="h3 big_numbers">2</span>
-										</a>
+                <a title="Squadre">
+										<span class="h3 big_numbers" (click)="numeroSquadre() > 0 && overlaySquadra.toggle($event)">{{ numeroSquadre() }}</span>
+                </a>
+                <p-overlayPanel #overlaySquadra [appendTo]="squadra">
+                  <div class="h4">
+                    <div *ngFor="let s of nomiSquadre(); let i = index">{{ i + 1 }}: {{ s }}</div>
+                  </div>
+                </p-overlayPanel>
               </div>
-              <div class="h5 nowrap">
+              <div class="h4 nowrap">
                 <i class="guida fa fa-truck fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Mezzi"></i>
                 <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Mezzi<b>" data-placement="bottom" data-html="true" data-content="
 													<div>
