@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-tag-autista',
+  selector: 'tag-autista',
   templateUrl: './tag-autista.component.html',
   styleUrls: ['./tag-autista.component.css']
 })

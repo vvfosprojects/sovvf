@@ -1,5 +1,6 @@
 import { Squadra } from "app/sintesi-richiesta/squadra.model";
 import { Mezzo } from "app/sintesi-richiesta/mezzo.model";
+import { Componente } from "app/sintesi-richiesta/componente.model";
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -137,4 +138,13 @@ export class SintesiRichiesta {
          */
         public etichette: string[]
     ) {}
+
+    public tuttiIComponenti(): Componente[] {
+        return this.squadre.reduce((a, c) => {
+            a.push(...c.componenti);
+            console.log(a);
+
+            return a;
+        }, []);
+    }
 }

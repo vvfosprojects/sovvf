@@ -9,6 +9,9 @@ import { ListaRichiesteComponent } from './lista-richieste/lista-richieste.compo
 import { FriendlyDatePipe } from "app/shared/pipes/friendly-date.pipe";
 import { FriendlyHourPipe } from "app/shared/pipes/friendly-hour.pipe";
 import { TruncatePipe } from "app/shared/pipes/truncate.pipe";
+import { TagCapopartenzaComponent } from "app/shared/components/tag-capopartenza/tag-capopartenza.component";
+import { TagAutistaComponent } from "app/shared/components/tag-autista/tag-autista.component";
+import { TagRimpiazzoComponent } from "app/shared/components/tag-rimpiazzo/tag-rimpiazzo.component";
 
 @NgModule({
   declarations: [
@@ -18,6 +21,9 @@ import { TruncatePipe } from "app/shared/pipes/truncate.pipe";
     FriendlyDatePipe,
     FriendlyHourPipe,
     TruncatePipe,
+    TagAutistaComponent,
+    TagCapopartenzaComponent,
+    TagRimpiazzoComponent,
   ],
   imports: [
     BrowserModule,

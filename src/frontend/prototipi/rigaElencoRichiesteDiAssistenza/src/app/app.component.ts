@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { SintesiRichiesta } from "app/sintesi-richiesta/sintesi-richiesta.model";
 import { Squadra } from "app/sintesi-richiesta/squadra.model";
+import { Mezzo } from "app/sintesi-richiesta/mezzo.model";
+import { Componente } from "app/sintesi-richiesta/componente.model";
 
 @Component({
   selector: 'app-root',
@@ -37,10 +39,116 @@ export class AppComponent implements OnInit {
         "0",
         "alta",
         [
-          new Squadra("1A", []),
-          new Squadra("2A", []),
+          new Squadra("1A", [
+            new Componente(
+              "CS",
+              "Mario Rossi",
+              "Mario Rossi - MRORSS45H44T656R",
+              true,
+              false,
+              false),
+            new Componente(
+              "VIG",
+              "Antonio Bianchi",
+              "Antonio Bianchi - NTNBNC76T54H444T",
+              false,
+              true,
+              false),
+            new Componente(
+              "VIG",
+              "Matteo Verdi",
+              "Matteo Verdi - VRDMTT56G77D454I",
+              false,
+              false,
+              false),
+            new Componente(
+              "VIG",
+              "Enrico Ottavi",
+              "Enrico Ottavi - NRCOTT88U75F454H",
+              false,
+              false,
+              false),
+            new Componente(
+              "VIG",
+              "Michele Rettore",
+              "Michele Rettore - MCHRTT65T65K575Q",
+              false,
+              false,
+              true),
+          ]),
+          new Squadra("2A", [
+            new Componente(
+              "CS",
+              "Tiziana Rossetti",
+              "Tiziana Rossetti - RSSTZN56T56R454E",
+              true,
+              false,
+              false),
+            new Componente(
+              "VIG",
+              "Marco Antonio Marchi Moschetti",
+              "Marco Antonio Marchi Moschetti- MRCMRC66T66R454F",
+              false,
+              true,
+              false),
+            new Componente(
+              "VIG",
+              "Raffaele Cantoni",
+              "Raffaele Cantoni - CNTRFL66T45R343E",
+              false,
+              false,
+              false),
+            new Componente(
+              "VIG",
+              "Giovanni Carta",
+              "Giovanni Carta - VRTGVN56T74H565Y",
+              false,
+              false,
+              false),
+          ]),
         ],
-        [],
+        [
+          new Mezzo(
+            "COD1",
+            "A1",
+            "APS",
+            "inViaggio",
+            "In viaggio",
+            "mediocre",
+            "Mediocre",
+            "basso",
+            "Basso",
+            "basso",
+            "Basso",
+            "proprio",
+            "Proprio",
+            [],
+            [
+              "Il mezzo deve rientrare per rifornimento",
+              "Il mezzo ha la pressione di una ruota bassa",
+            ]
+          ),
+          new Mezzo(
+            "COD2",
+            "AS1",
+            "AS",
+            "sulPosto",
+            "Sul posto",
+            "buono",
+            "Buono",
+            "alto",
+            "Alto",
+            "alto",
+            "Alto",
+            "altraSede",
+            "TUS",
+            [],
+            [
+              "Il mezzo deve rientrare per rifornimento",
+              "Il mezzo ha la pressione di una ruota bassa",
+            ]
+          )
+        ],
         ["pagamento"]
       ),
       new SintesiRichiesta(

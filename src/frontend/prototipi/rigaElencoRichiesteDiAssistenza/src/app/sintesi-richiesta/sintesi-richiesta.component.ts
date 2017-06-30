@@ -60,4 +60,8 @@ export class SintesiRichiestaComponent implements OnInit {
   private numeroSquadre(): number {
     return this.richiesta.squadre.length;
   }
+
+  private numeroMezzi(): number {
+    return this.richiesta.mezzi.length;
+  }
 }

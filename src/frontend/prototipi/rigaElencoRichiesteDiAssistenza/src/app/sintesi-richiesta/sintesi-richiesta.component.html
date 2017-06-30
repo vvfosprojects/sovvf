@@ -77,54 +77,47 @@
             <div class="col-md-1 p-2">
               <div class="h5 nowrap">
                 <i class="guida fa fa-users fa-fw" aria-hidden="true" title="Numero Squadre"></i>
-                <a>
-										<span class="h3 big_numbers"  [popover]="popSquadre" placement="bottom" popoverTitle="Squadre" triggers="mouseenter:mouseleave">
-                      {{ numeroSquadre() }}
-                    </span>
-                </a>
+                <span class="h3 big_numbers" [popover]="popSquadre" placement="bottom" popoverTitle="Squadre" triggers="mouseenter:mouseleave">
+                  {{ numeroSquadre() }}
+                </span>
 
                 <!-- popover squadre -->
                 <ng-template #popSquadre>
-                  <div class="h4">
-                    <div *ngFor="let s of nomiSquadre()">{{ s }}</div>
+                  <div class="h4" *ngFor="let s of nomiSquadre()">{{ s }}</div>
+                </ng-template>
+
+              </div>
+              <div class="h5 nowrap">
+                <i class="guida fa fa-truck fa-fw" aria-hidden="true" title="Numero Mezzi"></i>
+                <span class="h3 big_numbers" [popover]="popMezzi" placement="bottom" popoverTitle="Mezzi" triggers="mouseenter:mouseleave">{{ numeroMezzi() }}</span>
+
+                <!-- popover mezzi -->
+                <ng-template #popMezzi>
+                  <div *ngFor="let m of richiesta.mezzi" class="h4 nowrap">
+                    <span>{{ m.descrizione }}</span>
+                    <span class='badge badge-default m-0'>{{ m.genereMezzo }}</span>
                   </div>
                 </ng-template>
 
               </div>
-              <div class="h4 nowrap">
-                <i class="guida fa fa-truck fa-fw" aria-hidden="true" title="Numero Mezzi"></i>
-                <a tabindex="0" title="<b>Mezzi<b>" data-content="
-													<div>
-														<div>
-															<span style='font-weight: bold'>AMR123SA</span>
-															<span class='badge badge-default m-0'>APS</span>
-														</div>
-														<div>
-															<span style='font-weight: bold'>AMD456DE</span>
-															<span class='badge badge-default m-0'>autoscala</span>
-														</div>
-													</div>
-													">
-										<span class="h3 big_numbers">2</span>
-										</a>
-              </div>
               <div class="h5 nowrap">
-                <i class="guida fa fa-user fa-fw" aria-hidden="true" title="Persone Impiegate"></i>
-                <a tabindex="0" title="Persone Impiegate" data-content="
-														<div>
-														<b>CR</b>  Giuseppe Verdi <span class='badge badge-warning'>CP</span></br>
-														<b>CR</b>  Giuseppe Garibaldi <span class='badge badge-warning'>CP</span></br>
-														</div><b>VE</b>  Giacomo Leopardi <span class='badge badge-info'>A</span><br/>
-														</div><b>VE</b>  Giacomo Puccini <span class='badge badge-info'>A</span><br/>
-														<b>VE</b>  Torquato Tasso<br/>
-														<b>VQ</b>  Ippolito Pindemonte<br/>
-														<b>VP</b>  Alessandro Manzoni<br/>
-														<b>VE</b>  Italo Svevo<br/>
-														<b>VQ</b>  Ugo Foscolo<br/>
-														<b>VP</b>  Dante Alighieri<br/>
-														</div>">
-										<span class="h3 big_numbers">10</span>
-										</a>
+                <i class="guida fa fa-user fa-fw" aria-hidden="true" title="Numero componenti impegnati"></i>
+                <span title="Persone Impiegate">
+                  <span class="h3 big_numbers" [popover]="popPersone" placement="bottom" popoverTitle="Componenti impegnati" triggers="mouseenter:mouseleave">{{ richiesta.tuttiIComponenti().length }}</span>
+                </span>
+
+                <!-- popover persone -->
+                <ng-template #popPersone>
+                  <div class="h5 nowrap">
+                    <div *ngFor="let c of richiesta.tuttiIComponenti()">
+                      <b>{{ c.qualifica }}</b> {{ c.nominativo | truncate:16 }}
+                      <tag-capopartenza *ngIf="c.capoPartenza"></tag-capopartenza>
+                      <tag-autista *ngIf="c.autista"></tag-autista>
+                      <tag-rimpiazzo *ngIf="c.rimpiazzo"></tag-rimpiazzo>
+                    </div>
+                  </div>
+                </ng-template>
+
               </div>
             </div>
           </div>
@@ -202,7 +195,7 @@
                       <span style="font-weight: bold">Prima Partenza A</span>
                     </div>
                     <div class="col-md-2">
-                      <a tabindex="0" title="<b>Componenti Squadra<b>" data-content="
+                      <a title="<b>Componenti Squadra<b>" data-content="
 														<div>
 														<b>CR</b>  Giuseppe Verdi <span class='badge badge-warning'>CP</span></br>
 														</div><b>VE</b>  Giacomo Leopardi <span class='badge badge-info'>A</span><br/>
@@ -220,7 +213,7 @@
                       <span style="font-weight: bold">Seconda Partenza A</span>
                     </div>
                     <div class="col-md-2">
-                      <a tabindex="0" title="<b>Componenti Squadra<b>" data-content="
+                      <a title="<b>Componenti Squadra<b>" data-content="
 														<b>CR</b>  Giuseppe Garibaldi <span class='badge badge-warning'>CP</span></br>
 														</div><b>VE</b>  Giacomo Puccini <span class='badge badge-info'>A</span><br/>
 														<b>VE</b>  Italo Svevo<br/>
@@ -250,7 +243,7 @@
 
                     </div>
                     <div class="col-md-2 p-0 pl-2">
-                      <a href="#" tabindex="0" title="Indicatori Mezzo" data-content="
+                      <a href="#" title="Indicatori Mezzo" data-content="
 														<div style='font-size:1.3em'>
 														<i class='fa fa-cogs fa-fw' aria-hidden='true' title='Stato di efficienza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-success'> OTTIMO </span><br/>
 														<i class='fa fa-tachometer fa-fw' aria-hidden='true' title='Livello Carburante'/> &nbsp;&nbsp; <span class='badge badge-success'> ALTO </span><br/>
@@ -260,7 +253,7 @@
 													<i class="guida fa fa-briefcase fa-fw" style="color:green!important;" aria-hidden="true"
 													 title="Condizione del Mezzo"></i>
 													 </a>
-                      <a tabindex="0" title="Persone sul Mezzo" data-content="
+                      <a title="Persone sul Mezzo" data-content="
 														<b>CR</b>  Giuseppe Verdi <span class='badge badge-warning'>CP</span></br>
 														</div><b>VE</b>  Giacomo Leopardi <span class='badge badge-info'>A</span><br/>
 														<b>VE</b>  Torquato Tasso<br/>
@@ -272,21 +265,20 @@
                       <a style="font-weight: bold" href="#">
 													<i class="guida fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" title="Localizzazione Mezzo"></i>	
 												</a>
-                      <a tabindex="0" title="Notifiche mezzo" data-content="Nessuna notifica">
+                      <a tooltip="Nessuna notifica">
 													<i class="guida fa fa-bell fa-fw" style="color:cadetblue!important;" aria-hidden="true" title="Persone sul mezzo"></i>	
 												</a>
                     </div>
                   </li>
                   <li class="list-group-item p-0">
                     <div class="col-md-10">
-                      <i class="guida fa fa-tachometer fa-fw mr-0" style="font-size: 1.5em" aria-hidden="true"
-                        title="Mezzo"></i>
+                      <i class="guida fa fa-tachometer fa-fw mr-0" style="font-size: 1.5em" aria-hidden="true" title="Mezzo"></i>
                       <span style="font-weight: bold">AMD456DE</span>
                       <span class="badge badge-default m-0">autoscala</span>
                       <span class="badge badge-danger m-0">in sede</span>
                     </div>
                     <div class="col-md-2 p-0 pl-2">
-                      <a href="#" tabindex="0" title="Indicatori Mezzo" data-content="
+                      <a href="#" title="Indicatori Mezzo" data-content="
 														<div style='font-size:1.3em'>
 														<i class='fa fa-cogs fa-fw' aria-hidden='true' title='Stato di efficienza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-warning'> MEDIOCRE </span><br/>
 														<i class='fa fa-tachometer fa-fw' aria-hidden='true' title='Livello Carburante'/> &nbsp;&nbsp; <span class='badge badge-danger'> BASSO </span><br/>
@@ -296,7 +288,7 @@
 													<i class="guida fa fa-briefcase fa-fw" style="color:red!important" aria-hidden="true"
 													 title="Condizione del Mezzo"></i>
 													 </a>
-                      <a tabindex="0" title="Persone sul Mezzo" data-content="
+                      <a title="Persone sul Mezzo" data-content="
 														<b>CR</b>  Giuseppe Garibaldi <span class='badge badge-warning'>CP</span></br>
 														</div><b>VE</b>  Giacomo Puccini <span class='badge badge-info'>A</span><br/>
 														<b>VE</b>  Italo Svevo<br/>
@@ -308,7 +300,7 @@
                       <a style="font-weight: bold" href="#">
 													<i class="guida fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" title="Localizzazione Mezzo"></i>	
 												</a>
-                      <a tabindex="0" title="Notifiche mezzo" data-content="Nessuna notifica">
+                      <a tooltip="{{ richiesta.NotificheMezzo}}">
 													<i class="guida fa fa-bell fa-fw" style="color:cadetblue!important;" aria-hidden="true" title="Persone sul mezzo"></i>	
 												</a>
                     </div>
