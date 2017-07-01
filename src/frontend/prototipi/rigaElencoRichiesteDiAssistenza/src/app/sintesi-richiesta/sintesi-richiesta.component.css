@@ -12,7 +12,7 @@
 	color: #bbbbbb;
 }
 .big_numbers {
-	color: #a72920;
+	color: #a72920 !important;
 	font-weight: bold;
 }
 .bg_diagonal_grey {
@@ -43,4 +43,16 @@ a:hover {
 .tasto-dettaglio {
 	color:lightblue !important;
 	font-size: 1.5em;
+}
+.localita {
+	background-color: gainsboro;
+}
+.globo-loc {
+	color: cadetblue;
+}
+.note-localita {
+	background-color: white;
+}
+.sch-cont {
+	color: darkorange;
 }

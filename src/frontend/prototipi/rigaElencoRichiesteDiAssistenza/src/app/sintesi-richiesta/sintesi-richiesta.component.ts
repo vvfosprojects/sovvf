@@ -39,28 +39,29 @@ export class SintesiRichiestaComponent implements OnInit {
   }
 
   /**
-   * Restituisce tutte le tipologie eccetto la prima
-   */
-  private altreTipologie(): string[] {
-    return this.richiesta.tipologie
-      .filter((t, i) => i != 0);
-  }
-
-  /**
    * Espande/comprime il livello di dettaglio visualizzato per la richiesta
    */
   private toggleEspanso(): void {
     this.espanso = !this.espanso;
   }
 
+  /**
+   * Restituisce il vettore con i nomi delle squadre
+   */
   private nomiSquadre(): string[] {
     return this.richiesta.squadre.map(s => s.nome);
   }
 
+  /**
+   * Restituisce il numero delle squadre
+   */
   private numeroSquadre(): number {
     return this.richiesta.squadre.length;
   }
 
+  /**
+   * Restituisce il vettore con il numero dei mezzi
+   */
   private numeroMezzi(): number {
     return this.richiesta.mezzi.length;
   }

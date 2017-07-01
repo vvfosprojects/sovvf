@@ -99,7 +99,7 @@ export class SintesiRichiesta {
          * codice dello stato di invio del fonogramma (per es. daInviare, inviato, nonNecessario). Utile a calcolare
          * il colore della segnalazione.
          */
-        public statoFonogrammaRichiesta: string,
+        public statoFonogramma: string,
 
         /**
          * segnalazione sullo stato di invio del fonogramma.
@@ -142,7 +142,6 @@ export class SintesiRichiesta {
     public tuttiIComponenti(): Componente[] {
         return this.squadre.reduce((a, c) => {
             a.push(...c.componenti);
-            console.log(a);
 
             return a;
         }, []);
