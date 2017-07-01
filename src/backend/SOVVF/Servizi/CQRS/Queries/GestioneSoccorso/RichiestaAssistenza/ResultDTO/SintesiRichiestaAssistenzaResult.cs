@@ -201,7 +201,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
         ///   Numero di eventi collegati alla richiesta (che è un'indicazione di massima sulla stima
         ///   della complessità dell'intervento)
         /// </summary>
-        public int NumeroEventiGenerati { get; set; }
+        public int indiceComplessita { get; set; }
 
         /// <summary>
         ///   Codice della complessità dell'intervento (per es. bassa, media, alta). Utile a
