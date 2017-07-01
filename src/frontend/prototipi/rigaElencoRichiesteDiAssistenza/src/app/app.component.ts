@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import { SintesiRichiesta } from "app/sintesi-richiesta/sintesi-richiesta.model";
 import { Squadra } from "app/sintesi-richiesta/squadra.model";
 import { Mezzo } from "app/sintesi-richiesta/mezzo.model";
-import { Componente } from "app/sintesi-richiesta/componente.model";
+import { Componente } from "./componente/componente.model";
 
 @Component({
   selector: 'app-root',

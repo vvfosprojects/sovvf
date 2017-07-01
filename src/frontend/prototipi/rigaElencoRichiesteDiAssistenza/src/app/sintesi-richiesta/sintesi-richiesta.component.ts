@@ -26,7 +26,7 @@ export class SintesiRichiestaComponent implements OnInit {
    * Utile per eseguire un ngFor con i pallini.
    */
   private vettorePallini() {
-    return new Array(this.richiesta.priorita);
+    return new Array(this.richiesta.prioritaRichiesta);
   }
 
   /**
@@ -35,7 +35,7 @@ export class SintesiRichiestaComponent implements OnInit {
    */
   private vettoreBuchini() {
     const MAX_PRIORITA = 5;
-    return new Array(MAX_PRIORITA - this.richiesta.priorita);
+    return new Array(MAX_PRIORITA - this.richiesta.prioritaRichiesta);
   }
 
   /**

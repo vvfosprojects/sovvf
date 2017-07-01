@@ -1,6 +1,6 @@
 import { Squadra } from "app/sintesi-richiesta/squadra.model";
 import { Mezzo } from "app/sintesi-richiesta/mezzo.model";
-import { Componente } from "app/sintesi-richiesta/componente.model";
+import { Componente } from "../componente/componente.model";
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari

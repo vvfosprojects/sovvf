@@ -12,6 +12,7 @@ import { TruncatePipe } from "app/shared/pipes/truncate.pipe";
 import { TagCapopartenzaComponent } from "app/shared/components/tag-capopartenza/tag-capopartenza.component";
 import { TagAutistaComponent } from "app/shared/components/tag-autista/tag-autista.component";
 import { TagRimpiazzoComponent } from "app/shared/components/tag-rimpiazzo/tag-rimpiazzo.component";
+import { ComponenteComponent } from './componente/componente.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { TagRimpiazzoComponent } from "app/shared/components/tag-rimpiazzo/tag-r
     TagAutistaComponent,
     TagCapopartenzaComponent,
     TagRimpiazzoComponent,
+    ComponenteComponent,
   ],
   imports: [
     BrowserModule,
