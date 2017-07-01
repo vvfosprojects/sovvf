@@ -1,5 +1,5 @@
 import { Squadra } from "app/sintesi-richiesta/squadra.model";
-import { Mezzo } from "app/sintesi-richiesta/mezzo.model";
+import { Mezzo } from "../mezzo/mezzo.model";
 import { Componente } from "../componente/componente.model";
 
 /**

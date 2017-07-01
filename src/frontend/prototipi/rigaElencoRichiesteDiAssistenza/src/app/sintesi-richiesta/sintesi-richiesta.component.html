@@ -34,6 +34,7 @@
 
               </div>
 
+              <!-- priorità richiesta -->
               <div class="h5 nowrap">
                 <i class="guida fa fa-thermometer-half fa-fw" aria-hidden="true" title="Priorità della richiesta"></i>
                 <span class="h5" [ngClass]="{'text-success':richiesta.prioritaRichiesta <= 2, 'text-warning':richiesta.prioritaRichiesta > 2 && richiesta.prioritaRichiesta <= 4, 'text-danger': richiesta.prioritaRichiesta == 5}">
@@ -43,7 +44,10 @@
 
             </div>
 
+            <!-- II colonna primo livello di dettaglio -->
             <div class="col-md-8">
+
+              <!-- Tipologie -->
               <div class="h5 nowrap">
                 <i class="guida fa fa-exclamation-triangle fa-fw" aria-hidden="true" title="Tipologia Eventi"></i>
                 <span *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="h4 tipologia">{{ richiesta.tipologie[0] }}</span>
@@ -66,17 +70,25 @@
                   <span tooltip="{{ richiesta.descrizione }}" placement="bottom">{{ richiesta.descrizione | truncate:33 }}</span>
                 </h5>
               </div>
+
+              <!-- richiedente -->
               <div class="h5 nowrap">
                 <i class="guida fa fa-address-book-o fa-fw" aria-hidden="true" title="Richiedente"></i>
                 <span tooltip="{{ richiesta.richiedente }}" placement="bottom">{{ richiesta.richiedente | truncate:33 }}</span>
               </div>
+
+              <!-- numero richiedente -->
               <div class="h5 pt-1 nowrap">
                 <i class="guida fa fa-phone fa-fw mr-1" aria-hidden="true" title="Numero richiedente"></i> {{ richiesta.numeroRichiedente
                 }}
               </div>
 
             </div>
+
+            <!-- indicatori stato richiesta -->
             <div class="col-md-1 p-2">
+
+              <!-- squadre -->
               <div class="h5 nowrap">
                 <i class="guida fa fa-users fa-fw" aria-hidden="true" title="Numero Squadre"></i>
                 <a class="h3 big_numbers" [popover]="popSquadre" placement="bottom" popoverTitle="Squadre" triggers="focus" tabindex="0">
@@ -89,6 +101,8 @@
                 </ng-template>
 
               </div>
+
+              <!-- mezzi -->
               <div class="h5 nowrap">
                 <i class="guida fa fa-truck fa-fw" aria-hidden="true" title="Numero Mezzi"></i>
                 <a class="h3 big_numbers" [popover]="popMezzi" placement="bottom" popoverTitle="Mezzi" triggers="focus" tabindex="0">
@@ -104,16 +118,18 @@
                 </ng-template>
 
               </div>
+
+              <!-- componenti -->
               <div class="h5 nowrap">
                 <i class="guida fa fa-user fa-fw" aria-hidden="true" title="Componenti ora impegnati"></i>
-                <a class="h3 big_numbers" [popover]="popPersone" placement="bottom" popoverTitle="Componenti ora impegnati" triggers="focus"
+                <a class="h3 big_numbers" [popover]="popComponenti" placement="bottom" popoverTitle="Componenti ora impegnati" triggers="focus"
                   tabindex="0">
                     {{ richiesta.tuttiIComponenti().length }}
                 </a>
 
                 <!-- popover persone -->
-                <ng-template #popPersone>
-                  <div class="h5 nowrap">
+                <ng-template #popComponenti>
+                  <div class="h5">
                     <div *ngFor="let c of richiesta.tuttiIComponenti()">
                       <componente [componente]="c"></componente>
                     </div>
@@ -124,6 +140,8 @@
             </div>
           </div>
         </div>
+
+        <!-- I livello seconda riga: località -->
         <div class="col-md-12">
           <div class="card">
             <div class="row m-0 localita">
@@ -214,7 +232,7 @@
 											</a>
 
                       <ng-template #popComponenti>
-                        <div class="h5 nowrap">
+                        <div class="h5">
                           <div *ngFor="let c of s.componenti">
                             <componente [componente]="c"></componente>
                           </div>
@@ -226,87 +244,20 @@
                 </ul>
               </div>
             </div>
+
+            <!-- II livello di dettaglio: mezzi -->
             <div class="col-md-5">
               <div class="card">
                 <div class="card-block bg_card_title">
-                  <i class="guida fa fa-truck fa-2x fa-fw" aria-hidden="true" title="Mezzi Coinvolti"></i>
-                  <span class="h4 card-title">&nbsp;Mezzi Coinvolti</span>
+                  <i class="guida fa fa-truck fa-2x fa-fw" aria-hidden="true" title="Mezzi coinvolti"></i>
+                  <span class="h4 card-title">Mezzi coinvolti</span>
                 </div>
                 <ul class="list-group list-group-flush">
-                  <li class="list-group-item p-0">
-                    <div class="col-md-10">
-                      <i class="guida fa fa-tachometer fa-fw mr-0" style="font-size: 1.5em" aria-hidden="true" title="Mezzo"></i>
-                      <span style="font-weight: bold">AMR123SA</span>
-                      <span class="badge badge-default m-0">APS</span>
-                      <span class="badge badge-warning m-0">in viaggio</span>
-
-                    </div>
-                    <div class="col-md-2 p-0 pl-2">
-                      <a href="#" title="Indicatori Mezzo" data-content="
-														<div style='font-size:1.3em'>
-														<i class='fa fa-cogs fa-fw' aria-hidden='true' title='Stato di efficienza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-success'> OTTIMO </span><br/>
-														<i class='fa fa-tachometer fa-fw' aria-hidden='true' title='Livello Carburante'/> &nbsp;&nbsp; <span class='badge badge-success'> ALTO </span><br/>
-														<i class='fa fa-tint fa-fw' aria-hidden='true' title='Livello Estinguente'/> &nbsp;&nbsp; <span class='badge badge-success'> ALTO </span><br/>
-														<i class='fa fa-flag fa-fw' aria-hidden='true' title='Appartenenza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-info'> PROPRIO </span><br/>
-														</div>">														
-													<i class="guida fa fa-briefcase fa-fw" style="color:green!important;" aria-hidden="true"
-													 title="Condizione del Mezzo"></i>
-													 </a>
-                      <a title="Persone sul Mezzo" data-content="
-														<b>CR</b>  Giuseppe Verdi <span class='badge badge-warning'>CP</span></br>
-														</div><b>VE</b>  Giacomo Leopardi <span class='badge badge-info'>A</span><br/>
-														<b>VE</b>  Torquato Tasso<br/>
-														<b>VQ</b>  Ippolito Pindemonte<br/>
-														<b>VP</b>  Alessandro Manzoni<br/>
-														</div>">
-													<i class="guida fa fa-user fa-fw" style="color:cadetblue!important;" aria-hidden="true" title="Persone sul mezzo"></i>	
-												</a>
-                      <a style="font-weight: bold" href="#">
-													<i class="guida fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" title="Localizzazione Mezzo"></i>	
-												</a>
-                      <a tooltip="Nessuna notifica">
-													<i class="guida fa fa-bell fa-fw" style="color:cadetblue!important;" aria-hidden="true" title="Persone sul mezzo"></i>	
-												</a>
-                    </div>
-                  </li>
-                  <li class="list-group-item p-0">
-                    <div class="col-md-10">
-                      <i class="guida fa fa-tachometer fa-fw mr-0" style="font-size: 1.5em" aria-hidden="true" title="Mezzo"></i>
-                      <span style="font-weight: bold">AMD456DE</span>
-                      <span class="badge badge-default m-0">autoscala</span>
-                      <span class="badge badge-danger m-0">in sede</span>
-                    </div>
-                    <div class="col-md-2 p-0 pl-2">
-                      <a href="#" title="Indicatori Mezzo" data-content="
-														<div style='font-size:1.3em'>
-														<i class='fa fa-cogs fa-fw' aria-hidden='true' title='Stato di efficienza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-warning'> MEDIOCRE </span><br/>
-														<i class='fa fa-tachometer fa-fw' aria-hidden='true' title='Livello Carburante'/> &nbsp;&nbsp; <span class='badge badge-danger'> BASSO </span><br/>
-														<i class='fa fa-tint fa-fw' aria-hidden='true' title='Livello Estinguente'/> &nbsp;&nbsp; <span class='badge badge-success'> ALTO </span><br/>
-														<i class='fa fa-flag fa-fw' aria-hidden='true' title='Appartenenza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-warning'> ALTRA SEDE </span><br/>
-														</div>">	
-													<i class="guida fa fa-briefcase fa-fw" style="color:red!important" aria-hidden="true"
-													 title="Condizione del Mezzo"></i>
-													 </a>
-                      <a title="Persone sul Mezzo" data-content="
-														<b>CR</b>  Giuseppe Garibaldi <span class='badge badge-warning'>CP</span></br>
-														</div><b>VE</b>  Giacomo Puccini <span class='badge badge-info'>A</span><br/>
-														<b>VE</b>  Italo Svevo<br/>
-														<b>VQ</b>  Ugo Foscolo<br/>
-														<b>VP</b>  Dante Alighieri<br/>
-														">
-													<i class="guida fa fa-user fa-fw" style="color:cadetblue!important;" aria-hidden="true" title="Persone sul mezzo"></i>	
-												</a>
-                      <a style="font-weight: bold" href="#">
-													<i class="guida fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" title="Localizzazione Mezzo"></i>	
-												</a>
-                      <a tooltip="{{ richiesta.NotificheMezzo}}">
-													<i class="guida fa fa-bell fa-fw" style="color:cadetblue!important;" aria-hidden="true" title="Persone sul mezzo"></i>	
-												</a>
-                    </div>
-                  </li>
+                  <mezzo *ngFor="let m of richiesta.mezzi" [mezzo]="m"></mezzo>
                 </ul>
               </div>
             </div>
+            
             <!-- TAGS-->
             <div class="card-text col-md-12">
               <div class="card mt-3" style="background-color: lavender">

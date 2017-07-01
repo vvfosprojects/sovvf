@@ -1,4 +1,4 @@
-import { Componente } from "app/sintesi-richiesta/componente.model";
+import { Componente } from "../componente/componente.model";
 
 /**
  * Modella un mezzo impegnato su una richiesta di assistenza
@@ -33,7 +33,7 @@ export class Mezzo {
 
         /**
          * Codice dello stato di efficienza del mezzo. Utile a definire il colore
-         * della segnalazione delolo stato di efficienza.
+         * della segnalazione dello stato di efficienza. (per es. inManutenzione, mediocre, buono, ottimo)
          */
         public statoEfficienzaMezzo: string,
 
@@ -44,7 +44,7 @@ export class Mezzo {
 
         /**
          * Codice del livello di carburante. Utile a definire il colore
-         * della segnalazione sul livello di carburante.
+         * della segnalazione sul livello di carburante. (per es. basso, medio, alto)
          */
         public livelloCarburante: string,
 
@@ -55,7 +55,7 @@ export class Mezzo {
 
         /**
          * Codice del livello di estinguente. Utile a definire il colore
-         * della segnalazione del livello di estinguente.
+         * della segnalazione del livello di estinguente. (per es. basso, medio, alto)
          */
         public livelloEstinguente: string,
 
@@ -65,8 +65,8 @@ export class Mezzo {
         public descrizioneLivelloEstinguente: string,
 
         /**
-         * Codice dello stato di appartenenza del mezzo. Per es. PROPRIO,
-         * ALTRASEDE, ecc. Utile a definire il colore della segnalazione
+         * Codice dello stato di appartenenza del mezzo. Per es. proprio,
+         * altraSede, ecc. Utile a definire il colore della segnalazione
          * sullo stato di appartenenza.
          */
         public appartenenzaMezzo: string,
@@ -79,7 +79,7 @@ export class Mezzo {
         /**
          * Elenco dei componenti presenti sul mezzo
          */
-        public personeSulMezzo: Componente[],
+        public equipaggio: Componente[],
 
         /**
          * Elenco delle notifiche legate al mezzo

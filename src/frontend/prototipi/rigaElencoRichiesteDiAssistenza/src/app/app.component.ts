@@ -3,7 +3,7 @@ import * as moment from 'moment';
 
 import { SintesiRichiesta } from "app/sintesi-richiesta/sintesi-richiesta.model";
 import { Squadra } from "app/sintesi-richiesta/squadra.model";
-import { Mezzo } from "app/sintesi-richiesta/mezzo.model";
+import { Mezzo } from "./mezzo/mezzo.model";
 import { Componente } from "./componente/componente.model";
 
 @Component({
@@ -123,7 +123,43 @@ export class AppComponent implements OnInit {
             "Basso",
             "proprio",
             "Proprio",
-            [],
+            [
+              new Componente(
+                "CS",
+                "Mario Rossi",
+                "Mario Rossi - MRORSS45H44T656R",
+                true,
+                false,
+                false),
+              new Componente(
+                "VIG",
+                "Antonio Bianchi",
+                "Antonio Bianchi - NTNBNC76T54H444T",
+                false,
+                true,
+                false),
+              new Componente(
+                "VIG",
+                "Matteo Verdi",
+                "Matteo Verdi - VRDMTT56G77D454I",
+                false,
+                false,
+                false),
+              new Componente(
+                "VIG",
+                "Enrico Ottavi",
+                "Enrico Ottavi - NRCOTT88U75F454H",
+                false,
+                false,
+                false),
+              new Componente(
+                "VIG",
+                "Michele Rettore",
+                "Michele Rettore - MCHRTT65T65K575Q",
+                false,
+                false,
+                true),
+            ],
             [
               "Il mezzo deve rientrare per rifornimento",
               "Il mezzo ha la pressione di una ruota bassa",
@@ -142,8 +178,37 @@ export class AppComponent implements OnInit {
             "alto",
             "Alto",
             "altraSede",
-            "TUS",
-            [],
+            "Altra sede",
+            [
+              new Componente(
+                "CS",
+                "Tiziana Rossetti",
+                "Tiziana Rossetti - RSSTZN56T56R454E",
+                true,
+                false,
+                false),
+              new Componente(
+                "VIG",
+                "Marco Antonio Marchi Moschetti",
+                "Marco Antonio Marchi Moschetti - MRCMRC66T66R454F",
+                false,
+                true,
+                false),
+              new Componente(
+                "VIG",
+                "Raffaele Cantoni",
+                "Raffaele Cantoni - CNTRFL66T45R343E",
+                false,
+                false,
+                false),
+              new Componente(
+                "VIG",
+                "Giovanni Carta",
+                "Giovanni Carta - VRTGVN56T74H565Y",
+                false,
+                false,
+                false),
+            ],
             [
               "Il mezzo deve rientrare per rifornimento",
               "Il mezzo ha la pressione di una ruota bassa",

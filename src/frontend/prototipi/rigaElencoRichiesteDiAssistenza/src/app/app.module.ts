@@ -13,6 +13,7 @@ import { TagCapopartenzaComponent } from "app/shared/components/tag-capopartenza
 import { TagAutistaComponent } from "app/shared/components/tag-autista/tag-autista.component";
 import { TagRimpiazzoComponent } from "app/shared/components/tag-rimpiazzo/tag-rimpiazzo.component";
 import { ComponenteComponent } from './componente/componente.component';
+import { MezzoComponent } from './mezzo/mezzo.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ComponenteComponent } from './componente/componente.component';
     TagCapopartenzaComponent,
     TagRimpiazzoComponent,
     ComponenteComponent,
+    MezzoComponent,
   ],
   imports: [
     BrowserModule,
