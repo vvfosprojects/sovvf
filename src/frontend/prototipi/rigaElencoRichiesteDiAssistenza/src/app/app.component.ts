@@ -36,9 +36,9 @@ export class AppComponent implements OnInit {
         "987654321",
         "nonNecessario",
         "Non necessario",
-        133,
-        "0",
-        "alta",
+        5,
+        "bassa",
+        "Bassa",
         [
           new Squadra("1A", [
             new Componente(
@@ -173,8 +173,8 @@ export class AppComponent implements OnInit {
         "daInviare",
         "Da inviare",
         133,
-        "0",
         "alta",
+        "Alta",
         [],
         [],
         ["pagamento"]

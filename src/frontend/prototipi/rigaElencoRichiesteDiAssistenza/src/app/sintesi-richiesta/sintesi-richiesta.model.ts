@@ -99,7 +99,7 @@ export class SintesiRichiesta {
          * codice dello stato di invio del fonogramma (per es. daInviare, inviato, nonNecessario). Utile a calcolare
          * il colore della segnalazione.
          */
-        public statoFonogramma: string,
+        public statoFonogrammaRichiesta: string,
 
         /**
          * segnalazione sullo stato di invio del fonogramma.
@@ -107,10 +107,9 @@ export class SintesiRichiesta {
         public descrizioneStatoFonogramma: string,
 
         /**
-         * numero di eventi collegati alla richiesta (che è un'indicazione di massima
-         * sulla stima della complessità dell'intervento)
+         * indice di complessità dell'intervento (per es. numero di eventi collegati alla richiesta)
          */
-        public numeroEventiGenerati: number,
+        public indiceComplessita: number,
 
         /**
          * codice della complessità dell'intervento (per es. bassa, media, alta). Utile
