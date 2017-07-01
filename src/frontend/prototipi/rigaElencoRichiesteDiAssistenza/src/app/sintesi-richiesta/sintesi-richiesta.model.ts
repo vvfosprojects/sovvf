@@ -43,7 +43,7 @@ export class SintesiRichiesta {
          * priorita della richiesta (da 1 a 5). 1 = Altissima, 2 = Alta, 3 = Media,
          * 4 = Bassa, 5 = Bassissima.
          */
-        public priorita: number,
+        public prioritaRichiesta: number,
 
         /**
          * descrizione delle tipologie
