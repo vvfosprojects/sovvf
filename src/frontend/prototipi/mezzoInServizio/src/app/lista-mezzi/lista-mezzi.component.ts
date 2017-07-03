@@ -11,7 +11,7 @@ export class ListaMezziComponent implements OnInit {
   private tuttiIMezzi: MezzoInServizio[];
   private mezzi: MezzoInServizio[];
   private filtroSedi = {};
-  private filtroDisponibilita = { disponibile: { count: 0, checked: 0}, nonDisponibile: { count: 0, checked: 0} };
+  private filtroDisponibilita = { disponibile: { count: 0, checked: 0 }, nonDisponibile: { count: 0, checked: 0 } };
   private errorMessage: string;
 
   constructor(private listaMezziService: ListaMezziService) { }
@@ -123,27 +123,26 @@ export class ListaMezziComponent implements OnInit {
    * nella lista dei mezzi.
    */
   private aggiornaMezziFiltrati() {
-    var mezzi;
-    //filtro su sedi
+    var mezzi: MezzoInServizio[];
 
-    // se nessuna checkbox è spuntata, si vedono tutti i mezzi
+    mezzi = this.tuttiIMezzi;
+
+    //filtro su sedi
+    // si vedono solo i mezzi delle categorie spuntate
     if (Object.keys(this.filtroSedi)
       .map(key => this.filtroSedi[key])
-      .every(x => !x.checked)) {
-      mezzi = this.tuttiIMezzi;
-    } else {
-      // altrimenti si vedono solo quelli delle categorie spuntate
-      mezzi = this.tuttiIMezzi.filter(m => {
-        return this.filtroSedi[m.descrizioneUnitaOperativa].checked;
-      });
+      .some(x => x.checked)) {
+      mezzi = this.mezzi.filter(m => this.filtroSedi[m.descrizioneUnitaOperativa].checked);
     }
 
     if (this.filtroDisponibilita.disponibile.checked || this.filtroDisponibilita.nonDisponibile.checked)
-      mezzi = mezzi.filter(m => 
+      mezzi = mezzi.filter(m =>
         m.disponibile && this.filtroDisponibilita.disponibile.checked ||
         !m.disponibile && this.filtroDisponibilita.nonDisponibile.checked
       );
 
-    this.mezzi = mezzi; 
+    //mezzi = mezzi.filter(m => m.ricerca("ciao"));
+
+    this.mezzi = mezzi;
   }
 }
