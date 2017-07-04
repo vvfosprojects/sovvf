@@ -18,7 +18,7 @@
     <ng-template #indMez>
       <div class="h4 nowrap">
         <div><i class='fa fa-cogs fa-fw' aria-hidden='true' title='Stato di efficienza del mezzo' ></i><span class='badge'
-          [ngClass]="{'badge-danger':mezzo.statoEfficienzaMezzo == 'inManutenzione', 'badge-warning':mezzo.statoEfficienzaMezzo == 'mediocre','badge-success':mezzo.statoEfficienzaMezzo == 'buono', 'badge-danger':mezzo.statoEfficienzaMezzo == 'ottimo'}">
+          [ngClass]="{'badge-danger':mezzo.statoEfficienzaMezzo == 'inManutenzione', 'badge-warning':mezzo.statoEfficienzaMezzo == 'mediocre','badge-success':mezzo.statoEfficienzaMezzo == 'buono', 'badge-success':mezzo.statoEfficienzaMezzo == 'ottimo'}">
           {{ mezzo.descrizioneStatoEfficienza }}</span></div>
         <div><i class='fa fa-tachometer fa-fw' aria-hidden='true' title='Livello Carburante' ></i><span class='badge'
           [ngClass]="{'badge-danger':mezzo.livelloCarburante == 'basso', 'badge-warning':mezzo.livelloCarburante == 'medio','badge-success':mezzo.livelloCarburante == 'alto'}">
