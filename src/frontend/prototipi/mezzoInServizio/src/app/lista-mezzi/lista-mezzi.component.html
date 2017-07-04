@@ -1,10 +1,18 @@
 <div class="row">
     
     <div class="row col-10">
-        <app-mezzoinservizio *ngFor="let m of mezzi" [mezzo]="m" class="col col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4"></app-mezzoinservizio>
+        <app-mezzoinservizio *ngFor="let m of mezziFiltrati" [mezzo]="m" class="col col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4"></app-mezzoinservizio>
     </div>
 
     <div class="col-2">
+
+        <div class="input-group">
+             <input type="text" class="form-control" placeholder="Search for..." [(ngModel)]="testoRicerca" (keyup)="ricerca($event)">
+                <span class="input-group-btn">
+                <button class="btn btn-secondary" type="button">Go!</button>
+                </span>
+        </div>
+  
         <div class="card filtro">
             <div class="card-block">
                 <h6>Sede</h6>
@@ -22,13 +30,13 @@
                 <h6>Disponibilità</h6>
                 <div>
                     <label>
-                        <input [ngModel]="filtroDisponibilita.disponibile.checked" type="checkbox" (click)="selDisponibilita($event, 1)" /> Disponibile
+                        <input [ngModel]="filtroDisponibilita.disponibile.checked" type="checkbox" (click)="selDisponibile($event)" /> Disponibile
                         <span class="badge badge-pill badge-info">{{ filtroDisponibilita.disponibile.count }}</span>
                     </label>
                 </div>
                 <div>
                     <label>
-                        <input [ngModel]="filtroDisponibilita.nonDisponibile.checked" type="checkbox" (click)="selDisponibilita($event, 0)" /> Non disponibile
+                        <input [ngModel]="filtroDisponibilita.nonDisponibile.checked" type="checkbox" (click)="selNonDisponibile($event)" /> Non disponibile
                         <span class="badge badge-pill badge-info">{{ filtroDisponibilita.nonDisponibile.count }}</span>
                     </label>
                 </div>
@@ -38,24 +46,15 @@
         <div class="card filtro">
             <div class="card-block">
                 <h6>Stato</h6>
-                <div>
-                    <input type="checkbox" /> In Sede
-                    <span class="badge badge-pill badge-info">30</span>
-                </div>
-                <div>
-                    <input type="checkbox" /> In viaggio
-                    <span class="badge badge-pill badge-info">20</span>
-                </div>
-                <div>
-                    <input type="checkbox" /> Sul posto
-                    <span class="badge badge-pill badge-info">15</span>
-                </div>
-                <div>
-                    <input type="checkbox" /> In rientro
-                    <span class="badge badge-pill badge-info">30</span>
+                <div *ngFor="let key of getStatoKeys()">
+                    <label>
+                        <input [ngModel]="filtroStato[key].checked" type="checkbox" (click)="selStato($event, key)" />{{getDescrizioneStato(key)}}
+                        <span class="badge badge-pill badge-info">{{ filtroStato[key].count }}</span>
+                    </label>
                 </div>
             </div>
         </div>
-    </div>
-    
+
+ 
 </div>
+    

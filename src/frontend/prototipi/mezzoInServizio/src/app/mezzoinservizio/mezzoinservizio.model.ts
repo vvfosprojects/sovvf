@@ -1,6 +1,7 @@
 import { PersonaSulMezzo } from "./persona-sul-mezzo.model";
 
 export class MezzoInServizio {
+  private _testoRicercabile: string[];
 
   constructor(public codice: string,
     public descrizioneUnitaOperativa: string,
@@ -17,9 +18,11 @@ export class MezzoInServizio {
      * Rappresenta l'elenco delle persone che sono presenti sul mezzo
      */
     public personeSulMezzo: PersonaSulMezzo[]
-  ) { }
+  ) {
+    this._testoRicercabile = this.calcolaTestoRicercabile();
+  }
 
-  private testoRicercabile(): string[] {
+  public calcolaTestoRicercabile(): string[] {
     let v = [
       this.descrizioneUnitaOperativa,
       this.descrizione,
@@ -33,8 +36,11 @@ export class MezzoInServizio {
     return v;
   }
 
-  ricerca(chiave: string): boolean {
-    console.log(this.testoRicercabile());
-    return this.testoRicercabile().some(p => p === chiave);
+  public ricercaFullText(chiave: string): boolean {
+    return this._testoRicercabile.some(p => p === chiave);
+  }
+
+  public testoRicercabile(): string[] {
+    return this._testoRicercabile;
   }
 }
