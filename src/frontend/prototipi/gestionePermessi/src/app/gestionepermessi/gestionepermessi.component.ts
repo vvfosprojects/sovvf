@@ -23,6 +23,34 @@ export class GestionepermessiComponent implements OnInit {
         private adapterAlbero: AdapterAlberoService) { }
 
     ngOnInit() {
+        this.files = JSON.parse(`
+            {
+    "data": 
+    [
+        {
+            "label": "Lazy Node 0",
+            "data": "Node 0",
+            "expandedIcon": "fa-folder-open",
+            "collapsedIcon": "fa-folder",
+            "leaf": false
+        },
+        {
+            "label": "Lazy Node 1",
+            "data": "Node 1",
+            "expandedIcon": "fa-folder-open",
+            "collapsedIcon": "fa-folder",
+            "leaf": false
+        },
+        {
+            "label": "Lazy Node 1",
+            "data": "Node 2",
+            "expandedIcon": "fa-folder-open",
+            "collapsedIcon": "fa-folder",
+            "leaf": false
+        }
+    ]
+}
+        `).data;
         this.situazionePermessiService.getSituazionePermessi()
             .map(situazionePermessi => {
                 this.situazionePermessi = situazionePermessi;
