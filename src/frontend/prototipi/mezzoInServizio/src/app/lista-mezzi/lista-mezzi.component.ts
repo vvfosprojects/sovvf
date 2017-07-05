@@ -265,4 +265,9 @@ export class ListaMezziComponent implements OnInit {
       });
     });
   }
+
+  private clearSearchText(): void {
+    this.testoRicerca = null;
+    this.aggiornaMezziFiltrati();
+  }
 }
