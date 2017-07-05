@@ -65,4 +65,9 @@ export class SintesiRichiestaComponent implements OnInit {
   private numeroMezzi(): number {
     return this.richiesta.mezzi.length;
   }
+
+  private clickDettagli(): void {
+    console.log("Sono il componente. Vogliono vedere i miei dettagli", this.richiesta.id);
+    this.showDettagli.emit(this.richiesta);
+  }
 }

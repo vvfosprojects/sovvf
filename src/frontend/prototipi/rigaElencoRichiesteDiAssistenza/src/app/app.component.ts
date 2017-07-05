@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.richieste = [
       new SintesiRichiesta(
-        "0",
+        "R0",
         "123.456.789",
         false,
         new Date(),
@@ -218,7 +218,7 @@ export class AppComponent implements OnInit {
         ["pagamento"]
       ),
       new SintesiRichiesta(
-        "0",
+        "R1",
         "333.444.555",
         true,
         new Date(),
@@ -245,7 +245,7 @@ export class AppComponent implements OnInit {
         ["pagamento"]
       ),
     new SintesiRichiesta(
-        "0",
+        "R2",
         "123.456.789",
         false,
         new Date(),
@@ -446,6 +446,10 @@ export class AppComponent implements OnInit {
         ["pagamento"]
       ),
     ];
+  }
+
+  showDettagliRicevuto(richiesta: SintesiRichiesta): void {
+    console.log("Sono app.component. Vogliono vedere i dettagli di", richiesta.id);
   }
 
 }

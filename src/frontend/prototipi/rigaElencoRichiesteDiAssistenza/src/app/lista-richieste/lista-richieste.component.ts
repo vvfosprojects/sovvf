@@ -98,4 +98,9 @@ export class ListaRichiesteComponent implements OnInit {
     this.filtriRilevante = event;
     this.applicaNuovaSelezione();
   }
+
+  showDettagliRicevuto(richiesta: SintesiRichiesta): void {
+    console.log("Sono la lista. Vogliono vedere il dettaglio di ", richiesta.id);
+    this.showDettagli.emit(richiesta);
+  }
 }
