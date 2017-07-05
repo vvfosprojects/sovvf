@@ -235,23 +235,34 @@ export class ListaMezziComponent implements OnInit {
   }
 
   public testoRicercabileMezzo(m: MezzoInServizio): string[] {
-    let v = [
-      m.descrizioneUnitaOperativa,
-      m.descrizione,
-      m.targa,
-      m.codiceRichiestaAssistenza,
-      m.descrizioneSquadra
-    ];
+    // calcolo il vettore dei nomi e dei cognomi
+    let vetNomiCognomi = m.personeSulMezzo.reduce((a, p) => {
+      a.push(...p.descrizione.split(" ").filter(p => !!p));
 
-    m.personeSulMezzo.map(p => p.descrizione).forEach(desc => v.push(desc));
+      return a;
+    }, []);
+
+    // compongo il vettore con tutti i testi
+    let v = [
+      ...m.descrizioneUnitaOperativa.split(" ").filter(p => !!p),
+      ...m.descrizione.split(" ").filter(p => !!p),
+      ...m.targa.split(" ").filter(p => !!p),
+      ...m.codiceRichiestaAssistenza.split(" ").filter(p => !!p),
+      ...m.descrizioneSquadra.split(" ").filter(p => !!p),
+      ...vetNomiCognomi
+    ];
 
     return v;
   }
 
   public ricercaFullText(m: MezzoInServizio, chiave: string): boolean {
-    return this.testoRicercabileMezzo(m).some(p => {
-      var regex = new RegExp("^" + this.testoRicerca, 'i');
-      return !!p.match(regex);
+    var chiaveSplit = chiave.split(" ").filter(p => !!p);
+
+    return chiaveSplit.every(pch => {
+      return this.testoRicercabileMezzo(m).some(p => {
+        var regex = new RegExp("^" + pch, 'i');
+        return !!p.match(regex);
+      });
     });
   }
 }
