@@ -1,0 +1,21 @@
+RIFERIMENTI:
+===> https://github.com/robisim74/angular-maps
+
+DA FARE:
+
+npm install --save bootstrap@4.0.0-alpha.6 font-awesome
+npm install -g typings
+npm install --save @types/googlemaps (oppure npm install --save googlemaps @types/googlemaps)
+typings install -g --save dt~google.maps 
+
+
+AGGIUNGERE:
+
+index.html:
+		<!-- Risolve errore in esecuzione "EXCEPTION: google is not defined"-->
+    <!-- AGGIUNTO APIs--> 
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script> 
+
+styles.css:
+    @import "~bootstrap/dist/css/bootstrap.min.css";
+    @import "~font-awesome/css/font-awesome.css";    

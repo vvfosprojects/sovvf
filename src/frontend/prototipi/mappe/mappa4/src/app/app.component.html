@@ -1,0 +1,89 @@
+
+<div class="row justify-content-center align-items-center">
+
+    <div class="col-lg-4">  
+<!-- VALORI OUT -->
+      <div class="card card-block card-outline-primary mb-3">
+            <h5 class="card-title text-center">@OUTPUT<br>(dopo click sulla mappa)</h5>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">Lat</span>
+                        <input class="card-text" value="{{LAT}}" >
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">Lon</span>
+                        <input class="card-text" value="{{LON}}">
+                    </div>
+                </div>
+            </div>        
+      </div> <!-- card card-block card-outline-primary mb-3 -->
+
+    <!-- VALORI IN -->
+      <div class="card card-block card-outline-danger mb-3">
+            <h5 class="card-title text-center">@INPUT</h5>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">Lat</span>
+                        <input class="card-text" #lat value="42.123456">
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">Lon</span>
+                        <input class="card-text" #lon value="12.123456">
+                    </div>
+                </div>
+            </div> <!-- end row -->
+
+            <div class="card-block">
+                <input class="card-text col-10" #testo placeholder="Contenuto">
+            </div>
+
+            <div class="card-block">
+              <button class="btn btn-primary btn-lg btn-block"
+                      (click)="setMarkerLatLng(lat.value, lon.value, testo.value, testo.value)">
+                      Invia Coordinate
+              </button>
+            </div>
+      </div> <!-- card card-block card-outline-danger mb-3 -->
+
+
+      <div class="card-block card card-outline-danger mb-3">
+            <h5 class="card-title text-center">@INPUT</h5>
+            <!--<input type="text" id="input-search" class="form-control" [(ngModel)]="address" (keyup.enter)="search(address)" placeholder="Indirizzo">-->
+            <input class="card-text" #address (keyup.enter)="search(address.value)" placeholder="Indirizzo">
+      </div>
+    </div><!-- col-lg-4 -->
+  
+<!-- MAPPA -->  
+  <div class="col-sm-6">
+
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Mappa degli Interventi</a>
+            </div>
+        </div>
+    </nav>
+
+    <google-map [center]="center"
+                [zoom]="zoom"
+                [disableDefaultUI]="disableDefaultUI"
+                [disableDoubleClickZoom]="disableDoubleClickZoom" 
+                [mapTypeId]="mapTypeId"
+                [maxZoom]="maxZoom"
+                [minZoom]="minZoom"
+                [styles]="styles"
+                (click)="addMarker(0, 0)"> 
+
+        <google-map-marker [position]="position" [title]="title" [content]="content"></google-map-marker> 
+    </google-map> 
+  </div>
+
+</div>
