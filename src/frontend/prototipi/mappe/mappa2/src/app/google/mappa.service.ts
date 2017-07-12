@@ -1,8 +1,9 @@
-import { PuntiMappaGoogleInput, PuntiMappaGoogleOutput } from './mappa.model'
+import { MappaComponent } from './mappa.component';
+import { PuntiMappaGoogleInput, PuntiMappaGoogleOutput } from './mappa.model';
+
 
 export class MappaService {
-        
-        private puntiMappaGoogleInput: PuntiMappaGoogleInput[];
+        //private puntiMappaGoogleInput: PuntiMappaGoogleInput[];
         //private puntiMappaGoogleOutput: PuntiMappaGoogleOutput[];        
 
         constructor() {
@@ -20,10 +21,11 @@ export class MappaService {
             ];
         }
 
-        //public setPuntiMappaGoogleFake(p: PuntiMappaGoogleOutput): PuntiMappaGoogleOutput[] {
-        //    alert("setPuntiMappaGoogleFake"); 
-        //    return [
-        //    new PuntiMappaGoogleOutput(p.latitudine, p.longitudine),
-        //    ];
-        //}
+        public setPuntiMappaGoogleFake(a: number): PuntiMappaGoogleOutput {
+            alert("setPuntiMappaGoogleFake" + a); 
+            //let punto=new PuntiMappaGoogleOutput(a,0);
+            //let punto=new PuntiMappaGoogleOutput(a, 0)
+
+            return {latitudine: a, longitudine: 0};
+        }
 }

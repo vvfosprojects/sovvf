@@ -1,5 +1,5 @@
 import { Component, Input, Output, OnInit, ElementRef, EventEmitter } from '@angular/core';
-import * as GoogleMapsLoader from 'google-maps'; // eseguire npm install google-maps /****/
+import * as GoogleMapsLoader from 'google-maps'; // eseguire npm install google-maps --save /****/
 
 import { PuntiMappaGoogleInput, PuntiMappaGoogleOutput } from './mappa.model'
 import { MappaService } from "./mappa.service";
@@ -12,35 +12,37 @@ import { MappaService } from "./mappa.service";
 
 export class MappaComponent implements OnInit {
   title = 'mappa google!';
-  lat = 0;
-  lon = 0;
 
   @Input() puntiMappaGoogleInput: PuntiMappaGoogleInput[];
+  p: PuntiMappaGoogleOutput;
+  @Input() lat: number;
   @Output() click = new EventEmitter();
 
-  constructor(private elementRef:ElementRef, private mappaService: MappaService) { }
+  constructor(private elementRef:ElementRef, private mappaService:MappaService) { }
 
   ngOnInit() {
         //this.puntiMappaGoogle = this.mappaService.getPuntiMappaGoogleFake(). .subscribe(lista => this.puntiMappaGoogle = lista);
         this.puntiMappaGoogleInput = this.mappaService.getPuntiMappaGoogleFake();
   
         let el: HTMLElement = this.elementRef.nativeElement.querySelector('.google-mappa');
-        this.createMap(el);
+        this.createMap(el, this.mappaService);
   }
 
   public setCoordinataFake() {
-        alert("ok: " + this.lat);
-        //alert("Lat1: " + this.lat);
+        //this.lat=this.puntiMappaGoogleOuput[0].latitudine;
+        //this.lat=66666;
+        //this.lat=this.p.latitudine;
+        alert("Lat1 (setCoordinataFake): " + this.lat);
         //this.mappaService.setPuntiMappaGoogleFake(new PuntiMappaGoogleOutput(41.897989, 12.504349));
         //this.lat=41.897989;
         //this.lon=12.504349;
   }
 
-  private createMap(el: HTMLElement) {
+  private createMap(el: HTMLElement, mappaService: MappaService) {
 
         GoogleMapsLoader.LANGUAGE = 'it';
         GoogleMapsLoader.REGION = 'IT';
-        //GoogleMapsLoader.KEY = 'qwertyuiopasdfghjklzxcvbnm';
+        GoogleMapsLoader.KEY = 'AIzaSyAQaGCkBos_D0w-cRhR2jD45yl99FjPFg8';
 
         GoogleMapsLoader.load((google) => {
 
@@ -61,7 +63,10 @@ export class MappaComponent implements OnInit {
             }
 
             google.maps.event.addListener(map, 'click', function(e) {
-                        this.lat=e.latLng.lat();
+                        this.p=mappaService.setPuntiMappaGoogleFake(e.latLng.lat());
+                        alert("==>" + this.p.latitudine);
+                        //p.latitudine=666;
+                        this.lat=66666;
                         placeMarker(map, e.latLng);
             });
 
@@ -77,12 +82,6 @@ export class MappaComponent implements OnInit {
                   });
                   infowindow.open(map,marker);
             } 
-
-            google.maps.event.addListener(map, 'click', function($scope, e) {
-                  alert("1");
-                 $scope.lati=1111;
-                  alert("2");
-            });
 
          });
 //FINE LOADER MAP GOOGLE
