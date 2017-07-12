@@ -1,31 +1,29 @@
-<div class="card status_non_presidiato row_text p-3">
+<div class="card row_text p-3" [ngClass]="{'status_presidiato': richiesta.presidiato, 'status_non_presidiato': !richiesta.presidiato}">
   <div class="row align-items-center">
     <div class="col-md-11">
       <div class="row">
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-3">
-              <div class="h5">
-                <i class="fa fa-hashtag fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Identificativo richiesta assistenza"></i>
-                <span class="h4">
-								  <a data-toggle="collapse" style="color:#444444!important; font-weight: bold" href="#collapse1">
+              <div class="h5 nowrap">
+                <i class="guida fa fa-hashtag fa-fw" aria-hidden="true" title="Identificativo richiesta assistenza"></i>
+                <a class="h4 num-int" (click)="toggleEspanso()">
 									  {{ richiesta.codice }}
-                  </a>
-								</span>
+								</a>
                 <span *ngIf="richiesta.rilevante">
-                  <i class="fa fa-exclamation-circle fa-fw" style="color:red!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                  <i class="guida fa fa-exclamation-circle fa-fw" style="color:red!important;" aria-hidden="true"
                   title="Intervento Rilevante"></i>
                 </span>
               </div>
 
-              <div class="h5">
-                <i class="fa fa-calendar fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Data e Ora ricezione richiesta"></i>
-                {{ richiesta.istanteRicezioneRichiesta | friendlyDate }} - {{ richiesta.istanteRicezioneRichiesta | friendlyHour }}
+              <div class="h5 nowrap">
+                <i class="guida fa fa-clock-o fa-fw" aria-hidden="true" title="Ricezione richiesta"></i> {{ richiesta.istanteRicezioneRichiesta
+                | friendlyDate }} - {{ richiesta.istanteRicezioneRichiesta | friendlyHour }}
               </div>
-              <div class="h5">
-                <i class="fa fa-bolt fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Orario Prima assegnazione"></i>
-                {{ richiesta.istantePrimaAssegnazione | friendlyHour }}
-                
+              <div class="h5 nowrap">
+                <i class="guida fa fa-bolt fa-fw" aria-hidden="true" title="Prima assegnazione"></i> {{ richiesta.istantePrimaAssegnazione
+                | friendlyHour }}
+
                 <!-- presidiato / non presidiato -->
                 <span *ngIf="richiesta.presidiato;else nonPresidiato">
                   <span class="badge badge-success">presidiato</span>
@@ -36,300 +34,237 @@
 
               </div>
 
-              <div class="h5">
-                <i class="fa fa-thermometer-half fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Priorità della richiesta"></i>
-                <span class="h5" style="font-family: FontAwesome; font-style: normal; color:#006633">
-                  <span *ngFor="let n of vettorePallini()">&#xf111;</span><span *ngFor="let n of vettoreBuchini()">&#xf10c;</span>
+              <!-- priorità richiesta -->
+              <div class="h5 nowrap">
+                <i class="guida fa fa-thermometer-half fa-fw" aria-hidden="true" title="Priorità della richiesta"></i>
+                <span class="h5" [ngClass]="{'text-success':richiesta.prioritaRichiesta <= 2, 'text-warning':richiesta.prioritaRichiesta > 2 && richiesta.prioritaRichiesta <= 4, 'text-danger': richiesta.prioritaRichiesta == 5}">
+                  <i *ngFor="let n of vettorePallini()" class="fa fa-circle" aria-hidden="true"></i><i *ngFor="let n of vettoreBuchini()" class="fa fa-circle-o" aria-hidden="true"></i>  
                 </span>
               </div>
 
             </div>
+
+            <!-- II colonna primo livello di dettaglio -->
             <div class="col-md-8">
-              <div class="h5">
-                <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Tipologia Eventi"></i>
-                <span *ngIf="richiesta.tipologie.length > 0" class="h4" style="color:chocolate">{{ richiesta.tipologie[0] }}</span>
-                <a *ngIf="richiesta.tipologie.length > 1" tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Tipologie<b>" data-placement="bottom" data-html="true"
-                  data-content="
-														<div class='h5' style='color:#bbbbbb;'>
-														<span class='badge badge-danger'>Incendio Normale</span><br/>
-														Incendio zona rotonda prima del centro abitato [...]<br/><br/>
-														<span class='badge badge-danger'>Incidente Stradale</span><br/>
-														Auto nel fossato per fumo albero in fiamme [...]<br/><br/>
-														<span class='badge badge-danger'>Soccorso a persona</span><br/>
-														Persona Investita da auto finita nel fossato [...]<br/><br/>
-														</div>">
-										<span class="h6 ml-2" style="font-weight:bold;color:chocolate">[più altri {{ richiesta.tipologie.length - 1 }}]</span></a>
+
+              <!-- Tipologie -->
+              <div class="h5 nowrap">
+                <i class="guida fa fa-exclamation-triangle fa-fw" aria-hidden="true" title="Tipologia Eventi"></i>
+                <span *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="h4 tipologia">{{ richiesta.tipologie[0] }}</span>
+                <a *ngIf="richiesta.tipologie.length > 1" [popover]="popAltreTip" placement="bottom" popoverTitle="Altre tipologie" triggers="mouseenter:mouseleave">
+                  [più altre {{ richiesta.tipologie.length - 1 }}]
+                </a>
+
+                <!-- popover altre tipologie -->
+                <ng-template #popAltreTip>
+                  <div class="h4" *ngFor="let t of richiesta.tipologie; let i = index">
+                    <div *ngIf="i > 0">
+                      {{ i + 1 }}.
+                      <span class="tipologia">{{ t }}</span>
+                    </div>
+                  </div>
+                </ng-template>
 
                 <h5>
-                  <a style="color:#bbbbbb;" tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Descrizione dettagliata evento<b>"
-                    data-html="true" data-content="
-														<div style='font-size:1em'>
-														Incendio zona rotonda prima del centro abitato, cassonetto incendiato che ha coinvolto anche un albero in prossimità
-														</div>">	
-											<i class="fa fa-fw" aria-hidden="true"></i>
-											<!--<span data-toggle="tooltip" title="Incendio zona rotonda prima del centro abitato, cassonetto incendiato che ha coinvolto anche un albero in prossimità">-->
-												Incendio zona rotonda prima del centro abitato [...]
-												<!--</span>-->
-											</a>
+                  <i class="guida fa fa-fw" aria-hidden="true"></i>
+                  <span tooltip="{{ richiesta.descrizione }}" placement="bottom">{{ richiesta.descrizione | truncate:33 }}</span>
                 </h5>
               </div>
-              <div class="h5">
-                <i class="fa fa-address-book-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Riferimento Chiamante"></i>                Carabinieri
+
+              <!-- richiedente -->
+              <div class="h5 nowrap">
+                <i class="guida fa fa-address-book-o fa-fw" aria-hidden="true" title="Richiedente"></i>
+                <span tooltip="{{ richiesta.richiedente }}" placement="bottom">{{ richiesta.richiedente | truncate:33 }}</span>
               </div>
-              <div class="h5 pt-1">
-                <i class="fa fa-phone fa-fw mr-1" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Chiamante"></i>065193943
+
+              <!-- numero richiedente -->
+              <div class="h5 pt-1 nowrap">
+                <i class="guida fa fa-phone fa-fw mr-1" aria-hidden="true" title="Numero richiedente"></i> {{ richiesta.numeroRichiedente
+                }}
               </div>
 
             </div>
+
+            <!-- indicatori stato richiesta -->
             <div class="col-md-1 p-2">
-              <div class="h5">
-                <i class="fa fa-users fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Squadre"></i>
-                <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Squadre<b>" data-placement="bottom" data-html="true"
-                  data-content="
-														<div style='font-size:1.3em'>
-														<span class='badge badge-success'>Prima Partenza A</span></br>
-														<span class='badge badge-info'>Seconda Partenza A</span></br>
-														</div>">
-										<span class="h3 big_numbers">2</span>
-										</a>
+
+              <!-- squadre -->
+              <div class="h5 nowrap">
+                <i class="guida fa fa-users fa-fw" aria-hidden="true" title="Numero Squadre"></i>
+                <a class="h3 big_numbers" [popover]="popSquadre" placement="bottom" popoverTitle="Squadre" triggers="focus" tabindex="0">
+                  {{ numeroSquadre() }}
+                </a>
+
+                <!-- popover squadre -->
+                <ng-template #popSquadre>
+                  <div class="h4" *ngFor="let s of nomiSquadre()">{{ s }}</div>
+                </ng-template>
+
               </div>
-              <div class="h5">
-                <i class="fa fa-truck fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Mezzi"></i>
-                <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Mezzi<b>" data-placement="bottom" data-html="true" data-content="
-													<div>
-														<div>
-															<span style='font-weight: bold'>AMR123SA</span>
-															<span class='badge badge-default m-0'>APS</span>
-														</div>
-														<div>
-															<span style='font-weight: bold'>AMD456DE</span>
-															<span class='badge badge-default m-0'>autoscala</span>
-														</div>
-													</div>
-													">
-										<span class="h3 big_numbers">2</span>
-										</a>
+
+              <!-- mezzi -->
+              <div class="h5 nowrap">
+                <i class="guida fa fa-truck fa-fw" aria-hidden="true" title="Numero Mezzi"></i>
+                <a class="h3 big_numbers" [popover]="popMezzi" placement="bottom" popoverTitle="Mezzi" triggers="focus" tabindex="0">
+                  {{ numeroMezzi() }}
+                </a>
+
+                <!-- popover mezzi -->
+                <ng-template #popMezzi>
+                  <div *ngFor="let m of richiesta.mezzi" class="h4 nowrap">
+                    <span>{{ m.descrizione }}</span>
+                    <span class='badge badge-default m-0'>{{ m.genereMezzo }}</span>
+                  </div>
+                </ng-template>
+
               </div>
-              <div class="h5">
-                <i class="fa fa-user fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone Impiegate"></i>
-                <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Persone Impiegate<b>" data-placement="left" data-html="true"
-                  data-content="
-														<div>
-														<b>CR</b>  Giuseppe Verdi <span class='badge badge-warning'>CP</span></br>
-														<b>CR</b>  Giuseppe Garibaldi <span class='badge badge-warning'>CP</span></br>
-														</div><b>VE</b>  Giacomo Leopardi <span class='badge badge-info'>A</span><br/>
-														</div><b>VE</b>  Giacomo Puccini <span class='badge badge-info'>A</span><br/>
-														<b>VE</b>  Torquato Tasso<br/>
-														<b>VQ</b>  Ippolito Pindemonte<br/>
-														<b>VP</b>  Alessandro Manzoni<br/>
-														<b>VE</b>  Italo Svevo<br/>
-														<b>VQ</b>  Ugo Foscolo<br/>
-														<b>VP</b>  Dante Alighieri<br/>
-														</div>">
-										<span class="h3 big_numbers">10</span>
-										</a>
+
+              <!-- componenti -->
+              <div class="h5 nowrap">
+                <i class="guida fa fa-user fa-fw" aria-hidden="true" title="Componenti ora impegnati"></i>
+                <a class="h3 big_numbers" [popover]="popComponenti" placement="bottom" popoverTitle="Componenti ora impegnati" triggers="focus"
+                  tabindex="0">
+                    {{ richiesta.tuttiIComponenti().length }}
+                </a>
+
+                <!-- popover persone -->
+                <ng-template #popComponenti>
+                  <div class="h5">
+                    <div *ngFor="let c of richiesta.tuttiIComponenti()">
+                      <componente [componente]="c"></componente>
+                    </div>
+                  </div>
+                </ng-template>
+
               </div>
             </div>
           </div>
         </div>
+
+        <!-- I livello seconda riga: località -->
         <div class="col-md-12">
           <div class="card">
-            <div class="row m-0" style="background-color: gainsboro;">
+            <div class="row m-0 localita">
               <div class="col-md-10 h3">
-                <i class="fa fa-map-marker fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione"></i>
+                <i class="guida fa fa-map-marker fa-fw" aria-hidden="true" title="Localizzazione"></i>
                 <span class="h5">
-												Via Gustavo Lafrutta, 15 - Roma (RM)
-											 <a href="#">
-												<i class="fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione Richiesta Intervento"></i>	
-											</a>
-											</span>
+                  {{ richiesta.descrizioneLocalita }}
+                  <a href="#">
+                    <i class="guida fa fa-globe fa-fw globo-loc" aria-hidden="true" title="Localizzazione Richiesta Intervento"></i>	
+                  </a>
+								</span>
               </div>
-              <div class="col-md-2 h6 pt-2">
-                <span class="badge badge-primary">Tus</span>
-                <span class="badge badge-info">Ost</span>
-                <span class="badge badge-default">Cent</span>
+              <div class="col-md-2 h6 pt-2 text-right">
+                <span *ngIf="richiesta.descrizioneCompetenze.length > 0" class="badge badge-primary">{{ richiesta.descrizioneCompetenze[0] }}</span>
+                <span *ngIf="richiesta.descrizioneCompetenze.length > 1" class="badge badge-info">{{ richiesta.descrizioneCompetenze[1] }}</span>
+                <span *ngIf="richiesta.descrizioneCompetenze.length > 2" class="badge badge-default">{{ richiesta.descrizioneCompetenze[2] }}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div id="collapse1" class="col-md-12 panel-collapse collapse">
+        <!-- box note localita e zone emergenza -->
+        <div *ngIf="espanso" class="col-md-12">
           <div class="col-md-12">
-            <div class="row card bt-0" style="background-color: white">
+            <div class="row card bt-0 note-localita">
               <div class="col-md-12 bg_diagonal_grey">
                 <div class="h3">
-                  <!--<i class="fa fa-info-circle fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Informazioni aggiuntive sulla localizzazione"></i>-->
                   <div class="h6 p-2">
-                    200 mt prima della rotonda, segnalato dal paracarro Km 1202
+                    {{ richiesta.noteLocalita }}
                   </div>
                   <div class="h5 pull-right">
-                    <span class="badge badge-danger pull-right m-1">Zona ABC</span>
-                    <span class="badge badge-danger pull-right m-1">Zona DEF</span>
+                    <span *ngFor="let ze of richiesta.zoneEmergenza" class="badge badge-danger pull-right m-1">{{ ze }}</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row mt-3">
-            <!--<h4 class="card-title p-1" style="background-color: #a3d8ad;">Dettaglio Richiesta</h4>-->
 
+          <!-- prima colonna II livello di dettaglio -->
+          <div class="row mt-3">
             <div class="col-md-3">
+
+              <!-- presa in carico -->
               <div class="h5">
-                <i class="fa fa-calendar-check-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Data e Ora Presa in Carico"></i>
-                <span class="badge badge-info">oggi</span> - 15.13
+                <i class="guida fa fa-calendar-check-o fa-fw" aria-hidden="true" title="Presa in carico"></i> {{ richiesta.istantePresaInCarico
+                | friendlyDate }} - {{ richiesta.istantePresaInCarico | friendlyHour }}
               </div>
+
+              <!-- scheda nue -->
               <div class="h5">
-                <i class="fa fa-id-card-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Codice scheda NUE"></i>
-                <a href="#"><span style="color: darkorange">184831295</span></a>
+                <i class="guida fa fa-id-card-o fa-fw" aria-hidden="true" title="Codice scheda NUE"></i>
+                <a href="#" class="sch-cont">{{ richiesta.codiceSchedaNue }}</a>
               </div>
+
+              <!-- fonogramma -->
               <div class="h5">
-                <i class="fa fa-paper-plane-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Stato Fonogramma"></i>
-                <span class="h4 badge badge-success">fonogramma inviato</span>
+                <i class="guida fa fa-paper-plane-o fa-fw" aria-hidden="true" title="Stato Fonogramma"></i>
+                <span class="h4 badge" [ngClass]="{'badge-success':richiesta.statoFonogrammaRichiesta == 'inviato', 'badge-default':richiesta.statoFonogrammaRichiesta == 'nonNecessario', 'badge-warning':richiesta.statoFonogrammaRichiesta == 'daInviare'}">
+                  {{ richiesta.descrizioneStatoFonogramma }}
+                </span>
               </div>
+
+              <!-- complessità -->
               <div class="h5">
-                <i class="fa fa-list fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Eventi Generati"></i>
-                <b><a href="#" >133</a></b>
-                <span class="h4 badge badge-danger">complesso</span>
+                <i class="guida fa fa-gears fa-fw" aria-hidden="true" title="Complessità"></i>
+                <b>{{ richiesta.indiceComplessita }}</b>
+                <span class="h4 badge" [ngClass]="{'badge-success':richiesta.complessitaRichiesta == 'bassa', 'badge-warning':richiesta.complessitaRichiesta == 'media', 'badge-danger':richiesta.complessitaRichiesta == 'alta'}">{{ richiesta.descrizioneComplessita }}</span>
               </div>
 
             </div>
+
+            <!-- II livello di dettaglio: squadre -->
             <div class="col-md-4">
               <div class="card">
                 <div class="card-block bg_card_title">
-                  <i class="fa fa-users fa-2x fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Squadre Coinvolte"></i>
-                  <span class="h4 card-title">Squadre Coinvolte</span>
+                  <i class="guida fa fa-users fa-2x fa-fw" aria-hidden="true" title="Squadre coinvolte"></i>
+                  <span class="h4 card-title">Squadre coinvolte</span>
                 </div>
                 <ul class="list-group list-group-flush">
-                  <li class="list-group-item pl-2 pr-2">
+                  <li *ngFor="let s of richiesta.squadre" class="list-group-item pl-2 pr-2">
                     <div class="col-md-10">
-                      <i class="fa fa-fire-extinguisher fa-fw mr-2" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                        title="Squadra"></i>
-                      <span style="font-weight: bold">Prima Partenza A</span>
+                      <i class="guida fa fa-fire-extinguisher fa-fw mr-2" style="font-size: 1.5em" aria-hidden="true" title="Squadra"></i>
+                      <span style="font-weight: bold">{{ s.nome }}</span>
                     </div>
                     <div class="col-md-2">
-                      <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Componenti Squadra<b>" data-html="true" data-content="
-														<div>
-														<b>CR</b>  Giuseppe Verdi <span class='badge badge-warning'>CP</span></br>
-														</div><b>VE</b>  Giacomo Leopardi <span class='badge badge-info'>A</span><br/>
-														<b>VE</b>  Torquato Tasso<br/>
-														<b>VQ</b>  Ippolito Pindemonte<br/>
-														<b>VP</b>  Alessandro Manzoni<br/>
-														</div>">
-													<i class="fa fa-tags fa-fw" style="color:cadetblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Componenti Squadra"></i>	
-												</a>
-                    </div>
-                  </li>
-                  <li class="list-group-item pl-2 pr-2">
-                    <div class="col-md-10">
-                      <i class="fa fa-fire-extinguisher fa-fw mr-2" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                        title="Squadra"></i>
-                      <span style="font-weight: bold">Seconda Partenza A</span>
-                    </div>
-                    <div class="col-md-2">
-                      <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Componenti Squadra<b>" data-html="true" data-content="
-														<b>CR</b>  Giuseppe Garibaldi <span class='badge badge-warning'>CP</span></br>
-														</div><b>VE</b>  Giacomo Puccini <span class='badge badge-info'>A</span><br/>
-														<b>VE</b>  Italo Svevo<br/>
-														<b>VQ</b>  Ugo Foscolo<br/>
-														<b>VP</b>  Dante Alighieri<br/>
-														">
-													<i class="fa fa-tags fa-fw" style="color:cadetblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Componenti Squadra"></i>	
-												</a>
+                      <a title="Componenti squadra" [popover]="popComponenti" placement="bottom" popoverTitle="Componenti" triggers="focus" tabindex="0">
+													<i class="guida fa fa-tags fa-fw" style="color:cadetblue!important;font-size: 1.5em" aria-hidden="true" title="Componenti squadra"></i>	
+											</a>
+
+                      <ng-template #popComponenti>
+                        <div class="h5">
+                          <div *ngFor="let c of s.componenti">
+                            <componente [componente]="c"></componente>
+                          </div>
+                        </div>
+                      </ng-template>
+
                     </div>
                   </li>
                 </ul>
               </div>
             </div>
+
+            <!-- II livello di dettaglio: mezzi -->
             <div class="col-md-5">
               <div class="card">
                 <div class="card-block bg_card_title">
-                  <i class="fa fa-truck fa-2x fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Mezzi Coinvolti"></i>
-                  <span class="h4 card-title">&nbsp;Mezzi Coinvolti</span>
+                  <i class="guida fa fa-truck fa-2x fa-fw" aria-hidden="true" title="Mezzi coinvolti"></i>
+                  <span class="h4 card-title">Mezzi coinvolti</span>
                 </div>
                 <ul class="list-group list-group-flush">
-                  <li class="list-group-item p-0">
-                    <div class="col-md-10">
-                      <i class="fa fa-tachometer fa-fw mr-0" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                        title="Mezzo"></i>
-                      <span style="font-weight: bold">AMR123SA</span>
-                      <span class="badge badge-default m-0">APS</span>
-                      <span class="badge badge-warning m-0">in viaggio</span>
-
-                    </div>
-                    <div class="col-md-2 p-0 pl-2">
-                      <a href="#" tabindex="0" data-toggle="popover" data-trigger="focus" title="<b>Indicatori Mezzo<b>" data-html="true" data-content="
-														<div style='font-size:1.3em'>
-														<i class='fa fa-cogs fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Stato di efficienza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-success'> OTTIMO </span><br/>
-														<i class='fa fa-tachometer fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Livello Carburante'/> &nbsp;&nbsp; <span class='badge badge-success'> ALTO </span><br/>
-														<i class='fa fa-tint fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Livello Estinguente'/> &nbsp;&nbsp; <span class='badge badge-success'> ALTO </span><br/>
-														<i class='fa fa-flag fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Appartenenza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-info'> PROPRIO </span><br/>
-														</div>">														
-													<i class="fa fa-briefcase fa-fw" style="color:green!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-													 title="Condizione del Mezzo"></i>
-													 </a>
-                      <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Persone sul Mezzo<b>" data-html="true" data-content="
-														<b>CR</b>  Giuseppe Verdi <span class='badge badge-warning'>CP</span></br>
-														</div><b>VE</b>  Giacomo Leopardi <span class='badge badge-info'>A</span><br/>
-														<b>VE</b>  Torquato Tasso<br/>
-														<b>VQ</b>  Ippolito Pindemonte<br/>
-														<b>VP</b>  Alessandro Manzoni<br/>
-														</div>">
-													<i class="fa fa-user fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
-												</a>
-                      <a style="font-weight: bold" href="#">
-													<i class="fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione Mezzo"></i>	
-												</a>
-                      <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Notifiche mezzo<b>" data-html="true" data-content="Nessuna notifica">
-													<i class="fa fa-bell fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
-												</a>
-                    </div>
-                  </li>
-                  <li class="list-group-item p-0">
-                    <div class="col-md-10">
-                      <i class="fa fa-tachometer fa-fw mr-0" style="font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                        title="Mezzo"></i>
-                      <span style="font-weight: bold">AMD456DE</span>
-                      <span class="badge badge-default m-0">autoscala</span>
-                      <span class="badge badge-danger m-0">in sede</span>
-                    </div>
-                    <div class="col-md-2 p-0 pl-2">
-                      <a href="#" tabindex="0" data-toggle="popover" data-trigger="focus" title="<b>Indicatori Mezzo<b>" data-html="true" data-content="
-														<div style='font-size:1.3em'>
-														<i class='fa fa-cogs fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Stato di efficienza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-warning'> MEDIOCRE </span><br/>
-														<i class='fa fa-tachometer fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Livello Carburante'/> &nbsp;&nbsp; <span class='badge badge-danger'> BASSO </span><br/>
-														<i class='fa fa-tint fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Livello Estinguente'/> &nbsp;&nbsp; <span class='badge badge-success'> ALTO </span><br/>
-														<i class='fa fa-flag fa-fw' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Appartenenza del mezzo'/> &nbsp;&nbsp; <span class='badge badge-warning'> ALTRA SEDE </span><br/>
-														</div>">	
-													<i class="fa fa-briefcase fa-fw" style="color:red!important" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-													 title="Condizione del Mezzo"></i>
-													 </a>
-                      <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Persone sul Mezzo<b>" data-html="true" data-content="
-														<b>CR</b>  Giuseppe Garibaldi <span class='badge badge-warning'>CP</span></br>
-														</div><b>VE</b>  Giacomo Puccini <span class='badge badge-info'>A</span><br/>
-														<b>VE</b>  Italo Svevo<br/>
-														<b>VQ</b>  Ugo Foscolo<br/>
-														<b>VP</b>  Dante Alighieri<br/>
-														">
-													<i class="fa fa-user fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
-												</a>
-                      <a style="font-weight: bold" href="#">
-													<i class="fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione Mezzo"></i>	
-												</a>
-                      <a tabindex="0" data-toggle="popover" data-trigger="hover" title="<b>Notifiche mezzo<b>" data-html="true" data-content="Nessuna notifica">
-													<i class="fa fa-bell fa-fw" style="color:cadetblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone sul mezzo"></i>	
-												</a>
-                    </div>
-                  </li>
+                  <mezzo *ngFor="let m of richiesta.mezzi" [mezzo]="m"></mezzo>
                 </ul>
               </div>
             </div>
+            
             <!-- TAGS-->
             <div class="card-text col-md-12">
               <div class="card mt-3" style="background-color: lavender">
                 <div class="col-md-12 h5 pull-right mt-2">
                   <span class="badge badge-default pull-right m-1">Incendi Estivi</span>
                   <span class="badge badge-default pull-right m-1">Fuori Città</span>
-                  <i class="fa fa-tags fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Etichette"></i>
+                  <i class="guida fa fa-tags fa-fw" aria-hidden="true" title="Etichette"></i>
                 </div>
               </div>
             </div>
@@ -340,8 +275,7 @@
     <div class="col-md-1">
       <div class="ml-4 mr-0 pr-0 h2">
         <a href="#">
-							<i class="fa fa-arrow-circle-o-right" style="color:lightblue!important;font-size: 1.5em" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-							 title="Vai alla pagina di dettaglio"></i>
+							<i class="tasto-dettaglio fa fa-arrow-circle-o-right" aria-hidden="true" title="Vai alla pagina di dettaglio" (click)="clickDettagli()"></i>
 						</a>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { Squadra } from "app/sintesi-richiesta/squadra.model";
-import { Mezzo } from "app/sintesi-richiesta/mezzo.model";
+import { Mezzo } from "../mezzo/mezzo.model";
+import { Componente } from "../componente/componente.model";
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -42,7 +43,7 @@ export class SintesiRichiesta {
          * priorita della richiesta (da 1 a 5). 1 = Altissima, 2 = Alta, 3 = Media,
          * 4 = Bassa, 5 = Bassissima.
          */
-        public priorita: number,
+        public prioritaRichiesta: number,
 
         /**
          * descrizione delle tipologie
@@ -106,10 +107,9 @@ export class SintesiRichiesta {
         public descrizioneStatoFonogramma: string,
 
         /**
-         * numero di eventi collegati alla richiesta (che è un'indicazione di massima
-         * sulla stima della complessità dell'intervento)
+         * indice di complessità dell'intervento (per es. numero di eventi collegati alla richiesta)
          */
-        public numeroEventiGenerati: number,
+        public indiceComplessita: number,
 
         /**
          * codice della complessità dell'intervento (per es. bassa, media, alta). Utile
@@ -137,4 +137,12 @@ export class SintesiRichiesta {
          */
         public etichette: string[]
     ) {}
+
+    public tuttiIComponenti(): Componente[] {
+        return this.squadre.reduce((a, c) => {
+            a.push(...c.componenti);
+
+            return a;
+        }, []);
+    }
 }

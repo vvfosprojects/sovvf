@@ -24,7 +24,7 @@ export class MezzoinservizioComponent implements OnInit {
 
   }
 
-  private getDescrizioneStato(codice: string): string {
+  public getDescrizioneStato(codice: string): string {
     return this.mapperDescStato.map(codice);
   }
 
@@ -39,7 +39,7 @@ export class MezzoinservizioComponent implements OnInit {
     return !!this.fs.personeSulMezzo && this.fs.personeSulMezzo.length;
   }
 
-  public hideMostraPersone(): void {
+  private hideMostraPersone(): void {
     this._mostraPersone = !this._mostraPersone;
   }
 

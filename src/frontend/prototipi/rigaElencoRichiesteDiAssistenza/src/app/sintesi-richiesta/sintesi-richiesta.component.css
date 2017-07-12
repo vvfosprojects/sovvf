@@ -7,11 +7,12 @@
 .row_text {
 	color: #666666;
 }
-.fa {
-	color: #bbbbbb!important;
+/* icone di guida */
+.guida {
+	color: #bbbbbb;
 }
 .big_numbers {
-	color: #a72920;
+	color: #a72920 !important;
 	font-weight: bold;
 }
 .bg_diagonal_grey {
@@ -22,4 +23,36 @@
 }
 .bg_card_title {
 	background-color: beige;
+}
+.nowrap {
+	white-space: nowrap;
+}
+a:hover {
+	text-decoration: underline !important;
+	font-weight: bold !important;
+	cursor: pointer !important;
+}
+.tipologia {
+	color:chocolate;
+}
+.num-int {
+	color:#444444;
+	font-weight: bold;
+	cursor: pointer;
+}
+.tasto-dettaglio {
+	color:lightblue !important;
+	font-size: 1.5em;
+}
+.localita {
+	background-color: gainsboro;
+}
+.globo-loc {
+	color: cadetblue;
+}
+.note-localita {
+	background-color: white;
+}
+.sch-cont {
+	color: darkorange;
 }

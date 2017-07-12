@@ -1,4 +1,4 @@
-import { Componente } from "app/sintesi-richiesta/componente.model";
+import { Componente } from "../componente/componente.model";
 
 export class Squadra {
     // non dimenticare di inserire un campo che indichi se la squadra
