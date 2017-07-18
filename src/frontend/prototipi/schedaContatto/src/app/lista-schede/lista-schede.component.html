@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="col-10">
+        <app-sintesi-scheda *ngFor="let s of schedeFiltrate" [scheda]="s" class="col col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4"></app-sintesi-scheda>
+    </div>
+
+    <div class="col-2">
+        <div style="position: fixed; margin-top: 1em;">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Cerca..." [(ngModel)]="testoRicerca" (keyup)="ricerca($event)">
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button" (click)="clearSearchText()"><i class="fa fa-times" aria-hidden="true"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

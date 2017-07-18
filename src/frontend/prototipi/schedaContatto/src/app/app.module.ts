@@ -8,13 +8,21 @@ import { AppComponent } from './app.component';
 import { FormschedacontattoComponent } from './formschedacontatto/formschedacontatto.component';
 import { FriendlyDatePipe } from './shared/pipes/friendly-date.pipe';
 import { FriendlyHourPipe } from './shared/pipes/friendly-hour.pipe';
+import { ListaSchedeService } from "app/lista-schede/lista-schede.service";
+import { ListaSchedeService_FakeJson } from "app/lista-schede/lista-schede-fake-json.service";
+import { ListaSchedeComponent } from "app/lista-schede/lista-schede.component";
+import { SintesiSchedaComponent } from './sintesi-scheda/sintesi-scheda.component';
+
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     FormschedacontattoComponent,
     FriendlyDatePipe,
-    FriendlyHourPipe
+    FriendlyHourPipe,
+    ListaSchedeComponent,
+    SintesiSchedaComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +30,9 @@ import { FriendlyHourPipe } from './shared/pipes/friendly-hour.pipe';
     HttpModule,
     NgbModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    { provide: ListaSchedeService, useClass: ListaSchedeService_FakeJson },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

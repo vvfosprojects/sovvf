@@ -21,7 +21,7 @@ export class SchedaContattoService {
               'Incendio', 
               'Attributi di classificazione',
               'Note',
-              'HIGH',
+              5,
               '2',
               'VVF');
 }
