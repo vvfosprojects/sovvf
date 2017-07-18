@@ -11,20 +11,20 @@ export class Mezzo {
         public codice: string,
 
         /**
-         * Descrizione
+         * Descrizione del mezzo (come appare in GUI)
          */
         public descrizione: string,
         
         /**
          * Genere. Per es. APS, ABP, AS, CA, ecc.
          */
-        public genereMezzo: string,
+        public genere: string,
 
         /**
-         * Codice dello stato del mezzo. Per es. inSede, inViaggio, sulPosto, inRientro,
-         * istituto, disimpegnato, ecc. Utile a definire il colore del segnale di stato.
+         * Codice dello stato del mezzo (0 = InSede, 1 = InViaggio, 2 = SulPosto,
+         * 3 = InRientro, 4 = Istituto). Utile a definire il colore del segnale di stato.
          */
-        public statoMezzo: string,
+        public statoMezzo: number,
         
         /**
          * Testo del segnale di stato.
@@ -32,10 +32,10 @@ export class Mezzo {
         public descrizioneStato: string,
 
         /**
-         * Codice dello stato di efficienza del mezzo. Utile a definire il colore
-         * della segnalazione dello stato di efficienza. (per es. inManutenzione, mediocre, buono, ottimo)
+         * Codice dello stato di efficienza del mezzo (0 = FuoriUso, 1 = Mediocre, 2 = Buono,
+         * 3 = Ottimo). Utile a definire il colore della segnalazione dello stato di efficienza.
          */
-        public statoEfficienzaMezzo: string,
+        public statoEfficienzaMezzo: number,
 
         /**
          * Testo dello stato di efficienza
@@ -43,10 +43,10 @@ export class Mezzo {
         public descrizioneStatoEfficienza: string,
 
         /**
-         * Codice del livello di carburante. Utile a definire il colore
-         * della segnalazione sul livello di carburante. (per es. basso, medio, alto)
+         * Codice del livello di carburante (0 = NonRilevato, 1 = Vuoto, 2 = Basso, 3 = Medio,
+         * 4 = Alto). Utile a definire il colore della segnalazione sul livello di carburante.
          */
-        public livelloCarburante: string,
+        public livelloCarburante: number,
 
         /**
          * Testo del livello di carburante.
@@ -54,10 +54,10 @@ export class Mezzo {
         public descrizioneLivelloCarburante: string,
 
         /**
-         * Codice del livello di estinguente. Utile a definire il colore
-         * della segnalazione del livello di estinguente. (per es. basso, medio, alto)
+         * Codice del livello di estinguente (0 = NonRilevato, 1 = Vuoto, 2 = Basso, 3 = Medio,
+         * 4 = Alto). Utile a definire il colore della segnalazione del livello di estinguente.
          */
-        public livelloEstinguente: string,
+        public livelloEstinguente: number,
 
         /**
          * Testo della segnalazione sul livello di estinguente
@@ -65,11 +65,10 @@ export class Mezzo {
         public descrizioneLivelloEstinguente: string,
 
         /**
-         * Codice dello stato di appartenenza del mezzo. Per es. proprio,
-         * altraSede, ecc. Utile a definire il colore della segnalazione
-         * sullo stato di appartenenza.
+         * Codice dello stato di appartenenza del mezzo (0 = Proprio, 1 = Altra sede).
+         * Utile a definire il colore della segnalazione sullo stato di appartenenza.
          */
-        public appartenenzaMezzo: string,
+        public appartenenzaMezzo: number,
 
         /**
          * Testo della segnalazione sullo stato di appartenenza.

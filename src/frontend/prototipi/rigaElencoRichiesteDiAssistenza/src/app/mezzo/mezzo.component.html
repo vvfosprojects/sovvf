@@ -2,8 +2,8 @@
   <div class="col-md-10">
     <i class="guida fa fa-tachometer fa-fw mr-0" style="font-size: 1.5em" aria-hidden="true" title="Mezzo"></i>
     <span style="font-weight: bold">{{ mezzo.descrizione }}</span>
-    <span class="badge badge-default m-0">{{ mezzo.genereMezzo }}</span>
-    <span class="badge m-0" [ngClass]="{'badge-default':mezzo.statoMezzo == 'inSede', 'badge-warning':mezzo.statoMezzo == 'inViaggio', 'badge-success':mezzo.statoMezzo == 'sulPosto', 'badge-info':mezzo.statoMezzo == 'inRientro'}">
+    <span class="badge badge-default m-0">{{ mezzo.genere }}</span>
+    <span class="badge m-0" [ngClass]="{'badge-default':mezzo.statoMezzo == 0 || mezzo.statoMezzo == 4, 'badge-warning':mezzo.statoMezzo == 1, 'badge-success':mezzo.statoMezzo == 2, 'badge-info':mezzo.statoMezzo == 3}">
       {{ mezzo.descrizioneStato }}
     </span>
   </div>
@@ -18,16 +18,16 @@
     <ng-template #indMez>
       <div class="h4 nowrap">
         <div><i class='fa fa-cogs fa-fw' aria-hidden='true' title='Stato di efficienza del mezzo' ></i><span class='badge'
-          [ngClass]="{'badge-danger':mezzo.statoEfficienzaMezzo == 'inManutenzione', 'badge-warning':mezzo.statoEfficienzaMezzo == 'mediocre','badge-success':mezzo.statoEfficienzaMezzo == 'buono', 'badge-success':mezzo.statoEfficienzaMezzo == 'ottimo'}">
+          [ngClass]="{'badge-danger':mezzo.statoEfficienzaMezzo == 0, 'badge-warning':mezzo.statoEfficienzaMezzo == 1,'badge-success':mezzo.statoEfficienzaMezzo == 2 || mezzo.statoEfficienzaMezzo == 3}">
           {{ mezzo.descrizioneStatoEfficienza }}</span></div>
         <div><i class='fa fa-tachometer fa-fw' aria-hidden='true' title='Livello Carburante' ></i><span class='badge'
-          [ngClass]="{'badge-danger':mezzo.livelloCarburante == 'basso', 'badge-warning':mezzo.livelloCarburante == 'medio','badge-success':mezzo.livelloCarburante == 'alto'}">
+          [ngClass]="{'badge-default':mezzo.livelloCarburante == 0, 'badge-danger':mezzo.livelloCarburante == 1 || mezzo.livelloCarburante == 2, 'badge-warning':mezzo.livelloCarburante == 3,'badge-success':mezzo.livelloCarburante == 4}">
           {{ mezzo.descrizioneLivelloCarburante }}</span></div>
         <div><i class='fa fa-tint fa-fw' aria-hidden='true' title='Livello Estinguente' ></i><span class='badge'
-          [ngClass]="{'badge-danger':mezzo.livelloEstinguente == 'basso', 'badge-warning':mezzo.livelloEstinguente == 'medio','badge-success':mezzo.livelloEstinguente == 'alto'}">
+          [ngClass]="{'badge-default':mezzo.livelloEstinguente == 0, 'badge-danger':mezzo.livelloEstinguente == 1 || mezzo.livelloEstinguente == 2, 'badge-warning':mezzo.livelloEstinguente == 3,'badge-success':mezzo.livelloEstinguente == 4}">
           {{ mezzo.descrizioneLivelloEstinguente }}</span></div>
         <div><i class='fa fa-flag fa-fw' aria-hidden='true' title='Appartenenza del mezzo' ></i><span class='badge'
-          [ngClass]="{'badge-warning':mezzo.appartenenzaMezzo == 'altraSede','badge-success':mezzo.appartenenzaMezzo == 'proprio'}">
+          [ngClass]="{'badge-warning':mezzo.appartenenzaMezzo == 1,'badge-success':mezzo.appartenenzaMezzo == 0}">
           {{ mezzo.descrizioneAppartenenzaMezzo }}</span></div>
       </div>
     </ng-template>

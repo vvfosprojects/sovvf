@@ -25,9 +25,9 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
     public class Componente
     {
         /// <summary>
-        ///   La qualifica
+        ///   La descrizione della qualifica
         /// </summary>
-        public string Qualifica { get; set; }
+        public string DescrizioneQualifica { get; set; }
 
         /// <summary>
         ///   Il nominativo esteso del componente

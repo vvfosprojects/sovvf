@@ -63,7 +63,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
             /// <summary>
             ///   Il mezzo è fuori uso
             /// </summary>
-            FuoriUso,
+            FuoriUso = 0,
 
             /// <summary>
             ///   Lo stato è mediocre
@@ -141,7 +141,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
         /// <summary>
         ///   Genere. Per es. APS, ABP, AS, CA, ecc.
         /// </summary>
-        public string GenereMezzo { get; set; }
+        public string Genere { get; set; }
 
         /// <summary>
         ///   Codice dello stato del mezzo. Per es. inSede, inViaggio, sulPosto, inRientro, istituto,
@@ -188,8 +188,8 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
         public string DescrizioneLivelloEstinguente { get; set; }
 
         /// <summary>
-        ///   Codice dello stato di appartenenza del mezzo. Per es. PROPRIO, ALTRASEDE, ecc. Utile a
-        ///   definire il colore della segnalazione sullo stato di appartenenza.
+        ///   Codice dello stato di appartenenza del mezzo. Utile a definire il colore della
+        ///   segnalazione sullo stato di appartenenza.
         /// </summary>
         public Appartenenza AppartenenzaMezzo { get; set; }
 

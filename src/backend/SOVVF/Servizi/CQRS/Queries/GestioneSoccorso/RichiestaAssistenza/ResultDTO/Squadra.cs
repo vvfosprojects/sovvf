@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.ResultDTO
 {
     /// <summary>
@@ -28,6 +30,12 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
         ///   Il nome della squadra
         /// </summary>
         public string Nome { get; set; }
+
+        /// <summary>
+        ///   E' l'istante in cui la squadra ha terminato il suo impegno sulla richiesta. Se è null,
+        ///   la squadra è ancora impegnata sulla richiesta.
+        /// </summary>
+        public DateTime? IstanteTermineImpegno { get; set; }
 
         /// <summary>
         ///   I componenti della squadra

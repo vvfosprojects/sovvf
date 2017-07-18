@@ -199,7 +199,7 @@
               <!-- fonogramma -->
               <div class="h5">
                 <i class="guida fa fa-paper-plane-o fa-fw" aria-hidden="true" title="Stato Fonogramma"></i>
-                <span class="h4 badge" [ngClass]="{'badge-success':richiesta.statoFonogrammaRichiesta == 'inviato', 'badge-default':richiesta.statoFonogrammaRichiesta == 'nonNecessario', 'badge-warning':richiesta.statoFonogrammaRichiesta == 'daInviare'}">
+                <span class="h4 badge" [ngClass]="{'badge-success':richiesta.statoFonogrammaRichiesta == 2, 'badge-default':richiesta.statoFonogrammaRichiesta == 0, 'badge-warning':richiesta.statoFonogrammaRichiesta == 1}">
                   {{ richiesta.descrizioneStatoFonogramma }}
                 </span>
               </div>
@@ -208,7 +208,7 @@
               <div class="h5">
                 <i class="guida fa fa-gears fa-fw" aria-hidden="true" title="Complessità"></i>
                 <b>{{ richiesta.indiceComplessita }}</b>
-                <span class="h4 badge" [ngClass]="{'badge-success':richiesta.complessitaRichiesta == 'bassa', 'badge-warning':richiesta.complessitaRichiesta == 'media', 'badge-danger':richiesta.complessitaRichiesta == 'alta'}">{{ richiesta.descrizioneComplessita }}</span>
+                <span class="h4 badge" [ngClass]="{'badge-success':richiesta.complessitaRichiesta == 2, 'badge-warning':richiesta.complessitaRichiesta == 1, 'badge-danger':richiesta.complessitaRichiesta == 0}">{{ richiesta.descrizioneComplessita }}</span>
               </div>
 
             </div>

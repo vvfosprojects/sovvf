@@ -71,12 +71,12 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
             /// <summary>
             ///   Il fonogramma deve essere inviato ma non è stato inviato (rosso)
             /// </summary>
-            NonInviato,
+            DaInviare,
 
             /// <summary>
             ///   Il fonogramma è stato inviato
             /// </summary>
-            DaInviare
+            Inviato
         }
 
         /// <summary>
@@ -111,8 +111,13 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
         public string Codice { get; set; }
 
         /// <summary>
-        ///   Indica se la richiesta è stata marcata come rilevante dall'operatore
+        ///   Indica se la richiesta è rilevante
         /// </summary>
+        /// <remarks>
+        ///   Una richiesta può essere rilevante se è l'operatore a marcarla come tale, oppure in
+        ///   base ad un insieme di regole automatiche deterministiche o basate su algoritmi di
+        ///   machine learning.
+        /// </remarks>
         public bool Rilevante { get; set; }
 
         /// <summary>
@@ -156,14 +161,14 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
         public string NumeroRichiedente { get; set; }
 
         /// <summary>
-        ///   Descrizione della località della richiesta
+        ///   Descrizione della località dell'evento
         /// </summary>
         public string DescrizioneLocalita { get; set; }
 
         /// <summary>
         ///   Descrizione delle sedi di prima, seconda e terza competenza
         /// </summary>
-        public string DescrizioneCompetenze { get; set; }
+        public string[] DescrizioneCompetenze { get; set; }
 
         /// <summary>
         ///   Note sulla località della richiesta (per es. "accanto a ingresso carico/scarico del
@@ -201,7 +206,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
         ///   Numero di eventi collegati alla richiesta (che è un'indicazione di massima sulla stima
         ///   della complessità dell'intervento)
         /// </summary>
-        public int indiceComplessita { get; set; }
+        public int IndiceComplessita { get; set; }
 
         /// <summary>
         ///   Codice della complessità dell'intervento (per es. bassa, media, alta). Utile a

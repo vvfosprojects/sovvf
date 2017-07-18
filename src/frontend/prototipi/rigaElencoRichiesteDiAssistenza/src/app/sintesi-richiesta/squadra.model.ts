@@ -1,11 +1,22 @@
 import { Componente } from "../componente/componente.model";
 
 export class Squadra {
-    // non dimenticare di inserire un campo che indichi se la squadra
-    // è ancora impegnata sulla richiesta, o l'eventuale data in cui
-    // si è liberata.
     constructor(
+
+        /**
+         * Il nome della squadra
+         */
         public nome: string,
+
+        /**
+         * E' l'istante in cui la squadra ha terminato il suo impegno sulla richiesta.
+         * Se è null, la squadra è ancora impegnata sulla richiesta.
+         */
+        public istanteTermineImpegno: Date,
+
+        /**
+         * I componenti della squadra
+         */
         public componenti: Componente[]
     ) {}
 }

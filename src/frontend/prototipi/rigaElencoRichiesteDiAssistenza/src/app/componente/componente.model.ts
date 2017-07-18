@@ -6,7 +6,7 @@ export class Componente {
         /**
          * La qualifica
          */
-        public qualifica: string,
+        public descrizioneQualifica: string,
 
         /**
          * Il nominativo esteso del componente

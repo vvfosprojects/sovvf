@@ -15,12 +15,12 @@ export class SintesiRichiesta {
         public id: string,
 
         /**
-         * codice
+         * E' il codice della Richiesta di Assistenza
          */
         public codice: string,
 
         /**
-         * indica se la richiesta è stata marcata come rilevante dall'operatore
+         * Indica se la richiesta è rilevante
          */
         public rilevante: boolean,
 
@@ -40,8 +40,8 @@ export class SintesiRichiesta {
         public presidiato: boolean,
 
         /**
-         * priorita della richiesta (da 1 a 5). 1 = Altissima, 2 = Alta, 3 = Media,
-         * 4 = Bassa, 5 = Bassissima.
+         * priorita della richiesta (da 0 a 4). 0 = Altissima, 1 = Alta, 2 = Media,
+         * 3 = Bassa, 4 = Bassissima.
          */
         public prioritaRichiesta: number,
 
@@ -66,7 +66,7 @@ export class SintesiRichiesta {
         public numeroRichiedente: string,
 
         /**
-         * descrizione della località della richiesta
+         * descrizione della località dell'evento
          */
         public descrizioneLocalita: string,
 
@@ -76,7 +76,8 @@ export class SintesiRichiesta {
         public descrizioneCompetenze: string[],
 
         /**
-         * note sulla località della richiesta (per es. "accanto a ingresso carico/scarico del supermercato Spendibene")
+         * note sulla località della richiesta (per es. "accanto a ingresso
+         * carico/scarico del supermercato Spendibene")
          */
         public noteLocalita: string,
 
@@ -96,13 +97,13 @@ export class SintesiRichiesta {
         public codiceSchedaNue: string,
 
         /**
-         * codice dello stato di invio del fonogramma (per es. daInviare, inviato, nonNecessario). Utile a calcolare
-         * il colore della segnalazione.
+         * codice dello stato di invio del fonogramma (0 = Non necessario, 1 = Da inviare,
+         * 2 = Inviato). Utile a calcolare il colore della segnalazione.
          */
-        public statoFonogrammaRichiesta: string,
+        public statoFonogrammaRichiesta: number,
 
         /**
-         * segnalazione sullo stato di invio del fonogramma.
+         * segnalazione sullo stato di invio del fonogramma
          */
         public descrizioneStatoFonogramma: string,
 
@@ -112,10 +113,10 @@ export class SintesiRichiesta {
         public indiceComplessita: number,
 
         /**
-         * codice della complessità dell'intervento (per es. bassa, media, alta). Utile
+         * codice della complessità dell'intervento (0 = Alta, 1 = Media, 2 = Bassa). Utile
          * a calcolare il colore della segnalazione sulla complessità.
          */
-        public complessitaRichiesta: string,
+        public complessitaRichiesta: number,
 
         /**
          * segnalazione sulla complessità dell'intervento.
