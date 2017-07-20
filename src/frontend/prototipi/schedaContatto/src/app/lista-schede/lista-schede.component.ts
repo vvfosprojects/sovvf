@@ -33,6 +33,8 @@ export class ListaSchedeComponent implements OnInit {
       )
   }
 
-  
-
+  private visualizzaScheda(event) {
+    //da cambiare
+    console.log(event);
+  }
 }

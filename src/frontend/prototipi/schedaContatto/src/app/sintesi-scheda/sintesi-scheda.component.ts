@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SchedaContatto } from "app/formschedacontatto/scheda-contatto.model";
 
 @Component({
@@ -9,6 +9,8 @@ import { SchedaContatto } from "app/formschedacontatto/scheda-contatto.model";
 export class SintesiSchedaComponent implements OnInit {
 
   @Input() scheda: SchedaContatto;
+
+  @Output() showDetail: EventEmitter<SchedaContatto> = new EventEmitter();
 
   //Modifica apportata da Marzotti per visualizzare la lista delle schede contatto - 13/07
   //constructor(private schedaContattoService : SchedaContattoService) {  
@@ -41,5 +43,9 @@ export class SintesiSchedaComponent implements OnInit {
   private vettoreBuchini() {
     const MAX_PRIORITA = 5;
     return new Array(MAX_PRIORITA - this.scheda.priorita);
+  }
+
+  private mostraDettaglio() {
+    this.showDetail.emit(this.scheda);
   }
 }

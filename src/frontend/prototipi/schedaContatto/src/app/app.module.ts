@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { FormschedacontattoComponent } from './formschedacontatto/formschedacontatto.component';
@@ -13,7 +14,16 @@ import { ListaSchedeService_FakeJson } from "app/lista-schede/lista-schede-fake-
 import { ListaSchedeComponent } from "app/lista-schede/lista-schede.component";
 import { SintesiSchedaComponent } from './sintesi-scheda/sintesi-scheda.component';
 
-import { AppRoutingModule } from './app-routing.module';
+const ROUTES = [
+  {
+    path: '',
+    component: ListaSchedeComponent
+  },
+  {
+    path: 'scheda-contatto/:id',
+    component: FormschedacontattoComponent
+  }
+];
 
 @NgModule({
   declarations: [
@@ -28,7 +38,8 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserModule,
     FormsModule,
     HttpModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    RouterModule.forRoot(ROUTES),
   ],
   providers: [
     { provide: ListaSchedeService, useClass: ListaSchedeService_FakeJson },
