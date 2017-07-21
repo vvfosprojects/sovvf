@@ -12,31 +12,36 @@
               </div>
             </div>
             <!-- priorità scheda -->
-            <div class="col-md-3">
-              <div class="h5 nowrap">
+            <div class="col-md-2">
+              <div class="nowrap">
                 <i class="guida fa fa-thermometer-half fa-fw" aria-hidden="true" title="Priorità della scheda"></i>
-                <span class="h5" [ngClass]="{'text-success':scheda.priorita <= 2, 'text-warning':scheda.priorita > 2 && scheda.priorita <= 4, 'text-danger': scheda.priorita == 5}">
+                <span [ngClass]="{'text-success':scheda.priorita <= 2, 'text-warning':scheda.priorita > 2 && scheda.priorita <= 4, 'text-danger': scheda.priorita == 5}">
                   <i *ngFor="let n of vettorePallini()" class="fa fa-circle" aria-hidden="true"></i><i *ngFor="let n of vettoreBuchini()" class="fa fa-circle-o" aria-hidden="true"></i>  
                 </span>
               </div>
             </div>
-            <!-- nominativo utente -->
+            <!-- tipo di evento -->
             <div class="col-md-3">
-              <div class="h5 nowrap">
-                <i class="fa fa-user" aria-hidden="true" title="Nominativo utente"></i>
-                <a class="h4">
-									  {{ scheda.nomeUtente }}
+              <div class="nowrap">
+                <i class="fa fa-list" aria-hidden="true" title="Classificazione NUE"></i>
+                <a class="h5">
+									  {{ scheda.classificazioneNUE }}
 								</a>
               </div>
             </div>
-            <!-- telefono utente -->
-            <div class="col-md-3">
-              <div class="h5 nowrap">
-                <i class="fa fa-phone" aria-hidden="true" title="Telefono utente"></i>
-                <a class="h4 num-int">
-									  {{ scheda.numTelefono }}
-								</a>
+            <!-- nominativo utente -->
+            <div class="col-md-2">
+              <div class="nowrap">
+                <i class="fa fa-user" aria-hidden="true" title="Nominativo utente"></i>
+								  {{ scheda.nomeUtente }}
               </div>
+            </div>
+            <!-- telefono utente -->
+            <div class="col-md-2">
+              <div class="nowrap">
+                <i class="fa fa-phone" aria-hidden="true" title="Telefono utente"></i>
+                 {{ scheda.numTelefono }}
+						  </div>
             </div>
           </div>
         </div>

@@ -1,32 +1,71 @@
-<div class="section">
- <div class="container">
-   <div class="row">
-      <div class="col-md-6">
-      </div>
-      <div class="col-md-6">
-          <p-growl [value]="msgs"></p-growl>
-      </div>
-   </div>
-   <div class="row">
-    <div class="col-md-3">
-        <p-tree [value]="files" selectionMode="single" [(selection)]="selectedFile" 
-       (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+<div class="row">
+  <div class="col-md-12">
+    <!-- <p-dataTable [value]="permessiAssegnati">
+      <p-column field="Descrizione" header="Descrizione"></p-column>
+      <p-column field="Unità Operativa" header="Unità Operativa"></p-column>
+      <p-column field="Data Inizio" header="Data inizio"></p-column>
+      <p-column field="Data Fine" header="Data fine"></p-column>
+      <p-column field="Ricorsivo" header="Ricorsivo"></p-column>
+      <p-column field="Azioni" header="Azioni"></p-column>
+    </p-dataTable> -->
+    <p-dataTable [value]="permessiAssegnati">
+        <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header"></p-column>
+    </p-dataTable>
+  </div>
+</div>
 
-      <div style="margin-top:8px">
-         Selected Node: {{ selectedFile ? selectedFile.label : 'none' }}
-      </div>
+<br>
 
+<div class="row">
+  <div class="col-md-4">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Cerca nominativo..." [(ngModel)]="testoRicerca" (keyup)="ricerca($event)">
+      <span class="input-group-btn">
+        <button class="btn btn-secondary" type="button" (click)="clearSearchText()"><i class="fa fa-times" aria-hidden="true"></i></button>
+      </span>
     </div>
-    <!--<div class="col-md-2">
-        <button pButton type="text" label="Expand all" (click)="expandAll()"></button>
-        <button pButton type="text" label="Collapse all" (click)="collapseAll()"></button>
-    </div>-->
-    <div class="col-md-4">
-         <button type="button" class="btn btn-sm" (click)="expandAll()">Expand all</button>
-         <button type="button" class="btn btn-sm" (click)="collapseAll()">Collapse all</button>
-    </div>
-   </div>
- </div>
+  </div>
+  <div class="col-md-8">
+    <p-checkbox label="cerca solo nel nodo selezionato" [(ngModel)]="checkNodeSelected" binary="true"></p-checkbox>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <p-growl [value]="msgs"></p-growl>
+
+  <div class="col-md-2">
+    <button pButton type="button" (click)="expandAll()" label="Espandi tutto"></button>
+    <button pButton type="button" (click)="collapseAll()" label="Chiudi tutto"></button>
+  </div>
+  
+  <div class="col-md-6">
+    <p-tree [value]="files" selectionMode="single" [(selection)]="selectedFile" 
+      (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+    <!-- <div style="margin-top:8px">
+       Selected Node: {{ selectedFile ? selectedFile.label : 'none' }}
+    </div> -->
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <h4 class="first">Ruoli selezionati: <a *ngFor="let ruoli of ruoliSelezionati" style="margin-right:10px">{{ruoli}}</a></h4>
+     <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 1" label="Ruolo 1" [(ngModel)]="ruoliSelezionati"></p-checkbox></div>
+     <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 2" label="Ruolo 2" [(ngModel)]="ruoliSelezionati"></p-checkbox></div>
+     <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 3" label="Ruolo 3" [(ngModel)]="ruoliSelezionati"></p-checkbox></div>
+     <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 4" label="Ruolo 4" [(ngModel)]="ruoliSelezionati"></p-checkbox></div>
+  </div>
+  
+  <div class="col-md-6">
+    <h4 class="first">Permessi selezionati: <a *ngFor="let permessi of permessiSelezionati" style="margin-right:10px">{{permessi}}</a></h4>
+     <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 1" label="Permesso 1" [(ngModel)]="permessiSelezionati"></p-checkbox></div>
+     <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 2" label="Permesso 2" [(ngModel)]="permessiSelezionati"></p-checkbox></div>
+     <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 3" label="Permesso 3" [(ngModel)]="permessiSelezionati"></p-checkbox></div>
+     <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 4" label="Permesso 4" [(ngModel)]="permessiSelezionati"></p-checkbox></div>
+  </div>
+
 </div>
 
 

@@ -14,7 +14,7 @@ export class SituazionePermessi {
         public unitaOperativeRadice: UnitaOperativa[],
 
         /**
-         * E' la situazione dei pemressi assegnati sui quali ho visibilità
+         * E' la situazione dei permessi assegnati sui quali ho visibilità
          */
         public permessiAssegnati: PermessoAssegnato[]
     ) {}

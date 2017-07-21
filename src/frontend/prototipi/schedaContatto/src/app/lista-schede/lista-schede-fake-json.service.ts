@@ -47,4 +47,10 @@ export class ListaSchedeService_FakeJson {
   public getSchede(): Observable<SchedaContatto[]> {
     return Observable.of(this.schede);
   }
+
+  public getScheda(id: number | string): Observable<SchedaContatto> {
+    return Observable.of(this.schede
+       // (+) before `id` turns the string into a number
+       .find(scheda => scheda.idScheda === +id));
+  }
 }

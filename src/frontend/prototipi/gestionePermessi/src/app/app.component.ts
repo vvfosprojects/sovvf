@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {TreeModule,TreeNode} from 'primeng/primeng';
 
 
 @Component({

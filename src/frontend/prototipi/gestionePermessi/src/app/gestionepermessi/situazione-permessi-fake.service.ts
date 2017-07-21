@@ -11,18 +11,18 @@ import { PermessoAssegnato } from "app/gestionepermessi/permesso-assegnato.model
 export class SituazionePermessiFakeService {
   private situazionePermessi: SituazionePermessi = new SituazionePermessi(
     [
-      new UnitaOperativa("DIR-LAZ", "Direzione Regionale Lazio", "DIR-LAZ", [
-        new UnitaOperativa("COM-RM", "Comando Provinciale Roma", "COM-RM", []),
-        new UnitaOperativa("COM-RT", "Comando Provinciale Rieti", "DIR_LAZ", []),
-        // new UnitaOperativa("COM-VT", "Comando Provinciale Viterbo", "DIR_LAZ", []),
-        // new UnitaOperativa("COM-LT", "Comando Provinciale Latina", "DIR_LAZ", []),
-        // new UnitaOperativa("COM-FR", "Comando Provinciale Frosinone", "DIR_LAZ", []),
+      new UnitaOperativa("0","DIR-LAZ", "Direzione Regionale Lazio", [
+        new UnitaOperativa("1","COM-RM", "Comando Provinciale Roma", []),
+        new UnitaOperativa("3","COM-RT", "Comando Provinciale Rieti", []),
+        new UnitaOperativa("4","COM-VT", "Comando Provinciale Viterbo", []),
+        new UnitaOperativa("5","COM-LT", "Comando Provinciale Latina", []),
+        new UnitaOperativa("7","COM-FR", "Comando Provinciale Frosinone", []),
       ]),
-      new UnitaOperativa("0", "COA Marche", "COA_MAR", []),
+      new UnitaOperativa("0", "COA_MAR","COA Marche", []),
     ],
     [
       new PermessoAssegnato("0", "Manuela Marzotti", "MZTMNL11Y23T666I", "Può inserire interventi", "Comando Roma", true, new Date(), null),
-      new PermessoAssegnato("0", "Manuela Marzotti", "MZTMNL11Y23T666I", "Può inserire interventi", "Comando Roma", true, new Date(), null),      
+      new PermessoAssegnato("1", "Manuela Marzotti", "MZTMNL11Y23T666I", "Può vedere interventi", "Comando Roma", true, new Date(), null),      
     ]);
 
   constructor(private http: Http) { }

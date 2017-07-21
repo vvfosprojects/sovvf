@@ -13,15 +13,24 @@ import { ListaSchedeService } from "app/lista-schede/lista-schede.service";
 import { ListaSchedeService_FakeJson } from "app/lista-schede/lista-schede-fake-json.service";
 import { ListaSchedeComponent } from "app/lista-schede/lista-schede.component";
 import { SintesiSchedaComponent } from './sintesi-scheda/sintesi-scheda.component';
+import { PageNotFoundComponent } from "app/not-found.component";
 
 const ROUTES = [
-  {
+   {
     path: '',
     component: ListaSchedeComponent
-  },
+  }, 
   {
     path: 'scheda-contatto/:id',
     component: FormschedacontattoComponent
+  },
+  /*  {
+    path: '', 
+    redirectTo: '/lista-schede',
+    pathMatch: 'full' 
+  },  */
+  { path: '**', 
+    component: PageNotFoundComponent 
   }
 ];
 
@@ -32,7 +41,8 @@ const ROUTES = [
     FriendlyDatePipe,
     FriendlyHourPipe,
     ListaSchedeComponent,
-    SintesiSchedaComponent
+    SintesiSchedaComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

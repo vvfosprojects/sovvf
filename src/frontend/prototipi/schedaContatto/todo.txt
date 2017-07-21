@@ -1,1 +1,1 @@
-Aggiungere evidenza del tipo di evento
+rendere componenti dumb
