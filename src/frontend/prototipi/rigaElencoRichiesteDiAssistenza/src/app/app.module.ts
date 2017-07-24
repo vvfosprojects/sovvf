@@ -15,6 +15,8 @@ import { TagRimpiazzoComponent } from "app/shared/components/tag-rimpiazzo/tag-r
 import { ComponenteComponent } from './componente/componente.component';
 import { MezzoComponent } from './mezzo/mezzo.component';
 import { FiltroComponent } from './filtro/filtro.component';
+import { SintesiRichiesteService } from "app/sintesi-richieste-service/sintesi-richieste.service";
+import { SintesiRichiesteServiceFake } from "app/sintesi-richieste-service/sintesi-richieste.service.fake";
 
 @NgModule({
   declarations: [
@@ -36,7 +38,7 @@ import { FiltroComponent } from './filtro/filtro.component';
     PopoverModule.forRoot(),
     TooltipModule.forRoot(),
   ],
-  providers: [],
+  providers: [{ provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
