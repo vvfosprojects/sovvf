@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------
 using System;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.ResultDTO
+namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.ResultDTO
 {
     /// <summary>
     ///   Contiene le informazioni di sintesi di una Richiesta di Assistenza, utile ad alimentare il
