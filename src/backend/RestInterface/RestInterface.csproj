@@ -105,6 +105,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\InfoAutenticazioneController.cs" />
     <Compile Include="Controllers\ProvaController.cs" />
+    <Compile Include="Controllers\Soccorso\SintesiRichiesteAssistenzaController.cs" />
     <Compile Include="Controllers\Soccorso\TelefonataController.cs" />
     <Compile Include="Controllers\Soccorso\SituazioneMezziController.cs" />
     <Compile Include="Global.asax.cs">
