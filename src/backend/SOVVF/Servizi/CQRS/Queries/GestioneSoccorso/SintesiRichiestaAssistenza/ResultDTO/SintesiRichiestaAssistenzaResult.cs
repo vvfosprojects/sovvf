@@ -26,6 +26,9 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssisten
     /// </summary>
     public class SintesiRichiestaAssistenzaResult
     {
+        /// <summary>
+        ///   La sintesi della richiesta di assistenza
+        /// </summary>
         public SintesiRichiesta SintesiRichiesta { get; set; }
     }
 }

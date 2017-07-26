@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiRichiestaAssistenza.cs" company="CNVVF">
+// <copyright file="SintesiRichiesta.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -27,6 +27,9 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssisten
     /// </summary>
     public class SintesiRichiesta
     {
+        /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
         public SintesiRichiesta()
         {
             this.Tipologie = new string[0];
