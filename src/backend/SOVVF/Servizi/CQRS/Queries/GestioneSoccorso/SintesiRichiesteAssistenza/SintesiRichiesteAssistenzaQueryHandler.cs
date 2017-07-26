@@ -26,7 +26,29 @@ using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
     /// <summary>
-    ///   Restituisce la sintesi delle richieste di assistenza
+    ///   Query per l'accesso alla lista delle richieste di assistenza "di interesse". Quali sono le
+    ///   richieste interessanti è specificato dal DTO di input. Ecco alcuni esempi di ricerca, in
+    ///   base ai valori contenuti nel DTO di input:
+    ///   <para>
+    ///     - DTO vuoto: vengono selezionate le prime 10 richieste aperte più recenti, appartenenti
+    ///       all'unità operativa a cui fa capo l'utente autenticato;
+    ///   </para>
+    ///   <para>
+    ///     - DTO contenente una lista di unità operative: vengono selezionate le prime 10 richieste
+    ///       aperte più recenti, appartenenti alle unità operative indicate dal DTO;
+    ///   </para>
+    ///   <para>
+    ///     - DTO contenente una stringa chiave: la ricerca restituisce le prime 10 richieste più
+    ///       rilevanti rispetto al testo chiave (full-text search);
+    ///   </para>
+    ///   <para>
+    ///     - DTO contenente un riferimento geo-referenziato: la ricerca restituisce le prime 10
+    ///       richieste più vicine al riferimento;
+    ///   </para>
+    ///   <para>
+    ///     - DTO contenente un array di stati richiesta: la ricerca restituisce le prime 10
+    ///       richieste negli stati specificati.
+    ///   </para>
     /// </summary>
     public class SintesiRichiesteAssistenzaQueryHandler : IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult>
     {

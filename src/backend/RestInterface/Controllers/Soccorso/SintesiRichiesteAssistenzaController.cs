@@ -30,25 +30,7 @@ using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.R
 namespace RestInterface.Controllers.Soccorso
 {
     /// <summary>
-    ///   Controller che dà accesso alla lista delle richieste di assistenza "di interesse". Quali
-    ///   sono le richieste interessanti è specificato dal DTO di input. Ecco alcuni esempi di
-    ///   ricerca, in base ai valori contenuti nel DTO di input:
-    ///   <para>
-    ///     - DTO vuoto: vengono selezionate le prime 10 richieste più recenti, appartenenti
-    ///       all'unità operativa a cui fa capo l'itente autenticato;
-    ///   </para>
-    ///   <para>
-    ///     - DTO contenente una stringa chiave: la ricerca restituisce le prime 10 richieste più
-    ///       rilevanti rispetto al testo chiave (full-text search);
-    ///   </para>
-    ///   <para>
-    ///     - DTO contenente un riferimento geo-referenziato: la ricerca restituisce le prime 10
-    ///       richieste più vicine al riferimento;
-    ///   </para>
-    ///   <para>
-    ///     - DTO contenente un array di stati richiesta: la ricerca restituisce le prime 10
-    ///       richieste negli stati specificati.
-    ///   </para>
+    ///   Controller per l'accesso alla sintesi sulle richieste di assistenza
     /// </summary>
     public class SintesiRichiesteAssistenzaController : ApiController
     {
