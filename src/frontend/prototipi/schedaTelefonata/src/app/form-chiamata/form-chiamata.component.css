@@ -1,6 +1,6 @@
 /* Altezza iniziale della cartografia google*/
 .sebm-google-map-container {
-  height: 320px;
+  height: 730px;
 }
 
 /* dropdown multiselect (campo TAG)*/
@@ -41,6 +41,12 @@
 	color: #292b2c;    
 }
 
+:host /deep/ .ui-chips-token{
+	background-color: #a5a8aa;
+	color: #292b2c;    
+	vertical-align: middle;
+}
+
 /* spaziatura dell'elemento multiplo*/
 :host /deep/ li.ui-autocomplete-input-token{
 	padding: 0 .25em .25em 0;
@@ -70,6 +76,7 @@
 	max-height: 40px;
 }
 
+
 /*-----------------------------------------*/
 
 :host /deep/ span.ui-autocomplete.ui-widget{
@@ -88,6 +95,39 @@
 			 p-autocomplete.ng-untouched.ng-valid.ui-inputwrapper-focus.ui-inputwrapper-filled.ng-dirty
 {
 	width: 100%;
+}
+
+/* per rendere il componente p-chips largo il 100% della colonna*/
+:host /deep/ p-chips.ng-untouched.ng-pristine.ng-valid,
+		     p-chips.ng-valid.ui-inputwrapper-filled.ng-dirty.ng-touched,
+			 p-chips.ng-valid.ng-dirty.ng-touched,
+			 p-chips.ng-pristine.ng-valid.ng-touched,
+			 p-chips.ng-untouched.ng-valid.ui-inputwrapper-focus.ui-inputwrapper-filled.ng-dirty,
+			 p-chips.ng-untouched.ng-valid.ng-dirty
+
+{
+	width: 100%;
+}
+
+:host /deep/ ul.ui-inputtext.ui-state-default.ui-corner-all{
+	border-top-left-radius: 0; /* angoli del componente dritti in modo che siano identici a quelli degli altri campi. */
+	border-bottom-left-radius: 0;
+}
+
+
+:host /deep/ .ui-chips > ul.ui-inputtext {
+	clear: left;
+	cursor: text;
+	list-style-type: none;
+	margin: 0;
+	overflow: hidden;
+	padding: 0 .25em;
+	min-height: 34px;
+	vertical-align: middle;	
+}
+
+:host /deep/ .ui-chips-input-token input{
+	vertical-align: middle;	
 }
 
 /*:host /deep/ p-autocomplete.ng-untouched.ng-pristine.ng-valid{
