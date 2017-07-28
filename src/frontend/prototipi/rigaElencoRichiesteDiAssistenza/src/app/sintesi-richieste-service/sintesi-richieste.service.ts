@@ -1,15 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs/Observable";
+import { Http, Response } from '@angular/http';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
+import * as moment from 'moment';
 
 import { SintesiRichiesta } from '../sintesi-richiesta/sintesi-richiesta.model';
+import { environment } from "environments/environment";
+import { Mezzo } from "app/mezzo/mezzo.model";
+import { Componente } from "app/componente/componente.model";
+import { Squadra } from "app/sintesi-richiesta/squadra.model";
+
+const API_URL = environment.apiUrl;
 
 @Injectable()
 export class SintesiRichiesteService {
 
-  constructor() { }
+  constructor(private http: Http) { }
 
   public getSintesiRichieste(): Observable<SintesiRichiesta[]> {
-    //va implementato con query http
-    return null;
+    return this.http
+      .get(API_URL + '/sintesiRichiesteAssistenza')
+      .map(response => response.json().sintesiRichieste.map(r => {
+        let richiesta = Object.create(SintesiRichiesta.prototype);
+        return Object.assign(richiesta, r);
+      }))
+      .catch(this.handleError);
+  }
+
+  private handleError(error: Response | any) {
+    console.error('ApiService::handleError', error);
+    return Observable.throw(error);
   }
 }

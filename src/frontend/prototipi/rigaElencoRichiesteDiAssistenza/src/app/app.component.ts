@@ -9,15 +9,17 @@ import { SintesiRichiesteService } from "app/sintesi-richieste-service/sintesi-r
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  private richieste: SintesiRichiesta[];
+  private richieste: SintesiRichiesta[] = [];
 
   constructor(private sintesiRichiesteService: SintesiRichiesteService) {
-
   }
 
   ngOnInit() {
     this.sintesiRichiesteService.getSintesiRichieste()
-      .subscribe(richieste => this.richieste = richieste);
+      .subscribe(richieste => {
+        console.log("Richieste service: ", richieste);
+        this.richieste = richieste;
+      });
   }
 
   showDettagliRicevuto(richiesta: SintesiRichiesta): void {
