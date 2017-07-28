@@ -22,7 +22,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Modello.Classi.Geo;
 using Modello.Classi.Soccorso.Eventi;
+using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
+using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
+using Modello.Classi.Soccorso.StatiRichiesta;
 
 namespace Modello.Classi.Soccorso
 {
@@ -277,6 +280,93 @@ namespace Modello.Classi.Soccorso
             }
 
             this.eventi.Add(evento);
+        }
+
+        /// <summary>
+        ///   Restituisce l'istante della Richiesta di Assistenza
+        /// </summary>
+        public DateTime DataOraRichiesta
+        {
+            get
+            {
+                try
+                {
+                    var eventoSegnalazione = this.Eventi
+                        .Where(e => e is Segnalazione)
+                        .OrderByDescending(e => e.Istante)
+                        .First() as Segnalazione;
+                    return eventoSegnalazione.Istante;
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException("Impossibile recuperare l'istante della Richiesta di Assistenza.", ex);
+                }
+            }
+        }
+
+        /// <summary>
+        ///   Restituisce l'istante della prima Assegnazione
+        /// </summary>
+        public DateTime DataOraPrimaAssegnazione
+        {
+            get
+            {
+                try
+                {
+                    var eventoSegnalazione = this.Eventi
+                        .Where(e => e is ComposizionePartenze)
+                        .OrderByDescending(e => e.Istante)
+                        .First() as ComposizionePartenze;
+                    return eventoSegnalazione.Istante;
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException("Impossibile recuperare l'istante della prima Assegnazione.", ex);
+                }
+            }
+        }
+
+        /// <summary>
+        ///   Restituisce lo stato della Richiesta
+        /// </summary>
+        public IStatoRichiesta StatoRichiesta
+        {
+            get
+            {
+                IStatoRichiesta statoRichiesta;
+
+                try
+                {
+                    var eventoChiusura = this.Eventi
+                    .Where(e => e is ChiusuraRichiesta);
+                    if (eventoChiusura != null)
+                    { statoRichiesta = new Chiusa(); }
+                    else
+                    {
+                        var elencoMezziCoinvolti = this.MezziCoinvolti;
+                        if (elencoMezziCoinvolti == null)
+                        { statoRichiesta = new InAttesa(); }
+                        else
+                        {
+                            // a questo punto può essere o Assegnata o Sospesa
+                            var mezziAssegnati = elencoMezziCoinvolti.Count();
+                            var mezziRiassegnati = elencoMezziCoinvolti.Where(m => m.StatoDelMezzo is Riassegnato).Count();
+                            if (mezziRiassegnati == mezziAssegnati)
+                            {
+                                statoRichiesta = new Sospesa();
+                            }
+                            {
+                                statoRichiesta = new Assegnata();
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException("Impossibile recuperare lo stato della Richiesta di Assistenza.", ex);
+                }
+                return statoRichiesta;
+            }
         }
     }
 }

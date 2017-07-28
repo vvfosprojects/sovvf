@@ -52,6 +52,11 @@
     <Compile Include="Bindings.cs" />
     <Compile Include="Classi\Organigramma\TagNodo.cs" />
     <Compile Include="Classi\Soccorso\TipologiaRichiesta.cs" />
+    <Compile Include="Classi\Soccorso\StatiRichiesta\Chiusa.cs" />
+    <Compile Include="Classi\Soccorso\StatiRichiesta\Sospesa.cs" />
+    <Compile Include="Classi\Soccorso\StatiRichiesta\Assegnata.cs" />
+    <Compile Include="Classi\Soccorso\StatiRichiesta\InAttesa.cs" />
+    <Compile Include="Classi\Soccorso\StatiRichiesta\IStatoRichiesta.cs" />
     <Compile Include="Classi\Utenti\Autenticazione\Utente.cs" />
     <Compile Include="Classi\Geo\Cerchio.cs" />
     <Compile Include="Classi\Geo\Geolocalizzazione.cs" />
@@ -121,6 +126,8 @@
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SintesiRichiesteAssistenza\SintesiRichiesteAssistenzaQueryHandler.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SintesiRichiesteAssistenza\ResultDTO\SintesiRichiesteAssistenzaResult.cs" />
     <Compile Include="Servizi\Infrastruttura\Anagrafiche\IGetTipoInterventoByCodice.cs" />
+    <Compile Include="Classi\Soccorso\SintesiRichiestaAssistenza.cs" />
+    <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetSintesiRichiestaAssistenzaById.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiestePerSituazioneMezzi.cs" />
     <Compile Include="Classi\Organigramma\InfoUnitaOperativa.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\QueryDTO\SituazioneMezziQuery.cs" />
@@ -172,7 +179,9 @@
     <Compile Include="Servizi\Infrastruttura\Autenticazione\IGetOperatoreAutenticato.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\IGetUnitaOperativaRadice.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Servizi\Infrastruttura\GestioneSoccorso\Implementazioni\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\SOVVF.licenseheader">
       <Link>SOVVF.licenseheader</Link>
@@ -180,7 +189,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
