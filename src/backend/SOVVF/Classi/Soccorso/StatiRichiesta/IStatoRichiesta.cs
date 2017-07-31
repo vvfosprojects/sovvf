@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiRichiestaAssistenzaQuery.cs" company="CNVVF">
+// <copyright file="IStatoMezzo.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,19 +17,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.ResultDTO;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.ResultDTO;
-
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.QueryDTO
+namespace Modello.Classi.Soccorso.StatiRichiesta
 {
     /// <summary>
-    ///   Contiene le informazioni di sintesi di una Richiesta di Assistenza
+    ///   Stati in cui può trovarsi una Richiesta
     /// </summary>
-    public class SintesiRichiestaAssistenzaQuery : IQuery<SintesiRichiestaAssistenzaResult>
+    public interface IStatoRichiesta
     {
         /// <summary>
-        ///   E' l'ID della Richiesta da estrarre
+        ///   Indica se una Richiesta è evasa
         /// </summary>
-        public string IdRichiesta { get; set; }
+
+        bool Evasa { get; }
     }
 }
