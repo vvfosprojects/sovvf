@@ -39,17 +39,8 @@ export class GestionepermessiComponent implements OnInit {
         private adapterAlbero: AdapterAlberoService) { }
 
     ngOnInit() {
-        this.cols = [
-            {field: 'descrizione', header: 'Descrizione'},
-            {field: 'unitaOperativa', header: 'Unità Operativa'},
-            {field: 'dataInizio', header: 'Data inizio'},
-            {field: 'dataFine', header: 'Data fine'},
-            {field: 'ricorsivo', header: 'Ricorsivo'},
-            {field: 'azioni', header: 'Azioni'}
-        ];
-
-
-          this.files = JSON.parse(`
+        
+        this.files = JSON.parse(`
             {
         "data": 
         [
@@ -77,15 +68,24 @@ export class GestionepermessiComponent implements OnInit {
         ]
         }
         `).data;  
-         this.situazionePermessiService.getSituazionePermessi()
+        
+        this.situazionePermessiService.getSituazionePermessi()
             .map(situazionePermessi => {
                 this.situazionePermessi = situazionePermessi;
                 
                 this.primeNgTrees = this.situazionePermessi.unitaOperativeRadice.map(uo =>
                     this.adapterAlbero.converti(uo));
 
-                //this.permessiAssegnati = situazionePermessi.permessiAssegnati;
+                
+                
             });
+        
+        //this.permessiAssegnati = this.situazionePermessi.permessiAssegnati;
+        this.permessiAssegnati = 
+        [
+            new PermessoAssegnato("0", "Manuela Marzotti", "MZTMNL11Y23T666I", "Può inserire interventi", "Comando Roma", true, new Date(2017, 5, 5, 10, 9, 20), null),
+            new PermessoAssegnato("1", "Manuela Marzotti", "MZTMNL11Y23T666I", "Può vedere interventi", "Comando Roma", false, new Date(2016, 5, 9, 11, 8, 22), new Date(2017, 5, 9, 11, 8, 22))
+        ];
     }
 
     nodeSelect(event) {
@@ -122,5 +122,9 @@ export class GestionepermessiComponent implements OnInit {
     private clearSearchText(): void {
        this.testoRicerca = null;
     }
+
+    private eliminaPermesso() {
+        //implementare la funzione di chiamata al servizio per eliminare il record
+     }
 
 }

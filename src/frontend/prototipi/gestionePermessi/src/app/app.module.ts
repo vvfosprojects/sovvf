@@ -17,10 +17,20 @@ import { DataTableModule,SharedModule} from 'primeng/primeng';
 import { CheckboxModule} from 'primeng/primeng';
 import { ButtonModule} from 'primeng/primeng';
 
+import {FieldsetModule} from 'primeng/primeng';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
+import { FriendlyDatePipe } from './shared/pipes/friendly-date.pipe';
+import { FriendlyHourPipe } from './shared/pipes/friendly-hour.pipe';
+import { TruncatePipe } from './shared/pipes/truncate.pipe';
+
 @NgModule({
   declarations: [
     AppComponent,
-    GestionepermessiComponent
+    GestionepermessiComponent,
+    FriendlyDatePipe,
+    FriendlyHourPipe,
+    TruncatePipe
   ],
   imports: [
     BrowserModule,
@@ -30,7 +40,9 @@ import { ButtonModule} from 'primeng/primeng';
     GrowlModule,
     DataTableModule,
     CheckboxModule,
-    ButtonModule
+    ButtonModule,
+    FieldsetModule,
+    BrowserAnimationsModule
   ],
   providers: [SituazionePermessiFakeService, AdapterAlberoService],
   bootstrap: [AppComponent]
