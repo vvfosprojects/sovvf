@@ -61,26 +61,32 @@
 
 <div class="row">
   <div class="col-md-6">
-    <p-tree [value]="files" selectionMode="single" [(selection)]="selectedFile" 
-      (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
-    <!-- <div style="margin-top:8px">
-       Selected Node: {{ selectedFile ? selectedFile.label : 'none' }}
-    </div> -->
+    <p-tree [value]="primeNgTrees" selectionMode="single" [(selection)]="selectedFile" 
+      (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)">
+    </p-tree>
   </div>
 </div>
 
 <br>
 
 <div class="row">
-  <div class="col-md-6">
+  <!-- <div class="col-md-4">
     <div class="input-group">
       <input type="text" class="form-control" placeholder="Cerca nominativo..." [(ngModel)]="testoRicerca" (keyup)="ricerca($event)">
       <span class="input-group-btn">
         <button class="btn btn-secondary" type="button" (click)="clearSearchText()"><i class="fa fa-times" aria-hidden="true"></i></button>
       </span>
     </div>
-  </div>
+  </div> -->
   <div class="col-md-4">
+    <div class="input-group">
+     <p-autoComplete [(ngModel)]="nominativo" [suggestions]="filteredNames" (completeMethod)="filterNameSingle($event)" [size]="30"
+        placeholder="Cerca nominativo..." [minLength]="1"></p-autoComplete>
+     <button class="btn btn-secondary" type="button" (click)="clearSearchText()"><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <div class="col-md-3">
     <p-checkbox label="cerca solo nel nodo selezionato" [(ngModel)]="checkNodeSelected" binary="true"></p-checkbox>
   </div>
 </div>

@@ -12,16 +12,15 @@ export class AdapterAlberoService {
   constructor() { }
 
   public converti(uo: UnitaOperativa): TreeNode {
-       console.log("descrizione: " + uo.descrizione);
-
-       console.log("tooltip: " + uo.tooltip);
        
        let treeNode: TreeNode = {
-            label: uo.descrizione,
-            data: uo.tooltip,
-            expandedIcon: "fa-folder-open",
-            collapsedIcon: "fa-folder",            
-            children: []    
+            label: uo.tooltip,
+            data: uo.descrizione,
+            // collapsedIcon: "fa-plus-square-o",
+            // expandedIcon:"fa fa-minus-square-o",
+            icon: "fa-fire-extinguisher",
+            //leaf => boolean - Specifies if the node has children. Used in lazy loading.
+            children: uo.figli.map(figlio => this.converti(figlio))
        };
         return treeNode;
   }

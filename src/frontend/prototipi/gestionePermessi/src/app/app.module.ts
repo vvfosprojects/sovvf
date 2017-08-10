@@ -6,8 +6,8 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { GestionepermessiComponent } from './gestionepermessi/gestionepermessi.component';
 
-import { SituazionePermessiFakeService } from "./gestionepermessi/situazione-permessi-fake.service";
-import { AdapterAlberoService } from "app/gestionepermessi/adapter-albero.service";
+import { SituazionePermessiFakeService } from "./gestionepermessi/servizi/situazione-permessi-fake.service";
+import { AdapterAlberoService } from "app/gestionepermessi/servizi/adapter-albero.service";
 
 import { TreeModule, TreeNode } from 'primeng/primeng';
 import { GrowlModule, Message } from 'primeng/primeng';
@@ -17,12 +17,15 @@ import { DataTableModule,SharedModule} from 'primeng/primeng';
 import { CheckboxModule} from 'primeng/primeng';
 import { ButtonModule} from 'primeng/primeng';
 
-import {FieldsetModule} from 'primeng/primeng';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { FieldsetModule} from 'primeng/primeng';
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { AutoCompleteModule} from 'primeng/primeng';
 
 import { FriendlyDatePipe } from './shared/pipes/friendly-date.pipe';
 import { FriendlyHourPipe } from './shared/pipes/friendly-hour.pipe';
 import { TruncatePipe } from './shared/pipes/truncate.pipe';
+import { PersonaleDaAutorizzareService } from "app/gestionepermessi/servizi/personale-da-autorizzare.service";
+
 
 @NgModule({
   declarations: [
@@ -42,9 +45,10 @@ import { TruncatePipe } from './shared/pipes/truncate.pipe';
     CheckboxModule,
     ButtonModule,
     FieldsetModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AutoCompleteModule
   ],
-  providers: [SituazionePermessiFakeService, AdapterAlberoService],
+  providers: [SituazionePermessiFakeService, AdapterAlberoService, PersonaleDaAutorizzareService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
