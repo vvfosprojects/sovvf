@@ -14,7 +14,7 @@ import 'rxjs/add/operator/map';
 import { PermessoAssegnato } from "app/gestionepermessi/permesso-assegnato.model";
 import { UnitaOperativa } from "app/gestionepermessi/unita-operativa.model";
 import { PersonaleDaAutorizzareService } from "app/gestionepermessi/servizi/personale-da-autorizzare.service";
-
+import { ConfirmationService} from 'primeng/primeng';
 
 @Component({
     selector: 'app-gestionepermessi',
@@ -41,7 +41,8 @@ export class GestionepermessiComponent implements OnInit {
     //selectedFile: TreeNode;
 
     constructor(private situazionePermessiService: SituazionePermessiFakeService,
-        private adapterAlbero: AdapterAlberoService, private personaleDaAutorizzareService: PersonaleDaAutorizzareService) { }
+        private adapterAlbero: AdapterAlberoService, private personaleDaAutorizzareService: PersonaleDaAutorizzareService,
+        private confirmationService: ConfirmationService) { }
 
     ngOnInit() {
         
@@ -113,8 +114,34 @@ export class GestionepermessiComponent implements OnInit {
        this.nominativo = null;
     }
 
+    private assegnaPermessi() {
+       this.confirmationService.confirm({
+            message: 'Sei sicuro di voler assegnare i permessi selezionati?',
+            header: 'Confirmation',
+            icon: 'fa fa-question-circle',
+            accept: () => {
+                this.msgs = [{severity:'info', summary:'Confirmed', detail:'Permessi assegnati con successo'}];
+            },
+            reject: () => {
+                this.msgs = [{severity:'info', summary:'Rejected', detail:'Operazione annullata'}];
+            }
+        });
+
+    }
+
     private eliminaPermesso() {
         //implementare la funzione di chiamata al servizio per eliminare il record
+        this.confirmationService.confirm({
+            message: 'Sei sicuro di voler eliminare il permesso selezionato?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
+                this.msgs = [{severity:'info', summary:'Confirmed', detail:'Permessi eliminati'}];
+            },
+            reject: () => {
+                this.msgs = [{severity:'info', summary:'Rejected', detail:'Operazione annullata'}];
+            }
+        });
      }
 
      filterNameSingle(event){

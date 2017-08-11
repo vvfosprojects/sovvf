@@ -25,7 +25,7 @@ import { FriendlyDatePipe } from './shared/pipes/friendly-date.pipe';
 import { FriendlyHourPipe } from './shared/pipes/friendly-hour.pipe';
 import { TruncatePipe } from './shared/pipes/truncate.pipe';
 import { PersonaleDaAutorizzareService } from "app/gestionepermessi/servizi/personale-da-autorizzare.service";
-
+import { ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 @NgModule({
   declarations: [
@@ -46,9 +46,10 @@ import { PersonaleDaAutorizzareService } from "app/gestionepermessi/servizi/pers
     ButtonModule,
     FieldsetModule,
     BrowserAnimationsModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    ConfirmDialogModule
   ],
-  providers: [SituazionePermessiFakeService, AdapterAlberoService, PersonaleDaAutorizzareService],
+  providers: [SituazionePermessiFakeService, AdapterAlberoService, PersonaleDaAutorizzareService, ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

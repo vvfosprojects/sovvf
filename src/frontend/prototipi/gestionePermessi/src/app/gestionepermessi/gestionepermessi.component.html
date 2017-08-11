@@ -37,7 +37,6 @@
 
         <p-column field="Azioni" header="Azioni" [style]="{'text-align': 'center'}">
           <ng-template let-col let-bol="rowData" pTemplate="body">
-            <!-- usare ConfirmDialog di PrimeNg -->
             <a href="#" (click)="eliminaPermesso()">
             <i class="fa fa-trash" aria-hidden="true" title="Elimina il permesso"></i>
           </a>
@@ -113,7 +112,16 @@
        <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 4" label="Permesso 4" [(ngModel)]="permessiSelezionati"></p-checkbox></div>
     </p-fieldset>
   </div>
+  
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <p-confirmDialog></p-confirmDialog>
+  </div>
 
+  <div class="col-md-3">
+    <button type="button" (click)="assegnaPermessi()" pButton icon="fa-check" label="Conferma"></button>
+  </div>
 </div>
 
 
