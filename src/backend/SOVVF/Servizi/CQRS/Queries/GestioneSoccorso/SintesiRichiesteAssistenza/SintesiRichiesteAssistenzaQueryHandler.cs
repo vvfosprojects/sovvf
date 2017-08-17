@@ -19,10 +19,8 @@
 //-----------------------------------------------------------------------
 using System.Linq;
 using Modello.Classi.Soccorso.SintesiRichiestaAssistenza;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.ResultDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
-using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
