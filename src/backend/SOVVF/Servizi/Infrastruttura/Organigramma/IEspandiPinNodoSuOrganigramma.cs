@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IEspandiTagsNodoSuOrganigramma.cs" company="CNVVF">
+// <copyright file="IEspandiPinNodoSuOrganigramma.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -23,19 +23,23 @@ using Modello.Classi.Organigramma;
 namespace Modello.Servizi.Infrastruttura.Organigramma
 {
     /// <summary>
-    ///   Questo servizio si occupa della espansione di una serie di <see cref="TagNodo" /> in una
-    ///   lista dei codici nodo, con riferimento all'organigramma. In altre parole, se la lista dei
-    ///   <see cref="TagNodo" /> contiene un nodo non ricorsivo e un nodo disgiunto ricorsivo, il
-    ///   servizio restituisce una lista contenente i codici del primo nodo e tutti i codici di tutti
-    ///   i nodi contenuti nel sottoalbero del secondo nodo.
+    ///   Questo servizio si occupa della espansione di una serie di <see cref="PinNodo" /> in una
+    ///   lista dei codici nodo, con riferimento all'organigramma.
     /// </summary>
-    public interface IEspandiTagsNodoSuOrganigramma
+    /// <example>
+    ///   Se la lista dei <see cref="PinNodo" /> contiene un nodo non ricorsivo e un nodo disgiunto
+    ///   ricorsivo, il servizio restituisce una sequenza contenente il codice del primo nodo e tutti
+    ///   i codici di tutti i nodi contenuti nel sottoalbero del secondo nodo.
+    /// </example>
+    public interface IEspandiPinNodoSuOrganigramma
     {
         /// <summary>
-        ///   Espande una serie di <see cref="TagNodo" /> nella serie di codici sull'organigramma.
+        ///   Espande una serie di <see cref="PinNodo" /> nella serie di codici sull'organigramma.
         /// </summary>
-        /// <param name="tagsNodo">L'enumerable di <see cref="TagNodo" /> da espandere.</param>
-        /// <returns>La lista di codici di tutti i nodi intercettati dai tags.</returns>
-        IEnumerable<string> Espandi(IEnumerable<TagNodo> tagsNodo);
+        /// <param name="pinsNodo">L'enumerable di <see cref="PinNodo" /> da espandere.</param>
+        /// <returns>
+        ///   La lista di codici di tutti i nodi intercettati dai <see cref="PinNodo" /> .
+        /// </returns>
+        IEnumerable<string> Espandi(IEnumerable<PinNodo> pinsNodo);
     }
 }

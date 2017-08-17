@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InfoUnitaOperativa.cs" company="CNVVF">
+// <copyright file="PinNodo.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,36 +17,49 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.QueryDTO
+namespace Modello.Classi.Organigramma
 {
     /// <summary>
-    ///   Indica un nodo dell'organigramma e la necessità o meno di considerare anche tutti i nodi figli
+    ///   Seleziona un nodo dell'organigramma ed, eventualmente, il relativo sottoalbero.
     /// </summary>
-    public class InfoUnitaOperativa
+    public class PinNodo
     {
+        /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="codiceUnitaOperativa">Il codice dell'unità operativa indicata</param>
+        /// <param name="ricorsivo">Indica se si considera l'intero sottoalbero ricorsivamente</param>
+        public PinNodo(string codiceUnitaOperativa, bool ricorsivo = false)
+        {
+            this.Codice = codiceUnitaOperativa;
+            this.Ricorsivo = ricorsivo;
+        }
+
         /// <summary>
         ///   E' il codice dell'unità operativa
         /// </summary>
         public string Codice { get; set; }
 
         /// <summary>
-        ///   Indica se va considerato l'intero sottoalbero del nodo
+        ///   Indica se il selettore include anche l'intero sottoalbero avente per radice l'unità
+        ///   operativa indicata da <see cref="Codice" />.
         /// </summary>
         public bool Ricorsivo { get; set; }
 
         /// <summary>
-        ///   Per la classe, un Nodo è uguale ad un altro Nodo se hanno lo stesso codice unità operativa
+        ///   Un selettore è uguale ad un altro Nodo se hanno lo stesso <see cref="Codice" /> e lo
+        ///   stesso <see cref="Ricorsivo" />.
         /// </summary>
         /// <param name="obj">Oggetto da confrontare</param>
         /// <returns>true se il nodo passato è uguale</returns>
         public override bool Equals(object obj)
         {
-            if (!(obj is InfoUnitaOperativa))
+            if (!(obj is PinNodo))
             {
                 return false;
             }
 
-            var n = (InfoUnitaOperativa)obj;
+            var n = (PinNodo)obj;
             return n.Codice.Equals(this.Codice);
         }
 
@@ -56,7 +69,8 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.
         /// <returns>Hashcode dell'istanza</returns>
         public override int GetHashCode()
         {
-            return this.Codice.GetHashCode();
+            return this.Codice.GetHashCode() ^
+                this.Ricorsivo.GetHashCode();
         }
     }
 }

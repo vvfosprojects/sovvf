@@ -51,9 +51,9 @@ namespace SOVVF.FakeImplementations.Modello.Organigramma
         public IEnumerable<string> Get()
         {
             return this.getUnitaOperativaRadice.Get()
-                .GetSottoAlbero(new TagNodo[]
+                .GetSottoAlbero(new PinNodo[]
                 {
-                    new TagNodo("DR_LAZ", true)
+                    new PinNodo("DR_LAZ", true)
                 })
                 .Select(n => n.Codice);
         }

@@ -35,6 +35,6 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMezzi.QueryDTO
         ///   Se UnitaOperative è un set vuoto allora il calcolo degli indicatori verrà effettuato in
         ///   base alle regole di profilo assegnate all'utente autenticato
         /// </remarks>
-        public ISet<InfoUnitaOperativa> UnitaOperative { get; set; }
+        public ISet<PinNodo> UnitaOperative { get; set; }
     }
 }

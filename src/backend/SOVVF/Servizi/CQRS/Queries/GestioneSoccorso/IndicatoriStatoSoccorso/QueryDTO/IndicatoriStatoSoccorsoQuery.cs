@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
+using Modello.Classi.Organigramma;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.ResultDTO;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.QueryDTO
@@ -34,6 +35,6 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.
         ///   Se UnitaOperative è un set vuoto allora il calcolo degli indicatori verrà effettuato in
         ///   base ai privilegi assegnati all'utente autenticato
         /// </remarks>
-        public ISet<InfoUnitaOperativa> UnitaOperative { get; set; }
+        public ISet<PinNodo> UnitaOperative { get; set; }
     }
 }

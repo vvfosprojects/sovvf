@@ -44,7 +44,7 @@ namespace Modello.Test.Classi.Soccorso
             var richiesta2 = this.Crea_Richiesta_Con_M3_e_M4_assegnati_e_M3_sul_posto_e_in_viaggio(out expected);
             var richieste = new List<RichiestaAssistenza>() { richiesta1, richiesta2 };
             var getSituazioneMezzi = this.CreaServizio(richieste);
-            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<InfoUnitaOperativa>());
+            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<PinNodo>());
 
             Assert.That(situazioneMezzi.Count(), Is.EqualTo(4));
         }
@@ -59,12 +59,12 @@ namespace Modello.Test.Classi.Soccorso
 
             var mockUnitaOperativa = new Mock<UnitaOperativa>();
             mockUnitaOperativa
-                .Setup(m => m.GetSottoAlbero(It.IsAny<IEnumerable<TagNodo>>()))
+                .Setup(m => m.GetSottoAlbero(It.IsAny<IEnumerable<PinNodo>>()))
                 .Returns(Enumerable.Repeat<UnitaOperativa>(new UnitaOperativa("MI", "MI"), 1));
 
-            var mockEspandiTagsNodoSuOrganigramma = new Mock<IEspandiTagsNodoSuOrganigramma>();
-            mockEspandiTagsNodoSuOrganigramma
-                .Setup(m => m.Espandi(It.IsAny<IEnumerable<TagNodo>>()))
+            var mockEspandiPinsNodoSuOrganigramma = new Mock<IEspandiPinNodoSuOrganigramma>();
+            mockEspandiPinsNodoSuOrganigramma
+                .Setup(m => m.Espandi(It.IsAny<IEnumerable<PinNodo>>()))
                 .Returns(Enumerable.Repeat<string>("MI", 1));
 
             var mockGetRichiestePerSituazioneMezzi = new Mock<IGetRichiestePerSituazioneMezzi>();
@@ -74,10 +74,10 @@ namespace Modello.Test.Classi.Soccorso
 
             var getSituazioneMezzi = new GetSituazioneMezzi(
                 mockGetCodiciUnitaOperativeVisibiliPerSoccorso.Object,
-                mockEspandiTagsNodoSuOrganigramma.Object,
+                mockEspandiPinsNodoSuOrganigramma.Object,
                 mockGetRichiestePerSituazioneMezzi.Object);
 
-            var result = getSituazioneMezzi.Get(new HashSet<InfoUnitaOperativa>());
+            var result = getSituazioneMezzi.Get(new HashSet<PinNodo>());
 
             Assert.That(result, Is.Empty);
         }
@@ -89,7 +89,7 @@ namespace Modello.Test.Classi.Soccorso
             var richiesta = this.Crea_Richiesta_Con_M1_e_M2_assegnati_e_M1_in_viaggio_e_sul_posto(out expected);
             var richieste = new List<RichiestaAssistenza>() { richiesta };
             var getSituazioneMezzi = this.CreaServizio(richieste);
-            var resultDto = getSituazioneMezzi.Get(new HashSet<InfoUnitaOperativa>());
+            var resultDto = getSituazioneMezzi.Get(new HashSet<PinNodo>());
 
             Assert.That(resultDto.Count(), Is.EqualTo(2));
         }
@@ -101,7 +101,7 @@ namespace Modello.Test.Classi.Soccorso
             var richiesta = this.Crea_Richiesta_Con_M1_e_M2_assegnati_e_M1_in_viaggio_e_sul_posto(out expected);
             var richieste = new List<RichiestaAssistenza>() { richiesta };
             var getSituazioneMezzi = this.CreaServizio(richieste);
-            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<InfoUnitaOperativa>());
+            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<PinNodo>());
             var situazioneM1 = situazioneMezzi.Single(sm => sm.Codice == "M1");
             var situazioneM2 = situazioneMezzi.Single(sm => sm.Codice == "M2");
             var expectedM1 = expected.Single(sm => sm.Codice == "M1");
@@ -126,7 +126,7 @@ namespace Modello.Test.Classi.Soccorso
             var richiesta2 = this.Crea_Richiesta_Con_M3_e_M4_assegnati_e_M3_sul_posto_e_in_viaggio(out expected2);
             var richieste = new List<RichiestaAssistenza>() { richiesta1, richiesta2 };
             var getSituazioneMezzi = this.CreaServizio(richieste);
-            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<InfoUnitaOperativa>());
+            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<PinNodo>());
             var situazioneM1 = situazioneMezzi.Single(sm => sm.Codice == "M1");
             var situazioneM2 = situazioneMezzi.Single(sm => sm.Codice == "M2");
             var situazioneM3 = situazioneMezzi.Single(sm => sm.Codice == "M3");
@@ -161,7 +161,7 @@ namespace Modello.Test.Classi.Soccorso
             var richiesta = this.CreaRichiestaContenenteUnicoEventoDiComposizione(out expected);
             var richieste = new List<RichiestaAssistenza>() { richiesta };
             var getSituazioneMezzi = this.CreaServizio(richieste);
-            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<InfoUnitaOperativa>());
+            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<PinNodo>());
             var situazione = situazioneMezzi.Single(sm => sm.Codice == "M1");
 
             Assert.That(situazione.Codice, Is.EqualTo(expected.Codice));
@@ -177,7 +177,7 @@ namespace Modello.Test.Classi.Soccorso
             var richiesta = this.CreaRichiestaContenenteUnicoEventoDiComposizione(out expected);
             var richieste = new List<RichiestaAssistenza>() { richiesta };
             var getSituazioneMezzi = this.CreaServizio(richieste);
-            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<InfoUnitaOperativa>());
+            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<PinNodo>());
 
             Assert.That(situazioneMezzi.Count(), Is.EqualTo(1));
         }
@@ -355,12 +355,12 @@ namespace Modello.Test.Classi.Soccorso
 
             var mockUnitaOperativa = new Mock<UnitaOperativa>();
             mockUnitaOperativa
-                .Setup(m => m.GetSottoAlbero(It.IsAny<IEnumerable<TagNodo>>()))
+                .Setup(m => m.GetSottoAlbero(It.IsAny<IEnumerable<PinNodo>>()))
                 .Returns(Enumerable.Repeat<UnitaOperativa>(new UnitaOperativa("MI", "MI"), 1));
 
-            var mockEspandiTagsNodoSuOrganigramma = new Mock<IEspandiTagsNodoSuOrganigramma>();
-            mockEspandiTagsNodoSuOrganigramma
-                .Setup(m => m.Espandi(It.IsAny<IEnumerable<TagNodo>>()))
+            var mockEspandiPinsNodoSuOrganigramma = new Mock<IEspandiPinNodoSuOrganigramma>();
+            mockEspandiPinsNodoSuOrganigramma
+                .Setup(m => m.Espandi(It.IsAny<IEnumerable<PinNodo>>()))
                 .Returns(Enumerable.Repeat<string>("MI", 1));
 
             var mockGetRichiestePerSituazioneMezzi = new Mock<IGetRichiestePerSituazioneMezzi>();
@@ -370,7 +370,7 @@ namespace Modello.Test.Classi.Soccorso
 
             var getSituezioneMezzi = new GetSituazioneMezzi(
                 mockGetCodiciUnitaOperativeVisibiliPerSoccorso.Object,
-                mockEspandiTagsNodoSuOrganigramma.Object,
+                mockEspandiPinsNodoSuOrganigramma.Object,
                 mockGetRichiestePerSituazioneMezzi.Object);
 
             return getSituezioneMezzi;

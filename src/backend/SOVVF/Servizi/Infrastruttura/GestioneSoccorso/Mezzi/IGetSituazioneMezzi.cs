@@ -34,6 +34,6 @@ namespace Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi
         /// </summary>
         /// <param name="codiciUnitaOperative">I codici delle unità operative di interesse</param>
         /// <returns>La situazione dei mezzi</returns>
-        IEnumerable<SituazioneMezzo> Get(ISet<InfoUnitaOperativa> codiciUnitaOperative);
+        IEnumerable<SituazioneMezzo> Get(ISet<PinNodo> codiciUnitaOperative);
     }
 }

@@ -38,9 +38,9 @@ namespace Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.Implementation
         private readonly IGetUnitaOperativeVisibiliPerSoccorso getCodiciUnitaOperativeVisibiliPerSoccorso;
 
         /// <summary>
-        ///   L'istanza del servizio <see cref="IEspandiTagsNodoSuOrganigramma" />
+        ///   L'istanza del servizio <see cref="IEspandiPinNodoSuOrganigramma" />
         /// </summary>
-        private readonly IEspandiTagsNodoSuOrganigramma espandiTagsNodoSuOrganigramma;
+        private readonly IEspandiPinNodoSuOrganigramma espandiPinsNodoSuOrganigramma;
 
         /// <summary>
         ///   Handler del servizio
@@ -51,15 +51,15 @@ namespace Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.Implementation
         ///   Costruttore del servizio
         /// </summary>
         /// <param name="getCodiciUnitaOperativeVisibiliPerSoccorso">Istanza del servizio <see cref="IGetUnitaOperativeVisibiliPerSoccorso" /></param>
-        /// <param name="espandiTagsNodoSuOrganigramma">Istanza del servizio <see cref="IEspandiTagsNodoSuOrganigramma" /></param>
+        /// <param name="espandiPinsNodoSuOrganigramma">Istanza del servizio <see cref="IEspandiPinNodoSuOrganigramma" /></param>
         /// <param name="getRichiestePerSituazioneMezzi">Istanza del servizio <see cref="IGetRichiestePerSituazioneMezzi" /></param>
         public GetSituazioneMezzi(
             IGetUnitaOperativeVisibiliPerSoccorso getCodiciUnitaOperativeVisibiliPerSoccorso,
-            IEspandiTagsNodoSuOrganigramma espandiTagsNodoSuOrganigramma,
+            IEspandiPinNodoSuOrganigramma espandiPinsNodoSuOrganigramma,
             IGetRichiestePerSituazioneMezzi getRichiestePerSituazioneMezzi)
         {
             this.getCodiciUnitaOperativeVisibiliPerSoccorso = getCodiciUnitaOperativeVisibiliPerSoccorso;
-            this.espandiTagsNodoSuOrganigramma = espandiTagsNodoSuOrganigramma;
+            this.espandiPinsNodoSuOrganigramma = espandiPinsNodoSuOrganigramma;
             this.getRichiestePerSituazioneMezzi = getRichiestePerSituazioneMezzi;
         }
 
@@ -77,7 +77,7 @@ namespace Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.Implementation
         /// </summary>
         /// <param name="codiciUnitaOperative">I codici delle unità operative di interesse</param>
         /// <returns>La situazione dei mezzi</returns>
-        public IEnumerable<SituazioneMezzo> Get(ISet<InfoUnitaOperativa> codiciUnitaOperative)
+        public IEnumerable<SituazioneMezzo> Get(ISet<PinNodo> codiciUnitaOperative)
         {
             IEnumerable<string> listaCodiciUnitaOperative;
 
@@ -87,11 +87,11 @@ namespace Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.Implementation
                 listaCodiciUnitaOperative = this.getCodiciUnitaOperativeVisibiliPerSoccorso.Get();
             }
             else
-            { // altrimenti si espande l'elenco dei tags
-                var tagsNodi = codiciUnitaOperative
-                    .Select(t => new TagNodo(t.Codice, t.Ricorsivo));
+            { // altrimenti si espande l'elenco dei pins
+                var pinsNodi = codiciUnitaOperative
+                    .Select(t => new PinNodo(t.Codice, t.Ricorsivo));
 
-                listaCodiciUnitaOperative = this.espandiTagsNodoSuOrganigramma.Espandi(tagsNodi);
+                listaCodiciUnitaOperative = this.espandiPinsNodoSuOrganigramma.Espandi(pinsNodi);
             }
 
             // Preleva le richieste

@@ -35,7 +35,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi
         /// </summary>
         /// <param name="codiciUnitaOperative">Not used</param>
         /// <returns>La situazione dei mezzi</returns>
-        public IEnumerable<SituazioneMezzo> Get(ISet<InfoUnitaOperativa> codiciUnitaOperative)
+        public IEnumerable<SituazioneMezzo> Get(ISet<PinNodo> codiciUnitaOperative)
         {
             var rnd = new Random();
             return new SituazioneMezzo[]

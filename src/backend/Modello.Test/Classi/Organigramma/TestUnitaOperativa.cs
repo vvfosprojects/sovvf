@@ -28,14 +28,14 @@ namespace Modello.Test.Classi.Organigramma
     public class TestUnitaOperativa
     {
         [Test]
-        public void DueTagCongiuntiRicorsiviSonoCorrettamenteRestituiti()
+        public void DuePinCongiuntiRicorsiviSonoCorrettamenteRestituiti()
         {
             var albero = this.GetAlberoFake();
 
-            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
+            var codiciNodo = albero.GetSottoAlbero(new PinNodo[]
             {
-                new TagNodo("1.2", true),
-                new TagNodo("1.2.1", true),
+                new PinNodo("1.2", true),
+                new PinNodo("1.2.1", true),
             })
             .Select(n => n.Codice)
             .ToArray();
@@ -48,14 +48,14 @@ namespace Modello.Test.Classi.Organigramma
         }
 
         [Test]
-        public void DueTagDisgiuntiDiCuiUnoRicorsivoSonoCorrettamenteRestituiti()
+        public void DuePinDisgiuntiDiCuiUnoRicorsivoSonoCorrettamenteRestituiti()
         {
             var albero = this.GetAlberoFake();
 
-            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
+            var codiciNodo = albero.GetSottoAlbero(new PinNodo[]
             {
-                new TagNodo("1.2", true),
-                new TagNodo("1.3.2", false),
+                new PinNodo("1.2", true),
+                new PinNodo("1.3.2", false),
             })
             .Select(n => n.Codice)
             .ToArray();
@@ -69,14 +69,14 @@ namespace Modello.Test.Classi.Organigramma
         }
 
         [Test]
-        public void DueTagDisgiuntiRicorsiviSonoCorrettamenteRestituiti()
+        public void DuePinDisgiuntiRicorsiviSonoCorrettamenteRestituiti()
         {
             var albero = this.GetAlberoFake();
 
-            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
+            var codiciNodo = albero.GetSottoAlbero(new PinNodo[]
             {
-                new TagNodo("1.3", true),
-                new TagNodo("1.3.2", true),
+                new PinNodo("1.3", true),
+                new PinNodo("1.3.2", true),
             })
             .Select(n => n.Codice)
             .ToArray();
@@ -91,14 +91,14 @@ namespace Modello.Test.Classi.Organigramma
         }
 
         [Test]
-        public void DueTagSuLineaGerarchicaDiCuiLAntenatoNonRicorsivoSonoCorrettamenteRestituiti()
+        public void DuePinSuLineaGerarchicaDiCuiLAntenatoNonRicorsivoSonoCorrettamenteRestituiti()
         {
             var albero = this.GetAlberoFake();
 
-            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
+            var codiciNodo = albero.GetSottoAlbero(new PinNodo[]
             {
-                new TagNodo("1", false), // antenato non ricorsivo
-                new TagNodo("1.3.2", true), // discendente ricorsivo
+                new PinNodo("1", false), // antenato non ricorsivo
+                new PinNodo("1.3.2", true), // discendente ricorsivo
             })
             .Select(n => n.Codice)
             .ToArray();
@@ -111,14 +111,14 @@ namespace Modello.Test.Classi.Organigramma
         }
 
         [Test]
-        public void DueTagSuLineaGerarchicaNonRicorsiviSonoCorrettamenteRestituiti()
+        public void DuePinSuLineaGerarchicaNonRicorsiviSonoCorrettamenteRestituiti()
         {
             var albero = this.GetAlberoFake();
 
-            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
+            var codiciNodo = albero.GetSottoAlbero(new PinNodo[]
             {
-                new TagNodo("1", false),
-                new TagNodo("1.2", false),
+                new PinNodo("1", false),
+                new PinNodo("1.2", false),
             })
             .Select(n => n.Codice)
             .ToArray();
@@ -129,13 +129,13 @@ namespace Modello.Test.Classi.Organigramma
         }
 
         [Test]
-        public void TagConCodiceInesistenteRestituisceListaVuota()
+        public void PinConCodiceInesistenteRestituisceListaVuota()
         {
             var albero = this.GetAlberoFake();
 
-            var codiciNodo = albero.GetSottoAlbero(new TagNodo[]
+            var codiciNodo = albero.GetSottoAlbero(new PinNodo[]
             {
-                new TagNodo("inesistente", false)
+                new PinNodo("inesistente", false)
             })
             .Select(n => n.Codice)
             .ToArray();

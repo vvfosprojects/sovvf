@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="EspandiTagsNodoSuOrganigramma.cs" company="CNVVF">
+// <copyright file="EspandiPinNodoSuOrganigramma.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -24,9 +24,9 @@ using Modello.Classi.Organigramma;
 namespace Modello.Servizi.Infrastruttura.Organigramma.Implementazioni
 {
     /// <summary>
-    ///   Implementazione del servizio di espansione dei tags su organigramma.
+    ///   Implementazione del servizio di espansione dei pins su organigramma.
     /// </summary>
-    internal class EspandiTagsNodoSuOrganigramma : IEspandiTagsNodoSuOrganigramma
+    internal class EspandiPinNodoSuOrganigramma : IEspandiPinNodoSuOrganigramma
     {
         /// <summary>
         ///   L'istanza del servizio <see cref="IGetUnitaOperativaRadice" />
@@ -37,20 +37,20 @@ namespace Modello.Servizi.Infrastruttura.Organigramma.Implementazioni
         ///   Costruttore della classe
         /// </summary>
         /// <param name="getUnitaOperativaRadice">L'istanza del servizio <see cref="IGetUnitaOperativaRadice" /></param>
-        public EspandiTagsNodoSuOrganigramma(IGetUnitaOperativaRadice getUnitaOperativaRadice)
+        public EspandiPinNodoSuOrganigramma(IGetUnitaOperativaRadice getUnitaOperativaRadice)
         {
             this.getUnitaOperativaRadice = getUnitaOperativaRadice;
         }
 
         /// <summary>
-        ///   Espande la lista dei tags forniti in ingresso
+        ///   Espande la lista dei pins forniti in ingresso
         /// </summary>
-        /// <param name="tagsNodo">I tags da espandere</param>
+        /// <param name="pinsNodo">I pins da espandere</param>
         /// <returns>La lista espansa dei codici unità operativa</returns>
-        public IEnumerable<string> Espandi(IEnumerable<TagNodo> tagsNodo)
+        public IEnumerable<string> Espandi(IEnumerable<PinNodo> pinsNodo)
         {
             return this.getUnitaOperativaRadice.Get()
-                .GetSottoAlbero(tagsNodo)
+                .GetSottoAlbero(pinsNodo)
                 .Select(n => n.Codice);
         }
     }

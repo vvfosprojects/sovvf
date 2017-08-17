@@ -92,18 +92,18 @@ namespace Modello.Classi.Organigramma
 
         /// <summary>
         ///   Restituisce tutte le unità operative presenti nel sottoalbero che corrispondono
-        ///   all'insieme dei tags
+        ///   all'insieme dei pins
         /// </summary>
-        /// <param name="tags">I tags da espandere</param>
+        /// <param name="pins">I pins da espandere</param>
         /// <returns>
-        ///   I tags che individuano le unità operative da restituire, ciascuno indicante l'eventuale ricorsività
+        ///   I pins che individuano le unità operative da restituire, ciascuno indicante l'eventuale ricorsività
         /// </returns>
-        public virtual IEnumerable<UnitaOperativa> GetSottoAlbero(IEnumerable<TagNodo> tags)
+        public virtual IEnumerable<UnitaOperativa> GetSottoAlbero(IEnumerable<PinNodo> pins)
         {
-            var tag = tags.SingleOrDefault(t => t.Codice == this.Codice);
-            if (tag != null)
+            var pin = pins.SingleOrDefault(t => t.Codice == this.Codice);
+            if (pin != null)
             {
-                if (tag.Ricorsivo)
+                if (pin.Ricorsivo)
                 {
                     foreach (var n in this.GetSottoAlbero())
                     {
@@ -116,7 +116,7 @@ namespace Modello.Classi.Organigramma
 
                     foreach (var f in this.Figli)
                     {
-                        foreach (var n in f.GetSottoAlbero(tags))
+                        foreach (var n in f.GetSottoAlbero(pins))
                         {
                             yield return n;
                         }
@@ -127,7 +127,7 @@ namespace Modello.Classi.Organigramma
             {
                 foreach (var f in this.Figli)
                 {
-                    foreach (var n in f.GetSottoAlbero(tags))
+                    foreach (var n in f.GetSottoAlbero(pins))
                     {
                         yield return n;
                     }

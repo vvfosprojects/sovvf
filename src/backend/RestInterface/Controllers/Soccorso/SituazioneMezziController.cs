@@ -56,7 +56,7 @@ namespace RestInterface.Controllers.Soccorso
             {
                 query = new SituazioneMezziQuery()
                 {
-                    UnitaOperative = new HashSet<InfoUnitaOperativa>()
+                    UnitaOperative = new HashSet<PinNodo>()
                 };
             }
 

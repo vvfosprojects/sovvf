@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bindings.cs" />
-    <Compile Include="Classi\Organigramma\TagNodo.cs" />
+    <Compile Include="Classi\Organigramma\PinNodo.cs" />
     <Compile Include="Classi\Soccorso\TipologiaRichiesta.cs" />
     <Compile Include="Classi\Soccorso\StatiRichiesta\Chiusa.cs" />
     <Compile Include="Classi\Soccorso\StatiRichiesta\Sospesa.cs" />
@@ -128,7 +128,6 @@
     <Compile Include="Servizi\Infrastruttura\Anagrafiche\IGetTipoInterventoByCodice.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetSintesiRichiestaAssistenzaById.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiestePerSituazioneMezzi.cs" />
-    <Compile Include="Classi\Organigramma\InfoUnitaOperativa.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\QueryDTO\SituazioneMezziQuery.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\SituazioneMezzo\SituazioneMezzo.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\SituazioneMezziQueryHandler.cs" />
@@ -139,14 +138,13 @@
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\Mezzi\IGetSituazioneMezzi.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\Mezzi\Implementation\GetSituazioneMezzi.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\Bindings.cs" />
-    <Compile Include="Servizi\Infrastruttura\Organigramma\Implementazioni\EspandiTagsNodoSuOrganigramma.cs" />
+    <Compile Include="Servizi\Infrastruttura\Organigramma\Implementazioni\EspandiPinNodoSuOrganigramma.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\Implementazioni\GetUnitaOperativaPerCodice.cs" />
-    <Compile Include="Servizi\Infrastruttura\Organigramma\IEspandiTagsNodoSuOrganigramma.cs" />
+    <Compile Include="Servizi\Infrastruttura\Organigramma\IEspandiPinNodoSuOrganigramma.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\IGetUnitaOperativeVisibiliPerSoccorso.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\IGetUnitaOperativaPerCodice.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\IndicatoriStatoSoccorsoQueryHandler.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\QueryDTO\IndicatoriStatoSoccorsoQuery.cs" />
-    <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\QueryDTO\InfoUnitaOperativa.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\IndicatoriStatoSoccorso\ResultDTO\IndicatoriStatoSoccorsoResult.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\ISaveRichiestaAssistenza.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiestaAssistenzaById.cs" />
