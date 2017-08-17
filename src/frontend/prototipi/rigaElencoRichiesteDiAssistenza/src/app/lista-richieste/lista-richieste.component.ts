@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { SintesiRichiesta } from "app/sintesi-richiesta/sintesi-richiesta.model";
 import { VoceFiltro } from "app/filtro/voce-filtro.model";
+import { Observable } from "rxjs/Observable";
 
 @Component({
   selector: 'lista-richieste',
@@ -44,6 +45,14 @@ export class ListaRichiesteComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("Richieste: ", this.richieste);
+
+    this.richiesteFiltrate = this.richieste;
+
+    this.inizializzaFiltri();
+  }
+
+  ngOnChanges(changes: any) {
     this.richiesteFiltrate = this.richieste;
 
     this.inizializzaFiltri();

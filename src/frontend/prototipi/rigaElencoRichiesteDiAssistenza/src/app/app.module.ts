@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { Http, HttpModule } from "@angular/http";
 
 import { AppComponent } from './app.component';
 import { SintesiRichiestaComponent } from './sintesi-richiesta/sintesi-richiesta.component';
@@ -35,10 +36,11 @@ import { SintesiRichiesteServiceFake } from "app/sintesi-richieste-service/sinte
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     PopoverModule.forRoot(),
     TooltipModule.forRoot(),
   ],
-  providers: [{ provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }],
+  providers: [{ provide: SintesiRichiesteService, useClass: SintesiRichiesteService }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
