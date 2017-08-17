@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IGetRichiestaAssistenzaById.cs" company="CNVVF">
+// <copyright file="IGetSintesiRichiestaAssistenzaById.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using Modello.Classi.Soccorso;
+using Modello.Classi.Soccorso.SintesiRichiestaAssistenza;
 
 namespace Modello.Servizi.Infrastruttura.GestioneSoccorso
 {
@@ -31,6 +32,6 @@ namespace Modello.Servizi.Infrastruttura.GestioneSoccorso
         /// </summary>
         /// <param name="idRichiestaAssistenza">Identificativo della Richiesta di Assistenza</param>
         /// <returns>Sintesi di una Richiesta di Assistenza</returns>
-        SintesiRichiestaAssistenza Get(string idRichiestaAssistenza);
+        SintesiRichiesta Get(string idRichiestaAssistenza);
     }
 }

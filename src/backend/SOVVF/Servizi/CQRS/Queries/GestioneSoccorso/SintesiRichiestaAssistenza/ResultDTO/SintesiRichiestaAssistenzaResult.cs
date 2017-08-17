@@ -17,34 +17,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-/*
-using System;
+using Modello.Classi.Soccorso.SintesiRichiestaAssistenza;
+
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.ResultDTO
 {
-/// <summary>
-///   DTO di output
-/// </summary>
-public class SintesiRichiestaAssistenzaResult
-{
     /// <summary>
-    ///   La sintesi della richiesta di assistenza
+    ///   DTO di output
     /// </summary>
-    public SintesiRichiesta SintesiRichiesta { get; set; }
-=======
-    */
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Modello.Classi.Soccorso;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.ResultDTO;
-
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.ResultDTO
-{
     public class SintesiRichiestaAssistenzaResult
     {
+        /// <summary>
+        ///   La sintesi della richiesta di assistenza
+        /// </summary>
         public SintesiRichiesta SintesiRichiesta { get; internal set; }
     }
 }

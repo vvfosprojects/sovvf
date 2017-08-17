@@ -18,7 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.ResultDTO;
+using Modello.Classi.Soccorso.SintesiRichiestaAssistenza;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO
 {

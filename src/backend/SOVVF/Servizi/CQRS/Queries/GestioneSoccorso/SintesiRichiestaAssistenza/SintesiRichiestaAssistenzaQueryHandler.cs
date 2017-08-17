@@ -17,7 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.ResultDTO;
+using Modello.Classi.Soccorso.SintesiRichiestaAssistenza;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.ResultDTO;
 using Modello.Servizi.Infrastruttura.GestioneSoccorso;
@@ -53,20 +53,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssisten
         {
             // estrae la richieste di assistenza indicata
             var richiesteAssistenza = this.getRichiestaAssistenzaById.Get(query.IdRichiesta);
-            /*
-             * VERSIONE DI FELIX
-             * per assegnare anche la DataOraRichiesta e DataOraPrimaAssegnazione
-             *
-             *
-            var result = new SintesiRichiestaAssistenzaResult();
 
-            var r = new SintesiRichiestaAssistenza();
-            //result.SintesiRichiesteAssistenza.
-            r.CodiceRichiesta = richiesteAssistenza.Codice;
-            r.DataOraRichiesta = richiesteAssistenza.DataOraRichiesta;
-            r.DataOraPrimaAssegnazione = richiesteAssistenza.DataOraPrimaAssegnazione;
-
-            */
             var result = new SintesiRichiestaAssistenzaResult()
             {
                 SintesiRichiesta = new SintesiRichiesta()
@@ -74,6 +61,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssisten
                     Codice = richiesteAssistenza.Codice
                 }
             };
+
             return result;
         }
     }

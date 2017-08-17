@@ -319,41 +319,36 @@ namespace Modello.Classi.Soccorso
             {
                 IStatoRichiesta statoRichiesta;
 
-                try
+                var eventoChiusura = this.Eventi
+                    .Where(e => e is ChiusuraRichiesta);
+
+                if (eventoChiusura != null)
                 {
-                    var eventoChiusura = this.Eventi
-                        .Where(e => e is ChiusuraRichiesta);
-                    if (eventoChiusura != null)
+                    statoRichiesta = new Chiusa();
+                }
+                else
+                {
+                    var elencoMezziCoinvolti = this.MezziCoinvolti;
+                    if (elencoMezziCoinvolti == null)
                     {
-                        statoRichiesta = new Chiusa();
+                        statoRichiesta = new InAttesa();
                     }
                     else
                     {
-                        var elencoMezziCoinvolti = this.MezziCoinvolti;
-                        if (elencoMezziCoinvolti == null)
+                        // a questo punto può essere o Assegnata o Sospesa
+                        var mezziAssegnati = elencoMezziCoinvolti.Count();
+                        var mezziRiassegnati = elencoMezziCoinvolti.Where(m => m.StatoDelMezzo is Riassegnato).Count();
+                        if (mezziRiassegnati == mezziAssegnati)
                         {
-                            statoRichiesta = new InAttesa();
+                            statoRichiesta = new Sospesa();
                         }
                         else
                         {
-                            // a questo punto può essere o Assegnata o Sospesa
-                            var mezziAssegnati = elencoMezziCoinvolti.Count();
-                            var mezziRiassegnati = elencoMezziCoinvolti.Where(m => m.StatoDelMezzo is Riassegnato).Count();
-                            if (mezziRiassegnati == mezziAssegnati)
-                            {
-                                statoRichiesta = new Sospesa();
-                            }
-                            else
-                            {
-                                statoRichiesta = new Assegnata();
-                            }
+                            statoRichiesta = new Assegnata();
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    throw new InvalidOperationException("Impossibile recuperare lo stato della Richiesta di Assistenza.", ex);
-                }
+
                 return statoRichiesta;
             }
         }

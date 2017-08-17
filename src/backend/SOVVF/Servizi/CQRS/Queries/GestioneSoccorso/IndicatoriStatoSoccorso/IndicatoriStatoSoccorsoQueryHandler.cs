@@ -58,9 +58,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
         ///   Costruttore del servizio
         /// </summary>
         /// <param name="getUnitaOperativaPerCodice">Istanza del servizio <see cref="IGetUnitaOperativaPerCodice" /></param>
-        /// <param name="getRichiesteAssistenzaPerIndicatoriPerUnitaOperative">
-        ///   Istanza del servizio <see cref="IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative" />
-        /// </param>
+        /// <param name="getRichiesteAssistenzaInCorso">Istanza del servizio <see cref="IGetRichiesteAssistenzaInCorso" /></param>
         /// <param name="getNumeroMezziSoccorsoOraInServizio">Istanza del servizio <see cref="IGetNumeroMezziSoccorsoOraInServizio" /></param>
         /// <param name="getNumeroSquadreSoccorsoOraInServizio">Istanza del servizio <see cref="IGetNumeroSquadreSoccorsoOraInServizio" /></param>
         public IndicatoriStatoSoccorsoQueryHandler(
