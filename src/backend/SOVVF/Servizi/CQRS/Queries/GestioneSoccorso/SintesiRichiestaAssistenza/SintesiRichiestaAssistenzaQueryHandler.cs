@@ -17,12 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Modello.Servizi.Infrastruttura.GestioneSoccorso;
-
-//using Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.ResultDTO;
+using Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.ResultDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.ResultDTO;
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.ResultDTO;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza
 {

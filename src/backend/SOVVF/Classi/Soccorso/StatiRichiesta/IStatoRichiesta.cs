@@ -27,7 +27,6 @@ namespace Modello.Classi.Soccorso.StatiRichiesta
         /// <summary>
         ///   Indica se una Richiesta è evasa
         /// </summary>
-
         bool Evasa { get; }
     }
 }

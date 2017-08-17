@@ -55,7 +55,7 @@ namespace SOVVF.FakeImplementations
 
             container.Register<global::Modello.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaAssistenzaById, Modello.GestioneSoccorso.GetRichiestaAssistenzaById_Fake>();
 
-            container.Register<global::Modello.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative, Modello.GestioneSoccorso.GetRichiesteAssistenzaPerIndicatoriPerUnitaOperative_Empty>();
+            container.Register<global::Modello.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiesteAssistenzaInCorso, Modello.GestioneSoccorso.GetRichiesteAssistenzaInCorso_Empty>();
 
             container.Register<global::Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetNumeroMezziSoccorsoOraInServizio, Modello.GestioneSoccorso.Mezzi.GetNumeroMezziSoccorsoOraInServizio_Fake>();
 

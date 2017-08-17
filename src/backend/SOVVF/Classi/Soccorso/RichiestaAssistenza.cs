@@ -267,22 +267,6 @@ namespace Modello.Classi.Soccorso
         }
 
         /// <summary>
-        ///   Aggiunge un evento alla lista degli eventi. L'evento deve essersi verificato in un
-        ///   istante superiore a quello dell'ultimo evento in lista. In caso contrario il metodo
-        ///   solleva un'eccezione.
-        /// </summary>
-        /// <param name="evento">L'evento da aggiungere</param>
-        public void AddEvento(Evento evento)
-        {
-            if (this.eventi.Any() && this.eventi.Last().Istante > evento.Istante)
-            {
-                throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
-            }
-
-            this.eventi.Add(evento);
-        }
-
-        /// <summary>
         ///   Restituisce l'istante della Richiesta di Assistenza
         /// </summary>
         public DateTime DataOraRichiesta
@@ -338,14 +322,18 @@ namespace Modello.Classi.Soccorso
                 try
                 {
                     var eventoChiusura = this.Eventi
-                    .Where(e => e is ChiusuraRichiesta);
+                        .Where(e => e is ChiusuraRichiesta);
                     if (eventoChiusura != null)
-                    { statoRichiesta = new Chiusa(); }
+                    {
+                        statoRichiesta = new Chiusa();
+                    }
                     else
                     {
                         var elencoMezziCoinvolti = this.MezziCoinvolti;
                         if (elencoMezziCoinvolti == null)
-                        { statoRichiesta = new InAttesa(); }
+                        {
+                            statoRichiesta = new InAttesa();
+                        }
                         else
                         {
                             // a questo punto può essere o Assegnata o Sospesa
@@ -355,6 +343,7 @@ namespace Modello.Classi.Soccorso
                             {
                                 statoRichiesta = new Sospesa();
                             }
+                            else
                             {
                                 statoRichiesta = new Assegnata();
                             }
@@ -367,6 +356,22 @@ namespace Modello.Classi.Soccorso
                 }
                 return statoRichiesta;
             }
+        }
+
+        /// <summary>
+        ///   Aggiunge un evento alla lista degli eventi. L'evento deve essersi verificato in un
+        ///   istante superiore a quello dell'ultimo evento in lista. In caso contrario il metodo
+        ///   solleva un'eccezione.
+        /// </summary>
+        /// <param name="evento">L'evento da aggiungere</param>
+        public void AddEvento(Evento evento)
+        {
+            if (this.eventi.Any() && this.eventi.Last().Istante > evento.Istante)
+            {
+                throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
+            }
+
+            this.eventi.Add(evento);
         }
     }
 }

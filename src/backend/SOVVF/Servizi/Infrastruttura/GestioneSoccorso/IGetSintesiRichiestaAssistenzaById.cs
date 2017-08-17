@@ -19,8 +19,6 @@
 //-----------------------------------------------------------------------
 using Modello.Classi.Soccorso;
 
-//using Modello.Classi.Soccorso.RichiestaAssistenza;
-
 namespace Modello.Servizi.Infrastruttura.GestioneSoccorso
 {
     /// <summary>

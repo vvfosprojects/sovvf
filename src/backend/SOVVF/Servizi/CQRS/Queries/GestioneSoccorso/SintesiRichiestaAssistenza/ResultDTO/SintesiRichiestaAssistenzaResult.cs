@@ -46,8 +46,5 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.RichiestaAssistenza.Resu
     public class SintesiRichiestaAssistenzaResult
     {
         public SintesiRichiesta SintesiRichiesta { get; internal set; }
-
-        //public IEnumerable<SintesiRichiestaAssistenza> SintesiRichiesteAssistenza { get; set; }
-        public IEnumerable<SintesiRichiesta> SintesiRichiesteAssistenza { get; set; }
     }
 }

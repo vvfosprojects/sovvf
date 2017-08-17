@@ -42,7 +42,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative getRichiesteAssistenzaPerIndicatoriPerUnitaOperative;
+        private readonly IGetRichiesteAssistenzaInCorso getRichiesteAssistenzaInCorso;
 
         /// <summary>
         ///   Handler del servizio
@@ -65,12 +65,12 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
         /// <param name="getNumeroSquadreSoccorsoOraInServizio">Istanza del servizio <see cref="IGetNumeroSquadreSoccorsoOraInServizio" /></param>
         public IndicatoriStatoSoccorsoQueryHandler(
                 IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice,
-                IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative getRichiesteAssistenzaPerIndicatoriPerUnitaOperative,
+                IGetRichiesteAssistenzaInCorso getRichiesteAssistenzaInCorso,
                 IGetNumeroMezziSoccorsoOraInServizio getNumeroMezziSoccorsoOraInServizio,
                 IGetNumeroSquadreSoccorsoOraInServizio getNumeroSquadreSoccorsoOraInServizio)
         {
             this.getUnitaOperativaPerCodice = getUnitaOperativaPerCodice;
-            this.getRichiesteAssistenzaPerIndicatoriPerUnitaOperative = getRichiesteAssistenzaPerIndicatoriPerUnitaOperative;
+            this.getRichiesteAssistenzaInCorso = getRichiesteAssistenzaInCorso;
             this.getNumeroMezziSoccorsoOraInServizio = getNumeroMezziSoccorsoOraInServizio;
             this.getNumeroSquadreSoccorsoOraInServizio = getNumeroSquadreSoccorsoOraInServizio;
         }
@@ -102,7 +102,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
             }
 
             // estrarre le richieste di assistenza in corso relative alle Unità Operative interessate
-            var richiesteAssistenza = this.getRichiesteAssistenzaPerIndicatoriPerUnitaOperative.Get(listaCodiciUnitaOperative).ToArray();
+            var richiesteAssistenza = this.getRichiesteAssistenzaInCorso.Get(listaCodiciUnitaOperative).ToArray();
 
             // estrae una lista che include una lista di eventi per ogni richiesta
             var eventi = richiesteAssistenza.Select(r => r.Eventi);

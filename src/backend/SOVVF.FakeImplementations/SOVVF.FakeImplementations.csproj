@@ -80,7 +80,7 @@
     <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\StatoMezzo\IStatoMezzo.cs" />
     <Compile Include="Modello\GestioneSoccorso\GenerazioneRichieste\StatoMezzo\SulPosto.cs" />
     <Compile Include="Modello\GestioneSoccorso\GetRichiestaAssistenzaById_Fake.cs" />
-    <Compile Include="Modello\GestioneSoccorso\GetRichiesteAssistenzaPerIndicatoriPerUnitaOperative_Empty.cs" />
+    <Compile Include="Modello\GestioneSoccorso\GetRichiesteAssistenzaInCorso_Empty.cs" />
     <Compile Include="Modello\GestioneSoccorso\Mezzi\GetNumeroSquadreSoccorsoOraInServizio_Fake.cs" />
     <Compile Include="Modello\GestioneSoccorso\Mezzi\GetNumeroMezziSoccorsoOraInServizio_Fake.cs" />
     <Compile Include="Modello\GestioneSoccorso\Mezzi\GetSituazioneMezzi_RandomFake.cs" />

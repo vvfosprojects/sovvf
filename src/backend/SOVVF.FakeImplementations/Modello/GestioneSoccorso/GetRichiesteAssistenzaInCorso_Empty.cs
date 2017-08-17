@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative.cs" company="CNVVF">
+// <copyright file="GetRichiesteAssistenzaInCorso_Empty.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,21 +18,26 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
+using System.Linq;
 using Modello.Classi.Soccorso;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 
-namespace Modello.Servizi.Infrastruttura.GestioneSoccorso
+namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso
 {
     /// <summary>
-    ///   Servizio che restituisce l'elenco delle richieste di Assistenza utilizzate per il calcolo
-    ///   degli indicatori per le Unità Operative indicate
+    ///   Implementazione del servizio che restituisce l'elenco delle richieste di Assistenza
+    ///   utilizzate per il calcolo degli indicatori per le Unità Operative indicate
     /// </summary>
-    public interface IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative
+    internal class GetRichiesteAssistenzaInCorso_Empty : IGetRichiesteAssistenzaInCorso
     {
         /// <summary>
-        ///   Restituisce l'elenco delle Richieste di Assistenza
+        ///   Restituisce le richieste
         /// </summary>
-        /// <param name="codiciUnitaOperative">Elenco dei codici dell'Unità Operativa</param>
-        /// <returns>Elenco delle Richieste</returns>
-        IEnumerable<RichiestaAssistenza> Get(IEnumerable<string> codiciUnitaOperative);
+        /// <param name="codiciUnitaOperative">I codici delle unità operative implicate</param>
+        /// <returns>Le richieste</returns>
+        public IEnumerable<RichiestaAssistenza> Get(IEnumerable<string> codiciUnitaOperative)
+        {
+            return Enumerable.Empty<RichiestaAssistenza>();
+        }
     }
 }

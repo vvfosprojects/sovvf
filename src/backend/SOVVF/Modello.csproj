@@ -136,7 +136,7 @@
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\ResultDTO\SituazioneMezziResult.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetNumeroSquadreSoccorsoOraInServizio.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\Mezzi\IGetNumeroMezziSoccorsoOraInServizio.cs" />
-    <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative.cs" />
+    <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiesteAssistenzaInCorso.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\Mezzi\IGetSituazioneMezzi.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\Mezzi\Implementation\GetSituazioneMezzi.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\Bindings.cs" />

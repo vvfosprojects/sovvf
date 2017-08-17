@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="GetRichiesteAssistenzaPerIndicatoriPerUnitaOperative_Empty.cs" company="CNVVF">
+// <copyright file="IGetRichiesteAssistenzaInCorso.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,26 +18,23 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
-using System.Linq;
 using Modello.Classi.Soccorso;
-using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 
-namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso
+namespace Modello.Servizi.Infrastruttura.GestioneSoccorso
 {
     /// <summary>
-    ///   Implementazione del servizio che restituisce l'elenco delle richieste di Assistenza
-    ///   utilizzate per il calcolo degli indicatori per le Unità Operative indicate
+    ///   Servizio che restituisce l'elenco delle richieste di assistenza in corso
     /// </summary>
-    internal class GetRichiesteAssistenzaPerIndicatoriPerUnitaOperative_Empty : IGetRichiesteAssistenzaPerIndicatoriPerUnitaOperative
+    public interface IGetRichiesteAssistenzaInCorso
     {
         /// <summary>
-        ///   Restituisce le richieste
+        ///   Restituisce l'elenco delle Richieste di Assistenza in corso
         /// </summary>
-        /// <param name="codiciUnitaOperative">I codici delle unità operative implicate</param>
-        /// <returns>Le richieste</returns>
-        public IEnumerable<RichiestaAssistenza> Get(IEnumerable<string> codiciUnitaOperative)
-        {
-            return Enumerable.Empty<RichiestaAssistenza>();
-        }
+        /// <param name="codiciUnitaOperative">
+        ///   Elenco dei codici delle Unità Operative a cui le richieste appartengono. Se
+        ///   quest'elenco è vuoto, vengono prelevate tutte le richieste.
+        /// </param>
+        /// <returns>Elenco delle Richieste</returns>
+        IEnumerable<RichiestaAssistenza> Get(IEnumerable<string> codiciUnitaOperative);
     }
 }
