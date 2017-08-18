@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO
 {
@@ -26,5 +27,9 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssisten
     /// </summary>
     public class SintesiRichiesteAssistenzaQuery : IQuery<SintesiRichiesteAssistenzaResult>
     {
+        /// <summary>
+        ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
+        /// </summary>
+        public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
     }
 }

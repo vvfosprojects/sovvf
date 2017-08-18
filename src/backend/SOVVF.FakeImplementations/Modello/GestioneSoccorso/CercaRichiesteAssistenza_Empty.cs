@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IGetRichiesteAssistenzaInCorso.cs" company="CNVVF">
+// <copyright file="CercaRichiesteAssistenza_Empty.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,23 +18,26 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
+using System.Linq;
 using Modello.Classi.Soccorso;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
-namespace Modello.Servizi.Infrastruttura.GestioneSoccorso
+namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso
 {
     /// <summary>
-    ///   Servizio che restituisce l'elenco delle richieste di assistenza in corso
+    ///   Implementazione del servizio che restituisce l'elenco delle richieste di Assistenza
+    ///   utilizzate per il calcolo degli indicatori per le Unità Operative indicate
     /// </summary>
-    public interface IGetRichiesteAssistenzaInCorso
+    internal class CercaRichiesteAssistenza_Empty : ICercaRichiesteAssistenza
     {
         /// <summary>
-        ///   Restituisce l'elenco delle Richieste di Assistenza in corso
+        ///   Restituisce un set vuoto di sintesi richiesta
         /// </summary>
-        /// <param name="codiciUnitaOperative">
-        ///   Elenco dei codici delle Unità Operative a cui le richieste appartengono. Se
-        ///   quest'elenco è vuoto, vengono prelevate tutte le richieste.
-        /// </param>
-        /// <returns>Elenco delle Richieste</returns>
-        IEnumerable<RichiestaAssistenza> Get(IEnumerable<string> codiciUnitaOperative);
+        /// <param name="filtro">Not used</param>
+        /// <returns>Il set vuoto di richieste</returns>
+        public IEnumerable<RichiestaAssistenza> Get(FiltroRicercaRichiesteAssistenza filtro)
+        {
+            return Enumerable.Empty<RichiestaAssistenza>();
+        }
     }
 }

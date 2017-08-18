@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
 using System.Linq;
 using Modello.Classi.Soccorso;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
@@ -25,6 +24,7 @@ using Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.Quer
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.ResultDTO;
 using Modello.Servizi.Infrastruttura.GestioneSoccorso;
 using Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using Modello.Servizi.Infrastruttura.Organigramma;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
@@ -42,7 +42,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly IGetRichiesteAssistenzaInCorso getRichiesteAssistenzaInCorso;
+        private readonly ICercaRichiesteAssistenza cercaRichiesteAssistenza;
 
         /// <summary>
         ///   Handler del servizio
@@ -58,17 +58,17 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
         ///   Costruttore del servizio
         /// </summary>
         /// <param name="getUnitaOperativaPerCodice">Istanza del servizio <see cref="IGetUnitaOperativaPerCodice" /></param>
-        /// <param name="getRichiesteAssistenzaInCorso">Istanza del servizio <see cref="IGetRichiesteAssistenzaInCorso" /></param>
+        /// <param name="cercaRichiesteAssistenza">Istanza del servizio <see cref="ICercaRichiesteAssistenza" /></param>
         /// <param name="getNumeroMezziSoccorsoOraInServizio">Istanza del servizio <see cref="IGetNumeroMezziSoccorsoOraInServizio" /></param>
         /// <param name="getNumeroSquadreSoccorsoOraInServizio">Istanza del servizio <see cref="IGetNumeroSquadreSoccorsoOraInServizio" /></param>
         public IndicatoriStatoSoccorsoQueryHandler(
                 IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice,
-                IGetRichiesteAssistenzaInCorso getRichiesteAssistenzaInCorso,
+                ICercaRichiesteAssistenza cercaRichiesteAssistenza,
                 IGetNumeroMezziSoccorsoOraInServizio getNumeroMezziSoccorsoOraInServizio,
                 IGetNumeroSquadreSoccorsoOraInServizio getNumeroSquadreSoccorsoOraInServizio)
         {
             this.getUnitaOperativaPerCodice = getUnitaOperativaPerCodice;
-            this.getRichiesteAssistenzaInCorso = getRichiesteAssistenzaInCorso;
+            this.cercaRichiesteAssistenza = cercaRichiesteAssistenza;
             this.getNumeroMezziSoccorsoOraInServizio = getNumeroMezziSoccorsoOraInServizio;
             this.getNumeroSquadreSoccorsoOraInServizio = getNumeroSquadreSoccorsoOraInServizio;
         }
@@ -80,27 +80,13 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
         /// <returns>Il DTO di uscita della query</returns>
         public IndicatoriStatoSoccorsoResult Handle(IndicatoriStatoSoccorsoQuery query)
         {
-            var listaCodiciUnitaOperative = new HashSet<string>();
-            foreach (var uo in query.UnitaOperative)
+            var filtro = new FiltroRicercaRichiesteAssistenza()
             {
-                if (uo.Ricorsivo)
-                {
-                    var nodo = this.getUnitaOperativaPerCodice.Get(uo.Codice);
-                    var nodi = nodo.GetSottoAlbero();
-
-                    foreach (var singoloNodo in nodi)
-                    {
-                        listaCodiciUnitaOperative.Add(singoloNodo.Codice);
-                    }
-                }
-                else
-                {
-                    listaCodiciUnitaOperative.Add(uo.Codice);
-                }
-            }
+                UnitaOperative = query.UnitaOperative
+            };
 
             // estrarre le richieste di assistenza in corso relative alle Unità Operative interessate
-            var richiesteAssistenza = this.getRichiesteAssistenzaInCorso.Get(listaCodiciUnitaOperative).ToArray();
+            var richiesteAssistenza = this.cercaRichiesteAssistenza.Get(filtro).ToArray();
 
             // estrae una lista che include una lista di eventi per ogni richiesta
             var eventi = richiesteAssistenza.Select(r => r.Eventi);
@@ -118,8 +104,9 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
                 NumeroSquadreSoccorsoImpegnate = richiesteAssistenza.Sum(r => r.CapiPartenzaCoinvolti.Count(m => m.StatoDelCapoPartenza != CapoPartenzaCoinvolto.StatoCapoPartenza.RientratoInSede))
             };
 
-            result.NumeroTotaleMezziSoccorso = this.getNumeroMezziSoccorsoOraInServizio.Get(listaCodiciUnitaOperative);
-            result.NumeroTotaleSquadreSoccorso = this.getNumeroSquadreSoccorsoOraInServizio.Get(listaCodiciUnitaOperative);
+#warning Va realizzata una classe SelettoreOrganigramma che consenta di individuare un sottoinsieme di nodi dell'organigramma
+            result.NumeroTotaleMezziSoccorso = this.getNumeroMezziSoccorsoOraInServizio.Get(null);
+            result.NumeroTotaleSquadreSoccorso = this.getNumeroSquadreSoccorsoOraInServizio.Get(null);
             return result;
         }
     }

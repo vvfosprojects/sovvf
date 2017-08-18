@@ -17,10 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Linq;
 using Modello.Classi.Soccorso.SintesiRichiestaAssistenza;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
@@ -52,20 +52,35 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssisten
     public class SintesiRichiesteAssistenzaQueryHandler : IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult>
     {
         /// <summary>
+        ///   Istanza del servizio
+        /// </summary>
+        private readonly ICercaRichiesteAssistenza cercaRichiesteAssistenza;
+
+        /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="cercaRichiesteAssistenza">L'istanza del servizio</param>
+        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza)
+        {
+            this.cercaRichiesteAssistenza = cercaRichiesteAssistenza;
+        }
+
+        /// <summary>
         ///   Metodo di esecuzione della query
         /// </summary>
         /// <param name="query">Il DTO di ingresso della query</param>
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
         {
-            var richiesta = new SintesiRichiesta()
-            {
-                Codice = "111.222.333"
-            };
+            var richieste = this.cercaRichiesteAssistenza.Get(query.Filtro);
+
+#warning va realizzato il servizio di mapping delle richieste di assistenza sulla loro sintesi
+            // var sintesiRichieste = richieste.Select(r => mappaSuSintesi(r));
+            var sintesiRichieste = new SintesiRichiesta[0];
 
             return new SintesiRichiesteAssistenzaResult()
             {
-                SintesiRichieste = Enumerable.Repeat(richiesta, 3)
+                SintesiRichieste = sintesiRichieste
             };
         }
     }
