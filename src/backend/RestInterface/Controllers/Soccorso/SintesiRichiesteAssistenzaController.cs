@@ -21,6 +21,7 @@ using System.Web.Http;
 using Modello.Servizi.CQRS.Queries;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
 namespace RestInterface.Controllers.Soccorso
 {
@@ -47,10 +48,16 @@ namespace RestInterface.Controllers.Soccorso
         /// <summary>
         ///   Metodo di accesso alle richieste di assistenza
         /// </summary>
+        /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
-        public SintesiRichiesteAssistenzaResult Get()
+        public SintesiRichiesteAssistenzaResult Get(FiltroRicercaRichiesteAssistenza filtro)
         {
-            return this.handler.Handle(new SintesiRichiesteAssistenzaQuery());
+            var query = new SintesiRichiesteAssistenzaQuery()
+            {
+                Filtro = filtro
+            };
+
+            return this.handler.Handle(query);
         }
     }
 }
