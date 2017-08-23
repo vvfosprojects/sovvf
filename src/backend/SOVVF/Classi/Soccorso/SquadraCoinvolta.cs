@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CapoPartenzaCoinvolto.cs" company="CNVVF">
+// <copyright file="SquadraCoinvolta.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -22,12 +22,12 @@ namespace Modello.Classi.Soccorso
     /// <summary>
     ///   Contiene le informazioni sullo stato di un capopartenza coinvolto in un intervento di soccorso
     /// </summary>
-    public class CapoPartenzaCoinvolto
+    public class SquadraCoinvolta
     {
         /// <summary>
         ///   Enumera gli stati in cui un capopartenza partecipante ad una richiesta può trovarsi
         /// </summary>
-        public enum StatoCapoPartenza
+        public enum StatoSquadra
         {
             /// <summary>
             ///   In viaggio verso il luogo del sinistro.
@@ -35,7 +35,7 @@ namespace Modello.Classi.Soccorso
             InViaggio,
 
             /// <summary>
-            ///   Giunto sul luogo del sinistro
+            ///   Giunta sul luogo del sinistro
             /// </summary>
             SulPosto,
 
@@ -45,19 +45,19 @@ namespace Modello.Classi.Soccorso
             InRientro,
 
             /// <summary>
-            ///   Rientrato presso la sede di servizio
+            ///   Rientrata presso la sede di servizio
             /// </summary>
-            RientratoInSede
+            RientrataInSede
         }
 
         /// <summary>
-        ///   Il codice fiscale del capopartenza
+        ///   Il nome della squadra
         /// </summary>
-        public string CodiceFiscale { get; set; }
+        public string Nome { get; set; }
 
         /// <summary>
-        ///   Lo stato del capopartenza
+        ///   Lo stato della squadra
         /// </summary>
-        public StatoCapoPartenza StatoDelCapoPartenza { get; set; }
+        public StatoSquadra StatoDellaSquadra { get; set; }
     }
 }

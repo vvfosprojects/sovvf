@@ -187,9 +187,9 @@ namespace Modello.Classi.Soccorso
         }
 
         /// <summary>
-        ///   Restituisce l'elenco dei Capi Partenza assegnati alla Richiesta di Assistenza
+        ///   Restituisce l'elenco delle squadre coinvolte nella Richiesta di Assistenza
         /// </summary>
-        public IEnumerable<CapoPartenzaCoinvolto> CapiPartenzaCoinvolti
+        public IEnumerable<SquadraCoinvolta> SquadreCoinvolte
         {
             get
             {

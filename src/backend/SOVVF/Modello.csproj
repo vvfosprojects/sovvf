@@ -69,7 +69,7 @@
     <Compile Include="Classi\Soccorso\Eventi\Evento.cs" />
     <Compile Include="Classi\Soccorso\Eventi\IEvento.cs" />
     <Compile Include="Classi\Soccorso\Eventi\InizioPresaInCarico.cs" />
-    <Compile Include="Classi\Soccorso\CapoPartenzaCoinvolto.cs" />
+    <Compile Include="Classi\Soccorso\SquadraCoinvolta.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\IPartenza.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\FuoriServizio.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\Riassegnazione.cs" />
