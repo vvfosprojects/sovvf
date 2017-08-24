@@ -27,7 +27,7 @@ namespace Modello.Classi.Soccorso.Eventi
     ///   oppure di chiusura dell'intervento effettuato, di intervento non più necessario, di falso
     ///   allarme, di fine della vigilanza, etc.
     /// </summary>
-    public class ChiusuraRichiesta : Evento
+    public class ChiusuraRichiesta : Evento, IGestioneChiusura
     {
         /// <summary>
         ///   Costruttore della classe. A seguito della chiamata, la richiesta risulta chiusa.
@@ -46,5 +46,14 @@ namespace Modello.Classi.Soccorso.Eventi
         ///   Indica la motivazione della chiusura
         /// </summary>
         public string Motivazione { get; }
+
+        /// <summary>
+        ///   Indica che questo evento chiude la richiesta
+        /// </summary>
+        /// <returns>Il valore true indicante che l'evento chiude la richiesta</returns>
+        public bool ChiudeRichiesta()
+        {
+            return true;
+        }
     }
 }

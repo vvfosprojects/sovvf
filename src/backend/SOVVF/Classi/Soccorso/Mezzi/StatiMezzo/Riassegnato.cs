@@ -18,30 +18,36 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System;
+using System.Diagnostics.CodeAnalysis;
+using Modello.Classi.Soccorso.Eventi.Partenze;
+
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "https://stackoverflow.com/questions/37189518/stylecop-warning-sa1126prefixcallscorrectly-on-name-of-class")]
+
     /// <summary>
     ///   Riassegnato ad un'altra Richiesta. E' uno stato di durata nulla che rappresenta lo stato
     ///   finale di un Mezzo dal punto di vista della Richiesta di Assistenza da cui proviene il
     ///   Mezzo. Immediatamente dopo, il Mezzo andrà nello stato Assegnato.
     /// </summary>
-    public class Riassegnato : IStatoMezzo
+    public class Riassegnato : AbstractStatoMezzo
     {
         /// <summary>
         ///   Codice identificativo dello stato
         /// </summary>
-        public string Codice
+        public override string Codice
         {
             get
             {
-                return "Riassegnato";
+                return nameof(Riassegnato);
             }
         }
 
         /// <summary>
         ///   Indica se il mezzo è disponibile in questo stato.
         /// </summary>
-        public bool Disponibile
+        public override bool Disponibile
         {
             get
             {

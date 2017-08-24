@@ -24,6 +24,7 @@ using Modello.Classi.Geo;
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
+using Modello.Classi.Soccorso.Mezzi;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 using Modello.Classi.Soccorso.StatiRichiesta;
 
@@ -176,13 +177,47 @@ namespace Modello.Classi.Soccorso
         public bool InAttesa { get; }
 
         /// <summary>
-        ///   Restituisce l'elenco dei Mezzi coinvolti nella Richiesta di Assistenza
+        ///   Restituisce l'elenco degli stati dei mezzi coinvolti nella Richiesta di Assistenza
         /// </summary>
-        public IEnumerable<MezzoCoinvolto> MezziCoinvolti
+        public IDictionary<string, IStatoMezzo> MezziCoinvolti
         {
             get
             {
-                throw new NotImplementedException();
+                var eventiPartenza = this.Eventi
+                    .Where(e => e is IPartenza)
+                    .Select(e => (IPartenza)e);
+
+                var eventiPartenzaRaggruppatiPerMezzo = eventiPartenza.SelectMany(
+                    e => e.CodiciMezzo,
+                    (evento, codiceMezzo) => new
+                    {
+                        Codice = codiceMezzo,
+                        Evento = evento
+                    })
+                    .GroupBy(el => el.Codice, el => el.Evento);
+
+                // se la richiesta è chiusa i mezzi partecipanti certamente non sono assegnati ad essa
+                if (this.Chiusa)
+                {
+                    return eventiPartenzaRaggruppatiPerMezzo
+                        .Select(g => g.Key)
+                        .ToDictionary(k => k, _ => (IStatoMezzo)new NonAssegnatoARichiesta());
+                }
+
+                var d = new Dictionary<string, IStatoMezzo>();
+
+                foreach (var gruppoEventiPartenza in eventiPartenzaRaggruppatiPerMezzo)
+                {
+                    var codice = gruppoEventiPartenza.Key;
+                    var eventi = gruppoEventiPartenza.AsEnumerable();
+                    var processoreStato = new ProcessoreStato();
+                    processoreStato.ProcessaEventi(eventi);
+                    var stato = processoreStato.Stato;
+
+                    d[codice] = stato;
+                }
+
+                return d;
             }
         }
 
@@ -317,39 +352,32 @@ namespace Modello.Classi.Soccorso
         {
             get
             {
-                IStatoRichiesta statoRichiesta;
-
                 var eventoChiusura = this.Eventi
                     .Where(e => e is ChiusuraRichiesta);
 
-                if (eventoChiusura != null)
+                if (this.Eventi.Any())
                 {
-                    statoRichiesta = new Chiusa();
+                    return new Chiusa();
                 }
                 else
                 {
                     var elencoMezziCoinvolti = this.MezziCoinvolti;
-                    if (elencoMezziCoinvolti == null)
+                    if (!elencoMezziCoinvolti.Any())
                     {
-                        statoRichiesta = new InAttesa();
+                        return new InAttesa();
                     }
                     else
                     {
-                        // a questo punto può essere o Assegnata o Sospesa
-                        var mezziAssegnati = elencoMezziCoinvolti.Count();
-                        var mezziRiassegnati = elencoMezziCoinvolti.Where(m => m.StatoDelMezzo is Riassegnato).Count();
-                        if (mezziRiassegnati == mezziAssegnati)
+                        if (elencoMezziCoinvolti.Values.Any(e => e.AssegnatoARichiesta))
                         {
-                            statoRichiesta = new Sospesa();
+                            return new Assegnata();
                         }
                         else
                         {
-                            statoRichiesta = new Assegnata();
+                            return new Sospesa();
                         }
                     }
                 }
-
-                return statoRichiesta;
             }
         }
 

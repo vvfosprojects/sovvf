@@ -108,15 +108,14 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// <summary>
         ///   Restituisce i codici dei mezzi coinvolti in questo evento
         /// </summary>
-        string[] IPartenza.CodiciMezzo
+        ISet<string> IPartenza.CodiciMezzo
         {
             get
             {
-                return this.Componenti
+                return new HashSet<string>(this.Componenti
                     .Select(c => c.CodiceMezzo)
                     .Where(cm => cm != null)
-                    .Distinct()
-                    .ToArray();
+                    .Distinct());
             }
         }
 

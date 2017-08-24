@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Modello.Classi.Soccorso.Eventi.Partenze;
+
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
     /// <summary>
@@ -37,5 +39,20 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         ///   attende una partenza immediata verso il luogo del sinistro in seguito all'assegnazione.
         /// </remarks>
         bool Disponibile { get; }
+
+#warning rinominare il metodo "DisponibilePerComposizione"
+
+        /// <summary>
+        ///   Indica se in questo stato il mezzo risulta assegnato alla richiesta o meno
+        /// </summary>
+        bool AssegnatoARichiesta { get; }
+
+        /// <summary>
+        ///   Induce una transizione di stato in seguito al verificarsi di un evento, restituendo il
+        ///   nuovo stato a seguito della transizione
+        /// </summary>
+        /// <param name="evento">L'evento che induce la transizione di stato</param>
+        /// <returns>Il nuovo stato raggiunto a seguito della transizione</returns>
+        IStatoMezzo Transisci(IPartenza evento);
     }
 }

@@ -24,7 +24,7 @@ namespace Modello.Classi.Soccorso.Eventi
     /// <summary>
     ///   Questo evento indica che è la richiesta assistenza viene riaperta
     /// </summary>
-    public class RiaperturaRichiesta : Evento
+    public class RiaperturaRichiesta : Evento, IGestioneChiusura
     {
         /// <summary>
         ///   Costruttore della classe. A seguito della chiamata, la richiesta risulta aperta.
@@ -38,6 +38,15 @@ namespace Modello.Classi.Soccorso.Eventi
             string codiceFonte) : base(richiesta, istante, codiceFonte)
         {
             richiesta.IstanteChiusura = null;
+        }
+
+        /// <summary>
+        ///   Indica che questo evento apre la richiesta
+        /// </summary>
+        /// <returns>Il valore false indicante che l'evento apre la richiesta</returns>
+        public bool ChiudeRichiesta()
+        {
+            return false;
         }
     }
 }

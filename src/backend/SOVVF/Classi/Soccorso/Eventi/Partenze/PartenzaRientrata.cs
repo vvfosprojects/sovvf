@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
@@ -59,11 +60,11 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// <summary>
         ///   Restituisce i codici dei mezzi coinvolti in questo evento
         /// </summary>
-        string[] IPartenza.CodiciMezzo
+        ISet<string> IPartenza.CodiciMezzo
         {
             get
             {
-                return new string[] { this.CodiceMezzo };
+                return new HashSet<string> { this.CodiceMezzo };
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InViaggio.cs" company="CNVVF">
+// <copyright file="NonAssegnatoARichiesta.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,9 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
@@ -27,18 +30,20 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "https://stackoverflow.com/questions/37189518/stylecop-warning-sa1126prefixcallscorrectly-on-name-of-class")]
 
     /// <summary>
-    ///   In viaggio verso il luogo del sinistro.
+    ///   Questo stato ha senso con riferimento ad una precisa <see cref="RichiestaAssistenza" /> per
+    ///   la quale il mezzo non è ancora stato assegnato. L'unica transizione valida da questo stato
+    ///   è la composizione partenza.
     /// </summary>
-    public class InViaggio : AbstractStatoMezzo
+    public class NonAssegnatoARichiesta : AbstractStatoMezzo
     {
         /// <summary>
-        ///   Codice identificativo dello stato
+        ///   Il codice identificativo dello stato
         /// </summary>
         public override string Codice
         {
             get
             {
-                return nameof(InViaggio);
+                return nameof(NonAssegnatoARichiesta);
             }
         }
 
@@ -46,6 +51,17 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         ///   Indica se il mezzo è disponibile in questo stato
         /// </summary>
         public override bool Disponibile
+        {
+            get
+            {
+                throw new InvalidOperationException("Non è possibile valutare la disponibilità di un mezzo nello stato sconosciuto");
+            }
+        }
+
+        /// <summary>
+        ///   In questo stato il mezzo non è assegnato alla richiesta
+        /// </summary>
+        public override bool AssegnatoARichiesta
         {
             get
             {

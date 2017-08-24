@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Collections.Generic;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
@@ -29,7 +30,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// <summary>
         ///   Restituisce i codici dei mezzi coinvolti in questo evento
         /// </summary>
-        string[] CodiciMezzo { get; }
+        ISet<string> CodiciMezzo { get; }
 
         /// <summary>
         ///   Restituisce lo stato che il mezzo assume a seguito del verificarsi dell'evento

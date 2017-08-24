@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="MezzoCoinvolto.cs" company="CNVVF">
+// <copyright file="IGestioneChiusura.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,23 +17,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Modello.Classi.Soccorso
+namespace Modello.Classi.Soccorso.Eventi
 {
     /// <summary>
-    ///   Contiene le informazioni sullo stato di un mezzo coinvolto in un intervento di soccorso
+    ///   Interfaccia alla quale sono conformi gli eventi che influenzano la chiusura o la riapertura
+    ///   di una richiesta
     /// </summary>
-    public class MezzoCoinvolto
+    public interface IGestioneChiusura : IEvento
     {
         /// <summary>
-        ///   Il codice del mezzo
+        ///   Indica che l'evento determina la chiusura della <see cref="RichiestaAssistenza" />. Se
+        ///   il valore restituito è false, l'evento determina la apertura della <see cref="RichiestaAssistenza" />.
         /// </summary>
-        public string CodiceMezzo { get; set; }
-
-        /// <summary>
-        ///   Lo stato del mezzo
-        /// </summary>
-        public IStatoMezzo StatoDelMezzo { get; set; }
+        /// <returns>Un predicato che indica se l'evento chiude (o piuttosto apre) la richiesta</returns>
+        bool ChiudeRichiesta();
     }
 }

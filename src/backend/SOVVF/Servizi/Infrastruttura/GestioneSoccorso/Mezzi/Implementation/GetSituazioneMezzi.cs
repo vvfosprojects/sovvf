@@ -117,7 +117,7 @@ namespace Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.Implementation
             // Fa l'unwind degli eventi in base ai mezzi che ogni evento coinvolge, conservando il
             // codice mezzo per ogni evento
             var eventiConCodiceMezzo = eventiPartenza.SelectMany(
-                e => e.Evento.CodiciMezzo.Distinct(),
+                e => e.Evento.CodiciMezzo,
                 (evento, codiceMezzo) => new
                 {
                     CodiceRichiesta = evento.CodiceRichiesta,

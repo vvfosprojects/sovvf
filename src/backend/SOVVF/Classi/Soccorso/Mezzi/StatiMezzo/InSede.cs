@@ -18,32 +18,49 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System;
+using System.Diagnostics.CodeAnalysis;
+using Modello.Classi.Soccorso.Eventi.Partenze;
+
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "https://stackoverflow.com/questions/37189518/stylecop-warning-sa1126prefixcallscorrectly-on-name-of-class")]
+
     /// <summary>
     ///   Presente presso la sede di servizio
     /// </summary>
-    public class InSede : IStatoMezzo
+    public class InSede : AbstractStatoMezzo
     {
         /// <summary>
         ///   Codice identificativo dello stato
         /// </summary>
-        public string Codice
+        public override string Codice
         {
             get
             {
-                return "InSede";
+                return nameof(InSede);
             }
         }
 
         /// <summary>
         ///   Indica se il mezzo è disponibile in questo stato
         /// </summary>
-        public bool Disponibile
+        public override bool Disponibile
         {
             get
             {
                 return true;
+            }
+        }
+
+        /// <summary>
+        ///   In questo stato il mezzo non risulta assegnato alla richiesta
+        /// </summary>
+        public override bool AssegnatoARichiesta
+        {
+            get
+            {
+                return false;
             }
         }
     }

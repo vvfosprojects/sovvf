@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InViaggio.cs" company="CNVVF">
+// <copyright file="AbstractStatoMezzo.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,40 +17,51 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 using System;
-using System.Diagnostics.CodeAnalysis;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
-    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "https://stackoverflow.com/questions/37189518/stylecop-warning-sa1126prefixcallscorrectly-on-name-of-class")]
-
     /// <summary>
-    ///   In viaggio verso il luogo del sinistro.
+    ///   La classe base per tutti gli <see cref="IStatoMezzo" />
     /// </summary>
-    public class InViaggio : AbstractStatoMezzo
+    public abstract class AbstractStatoMezzo : IStatoMezzo
     {
         /// <summary>
-        ///   Codice identificativo dello stato
+        ///   Uno stato mezzo, con maggiore probabilità, implica l'assegnazione del mezzo alla
+        ///   richiesta. Gli stati che contravvengono questa consuetudine sono tenuti a fare
+        ///   l'override di questo metodo della classe base.
         /// </summary>
-        public override string Codice
+        public virtual bool AssegnatoARichiesta
         {
             get
             {
-                return nameof(InViaggio);
+                return true;
             }
         }
 
         /// <summary>
+        ///   Il codice identificativo dello stato
+        /// </summary>
+        public abstract string Codice { get; }
+
+        /// <summary>
         ///   Indica se il mezzo è disponibile in questo stato
         /// </summary>
-        public override bool Disponibile
+        public abstract bool Disponibile { get; }
+
+        /// <summary>
+        ///   Calcola la transizione di stato ottenuta in seguito al verificarsi di un evento
+        /// </summary>
+        /// <param name="evento">L'evento che induce la transizione di stato</param>
+        /// <returns>Il nuovo stato raggiunto a seguito della transizione</returns>
+        public IStatoMezzo Transisci(IPartenza evento)
         {
-            get
-            {
-                return false;
-            }
+            throw new NotImplementedException();
         }
     }
 }
