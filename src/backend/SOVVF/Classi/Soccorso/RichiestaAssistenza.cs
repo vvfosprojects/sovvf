@@ -24,7 +24,6 @@ using Modello.Classi.Geo;
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
-using Modello.Classi.Soccorso.Mezzi;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 using Modello.Classi.Soccorso.StatiRichiesta;
 
