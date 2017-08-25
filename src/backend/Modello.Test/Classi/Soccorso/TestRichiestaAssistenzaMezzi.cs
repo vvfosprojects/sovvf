@@ -193,5 +193,156 @@ namespace Modello.Test.Classi.Soccorso
 
             Assert.That(stato, Is.InstanceOf<InSede>());
         }
+
+        [Test]
+        public void UnaRichiestaConUnMezzoRiassegnatoPrimaDelRientroRestituisceLoStatoNonAssegnatoARichiesta()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1")
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte");
+            new ArrivoSulPosto(richiesta, "M1", DateTime.Now, "fonte");
+            new PartenzaInRientro(richiesta, "M1", DateTime.Now, "fonte");
+            new Riassegnazione(richiesta, "R2", "M1", DateTime.Now, "fonte");
+
+            var mezziCoinvolti = richiesta.MezziCoinvolti;
+            var stato = mezziCoinvolti["M1"];
+
+            Assert.That(stato, Is.InstanceOf<NonAssegnatoARichiesta>());
+        }
+
+        [Test]
+        public void UnaRichiestaConUnMezzoRiassegnatoDopoLArrivoRestituisceLoStatoNonAssegnatoARichiesta()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1")
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte");
+            new ArrivoSulPosto(richiesta, "M1", DateTime.Now, "fonte");
+            new Riassegnazione(richiesta, "R2", "M1", DateTime.Now, "fonte");
+
+            var mezziCoinvolti = richiesta.MezziCoinvolti;
+            var stato = mezziCoinvolti["M1"];
+
+            Assert.That(stato, Is.InstanceOf<NonAssegnatoARichiesta>());
+        }
+
+        [Test]
+        public void UnaRichiestaConUnMezzoRiassegnatoDopoLUscitaRestituisceLoStatoNonAssegnatoARichiesta()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1")
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte");
+            new Riassegnazione(richiesta, "R2", "M1", DateTime.Now, "fonte");
+
+            var mezziCoinvolti = richiesta.MezziCoinvolti;
+            var stato = mezziCoinvolti["M1"];
+
+            Assert.That(stato, Is.InstanceOf<NonAssegnatoARichiesta>());
+        }
+
+        [Test]
+        public void UnaRichiestaConUnMezzoRiassegnatoDopoLaComposizioneRestituisceLoStatoNonAssegnatoARichiesta()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1")
+                }
+            };
+            new Riassegnazione(richiesta, "R2", "M1", DateTime.Now, "fonte");
+
+            var mezziCoinvolti = richiesta.MezziCoinvolti;
+            var stato = mezziCoinvolti["M1"];
+
+            Assert.That(stato, Is.InstanceOf<NonAssegnatoARichiesta>());
+        }
+
+        [Test]
+        public void UnaRichiestaConDueMezziInUnaComposizioneRestituisceDueStatiMezzo()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1"),
+                    new ComponentePartenza("YYY", "M2"),
+                }
+            };
+
+            var mezziCoinvolti = richiesta.MezziCoinvolti;
+
+            Assert.That(mezziCoinvolti, Has.Count.EqualTo(2));
+        }
+
+        [Test]
+        public void UnaRichiestaConDueMezziInDueComposizioniRestituisceDueStatiMezzo()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1"),
+                }
+            };
+            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("YYY", "M2"),
+                }
+            };
+
+            var mezziCoinvolti = richiesta.MezziCoinvolti;
+
+            Assert.That(mezziCoinvolti, Has.Count.EqualTo(2));
+        }
+
+        [Test]
+        public void UnaRichiestaConM1PartitoEdM2ArrivatoRestituisceIDueStatiCorrettamente()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1"),
+                    new ComponentePartenza("YYY", "M2"),
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(10), "fonte");
+            new UscitaPartenza(richiesta, "M2", now.AddSeconds(20), "fonte");
+            new ArrivoSulPosto(richiesta, "M2", now.AddSeconds(30), "fonte");
+
+            var mezziCoinvolti = richiesta.MezziCoinvolti;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(mezziCoinvolti, Has.Count.EqualTo(2));
+                Assert.That(mezziCoinvolti["M1"], Is.InstanceOf<InViaggio>());
+                Assert.That(mezziCoinvolti["M2"], Is.InstanceOf<SulPosto>());
+            });
+        }
     }
 }

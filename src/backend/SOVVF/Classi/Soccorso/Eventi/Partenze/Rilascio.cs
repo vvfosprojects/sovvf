@@ -23,6 +23,8 @@ using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
+#warning Marcello: non ricordo che differenza vi è tra Rilascio e Riassegnazione
+
     /// <summary>
     ///   Indica il rilascio della <see cref="ComposizionePartenze"></see> da una Richiesta di
     ///   assistenza. (valido da dopo la <see cref="ComposizionePartenze" /> fino a
