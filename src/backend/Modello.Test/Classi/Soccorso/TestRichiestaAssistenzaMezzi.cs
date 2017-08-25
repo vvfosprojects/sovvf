@@ -98,14 +98,15 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConUnMezzoUscitoRestituisceUnMezzoCoinvolto()
         {
             var richiesta = new RichiestaAssistenza();
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
                     new ComponentePartenza("XXX", "M1")
                 }
             };
-            new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte");
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
 
             var mezziCoinvolti = richiesta.MezziCoinvolti;
 
@@ -116,14 +117,15 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConUnMezzoPartitoRestituisceLoStatoInViaggio()
         {
             var richiesta = new RichiestaAssistenza();
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
                     new ComponentePartenza("XXX", "M1")
                 }
             };
-            new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte");
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
 
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
@@ -135,15 +137,16 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConUnMezzoSulPostoRestituisceLoStatoSulPosto()
         {
             var richiesta = new RichiestaAssistenza();
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
                     new ComponentePartenza("XXX", "M1")
                 }
             };
-            new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte");
-            new ArrivoSulPosto(richiesta, "M1", DateTime.Now, "fonte");
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
+            new ArrivoSulPosto(richiesta, "M1", now.AddSeconds(2), "fonte");
 
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
@@ -155,16 +158,17 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConUnMezzoPartitoDalPostoRestituisceLoStatoInRientro()
         {
             var richiesta = new RichiestaAssistenza();
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
                     new ComponentePartenza("XXX", "M1")
                 }
             };
-            new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte");
-            new ArrivoSulPosto(richiesta, "M1", DateTime.Now, "fonte");
-            new PartenzaInRientro(richiesta, "M1", DateTime.Now, "fonte");
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
+            new ArrivoSulPosto(richiesta, "M1", now.AddSeconds(2), "fonte");
+            new PartenzaInRientro(richiesta, "M1", now.AddSeconds(3), "fonte");
 
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
@@ -176,17 +180,18 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConUnMezzoRientratoInSedeRestituisceLoStatoInSede()
         {
             var richiesta = new RichiestaAssistenza();
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
                     new ComponentePartenza("XXX", "M1")
                 }
             };
-            new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte");
-            new ArrivoSulPosto(richiesta, "M1", DateTime.Now, "fonte");
-            new PartenzaInRientro(richiesta, "M1", DateTime.Now, "fonte");
-            new PartenzaRientrata(richiesta, "M1", DateTime.Now, "fonte");
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
+            new ArrivoSulPosto(richiesta, "M1", now.AddSeconds(2), "fonte");
+            new PartenzaInRientro(richiesta, "M1", now.AddSeconds(3), "fonte");
+            new PartenzaRientrata(richiesta, "M1", now.AddSeconds(4), "fonte");
 
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
@@ -198,17 +203,18 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConUnMezzoRiassegnatoPrimaDelRientroRestituisceLoStatoNonAssegnatoARichiesta()
         {
             var richiesta = new RichiestaAssistenza();
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
                     new ComponentePartenza("XXX", "M1")
                 }
             };
-            new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte");
-            new ArrivoSulPosto(richiesta, "M1", DateTime.Now, "fonte");
-            new PartenzaInRientro(richiesta, "M1", DateTime.Now, "fonte");
-            new Riassegnazione(richiesta, "R2", "M1", DateTime.Now, "fonte");
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
+            new ArrivoSulPosto(richiesta, "M1", now.AddSeconds(2), "fonte");
+            new PartenzaInRientro(richiesta, "M1", now.AddSeconds(3), "fonte");
+            new Riassegnazione(richiesta, "R2", "M1", now.AddSeconds(4), "fonte");
 
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
@@ -220,16 +226,17 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConUnMezzoRiassegnatoDopoLArrivoRestituisceLoStatoNonAssegnatoARichiesta()
         {
             var richiesta = new RichiestaAssistenza();
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
                     new ComponentePartenza("XXX", "M1")
                 }
             };
-            new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte");
-            new ArrivoSulPosto(richiesta, "M1", DateTime.Now, "fonte");
-            new Riassegnazione(richiesta, "R2", "M1", DateTime.Now, "fonte");
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
+            new ArrivoSulPosto(richiesta, "M1", now.AddSeconds(2), "fonte");
+            new Riassegnazione(richiesta, "R2", "M1", now.AddSeconds(3), "fonte");
 
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
@@ -241,15 +248,16 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConUnMezzoRiassegnatoDopoLUscitaRestituisceLoStatoNonAssegnatoARichiesta()
         {
             var richiesta = new RichiestaAssistenza();
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
                     new ComponentePartenza("XXX", "M1")
                 }
             };
-            new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte");
-            new Riassegnazione(richiesta, "R2", "M1", DateTime.Now, "fonte");
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
+            new Riassegnazione(richiesta, "R2", "M1", now.AddSeconds(2), "fonte");
 
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
@@ -261,14 +269,15 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConUnMezzoRiassegnatoDopoLaComposizioneRestituisceLoStatoNonAssegnatoARichiesta()
         {
             var richiesta = new RichiestaAssistenza();
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
                     new ComponentePartenza("XXX", "M1")
                 }
             };
-            new Riassegnazione(richiesta, "R2", "M1", DateTime.Now, "fonte");
+            new Riassegnazione(richiesta, "R2", "M1", now.AddSeconds(1), "fonte");
 
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
@@ -298,14 +307,15 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConDueMezziInDueComposizioniRestituisceDueStatiMezzo()
         {
             var richiesta = new RichiestaAssistenza();
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
                     new ComponentePartenza("XXX", "M1"),
                 }
             };
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            new ComposizionePartenze(richiesta, now.AddSeconds(1), "fonte")
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
@@ -331,9 +341,9 @@ namespace Modello.Test.Classi.Soccorso
                     new ComponentePartenza("YYY", "M2"),
                 }
             };
-            new UscitaPartenza(richiesta, "M1", now.AddSeconds(10), "fonte");
-            new UscitaPartenza(richiesta, "M2", now.AddSeconds(20), "fonte");
-            new ArrivoSulPosto(richiesta, "M2", now.AddSeconds(30), "fonte");
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
+            new UscitaPartenza(richiesta, "M2", now.AddSeconds(2), "fonte");
+            new ArrivoSulPosto(richiesta, "M2", now.AddSeconds(3), "fonte");
 
             var mezziCoinvolti = richiesta.MezziCoinvolti;
 
