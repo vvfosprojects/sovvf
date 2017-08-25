@@ -344,5 +344,64 @@ namespace Modello.Test.Classi.Soccorso
                 Assert.That(mezziCoinvolti["M2"], Is.InstanceOf<SulPosto>());
             });
         }
+
+        [Test]
+        public void UnaRichiestaConUnMezzoRientratoEPoiDiNuovoUscitoRestituisceUnSoloMezzo()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1")
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", DateTime.Now.AddSeconds(1), "fonte");
+            new ArrivoSulPosto(richiesta, "M1", DateTime.Now.AddSeconds(2), "fonte");
+            new PartenzaInRientro(richiesta, "M1", DateTime.Now.AddSeconds(3), "fonte");
+            new PartenzaRientrata(richiesta, "M1", DateTime.Now.AddSeconds(4), "fonte");
+            new ComposizionePartenze(richiesta, DateTime.Now.AddSeconds(5), "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("YYY", "M1")
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", DateTime.Now.AddSeconds(6), "fonte");
+
+            var mezziCoinvolti = richiesta.MezziCoinvolti;
+
+            Assert.That(mezziCoinvolti, Has.Count.EqualTo(1));
+        }
+
+        [Test]
+        public void UnaRichiestaConUnMezzoRientratoEPoiDiNuovoUscitoRestituisceLoStatoInViaggio()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1")
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", DateTime.Now.AddSeconds(1), "fonte");
+            new ArrivoSulPosto(richiesta, "M1", DateTime.Now.AddSeconds(2), "fonte");
+            new PartenzaInRientro(richiesta, "M1", DateTime.Now.AddSeconds(3), "fonte");
+            new PartenzaRientrata(richiesta, "M1", DateTime.Now.AddSeconds(4), "fonte");
+            new ComposizionePartenze(richiesta, DateTime.Now.AddSeconds(5), "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("YYY", "M1")
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", DateTime.Now.AddSeconds(6), "fonte");
+
+            var mezziCoinvolti = richiesta.MezziCoinvolti;
+            var stato = mezziCoinvolti["M1"];
+
+            Assert.That(stato, Is.InstanceOf<InViaggio>());
+        }
     }
 }
