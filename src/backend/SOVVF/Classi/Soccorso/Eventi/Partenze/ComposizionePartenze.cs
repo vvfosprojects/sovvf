@@ -118,14 +118,5 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
                     .Distinct());
             }
         }
-
-        /// <summary>
-        ///   Restituisce lo stato che il mezzo assume a seguito del verificarsi dell'evento
-        /// </summary>
-        /// <returns>Lo stato del mezzo</returns>
-        IStatoMezzo IPartenza.GetStatoMezzo()
-        {
-            return new Assegnato();
-        }
     }
 }

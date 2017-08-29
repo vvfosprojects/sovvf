@@ -31,11 +31,5 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         ///   Restituisce i codici dei mezzi coinvolti in questo evento
         /// </summary>
         ISet<string> CodiciMezzo { get; }
-
-        /// <summary>
-        ///   Restituisce lo stato che il mezzo assume a seguito del verificarsi dell'evento
-        /// </summary>
-        /// <returns>Lo stato del mezzo</returns>
-        IStatoMezzo GetStatoMezzo();
     }
 }

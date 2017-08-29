@@ -23,6 +23,7 @@ using System.Linq;
 using Modello.Classi.Organigramma;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Mezzi.SituazioneMezzo;
+using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 using Modello.Servizi.Infrastruttura.Organigramma;
 
 namespace Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.Implementation
@@ -127,14 +128,17 @@ namespace Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.Implementation
 
             // Raggruppa gli eventi per codice mezzo
             var eventiPerCodiceMezzo = eventiConCodiceMezzo.GroupBy(e => e.CodiceMezzo);
+            var processoreStatoMezzi = new ProcessoreStato();
 
             var situazioneMezzi =
                 from gruppo in eventiPerCodiceMezzo
                 let eventoPiuRecente = gruppo.OrderByDescending(e => e.Evento.Istante).First()
+                let stato = processoreStatoMezzi.ProcessaEventi(gruppo.Select(e => e.Evento)).Stato
                 select new SituazioneMezzo()
                 {
                     Codice = gruppo.Key,
-                    CodiceStato = eventoPiuRecente.Evento.GetStatoMezzo().Codice,
+                    CodiceStato = stato.Codice,
+#warning il codice richiesta e l'istante devono essere prelevati dallo stato, e non dall'evento più recente che potrebbe essere ininfluente
                     CodiceRichiestaAssistenza = eventoPiuRecente.CodiceRichiesta,
                     IstanteAggiornamentoStato = eventoPiuRecente.Evento.Istante
                 };

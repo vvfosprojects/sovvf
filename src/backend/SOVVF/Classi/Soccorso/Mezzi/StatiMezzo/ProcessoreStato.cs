@@ -34,8 +34,6 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// </summary>
         private IStatoMezzo stato;
 
-#warning Va specializzata questa classe per identificare il diagramma di stato per una singola richiesta. Va poi realizzata un'altra classe Processore capace di calcolare lo stato in generale, che viene inizializzata con lo stato di un mezzo in sede.
-
         /// <summary>
         ///   Il costruttore della classe. Lo stato originario è quello di mezzo non assegnato alla richiesta.
         /// </summary>
@@ -56,21 +54,27 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         ///   Esegue le transizioni di stato processando gli eventi dopo averli ordinati in ordine cronologico.
         /// </summary>
         /// <param name="eventi">Gli eventi che inducono le transizioni di stato</param>
-        public void ProcessaEventi(IEnumerable<IPartenza> eventi)
+        /// <returns>Il processore</returns>
+        public ProcessoreStato ProcessaEventi(IEnumerable<IPartenza> eventi)
         {
             foreach (var e in eventi.OrderBy(e => e.Istante))
             {
                 this.stato = this.stato.Transisci(e);
             }
+
+            return this;
         }
 
         /// <summary>
         ///   Esegue una transizione di stato
         /// </summary>
         /// <param name="evento">L'evento che induce la transizione di stato</param>
-        public void ProcessaEvento(IPartenza evento)
+        /// <returns>Il processore</returns>
+        public ProcessoreStato ProcessaEvento(IPartenza evento)
         {
             this.stato = this.stato.Transisci(evento);
+
+            return this;
         }
     }
 }
