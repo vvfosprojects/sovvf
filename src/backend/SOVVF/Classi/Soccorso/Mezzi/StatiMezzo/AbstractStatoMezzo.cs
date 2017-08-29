@@ -28,27 +28,19 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     public abstract class AbstractStatoMezzo : IStatoMezzo
     {
         /// <summary>
-        ///   Uno stato mezzo, con maggiore probabilità, implica l'assegnazione del mezzo alla
-        ///   richiesta. Gli stati che contravvengono questa consuetudine sono tenuti a fare
-        ///   l'override di questo metodo della classe base.
-        /// </summary>
-        public virtual bool AssegnatoARichiesta
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
         ///   Il codice identificativo dello stato
         /// </summary>
         public abstract string Codice { get; }
 
         /// <summary>
-        ///   Indica se il mezzo è disponibile in questo stato
+        ///   Indica se il mezzo è disponibile
         /// </summary>
         public abstract bool Disponibile { get; }
+
+        /// <summary>
+        ///   Indica se il mezzo è assegnato ad una richiesta
+        /// </summary>
+        public abstract bool AssegnatoARichiesta { get; }
 
         /// <summary>
         ///   Calcola la transizione di stato ottenuta in seguito al verificarsi di un evento

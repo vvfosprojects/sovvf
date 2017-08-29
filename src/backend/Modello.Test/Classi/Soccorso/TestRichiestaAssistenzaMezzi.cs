@@ -219,7 +219,7 @@ namespace Modello.Test.Classi.Soccorso
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
 
-            Assert.That(stato, Is.InstanceOf<NonAssegnatoARichiesta>());
+            Assert.That(stato, Is.InstanceOf<Libero>());
         }
 
         [Test]
@@ -241,7 +241,7 @@ namespace Modello.Test.Classi.Soccorso
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
 
-            Assert.That(stato, Is.InstanceOf<NonAssegnatoARichiesta>());
+            Assert.That(stato, Is.InstanceOf<Libero>());
         }
 
         [Test]
@@ -262,7 +262,7 @@ namespace Modello.Test.Classi.Soccorso
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
 
-            Assert.That(stato, Is.InstanceOf<NonAssegnatoARichiesta>());
+            Assert.That(stato, Is.InstanceOf<Libero>());
         }
 
         [Test]
@@ -282,7 +282,7 @@ namespace Modello.Test.Classi.Soccorso
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
 
-            Assert.That(stato, Is.InstanceOf<NonAssegnatoARichiesta>());
+            Assert.That(stato, Is.InstanceOf<Libero>());
         }
 
         [Test]

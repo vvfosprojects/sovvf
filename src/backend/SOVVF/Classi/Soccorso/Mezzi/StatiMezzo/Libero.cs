@@ -29,7 +29,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     ///   la quale il mezzo non è ancora stato assegnato. L'unica transizione valida da questo stato
     ///   è la composizione partenza.
     /// </summary>
-    public class NonAssegnatoARichiesta : AbstractStatoMezzo
+    public class Libero : AbstractStatoMezzo
     {
         /// <summary>
         ///   Il codice identificativo dello stato
@@ -38,7 +38,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         {
             get
             {
-                return nameof(NonAssegnatoARichiesta);
+                return nameof(Libero);
             }
         }
 
@@ -54,7 +54,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        ///   In questo stato il mezzo non è assegnato alla richiesta
+        /// In questo stato il mezzo non risulta assegnato ad una richiesta
         /// </summary>
         public override bool AssegnatoARichiesta
         {

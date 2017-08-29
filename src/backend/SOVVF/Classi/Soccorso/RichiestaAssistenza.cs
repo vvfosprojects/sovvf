@@ -200,7 +200,7 @@ namespace Modello.Classi.Soccorso
                 {
                     return eventiPartenzaRaggruppatiPerMezzo
                         .Select(g => g.Key)
-                        .ToDictionary(k => k, _ => (IStatoMezzo)new NonAssegnatoARichiesta());
+                        .ToDictionary(k => k, _ => (IStatoMezzo)new Libero());
                 }
 
                 var d = new Dictionary<string, IStatoMezzo>();

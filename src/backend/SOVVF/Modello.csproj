@@ -54,7 +54,7 @@
     <Compile Include="Classi\Soccorso\Eventi\IGestioneChiusura.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\AbstractStatoMezzo.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\ProcessoreStato.cs" />
-    <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\NonAssegnatoARichiesta.cs" />
+    <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\Libero.cs" />
     <Compile Include="Classi\Soccorso\TipologiaRichiesta.cs" />
     <Compile Include="Classi\Soccorso\StatiRichiesta\Chiusa.cs" />
     <Compile Include="Classi\Soccorso\StatiRichiesta\Sospesa.cs" />
@@ -78,7 +78,6 @@
     <Compile Include="Classi\Soccorso\Eventi\Partenze\FuoriServizio.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\Riassegnazione.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\Rilascio.cs" />
-    <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\Riassegnato.cs" />
     <Compile Include="Classi\Soccorso\Risorse\SelezioneRisorsa.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\ComposizionePartenze.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\PartenzaRientrata.cs" />

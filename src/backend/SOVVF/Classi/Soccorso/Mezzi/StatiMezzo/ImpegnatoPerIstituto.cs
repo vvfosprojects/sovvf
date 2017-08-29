@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
@@ -29,6 +30,17 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     /// </summary>
     public class ImpegnatoPerIstituto : AbstractStatoMezzo
     {
+        /// <summary>
+        /// In questo stato il mezzo non risulta assegnato ad una richiesta
+        /// </summary>
+        public override bool AssegnatoARichiesta
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         ///   Codice identificativo dello stato
         /// </summary>

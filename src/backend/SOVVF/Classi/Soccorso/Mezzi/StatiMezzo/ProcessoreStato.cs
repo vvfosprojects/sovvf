@@ -41,7 +41,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// </summary>
         public ProcessoreStato()
         {
-            this.stato = new NonAssegnatoARichiesta();
+            this.stato = new Libero();
         }
 
         /// <summary>
