@@ -29,7 +29,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
     /// <remarks>
     ///   L'arrivo sul posto consiste per esempio nel raggiungere il luogo della richiesta di assistenza
     /// </remarks>
-    public class ArrivoSulPosto : Evento, IPartenza
+    public class ArrivoSulPosto : AbstractPartenza
     {
         /// <summary>
         ///   Costruttore della classe
@@ -42,30 +42,8 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
             RichiestaAssistenza richiesta,
             string codiceMezzo,
             DateTime istante,
-            string codiceFonte) : base(richiesta, istante, codiceFonte)
+            string codiceFonte) : base(richiesta, codiceMezzo, istante, codiceFonte)
         {
-            if (string.IsNullOrWhiteSpace(codiceMezzo))
-            {
-                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceMezzo));
-            }
-
-            this.CodiceMezzo = codiceMezzo;
-        }
-
-        /// <summary>
-        ///   E' l'identificativo del mezzo a cui è associato l'evento
-        /// </summary>
-        public string CodiceMezzo { get; private set; }
-
-        /// <summary>
-        ///   Restituisce i codici dei mezzi coinvolti in questo evento
-        /// </summary>
-        ISet<string> IPartenza.CodiciMezzo
-        {
-            get
-            {
-                return new HashSet<string> { this.CodiceMezzo };
-            }
         }
     }
 }

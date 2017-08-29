@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Riassegnazione.cs" company="CNVVF">
+// <copyright file="AbstractPartenza.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,42 +18,53 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    ///   Modella il rilascio di un mezzo da una richiesta per riassegnazione ad altro intervento
+    /// Classe astratta che modella il comportamento di default di un evento partenza che coinvolge un solo mezzo.
     /// </summary>
-    public class Riassegnazione : Rilascio
+    public abstract class AbstractPartenza : Evento, IPartenza
     {
         /// <summary>
-        ///   Costruttore della classe.
+        ///   Costruttore della classe
         /// </summary>
         /// <param name="richiesta">E' la richiesta di assistenza a cui si aggiunge l'evento</param>
-        /// <param name="codiceRichiesta">
-        ///   Il codice della richiesta alla quale viene riassegnato il mezzo
-        /// </param>
         /// <param name="codiceMezzo">Il codice del mezzo</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public Riassegnazione(
+        public AbstractPartenza(
             RichiestaAssistenza richiesta,
-            string codiceRichiesta,
             string codiceMezzo,
             DateTime istante,
-            string codiceFonte) : base(richiesta, codiceMezzo, istante, codiceFonte)
+            string codiceFonte) : base(richiesta, istante, codiceFonte)
         {
-            if (string.IsNullOrWhiteSpace(codiceRichiesta))
+            if (string.IsNullOrWhiteSpace(codiceMezzo))
             {
-                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceRichiesta));
+                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceMezzo));
             }
 
-            this.CodiceRichiesta = codiceRichiesta;
+            this.CodiceMezzo = codiceMezzo;
         }
 
         /// <summary>
-        ///   E' l'identificativo della Richiesta di Assistenza a cui viene riassegnata la Partenza
+        ///   E' l'identificativo del mezzo a cui è associato l'evento
         /// </summary>
-        public string CodiceRichiesta { get; private set; }
+        public string CodiceMezzo { get; private set; }
+
+        /// <summary>
+        ///   Restituisce i codici dei mezzi coinvolti in questo evento
+        /// </summary>
+        ISet<string> IPartenza.CodiciMezzo
+        {
+            get
+            {
+                return new HashSet<string> { this.CodiceMezzo };
+            }
+        }
     }
 }

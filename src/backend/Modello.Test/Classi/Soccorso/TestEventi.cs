@@ -30,6 +30,7 @@ namespace Modello.Test.Classi.Soccorso
     public class TestEventi
     {
         private RichiestaAssistenza richiesta = new RichiestaAssistenza();
+        private RichiestaAssistenza richiestaSubentrata = new RichiestaAssistenza();
 
         [Test]
         public void Un_evento_di_inizio_presa_in_carico_non_puo_avere_una_data_di_default()
@@ -166,27 +167,27 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_riassegnazione_con_parametri_corretti_e_correttamente_creato()
         {
             var now = DateTime.Now;
-            var evento = new Riassegnazione(this.richiesta, "R1", "M1", DateTime.Now, "Fonte");
+            var evento = new RevocaPerRiassegnazione(this.richiesta, this.richiestaSubentrata, "M1", DateTime.Now, "Fonte");
 
-            Assert.That(evento.CodiceRichiesta, Is.EqualTo("R1"));
+            Assert.That(evento.RichiestaSubentrata, Is.SameAs(this.richiestaSubentrata));
             Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
             Assert.That(evento.Istante, Is.EqualTo(now));
             Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
         }
 
         [Test]
-        public void Un_evento_di_riassegnazione_con_richiesta_whitespace_non_puo_essere_creato()
+        public void Un_evento_di_riassegnazione_con_richiesta_subentrata_null_non_puo_essere_creato()
         {
             Assert.That(
-                () => new Riassegnazione(this.richiesta, " ", "M1", DateTime.Now, " "),
-                Throws.ArgumentException);
+                () => new RevocaPerRiassegnazione(this.richiesta, null, "M1", DateTime.Now, " "),
+                Throws.ArgumentNullException);
         }
 
         [Test]
         public void Un_evento_di_riassegnazione_con_mezzo_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new Riassegnazione(this.richiesta, "R1", " ", DateTime.Now, "Fonte"),
+                () => new RevocaPerRiassegnazione(this.richiesta, this.richiestaSubentrata, " ", DateTime.Now, "Fonte"),
                 Throws.ArgumentException);
         }
 
@@ -194,7 +195,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_riassegnazione_con_data_di_default_non_puo_essere_creato()
         {
             Assert.That(
-                () => new Riassegnazione(this.richiesta, "R1", "M1", new DateTime(), "Fonte"),
+                () => new RevocaPerRiassegnazione(this.richiesta, this.richiestaSubentrata, "M1", new DateTime(), "Fonte"),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
@@ -202,7 +203,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_riassegnazione_con_fonte_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new Riassegnazione(this.richiesta, "R1", "M1", DateTime.Now, " "),
+                () => new RevocaPerRiassegnazione(this.richiesta, this.richiestaSubentrata, "M1", DateTime.Now, " "),
                 Throws.ArgumentException);
         }
 

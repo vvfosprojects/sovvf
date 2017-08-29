@@ -312,6 +312,10 @@ namespace Modello.Test.Classi.Soccorso
             {
                 Codice = "R1",
             };
+            var richiestaSubentrata = new RichiestaAssistenza()
+            {
+                Codice = "R2",
+            };
             var componentePartenza1 = new ComponentePartenza("CF1", "M1");
             var componentePartenza2 = new ComponentePartenza("CF2", "M2");
             var istanteEventoAssegnazione = DateTime.Now.AddMinutes(-10);
@@ -324,7 +328,7 @@ namespace Modello.Test.Classi.Soccorso
             var istanteSulPostoM1 = DateTime.Now.AddMinutes(-4);
             var eventoSulPostoM1 = new ArrivoSulPosto(richiesta, "M1", istanteSulPostoM1, "Fonte");
             var istanteSganciatoM1 = DateTime.Now.AddMinutes(-2);
-            var eventoSganciatoM1 = new Riassegnazione(richiesta, "R1", "M1", istanteSganciatoM1, "Fonte");
+            var eventoSganciatoM1 = new RevocaPerRiassegnazione(richiesta, richiestaSubentrata, "M1", istanteSganciatoM1, "Fonte");
             var istanteEventoUscitaM2 = DateTime.Now.AddMinutes(-8);
             var eventoUscitaM2 = new UscitaPartenza(richiesta, "M2", istanteEventoUscitaM2, "Fonte");
             expected = new SituazioneMezzo[]

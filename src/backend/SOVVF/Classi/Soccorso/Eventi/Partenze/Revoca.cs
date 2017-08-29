@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Rilascio.cs" company="CNVVF">
+// <copyright file="Revoca.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -19,18 +19,17 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
-using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
-#warning Marcello: non ricordo che differenza vi è tra Rilascio e Riassegnazione
-
     /// <summary>
-    ///   Indica il rilascio della <see cref="ComposizionePartenze"></see> da una Richiesta di
-    ///   assistenza. (valido da dopo la <see cref="ComposizionePartenze" /> fino a
-    ///   <see cref="PartenzaInRientro" /> inclusa)
+    /// Classe astratta che modella la revoca nell'uso di un mezzo da parte di una <see cref="RichiestaAssistenza"/>.
+    /// Si specializza nei suoi casi concreti (per es. intervento non più necessario). 
     /// </summary>
-    public abstract class Rilascio : Evento, IPartenza
+    public abstract class Revoca : AbstractPartenza
     {
         /// <summary>
         ///   Costruttore della classe.
@@ -39,34 +38,12 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// <param name="codiceMezzo">Il codice del mezzo</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public Rilascio(
+        public Revoca(
             RichiestaAssistenza richiesta,
             string codiceMezzo,
             DateTime istante,
-            string codiceFonte) : base(richiesta, istante, codiceFonte)
+            string codiceFonte) : base(richiesta, codiceMezzo, istante, codiceFonte)
         {
-            if (string.IsNullOrWhiteSpace(codiceMezzo))
-            {
-                throw new ArgumentException("Cannot be null or whitespace", nameof(codiceMezzo));
-            }
-
-            this.CodiceMezzo = codiceMezzo;
-        }
-
-        /// <summary>
-        ///   E' l'identificativo del mezzo a cui è associato l'evento
-        /// </summary>
-        public string CodiceMezzo { get; private set; }
-
-        /// <summary>
-        ///   Restituisce i codici dei mezzi coinvolti in questo evento
-        /// </summary>
-        ISet<string> IPartenza.CodiciMezzo
-        {
-            get
-            {
-                return new HashSet<string>() { this.CodiceMezzo };
-            }
         }
     }
 }

@@ -203,6 +203,7 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConUnMezzoRiassegnatoPrimaDelRientroRestituisceLoStatoNonAssegnatoARichiesta()
         {
             var richiesta = new RichiestaAssistenza();
+            var richiestaSubentrata = new RichiestaAssistenza();
             var now = DateTime.Now;
             new ComposizionePartenze(richiesta, now, "fonte")
             {
@@ -214,7 +215,7 @@ namespace Modello.Test.Classi.Soccorso
             new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
             new ArrivoSulPosto(richiesta, "M1", now.AddSeconds(2), "fonte");
             new PartenzaInRientro(richiesta, "M1", now.AddSeconds(3), "fonte");
-            new Riassegnazione(richiesta, "R2", "M1", now.AddSeconds(4), "fonte");
+            new RevocaPerRiassegnazione(richiesta, richiestaSubentrata, "M1", now.AddSeconds(4), "fonte");
 
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
@@ -226,6 +227,7 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConUnMezzoRiassegnatoDopoLArrivoRestituisceLoStatoNonAssegnatoARichiesta()
         {
             var richiesta = new RichiestaAssistenza();
+            var richiestaSubentrata = new RichiestaAssistenza();
             var now = DateTime.Now;
             new ComposizionePartenze(richiesta, now, "fonte")
             {
@@ -236,7 +238,7 @@ namespace Modello.Test.Classi.Soccorso
             };
             new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
             new ArrivoSulPosto(richiesta, "M1", now.AddSeconds(2), "fonte");
-            new Riassegnazione(richiesta, "R2", "M1", now.AddSeconds(3), "fonte");
+            new RevocaPerRiassegnazione(richiesta, richiestaSubentrata, "M1", now.AddSeconds(3), "fonte");
 
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
@@ -248,6 +250,7 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConUnMezzoRiassegnatoDopoLUscitaRestituisceLoStatoNonAssegnatoARichiesta()
         {
             var richiesta = new RichiestaAssistenza();
+            var richiestaSubentrata = new RichiestaAssistenza();
             var now = DateTime.Now;
             new ComposizionePartenze(richiesta, now, "fonte")
             {
@@ -257,7 +260,7 @@ namespace Modello.Test.Classi.Soccorso
                 }
             };
             new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
-            new Riassegnazione(richiesta, "R2", "M1", now.AddSeconds(2), "fonte");
+            new RevocaPerRiassegnazione(richiesta, richiestaSubentrata, "M1", now.AddSeconds(2), "fonte");
 
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
@@ -269,6 +272,7 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConUnMezzoRiassegnatoDopoLaComposizioneRestituisceLoStatoNonAssegnatoARichiesta()
         {
             var richiesta = new RichiestaAssistenza();
+            var richiestaSubentrata = new RichiestaAssistenza();
             var now = DateTime.Now;
             new ComposizionePartenze(richiesta, now, "fonte")
             {
@@ -277,7 +281,7 @@ namespace Modello.Test.Classi.Soccorso
                     new ComponentePartenza("XXX", "M1")
                 }
             };
-            new Riassegnazione(richiesta, "R2", "M1", now.AddSeconds(1), "fonte");
+            new RevocaPerRiassegnazione(richiesta, richiestaSubentrata, "M1", now.AddSeconds(1), "fonte");
 
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];

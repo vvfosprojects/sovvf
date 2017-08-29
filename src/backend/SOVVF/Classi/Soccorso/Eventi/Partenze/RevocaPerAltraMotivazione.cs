@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FuoriServizio.cs" company="CNVVF">
+// <copyright file="RevocaPerAltraMotivazione.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -19,41 +19,42 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    ///   Modella il rilascio di un mezzo da una richiesta per uscita dal servizio.
+    /// Classe che modella una revoca per una motivazione non standard. La motivazione deve essere specificata all'atto della costruzione della classe.
     /// </summary>
-    public class FuoriServizio : AbstractPartenza
+    public class RevocaPerAltraMotivazione : Revoca
     {
         /// <summary>
-        ///   Costruttore della classe.
+        /// Costruttore della classe
         /// </summary>
-        /// <param name="richiesta">E' la richiesta di assistenza a cui si aggiunge l'evento</param>
-        /// <param name="codiceMezzo">Il codice del mezzo</param>
-        /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
-        /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        /// <param name="motivazione">
-        ///   E' la motivazione che giustifica la transizione di stato verso Fuori Servizio
-        /// </param>
-        public FuoriServizio(
-            RichiestaAssistenza richiesta,
-            string codiceMezzo,
-            DateTime istante,
+        /// <param name="richiesta">La richiesta a cui appartiene l'evento</param>
+        /// <param name="codiceMezzo">Il codice mezzo relativo all'evento</param>
+        /// <param name="istante">L'istante in cui l'evento si verifica</param>
+        /// <param name="codiceFonte">La fonte informativa dell'evento</param>
+        /// <param name="motivazione">La motivazione della revoca.</param>
+        public RevocaPerAltraMotivazione(
+            RichiestaAssistenza richiesta, 
+            string codiceMezzo, 
+            DateTime istante, 
             string codiceFonte,
             string motivazione) : base(richiesta, codiceMezzo, istante, codiceFonte)
         {
             if (string.IsNullOrWhiteSpace(motivazione))
             {
-                throw new ArgumentException("Cannot be null or whitespace", nameof(motivazione));
+                throw new ArgumentException("La motivazione della revoca deve essere specificata", nameof(motivazione));
             }
 
             this.Motivazione = motivazione;
         }
 
         /// <summary>
-        ///   E' la motivazione che giustifica la transizione di stato verso Fuori Servizio
+        /// La motivazione della revoca
         /// </summary>
         public string Motivazione { get; private set; }
     }

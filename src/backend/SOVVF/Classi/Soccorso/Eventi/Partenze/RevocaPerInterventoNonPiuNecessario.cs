@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="UscitaPartenza.cs" company="CNVVF">
+// <copyright file="RevocaPerInterventoNonPiuNecessario.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -19,29 +19,29 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
-using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    ///   Modella l'uscita di una <see cref="ComposizionePartenze" />.
+    /// Classe che modella la revoca nell'uso di un mezzo da parte di una <see cref="RichiestaAssistenza"/>
+    /// per intervento non più necessario.
     /// </summary>
-    /// <remarks>
-    ///   L'uscita consiste per esempio nel varcare il cancello di uscita del Comando Provinciale
-    /// </remarks>
-    public class UscitaPartenza : AbstractPartenza
+    public class RevocaPerInterventoNonPiuNecessario : Revoca
     {
         /// <summary>
-        ///   Costruttore della classe.
+        /// Costruttore della classe
         /// </summary>
-        /// <param name="richiesta">E' la richiesta di assistenza a cui si aggiunge l'evento</param>
-        /// <param name="codiceMezzo">Il codice del mezzo</param>
-        /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
-        /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public UscitaPartenza(
-            RichiestaAssistenza richiesta,
-            string codiceMezzo,
-            DateTime istante,
+        /// <param name="richiesta">La richiesta a cui appartiene l'evento</param>
+        /// <param name="codiceMezzo">Il codice mezzo relativo all'evento</param>
+        /// <param name="istante">L'istante in cui l'evento si verifica</param>
+        /// <param name="codiceFonte">La fonte informativa dell'evento</param>
+        public RevocaPerInterventoNonPiuNecessario(
+            RichiestaAssistenza richiesta, 
+            string codiceMezzo, 
+            DateTime istante, 
             string codiceFonte) : base(richiesta, codiceMezzo, istante, codiceFonte)
         {
         }
