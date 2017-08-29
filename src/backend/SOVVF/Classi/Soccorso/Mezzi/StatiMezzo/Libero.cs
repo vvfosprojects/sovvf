@@ -49,7 +49,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         {
             get
             {
-                throw new InvalidOperationException("Non è possibile valutare la disponibilità di un mezzo nello stato sconosciuto");
+                return true;
             }
         }
 
