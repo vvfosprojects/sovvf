@@ -53,13 +53,13 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        ///   Indica se il mezzo è disponibile in questo stato
+        ///   In questo stato il mezzo non risulta disponibile per l'assegnazione
         /// </summary>
         public override bool Disponibile
         {
             get
             {
-                return true;
+                return false;
             }
         }
     }
