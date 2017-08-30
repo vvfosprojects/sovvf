@@ -55,6 +55,7 @@
     <Compile Include="Classi\Soccorso\Eventi\Partenze\AbstractPartenza.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\Revoca.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\RevocaPerAltraMotivazione.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\Partenze\RevocaPerFuoriServizio.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\RevocaPerInterventoNonPiuNecessario.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\RevocaPerRiassegnazione.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\AbstractStatoMezzo.cs" />
