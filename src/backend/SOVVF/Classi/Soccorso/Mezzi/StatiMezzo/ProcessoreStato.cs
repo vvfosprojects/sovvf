@@ -57,7 +57,19 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Il processore</returns>
         public ProcessoreStato ProcessaEventi(IEnumerable<IPartenza> eventi)
         {
-            foreach (var e in eventi.OrderBy(e => e.Istante))
+            // Asserisce che gli eventi siano ordinati in ordine cronologico
+            IPartenza ultimoEvento = null;
+            foreach (var e in eventi)
+            {
+                if (ultimoEvento != null)
+                {
+                    System.Diagnostics.Debug.Assert(ultimoEvento.Istante <= e.Istante);
+                }
+
+                ultimoEvento = e;
+            }
+
+            foreach (var e in eventi)
             {
                 this.stato = this.stato.Transisci(e);
             }
