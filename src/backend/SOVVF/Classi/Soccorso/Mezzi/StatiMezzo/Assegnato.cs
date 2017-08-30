@@ -19,6 +19,8 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Diagnostics.CodeAnalysis;
+using Modello.Classi.Soccorso.Eventi.Eccezioni;
+using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
@@ -30,7 +32,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     public class Assegnato : AbstractStatoMezzo
     {
         /// <summary>
-        /// In questo stato il mezzo risulta assegnato ad una richiesta
+        ///   In questo stato il mezzo risulta assegnato ad una richiesta
         /// </summary>
         public override bool AssegnatoARichiesta
         {
@@ -60,6 +62,41 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
             {
                 return false;
             }
+        }
+
+        public override IStatoMezzo AcceptVisitor(PartenzaRientrata partenzaRientrata)
+        {
+            throw new WorkflowException();
+        }
+
+        public override IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze)
+        {
+            throw new WorkflowException();
+        }
+
+        public override IStatoMezzo AcceptVisitor(PartenzaInRientro partenzaInRientro)
+        {
+            throw new WorkflowException();
+        }
+
+        public override IStatoMezzo AcceptVisitor(UscitaPartenza fuoriServizio)
+        {
+            return new InViaggio();
+        }
+
+        public override IStatoMezzo AcceptVisitor(Revoca revoca)
+        {
+            return new InSede();
+        }
+
+        public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
+        {
+            throw new WorkflowException();
+        }
+
+        public override IStatoMezzo AcceptVisitor(ArrivoSulPosto arrivoSulPosto)
+        {
+            throw new WorkflowException();
         }
     }
 }

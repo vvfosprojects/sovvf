@@ -28,8 +28,7 @@ using NUnit.Framework;
 namespace Modello.Test.Classi.Soccorso
 {
     [TestFixture]
-    [Ignore("Le implementazioni non sono ancora pronte")]
-    public class TestRichiestaAssistenzaMezzi
+    public class TestRichiestaAssistenzaStatiMezzo
     {
         [Test]
         public void UnaRichiestaVuotaNonHaMezziCoinvolti()
@@ -200,7 +199,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnaRichiestaConUnMezzoRiassegnatoPrimaDelRientroRestituisceLoStatoNonAssegnatoARichiesta()
+        public void UnaRichiestaConUnMezzoRiassegnatoPrimaDelRientroRestituisceLoStatoLibero()
         {
             var richiesta = new RichiestaAssistenza();
             var richiestaSubentrata = new RichiestaAssistenza();
@@ -224,7 +223,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnaRichiestaConUnMezzoRiassegnatoDopoLArrivoRestituisceLoStatoNonAssegnatoARichiesta()
+        public void UnaRichiestaConUnMezzoRiassegnatoDopoLArrivoRestituisceLoStatoLibero()
         {
             var richiesta = new RichiestaAssistenza();
             var richiestaSubentrata = new RichiestaAssistenza();
@@ -247,7 +246,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnaRichiestaConUnMezzoRiassegnatoDopoLUscitaRestituisceLoStatoNonAssegnatoARichiesta()
+        public void UnaRichiestaConUnMezzoRiassegnatoDopoLUscitaRestituisceLoStatoLibero()
         {
             var richiesta = new RichiestaAssistenza();
             var richiestaSubentrata = new RichiestaAssistenza();
@@ -269,7 +268,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnaRichiestaConUnMezzoRiassegnatoDopoLaComposizioneRestituisceLoStatoNonAssegnatoARichiesta()
+        public void UnaRichiestaConUnMezzoRevocatoDopoLaComposizioneRestituisceLoStatoInSede()
         {
             var richiesta = new RichiestaAssistenza();
             var richiestaSubentrata = new RichiestaAssistenza();
@@ -286,7 +285,7 @@ namespace Modello.Test.Classi.Soccorso
             var mezziCoinvolti = richiesta.MezziCoinvolti;
             var stato = mezziCoinvolti["M1"];
 
-            Assert.That(stato, Is.InstanceOf<Libero>());
+            Assert.That(stato, Is.InstanceOf<InSede>());
         }
 
         [Test]

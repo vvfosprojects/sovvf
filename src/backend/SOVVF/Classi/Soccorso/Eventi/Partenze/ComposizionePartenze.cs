@@ -118,5 +118,10 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
                     .Distinct());
             }
         }
+
+        IStatoMezzo IVisitorStatoMezzo.Visit(ICanAcceptVisitorStatoMezzo stato)
+        {
+            return stato.AcceptVisitor(this);
+        }
     }
 }

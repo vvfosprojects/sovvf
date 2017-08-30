@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FuoriServizio.cs" company="CNVVF">
+// <copyright file="VaInFuoriServizio.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -19,13 +19,14 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
     ///   Modella il rilascio di un mezzo da una richiesta per uscita dal servizio.
     /// </summary>
-    public class FuoriServizio : AbstractPartenza
+    public class VaInFuoriServizio : AbstractPartenza
     {
         /// <summary>
         ///   Costruttore della classe.
@@ -37,7 +38,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// <param name="motivazione">
         ///   E' la motivazione che giustifica la transizione di stato verso Fuori Servizio
         /// </param>
-        public FuoriServizio(
+        public VaInFuoriServizio(
             RichiestaAssistenza richiesta,
             string codiceMezzo,
             DateTime istante,
@@ -56,5 +57,10 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         ///   E' la motivazione che giustifica la transizione di stato verso Fuori Servizio
         /// </summary>
         public string Motivazione { get; private set; }
+
+        public override IStatoMezzo Visit(ICanAcceptVisitorStatoMezzo stato)
+        {
+            return stato.AcceptVisitor(this);
+        }
     }
 }

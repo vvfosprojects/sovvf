@@ -34,7 +34,6 @@ using NUnit.Framework;
 namespace Modello.Test.Classi.Soccorso
 {
     [TestFixture]
-    [Ignore("Le implementazioni non sono ancora pronte")]
     public class TestSituazioneMezzi
     {
         [Test]

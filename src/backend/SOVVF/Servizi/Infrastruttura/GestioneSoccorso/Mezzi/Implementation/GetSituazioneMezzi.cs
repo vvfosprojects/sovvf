@@ -128,12 +128,11 @@ namespace Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.Implementation
 
             // Raggruppa gli eventi per codice mezzo
             var eventiPerCodiceMezzo = eventiConCodiceMezzo.GroupBy(e => e.CodiceMezzo);
-            var processoreStatoMezzi = new ProcessoreStato();
 
             var situazioneMezzi =
                 from gruppo in eventiPerCodiceMezzo
                 let eventoPiuRecente = gruppo.OrderByDescending(e => e.Evento.Istante).First()
-                let stato = processoreStatoMezzi.ProcessaEventi(gruppo.Select(e => e.Evento)).Stato
+                let stato = new ProcessoreStato().ProcessaEventi(gruppo.Select(e => e.Evento)).Stato
                 select new SituazioneMezzo()
                 {
                     Codice = gruppo.Key,

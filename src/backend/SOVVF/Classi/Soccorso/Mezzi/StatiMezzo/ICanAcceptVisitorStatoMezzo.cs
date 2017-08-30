@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IPartenza.cs" company="CNVVF">
+// <copyright file="ICanAcceptVisitorStatoMezzo.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,19 +17,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
+using Modello.Classi.Soccorso.Eventi.Partenze;
 
-namespace Modello.Classi.Soccorso.Eventi.Partenze
+namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
-    /// <summary>
-    ///   Indica che è un evento legato ad una partenza
-    /// </summary>
-    public interface IPartenza : IEvento, IVisitorStatoMezzo
+    public interface ICanAcceptVisitorStatoMezzo
     {
-        /// <summary>
-        ///   Restituisce i codici dei mezzi coinvolti in questo evento
-        /// </summary>
-        ISet<string> CodiciMezzo { get; }
+        IStatoMezzo AcceptVisitor(ArrivoSulPosto arrivoSulPosto);
+
+        IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio);
+
+        IStatoMezzo AcceptVisitor(UscitaPartenza fuoriServizio);
+
+        IStatoMezzo AcceptVisitor(Revoca revoca);
+
+        IStatoMezzo AcceptVisitor(PartenzaInRientro partenzaInRientro);
+
+        IStatoMezzo AcceptVisitor(PartenzaRientrata partenzaRientrata);
+
+        IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze);
     }
 }

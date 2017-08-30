@@ -22,11 +22,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    /// Classe astratta che modella il comportamento di default di un evento partenza che coinvolge un solo mezzo.
+    ///   Classe astratta che modella il comportamento di default di un evento partenza che coinvolge
+    ///   un solo mezzo.
     /// </summary>
     public abstract class AbstractPartenza : Evento, IPartenza
     {
@@ -66,5 +68,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
                 return new HashSet<string> { this.CodiceMezzo };
             }
         }
+
+        public abstract IStatoMezzo Visit(ICanAcceptVisitorStatoMezzo stato);
     }
 }

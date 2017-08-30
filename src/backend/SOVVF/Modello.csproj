@@ -51,14 +51,17 @@
   <ItemGroup>
     <Compile Include="Bindings.cs" />
     <Compile Include="Classi\Organigramma\PinNodo.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\Eccezioni\WorkflowException.cs" />
     <Compile Include="Classi\Soccorso\Eventi\IGestioneChiusura.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\AbstractPartenza.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\Partenze\IVisitorStatoMezzo.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\Revoca.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\RevocaPerAltraMotivazione.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\RevocaPerFuoriServizio.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\RevocaPerInterventoNonPiuNecessario.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\RevocaPerRiassegnazione.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\AbstractStatoMezzo.cs" />
+    <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\ICanAcceptVisitorStatoMezzo.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\ProcessoreStato.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\Libero.cs" />
     <Compile Include="Classi\Soccorso\TipologiaRichiesta.cs" />
@@ -81,7 +84,7 @@
     <Compile Include="Classi\Soccorso\Eventi\InizioPresaInCarico.cs" />
     <Compile Include="Classi\Soccorso\SquadraCoinvolta.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\IPartenza.cs" />
-    <Compile Include="Classi\Soccorso\Eventi\Partenze\FuoriServizio.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\Partenze\VaInFuoriServizio.cs" />
     <Compile Include="Classi\Soccorso\Risorse\SelezioneRisorsa.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\ComposizionePartenze.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\PartenzaRientrata.cs" />

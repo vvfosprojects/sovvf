@@ -17,7 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Diagnostics.CodeAnalysis;
+using Modello.Classi.Soccorso.Eventi.Eccezioni;
+using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
@@ -59,6 +62,41 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
             {
                 return false;
             }
+        }
+
+        public override IStatoMezzo AcceptVisitor(ArrivoSulPosto arrivoSulPosto)
+        {
+            throw new WorkflowException();
+        }
+
+        public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
+        {
+            throw new WorkflowException();
+        }
+
+        public override IStatoMezzo AcceptVisitor(UscitaPartenza fuoriServizio)
+        {
+            throw new WorkflowException();
+        }
+
+        public override IStatoMezzo AcceptVisitor(Revoca revoca)
+        {
+            throw new WorkflowException();
+        }
+
+        public override IStatoMezzo AcceptVisitor(PartenzaInRientro partenzaInRientro)
+        {
+            throw new WorkflowException();
+        }
+
+        public override IStatoMezzo AcceptVisitor(PartenzaRientrata partenzaRientrata)
+        {
+            throw new WorkflowException();
+        }
+
+        public override IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze)
+        {
+            return new Assegnato();
         }
     }
 }

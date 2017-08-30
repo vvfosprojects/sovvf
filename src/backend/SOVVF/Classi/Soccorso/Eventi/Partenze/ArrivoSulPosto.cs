@@ -45,5 +45,10 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
             string codiceFonte) : base(richiesta, codiceMezzo, istante, codiceFonte)
         {
         }
+
+        public override IStatoMezzo Visit(ICanAcceptVisitorStatoMezzo stato)
+        {
+            return stato.AcceptVisitor(this);
+        }
     }
 }

@@ -179,7 +179,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_riassegnazione_con_richiesta_subentrata_null_non_puo_essere_creato()
         {
             Assert.That(
-                () => new RevocaPerRiassegnazione(this.richiesta, null, "M1", DateTime.Now, " "),
+                () => new RevocaPerRiassegnazione(this.richiesta, null, "M1", DateTime.Now, "fonte"),
                 Throws.ArgumentNullException);
         }
 
@@ -302,7 +302,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_fuori_servizio_con_mezzo_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new FuoriServizio(this.richiesta, " ", DateTime.Now, "Fonte", "motivazione"),
+                () => new VaInFuoriServizio(this.richiesta, " ", DateTime.Now, "Fonte", "motivazione"),
                 Throws.ArgumentException);
         }
 
@@ -310,7 +310,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_fuori_servizio_con_data_di_default_non_puo_essere_creato()
         {
             Assert.That(
-                () => new FuoriServizio(this.richiesta, "M1", new DateTime(), "Fonte", "motivazione"),
+                () => new VaInFuoriServizio(this.richiesta, "M1", new DateTime(), "Fonte", "motivazione"),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
@@ -318,7 +318,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_fuori_servizio_con_fonte_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new FuoriServizio(this.richiesta, "M1", DateTime.Now, " ", "motivazione"),
+                () => new VaInFuoriServizio(this.richiesta, "M1", DateTime.Now, " ", "motivazione"),
                 Throws.ArgumentException);
         }
 
@@ -326,7 +326,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_fuori_servizio_con_motivazione_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new FuoriServizio(this.richiesta, "M1", DateTime.Now, "Fonte", " "),
+                () => new VaInFuoriServizio(this.richiesta, "M1", DateTime.Now, "Fonte", " "),
                 Throws.ArgumentException);
         }
 
@@ -334,7 +334,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_fuori_servizio_con_parametri_corretti_puo_essere_creato()
         {
             var now = DateTime.Now;
-            var evento = new FuoriServizio(this.richiesta, "M1", now, "Fonte", "motivazione");
+            var evento = new VaInFuoriServizio(this.richiesta, "M1", now, "Fonte", "motivazione");
 
             Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
             Assert.That(evento.Istante, Is.EqualTo(now));

@@ -22,12 +22,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    /// Classe astratta che modella la revoca nell'uso di un mezzo da parte di una <see cref="RichiestaAssistenza"/>.
-    /// Si specializza nei suoi casi concreti (per es. intervento non più necessario). 
+    ///   Classe astratta che modella la revoca nell'uso di un mezzo da parte di una
+    ///   <see cref="RichiestaAssistenza" />. Si specializza nei suoi casi concreti (per es.
+    ///   intervento non più necessario).
     /// </summary>
     public abstract class Revoca : AbstractPartenza
     {
@@ -44,6 +46,11 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
             DateTime istante,
             string codiceFonte) : base(richiesta, codiceMezzo, istante, codiceFonte)
         {
+        }
+
+        public override IStatoMezzo Visit(ICanAcceptVisitorStatoMezzo stato)
+        {
+            return stato.AcceptVisitor(this);
         }
     }
 }

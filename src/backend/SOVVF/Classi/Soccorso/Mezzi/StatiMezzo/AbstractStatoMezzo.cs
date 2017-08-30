@@ -25,7 +25,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     /// <summary>
     ///   La classe base per tutti gli <see cref="IStatoMezzo" />
     /// </summary>
-    public abstract class AbstractStatoMezzo : IStatoMezzo
+    public abstract class AbstractStatoMezzo : IStatoMezzo, ICanAcceptVisitorStatoMezzo
     {
         /// <summary>
         ///   Il codice identificativo dello stato
@@ -49,7 +49,21 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Il nuovo stato raggiunto a seguito della transizione</returns>
         public IStatoMezzo Transisci(IPartenza evento)
         {
-            throw new NotImplementedException();
+            return evento.Visit(this);
         }
+
+        public abstract IStatoMezzo AcceptVisitor(ArrivoSulPosto arrivoSulPosto);
+
+        public abstract IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio);
+
+        public abstract IStatoMezzo AcceptVisitor(UscitaPartenza fuoriServizio);
+
+        public abstract IStatoMezzo AcceptVisitor(Revoca revoca);
+
+        public abstract IStatoMezzo AcceptVisitor(PartenzaInRientro partenzaInRientro);
+
+        public abstract IStatoMezzo AcceptVisitor(PartenzaRientrata partenzaRientrata);
+
+        public abstract IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze);
     }
 }
