@@ -119,6 +119,11 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
             }
         }
 
+        /// <summary>
+        ///   Metodo di visita
+        /// </summary>
+        /// <param name="stato">Lo stato da visitare</param>
+        /// <returns>Il nuovo stato a seguito della transizione di stato</returns>
         IStatoMezzo IVisitorStatoMezzo.Visit(ICanAcceptVisitorStatoMezzo stato)
         {
             return stato.AcceptVisitor(this);

@@ -64,36 +64,71 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
             }
         }
 
+        /// <summary>
+        /// Nello stato <see cref="InViaggio"/> non può essere gestito l'evento <see cref="PartenzaRientrata"/>  
+        /// </summary>
+        /// <param name="partenzaRientrata">Il visitor</param>
+        /// <returns>Nulla perché solleva un'eccezione</returns>
         public override IStatoMezzo AcceptVisitor(PartenzaRientrata partenzaRientrata)
         {
             throw new WorkflowException();
         }
 
+        /// <summary>
+        /// Nello stato <see cref="InViaggio"/> non può essere gestito l'evento <see cref="ComposizionePartenze"/>  
+        /// </summary>
+        /// <param name="composizionePartenze">Il visitor</param>
+        /// <returns>Nulla perché solleva un'eccezione</returns>
         public override IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze)
         {
             throw new WorkflowException();
         }
 
+        /// <summary>
+        /// Nello stato <see cref="InViaggio"/> non può essere gestito l'evento <see cref="PartenzaInRientro"/>  
+        /// </summary>
+        /// <param name="partenzaInRientro">Il visitor</param>
+        /// <returns>Nulla perché solleva un'eccezione</returns>
         public override IStatoMezzo AcceptVisitor(PartenzaInRientro partenzaInRientro)
         {
             throw new WorkflowException();
         }
 
-        public override IStatoMezzo AcceptVisitor(UscitaPartenza fuoriServizio)
+        /// <summary>
+        /// Nello stato <see cref="InViaggio"/> non può essere gestito l'evento <see cref="UscitaPartenza"/>  
+        /// </summary>
+        /// <param name="uscitaPartenza">Il visitor</param>
+        /// <returns>Nulla perché solleva un'eccezione</returns>
+        public override IStatoMezzo AcceptVisitor(UscitaPartenza uscitaPartenza)
         {
             throw new WorkflowException();
         }
 
+        /// <summary>
+        /// Nello stato <see cref="InViaggio"/> l'evento <see cref="Revoca"/> produce la transizione nello stato <see cref="Libero"/>. 
+        /// </summary>
+        /// <param name="revoca">Il visitor</param>
+        /// <returns>Lo stato <see cref="Libero"/></returns>
         public override IStatoMezzo AcceptVisitor(Revoca revoca)
         {
             return new Libero();
         }
 
+        /// <summary>
+        /// Nello stato <see cref="InViaggio"/> non può essere gestito l'evento <see cref="VaInFuoriServizio"/>  
+        /// </summary>
+        /// <param name="vaInFuoriServizio">Il visitor</param>
+        /// <returns>Nulla perché solleva un'eccezione</returns>
         public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
         {
             throw new WorkflowException();
         }
 
+        /// <summary>
+        /// Nello stato <see cref="InViaggio"/> l'evento <see cref="ArrivoSulPosto"/> produce la transizione nello stato <see cref="SulPosto"/>. 
+        /// </summary>
+        /// <param name="arrivoSulPosto">Il visitor</param>
+        /// <returns>Lo stato <see cref="SulPosto"/></returns>
         public override IStatoMezzo AcceptVisitor(ArrivoSulPosto arrivoSulPosto)
         {
             return new SulPosto();

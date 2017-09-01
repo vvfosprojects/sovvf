@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="TestRichiestaAssistenzaMezzi.cs" company="CNVVF">
+// <copyright file="TestRichiestaAssistenzaStatiMezzo.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.

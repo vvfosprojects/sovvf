@@ -52,18 +52,53 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
             return evento.Visit(this);
         }
 
+        /// <summary>
+        ///   Accetta il visitor
+        /// </summary>
+        /// <param name="arrivoSulPosto">Il visitor accettato</param>
+        /// <returns>Il nuovo stato</returns>
         public abstract IStatoMezzo AcceptVisitor(ArrivoSulPosto arrivoSulPosto);
 
+        /// <summary>
+        ///   Accetta il visitor
+        /// </summary>
+        /// <param name="vaInFuoriServizio">Il visitor accettato</param>
+        /// <returns>Il nuovo stato</returns>
         public abstract IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio);
 
-        public abstract IStatoMezzo AcceptVisitor(UscitaPartenza fuoriServizio);
+        /// <summary>
+        ///   Accetta il visitor
+        /// </summary>
+        /// <param name="uscitaPartenza">Il visitor accettato</param>
+        /// <returns>Il nuovo stato</returns>
+        public abstract IStatoMezzo AcceptVisitor(UscitaPartenza uscitaPartenza);
 
+        /// <summary>
+        ///   Accetta il visitor
+        /// </summary>
+        /// <param name="revoca">Il visitor accettato</param>
+        /// <returns>Il nuovo stato</returns>
         public abstract IStatoMezzo AcceptVisitor(Revoca revoca);
 
+        /// <summary>
+        ///   Accetta il visitor
+        /// </summary>
+        /// <param name="partenzaInRientro">Il visitor accettato</param>
+        /// <returns>Il nuovo stato</returns>
         public abstract IStatoMezzo AcceptVisitor(PartenzaInRientro partenzaInRientro);
 
+        /// <summary>
+        ///   Accetta il visitor
+        /// </summary>
+        /// <param name="partenzaRientrata">Il visitor accettato</param>
+        /// <returns>Il nuovo stato</returns>
         public abstract IStatoMezzo AcceptVisitor(PartenzaRientrata partenzaRientrata);
 
+        /// <summary>
+        ///   Accetta il visitor
+        /// </summary>
+        /// <param name="composizionePartenze">Il visitor accettato</param>
+        /// <returns>Il nuovo stato</returns>
         public abstract IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze);
     }
 }

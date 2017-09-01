@@ -26,8 +26,21 @@ using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
+    /// <summary>
+    ///   Interfaccia che definisce il metodo di visita in accordo con il pattern Visitor
+    ///   <see cref="https://en.wikipedia.org/wiki/Visitor_pattern" />. Il visitor è rappresentato
+    ///   dagli eventi <see cref="IPartenza" /> che visitano gli stati mezzo per produrre la
+    ///   transizione verso lo stato successivo. Le transizioni vietate producono il verificarsi di
+    ///   un'eccezione. Quelle consentite restituiscono il nuovo stato come risultato
+    ///   dell'invocazione del metodo di visita.
+    /// </summary>
     public interface IVisitorStatoMezzo
     {
+        /// <summary>
+        ///   Metodo di visita
+        /// </summary>
+        /// <param name="stato">Lo stato da visitare</param>
+        /// <returns>Il nuovo stato a seguito della transizione di stato</returns>
         IStatoMezzo Visit(ICanAcceptVisitorStatoMezzo stato);
     }
 }

@@ -21,20 +21,58 @@ using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
+    /// <summary>
+    ///   Interfaccia che dichiara i metodi che possono essere invocati da un <see cref="IVisitorStatoMezzo" />.
+    /// </summary>
     public interface ICanAcceptVisitorStatoMezzo
     {
+        /// <summary>
+        ///   Accetta il visitor
+        /// </summary>
+        /// <param name="arrivoSulPosto">Il visitor accettato</param>
+        /// <returns>Il nuovo stato</returns>
         IStatoMezzo AcceptVisitor(ArrivoSulPosto arrivoSulPosto);
 
+        /// <summary>
+        ///   Accetta il visitor
+        /// </summary>
+        /// <param name="vaInFuoriServizio">Il visitor accettato</param>
+        /// <returns>Il nuovo stato</returns>
         IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio);
 
-        IStatoMezzo AcceptVisitor(UscitaPartenza fuoriServizio);
+        /// <summary>
+        ///   Accetta il visitor
+        /// </summary>
+        /// <param name="uscitaPartenza">Il visitor accettato</param>
+        /// <returns>Il nuovo stato</returns>
+        IStatoMezzo AcceptVisitor(UscitaPartenza uscitaPartenza);
 
+        /// <summary>
+        ///   Accetta il visitor
+        /// </summary>
+        /// <param name="revoca">Il visitor accettato</param>
+        /// <returns>Il nuovo stato</returns>
         IStatoMezzo AcceptVisitor(Revoca revoca);
 
-        IStatoMezzo AcceptVisitor(PartenzaInRientro partenzaInRientro);
+        /// <summary>
+        ///   Accetta il visitor
+        /// </summary>
+        /// <param name="partenzaRientrata">Il visitor accettato</param>
+        /// <returns>Il nuovo stato</returns>
+        IStatoMezzo AcceptVisitor(PartenzaInRientro partenzaRientrata);
 
+        /// <summary>
+        ///   Accetta il visitor
+        /// </summary>
+        /// <param name="partenzaRientrata">Il visitor accettato</param>
+        /// <returns>Il nuovo stato</returns>
         IStatoMezzo AcceptVisitor(PartenzaRientrata partenzaRientrata);
 
+        /// <summary>
+        ///   Accetta il visitor
+        /// </summary>
+        /// <param name="composizionePartenze">Il visitor accettato</param>
+        /// <returns>Il nuovo stato</returns>
         IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze);
     }
 }

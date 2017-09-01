@@ -69,6 +69,11 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
             }
         }
 
+        /// <summary>
+        /// Metodo di visita del visitor.
+        /// </summary>
+        /// <param name="stato">Lo stato da visitare</param>
+        /// <returns>Restituisce lo stato raggiunto a seguito della visita da parte dell'evento <see cref="IPartenza"/> visitor.</returns>
         public abstract IStatoMezzo Visit(ICanAcceptVisitorStatoMezzo stato);
     }
 }

@@ -58,6 +58,11 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// </summary>
         public string Motivazione { get; private set; }
 
+        /// <summary>
+        ///   Metodo di visita
+        /// </summary>
+        /// <param name="stato">Lo stato da visitare</param>
+        /// <returns>Il nuovo stato a seguito della transizione di stato</returns>
         public override IStatoMezzo Visit(ICanAcceptVisitorStatoMezzo stato)
         {
             return stato.AcceptVisitor(this);
