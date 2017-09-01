@@ -46,9 +46,11 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         public ComposizionePartenze(
             RichiestaAssistenza richiesta,
             DateTime istante,
-            string codiceFonte) : base(richiesta, istante, codiceFonte)
+            string codiceFonte,
+            bool fuoriSede) : base(richiesta, istante, codiceFonte)
         {
             this.Componenti = new HashSet<ComponentePartenza>();
+            this.FuoriSede = fuoriSede;
         }
 
         /// <summary>
@@ -93,6 +95,14 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         ///   E' la lista dei componenti della partenza
         /// </summary>
         public ISet<ComponentePartenza> Componenti { get; set; }
+
+        /// <summary>
+        ///   Indica se l'evento si verifica mentre il mezzo è fuori sede o in sede. Questa
+        ///   informazione serve al <see cref="ProcessoreStato" /> a calcolare lo stato iniziale in
+        ///   cui il mezzo si trova, a partire dall'analisi degli eventi di un mezzo contenuti in una
+        ///   singola richiesta.
+        /// </summary>
+        public bool FuoriSede { get; private set; }
 
         /// <summary>
         ///   Restituisce il numero di componenti della <see cref="ComposizionePartenze" />

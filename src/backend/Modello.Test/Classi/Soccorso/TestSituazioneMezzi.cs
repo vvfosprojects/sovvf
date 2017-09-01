@@ -192,7 +192,7 @@ namespace Modello.Test.Classi.Soccorso
             var componentePartenza1 = new ComponentePartenza("CF1", "M1");
             var componentePartenza2 = new ComponentePartenza("CF2", "M2");
             var istanteEvento1 = DateTime.Now.AddMinutes(-10);
-            var eventoComposizione = new ComposizionePartenze(richiesta, istanteEvento1, "Fonte")
+            var eventoComposizione = new ComposizionePartenze(richiesta, istanteEvento1, "Fonte", false)
             {
                 Componenti = new HashSet<ComponentePartenza>() { componentePartenza1, componentePartenza2 }
             };
@@ -230,7 +230,7 @@ namespace Modello.Test.Classi.Soccorso
             var componentePartenza1 = new ComponentePartenza("CF3", "M3");
             var componentePartenza2 = new ComponentePartenza("CF4", "M4");
             var istanteEvento1 = DateTime.Now.AddMinutes(-11);
-            var eventoComposizione = new ComposizionePartenze(richiesta, istanteEvento1, "Fonte")
+            var eventoComposizione = new ComposizionePartenze(richiesta, istanteEvento1, "Fonte", false)
             {
                 Componenti = new HashSet<ComponentePartenza>() { componentePartenza1, componentePartenza2 }
             };
@@ -267,7 +267,7 @@ namespace Modello.Test.Classi.Soccorso
             var componentePartenza1 = new ComponentePartenza("CF3", "M3");
             var componentePartenza2 = new ComponentePartenza("CF4", "M4");
             var istanteEventoAssegnazione = DateTime.Now.AddMinutes(-10);
-            var eventoComposizione = new ComposizionePartenze(richiesta, istanteEventoAssegnazione, "Fonte")
+            var eventoComposizione = new ComposizionePartenze(richiesta, istanteEventoAssegnazione, "Fonte", false)
             {
                 Componenti = new HashSet<ComponentePartenza>() { componentePartenza1, componentePartenza2 }
             };
@@ -318,7 +318,7 @@ namespace Modello.Test.Classi.Soccorso
             var componentePartenza1 = new ComponentePartenza("CF1", "M1");
             var componentePartenza2 = new ComponentePartenza("CF2", "M2");
             var istanteEventoAssegnazione = DateTime.Now.AddMinutes(-10);
-            var eventoComposizione = new ComposizionePartenze(richiesta, istanteEventoAssegnazione, "Fonte")
+            var eventoComposizione = new ComposizionePartenze(richiesta, istanteEventoAssegnazione, "Fonte", false)
             {
                 Componenti = new HashSet<ComponentePartenza>() { componentePartenza1, componentePartenza2 }
             };
@@ -388,7 +388,7 @@ namespace Modello.Test.Classi.Soccorso
             };
             var componentePartenza = new ComponentePartenza("CF1", "M1");
             var istanteEvento = DateTime.Now.AddMinutes(-10);
-            var eventoComposizione = new ComposizionePartenze(richiestaConUnicoEventoDiAssegnazione, istanteEvento, "Fonte")
+            var eventoComposizione = new ComposizionePartenze(richiestaConUnicoEventoDiAssegnazione, istanteEvento, "Fonte", false)
             {
                 Componenti = new HashSet<ComponentePartenza>() { componentePartenza }
             };

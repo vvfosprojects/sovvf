@@ -268,7 +268,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_composizione_partenze_con_parametri_corretti_e_correttamente_creato()
         {
             var now = DateTime.Now;
-            var evento = new ComposizionePartenze(this.richiesta, now, "Fonte");
+            var evento = new ComposizionePartenze(this.richiesta, now, "Fonte", false);
 
             Assert.That(evento.Istante, Is.EqualTo(now));
             Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
@@ -277,7 +277,7 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void Un_evento_di_composizione_partenze_ha_i_componenti_non_null()
         {
-            var evento = new ComposizionePartenze(this.richiesta, DateTime.Now, "Fonte");
+            var evento = new ComposizionePartenze(this.richiesta, DateTime.Now, "Fonte", false);
 
             Assert.That(evento.Componenti, Is.Not.Null);
         }
@@ -286,7 +286,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_composizione_partenze_con_data_di_default_non_puo_essere_creato()
         {
             Assert.That(
-                () => new ComposizionePartenze(this.richiesta, new DateTime(), "Fonte"),
+                () => new ComposizionePartenze(this.richiesta, new DateTime(), "Fonte", false),
                 Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
@@ -294,7 +294,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_composizione_partenze_con_fonte_whitespace_non_puo_essere_creato()
         {
             Assert.That(
-                () => new ComposizionePartenze(this.richiesta, DateTime.Now, " "),
+                () => new ComposizionePartenze(this.richiesta, DateTime.Now, " ", false),
                 Throws.ArgumentException);
         }
 

@@ -1,0 +1,148 @@
+﻿//-----------------------------------------------------------------------
+// <copyright file="FuoriSincro.cs" company="CNVVF">
+// Copyright (C) 2017 - CNVVF
+//
+// This file is part of SOVVF.
+// SOVVF is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// SOVVF is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+//-----------------------------------------------------------------------
+using System;
+using System.Diagnostics.CodeAnalysis;
+using Modello.Classi.Soccorso.Eventi.Eccezioni;
+using Modello.Classi.Soccorso.Eventi.Partenze;
+
+namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
+{
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "https://stackoverflow.com/questions/37189518/stylecop-warning-sa1126prefixcallscorrectly-on-name-of-class")]
+
+    /// <summary>
+    ///   Stato iniziale del processore che non ha evidenza del fatto che il mezzo sia nello stato
+    ///   <see cref="InSede" /> oppure <see cref="InViaggio" />. Il processore si porta in uno stato
+    ///   ben noto dopo aver processato il primo evento che è un evento
+    ///   <see cref="ComposizionePartenze" />. Questo evento reca anche informazioni sullo stato
+    ///   iniziale. Di conseguenza calcola lo stato successivo che può essere
+    ///   <see cref="Assegnato" /> oppure <see cref="InViaggio" />.
+    /// </summary>
+    internal class FuoriSincro : AbstractStatoMezzo
+    {
+        /// <summary>
+        ///   In questo stato non ha senso chiedere se il mezzo è assegnato ad una richiesta.
+        /// </summary>
+        public override bool AssegnatoARichiesta
+        {
+            get
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
+        /// <summary>
+        ///   Codice identificativo dello stato
+        /// </summary>
+        public override string Codice
+        {
+            get
+            {
+                return nameof(FuoriSincro);
+            }
+        }
+
+        /// <summary>
+        ///   In questo stato non ha senso chiedere se il mezzo è disponibile per l'assegnazione.
+        /// </summary>
+        public override bool Disponibile
+        {
+            get
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
+        /// <summary>
+        ///   Nello stato <see cref="FuoriSincro" /> non può essere gestito l'evento <see cref="PartenzaRientrata" />
+        /// </summary>
+        /// <param name="partenzaRientrata">Il visitor</param>
+        /// <returns>Nulla perché solleva un'eccezione</returns>
+        public override IStatoMezzo AcceptVisitor(PartenzaRientrata partenzaRientrata)
+        {
+            throw new WorkflowException();
+        }
+
+        /// <summary>
+        ///   Nello stato <see cref="FuoriSincro" /> un evento <see cref="ComposizionePartenze" /> fa
+        ///   transire verso lo stato <see cref="Assegnato" /> se la composizione avviene col mezzo
+        ///   in sede, oppure verso lo stato <see cref="Libero" /> se la composizione avviene mentre
+        ///   il mezzo non è in sede.
+        /// </summary>
+        /// <param name="composizionePartenze">Il visitor</param>
+        /// <returns>Il nuovo stato a valle dell'evento di composizione</returns>
+        public override IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze)
+        {
+            if (composizionePartenze.FuoriSede)
+                return new Libero();
+            else
+                return new Assegnato();
+        }
+
+        /// <summary>
+        ///   Nello stato <see cref="FuoriSincro" /> non può essere gestito l'evento <see cref="PartenzaInRientro" />
+        /// </summary>
+        /// <param name="partenzaInRientro">Il visitor</param>
+        /// <returns>Nulla perché solleva un'eccezione</returns>
+        public override IStatoMezzo AcceptVisitor(PartenzaInRientro partenzaInRientro)
+        {
+            throw new WorkflowException();
+        }
+
+        /// <summary>
+        ///   Nello stato <see cref="FuoriSincro" /> non può essere gestito l'evento <see cref="UscitaPartenza" />
+        /// </summary>
+        /// <param name="uscitaPartenza">Il visitor</param>
+        /// <returns>Nulla perché solleva un'eccezione</returns>
+        public override IStatoMezzo AcceptVisitor(UscitaPartenza uscitaPartenza)
+        {
+            throw new WorkflowException();
+        }
+
+        /// <summary>
+        ///   Nello stato <see cref="FuoriSincro" /> non può essere gestito l'evento <see cref="Revoca" />
+        /// </summary>
+        /// <param name="revoca">Il visitor</param>
+        /// <returns>Nulla perché solleva un'eccezione</returns>
+        public override IStatoMezzo AcceptVisitor(Revoca revoca)
+        {
+            throw new WorkflowException();
+        }
+
+        /// <summary>
+        ///   Nello stato <see cref="FuoriSincro" /> non può essere gestito l'evento <see cref="VaInFuoriServizio" />
+        /// </summary>
+        /// <param name="vaInFuoriServizio">Il visitor</param>
+        /// <returns>Nulla perché solleva un'eccezione</returns>
+        public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
+        {
+            return new FuoriServizio();
+        }
+
+        /// <summary>
+        ///   Nello stato <see cref="FuoriSincro" /> non può essere gestito l'evento <see cref="ArrivoSulPosto" />
+        /// </summary>
+        /// <param name="arrivoSulPosto">Il visitor</param>
+        /// <returns>Nulla perché solleva un'eccezione</returns>
+        public override IStatoMezzo AcceptVisitor(ArrivoSulPosto arrivoSulPosto)
+        {
+            throw new WorkflowException();
+        }
+    }
+}

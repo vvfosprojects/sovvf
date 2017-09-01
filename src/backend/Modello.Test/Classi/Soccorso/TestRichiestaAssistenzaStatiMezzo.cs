@@ -44,7 +44,7 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConUnMezzoAssegnatoRestituisceUnMezzoCoinvolto()
         {
             var richiesta = new RichiestaAssistenza();
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
@@ -61,7 +61,7 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConUnMezzoAssegnatoRestituisceIlCodiceDelMezzoCoinvolto()
         {
             var richiesta = new RichiestaAssistenza();
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
@@ -82,7 +82,7 @@ namespace Modello.Test.Classi.Soccorso
             var richiesta = new RichiestaAssistenza();
             var eventi = new IPartenza[]
             {
-                new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+                new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
                 {
                     Componenti = new HashSet<ComponentePartenza>()
                     {
@@ -104,7 +104,7 @@ namespace Modello.Test.Classi.Soccorso
             var richiesta = new RichiestaAssistenza();
             var eventi = new IPartenza[]
             {
-                new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+                new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
                 {
                     Componenti = new HashSet<ComponentePartenza>()
                     {
@@ -124,14 +124,14 @@ namespace Modello.Test.Classi.Soccorso
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
                     new ComponentePartenza("XXX", "M1"),
                 }
             };
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
@@ -149,7 +149,7 @@ namespace Modello.Test.Classi.Soccorso
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
-            new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+            new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
@@ -178,7 +178,7 @@ namespace Modello.Test.Classi.Soccorso
             var richiesta = new RichiestaAssistenza();
             var eventi = new IPartenza[]
             {
-                new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+                new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
                 {
                     Componenti = new HashSet<ComponentePartenza>()
                     {
@@ -189,7 +189,7 @@ namespace Modello.Test.Classi.Soccorso
                 new ArrivoSulPosto(richiesta, "M1", DateTime.Now, "fonte"),
                 new PartenzaInRientro(richiesta, "M1", DateTime.Now, "fonte"),
                 new PartenzaRientrata(richiesta, "M1", DateTime.Now, "fonte"),
-                new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
+                new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
                 {
                     Componenti = new HashSet<ComponentePartenza>()
                     {

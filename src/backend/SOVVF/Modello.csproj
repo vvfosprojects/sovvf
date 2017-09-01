@@ -61,6 +61,7 @@
     <Compile Include="Classi\Soccorso\Eventi\Partenze\RevocaPerInterventoNonPiuNecessario.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\RevocaPerRiassegnazione.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\AbstractStatoMezzo.cs" />
+    <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\FuoriSincro.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\ICanAcceptVisitorStatoMezzo.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\ProcessoreStato.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\Libero.cs" />

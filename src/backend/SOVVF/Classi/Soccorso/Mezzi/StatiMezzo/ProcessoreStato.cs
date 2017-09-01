@@ -39,7 +39,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// </summary>
         public ProcessoreStato()
         {
-            this.stato = new InSede();
+            this.stato = new FuoriSincro();
         }
 
         /// <summary>
