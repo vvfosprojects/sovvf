@@ -65,7 +65,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        /// Nello stato <see cref="InSede"/> non può essere gestito l'evento <see cref="ArrivoSulPosto"/>  
+        ///   Nello stato <see cref="InSede" /> non può essere gestito l'evento <see cref="ArrivoSulPosto" />
         /// </summary>
         /// <param name="arrivoSulPosto">Il visitor</param>
         /// <returns>Nulla perché solleva un'eccezione</returns>
@@ -75,17 +75,18 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        /// Nello stato <see cref="InSede"/> non può essere gestito l'evento <see cref="VaInFuoriServizio"/>  
+        ///   Nello stato <see cref="InSede" /> l'evento <see cref="VaInFuoriServizio" /> produce la
+        ///   transizione nello stato <see cref="FuoriServizio" />.
         /// </summary>
         /// <param name="vaInFuoriServizio">Il visitor</param>
-        /// <returns>Nulla perché solleva un'eccezione</returns>
+        /// <returns>Lo stato <see cref="FuoriServizio" /></returns>
         public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
         {
-            throw new WorkflowException();
+            return new FuoriServizio();
         }
 
         /// <summary>
-        /// Nello stato <see cref="InSede"/> non può essere gestito l'evento <see cref="UscitaPartenza"/>  
+        ///   Nello stato <see cref="InSede" /> non può essere gestito l'evento <see cref="UscitaPartenza" />
         /// </summary>
         /// <param name="uscitaPartenza">Il visitor</param>
         /// <returns>Nulla perché solleva un'eccezione</returns>
@@ -95,7 +96,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        /// Nello stato <see cref="InSede"/> non può essere gestito l'evento <see cref="Revoca"/>  
+        ///   Nello stato <see cref="InSede" /> non può essere gestito l'evento <see cref="Revoca" />
         /// </summary>
         /// <param name="revoca">Il visitor</param>
         /// <returns>Nulla perché solleva un'eccezione</returns>
@@ -105,7 +106,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        /// Nello stato <see cref="InSede"/> non può essere gestito l'evento <see cref="PartenzaInRientro"/>  
+        ///   Nello stato <see cref="InSede" /> non può essere gestito l'evento <see cref="PartenzaInRientro" />
         /// </summary>
         /// <param name="partenzaInRientro">Il visitor</param>
         /// <returns>Nulla perché solleva un'eccezione</returns>
@@ -115,7 +116,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        /// Nello stato <see cref="InSede"/> non può essere gestito l'evento <see cref="PartenzaRientrata"/>  
+        ///   Nello stato <see cref="InSede" /> non può essere gestito l'evento <see cref="PartenzaRientrata" />
         /// </summary>
         /// <param name="partenzaRientrata">Il visitor</param>
         /// <returns>Nulla perché solleva un'eccezione</returns>
@@ -125,10 +126,11 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        /// Nello stato <see cref="InSede"/> l'evento <see cref="ComposizionePartenze"/> produce la transizione nello stato <see cref="Assegnato"/>. 
+        ///   Nello stato <see cref="InSede" /> l'evento <see cref="ComposizionePartenze" /> produce
+        ///   la transizione nello stato <see cref="Assegnato" />.
         /// </summary>
         /// <param name="composizionePartenze">Il visitor</param>
-        /// <returns>Lo stato <see cref="Assegnato"/></returns>
+        /// <returns>Lo stato <see cref="Assegnato" /></returns>
         public override IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze)
         {
             return new Assegnato();

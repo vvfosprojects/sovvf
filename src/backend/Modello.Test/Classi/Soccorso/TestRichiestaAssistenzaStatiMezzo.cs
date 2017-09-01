@@ -416,5 +416,128 @@ namespace Modello.Test.Classi.Soccorso
 
             Assert.That(stato, Is.InstanceOf<InViaggio>());
         }
+
+        [Test]
+        public void UnMezzoPuoAndareDirettamenteFuoriServizio()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new VaInFuoriServizio(richiesta, "M1", now, "fonte", "test");
+
+            var mezziCoinvolti = richiesta.MezziCoinvolti;
+            var stato = mezziCoinvolti["M1"];
+
+            Assert.That(stato, Is.InstanceOf<FuoriServizio>());
+        }
+
+        [Test]
+        public void UnMezzoAssegnatoPuoAndareFuoriServizio()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1")
+                }
+            };
+            new VaInFuoriServizio(richiesta, "M1", now.AddSeconds(1), "fonte", "test");
+
+            var mezziCoinvolti = richiesta.MezziCoinvolti;
+            var stato = mezziCoinvolti["M1"];
+
+            Assert.That(stato, Is.InstanceOf<FuoriServizio>());
+        }
+
+        [Test]
+        public void UnMezzoUscitoPuoAndareFuoriServizio()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1")
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
+            new VaInFuoriServizio(richiesta, "M1", now.AddSeconds(2), "fonte", "test");
+
+            var mezziCoinvolti = richiesta.MezziCoinvolti;
+            var stato = mezziCoinvolti["M1"];
+
+            Assert.That(stato, Is.InstanceOf<FuoriServizio>());
+        }
+
+        [Test]
+        public void UnMezzoArrivatoPuoAndareFuoriServizio()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1")
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
+            new ArrivoSulPosto(richiesta, "M1", now.AddSeconds(2), "fonte");
+            new VaInFuoriServizio(richiesta, "M1", now.AddSeconds(3), "fonte", "test");
+
+            var mezziCoinvolti = richiesta.MezziCoinvolti;
+            var stato = mezziCoinvolti["M1"];
+
+            Assert.That(stato, Is.InstanceOf<FuoriServizio>());
+        }
+
+        [Test]
+        public void UnMezzoPartitoPuoAndareFuoriServizio()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1")
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
+            new ArrivoSulPosto(richiesta, "M1", now.AddSeconds(2), "fonte");
+            new PartenzaInRientro(richiesta, "M1", now.AddSeconds(3), "fonte");
+            new VaInFuoriServizio(richiesta, "M1", now.AddSeconds(4), "fonte", "test");
+
+            var mezziCoinvolti = richiesta.MezziCoinvolti;
+            var stato = mezziCoinvolti["M1"];
+
+            Assert.That(stato, Is.InstanceOf<FuoriServizio>());
+        }
+
+        [Test]
+        public void UnMezzoRientratoPuoAndareFuoriServizio()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte")
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1")
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte");
+            new ArrivoSulPosto(richiesta, "M1", now.AddSeconds(2), "fonte");
+            new PartenzaInRientro(richiesta, "M1", now.AddSeconds(3), "fonte");
+            new PartenzaRientrata(richiesta, "M1", now.AddSeconds(4), "fonte");
+            new VaInFuoriServizio(richiesta, "M1", now.AddSeconds(5), "fonte", "test");
+
+            var mezziCoinvolti = richiesta.MezziCoinvolti;
+            var stato = mezziCoinvolti["M1"];
+
+            Assert.That(stato, Is.InstanceOf<FuoriServizio>());
+        }
     }
 }

@@ -65,7 +65,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        ///   Nello stato <see cref="InRientro" /> non può essere gestito l'evento <see cref="partenzaRientrata" />
+        ///   Nello stato <see cref="FuoriServizio" /> non può essere gestito l'evento <see cref="partenzaRientrata" />
         /// </summary>
         /// <param name="partenzaRientrata">Il visitor</param>
         /// <returns>Nulla perché solleva un'eccezione</returns>
@@ -75,7 +75,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        ///   Nello stato <see cref="InRientro" /> non può essere gestito l'evento <see cref="ComposizionePartenze" />
+        ///   Nello stato <see cref="FuoriServizio" /> non può essere gestito l'evento <see cref="ComposizionePartenze" />
         /// </summary>
         /// <param name="composizionePartenze">Il visitor</param>
         /// <returns>Nulla perché solleva un'eccezione</returns>
@@ -85,7 +85,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        ///   Nello stato <see cref="InRientro" /> non può essere gestito l'evento <see cref="PartenzaInRientro" />
+        ///   Nello stato <see cref="FuoriServizio" /> non può essere gestito l'evento <see cref="PartenzaInRientro" />
         /// </summary>
         /// <param name="partenzaInRientro">Il visitor</param>
         /// <returns>Nulla perché solleva un'eccezione</returns>
@@ -95,7 +95,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        ///   Nello stato <see cref="InRientro" /> non può essere gestito l'evento <see cref="UscitaPartenza" />
+        ///   Nello stato <see cref="FuoriServizio" /> non può essere gestito l'evento <see cref="UscitaPartenza" />
         /// </summary>
         /// <param name="uscitaPartenza">Il visitor</param>
         /// <returns>Nulla perché solleva un'eccezione</returns>
@@ -105,7 +105,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        ///   Nello stato <see cref="InRientro" /> non può essere gestito l'evento <see cref="Revoca" />
+        ///   Nello stato <see cref="FuoriServizio" /> non può essere gestito l'evento <see cref="Revoca" />
         /// </summary>
         /// <param name="revoca">Il visitor</param>
         /// <returns>Nulla perché solleva un'eccezione</returns>
@@ -115,7 +115,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        ///   Nello stato <see cref="InRientro" /> non può essere gestito l'evento <see cref="VaInFuoriServizio" />
+        ///   Nello stato <see cref="FuoriServizio" /> non può essere gestito l'evento <see cref="VaInFuoriServizio" />
         /// </summary>
         /// <param name="vaInFuoriServizio">Il visitor</param>
         /// <returns>Nulla perché solleva un'eccezione</returns>

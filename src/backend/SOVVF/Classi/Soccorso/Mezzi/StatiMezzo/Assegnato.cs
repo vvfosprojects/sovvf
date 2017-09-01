@@ -117,13 +117,14 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        ///   Nello stato <see cref="Assegnato" /> non può essere gestito l'evento <see cref="VaInFuoriServizio" />
+        ///   Nello stato <see cref="Assegnato" /> l'evento <see cref="VaInFuoriServizio" /> produce
+        ///   la transizione nello stato <see cref="FuoriServizio" />.
         /// </summary>
         /// <param name="vaInFuoriServizio">Il visitor</param>
-        /// <returns>Nulla perché solleva un'eccezione</returns>
+        /// <returns>Lo stato <see cref="FuoriServizio" /></returns>
         public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
         {
-            throw new WorkflowException();
+            return new FuoriServizio();
         }
 
         /// <summary>

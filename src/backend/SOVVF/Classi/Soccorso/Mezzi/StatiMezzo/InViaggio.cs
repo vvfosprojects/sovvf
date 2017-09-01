@@ -65,7 +65,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        /// Nello stato <see cref="InViaggio"/> non può essere gestito l'evento <see cref="PartenzaRientrata"/>  
+        ///   Nello stato <see cref="InViaggio" /> non può essere gestito l'evento <see cref="PartenzaRientrata" />
         /// </summary>
         /// <param name="partenzaRientrata">Il visitor</param>
         /// <returns>Nulla perché solleva un'eccezione</returns>
@@ -75,7 +75,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        /// Nello stato <see cref="InViaggio"/> non può essere gestito l'evento <see cref="ComposizionePartenze"/>  
+        ///   Nello stato <see cref="InViaggio" /> non può essere gestito l'evento <see cref="ComposizionePartenze" />
         /// </summary>
         /// <param name="composizionePartenze">Il visitor</param>
         /// <returns>Nulla perché solleva un'eccezione</returns>
@@ -85,7 +85,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        /// Nello stato <see cref="InViaggio"/> non può essere gestito l'evento <see cref="PartenzaInRientro"/>  
+        ///   Nello stato <see cref="InViaggio" /> non può essere gestito l'evento <see cref="PartenzaInRientro" />
         /// </summary>
         /// <param name="partenzaInRientro">Il visitor</param>
         /// <returns>Nulla perché solleva un'eccezione</returns>
@@ -95,7 +95,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        /// Nello stato <see cref="InViaggio"/> non può essere gestito l'evento <see cref="UscitaPartenza"/>  
+        ///   Nello stato <see cref="InViaggio" /> non può essere gestito l'evento <see cref="UscitaPartenza" />
         /// </summary>
         /// <param name="uscitaPartenza">Il visitor</param>
         /// <returns>Nulla perché solleva un'eccezione</returns>
@@ -105,30 +105,33 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        /// Nello stato <see cref="InViaggio"/> l'evento <see cref="Revoca"/> produce la transizione nello stato <see cref="Libero"/>. 
+        ///   Nello stato <see cref="InViaggio" /> l'evento <see cref="Revoca" /> produce la
+        ///   transizione nello stato <see cref="Libero" />.
         /// </summary>
         /// <param name="revoca">Il visitor</param>
-        /// <returns>Lo stato <see cref="Libero"/></returns>
+        /// <returns>Lo stato <see cref="Libero" /></returns>
         public override IStatoMezzo AcceptVisitor(Revoca revoca)
         {
             return new Libero();
         }
 
         /// <summary>
-        /// Nello stato <see cref="InViaggio"/> non può essere gestito l'evento <see cref="VaInFuoriServizio"/>  
+        ///   Nello stato <see cref="InViaggio" /> l'evento <see cref="VaInFuoriServizio" /> produce
+        ///   la transizione nello stato <see cref="FuoriServizio" />.
         /// </summary>
         /// <param name="vaInFuoriServizio">Il visitor</param>
-        /// <returns>Nulla perché solleva un'eccezione</returns>
+        /// <returns>Lo stato <see cref="FuoriServizio" /></returns>
         public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
         {
-            throw new WorkflowException();
+            return new FuoriServizio();
         }
 
         /// <summary>
-        /// Nello stato <see cref="InViaggio"/> l'evento <see cref="ArrivoSulPosto"/> produce la transizione nello stato <see cref="SulPosto"/>. 
+        ///   Nello stato <see cref="InViaggio" /> l'evento <see cref="ArrivoSulPosto" /> produce la
+        ///   transizione nello stato <see cref="SulPosto" />.
         /// </summary>
         /// <param name="arrivoSulPosto">Il visitor</param>
-        /// <returns>Lo stato <see cref="SulPosto"/></returns>
+        /// <returns>Lo stato <see cref="SulPosto" /></returns>
         public override IStatoMezzo AcceptVisitor(ArrivoSulPosto arrivoSulPosto)
         {
             return new SulPosto();
