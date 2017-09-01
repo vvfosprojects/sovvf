@@ -56,6 +56,7 @@ namespace Modello.Classi.Soccorso.Eventi
             this.Istante = istante;
             this.CodiceFonte = codiceFonte;
             richiesta.AddEvento(this);
+            this.IstanteCreazione = DateTime.UtcNow;
         }
 
         /// <summary>
@@ -69,5 +70,11 @@ namespace Modello.Classi.Soccorso.Eventi
         ///   sensore, un altro sistema informativo, lo stesso SOVVF.
         /// </summary>
         public string CodiceFonte { get; private set; }
+
+        /// <summary>
+        ///   E' la data in cui l'evento è stato creato. Può differire da <see cref="Istante" /> nel
+        ///   caso in cui la registrazione di un evento avvenga posticipata.
+        /// </summary>
+        private DateTime IstanteCreazione { get; set; }
     }
 }
