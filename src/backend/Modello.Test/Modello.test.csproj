@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classi\Soccorso\TestProcessoreStatoMezzi.cs" />
     <Compile Include="Classi\Soccorso\TestRichiestaAssistenzaStatiMezzo.cs" />
     <Compile Include="Classi\Utenti\Autenticazione\TestUtente.cs" />
     <Compile Include="Classi\Organigramma\TestUnitaOperativa.cs" />
