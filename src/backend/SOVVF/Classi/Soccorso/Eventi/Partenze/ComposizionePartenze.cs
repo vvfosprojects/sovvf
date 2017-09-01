@@ -43,6 +43,9 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// <param name="richiesta">E' la richiesta di assistenza a cui si aggiunge l'evento</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
+        /// <param name="fuoriSede">
+        ///   Indica se, al momento della composizione, il mezzo è fuori sede o meno
+        /// </param>
         public ComposizionePartenze(
             RichiestaAssistenza richiesta,
             DateTime istante,

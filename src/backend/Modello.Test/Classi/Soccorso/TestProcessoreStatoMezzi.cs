@@ -30,7 +30,7 @@ namespace Modello.Test.Classi.Soccorso
     public class TestProcessoreStatoMezzi
     {
         [Test]
-        public void UnaRichiestaConUnMezzoAssegnatoMentreEInSedeRestituisceLoStatoAssegnato()
+        public void UnEventoDiComposizioneMentreIlMezzoEInSedeRestituisceLoStatoAssegnato()
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
@@ -52,7 +52,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnaRichiestaConUnMezzoAssegnatoMentreNonEInSedeRestituisceLoStatoLibero()
+        public void UnEventoDiComposizioneMentreIlMezzoNonEInSedeRestituisceLoStatoLibero()
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
@@ -74,7 +74,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnaRichiestaConUnMezzoPartitoRestituisceLoStatoInViaggio()
+        public void UnMezzoPartitoRestituisceLoStatoInViaggio()
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
@@ -96,7 +96,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnaRichiestaConUnMezzoSulPostoRestituisceLoStatoSulPosto()
+        public void UnMezzoSulPostoRestituisceLoStatoSulPosto()
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
@@ -119,7 +119,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnaRichiestaConUnMezzoPartitoDalPostoRestituisceLoStatoInRientro()
+        public void UnMezzoPartitoDalPostoRestituisceLoStatoInRientro()
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
@@ -143,7 +143,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnaRichiestaConUnMezzoRientratoInSedeRestituisceLoStatoInSede()
+        public void UnMezzoRientratoInSedeRestituisceLoStatoInSede()
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
@@ -168,7 +168,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnaRichiestaConUnMezzoRiassegnatoPrimaDelRientroRestituisceLoStatoLibero()
+        public void UnMezzoRiassegnatoPrimaDelRientroRestituisceLoStatoLibero()
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
@@ -194,7 +194,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnaRichiestaConUnMezzoRiassegnatoDopoLArrivoRestituisceLoStatoLibero()
+        public void UnMezzoRiassegnatoDopoLArrivoRestituisceLoStatoLibero()
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
@@ -219,7 +219,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnaRichiestaConUnMezzoRiassegnatoDopoLUscitaRestituisceLoStatoLibero()
+        public void UnMezzoRiassegnatoDopoLUscitaRestituisceLoStatoLibero()
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
@@ -243,7 +243,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnaRichiestaConUnMezzoRevocatoDopoLaComposizioneRestituisceLoStatoInSede()
+        public void UnMezzoRevocatoDopoLaComposizioneRestituisceLoStatoInSede()
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
@@ -266,7 +266,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnaRichiestaConUnMezzoRientratoEPoiDiNuovoUscitoRestituisceLoStatoInViaggio()
+        public void UnMezzoRientratoEPoiDiNuovoUscitoRestituisceLoStatoInViaggio()
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();

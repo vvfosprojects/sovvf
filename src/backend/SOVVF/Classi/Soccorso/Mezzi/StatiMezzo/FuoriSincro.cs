@@ -90,9 +90,13 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         public override IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze)
         {
             if (composizionePartenze.FuoriSede)
+            {
                 return new Libero();
+            }
             else
+            {
                 return new Assegnato();
+            }
         }
 
         /// <summary>
