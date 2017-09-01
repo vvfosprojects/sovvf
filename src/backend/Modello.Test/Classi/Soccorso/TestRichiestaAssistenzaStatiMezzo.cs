@@ -80,7 +80,8 @@ namespace Modello.Test.Classi.Soccorso
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
-            var eventi = new IPartenza[] {
+            var eventi = new IPartenza[]
+            {
                 new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
                 {
                     Componenti = new HashSet<ComponentePartenza>()
@@ -101,7 +102,8 @@ namespace Modello.Test.Classi.Soccorso
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
-            var eventi = new IPartenza[] {
+            var eventi = new IPartenza[]
+            {
                 new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
                 {
                     Componenti = new HashSet<ComponentePartenza>()
@@ -174,7 +176,8 @@ namespace Modello.Test.Classi.Soccorso
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
-            var eventi = new IPartenza[] {
+            var eventi = new IPartenza[]
+            {
                 new ComposizionePartenze(richiesta, DateTime.Now, "fonte")
                 {
                     Componenti = new HashSet<ComponentePartenza>()
