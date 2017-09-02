@@ -91,16 +91,6 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        ///   Nello stato <see cref="FuoriSincro" /> non può essere gestito l'evento <see cref="PartenzaRientrata" />
-        /// </summary>
-        /// <param name="partenzaRientrata">Il visitor</param>
-        /// <returns>Nulla perché solleva un'eccezione</returns>
-        public override IStatoMezzo AcceptVisitor(PartenzaRientrata partenzaRientrata)
-        {
-            throw new WorkflowException();
-        }
-
-        /// <summary>
         ///   Nello stato <see cref="FuoriSincro" /> un evento <see cref="ComposizionePartenze" /> fa
         ///   transire verso lo stato <see cref="Assegnato" /> se la composizione avviene col mezzo
         ///   in sede, oppure verso lo stato <see cref="Libero" /> se la composizione avviene mentre
@@ -121,36 +111,6 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        ///   Nello stato <see cref="FuoriSincro" /> non può essere gestito l'evento <see cref="PartenzaInRientro" />
-        /// </summary>
-        /// <param name="partenzaInRientro">Il visitor</param>
-        /// <returns>Nulla perché solleva un'eccezione</returns>
-        public override IStatoMezzo AcceptVisitor(PartenzaInRientro partenzaInRientro)
-        {
-            throw new WorkflowException();
-        }
-
-        /// <summary>
-        ///   Nello stato <see cref="FuoriSincro" /> non può essere gestito l'evento <see cref="UscitaPartenza" />
-        /// </summary>
-        /// <param name="uscitaPartenza">Il visitor</param>
-        /// <returns>Nulla perché solleva un'eccezione</returns>
-        public override IStatoMezzo AcceptVisitor(UscitaPartenza uscitaPartenza)
-        {
-            throw new WorkflowException();
-        }
-
-        /// <summary>
-        ///   Nello stato <see cref="FuoriSincro" /> non può essere gestito l'evento <see cref="Revoca" />
-        /// </summary>
-        /// <param name="revoca">Il visitor</param>
-        /// <returns>Nulla perché solleva un'eccezione</returns>
-        public override IStatoMezzo AcceptVisitor(Revoca revoca)
-        {
-            throw new WorkflowException();
-        }
-
-        /// <summary>
         ///   Nello stato <see cref="FuoriSincro" /> non può essere gestito l'evento <see cref="VaInFuoriServizio" />
         /// </summary>
         /// <param name="vaInFuoriServizio">Il visitor</param>
@@ -158,16 +118,6 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
         {
             return new FuoriServizio(vaInFuoriServizio.Istante);
-        }
-
-        /// <summary>
-        ///   Nello stato <see cref="FuoriSincro" /> non può essere gestito l'evento <see cref="ArrivoSulPosto" />
-        /// </summary>
-        /// <param name="arrivoSulPosto">Il visitor</param>
-        /// <returns>Nulla perché solleva un'eccezione</returns>
-        public override IStatoMezzo AcceptVisitor(ArrivoSulPosto arrivoSulPosto)
-        {
-            throw new WorkflowException();
         }
     }
 }

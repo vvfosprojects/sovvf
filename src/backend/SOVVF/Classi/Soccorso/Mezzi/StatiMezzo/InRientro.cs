@@ -86,36 +86,6 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        ///   Nello stato <see cref="InRientro" /> non può essere gestito l'evento <see cref="ComposizionePartenze" />
-        /// </summary>
-        /// <param name="composizionePartenze">Il visitor</param>
-        /// <returns>Nulla perché solleva un'eccezione</returns>
-        public override IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze)
-        {
-            throw new WorkflowException();
-        }
-
-        /// <summary>
-        ///   Nello stato <see cref="InRientro" /> non può essere gestito l'evento <see cref="PartenzaInRientro" />
-        /// </summary>
-        /// <param name="partenzaInRientro">Il visitor</param>
-        /// <returns>Nulla perché solleva un'eccezione</returns>
-        public override IStatoMezzo AcceptVisitor(PartenzaInRientro partenzaInRientro)
-        {
-            throw new WorkflowException();
-        }
-
-        /// <summary>
-        ///   Nello stato <see cref="InRientro" /> non può essere gestito l'evento <see cref="UscitaPartenza" />
-        /// </summary>
-        /// <param name="uscitaPartenza">Il visitor</param>
-        /// <returns>Nulla perché solleva un'eccezione</returns>
-        public override IStatoMezzo AcceptVisitor(UscitaPartenza uscitaPartenza)
-        {
-            throw new WorkflowException();
-        }
-
-        /// <summary>
         ///   Nello stato <see cref="InRientro" /> l'evento <see cref="Revoca" /> produce la
         ///   transizione nello stato <see cref="Libero" />.
         /// </summary>
@@ -135,16 +105,6 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
         {
             return new FuoriServizio(vaInFuoriServizio.Istante);
-        }
-
-        /// <summary>
-        ///   Nello stato <see cref="InRientro" /> non può essere gestito l'evento <see cref="ArrivoSulPosto" />
-        /// </summary>
-        /// <param name="arrivoSulPosto">Il visitor</param>
-        /// <returns>Nulla perché solleva un'eccezione</returns>
-        public override IStatoMezzo AcceptVisitor(ArrivoSulPosto arrivoSulPosto)
-        {
-            throw new WorkflowException();
         }
     }
 }

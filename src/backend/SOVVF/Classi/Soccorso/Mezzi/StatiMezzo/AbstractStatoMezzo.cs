@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
@@ -69,52 +70,94 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        ///   Accetta il visitor
+        ///   Accetta il visitor e scatena l'implementazione di default che consiste nel sollevare
+        ///   una <see cref="WorkflowException" />. Gli stati concreti, implementati nelle classi
+        ///   derivate, effettuano l'override dei metodi corrispondenti a transizioni di stato
+        ///   ammesse, restituendo lo stato corretto a fronte dell'evento (visitor) di ingresso.
         /// </summary>
         /// <param name="arrivoSulPosto">Il visitor accettato</param>
-        /// <returns>Il nuovo stato</returns>
-        public abstract IStatoMezzo AcceptVisitor(ArrivoSulPosto arrivoSulPosto);
+        /// <returns>Niente, poiché solleva un'eccezione</returns>
+        public virtual IStatoMezzo AcceptVisitor(ArrivoSulPosto arrivoSulPosto)
+        {
+            throw new WorkflowException($"Impossibile transire in seguito all'evento {nameof(arrivoSulPosto)}");
+        }
 
         /// <summary>
-        ///   Accetta il visitor
+        ///   Accetta il visitor e scatena l'implementazione di default che consiste nel sollevare
+        ///   una <see cref="WorkflowException" />. Gli stati concreti, implementati nelle classi
+        ///   derivate, effettuano l'override dei metodi corrispondenti a transizioni di stato
+        ///   ammesse, restituendo lo stato corretto a fronte dell'evento (visitor) di ingresso.
         /// </summary>
-        /// <param name="vaInFuoriServizio">Il visitor accettato</param>
-        /// <returns>Il nuovo stato</returns>
-        public abstract IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio);
+        /// <param name="arrivoSulPosto">Il visitor accettato</param>
+        /// <returns>Niente, poiché solleva un'eccezione</returns>
+        public virtual IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
+        {
+            throw new WorkflowException($"Impossibile transire in seguito all'evento {nameof(vaInFuoriServizio)}");
+        }
 
         /// <summary>
-        ///   Accetta il visitor
+        ///   Accetta il visitor e scatena l'implementazione di default che consiste nel sollevare
+        ///   una <see cref="WorkflowException" />. Gli stati concreti, implementati nelle classi
+        ///   derivate, effettuano l'override dei metodi corrispondenti a transizioni di stato
+        ///   ammesse, restituendo lo stato corretto a fronte dell'evento (visitor) di ingresso.
         /// </summary>
-        /// <param name="uscitaPartenza">Il visitor accettato</param>
-        /// <returns>Il nuovo stato</returns>
-        public abstract IStatoMezzo AcceptVisitor(UscitaPartenza uscitaPartenza);
+        /// <param name="arrivoSulPosto">Il visitor accettato</param>
+        /// <returns>Niente, poiché solleva un'eccezione</returns>
+        public virtual IStatoMezzo AcceptVisitor(UscitaPartenza uscitaPartenza)
+        {
+            throw new WorkflowException($"Impossibile transire in seguito all'evento {nameof(uscitaPartenza)}");
+        }
 
         /// <summary>
-        ///   Accetta il visitor
+        ///   Accetta il visitor e scatena l'implementazione di default che consiste nel sollevare
+        ///   una <see cref="WorkflowException" />. Gli stati concreti, implementati nelle classi
+        ///   derivate, effettuano l'override dei metodi corrispondenti a transizioni di stato
+        ///   ammesse, restituendo lo stato corretto a fronte dell'evento (visitor) di ingresso.
         /// </summary>
-        /// <param name="revoca">Il visitor accettato</param>
-        /// <returns>Il nuovo stato</returns>
-        public abstract IStatoMezzo AcceptVisitor(Revoca revoca);
+        /// <param name="arrivoSulPosto">Il visitor accettato</param>
+        /// <returns>Niente, poiché solleva un'eccezione</returns>
+        public virtual IStatoMezzo AcceptVisitor(Revoca revoca)
+        {
+            throw new WorkflowException($"Impossibile transire in seguito all'evento {nameof(revoca)}");
+        }
 
         /// <summary>
-        ///   Accetta il visitor
+        ///   Accetta il visitor e scatena l'implementazione di default che consiste nel sollevare
+        ///   una <see cref="WorkflowException" />. Gli stati concreti, implementati nelle classi
+        ///   derivate, effettuano l'override dei metodi corrispondenti a transizioni di stato
+        ///   ammesse, restituendo lo stato corretto a fronte dell'evento (visitor) di ingresso.
         /// </summary>
-        /// <param name="partenzaInRientro">Il visitor accettato</param>
-        /// <returns>Il nuovo stato</returns>
-        public abstract IStatoMezzo AcceptVisitor(PartenzaInRientro partenzaInRientro);
+        /// <param name="arrivoSulPosto">Il visitor accettato</param>
+        /// <returns>Niente, poiché solleva un'eccezione</returns>
+        public virtual IStatoMezzo AcceptVisitor(PartenzaInRientro partenzaInRientro)
+        {
+            throw new WorkflowException($"Impossibile transire in seguito all'evento {nameof(partenzaInRientro)}");
+        }
 
         /// <summary>
-        ///   Accetta il visitor
+        ///   Accetta il visitor e scatena l'implementazione di default che consiste nel sollevare
+        ///   una <see cref="WorkflowException" />. Gli stati concreti, implementati nelle classi
+        ///   derivate, effettuano l'override dei metodi corrispondenti a transizioni di stato
+        ///   ammesse, restituendo lo stato corretto a fronte dell'evento (visitor) di ingresso.
         /// </summary>
-        /// <param name="partenzaRientrata">Il visitor accettato</param>
-        /// <returns>Il nuovo stato</returns>
-        public abstract IStatoMezzo AcceptVisitor(PartenzaRientrata partenzaRientrata);
+        /// <param name="arrivoSulPosto">Il visitor accettato</param>
+        /// <returns>Niente, poiché solleva un'eccezione</returns>
+        public virtual IStatoMezzo AcceptVisitor(PartenzaRientrata partenzaRientrata)
+        {
+            throw new WorkflowException($"Impossibile transire in seguito all'evento {nameof(partenzaRientrata)}");
+        }
 
         /// <summary>
-        ///   Accetta il visitor
+        ///   Accetta il visitor e scatena l'implementazione di default che consiste nel sollevare
+        ///   una <see cref="WorkflowException" />. Gli stati concreti, implementati nelle classi
+        ///   derivate, effettuano l'override dei metodi corrispondenti a transizioni di stato
+        ///   ammesse, restituendo lo stato corretto a fronte dell'evento (visitor) di ingresso.
         /// </summary>
-        /// <param name="composizionePartenze">Il visitor accettato</param>
-        /// <returns>Il nuovo stato</returns>
-        public abstract IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze);
+        /// <param name="arrivoSulPosto">Il visitor accettato</param>
+        /// <returns>Niente, poiché solleva un'eccezione</returns>
+        public virtual IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze)
+        {
+            throw new WorkflowException($"Impossibile transire in seguito all'evento {nameof(composizionePartenze)}");
+        }
     }
 }
