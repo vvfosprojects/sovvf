@@ -18,20 +18,17 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    /// Classe che modella una revoca per una motivazione non standard. La motivazione deve essere specificata all'atto della costruzione della classe.
+    ///   Classe che modella una revoca per una motivazione non standard. La motivazione deve essere
+    ///   specificata all'atto della costruzione della classe.
     /// </summary>
     public class RevocaPerAltraMotivazione : Revoca
     {
         /// <summary>
-        /// Costruttore della classe
+        ///   Costruttore della classe
         /// </summary>
         /// <param name="richiesta">La richiesta a cui appartiene l'evento</param>
         /// <param name="codiceMezzo">Il codice mezzo relativo all'evento</param>
@@ -39,9 +36,9 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         /// <param name="codiceFonte">La fonte informativa dell'evento</param>
         /// <param name="motivazione">La motivazione della revoca.</param>
         public RevocaPerAltraMotivazione(
-            RichiestaAssistenza richiesta, 
-            string codiceMezzo, 
-            DateTime istante, 
+            RichiestaAssistenza richiesta,
+            string codiceMezzo,
+            DateTime istante,
             string codiceFonte,
             string motivazione) : base(richiesta, codiceMezzo, istante, codiceFonte)
         {
@@ -54,7 +51,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         }
 
         /// <summary>
-        /// La motivazione della revoca
+        ///   La motivazione della revoca
         /// </summary>
         public string Motivazione { get; private set; }
     }

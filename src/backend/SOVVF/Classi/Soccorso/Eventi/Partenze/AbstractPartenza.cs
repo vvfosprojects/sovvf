@@ -19,9 +19,6 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
@@ -70,10 +67,13 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         }
 
         /// <summary>
-        /// Metodo di visita del visitor.
+        ///   Metodo di visita del visitor.
         /// </summary>
         /// <param name="stato">Lo stato da visitare</param>
-        /// <returns>Restituisce lo stato raggiunto a seguito della visita da parte dell'evento <see cref="IPartenza"/> visitor.</returns>
+        /// <returns>
+        ///   Restituisce lo stato raggiunto a seguito della visita da parte dell'evento
+        ///   <see cref="IPartenza" /> visitor.
+        /// </returns>
         public abstract IStatoMezzo Visit(ICanAcceptVisitorStatoMezzo stato);
     }
 }

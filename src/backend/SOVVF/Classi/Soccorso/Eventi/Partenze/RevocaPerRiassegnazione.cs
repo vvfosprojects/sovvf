@@ -18,31 +18,29 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    /// Modella l'evento di revoca per riassegnazione mezzo ad altro intervento
+    ///   Modella l'evento di revoca per riassegnazione mezzo ad altro intervento
     /// </summary>
     public class RevocaPerRiassegnazione : Revoca
     {
         /// <summary>
-        /// Costruttore della classe
+        ///   Costruttore della classe
         /// </summary>
         /// <param name="richiesta">La richiesta a cui appartiene l'evento</param>
-        /// <param name="richiestaSubentrata">La richiesta che subentra nell'uso del mezzo, in seguito all'evento</param>
+        /// <param name="richiestaSubentrata">
+        ///   La richiesta che subentra nell'uso del mezzo, in seguito all'evento
+        /// </param>
         /// <param name="codiceMezzo">Il codice mezzo relativo all'evento</param>
         /// <param name="istante">L'istante in cui l'evento si verifica</param>
         /// <param name="codiceFonte">La fonte informativa dell'evento</param>
         public RevocaPerRiassegnazione(
             RichiestaAssistenza richiesta,
             RichiestaAssistenza richiestaSubentrata,
-            string codiceMezzo, 
-            DateTime istante, 
+            string codiceMezzo,
+            DateTime istante,
             string codiceFonte) : base(richiesta, codiceMezzo, istante, codiceFonte)
         {
             if (richiestaSubentrata == null)
@@ -54,7 +52,7 @@ namespace Modello.Classi.Soccorso.Eventi.Partenze
         }
 
         /// <summary>
-        /// La richiesta che subentra nell'uso del mezzo
+        ///   La richiesta che subentra nell'uso del mezzo
         /// </summary>
         public RichiestaAssistenza RichiestaSubentrata { get; private set; }
     }

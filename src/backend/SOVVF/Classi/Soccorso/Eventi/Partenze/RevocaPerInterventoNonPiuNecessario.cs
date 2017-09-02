@@ -18,30 +18,26 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Modello.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    /// Classe che modella la revoca nell'uso di un mezzo da parte di una <see cref="RichiestaAssistenza"/>
-    /// per intervento non più necessario.
+    ///   Classe che modella la revoca nell'uso di un mezzo da parte di una
+    ///   <see cref="RichiestaAssistenza" /> per intervento non più necessario.
     /// </summary>
     public class RevocaPerInterventoNonPiuNecessario : Revoca
     {
         /// <summary>
-        /// Costruttore della classe
+        ///   Costruttore della classe
         /// </summary>
         /// <param name="richiesta">La richiesta a cui appartiene l'evento</param>
         /// <param name="codiceMezzo">Il codice mezzo relativo all'evento</param>
         /// <param name="istante">L'istante in cui l'evento si verifica</param>
         /// <param name="codiceFonte">La fonte informativa dell'evento</param>
         public RevocaPerInterventoNonPiuNecessario(
-            RichiestaAssistenza richiesta, 
-            string codiceMezzo, 
-            DateTime istante, 
+            RichiestaAssistenza richiesta,
+            string codiceMezzo,
+            DateTime istante,
             string codiceFonte) : base(richiesta, codiceMezzo, istante, codiceFonte)
         {
         }

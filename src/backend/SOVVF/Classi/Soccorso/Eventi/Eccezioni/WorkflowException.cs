@@ -18,28 +18,24 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Modello.Classi.Soccorso.Eventi.Eccezioni
 {
     /// <summary>
-    /// Eccezione che indica il verificarsi di una transizione vietata in uno state diagram
+    ///   Eccezione che indica il verificarsi di una transizione vietata in uno state diagram
     /// </summary>
     [Serializable]
     public class WorkflowException : Exception
     {
         /// <summary>
-        /// Costruttore di default
+        ///   Costruttore di default
         /// </summary>
         public WorkflowException()
         {
         }
 
         /// <summary>
-        /// Costruttore con messaggio
+        ///   Costruttore con messaggio
         /// </summary>
         /// <param name="message">Il messaggio dell'eccezione</param>
         public WorkflowException(string message)
@@ -48,7 +44,7 @@ namespace Modello.Classi.Soccorso.Eventi.Eccezioni
         }
 
         /// <summary>
-        /// Costruttore con messaggio ed eccezione successiva nello stack
+        ///   Costruttore con messaggio ed eccezione successiva nello stack
         /// </summary>
         /// <param name="message">Il messaggio dell'eccezione</param>
         /// <param name="innerException">L'eccezione successiva nello stack</param>
