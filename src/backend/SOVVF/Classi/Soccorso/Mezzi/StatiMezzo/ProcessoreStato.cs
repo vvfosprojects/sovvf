@@ -17,7 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 
@@ -39,7 +41,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// </summary>
         public ProcessoreStato()
         {
-            this.stato = new FuoriSincro();
+            this.stato = new FuoriSincro(DateTime.MinValue);
         }
 
         /// <summary>
@@ -63,7 +65,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
             {
                 if (ultimoEvento != null)
                 {
-                    System.Diagnostics.Debug.Assert(ultimoEvento.Istante <= e.Istante, "Gli eventi non risultano ordinati in ordine crescente");
+                    Debug.Assert(ultimoEvento.Istante <= e.Istante, "Gli eventi non risultano ordinati in ordine crescente");
                 }
 
                 ultimoEvento = e;

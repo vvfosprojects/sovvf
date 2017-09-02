@@ -32,6 +32,16 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     public class InViaggio : AbstractStatoMezzo
     {
         /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="istanteTransizione">
+        ///   L'istante in cui avviene la transizione in questo stato
+        /// </param>
+        public InViaggio(DateTime istanteTransizione) : base(istanteTransizione)
+        {
+        }
+
+        /// <summary>
         ///   In questo stato il mezzo risulta assegnato ad una richiesta
         /// </summary>
         public override bool AssegnatoARichiesta
@@ -112,7 +122,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Lo stato <see cref="Libero" /></returns>
         public override IStatoMezzo AcceptVisitor(Revoca revoca)
         {
-            return new Libero();
+            return new Libero(revoca.Istante);
         }
 
         /// <summary>
@@ -123,7 +133,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Lo stato <see cref="FuoriServizio" /></returns>
         public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
         {
-            return new FuoriServizio();
+            return new FuoriServizio(vaInFuoriServizio.Istante);
         }
 
         /// <summary>
@@ -134,7 +144,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Lo stato <see cref="SulPosto" /></returns>
         public override IStatoMezzo AcceptVisitor(ArrivoSulPosto arrivoSulPosto)
         {
-            return new SulPosto();
+            return new SulPosto(arrivoSulPosto.Istante);
         }
     }
 }

@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
@@ -46,6 +47,11 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         ///   Indica se in questo stato il mezzo risulta assegnato alla richiesta o meno
         /// </summary>
         bool AssegnatoARichiesta { get; }
+
+        /// <summary>
+        ///   Indica l'istante in cui la transizione in questo stato è avvenuta
+        /// </summary>
+        DateTime IstanteTransizione { get; }
 
         /// <summary>
         ///   Induce una transizione di stato in seguito al verificarsi di un evento, restituendo il

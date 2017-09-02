@@ -37,6 +37,16 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     internal class FuoriSincro : AbstractStatoMezzo
     {
         /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="istanteTransizione">
+        ///   L'istante in cui avviene la transizione in questo stato
+        /// </param>
+        public FuoriSincro(DateTime istanteTransizione) : base(istanteTransizione)
+        {
+        }
+
+        /// <summary>
         ///   In questo stato non ha senso chiedere se il mezzo è assegnato ad una richiesta.
         /// </summary>
         public override bool AssegnatoARichiesta
@@ -70,6 +80,17 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
+        ///   Non ha senso invocare il metodo per lo stato <see cref="FuoriSincro" />.
+        /// </summary>
+        public override DateTime IstanteTransizione
+        {
+            get
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
+        /// <summary>
         ///   Nello stato <see cref="FuoriSincro" /> non può essere gestito l'evento <see cref="PartenzaRientrata" />
         /// </summary>
         /// <param name="partenzaRientrata">Il visitor</param>
@@ -91,11 +112,11 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         {
             if (composizionePartenze.FuoriSede)
             {
-                return new Libero();
+                return new Libero(composizionePartenze.Istante);
             }
             else
             {
-                return new Assegnato();
+                return new Assegnato(composizionePartenze.Istante);
             }
         }
 
@@ -136,7 +157,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Nulla perché solleva un'eccezione</returns>
         public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
         {
-            return new FuoriServizio();
+            return new FuoriServizio(vaInFuoriServizio.Istante);
         }
 
         /// <summary>

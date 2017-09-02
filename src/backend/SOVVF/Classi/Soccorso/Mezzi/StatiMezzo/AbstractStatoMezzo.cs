@@ -28,6 +28,17 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     public abstract class AbstractStatoMezzo : IStatoMezzo, ICanAcceptVisitorStatoMezzo
     {
         /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="istanteTransizione">
+        ///   L'istante in cui avviene la transizione in questo stato
+        /// </param>
+        public AbstractStatoMezzo(DateTime istanteTransizione)
+        {
+            this.IstanteTransizione = istanteTransizione;
+        }
+
+        /// <summary>
         ///   Il codice identificativo dello stato
         /// </summary>
         public abstract string Codice { get; }
@@ -41,6 +52,11 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         ///   Indica se il mezzo è assegnato ad una richiesta
         /// </summary>
         public abstract bool AssegnatoARichiesta { get; }
+
+        /// <summary>
+        ///   Indica l'istante in cui la transizione in questo stato è avvenuta
+        /// </summary>
+        public virtual DateTime IstanteTransizione { get; private set; }
 
         /// <summary>
         ///   Calcola la transizione di stato ottenuta in seguito al verificarsi di un evento

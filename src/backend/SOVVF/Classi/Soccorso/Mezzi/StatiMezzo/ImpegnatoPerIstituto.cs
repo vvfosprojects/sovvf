@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Diagnostics.CodeAnalysis;
 using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using Modello.Classi.Soccorso.Eventi.Partenze;
@@ -30,6 +31,16 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     /// </summary>
     public class ImpegnatoPerIstituto : AbstractStatoMezzo
     {
+        /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="istanteTransizione">
+        ///   L'istante in cui avviene la transizione in questo stato
+        /// </param>
+        public ImpegnatoPerIstituto(DateTime istanteTransizione) : base(istanteTransizione)
+        {
+        }
+
         /// <summary>
         ///   In questo stato il mezzo non risulta assegnato ad una richiesta
         /// </summary>
@@ -121,7 +132,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Lo stato <see cref="FuoriServizio" /></returns>
         public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
         {
-            return new FuoriServizio();
+            return new FuoriServizio(vaInFuoriServizio.Istante);
         }
 
         /// <summary>

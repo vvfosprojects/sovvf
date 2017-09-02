@@ -32,6 +32,16 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     public class FuoriServizio : AbstractStatoMezzo
     {
         /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="istanteTransizione">
+        ///   L'istante in cui avviene la transizione in questo stato
+        /// </param>
+        public FuoriServizio(DateTime istanteTransizione) : base(istanteTransizione)
+        {
+        }
+
+        /// <summary>
         ///   In questo stato il mezzo non risulta assegnato ad una richiesta
         /// </summary>
         public override bool AssegnatoARichiesta

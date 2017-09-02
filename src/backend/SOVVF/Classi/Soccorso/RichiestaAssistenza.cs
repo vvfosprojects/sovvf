@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Modello.Classi.Geo;
 using Modello.Classi.Soccorso.Eventi;
@@ -195,14 +196,6 @@ namespace Modello.Classi.Soccorso
                     })
                     .GroupBy(el => el.Codice, el => el.Evento);
 
-                // se la richiesta è chiusa i mezzi partecipanti certamente non sono assegnati ad essa
-                if (this.Chiusa)
-                {
-                    return eventiPartenzaRaggruppatiPerMezzo
-                        .Select(g => g.Key)
-                        .ToDictionary(k => k, _ => (IStatoMezzo)new Libero());
-                }
-
                 var d = new Dictionary<string, IStatoMezzo>();
 
                 foreach (var gruppoEventiPartenza in eventiPartenzaRaggruppatiPerMezzo)
@@ -214,6 +207,12 @@ namespace Modello.Classi.Soccorso
                     var stato = processoreStato.Stato;
 
                     d[codice] = stato;
+                }
+
+                // Se la richiesta è chiusa, i mezzi devono essere stati tutti liberati.
+                if (this.Chiusa)
+                {
+                    Debug.Assert(d.Values.All(stato => stato is Libero), "La richiesta è chiusa ma contiene mezzi non liberi");
                 }
 
                 return d;

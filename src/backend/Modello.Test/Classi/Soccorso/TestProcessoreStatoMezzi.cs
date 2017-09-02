@@ -432,5 +432,66 @@ namespace Modello.Test.Classi.Soccorso
 
             Assert.That(stato, Is.InstanceOf<FuoriServizio>());
         }
+
+        [Test]
+        public void UnUnicoEventoProvocaUnaTransizioneNellIstanteDellEvento()
+        {
+            var processoreStato = new ProcessoreStato();
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            var eventi = new IPartenza[]
+            {
+                new ComposizionePartenze(richiesta, now, "fonte", false)
+                {
+                    Componenti = new HashSet<ComponentePartenza>()
+                    {
+                        new ComponentePartenza("XXX", "M1")
+                    }
+                }
+            };
+
+            var stato = processoreStato.ProcessaEventi(eventi).Stato;
+
+            Assert.That(stato.IstanteTransizione, Is.EqualTo(now));
+        }
+
+        [Test]
+        public void LIstanteTransizioneRiportaLaDataDellUltimoEvento()
+        {
+            var processoreStato = new ProcessoreStato();
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            var eventi = new IPartenza[]
+            {
+                new ComposizionePartenze(richiesta, now, "fonte", false)
+                {
+                    Componenti = new HashSet<ComponentePartenza>()
+                    {
+                        new ComponentePartenza("XXX", "M1")
+                    }
+                },
+                new UscitaPartenza(richiesta, "M1", now.AddSeconds(1), "fonte"),
+                new ArrivoSulPosto(richiesta, "M1", now.AddSeconds(2), "fonte")
+            };
+
+            var stato = processoreStato.ProcessaEventi(eventi).Stato;
+
+            Assert.That(stato.IstanteTransizione, Is.EqualTo(now.AddSeconds(2)));
+        }
+
+        [Test]
+        public void RichiedereLIstanteTransizioneSenzaEventiGeneraEccezione()
+        {
+            var processoreStato = new ProcessoreStato();
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+
+            var stato = processoreStato.ProcessaEventi(new IPartenza[0]).Stato;
+
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var istanteTransizione = stato.IstanteTransizione;
+            });
+        }
     }
 }

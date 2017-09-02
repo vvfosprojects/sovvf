@@ -34,6 +34,16 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     public class Libero : AbstractStatoMezzo
     {
         /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="istanteTransizione">
+        ///   L'istante in cui avviene la transizione in questo stato
+        /// </param>
+        public Libero(DateTime istanteTransizione) : base(istanteTransizione)
+        {
+        }
+
+        /// <summary>
         ///   Il codice identificativo dello stato
         /// </summary>
         public override string Codice
@@ -84,7 +94,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Lo stato <see cref="FuoriServizio" /></returns>
         public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
         {
-            return new FuoriServizio();
+            return new FuoriServizio(vaInFuoriServizio.Istante);
         }
 
         /// <summary>
@@ -125,7 +135,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Lo stato <see cref="InSede" /></returns>
         public override IStatoMezzo AcceptVisitor(PartenzaRientrata partenzaRientrata)
         {
-            return new InSede();
+            return new InSede(partenzaRientrata.Istante);
         }
 
         /// <summary>
@@ -136,7 +146,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Lo stato <see cref="InViaggio" /></returns>
         public override IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze)
         {
-            return new InViaggio();
+            return new InViaggio(composizionePartenze.Istante);
         }
     }
 }

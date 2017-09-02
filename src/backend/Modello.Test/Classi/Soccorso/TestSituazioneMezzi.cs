@@ -171,6 +171,30 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
+        public void Crea_Richiesta_R1_Con_M1_e_M2_revocato_e_riassegnato_e_M1_revocato_e_M2_in_viaggi()
+        {
+            IEnumerable<SituazioneMezzo> expected;
+            IEnumerable<RichiestaAssistenza> richieste;
+
+            this.Crea_Richiesta_R1_Con_M1_e_M2_revocato_e_riassegnato_e_M1_revocato_e_M2_in_viaggio(out expected, out richieste);
+            var getSituazioneMezzi = this.CreaServizio(richieste);
+            var situazioneMezzi = getSituazioneMezzi.Get(new HashSet<PinNodo>());
+            var situazioneM1 = situazioneMezzi.Single(sm => sm.Codice == "M1");
+            var situazioneM2 = situazioneMezzi.Single(sm => sm.Codice == "M2");
+            var expectedM1 = expected.Single(sm => sm.Codice == "M1");
+            var expectedM2 = expected.Single(sm => sm.Codice == "M2");
+
+            Assert.That(situazioneM1.Codice, Is.EqualTo(expectedM1.Codice));
+            Assert.That(situazioneM1.CodiceRichiestaAssistenza, Is.EqualTo(expectedM1.CodiceRichiestaAssistenza));
+            Assert.That(situazioneM1.IstanteAggiornamentoStato, Is.EqualTo(expectedM1.IstanteAggiornamentoStato));
+            Assert.That(situazioneM1.CodiceStato, Is.EqualTo(expectedM1.CodiceStato));
+            Assert.That(situazioneM2.Codice, Is.EqualTo(expectedM2.Codice));
+            Assert.That(situazioneM2.CodiceRichiestaAssistenza, Is.EqualTo(expectedM2.CodiceRichiestaAssistenza));
+            Assert.That(situazioneM2.IstanteAggiornamentoStato, Is.EqualTo(expectedM2.IstanteAggiornamentoStato));
+            Assert.That(situazioneM2.CodiceStato, Is.EqualTo(expectedM2.CodiceStato));
+        }
+
+        [Test]
         public void UnaUnicaRichiestaContenenteUnicoEventoDiComposizioneRestituisceUnaSolaSituazioneMezzo()
         {
             SituazioneMezzo expected;
@@ -205,14 +229,14 @@ namespace Modello.Test.Classi.Soccorso
                 new SituazioneMezzo()
                 {
                     Codice = "M1",
-                    CodiceStato = new SulPosto().Codice,
+                    CodiceStato = new SulPosto(istanteEvento3).Codice,
                     CodiceRichiestaAssistenza = "R1",
                     IstanteAggiornamentoStato = istanteEvento3
                 },
                 new SituazioneMezzo()
                 {
                     Codice = "M2",
-                    CodiceStato = new Assegnato().Codice,
+                    CodiceStato = new Assegnato(istanteEvento1).Codice,
                     CodiceRichiestaAssistenza = "R1",
                     IstanteAggiornamentoStato = istanteEvento1
                 }
@@ -243,14 +267,14 @@ namespace Modello.Test.Classi.Soccorso
                 new SituazioneMezzo()
                 {
                     Codice = "M4",
-                    CodiceStato = new SulPosto().Codice,
+                    CodiceStato = new SulPosto(istanteEvento3).Codice,
                     CodiceRichiestaAssistenza = "R2",
                     IstanteAggiornamentoStato = istanteEvento3
                 },
                 new SituazioneMezzo()
                 {
                     Codice = "M3",
-                    CodiceStato = new Assegnato().Codice,
+                    CodiceStato = new Assegnato(istanteEvento1).Codice,
                     CodiceRichiestaAssistenza = "R2",
                     IstanteAggiornamentoStato = istanteEvento1
                 },
@@ -275,29 +299,29 @@ namespace Modello.Test.Classi.Soccorso
             var eventoUscitaM3 = new UscitaPartenza(richiesta, "M3", istanteEventoUscitaM3, "Fonte");
             var istanteSulPostoM3 = DateTime.Now.AddMinutes(-4);
             var eventoSulPostoM3 = new ArrivoSulPosto(richiesta, "M3", istanteSulPostoM3, "Fonte");
-            var istanteInRientroM3 = DateTime.Now.AddMinutes(-4);
-            var eventoInRientroM3 = new ArrivoSulPosto(richiesta, "M3", istanteInRientroM3, "Fonte");
+            var istanteInRientroM3 = DateTime.Now.AddMinutes(-2);
+            var eventoInRientroM3 = new PartenzaInRientro(richiesta, "M3", istanteInRientroM3, "Fonte");
             var istanteEventoUscitaM4 = DateTime.Now.AddMinutes(-7);
             var eventoUscitaM4 = new UscitaPartenza(richiesta, "M4", istanteEventoUscitaM4, "Fonte");
             var istanteSulPostoM4 = DateTime.Now.AddMinutes(-4);
             var eventoSulPostoM4 = new ArrivoSulPosto(richiesta, "M4", istanteSulPostoM4, "Fonte");
-            var istanteInRientroM4 = DateTime.Now.AddMinutes(-4);
+            var istanteInRientroM4 = DateTime.Now.AddMinutes(-3);
             var eventoInRientroM4 = new PartenzaInRientro(richiesta, "M4", istanteInRientroM4, "Fonte");
-            var istanteRientratoM4 = DateTime.Now.AddMinutes(-4);
+            var istanteRientratoM4 = DateTime.Now.AddMinutes(-2);
             var eventoRientratoM4 = new PartenzaRientrata(richiesta, "M4", istanteRientratoM4, "Fonte");
             expected = new SituazioneMezzo[]
             {
                 new SituazioneMezzo()
                 {
                     Codice = "M3",
-                    CodiceStato = new InRientro().Codice,
+                    CodiceStato = new InRientro(istanteInRientroM3).Codice,
                     CodiceRichiestaAssistenza = "R2",
                     IstanteAggiornamentoStato = istanteSulPostoM3
                 },
                 new SituazioneMezzo()
                 {
                     Codice = "M4",
-                    CodiceStato = new InSede().Codice,
+                    CodiceStato = new InSede(istanteRientratoM4).Codice,
                     CodiceRichiestaAssistenza = "R2",
                     IstanteAggiornamentoStato = istanteRientratoM4
                 },
@@ -305,7 +329,7 @@ namespace Modello.Test.Classi.Soccorso
             return richiesta;
         }
 
-        private RichiestaAssistenza Crea_Richiesta_R1_Con_M1_e_M2_assegnati_e_M1_sganciato_e_M2_in_viaggio(out IEnumerable<SituazioneMezzo> expected)
+        private void Crea_Richiesta_R1_Con_M1_e_M2_revocato_e_riassegnato_e_M1_revocato_e_M2_in_viaggio(out IEnumerable<SituazioneMezzo> expected, out IEnumerable<RichiestaAssistenza> richieste)
         {
             var richiesta = new RichiestaAssistenza()
             {
@@ -315,39 +339,45 @@ namespace Modello.Test.Classi.Soccorso
             {
                 Codice = "R2",
             };
+            richieste = new RichiestaAssistenza[] { richiesta, richiestaSubentrata };
+            var now = DateTime.Now;
             var componentePartenza1 = new ComponentePartenza("CF1", "M1");
             var componentePartenza2 = new ComponentePartenza("CF2", "M2");
-            var istanteEventoAssegnazione = DateTime.Now.AddMinutes(-10);
+            var istanteEventoAssegnazione = now.AddMinutes(-10);
             var eventoComposizione = new ComposizionePartenze(richiesta, istanteEventoAssegnazione, "Fonte", false)
             {
                 Componenti = new HashSet<ComponentePartenza>() { componentePartenza1, componentePartenza2 }
             };
-            var istanteEventoUscitaM1 = DateTime.Now.AddMinutes(-7);
+            var istanteEventoUscitaM1 = now.AddMinutes(-7);
             var eventoUscitaM1 = new UscitaPartenza(richiesta, "M1", istanteEventoUscitaM1, "Fonte");
-            var istanteSulPostoM1 = DateTime.Now.AddMinutes(-4);
-            var eventoSulPostoM1 = new ArrivoSulPosto(richiesta, "M1", istanteSulPostoM1, "Fonte");
-            var istanteSganciatoM1 = DateTime.Now.AddMinutes(-2);
-            var eventoSganciatoM1 = new RevocaPerRiassegnazione(richiesta, richiestaSubentrata, "M1", istanteSganciatoM1, "Fonte");
-            var istanteEventoUscitaM2 = DateTime.Now.AddMinutes(-8);
+            var istanteEventoUscitaM2 = now.AddMinutes(-6);
             var eventoUscitaM2 = new UscitaPartenza(richiesta, "M2", istanteEventoUscitaM2, "Fonte");
+            var istanteSulPostoM1 = now.AddMinutes(-4);
+            var eventoSulPostoM1 = new ArrivoSulPosto(richiesta, "M1", istanteSulPostoM1, "Fonte");
+            var istanteSganciatoM1 = now.AddMinutes(-2);
+            var eventoSganciatoM1 = new RevocaPerRiassegnazione(richiesta, richiestaSubentrata, "M1", istanteSganciatoM1, "Fonte");
+            var istanteRiassegnatoM1 = now.AddMinutes(-1);
+            var eventoComposizione2 = new ComposizionePartenze(richiestaSubentrata, istanteRiassegnatoM1, "Fonte", true)
+            {
+                Componenti = new HashSet<ComponentePartenza>() { componentePartenza1 }
+            };
             expected = new SituazioneMezzo[]
             {
                 new SituazioneMezzo()
                 {
                     Codice = "M1",
-                    CodiceStato = new InViaggio().Codice,
-                    CodiceRichiestaAssistenza = "R1",
-                    IstanteAggiornamentoStato = istanteSganciatoM1
+                    CodiceStato = new InViaggio(istanteRiassegnatoM1).Codice,
+                    CodiceRichiestaAssistenza = "R2",
+                    IstanteAggiornamentoStato = istanteRiassegnatoM1
                 },
                 new SituazioneMezzo()
                 {
                     Codice = "M2",
-                    CodiceStato = new InViaggio().Codice,
-                    CodiceRichiestaAssistenza = "R2",
+                    CodiceStato = new InViaggio(istanteEventoUscitaM2).Codice,
+                    CodiceRichiestaAssistenza = "R1",
                     IstanteAggiornamentoStato = istanteEventoUscitaM2
                 },
             };
-            return richiesta;
         }
 
         private GetSituazioneMezzi CreaServizio(IEnumerable<RichiestaAssistenza> richieste)
@@ -395,7 +425,7 @@ namespace Modello.Test.Classi.Soccorso
             expected = new SituazioneMezzo()
             {
                 Codice = "M1",
-                CodiceStato = new Assegnato().Codice,
+                CodiceStato = new Assegnato(istanteEvento).Codice,
                 CodiceRichiestaAssistenza = "R1",
                 IstanteAggiornamentoStato = istanteEvento
             };
