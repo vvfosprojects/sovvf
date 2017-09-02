@@ -88,7 +88,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         ///   derivate, effettuano l'override dei metodi corrispondenti a transizioni di stato
         ///   ammesse, restituendo lo stato corretto a fronte dell'evento (visitor) di ingresso.
         /// </summary>
-        /// <param name="arrivoSulPosto">Il visitor accettato</param>
+        /// <param name="vaInFuoriServizio">Il visitor accettato</param>
         /// <returns>Niente, poiché solleva un'eccezione</returns>
         public virtual IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
         {
@@ -101,7 +101,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         ///   derivate, effettuano l'override dei metodi corrispondenti a transizioni di stato
         ///   ammesse, restituendo lo stato corretto a fronte dell'evento (visitor) di ingresso.
         /// </summary>
-        /// <param name="arrivoSulPosto">Il visitor accettato</param>
+        /// <param name="uscitaPartenza">Il visitor accettato</param>
         /// <returns>Niente, poiché solleva un'eccezione</returns>
         public virtual IStatoMezzo AcceptVisitor(UscitaPartenza uscitaPartenza)
         {
@@ -114,7 +114,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         ///   derivate, effettuano l'override dei metodi corrispondenti a transizioni di stato
         ///   ammesse, restituendo lo stato corretto a fronte dell'evento (visitor) di ingresso.
         /// </summary>
-        /// <param name="arrivoSulPosto">Il visitor accettato</param>
+        /// <param name="revoca">Il visitor accettato</param>
         /// <returns>Niente, poiché solleva un'eccezione</returns>
         public virtual IStatoMezzo AcceptVisitor(Revoca revoca)
         {
@@ -127,7 +127,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         ///   derivate, effettuano l'override dei metodi corrispondenti a transizioni di stato
         ///   ammesse, restituendo lo stato corretto a fronte dell'evento (visitor) di ingresso.
         /// </summary>
-        /// <param name="arrivoSulPosto">Il visitor accettato</param>
+        /// <param name="partenzaInRientro">Il visitor accettato</param>
         /// <returns>Niente, poiché solleva un'eccezione</returns>
         public virtual IStatoMezzo AcceptVisitor(PartenzaInRientro partenzaInRientro)
         {
@@ -140,7 +140,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         ///   derivate, effettuano l'override dei metodi corrispondenti a transizioni di stato
         ///   ammesse, restituendo lo stato corretto a fronte dell'evento (visitor) di ingresso.
         /// </summary>
-        /// <param name="arrivoSulPosto">Il visitor accettato</param>
+        /// <param name="partenzaRientrata">Il visitor accettato</param>
         /// <returns>Niente, poiché solleva un'eccezione</returns>
         public virtual IStatoMezzo AcceptVisitor(PartenzaRientrata partenzaRientrata)
         {
@@ -153,7 +153,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         ///   derivate, effettuano l'override dei metodi corrispondenti a transizioni di stato
         ///   ammesse, restituendo lo stato corretto a fronte dell'evento (visitor) di ingresso.
         /// </summary>
-        /// <param name="arrivoSulPosto">Il visitor accettato</param>
+        /// <param name="composizionePartenze">Il visitor accettato</param>
         /// <returns>Niente, poiché solleva un'eccezione</returns>
         public virtual IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze)
         {
