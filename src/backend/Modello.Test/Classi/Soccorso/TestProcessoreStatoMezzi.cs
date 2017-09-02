@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using Modello.Classi.Soccorso;
+using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 using NUnit.Framework;
@@ -491,6 +492,96 @@ namespace Modello.Test.Classi.Soccorso
             Assert.Throws<InvalidOperationException>(() =>
             {
                 var istanteTransizione = stato.IstanteTransizione;
+            });
+        }
+
+        [Test]
+        public void UnMezzoInViaggioNonPuoEsserePartitoDalLuogo()
+        {
+            var processoreStato = new ProcessoreStato();
+            var richiesta = new RichiestaAssistenza();
+            var eventi = new IPartenza[]
+            {
+                new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
+                {
+                    Componenti = new HashSet<ComponentePartenza>()
+                    {
+                        new ComponentePartenza("XXX", "M1")
+                    }
+                },
+                new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte"),
+                new PartenzaInRientro(richiesta, "M1", DateTime.Now, "fonte"),
+            };
+
+            Assert.Throws<WorkflowException>(() =>
+            {
+                var stato = processoreStato.ProcessaEventi(eventi).Stato;
+            });
+        }
+
+        [Test]
+        public void UnMezzoSulPostoNonPuoEssereRientratoInSede()
+        {
+            var processoreStato = new ProcessoreStato();
+            var richiesta = new RichiestaAssistenza();
+            var eventi = new IPartenza[]
+            {
+                new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
+                {
+                    Componenti = new HashSet<ComponentePartenza>()
+                    {
+                        new ComponentePartenza("XXX", "M1")
+                    }
+                },
+                new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte"),
+                new ArrivoSulPosto(richiesta, "M1", DateTime.Now, "fonte"),
+                new PartenzaRientrata(richiesta, "M1", DateTime.Now, "fonte"),
+            };
+
+            Assert.Throws<WorkflowException>(() =>
+            {
+                var stato = processoreStato.ProcessaEventi(eventi).Stato;
+            });
+        }
+
+        [Test]
+        public void UnMezzoInSedeNonPuoEssereUscitoDallaSede()
+        {
+            var processoreStato = new ProcessoreStato();
+            var richiesta = new RichiestaAssistenza();
+            var eventi = new IPartenza[]
+            {
+                new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte"),
+            };
+
+            Assert.Throws<WorkflowException>(() =>
+            {
+                var stato = processoreStato.ProcessaEventi(eventi).Stato;
+            });
+        }
+
+        [Test]
+        public void UnMezzoSulPostoNonPuoEssereUscitoDallaSede()
+        {
+            var processoreStato = new ProcessoreStato();
+            var richiesta = new RichiestaAssistenza();
+            var eventi = new IPartenza[]
+            {
+                new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
+                {
+                    Componenti = new HashSet<ComponentePartenza>()
+                    {
+                        new ComponentePartenza("XXX", "M1")
+                    }
+                },
+                new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte"),
+                new ArrivoSulPosto(richiesta, "M1", DateTime.Now, "fonte"),
+                new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte"),
+            };
+
+            Assert.Throws<WorkflowException>(() =>
+            {
+                var stato = processoreStato.ProcessaEventi(eventi).Stato;
             });
         }
     }
