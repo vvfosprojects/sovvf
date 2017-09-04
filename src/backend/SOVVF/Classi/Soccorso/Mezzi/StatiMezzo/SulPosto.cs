@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
@@ -29,7 +28,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     /// <summary>
     ///   Presente sul luogo del sinistro
     /// </summary>
-    public class SulPosto : AbstractStatoMezzo
+    public class SulPosto : AbstractStatoMezzoAssegnatoARichiesta
     {
         /// <summary>
         ///   Costruttore della classe
@@ -37,19 +36,9 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <param name="istanteTransizione">
         ///   L'istante in cui avviene la transizione in questo stato
         /// </param>
-        public SulPosto(DateTime istanteTransizione) : base(istanteTransizione)
+        /// <param name="codiceRichiesta">Il codice della richiesta a cui lo stato è assegnato</param>
+        public SulPosto(DateTime istanteTransizione, string codiceRichiesta) : base(istanteTransizione, codiceRichiesta)
         {
-        }
-
-        /// <summary>
-        ///   In questo stato il mezzo risulta assegnato ad una richiesta
-        /// </summary>
-        public override bool AssegnatoARichiesta
-        {
-            get
-            {
-                return true;
-            }
         }
 
         /// <summary>
@@ -82,7 +71,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Lo stato <see cref="InRientro" /></returns>
         public override IStatoMezzo AcceptVisitor(PartenzaInRientro partenzaInRientro)
         {
-            return new InRientro(partenzaInRientro.Istante);
+            return new InRientro(partenzaInRientro.Istante, partenzaInRientro.CodiceRichiesta);
         }
 
         /// <summary>

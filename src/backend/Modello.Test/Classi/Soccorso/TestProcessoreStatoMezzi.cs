@@ -270,28 +270,29 @@ namespace Modello.Test.Classi.Soccorso
         public void UnMezzoRientratoEPoiDiNuovoUscitoRestituisceLoStatoInViaggio()
         {
             var processoreStato = new ProcessoreStato();
-            var richiesta = new RichiestaAssistenza();
+            var richiesta1 = new RichiestaAssistenza();
+            var richiesta2 = new RichiestaAssistenza();
             var eventi = new IPartenza[]
             {
-                new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
+                new ComposizionePartenze(richiesta1, DateTime.Now, "fonte", false)
                 {
                     Componenti = new HashSet<ComponentePartenza>()
                     {
                         new ComponentePartenza("XXX", "M1")
                     }
                 },
-                new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte"),
-                new ArrivoSulPosto(richiesta, "M1", DateTime.Now, "fonte"),
-                new PartenzaInRientro(richiesta, "M1", DateTime.Now, "fonte"),
-                new PartenzaRientrata(richiesta, "M1", DateTime.Now, "fonte"),
-                new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
+                new UscitaPartenza(richiesta1, "M1", DateTime.Now, "fonte"),
+                new ArrivoSulPosto(richiesta1, "M1", DateTime.Now, "fonte"),
+                new PartenzaInRientro(richiesta1, "M1", DateTime.Now, "fonte"),
+                new PartenzaRientrata(richiesta1, "M1", DateTime.Now, "fonte"),
+                new ComposizionePartenze(richiesta2, DateTime.Now, "fonte", false)
                 {
                     Componenti = new HashSet<ComponentePartenza>()
                     {
                         new ComponentePartenza("YYY", "M1")
                     }
                 },
-                new UscitaPartenza(richiesta, "M1", DateTime.Now, "fonte")
+                new UscitaPartenza(richiesta2, "M1", DateTime.Now, "fonte")
             };
 
             var stato = processoreStato.ProcessaEventi(eventi).Stato;
@@ -582,6 +583,71 @@ namespace Modello.Test.Classi.Soccorso
             Assert.Throws<WorkflowException>(() =>
             {
                 var stato = processoreStato.ProcessaEventi(eventi).Stato;
+            });
+        }
+
+        [Test]
+        public void UnMezzoAssegnatoRestituisceIlCodiceRichiestaGiusto()
+        {
+            var processoreStato = new ProcessoreStato();
+            var richiesta = new RichiestaAssistenza();
+            richiesta.Codice = "C1234";
+            var eventi = new IPartenza[]
+            {
+                new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
+                {
+                    Componenti = new HashSet<ComponentePartenza>()
+                    {
+                        new ComponentePartenza("XXX", "M1")
+                    }
+                }
+            };
+
+            var stato = processoreStato.ProcessaEventi(eventi).Stato;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(stato.AssegnatoARichiesta, Is.True);
+                Assert.That(stato, Is.InstanceOf<IStatoMezzoAssegnatoARichiesta>());
+                Assert.That(((IStatoMezzoAssegnatoARichiesta)stato).CodiceRichiesta, Is.EqualTo("C1234"));
+            });
+        }
+
+        [Test]
+        public void UnMezzoRevocatoEdAssegnatoAdAltraRichiestaRestituisceIlCodiceRichiestaGiusto()
+        {
+            var processoreStato = new ProcessoreStato();
+            var richiesta1 = new RichiestaAssistenza() { Codice = "R1" };
+            var richiesta2 = new RichiestaAssistenza() { Codice = "R2" };
+            var eventi = new IPartenza[]
+            {
+                new ComposizionePartenze(richiesta1, DateTime.Now, "fonte", false)
+                {
+                    Componenti = new HashSet<ComponentePartenza>()
+                    {
+                        new ComponentePartenza("XXX", "M1")
+                    }
+                },
+                new UscitaPartenza(richiesta1, "M1", DateTime.Now, "fonte"),
+                new ArrivoSulPosto(richiesta1, "M1", DateTime.Now, "fonte"),
+                new PartenzaInRientro(richiesta1, "M1", DateTime.Now, "fonte"),
+                new PartenzaRientrata(richiesta1, "M1", DateTime.Now, "fonte"),
+                new ComposizionePartenze(richiesta2, DateTime.Now, "fonte", false)
+                {
+                    Componenti = new HashSet<ComponentePartenza>()
+                    {
+                        new ComponentePartenza("YYY", "M1")
+                    }
+                },
+                new UscitaPartenza(richiesta2, "M1", DateTime.Now, "fonte")
+            };
+
+            var stato = processoreStato.ProcessaEventi(eventi).Stato;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(stato, Is.InstanceOf<IStatoMezzoAssegnatoARichiesta>());
+                Assert.That(((IStatoMezzoAssegnatoARichiesta)stato).CodiceRichiesta, Is.EqualTo("R2"));
             });
         }
     }

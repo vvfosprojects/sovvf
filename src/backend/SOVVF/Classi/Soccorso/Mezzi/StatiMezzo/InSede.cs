@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
@@ -29,7 +28,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     /// <summary>
     ///   Presente presso la sede di servizio
     /// </summary>
-    public class InSede : AbstractStatoMezzo
+    public class InSede : AbstractStatoMezzoNonAssegnatoARichiesta
     {
         /// <summary>
         ///   Costruttore della classe
@@ -64,17 +63,6 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        ///   In questo stato il mezzo non risulta assegnato alla richiesta
-        /// </summary>
-        public override bool AssegnatoARichiesta
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
         ///   Nello stato <see cref="InSede" /> l'evento <see cref="VaInFuoriServizio" /> produce la
         ///   transizione nello stato <see cref="FuoriServizio" />.
         /// </summary>
@@ -93,7 +81,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Lo stato <see cref="Assegnato" /></returns>
         public override IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze)
         {
-            return new Assegnato(composizionePartenze.Istante);
+            return new Assegnato(composizionePartenze.Istante, composizionePartenze.CodiceRichiesta);
         }
     }
 }

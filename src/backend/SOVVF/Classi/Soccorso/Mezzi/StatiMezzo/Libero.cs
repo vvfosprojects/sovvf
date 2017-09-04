@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
@@ -31,7 +30,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     ///   la quale il mezzo non è ancora stato assegnato. L'unica transizione valida da questo stato
     ///   è la composizione partenza.
     /// </summary>
-    public class Libero : AbstractStatoMezzo
+    public class Libero : AbstractStatoMezzoNonAssegnatoARichiesta
     {
         /// <summary>
         ///   Costruttore della classe
@@ -66,17 +65,6 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
-        ///   In questo stato il mezzo non risulta assegnato ad una richiesta
-        /// </summary>
-        public override bool AssegnatoARichiesta
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
         ///   Nello stato <see cref="Libero" /> l'evento <see cref="VaInFuoriServizio" /> produce la
         ///   transizione nello stato <see cref="FuoriServizio" />.
         /// </summary>
@@ -106,7 +94,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Lo stato <see cref="InViaggio" /></returns>
         public override IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze)
         {
-            return new InViaggio(composizionePartenze.Istante);
+            return new InViaggio(composizionePartenze.Istante, composizionePartenze.CodiceRichiesta);
         }
     }
 }

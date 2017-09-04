@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
@@ -29,7 +28,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     /// <summary>
     ///   In viaggio verso la sede di servizio
     /// </summary>
-    public class InRientro : AbstractStatoMezzo
+    public class InRientro : AbstractStatoMezzoAssegnatoARichiesta
     {
         /// <summary>
         ///   Costruttore della classe
@@ -37,19 +36,8 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <param name="istanteTransizione">
         ///   L'istante in cui avviene la transizione in questo stato
         /// </param>
-        public InRientro(DateTime istanteTransizione) : base(istanteTransizione)
+        public InRientro(DateTime istanteTransizione, string codiceRichiesta) : base(istanteTransizione, codiceRichiesta)
         {
-        }
-
-        /// <summary>
-        ///   In questo stato il mezzo risulta assegnato ad una richiesta
-        /// </summary>
-        public override bool AssegnatoARichiesta
-        {
-            get
-            {
-                return true;
-            }
         }
 
         /// <summary>

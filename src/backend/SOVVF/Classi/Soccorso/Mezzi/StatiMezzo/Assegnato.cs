@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
@@ -29,7 +28,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     /// <summary>
     ///   Assegnato ad una Richiesta
     /// </summary>
-    public class Assegnato : AbstractStatoMezzo
+    public class Assegnato : AbstractStatoMezzoAssegnatoARichiesta
     {
         /// <summary>
         ///   Costruttore della classe
@@ -37,19 +36,8 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <param name="istanteTransizione">
         ///   L'istante in cui avviene la transizione in questo stato
         /// </param>
-        public Assegnato(DateTime istanteTransizione) : base(istanteTransizione)
+        public Assegnato(DateTime istanteTransizione, string codiceRichiesta) : base(istanteTransizione, codiceRichiesta)
         {
-        }
-
-        /// <summary>
-        ///   In questo stato il mezzo risulta assegnato ad una richiesta
-        /// </summary>
-        public override bool AssegnatoARichiesta
-        {
-            get
-            {
-                return true;
-            }
         }
 
         /// <summary>
@@ -73,7 +61,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
                 return false;
             }
         }
-        
+
         /// <summary>
         ///   Nello stato <see cref="Assegnato" /> l'evento <see cref="UscitaPartenza" /> produce la
         ///   transizione nello stato <see cref="InViaggio" />.
@@ -82,7 +70,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Lo stato <see cref="InViaggio" /></returns>
         public override IStatoMezzo AcceptVisitor(UscitaPartenza uscitaPartenza)
         {
-            return new InViaggio(uscitaPartenza.Istante);
+            return new InViaggio(uscitaPartenza.Istante, uscitaPartenza.CodiceRichiesta);
         }
 
         /// <summary>

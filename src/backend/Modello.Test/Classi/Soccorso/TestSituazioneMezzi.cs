@@ -229,14 +229,14 @@ namespace Modello.Test.Classi.Soccorso
                 new SituazioneMezzo()
                 {
                     Codice = "M1",
-                    CodiceStato = new SulPosto(istanteEvento3).Codice,
+                    CodiceStato = new SulPosto(istanteEvento3, "R1").Codice,
                     CodiceRichiestaAssistenza = "R1",
                     IstanteAggiornamentoStato = istanteEvento3
                 },
                 new SituazioneMezzo()
                 {
                     Codice = "M2",
-                    CodiceStato = new Assegnato(istanteEvento1).Codice,
+                    CodiceStato = new Assegnato(istanteEvento1, "R1").Codice,
                     CodiceRichiestaAssistenza = "R1",
                     IstanteAggiornamentoStato = istanteEvento1
                 }
@@ -267,14 +267,14 @@ namespace Modello.Test.Classi.Soccorso
                 new SituazioneMezzo()
                 {
                     Codice = "M4",
-                    CodiceStato = new SulPosto(istanteEvento3).Codice,
+                    CodiceStato = new SulPosto(istanteEvento3, "R2").Codice,
                     CodiceRichiestaAssistenza = "R2",
                     IstanteAggiornamentoStato = istanteEvento3
                 },
                 new SituazioneMezzo()
                 {
                     Codice = "M3",
-                    CodiceStato = new Assegnato(istanteEvento1).Codice,
+                    CodiceStato = new Assegnato(istanteEvento1, "R2").Codice,
                     CodiceRichiestaAssistenza = "R2",
                     IstanteAggiornamentoStato = istanteEvento1
                 },
@@ -314,7 +314,7 @@ namespace Modello.Test.Classi.Soccorso
                 new SituazioneMezzo()
                 {
                     Codice = "M3",
-                    CodiceStato = new InRientro(istanteInRientroM3).Codice,
+                    CodiceStato = new InRientro(istanteInRientroM3, "R2").Codice,
                     CodiceRichiestaAssistenza = "R2",
                     IstanteAggiornamentoStato = istanteSulPostoM3
                 },
@@ -366,14 +366,14 @@ namespace Modello.Test.Classi.Soccorso
                 new SituazioneMezzo()
                 {
                     Codice = "M1",
-                    CodiceStato = new InViaggio(istanteRiassegnatoM1).Codice,
+                    CodiceStato = new InViaggio(istanteRiassegnatoM1, "R2").Codice,
                     CodiceRichiestaAssistenza = "R2",
                     IstanteAggiornamentoStato = istanteRiassegnatoM1
                 },
                 new SituazioneMezzo()
                 {
                     Codice = "M2",
-                    CodiceStato = new InViaggio(istanteEventoUscitaM2).Codice,
+                    CodiceStato = new InViaggio(istanteEventoUscitaM2, "R1").Codice,
                     CodiceRichiestaAssistenza = "R1",
                     IstanteAggiornamentoStato = istanteEventoUscitaM2
                 },
@@ -425,7 +425,7 @@ namespace Modello.Test.Classi.Soccorso
             expected = new SituazioneMezzo()
             {
                 Codice = "M1",
-                CodiceStato = new Assegnato(istanteEvento).Codice,
+                CodiceStato = new Assegnato(istanteEvento, "R1").Codice,
                 CodiceRichiestaAssistenza = "R1",
                 IstanteAggiornamentoStato = istanteEvento
             };

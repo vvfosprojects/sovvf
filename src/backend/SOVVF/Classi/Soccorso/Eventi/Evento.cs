@@ -57,6 +57,7 @@ namespace Modello.Classi.Soccorso.Eventi
             this.CodiceFonte = codiceFonte;
             richiesta.AddEvento(this);
             this.IstanteCreazione = DateTime.UtcNow;
+            this.CodiceRichiesta = richiesta.Codice;
         }
 
         /// <summary>
@@ -76,5 +77,10 @@ namespace Modello.Classi.Soccorso.Eventi
         ///   caso in cui la registrazione di un evento avvenga posticipata.
         /// </summary>
         private DateTime IstanteCreazione { get; set; }
+
+        /// <summary>
+        ///   Il codice della <see cref="RichiestaAssistenza" /> a cui l'evento appartiene.
+        /// </summary>
+        public string CodiceRichiesta { get; private set; }
     }
 }

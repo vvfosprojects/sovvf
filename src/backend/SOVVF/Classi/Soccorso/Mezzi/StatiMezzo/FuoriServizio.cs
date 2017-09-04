@@ -19,8 +19,6 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Modello.Classi.Soccorso.Eventi.Eccezioni;
-using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
 {
@@ -29,7 +27,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
     /// <summary>
     ///   Fuori Servizio
     /// </summary>
-    public class FuoriServizio : AbstractStatoMezzo
+    public class FuoriServizio : AbstractStatoMezzoNonAssegnatoARichiesta
     {
         /// <summary>
         ///   Costruttore della classe
@@ -39,17 +37,6 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// </param>
         public FuoriServizio(DateTime istanteTransizione) : base(istanteTransizione)
         {
-        }
-
-        /// <summary>
-        ///   In questo stato il mezzo non risulta assegnato ad una richiesta
-        /// </summary>
-        public override bool AssegnatoARichiesta
-        {
-            get
-            {
-                return false;
-            }
         }
 
         /// <summary>

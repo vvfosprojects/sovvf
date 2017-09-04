@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Modello.Classi.Soccorso.Eventi.Eccezioni;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 
 namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
@@ -106,7 +105,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
             }
             else
             {
-                return new Assegnato(composizionePartenze.Istante);
+                return new Assegnato(composizionePartenze.Istante, composizionePartenze.CodiceRichiesta);
             }
         }
 
