@@ -73,14 +73,14 @@ namespace Modello.Classi.Soccorso.Eventi
         public string CodiceFonte { get; private set; }
 
         /// <summary>
+        ///   Il codice della <see cref="RichiestaAssistenza" /> a cui l'evento appartiene.
+        /// </summary>
+        public string CodiceRichiesta { get; private set; }
+
+        /// <summary>
         ///   E' la data in cui l'evento è stato creato. Può differire da <see cref="Istante" /> nel
         ///   caso in cui la registrazione di un evento avvenga posticipata.
         /// </summary>
         private DateTime IstanteCreazione { get; set; }
-
-        /// <summary>
-        ///   Il codice della <see cref="RichiestaAssistenza" /> a cui l'evento appartiene.
-        /// </summary>
-        public string CodiceRichiesta { get; private set; }
     }
 }

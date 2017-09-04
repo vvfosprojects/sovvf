@@ -36,6 +36,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <param name="istanteTransizione">
         ///   L'istante in cui avviene la transizione in questo stato
         /// </param>
+        /// <param name="codiceRichiesta">Il codice della richiesta proprietaria dell'evento</param>
         public InViaggio(DateTime istanteTransizione, string codiceRichiesta) : base(istanteTransizione, codiceRichiesta)
         {
         }
