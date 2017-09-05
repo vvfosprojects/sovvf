@@ -402,12 +402,12 @@ namespace Modello.Test.Classi.Soccorso
                 .Setup(m => m.Get(It.IsAny<IEnumerable<string>>()))
                 .Returns(richieste);
 
-            var getSituezioneMezzi = new GetSituazioneMezzi(
+            var getSituazioneMezzi = new GetSituazioneMezzi(
                 mockGetCodiciUnitaOperativeVisibiliPerSoccorso.Object,
                 mockEspandiPinsNodoSuOrganigramma.Object,
                 mockGetRichiestePerSituazioneMezzi.Object);
 
-            return getSituezioneMezzi;
+            return getSituazioneMezzi;
         }
 
         private RichiestaAssistenza CreaRichiestaContenenteUnicoEventoDiComposizione(out SituazioneMezzo expected)
