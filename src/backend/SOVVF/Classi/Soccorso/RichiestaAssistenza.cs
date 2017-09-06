@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Modello.Classi.Geo;
+using Modello.Classi.Persistenza;
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
@@ -38,7 +39,7 @@ namespace Modello.Classi.Soccorso
     ///         delegazione VVF ad un convegno. Non è un'istanza di richiesta il terremoto, che
     ///         essendo un macro evento calamitoso darà luogo a più richieste di assistenza.
     /// </summary>
-    public class RichiestaAssistenza
+    public class RichiestaAssistenza : Entity
     {
         /// <summary>
         ///   Contiene la lista degli eventi considerati di interesse per la richiesta.

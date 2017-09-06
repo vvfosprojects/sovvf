@@ -166,6 +166,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
 
             var fakerRichiesteAssistenza = new Faker<RichiestaAssistenza>()
                 .StrictMode(true)
+                .RuleFor(ra => ra.Id, f => f.UniqueIndex.ToString())
                 .RuleFor(ra => ra.Codice, f => f.IndexGlobal.ToString())
                 .RuleFor(ra => ra.CodiceUnitaOperativaCompetente, f => this.codiceUnitaOperativa)
                 .RuleFor(ra => ra.CodiciUnitaOperativeAllertate, f => new HashSet<string> { this.codiceUnitaOperativa })

@@ -1,5 +1,5 @@
-//-----------------------------------------------------------------------
-// <copyright file="SintesiRichiestaAssistenzaResult.cs" company="CNVVF">
+﻿//-----------------------------------------------------------------------
+// <copyright file="IMapperRichiestaSuSintesi.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,18 +17,21 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Modello.Classi.Soccorso;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.ResultDTO
+namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
 {
     /// <summary>
-    ///   DTO di output
+    /// Servizio di mapping di <see cref="RichiestaAssistenza"/> sul DTO <see cref="SintesiRichiesta"/>. 
     /// </summary>
-    public class SintesiRichiestaAssistenzaResult
+    public interface IMapperRichiestaSuSintesi
     {
         /// <summary>
-        ///   La sintesi della richiesta di assistenza
+        /// Esegue il mapping di <see cref="RichiestaAssistenza"/> sul DTO <see cref="SintesiRichiesta"/>. 
         /// </summary>
-        public SintesiRichiesta SintesiRichiesta { get; internal set; }
+        /// <param name="richiesta">La richiesta da mappare</param>
+        /// <returns>Il DTO risultante dal mapping</returns>
+        SintesiRichiesta Map(RichiestaAssistenza richiesta);
     }
 }
