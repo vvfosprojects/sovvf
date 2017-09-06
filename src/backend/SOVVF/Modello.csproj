@@ -55,6 +55,8 @@
     <Compile Include="Classi\Persistenza\IEntity.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Eccezioni\WorkflowException.cs" />
     <Compile Include="Classi\Soccorso\Eventi\IGestioneChiusura.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\MarcaNonRilevante.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\MarcaRilevante.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\AbstractPartenza.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\IVisitorStatoMezzo.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\Revoca.cs" />

@@ -178,6 +178,19 @@ namespace Modello.Classi.Soccorso
         public bool InAttesa { get; }
 
         /// <summary>
+        /// Indica se la <see cref="RichiestaAssistenza"/> è marcata come rilevante.
+        /// </summary>
+        public bool Rilevante { get
+            {
+                var ultimoEventoRilevanza = this.eventi
+                    .Where(e => (e is MarcaRilevante) || (e is MarcaNonRilevante))
+                    .LastOrDefault();
+
+                return (ultimoEventoRilevanza != null) && (ultimoEventoRilevanza is MarcaRilevante);
+            }
+        }
+
+        /// <summary>
         ///   Restituisce l'elenco degli stati dei mezzi coinvolti nella Richiesta di Assistenza
         /// </summary>
         public IDictionary<string, IStatoMezzo> MezziCoinvolti
