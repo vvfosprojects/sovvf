@@ -28,12 +28,12 @@ using Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssis
 namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
 {
     /// <summary>
-    /// Implementazione del servizio di mapping di <see cref="RichiestaAssistenza"/> sul DTO <see cref="SintesiRichiesta"/>. 
+    ///   Implementazione del servizio di mapping di <see cref="RichiestaAssistenza" /> sul DTO <see cref="SintesiRichiesta" />.
     /// </summary>
     internal class MapperRichiestaSuSintesi : IMapperRichiestaSuSintesi
     {
         /// <summary>
-        /// Esegue il mapping di <see cref="RichiestaAssistenza"/> sul DTO <see cref="SintesiRichiesta"/>. 
+        ///   Esegue il mapping di <see cref="RichiestaAssistenza" /> sul DTO <see cref="SintesiRichiesta" />.
         /// </summary>
         /// <param name="richiesta">La richiesta da mappare</param>
         /// <returns>Il DTO risultante dal mapping</returns>
@@ -44,6 +44,7 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
             {
                 Id = richiesta.Id,
                 Codice = richiesta.Codice,
+                Rilevante = richiesta.Rilevante
             };
         }
     }

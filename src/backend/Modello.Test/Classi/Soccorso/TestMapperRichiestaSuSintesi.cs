@@ -17,7 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using Modello.Classi.Soccorso;
+using Modello.Classi.Soccorso.Eventi;
 using Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using NUnit.Framework;
 
@@ -52,6 +54,29 @@ namespace Modello.Test.Classi.Soccorso
             var sintesi = mapper.Map(richiesta);
 
             Assert.That(sintesi.Codice, Is.EqualTo(richiesta.Codice));
+        }
+
+        [Test]
+        public void UnaRichiestaRilevanteHaLaRilevanzaCorrettamenteMappata()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest");
+            var mapper = new MapperRichiestaSuSintesi();
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.Rilevante, Is.True);
+        }
+
+        [Test]
+        public void UnaRichiestaNonRilevanteHaLaRilevanzaCorrettamenteMappata()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var mapper = new MapperRichiestaSuSintesi();
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.Rilevante, Is.False);
         }
     }
 }

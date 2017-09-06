@@ -178,9 +178,11 @@ namespace Modello.Classi.Soccorso
         public bool InAttesa { get; }
 
         /// <summary>
-        /// Indica se la <see cref="RichiestaAssistenza"/> è marcata come rilevante.
+        ///   Indica se la <see cref="RichiestaAssistenza" /> è marcata come rilevante.
         /// </summary>
-        public bool Rilevante { get
+        public bool Rilevante
+        {
+            get
             {
                 var ultimoEventoRilevanza = this.eventi
                     .Where(e => (e is MarcaRilevante) || (e is MarcaNonRilevante))
