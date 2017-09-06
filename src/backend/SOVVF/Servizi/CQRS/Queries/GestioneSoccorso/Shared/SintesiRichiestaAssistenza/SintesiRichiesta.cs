@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------
 using System;
 
-namespace Modello.Classi.Soccorso.SintesiRichiestaAssistenza
+namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
     /// <summary>
     ///   Contiene le informazioni di sintesi di una Richiesta di Assistenza, utile ad alimentare il

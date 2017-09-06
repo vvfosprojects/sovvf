@@ -17,7 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Modello.Classi.Soccorso.SintesiRichiestaAssistenza
+namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
     /// <summary>
     ///   Modella il componente di una squadra
