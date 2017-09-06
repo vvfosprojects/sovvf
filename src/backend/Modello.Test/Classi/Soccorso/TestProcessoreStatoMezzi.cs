@@ -587,7 +587,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnMezzoAssegnatoRestituisceIlCodiceRichiestaGiusto()
+        public void UnMezzoAssegnatoRestituisceIlCodiceDellaRichiesta()
         {
             var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
@@ -614,7 +614,7 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnMezzoRevocatoEdAssegnatoAdAltraRichiestaRestituisceIlCodiceRichiestaGiusto()
+        public void UnMezzoRevocatoEdAssegnatoAdAltraRichiestaRestituisceIlCodiceDellAltraRichiesta()
         {
             var processoreStato = new ProcessoreStato();
             var richiesta1 = new RichiestaAssistenza() { Codice = "R1" };
