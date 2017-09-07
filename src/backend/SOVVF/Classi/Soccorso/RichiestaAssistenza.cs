@@ -155,7 +155,7 @@ namespace Modello.Classi.Soccorso
         {
             get
             {
-                return this.Eventi
+                return this.eventi
                     .Where(e => e is Telefonata)
                     .Select(e => e as Telefonata)
                     .ToList();
@@ -199,7 +199,7 @@ namespace Modello.Classi.Soccorso
         {
             get
             {
-                var eventiPartenza = this.Eventi
+                var eventiPartenza = this.eventi
                     .Where(e => e is IPartenza)
                     .Select(e => (IPartenza)e);
 
@@ -306,7 +306,7 @@ namespace Modello.Classi.Soccorso
         {
             get
             {
-                var eventoAssegnazionePriorita = this.Eventi
+                var eventoAssegnazionePriorita = this.eventi
                     .Where(e => e is AssegnazionePriorita)
                     .OrderByDescending(e => e.Istante)
                     .FirstOrDefault() as AssegnazionePriorita;
@@ -318,16 +318,16 @@ namespace Modello.Classi.Soccorso
         /// <summary>
         ///   Restituisce l'istante della Richiesta di Assistenza
         /// </summary>
-        public DateTime DataOraRichiesta
+        public DateTime IstanteRicezioneRichiesta
         {
             get
             {
                 try
                 {
-                    var eventoSegnalazione = this.Eventi
+                    var eventoSegnalazione = this.eventi
                         .Where(e => e is Segnalazione)
-                        .OrderByDescending(e => e.Istante)
                         .First() as Segnalazione;
+
                     return eventoSegnalazione.Istante;
                 }
                 catch (Exception ex)
@@ -338,23 +338,23 @@ namespace Modello.Classi.Soccorso
         }
 
         /// <summary>
-        ///   Restituisce l'istante della prima Assegnazione
+        ///   Restituisce l'istante della prima assegnazione di una risorsa squadra/mezzo alla <see cref="RichiestaAssistenza" />.
         /// </summary>
-        public DateTime DataOraPrimaAssegnazione
+        public DateTime? IstantePrimaAssegnazione
         {
             get
             {
-                try
+                var eventoAssegnazione = this.eventi
+                    .Where(e => e is ComposizionePartenze)
+                    .FirstOrDefault() as ComposizionePartenze;
+
+                if (eventoAssegnazione == null)
                 {
-                    var eventoSegnalazione = this.Eventi
-                        .Where(e => e is ComposizionePartenze)
-                        .OrderByDescending(e => e.Istante)
-                        .First() as ComposizionePartenze;
-                    return eventoSegnalazione.Istante;
+                    return null;
                 }
-                catch (Exception ex)
+                else
                 {
-                    throw new InvalidOperationException("Impossibile recuperare l'istante della prima Assegnazione.", ex);
+                    return eventoAssegnazione.Istante;
                 }
             }
         }
@@ -366,10 +366,10 @@ namespace Modello.Classi.Soccorso
         {
             get
             {
-                var eventoChiusura = this.Eventi
+                var eventoChiusura = this.eventi
                     .Where(e => e is ChiusuraRichiesta);
 
-                if (this.Eventi.Any())
+                if (this.eventi.Any())
                 {
                     return new Chiusa();
                 }
