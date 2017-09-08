@@ -446,5 +446,45 @@ namespace Modello.Test.Classi.Soccorso
 
             Assert.Pass();
         }
+
+        [Test]
+        public void UnaRichiestaAssistenzaSenzaEventiRilevanzaENonRilevante()
+        {
+            var richiesta = new RichiestaAssistenza();
+
+            Assert.That(richiesta.Rilevante, Is.False);
+        }
+
+        [Test]
+        public void UnaRichiestaAssistenzaConEventoRilevanzaERilevante()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest");
+
+            Assert.That(richiesta.Rilevante, Is.True);
+        }
+
+        [Test]
+        public void UnaRichiestaAssistenzaConEventoRilevanzaEPoiEventoNonRilevanzaENonRilevante()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new MarcaRilevante(richiesta, now.AddSeconds(-10), "fonte", "motivazioneTest1");
+            new MarcaNonRilevante(richiesta, now, "fonte", "motivazioneTest2");
+
+            Assert.That(richiesta.Rilevante, Is.False);
+        }
+
+        [Test]
+        public void UnaRichiestaAssistenzaConDueEventiRilevanzaIntervallatiDaNonRilevanzaERilevante()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new MarcaRilevante(richiesta, now.AddSeconds(-10), "fonte", "motivazioneTest1");
+            new MarcaNonRilevante(richiesta, now.AddSeconds(-5), "fonte", "motivazioneTest2");
+            new MarcaRilevante(richiesta, now, "fonte", "motivazioneTest3");
+
+            Assert.That(richiesta.Rilevante, Is.True);
+        }
     }
 }

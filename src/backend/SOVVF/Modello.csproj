@@ -50,9 +50,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bindings.cs" />
+    <Compile Include="Classi\Persistenza\Entity.cs" />
     <Compile Include="Classi\Organigramma\PinNodo.cs" />
+    <Compile Include="Classi\Persistenza\IEntity.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Eccezioni\WorkflowException.cs" />
     <Compile Include="Classi\Soccorso\Eventi\IGestioneChiusura.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\MarcaNonRilevante.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\MarcaRilevante.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\AbstractPartenza.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\IVisitorStatoMezzo.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\Revoca.cs" />
@@ -127,6 +131,8 @@
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\InserisciTelefonata\CommandDTO\Azione.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\InserisciTelefonata\CommandDTO\InserisciTelefonataCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\InserisciTelefonata\InserisciTelefonataCommandHandler.cs" />
+    <Compile Include="Servizi\CQRS\Mappers\RichiestaSuSintesi\IMapperRichiestaSuSintesi.cs" />
+    <Compile Include="Servizi\CQRS\Mappers\RichiestaSuSintesi\MapperRichiestaSuSintesi.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SintesiRichiestaAssistenza\QueryDTO\SintesiRichiestaAssistenzaQuery.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\Shared\SintesiRichiestaAssistenza\Componente.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\Shared\SintesiRichiestaAssistenza\Mezzo.cs" />

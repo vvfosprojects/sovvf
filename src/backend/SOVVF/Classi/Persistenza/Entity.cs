@@ -1,5 +1,5 @@
-//-----------------------------------------------------------------------
-// <copyright file="SintesiRichiestaAssistenzaResult.cs" company="CNVVF">
+﻿//-----------------------------------------------------------------------
+// <copyright file="Entity.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,18 +17,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.ResultDTO
+namespace Modello.Classi.Persistenza
 {
     /// <summary>
-    ///   DTO di output
+    /// Classe astratta da cui derivano le entita, cioè le classi che hanno una corrispondenza uno-ad-uno con una entry di database.
     /// </summary>
-    public class SintesiRichiestaAssistenzaResult
+    public abstract class Entity : IEntity
     {
         /// <summary>
-        ///   La sintesi della richiesta di assistenza
+        /// L'id dell'entità, che corrisponde alla chiave primaria nel database.
         /// </summary>
-        public SintesiRichiesta SintesiRichiesta { get; internal set; }
+        public string Id { get; protected internal set; }
     }
 }
