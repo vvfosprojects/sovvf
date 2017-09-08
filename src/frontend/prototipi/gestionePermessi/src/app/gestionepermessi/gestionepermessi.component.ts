@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 
 import { TreeModule, TreeNode } from 'primeng/primeng';
-import { DataTableModule,SharedModule} from 'primeng/primeng';
+import { DataTableModule, SharedModule } from 'primeng/primeng';
 import { GrowlModule, Message } from 'primeng/primeng';
-import { CheckboxModule} from 'primeng/primeng';
-import { ButtonModule} from 'primeng/primeng';
+import { CheckboxModule } from 'primeng/primeng';
+import { ButtonModule } from 'primeng/primeng';
 
 import { SituazionePermessiFakeService } from "app/gestionepermessi/servizi/situazione-permessi-fake.service";
 import { SituazionePermessi } from "app/gestionepermessi/situazione-permessi.model";
 import { AdapterAlberoService } from "app/gestionepermessi/servizi/adapter-albero.service";
 
-import 'rxjs/add/operator/map';
 import { PermessoAssegnato } from "app/gestionepermessi/permesso-assegnato.model";
 import { UnitaOperativa } from "app/gestionepermessi/unita-operativa.model";
 import { PersonaleDaAutorizzareService } from "app/gestionepermessi/servizi/personale-da-autorizzare.service";
-import { ConfirmationService} from 'primeng/primeng';
+import { ConfirmationService } from 'primeng/primeng';
 
 @Component({
     selector: 'app-gestionepermessi',
@@ -22,7 +21,7 @@ import { ConfirmationService} from 'primeng/primeng';
     styleUrls: ['./gestionepermessi.component.css']
 })
 export class GestionepermessiComponent implements OnInit {
-    private situazionePermessi: SituazionePermessi;
+    //private situazionePermessi: SituazionePermessi;
     private primeNgTrees = [];
     //private sitPerm;
     private testoRicerca: string;
@@ -34,7 +33,7 @@ export class GestionepermessiComponent implements OnInit {
     permessiSelezionati: string[] = [];
     filteredNames: any[];
     nominativo: any;
-    names: any[]; 
+    names: any[];
 
     msgs: Message[];
     //files: TreeNode[];
@@ -45,38 +44,14 @@ export class GestionepermessiComponent implements OnInit {
         private confirmationService: ConfirmationService) { }
 
     ngOnInit() {
-        
-        //==>>>> controllare perché non funziona chiamata al servizio <<<<=====
-        
-        // this.situazionePermessiService.getSituazionePermessi()
-        //     .map(situazionePermessi => {
-        //         this.situazionePermessi = situazionePermessi;
-                
-        //         this.primeNgTrees = this.situazionePermessi.unitaOperativeRadice.map(uo =>
-        //             this.adapterAlbero.converti(uo));
-                
-        //         this.permessiAssegnati = this.situazionePermessi.permessiAssegnati;
-                
-        //     });
-        
-        this.primeNgTrees = 
-        [
-            new UnitaOperativa("0","DIR-LAZ", "Direzione Regionale Lazio", [
-                new UnitaOperativa("1","COM-RM", "Comando Provinciale Roma", []),
-                new UnitaOperativa("3","COM-RT", "Comando Provinciale Rieti", []),
-                new UnitaOperativa("4","COM-VT", "Comando Provinciale Viterbo", []),
-                new UnitaOperativa("5","COM-LT", "Comando Provinciale Latina", []),
-                new UnitaOperativa("7","COM-FR", "Comando Provinciale Frosinone", []),
-            ]),
-            new UnitaOperativa("0", "COA_MAR","COA Marche", [])
-        ].map(uo => this.adapterAlbero.converti(uo));
+        this.situazionePermessiService.getSituazionePermessi()
+            .subscribe(data => {
+                this.primeNgTrees = data.unitaOperativeRadice.map(uo =>
+                    this.adapterAlbero.converti(uo)
+                );
+                this.permessiAssegnati = data.permessiAssegnati;
 
-        this.permessiAssegnati = 
-        [
-            new PermessoAssegnato("0", "Manuela Marzotti", "MZTMNL11Y23T666I", "Può inserire interventi", "Comando Roma", true, new Date(2017, 5, 5, 10, 9, 20), null),
-            new PermessoAssegnato("1", "Manuela Marzotti", "MZTMNL11Y23T666I", "Può vedere interventi", "Comando Roma", false, new Date(2016, 5, 9, 11, 8, 22), new Date(2017, 5, 9, 11, 8, 22))
-        ];
-
+            });
     }
 
     nodeSelect(event) {
@@ -111,19 +86,19 @@ export class GestionepermessiComponent implements OnInit {
     }
 
     private clearSearchText(): void {
-       this.nominativo = null;
+        this.nominativo = null;
     }
 
     private assegnaPermessi() {
-       this.confirmationService.confirm({
+        this.confirmationService.confirm({
             message: 'Sei sicuro di voler assegnare i permessi selezionati?',
             header: 'Confirmation',
             icon: 'fa fa-question-circle',
             accept: () => {
-                this.msgs = [{severity:'info', summary:'Confirmed', detail:'Permessi assegnati con successo'}];
+                this.msgs = [{ severity: 'info', summary: 'Confirmed', detail: 'Permessi assegnati con successo' }];
             },
             reject: () => {
-                this.msgs = [{severity:'info', summary:'Rejected', detail:'Operazione annullata'}];
+                this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'Operazione annullata' }];
             }
         });
 
@@ -136,15 +111,15 @@ export class GestionepermessiComponent implements OnInit {
             header: 'Delete Confirmation',
             icon: 'fa fa-trash',
             accept: () => {
-                this.msgs = [{severity:'info', summary:'Confirmed', detail:'Permessi eliminati'}];
+                this.msgs = [{ severity: 'info', summary: 'Confirmed', detail: 'Permessi eliminati' }];
             },
             reject: () => {
-                this.msgs = [{severity:'info', summary:'Rejected', detail:'Operazione annullata'}];
+                this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'Operazione annullata' }];
             }
         });
-     }
+    }
 
-     filterNameSingle(event){
+    filterNameSingle(event) {
         let query = event.query;
         this.personaleDaAutorizzareService.getNominativi().subscribe(names => {
             this.filteredNames = this.filterName(query, names);
@@ -152,15 +127,15 @@ export class GestionepermessiComponent implements OnInit {
         console.log("filteredNames: " + this.filteredNames);
     }
 
-    filterName(query, names: any[]):any[] {
+    filterName(query, names: any[]): any[] {
         //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-        let filtered : any[] = [];
-        for(let i = 0; i < names.length; i++) {
+        let filtered: any[] = [];
+        for (let i = 0; i < names.length; i++) {
             let nominativo = names[i];
-            if(nominativo.descrizione.toLowerCase().indexOf(query.toLowerCase()) > -1) {
+            if (nominativo.descrizione.toLowerCase().indexOf(query.toLowerCase()) > -1) {
                 filtered.push(nominativo.descrizione);
             }
-            
+
         }
         return filtered;
     }

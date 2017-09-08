@@ -28,6 +28,8 @@ export class SituazionePermessiFakeService {
   constructor(private http: Http) { }
 
   public getSituazionePermessi(): Observable<SituazionePermessi> {
+    console.log("Service SituazionePermessiFakeService getSituazionePermessi");   
+    console.log(this.situazionePermessi);
     return Observable.of(this.situazionePermessi);
   }
 }
