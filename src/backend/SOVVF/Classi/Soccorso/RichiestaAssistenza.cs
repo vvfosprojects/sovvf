@@ -308,8 +308,7 @@ namespace Modello.Classi.Soccorso
             {
                 var eventoAssegnazionePriorita = this.eventi
                     .Where(e => e is AssegnazionePriorita)
-                    .OrderByDescending(e => e.Istante)
-                    .FirstOrDefault() as AssegnazionePriorita;
+                    .LastOrDefault() as AssegnazionePriorita;
 
                 return eventoAssegnazionePriorita != null ? eventoAssegnazionePriorita.Priorita : RichiestaAssistenza.Priorita.Media;
             }
