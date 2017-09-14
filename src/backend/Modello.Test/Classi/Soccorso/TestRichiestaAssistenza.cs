@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System;
 using Modello.Classi.Soccorso;
+using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using NUnit.Framework;
 
@@ -46,6 +47,40 @@ namespace Modello.Test.Classi.Soccorso
             var telefonate = richiesta.Telefonate;
 
             Assert.That(telefonate.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void LaPrioritaEMediaInAssenzaDiEventi()
+        {
+            var richiesta = new RichiestaAssistenza();
+
+            var priorita = richiesta.PrioritaRichiesta;
+
+            Assert.That(priorita, Is.EqualTo(RichiestaAssistenza.Priorita.Media));
+        }
+
+        [Test]
+        public void LaPrioritaECorrettamenteRestituita()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new AssegnazionePriorita(richiesta, RichiestaAssistenza.Priorita.Alta, DateTime.Now, "Fonte");
+
+            var priorita = richiesta.PrioritaRichiesta;
+
+            Assert.That(priorita, Is.EqualTo(RichiestaAssistenza.Priorita.Alta));
+        }
+
+        [Test]
+        public void ValeLUltimoDiDueEventiDiAssegnazionePriorita()
+        {
+            var time = DateTime.Now.AddSeconds(-10);
+            var richiesta = new RichiestaAssistenza();
+            new AssegnazionePriorita(richiesta, RichiestaAssistenza.Priorita.Alta, time, "Fonte");
+            new AssegnazionePriorita(richiesta, RichiestaAssistenza.Priorita.Bassa, time.AddSeconds(5), "Fonte");
+
+            var priorita = richiesta.PrioritaRichiesta;
+
+            Assert.That(priorita, Is.EqualTo(RichiestaAssistenza.Priorita.Bassa));
         }
     }
 }
