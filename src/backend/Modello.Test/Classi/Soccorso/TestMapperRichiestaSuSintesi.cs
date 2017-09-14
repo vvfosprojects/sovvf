@@ -20,6 +20,7 @@
 using System;
 using Modello.Classi.Soccorso;
 using Modello.Classi.Soccorso.Eventi;
+using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using NUnit.Framework;
 
@@ -31,10 +32,9 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void LIdRichiestaECorrettamenteMappato()
         {
-            var richiesta = new RichiestaAssistenza()
-            {
-                Id = "TestId"
-            };
+            var now = DateTime.Now;
+            var richiesta = GetRichiestaBenFormata(istanteRicezione: now);
+            richiesta.Id = "TestId";
             var mapper = new MapperRichiestaSuSintesi();
 
             var sintesi = mapper.Map(richiesta);
@@ -45,10 +45,9 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void IlCodiceRichiestaECorrettamenteMappato()
         {
-            var richiesta = new RichiestaAssistenza()
-            {
-                Codice = "TestCod"
-            };
+            var now = DateTime.Now;
+            var richiesta = GetRichiestaBenFormata(istanteRicezione: now);
+            richiesta.Codice = "TestCod";
             var mapper = new MapperRichiestaSuSintesi();
 
             var sintesi = mapper.Map(richiesta);
@@ -59,7 +58,8 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaRichiestaRilevanteHaLaRilevanzaCorrettamenteMappata()
         {
-            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            var richiesta = GetRichiestaBenFormata(istanteRicezione: now);
             new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest");
             var mapper = new MapperRichiestaSuSintesi();
 
@@ -71,12 +71,33 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaRichiestaNonRilevanteHaLaRilevanzaCorrettamenteMappata()
         {
-            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            var richiesta = GetRichiestaBenFormata(istanteRicezione: now);
             var mapper = new MapperRichiestaSuSintesi();
 
             var sintesi = mapper.Map(richiesta);
 
             Assert.That(sintesi.Rilevante, Is.False);
+        }
+
+        [Test]
+        public void UnaRichiestaHaLIstanteRicezioneRichiestaCorrettamenteMappato()
+        {
+            var now = DateTime.Now;
+            var richiesta = GetRichiestaBenFormata(istanteRicezione: now);
+            var mapper = new MapperRichiestaSuSintesi();
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.IstanteRicezioneRichiesta, Is.EqualTo(now));
+        }
+
+        private RichiestaAssistenza GetRichiestaBenFormata(DateTime istanteRicezione)
+        {
+            var richiesta = new RichiestaAssistenza();
+            new Telefonata(richiesta, "TestCode", istanteRicezione, "fonte");
+
+            return richiesta;
         }
     }
 }
