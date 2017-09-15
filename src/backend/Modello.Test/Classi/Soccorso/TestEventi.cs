@@ -167,7 +167,7 @@ namespace Modello.Test.Classi.Soccorso
         public void Un_evento_di_riassegnazione_con_parametri_corretti_e_correttamente_creato()
         {
             var now = DateTime.Now;
-            var evento = new RevocaPerRiassegnazione(this.richiesta, this.richiestaSubentrata, "M1", DateTime.Now, "Fonte");
+            var evento = new RevocaPerRiassegnazione(this.richiesta, this.richiestaSubentrata, "M1", now, "Fonte");
 
             Assert.That(evento.RichiestaSubentrata, Is.SameAs(this.richiestaSubentrata));
             Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
