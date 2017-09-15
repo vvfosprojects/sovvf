@@ -258,7 +258,7 @@ namespace Modello.Classi.Soccorso
         ///   Per es. è la lista { valanga, soccorso a persona, ricerca disperso, messa in sicurezza
         ///   } in un sinistro simile al Rigopiano
         /// </remarks>
-        public IList<TipologiaRichiesta> Tipologie { get; set; }
+        public virtual IList<TipologiaRichiesta> Tipologie { get; set; }
 
         /// <summary>
         ///   E' l'indirizzo della richiesta

@@ -18,6 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Bogus;
 using Modello.Classi.Soccorso;
 using Modello.Classi.Soccorso.Eventi;
@@ -162,15 +164,42 @@ namespace Modello.Test.Classi.Soccorso
             Assert.That(sintesi.PrioritaRichiesta, Is.EqualTo(priorita));
         }
 
-        private Mock<RichiestaAssistenza> GetMockRichiestaBenFormata(DateTime? istanteRicezione = null)
+        [Test]
+        public void LeTipologieSonoCorrettamenteMappate()
+        {
+            var tipologie = new TipologiaRichiesta[]
+            {
+                    new TipologiaRichiesta("C1", "D1"),
+                    new TipologiaRichiesta("C2", "D2"),
+                    new TipologiaRichiesta("C3", "D3"),
+                    new TipologiaRichiesta("C4", "D4")
+            };
+            var mockRichiesta = this.GetMockRichiestaBenFormata(istanteRicezione: null, tipologie: tipologie);
+            mockRichiesta
+                .Setup(r => r.Tipologie)
+                .Returns(tipologie);
+            var richiesta = mockRichiesta.Object;
+            var mapper = new MapperRichiestaSuSintesi();
+
+            var sintesi = mapper.Map(richiesta);
+
+            CollectionAssert.AreEqual(new[] { "D1", "D2", "D3", "D4" }, sintesi.Tipologie);
+        }
+
+        private Mock<RichiestaAssistenza> GetMockRichiestaBenFormata(DateTime? istanteRicezione = null, IEnumerable<TipologiaRichiesta> tipologie = null)
         {
             if (!istanteRicezione.HasValue)
+            {
                 istanteRicezione = DateTime.Now;
+            }
 
             var mockRichiesta = new Mock<RichiestaAssistenza>();
             mockRichiesta
                 .Setup(r => r.IstanteRicezioneRichiesta)
                 .Returns(istanteRicezione.Value);
+            mockRichiesta
+                    .Setup(r => r.Tipologie)
+                    .Returns(tipologie == null ? new List<TipologiaRichiesta>() : tipologie.ToList());
 
             return mockRichiesta;
         }
