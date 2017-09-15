@@ -164,7 +164,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(g => g.Latitudine, f => f.Address.Latitude())
                 .RuleFor(g => g.Longitudine, f => f.Address.Longitude());
 
-            var fakerRichiesteAssistenza = new Faker<RichiestaAssistenza>()
+            var fakerRichiesteAssistenza = new Faker<RichiestaAssistenza>("it")
                 .StrictMode(true)
                 .RuleFor(ra => ra.Id, f => f.UniqueIndex.ToString())
                 .RuleFor(ra => ra.Codice, f => f.IndexGlobal.ToString())
@@ -177,6 +177,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(ra => ra.ZonaEmergenza, f => string.Empty)
                 .RuleFor(ra => ra.Descrizione, f => f.Lorem.Sentence())
                 .RuleFor(ra => ra.Richiedente, f => $"{f.Name.FirstName()} {f.Name.LastName()}")
+                .RuleFor(ra => ra.NumeroRichiedente, f => f.Phone.PhoneNumber())
                 .Ignore(ra => ra.Tags);
 
             var fakerTelefonata = new Faker<Telefonata>()

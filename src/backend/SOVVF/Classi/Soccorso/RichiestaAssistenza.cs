@@ -416,6 +416,11 @@ namespace Modello.Classi.Soccorso
         public virtual string Richiedente { get; set; }
 
         /// <summary>
+        ///   Il numero telefonico del richiedente della richiesta, se appropriato.
+        /// </summary>
+        public virtual string NumeroRichiedente { get; set; }
+
+        /// <summary>
         ///   Aggiunge un evento alla lista degli eventi. L'evento deve essersi verificato in un
         ///   istante superiore a quello dell'ultimo evento in lista. In caso contrario il metodo
         ///   solleva un'eccezione.
