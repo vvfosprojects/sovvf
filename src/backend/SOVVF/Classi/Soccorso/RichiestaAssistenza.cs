@@ -406,15 +406,14 @@ namespace Modello.Classi.Soccorso
         {
             get
             {
-#warning metodo non implementato
-                throw new NotImplementedException();
+                return this.MezziCoinvolti.Values.Any(statoMezzo => statoMezzo is SulPosto);
             }
         }
 
         /// <summary>
         ///   Il richiedente della richiesta.
         /// </summary>
-        public string Richiedente { get; set; }
+        public virtual string Richiedente { get; set; }
 
         /// <summary>
         ///   Aggiunge un evento alla lista degli eventi. L'evento deve essersi verificato in un

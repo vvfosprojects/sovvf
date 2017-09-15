@@ -201,6 +201,21 @@ namespace Modello.Test.Classi.Soccorso
             Assert.That(sintesi.Descrizione, Is.EqualTo("DescXYZ"));
         }
 
+        [Test]
+        public void IlRichiedenteECorrettamenteMappato()
+        {
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            mockRichiesta
+                .Setup(r => r.Richiedente)
+                .Returns("TestRichiedente");
+            var richiesta = mockRichiesta.Object;
+            var mapper = new MapperRichiestaSuSintesi();
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.Richiedente, Is.EqualTo("TestRichiedente"));
+        }
+
         private Mock<RichiestaAssistenza> GetMockRichiestaBenFormata(
             DateTime? istanteRicezione = null,
             IEnumerable<TipologiaRichiesta> tipologie = null)

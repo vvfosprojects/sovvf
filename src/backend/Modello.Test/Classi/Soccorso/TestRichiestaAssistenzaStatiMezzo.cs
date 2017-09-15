@@ -203,5 +203,154 @@ namespace Modello.Test.Classi.Soccorso
 
             Assert.That(mezziCoinvolti, Has.Count.EqualTo(1));
         }
+
+        [Test]
+        public void UnaRichiestaConUnMezzoUscitoEdUnoSulPostoEPresidiata()
+        {
+            var processoreStato = new ProcessoreStato();
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte", false)
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1"),
+                }
+            };
+            new ComposizionePartenze(richiesta, now.AddSeconds(10), "fonte", false)
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("YYY", "M2"),
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(15), "fonte");
+            new UscitaPartenza(richiesta, "M2", now.AddSeconds(20), "fonte");
+            new ArrivoSulPosto(richiesta, "M2", now.AddSeconds(25), "fonte");
+
+            var presidiato = richiesta.Presidiato;
+
+            Assert.That(presidiato, Is.True);
+        }
+
+        [Test]
+        public void UnaRichiestaConUnMezzoUscitoEdUnoInRientroNonEPresidiata()
+        {
+            var processoreStato = new ProcessoreStato();
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte", false)
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1"),
+                }
+            };
+            new ComposizionePartenze(richiesta, now.AddSeconds(10), "fonte", false)
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("YYY", "M2"),
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(15), "fonte");
+            new UscitaPartenza(richiesta, "M2", now.AddSeconds(20), "fonte");
+            new ArrivoSulPosto(richiesta, "M2", now.AddSeconds(25), "fonte");
+            new PartenzaInRientro(richiesta, "M2", now.AddSeconds(25), "fonte");
+
+            var presidiato = richiesta.Presidiato;
+
+            Assert.That(presidiato, Is.False);
+        }
+
+        [Test]
+        public void UnaRichiestaConDueMezziSulPostoEPresidiata()
+        {
+            var processoreStato = new ProcessoreStato();
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte", false)
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1"),
+                }
+            };
+            new ComposizionePartenze(richiesta, now.AddSeconds(10), "fonte", false)
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("YYY", "M2"),
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(15), "fonte");
+            new UscitaPartenza(richiesta, "M2", now.AddSeconds(20), "fonte");
+            new ArrivoSulPosto(richiesta, "M1", now.AddSeconds(25), "fonte");
+            new ArrivoSulPosto(richiesta, "M2", now.AddSeconds(25), "fonte");
+
+            var presidiato = richiesta.Presidiato;
+
+            Assert.That(presidiato, Is.True);
+        }
+
+        [Test]
+        public void UnaRichiestaConDueMezziUscitiDallaSedeNonEPresidiata()
+        {
+            var processoreStato = new ProcessoreStato();
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte", false)
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1"),
+                }
+            };
+            new ComposizionePartenze(richiesta, now.AddSeconds(10), "fonte", false)
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("YYY", "M2"),
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(15), "fonte");
+            new UscitaPartenza(richiesta, "M2", now.AddSeconds(20), "fonte");
+
+            var presidiato = richiesta.Presidiato;
+
+            Assert.That(presidiato, Is.False);
+        }
+
+        [Test]
+        public void UnaRichiestaConDueMezziInRientroNonEPresidiata()
+        {
+            var processoreStato = new ProcessoreStato();
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte", false)
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("XXX", "M1"),
+                }
+            };
+            new ComposizionePartenze(richiesta, now.AddSeconds(10), "fonte", false)
+            {
+                Componenti = new HashSet<ComponentePartenza>()
+                {
+                    new ComponentePartenza("YYY", "M2"),
+                }
+            };
+            new UscitaPartenza(richiesta, "M1", now.AddSeconds(15), "fonte");
+            new UscitaPartenza(richiesta, "M2", now.AddSeconds(20), "fonte");
+            new ArrivoSulPosto(richiesta, "M1", now.AddSeconds(25), "fonte");
+            new ArrivoSulPosto(richiesta, "M2", now.AddSeconds(30), "fonte");
+            new PartenzaInRientro(richiesta, "M1", now.AddSeconds(35), "fonte");
+            new PartenzaInRientro(richiesta, "M2", now.AddSeconds(40), "fonte");
+
+            var presidiato = richiesta.Presidiato;
+
+            Assert.That(presidiato, Is.False);
+        }
     }
 }
