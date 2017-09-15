@@ -52,7 +52,8 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 Tipologie = richiesta.Tipologie.Select(t => t.Descrizione).ToArray(),
                 Descrizione = richiesta.Descrizione,
                 Richiedente = richiesta.Richiedente,
-                NumeroRichiedente = richiesta.NumeroRichiedente
+                NumeroRichiedente = richiesta.NumeroRichiedente,
+                DescrizioneLocalita = richiesta.Indirizzo
             };
         }
     }

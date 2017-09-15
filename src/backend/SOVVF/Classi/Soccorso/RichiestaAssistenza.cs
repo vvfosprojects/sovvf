@@ -263,7 +263,7 @@ namespace Modello.Classi.Soccorso
         /// <summary>
         ///   E' l'indirizzo della richiesta
         /// </summary>
-        public string Indirizzo { get; set; }
+        public virtual string Indirizzo { get; set; }
 
         /// <summary>
         ///   E' la descrizione della richiesta, che ne sintetizza le caratteristiche principali.
