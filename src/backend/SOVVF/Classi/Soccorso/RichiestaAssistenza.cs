@@ -395,6 +395,18 @@ namespace Modello.Classi.Soccorso
         }
 
         /// <summary>
+        ///   Indica se il luogo del sinistro è presidiato
+        /// </summary>
+        public virtual bool Presidiato
+        {
+            get
+            {
+#warning metodo non implementato
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
         ///   Aggiunge un evento alla lista degli eventi. L'evento deve essersi verificato in un
         ///   istante superiore a quello dell'ultimo evento in lista. In caso contrario il metodo
         ///   solleva un'eccezione.

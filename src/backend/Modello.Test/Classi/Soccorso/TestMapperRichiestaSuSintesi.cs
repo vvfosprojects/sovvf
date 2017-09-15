@@ -113,6 +113,36 @@ namespace Modello.Test.Classi.Soccorso
             Assert.That(sintesi.IstantePrimaAssegnazione, Is.EqualTo(istantePrimaAssegnazione));
         }
 
+        [Test]
+        public void PresidiatoECorrettamenteMappatoSeFalse()
+        {
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            mockRichiesta
+                .Setup(r => r.Presidiato)
+                .Returns(false);
+            var richiesta = mockRichiesta.Object;
+            var mapper = new MapperRichiestaSuSintesi();
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.Presidiato, Is.False);
+        }
+
+        [Test]
+        public void PresidiatoECorrettamenteMappatoSeTrue()
+        {
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            mockRichiesta
+                .Setup(r => r.Presidiato)
+                .Returns(true);
+            var richiesta = mockRichiesta.Object;
+            var mapper = new MapperRichiestaSuSintesi();
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.Presidiato, Is.True);
+        }
+
         private Mock<RichiestaAssistenza> GetMockRichiestaBenFormata(DateTime? istanteRicezione = null)
         {
             if (!istanteRicezione.HasValue)
