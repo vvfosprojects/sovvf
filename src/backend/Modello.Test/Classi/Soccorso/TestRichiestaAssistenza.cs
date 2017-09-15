@@ -20,6 +20,7 @@
 using System;
 using Modello.Classi.Soccorso;
 using Modello.Classi.Soccorso.Eventi;
+using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using NUnit.Framework;
 
@@ -117,6 +118,41 @@ namespace Modello.Test.Classi.Soccorso
             var istanteRichiesta = richiesta.IstanteRicezioneRichiesta;
 
             Assert.That(istanteRichiesta, Is.EqualTo(now));
+        }
+
+        [Test]
+        public void LIstantePrimaAssegnazioneECorrettamenteRestituito()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte", false);
+
+            var istantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione;
+
+            Assert.That(istantePrimaAssegnazione, Is.EqualTo(now));
+        }
+
+        [Test]
+        public void IlPrimoIstanteDiPrimaAssegnazioneERestituito()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new ComposizionePartenze(richiesta, now, "fonte", false);
+            new ComposizionePartenze(richiesta, now.AddSeconds(5), "fonte", false);
+
+            var istantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione;
+
+            Assert.That(istantePrimaAssegnazione, Is.EqualTo(now));
+        }
+
+        [Test]
+        public void InAssenzaDiAssegnazioniLIstantePrimaAssegnazioneENull()
+        {
+            var richiesta = new RichiestaAssistenza();
+
+            var istantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione;
+
+            Assert.That(istantePrimaAssegnazione, Is.Null);
         }
     }
 }
