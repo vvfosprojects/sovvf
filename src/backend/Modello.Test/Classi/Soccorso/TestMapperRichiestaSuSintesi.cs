@@ -23,6 +23,7 @@ using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi;
+using Moq;
 using NUnit.Framework;
 
 namespace Modello.Test.Classi.Soccorso
@@ -33,8 +34,7 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void LIdRichiestaECorrettamenteMappato()
         {
-            var now = DateTime.Now;
-            var richiesta = this.GetRichiestaBenFormata(istanteRicezione: now);
+            var richiesta = this.GetMockRichiestaBenFormata().Object;
             richiesta.Id = "TestId";
             var mapper = new MapperRichiestaSuSintesi();
 
@@ -46,8 +46,7 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void IlCodiceRichiestaECorrettamenteMappato()
         {
-            var now = DateTime.Now;
-            var richiesta = this.GetRichiestaBenFormata(istanteRicezione: now);
+            var richiesta = this.GetMockRichiestaBenFormata().Object;
             richiesta.Codice = "TestCod";
             var mapper = new MapperRichiestaSuSintesi();
 
@@ -59,9 +58,11 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaRichiestaRilevanteHaLaRilevanzaCorrettamenteMappata()
         {
-            var now = DateTime.Now;
-            var richiesta = this.GetRichiestaBenFormata(istanteRicezione: now);
-            new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest");
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            mockRichiesta
+                .Setup(r => r.Rilevante)
+                .Returns(true);
+            var richiesta = mockRichiesta.Object;
             var mapper = new MapperRichiestaSuSintesi();
 
             var sintesi = mapper.Map(richiesta);
@@ -72,8 +73,11 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaRichiestaNonRilevanteHaLaRilevanzaCorrettamenteMappata()
         {
-            var now = DateTime.Now;
-            var richiesta = this.GetRichiestaBenFormata(istanteRicezione: now);
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            mockRichiesta
+                .Setup(r => r.Rilevante)
+                .Returns(false);
+            var richiesta = mockRichiesta.Object;
             var mapper = new MapperRichiestaSuSintesi();
 
             var sintesi = mapper.Map(richiesta);
@@ -84,34 +88,42 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaRichiestaHaLIstanteRicezioneRichiestaCorrettamenteMappato()
         {
-            var now = DateTime.Now;
-            var richiesta = this.GetRichiestaBenFormata(istanteRicezione: now);
+            var istanteRicezione = DateTime.Now.AddSeconds(-100);
+            var richiesta = this.GetMockRichiestaBenFormata(istanteRicezione).Object;
             var mapper = new MapperRichiestaSuSintesi();
 
             var sintesi = mapper.Map(richiesta);
 
-            Assert.That(sintesi.IstanteRicezioneRichiesta, Is.EqualTo(richiesta.IstanteRicezioneRichiesta));
+            Assert.That(sintesi.IstanteRicezioneRichiesta, Is.EqualTo(istanteRicezione));
         }
 
         [Test]
         public void UnaRichiestaHaLIstantePrimaAssegnazioneCorrettamenteMappato()
         {
-            var now = DateTime.Now;
-            var richiesta = this.GetRichiestaBenFormata(istanteRicezione: now);
-            new ComposizionePartenze(richiesta, now.AddSeconds(5), "fonte", false);
+            var istantePrimaAssegnazione = DateTime.Now.AddSeconds(10);
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            mockRichiesta
+                .Setup(r => r.IstantePrimaAssegnazione)
+                .Returns(istantePrimaAssegnazione);
+            var richiesta = mockRichiesta.Object;
             var mapper = new MapperRichiestaSuSintesi();
 
             var sintesi = mapper.Map(richiesta);
 
-            Assert.That(sintesi.IstantePrimaAssegnazione, Is.EqualTo(richiesta.IstantePrimaAssegnazione));
+            Assert.That(sintesi.IstantePrimaAssegnazione, Is.EqualTo(istantePrimaAssegnazione));
         }
 
-        private RichiestaAssistenza GetRichiestaBenFormata(DateTime istanteRicezione)
+        private Mock<RichiestaAssistenza> GetMockRichiestaBenFormata(DateTime? istanteRicezione = null)
         {
-            var richiesta = new RichiestaAssistenza();
-            new Telefonata(richiesta, "TestCode", istanteRicezione, "fonte");
+            if (!istanteRicezione.HasValue)
+                istanteRicezione = DateTime.Now;
 
-            return richiesta;
+            var mockRichiesta = new Mock<RichiestaAssistenza>();
+            mockRichiesta
+                .Setup(r => r.IstanteRicezioneRichiesta)
+                .Returns(istanteRicezione.Value);
+
+            return mockRichiesta;
         }
     }
 }

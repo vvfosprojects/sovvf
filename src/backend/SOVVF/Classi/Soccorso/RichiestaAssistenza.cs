@@ -180,7 +180,7 @@ namespace Modello.Classi.Soccorso
         /// <summary>
         ///   Indica se la <see cref="RichiestaAssistenza" /> è marcata come rilevante.
         /// </summary>
-        public bool Rilevante
+        public virtual bool Rilevante
         {
             get
             {
@@ -317,7 +317,7 @@ namespace Modello.Classi.Soccorso
         /// <summary>
         ///   Restituisce l'istante della Richiesta di Assistenza
         /// </summary>
-        public DateTime IstanteRicezioneRichiesta
+        public virtual DateTime IstanteRicezioneRichiesta
         {
             get
             {
@@ -339,7 +339,7 @@ namespace Modello.Classi.Soccorso
         /// <summary>
         ///   Restituisce l'istante della prima assegnazione di una risorsa squadra/mezzo alla <see cref="RichiestaAssistenza" />.
         /// </summary>
-        public DateTime? IstantePrimaAssegnazione
+        public virtual DateTime? IstantePrimaAssegnazione
         {
             get
             {
