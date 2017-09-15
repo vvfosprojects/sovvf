@@ -141,7 +141,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         /// <summary>
         ///   Eventuale istante di prima assegnazione di risorse alla richiesta
         /// </summary>
-        public DateTime IstantePrimaAssegnazione { get; set; }
+        public DateTime? IstantePrimaAssegnazione { get; set; }
 
         /// <summary>
         ///   Indica se il luogo del sinistro è presidiato con squadra VVF

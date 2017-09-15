@@ -20,6 +20,7 @@
 using System;
 using Modello.Classi.Soccorso;
 using Modello.Classi.Soccorso.Eventi;
+using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using NUnit.Framework;
@@ -89,7 +90,20 @@ namespace Modello.Test.Classi.Soccorso
 
             var sintesi = mapper.Map(richiesta);
 
-            Assert.That(sintesi.IstanteRicezioneRichiesta, Is.EqualTo(now));
+            Assert.That(sintesi.IstanteRicezioneRichiesta, Is.EqualTo(richiesta.IstanteRicezioneRichiesta));
+        }
+
+        [Test]
+        public void UnaRichiestaHaLIstantePrimaAssegnazioneCorrettamenteMappato()
+        {
+            var now = DateTime.Now;
+            var richiesta = this.GetRichiestaBenFormata(istanteRicezione: now);
+            new ComposizionePartenze(richiesta, now.AddSeconds(5), "fonte", false);
+            var mapper = new MapperRichiestaSuSintesi();
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.IstantePrimaAssegnazione, Is.EqualTo(richiesta.IstantePrimaAssegnazione));
         }
 
         private RichiestaAssistenza GetRichiestaBenFormata(DateTime istanteRicezione)

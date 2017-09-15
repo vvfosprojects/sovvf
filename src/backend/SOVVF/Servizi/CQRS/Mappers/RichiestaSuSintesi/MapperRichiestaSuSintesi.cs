@@ -45,7 +45,8 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 Id = richiesta.Id,
                 Codice = richiesta.Codice,
                 Rilevante = richiesta.Rilevante,
-                IstanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta
+                IstanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta,
+                IstantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione
             };
         }
     }
