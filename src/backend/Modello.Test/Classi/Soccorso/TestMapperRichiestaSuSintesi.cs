@@ -186,7 +186,24 @@ namespace Modello.Test.Classi.Soccorso
             CollectionAssert.AreEqual(new[] { "D1", "D2", "D3", "D4" }, sintesi.Tipologie);
         }
 
-        private Mock<RichiestaAssistenza> GetMockRichiestaBenFormata(DateTime? istanteRicezione = null, IEnumerable<TipologiaRichiesta> tipologie = null)
+        [Test]
+        public void LaDescrizioneECorrettamenteMappata()
+        {
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            mockRichiesta
+                .Setup(r => r.Descrizione)
+                .Returns("DescXYZ");
+            var richiesta = mockRichiesta.Object;
+            var mapper = new MapperRichiestaSuSintesi();
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.Descrizione, Is.EqualTo("DescXYZ"));
+        }
+
+        private Mock<RichiestaAssistenza> GetMockRichiestaBenFormata(
+            DateTime? istanteRicezione = null,
+            IEnumerable<TipologiaRichiesta> tipologie = null)
         {
             if (!istanteRicezione.HasValue)
             {

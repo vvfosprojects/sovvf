@@ -49,7 +49,8 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 IstantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione,
                 Presidiato = richiesta.Presidiato,
                 PrioritaRichiesta = richiesta.PrioritaRichiesta,
-                Tipologie = richiesta.Tipologie.Select(t => t.Descrizione).ToArray()
+                Tipologie = richiesta.Tipologie.Select(t => t.Descrizione).ToArray(),
+                Descrizione = richiesta.Descrizione
             };
         }
     }

@@ -266,6 +266,11 @@ namespace Modello.Classi.Soccorso
         public string Indirizzo { get; set; }
 
         /// <summary>
+        ///   E' la descrizione della richiesta, che ne sintetizza le caratteristiche principali.
+        /// </summary>
+        public virtual string Descrizione { get; set; }
+
+        /// <summary>
         ///   E' la zona di emergenza a cui la richiesta è legata
         /// </summary>
         public string ZonaEmergenza { get; set; }

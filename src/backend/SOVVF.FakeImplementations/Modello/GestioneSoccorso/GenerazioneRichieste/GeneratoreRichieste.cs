@@ -175,6 +175,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(ra => ra.IstanteChiusura, f => null)
                 .RuleFor(ra => ra.Indirizzo, f => f.Address.StreetAddress())
                 .RuleFor(ra => ra.ZonaEmergenza, f => string.Empty)
+                .RuleFor(ra => ra.Descrizione, f => f.Lorem.Sentence())
                 .Ignore(ra => ra.Tags);
 
             var fakerTelefonata = new Faker<Telefonata>()
