@@ -91,6 +91,7 @@
     <Compile Include="Modello\GestioneSoccorso\Risorse\TestAndSetSelezioneDisponibilitaSquadra_Fake.cs" />
     <Compile Include="Modello\GestioneSoccorso\SaveRichiestaDiAssistenza_Fake.cs" />
     <Compile Include="Modello\Infrastruttura\Anagrafiche\GetTipoInterventoByCodice_Fake.cs" />
+    <Compile Include="Modello\Infrastruttura\CompetenzeTerritoriali\GetCompetenzeByPunto_Fake_Hardcoded.cs" />
     <Compile Include="Modello\Organigramma\GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato.cs" />
     <Compile Include="Modello\Organigramma\GetUnitaOperativeVisibiliPerSoccorso_OperatoreDirezioneRegionaleLazio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

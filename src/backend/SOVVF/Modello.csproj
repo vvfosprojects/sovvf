@@ -145,6 +145,7 @@
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SintesiRichiesteAssistenza\SintesiRichiesteAssistenzaQueryHandler.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SintesiRichiesteAssistenza\ResultDTO\SintesiRichiesteAssistenzaResult.cs" />
     <Compile Include="Servizi\Infrastruttura\Anagrafiche\IGetTipoInterventoByCodice.cs" />
+    <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\CompetenzeTerritoriali\IGetCompetenzeByPunto.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetSintesiRichiestaAssistenzaById.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiestePerSituazioneMezzi.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\QueryDTO\SituazioneMezziQuery.cs" />
@@ -196,9 +197,7 @@
     <Compile Include="Servizi\Infrastruttura\Autenticazione\IGetOperatoreAutenticato.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\IGetUnitaOperativaRadice.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Servizi\Infrastruttura\GestioneSoccorso\Implementazioni\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="..\SOVVF.licenseheader">
       <Link>SOVVF.licenseheader</Link>
