@@ -412,6 +412,11 @@ namespace Modello.Classi.Soccorso
         }
 
         /// <summary>
+        ///   Il richiedente della richiesta.
+        /// </summary>
+        public string Richiedente { get; set; }
+
+        /// <summary>
         ///   Aggiunge un evento alla lista degli eventi. L'evento deve essersi verificato in un
         ///   istante superiore a quello dell'ultimo evento in lista. In caso contrario il metodo
         ///   solleva un'eccezione.
