@@ -82,5 +82,41 @@ namespace Modello.Test.Classi.Soccorso
 
             Assert.That(priorita, Is.EqualTo(RichiestaAssistenza.Priorita.Bassa));
         }
+
+        [Test]
+        public void InAssenzaDiSegnalazioniLIstanteRichiestaDaEccezione()
+        {
+            var richiesta = new RichiestaAssistenza();
+
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var istanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta;
+            });
+        }
+
+        [Test]
+        public void LIstanteRichiestaECorrettamenteRestituito()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new Telefonata(richiesta, "codice", now, "fonte");
+
+            var istanteRichiesta = richiesta.IstanteRicezioneRichiesta;
+
+            Assert.That(istanteRichiesta, Is.EqualTo(now));
+        }
+
+        [Test]
+        public void IlPrimoIstanteRichiestaERestituito()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new Telefonata(richiesta, "codice1", now, "fonte");
+            new Telefonata(richiesta, "codice2", now.AddSeconds(5), "fonte");
+
+            var istanteRichiesta = richiesta.IstanteRicezioneRichiesta;
+
+            Assert.That(istanteRichiesta, Is.EqualTo(now));
+        }
     }
 }

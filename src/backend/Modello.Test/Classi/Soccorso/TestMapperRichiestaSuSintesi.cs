@@ -33,7 +33,7 @@ namespace Modello.Test.Classi.Soccorso
         public void LIdRichiestaECorrettamenteMappato()
         {
             var now = DateTime.Now;
-            var richiesta = GetRichiestaBenFormata(istanteRicezione: now);
+            var richiesta = this.GetRichiestaBenFormata(istanteRicezione: now);
             richiesta.Id = "TestId";
             var mapper = new MapperRichiestaSuSintesi();
 
@@ -46,7 +46,7 @@ namespace Modello.Test.Classi.Soccorso
         public void IlCodiceRichiestaECorrettamenteMappato()
         {
             var now = DateTime.Now;
-            var richiesta = GetRichiestaBenFormata(istanteRicezione: now);
+            var richiesta = this.GetRichiestaBenFormata(istanteRicezione: now);
             richiesta.Codice = "TestCod";
             var mapper = new MapperRichiestaSuSintesi();
 
@@ -59,7 +59,7 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaRilevanteHaLaRilevanzaCorrettamenteMappata()
         {
             var now = DateTime.Now;
-            var richiesta = GetRichiestaBenFormata(istanteRicezione: now);
+            var richiesta = this.GetRichiestaBenFormata(istanteRicezione: now);
             new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest");
             var mapper = new MapperRichiestaSuSintesi();
 
@@ -72,7 +72,7 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaNonRilevanteHaLaRilevanzaCorrettamenteMappata()
         {
             var now = DateTime.Now;
-            var richiesta = GetRichiestaBenFormata(istanteRicezione: now);
+            var richiesta = this.GetRichiestaBenFormata(istanteRicezione: now);
             var mapper = new MapperRichiestaSuSintesi();
 
             var sintesi = mapper.Map(richiesta);
@@ -84,7 +84,7 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaHaLIstanteRicezioneRichiestaCorrettamenteMappato()
         {
             var now = DateTime.Now;
-            var richiesta = GetRichiestaBenFormata(istanteRicezione: now);
+            var richiesta = this.GetRichiestaBenFormata(istanteRicezione: now);
             var mapper = new MapperRichiestaSuSintesi();
 
             var sintesi = mapper.Map(richiesta);
