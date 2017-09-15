@@ -302,7 +302,7 @@ namespace Modello.Classi.Soccorso
         /// <summary>
         ///   Restituisce la priorità della richiesta. Se non è esplicitamente impostata è uguale a <see cref="Priorita.Media" />.
         /// </summary>
-        public Priorita PrioritaRichiesta
+        public virtual Priorita PrioritaRichiesta
         {
             get
             {

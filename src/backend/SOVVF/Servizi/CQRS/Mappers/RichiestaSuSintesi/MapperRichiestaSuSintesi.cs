@@ -47,7 +47,8 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 Rilevante = richiesta.Rilevante,
                 IstanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta,
                 IstantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione,
-                Presidiato = richiesta.Presidiato
+                Presidiato = richiesta.Presidiato,
+                PrioritaRichiesta = richiesta.PrioritaRichiesta
             };
         }
     }

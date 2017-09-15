@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using Bogus;
 using Modello.Classi.Soccorso;
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Partenze;
@@ -141,6 +142,24 @@ namespace Modello.Test.Classi.Soccorso
             var sintesi = mapper.Map(richiesta);
 
             Assert.That(sintesi.Presidiato, Is.True);
+        }
+
+        [Test]
+        [Repeat(20)]
+        public void LaPrioritaECorrettamenteMappata()
+        {
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            var faker = new Faker();
+            var priorita = faker.PickRandom<RichiestaAssistenza.Priorita>();
+            mockRichiesta
+                .Setup(r => r.PrioritaRichiesta)
+                .Returns(priorita);
+            var richiesta = mockRichiesta.Object;
+            var mapper = new MapperRichiestaSuSintesi();
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.PrioritaRichiesta, Is.EqualTo(priorita));
         }
 
         private Mock<RichiestaAssistenza> GetMockRichiestaBenFormata(DateTime? istanteRicezione = null)

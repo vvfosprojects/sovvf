@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using Modello.Classi.Soccorso;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
@@ -38,37 +39,6 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
             this.Squadre = new Squadra[0];
             this.Mezzi = new Mezzo[0];
             this.Etichette = new string[0];
-        }
-
-        /// <summary>
-        ///   Priorità della richiesta
-        /// </summary>
-        public enum Priorita
-        {
-            /// <summary>
-            ///   Priorità altissima
-            /// </summary>
-            Altissima = 0,
-
-            /// <summary>
-            ///   Priorità alta
-            /// </summary>
-            Alta,
-
-            /// <summary>
-            ///   Priorità media
-            /// </summary>
-            Media,
-
-            /// <summary>
-            ///   Priorità bassa
-            /// </summary>
-            Bassa,
-
-            /// <summary>
-            ///   Priorità bassissima
-            /// </summary>
-            Bassissima
         }
 
         /// <summary>
@@ -151,7 +121,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         /// <summary>
         ///   Priorita della richiesta
         /// </summary>
-        public Priorita PrioritaRichiesta { get; set; }
+        public RichiestaAssistenza.Priorita PrioritaRichiesta { get; set; }
 
         /// <summary>
         ///   Descrizione delle tipologie
