@@ -174,6 +174,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(ra => ra.Tipologie, f => this.GeneraTipologie())
                 .RuleFor(ra => ra.IstanteChiusura, f => null)
                 .RuleFor(ra => ra.Indirizzo, f => f.Address.StreetAddress())
+                .RuleFor(ra => ra.NoteLocalita, f => f.Lorem.Sentence())
                 .RuleFor(ra => ra.ZonaEmergenza, f => string.Empty)
                 .RuleFor(ra => ra.Descrizione, f => f.Lorem.Sentence())
                 .RuleFor(ra => ra.Richiedente, f => $"{f.Name.FirstName()} {f.Name.LastName()}")

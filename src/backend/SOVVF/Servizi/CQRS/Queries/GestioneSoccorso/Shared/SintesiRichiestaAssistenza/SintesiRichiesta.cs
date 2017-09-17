@@ -149,16 +149,16 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         public string DescrizioneLocalita { get; set; }
 
         /// <summary>
-        ///   Descrizione delle sedi di prima, seconda e terza competenza
-        /// </summary>
-        public string[] DescrizioneCompetenze { get; set; }
-
-        /// <summary>
         ///   Note sulla località della richiesta (per es. "accanto a ingresso carico/scarico del
         ///   supermercato Spendibene")
         /// </summary>
         public string NoteLocalita { get; set; }
 
+        /// <summary>
+        ///   Descrizione delle sedi di prima, seconda e terza competenza
+        /// </summary>
+        public string[] DescrizioneCompetenze { get; set; }
+        
         /// <summary>
         ///   Descrizione delle zone di emergenza
         /// </summary>

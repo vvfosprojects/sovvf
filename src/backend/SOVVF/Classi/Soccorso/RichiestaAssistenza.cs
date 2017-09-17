@@ -266,6 +266,12 @@ namespace Modello.Classi.Soccorso
         public virtual string Indirizzo { get; set; }
 
         /// <summary>
+        ///   Note sulla località della richiesta (per es. "accanto a ingresso carico/scarico del
+        ///   supermercato Spendibene")
+        /// </summary>
+        public virtual string NoteLocalita { get; set; }
+
+        /// <summary>
         ///   E' la descrizione della richiesta, che ne sintetizza le caratteristiche principali.
         /// </summary>
         public virtual string Descrizione { get; set; }
