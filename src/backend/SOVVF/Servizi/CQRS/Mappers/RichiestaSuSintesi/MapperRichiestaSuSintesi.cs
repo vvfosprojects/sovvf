@@ -70,7 +70,8 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 NumeroRichiedente = richiesta.NumeroRichiedente,
                 DescrizioneLocalita = richiesta.Indirizzo,
                 DescrizioneCompetenze = richiesta.CodiciUOCompetenza.Select(cod => this.getUnitaOperativaPerCodice.Get(cod).Nome).ToArray(),
-                NoteLocalita = richiesta.NoteLocalita
+                NoteLocalita = richiesta.NoteLocalita,
+                ZoneEmergenza = richiesta.ZoneEmergenza
             };
         }
     }

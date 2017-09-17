@@ -264,6 +264,21 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
+        public void LeZoneEmergenzaSonoCorrettamenteMappate()
+        {
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            mockRichiesta
+                .Setup(r => r.ZoneEmergenza)
+                .Returns(new[] { "ZonaEm1", "ZonaEm2", "ZonaEm3" });
+            var richiesta = mockRichiesta.Object;
+            var mapper = GetMapper();
+
+            var sintesi = mapper.Map(richiesta);
+
+            CollectionAssert.AreEqual(sintesi.ZoneEmergenza, new[] { "ZonaEm1", "ZonaEm2", "ZonaEm3" });
+        }
+
+        [Test]
         public void ICodiciUODiCompetenzaSonoCorrettamenteMappati()
         {
             var mockRichiesta = this.GetMockRichiestaBenFormata();
