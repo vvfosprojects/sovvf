@@ -85,7 +85,7 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata.Com
         /// <summary>
         ///   Il nome della eventuale zona di emergenza (per es. sisma Emilia)
         /// </summary>
-        public string ZonaEmergenza { get; set; }
+        public string[] ZoneEmergenza { get; set; }
 
         /// <summary>
         ///   Una lista di etichette relative alla chiamata, utile al fine di effettuare una

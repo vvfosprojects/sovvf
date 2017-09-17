@@ -279,7 +279,7 @@ namespace Modello.Classi.Soccorso
         /// <summary>
         ///   E' la zona di emergenza a cui la richiesta è legata
         /// </summary>
-        public string ZonaEmergenza { get; set; }
+        public string[] ZoneEmergenza { get; set; }
 
         /// <summary>
         ///   Sono i tags legati alla richiesta di assistenza

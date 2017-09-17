@@ -84,7 +84,7 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata
                 Geolocalizzazione = command.Geolocalizzazione,
                 Tipologie = command.CodiciTipiIntervento.Select(c => this.getTipoInterventoByCodice.Get(c)).ToList(),
                 Indirizzo = command.Indirizzo,
-                ZonaEmergenza = command.ZonaEmergenza,
+                ZoneEmergenza = command.ZoneEmergenza,
             };
 
             foreach (var t in command.Tags)
