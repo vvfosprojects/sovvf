@@ -178,6 +178,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(ra => ra.Descrizione, f => f.Lorem.Sentence())
                 .RuleFor(ra => ra.Richiedente, f => $"{f.Name.FirstName()} {f.Name.LastName()}")
                 .RuleFor(ra => ra.NumeroRichiedente, f => f.Phone.PhoneNumber())
+                .RuleFor(ra => ra.CodiciUOCompetenza, f => new[] { f.Address.StateAbbr(), f.Address.StateAbbr(), f.Address.StateAbbr() })
                 .Ignore(ra => ra.Tags);
 
             var fakerTelefonata = new Faker<Telefonata>()

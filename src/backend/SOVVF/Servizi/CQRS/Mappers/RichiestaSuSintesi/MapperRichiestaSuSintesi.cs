@@ -24,6 +24,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Modello.Classi.Soccorso;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using Modello.Servizi.Infrastruttura.Organigramma;
 
 namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
 {
@@ -32,6 +33,20 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
     /// </summary>
     internal class MapperRichiestaSuSintesi : IMapperRichiestaSuSintesi
     {
+        /// <summary>
+        /// Istanza del servizio
+        /// </summary>
+        private readonly IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice;
+
+        /// <summary>
+        /// Costruttore della classe
+        /// </summary>
+        /// <param name="getUnitaOperativaPerCodice">L'istanza del servizio di risoluzione unità operativa a partire dal codice</param>
+        public MapperRichiestaSuSintesi(IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice)
+        {
+            this.getUnitaOperativaPerCodice = getUnitaOperativaPerCodice;
+        }
+
         /// <summary>
         ///   Esegue il mapping di <see cref="RichiestaAssistenza" /> sul DTO <see cref="SintesiRichiesta" />.
         /// </summary>
@@ -53,7 +68,8 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 Descrizione = richiesta.Descrizione,
                 Richiedente = richiesta.Richiedente,
                 NumeroRichiedente = richiesta.NumeroRichiedente,
-                DescrizioneLocalita = richiesta.Indirizzo
+                DescrizioneLocalita = richiesta.Indirizzo,
+                DescrizioneCompetenze = richiesta.CodiciUOCompetenza.Select(cod => this.getUnitaOperativaPerCodice.Get(cod).Nome).ToArray()
             };
         }
     }

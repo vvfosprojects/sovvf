@@ -21,11 +21,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Bogus;
+using Modello.Classi.Organigramma;
 using Modello.Classi.Soccorso;
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi;
+using Modello.Servizi.Infrastruttura.Organigramma;
 using Moq;
 using NUnit.Framework;
 
@@ -39,7 +41,7 @@ namespace Modello.Test.Classi.Soccorso
         {
             var richiesta = this.GetMockRichiestaBenFormata().Object;
             richiesta.Id = "TestId";
-            var mapper = new MapperRichiestaSuSintesi();
+            var mapper = GetMapper();
 
             var sintesi = mapper.Map(richiesta);
 
@@ -51,7 +53,7 @@ namespace Modello.Test.Classi.Soccorso
         {
             var richiesta = this.GetMockRichiestaBenFormata().Object;
             richiesta.Codice = "TestCod";
-            var mapper = new MapperRichiestaSuSintesi();
+            var mapper = GetMapper();
 
             var sintesi = mapper.Map(richiesta);
 
@@ -66,7 +68,7 @@ namespace Modello.Test.Classi.Soccorso
                 .Setup(r => r.Rilevante)
                 .Returns(true);
             var richiesta = mockRichiesta.Object;
-            var mapper = new MapperRichiestaSuSintesi();
+            var mapper = GetMapper();
 
             var sintesi = mapper.Map(richiesta);
 
@@ -81,7 +83,7 @@ namespace Modello.Test.Classi.Soccorso
                 .Setup(r => r.Rilevante)
                 .Returns(false);
             var richiesta = mockRichiesta.Object;
-            var mapper = new MapperRichiestaSuSintesi();
+            var mapper = GetMapper();
 
             var sintesi = mapper.Map(richiesta);
 
@@ -93,7 +95,7 @@ namespace Modello.Test.Classi.Soccorso
         {
             var istanteRicezione = DateTime.Now.AddSeconds(-100);
             var richiesta = this.GetMockRichiestaBenFormata(istanteRicezione).Object;
-            var mapper = new MapperRichiestaSuSintesi();
+            var mapper = GetMapper();
 
             var sintesi = mapper.Map(richiesta);
 
@@ -109,7 +111,7 @@ namespace Modello.Test.Classi.Soccorso
                 .Setup(r => r.IstantePrimaAssegnazione)
                 .Returns(istantePrimaAssegnazione);
             var richiesta = mockRichiesta.Object;
-            var mapper = new MapperRichiestaSuSintesi();
+            var mapper = GetMapper();
 
             var sintesi = mapper.Map(richiesta);
 
@@ -124,7 +126,7 @@ namespace Modello.Test.Classi.Soccorso
                 .Setup(r => r.Presidiato)
                 .Returns(false);
             var richiesta = mockRichiesta.Object;
-            var mapper = new MapperRichiestaSuSintesi();
+            var mapper = GetMapper();
 
             var sintesi = mapper.Map(richiesta);
 
@@ -139,7 +141,7 @@ namespace Modello.Test.Classi.Soccorso
                 .Setup(r => r.Presidiato)
                 .Returns(true);
             var richiesta = mockRichiesta.Object;
-            var mapper = new MapperRichiestaSuSintesi();
+            var mapper = GetMapper();
 
             var sintesi = mapper.Map(richiesta);
 
@@ -157,7 +159,7 @@ namespace Modello.Test.Classi.Soccorso
                 .Setup(r => r.PrioritaRichiesta)
                 .Returns(priorita);
             var richiesta = mockRichiesta.Object;
-            var mapper = new MapperRichiestaSuSintesi();
+            var mapper = GetMapper();
 
             var sintesi = mapper.Map(richiesta);
 
@@ -179,7 +181,7 @@ namespace Modello.Test.Classi.Soccorso
                 .Setup(r => r.Tipologie)
                 .Returns(tipologie);
             var richiesta = mockRichiesta.Object;
-            var mapper = new MapperRichiestaSuSintesi();
+            var mapper = GetMapper();
 
             var sintesi = mapper.Map(richiesta);
 
@@ -194,7 +196,7 @@ namespace Modello.Test.Classi.Soccorso
                 .Setup(r => r.Descrizione)
                 .Returns("DescXYZ");
             var richiesta = mockRichiesta.Object;
-            var mapper = new MapperRichiestaSuSintesi();
+            var mapper = GetMapper();
 
             var sintesi = mapper.Map(richiesta);
 
@@ -209,7 +211,7 @@ namespace Modello.Test.Classi.Soccorso
                 .Setup(r => r.Richiedente)
                 .Returns("TestRichiedente");
             var richiesta = mockRichiesta.Object;
-            var mapper = new MapperRichiestaSuSintesi();
+            var mapper = GetMapper();
 
             var sintesi = mapper.Map(richiesta);
 
@@ -224,7 +226,7 @@ namespace Modello.Test.Classi.Soccorso
                 .Setup(r => r.NumeroRichiedente)
                 .Returns("TestNumeroRichiedente");
             var richiesta = mockRichiesta.Object;
-            var mapper = new MapperRichiestaSuSintesi();
+            var mapper = GetMapper();
 
             var sintesi = mapper.Map(richiesta);
 
@@ -239,11 +241,36 @@ namespace Modello.Test.Classi.Soccorso
                 .Setup(r => r.Indirizzo)
                 .Returns("TestIndirizzo");
             var richiesta = mockRichiesta.Object;
-            var mapper = new MapperRichiestaSuSintesi();
+            var mapper = GetMapper();
 
             var sintesi = mapper.Map(richiesta);
 
             Assert.That(sintesi.DescrizioneLocalita, Is.EqualTo("TestIndirizzo"));
+        }
+
+        [Test]
+        public void ICodiciUODiCompetenzaSonoCorrettamenteMappati()
+        {
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            mockRichiesta
+                .Setup(r => r.CodiciUOCompetenza)
+                .Returns(new[] { "CodUO1", "CodUO2", "CodUO3" });
+            var richiesta = mockRichiesta.Object;
+            var mapper = GetMapper();
+
+            var sintesi = mapper.Map(richiesta);
+
+            CollectionAssert.AreEqual(sintesi.DescrizioneCompetenze, new[] { "Descrizione CodUO1", "Descrizione CodUO2", "Descrizione CodUO3" });
+        }
+
+        private static MapperRichiestaSuSintesi GetMapper()
+        {
+            var mockGetUnitaOperativaPerCodice = new Mock<IGetUnitaOperativaPerCodice>();
+            mockGetUnitaOperativaPerCodice
+                .Setup(m => m.Get(It.IsAny<string>()))
+                .Returns<string>(param => new UnitaOperativa(param, $"Descrizione {param}"));
+
+            return new MapperRichiestaSuSintesi(mockGetUnitaOperativaPerCodice.Object);
         }
 
         private Mock<RichiestaAssistenza> GetMockRichiestaBenFormata(
