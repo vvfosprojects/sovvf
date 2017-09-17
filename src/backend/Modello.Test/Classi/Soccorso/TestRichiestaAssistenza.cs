@@ -20,6 +20,7 @@
 using System;
 using Modello.Classi.Soccorso;
 using Modello.Classi.Soccorso.Eventi;
+using Modello.Classi.Soccorso.Eventi.Fonogramma;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using NUnit.Framework;
@@ -187,6 +188,54 @@ namespace Modello.Test.Classi.Soccorso
             var codiceSchedaNue = richiesta.CodiceSchedaNue;
 
             Assert.That(codiceSchedaNue, Is.EqualTo("CodNue2"));
+        }
+
+        [Test]
+        public void FonogrammaNonNecessarioPerUnaRichiestaSenzaEventiFonogramma()
+        {
+            var richiesta = new RichiestaAssistenza();
+
+            var statoInvioFonogramma = richiesta.StatoInvioFonogramma;
+
+            Assert.That(statoInvioFonogramma, Is.EqualTo(RichiestaAssistenza.StatoFonogramma.NonNecessario));
+        }
+
+        [Test]
+        public void IlFonogrammaEDaInviareConEventoDiInvioRichiesto()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new InviareFonogramma(richiesta, DateTime.Now, "fonte", "Cc e Polizia");
+
+            var statoInvioFonogramma = richiesta.StatoInvioFonogramma;
+
+            Assert.That(statoInvioFonogramma, Is.EqualTo(RichiestaAssistenza.StatoFonogramma.DaInviare));
+        }
+
+        [Test]
+        public void IlFonogrammaEInviatoConEventoDiInvio()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new InviareFonogramma(richiesta, now, "fonte", "Cc e Polizia");
+            new FonogrammaInviato(richiesta, now.AddSeconds(5), "fonte");
+
+            var statoInvioFonogramma = richiesta.StatoInvioFonogramma;
+
+            Assert.That(statoInvioFonogramma, Is.EqualTo(RichiestaAssistenza.StatoFonogramma.Inviato));
+        }
+
+        [Test]
+        public void IlFonogrammaEDaInviareSeAdEventoDiInvioSegueEventoDiInvioRichiesto()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new InviareFonogramma(richiesta, now, "fonte", "Cc e Polizia");
+            new FonogrammaInviato(richiesta, now.AddSeconds(5), "fonte");
+            new InviareFonogramma(richiesta, now.AddSeconds(10), "fonte", "Cc e Polizia");
+
+            var statoInvioFonogramma = richiesta.StatoInvioFonogramma;
+
+            Assert.That(statoInvioFonogramma, Is.EqualTo(RichiestaAssistenza.StatoFonogramma.DaInviare));
         }
     }
 }

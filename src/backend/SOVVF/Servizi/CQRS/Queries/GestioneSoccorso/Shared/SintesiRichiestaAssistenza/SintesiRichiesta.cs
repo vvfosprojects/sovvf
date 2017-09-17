@@ -42,27 +42,6 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         }
 
         /// <summary>
-        ///   Indicazione dello stato del fonogramma
-        /// </summary>
-        public enum StatoFonogramma
-        {
-            /// <summary>
-            ///   Il fonogramma non è necessario
-            /// </summary>
-            NonNecessario = 0,
-
-            /// <summary>
-            ///   Il fonogramma deve essere inviato ma non è stato inviato (rosso)
-            /// </summary>
-            DaInviare,
-
-            /// <summary>
-            ///   Il fonogramma è stato inviato
-            /// </summary>
-            Inviato
-        }
-
-        /// <summary>
         ///   Indicazione della complessità di una richiesta di assistenza
         /// </summary>
         public enum Complessita
@@ -158,7 +137,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         ///   Descrizione delle sedi di prima, seconda e terza competenza
         /// </summary>
         public string[] DescrizioneCompetenze { get; set; }
-        
+
         /// <summary>
         ///   Descrizione delle zone di emergenza
         /// </summary>
@@ -178,7 +157,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         ///   Codice dello stato di invio del fonogramma (per es. daInviare, inviato, nonNecessario).
         ///   Utile a calcolare il colore della segnalazione.
         /// </summary>
-        public StatoFonogramma StatoFonogrammaRichiesta { get; set; }
+        public RichiestaAssistenza.StatoFonogramma StatoFonogrammaRichiesta { get; set; }
 
         /// <summary>
         ///   Segnalazione sullo stato di invio del fonogramma.

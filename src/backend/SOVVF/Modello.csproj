@@ -54,6 +54,9 @@
     <Compile Include="Classi\Organigramma\PinNodo.cs" />
     <Compile Include="Classi\Persistenza\IEntity.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Eccezioni\WorkflowException.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\Fonogramma\FonogrammaInviato.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\Fonogramma\IFonogramma.cs" />
+    <Compile Include="Classi\Soccorso\Eventi\Fonogramma\InviareFonogramma.cs" />
     <Compile Include="Classi\Soccorso\Eventi\IGestioneChiusura.cs" />
     <Compile Include="Classi\Soccorso\Eventi\MarcaNonRilevante.cs" />
     <Compile Include="Classi\Soccorso\Eventi\MarcaRilevante.cs" />

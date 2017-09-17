@@ -24,6 +24,7 @@ using System.Linq;
 using Modello.Classi.Geo;
 using Modello.Classi.Persistenza;
 using Modello.Classi.Soccorso.Eventi;
+using Modello.Classi.Soccorso.Eventi.Fonogramma;
 using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
@@ -79,6 +80,27 @@ namespace Modello.Classi.Soccorso
             ///   Alta priorità
             /// </summary>
             Alta
+        }
+
+        /// <summary>
+        ///   Indicazione dello stato del fonogramma
+        /// </summary>
+        public enum StatoFonogramma
+        {
+            /// <summary>
+            ///   Il fonogramma non è necessario
+            /// </summary>
+            NonNecessario = 0,
+
+            /// <summary>
+            ///   Il fonogramma deve essere inviato ma non è stato inviato (rosso)
+            /// </summary>
+            DaInviare,
+
+            /// <summary>
+            ///   Il fonogramma è stato inviato
+            /// </summary>
+            Inviato
         }
 
         /// <summary>
@@ -470,6 +492,32 @@ namespace Modello.Classi.Soccorso
                     .FirstOrDefault();
 
                 return primoCodiceNue;
+            }
+        }
+
+        /// <summary>
+        ///   Calcola lo stato di invio del fonogramma per la richiesta, in base all'ultimo evento
+        ///   fonogramma presente nella richiesta.
+        /// </summary>
+        public virtual StatoFonogramma StatoInvioFonogramma
+        {
+            get
+            {
+                var ultimoEventoFonogramma = this.eventi
+                    .Where(e => e is IFonogramma)
+                    .LastOrDefault();
+
+                if (ultimoEventoFonogramma is FonogrammaInviato)
+                {
+                    return StatoFonogramma.Inviato;
+                }
+
+                if (ultimoEventoFonogramma is InviareFonogramma)
+                {
+                    return StatoFonogramma.DaInviare;
+                }
+
+                return StatoFonogramma.NonNecessario;
             }
         }
 
