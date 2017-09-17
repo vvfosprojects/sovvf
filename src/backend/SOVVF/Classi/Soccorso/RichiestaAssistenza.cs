@@ -421,6 +421,11 @@ namespace Modello.Classi.Soccorso
         public virtual string NumeroRichiedente { get; set; }
 
         /// <summary>
+        /// E' il codice delle unità operative di prima, seconda, terza... competenza, in ordine di preferenza.
+        /// </summary>
+        public virtual string[] CodiciUOCompetenza { get; set; }
+
+        /// <summary>
         ///   Aggiunge un evento alla lista degli eventi. L'evento deve essersi verificato in un
         ///   istante superiore a quello dell'ultimo evento in lista. In caso contrario il metodo
         ///   solleva un'eccezione.
