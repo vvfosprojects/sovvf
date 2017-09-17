@@ -340,6 +340,24 @@ namespace Modello.Test.Classi.Soccorso
             Assert.That(sintesi.CodiceSchedaNue, Is.EqualTo("TestCodiceNue"));
         }
 
+        [Test]
+        [Repeat(20)]
+        public void LoStatoInvioFonogrammaECorrettamenteMappato()
+        {
+            var faker = new Faker();
+            var statoFonogramma = faker.PickRandom<RichiestaAssistenza.StatoFonogramma>();
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            mockRichiesta
+                .Setup(r => r.StatoInvioFonogramma)
+                .Returns(statoFonogramma);
+            var richiesta = mockRichiesta.Object;
+            var mapper = GetMapper();
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.StatoFonogrammaRichiesta, Is.EqualTo(statoFonogramma));
+        }
+
         private static MapperRichiestaSuSintesi GetMapper()
         {
             var mockGetUnitaOperativaPerCodice = new Mock<IGetUnitaOperativaPerCodice>();
