@@ -154,5 +154,39 @@ namespace Modello.Test.Classi.Soccorso
 
             Assert.That(istantePrimaAssegnazione, Is.Null);
         }
+
+        [Test]
+        public void InAssenzaDiTelefonateIlCodiceSchedaNueENull()
+        {
+            var richiesta = new RichiestaAssistenza();
+
+            var codiceSchedaNue = richiesta.CodiceSchedaNue;
+
+            Assert.That(codiceSchedaNue, Is.Null);
+        }
+
+        [Test]
+        public void IlCodiceSchedaNueEQuelloDellaPrimaTelefonata()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new Telefonata(richiesta, "CodRichiesta", now, "fonte") { CodiceSchedaContatto = "CodNue1" };
+            new Telefonata(richiesta, "CodRichiesta", now.AddSeconds(5), "fonte") { CodiceSchedaContatto = "CodNue2" };
+            var codiceSchedaNue = richiesta.CodiceSchedaNue;
+
+            Assert.That(codiceSchedaNue, Is.EqualTo("CodNue1"));
+        }
+
+        [Test]
+        public void IlCodiceSchedaNueEQuelloDellaPrimaTelefonataCheNonHaIlCodiceNull()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new Telefonata(richiesta, "CodRichiesta", now, "fonte");
+            new Telefonata(richiesta, "CodRichiesta", now.AddSeconds(5), "fonte") { CodiceSchedaContatto = "CodNue2" };
+            var codiceSchedaNue = richiesta.CodiceSchedaNue;
+
+            Assert.That(codiceSchedaNue, Is.EqualTo("CodNue2"));
+        }
     }
 }

@@ -170,9 +170,9 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         public DateTime? IstantePresaInCarico { get; set; }
 
         /// <summary>
-        ///   Codice della scheda nue
+        ///   Codice della scheda Nue
         /// </summary>
-        public string CodiceSchedaNue { get; set; }
+        public virtual string CodiceSchedaNue { get; set; }
 
         /// <summary>
         ///   Codice dello stato di invio del fonogramma (per es. daInviare, inviato, nonNecessario).

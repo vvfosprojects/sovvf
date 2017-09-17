@@ -34,14 +34,16 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
     internal class MapperRichiestaSuSintesi : IMapperRichiestaSuSintesi
     {
         /// <summary>
-        /// Istanza del servizio
+        ///   Istanza del servizio
         /// </summary>
         private readonly IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice;
 
         /// <summary>
-        /// Costruttore della classe
+        ///   Costruttore della classe
         /// </summary>
-        /// <param name="getUnitaOperativaPerCodice">L'istanza del servizio di risoluzione unità operativa a partire dal codice</param>
+        /// <param name="getUnitaOperativaPerCodice">
+        ///   L'istanza del servizio di risoluzione unità operativa a partire dal codice
+        /// </param>
         public MapperRichiestaSuSintesi(IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice)
         {
             this.getUnitaOperativaPerCodice = getUnitaOperativaPerCodice;
@@ -72,7 +74,8 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 DescrizioneCompetenze = richiesta.CodiciUOCompetenza.Select(cod => this.getUnitaOperativaPerCodice.Get(cod).Nome).ToArray(),
                 NoteLocalita = richiesta.NoteLocalita,
                 ZoneEmergenza = richiesta.ZoneEmergenza,
-                IstantePresaInCarico = richiesta.IstantePresaInCarico
+                IstantePresaInCarico = richiesta.IstantePresaInCarico,
+                CodiceSchedaNue = richiesta.CodiceSchedaNue
             };
         }
     }

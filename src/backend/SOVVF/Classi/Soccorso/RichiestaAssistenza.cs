@@ -348,7 +348,8 @@ namespace Modello.Classi.Soccorso
         }
 
         /// <summary>
-        ///   Restituisce l'istante della prima presa in carico da parte di un operatore, identificato dall'apposito evento.
+        ///   Restituisce l'istante della prima presa in carico da parte di un operatore,
+        ///   identificato dall'apposito evento.
         /// </summary>
         public virtual DateTime? IstantePresaInCarico
         {
@@ -449,9 +450,28 @@ namespace Modello.Classi.Soccorso
         public virtual string NumeroRichiedente { get; set; }
 
         /// <summary>
-        /// E' il codice delle unità operative di prima, seconda, terza... competenza, in ordine di preferenza.
+        ///   E' il codice delle unità operative di prima, seconda, terza... competenza, in ordine di preferenza.
         /// </summary>
         public virtual string[] CodiciUOCompetenza { get; set; }
+
+        /// <summary>
+        ///   Codice della scheda Nue, estratto dalla prima telefonata che è legata ad una scheda
+        ///   contatto del Nue.
+        /// </summary>
+        public virtual string CodiceSchedaNue
+        {
+            get
+            {
+                var primoCodiceNue = this.eventi
+                    .Where(e => e is Telefonata)
+                    .Select(e => e as Telefonata)
+                    .Select(e => e.CodiceSchedaContatto)
+                    .Where(cod => !string.IsNullOrWhiteSpace(cod))
+                    .FirstOrDefault();
+
+                return primoCodiceNue;
+            }
+        }
 
         /// <summary>
         ///   Aggiunge un evento alla lista degli eventi. L'evento deve essersi verificato in un

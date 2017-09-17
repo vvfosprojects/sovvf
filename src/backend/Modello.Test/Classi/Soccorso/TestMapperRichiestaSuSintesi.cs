@@ -325,6 +325,21 @@ namespace Modello.Test.Classi.Soccorso
             CollectionAssert.AreEqual(sintesi.DescrizioneCompetenze, new[] { "Descrizione CodUO1", "Descrizione CodUO2", "Descrizione CodUO3" });
         }
 
+        [Test]
+        public void IlCodiceSchedaNueECorrettamenteMappato()
+        {
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            mockRichiesta
+                .Setup(r => r.CodiceSchedaNue)
+                .Returns("TestCodiceNue");
+            var richiesta = mockRichiesta.Object;
+            var mapper = GetMapper();
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.CodiceSchedaNue, Is.EqualTo("TestCodiceNue"));
+        }
+
         private static MapperRichiestaSuSintesi GetMapper()
         {
             var mockGetUnitaOperativaPerCodice = new Mock<IGetUnitaOperativaPerCodice>();
