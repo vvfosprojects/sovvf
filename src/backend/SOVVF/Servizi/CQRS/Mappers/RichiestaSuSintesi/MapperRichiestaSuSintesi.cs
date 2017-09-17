@@ -69,7 +69,8 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 Richiedente = richiesta.Richiedente,
                 NumeroRichiedente = richiesta.NumeroRichiedente,
                 DescrizioneLocalita = richiesta.Indirizzo,
-                DescrizioneCompetenze = richiesta.CodiciUOCompetenza.Select(cod => this.getUnitaOperativaPerCodice.Get(cod).Nome).ToArray()
+                DescrizioneCompetenze = richiesta.CodiciUOCompetenza.Select(cod => this.getUnitaOperativaPerCodice.Get(cod).Nome).ToArray(),
+                NoteLocalita = richiesta.NoteLocalita
             };
         }
     }

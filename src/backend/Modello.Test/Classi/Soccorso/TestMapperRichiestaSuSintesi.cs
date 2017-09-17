@@ -249,6 +249,21 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
+        public void LeNoteLocalitaSonoCorrettamenteMappate()
+        {
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            mockRichiesta
+                .Setup(r => r.NoteLocalita)
+                .Returns("TestNotelocalita");
+            var richiesta = mockRichiesta.Object;
+            var mapper = GetMapper();
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.NoteLocalita, Is.EqualTo("TestNotelocalita"));
+        }
+
+        [Test]
         public void ICodiciUODiCompetenzaSonoCorrettamenteMappati()
         {
             var mockRichiesta = this.GetMockRichiestaBenFormata();
