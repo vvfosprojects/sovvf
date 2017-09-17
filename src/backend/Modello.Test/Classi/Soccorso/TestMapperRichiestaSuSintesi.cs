@@ -279,6 +279,38 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
+        public void LIstantePresaInCaricoECorrettamenteMappato()
+        {
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            var now = DateTime.Now;
+            mockRichiesta
+                .Setup(r => r.IstantePresaInCarico)
+                .Returns(now);
+            var richiesta = mockRichiesta.Object;
+            var mapper = GetMapper();
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.IstantePresaInCarico.Value, Is.EqualTo(now));
+        }
+
+        [Test]
+        public void LIstantePresaInCaricoECorrettamenteMappatoSeENull()
+        {
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            var now = DateTime.Now;
+            mockRichiesta
+                .Setup(r => r.IstantePresaInCarico)
+                .Returns((DateTime?)null);
+            var richiesta = mockRichiesta.Object;
+            var mapper = GetMapper();
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.IstantePresaInCarico.HasValue, Is.False);
+        }
+
+        [Test]
         public void ICodiciUODiCompetenzaSonoCorrettamenteMappati()
         {
             var mockRichiesta = this.GetMockRichiestaBenFormata();

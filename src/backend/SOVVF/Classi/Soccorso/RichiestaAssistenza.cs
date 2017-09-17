@@ -348,6 +348,28 @@ namespace Modello.Classi.Soccorso
         }
 
         /// <summary>
+        ///   Restituisce l'istante della prima presa in carico da parte di un operatore, identificato dall'apposito evento.
+        /// </summary>
+        public virtual DateTime? IstantePresaInCarico
+        {
+            get
+            {
+                var eventoPresaInCarico = this.eventi
+                    .Where(e => e is InizioPresaInCarico)
+                    .FirstOrDefault() as InizioPresaInCarico;
+
+                if (eventoPresaInCarico == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return eventoPresaInCarico.Istante;
+                }
+            }
+        }
+
+        /// <summary>
         ///   Restituisce l'istante della prima assegnazione di una risorsa squadra/mezzo alla <see cref="RichiestaAssistenza" />.
         /// </summary>
         public virtual DateTime? IstantePrimaAssegnazione

@@ -167,7 +167,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         /// <summary>
         ///   Eventuale istante di presa in carico della richiesta
         /// </summary>
-        public DateTime IstantePresaInCarico { get; set; }
+        public DateTime? IstantePresaInCarico { get; set; }
 
         /// <summary>
         ///   Codice della scheda nue
