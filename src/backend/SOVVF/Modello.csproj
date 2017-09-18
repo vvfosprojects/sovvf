@@ -53,6 +53,10 @@
     <Compile Include="Classi\Persistenza\Entity.cs" />
     <Compile Include="Classi\Organigramma\PinNodo.cs" />
     <Compile Include="Classi\Persistenza\IEntity.cs" />
+    <Compile Include="Classi\Soccorso\Complessita\Alta.cs" />
+    <Compile Include="Classi\Soccorso\Complessita\Media.cs" />
+    <Compile Include="Classi\Soccorso\Complessita\Bassa.cs" />
+    <Compile Include="Classi\Soccorso\Complessita\IComplessita.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Eccezioni\WorkflowException.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Fonogramma\FonogrammaInviato.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Fonogramma\IFonogramma.cs" />

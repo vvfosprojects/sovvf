@@ -74,6 +74,8 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 CodiceSchedaNue = richiesta.CodiceSchedaNue,
                 StatoFonogrammaRichiesta = richiesta.StatoInvioFonogramma.Codice,
                 DescrizioneStatoFonogramma = richiesta.StatoInvioFonogramma.Descrizione,
+                ComplessitaRichiesta = richiesta.Complessita.Codice,
+                DescrizioneComplessita = richiesta.Complessita.Descrizione,
             };
         }
     }

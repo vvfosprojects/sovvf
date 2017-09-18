@@ -361,7 +361,7 @@ namespace Modello.Test.Classi.Soccorso
 
         [Test]
         [Repeat(20)]
-        public void LaDescrizioneInvioFonogrammaECorrettamenteMappato()
+        public void LaDescrizioneInvioFonogrammaECorrettamenteMappata()
         {
             var mockRichiesta = this.GetMockRichiestaBenFormata();
             var richiesta = mockRichiesta.Object;
@@ -379,6 +379,50 @@ namespace Modello.Test.Classi.Soccorso
             var sintesi = mapper.Map(richiesta);
 
             Assert.That(sintesi.DescrizioneStatoFonogramma, Is.EqualTo(statoFonogrammaRichiesta.Descrizione));
+        }
+
+        [Test]
+        [Repeat(20)]
+        public void IlCodiceComplessitaECorrettamenteMappato()
+        {
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            var richiesta = mockRichiesta.Object;
+            var mapper = GetMapper();
+
+            var faker = new Faker();
+            var complessita = faker.PickRandom<Modello.Classi.Soccorso.Complessita.IComplessita>(
+                new Modello.Classi.Soccorso.Complessita.Bassa(),
+                new Modello.Classi.Soccorso.Complessita.Media(),
+                new Modello.Classi.Soccorso.Complessita.Alta());
+            mockRichiesta
+                .Setup(r => r.Complessita)
+                .Returns(complessita);
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.ComplessitaRichiesta, Is.EqualTo(complessita.Codice));
+        }
+
+        [Test]
+        [Repeat(20)]
+        public void LaDescrizioneComplessitaECorrettamenteMappata()
+        {
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            var richiesta = mockRichiesta.Object;
+            var mapper = GetMapper();
+
+            var faker = new Faker();
+            var complessita = faker.PickRandom<Modello.Classi.Soccorso.Complessita.IComplessita>(
+                new Modello.Classi.Soccorso.Complessita.Bassa(),
+                new Modello.Classi.Soccorso.Complessita.Media(),
+                new Modello.Classi.Soccorso.Complessita.Alta());
+            mockRichiesta
+                .Setup(r => r.Complessita)
+                .Returns(complessita);
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.DescrizioneComplessita, Is.EqualTo(complessita.Descrizione));
         }
 
         private static MapperRichiestaSuSintesi GetMapper()
@@ -410,6 +454,9 @@ namespace Modello.Test.Classi.Soccorso
             mockRichiesta
                 .Setup(r => r.StatoInvioFonogramma)
                 .Returns(new Modello.Classi.Soccorso.Fonogramma.NonNecessario());
+            mockRichiesta
+                .Setup(r => r.Complessita)
+                .Returns(new Modello.Classi.Soccorso.Complessita.Bassa());
 
             return mockRichiesta;
         }

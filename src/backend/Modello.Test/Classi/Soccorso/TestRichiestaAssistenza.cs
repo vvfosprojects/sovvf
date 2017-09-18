@@ -237,5 +237,61 @@ namespace Modello.Test.Classi.Soccorso
 
             Assert.That(statoInvioFonogramma, Is.InstanceOf<Modello.Classi.Soccorso.Fonogramma.DaInviare>());
         }
+
+        [Test]
+        public void LaComplessitaCon20EventiEBassa()
+        {
+            var richiesta = new RichiestaAssistenza();
+            for (int i = 0; i < 20; i++)
+            {
+                new Telefonata(richiesta, $"Cod{i}", DateTime.Now.AddSeconds(1 * 10), "fonte");
+            }
+
+            var complessita = richiesta.Complessita;
+
+            Assert.That(complessita, Is.InstanceOf<Modello.Classi.Soccorso.Complessita.Bassa>());
+        }
+
+        [Test]
+        public void LaComplessitaCon21EventiEMedia()
+        {
+            var richiesta = new RichiestaAssistenza();
+            for (int i = 0; i < 21; i++)
+            {
+                new Telefonata(richiesta, $"Cod{i}", DateTime.Now.AddSeconds(1 * 10), "fonte");
+            }
+
+            var complessita = richiesta.Complessita;
+
+            Assert.That(complessita, Is.InstanceOf<Modello.Classi.Soccorso.Complessita.Media>());
+        }
+
+        [Test]
+        public void LaComplessitaCon60EventiEMedia()
+        {
+            var richiesta = new RichiestaAssistenza();
+            for (int i = 0; i < 60; i++)
+            {
+                new Telefonata(richiesta, $"Cod{i}", DateTime.Now.AddSeconds(1 * 10), "fonte");
+            }
+
+            var complessita = richiesta.Complessita;
+
+            Assert.That(complessita, Is.InstanceOf<Modello.Classi.Soccorso.Complessita.Media>());
+        }
+
+        [Test]
+        public void LaComplessitaCon61EventiEAlta()
+        {
+            var richiesta = new RichiestaAssistenza();
+            for (int i = 0; i < 61; i++)
+            {
+                new Telefonata(richiesta, $"Cod{i}", DateTime.Now.AddSeconds(1 * 10), "fonte");
+            }
+
+            var complessita = richiesta.Complessita;
+
+            Assert.That(complessita, Is.InstanceOf<Modello.Classi.Soccorso.Complessita.Alta>());
+        }
     }
 }

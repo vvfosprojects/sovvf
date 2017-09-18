@@ -43,27 +43,6 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         }
 
         /// <summary>
-        ///   Indicazione della complessità di una richiesta di assistenza
-        /// </summary>
-        public enum Complessita
-        {
-            /// <summary>
-            ///   Complessità alta
-            /// </summary>
-            Alta = 0,
-
-            /// <summary>
-            ///   Complessità media
-            /// </summary>
-            Media,
-
-            /// <summary>
-            ///   Complessità bassa
-            /// </summary>
-            Bassa
-        }
-
-        /// <summary>
         ///   L'id della richiesta
         /// </summary>
         public string Id { get; set; }
@@ -172,10 +151,10 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         public int IndiceComplessita { get; set; }
 
         /// <summary>
-        ///   Codice della complessità dell'intervento (per es. bassa, media, alta). Utile a
+        ///   Codice della complessità dell'intervento (0 = alta, 1 = media, 2 = bassa). Utile a
         ///   calcolare il colore della segnalazione sulla complessità.
         /// </summary>
-        public Complessita ComplessitaRichiesta { get; set; }
+        public string ComplessitaRichiesta { get; set; }
 
         /// <summary>
         ///   Segnalazione sulla complessità dell'intervento.

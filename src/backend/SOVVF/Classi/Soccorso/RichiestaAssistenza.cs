@@ -501,6 +501,28 @@ namespace Modello.Classi.Soccorso
         }
 
         /// <summary>
+        ///   Modella la complessità legata ad una <see cref="RichiestaAssistenza" />. Le soglie sono
+        ///   le seguenti: 0 - 20: bassa; 21 - 60: media; maggiore di 61: alta;
+        /// </summary>
+        public virtual Complessita.IComplessita Complessita
+        {
+            get
+            {
+                if (this.eventi.Count <= 20)
+                {
+                    return new Complessita.Bassa();
+                }
+
+                if (this.eventi.Count <= 60)
+                {
+                    return new Complessita.Media();
+                }
+
+                return new Complessita.Alta();
+            }
+        }
+
+        /// <summary>
         ///   Aggiunge un evento alla lista degli eventi. L'evento deve essersi verificato in un
         ///   istante superiore a quello dell'ultimo evento in lista. In caso contrario il metodo
         ///   solleva un'eccezione.
