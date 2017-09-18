@@ -67,6 +67,10 @@
     <Compile Include="Classi\Soccorso\Eventi\Partenze\RevocaPerFuoriServizio.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\RevocaPerInterventoNonPiuNecessario.cs" />
     <Compile Include="Classi\Soccorso\Eventi\Partenze\RevocaPerRiassegnazione.cs" />
+    <Compile Include="Classi\Soccorso\Fonogramma\Inviato.cs" />
+    <Compile Include="Classi\Soccorso\Fonogramma\IStatoFonogramma.cs" />
+    <Compile Include="Classi\Soccorso\Fonogramma\DaInviare.cs" />
+    <Compile Include="Classi\Soccorso\Fonogramma\NonNecessario.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\AbstractStatoMezzo.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\AbstractStatoMezzoAssegnatoARichiesta.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\AbstractStatoMezzoNonAssegnatoARichiesta.cs" />

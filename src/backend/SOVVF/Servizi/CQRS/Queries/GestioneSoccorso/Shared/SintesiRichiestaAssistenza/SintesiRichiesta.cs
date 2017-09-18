@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System;
 using Modello.Classi.Soccorso;
+using Modello.Classi.Soccorso.Fonogramma;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
@@ -154,10 +155,10 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         public virtual string CodiceSchedaNue { get; set; }
 
         /// <summary>
-        ///   Codice dello stato di invio del fonogramma (per es. daInviare, inviato, nonNecessario).
-        ///   Utile a calcolare il colore della segnalazione.
+        ///   Codice dello stato di invio del fonogramma (0 = Non necessario, 1 = Da inviare, 2 =
+        ///   Inviato). Utile a calcolare il colore della segnalazione.
         /// </summary>
-        public RichiestaAssistenza.StatoFonogramma StatoFonogrammaRichiesta { get; set; }
+        public string StatoFonogrammaRichiesta { get; set; }
 
         /// <summary>
         ///   Segnalazione sullo stato di invio del fonogramma.

@@ -83,27 +83,6 @@ namespace Modello.Classi.Soccorso
         }
 
         /// <summary>
-        ///   Indicazione dello stato del fonogramma
-        /// </summary>
-        public enum StatoFonogramma
-        {
-            /// <summary>
-            ///   Il fonogramma non è necessario
-            /// </summary>
-            NonNecessario = 0,
-
-            /// <summary>
-            ///   Il fonogramma deve essere inviato ma non è stato inviato (rosso)
-            /// </summary>
-            DaInviare,
-
-            /// <summary>
-            ///   Il fonogramma è stato inviato
-            /// </summary>
-            Inviato
-        }
-
-        /// <summary>
         ///   <para>
         ///     Il codice intervento è un codice parlante che si utilizza per identificare
         ///     univocamente una richiesta. Si può per esempio utilizzare nelle comunicazioni verbali
@@ -499,7 +478,7 @@ namespace Modello.Classi.Soccorso
         ///   Calcola lo stato di invio del fonogramma per la richiesta, in base all'ultimo evento
         ///   fonogramma presente nella richiesta.
         /// </summary>
-        public virtual StatoFonogramma StatoInvioFonogramma
+        public virtual Fonogramma.IStatoFonogramma StatoInvioFonogramma
         {
             get
             {
@@ -509,15 +488,15 @@ namespace Modello.Classi.Soccorso
 
                 if (ultimoEventoFonogramma is FonogrammaInviato)
                 {
-                    return StatoFonogramma.Inviato;
+                    return new Fonogramma.Inviato();
                 }
 
                 if (ultimoEventoFonogramma is InviareFonogramma)
                 {
-                    return StatoFonogramma.DaInviare;
+                    return new Fonogramma.DaInviare();
                 }
 
-                return StatoFonogramma.NonNecessario;
+                return new Fonogramma.NonNecessario();
             }
         }
 

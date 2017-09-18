@@ -72,7 +72,8 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 ZoneEmergenza = richiesta.ZoneEmergenza,
                 IstantePresaInCarico = richiesta.IstantePresaInCarico,
                 CodiceSchedaNue = richiesta.CodiceSchedaNue,
-                StatoFonogrammaRichiesta = richiesta.StatoInvioFonogramma
+                StatoFonogrammaRichiesta = richiesta.StatoInvioFonogramma.Codice,
+                DescrizioneStatoFonogramma = richiesta.StatoInvioFonogramma.Descrizione,
             };
         }
     }

@@ -341,18 +341,44 @@ namespace Modello.Test.Classi.Soccorso
         [Repeat(20)]
         public void LoStatoInvioFonogrammaECorrettamenteMappato()
         {
-            var faker = new Faker();
-            var statoFonogramma = faker.PickRandom<RichiestaAssistenza.StatoFonogramma>();
             var mockRichiesta = this.GetMockRichiestaBenFormata();
-            mockRichiesta
-                .Setup(r => r.StatoInvioFonogramma)
-                .Returns(statoFonogramma);
             var richiesta = mockRichiesta.Object;
             var mapper = GetMapper();
 
+            var faker = new Faker();
+            var statoFonogrammaRichiesta = faker.PickRandom<Modello.Classi.Soccorso.Fonogramma.IStatoFonogramma>(
+                new Modello.Classi.Soccorso.Fonogramma.NonNecessario(),
+                new Modello.Classi.Soccorso.Fonogramma.DaInviare(),
+                new Modello.Classi.Soccorso.Fonogramma.Inviato());
+            mockRichiesta
+                .Setup(r => r.StatoInvioFonogramma)
+                .Returns(statoFonogrammaRichiesta);
+
             var sintesi = mapper.Map(richiesta);
 
-            Assert.That(sintesi.StatoFonogrammaRichiesta, Is.EqualTo(statoFonogramma));
+            Assert.That(sintesi.StatoFonogrammaRichiesta, Is.EqualTo(statoFonogrammaRichiesta.Codice));
+        }
+
+        [Test]
+        [Repeat(20)]
+        public void LaDescrizioneInvioFonogrammaECorrettamenteMappato()
+        {
+            var mockRichiesta = this.GetMockRichiestaBenFormata();
+            var richiesta = mockRichiesta.Object;
+            var mapper = GetMapper();
+
+            var faker = new Faker();
+            var statoFonogrammaRichiesta = faker.PickRandom<Modello.Classi.Soccorso.Fonogramma.IStatoFonogramma>(
+                new Modello.Classi.Soccorso.Fonogramma.NonNecessario(),
+                new Modello.Classi.Soccorso.Fonogramma.DaInviare(),
+                new Modello.Classi.Soccorso.Fonogramma.Inviato());
+            mockRichiesta
+                .Setup(r => r.StatoInvioFonogramma)
+                .Returns(statoFonogrammaRichiesta);
+
+            var sintesi = mapper.Map(richiesta);
+
+            Assert.That(sintesi.DescrizioneStatoFonogramma, Is.EqualTo(statoFonogrammaRichiesta.Descrizione));
         }
 
         private static MapperRichiestaSuSintesi GetMapper()
@@ -381,6 +407,9 @@ namespace Modello.Test.Classi.Soccorso
             mockRichiesta
                     .Setup(r => r.Tipologie)
                     .Returns(tipologie == null ? new List<TipologiaRichiesta>() : tipologie.ToList());
+            mockRichiesta
+                .Setup(r => r.StatoInvioFonogramma)
+                .Returns(new Modello.Classi.Soccorso.Fonogramma.NonNecessario());
 
             return mockRichiesta;
         }

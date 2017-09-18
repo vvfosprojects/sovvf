@@ -197,7 +197,7 @@ namespace Modello.Test.Classi.Soccorso
 
             var statoInvioFonogramma = richiesta.StatoInvioFonogramma;
 
-            Assert.That(statoInvioFonogramma, Is.EqualTo(RichiestaAssistenza.StatoFonogramma.NonNecessario));
+            Assert.That(statoInvioFonogramma, Is.InstanceOf<Modello.Classi.Soccorso.Fonogramma.NonNecessario>());
         }
 
         [Test]
@@ -208,7 +208,7 @@ namespace Modello.Test.Classi.Soccorso
 
             var statoInvioFonogramma = richiesta.StatoInvioFonogramma;
 
-            Assert.That(statoInvioFonogramma, Is.EqualTo(RichiestaAssistenza.StatoFonogramma.DaInviare));
+            Assert.That(statoInvioFonogramma, Is.InstanceOf<Modello.Classi.Soccorso.Fonogramma.DaInviare>());
         }
 
         [Test]
@@ -221,7 +221,7 @@ namespace Modello.Test.Classi.Soccorso
 
             var statoInvioFonogramma = richiesta.StatoInvioFonogramma;
 
-            Assert.That(statoInvioFonogramma, Is.EqualTo(RichiestaAssistenza.StatoFonogramma.Inviato));
+            Assert.That(statoInvioFonogramma, Is.InstanceOf<Modello.Classi.Soccorso.Fonogramma.Inviato>());
         }
 
         [Test]
@@ -235,7 +235,7 @@ namespace Modello.Test.Classi.Soccorso
 
             var statoInvioFonogramma = richiesta.StatoInvioFonogramma;
 
-            Assert.That(statoInvioFonogramma, Is.EqualTo(RichiestaAssistenza.StatoFonogramma.DaInviare));
+            Assert.That(statoInvioFonogramma, Is.InstanceOf<Modello.Classi.Soccorso.Fonogramma.DaInviare>());
         }
     }
 }
