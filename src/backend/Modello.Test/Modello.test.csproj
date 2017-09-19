@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classi\Soccorso\SituazioneMezziRichiesta.IntegrationTest.cs" />
     <Compile Include="Classi\Soccorso\TestMapperRichiestaSuSintesi.cs" />
     <Compile Include="Classi\Soccorso\TestProcessoreStatoMezzi.cs" />
     <Compile Include="Classi\Soccorso\TestRichiestaAssistenzaStatiMezzo.cs" />
