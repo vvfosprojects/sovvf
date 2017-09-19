@@ -407,23 +407,21 @@ namespace Modello.Classi.Soccorso
                 {
                     return new Chiusa();
                 }
+
+                var elencoMezziCoinvolti = this.MezziCoinvolti;
+                if (!elencoMezziCoinvolti.Any())
+                {
+                    return new InAttesa();
+                }
                 else
                 {
-                    var elencoMezziCoinvolti = this.MezziCoinvolti;
-                    if (!elencoMezziCoinvolti.Any())
+                    if (elencoMezziCoinvolti.Values.Any(e => e.AssegnatoARichiesta))
                     {
-                        return new InAttesa();
+                        return new Assegnata();
                     }
                     else
                     {
-                        if (elencoMezziCoinvolti.Values.Any(e => e.AssegnatoARichiesta))
-                        {
-                            return new Assegnata();
-                        }
-                        else
-                        {
-                            return new Sospesa();
-                        }
+                        return new Sospesa();
                     }
                 }
             }
