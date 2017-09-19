@@ -403,7 +403,7 @@ namespace Modello.Classi.Soccorso
                 var eventoChiusura = this.eventi
                     .Where(e => e is ChiusuraRichiesta);
 
-                if (this.eventi.Any())
+                if (this.Chiusa)
                 {
                     return new Chiusa();
                 }
