@@ -8,7 +8,7 @@ using Modello.Classi.Soccorso.Eventi.Partenze;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 using NUnit.Framework;
 
-namespace Modello.Test.Classi.Soccorso
+namespace Modello.IntegrationTest.Classi.Soccorso
 {
     [TestFixture]
     public class SituazioneMezziRichiesta

@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOVVF.FakeImplementations",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOVVF.FakeImplementations.Test", "SOVVF.FakeImplementations.Test\SOVVF.FakeImplementations.Test.csproj", "{971B0A3A-43D0-4912-AB06-B6B3F29996BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modello.IntegrationTest", "Modello.IntegrationTest\Modello.IntegrationTest.csproj", "{5AE922A7-36E6-45BD-A5D2-69F3428C3488}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{971B0A3A-43D0-4912-AB06-B6B3F29996BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{971B0A3A-43D0-4912-AB06-B6B3F29996BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{971B0A3A-43D0-4912-AB06-B6B3F29996BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AE922A7-36E6-45BD-A5D2-69F3428C3488}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AE922A7-36E6-45BD-A5D2-69F3428C3488}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AE922A7-36E6-45BD-A5D2-69F3428C3488}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AE922A7-36E6-45BD-A5D2-69F3428C3488}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
