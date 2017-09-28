@@ -403,27 +403,25 @@ namespace Modello.Classi.Soccorso
                 var eventoChiusura = this.eventi
                     .Where(e => e is ChiusuraRichiesta);
 
-                if (this.eventi.Any())
+                if (this.Chiusa)
                 {
                     return new Chiusa();
                 }
+
+                var elencoMezziCoinvolti = this.MezziCoinvolti;
+                if (!elencoMezziCoinvolti.Any())
+                {
+                    return new InAttesa();
+                }
                 else
                 {
-                    var elencoMezziCoinvolti = this.MezziCoinvolti;
-                    if (!elencoMezziCoinvolti.Any())
+                    if (elencoMezziCoinvolti.Values.Any(e => e.AssegnatoARichiesta))
                     {
-                        return new InAttesa();
+                        return new Assegnata();
                     }
                     else
                     {
-                        if (elencoMezziCoinvolti.Values.Any(e => e.AssegnatoARichiesta))
-                        {
-                            return new Assegnata();
-                        }
-                        else
-                        {
-                            return new Sospesa();
-                        }
+                        return new Sospesa();
                     }
                 }
             }

@@ -293,5 +293,53 @@ namespace Modello.Test.Classi.Soccorso
 
             Assert.That(complessita, Is.InstanceOf<Modello.Classi.Soccorso.Complessita.Alta>());
         }
+
+        [Test]
+        public void UnaRichiestaSenzaEventiEAperta()
+        {
+            var richiesta = new RichiestaAssistenza();
+
+            var aperta = !richiesta.Chiusa;
+
+            Assert.That(aperta, Is.True);
+        }
+
+        [Test]
+        public void UnaRichiestaConEventoChiusuraEChiusa()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new ChiusuraRichiesta("test", richiesta, DateTime.Now, "fonte");
+
+            var chiusa = richiesta.Chiusa;
+
+            Assert.That(chiusa, Is.True);
+        }
+
+        [Test]
+        public void UnaRichiestaConEventoChiusuraERiaperturaEAperta()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new ChiusuraRichiesta("test", richiesta, now, "fonte");
+            new RiaperturaRichiesta(richiesta, now.AddSeconds(10), "fonte");
+
+            var aperta = !richiesta.Chiusa;
+
+            Assert.That(aperta, Is.True);
+        }
+
+        [Test]
+        public void UnaRichiestaConEventoChiusuraRiaperturaEChiusuraEChiusa()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+            new ChiusuraRichiesta("test", richiesta, now, "fonte");
+            new RiaperturaRichiesta(richiesta, now.AddSeconds(10), "fonte");
+            new ChiusuraRichiesta("test", richiesta, now.AddSeconds(20), "fonte");
+
+            var chiusa = richiesta.Chiusa;
+
+            Assert.That(chiusa, Is.True);
+        }
     }
 }
