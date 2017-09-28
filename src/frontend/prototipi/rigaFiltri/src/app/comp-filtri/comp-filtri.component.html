@@ -1,99 +1,36 @@
 
 <div class="card col-12">
   <div class="row">
-    <div class="card-block col-2">
-      <span class="btn-group" data-toggle="buttons">
-        <label class="btn btn-outline-primary"><i class="fa fa-plus-square-o fa-lg" aria-hidden="true"></i></label>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <label class="btn btn-outline-primary active"><input type="radio" name="options" id="option1" autocomplete="off" checked>Ch.+Int.</label>
-        <label class="btn btn-outline-primary"><input type="radio" name="options" id="option1" autocomplete="off">Ch.</label>
-        <label class="btn btn-outline-primary"><input type="radio" name="options" id="option1" autocomplete="off">Int.</label>
-      </span>
- </div>
-
-  <div class="card-block col-1">
-   
-     <div class="form-check form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" value="option1" checked> In corso
-        </label>
-      </div>   
-       <div class="form-check form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" value="option2"> Chiusi
-        </label>
-      </div>      
-  </div>
-  <div class="card-block col-1">
-   
-     <div class="form-check form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" value="option1" checked> Interni
-        </label>
-      </div>   
-       <div class="form-check form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" value="option2"> Esterni
-        </label>
-      </div>      
-  </div>
-  <div class="card-block col-2">
-         <div class="form-check form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" value="option1" checked> Presidiati
-        </label>
-      </div>   
-       <div class="form-check form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" value="option2" checked> Non presidiati
-        </label>
-      </div>   
-  </div>
-   <div class="card-block col-1">
-         <div class="form-check form-check">
-        <label class="form-check-label">
-           <input type="radio" name="options" id="option1" autocomplete="off" checked> Turno
-        </label>
-      </div>   
-   </div>
-    <div class="card-block col-1">
-         <div class="input-group ">
-        <button type="button" class="btn btn-secondary btn-sm">Data</button></div>
-            <div><input type="text" class="form-control" placeholder=""></div>
-  
- 
-<!--     <div class="input-group">
-           <div class="input-group-btn">
-                    <button class="btn btn-secondary  btn-sm" type="button">Data</button></div>
-                <input type="text" class="form-control" placeholder="">
-              
-   
-     </div>
--->   
-       
+    <div class="card-block col-9">
+      <span class="btn-group" data-toggle="button">
+       <label class="btn btn-outline-primary" data-toggle="tootip" title="Nuova Chiamata"><i class="fa fa-plus-square-o fa-lg" aria-hidden="true"></i></label>
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+       <!--<label><input [checked]="filtri_chiamate" class="fa fa-user-circle-o" aria-hidden="true" type="button" autocomplete="off" (click)="selChiamate($event)"></label>  -->
+       <label><button class="btn btn-outline-primary active" type="button" name="chiamate" data-toggle="tootip" title="Chiamate" (click)="selFiltri('chiamate')"><i class="fa fa-user-circle-o" aria-hidden="true"></i></button></label>
+       <label><button class="btn btn-outline-primary active" type="button" name="interventi" data-toggle="tootip" title="Interventi" (click)="selFiltri('interventi')"><i class="fa fa-user-circle-o" aria-hidden="true"></i></button></label>
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       <label><button class="btn btn-outline-primary active"  type="button" name="aperti" data-toggle="tootip" title="Aperti"  (click)="selFiltri('aperti')"><i class="fa fa-user-circle-o" aria-hidden="true"></i></button></label>
+       <label><button class="btn btn-outline-primary"  type="button" name="chiusi" data-toggle="tootip" title="Chiusi" (click)="selFiltri('chiusi')"><i class="fa fa-user-circle-o" aria-hidden="true"></i></button></label>
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       <label><button class="btn btn-outline-primary active"  type="button" name="interni" data-toggle="tootip" title="Interni" (click)="selFiltri('interni')"><i class="fa fa-user-circle-o" aria-hidden="true"></i></button></label>
+       <label><button class="btn btn-outline-primary"  type="button" name="esterni" data-toggle="tootip" title="Esterni" (click)="selFiltri('esterni')"><i class="fa fa-user-circle-o" aria-hidden="true"></i></button></label>
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       <label><button class="btn btn-outline-primary active"  type="button" name="presidiati" data-toggle="tootip" title="Presidiati" (click)="selFiltri('presidiati')"><i class="fa fa-user-circle-o" aria-hidden="true"></i></button></label>
+       <label><button class="btn btn-outline-primary active"  type="button" name="nonPresidiati" data-toggle="tootip" title="Non Presidiati" (click)="selFiltri('nonPresidiati')"><i class="fa fa-user-circle-o" aria-hidden="true"></i></button></label>
+       <!--
+   <label class="btn btn-outline-primary"> <input [checked]="filtro_chiamate" type="checkbox" (click)="selChiamate($event)" /> Ch.</label>
+     -->
+    </span>
     </div>
-       <div class="card-block col-1">
-       <div class="form-check form-check">
-        <label class="form-check-label">
-           <input type="radio" name="options" id="option2" autocomplete="off"> Del
-       </label>
-      </div>   
-        <div class="form-check form-check">
-        <label class="form-check-label">
-             <input type="radio" name="options" id="option3" autocomplete="off"> Dal
-        </label>
-      </div>      
-  </div>
    <div class="card-block col-3">
-   
-    <span class="input-group">
+     <span class="input-group">
                 <input type="text" class="form-control" placeholder="Cerca...">
                 <span class="input-group-btn">
                     <button class="btn btn-secondary" type="button"><i class="fa fa-times" aria-hidden="true"></i></button>
+                </span>
     </span>
-    </span>
-     
-  </div>
+   </div>
+</div>
 </div>
 
 

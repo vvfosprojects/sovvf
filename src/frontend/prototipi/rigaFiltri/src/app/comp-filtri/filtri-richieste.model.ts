@@ -1,14 +1,16 @@
+
 export class FiltriRichieste {
-    constructor(
-        public aperti: boolean,
-        public chiusi: boolean,
-        public chiamate: boolean,
-        public interventi: boolean,
-        public interni: boolean,
-        public esterni: boolean,
-        public presidiato: boolean,
-        public nonPresidiato: boolean,
-        public chiaveDiRicerca: string
+    
+  constructor(
+    public chiamate : boolean,
+    public interventi : boolean,
+    public aperti : boolean,
+    public chiusi : boolean,
+    public interni : boolean,
+    public esterni : boolean,
+    public presidiati : boolean,
+    public nonPresidiati : boolean,
+    public chiaveDiRicerca ?: string
     ) {
 
     }
