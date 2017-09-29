@@ -15,7 +15,7 @@ export class CompFiltriComponent implements OnInit {
   /*@Output() nuovoFiltro: EventEmitter<FiltriRichieste> = new EventEmitter();*/
 
   constructor() {
-    this.filtri = new FiltriRichieste(true, true, true, false, true, false, true, true, '');
+    this.filtri = new FiltriRichieste(true, true, true, false, true, false, true, true,' ');
     }
 
   ngOnInit() {
@@ -26,6 +26,7 @@ export class CompFiltriComponent implements OnInit {
   
    private selFiltri(elemento_filtri : string) 
    {
+   
     if (elemento_filtri === "chiamate")
        this.filtri.chiamate = !this.filtri.chiamate;     
     else if (elemento_filtri === "interventi")
@@ -40,12 +41,17 @@ export class CompFiltriComponent implements OnInit {
       this.filtri.esterni = !this.filtri.esterni;
     else if (elemento_filtri === "presidiati")
       this.filtri.presidiati = !this.filtri.presidiati;
-    else if (elemento_filtri === "nonpresidiati")
+    else if (elemento_filtri === "nonPresidiati")
       this.filtri.nonPresidiati = !this.filtri.nonPresidiati;
-   
+     
     
-   console.log("CHIAMATE:"+ ' ' + this.filtri.chiamate + "  INTERVENTI:"+ ' '+ this.filtri.interventi + "  APERTI:"+ ' '+ this.filtri.aperti + "  CHIUSI: "+ ' '+ this.filtri.chiusi + "  INTERNI:" + ' ' + this.filtri.interni + "  ESTERNI:"+ ' '+ this.filtri.esterni + "  PRESIDIATI:"+ ' '+ this.filtri.presidiati + "  NON PRESIDIATI:"+ ' '+ this.filtri.nonPresidiati + "  CHIAVE DI RICERCA:"+ ' ' + this.filtri.chiaveDiRicerca);
+   console.log("CHIAMATE:"+ ' ' + this.filtri.chiamate + "  INTERVENTI:"+ ' '+ this.filtri.interventi + "  APERTI:"+ ' '+ this.filtri.aperti + "  CHIUSI: "+ ' '+ this.filtri.chiusi + "  INTERNI:" + ' ' + this.filtri.interni + "  ESTERNI:"+ ' '+ this.filtri.esterni + "  PRESIDIATI:"+ ' '+ this.filtri.presidiati + "  NON PRESIDIATI:"+ ' '+ this.filtri.nonPresidiati + "  CHIAVE DI RICERCA:" + ' ' + this.filtri.chiaveDiRicerca);
    
+  }
+
+  private clearSearchText()
+  {
+  this.filtri.chiaveDiRicerca = '';
   }
 }
 
