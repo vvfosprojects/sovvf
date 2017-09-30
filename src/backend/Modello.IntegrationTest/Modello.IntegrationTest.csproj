@@ -45,10 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classi\Soccorso\SituazioneMezziRichiesta.IntegrationTest.cs" />
+    <Compile Include="Classi\Soccorso\SituazioneMezziRichiesta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\SOVVF.licenseheader">
+      <Link>SOVVF.licenseheader</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
