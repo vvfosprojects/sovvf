@@ -35,13 +35,27 @@ import {} from '@types/googlemaps';
     /*** @param latLng Marker position            ***/ 
     /*** @param title Tooltip                     ***/ 
     /*** @param contentString InfoWindow' content ***/ 
-    addMarker(latLng: google.maps.LatLng, title?: string, contentString?: string): void {
-    //addMarker(latLng: google.maps.LatLng, title?: string, contentString?: string, iconMarker?: string): void {        
+    //addMarker(latLng: google.maps.LatLng, title?: string, contentString?: string): void {
+    addMarker(latLng: google.maps.LatLng, title?: string, contentString?: string, iconMarker?: string): void {        
         if (this.map != null && latLng != null) {
+            if(iconMarker == ""){
+                iconMarker='https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png';
+            }
+            let  image = {
+                url: iconMarker,
+                // This marker is 20 pixels wide by 32 pixels high.
+                size: new google.maps.Size(20, 32),
+                // The origin for this image is (0, 0).
+                origin: new google.maps.Point(0, 0),
+                // The anchor for this image is the base of the flagpole at (0, 32).
+                anchor: new google.maps.Point(0, 32)
+              };
+            alert(iconMarker);
             // Creates the marker. 
             const marker: google.maps.Marker = new google.maps.Marker({ 
                     position: latLng
                    ,title: title + '\n' + contentString
+                   ,icon: image
             }); 
             // Adds the marker to the map. 
             marker.setMap(this.map); 

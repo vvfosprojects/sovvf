@@ -17,10 +17,13 @@ export class GoogleMapMarker implements OnChanges {
     /*** An InfoWindow's content is diplayed in a popup window above the map, at a given location. ***/ 
     @Input() content: string; 
 
+    /*** image icon marker ***/ 
+    @Input() urlIcon: string; 
+
     constructor(public maps: MapService) { } 
 
     ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
         // Creates the marker and the info window. 
-        if (changes['position']) { this.maps.addMarker(this.position, this.title, this.content); }; 
+        if (changes['position']) { this.maps.addMarker(this.position, this.title, this.content, this.urlIcon); }; 
     } 
 }

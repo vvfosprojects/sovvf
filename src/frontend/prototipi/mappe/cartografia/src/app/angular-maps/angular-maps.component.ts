@@ -37,6 +37,8 @@ export class AngularMapsComponent {
   title: string; 
   // Info window. 
   content: string; 
+  // url Icon Marker. 
+  urlIcon: string;
 
   // Warning flag & message. 
   warning: boolean; 
@@ -108,7 +110,7 @@ export class AngularMapsComponent {
  //Marca la posizione dell'intervento 
     marcaIntervento(): void{
         ////alert("marcaIntervento");
-        if(this.puntoMappaInput.indirizzo === "" &&
+        if(this.puntoMappaInput.indirizzo == "" &&
             this.puntoMappaInput.latitudine <= 0.1 &&
             this.puntoMappaInput.longitudine <= 0.1) { 
             this.message = "nessun risultato"; 
@@ -116,11 +118,13 @@ export class AngularMapsComponent {
             alert(this.message);
             return;
         }
-
+alert('[' + this.puntoMappaInput.indirizzo + ']');
+        this.puntoMappaInput.marker="";
         if(this.puntoMappaInput.indirizzo != "") {
             this.search(this.puntoMappaInput.indirizzo);
             this.puntoMappaInput.latitudine = this.center.lat();
-            this.puntoMappaInput.longitudine = this.center.lng();            
+            this.puntoMappaInput.longitudine = this.center.lng();
+            this.puntoMappaInput.marker='https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';            
         }
 
         this.setMarkerIntervento(); 
@@ -130,6 +134,7 @@ export class AngularMapsComponent {
         this.position = new google.maps.LatLng(this.puntoMappaInput.latitudine, this.puntoMappaInput.longitudine); 
         this.title = this.puntoMappaInput.codice + " - " + this.puntoMappaInput.tipologia + "\n"; 
         this.content = this.puntoMappaInput.descrizione;
+        this.urlIcon = this.puntoMappaInput.marker;
     }
 
     
