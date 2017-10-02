@@ -2,10 +2,14 @@ import { Injectable } from '@angular/core';
 
 import {} from '@types/googlemaps';
 
+import { PuntiMappaGoogleInput } from '../model/puntiMappaGoogleInput.model'
+
+
 @Injectable() export class MapService { 
 
     private map: google.maps.Map; 
     private markers: google.maps.Marker[] = [];
+    //private puntoMappaInput: PuntiMappaGoogleInput;
 
     constructor() { } 
 
@@ -31,31 +35,33 @@ import {} from '@types/googlemaps';
         } 
     } 
 
+    addPoint(puntoMappaInput: PuntiMappaGoogleInput): void {
+        this.addMarker(new google.maps.LatLng(puntoMappaInput.latitudine, puntoMappaInput.longitudine), 
+                       puntoMappaInput.tipologia + ' (' + puntoMappaInput.codice + ')\n', 
+                       puntoMappaInput.descrizione,
+                       puntoMappaInput.marker);
+    }
+
     /*** Adds a marker. ***/
     /*** @param latLng Marker position            ***/ 
     /*** @param title Tooltip                     ***/ 
     /*** @param contentString InfoWindow' content ***/ 
+    /*** @param iconMarker image Icon             ***/ 
     //addMarker(latLng: google.maps.LatLng, title?: string, contentString?: string): void {
     addMarker(latLng: google.maps.LatLng, title?: string, contentString?: string, iconMarker?: string): void {        
         if (this.map != null && latLng != null) {
-            if(iconMarker == ""){
-                iconMarker='https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png';
-            }
-            let  image = {
-                url: iconMarker,
-                // This marker is 20 pixels wide by 32 pixels high.
-                size: new google.maps.Size(20, 32),
-                // The origin for this image is (0, 0).
-                origin: new google.maps.Point(0, 0),
-                // The anchor for this image is the base of the flagpole at (0, 32).
-                anchor: new google.maps.Point(0, 32)
-              };
-            alert(iconMarker);
+            if(iconMarker == "") iconMarker='https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png';
+
             // Creates the marker. 
             const marker: google.maps.Marker = new google.maps.Marker({ 
                     position: latLng
                    ,title: title + '\n' + contentString
-                   ,icon: image
+                   ,icon: {
+                            url: iconMarker,
+                            size: new google.maps.Size(40, 52)//,  // This marker is 20 pixels wide by 32 pixels high.
+                            //origin: new google.maps.Point(0, 0), // The origin for this image is (0, 0).
+                            //anchor: new google.maps.Point(0, 32) // The anchor for this image is the base of the flagpole at (0, 32).
+                  }
             }); 
             // Adds the marker to the map. 
             marker.setMap(this.map); 

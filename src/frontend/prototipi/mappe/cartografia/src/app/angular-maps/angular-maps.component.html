@@ -101,7 +101,14 @@
                   [minZoom]="minZoom"
                   [styles]="styles">
                   
-                  <google-map-marker [position]="position" [title]="title" [content]="content" [urlIcon]="urlIcon"></google-map-marker>
+                <!--<google-map-marker [position]="position" [title]="title" [content]="content" [urlIcon]="urlIcon"></google-map-marker>-->
+                <google-map-marker [latitudine]="this.puntoMappaInput.latitudine"
+                                   [longitudine]="this.puntoMappaInput.longitudine"
+                                   [title]="puntoMappaInput.tipologia + ' (' + puntoMappaInput.codice + ')\n'"
+                                   [content]="puntoMappaInput.descrizione"
+                                   [urlIcon]="puntoMappaInput.marker">
+                </google-map-marker>                  
+
       </google-map> 
       <!--
         (click)="da implementare" 
