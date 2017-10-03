@@ -9,7 +9,6 @@ import { PuntiMappaGoogleInput } from '../model/puntiMappaGoogleInput.model'
 
     private map: google.maps.Map; 
     private markers: google.maps.Marker[] = [];
-    //private puntoMappaInput: PuntiMappaGoogleInput;
 
     constructor() { } 
 
@@ -35,29 +34,20 @@ import { PuntiMappaGoogleInput } from '../model/puntiMappaGoogleInput.model'
         } 
     } 
 
-    addPoint(puntoMappaInput: PuntiMappaGoogleInput): void {
-        this.addMarker(new google.maps.LatLng(puntoMappaInput.latitudine, puntoMappaInput.longitudine), 
-                       puntoMappaInput.tipologia + ' (' + puntoMappaInput.codice + ')\n', 
-                       puntoMappaInput.descrizione,
-                       puntoMappaInput.marker);
-    }
-
     /*** Adds a marker. ***/
-    /*** @param latLng Marker position            ***/ 
-    /*** @param title Tooltip                     ***/ 
-    /*** @param contentString InfoWindow' content ***/ 
-    /*** @param iconMarker image Icon             ***/ 
-    //addMarker(latLng: google.maps.LatLng, title?: string, contentString?: string): void {
-    addMarker(latLng: google.maps.LatLng, title?: string, contentString?: string, iconMarker?: string): void {        
-        if (this.map != null && latLng != null) {
-            if(iconMarker == "") iconMarker='https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png';
+    /*** @param puntoMappaInput Model  ***/ 
+    addMarker(puntoMappaInput: PuntiMappaGoogleInput): void { 
+        if (this.map != null && puntoMappaInput.latitudine != null && puntoMappaInput.longitudine != null) {
+            if(puntoMappaInput.marker == "") puntoMappaInput.marker='https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png';
 
             // Creates the marker. 
             const marker: google.maps.Marker = new google.maps.Marker({ 
-                    position: latLng
-                   ,title: title + '\n' + contentString
+                    position: new google.maps.LatLng(puntoMappaInput.latitudine, puntoMappaInput.longitudine)
+                   ,title: puntoMappaInput.tipologia + ' (' + puntoMappaInput.codice + ')' + '\n\n' +
+                           puntoMappaInput.descrizione + '\n\n' +
+                           puntoMappaInput.indirizzo
                    ,icon: {
-                            url: iconMarker,
+                            url: puntoMappaInput.marker,
                             size: new google.maps.Size(40, 52)//,  // This marker is 20 pixels wide by 32 pixels high.
                             //origin: new google.maps.Point(0, 0), // The origin for this image is (0, 0).
                             //anchor: new google.maps.Point(0, 32) // The anchor for this image is the base of the flagpole at (0, 32).
@@ -66,11 +56,11 @@ import { PuntiMappaGoogleInput } from '../model/puntiMappaGoogleInput.model'
             // Adds the marker to the map. 
             marker.setMap(this.map); 
             // Creates the info window if required. 
-            if (contentString != null) { 
+            if (puntoMappaInput.descrizione != null) { 
                 // Sets the max width of the info window to the width of the map element. 
                 const width: number = this.map.getDiv().clientWidth; 
                 const infoWindow: google.maps.InfoWindow = new google.maps.InfoWindow({ 
-                      content: contentString, 
+                      content: puntoMappaInput.descrizione, 
                       maxWidth: width 
                 }); 
                 // Makes the info window visible. 
@@ -79,6 +69,11 @@ import { PuntiMappaGoogleInput } from '../model/puntiMappaGoogleInput.model'
                 }); 
             } 
 
+            // Makes the deleteMarkers. 
+            marker.addListener('dblclick', () => { 
+                marker.setMap(null);
+            }); 
+            
             // Pushes it to the markers array. 
             this.markers.push(marker);
         } 

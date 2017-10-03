@@ -8,25 +8,25 @@
             <div class="row">
                     <div class="input-group input-group-sm">
                         <span class="input-group-addon">Intervento</span>
-                        <input class="card-text" placeholder="Codice" style="width:50px;font-size:8pt" [(ngModel)]="puntoMappaInput.codice"/>
-                        <input class="card-text" placeholder="Tipologia"  style="width:250px;font-size:8pt"  [(ngModel)]="puntoMappaInput.tipologia"/>
+                        <input class="card-text" placeholder="Codice" style="width:50px;font-size:8pt" [(ngModel)]="punto.codice"/>
+                        <input class="card-text" placeholder="Tipologia"  style="width:250px;font-size:8pt"  [(ngModel)]="punto.tipologia"/>
                     </div>
             </div> <!-- end row -->
             <div class="row">
                     <div class="input-group input-group-sm">
                         <span class="input-group-addon">Descrizione</span>
-                        <input class="card-text" placeholder="Descrizione dell'intervento" style="width:292px;font-size:8pt"  [(ngModel)]="puntoMappaInput.descrizione"/>
+                        <input class="card-text" placeholder="Descrizione dell'intervento" style="width:292px;font-size:8pt"  [(ngModel)]="punto.descrizione"/>
                     </div>
             </div> <!-- end row -->
             <div class="row">
                 <div class="input-group input-group-sm">
-                    <span class="input-group-addon">Lat</span><input class="card-text" placeholder="Latitudine"  style="width:152px;font-size:8pt" [(ngModel)]="puntoMappaInput.latitudine"/>
-                    <span class="input-group-addon">Lon</span><input class="card-text" placeholder="Longitudine" style="width:152px;font-size:8pt" [(ngModel)]="puntoMappaInput.longitudine"/>
+                    <span class="input-group-addon">Lat</span><input class="card-text" placeholder="Latitudine"  style="width:152px;font-size:8pt" [(ngModel)]="punto.latitudine"/>
+                    <span class="input-group-addon">Lon</span><input class="card-text" placeholder="Longitudine" style="width:152px;font-size:8pt" [(ngModel)]="punto.longitudine"/>
                 </div>
             </div> <!-- end row -->    
             <div class="row">
                     <div class="input-group input-group-sm">
-                        <span class="input-group-addon">Indirizzo</span><input class="card-text" placeholder="Indirizzo"  style="width:310px;font-size:8pt" [(ngModel)]="puntoMappaInput.indirizzo"/>
+                        <span class="input-group-addon">Indirizzo</span><input class="card-text" placeholder="Indirizzo"  style="width:310px;font-size:8pt" [(ngModel)]="punto.indirizzo"/>
                     </div>
                 </div> <!-- end row -->    
             <div class="row">
@@ -101,14 +101,7 @@
                   [minZoom]="minZoom"
                   [styles]="styles">
                   
-                <!--<google-map-marker [position]="position" [title]="title" [content]="content" [urlIcon]="urlIcon"></google-map-marker>-->
-                <google-map-marker [latitudine]="this.puntoMappaInput.latitudine"
-                                   [longitudine]="this.puntoMappaInput.longitudine"
-                                   [title]="puntoMappaInput.tipologia + ' (' + puntoMappaInput.codice + ')\n'"
-                                   [content]="puntoMappaInput.descrizione"
-                                   [urlIcon]="puntoMappaInput.marker">
-                </google-map-marker>                  
-
+                <google-map-marker [punto]="punto"></google-map-marker>                  
       </google-map> 
       <!--
         (click)="da implementare" 

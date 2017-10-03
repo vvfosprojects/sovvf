@@ -14,7 +14,14 @@ import { GeocodingService } from './services/geocoding.service';
 
 export class AngularMapsComponent {
 
-  @Input() puntoMappaInput: PuntiMappaGoogleInput;
+ @Input() punto: PuntiMappaGoogleInput = new PuntiMappaGoogleInput("ABC",
+                                                                   "Tipologia dell'Intervento",
+                                                                   "via cavour 5 Roma",                                                         
+                                                                   "Breve descrizione",
+                                                                   0,
+                                                                   0,
+                                                                   "");
+  private puntiMappaInput: PuntiMappaGoogleInput[] = [];  
   
   // Center map. Required. 
   center: google.maps.LatLng; 
@@ -29,15 +36,6 @@ export class AngularMapsComponent {
   minZoom: number; 
   styles: google.maps.MapTypeStyle[];
 
-  // Marker position. Required. 
-  //position: google.maps.LatLng; 
-  // Marker title. 
-  //title: string; 
-  // Info window. 
-  //content: string; 
-  // url Icon Marker. 
-  //urlIcon: string;
-
   // Warning flag & message. 
   warning: boolean; 
   message: string; 
@@ -47,7 +45,7 @@ export class AngularMapsComponent {
                 private map: MapService, 
                 private geolocation: GeolocationService, 
                 private geocoding: GeocodingService) { 
-        //this.center = new google.maps.LatLng(0, 0); 
+
         this.center = new google.maps.LatLng(41.87, 12.53);         
         this.zoom = 10; 
 
@@ -70,14 +68,6 @@ export class AngularMapsComponent {
 
         this.warning = false; 
         this.message = ""; 
-
-        this.puntoMappaInput = new PuntiMappaGoogleInput("ABC",
-                                                         "Tipologia dell'Intervento",
-                                                         "via cavour 5 Roma",                                                         
-                                                         "Breve descrizione",
-                                                         0,
-                                                         0,
-                                                         "");        
     } // END constructor
 
 //Marca la posizione dell'indirizzo dato
@@ -90,28 +80,29 @@ export class AngularMapsComponent {
             this.geocoding.codeAddress(address).forEach(
                 (results: google.maps.GeocoderResult[]) => { 
                     console.log("Inizio: ", results.length)
-                    let descrizioneIniziale = this.puntoMappaInput.descrizione;
-                    for(let i=0; i<results.length; i++) {
-                        //if (!this.center.equals(results[0].geometry.location)) { 
+
+                    for(let i=0; i < results.length; i++) {
                             console.log("indirizzo: ",  results[i].formatted_address, ' - ', results[i].geometry.location.lat()); 
                            
-                            this.zoom = 11; 
-                            this.puntoMappaInput.latitudine = results[i].geometry.location.lat();
-                            this.puntoMappaInput.longitudine = results[i].geometry.location.lng();
-                            this.puntoMappaInput.descrizione = descrizioneIniziale + '\n' + results[i].formatted_address;;
-
-                            this.map.addMarker(new google.maps.LatLng(this.puntoMappaInput.latitudine,
-                                this.puntoMappaInput.longitudine), this.puntoMappaInput.codice, this.puntoMappaInput.descrizione,
-                                this.puntoMappaInput.marker);
-                            // this.center=results[i].geometry.location;
-                            //this.center = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng()); 
-                            //this.setMarker(this.center, results[0].formatted_address, results[0].formatted_address); 
-                        //} 
+                            this.zoom = 11;
+                            this.puntiMappaInput.push(
+                                new PuntiMappaGoogleInput(this.punto.codice,
+                                                          this.punto.tipologia,
+                                                          results[i].formatted_address,
+                                                          this.punto.descrizione,
+                                                          results[i].geometry.location.lat(),
+                                                          results[i].geometry.location.lng(),
+                                                          this.punto.marker));
                     }                        
                 })
                 .then(() => {
                     console.log('Servizio di geocoding completato.'); 
-        
+
+                    for(let i=0 ; i < this.puntiMappaInput.length; i++) {
+                        console.log("Completato: ", this.puntiMappaInput[i].latitudine );
+                        //this.punto=this.puntiMappaInput[i];
+                        this.map.addMarker(this.puntiMappaInput[i]);                                                
+                    }
                 })
                 .catch((status: google.maps.GeocoderStatus) => { 
                         if (status === google.maps.GeocoderStatus.ZERO_RESULTS) { 
@@ -123,39 +114,27 @@ export class AngularMapsComponent {
     }  // END search
 
  //Marca la posizione dell'intervento 
-    marcaIntervento(): void{
-
-        if(this.puntoMappaInput.indirizzo == "" &&
-           this.puntoMappaInput.latitudine <= 0.1 &&
-           this.puntoMappaInput.longitudine <= 0.1) { 
+    marcaIntervento(): void {
+        if(this.punto.indirizzo == "" &&
+           this.punto.latitudine <= 0.1 &&
+           this.punto.longitudine <= 0.1) { 
             this.message = "nessun risultato"; 
             this.warning = true; 
             alert(this.message);
             return;
         }
 
-        this.puntoMappaInput.marker="";
-        if(this.puntoMappaInput.indirizzo != "") {
-            this.puntoMappaInput.marker='https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';                        
-            this.search(this.puntoMappaInput.indirizzo);
+        this.punto.marker="";
+        if(this.punto.indirizzo != "") {
+            console.log('prima di chiamata search');
+            this.punto.marker='https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';                        
+            this.search(this.punto.indirizzo);
+            console.log('dopo di chiamata search');
         }            
     } // Fine marcaIntervento
 
 
 ////DA VERIFICARE
-//Marca la posizione per Latitudine e Longitudine  
-/*
-    private setMarker(latLng: google.maps.LatLng, title: string, content: string): void {
-        //this.maps.deleteMarkers(); 
-
-        // Sets the marker. 
-        this.position = latLng; 
-        this.title = title; 
-
-        // Sets the info window. 
-        this.content = content; 
-    } 
-*/
 /*
         //Marca la posizione attuale
         getCurrentPosition(): void { 
