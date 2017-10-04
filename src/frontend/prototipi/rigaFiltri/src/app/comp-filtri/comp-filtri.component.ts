@@ -15,7 +15,7 @@ export class CompFiltriComponent implements OnInit {
   /*@Output() nuovoFiltro: EventEmitter<FiltriRichieste> = new EventEmitter();*/
 
   constructor() {
-    this.filtri = new FiltriRichieste(true, true, true, false, true, false, true, true,' ');
+    this.filtri = new FiltriRichieste(true, true, true, false, true, false, true, true,'');
     }
 
   ngOnInit() {
@@ -27,10 +27,10 @@ export class CompFiltriComponent implements OnInit {
    private selFiltri(elemento_filtri : string) 
    {
    
-    if (elemento_filtri === "chiamate")
+    if (elemento_filtri === "chiamate") 
        this.filtri.chiamate = !this.filtri.chiamate;     
     else if (elemento_filtri === "interventi")
-       this.filtri.interventi = !this.filtri.interventi;
+       this.filtri.interventi = !this.filtri.interventi;  
     else if (elemento_filtri === "aperti")
       this.filtri.aperti = !this.filtri.aperti;
     else if (elemento_filtri === "chiusi")
