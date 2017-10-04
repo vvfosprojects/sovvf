@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import {} from '@types/googlemaps';
 
 import { PuntiMappaGoogleInput } from '../model/puntiMappaGoogleInput.model'
+import { PuntiMappaGoogleOutput } from '../model/puntiMappaGoogleOutput.model'
 
 
 @Injectable() export class MapService { 
@@ -15,11 +16,19 @@ import { PuntiMappaGoogleInput } from '../model/puntiMappaGoogleInput.model'
     /*** Creates a new map inside of the given HTML container. ***/
     /*** @param el DIV element ***/ 
     /*** @param mapOptions MapOptions object specification ***/ 
-    initMap(el: HTMLElement, mapOptions: any): void { 
+    //initMap(el: HTMLElement, mapOptions: any): void { 
+    initMap(el: HTMLElement, mapOptions: any): google.maps.Map {         
+        
         this.map = new google.maps.Map(el, mapOptions); 
+
+        //this.map.addListener('click', (e) => { 
+        //    alert("addListener ===> Lat " + e.latLng.lat() + " e Lon: " + e.latLng.lat());
+        //}); 
 
         // Adds event listener resize when the window changes size. 
         window.addEventListener("resize", () => { this.resize(); }); 
+
+        return this.map;
     } 
 
     setCenter(latLng: google.maps.LatLng): void {
@@ -56,21 +65,21 @@ import { PuntiMappaGoogleInput } from '../model/puntiMappaGoogleInput.model'
             // Adds the marker to the map. 
             marker.setMap(this.map); 
             // Creates the info window if required. 
-            if (puntoMappaInput.descrizione != null) { 
-                // Sets the max width of the info window to the width of the map element. 
-                const width: number = this.map.getDiv().clientWidth; 
-                const infoWindow: google.maps.InfoWindow = new google.maps.InfoWindow({ 
-                      content: puntoMappaInput.descrizione, 
-                      maxWidth: width 
-                }); 
-                // Makes the info window visible. 
-                marker.addListener('click', () => { 
-                    infoWindow.open(this.map, marker); 
-                }); 
-            } 
+            //if (puntoMappaInput.descrizione != null) { 
+            //    // Sets the max width of the info window to the width of the map element. 
+            //    const width: number = this.map.getDiv().clientWidth; 
+            //    const infoWindow: google.maps.InfoWindow = new google.maps.InfoWindow({ 
+            //          content: puntoMappaInput.descrizione, 
+            //          maxWidth: width 
+            //    }); 
+            //    // Makes the info window visible. 
+            //    marker.addListener('click', () => { 
+            //        infoWindow.open(this.map, marker); 
+            //    }); 
+            //} 
 
             // Makes the deleteMarkers. 
-            marker.addListener('dblclick', () => { 
+            marker.addListener('rightclick', () => { 
                 marker.setMap(null);
             }); 
             

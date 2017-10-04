@@ -4,7 +4,7 @@ import { PuntiMappaGoogleInput } from '../model/puntiMappaGoogleInput.model'
 import { MapService } from '../services/map.service'; 
 
 @Directive({ 
-    selector: 'google-map-marker' 
+    selector: '[google-map-marker]' 
 })
 
 export class GoogleMapMarker implements OnChanges {

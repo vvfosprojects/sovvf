@@ -34,49 +34,20 @@
                     <button class="btn btn-primary btn-sm btn-block" (click)="marcaIntervento()">Invia Intervento</button>
                 </div>
             </div> <!-- end row -->
-
-<!--
-            <h6 class="card-title text-center"><b>con coordinate</b></h6>
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="input-group"><span class="input-group-addon">Lat</span><input class="card-text" #lat value="42.123456"></div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="input-group"><span class="input-group-addon">Lon</span><input class="card-text" #lon value="12.123456"></div>
-                </div>
-            </div> !-- end row --
-
-            <div class="row">
-                <div class="card-block"><input class="card-text" #testo placeholder="Testo nel Marker"></div>
-
-                <div class="card-block">
-                    <button class="btn btn-primary btn-sm btn-block"
-                            (click)="setMarkerLatLng(lat.value, lon.value, testo.value, testo.value)">Invia Coordinate</button>
-                </div>
-            </div> -- end row --
-
-            <h6 class="card-title text-center"><b>con indirizzo</b></h6>
-            <div class="row">
-                <div class="card-block"><input class="card-text" #address placeholder="Inserire l'indirizzo"></div>
-                <div class="card-block"><button class="btn btn-primary btn-sm btn-block" (click)="search(address.value)">Cerca Indirizzo</button></div>
-            </div> -- end row --
--->
         </div> <!-- card card-block card-outline-danger mb-3 -->
        
 <!-- RICEZIONE COORDINATE -->
         <div class="card card-block card-outline-primary mb-3">
             <h5 class="card-title text-center"><b>RICEZIONE COORDINATE</b></h5>
             <h6 class="card-title text-center"><b>dopo click sulla mappa</b></h6>            
+           
             <div class="row">
-                <div class="col-lg-4">
-                    <div class="input-group"><span class="input-group-addon">Lat</span><input class="card-text" value="{{LAT}}"></div>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon">Lat</span><input class="card-text" placeholder="Latitudine"  style="width:152px;font-size:8pt" [(ngModel)]="puntoOutput.latitudine"/>
+                    <span class="input-group-addon">Lon</span><input class="card-text" placeholder="Longitudine" style="width:152px;font-size:8pt" [(ngModel)]="puntoOutput.longitudine"/>
                 </div>
-  
-                <div class="col-lg-4">
-                    <div class="input-group"><span class="input-group-addon">Lon</span><input class="card-text" value="{{LON}}"></div>
-                </div>
-            </div>        
+            </div> <!-- end row -->    
+
         </div> <!-- card card-block card-outline-primary mb-3 -->
   
     </div><!-- col-lg-4 -->
@@ -91,7 +62,7 @@
           </div>
       </nav>
   
-      <google-map 
+      <google-map (click)="getPuntoFromMap()" 
                   [center]="center"
                   [zoom]="zoom"
                   [disableDefaultUI]="disableDefaultUI"
@@ -99,13 +70,13 @@
                   [mapTypeId]="mapTypeId"
                   [maxZoom]="maxZoom"
                   [minZoom]="minZoom"
-                  [styles]="styles">
+                  [styles]="styles"
                   
-                <google-map-marker [punto]="punto"></google-map-marker>                  
+                  [puntoOutput]="puntoOutput">
+
+                  <div google-map-marker [punto]="punto"></div>                  
+                <!--<google-map-marker [punto]="punto"></google-map-marker>-->
       </google-map> 
-      <!--
-        (click)="da implementare" 
-      -->          
     </div>
   
   </div>
