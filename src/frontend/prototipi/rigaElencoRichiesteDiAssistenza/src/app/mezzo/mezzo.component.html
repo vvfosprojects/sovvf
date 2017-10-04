@@ -3,7 +3,7 @@
     <i class="guida fa fa-tachometer fa-fw mr-0" style="font-size: 1.5em" aria-hidden="true" title="Mezzo"></i>
     <span style="font-weight: bold">{{ mezzo.descrizione }}</span>
     <span class="badge badge-default m-0">{{ mezzo.genere }}</span>
-    <span class="badge m-0" [ngClass]="{'badge-default':mezzo.statoMezzo == 0 || mezzo.statoMezzo == 4, 'badge-warning':mezzo.statoMezzo == 1, 'badge-success':mezzo.statoMezzo == 2, 'badge-info':mezzo.statoMezzo == 3}">
+    <span class="badge m-0" [ngClass]="{'badge-default':mezzo.statoMezzo == 'InSede' || mezzo.statoMezzo == 'Istituto', 'badge-warning':mezzo.statoMezzo == 'InViaggio', 'badge-success':mezzo.statoMezzo == 'SulPosto', 'badge-info':mezzo.statoMezzo == 'InRientro'}">
       {{ mezzo.descrizioneStato }}
     </span>
   </div>

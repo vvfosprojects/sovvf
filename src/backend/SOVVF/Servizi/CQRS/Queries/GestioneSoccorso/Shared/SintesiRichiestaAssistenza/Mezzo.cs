@@ -25,37 +25,6 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
     public class Mezzo
     {
         /// <summary>
-        ///   Stato del mezzo
-        /// </summary>
-        public enum Stato
-        {
-            /// <summary>
-            ///   Il mezzo è in sede
-            /// </summary>
-            InSede = 0,
-
-            /// <summary>
-            ///   Il mezzo è in viaggio verso il luogo del sinistro
-            /// </summary>
-            InViaggio,
-
-            /// <summary>
-            ///   Il mezzo è sul posto
-            /// </summary>
-            SulPosto,
-
-            /// <summary>
-            ///   Il mezzo è in rientro
-            /// </summary>
-            InRientro,
-
-            /// <summary>
-            ///   Il mezzo è impegnato per motivi di istituto
-            /// </summary>
-            Istituto
-        }
-
-        /// <summary>
         ///   Stato di efficienza del mezzo
         /// </summary>
         public enum StatoEfficienza
@@ -144,10 +113,10 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         public string Genere { get; set; }
 
         /// <summary>
-        ///   Codice dello stato del mezzo. Per es. inSede, inViaggio, sulPosto, inRientro, istituto,
+        ///   Codice dello stato del mezzo. Per es. InSede, InViaggio, SulPosto, InRientro, Istituto,
         ///   ecc. Utile a definire il colore del segnale di stato.
         /// </summary>
-        public Stato StatoMezzo { get; set; }
+        public string StatoMezzo { get; set; }
 
         /// <summary>
         ///   Testo del segnale di stato.
