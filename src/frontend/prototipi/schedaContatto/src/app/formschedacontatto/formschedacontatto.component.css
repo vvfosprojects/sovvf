@@ -10,4 +10,4 @@
 font-style: italic;
 color: gray;
 }
-
+a.freccia-link:hover { cursor: pointer; }

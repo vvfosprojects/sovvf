@@ -124,7 +124,7 @@ export class GestionepermessiComponent implements OnInit {
         this.personaleDaAutorizzareService.getNominativi().subscribe(names => {
             this.filteredNames = this.filterName(query, names);
         });
-        console.log("filteredNames: " + this.filteredNames);
+        //console.log("filteredNames: " + this.filteredNames);
     }
 
     filterName(query, names: any[]): any[] {

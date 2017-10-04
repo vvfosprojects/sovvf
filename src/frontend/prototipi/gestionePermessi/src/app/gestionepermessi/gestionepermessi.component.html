@@ -2,6 +2,7 @@
   <div class="row">
     <div class="col-md-12">
         <p-dataTable [value]="permessiAssegnati">
+        <p-column field="descrizioneUtente" header="Nominativo"></p-column>
         <p-column field="descrizionePermesso" header="Descrizione"></p-column>
         <p-column field="descrizioneUnitaOperativa" header="Unità Operativa"></p-column>
         <p-column field="dataInizioPermesso" header="Data inizio" [style]="{'text-align': 'center'}">
@@ -69,30 +70,17 @@
 <br>
 
 <div class="row">
-  <!-- <div class="col-md-4">
-    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Cerca nominativo..." [(ngModel)]="testoRicerca" (keyup)="ricerca($event)">
-      <span class="input-group-btn">
-        <button class="btn btn-secondary" type="button" (click)="clearSearchText()"><i class="fa fa-times" aria-hidden="true"></i></button>
-      </span>
-    </div>
-  </div> -->
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div class="input-group">
      <p-autoComplete [(ngModel)]="nominativo" [suggestions]="filteredNames" (completeMethod)="filterNameSingle($event)" [size]="30"
         placeholder="Cerca nominativo..." [minLength]="1"></p-autoComplete>
      <button class="btn btn-secondary" type="button" (click)="clearSearchText()"><i class="fa fa-times" aria-hidden="true"></i></button>
     </div>
+    <div>
+      <p-checkbox label="cerca solo nel nodo selezionato" [(ngModel)]="checkNodeSelected" binary="true"></p-checkbox>
+    </div>
   </div>
 
-  <div class="col-md-3">
-    <p-checkbox label="cerca solo nel nodo selezionato" [(ngModel)]="checkNodeSelected" binary="true"></p-checkbox>
-  </div>
-</div>
-
-<br>
-
-<div class="row">
   <div class="col-md-3">
     <p-fieldset legend="Ruoli selezionati">
       <i *ngFor="let ruoli of ruoliSelezionati" style="margin-right:10px">{{ruoli}}</i>
@@ -112,15 +100,20 @@
        <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 4" label="Permesso 4" [(ngModel)]="permessiSelezionati"></p-checkbox></div>
     </p-fieldset>
   </div>
-  
 </div>
+
+<br>
+
 <div class="row">
-  <div class="col-md-8">
-    <p-confirmDialog></p-confirmDialog>
+  <div class="col-md-5">
+  </div>
+  
+  <div class="col-md-2">
+    <button type="button" (click)="assegnaPermessi()" pButton icon="fa-check" label="Conferma"></button>
   </div>
 
-  <div class="col-md-3">
-    <button type="button" (click)="assegnaPermessi()" pButton icon="fa-check" label="Conferma"></button>
+  <div class="col-md-5">
+    <p-confirmDialog></p-confirmDialog>
   </div>
 </div>
 
