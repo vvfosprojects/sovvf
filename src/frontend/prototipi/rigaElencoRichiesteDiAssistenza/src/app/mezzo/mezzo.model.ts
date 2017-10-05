@@ -21,10 +21,10 @@ export class Mezzo {
         public genere: string,
 
         /**
-         * Codice dello stato del mezzo (0 = InSede, 1 = InViaggio, 2 = SulPosto,
-         * 3 = InRientro, 4 = Istituto). Utile a definire il colore del segnale di stato.
+         * Codice dello stato del mezzo (InSede, InViaggio, SulPosto,
+         * InRientro, Istituto). Utile a definire il colore del segnale di stato.
          */
-        public statoMezzo: number,
+        public statoMezzo: string,
         
         /**
          * Testo del segnale di stato.

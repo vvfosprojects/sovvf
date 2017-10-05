@@ -68,6 +68,21 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
+        ///   Descrizione dello stato
+        /// </summary>
+        /// <remarks>
+        ///   Se il flusso applicativo esegue questo metodo sullo stato FuoriSincro c'è sertamente un
+        ///   errore logico. Il metodo pertanto solleva un'eccezione.
+        /// </remarks>
+        public override string Descrizione
+        {
+            get
+            {
+                throw new InvalidOperationException("Non ha senso chiedere la descrizione nello stato fuori sincro.");
+            }
+        }
+
+        /// <summary>
         ///   In questo stato non ha senso chiedere se il mezzo è disponibile per l'assegnazione.
         /// </summary>
         public override bool Disponibile

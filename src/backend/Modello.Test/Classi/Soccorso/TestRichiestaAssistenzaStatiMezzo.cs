@@ -78,7 +78,6 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaRichiestaConUnMezzoUscitoRestituisceUnMezzoCoinvolto()
         {
-            var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
             var eventi = new IPartenza[]
             {
@@ -100,7 +99,6 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaRichiestaConDueMezziInUnaComposizioneRestituisceDueStatiMezzo()
         {
-            var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
             var eventi = new IPartenza[]
             {
@@ -122,7 +120,6 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaRichiestaConDueMezziInDueComposizioniRestituisceDueStatiMezzo()
         {
-            var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
             new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
             {
@@ -147,7 +144,6 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaRichiestaConM1PartitoEdM2ArrivatoRestituisceIDueStatiCorrettamente()
         {
-            var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
             new ComposizionePartenze(richiesta, DateTime.Now, "fonte", false)
             {
@@ -174,7 +170,6 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaRichiestaConUnMezzoRientratoEPoiDiNuovoUscitoRestituisceUnSoloMezzo()
         {
-            var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
             var eventi = new IPartenza[]
             {
@@ -207,7 +202,6 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaRichiestaConUnMezzoUscitoEdUnoSulPostoEPresidiata()
         {
-            var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
             new ComposizionePartenze(richiesta, now, "fonte", false)
@@ -236,7 +230,6 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaRichiestaConUnMezzoUscitoEdUnoInRientroNonEPresidiata()
         {
-            var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
             new ComposizionePartenze(richiesta, now, "fonte", false)
@@ -266,7 +259,6 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaRichiestaConDueMezziSulPostoEPresidiata()
         {
-            var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
             new ComposizionePartenze(richiesta, now, "fonte", false)
@@ -296,7 +288,6 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaRichiestaConDueMezziUscitiDallaSedeNonEPresidiata()
         {
-            var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
             new ComposizionePartenze(richiesta, now, "fonte", false)
@@ -324,7 +315,6 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void UnaRichiestaConDueMezziInRientroNonEPresidiata()
         {
-            var processoreStato = new ProcessoreStato();
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
             new ComposizionePartenze(richiesta, now, "fonte", false)

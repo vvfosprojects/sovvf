@@ -1,6 +1,7 @@
 import { Component, ElementRef, NgZone, Input } from '@angular/core';
 
 import { PuntiMappaGoogleInput } from './model/puntiMappaGoogleInput.model'
+import { PuntiMappaGoogleOutput } from './model/puntiMappaGoogleOutput.model'
 
 import { MapService } from './services/map.service'
 import { GeolocationService } from './services/geolocation.service';
@@ -22,6 +23,8 @@ export class AngularMapsComponent {
                                                                    0,
                                                                    "");
   private puntiMappaInput: PuntiMappaGoogleInput[] = [];  
+ 
+  @Input() puntoOutput: PuntiMappaGoogleOutput = new PuntiMappaGoogleOutput(999999, 999999);
   
   // Center map. Required. 
   center: google.maps.LatLng; 
@@ -133,6 +136,7 @@ export class AngularMapsComponent {
         }            
     } // Fine marcaIntervento
 
+    getPuntoFromMap(): void { }
 
 ////DA VERIFICARE
 /*

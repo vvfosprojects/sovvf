@@ -52,6 +52,17 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         }
 
         /// <summary>
+        ///   Descrizione dello stato
+        /// </summary>
+        public override string Descrizione
+        {
+            get
+            {
+                return "In Sede";
+            }
+        }
+
+        /// <summary>
         ///   In questo stato il mezzo risulta disponibile per l'assegnazione
         /// </summary>
         public override bool Disponibile

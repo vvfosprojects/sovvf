@@ -33,6 +33,11 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         string Codice { get; }
 
         /// <summary>
+        ///   Descrizione dello stato
+        /// </summary>
+        string Descrizione { get; }
+
+        /// <summary>
         ///   Indica se il mezzo è disponibile in questo stato
         /// </summary>
         /// <remarks>

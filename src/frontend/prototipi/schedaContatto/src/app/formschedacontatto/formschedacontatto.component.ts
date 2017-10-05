@@ -37,16 +37,15 @@ export class FormschedacontattoComponent implements OnInit {
     .subscribe((scheda: SchedaContatto) => this.scheda = scheda);
   }
 
-    get fs(): SchedaContatto {
-          //Modifica apportata da Marzotti per visualizzare la lista delle schede contatto - 13/07
-          //return this.schedaContattoService.Get();
-          return this.scheda;
-
-    }
-
-    private tornaIndietro() {
-    this.router.navigate(['/lista-schede']);
+  get fs(): SchedaContatto {
+      //Modifica apportata da Marzotti per visualizzare la lista delle schede contatto - 13/07
+      //return this.schedaContattoService.Get();
+      return this.scheda;
   }
+
+  // private tornaIndietro() {
+  //   this.router.navigate(['/']);
+  // }
  
 }
 

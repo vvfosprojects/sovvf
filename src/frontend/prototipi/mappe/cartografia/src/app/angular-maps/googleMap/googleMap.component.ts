@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, OnChanges, SimpleChange, ElementRef } from '@angular/core'; 
+import { Component, Input, Output, OnInit, OnChanges, SimpleChange, ElementRef, EventEmitter } from '@angular/core'; 
 
 import { MapService } from '../services/map.service'; 
+import { PuntiMappaGoogleOutput } from '../model/puntiMappaGoogleOutput.model'
 
 @Component({ 
       selector: 'google-map', 
@@ -9,7 +10,10 @@ import { MapService } from '../services/map.service';
  }) 
 
  export class GoogleMapComponent implements OnInit, OnChanges { 
- 
+
+      @Input() puntoOutput: PuntiMappaGoogleOutput;
+      private map: google.maps.Map;      
+
       /* Center map. Required. */ 
       @Input() center: google.maps.LatLng; 
 
@@ -30,14 +34,17 @@ import { MapService } from '../services/map.service';
       @Input() minZoom: number; 
       /* Styles to apply to each of the default map types. */ 
       @Input() styles: google.maps.MapTypeStyle[];
-      
-      
-  
+
       constructor(public maps: MapService, private elementRef: ElementRef) { }
  
       ngOnInit(): void {
             const el: HTMLElement = this.elementRef.nativeElement.querySelector("#map"); 
             this.createMap(el); 
+
+            this.map.addListener('click', (e) => { 
+                  this.puntoOutput.latitudine = e.latLng.lat();
+                  this.puntoOutput.longitudine = e.latLng.lng();                  
+              }); 
       } 
  
       ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void { 
@@ -46,16 +53,17 @@ import { MapService } from '../services/map.service';
       } 
 
       private createMap(el: HTMLElement): void {
-            this.maps.initMap(el, { 
-                  center: this.center, 
-                  disableDefaultUI: this.disableDefaultUI, 
-                  disableDoubleClickZoom: this.disableDoubleClickZoom, 
-                  mapTypeId: this.mapTypeId, 
-                  maxZoom: this.maxZoom as number, 
-                  minZoom: this.minZoom as number, 
-                  styles: this.styles, 
-                  zoom: this.zoom as number 
-            }); 
+            this.map=
+                  this.maps.initMap(el, { 
+                        center: this.center, 
+                        disableDefaultUI: this.disableDefaultUI, 
+                        disableDoubleClickZoom: this.disableDoubleClickZoom, 
+                        mapTypeId: this.mapTypeId, 
+                        maxZoom: this.maxZoom as number, 
+                        minZoom: this.minZoom as number, 
+                        styles: this.styles, 
+                        zoom: this.zoom as number 
+                  }); 
       } 
- 
+
 }  //END class GoogleMapDirective
