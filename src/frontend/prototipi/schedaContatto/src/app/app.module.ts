@@ -24,11 +24,6 @@ const ROUTES = [
     path: 'scheda-contatto/:id',
     component: FormschedacontattoComponent
   },
-  /*  {
-    path: '', 
-    redirectTo: '/lista-schede',
-    pathMatch: 'full' 
-  },  */
   { path: '**', 
     component: PageNotFoundComponent 
   }

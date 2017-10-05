@@ -1,8 +1,7 @@
 import { Component, ElementRef, NgZone, Input } from '@angular/core';
 
-////import { GoogleMapMarker } from './googleMap/googleMap.marker.component'
-
 import { PuntiMappaGoogleInput } from './model/puntiMappaGoogleInput.model'
+import { PuntiMappaGoogleOutput } from './model/puntiMappaGoogleOutput.model'
 
 import { MapService } from './services/map.service'
 import { GeolocationService } from './services/geolocation.service';
@@ -16,7 +15,16 @@ import { GeocodingService } from './services/geocoding.service';
 
 export class AngularMapsComponent {
 
-  @Input() puntoMappaInput: PuntiMappaGoogleInput;
+ @Input() punto: PuntiMappaGoogleInput = new PuntiMappaGoogleInput("ABC",
+                                                                   "Tipologia dell'Intervento",
+                                                                   "via cavour 5 Roma",                                                         
+                                                                   "Breve descrizione",
+                                                                   0,
+                                                                   0,
+                                                                   "");
+  private puntiMappaInput: PuntiMappaGoogleInput[] = [];  
+ 
+  @Input() puntoOutput: PuntiMappaGoogleOutput = new PuntiMappaGoogleOutput(999999, 999999);
   
   // Center map. Required. 
   center: google.maps.LatLng; 
@@ -31,13 +39,6 @@ export class AngularMapsComponent {
   minZoom: number; 
   styles: google.maps.MapTypeStyle[];
 
-  // Marker position. Required. 
-  position: google.maps.LatLng; 
-  // Marker title. 
-  title: string; 
-  // Info window. 
-  content: string; 
-
   // Warning flag & message. 
   warning: boolean; 
   message: string; 
@@ -47,7 +48,8 @@ export class AngularMapsComponent {
                 private map: MapService, 
                 private geolocation: GeolocationService, 
                 private geocoding: GeocodingService) { 
-        this.center = new google.maps.LatLng(41.910943, 12.476358); 
+
+        this.center = new google.maps.LatLng(41.87, 12.53);         
         this.zoom = 10; 
 
         this.disableDefaultUI = true; 
@@ -69,15 +71,6 @@ export class AngularMapsComponent {
 
         this.warning = false; 
         this.message = ""; 
-
-        //this.puntoMappaInput = new PuntiMappaGoogleInput('','','','',0,0,'');
-        this.puntoMappaInput = new PuntiMappaGoogleInput("ABC",
-                                                         "Tipologia dell'Intervento",
-                                                         "via coriolano 40 roma",                                                         
-                                                         "Breve descrizione",
-                                                         0,
-                                                         0,
-                                                         "");        
     } // END constructor
 
 //Marca la posizione dell'indirizzo dato
@@ -85,17 +78,35 @@ export class AngularMapsComponent {
         if (address != "") { 
             this.warning = false; 
             this.message = ""; 
-            
+
             //Converts the address into geographic coordinates. 
             this.geocoding.codeAddress(address).forEach(
                 (results: google.maps.GeocoderResult[]) => { 
-                        if (!this.center.equals(results[0].geometry.location)) { 
-                            this.zoom = 11; 
-                            this.center = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng()); 
-                            //this.setMarker(this.center, results[0].formatted_address, results[0].formatted_address); 
-                        } 
+                    console.log("Inizio: ", results.length)
+
+                    for(let i=0; i < results.length; i++) {
+                            console.log("indirizzo: ",  results[i].formatted_address, ' - ', results[i].geometry.location.lat()); 
+                           
+                            this.zoom = 11;
+                            this.puntiMappaInput.push(
+                                new PuntiMappaGoogleInput(this.punto.codice,
+                                                          this.punto.tipologia,
+                                                          results[i].formatted_address,
+                                                          this.punto.descrizione,
+                                                          results[i].geometry.location.lat(),
+                                                          results[i].geometry.location.lng(),
+                                                          this.punto.marker));
+                    }                        
                 })
-                .then(() => { console.log('Servizio di geocoding completato.'); })
+                .then(() => {
+                    console.log('Servizio di geocoding completato.'); 
+
+                    for(let i=0 ; i < this.puntiMappaInput.length; i++) {
+                        console.log("Completato: ", this.puntiMappaInput[i].latitudine );
+                        //this.punto=this.puntiMappaInput[i];
+                        this.map.addMarker(this.puntiMappaInput[i]);                                                
+                    }
+                })
                 .catch((status: google.maps.GeocoderStatus) => { 
                         if (status === google.maps.GeocoderStatus.ZERO_RESULTS) { 
                             this.message = "nessun risultato"; 
@@ -106,48 +117,28 @@ export class AngularMapsComponent {
     }  // END search
 
  //Marca la posizione dell'intervento 
-    marcaIntervento(): void{
-        ////alert("marcaIntervento");
-        if(this.puntoMappaInput.indirizzo === "" &&
-            this.puntoMappaInput.latitudine <= 0.1 &&
-            this.puntoMappaInput.longitudine <= 0.1) { 
+    marcaIntervento(): void {
+        if(this.punto.indirizzo == "" &&
+           this.punto.latitudine <= 0.1 &&
+           this.punto.longitudine <= 0.1) { 
             this.message = "nessun risultato"; 
             this.warning = true; 
             alert(this.message);
             return;
         }
 
-        if(this.puntoMappaInput.indirizzo != "") {
-            this.search(this.puntoMappaInput.indirizzo);
-            this.puntoMappaInput.latitudine = this.center.lat();
-            this.puntoMappaInput.longitudine = this.center.lng();            
-        }
-
-        this.setMarkerIntervento(); 
+        this.punto.marker="";
+        if(this.punto.indirizzo != "") {
+            console.log('prima di chiamata search');
+            this.punto.marker='https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';                        
+            this.search(this.punto.indirizzo);
+            console.log('dopo di chiamata search');
+        }            
     } // Fine marcaIntervento
 
-    private setMarkerIntervento(): void { // ngOnChanges di googleMap.marker
-        this.position = new google.maps.LatLng(this.puntoMappaInput.latitudine, this.puntoMappaInput.longitudine); 
-        this.title = this.puntoMappaInput.codice + " - " + this.puntoMappaInput.tipologia + "\n"; 
-        this.content = this.puntoMappaInput.descrizione;
-    }
-
-    
+    getPuntoFromMap(): void { }
 
 ////DA VERIFICARE
-//Marca la posizione per Latitudine e Longitudine  
-/*
-    private setMarker(latLng: google.maps.LatLng, title: string, content: string): void {
-        //this.maps.deleteMarkers(); 
-
-        // Sets the marker. 
-        this.position = latLng; 
-        this.title = title; 
-
-        // Sets the info window. 
-        this.content = content; 
-    } 
-*/
 /*
         //Marca la posizione attuale
         getCurrentPosition(): void { 

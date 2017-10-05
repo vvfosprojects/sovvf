@@ -1,9 +1,7 @@
 export class PuntiMappaGoogleOutput {
-
-    latitudine: number;
-    longitudine: number;
-
-    constructor(values: Object = {}) { 
-        Object.assign(this, values); 
-    } 
-}
+    
+         constructor(
+            public latitudine: number,
+            public longitudine: number,
+         ) { }
+    }

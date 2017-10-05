@@ -30,6 +30,7 @@ import { GeocodingService } from './angular-maps/services/geocoding.service';
     MapService
    ,GeolocationService
    ,GeocodingService
+   ,GoogleMapMarker
     
   ],
   bootstrap: [AppComponent]
