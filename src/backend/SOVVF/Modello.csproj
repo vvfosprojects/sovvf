@@ -75,6 +75,7 @@
     <Compile Include="Classi\Soccorso\Fonogramma\IStatoFonogramma.cs" />
     <Compile Include="Classi\Soccorso\Fonogramma\DaInviare.cs" />
     <Compile Include="Classi\Soccorso\Fonogramma\NonNecessario.cs" />
+    <Compile Include="Classi\Soccorso\Mezzi\Mezzo.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\AbstractStatoMezzo.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\AbstractStatoMezzoAssegnatoARichiesta.cs" />
     <Compile Include="Classi\Soccorso\Mezzi\StatiMezzo\AbstractStatoMezzoNonAssegnatoARichiesta.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\SituazioneMezziQueryHandler.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\ResultDTO\SituazioneMezziResult.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetNumeroSquadreSoccorsoOraInServizio.cs" />
+    <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\Mezzi\IGetMezzoByCodice.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\Mezzi\IGetNumeroMezziSoccorsoOraInServizio.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\RicercaRichiesteAssistenza\FiltroRicercaRichiesteAssistenza.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\RicercaRichiesteAssistenza\ICercaRichiesteAssistenza.cs" />

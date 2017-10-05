@@ -23,7 +23,9 @@ using System.Linq;
 using Bogus;
 using Modello.Classi.Organigramma;
 using Modello.Classi.Soccorso;
+using Modello.Classi.Soccorso.Mezzi;
 using Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using Modello.Servizi.Infrastruttura.Organigramma;
 using Moq;
 using NUnit.Framework;
@@ -431,8 +433,12 @@ namespace Modello.Test.Classi.Soccorso
             mockGetUnitaOperativaPerCodice
                 .Setup(m => m.Get(It.IsAny<string>()))
                 .Returns<string>(param => new UnitaOperativa(param, $"Descrizione {param}"));
+            var mockGetMezzoByCodice = new Mock<IGetMezzoByCodice>();
+            mockGetMezzoByCodice
+                .Setup(mock => mock.Get(It.IsAny<string>()))
+                .Returns<string>(codice => new Mezzo(codice, "DescrizioneMock"));
 
-            return new MapperRichiestaSuSintesi(mockGetUnitaOperativaPerCodice.Object, new MapperMezzoSuSintesi());
+            return new MapperRichiestaSuSintesi(mockGetUnitaOperativaPerCodice.Object, new MapperMezzoSuSintesi(mockGetMezzoByCodice.Object));
         }
 
         private Mock<RichiestaAssistenza> GetMockRichiestaBenFormata(

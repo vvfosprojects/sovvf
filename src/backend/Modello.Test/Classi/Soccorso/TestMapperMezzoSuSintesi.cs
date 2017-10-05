@@ -18,13 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Bogus;
+using Modello.Classi.Soccorso.Mezzi;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 using Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
+using Moq;
 using NUnit.Framework;
 
 namespace Modello.Test.Classi.Soccorso
@@ -35,7 +34,7 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void IlCodiceDiUnMezzoMappatoECorretto()
         {
-            var mapperMezzoSuSintesi = new MapperMezzoSuSintesi();
+            var mapperMezzoSuSintesi = GetMapperMezzoSuSintesi();
 
             var mezzo = mapperMezzoSuSintesi.Map("TestCodice", new Assegnato(DateTime.Now, "TestCodice"));
 
@@ -46,7 +45,7 @@ namespace Modello.Test.Classi.Soccorso
         [Repeat(20)]
         public void LoStatoDiUnMezzoMappatoECorretto()
         {
-            var mapperMezzoSuSintesi = new MapperMezzoSuSintesi();
+            var mapperMezzoSuSintesi = GetMapperMezzoSuSintesi();
             var faker = new Faker();
             var stato = faker.PickRandom<IStatoMezzo>(
                 new InSede(DateTime.Now),
@@ -58,6 +57,26 @@ namespace Modello.Test.Classi.Soccorso
             var mezzo = mapperMezzoSuSintesi.Map("TestCodice", stato);
 
             Assert.That(mezzo.StatoMezzo, Is.EqualTo(stato.Codice));
+        }
+
+        [Test]
+        public void LaDescrizioneDelMezzoECorretta()
+        {
+            var mapperMezzoSuSintesi = GetMapperMezzoSuSintesi();
+
+            var mezzo = mapperMezzoSuSintesi.Map("TestCodice", new InSede(DateTime.Now));
+
+            Assert.That(mezzo.Descrizione, Is.EqualTo("DescrizioneMock"));
+        }
+
+        private static MapperMezzoSuSintesi GetMapperMezzoSuSintesi()
+        {
+            var mockGetMezzoByCodice = new Mock<IGetMezzoByCodice>();
+            mockGetMezzoByCodice
+                .Setup(mock => mock.Get(It.IsAny<string>()))
+                .Returns<string>(codice => new Mezzo(codice, "DescrizioneMock"));
+
+            return new MapperMezzoSuSintesi(mockGetMezzoByCodice.Object);
         }
     }
 }

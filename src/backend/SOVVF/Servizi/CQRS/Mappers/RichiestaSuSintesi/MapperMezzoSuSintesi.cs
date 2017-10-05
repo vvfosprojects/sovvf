@@ -24,6 +24,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Modello.Classi.Soccorso.Mezzi.StatiMezzo;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using Modello.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 
 namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
 {
@@ -33,6 +34,20 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
     internal class MapperMezzoSuSintesi
     {
         /// <summary>
+        ///   L'istanza del servizio
+        /// </summary>
+        private readonly IGetMezzoByCodice getMezzoByCodice;
+
+        /// <summary>
+        ///   Il costruttore
+        /// </summary>
+        /// <param name="getMezzoByCodice">L'istanza del servizio di risoluzione anagrafica mezzo</param>
+        public MapperMezzoSuSintesi(IGetMezzoByCodice getMezzoByCodice)
+        {
+            this.getMezzoByCodice = getMezzoByCodice;
+        }
+
+        /// <summary>
         ///   Metodo di mapping sul DTO sintesi richiesta
         /// </summary>
         /// <param name="codice">Il codice del mezzo</param>
@@ -40,12 +55,13 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
         /// <returns>Il DTO del mezzo</returns>
         public Mezzo Map(string codice, IStatoMezzo stato)
         {
+            var mezzo = this.getMezzoByCodice.Get(codice);
             return new Mezzo()
             {
                 Codice = codice,
                 StatoMezzo = stato.Codice,
                 DescrizioneStato = stato.Descrizione,
-#warning Continuare il mapping facendo affidamento su un servizio di accesso all'anagrafica mezzo
+                Descrizione = mezzo.Descrizione
             };
         }
     }
