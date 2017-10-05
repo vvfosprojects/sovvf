@@ -143,6 +143,7 @@
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\InserisciTelefonata\CommandDTO\InserisciTelefonataCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\InserisciTelefonata\InserisciTelefonataCommandHandler.cs" />
     <Compile Include="Servizi\CQRS\Mappers\RichiestaSuSintesi\IMapperRichiestaSuSintesi.cs" />
+    <Compile Include="Servizi\CQRS\Mappers\RichiestaSuSintesi\MapperMezzoSuSintesi.cs" />
     <Compile Include="Servizi\CQRS\Mappers\RichiestaSuSintesi\MapperRichiestaSuSintesi.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SintesiRichiestaAssistenza\QueryDTO\SintesiRichiestaAssistenzaQuery.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\Shared\SintesiRichiestaAssistenza\Componente.cs" />

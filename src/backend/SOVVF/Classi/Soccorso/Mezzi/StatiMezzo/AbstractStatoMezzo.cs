@@ -45,6 +45,11 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         public abstract string Codice { get; }
 
         /// <summary>
+        ///   La descrizione dello stato
+        /// </summary>
+        public abstract string Descrizione { get; }
+
+        /// <summary>
         ///   Indica se il mezzo è disponibile
         /// </summary>
         public abstract bool Disponibile { get; }

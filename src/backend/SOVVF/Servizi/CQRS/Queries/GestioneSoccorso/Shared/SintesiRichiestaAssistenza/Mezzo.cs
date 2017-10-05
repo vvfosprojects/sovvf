@@ -20,7 +20,7 @@
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
     /// <summary>
-    ///   Modella il mezzo
+    ///   Modella il mezzo in un DTO <see cref="SintesiRichiesta" />
     /// </summary>
     public class Mezzo
     {

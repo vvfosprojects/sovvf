@@ -35,14 +35,25 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
         private readonly IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice;
 
         /// <summary>
+        ///   Istanza del servizio
+        /// </summary>
+        private readonly MapperMezzoSuSintesi mapperMezzoSuSintesi;
+
+        /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="getUnitaOperativaPerCodice">
         ///   L'istanza del servizio di risoluzione unità operativa a partire dal codice
         /// </param>
-        public MapperRichiestaSuSintesi(IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice)
+        /// <param name="mapperMezzoSuSintesi">
+        ///   L'istanza del servizio di mapping di un mezzo sulla sintesi
+        /// </param>
+        public MapperRichiestaSuSintesi(
+            IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice,
+            MapperMezzoSuSintesi mapperMezzoSuSintesi)
         {
             this.getUnitaOperativaPerCodice = getUnitaOperativaPerCodice;
+            this.mapperMezzoSuSintesi = mapperMezzoSuSintesi;
         }
 
         /// <summary>
@@ -76,6 +87,7 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 DescrizioneStatoFonogramma = richiesta.StatoInvioFonogramma.Descrizione,
                 ComplessitaRichiesta = richiesta.Complessita.Codice,
                 DescrizioneComplessita = richiesta.Complessita.Descrizione,
+                Mezzi = richiesta.MezziCoinvolti.Select(mc => this.mapperMezzoSuSintesi.Map(mc.Key, mc.Value)).ToArray()
             };
         }
     }

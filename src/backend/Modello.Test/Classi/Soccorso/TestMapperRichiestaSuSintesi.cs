@@ -432,7 +432,7 @@ namespace Modello.Test.Classi.Soccorso
                 .Setup(m => m.Get(It.IsAny<string>()))
                 .Returns<string>(param => new UnitaOperativa(param, $"Descrizione {param}"));
 
-            return new MapperRichiestaSuSintesi(mockGetUnitaOperativaPerCodice.Object);
+            return new MapperRichiestaSuSintesi(mockGetUnitaOperativaPerCodice.Object, new MapperMezzoSuSintesi());
         }
 
         private Mock<RichiestaAssistenza> GetMockRichiestaBenFormata(
