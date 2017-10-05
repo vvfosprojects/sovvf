@@ -7,15 +7,6 @@
        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
        <!--<label><input [checked]="filtri_chiamate" class="fa fa-user-circle-o" aria-hidden="true" type="button" autocomplete="off" (click)="selChiamate($event)"></label>  -->
 
-       <!--  <label><button class="btn btn-outline-primary disabled" type="button" name="chiamate" data-toggle="tootip" title="Chiamate" (click)="selFiltri('chiamate')"><i class="fa fa-tty" aria-hidden="true"></i></button></label>
-     -->
-  <!--    <label><button class="btn btn-outline-primary active"  type="button" name="chiamate" data-toggle="tootip" title="Chiamate" [ngClass]="{'disabled' : filtri.interventi==false, 'active' : filtri.interventi==true}" (click)="selFiltri('chiamate')"><i class="fa fa-tty" aria-hidden="true"></i></button></label>
-  -->
- <!--     <label><button class="btn btn-outline-primary active" [ngClass]="{'disabled' : filtri.chiamate==false}" type="button" name="interventi" data-toggle="tootip" title="Interventi" (click)="selFiltri('interventi')"><i class="fa fa-tags" aria-hidden="true"></i></button></label>
- -->      
-   <!--    <label><button class="btn btn-outline-primary active" type="button" name="interventi" data-toggle="tootip" title="Interventi" (click)="selFiltri('interventi')"><i class="fa fa-tags" aria-hidden="true"></i></button></label>
-   -->
-
        <div *ngIf="filtri.interventi">
            <label><button class="btn btn-outline-primary active" type="button" name="chiamate" data-toggle="tootip" title="Chiamate" (click)="selFiltri('chiamate')"><i class="fa fa-tty" aria-hidden="true"></i></button></label>
        </div>
@@ -32,34 +23,11 @@
   <!--
    <label><button class="btn btn-outline-primary active" type="button" name="interventi" data-toggle="tootip" title="Interventi" (click)="selFiltri('interventi')"><i class="fa fa-tags" aria-hidden="true"></i></button></label>
   -->
-       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<!--
-       <ng-template [ngIf]="(filtri.chiusi && !filtri.aperti) || (filtri.chiusi && filtri.aperti)">
-           <label><button class="btn btn-outline-primary active" type="button" name="aperti" data-toggle="tootip" title="Aperti" (click)="selFiltri('aperti')"><i class="fa fa-unlock" aria-hidden="true"></i></button></label>
-        </ng-template>
-       <ng-template [ngIf]="!filtri.chiusi && filtri.aperti"><label><button class="btn btn-outline-primary active" aria-disabled="true" type="button" name="aperti" data-toggle="tootip" title="Aperti"><i class="fa fa-unlock" aria-hidden="true"></i></button></label>
-       </ng-template>
-       <ng-template [ngIf]="filtri.chiusi && !filtri.aperti"><label><button class="btn btn-outline-primary" type="button" name="aperti" data-toggle="tootip" title="Aperti" (click)="selFiltri('aperti')"><i class="fa fa-unlock" aria-hidden="true"></i></button></label>
-       </ng-template>
-      
-       <ng-template [ngIf]="filtri.aperti && !filtri.chiusi"><label><button class="btn btn-outline-primary"  type="button" name="chiusi" data-toggle="tootip" title="Chiusi" (click)="selFiltri('chiusi')"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button></label>
-       </ng-template>
-       <ng-template [ngIf]="filtri.aperti && filtri.chiusi"><label><button class="btn btn-primary"  type="button" name="chiusi" data-toggle="tootip" title="Chiusi" (click)="selFiltri('chiusi')"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button></label>
-       </ng-template>
-       <ng-template [ngIf]="!filtri.aperti"><label><button class="btn btn-primary" disabled={{filtri.chiusi}} type="button" name="chiusi" data-toggle="tootip" title="Chiusi"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button></label>
-       </ng-template>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-    -->
- <!--   <div class="badge" [ngClass]="{'badge-success' : fs.codiceStato == 'InSede' || fs.codiceStato == 'Istituto', 
-    'badge-danger'  : fs.codiceStato == 'InViaggio' || fs.codiceStato == 'SulPosto',
-    'badge-primary' : fs.codiceStato == 'InRientro',
-    'badge-default' : fs.codiceStato == 'FuoriServizio'}">{{getDescrizioneStato(fs.codiceStato)}}-->
-
-    <div *ngIf="filtri.aperti==true && filtri.chiusi==false">
+     <div *ngIf="filtri.aperti==true && filtri.chiusi==false">
       <label><button class='btn btn-primary'  disabled="true" name="aperti" data-toggle="tootip" title="Aperti" (click)="selFiltri('aperti')"><i class="fa fa-unlock" aria-hidden="true"></i></button></label>
-<!--
-        <label><button class='btn btn-primary'  [ngClass]="{'disabled="true"' : filtri.chiusi=='false', 'enabled' : filtri.chiusi=='true'}"  name="aperti" data-toggle="tootip" title="Aperti" (click)="selFiltri('aperti')"><i class="fa fa-unlock" aria-hidden="true"></i></button></label>
--->        
+  
     </div>
     <div *ngIf="filtri.aperti==true && filtri.chiusi==true">
   
@@ -94,56 +62,31 @@
             <label><button class='btn btn-primary' enabled="true" name="chiusi" data-toggle="tootip" title="Chiusi" (click)="selFiltri('chiusi')"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button></label>
      </div>  -->
   
-<!--
-     <div *ngIf="filtri.chiusi==true">
-       <label><button class='btn btn-outline-primary active' name="chiusi" data-toggle="tootip" title="Chiusi" (click)="selFiltri('chiusi')"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button></label>
-    </div>
-    <div *ngIf="filtri.chiusi==false">
-         <label><button class='btn btn-outline-primary' name="chiusi" data-toggle="tootip" title="Chiusi" (click)="selFiltri('chiusi')"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button></label>
-    </div>   
--->    
-    <!-- 
-    <label><button class="btn btn-outline-primary"  type="button" name="aperti" data-toggle="tootip" title="Aperti" (click)="selFiltri('aperti')"><i class="fa fa-unlock" aria-hidden="true"></i></button></label>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <div *ngIf="filtri.interni==true && filtri.esterni==false">
+        <label><button class='btn btn-primary'  disabled="true" name="interni" data-toggle="tootip" title="Interni" (click)="selFiltri('interni')"><i class="fa fa-home" aria-hidden="true"></i></button></label>
     
-       <label><button class="btn btn-outline-primary" [ngClass]="{'aria-pressed=true active' : filtri.aperti==true, 'aria-pressed=false' : filtri.aperti==false}" type="button" name="aperti" data-toggle="tootip" title="Aperti" (click)="selFiltri('aperti')"><i class="fa fa-unlock" aria-hidden="true"></i></button></label>
-
-       <label><button class="btn btn-outline-primary" [ngClass]="{'active' : filtri.chiusi==true, '' : filtri.chiusi==false}" type="button" name="chiusi" data-toggle="tootip" title="Chiusi" (click)="selFiltri('chiusi')"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button></label>
-   -->     
-<!--
-       <div *ngIf="filtri.chiusi">
-           <label><button class="btn btn-outline-primary active" type="button" name="aperti" data-toggle="tootip" title="Aperti" (click)="selFiltri('aperti')"><i class="fa fa-unlock" aria-hidden="true"></i></button></label>
-       </div>
-       <div *ngIf="!filtri.chiusi">
-           <label><button class="btn btn-primary" aria-disabled="true" type="button" name="aperti" data-toggle="tootip" title="Aperti"><i class="fa fa-unlock" aria-hidden="true"></i></button></label>
-       </div>
-       <div *ngIf="filtri.aperti">
-           <label><button class="btn btn-outline-primary"  type="button" name="chiusi" data-toggle="tootip" title="Chiusi" (click)="selFiltri('chiusi')"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button></label>
-       </div> 
-       <div *ngIf="!filtri.aperti">
-           <label><button class="btn btn-primary" aria-disabled="true" type="button" name="chiusi" data-toggle="tootip" title="Chiusi"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button></label>
-       </div>
-    -->
-  <!--     <label><button class="btn btn-outline-primary active"  type="button" name="aperti" data-toggle="tootip" title="Aperti"  (click)="selFiltri('aperti')"><i class="fa fa-unlock" aria-hidden="true"></i></button></label>
-       <label><button class="btn btn-outline-primary"  type="button" name="chiusi" data-toggle="tootip" title="Chiusi" (click)="selFiltri('chiusi')"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button></label>
-  -->     
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <div *ngIf="filtri.esterni">
-          <label><button class="btn btn-outline-primary active"  type="button" name="interni" data-toggle="tootip" title="Interni" (click)="selFiltri('interni')"><i class="fa fa-home" aria-hidden="true"></i></button></label>
       </div>
-      <div *ngIf="!filtri.esterni">
-          <label><button class="btn btn-primary" aria-disabled="true" type="button" name="interni" data-toggle="tootip" title="Interni"><i class="fa fa-home" aria-hidden="true"></i></button></label>
+      <div *ngIf="filtri.interni==true && filtri.esterni==true">
+    
+          <label><button class='btn btn-primary' enabled="true" name="interni" data-toggle="tootip" title="Interni" (click)="selFiltri('interni')"><i class="fa fa-home" aria-hidden="true"></i></button></label>
       </div>
-      <div *ngIf="filtri.interni">
-          <label><button class="btn btn-outline-primary"  type="button" name="esterni" data-toggle="tootip" title="Esterni" (click)="selFiltri('esterni')"><i class="fa fa-globe" aria-hidden="true"></i></button></label>
-      </div>
-      <div *ngIf="!filtri.interni">
-          <label><button class="btn btn-primary" aria-disabled="true" type="button" name="esterni" data-toggle="tootip" title="Esterni"><i class="fa fa-globe" aria-hidden="true"></i></button></label>
+      <div *ngIf="filtri.interni==false && filtri.esterni==true">         
+              <label><button class='btn btn-outline-primary' enabled="true" name="interni" data-toggle="tootip" title="Interni" (click)="selFiltri('interni')"><i class="fa fa-home" aria-hidden="true"></i></button></label>
       </div>
 
 
- <!--      <label><button class="btn btn-outline-primary active"  type="button" name="interni" data-toggle="tootip" title="Interni" (click)="selFiltri('interni')"><i class="fa fa-home" aria-hidden="true"></i></button></label>
-       <label><button class="btn btn-outline-primary"  type="button" name="esterni" data-toggle="tootip" title="Esterni" (click)="selFiltri('esterni')"><i class="fa fa-globe" aria-hidden="true"></i></button></label>
- -->
+      <div *ngIf="filtri.esterni==true && filtri.interni==false">
+        <label><button class='btn btn-primary' disabled="true" name="esterni" data-toggle="tootip" title="Esterni" (click)="selFiltri('esterni')"><i class="fa fa-globe" aria-hidden="true"></i></button></label>
+      </div>        
+
+      <div *ngIf="filtri.esterni==true && filtri.interni==true">         
+         <label><button class='btn btn-primary' enabled="true" name="esterni" data-toggle="tootip" title="Esterni" (click)="selFiltri('esterni')"><i class="fa fa-globe" aria-hidden="true"></i></button></label>
+      </div>
+      <div *ngIf="filtri.esterni==false && filtri.interni==true">         
+         <label><button class='btn btn-outline-primary' enabled="true" name="esterni" data-toggle="tootip" title="Esterni" (click)="selFiltri('esterni')"><i class="fa fa-globe" aria-hidden="true"></i></button></label>
+      </div>
+
        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
      
       <div *ngIf="filtri.nonPresidiati">
@@ -159,11 +102,7 @@
           <label><button class="btn btn-primary" aria-disabled="true" type="button" name="nonPresidiati" data-toggle="tootip" title="Non Presidiati"><i class="fa fa-user-times" aria-hidden="true"></i></button></label>
       </div>
      
-    <!-- 
-       <label><button class="btn btn-outline-primary active"  type="button" name="presidiati" data-toggle="tootip" title="Presidiati" (click)="selFiltri('presidiati')"><i class="fa fa-user-plus" aria-hidden="true"></i></button></label>
-       <label><button class="btn btn-outline-primary active"  type="button" name="nonPresidiati" data-toggle="tootip" title="Non Presidiati" (click)="selFiltri('nonPresidiati')"><i class="fa fa-user-times" aria-hidden="true"></i></button></label>
-    -->
-      </span>
+     </span>
     </div>
    <div class="card-block col-3">
      <span class="input-group">
