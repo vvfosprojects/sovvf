@@ -133,7 +133,10 @@ export class AngularMapsComponent {
             this.punto.marker='https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';                        
             this.search(this.punto.indirizzo);
             console.log('dopo di chiamata search');
-        }            
+        } 
+        else {
+            this.map.addMarker(this.punto);                                                
+        }    
     } // Fine marcaIntervento
 
     getPuntoFromMap(): void { }
