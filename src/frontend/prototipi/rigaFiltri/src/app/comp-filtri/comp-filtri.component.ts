@@ -29,8 +29,15 @@ export class CompFiltriComponent implements OnInit {
    
     if (elemento_filtri === "chiamate") 
        this.filtri.chiamate = !this.filtri.chiamate;     
-    else if (elemento_filtri === "interventi")
-       this.filtri.interventi = !this.filtri.interventi;  
+    else if (elemento_filtri === "interventi") 
+      {
+       this.filtri.interventi = !this.filtri.interventi;
+       if (this.filtri.interventi == false) 
+          {
+           this.filtri.presidiati = true; 
+           this.filtri.nonPresidiati = true;  
+          }
+      }
     else if (elemento_filtri === "aperti")
       this.filtri.aperti = !this.filtri.aperti;
     else if (elemento_filtri === "chiusi")
