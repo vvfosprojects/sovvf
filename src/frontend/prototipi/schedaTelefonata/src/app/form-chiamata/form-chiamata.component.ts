@@ -16,6 +16,7 @@ import { RicercaTipologieService } from ".././ricerca-tipologie/ricerca-tipologi
 import { TipologiaIntervento } from ".././ricerca-tipologie/tipologia-intervento.model";
 import { RicercaService } from "app/ricerca/ricerca.service";
 import { RisultatoRicerca } from "app/ricerca/risultato-ricerca";
+import { Punto } from "app/shared/classes/geo/punto";
 
 
 @Component({
@@ -28,6 +29,7 @@ export class FormChiamataComponent implements OnInit {
 
   risultati: RisultatoRicerca[];
   risultatiMultipli: RisultatoRicerca[];
+  tags: string[];
 
   msgs: Message[] = []; //Messaggi (conferma, info, ecc...)
 
@@ -91,7 +93,7 @@ export class FormChiamataComponent implements OnInit {
   constructor( @Inject(FormBuilder) private fb: FormBuilder, private fb2: FormBuilder, private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone, private _ricercaTipologieService: RicercaTipologieService, private _ricercaService: RicercaService, ) {
     this.formChiamataModel = new FormChiamataModel();
-    this.formChiamataModel.numero_chiamata = "123.4567.890";
+    this.formChiamataModel.numeroChiamata = "123.4567.890";
     this.formChiamataModel.operatore = "Mario Rossi";
     this.formChiamataModel.scheda_contatto = "123.456.789";
     // this.formChiamataModel.nome = "primo";
@@ -104,13 +106,14 @@ export class FormChiamataComponent implements OnInit {
       //'nome': [this.formChiamataModel.nome],
       //'cognome': [this.formChiamataModel.cognome, Validators.compose([Validators.required, this.validaCognome])],
       'tipo_interv': [this.formChiamataModel.tipo_interv],
+      'istanteChiamata':[this.formChiamataModel.istanteChiamata],
       'indirizzo': [this.searchControl],
       'optionsModel': [this.model], // Default model
       'formRagSoc': this.formRagSoc,
       //'ragione_sociale': [this.formChiamataModel.ragione_sociale],
       'telefono': [this.formChiamataModel.telefono],
       'zona_emergenza': [this.formChiamataModel.zona_emergenza],
-      'tag': [this.formChiamataModel.tag],
+      'tags': [this.formChiamataModel.tags],
       'motivazione': [this.formChiamataModel.motivazione],
       'note_indirizzo': [this.formChiamataModel.note_indirizzo],
       'note_pubbliche': [this.formChiamataModel.note_pubbliche],
@@ -312,6 +315,7 @@ export class FormChiamataComponent implements OnInit {
       // });
     }
 
+    console.log("istante chiamata", this.myForm.controls.istanteChiamata.value);
     console.log("indirizzo value ", this.myForm.controls.indirizzo.value);
     console.log("telefono ", this.myForm.controls.telefono.value);
     console.log("zona_emergenza ", this.myForm.controls.zona_emergenza.value);
@@ -323,11 +327,17 @@ export class FormChiamataComponent implements OnInit {
 
     this.showMsgInserimentoChiamataSuccesso();
 
+    let punto = new Punto();
+    
+    punto.latitudine = 98988.99876;
+
     this.chiamataDaSalvare = new FormChiamataModel();
+    this.chiamataDaSalvare.istanteChiamata = this.myForm.controls.istanteChiamata.value;
     this.chiamataDaSalvare.nome = value.nome;
     this.chiamataDaSalvare.cognome = value.cognome;
     this.chiamataDaSalvare.ragione_sociale = value.ragione_sociale;
     this.chiamataDaSalvare.tipo_interv = this.risultatiMultipli;
+    this.chiamataDaSalvare.tags = this.tags;
     this.chiamataDaSalvare.indirizzo = this.myForm.controls.indirizzo.value;
     this.chiamataDaSalvare.telefono = this.myForm.controls.telefono.value;
     this.chiamataDaSalvare.zona_emergenza = this.myForm.controls.zona_emergenza.value;
@@ -342,6 +352,7 @@ export class FormChiamataComponent implements OnInit {
     this.myForm.reset();
     this.formRagSoc.reset();
     this.risultatiMultipli = [];
+    this.tags = [];
     // let formChiamataModel = new FormChiamataModel();
 
   }
