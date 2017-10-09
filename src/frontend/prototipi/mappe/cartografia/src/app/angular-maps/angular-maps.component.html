@@ -74,7 +74,8 @@
                   
                   [puntoOutput]="puntoOutput">
 
-                  <div google-map-marker [punto]="punto"></div>                  
+                  <!--<div google-map-marker [punto]="punto"></div>-->
+                  <div *ngFor="let i of puntiMappaInput" google-map-marker [punto]="i"></div>                                    
                 <!--<google-map-marker [punto]="punto"></google-map-marker>-->
       </google-map> 
     </div>

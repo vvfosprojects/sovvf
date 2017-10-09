@@ -104,7 +104,7 @@ export class AngularMapsComponent {
                     for(let i=0 ; i < this.puntiMappaInput.length; i++) {
                         console.log("Completato: ", this.puntiMappaInput[i].latitudine );
                         //this.punto=this.puntiMappaInput[i];
-                        this.map.addMarker(this.puntiMappaInput[i]);                                                
+                        //this.map.addMarker(this.puntiMappaInput[i]);                                                
                     }
                 })
                 .catch((status: google.maps.GeocoderStatus) => { 
@@ -133,7 +133,10 @@ export class AngularMapsComponent {
             this.punto.marker='https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';                        
             this.search(this.punto.indirizzo);
             console.log('dopo di chiamata search');
-        }            
+        } 
+        else {
+            this.map.addMarker(this.punto);                                                
+        }    
     } // Fine marcaIntervento
 
     getPuntoFromMap(): void { }
