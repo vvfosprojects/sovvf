@@ -46,6 +46,7 @@ export class FormChiamataComponent implements OnInit {
   @Input() formChiamataModel: FormChiamataModel;
 
   chiamataDaSalvare: FormChiamataModel;
+  chiamataRecuperata: FormChiamataModel;
 
   myForm: FormGroup;
   formRagSoc: FormGroup;
@@ -307,6 +308,11 @@ export class FormChiamataComponent implements OnInit {
     console.log("nome ", value.nome);
     console.log("cognome ", value.cognome);
     console.log("ragione_sociale ", value.ragione_sociale);
+    // assegna i valori dal form al modello:
+    this.formChiamataModel.nome = value.nome;
+    this.formChiamataModel.cognome = value.cognome;
+    this.formChiamataModel.ragione_sociale = value.ragione_sociale;
+    //
     //console.log("tipo ", this.myForm.controls.tipo_interv.value);
     if (this.risultatiMultipli != null) {
        console.log(this.risultatiMultipli.map(r => r.testo).join());
@@ -315,6 +321,9 @@ export class FormChiamataComponent implements OnInit {
       // });
     }
 
+    console.log("nome dal form ", this.formChiamataModel.nome);
+    console.log("congnome dal form ", this.formChiamataModel.cognome);
+    console.log("ragione_sociale dal form ", this.formChiamataModel.ragione_sociale);
     console.log("istante chiamata", this.myForm.controls.istanteChiamata.value);
     console.log("indirizzo value ", this.myForm.controls.indirizzo.value);
     console.log("telefono ", this.myForm.controls.telefono.value);
@@ -346,7 +355,19 @@ export class FormChiamataComponent implements OnInit {
     this.chiamataDaSalvare.note_pubbliche = this.myForm.controls.note_pubbliche.value;
     this.chiamataDaSalvare.note_private = this.myForm.controls.note_private.value;
 
+    //Trasforma l'oggetto in una stringa JSON da passare
+    // in seguito al DB.
     console.log("JSON : "+JSON.stringify(this.chiamataDaSalvare));
+
+    //Trasforma una stringa JSON in un oggetto.
+    // Quando i dati sono recuperati dal DB e mostrati di nuovo sul form.
+    this.chiamataRecuperata = JSON.parse(JSON.stringify(this.chiamataDaSalvare));
+
+    console.log("il cognome valeva :"+this.chiamataRecuperata.cognome);
+
+    //Assegna un valore da un oggetto ad un campo del form
+    // quando devono essere valorizzati i campi del form con i dati dal DB.
+    this.formRagSoc.controls.nome.setValue(this.chiamataRecuperata.cognome);
 
     // resetto il form
     this.myForm.reset();
