@@ -12,6 +12,7 @@ import {AutoCompleteModule, GrowlModule, TooltipModule, ChipsModule} from 'prime
 
 import { RicercaTipologieService } from "./ricerca-tipologie/ricerca-tipologie.service";
 import { RicercaService } from "app/ricerca/ricerca.service";
+import { DataBaseService } from "app/db/data-base.service";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { RicercaService } from "app/ricerca/ricerca.service";
     TooltipModule,
     ChipsModule 
   ],
-  providers: [RicercaService, RicercaTipologieService],
+  providers: [RicercaService, RicercaTipologieService, DataBaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
