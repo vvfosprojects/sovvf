@@ -2,7 +2,7 @@
 <div class="card col-12">
   <div class="row">
     <div class="card-block col-9">
-       <label class="btn btn-primary"  title="Nuova Chiamata"><i class="fa fa-plus-square-o fa-lg" aria-hidden="true"></i></label>
+       <label class="btn btn-primary"  title="Nuova Chiamata" (click)="selFiltri('nuova_chiamata')"><i class="fa fa-plus-square-o fa-lg" aria-hidden="true"></i></label>
        <span class="btn-group" data-toggle="button">
        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
        <!--<label><input [checked]="filtri_chiamate" class="fa fa-user-circle-o" aria-hidden="true" type="button" autocomplete="off" (click)="selChiamate($event)"></label>  -->
@@ -93,6 +93,12 @@
       </div>
       <div *ngIf="!filtri.presidiati && filtri.interventi">
            <label><button class="btn btn-primary" aria-disabled="true" type="button" name="nonPresidiati" data-toggle="tootip" title="Non Presidiati"><i class="fa fa-user-times" aria-hidden="true"></i></button></label>
+      </div>
+      <div *ngIf="filtri.presidiati && filtri.nonPresidiati && filtri.interventi==false">
+        <label><button class="btn btn-primary" disabled type="button" name="Presidiati" data-toggle="tootip" title="Presidiati"><i class="fa fa-user-plus" aria-hidden="true"></i></button></label>
+      </div> 
+      <div *ngIf="filtri.presidiati && filtri.nonPresidiati && filtri.interventi==false">
+        <label><button class="btn btn-primary" disabled type="button" name="nonPresidiati" data-toggle="tootip" title="Non Presidiati"><i class="fa fa-user-times" aria-hidden="true"></i></button></label>
       </div>
      </span> 
     </div>  
