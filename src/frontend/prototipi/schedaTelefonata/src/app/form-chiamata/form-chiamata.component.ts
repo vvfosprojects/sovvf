@@ -31,7 +31,8 @@ export class FormChiamataComponent implements OnInit {
   risultatiMultipli: RisultatoRicerca[];
   tags: string[];
 
-  msgs: Message[] = []; //Messaggi (conferma, info, ecc...)
+  msgs: Message[] = []; //Messaggi (conferma, info)
+  msgsErrori: Message[] = []; //Messaggi (Errore)
 
   //------- Maps ------//
   public latitude: number;
@@ -196,7 +197,10 @@ export class FormChiamataComponent implements OnInit {
     this.msgs = [];
     this.msgs.push({ severity: 'success', summary: 'Conferma ', detail: 'Inserimento chiamata avvenuto correttamente.' });
   }
-
+  showMsgErrore(errore: string) {
+    this.msgsErrori = [];
+    this.msgsErrori.push({ severity: 'error', summary: 'Errore ', detail: errore });
+  }
   showMsgInserimentoChiamataInfo() {
     this.msgs = [];
     this.msgs.push({ severity: 'info', summary: 'Info ', detail: 'Inserimento chiamata annullato.' });
@@ -334,8 +338,6 @@ export class FormChiamataComponent implements OnInit {
     console.log("note_pubbliche ", this.myForm.controls.note_pubbliche.value);
     console.log("note_private ", this.myForm.controls.note_private.value);
 
-    this.showMsgInserimentoChiamataSuccesso();
-
     let punto = new Punto();
 
     punto.latitudine = 98988.99876;
@@ -355,14 +357,20 @@ export class FormChiamataComponent implements OnInit {
     this.chiamataDaSalvare.note_pubbliche = this.myForm.controls.note_pubbliche.value;
     this.chiamataDaSalvare.note_private = this.myForm.controls.note_private.value;
 
+    //Invio dati al DB.
+    this._dataBaseService.aggiungiChiamata(this.chiamataDaSalvare)
+      .subscribe(chiamata => {
+        this.inserimentoChiamataConSuccesso();
+      },
+      error => {
+        this.erroreInserimento(<any>error);
+      });
+
     //Trasforma l'oggetto in una stringa JSON da passare
     // in seguito al DB.
     //console.log("JSON : "+JSON.stringify(this.chiamataDaSalvare));
 
     //aggiunge la nuova chiamata al DB.
-    this.aggiungiChiamata(this.chiamataDaSalvare);
-
-
 
     //Trasforma una stringa JSON in un oggetto.
     // Quando i dati sono recuperati dal DB e mostrati di nuovo sul form.
@@ -372,13 +380,6 @@ export class FormChiamataComponent implements OnInit {
     //Assegna un valore da un oggetto ad un campo del form
     // quando devono essere valorizzati i campi del form con i dati dal DB.
     //this.formRagSoc.controls.nome.setValue(this.chiamataRecuperata.cognome);
-
-    // resetto il form
-    this.myForm.reset();
-    this.formRagSoc.reset();
-    this.risultatiMultipli = [];
-    this.tags = [];
-    // let formChiamataModel = new FormChiamataModel();
 
   }
 
@@ -400,13 +401,17 @@ export class FormChiamataComponent implements OnInit {
       );
   }
 
-  /**
-   * Metodo che aggiunge una nuova chiamata nel dataBase (con observable).
-   * @param nuovaChiamata 
-   */
-  private aggiungiChiamata(nuovaChiamata: FormChiamataModel): void {
-    this._dataBaseService.aggiungiChiamata(nuovaChiamata)
-      .subscribe(chiamata => { }, //TODO
-      error => console.log("Errore in inserimento chiamata: " + <any>error));
+  private inserimentoChiamataConSuccesso(): void {
+    this.showMsgInserimentoChiamataSuccesso();
+    // resetto il form
+    this.myForm.reset();
+    this.formRagSoc.reset();
+    this.risultatiMultipli = [];
+    this.tags = [];
+  }
+
+  private erroreInserimento(error: string): void {
+    this.showMsgErrore("Errore in inserimento chiamata: " + <any>error);
+    console.log("Errore in inserimento chiamata: " + <any>error);  
   }
 }
