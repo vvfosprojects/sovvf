@@ -2,18 +2,8 @@
   Elenco degli eventi della Richiesta 
 </h5>
   
-<!--
-<div class="card row_text p-3 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">  
-        Tipo
-    </div>
-    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">  
-        Descrizione
-    <div>
-</div>
--->
 <div *ngFor="let r of elencoEventi">
-    <app-evento-richiesta [evento]="r"></app-evento-richiesta>
+        <app-evento-richiesta [eventoRichiesta]="r"></app-evento-richiesta>
 </div>
 
 

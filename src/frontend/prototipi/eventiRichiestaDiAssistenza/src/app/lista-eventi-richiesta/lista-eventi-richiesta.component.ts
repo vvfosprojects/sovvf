@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Evento } from '../evento-richiesta/evento.model';
+import { EventoRichiesta } from '../evento-richiesta/evento-richiesta.model';
 
 @Component({
   selector: 'app-lista-eventi-richiesta',
@@ -7,8 +7,8 @@ import { Evento } from '../evento-richiesta/evento.model';
   styleUrls: ['./lista-eventi-richiesta.component.css']
 })
 export class ListaEventiRichiestaComponent implements OnInit {
-  @Input() elencoEventi : Evento[];
-
+  @Input() elencoEventi : EventoRichiesta[];
+  
   constructor() { }
 
   ngOnInit() {

@@ -3,40 +3,42 @@
     <div class="col-md-12">
       <div class="row">
         <div class="h5">
-          <div [ngSwitch]="evento.tipo">
+          <div [ngSwitch]="eventoRichiesta.tipo">
             <div *ngSwitchCase="'telefonata'">
-              <!--<i class="creazione_richiesta fa fa-phone-square fa-fw" aria-hidden="true" title="{{evento.tipo}}"></i>-->
-              <i class="guida fa fa-phone-square fa-fw" aria-hidden="true" title="{{evento.tipo}}"></i>
+              <!--<i class="creazione_richiesta fa fa-phone-square fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>-->
+              <i class="guida fa fa-phone-square fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>
             </div>
             <div *ngSwitchCase="'assegnazione_partenza'">
-                <!--<i class="assegnazione_partenza fa fa-truck fa-fw" aria-hidden="true" title="{{evento.tipo}}"></i>-->
-                <i class="guida fa fa-truck fa-fw" aria-hidden="true" title="{{evento.tipo}}"></i>
+                <!--<i class="assegnazione_partenza fa fa-truck fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>-->
+                <i class="guida fa fa-truck fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>
               </div>
             <div *ngSwitchCase="'uscita_partenza'">
-                <!--<i class="uscita_partenza fa fa-truck fa-fw" aria-hidden="true" title="{{evento.tipo}}"></i>-->
-                <i class="guida fa fa-rocket fa-fw" aria-hidden="true" title="{{evento.tipo}}"></i>
+                <!--<i class="uscita_partenza fa fa-truck fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>-->
+                <i class="guida fa fa-rocket fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>
               </div>
             <div *ngSwitchCase="'arrivo_partenza_sul_posto'">
-                <!--<i class="arrivo_partenza_sul_posto fa fa-truck fa-fw" aria-hidden="true" title="{{evento.tipo}}"></i>-->
-                <i class="guida fa fa-check-square-o fa-fw" aria-hidden="true" title="{{evento.tipo}}"></i>
+                <!--<i class="arrivo_partenza_sul_posto fa fa-truck fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>-->
+                <i class="guida fa fa-check-square-o fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>
               </div>
             <div *ngSwitchCase="'fine_intervento_della_partenza'">
-                <!--<i class="fine_intervento_della_partenza fa fa-truck fa-fw" aria-hidden="true" title="{{evento.tipo}}"></i>-->
-                <i class="guida fa fa-handshake-o fa-fw" aria-hidden="true" title="{{evento.tipo}}"></i>
+                <!--<i class="fine_intervento_della_partenza fa fa-truck fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>-->
+                <i class="guida fa fa-handshake-o fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>
             </div>
             <div *ngSwitchCase="'rientro_in_sede_della_partenza'">
-                <!--<i class="rientro_in_sede_della_partenza fa fa-truck fa-fw" aria-hidden="true" title="{{evento.tipo}}"></i>-->
-                <i class="guida fa fa-fast-backward fa-fw" aria-hidden="true" title="{{evento.tipo}}"></i>
+                <!--<i class="rientro_in_sede_della_partenza fa fa-truck fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>-->
+                <i class="guida fa fa-fast-backward fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>
             </div>
             <div *ngSwitchCase="'chiusura_richiesta'">
-                <!--<i class="chiusura_richiesta fa fa-phone-square fa-fw" aria-hidden="true" title="{{evento.tipo}}"></i>-->
-                <i class="guida fa fa-close fa-fw" aria-hidden="true" title="{{evento.tipo}}"></i>
+                <!--<i class="chiusura_richiesta fa fa-phone-square fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>-->
+                <i class="guida fa fa-close fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>
             </div>
           </div>
         </div>
-        <a class="h5" href="{{evento.HTMLLinkElement}}" title="Descrizione">
-            {{evento.descrizione}}
+        <a class="h5" href="{{eventoRichiesta.HTMLLinkElement}}" title="Descrizione">
+            {{eventoRichiesta.descrizione}}
+
         </a>
+        <!--<i class="fa fa-arrow-circle-o-right" aria-hidden="true" title="Vedi dettaglio" (click)="clickDettaglio($event)"></i>-->
       </div>
     </div>      
   </div>    
