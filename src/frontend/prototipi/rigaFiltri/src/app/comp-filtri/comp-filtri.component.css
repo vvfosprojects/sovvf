@@ -1,0 +1,21 @@
+
+.a {
+    background-color: royalblue;
+    color:white; 
+    border: 1px solid white; 
+    }
+.a:hover {
+    background-color: royalblue;
+    color:white; 
+    border: 1px solid white; 
+    }
+.b  {
+    background-color: white; 
+    color:royalblue;
+    border: 1px solid royalblue;
+    }
+.b:hover {
+    background-color: white; 
+    color:royalblue;
+    border: 1px solid royalblue;
+    }
