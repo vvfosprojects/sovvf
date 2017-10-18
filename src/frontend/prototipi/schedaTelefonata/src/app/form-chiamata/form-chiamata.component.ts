@@ -17,7 +17,7 @@ import { TipologiaIntervento } from ".././ricerca-tipologie/tipologia-intervento
 import { RicercaService } from "app/ricerca/ricerca.service";
 import { RisultatoRicerca } from "app/ricerca/risultato-ricerca";
 import { Punto } from "app/shared/classes/geo/punto";
-
+import { DataBaseService } from "app/db/data-base.service";
 
 @Component({
   selector: 'app-form-chiamata',
@@ -31,7 +31,8 @@ export class FormChiamataComponent implements OnInit {
   risultatiMultipli: RisultatoRicerca[];
   tags: string[];
 
-  msgs: Message[] = []; //Messaggi (conferma, info, ecc...)
+  msgs: Message[] = []; //Messaggi (conferma, info)
+  msgsErrori: Message[] = []; //Messaggi (Errore)
 
   //------- Maps ------//
   public latitude: number;
@@ -92,7 +93,7 @@ export class FormChiamataComponent implements OnInit {
   //------- End multiselect ------//
 
   constructor( @Inject(FormBuilder) private fb: FormBuilder, private fb2: FormBuilder, private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone, private _ricercaTipologieService: RicercaTipologieService, private _ricercaService: RicercaService, ) {
+    private ngZone: NgZone, private _ricercaTipologieService: RicercaTipologieService, private _ricercaService: RicercaService, private _dataBaseService: DataBaseService) {
     this.formChiamataModel = new FormChiamataModel();
     this.formChiamataModel.numeroChiamata = "123.4567.890";
     this.formChiamataModel.operatore = "Mario Rossi";
@@ -107,7 +108,7 @@ export class FormChiamataComponent implements OnInit {
       //'nome': [this.formChiamataModel.nome],
       //'cognome': [this.formChiamataModel.cognome, Validators.compose([Validators.required, this.validaCognome])],
       'tipo_interv': [this.formChiamataModel.tipo_interv],
-      'istanteChiamata':[this.formChiamataModel.istanteChiamata],
+      'istanteChiamata': [this.formChiamataModel.istanteChiamata],
       'indirizzo': [this.searchControl],
       'optionsModel': [this.model], // Default model
       'formRagSoc': this.formRagSoc,
@@ -196,7 +197,10 @@ export class FormChiamataComponent implements OnInit {
     this.msgs = [];
     this.msgs.push({ severity: 'success', summary: 'Conferma ', detail: 'Inserimento chiamata avvenuto correttamente.' });
   }
-
+  showMsgErrore(errore: string) {
+    this.msgsErrori = [];
+    this.msgsErrori.push({ severity: 'error', summary: 'Errore ', detail: errore });
+  }
   showMsgInserimentoChiamataInfo() {
     this.msgs = [];
     this.msgs.push({ severity: 'info', summary: 'Info ', detail: 'Inserimento chiamata annullato.' });
@@ -315,7 +319,7 @@ export class FormChiamataComponent implements OnInit {
     //
     //console.log("tipo ", this.myForm.controls.tipo_interv.value);
     if (this.risultatiMultipli != null) {
-       console.log(this.risultatiMultipli.map(r => r.testo).join());
+      console.log(this.risultatiMultipli.map(r => r.testo).join());
       // this.risultatiMultipli.forEach(element => {
       //   console.log(element.testo);
       // });
@@ -334,10 +338,8 @@ export class FormChiamataComponent implements OnInit {
     console.log("note_pubbliche ", this.myForm.controls.note_pubbliche.value);
     console.log("note_private ", this.myForm.controls.note_private.value);
 
-    this.showMsgInserimentoChiamataSuccesso();
-
     let punto = new Punto();
-    
+
     punto.latitudine = 98988.99876;
 
     this.chiamataDaSalvare = new FormChiamataModel();
@@ -355,26 +357,61 @@ export class FormChiamataComponent implements OnInit {
     this.chiamataDaSalvare.note_pubbliche = this.myForm.controls.note_pubbliche.value;
     this.chiamataDaSalvare.note_private = this.myForm.controls.note_private.value;
 
+    //Invio dati al DB.
+    this._dataBaseService.aggiungiChiamata(this.chiamataDaSalvare)
+      .subscribe(chiamata => {
+        this.inserimentoChiamataConSuccesso();
+      },
+      error => {
+        this.erroreInserimento(<any>error);
+      });
+
     //Trasforma l'oggetto in una stringa JSON da passare
     // in seguito al DB.
-    console.log("JSON : "+JSON.stringify(this.chiamataDaSalvare));
+    //console.log("JSON : "+JSON.stringify(this.chiamataDaSalvare));
+
+    //aggiunge la nuova chiamata al DB.
 
     //Trasforma una stringa JSON in un oggetto.
     // Quando i dati sono recuperati dal DB e mostrati di nuovo sul form.
-    this.chiamataRecuperata = JSON.parse(JSON.stringify(this.chiamataDaSalvare));
-
-    console.log("il cognome valeva :"+this.chiamataRecuperata.cognome);
+    //this.chiamataRecuperata = JSON.parse(JSON.stringify(this.chiamataDaSalvare));
+    //console.log("il cognome valeva :"+this.chiamataRecuperata.cognome);
 
     //Assegna un valore da un oggetto ad un campo del form
     // quando devono essere valorizzati i campi del form con i dati dal DB.
-    this.formRagSoc.controls.nome.setValue(this.chiamataRecuperata.cognome);
+    //this.formRagSoc.controls.nome.setValue(this.chiamataRecuperata.cognome);
 
+  }
+
+  /**
+   * Metodo che recupera (tramite id) la chiamata da visualizzare nel Form per 
+   * modificarla.
+   * @param id 
+   */
+  private cercaChiamataPerID(id: number) {
+    this._dataBaseService.getChiamata(id)
+      .subscribe(
+      risultato => {
+        this.chiamataRecuperata = risultato
+      },
+      error => {
+        console.log("Errore. in cercaChiamataPerID : ");
+        console.log(error);
+      }
+      );
+  }
+
+  private inserimentoChiamataConSuccesso(): void {
+    this.showMsgInserimentoChiamataSuccesso();
     // resetto il form
     this.myForm.reset();
     this.formRagSoc.reset();
     this.risultatiMultipli = [];
     this.tags = [];
-    // let formChiamataModel = new FormChiamataModel();
+  }
 
+  private erroreInserimento(error: string): void {
+    this.showMsgErrore("Errore in inserimento chiamata: " + <any>error);
+    console.log("Errore in inserimento chiamata: " + <any>error);  
   }
 }
