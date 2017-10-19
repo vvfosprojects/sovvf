@@ -16,8 +16,9 @@ import { EventiRichiestaServiceFake } from './eventi-richiesta-service/eventi-ri
     ListaEventiRichiestaComponent
   ],
   imports: [
+    NgbModule.forRoot(),
     HttpModule,
-    NgbModule.forRoot(), BrowserModule
+    BrowserModule
   ],
   providers: [{ provide: EventiRichiestaService, useClass:EventiRichiestaServiceFake}],
   bootstrap: [AppComponent]
