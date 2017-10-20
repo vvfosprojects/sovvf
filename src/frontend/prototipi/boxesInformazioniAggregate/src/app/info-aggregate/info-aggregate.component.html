@@ -1,0 +1,117 @@
+
+
+<div class="row">
+ <!--   <div class="col col-md-12 card card-block alert-danger m-1 h6">  -->
+   
+      <div class="col col-md-2">
+          <a class="card text-primary border-danger">
+              <div class="row">
+              <span class="col col-md-4">
+              <i class="fa fa-tags fa-5x danger" style="color: red;" aria-hidden="true"></i>
+              </span>
+              <span class="col col-md-7">
+              <ul class="list-unstyled" style="color: red;">
+              <li><strong class="card-text filtro" style="color: red; font-size: 13px; padding: 0; margin:0">Chiamate:</strong><strong class="badge badge-success" style="color: red;"></strong></li>
+              <li><strong class="card-text filtro" style="color: red; font-size: 13px; padding: 0; margin:0">Interventi aperti:</strong></li>
+                <ul>
+                  <li><span class="card-text" style="color: red; font-size: 12px; padding: 0; margin:0">Non Presidiati:</span></li>
+                   <li><span class="card-text" style="color: red; font-size: 12px; padding: 0; margin:0">Presidiati:</span></li>  
+                  <li><div  class="card-text" style="color: red; font-size: 12px; padding: 0; margin:0">Sospesi:</div></li>
+                </ul>
+              </ul>
+              </span>
+            </div>
+          </a>
+          
+        </div>  
+        <div class="col col-md-2">
+        <a class="card text-primary border-danger">
+            <div class="row">
+            <span class="col col-md-4">
+            <i class="fa fa-tags fa-4x danger" style="color: red;" aria-hidden="true"></i>
+            </span>
+            <span class="col col-md-7">
+            <a class="card-text filtro" style="color: red; font-size: 13px; padding: 0; margin:0">Chiamate:</a>
+            <a class="card-text filtro" style="color: red; font-size: 13px; padding: 0; margin:0">Interventi aperti:</a>
+            <a class="card-text" style="color: red; font-size: 12px; padding: 0; margin:0">Non Presidiati:</a>
+           <!--       <li><span class="card-text" style="color: red; font-size: 12px; padding: 0; margin:0">Presidiati:</span></li>  -->
+          <!--      <li><div  class="card-text" style="color: red; font-size: 12px; padding: 0; margin:0">Sospesi:</div></li> -->
+ 
+           
+            </span>
+          </div>
+        </a>
+        </div>
+  <!--  </div>  -->
+</div>  
+
+
+
+    <!--    <app-stat [bgClass]="'card-primary'" [icon]="'fa-phone'" [count]="10" [label]="'Chiamate in coda'"  [count1]="3"  [label1]="'Interventi in corso'"></app-stat>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <app-stat [bgClass]="'card-info'"    [icon]="'fa-car'"   [count]="4"  [label]="'Mezzi impegnati'"   [count1]="23" [label1]="'Mezzi totali in Servizio'"></app-stat>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <app-stat [bgClass]="'card-success'" [icon]="'fa-users'" [count]="2"  [label]="'Squadre Impegnate'" [count1]="4"  [label1]="'Squadre in Servizio'"></app-stat>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <app-stat [bgClass]="'card-danger'"  [icon]="'fa-sun-o'" [count]=""   [label]="'Previsioni del Tempo!'"></app-stat>
+    </div>
+</div>  -->
+
+<!-- <div class="section text-muted">
+  <div class="row">
+    <div class="col col-md-12 card card-block alert-success m-1 h6"
+    [ngClass]="{'alert-success'  : fs.codiceStato == 'InViaggio' || fs.codiceStato == 'SulPosto',
+        'alert-danger'  : !fs.disponibile}">
+      <div class="row">
+        <div class="col col-md-2">
+          <span class="fa-stack fa-2x">
+            <i class="fa fa-truck fa-stack-1x " [ngClass]="{'text-success' : fs.codiceStato == 'InSede' || fs.codiceStato == 'Istituto', 
+                     'text-danger'  : !fs.disponibile || fs.codiceStato == 'InViaggio' || fs.codiceStato == 'SulPosto',
+                     'text-primary' : fs.codiceStato == 'InRientro',
+                     'text-default' : fs.codiceStato == 'FuoriServizio'}"></i>
+            <i class="fa fa-circle-o fa-stack-2x text-success"></i>
+          <div *ngIf="fs.disponibile">
+           <i class="text-success"></i>
+          </div>
+          <div *ngIf="!fs.disponibile">
+           <i class="fa fa-ban fa-stack-2x text-danger"></i>
+          </div>
+        </span>
+        </div>
+        <div class="col col-md-3 text-center">
+          <div class="h5">{{fs.descrizione}}</div>
+          <div>{{fs.targa}}</div>
+          <div class="card-text">{{fs.descrizioneUnitaOperativa}} </div>
+        </div>
+        <div class="col col-md-2 text-center">
+          <div class="badge" [ngClass]="{'badge-success' : fs.codiceStato == 'InSede' || fs.codiceStato == 'Istituto', 
+                     'badge-danger'  : fs.codiceStato == 'InViaggio' || fs.codiceStato == 'SulPosto',
+                     'badge-primary' : fs.codiceStato == 'InRientro',
+                     'badge-default' : fs.codiceStato == 'FuoriServizio'}">{{getDescrizioneStato(fs.codiceStato)}}
+          </div>
+          <div class="text-muted"> <small> {{fs.istanteAggiornamentoStato | friendlyDate:20}} {{fs.istanteAggiornamentoStato | friendlyHour}} </small> </div>
+        </div>
+        <div class="col col-md-5 text-right">
+          <div *ngIf="numeroPersone() > 0">
+            <span class="fa fa-users" aria-hidden="true"></span>
+            <span class="badge badge-info">{{numeroPersone()}} </span>
+            <button *ngIf="!mostraPersone" type="button" class="btn btn-sm" (click)="hideMostraPersone()">
+                <i class="fa fa-chevron-down" aria-hidden="true"></i>
+              </button>
+            <button *ngIf="mostraPersone" type="button" class="btn btn-sm" (click)="hideMostraPersone()">
+                <i class="fa fa-chevron-up" aria-hidden="true"></i>
+              </button>
+
+          </div>
+          <div>
+            <a href="#">{{fs.codiceRichiestaAssistenza}}
+              </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
