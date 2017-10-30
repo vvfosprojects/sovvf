@@ -1,4 +1,18 @@
-.filtro {
-    margin-top: 0px;
-    margin-bottom: 0px;
+.badge {font-size: 10.025px;}
+p  {font-size:14px; padding-bottom:0; padding-right: 0; margin-bottom:0px; margin-top:4px; margin-right: 2px;}
+ul { list-style-type:none; color:red; font-size:12px; padding-bottom:0px; margin-bottom:0; margin-right: 2px;}
+a  {padding:0px; margin:0;  border-width: thick; border-style:ridge; background-color:white; border-color:#ededed;}
+.icon-background3 {
+    color:red;
+}
+.icon-background2 {
+    color:gainsboro;
+}
+.icon-background1 {
+    color:white;
+}
+
+.centered{
+    text-align:center;
+    vertical-align:center;
 }
