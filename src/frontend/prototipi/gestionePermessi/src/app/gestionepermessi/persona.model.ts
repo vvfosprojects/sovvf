@@ -1,4 +1,4 @@
-export class PersonaDaAutorizzare {
+export class Persona {
     constructor(
         /**
          * E' il codice fiscale della persona, utile come chiave per eventuali approfondimenti sull'istanza

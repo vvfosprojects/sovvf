@@ -40,7 +40,7 @@ import { SintesiRichiesteServiceFake } from "app/sintesi-richieste-service/sinte
     PopoverModule.forRoot(),
     TooltipModule.forRoot(),
   ],
-  providers: [{ provide: SintesiRichiesteService, useClass: SintesiRichiesteService }],
+  providers: [{ provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

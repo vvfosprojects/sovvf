@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/observable/of';
 
-import { SituazionePermessi } from "app/gestionepermessi/situazione-permessi.model";
-import { UnitaOperativa } from "app/gestionepermessi/unita-operativa.model";
-import { PermessoAssegnato } from "app/gestionepermessi/permesso-assegnato.model";
+import { SituazionePermessi } from "../situazione-permessi.model";
+import { UnitaOperativa } from "../unita-operativa.model";
+import { PermessoAssegnato } from "../permesso-assegnato.model";
+import { Permesso } from '../permesso.model';
+import { Ruolo } from '../ruolo.model';
 
 @Injectable()
 export class SituazionePermessiFakeService {
@@ -23,9 +24,20 @@ export class SituazionePermessiFakeService {
     [
       new PermessoAssegnato("0", "Manuela Marzotti", "MZTMNL11Y23T666I", "Può inserire interventi", "Comando Roma", true, new Date(2017, 5, 5, 10, 9, 20), null),
       new PermessoAssegnato("1", "Marcello Esposito", "ESPMRC11Y87T745Z", "Può vedere interventi", "Comando Roma", false, new Date(2016, 5, 9, 11, 8, 22), new Date(2017, 5, 9, 11, 8, 22)),      
-    ]);
+    ],
+  [
+    new Permesso("VisInt", "Visualizzazione interventi", "Consente all'utente di visualizzare gli interventi", ["OPERAT", "SUPERV"], 0),
+    new Permesso("GestInt", "Gestione interventi", "Consente all'utente di gestire un intervento", ["OPERAT"], 1),
+    new Permesso("CreaInt", "Creazione interventi", "Consente all'utente di acquisire una chiamata e generare un intervento", ["OPERAT"], 2),
+    new Permesso("InviaFono", "Invio fonogrammi", "Consente all'utente di inviare un fonogramma", ["SUPERV"], 3),
+  ],
+  [
+    new Ruolo("OPERAT", "Operatore", "Generico operatore di Sala Operativa", 0),
+    new Ruolo("SUPERV", "Supervisore", "Supervisore di Sala Operativa", 1),
+    new Ruolo("ADMIN", "Amministratore", "Amministratore di Sala Operativa", 2),
+  ]);
 
-  constructor(private http: Http) { }
+  constructor() { }
 
   public getSituazionePermessi(): Observable<SituazionePermessi> {
     console.log("Service SituazionePermessiFakeService getSituazionePermessi");   

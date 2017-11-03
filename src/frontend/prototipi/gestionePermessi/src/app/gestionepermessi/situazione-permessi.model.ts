@@ -1,5 +1,7 @@
-import { UnitaOperativa } from "app/gestionepermessi/unita-operativa.model";
-import { PermessoAssegnato } from "app/gestionepermessi/permesso-assegnato.model";
+import { UnitaOperativa } from "./unita-operativa.model";
+import { PermessoAssegnato } from "./permesso-assegnato.model";
+import { Permesso } from "./permesso.model";
+import { Ruolo } from "./ruolo.model";
 
 /**
  * E' il DTO che popola il modulo di gestione dei permessi
@@ -16,6 +18,16 @@ export class SituazionePermessi {
         /**
          * E' la situazione dei permessi assegnati sui quali ho visibilità
          */
-        public permessiAssegnati: PermessoAssegnato[]
+        public permessiAssegnati: PermessoAssegnato[],
+
+        /**
+         * E' l'anagrafica dei permessi da visualizzare nell'interfaccia
+         */
+        public permessiDisponibili: Permesso[],
+
+        /**
+         * E' l'anagrafica dei ruoli da visualizzare nell'interfaccia
+         */
+        public ruoliDisponibili: Ruolo[]
     ) {}
 }
