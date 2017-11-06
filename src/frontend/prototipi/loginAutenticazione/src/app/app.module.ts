@@ -7,10 +7,13 @@ import { AppComponent } from './app.component';
 import { routing }        from './app.routing';
 
 import { LoginComponent } from './login/index';
+import { AlertService} from './_services/index';
+import { AlertComponent } from './_directives/index';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AlertComponent,
     LoginComponent
   ],
   imports: [
@@ -19,7 +22,9 @@ import { LoginComponent } from './login/index';
     HttpModule,
     routing
   ],
-  providers: [],
+  providers: [
+    AlertService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
