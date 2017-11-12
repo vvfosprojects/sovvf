@@ -164,6 +164,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(g => g.Latitudine, f => f.Address.Latitude())
                 .RuleFor(g => g.Longitudine, f => f.Address.Longitude());
 
+            var zoneEmergenza = new[] { "Sisma Gotham City", "Alluvione Smallville", "Uragano Metropolis" }.ToList();
             var fakerRichiesteAssistenza = new Faker<RichiestaAssistenza>("it")
                 .StrictMode(true)
                 .RuleFor(ra => ra.Id, f => f.UniqueIndex.ToString())
@@ -175,7 +176,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(ra => ra.IstanteChiusura, f => null)
                 .RuleFor(ra => ra.Indirizzo, f => f.Address.StreetAddress())
                 .RuleFor(ra => ra.NoteLocalita, f => f.Lorem.Sentence())
-                .RuleFor(ra => ra.ZoneEmergenza, f => new string[0])
+                .RuleFor(ra => ra.ZoneEmergenza, f => f.Random.Float() < 0.001 ? new[] { f.Random.ListItem(zoneEmergenza) } : new string[0])
                 .RuleFor(ra => ra.Descrizione, f => f.Lorem.Sentence())
                 .RuleFor(ra => ra.Richiedente, f => $"{f.Name.FirstName()} {f.Name.LastName()}")
                 .RuleFor(ra => ra.NumeroRichiedente, f => f.Phone.PhoneNumber())
