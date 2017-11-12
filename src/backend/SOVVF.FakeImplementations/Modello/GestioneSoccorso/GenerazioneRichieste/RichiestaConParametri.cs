@@ -33,6 +33,13 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         public ParametriRichiesta Parametri { get; set; }
 
         /// <summary>
+        ///   Inizialmente impostato al numero di mezzi estratti per soddisfare la richiesta, tiene
+        ///   il conto dei mezzi che ancora devono intervenire, al fine di poter chiudere la
+        ///   richiesta quando il conteggio arriva a zero.
+        /// </summary>
+        public int MezziAncoraDaInviare { get; set; }
+
+        /// <summary>
         ///   La richiesta alla quale vanno aggiunti gli eventi secondo i parametri e secondo
         ///   l'evoluzione di tutte le altre richieste in competizione per l'acquisizione delle risorse.
         /// </summary>

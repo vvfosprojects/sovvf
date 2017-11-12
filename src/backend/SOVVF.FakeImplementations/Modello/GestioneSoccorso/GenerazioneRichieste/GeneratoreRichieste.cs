@@ -197,18 +197,21 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(t => t.RagioneSociale, f => f.Company.CompanyName());
 
             var numeroInterventi = (int)(this.dataMax.Subtract(this.dataMin).TotalDays * this.richiesteMedieAlGiorno);
-            var richiesteConParametri = Enumerable.Range(1, numeroInterventi)
-                 .Select(i => new RichiestaConParametri
+            var richiesteConParametri =
+                (from intervento in Enumerable.Range(1, numeroInterventi)
+                 let parametri = ParametriRichiesta.GetParametriFake(
+                      this.dataMin,
+                      this.dataMax,
+                      this.pesiNumeroMezziPartecipanti,
+                      new Gaussiana(this.mediaSecondiPartenzaDallaSedeSuccessive, this.mediaSecondiPartenzaDallaSedeSuccessive / 3),
+                      new Gaussiana(this.mediaSecondiArrivoSulPosto, this.mediaSecondiArrivoSulPosto / 3),
+                      new Gaussiana(this.mediaSecondiDurataIntervento, this.mediaSecondiDurataIntervento / 3),
+                      new Gaussiana(this.mediaSecondiRientroInSede, this.mediaSecondiRientroInSede / 3))
+                 select new RichiestaConParametri
                  {
-                     Parametri = ParametriRichiesta.GetParametriFake(
-                     this.dataMin,
-                     this.dataMax,
-                     this.pesiNumeroMezziPartecipanti,
-                     new Gaussiana(this.mediaSecondiPartenzaDallaSedeSuccessive, this.mediaSecondiPartenzaDallaSedeSuccessive / 3),
-                     new Gaussiana(this.mediaSecondiArrivoSulPosto, this.mediaSecondiArrivoSulPosto / 3),
-                     new Gaussiana(this.mediaSecondiDurataIntervento, this.mediaSecondiDurataIntervento / 3),
-                     new Gaussiana(this.mediaSecondiRientroInSede, this.mediaSecondiRientroInSede / 3)),
-                     Richiesta = fakerRichiesteAssistenza.Generate()
+                     Richiesta = fakerRichiesteAssistenza.Generate(),
+                     Parametri = parametri,
+                     MezziAncoraDaInviare = parametri.ParametriMezzi.Length
                  }).ToList();
 
             // Aggiunta eventi telefonata in base ai parametri selezionati per ogni richiesta

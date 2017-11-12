@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using Modello.Classi.Soccorso.Eventi.Partenze;
+using Modello.Classi.Soccorso.Eventi;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.AzioniSuRichiesta
 {
@@ -92,6 +93,9 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             {
                 mezzo.ContestoMezzo.InSede();
                 new PartenzaRientrata(this.richiesta.Richiesta, this.parametriMezzo.MezzoUtilizzato.Codice, istanteEffettivo, "Fonte");
+                this.richiesta.MezziAncoraDaInviare--;
+                if (this.richiesta.MezziAncoraDaInviare == 0)
+                    new ChiusuraRichiesta("Risolto", this.richiesta.Richiesta, istanteEffettivo, "Fonte");
             }
             catch
             {
