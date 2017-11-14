@@ -436,7 +436,7 @@ namespace Modello.Test.Classi.Soccorso
             var mockGetMezzoByCodice = new Mock<IGetMezzoByCodice>();
             mockGetMezzoByCodice
                 .Setup(mock => mock.Get(It.IsAny<string>()))
-                .Returns<string>(codice => new Mezzo(codice, "DescrizioneMock"));
+                .Returns<string>(codice => new Mezzo(codice, "DescrizioneMock", "GenereMock"));
 
             return new MapperRichiestaSuSintesi(mockGetUnitaOperativaPerCodice.Object, new MapperMezzoSuSintesi(mockGetMezzoByCodice.Object));
         }

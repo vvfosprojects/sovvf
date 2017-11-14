@@ -61,7 +61,8 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 Codice = codice,
                 StatoMezzo = stato.Codice,
                 DescrizioneStato = stato.Descrizione,
-                Descrizione = mezzo.Descrizione
+                Descrizione = mezzo.Descrizione,
+                Genere = mezzo.Genere
             };
         }
     }
