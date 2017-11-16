@@ -2,10 +2,11 @@
   <div class="row align-items-center">
     <div class="col-md-12">-->
       <td>        
-        <div class="h5">
+        <div  class="h5">
             <div >
-                <!--<i class="creazione_richiesta fa fa-phone-square fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>-->
-                <i class="fa {{iconaClasseEventoCorrente}} fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>
+                <!--<i class="fa {{iconeClasseEventoCorrente}} fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>-->                
+                <i *ngFor="let ii of iconeClasseEventoCorrente" class="fa {{ii}} fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}">
+                </i>
             </div>            
         </div>
       </td>

@@ -9,9 +9,9 @@ import { EventoRichiesta } from './evento-richiesta.model';
 export class EventoRichiestaComponent implements OnInit {
 
   private espanso: boolean = false;
-  private iconaClasseEventoCorrente;
-  iconeClassiEvento: any ;
-  myMap: any ;
+  private iconeClasseEventoCorrente: any;
+  private iconeClassiEvento: any ;
+  private myMap: any ;
   
   @Input() eventoRichiesta: EventoRichiesta;
   @Output() mostraDettaglio: EventEmitter<EventoRichiesta> = new EventEmitter();
@@ -26,19 +26,20 @@ export class EventoRichiestaComponent implements OnInit {
   ngOnInit() {
         
     this.iconeClassiEvento = [
-      ["telefonata","fa-phone-square"]
-      ,["assegnazione_partenza","fa-truck"]
-      ,["uscita_partenza","fa-rocket"]
-      ,["arrivo_partenza_sul_posto","fa-check-square-o"]
-      ,["fine_intervento_della_partenza","fa-handshake-o"]
-      ,["rientro_in_sede_della_partenza","fa-fast-backward"]
-      ,["chiusura_richiesta","fa-close"]
+      ['telefonata',['fa-phone-square']]
+      ,['assegnazione_partenza',['fa-truck', 'fa-hand-o-right']]
+      ,['uscita_partenza',['fa-truck', 'fa-rocket']]
+      ,['arrivo_partenza_sul_posto',['fa-truck', 'fa-check-square-o']]
+      ,['fine_intervento_della_partenza',['fa-truck', 'fa-handshake-o']]
+      ,['rientro_in_sede_della_partenza',['fa-truck', 'fa-hand-o-left']]
+      ,['chiusura_richiesta',['fa-flag-checkered']]
     ];
 
     this.myMap = new Map(this.iconeClassiEvento);    
 
-    this.iconaClasseEventoCorrente = this.myMap.get(this.nomeClasseEvento);
+    this.iconeClasseEventoCorrente = this.myMap.get(this.nomeClasseEvento);
 
+    console.log(this.iconeClasseEventoCorrente); 
     //this.iconaClasseEventoCorrente = myMap.get("telefonata");    
     //this.iconaClasseEventoCorrente = "fa-phone-square";
     /*
