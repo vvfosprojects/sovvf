@@ -13,6 +13,9 @@ export class EventoRichiestaComponent implements OnInit {
   @Input() eventoRichiesta: EventoRichiesta;
   @Output() mostraDettaglio: EventEmitter<EventoRichiesta> = new EventEmitter();
   
+  @Input() istanteEventoPrecedente: Date;
+  @Input() istantePrimoEvento: Date;
+  
   constructor() {  }
 
   ngOnInit() {
