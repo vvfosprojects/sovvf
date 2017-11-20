@@ -87,7 +87,7 @@
     <br>
     <br>
     <div class="offset-md-5">
-      <button type="button" class="btn btn-success btn-lg" (click)="assegnaPermessi()">Conferma</button>
+      <button type="button" class="btn btn-success btn-lg" (nuovoPermesso)="assegnaPermesso()">Conferma</button>
     </div>
     
   </div>
@@ -126,12 +126,6 @@
             </ng-template>
           </p-column>
           <p-column field="ricorsivo" header="Ricorsivo" [style]="{'text-align': 'center'}">
-              <!-- <div *ngIf="[col.field]; else elseBlock">
-                  <button type="button" pButton icon="fa-check"></button>
-              </div>
-              <ng-template #elseBlock let-col="rowData" pTemplate="body">
-                  <button type="button" pButton icon="fa-times"></button>
-              </ng-template>   -->
               <ng-template let-col let-bol="rowData" pTemplate="body">
                 <div *ngIf="bol[col.field]">
                 <i class="fa fa-check" aria-hidden="true" title="Permesso ricorsivo" ></i>

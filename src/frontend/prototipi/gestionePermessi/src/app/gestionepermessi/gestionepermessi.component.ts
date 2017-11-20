@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { TreeModule, TreeNode } from 'primeng/primeng';
 import { DataTableModule, SharedModule } from 'primeng/primeng';
@@ -16,7 +16,7 @@ import { RicercaPersonaFakeService } from './servizi/ricerca-persona-fake.servic
 
 import { PermessoAssegnato } from "./permesso-assegnato.model";
 import { UnitaOperativa } from "./unita-operativa.model";
-
+import { NuovoPermesso } from 'app/gestionepermessi/nuovo-permesso.model';
 
 
 @Component({
@@ -25,6 +25,9 @@ import { UnitaOperativa } from "./unita-operativa.model";
     styleUrls: ['./gestionepermessi.component.css']
 })
 export class GestionepermessiComponent implements OnInit {
+    //@Input() permessoAssegnato: PermessoAssegnato;
+    @Output() nuovoPermesso = new EventEmitter<NuovoPermesso>();
+
     dataInizio: Date;
     dataFine: Date;
     it: any;
@@ -33,13 +36,13 @@ export class GestionepermessiComponent implements OnInit {
 
     //private situazionePermessi: SituazionePermessi;
     private primeNgTrees = [];
-    //private sitPerm;
     private testoRicerca: string;
     checkNodeSelected: boolean = false;
     permessiAssegnati: PermessoAssegnato[];
     
     cols: any[];
 
+    codiceUnitaOperativa: string;
     ruoliSelezionati: string[] = [];
     permessiSelezionati: string[] = [];
     filteredNames: any[];
@@ -120,13 +123,14 @@ export class GestionepermessiComponent implements OnInit {
         this.nominativo = null;
     }
 
-    private assegnaPermessi() {
+    private assegnaPermesso() {
         this.confirmationService.confirm({
             message: 'Sei sicuro di voler assegnare i permessi selezionati?',
             header: 'Confirmation',
             icon: 'fa fa-question-circle',
             accept: () => {
                 this.msgs = [{ severity: 'info', summary: 'Confirmed', detail: 'Permessi assegnati con successo' }];
+                //this.nuovoPermesso.emit(this.permessiAssegnati);
             },
             reject: () => {
                 this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'Operazione annullata' }];
