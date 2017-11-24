@@ -3,7 +3,7 @@ p  {font-size:14px; padding-bottom:0; padding-right: 0; margin-bottom:0px; margi
 ul { list-style-type:none; color:red; font-size:12px; padding-bottom:0px; margin-bottom:0; margin-right: 2px;}
 a  {padding:0px; margin:0;  border-width:5px; border-style: ridge;border-radius:15px;box-shadow: 3px 3px 5px #999; }
 .icon-background3 {
-    background-color: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1)); /* Standard syntax (must be last) */
+    color:rgba(191, 64, 64, 1);
 }
 .icon-background2 {
     color:gainsboro;
@@ -11,6 +11,23 @@ a  {padding:0px; margin:0;  border-width:5px; border-style: ridge;border-radius:
 .icon-background1 {
     color:white;
 }
+
+ .badge-chiamate {
+    background-color: rgba(191, 64, 64, 1);
+ }
+ .badge-warning {
+    background-color: #f89406;
+ }
+ .badge-success {
+    background-color: #468847;
+ }
+  .badge-info {
+    background-color: #3a87ad;
+  }
+
+  
+
+
 
 .centered{
     text-align:center;
@@ -43,10 +60,3 @@ background: -moz-linear-gradient(right,rgba(255,0,0,0),rgba(255,0,0,1)); /*Fx 3.
 background: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1)); /*Standard*/
 }
 
-.fa-inverse {
-    opacity: 0;                /* Opacity (Transparency) */
-    color: rgba(199, 46, 46, 0.75);   /* RGBA Color (Alternative Transparency) */
-    -webkit-filter: blur(2px);    /* Blur */
-    -moz-filter: blur(2px);
-    filter: blur(2px);
-}
