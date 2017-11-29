@@ -6,12 +6,11 @@ a  {padding:0px; margin:0;  border-width:5px; border-style: ridge;border-radius:
     color:rgba(191, 64, 64, 1);
 }
 .icon-background2 {
-    color:gainsboro;
+    color:rgb(19, 104, 241);
 }
 .icon-background1 {
-    color:white;
+color:rgba(58, 130, 106, 1);
 }
-
  .badge-chiamate {
     background-color: rgba(191, 64, 64, 1);
  }
@@ -24,39 +23,13 @@ a  {padding:0px; margin:0;  border-width:5px; border-style: ridge;border-radius:
   .badge-info {
     background-color: #3a87ad;
   }
-
-  
-
-
-
 .centered{
     text-align:center;
     vertical-align:center;
 }
-#grad1 {
-   background-color: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1)); /* Standard syntax (must be last) */
+.gradient-squadre {
+    background: -webkit-gradient(linear, right bottom , left bottom, from(rgba(167, 184, 240, 0)), to(rgb(63, 128, 240)));
 }
-
-.icon-a {
-    color: #888;
-} 
-.icon-b {
-    color: orange;
+.gradient-interventi {
+    background: -webkit-gradient(linear, right bottom , left bottom, from(rgba(189, 110, 110, 0)), to(rgba(191, 64, 64, 1)));
 }
-.icon-c {
-    color: yellow;
-}
-.icon-d {
-    color: yellow;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: orange;
-    background-color: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1));
-}
-.fa-prova{
-background: red; /* For browsers that do not support gradients */
-background: -webkit-linear-gradient(left,rgba(255,0,0,0),rgba(255,0,0,1)); /*Safari 5.1-6*/
-background: -o-linear-gradient(right,rgba(255,0,0,0),rgba(255,0,0,1)); /*Opera 11.1-12*/
-background: -moz-linear-gradient(right,rgba(255,0,0,0),rgba(255,0,0,1)); /*Fx 3.6-15*/
-background: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1)); /*Standard*/
-}
-
