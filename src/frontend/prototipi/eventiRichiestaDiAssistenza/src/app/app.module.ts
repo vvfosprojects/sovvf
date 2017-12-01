@@ -2,6 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpModule } from '@angular/http';
+import { FriendlyDatePipe } from "./shared/pipes/friendly-date.pipe";
+import { FriendlyHourPipe } from "./shared/pipes/friendly-hour.pipe";
+import { DistanzaTemporalePipe } from "./shared/pipes/distanza-temporale.pipe";
 
 import { AppComponent } from './app.component';
 import { EventoRichiestaComponent } from './evento-richiesta/evento-richiesta.component';
@@ -13,7 +16,10 @@ import { EventiRichiestaServiceFake } from './eventi-richiesta-service/eventi-ri
   declarations: [
     AppComponent,
     EventoRichiestaComponent,
-    ListaEventiRichiestaComponent
+    ListaEventiRichiestaComponent,
+    FriendlyDatePipe,
+    FriendlyHourPipe,
+    DistanzaTemporalePipe  
   ],
   imports: [
     NgbModule.forRoot(),

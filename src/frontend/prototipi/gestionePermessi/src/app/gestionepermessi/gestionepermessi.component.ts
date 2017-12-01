@@ -1,19 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { TreeModule, TreeNode } from 'primeng/primeng';
 import { DataTableModule, SharedModule } from 'primeng/primeng';
 import { GrowlModule, Message } from 'primeng/primeng';
+import { CalendarModule } from 'primeng/primeng';
 import { CheckboxModule } from 'primeng/primeng';
 import { ButtonModule } from 'primeng/primeng';
-
-import { SituazionePermessiFakeService } from "app/gestionepermessi/servizi/situazione-permessi-fake.service";
-import { SituazionePermessi } from "app/gestionepermessi/situazione-permessi.model";
-import { AdapterAlberoService } from "app/gestionepermessi/servizi/adapter-albero.service";
-
-import { PermessoAssegnato } from "app/gestionepermessi/permesso-assegnato.model";
-import { UnitaOperativa } from "app/gestionepermessi/unita-operativa.model";
-import { PersonaleDaAutorizzareService } from "app/gestionepermessi/servizi/personale-da-autorizzare.service";
 import { ConfirmationService } from 'primeng/primeng';
+import { InputSwitchModule} from 'primeng/primeng';
+
+import { SituazionePermessiFakeService } from "./servizi/situazione-permessi-fake.service";
+import { SituazionePermessi } from "./situazione-permessi.model";
+import { AdapterAlberoService } from "./servizi/adapter-albero.service";
+import { RicercaPersonaFakeService } from './servizi/ricerca-persona-fake.service';
+
+import { PermessoAssegnato } from "./permesso-assegnato.model";
+import { UnitaOperativa } from "./unita-operativa.model";
+import { NuovoPermesso } from 'app/gestionepermessi/nuovo-permesso.model';
+
 
 @Component({
     selector: 'app-gestionepermessi',
@@ -21,14 +25,24 @@ import { ConfirmationService } from 'primeng/primeng';
     styleUrls: ['./gestionepermessi.component.css']
 })
 export class GestionepermessiComponent implements OnInit {
+    //@Input() permessoAssegnato: PermessoAssegnato;
+    @Output() nuovoPermesso = new EventEmitter<NuovoPermesso>();
+
+    dataInizio: Date;
+    dataFine: Date;
+    it: any;
+    minDate: Date;
+    ricorsivo: boolean = true;
+
     //private situazionePermessi: SituazionePermessi;
     private primeNgTrees = [];
-    //private sitPerm;
     private testoRicerca: string;
     checkNodeSelected: boolean = false;
     permessiAssegnati: PermessoAssegnato[];
+    
     cols: any[];
 
+    codiceUnitaOperativa: string;
     ruoliSelezionati: string[] = [];
     permessiSelezionati: string[] = [];
     filteredNames: any[];
@@ -40,10 +54,30 @@ export class GestionepermessiComponent implements OnInit {
     //selectedFile: TreeNode;
 
     constructor(private situazionePermessiService: SituazionePermessiFakeService,
-        private adapterAlbero: AdapterAlberoService, private personaleDaAutorizzareService: PersonaleDaAutorizzareService,
+        private adapterAlbero: AdapterAlberoService, private RicercaPersonaFakeService: RicercaPersonaFakeService,
         private confirmationService: ConfirmationService) { }
 
     ngOnInit() {
+        this.it = {
+            firstDayOfWeek: 1,
+            dayNames: [ "domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato" ],
+            dayNamesShort: [ "dom","lun","mar","mer","gio","ven","sab" ],
+            dayNamesMin: [ "D","L","M","M","G","V","S" ],
+            monthNames: [ "gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre" ],
+            monthNamesShort: [ "gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic" ],
+            today: 'Oggi',
+            clear: 'Cancella'
+        }
+
+        let today = new Date();
+        let month = today.getMonth();
+        let year = today.getFullYear();
+        let yearMax = year;
+        this.minDate = today;
+        // this.maxDate = new Date();
+        // this.maxDate.setMonth(nextMonth);
+        // this.maxDate.setFullYear(nextYear);
+
         this.situazionePermessiService.getSituazionePermessi()
             .subscribe(data => {
                 this.primeNgTrees = data.unitaOperativeRadice.map(uo =>
@@ -89,13 +123,14 @@ export class GestionepermessiComponent implements OnInit {
         this.nominativo = null;
     }
 
-    private assegnaPermessi() {
+    private assegnaPermesso() {
         this.confirmationService.confirm({
             message: 'Sei sicuro di voler assegnare i permessi selezionati?',
             header: 'Confirmation',
             icon: 'fa fa-question-circle',
             accept: () => {
                 this.msgs = [{ severity: 'info', summary: 'Confirmed', detail: 'Permessi assegnati con successo' }];
+                //this.nuovoPermesso.emit(this.permessiAssegnati);
             },
             reject: () => {
                 this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'Operazione annullata' }];
@@ -119,25 +154,25 @@ export class GestionepermessiComponent implements OnInit {
         });
     }
 
-    filterNameSingle(event) {
-        let query = event.query;
-        this.personaleDaAutorizzareService.getNominativi().subscribe(names => {
-            this.filteredNames = this.filterName(query, names);
-        });
-        //console.log("filteredNames: " + this.filteredNames);
-    }
+    // filterNameSingle(event) {
+    //     let query = event.query;
+    //     this.RicercaPersonaFakeService.cerca().subscribe(names => {
+    //         this.filteredNames = this.filterName(query, names);
+    //     });
+    //     //console.log("filteredNames: " + this.filteredNames);
+    // }
 
-    filterName(query, names: any[]): any[] {
-        //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-        let filtered: any[] = [];
-        for (let i = 0; i < names.length; i++) {
-            let nominativo = names[i];
-            if (nominativo.descrizione.toLowerCase().indexOf(query.toLowerCase()) > -1) {
-                filtered.push(nominativo.descrizione);
-            }
+    // filterName(query, names: any[]): any[] {
+    //     //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
+    //     let filtered: any[] = [];
+    //     for (let i = 0; i < names.length; i++) {
+    //         let nominativo = names[i];
+    //         if (nominativo.descrizione.toLowerCase().indexOf(query.toLowerCase()) > -1) {
+    //             filtered.push(nominativo.descrizione);
+    //         }
 
-        }
-        return filtered;
-    }
+    //     }
+    //     return filtered;
+    // }
 
 }

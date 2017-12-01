@@ -1,103 +1,45 @@
-<p-fieldset legend="Permessi assegnati" [toggleable]="true">
-  <div class="row">
-    <div class="col-md-12">
-        <p-dataTable [value]="permessiAssegnati">
-        <p-column field="descrizioneUtente" header="Nominativo"></p-column>
-        <p-column field="descrizionePermesso" header="Descrizione"></p-column>
-        <p-column field="descrizioneUnitaOperativa" header="Unità Operativa"></p-column>
-        <p-column field="dataInizioPermesso" header="Data inizio" [style]="{'text-align': 'center'}">
-          <ng-template let-col let-bol="rowData" pTemplate="body">
-              <span>
-                {{bol[col.field] | friendlyDate:20}}
-              </span>
-          </ng-template>
-        </p-column>
-        <p-column field="dataFinePermesso" header="Data fine" [style]="{'text-align': 'center'}">
-          <ng-template let-col let-bol="rowData" pTemplate="body">
-            <span>
-              {{bol[col.field] | friendlyDate:20}}
-            </span>
-          </ng-template>
-        </p-column>
-        <p-column field="ricorsivo" header="Ricorsivo" [style]="{'text-align': 'center'}">
-            <!-- <div *ngIf="[col.field]; else elseBlock">
-                <button type="button" pButton icon="fa-check"></button>
-            </div>
-            <ng-template #elseBlock let-col="rowData" pTemplate="body">
-                <button type="button" pButton icon="fa-times"></button>
-            </ng-template>   -->
-            <ng-template let-col let-bol="rowData" pTemplate="body">
-              <div *ngIf="bol[col.field]">
-              <i class="fa fa-check" aria-hidden="true" title="Permesso ricorsivo" ></i>
-              </div>
-              <div *ngIf="!bol[col.field]">
-              <i class="fa fa-times" aria-hidden="true" title="Permesso non ricorsivo"></i>
-              </div>
-            </ng-template>  
-        </p-column>
-
-        <p-column field="Azioni" header="Azioni" [style]="{'text-align': 'center'}">
-          <ng-template let-col let-bol="rowData" pTemplate="body">
-            <a href="#" (click)="eliminaPermesso()">
-            <i class="fa fa-trash" aria-hidden="true" title="Elimina il permesso"></i>
-          </a>
-          </ng-template>
-        </p-column>
-      </p-dataTable>
-    </div>
-  </div>
-</p-fieldset>
-
-<br>
 
 <div class="row">
-  <p-growl [value]="msgs"></p-growl>
+  <div class="col-md-6" >
+    <p-fieldset legend="Dove" [ngStyle]="{backgroundColor: '#60979f'}">
+    
+      <div class="row">
+        <div class="col-md-5">
+          <button class="btn" type="button" (click)="expandAll()" >Espandi tutto</button>
+          <button class="btn" type="button" (click)="collapseAll()" >Chiudi tutto</button>
+        </div>
+      </div>
 
-  <div class="col-md-6">
-    <button pButton type="button" (click)="expandAll()" label="Espandi tutto"></button>
-    <button pButton type="button" (click)="collapseAll()" label="Chiudi tutto"></button>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-6">
-    <p-tree [value]="primeNgTrees" selectionMode="single" [(selection)]="selectedFile" 
-      (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)">
-    </p-tree>
-  </div>
-</div>
-
-<br>
-
-<div class="row">
-  <div class="col-md-3">
-    <div class="input-group">
-     <p-autoComplete [(ngModel)]="nominativo" [suggestions]="filteredNames" (completeMethod)="filterNameSingle($event)" [size]="30"
-        placeholder="Cerca nominativo..." [minLength]="1"></p-autoComplete>
-     <button class="btn btn-secondary" type="button" (click)="clearSearchText()"><i class="fa fa-times" aria-hidden="true"></i></button>
-    </div>
-    <div>
-      <p-checkbox label="cerca solo nel nodo selezionato" [(ngModel)]="checkNodeSelected" binary="true"></p-checkbox>
-    </div>
-  </div>
-
-  <div class="col-md-3">
-    <p-fieldset legend="Ruoli selezionati">
-      <i *ngFor="let ruoli of ruoliSelezionati" style="margin-right:10px">{{ruoli}}</i>
-       <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 1" label="Ruolo 1" [(ngModel)]="ruoliSelezionati"></p-checkbox></div>
-       <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 2" label="Ruolo 2" [(ngModel)]="ruoliSelezionati"></p-checkbox></div>
-       <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 3" label="Ruolo 3" [(ngModel)]="ruoliSelezionati"></p-checkbox></div>
-       <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 4" label="Ruolo 4" [(ngModel)]="ruoliSelezionati"></p-checkbox></div>
+      <div class="row">
+        <div class="col-md-6">
+          <p-tree [value]="primeNgTrees" selectionMode="single" [(selection)]="selectedFile" 
+          (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)">
+          </p-tree>
+        </div>
+        <div class="col-md-2">
+         Ricorsivo
+          <p-inputSwitch onLabel="SI" offLabel="NO" [(ngModel)]="ricorsivo"></p-inputSwitch>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-5">
+          <p-checkbox label="cerca solo nel nodo selezionato" [(ngModel)]="checkNodeSelected" binary="true"></p-checkbox>
+        </div>
+      </div>
+    
     </p-fieldset>
-  </div> 
+   </div>
   
-  <div class="col-md-3">
-    <p-fieldset legend="Permessi selezionati">
-     <i *ngFor="let permessi of permessiSelezionati" style="margin-right:10px">{{permessi}}</i>
-       <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 1" label="Permesso 1" [(ngModel)]="permessiSelezionati"></p-checkbox></div>
-       <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 2" label="Permesso 2" [(ngModel)]="permessiSelezionati"></p-checkbox></div>
-       <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 3" label="Permesso 3" [(ngModel)]="permessiSelezionati"></p-checkbox></div>
-       <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 4" label="Permesso 4" [(ngModel)]="permessiSelezionati"></p-checkbox></div>
+  <div class="col-md-6">
+    <p-fieldset legend="Chi">
+      <div class="input-group">
+        <p-autoComplete [(ngModel)]="nominativo" [suggestions]="filteredNames" (completeMethod)="filterNameSingle($event)" [size]="20"
+          placeholder="Cerca nominativo..." [minLength]="1"></p-autoComplete>
+          <button class="btn" type="button" (click)="clearSearchText()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+      </div>
     </p-fieldset>
   </div>
 </div>
@@ -105,20 +47,107 @@
 <br>
 
 <div class="row">
-  <div class="col-md-5">
+  <div class="col-md-6">
+    <p-fieldset legend="Cosa">
+      <div class="col-md-3">
+        <p-fieldset legend="Ruoli">
+        <!-- <i *ngFor="let ruoli of ruoliSelezionati" style="margin-right:10px">{{ruoli}}</i> -->
+          <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 1" label="Ruolo 1" [(ngModel)]="ruoliSelezionati"></p-checkbox></div>
+          <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 2" label="Ruolo 2" [(ngModel)]="ruoliSelezionati"></p-checkbox></div>
+          <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 3" label="Ruolo 3" [(ngModel)]="ruoliSelezionati"></p-checkbox></div>
+          <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 4" label="Ruolo 4" [(ngModel)]="ruoliSelezionati"></p-checkbox></div>
+        </p-fieldset>
+      </div> 
+      
+      <div class="col-md-4">
+        <p-fieldset legend="Permessi">
+        <!-- <i *ngFor="let permessi of permessiSelezionati" style="margin-right:10px">{{permessi}}</i> -->
+          <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 1" label="Permesso 1" [(ngModel)]="permessiSelezionati"></p-checkbox></div>
+          <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 2" label="Permesso 2" [(ngModel)]="permessiSelezionati"></p-checkbox></div>
+          <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 3" label="Permesso 3" [(ngModel)]="permessiSelezionati"></p-checkbox></div>
+          <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 4" label="Permesso 4" [(ngModel)]="permessiSelezionati"></p-checkbox></div>
+        </p-fieldset>
+      </div>
+    </p-fieldset>
   </div>
   
-  <div class="col-md-2">
-    <button type="button" (click)="assegnaPermessi()" pButton icon="fa-check" label="Conferma"></button>
+  <div class="col-md-6">
+    <p-fieldset legend="Quando">
+      <div class="col-md-6">
+       <p-fieldset legend="Da">
+         <p-calendar [(ngModel)]="dataInizioPermesso" [locale]="it" [minDate]="today" [showIcon]="true" showButtonBar="true"></p-calendar> <span style="margin-left:35px">{{dataInizio|date}}</span>
+       </p-fieldset>
+      </div>
+      <div class="col-md-6">
+       <p-fieldset legend="A">
+        <p-calendar [(ngModel)]="dataFinePermesso" [locale]="it" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2037"></p-calendar> <span style="margin-left:35px">{{dataFine|date}}</span>
+       </p-fieldset>
+      </div>
+    </p-fieldset>
+    <br>
+    <br>
+    <div class="offset-md-5">
+      <button type="button" class="btn btn-success btn-lg" (nuovoPermesso)="assegnaPermesso()">Conferma</button>
+    </div>
+    
   </div>
+</div>
 
+<br>
+
+<div class="row">
   <div class="col-md-5">
     <p-confirmDialog></p-confirmDialog>
   </div>
 </div>
 
+<br>
 
+<div class="row">
+  <p-fieldset legend="Permessi assegnati" [toggleable]="true">
+    <div class="row">
+      <div class="col-md-12">
+          <p-dataTable [value]="permessiAssegnati">
+          <p-column field="descrizioneUtente" header="Nominativo"></p-column>
+          <p-column field="descrizionePermesso" header="Descrizione"></p-column>
+          <p-column field="descrizioneUnitaOperativa" header="Unità Operativa"></p-column>
+          <p-column field="dataInizioPermesso" header="Data inizio" [style]="{'text-align': 'center'}">
+            <ng-template let-col let-bol="rowData" pTemplate="body">
+                <span>
+                  {{bol[col.field] | friendlyDate:20}}
+                </span>
+            </ng-template>
+          </p-column>
+          <p-column field="dataFinePermesso" header="Data fine" [style]="{'text-align': 'center'}">
+            <ng-template let-col let-bol="rowData" pTemplate="body">
+              <span>
+                {{bol[col.field] | friendlyDate:20}}
+              </span>
+            </ng-template>
+          </p-column>
+          <p-column field="ricorsivo" header="Ricorsivo" [style]="{'text-align': 'center'}">
+              <ng-template let-col let-bol="rowData" pTemplate="body">
+                <div *ngIf="bol[col.field]">
+                <i class="fa fa-check" aria-hidden="true" title="Permesso ricorsivo" ></i>
+                </div>
+                <div *ngIf="!bol[col.field]">
+                <i class="fa fa-times" aria-hidden="true" title="Permesso non ricorsivo"></i>
+                </div>
+              </ng-template>  
+          </p-column>
 
+          <p-column field="Azioni" header="Azioni" [style]="{'text-align': 'center'}">
+            <ng-template let-col let-bol="rowData" pTemplate="body">
+              <a href="#" (click)="eliminaPermesso()">
+              <i class="fa fa-trash" aria-hidden="true" title="Elimina il permesso"></i>
+            </a>
+            </ng-template>
+          </p-column>
+        </p-dataTable>
+      </div>
+    </div>
+  </p-fieldset>
+</div>
 
 
 
