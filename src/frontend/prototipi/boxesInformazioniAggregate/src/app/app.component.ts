@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+import { InfoAggregate } from './info-aggregate/info-aggregate.model';
+import { InfoAggregateComponent } from './info-aggregate/info-aggregate.component';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +10,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+  myInfo;
+
+  constructor() {
+    this.myInfo = {
+        numChiamate: 2,
+        numIntAperti:4
+    };
+}
 }

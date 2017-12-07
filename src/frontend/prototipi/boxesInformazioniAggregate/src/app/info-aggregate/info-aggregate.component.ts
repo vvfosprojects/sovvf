@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+
+import { InfoAggregate } from './info-aggregate.model';
+
 
 @Component({
   selector: 'app-info-aggregate',
@@ -6,10 +9,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./info-aggregate.component.css']
 })
 export class InfoAggregateComponent implements OnInit {
+  @Input() info: InfoAggregate;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
+   
   }
 
+  get inf(): InfoAggregate {
+    
+        return this.info;
+    
+      }
+   
+ 
 }

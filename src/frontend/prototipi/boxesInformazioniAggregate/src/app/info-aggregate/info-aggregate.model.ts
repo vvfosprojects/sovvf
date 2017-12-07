@@ -1,7 +1,7 @@
 import {InfoMezzo } from "./info-mezzo.model";
 import { FunzionariSo } from "app/info-aggregate/funzionari-so.model";
 
-export class InfoAggragate {
+export class InfoAggregate {
     constructor(
         /**
          * E' il numero delle chiamate in corso non ancora evase

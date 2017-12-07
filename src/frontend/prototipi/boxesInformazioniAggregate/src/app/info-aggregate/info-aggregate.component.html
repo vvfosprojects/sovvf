@@ -12,18 +12,18 @@
                 <span class="col col-md-8">
                   <p>
                     <strong class="card-text" style="color:#ff4444; text-shadow:  4px -2px 3px rgb(247, 156, 156);">Chiamate </strong>
-                    <span class="badge badge-pill badge-danger pull-right">3</span>
+                    <span class="badge badge-pill badge-danger pull-right">{{info.numChiamate}}</span>
                   </p>
                   <p>
                     <strong class="card-text" style="color:#ff4444; text-shadow:  4px -2px 3px rgb(247, 156, 156);">Interventi aperti </strong>
-                    <span class="badge badge-pill badge-primary pull-right">5</span>
+                    <span class="badge badge-pill badge-primary pull-right">{{info.numIntAperti}}</span>
                   </p>
                   <ul>
-                    <li class="card-text" style="color:#ff4444; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(247, 156, 156);">Non Presidiati<span class="badge badge-pill badge-warning pull-right" style="color: #ffffff;">2</span>
+                    <li class="card-text" style="color:#ff4444; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(247, 156, 156);">Non Presidiati<span class="badge badge-pill badge-warning pull-right" style="color: #ffffff;">{{ig.numIntNonPresidiati}}</span>
                     </li>
-                    <li class="card-text" style="color:#ff4444; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(247, 156, 156);">Presidiati<span class="badge badge-pill badge-success pull-right">2</span>
+                    <li class="card-text" style="color:#ff4444; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(247, 156, 156);">Presidiati<span class="badge badge-pill badge-success pull-right">{{ig.numIntPresidiati}}</span>
                     </li>
-                    <li class="card-text" style="color:#ff4444; padding-top:4px; font-weight: bold; padding-bottom:7px; text-shadow:  4px -2px 3px rgb(247, 156, 156);">Sospesi<span class="badge badge-pill badge-warning pull-right" style="color: #ffffff;">1</span>
+                    <li class="card-text" style="color:#ff4444; padding-top:4px; font-weight: bold; padding-bottom:7px; text-shadow:  4px -2px 3px rgb(247, 156, 156);">Sospesi<span class="badge badge-pill badge-warning pull-right" style="color: #ffffff;">{{ig.numIntSospesi}}</span>
                     </li>
                   </ul>
                 </span>
@@ -39,13 +39,13 @@
               <span class="col col-md-8">
                 <ul>
                   <li class="card-text" style="font-size:13px; color:#0d47a1; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">Squadre</li>
-                  <li class="card-text" style="color:#0d47a1; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">In Sede<span class="badge badge-pill badge-default pull-right">2</span>
+                  <li class="card-text" style="color:#0d47a1; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">In Sede<span class="badge badge-pill badge-default pull-right">{{squadreInSede}}</span>
                   </li>
-                  <li class="card-text" style="color:#0d47a1; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">In Viaggio<span class="badge badge-pill badge-success pull-right">2</span>
+                  <li class="card-text" style="color:#0d47a1; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">In Viaggio<span class="badge badge-pill badge-success pull-right">{{squadreInViaggio}}</span>
                   </li>
-                  <li class="card-text" style="color:#0d47a1; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">Sul posto<span class="badge badge-pill badge-success pull-right">2</span>
+                  <li class="card-text" style="color:#0d47a1; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">Sul posto<span class="badge badge-pill badge-success pull-right">{{squadreSulPosto}}</span>
                   </li>
-                  <li class="card-text" style="color:#0d47a1; padding-top:4px; padding-bottom:8px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">In Rientro<span class="badge badge-pill badge-primary pull-right">1</span>
+                  <li class="card-text" style="color:#0d47a1; padding-top:4px; padding-bottom:8px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">In Rientro<span class="badge badge-pill badge-primary pull-right">{{squadreInRientro}}</span>
                   </li>
                 </ul>
                 </span>
