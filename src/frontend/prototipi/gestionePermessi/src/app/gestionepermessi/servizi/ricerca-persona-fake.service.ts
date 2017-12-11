@@ -5,8 +5,8 @@ import 'rxjs/add/observable/of';
 import { Persona } from "../persona.model";
 
 @Injectable()
-export class RicercaPersonaFake {
-private personeDaAutorizzare: Persona[] =
+export class RicercaPersonaFakeService {
+private ricercaPersona: Persona[] =
 [
   new Persona("MNBHJU78Y65T453R", "CS Mario Bianchi", "Mariolino"),
   new Persona("BRNGSP78Y65T453R", "CS Giuseppe Bernardi", "Peppino"),
@@ -21,7 +21,7 @@ private personeDaAutorizzare: Persona[] =
   constructor() { }
 
   public cerca(key: string, codiceUo: string): Observable<Persona[]> {
-    let result = this.personeDaAutorizzare.filter(p => p.descrizione.match(/key/i));
+    let result = this.ricercaPersona.filter(p => p.descrizione.match(/key/i));
     console.log("Ricerca persona con chiave", key, "Restituito:", result);
     return Observable.of(result);
   }

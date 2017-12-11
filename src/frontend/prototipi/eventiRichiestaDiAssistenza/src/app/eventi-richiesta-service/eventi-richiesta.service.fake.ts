@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/observable/of';
+//import * as moment from 'moment';
 
 import { EventoRichiesta } from '../evento-richiesta/evento-richiesta.model';
 
@@ -28,37 +29,51 @@ export class EventiRichiestaServiceFake {
       new EventoRichiesta(
         "0", 
         "telefonata", 
-        "telefonata ricevuta alle 10:12 di oggi",
+        new Date("2017-10-20T10:04"),
+        "",
+        "richiesta da 118",
         "http://about:blank"),
         new EventoRichiesta(
         "1",
         "assegnazione_partenza",
-        "partenza M_45678 assegnata alle 10:15 di oggi", 
+        new Date("2017-10-20T10:09"),
+        "M_45678", 
+        "dall'operatore UTENTE1",
         "http://about:blank"),
         new EventoRichiesta(
         "2",
         "uscita_partenza",
-        "partenza M_45678 uscita alle 10:18 di oggi", 
+        new Date("2017-10-20T10:11"),
+        "M_45678",
+        "dal Distaccamento Centrale", 
         "http://about:blank"),
         new EventoRichiesta(
         "3",
         "arrivo_partenza_sul_posto",
-        "partenza M_45678 arrivata sul posto alle 10:30 di oggi", 
+        new Date("2017-10-20T10:40"),
+        "M_45678",
+        "", 
          "http://about:blank"),
         new EventoRichiesta(
         "4",
         "fine_intervento_della_partenza",
-        "partenza M_45678 in rientro dal posto alle 11:15 di oggi", 
+        new Date("2017-10-20T11:54"),
+        "M_45678",
+        "", 
         "http://about:blank"),
         new EventoRichiesta(
         "5",
         "rientro_in_sede_della_partenza",
-        "partenza M_45678 rientrata in sede alle 11:45 di oggi", 
+        new Date("2017-10-20T12:34"),
+        "M_45678",
+        "nel Distaccamento Centrale", 
         "http://about:blank"),
         new EventoRichiesta(
         "6",
         "chiusura_richiesta",
-        "richiesta di assistenza conclusa alle 11:55 di oggi", 
+        new Date("2017-10-20T12:44"),
+        "",
+        "dall'operatore UTENTE1", 
         "http://about:blank")
     ];
 

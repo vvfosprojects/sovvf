@@ -69,12 +69,22 @@ namespace Modello.Test.Classi.Soccorso
             Assert.That(mezzo.Descrizione, Is.EqualTo("DescrizioneMock"));
         }
 
+        [Test]
+        public void IlGenereDelMezzoECorretto()
+        {
+            var mapperMezzoSuSintesi = GetMapperMezzoSuSintesi();
+
+            var mezzo = mapperMezzoSuSintesi.Map("TestCodice", new InSede(DateTime.Now));
+
+            Assert.That(mezzo.Genere, Is.EqualTo("GenereMock"));
+        }
+
         private static MapperMezzoSuSintesi GetMapperMezzoSuSintesi()
         {
             var mockGetMezzoByCodice = new Mock<IGetMezzoByCodice>();
             mockGetMezzoByCodice
                 .Setup(mock => mock.Get(It.IsAny<string>()))
-                .Returns<string>(codice => new Mezzo(codice, "DescrizioneMock"));
+                .Returns<string>(codice => new Mezzo(codice, "DescrizioneMock", "GenereMock"));
 
             return new MapperMezzoSuSintesi(mockGetMezzoByCodice.Object);
         }

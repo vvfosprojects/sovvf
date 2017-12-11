@@ -35,7 +35,7 @@ namespace Modello.Classi.Soccorso.Mezzi
         /// </summary>
         /// <param name="codice">Il codice</param>
         /// <param name="descrizione">La descrizione</param>
-        public Mezzo(string codice, string descrizione)
+        public Mezzo(string codice, string descrizione, string genere)
         {
             if (string.IsNullOrWhiteSpace(codice))
             {
@@ -47,8 +47,14 @@ namespace Modello.Classi.Soccorso.Mezzi
                 throw new ArgumentNullException(nameof(descrizione));
             }
 
+            if (string.IsNullOrWhiteSpace(genere))
+            {
+                throw new ArgumentNullException(nameof(genere));
+            }
+
             this.Codice = codice;
             this.Descrizione = descrizione;
+            this.Genere = genere;
         }
 
         /// <summary>
@@ -60,5 +66,10 @@ namespace Modello.Classi.Soccorso.Mezzi
         ///   La descrizione
         /// </summary>
         public string Descrizione { get; private set; }
+
+        /// <summary>
+        ///   Il genere
+        /// </summary>
+        public string Genere { get; private set; }
     }
 }
