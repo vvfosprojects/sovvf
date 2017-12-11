@@ -5,7 +5,6 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { FormChiamataComponent } from './form-chiamata/form-chiamata.component';
-import { MultiselectDropdownModule  } from 'angular-2-dropdown-multiselect';
 
 import { AgmCoreModule } from "@agm/core";
 import {AutoCompleteModule, GrowlModule, TooltipModule, ChipsModule} from 'primeng/primeng';
@@ -28,7 +27,6 @@ import { DataBaseService } from "app/db/data-base.service";
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
-    MultiselectDropdownModule,
     AutoCompleteModule,
     GrowlModule,
     TooltipModule,
