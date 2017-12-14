@@ -1,5 +1,4 @@
 import { Component, NgModule, NgZone, OnInit, Input, Inject, ViewChild, ElementRef } from '@angular/core';
-import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 import { FormChiamataModel } from './form-chiamata.model';
 import {
   FormBuilder,
@@ -53,44 +52,6 @@ export class FormChiamataComponent implements OnInit {
   formRagSoc: FormGroup;
 
   model: number[] = [];
-  /**
-   * opzioni per la multiselect del tag
-   */
-  myOptions: IMultiSelectOption[] = [
-    { id: 1, name: 'tag 1 lungo' },
-    { id: 2, name: 'tag 2 lungo' },
-    { id: 3, name: 'tag 3 lungo' },
-    { id: 4, name: 'tag 4' },
-    { id: 5, name: 'tag 5' },
-    { id: 6, name: 'tag 6' },
-  ];
-
-  myTexts: IMultiSelectTexts = {
-    checkAll: 'Seleziona tutti',
-    uncheckAll: 'Deseleziona tutti',
-    checked: 'Selezionato',
-    checkedPlural: 'Selezionati',
-    searchPlaceholder: 'Cerca...',
-    defaultTitle: 'Seleziona tag',
-    allSelected: 'Tutti selezionati',
-  };
-
-  mySettings: IMultiSelectSettings = {
-    pullRight: true,
-    enableSearch: true,
-    checkedStyle: 'fontawesome',
-    buttonClasses: 'btn btn-default btn-secondary btn-block',
-    itemClasses: '',
-    selectionLimit: 0,
-    closeOnSelect: false,
-    autoUnselect: false,
-    showCheckAll: true,
-    showUncheckAll: true,
-    // fixedTitle: false,
-    dynamicTitleMaxItems: 4,
-    maxHeight: '200px',
-  };
-  //------- End multiselect ------//
 
   constructor( @Inject(FormBuilder) private fb: FormBuilder, private fb2: FormBuilder, private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone, private _ricercaTipologieService: RicercaTipologieService, private _ricercaService: RicercaService, private _dataBaseService: DataBaseService) {
