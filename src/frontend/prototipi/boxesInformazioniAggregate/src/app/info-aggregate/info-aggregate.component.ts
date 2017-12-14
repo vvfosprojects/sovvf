@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { InfoAggregate } from './info-aggregate.model';
+import { Observable } from "rxjs/Observable";
 
 
 @Component({
@@ -9,19 +10,12 @@ import { InfoAggregate } from './info-aggregate.model';
   styleUrls: ['./info-aggregate.component.css']
 })
 export class InfoAggregateComponent implements OnInit {
-  @Input() info: InfoAggregate;
-
+  @Input() informazioni: InfoAggregate[];
+ /// @Output() showDettagli: EventEmitter<InfoAggregate> = new EventEmitter();
   constructor() {}
 
   ngOnInit() {
-   
-  }
-
-  get inf(): InfoAggregate {
-    
-        return this.info;
-    
+    console.log("Informazioni: ", this.informazioni);
       }
-   
  
 }

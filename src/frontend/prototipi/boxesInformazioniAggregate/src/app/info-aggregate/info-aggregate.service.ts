@@ -7,7 +7,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 import { InfoAggregate } from './info-aggregate.model';
-import { InfoMezzo } from './info-mezzo.model';
+import { InfoMezzo } from '../box-mezzi/info-mezzo.model';
 import { FunzionariSo } from './funzionari-so.model';
 import { DescMeteoMap } from './desc-meteo-map.class';
 

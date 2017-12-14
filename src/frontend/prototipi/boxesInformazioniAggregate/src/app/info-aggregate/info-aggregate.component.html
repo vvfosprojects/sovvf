@@ -1,58 +1,31 @@
-<div class="section">
-  <div class="row">
-    <div class="col col-md-12 card card-block m-1 h6" style="background-color:#ededed;">
+<div class="row">
+  <div class="col col-mod-12 card card-block m-1 h6">
+    <div *ngFor="let v of informazioni">
       <div class="row">
-        <!--   <div class="col col-md-12 card card-block alert-danger m-1 h6">  -->
-        <div class="col col-md-2">
-            <a class="card danger">
-              <div class="row">
-                <span class="col col-md-4">
-                  <i class="fa fa-tags fa-4x" style="color:#ff4444; margin-left:15px; margin-top:15px; margin-bottom:15px; text-shadow:  4px -2px 3px #f8b3b3;"></i>
-                </span>
-                <span class="col col-md-8">
-                  <p>
-                    <strong class="card-text" style="color:#ff4444; text-shadow:  4px -2px 3px rgb(247, 156, 156);">Chiamate </strong>
-                    <span class="badge badge-pill badge-danger pull-right">{{info.numChiamate}}</span>
-                  </p>
-                  <p>
-                    <strong class="card-text" style="color:#ff4444; text-shadow:  4px -2px 3px rgb(247, 156, 156);">Interventi aperti </strong>
-                    <span class="badge badge-pill badge-primary pull-right">{{info.numIntAperti}}</span>
-                  </p>
-                  <ul>
-                    <li class="card-text" style="color:#ff4444; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(247, 156, 156);">Non Presidiati<span class="badge badge-pill badge-warning pull-right" style="color: #ffffff;">{{ig.numIntNonPresidiati}}</span>
-                    </li>
-                    <li class="card-text" style="color:#ff4444; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(247, 156, 156);">Presidiati<span class="badge badge-pill badge-success pull-right">{{ig.numIntPresidiati}}</span>
-                    </li>
-                    <li class="card-text" style="color:#ff4444; padding-top:4px; font-weight: bold; padding-bottom:7px; text-shadow:  4px -2px 3px rgb(247, 156, 156);">Sospesi<span class="badge badge-pill badge-warning pull-right" style="color: #ffffff;">{{ig.numIntSospesi}}</span>
-                    </li>
-                  </ul>
-                </span>
-              </div>
-            </a>
-          </div>
-          <div class="col col-md-2">
-          <a class="card text-muted">
-            <div class="row">
-              <span class="col col-md-4">
-                <i class="fa fa-users fa-4x" style="color:#0d47a1; text-shadow:  4px -2px 3px rgb(127, 137, 245); margin-left:15px; margin-top:20px; border-color:transparent; border-radius:15px; "></i>
-              </span>
-              <span class="col col-md-8">
-                <ul>
-                  <li class="card-text" style="font-size:13px; color:#0d47a1; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">Squadre</li>
-                  <li class="card-text" style="color:#0d47a1; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">In Sede<span class="badge badge-pill badge-default pull-right">{{squadreInSede}}</span>
-                  </li>
-                  <li class="card-text" style="color:#0d47a1; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">In Viaggio<span class="badge badge-pill badge-success pull-right">{{squadreInViaggio}}</span>
-                  </li>
-                  <li class="card-text" style="color:#0d47a1; padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">Sul posto<span class="badge badge-pill badge-success pull-right">{{squadreSulPosto}}</span>
-                  </li>
-                  <li class="card-text" style="color:#0d47a1; padding-top:4px; padding-bottom:8px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">In Rientro<span class="badge badge-pill badge-primary pull-right">{{squadreInRientro}}</span>
-                  </li>
-                </ul>
-                </span>
-              </div>
-          </a>
+        <div class="col col-md-2 m-1 h6">
+          <box-interventi [interventi]="v" class="col-md-12"></box-interventi>
         </div>
-        <div class="col col-md-2">
+        <div class="col col-md-2 m-1 h6">
+          <box-squadre [squadre]="v" class="col-md-12"></box-squadre>
+        </div>
+        <!-- <div *ngFor="let m of v.infoMezzo"> -->
+          <div *ngFor="let m of v.infoMezzo" class="col col-md-2 m-1 h6">
+            <box-mezzi [mezzi]="m" class="col-md-12"></box-mezzi>
+          </div>
+        <!-- </div> -->
+      <!--   <div class="col col-md-2 m-1 h6">
+          <box-squadre [squadre]="v" class="col-md-12"></box-squadre>
+        </div>
+        <div class="col col-md-2 m-1 h6">
+          <box-squadre [squadre]="v" class="col-md-12"></box-squadre>
+        </div>
+        <div class="col col-md-2 m-1 h6">
+          <box-squadre [squadre]="v" class="col-md-12"></box-squadre>
+        </div>
+     -->
+
+     
+               <div class="col col-md-2">
                   <a class="card text-muted">
                     <div class="row">
                       <span class="col col-md-4">
@@ -214,13 +187,11 @@
                           </span>
                          </div>
                       </a>
-                  </div>
-                 
-      <!--  </div>  -->
+                  </div> 
+ -->
+        <!-- </div>  -->
+        <!-- </div>  -->
       </div>
-     </div>
+    </div>
   </div>
 </div>
-
-
-
