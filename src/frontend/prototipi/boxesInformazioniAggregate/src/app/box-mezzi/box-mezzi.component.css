@@ -1,53 +1,40 @@
 .badge {font-size: 10.025px;}
-p  {font-size:14px; padding-bottom:0; padding-right: 0; margin-bottom:0px; margin-top:4px; margin-right: 2px;}
-ul { list-style-type:none; font-size:12px; padding-bottom:0px; margin-bottom:0; margin-right: 2px;}
+ul { list-style-type:none; padding-bottom:0px; margin-bottom:0; margin-right: 2px;}
 a  {padding:0px; margin:0;  border-width:5px; border-style: ridge;border-radius:15px;box-shadow: 3px 3px 5px #999; }
-.icon-background3 {
-    color:rgba(191, 64, 64, 1);
-}
-.icon-background2 {
-    color:rgb(19, 104, 241);
-}
-.icon-background1 {
-    color:rgb(61, 160, 125);
-}
- .badge-chiamate {
-    background-color: rgba(191, 64, 64, 1);
- }
- .badge-warning {
-    background-color: #f89406;
- }
- .badge-success {
-    background-color: #468847;
- }
-  .badge-info {
-    background-color: #3a87ad;
-  }
-.centered{
-    text-align:center;
-    vertical-align:center;
-}
-.gradient-squadre {
-    background: -webkit-gradient(linear, right bottom , left bottom, from(rgba(167, 184, 240, 0)), to(rgb(63, 128, 240)));
-}
-.gradient-interventi {
-    background: -webkit-gradient(linear, right bottom , left bottom, from(rgba(189, 110, 110, 0)), to(rgba(191, 64, 64, 1)));
-}
-.shadow-ic-verde  {
-    text-shadow:4px -2px 3px green ; margin-left:15px; margin-top:20px; border-color:transparent; border-radius:15px;
+
+ .shadow-ic-verde  {
+    text-shadow:4px -2px 3px #468847; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
 }
 .shadow-ic-giallo  {
-  text-shadow:  4px -2px 3px yellow;  margin-left:15px; margin-top:20px; border-color:transparent; border-radius:15px;
+  text-shadow:  4px -2px 3px #f89406; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
 }
 .shadow-ic-celeste  {
-    text-shadow:  4px -2px 3px cyan; margin-left:15px; margin-top:20px; border-color:transparent; border-radius:15px;
+    text-shadow:  4px -2px 3px #3a87ad; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
+} 
+.shadow-text-verde0  {
+    padding-top:5px; font-size:14px; font-weight: bold; text-shadow:  4px -2px 3px #8ed38e;
 }
-.shadow-text-verde  {
-    padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px green;
+.shadow-text-giallo0  {
+    padding-top:5px; font-size:14px; font-weight: bold; text-shadow:  4px -2px 3px  #f5c382;
 }
-.shadow-text-giallo  {
-    padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px yellow;
+.shadow-text-celeste0  {
+    padding-top:5px; font-size:14px; font-weight: bold; text-shadow:  4px -2px 3px #8dd6f5;
 }
-.shadow-text-celeste  {
-    padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px cyan;
+.shadow-text-verde1  {
+    padding-top:5px; font-size:12px; font-weight: bold; text-shadow:  4px -2px 3px #8ed38e;
+}
+.shadow-text-giallo1  {
+    padding-top:5px; font-size:12px; font-weight: bold; text-shadow:  4px -2px 3px  #f5c382;
+}
+.shadow-text-celeste1  {
+    padding-top:5px; font-size:12px; font-weight: bold; text-shadow:  4px -2px 3px #8dd6f5;
+}
+.shadow-text-verde2  {
+    padding-top:5px; padding-bottom:8px; font-size:12px; font-weight: bold; text-shadow:  4px -2px 3px #8ed38e;
+}
+.shadow-text-giallo2  {
+    padding-top:5px; padding-bottom:8px; font-size:12px; font-weight: bold; text-shadow:  4px -2px 3px  #f5c382;
+}
+.shadow-text-celeste2  {
+    padding-top:5px; padding-bottom:8px; font-size:12px; font-weight: bold; text-shadow:  4px -2px 3px #8dd6f5;
 }

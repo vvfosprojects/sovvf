@@ -7,23 +7,24 @@
        </span>
         <span class="col col-md-8">
           <ul>
-            <li class="card-text font-size:13px;" [ngClass]="{'shadow-text-verde'  : mezzi.genereMezzo == 'APS',
-            'shadow-text-giallo'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste'  : mezzi.genereMezzo == 'ABP' }">{{mezzi.genereMezzo}}</li>
+            <li class="card-text" [ngClass]="{'shadow-text-verde0'  : mezzi.genereMezzo == 'APS',
+            'shadow-text-giallo0'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste0'  : mezzi.genereMezzo == 'ABP' }">{{mezzi.genereMezzo}}</li>
          
-            <li class="card-text" [ngClass]="{'shadow-text-verde'  : mezzi.genereMezzo == 'APS',
-            'shadow-text-giallo'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste'  : mezzi.genereMezzo == 'ABP' }">In Sede<span class="badge badge-pill badge-success pull-right">{{mezzi.mezziInSede}}</span>
+            <li class="card-text" [ngClass]="{'shadow-text-verde1'  : mezzi.genereMezzo == 'APS',
+            'shadow-text-giallo1'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste1'  : mezzi.genereMezzo == 'ABP' }">In Sede<span class="badge badge-pill badge-default pull-right">{{mezzi.mezziInSede}}</span>
             </li>
-            <li class="card-text" [ngClass]="{'shadow-text-verde'  : mezzi.genereMezzo == 'APS',
-            'shadow-text-giallo'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste'  : mezzi.genereMezzo == 'ABP' }">In Viaggio<span class="badge badge-pill badge-chiamate pull-right">{{mezzi.mezziInViaggio}}</span>
+            <li class="card-text" [ngClass]="{'shadow-text-verde1'  : mezzi.genereMezzo == 'APS',
+            'shadow-text-giallo1'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste1'  : mezzi.genereMezzo == 'ABP' }">In Viaggio<span class="badge badge-pill badge-success pull-right">{{mezzi.mezziInViaggio}}</span>
             </li>
-            <li class="card-text" [ngClass]="{'shadow-text-verde'  : mezzi.genereMezzo == 'APS',
-            'shadow-text-giallo'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste'  : mezzi.genereMezzo == 'ABP' }">Sul posto<span class="badge badge-pill badge-chiamate pull-right">{{mezzi.mezziSulPosto}}</span>
+            <li class="card-text" [ngClass]="{'shadow-text-verde1'  : mezzi.genereMezzo == 'APS',
+            'shadow-text-giallo1'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste1'  : mezzi.genereMezzo == 'ABP' }">Sul posto<span class="badge badge-pill badge-success pull-right">{{mezzi.mezziSulPosto}}</span>
             </li>
-            <li class="card-text" [ngClass]="{'shadow-text-verde'  : mezzi.genereMezzo == 'APS',
-            'shadow-text-giallo'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste'  : mezzi.genereMezzo == 'ABP' }">In Rientro<span class="badge badge-pill badge-info pull-right">{{mezzi.mezziInRientro}}</span>
+            <li class="card-text" [ngClass]="{'shadow-text-verde2'  : mezzi.genereMezzo == 'APS',
+            'shadow-text-giallo2'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste2'  : mezzi.genereMezzo == 'ABP' }">In Rientro<span class="badge badge-pill badge-primary pull-right">{{mezzi.mezziInRientro}}</span>
             </li>
           </ul>
           </span>
         </div>
     </a>
    
+ 

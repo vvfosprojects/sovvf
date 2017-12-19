@@ -1,3 +1,87 @@
-<p>
-  box-meteo works!
-</p>
+<a class="card text-muted">
+  <div class="row">
+    <span class="col col-md-4">
+      <i class="fa-stack fa-2x">
+      <i class="fa fa-cloud fa-2x" style="margin-top:15px; margin-left:15px; margin-bottom:15px; border-color:transparent; border-radius:15px; color:white; background: linear-gradient(to right, rgb(64, 155, 191), rgb(191, 201, 204)); text-shadow:  4px -2px 3px rgb(115, 175, 197);"></i> 
+    </i> 
+    </span>
+    <span class="col col-md-2">
+      <ul>
+        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:6px; font-weight: bold; text-shadow:  4px -2px 3px rgb(177, 183, 247);"><i class="fa fa-thermometer-half"  aria-hidden="true"></i></li>
+        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:6px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);"><i class="fa fa-tint" aria-hidden="true" ></i></li>
+        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:6px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);"><i class="fa fa-umbrella" aria-hidden="true"></i></li>
+        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:5px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);"><i class="fa fa-snowflake-o" aria-hidden="true"></i></li>
+      </ul>
+    </span>
+    <span class="col col-md-6">
+      <ul>
+        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:6px; font-weight: bold; text-shadow:  4px -2px 3px rgb(177, 183, 247);">{{previsioni.temperatura}}°</li>
+        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:6px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">{{previsioni.umidita}}%</li>
+        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:6px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">{{previsioni.probPrecipitazione}}%</li>
+        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:5px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">{{previsioni.prevNeve}}</li>
+      </ul>
+    </span>
+  </div>
+</a>
+
+
+<!-- <i class="fa fa-truck fa-4x" [ngClass]="{'shadow-ic-verde'  : mezzi.genereMezzo == 'APS',
+'shadow-ic-giallo'  : mezzi.genereMezzo == 'AS', 'shadow-ic-celeste'  : mezzi.genereMezzo == 'ABP' }"></i>  -->
+
+<!-- <li class="card-text" [ngClass]="{'shadow-text-verde0'  : mezzi.genereMezzo == 'APS',
+'shadow-text-giallo0'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste0'  : mezzi.genereMezzo == 'ABP' }">{{mezzi.genereMezzo}}</li>
+
+ -->
+ <!--  <a class="card text-muted"  style="color:rgb(64, 155, 191)">
+    <div class="row">
+      <span class="col col-md-4">
+        <i class="fa-stack fa-2x">
+        <i class="fa fa-cloud fa-2x" style="margin-top:15px; margin-left:10px; border-color:transparent; border-radius:15px; color:white; background: linear-gradient(to right, rgb(64, 155, 191), rgb(191, 201, 204)); text-shadow:  4px -2px 3px rgb(115, 175, 197);"></i> 
+        </i>   
+      </span>
+      <span class="col col-md-2">
+      </span>  
+      <span class="col col-md-6">
+        <h6>
+         <strong class="card-text" style="color:rgb(64, 155, 191); margin-bottom:10px; text-shadow:  4px -2px 3px rgb(142, 184, 199);"><i class="fa fa-thermometer-half" aria-hidden="true"></i> : 20°</strong>
+        </h6>
+        <h6>
+         <strong class="card-text" style="color:rgb(64, 155, 191); margin-top:0px; text-shadow:  4px -2px 3px rgb(142, 184, 199);"><i class="fa fa-tint" aria-hidden="true"></i> : 30%</strong>
+        </h6>
+        <h6>
+          <strong class="card-text" style="color:rgb(64, 155, 191); margin-top:0px; text-shadow:  4px -2px 3px rgb(142, 184, 199);"><i class="fa fa-umbrella" aria-hidden="true"></i> : 60%</strong>
+        </h6>
+        <h6>
+         <strong class="card-text" style="color:rgb(64, 155, 191); margin-top:0px; text-shadow:  4px -2px 3px rgb(142, 184, 199);"><i class="fa fa-snowflake-o" aria-hidden="true"></i> bassa</strong>
+        </h6>
+      </span>
+     </div>
+  </a>
+
+<div class="col col-md-2">
+    <a class="card text-muted"  style="color:rgba(212, 200, 43, 1)">
+      <div class="row">
+        <span class="col col-md-4">
+          <i class="fa-stack fa-2x">
+          <i class="fa fa-sun-o fa-2x" style="margin-top:15px; margin-left:10px; border-color:transparent; border-radius:15px; color:white; background: linear-gradient(to right, rgba(212, 200, 43, 1), rgb(218, 214, 179)); text-shadow:  4px -2px 3px rgba(212, 200, 43, 1);"></i> 
+          </i>   
+        </span>
+        <span class="col col-md-2">
+        </span>  
+        <span class="col col-md-6">
+          <h6>
+           <strong class="card-text" style="color:rgb(214, 198, 21); margin-bottom:10px; text-shadow:  4px -2px 3px rgb(216, 211, 159);"><i class="fa fa-thermometer-half" aria-hidden="true"></i> : 22°</strong>
+          </h6>
+          <h6>
+           <strong class="card-text" style="color:rgb(214, 198, 21); margin-top:0px; text-shadow:  4px -2px 3px rgb(216, 211, 159);"><i class="fa fa-tint" aria-hidden="true"></i> : 10%</strong>
+          </h6>
+          <h6>
+            <strong class="card-text" style="color:rgb(214, 198, 21); margin-top:0px; text-shadow:  4px -2px 3px rgb(216, 211, 159);"><i class="fa fa-umbrella" aria-hidden="true"></i> : 3%</strong>
+          </h6>
+          <h6>
+           <strong class="card-text" style="color:rgb(214, 198, 21); margin-top:0px; text-shadow:  4px -2px 3px rgb(216, 211, 159);"><i class="fa fa-snowflake-o" aria-hidden="true"></i>bassa</strong>
+          </h6>
+        </span>
+       </div>
+    </a>
+  </div> -->

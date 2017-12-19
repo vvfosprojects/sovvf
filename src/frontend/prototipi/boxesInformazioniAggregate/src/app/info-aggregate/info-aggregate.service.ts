@@ -9,7 +9,7 @@ import 'rxjs/add/observable/throw';
 import { InfoAggregate } from './info-aggregate.model';
 import { InfoMezzo } from '../box-mezzi/info-mezzo.model';
 import { FunzionariSo } from './funzionari-so.model';
-import { DescMeteoMap } from './desc-meteo-map.class';
+import { DescMeteoMap } from '../box-meteo/desc-meteo-map.class';
 
 import { environment } from "environments/environment";
 

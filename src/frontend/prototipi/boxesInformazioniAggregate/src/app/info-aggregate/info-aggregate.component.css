@@ -2,34 +2,5 @@
 p  {font-size:14px; padding-bottom:0; padding-right: 0; margin-bottom:0px; margin-top:4px; margin-right: 2px;}
 ul { list-style-type:none; color:red; font-size:12px; padding-bottom:0px; margin-bottom:0; margin-right: 2px;}
 a  {padding:0px; margin:0;  border-width:5px; border-style: ridge;border-radius:15px;box-shadow: 3px 3px 5px #999; }
-.icon-background3 {
-    color:rgba(191, 64, 64, 1);
-}
-.icon-background2 {
-    color:rgb(19, 104, 241);
-}
-.icon-background1 {
-    color:rgb(61, 160, 125);
-}
- .badge-chiamate {
-    background-color: rgba(191, 64, 64, 1);
- }
- .badge-warning {
-    background-color: #f89406;
- }
- .badge-success {
-    background-color: #468847;
- }
-  .badge-info {
-    background-color: #3a87ad;
-  }
-.centered{
-    text-align:center;
-    vertical-align:center;
-}
-.gradient-squadre {
-    background: -webkit-gradient(linear, right bottom , left bottom, from(rgba(167, 184, 240, 0)), to(rgb(63, 128, 240)));
-}
-.gradient-interventi {
-    background: -webkit-gradient(linear, right bottom , left bottom, from(rgba(189, 110, 110, 0)), to(rgba(191, 64, 64, 1)));
-}
+
+ 

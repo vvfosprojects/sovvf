@@ -68,7 +68,11 @@ export class InfoAggregate {
          * E' la percentuale di probabilità di precipitazione
          */
         public probPrecipitazione: number,
-        
+
+          /**
+         * E' la percentuale di probabilità di precipitazione
+         */
+        public prevNeve: string,
         
         /**
          * Array contenente le informazioni relative ai funzionari di servizio in Sala Operativa

@@ -1,107 +1,21 @@
-<div class="row">
-  <div class="col col-mod-12 card card-block m-1 h6">
+<!-- <div class="row"> -->
+  <div class="col col-mod-12 m-1 h6">
     <div *ngFor="let v of informazioni">
       <div class="row">
-        <div class="col col-md-2 m-1 h6">
+        <div class="col col-md-2">
           <box-interventi [interventi]="v" class="col-md-12"></box-interventi>
         </div>
-        <div class="col col-md-2 m-1 h6">
+        <div class="col col-md-2">
           <box-squadre [squadre]="v" class="col-md-12"></box-squadre>
         </div>
-        <!-- <div *ngFor="let m of v.infoMezzo"> -->
-          <div *ngFor="let m of v.infoMezzo" class="col col-md-2 m-1 h6">
-            <box-mezzi [mezzi]="m" class="col-md-12"></box-mezzi>
-          </div>
-        <!-- </div> -->
-      <!--   <div class="col col-md-2 m-1 h6">
-          <box-squadre [squadre]="v" class="col-md-12"></box-squadre>
+        <div *ngFor="let m of v.infoMezzo" class="col col-md-2">
+          <box-mezzi [mezzi]="m" class="col-md-12"></box-mezzi>
         </div>
-        <div class="col col-md-2 m-1 h6">
-          <box-squadre [squadre]="v" class="col-md-12"></box-squadre>
+        <div class="col col-md-2">
+          <box-meteo [previsioni]="v" class="col-md-12"></box-meteo>
         </div>
-        <div class="col col-md-2 m-1 h6">
-          <box-squadre [squadre]="v" class="col-md-12"></box-squadre>
-        </div>
-     -->
-
      
-               <div class="col col-md-2">
-                  <a class="card text-muted">
-                    <div class="row">
-                      <span class="col col-md-4">
-                        <i class="fa fa-truck fa-4x" style="color:rgba(58, 130, 106, 1); text-shadow:  4px -2px 3px rgba(100, 196, 164, 1); margin-left:15px; margin-top:20px; border-color:transparent; border-radius:15px; "></i>
-                      </span>
-                      <span class="col col-md-8">
-                        <h5>
-                          <strong class="card-text" style="color:rgba(34, 89, 70, 1); margin-top:10px; text-shadow:  4px -2px 3px rgba(100, 196, 164, 1);">APS</strong>
-                        </h5>
-                        <ul>
-                          <li class="card-text" style="color:rgba(34, 89, 70, 1); padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgba(100, 196, 164, 1);">In Sede<span class="badge badge-pill badge-success pull-right">2</span>
-                          </li>
-                          <li class="card-text" style="color:rgba(34, 89, 70, 1); padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgba(100, 196, 164, 1);">In Viaggio<span class="badge badge-pill badge-chiamate pull-right">2</span>
-                          </li>
-                          <li class="card-text" style="color:rgba(34, 89, 70, 1); padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgba(100, 196, 164, 1);">Sul posto<span class="badge badge-pill badge-chiamate pull-right">2</span>
-                          </li>
-                          <li class="card-text" style="color:rgba(34, 89, 70, 1); padding-top:4px; padding-bottom:8px; font-weight: bold; text-shadow:  4px -2px 3px rgba(100, 196, 164, 1);">In Rientro<span class="badge badge-pill badge-info pull-right">1</span>
-                          </li>
-                        </ul>
-                        </span>
-                      </div>
-                  </a>
-           </div>
-                <div class="col col-md-2">
-                  <a class="card text-muted"  style="color:rgba(191, 149, 64, 1)">
-                    <div class="row">
-                      <span class="col col-md-4">
-                        <i class="fa-stack fa-2x">
-                        <i class="fa fa-truck fa-3x" style="border-color:transparent; border-radius:15px; color:white; background: linear-gradient(to right, rgb(174, 176, 64), rgb(208, 209, 168)); text-shadow:  4px -2px 3px rgb(193, 207, 66);"></i> 
-                        </i>       
-                      </span>
-                      <span class="col col-md-8">
-                        <h5>
-                         <strong class="card-text" style="color:rgba(191, 149, 64, 1); margin-bottom:10px; text-shadow:  4px -2px 3px rgb(184, 190, 67);">AS</strong>
-                        </h5>
-                         <ul>
-                          <li class="card-text" style="color:rgba(191, 149, 64, 1); padding-top:2px; font-weight: bold; text-shadow:  4px -2px 3px rgb(184, 190, 67);">In Sede<span class="badge badge-pill badge-success pull-right">2</span>
-                          </li>
-                          <li class="card-text" style="color:rgba(191, 149, 64, 1); padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(184, 190, 67);">In Viaggio<span class="badge badge-pill badge-chiamate pull-right">2</span>
-                          </li>
-                          <li class="card-text" style="color:rgba(191, 149, 64, 1); padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(184, 190, 67);">Sul posto<span class="badge badge-pill badge-chiamate pull-right">2</span>
-                          </li>
-                          <li class="card-text" style="color:rgba(191, 149, 64, 1); padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(184, 190, 67);">In Rientro<span class="badge badge-pill badge-info pull-right">1</span>
-                          </li>
-                        </ul>
-                        </span>
-                     </div>
-                  </a>
-                </div>
-                <div class="col col-md-2">
-                  <a class="card text-muted"  style="color:rgb(64, 155, 191)">
-                    <div class="row">
-                      <span class="col col-md-4">
-                        <i class="fa-stack fa-2x">
-                        <i class="fa fa-truck fa-3x" style="border-color:transparent; border-radius:15px; color:white; background: linear-gradient(to right, rgb(64, 155, 191), rgb(187, 197, 201)); text-shadow:  4px -2px 3px rgb(115, 175, 197);"></i> 
-                        </i>       
-                      </span>
-                      <span class="col col-md-8">
-                        <h5>
-                         <strong class="card-text" style="color:rgb(64, 155, 191); margin-bottom:10px; text-shadow:  4px -2px 3px rgb(138, 181, 197);">ABP</strong>
-                        </h5>
-                         <ul>
-                          <li class="card-text" style="color:rgb(64, 155, 191); padding-top:2px; font-weight: bold; text-shadow:  4px -2px 3px rgb(138, 181, 197);">In Sede<span class="badge badge-pill badge-success pull-right">2</span>
-                          </li>
-                          <li class="card-text" style="color:rgb(64, 155, 191); padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(138, 181, 197);">In Viaggio<span class="badge badge-pill badge-chiamate pull-right">2</span>
-                          </li>
-                          <li class="card-text" style="color:rgb(64, 155, 191); padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(138, 181, 197);">Sul posto<span class="badge badge-pill badge-chiamate pull-right">2</span>
-                          </li>
-                          <li class="card-text" style="color:rgb(64, 155, 191); padding-top:4px; font-weight: bold; text-shadow:  4px -2px 3px rgb(138, 181, 197);">In Rientro<span class="badge badge-pill badge-info pull-right">1</span>
-                          </li>
-                        </ul>
-                        </span>
-                     </div>
-                  </a>
-                </div>
-                <div class="col col-md-2">
+            <div class="col col-md-2">
                     <a class="card text-muted"  style="color:rgb(64, 155, 191)">
                       <div class="row">
                         <span class="col col-md-4">
@@ -127,8 +41,8 @@
                         </span>
                        </div>
                     </a>
-                  </div>
-                  <div class="col col-md-2">
+                  </div> 
+            <!--       <div class="col col-md-2">
                       <a class="card text-muted"  style="color:rgba(212, 200, 43, 1)">
                         <div class="row">
                           <span class="col col-md-4">
@@ -154,7 +68,7 @@
                           </span>
                          </div>
                       </a>
-                    </div>
+                    </div> -->
                   <div class="col col-md-2">
                       <a class="card text-muted"  style="color:rgba(60, 173, 195, 1)">
                         <div class="row">
@@ -188,10 +102,10 @@
                          </div>
                       </a>
                   </div> 
- -->
+
         <!-- </div>  -->
         <!-- </div>  -->
       </div>
     </div>
   </div>
-</div>
+<!-- </div> -->
