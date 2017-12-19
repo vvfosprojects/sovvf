@@ -20,10 +20,12 @@
   {{eventoRichiesta.targa}}
 </td>
 <td>
-  <i class="fa fa-sticky-note" aria-hidden="true"></i>
-  <a href="{{eventoRichiesta.HTMLLinkElement}}" title="Descrizione">
-    {{eventoRichiesta.note}}
-  </a>
+  <span *ngIf="eventoRichiesta.note">
+    <i class="fa fa-sticky-note" aria-hidden="true"></i>
+    <a href="{{eventoRichiesta.HTMLLinkElement}}" title="Descrizione">
+      {{eventoRichiesta.note}}
+    </a>
+  </span>
   <!--<i class="fa fa-arrow-circle-o-right" aria-hidden="true" title="Vedi dettaglio" (click)="clickDettaglio($event)"></i>-->
 </td>
 
