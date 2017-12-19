@@ -11,11 +11,9 @@
       <th scope="col">Note</th>
     </thead>
     <tbody>
-      <tr *ngFor="let r of elencoEventi">          
         <!--<div *ngFor="let r of elencoEventi" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">-->
         <!--<app-evento-richiesta [eventoRichiesta]="r"></app-evento-richiesta>-->
-        <app-evento-richiesta [eventoRichiesta]="r" [nomeClasseEvento]="r.nomeClasseEvento" [istantePrimoEvento]="istantePrimoEvento" [istanteEventoPrecedente]="istanteEventoPrecedente"></app-evento-richiesta>
-      </tr>
+        <tr app-evento-richiesta *ngFor="let r of elencoEventi" [eventoRichiesta]="r" [nomeClasseEvento]="r.nomeClasseEvento" [istantePrimoEvento]="istantePrimoEvento" [istanteEventoPrecedente]="istanteEventoPrecedente"></tr>
     </tbody>
   </table>
 </div>
