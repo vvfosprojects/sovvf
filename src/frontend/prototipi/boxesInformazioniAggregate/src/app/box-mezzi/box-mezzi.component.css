@@ -2,14 +2,14 @@
 ul { list-style-type:none; padding-bottom:0px; margin-bottom:0; margin-right: 2px;}
 a  {padding:0px; margin:0;  border-width:5px; border-style: ridge;border-radius:15px;box-shadow: 3px 3px 5px #999; }
 
- .shadow-ic-verde  {
-    text-shadow:4px -2px 3px #468847; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
+.shadow-ic-verde  {
+    text-shadow:4px -2px 3px #8ed38e; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
 }
 .shadow-ic-giallo  {
-  text-shadow:  4px -2px 3px #f89406; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
+  text-shadow:  4px -2px 3px #f5c382; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
 }
 .shadow-ic-celeste  {
-    text-shadow:  4px -2px 3px #3a87ad; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
+    text-shadow:  4px -2px 3px #8dd6f5; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
 } 
 .shadow-text-verde0  {
     padding-top:5px; font-size:14px; font-weight: bold; text-shadow:  4px -2px 3px #8ed38e;

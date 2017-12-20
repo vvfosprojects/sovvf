@@ -1,3 +1,36 @@
 .badge {font-size: 10.025px;}
 ul { list-style-type:none; }
 a  { border-width:5px; border-style: ridge;border-radius:15px;box-shadow: 3px 3px 5px #999; }
+.shadow-ic-verde  {
+    text-shadow:4px -2px 3px #468847; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
+}
+.shadow-ic-giallo  {
+    color:#f89406; text-shadow:  4px -2px 3px #f5c382; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
+}
+.shadow-ic-celeste  {
+    color:#337ab7; text-shadow:  4px -2px 3px rgb(127, 137, 245); margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
+} 
+.shadow-text-giallo  {
+    color:#f89406; text-shadow:  4px -2px 3px #f5c382;
+}
+.shadow-text-celeste  {
+    color:#337ab7; text-shadow:  4px -2px 3px rgb(177, 183, 247);
+}
+.shadow-text-verde1  {
+    padding-top:5px; font-size:12px; font-weight: bold; text-shadow:  4px -2px 3px #8ed38e;
+}
+.shadow-text-giallo1  {
+    padding-top:5px; font-size:12px; font-weight: bold; text-shadow:  4px -2px 3px  #f5c382;
+}
+.shadow-text-celeste1  {
+    padding-top:5px; font-size:12px; font-weight: bold; text-shadow:  4px -2px 3px #8dd6f5;
+}
+.shadow-text-verde2  {
+    padding-top:5px; padding-bottom:8px; font-size:12px; font-weight: bold; text-shadow:  4px -2px 3px #8ed38e;
+}
+.shadow-text-giallo2  {
+    padding-top:5px; padding-bottom:8px; font-size:12px; font-weight: bold; text-shadow:  4px -2px 3px  #f5c382;
+}
+.shadow-text-celeste2  {
+    padding-top:5px; padding-bottom:8px; font-size:12px; font-weight: bold; text-shadow:  4px -2px 3px #8dd6f5;
+}

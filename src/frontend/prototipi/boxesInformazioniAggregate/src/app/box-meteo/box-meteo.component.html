@@ -1,29 +1,42 @@
-<a class="card text-muted">
+<a class="card">
   <div class="row">
     <span class="col col-md-4">
-      <i class="fa-stack fa-2x">
-      <i class="fa fa-cloud fa-2x" style="margin-top:15px; margin-left:15px; margin-bottom:15px; border-color:transparent; border-radius:15px; color:white; background: linear-gradient(to right, rgb(64, 155, 191), rgb(191, 201, 204)); text-shadow:  4px -2px 3px rgb(115, 175, 197);"></i> 
-    </i> 
+     <span *ngIf="previsioni.descStato == 'Nuvoloso'">
+        <i class="fa fa-cloud fa-4x shadow-ic-celeste" data-toggle="tooltip" data-placement="top" title={{getDescrizioneMeteo(previsioni.descStato)}}></i>
+     </span>
+     <span *ngIf="previsioni.descStato == 'Sereno'">
+        <i class="fa fa-sun-o fa-4x shadow-ic-giallo" data-toggle="tooltip" data-placement="top" title={{getDescrizioneMeteo(previsioni.descStato)}}></i>
+     </span>
+     <span *ngIf="previsioni.descStato == 'Pioggia'">
+        <i class="fa fa-tint fa-4x shadow-ic-celeste" data-toggle="tooltip" data-placement="top" title={{getDescrizioneMeteo(previsioni.descStato)}}></i>
+     </span>
+     <span *ngIf="previsioni.descStato == 'Temporali'">
+        <i class="fa fa-bolt fa-4x shadow-ic-celeste" data-toggle="tooltip" data-placement="top" title={{getDescrizioneMeteo(previsioni.descStato)}}></i>
+     </span>
+     <span *ngIf="previsioni.descStato == 'Neve'">
+        <i class="fa fa-snowflake-o fa-4x shadow-ic-celeste" data-toggle="tooltip" data-placement="top" title={{getDescrizioneMeteo(previsioni.descStato)}}></i>
+     </span>
     </span>
     <span class="col col-md-2">
-      <ul>
-        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:6px; font-weight: bold; text-shadow:  4px -2px 3px rgb(177, 183, 247);"><i class="fa fa-thermometer-half"  aria-hidden="true"></i></li>
-        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:6px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);"><i class="fa fa-tint" aria-hidden="true" ></i></li>
-        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:6px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);"><i class="fa fa-umbrella" aria-hidden="true"></i></li>
-        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:5px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);"><i class="fa fa-snowflake-o" aria-hidden="true"></i></li>
+      <ul [ngClass]="{'shadow-text-celeste'  : previsioni.descStato == 'Nuvoloso' || previsioni.descStato == 'Pioggia' || previsioni.descStato == 'Temporali' || previsioni.descStato == 'Neve', 'shadow-text-giallo'   : previsioni.descStato == 'Sereno',
+                      'shadow-text-giallo'  : previsioni.descStato == 'Sereno'}">
+        <li class="card-text"><i class="fa fa-thermometer-half" data-toggle="tooltip" data-placement="top" title="Temperatura" aria-hidden="true" style="font-size:14px; font-weight: bold; padding-top:6px;" ></i></li>
+        <li class="card-text"><i class="fa fa-tint" style="font-size:14px; font-weight: bold; padding-top:6px;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Umidità" ></i></li>
+        <li class="card-text"><i class="fa fa-umbrella" style="font-size:14px; font-weight: bold; padding-top:6px;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Probabilità precipitazioni"></i></li>
+        <li class="card-text"><i class="fa fa-snowflake-o" style="font-size:14px; font-weight: bold; padding-top:6px;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Rischio neve"></i></li>
       </ul>
     </span>
     <span class="col col-md-6">
-      <ul>
-        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:6px; font-weight: bold; text-shadow:  4px -2px 3px rgb(177, 183, 247);">{{previsioni.temperatura}}°</li>
-        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:6px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">{{previsioni.umidita}}%</li>
-        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:6px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">{{previsioni.probPrecipitazione}}%</li>
-        <li class="card-text" style="font-size:14px; color:#337ab7; padding-top:5px; font-weight: bold; text-shadow:  4px -2px 3px rgb(151, 158, 250);">{{previsioni.prevNeve}}</li>
+      <ul [ngClass]="{'shadow-text-celeste'  : previsioni.descStato == 'Nuvoloso' || previsioni.descStato == 'Pioggia' || previsioni.descStato == 'Temporali' || previsioni.descStato == 'Neve',                      'shadow-text-giallo'   : previsioni.descStato == 'Sereno',
+      'shadow-text-giallo'  : previsioni.descStato == 'Sereno'}">
+        <li class="card-text" style="font-size:14px; padding-top:6px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title="Temperatura">{{previsioni.temperatura}}°</li>
+        <li class="card-text" style="font-size:14px; padding-top:6px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title="Umidità">{{previsioni.umidita}}%</li>
+        <li class="card-text" style="font-size:14px; padding-top:6px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title="Probabilità precipitazioni">{{previsioni.probPrecipitazione}}%</li>
+        <li class="card-text" style="font-size:14px; padding-top:5px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title="Rischio neve">{{previsioni.prevNeve}}</li>
       </ul>
     </span>
   </div>
 </a>
-
 
 <!-- <i class="fa fa-truck fa-4x" [ngClass]="{'shadow-ic-verde'  : mezzi.genereMezzo == 'APS',
 'shadow-ic-giallo'  : mezzi.genereMezzo == 'AS', 'shadow-ic-celeste'  : mezzi.genereMezzo == 'ABP' }"></i>  -->

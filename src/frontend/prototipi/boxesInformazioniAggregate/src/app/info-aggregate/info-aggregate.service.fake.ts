@@ -50,7 +50,7 @@ export class InfoAggregateServiceFake {
         1,
         2,
         0,
-        "Sereno",
+        "Neve",
         14,
         20,
         10,
