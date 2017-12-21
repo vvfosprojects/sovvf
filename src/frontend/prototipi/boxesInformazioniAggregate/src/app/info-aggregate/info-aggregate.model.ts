@@ -1,5 +1,5 @@
 import {InfoMezzo } from "../box-mezzi/info-mezzo.model";
-import { FunzionariSo } from "app/info-aggregate/funzionari-so.model";
+import { FunzionariSo } from "app/box-funzionari/funzionari-so.model";
 
 export class InfoAggregate {
     constructor(

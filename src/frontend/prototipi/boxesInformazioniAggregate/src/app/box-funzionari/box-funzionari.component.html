@@ -1,3 +1,34 @@
-<p>
-  box-funzionari works!
-</p>
+<a class="card primary" style="color:rgba(60, 173, 195, 1)">
+  <div class="row">
+    <span class="col col-md-3">
+      <i class="fa fa-graduation-cap fa-4x" style="margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px; text-shadow:  4px -2px 3px #8dd6f5"></i>
+    </span>
+    <span class="col col-md-9">
+    <span *ngFor="let f of funzionari.funzionariSo">
+        <span *ngIf="f.funzGuardia">
+          <ul class="card-text" style="color:rgba(60, 173, 195, 1); font-size:13px; padding-top:8px; font-weight: bold; text-shadow:  4px -2px 3px #8dd6f5">Funz. di Guardia
+            <span class="row">
+            <div class="col col-md-1">
+            </div>
+            <span class="col col-md-11">
+            <li class="card-text" style="color:rgba(60, 173, 195, 1); font-size:13px;  padding-top:8px; font-weight: bold; text-shadow:  4px -2px 3px #8dd6f5">{{f.descrizione}}</li>
+              </span>
+            </span>
+          </ul>
+        </span>
+        <span *ngIf="f.capoTurno">
+            <ul class="card-text" style="color:rgba(60, 173, 195, 1); font-size:13px; padding-top:10px; font-weight: bold; text-shadow:  4px -2px 3px #8dd6f5">Capo Turno
+              <span class="row">
+              <div class="col col-md-1">
+              </div>
+              <span class="col col-md-11">
+              <li class="card-text" style="color:rgba(60, 173, 195, 1); font-size:13px;  padding-top:8px; padding-bottom:8px; font-weight: bold; text-shadow:  4px -2px 3px #8dd6f5">{{f.descrizione}}</li>
+                </span>
+              </span>
+            </ul>
+          </span>
+       </span>
+    </span>
+  </div>
+</a>
+

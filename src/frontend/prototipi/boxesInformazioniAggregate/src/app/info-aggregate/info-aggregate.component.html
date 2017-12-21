@@ -1,111 +1,21 @@
-<!-- <div class="row"> -->
-  <div class="col col-mod-12 m-1 h6">
-    <div *ngFor="let v of informazioni">
-      <div class="row">
-        <div class="col col-md-2">
-          <box-interventi [interventi]="v" class="col-md-12"></box-interventi>
-        </div>
-        <div class="col col-md-2">
-          <box-squadre [squadre]="v" class="col-md-12"></box-squadre>
-        </div>
-        <div *ngFor="let m of v.infoMezzo" class="col col-md-2">
-          <box-mezzi [mezzi]="m" class="col-md-12"></box-mezzi>
-        </div>
-        <div class="col col-md-2">
-          <box-meteo [previsioni]="v" class="col-md-12"></box-meteo>
-        </div>
-     
-            <div class="col col-md-2">
-                    <a class="card text-muted"  style="color:rgb(64, 155, 191)">
-                      <div class="row">
-                        <span class="col col-md-4">
-                          <i class="fa-stack fa-2x">
-                          <i class="fa fa-cloud fa-2x" style="margin-top:15px; margin-left:10px; border-color:transparent; border-radius:15px; color:white; background: linear-gradient(to right, rgb(64, 155, 191), rgb(191, 201, 204)); text-shadow:  4px -2px 3px rgb(115, 175, 197);"></i> 
-                          </i>   
-                        </span>
-                        <span class="col col-md-2">
-                        </span>  
-                        <span class="col col-md-6">
-                          <h6>
-                           <strong class="card-text" style="color:rgb(64, 155, 191); margin-bottom:10px; text-shadow:  4px -2px 3px rgb(142, 184, 199);"><i class="fa fa-thermometer-half" aria-hidden="true"></i> : 20°</strong>
-                          </h6>
-                          <h6>
-                           <strong class="card-text" style="color:rgb(64, 155, 191); margin-top:0px; text-shadow:  4px -2px 3px rgb(142, 184, 199);"><i class="fa fa-tint" aria-hidden="true"></i> : 30%</strong>
-                          </h6>
-                          <h6>
-                            <strong class="card-text" style="color:rgb(64, 155, 191); margin-top:0px; text-shadow:  4px -2px 3px rgb(142, 184, 199);"><i class="fa fa-umbrella" aria-hidden="true"></i> : 60%</strong>
-                          </h6>
-                          <h6>
-                           <strong class="card-text" style="color:rgb(64, 155, 191); margin-top:0px; text-shadow:  4px -2px 3px rgb(142, 184, 199);"><i class="fa fa-snowflake-o" aria-hidden="true"></i> bassa</strong>
-                          </h6>
-                        </span>
-                       </div>
-                    </a>
-                  </div> 
-            <!--       <div class="col col-md-2">
-                      <a class="card text-muted"  style="color:rgba(212, 200, 43, 1)">
-                        <div class="row">
-                          <span class="col col-md-4">
-                            <i class="fa-stack fa-2x">
-                            <i class="fa fa-sun-o fa-2x" style="margin-top:15px; margin-left:10px; border-color:transparent; border-radius:15px; color:white; background: linear-gradient(to right, rgba(212, 200, 43, 1), rgb(218, 214, 179)); text-shadow:  4px -2px 3px rgba(212, 200, 43, 1);"></i> 
-                            </i>   
-                          </span>
-                          <span class="col col-md-2">
-                          </span>  
-                          <span class="col col-md-6">
-                            <h6>
-                             <strong class="card-text" style="color:rgb(214, 198, 21); margin-bottom:10px; text-shadow:  4px -2px 3px rgb(216, 211, 159);"><i class="fa fa-thermometer-half" aria-hidden="true"></i> : 22°</strong>
-                            </h6>
-                            <h6>
-                             <strong class="card-text" style="color:rgb(214, 198, 21); margin-top:0px; text-shadow:  4px -2px 3px rgb(216, 211, 159);"><i class="fa fa-tint" aria-hidden="true"></i> : 10%</strong>
-                            </h6>
-                            <h6>
-                              <strong class="card-text" style="color:rgb(214, 198, 21); margin-top:0px; text-shadow:  4px -2px 3px rgb(216, 211, 159);"><i class="fa fa-umbrella" aria-hidden="true"></i> : 3%</strong>
-                            </h6>
-                            <h6>
-                             <strong class="card-text" style="color:rgb(214, 198, 21); margin-top:0px; text-shadow:  4px -2px 3px rgb(216, 211, 159);"><i class="fa fa-snowflake-o" aria-hidden="true"></i>bassa</strong>
-                            </h6>
-                          </span>
-                         </div>
-                      </a>
-                    </div> -->
-                  <div class="col col-md-2">
-                      <a class="card text-muted"  style="color:rgba(60, 173, 195, 1)">
-                        <div class="row">
-                          <span class="col col-md-2">
-                            <i class="fa-stack fa-2x">
-                            <i class="fa fa-graduation-cap fa-3x" style="border-color:transparent; border-radius:15px; color:white; background: linear-gradient(to right, rgb(43, 212, 170), rgb(180, 214, 206)); text-shadow:  4px -2px 3px rgb(144, 216, 198);"></i> 
-                            </i>   
-                          </span>
-                          <span class="col col-md-2">
-                          </span>
-                          <span class="col col-md-8">
-                           <p>
-                            <strong class="card-text" style="color:rgba(60, 173, 195, 1); text-shadow:  4px -2px 3px rgba(142, 207, 220, 1);">Funz. di Guardia:</strong>
-                           </p>
-                           <ul>
-                              <li class="card-text" style="color:rgba(60, 173, 195, 1); font-weight: bold; padding-top:8px; text-shadow:  4px -2px 3px rgba(142, 207, 220, 1);">Emilio Rossi
-                              </li>
-                           </ul> 
-                           <ul>
-                              <li class="card-text" style="color:transparent; padding-top:12px;">
-                              </li>
-                           </ul>  
-                           <p>
-                             <strong class="card-text" style="color:rgba(60, 173, 195, 1); text-shadow:  4px -2px 3px rgba(142, 207, 220, 1);">Capo Turno:</strong>
-                           </p>
-                           <ul>
-                              <li class="card-text" style="color:rgba(60, 173, 195, 1); font-weight: bold; padding-top:8px; text-shadow:  4px -2px 3px rgba(142, 207, 220, 1);">Giuseppe Verdi
-                              </li>
-                           </ul>  
-                          </span>
-                         </div>
-                      </a>
-                  </div> 
-
-        <!-- </div>  -->
-        <!-- </div>  -->
+<div class="col col-mod-12 m-1 h6">
+  <div *ngFor="let v of informazioni">
+    <div class="row">
+      <div class="col col-md-2">
+        <box-interventi [interventi]="v" class="col-md-12"></box-interventi>
+      </div>
+      <div class="col col-md-2">
+        <box-squadre [squadre]="v" class="col-md-12"></box-squadre>
+      </div>
+      <div *ngFor="let m of v.infoMezzo" class="col col-md-2">
+        <box-mezzi [mezzi]="m" class="col-md-12"></box-mezzi>
+      </div>
+      <div class="col col-md-2">
+        <box-meteo [previsioni]="v" class="col-md-12"></box-meteo>
+      </div>
+      <div class="col col-md-2">
+        <box-funzionari [funzionari]="v" class="col-md-12"></box-funzionari>
       </div>
     </div>
   </div>
-<!-- </div> -->
+</div>
