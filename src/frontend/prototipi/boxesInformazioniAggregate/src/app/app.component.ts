@@ -24,7 +24,4 @@ export class AppComponent implements OnInit {
       });
   }
 
-  // showDettagliRicevuto(informazioni: InfoAggregate): void {
-  //   console.log("Sono app.component. Vogliono vedere i dettagli di", informazioni);
-  // }
 }
