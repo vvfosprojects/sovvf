@@ -26,13 +26,24 @@ export class EventoRichiestaComponent implements OnInit {
   ngOnInit() {
         
     this.iconeClassiEvento = [
-      ['telefonata',['fa-phone-square']]
-      ,['assegnazione_partenza',['fa-truck', 'fa-hand-o-right']]
-      ,['uscita_partenza',['fa-truck', 'fa-rocket']]
-      ,['arrivo_partenza_sul_posto',['fa-truck', 'fa-check-square-o']]
-      ,['fine_intervento_della_partenza',['fa-truck', 'fa-handshake-o']]
-      ,['rientro_in_sede_della_partenza',['fa-truck', 'fa-hand-o-left']]
-      ,['chiusura_richiesta',['fa-flag-checkered']]
+      ['Telefonata',['fa-phone-square']]
+      ,['AssegnazionePriorita',['fa-sort-numeric-asc']]
+      ,['MarcaRilevante',['fa-warning', 'fa-check']]
+      ,['MarcaNonRilevante',['fa-warning', 'fa-close']]
+      ,['RiaperturaRichiesta',['fa-refresh']]
+      ,['InizioPresaInCarico',['fa-eye']]
+      ,['ChiusuraRichiesta',['fa-flag-checkered']]
+      ,['InviareFonogramma',['fa-fax']]
+      ,['ComposizionePartenza',['fa-truck', 'fa-pencil-square-o']]
+      ,['UscitaPartenza',['fa-truck', 'fa-hand-o-right']]
+      ,['ArrivoSulPosto',['fa-truck', 'fa-check-square-o']]
+      ,['PartenzaInRientro',['fa-truck', 'fa-handshake-o']]
+      ,['PartenzaRientrata',['fa-truck', 'fa-hand-o-left']]
+      ,['RevocaPerRiassegnazione',['fa-truck', 'fa-close', 'fa-share-square-o']]
+      ,['RevocaPerInterventoNonPiuNecessario',['fa-truck', 'fa-close', 'fa-flag-checkered']]
+      ,['RevocaPerFuoriServizio',['fa-truck', 'fa-close', 'fa-wrench']]
+      ,['RevocaPerAltraMotivazione',['fa-truck', 'fa-close', 'fa-question-circle-o']]
+      ,['VaInFuoriServizio',['fa-truck', 'fa-wrench']]
     ];
 
     this.myMap = new Map(this.iconeClassiEvento);    

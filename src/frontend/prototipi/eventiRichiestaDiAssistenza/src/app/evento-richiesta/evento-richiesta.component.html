@@ -17,11 +17,14 @@
   <span>{{eventoRichiesta.dataEvento | distanzaTemporale : istantePrimoEvento }}</span>
 </td>
 <td>
-  {{eventoRichiesta.targa}}
+  <span *ngIf="eventoRichiesta.targa">
+    <i class="fa fa-hashtag" aria-hidden="true"></i>
+    {{eventoRichiesta.targa}}
+  </span>
 </td>
 <td>
   <span *ngIf="eventoRichiesta.note">
-    <i class="fa fa-sticky-note" aria-hidden="true"></i>
+    <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
     <a href="{{eventoRichiesta.HTMLLinkElement}}" title="Descrizione">
       {{eventoRichiesta.note}}
     </a>
