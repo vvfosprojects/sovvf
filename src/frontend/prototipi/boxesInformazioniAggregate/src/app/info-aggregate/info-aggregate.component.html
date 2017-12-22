@@ -1,21 +1,20 @@
 <div class="col col-mod-12 m-1 h6">
-    <div *ngFor="let v of informazioni">
-      <div class="row">
-        <div class="col col-md-2">
-          <box-interventi [interventi]="v" class="col-md-12"></box-interventi>
-        </div>
-        <div class="col col-md-2">
-          <box-squadre [squadre]="v" class="col-md-12"></box-squadre>
-        </div>
-        <div *ngFor="let m of v.infoMezzo" class="col col-md-2">
-          <box-mezzi [mezzi]="m" class="col-md-12"></box-mezzi>
-        </div>
-        <div class="col col-md-2">
-          <box-meteo [previsioni]="v" class="col-md-12"></box-meteo>
-        </div>
-        <div class="col col-md-2">
-          <box-funzionari [funzionari]="v" class="col-md-12"></box-funzionari>
-        </div>
+  <div *ngFor="let v of informazioni">
+    <div class="row">
+      <div class="col col-xl-2 col-md-3 col-sm-4 col-6">
+        <box-interventi [interventi]="v" class="col-md-12"></box-interventi>
+      </div>
+      <div class="col col-xl-2 col-md-3 col-sm-4 col-6">
+        <box-squadre [squadre]="v" class="col-md-12"></box-squadre>
+      </div>
+      <div *ngFor="let m of v.infoMezzo" class="col col-xl-2 col-md-3 col-sm-4 col-6">
+        <box-mezzi [mezzi]="m" class="col-md-12"></box-mezzi>
+      </div>
+      <div class="col col-xl-2 col-md-3 col-sm-4 col-6">
+        <box-meteo [previsioni]="v" class="col-md-12"></box-meteo>
+      </div>
+      <div class="col col-xl-2 col-md-3 col-sm-4 col-6">
+        <box-funzionari [funzionari]="v" class="col-md-12"></box-funzionari>
       </div>
     </div>
   </div>
