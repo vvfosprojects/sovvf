@@ -57,7 +57,7 @@ export class InfoAggregateServiceFake {
         "bassa",
         [
         new FunzionariSo("RSIMRI62C62H501I",
-        "CTI Rossi Maria",
+        "FTID DE ANGELIS ROBERTO SALVATORE",
         "RSIMRI62C62H501I",
         true,
         false,
@@ -65,7 +65,7 @@ export class InfoAggregateServiceFake {
         false
         ),
         new FunzionariSo("RSIMRI62C62H501I",
-        "CTI Verdi Giovanni",
+        "FTID ANGE GIOV",
         "VRDGVN61E61H501T",
         false,
         false,
