@@ -17,7 +17,7 @@ export class ListaEventiRichiestaComponent implements OnInit {
 
   ngOnInit() {
     if (this.istantePrimoEvento == null) { 
-      //this.setIstantePrimoEvento(this.elencoEventi[0].dataEvento);      
+      //this.setIstantePrimoEvento(this.elencoEventi[0].istanteEvento);      
       this.setIstantePrimoEvento(moment().toDate());      
     }    
   }
@@ -37,8 +37,8 @@ export class ListaEventiRichiestaComponent implements OnInit {
         console.log(curVal);
         console.log(prevVal);
         
-        if ( propName == "dataEvento") {
-          console.log("ngOnChanges Felix dataEvento");
+        if ( propName == "istanteEvento") {
+          console.log("ngOnChanges Felix istanteEvento");
           //this.setIstanteEventoPrecedente(new Date(curVal));
           }
         
@@ -53,12 +53,12 @@ export class ListaEventiRichiestaComponent implements OnInit {
   private setIstanteEventoPrecedente(i: number) : Date {
     console.log("setIstanteEventoPrecedente");
     if (i > 0) {
-      this.istanteEventoPrecedente = this.elencoEventi[i - 1].dataEvento;
+      this.istanteEventoPrecedente = this.elencoEventi[i - 1].istanteEvento;
       console.log("ok");
       console.log(this.istanteEventoPrecedente);
     }
     else {  
-      this.istanteEventoPrecedente = this.elencoEventi[0].dataEvento; 
+      this.istanteEventoPrecedente = this.elencoEventi[0].istanteEvento; 
     }
     return this.istanteEventoPrecedente;
   }

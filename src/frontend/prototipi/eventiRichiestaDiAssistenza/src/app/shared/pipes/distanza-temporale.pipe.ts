@@ -13,18 +13,18 @@ transform(dataDa: Date, dataA: Date, formatoSintetico: string = "S"): string {
     if ((!dataDa) || (!dataA) )
       return "";
     if (dataDa == dataA) 
-      return "...";
+      return "";
       moment.locale('it');
 
     if (formatoSintetico == "S") {
       if (dataDa > dataA) 
         { dataIniziale = dataDa;
           dataFinale = dataA;
-          ritorno = "+"; }
+          ritorno = "(+"; }
       else
         { dataIniziale = dataA;
           dataFinale = dataDa;
-          ritorno = "-"; }
+          ritorno = "(-"; }
       
         //ritorno = ritorno + moment(dataDa).diff(dataA, 'hours', true);
         ore = moment(dataIniziale).diff(dataFinale, 'hours');
@@ -37,6 +37,7 @@ transform(dataDa: Date, dataA: Date, formatoSintetico: string = "S"): string {
         if (secondi != 0 ) { ritorno = ritorno + secondi +"s";}
         //ritorno = ritorno + moment(dataDa).diff(dataA);
         //ritorno = ritorno + ore +"h" +  minuti +"m" + secondi +"s" ;
+        ritorno = ritorno + ")";
     }
     else
       { ritorno = moment(dataDa).from(dataA); }

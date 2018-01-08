@@ -9,13 +9,13 @@
   </div>
 </td>
 <td>
-  <!--<div class="h5">{{eventoRichiesta.dataEvento.toLocaleDateString()}} {{eventoRichiesta.dataEvento.toLocaleTimeString()}}</div>-->
-  <span class="h6 text-muted">{{eventoRichiesta.dataEvento | friendlyDate}} {{eventoRichiesta.dataEvento | friendlyHour : true}}</span>
-  <!--<div class="h5">{{eventoRichiesta.dataEvento.toLocaleDateString()}} {{eventoRichiesta.dataEvento.toLocaleTimeString()}}</div>-->
-  <!--<div class="h5">{{eventoRichiesta.dataEvento | distanzaTemporale : istanteEventoPrecedente }}</div>-->
+  <!--<div class="h5">{{eventoRichiesta.istanteEvento.toLocaleDateString()}} {{eventoRichiesta.istanteEvento.toLocaleTimeString()}}</div>-->
+  <span class="h6 text-muted">{{eventoRichiesta.istanteEvento | friendlyDate}} {{eventoRichiesta.istanteEvento | friendlyHour : true}}</span>
+  <!--<div class="h5">{{eventoRichiesta.istanteEvento.toLocaleDateString()}} {{eventoRichiesta.istanteEvento.toLocaleTimeString()}}</div>-->
+  <!--<div class="h5">{{eventoRichiesta.istanteEvento | distanzaTemporale : istanteEventoPrecedente }}</div>-->
   <!--<span>(+26s) {{istanteEventoPrecedente}} </span>-->
-  <span>({{eventoRichiesta.dataEvento | distanzaTemporale : istanteEventoPrecedente }}) </span>
-  <span>{{eventoRichiesta.dataEvento | distanzaTemporale : istantePrimoEvento : "N" }}</span>
+  <span>{{eventoRichiesta.istanteEvento | distanzaTemporale : istanteEventoPrecedente }} </span>
+  <span>{{eventoRichiesta.istanteEvento | distanzaTemporale : istantePrimoEvento : "N" }}</span>
 </td>
 <td>
   <span *ngIf="eventoRichiesta.targa">
@@ -25,14 +25,14 @@
 </td>
 <td>
   <span *ngIf="eventoRichiesta.note">
-    <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
+    <i class="fa fa-sticky-note-o" aria-hidden="true" title="Descrizione"> </i>
+    <!--
     <a href="{{eventoRichiesta.HTMLLinkElement}}" title="Descrizione">
       {{eventoRichiesta.note}}
     </a>
+    -->
+    {{eventoRichiesta.note}} 
   </span>
   <!--<i class="fa fa-arrow-circle-o-right" aria-hidden="true" title="Vedi dettaglio" (click)="clickDettaglio($event)"></i>-->
 </td>
 
-<!--     </div>      
-  </div>    
-</div>-->
