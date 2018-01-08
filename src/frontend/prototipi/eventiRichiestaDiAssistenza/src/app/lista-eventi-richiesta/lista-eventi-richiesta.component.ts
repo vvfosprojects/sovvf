@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { EventoRichiesta } from '../evento-richiesta/evento-richiesta.model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-lista-eventi-richiesta',
@@ -16,10 +17,10 @@ export class ListaEventiRichiestaComponent implements OnInit {
 
   ngOnInit() {
     if (this.istantePrimoEvento == null) { 
-      this.setIstantePrimoEvento(this.elencoEventi[0].dataEvento);      
+      //this.setIstantePrimoEvento(this.elencoEventi[0].dataEvento);      
+      this.setIstantePrimoEvento(moment().toDate());      
     }    
   }
-
 
 
   ngOnChanges(changes: SimpleChanges) {
@@ -38,15 +39,28 @@ export class ListaEventiRichiestaComponent implements OnInit {
         
         if ( propName == "dataEvento") {
           console.log("ngOnChanges Felix dataEvento");
-          this.setIstanteEventoPrecedente(new Date(curVal));
+          //this.setIstanteEventoPrecedente(new Date(curVal));
           }
         
       }
  }
 
-  
-  private setIstanteEventoPrecedente(p: Date) : void {
-    this.istanteEventoPrecedente = p;
+/*
+ private setIstanteEventoPrecedente(p: Date) : void {
+  this.istanteEventoPrecedente = p;
+}
+*/
+  private setIstanteEventoPrecedente(i: number) : Date {
+    console.log("setIstanteEventoPrecedente");
+    if (i > 0) {
+      this.istanteEventoPrecedente = this.elencoEventi[i - 1].dataEvento;
+      console.log("ok");
+      console.log(this.istanteEventoPrecedente);
+    }
+    else {  
+      this.istanteEventoPrecedente = this.elencoEventi[0].dataEvento; 
+    }
+    return this.istanteEventoPrecedente;
   }
 
   private setIstantePrimoEvento(p: Date) : void {
@@ -54,4 +68,3 @@ export class ListaEventiRichiestaComponent implements OnInit {
   }
 
 }
-11

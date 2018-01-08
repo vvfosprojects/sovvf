@@ -13,7 +13,8 @@
     <tbody>
         <!--<div *ngFor="let r of elencoEventi" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">-->
         <!--<app-evento-richiesta [eventoRichiesta]="r"></app-evento-richiesta>-->
-        <tr app-evento-richiesta *ngFor="let r of elencoEventi" [eventoRichiesta]="r" [nomeClasseEvento]="r.nomeClasseEvento" [istantePrimoEvento]="istantePrimoEvento" [istanteEventoPrecedente]="istanteEventoPrecedente"></tr>
-    </tbody>
+        <!--<tr app-evento-richiesta *ngFor="let r of elencoEventi" [eventoRichiesta]="r" [nomeClasseEvento]="r.nomeClasseEvento" [istantePrimoEvento]="istantePrimoEvento" [istanteEventoPrecedente]="istanteEventoPrecedente"></tr>-->
+        <tr app-evento-richiesta *ngFor="let r of elencoEventi; let i = index" [eventoRichiesta]="r" [nomeClasseEvento]="r.nomeClasseEvento" [istantePrimoEvento]="istantePrimoEvento" [istanteEventoPrecedente]="setIstanteEventoPrecedente(i)"></tr>
+      </tbody>
   </table>
 </div>

@@ -80,4 +80,5 @@ export class EventoRichiestaComponent implements OnInit {
     event.preventDefault();
   }  
 
+
 }

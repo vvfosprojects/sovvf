@@ -10,11 +10,12 @@
 </td>
 <td>
   <!--<div class="h5">{{eventoRichiesta.dataEvento.toLocaleDateString()}} {{eventoRichiesta.dataEvento.toLocaleTimeString()}}</div>-->
-  <span class="h6 text-muted">{{eventoRichiesta.dataEvento | friendlyDate}} {{eventoRichiesta.dataEvento | friendlyHour}}</span>
+  <span class="h6 text-muted">{{eventoRichiesta.dataEvento | friendlyDate}} {{eventoRichiesta.dataEvento | friendlyHour : true}}</span>
   <!--<div class="h5">{{eventoRichiesta.dataEvento.toLocaleDateString()}} {{eventoRichiesta.dataEvento.toLocaleTimeString()}}</div>-->
   <!--<div class="h5">{{eventoRichiesta.dataEvento | distanzaTemporale : istanteEventoPrecedente }}</div>-->
-  <span>(+26s) </span>
-  <span>{{eventoRichiesta.dataEvento | distanzaTemporale : istantePrimoEvento }}</span>
+  <!--<span>(+26s) {{istanteEventoPrecedente}} </span>-->
+  <span>({{eventoRichiesta.dataEvento | distanzaTemporale : istanteEventoPrecedente }}) </span>
+  <span>{{eventoRichiesta.dataEvento | distanzaTemporale : istantePrimoEvento : "N" }}</span>
 </td>
 <td>
   <span *ngIf="eventoRichiesta.targa">
