@@ -23,7 +23,7 @@ export class InfoMezzo {
         /**
          * E' il totale dei mezzi In Rientro
          */
-        public mezziInRientro: number,
+        public mezziInRientro: number
        
         ) { }
 }

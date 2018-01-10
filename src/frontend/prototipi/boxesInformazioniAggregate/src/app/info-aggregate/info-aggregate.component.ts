@@ -10,7 +10,7 @@ import { Observable } from "rxjs/Observable";
   styleUrls: ['./info-aggregate.component.css']
 })
 export class InfoAggregateComponent implements OnInit {
-  @Input() informazioni: InfoAggregate[];
+  @Input() informazioni: InfoAggregate;
  /// @Output() showDettagli: EventEmitter<InfoAggregate> = new EventEmitter();
   constructor() {}
 

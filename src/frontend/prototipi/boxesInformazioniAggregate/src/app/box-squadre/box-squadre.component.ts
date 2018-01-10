@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { SquadreSo } from "app/box-squadre/box-squadre.model";
 
-import { InfoAggregate } from '../info-aggregate/info-aggregate.model';
 
 @Component({
   selector: 'box-squadre',
@@ -9,7 +9,7 @@ import { InfoAggregate } from '../info-aggregate/info-aggregate.model';
 })
 export class BoxSquadreComponent implements OnInit {
 
-  @Input() squadre: InfoAggregate[];
+  @Input() squadre: SquadreSo;
 
   constructor() { }
 

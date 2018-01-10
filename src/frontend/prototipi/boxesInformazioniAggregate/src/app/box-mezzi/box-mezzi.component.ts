@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-
-import { InfoAggregate } from '../info-aggregate/info-aggregate.model';
+import {InfoMezzo } from "../box-mezzi/info-mezzo.model";
 
 @Component({
   selector: 'box-mezzi',
@@ -9,7 +8,7 @@ import { InfoAggregate } from '../info-aggregate/info-aggregate.model';
 })
 export class BoxMezziComponent implements OnInit {
 
-  @Input() mezzi: InfoAggregate[];
+  @Input() mezzi: InfoMezzo[];
 
   constructor() { }
 

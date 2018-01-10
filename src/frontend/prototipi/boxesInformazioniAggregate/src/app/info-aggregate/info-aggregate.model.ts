@@ -1,83 +1,34 @@
 import {InfoMezzo } from "../box-mezzi/info-mezzo.model";
 import { FunzionariSo } from "app/box-funzionari/funzionari-so.model";
+import { InterventiSo } from "app/box-interventi/box-interventi.model";
+import { SquadreSo } from "app/box-squadre/box-squadre.model";
+import { MeteoSo } from "app/box-meteo/box-meteo.model";
 
-export class InfoAggregate {
-    constructor(
-        /**
-         * E' il numero delle chiamate in corso non ancora evase
+ export class InfoAggregate {
+     constructor(
+         /**
+         * Informazioni relative alle Chiamate ed interventi 
          */
-        public numChiamate: number,
-        /**
-         * E' il numero degli Interventi aperti
-         */
-        public numIntAperti: number,
-
-        /*** E' il numero degli Interventi Aperti Non Presidiati
-        */
-        public numIntNonPresidiati: number,
-        
-        /*** E' il numero degli Interventi Aperti Presidiati
-        */
-        public numIntPresidiati: number,
-        
-         /*** E' il numero degli Interventi Aperti Sospesi
-        */
-        public numIntSospesi: number,
-        
-        /**
+         public interventi: InterventiSo,
+                /**
          * Array contenente per ogni genere mezzo da visualizzare, il numero totale dei mezzi per ogni stato 
          */
-        public infoMezzo: InfoMezzo[],
-
-          /**
-         * E' il totale delle squadre in Sede
-         */
-        public squadreInSede: number,
-        
+         public infoMezzo: InfoMezzo[],
         /**
-         * E' il totale delle squadre in Viaggio
+         * Informazioni relative al numero delle squadre per ciascun Stato
          */
-        public squadreInViaggio: number,
-
+         public squadre: SquadreSo,
         /**
-         * E' il totale delle squadre Sul Posto
+         * Array contenente le informazioni relative al meteo
          */
-        public squadreSulPosto: number,
-
-        /**
-         * E' il totale delle squadre In Rientro
-         */
-        public squadreInRientro: number,
-
-        /**
-         * E' la descrizione dello stato del meteo
-         */
-        public descStato: string,
-
-        /**
-         * E' la temperatura
-         */
-        public temperatura: number,
-
+         public meteo: MeteoSo,
          /**
-         * E' la percentuale di Umidità
-         */
-        public umidita: number,
-
-        /**
-         * E' la percentuale di probabilità di precipitazione
-         */
-        public probPrecipitazione: number,
-
-          /**
-         * E' la percentuale di probabilità di precipitazione
-         */
-        public prevNeve: string,
-        
-        /**
          * Array contenente le informazioni relative ai funzionari di servizio in Sala Operativa
          */
-        public funzionariSo: FunzionariSo[]
+         public funzionariSo: FunzionariSo[]
 
-        ) { }
-}
+         ) { }
+ }
+
+
+                

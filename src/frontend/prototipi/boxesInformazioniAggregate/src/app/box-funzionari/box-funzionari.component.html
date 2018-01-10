@@ -1,35 +1,60 @@
-<a class="card card-text text-info" >
-  <div class="row">
-    <span class="col col-md-3">
-      <i class="fa fa-graduation-cap fa-4x" style="margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px; text-shadow:  4px -2px 3px #9bdbf5"></i>
-    </span>
-    <span class="col col-md-9">
-    <span *ngFor="let f of funzionari.funzionariSo">
-        <span *ngIf="f.funzGuardia">
-          <ul>
-            <li class="card-text text-info" style=" font-size:13px; padding-top:8px; font-weight: bold; text-shadow:  4px -2px 3px #9bdbf5">Funz. di Guardia</li>
-            <li class="card-text text-muted"  style=" font-size:13px; font-weight: bold;">{{f.descrizione.substr(0,30)}}
-                <span *ngIf="f.descrizione.length > 30">
-                  <span>...
-                    </span>
-                 </span>
-            </li>
-          </ul>
+<a class="card card-text text-info">
+    <div class="row">
+        <span class="col col-md-3">
+            <i class="fa fa-graduation-cap fa-4x" style="margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px; text-shadow:  4px -2px 3px #9bdbf5"></i>
         </span>
-        <span *ngIf="f.capoTurno">
-            <ul>
-              <li class="card-text text-info " style=" font-size:13px; padding-top:8px; font-weight: bold; text-shadow:  4px -2px 3px #9bdbf5">Capo Turno</li>
-             
-              <li class="card-text text-muted"  style=" font-size:13px; padding-bottom:15px; font-weight: bold;">{{f.descrizione.substr(0,30)}}
-              <span style="padding-bottom:0px;" *ngIf="f.descrizione.length > 30">
-                <span>...
-                  </span>
-               </span>
-              </li>
-            </ul>
-         </span>
-       </span>
-    </span>
-  </div>
+        <span class="col col-md-9">
+            <span *ngIf="!getfunzPresente() && !getCapoTurnoPresente()">
+                <ul>
+                    <li class="card-text text-info" style=" font-size:13px;margin-top:22px; margin-bottom:20px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Funz. di Guardia</li>
+                    <li class="card-text text-info " style=" font-size:13px; margin-top:30px; margin-bottom:20px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Capo Turno</li>
+                </ul>
+            </span>
+            <span *ngIf="!getfunzPresente() && getCapoTurnoPresente()">
+                <ul>
+                    <li class="card-text text-info" style=" font-size:13px;margin-top:20px; margin-bottom:18px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Funz. di Guardia</li>
+                </ul>
+            </span>
+            <span *ngIf="getfunzPresente()">
+                <ul>
+                    <li class="card-text text-info" style=" font-size:13px; padding-top:8px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Funz. di Guardia</li>
+                    <span *ngFor="let f of funzionari">
+                        <span *ngIf="f.funzGuardia">
+                            <li class="card-text text-muted" style="font-size:13px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title="Qualifica">{{f.qualifica}}</li>
+                            <ng-container *ngIf="f.descrizione.length <= 17; then thenBlock else elseBlock"></ng-container>
+                            <ng-template #thenBlock>
+                                <li class="card-text text-muted" style="font-size:13px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title={{f.tooltip}}>{{f.descrizione}}</li>
+                            </ng-template>
+                            <ng-template #elseBlock>
+                                <li class="card-text text-muted" style="font-size:13px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title={{f.descrizione}}-{{f.tooltip}}>{{f.descrizione.substr(0,17)}}...</li>
+                            </ng-template>
+                        </span>
+                    </span>
+                </ul>
+            </span>
+            <span *ngIf="!getCapoTurnoPresente() && getfunzPresente()">
+                <ul>
+                    <li class="card-text text-info " style=" font-size:13px; margin-top:17px; margin-bottom:20px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Capo Turno</li>
+                </ul>
+            </span>
+            <span *ngIf="getCapoTurnoPresente()">
+                <ul>
+                    <li class="card-text text-info " style=" font-size:13px; padding-top:8px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Capo Turno</li>
+                    <span *ngFor="let f of funzionari">
+                        <span *ngIf="f.capoTurno">
+                            <li class="card-text text-muted" style="font-size:13px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title="Qualifica">{{f.qualifica}}</li>
+                            <ng-container *ngIf="f.descrizione.length <= 17; then thenBlock else elseBlock"></ng-container>
+                            <ng-template #thenBlock>
+                                <li class="card-text text-muted" style="font-size:13px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title={{f.tooltip}}>{{f.descrizione}}</li>
+                            </ng-template>
+                            <ng-template #elseBlock>
+                                <li class="card-text text-muted" style="font-size:13px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title={{f.descrizione}}-{{f.tooltip}}>{{f.descrizione.substr(0,17)}}...</li>
+                            </ng-template>   
+                        </span>
+                    </span>
+                </ul>
+            </span>
+        </span>
+    </div>
 </a>
 

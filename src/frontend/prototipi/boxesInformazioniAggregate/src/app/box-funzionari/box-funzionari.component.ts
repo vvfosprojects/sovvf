@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-
-import { InfoAggregate } from '../info-aggregate/info-aggregate.model';
+import { FunzionariSo } from "app/box-funzionari/funzionari-so.model";
 
 
 @Component({
@@ -10,11 +9,39 @@ import { InfoAggregate } from '../info-aggregate/info-aggregate.model';
 })
 export class BoxFunzionariComponent implements OnInit {
 
-  @Input() funzionari: InfoAggregate[];
-
+  @Input() funzionari: FunzionariSo[];
+  private numero  : number;
   constructor() { }
 
   ngOnInit() {
   }
 
+ 
+  public getfunzPresente(): boolean 
+  {
+   var  presenteFunz : boolean;
+  
+   presenteFunz = false;
+     
+     this.funzionari.forEach(c=>  {
+      if (c.funzGuardia)
+        presenteFunz = true;
+      });
+
+    return presenteFunz;
+  }
+
+  public getCapoTurnoPresente(): boolean 
+  {
+   var  presenteCapoTurno : boolean;
+    
+   presenteCapoTurno = false;
+   
+     this.funzionari.forEach(c=>  {
+      if (c.capoTurno)
+      presenteCapoTurno = true;
+      });
+   
+    return presenteCapoTurno;
+  }
 }

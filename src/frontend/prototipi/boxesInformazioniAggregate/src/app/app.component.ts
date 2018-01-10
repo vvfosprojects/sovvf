@@ -11,7 +11,7 @@ import { InfoAggregateService } from "./info-aggregate/info-aggregate.service";
 })
 
 export class AppComponent implements OnInit {
-  private informazioni: InfoAggregate[] = [];
+  private informazioni: InfoAggregate;
 
   constructor(private infoAggregateService: InfoAggregateService) {
   }

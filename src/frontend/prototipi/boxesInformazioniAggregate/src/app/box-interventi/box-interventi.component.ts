@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-
-import { InfoAggregate } from '../info-aggregate/info-aggregate.model';
+import { InterventiSo } from "app/box-interventi/box-interventi.model";
 
 @Component({
   selector: 'box-interventi',
@@ -9,7 +8,7 @@ import { InfoAggregate } from '../info-aggregate/info-aggregate.model';
 })
 export class BoxInterventiComponent implements OnInit {
 
-  @Input() interventi: InfoAggregate[];
+  @Input() interventi: InterventiSo;
    
   constructor() { }
 

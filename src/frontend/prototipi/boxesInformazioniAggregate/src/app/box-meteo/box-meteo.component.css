@@ -11,8 +11,8 @@ a  { border-width:5px; border-style: ridge;border-radius:15px;box-shadow: 3px 3p
     color:#337ab7; text-shadow:  4px -2px 3px rgb(127, 137, 245); margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
 } 
 .shadow-text-giallo  {
-    color:#f89406; text-shadow:  4px -2px 3px #f5c382;
+    color:#f89406; text-shadow:  4px -2px 3px #f5cd9c;
 }
 .shadow-text-celeste  {
-    color:#337ab7; text-shadow:  4px -2px 3px rgb(177, 183, 247);
+    color:#337ab7; text-shadow:  4px -2px 3px rgb(195, 200, 247);
 }

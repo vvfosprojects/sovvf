@@ -5,8 +5,13 @@ export class FunzionariSo {
          */
         public codiceFiscale: string,
         
+         /**
+         * Qualifica della persona, visibile in interfaccia (per es. 'VCTI')
+         */
+        public qualifica: string,
+        
         /**
-         * Descrizione della persona, visibile in interfaccia (per es. 'VCTI Daniela Fares')
+         * Nominativo della persona, visibile in interfaccia (per es. 'Daniela Fares')
          */
         public descrizione: string,
 
