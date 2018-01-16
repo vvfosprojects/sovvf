@@ -34,12 +34,12 @@
             </span>
             <span *ngIf="!getCapoTurnoPresente() && getfunzPresente()">
                 <ul>
-                    <li class="card-text text-info " style=" font-size:13px; margin-top:17px; margin-bottom:20px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Capo Turno</li>
+                    <li class="card-text text-info " style="font-size:13px; margin-top:17px; margin-bottom:20px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Capo Turno</li>
                 </ul>
             </span>
             <span *ngIf="getCapoTurnoPresente()">
                 <ul>
-                    <li class="card-text text-info " style=" font-size:13px; padding-top:8px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Capo Turno</li>
+                    <li class="card-text text-info " style="font-size:13px; padding-top:8px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Capo Turno</li>
                     <span *ngFor="let f of funzionari">
                         <span *ngIf="f.capoTurno">
                             <li class="card-text text-muted" style="font-size:13px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title="Qualifica">{{f.qualifica}}</li>
@@ -54,7 +54,7 @@
                     </span>
                 </ul>
             </span>
-        </span>
+        </span> 
     </div>
 </a>
 
