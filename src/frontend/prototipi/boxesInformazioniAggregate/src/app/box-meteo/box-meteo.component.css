@@ -1,9 +1,6 @@
 .badge {font-size: 10.025px;}
 ul { list-style-type:none; }
 a  { border-width:5px; border-style: ridge;border-radius:15px;box-shadow: 3px 3px 5px #999; }
-.shadow-ic-verde  {
-    text-shadow:4px -2px 3px #468847; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
-}
 .shadow-ic-giallo  {
     color:#f89406; text-shadow:  4px -2px 3px #f5c382; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
 }
@@ -11,8 +8,8 @@ a  { border-width:5px; border-style: ridge;border-radius:15px;box-shadow: 3px 3p
     color:#337ab7; text-shadow:  4px -2px 3px rgb(127, 137, 245); margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
 } 
 .shadow-text-giallo  {
-    color:#f89406; text-shadow:  4px -2px 3px #f5cd9c;
+    color:#f89406; 
 }
 .shadow-text-celeste  {
-    color:#337ab7; text-shadow:  4px -2px 3px rgb(195, 200, 247);
+    color:#337ab7; 
 }
