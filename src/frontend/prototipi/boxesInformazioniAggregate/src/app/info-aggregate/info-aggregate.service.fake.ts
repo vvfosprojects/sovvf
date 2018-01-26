@@ -25,64 +25,64 @@ export class InfoAggregateServiceFake {
   public getInfoAggregate(): Observable<InfoAggregate> {
     var informazioni: InfoAggregate = (
       new InfoAggregate(
-      new InterventiSo(
-        3,
-        3,
-        1,
-        2,
-        0),
+        new InterventiSo(
+          3,
+          3,
+          1,
+          2,
+          0),
         [
-        new InfoMezzo("APS",
-                      2,
-                      1,
-                      2,
-                      0
-        ),
-        new InfoMezzo("ABP",
-        2,
-        1,
-        1,
-        0
-        ),
-        new InfoMezzo("AS",
-        1,
-        1,
-        0,
-        0
-        ),
+          new InfoMezzo("APS",
+            2,
+            1,
+            2,
+            0
+          ),
+          new InfoMezzo("ABP",
+            2,
+            1,
+            1,
+            0
+          ),
+          new InfoMezzo("AS",
+            1,
+            1,
+            0,
+            0
+          ),
         ],
         new SquadreSo(3,
-        1,
-        2,
-        0),
+          1,
+          2,
+          0),
         new MeteoSo(
-        "Neve",
-        14,
-        20,
-        10,
-        "bassa"),
-         [
-        new FunzionariSo("RSIMRI62C62H501I",
-         "FTID",
-         "Michele Rossini Foresti",
-         "RSIMRI62C62H501I",
-        true,
-        false,
-        false,
-        false
-        ),
-        new FunzionariSo("NGLGVN61E61H501T",
-        "VCTI",
-        "Angelini Giovine",
-         "NGLGVN61E61H501T",
-        false,
-        false,
-        false,
-        true
-        ),
+          "Neve",
+          14,
+          20,
+          10,
+          "bassa"),
+        [
+          new FunzionariSo("RSIMRI62C62H501I",
+            "FTID",
+            "Michele Rossini Foresti",
+            "RSIMRI62C62H501I",
+            true,
+            false,
+            false,
+            false
+          ),
+          new FunzionariSo("NGLGVN61E61H501T",
+            "VCTI",
+            "Angelini Giovine",
+            "NGLGVN61E61H501T",
+            false,
+            false,
+            false,
+            true
+          ),
         ]));
-    
-    
-    return Observable.of(informazioni);      
+
+
+    return Observable.of(informazioni);
   }
 }
