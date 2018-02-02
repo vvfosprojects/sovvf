@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UnitaOperativa } from "app/gestionepermessi/unita-operativa.model";
+import { UnitaOperativa } from "../model/unita-operativa.model";
 import { TreeNode } from "primeng/primeng";
 
 /**
@@ -16,6 +16,7 @@ export class AdapterAlberoService {
        let treeNode: TreeNode = {
             label: uo.tooltip,
             data: uo.descrizione,
+            type: uo.id,
             // collapsedIcon: "fa-plus-square-o",
             // expandedIcon:"fa fa-minus-square-o",
             icon: "fa-fire-extinguisher",

@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-md-5">
+    <button class="btn" type="button" (click)="expandAll()" >Espandi tutto</button>
+    <button class="btn" type="button" (click)="collapseAll()" >Chiudi tutto</button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <p-tree [value]="primeNgTrees" selectionMode="single" [(selection)]="selectedFile" 
+    (onNodeSelect)="nodeSelect($event)">
+    </p-tree>
+  </div>
+  <div class="col-md-2">
+   Ricorsivo
+    <p-inputSwitch onLabel="SI" offLabel="NO" (onChange)="ricorsivoSelect()"></p-inputSwitch>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-5">
+    <p-checkbox label="cerca solo nel nodo selezionato" (onChange)="nodochecked(e)" binary="true"></p-checkbox>
+  </div>
+</div>

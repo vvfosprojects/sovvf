@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/observable/of';
 
-import { SituazionePermessi } from "../situazione-permessi.model";
-import { UnitaOperativa } from "../unita-operativa.model";
-import { PermessoAssegnato } from "../permesso-assegnato.model";
-import { Permesso } from '../permesso.model';
-import { Ruolo } from '../ruolo.model';
+import { SituazionePermessi } from "../model/situazione-permessi.model";
+import { UnitaOperativa } from "../model/unita-operativa.model";
+import { PermessoAssegnato } from "../model/permesso-assegnato.model";
+import { Permesso } from '../model/permesso.model';
+import { Ruolo } from '../model/ruolo.model';
 
 @Injectable()
 export class SituazionePermessiFakeService {
