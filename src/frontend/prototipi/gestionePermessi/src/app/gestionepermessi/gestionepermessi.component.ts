@@ -25,15 +25,7 @@ import { NuovoPermesso } from '../model/nuovo-permesso.model';
 export class GestionepermessiComponent implements OnInit {
     //@Input() permessoAssegnato: PermessoAssegnato;
     @Output() nuovoPermesso = new EventEmitter<NuovoPermesso>();
-
-    dataInizio: Date;
-    dataFine: Date;
-    it: any;
-    minDate: Date;
-    ricorsivo: boolean = true;
-
-    //private situazionePermessi: SituazionePermessi;
-    
+        
     private testoRicerca: string;
     checkNodeSelected: boolean = false;
     permessiAssegnati: PermessoAssegnato[];
@@ -53,23 +45,6 @@ export class GestionepermessiComponent implements OnInit {
         private confirmationService: ConfirmationService) { }
 
     ngOnInit() {
-        this.it = {
-            firstDayOfWeek: 1,
-            dayNames: [ "domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato" ],
-            dayNamesShort: [ "dom","lun","mar","mer","gio","ven","sab" ],
-            dayNamesMin: [ "D","L","M","M","G","V","S" ],
-            monthNames: [ "gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre" ],
-            monthNamesShort: [ "gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic" ],
-            today: 'Oggi',
-            clear: 'Cancella'
-        }
-
-        let today = new Date();
-        let month = today.getMonth();
-        let year = today.getFullYear();
-        let yearMax = year;
-        this.minDate = today;
-        
         this.situazionePermessiService.getSituazionePermessi()
             .subscribe(data => {
                 this.permessiAssegnati = data.permessiAssegnati;

@@ -32,6 +32,8 @@ import { TruncatePipe } from './shared/pipes/truncate.pipe';
 import { ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 import { UnitaOperativaComponent } from './unita-operativa/unita-operativa.component';
 import { CercaNominativoComponent } from './cerca-nominativo/cerca-nominativo.component';
+import { RuoliPermessiComponent } from './ruoli-permessi/ruoli-permessi.component';
+import { DurataComponent } from './durata/durata.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { CercaNominativoComponent } from './cerca-nominativo/cerca-nominativo.co
     FriendlyHourPipe,
     TruncatePipe,
     UnitaOperativaComponent,
-    CercaNominativoComponent
+    CercaNominativoComponent,
+    RuoliPermessiComponent,
+    DurataComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 <div class="input-group">
   <p-autoComplete [(ngModel)]="nominativo" [suggestions]="filteredNames" (completeMethod)="filterNameSingle($event)" [size]="20"
-    placeholder="Cerca nominativo..." [minLength]="1"></p-autoComplete>
+    placeholder="Cerca nominativo..." [minLength]="1" (change)="leggiUnitaOperativa($event)"></p-autoComplete>
     <button class="btn" type="button" (click)="clearSearchText()">
       <i class="fa fa-times" aria-hidden="true"></i>
     </button>

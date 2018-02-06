@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { RicercaPersonaFakeService } from '../service/ricerca-persona-fake.service';
 import { UnitaOperativa } from 'app/model/unita-operativa.model';
-import { UnitaOperativaComponent } from 'app/unita-operativa/unita-operativa.component';
 import { RicercaEvent } from 'app/model/ricerca-event.model';
 import { Persona } from 'app/model/persona.model';
+import { UnitaOperativaComponent } from 'app/unita-operativa/unita-operativa.component';
 
 @Component({
   selector: 'app-cerca-nominativo',
@@ -12,7 +12,7 @@ import { Persona } from 'app/model/persona.model';
 })
 export class CercaNominativoComponent implements OnInit {
   @Input() unitaOperativa: UnitaOperativa;
-  @Output() cerca: EventEmitter<string> = new EventEmitter<string>();
+  @Output() nome: EventEmitter<string> = new EventEmitter<string>();
 
   nominativo: any;
   filteredNames: any[];
@@ -24,7 +24,7 @@ export class CercaNominativoComponent implements OnInit {
 
   private clearSearchText(): void {
     this.nominativo = null;
-    this.cerca.emit(this.nominativo);
+    this.nome.emit(this.nominativo);
   }
 
   public leggiUnitaOperativa(event) {
@@ -33,7 +33,7 @@ export class CercaNominativoComponent implements OnInit {
  
 
   filterNameSingle(event) {
-    this.cerca.emit(this.nominativo);
+    this.nome.emit(this.nominativo);
     console.log("nominativo " + this.nominativo);
 
         /* let query = event.query;

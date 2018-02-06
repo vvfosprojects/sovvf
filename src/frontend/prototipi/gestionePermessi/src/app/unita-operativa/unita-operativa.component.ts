@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UnitaOperativa } from "../model/unita-operativa.model";
 import { TreeModule, TreeNode } from 'primeng/primeng';
+import { CheckboxModule } from 'primeng/primeng';
 
 import { AdapterAlberoService } from '../service/adapter-albero.service';
 import { SituazionePermessiFakeService } from "../service/situazione-permessi-fake.service";
@@ -14,8 +15,8 @@ import { CercaNominativoComponent } from 'app/cerca-nominativo/cerca-nominativo.
   styleUrls: ['./unita-operativa.component.css']
 })
 export class UnitaOperativaComponent implements OnInit {
-  @Input() unitaOperativa: UnitaOperativa;
-  @Output() change: EventEmitter<RicercaEvent> = new EventEmitter<RicercaEvent>();
+  //@Input() unitaOperativa: UnitaOperativa;
+  @Output() unitaOperativa: EventEmitter<RicercaEvent> = new EventEmitter<RicercaEvent>();
 
   msgs: Message[];
   unitaSelezionate: any;
@@ -40,7 +41,7 @@ export class UnitaOperativaComponent implements OnInit {
     if (this.nodoSelezionato) this.nodoSelezionato = false;
     else this.nodoSelezionato = true;
 
-    this.change.emit({unitaOperSel : this.unitaSelezionate, ricorsivo : this.ricorsivo, nodoSelezionato : this.nodoSelezionato});
+    this.unitaOperativa.emit({unitaOperSel : this.unitaSelezionate, ricorsivo : this.ricorsivo, nodoSelezionato : this.nodoSelezionato});
     console.log("unitaOperSel " + this.unitaSelezionate, "ricorsivo " + this.ricorsivo, "nodoSelezionato " + this.nodoSelezionato );
   }
 
@@ -48,7 +49,7 @@ export class UnitaOperativaComponent implements OnInit {
     if (this.ricorsivo) this.ricorsivo = false;
     else this.ricorsivo = true;
 
-    this.change.emit({unitaOperSel : this.unitaSelezionate, ricorsivo : this.ricorsivo, nodoSelezionato : this.nodoSelezionato});
+    this.unitaOperativa.emit({unitaOperSel : this.unitaSelezionate, ricorsivo : this.ricorsivo, nodoSelezionato : this.nodoSelezionato});
     console.log("unitaOperSel " + this.unitaSelezionate, "ricorsivo " + this.ricorsivo, "nodoSelezionato " + this.nodoSelezionato );
   }
 
@@ -56,7 +57,7 @@ export class UnitaOperativaComponent implements OnInit {
     this.msgs = [];
     this.msgs.push({ severity: 'info', summary: 'Node Selected', detail: event.node.label });
     this.unitaSelezionate = event.node.data;
-    this.change.emit({unitaOperSel : this.unitaSelezionate, ricorsivo : this.ricorsivo, nodoSelezionato : this.nodoSelezionato});
+    this.unitaOperativa.emit({unitaOperSel : this.unitaSelezionate, ricorsivo : this.ricorsivo, nodoSelezionato : this.nodoSelezionato});
     console.log("unitaOperSel " + this.unitaSelezionate, "ricorsivo " + this.ricorsivo, "nodoSelezionato " + this.nodoSelezionato );
   }
 
