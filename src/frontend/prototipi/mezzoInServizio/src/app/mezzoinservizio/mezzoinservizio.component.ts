@@ -1,4 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 
 import { MezzoInServizio } from './mezzoinservizio.model';
 import { DescStatoMap } from './desc-stato-map.class';
@@ -12,7 +14,9 @@ export class MezzoinservizioComponent implements OnInit {
   private mapperDescStato = new DescStatoMap();
   private _mostraPersone: boolean = false;
   @Input() mezzo: MezzoInServizio;
+  @Output() eventoStato = new EventEmitter<string>();
 
+ 
   constructor() { }
 
   ngOnInit() {
@@ -28,7 +32,7 @@ export class MezzoinservizioComponent implements OnInit {
     return this.mapperDescStato.map(codice);
   }
 
-  private setDisponibile(isSet: boolean): void {
+   private setDisponibile(isSet: boolean): void {
     this.fs.disponibile = isSet;
   }
   private setCodiceStato(isSet: string): void {
@@ -39,6 +43,11 @@ export class MezzoinservizioComponent implements OnInit {
     return !!this.fs.personeSulMezzo && this.fs.personeSulMezzo.length;
   }
 
+  private statiSucc(): number {
+    // return this.fs.codiciStatoSucc.length;
+    return 1;
+  }
+
   private hideMostraPersone(): void {
     this._mostraPersone = !this._mostraPersone;
   }
@@ -46,6 +55,11 @@ export class MezzoinservizioComponent implements OnInit {
   get mostraPersone(): boolean {
     return this._mostraPersone;
   }
+
+
+  public clickStato() {
+        this.eventoStato.emit(this.fs.codiceStato);
+}
 
 }
 

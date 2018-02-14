@@ -1,4 +1,5 @@
 import { PersonaSulMezzo } from "./persona-sul-mezzo.model";
+import { StatiSuccessivi } from "app/mezzoinservizio/codici-stato-mezzo-succ.model";
 
 export class MezzoInServizio {
   private _testoRicercabile: string[];
@@ -17,7 +18,12 @@ export class MezzoInServizio {
     /**
      * Rappresenta l'elenco delle persone che sono presenti sul mezzo
      */
-    public personeSulMezzo: PersonaSulMezzo[]
+    public personeSulMezzo: PersonaSulMezzo[],
+     /**
+     * Stati del mezzo successivi
+     */
+    public codiciStatoSucc: StatiSuccessivi[]
+ 
   ) {
     this._testoRicercabile = this.calcolaTestoRicercabile();
   }

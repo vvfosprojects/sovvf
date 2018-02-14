@@ -62,6 +62,11 @@ export class ListaMezziService_FakeJson {
           "autista": false,
           "rimpiazzo": false
         }
+      ],
+      "codiciStatoSucc": [
+        {
+          "codiceStato": "InSede"
+        }
       ]
     },
     {
@@ -115,6 +120,17 @@ export class ListaMezziService_FakeJson {
           "capoPartenza": false,
           "autista": false,
           "rimpiazzo": false
+        }
+      ], 
+       "codiciStatoSucc": [
+        {
+          "codiceStato": "SulPosto"
+        },
+        {
+          "codiceStato": "InRientro"
+        },
+        {
+          "codiceStato": "InSede"
         }
       ]
     },
@@ -170,6 +186,17 @@ export class ListaMezziService_FakeJson {
           "autista": false,
           "rimpiazzo": false
         }
+      ],
+      "codiciStatoSucc": [
+        {
+          "codiceStato": "SulPosto"
+        },
+        {
+          "codiceStato": "InRientro"
+        },
+        {
+          "codiceStato": "InSede"
+        }
       ]
     },
     {
@@ -223,6 +250,14 @@ export class ListaMezziService_FakeJson {
           "capoPartenza": false,
           "autista": false,
           "rimpiazzo": false
+        }
+      ],
+      "codiciStatoSucc": [
+        {
+          "codiceStato": "InRientro"
+        },
+        {
+          "codiceStato": "InSede"
         }
       ]
     },
@@ -278,7 +313,8 @@ export class ListaMezziService_FakeJson {
           "autista": false,
           "rimpiazzo": false
         }
-      ]
+      ],
+      "codiciStatoSucc": []
     },
     {
       "codice": "ILX49208",
