@@ -1,10 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-    NgbCarouselModule,
-    NgbAlertModule
-} from '@ng-bootstrap/ng-bootstrap';
-
+import { NgbCarouselModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
@@ -13,7 +9,8 @@ import {
     NotificationComponent,
     ChatComponent
 } from './components';
-import { StatModule } from '../../shared';
+//import { InfoAggregateComponent } from "../bs-component/components";
+import { StatModule, InfoAggregateModule } from '../../shared';
 
 @NgModule({
     imports: [
@@ -22,12 +19,13 @@ import { StatModule } from '../../shared';
         NgbAlertModule.forRoot(),
         DashboardRoutingModule,
         StatModule,
+        InfoAggregateModule 
     ],
     declarations: [
         DashboardComponent,
         TimelineComponent,
         NotificationComponent,
-        ChatComponent
+        ChatComponent      
     ]
 })
-export class DashboardModule { }
+export class DashboardModule {}

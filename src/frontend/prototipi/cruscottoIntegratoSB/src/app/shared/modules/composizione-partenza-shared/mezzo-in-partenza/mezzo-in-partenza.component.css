@@ -1,0 +1,11 @@
+body {
+    margin: 10px;
+}
+.dragging {
+    border-left: 5px solid palevioletred;
+    border-right: 5px solid palevioletred;
+}
+
+.dropping {
+    border: 2px dotted palevioletred;
+}

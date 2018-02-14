@@ -2,7 +2,7 @@ $topnav-background-color: #222;
 :host {
     display: block;
 }
-.welcome-page {
+.not-found {
     position: absolute;
     top: 0;
     left: 0;
@@ -12,23 +12,45 @@ $topnav-background-color: #222;
     background: $topnav-background-color;
     text-align: center;
     color: #fff;
-    padding: 10em;
-    .col-lg-8{
-        padding :0;
+    padding: 3em;
+    .col-lg-4 {
+        padding: 0;
     }
-    .rounded-btn{
+    .input-lg {
+        height: 46px;
+        padding: 10px 16px;
+        font-size: 18px;
+        line-height: 1.3333333;
+        border-radius: 0;
+    }
+    .input-underline {
+        background: 0 0;
+        border: none;
+        box-shadow: none;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+        color: #fff;
+        border-radius: 0;
+    }
+    .input-underline:focus {
+        border-bottom: 2px solid #fff;
+        box-shadow: none;
+    }
+    .rounded-btn {
         -webkit-border-radius: 50px;
-                border-radius: 50px;
-        color: rgba(255,255,255,0.8);
+        border-radius: 50px;
+        color: rgba(255, 255, 255, 0.8);
         background: $topnav-background-color;
-        border: 2px solid rgba(255,255,255,0.8);
+        border: 2px solid rgba(255, 255, 255, 0.8);
         font-size: 18px;
         line-height: 40px;
         padding: 0 25px;
     }
-    .rounded-btn:hover,.rounded-btn:focus,.rounded-btn:active,.rounded-btn:visited{
-        color: rgba(255,255,255,1);
-        border: 2px solid rgba(255,255,255,1);
+    .rounded-btn:hover,
+    .rounded-btn:focus,
+    .rounded-btn:active,
+    .rounded-btn:visited {
+        color: rgba(255, 255, 255, 1);
+        border: 2px solid rgba(255, 255, 255, 1);
         outline: none;
     }
 
@@ -37,5 +59,37 @@ $topnav-background-color: #222;
         margin-top: 20px;
         margin-bottom: 10px;
         font-size: 36px;
+        small {
+            color: rgba(255, 255, 255, 0.7);
+        }
+    }
+
+    .form-group {
+        padding: 8px 0;
+        input::-webkit-input-placeholder {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        input:-moz-placeholder {
+            /* Firefox 18- */
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        input::-moz-placeholder {
+            /* Firefox 19+ */
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        input:-ms-input-placeholder {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+    }
+    .form-content {
+        padding: 40px 0;
+    }
+    .user-avatar {
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+        border: 2px solid #fff;
     }
 }

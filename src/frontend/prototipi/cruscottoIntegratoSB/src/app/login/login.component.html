@@ -1,21 +1,28 @@
-<div class="login-page">
-    <div class="row">
-        <div class="col-md-4 push-md-4">
-            <img src="assets/images/logo.png" width="150px" class="user-avatar" />
-            <h1>SB Admin BS4 Angular4</h1>
-            <form role="form">
+<div class="login-page" [@routerTransition]>
+    <div class="row justify-content-md-center">
+        <div class="col-md-4">
+            <img src="assets/images/Fiamma.png" width="150px" class="user-avatar" />
+            <h1>SO VVF</h1>
+            <form name="form" (ngSubmit)="f.form.valid && onLoggedin()" #f="ngForm" novalidate>
                 <div class="form-content">
-                    <div class="form-group">
-                        <input type="text" ng-model="name" class="form-control input-underline input-lg" id="" placeholder="Email">
+                    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+                        <input type="text" name="username" [(ngModel)]="model.username" #username="ngModel" class="form-control input-underline input-lg"
+                            id="" placeholder="Nome Utente" required>
+                        <div *ngIf="f.submitted && !username.valid" class="help-block">Username obbligatorio per accedere.</div>
                     </div>
-
-                    <div class="form-group">
-                        <input type="password" class="form-control input-underline input-lg" id="" placeholder="Password">
+                    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+                        <input type="password" name="password" [(ngModel)]="model.password" #password="ngModel" class="form-control input-underline input-lg"
+                            id="" placeholder="Password" required>
+                        <div *ngIf="f.submitted && !password.valid" class="help-block">Password obbligatoria per accedere.</div>
                     </div>
+                    <div class="form-group">
+                        <button [disabled]="loading" class="btn rounded-btn" [routerLink]="['/dashboard']">Entra</button>
+                        <img *ngIf="loading" src="assets/images/loader.gif"/> 
+                    </div>
+                    <alert></alert>
+                    <a class="text-muted" href="https://accounts.dipvvf.it/">Gestione credenziali di accesso.</a>
+                    <!--<a class="btn rounded-btn" [routerLink]="['/signup']">Register</a>-->
                 </div>
-                <a class="btn rounded-btn" [routerLink]="['/dashboard']" (click)="onLoggedin()"> Log in </a>
-                &nbsp;
-                <a class="btn rounded-btn" [routerLink]="['/signup']">Register</a>
             </form>
         </div>
     </div>

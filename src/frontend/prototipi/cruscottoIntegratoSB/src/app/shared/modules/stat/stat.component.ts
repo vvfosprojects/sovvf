@@ -10,12 +10,10 @@ export class StatComponent implements OnInit {
     @Input() icon: string;
     @Input() count: number;
     @Input() label: string;
-    @Input() count1: number;
-    @Input() label1: string;
     @Input() data: number;
     @Output() event: EventEmitter<any> = new EventEmitter();
 
-    constructor() { }
+    constructor() {}
 
     ngOnInit() {}
 }
