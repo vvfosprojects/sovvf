@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/observable/of';
 
-import { Persona } from "../persona.model";
+import { Persona } from "../model/persona.model";
 
 @Injectable()
 export class RicercaPersonaFakeService {

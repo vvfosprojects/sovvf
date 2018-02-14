@@ -6,9 +6,9 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { GestionepermessiComponent } from './gestionepermessi/gestionepermessi.component';
 
-import { SituazionePermessiFakeService } from "./gestionepermessi/servizi/situazione-permessi-fake.service";
-import { AdapterAlberoService } from "./gestionepermessi/servizi/adapter-albero.service";
-import { RicercaPersonaFakeService } from "./gestionepermessi/servizi/ricerca-persona-fake.service";
+import { SituazionePermessiFakeService } from "./service/situazione-permessi-fake.service";
+import { AdapterAlberoService } from "./service/adapter-albero.service";
+import { RicercaPersonaFakeService } from "./service/ricerca-persona-fake.service";
 
 import { TreeModule, TreeNode } from 'primeng/primeng';
 import { GrowlModule, Message } from 'primeng/primeng';
@@ -30,6 +30,10 @@ import { FriendlyHourPipe } from './shared/pipes/friendly-hour.pipe';
 import { TruncatePipe } from './shared/pipes/truncate.pipe';
 
 import { ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+import { UnitaOperativaComponent } from './unita-operativa/unita-operativa.component';
+import { CercaNominativoComponent } from './cerca-nominativo/cerca-nominativo.component';
+import { RuoliPermessiComponent } from './ruoli-permessi/ruoli-permessi.component';
+import { DurataComponent } from './durata/durata.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +41,11 @@ import { ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
     GestionepermessiComponent,
     FriendlyDatePipe,
     FriendlyHourPipe,
-    TruncatePipe
+    TruncatePipe,
+    UnitaOperativaComponent,
+    CercaNominativoComponent,
+    RuoliPermessiComponent,
+    DurataComponent
   ],
   imports: [
     BrowserModule,

@@ -34,7 +34,6 @@
         <label><button class='btn btn-primary'  aria-disabled="true" name="aperti" data-toggle="tootip" title="Aperti"><i class="fa fa-unlock" aria-hidden="true"></i></button></label>
      </div>
     <div *ngIf="filtri.aperti==true && filtri.chiusi==true">
-  
         <label><button class='btn btn-primary' name="aperti" data-toggle="tootip" title="Aperti" (click)="selFiltri('aperti')"><i class="fa fa-unlock" aria-hidden="true"></i></button></label>
     </div>
     <div *ngIf="filtri.aperti==false && filtri.chiusi==true">         
