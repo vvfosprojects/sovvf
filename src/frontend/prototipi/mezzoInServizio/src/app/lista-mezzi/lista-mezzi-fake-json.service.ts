@@ -314,7 +314,11 @@ export class ListaMezziService_FakeJson {
           "rimpiazzo": false
         }
       ],
-      "codiciStatoSucc": []
+      "codiciStatoSucc": [
+        {
+          "codiceStato": "InSede"
+        }
+      ]
     },
     {
       "codice": "ILX49208",
@@ -369,7 +373,11 @@ export class ListaMezziService_FakeJson {
           "rimpiazzo": false
         }
       ],
-      "codiciStatoSucc": []
+      "codiciStatoSucc": [
+        {
+          "codiceStato": "InSede"
+        }
+      ]
     },
     {
       "codice": "JWI42179",
@@ -424,7 +432,14 @@ export class ListaMezziService_FakeJson {
           "rimpiazzo": false
         }
       ],
-      "codiciStatoSucc": []
+      "codiciStatoSucc": [
+        {
+          "codiceStato": "InRientro"
+        },
+        {
+          "codiceStato": "InSede"
+        }
+      ]
     },
     {
       "codice": "UEZ19973",
@@ -479,7 +494,11 @@ export class ListaMezziService_FakeJson {
           "rimpiazzo": false
         }
       ],
-      "codiciStatoSucc": []
+      "codiciStatoSucc": [
+        {
+          "codiceStato": "InSede"
+        }
+      ]
     },
     {
       "codice": "QVI50644",
@@ -534,7 +553,11 @@ export class ListaMezziService_FakeJson {
           "rimpiazzo": false
         }
       ],
-      "codiciStatoSucc": []
+      "codiciStatoSucc": [
+        {
+          "codiceStato": "InSede"
+        }
+      ]
     },
     {
       "codice": "ZFG69978",
@@ -589,7 +612,11 @@ export class ListaMezziService_FakeJson {
           "rimpiazzo": false
         }
       ],
-      "codiciStatoSucc": []
+      "codiciStatoSucc": [
+        {
+          "codiceStato": "InSede"
+        }
+      ]
     },
     {
       "codice": "RDB95997",
@@ -644,7 +671,11 @@ export class ListaMezziService_FakeJson {
           "rimpiazzo": false
         }
       ],
-      "codiciStatoSucc": []
+      "codiciStatoSucc": [
+        {
+          "codiceStato": "InSede"
+        }
+      ]
     },
     {
       "codice": "RII05860",
@@ -699,7 +730,11 @@ export class ListaMezziService_FakeJson {
           "rimpiazzo": false
         }
       ],
-      "codiciStatoSucc": []
+      "codiciStatoSucc": [
+        {
+          "codiceStato": "InSede"
+        }
+      ]
     },
     {
       "codice": "OAC38806",
@@ -754,7 +789,14 @@ export class ListaMezziService_FakeJson {
           "rimpiazzo": false
         }
       ],
-      "codiciStatoSucc": []
+      "codiciStatoSucc": [
+        {
+          "codiceStato": "InRientro"
+        },
+        {
+          "codiceStato": "InSede"
+        }
+      ]
     },
     {
       "codice": "CEN95985",
@@ -809,7 +851,14 @@ export class ListaMezziService_FakeJson {
           "rimpiazzo": false
         }
       ],
-      "codiciStatoSucc": []
+      "codiciStatoSucc": [
+        {
+          "codiceStato": "InRientro"
+        },
+        {
+          "codiceStato": "InSede"
+        }
+      ]
     },
     {
       "codice": "GZS56982",
@@ -864,7 +913,14 @@ export class ListaMezziService_FakeJson {
           "rimpiazzo": false
         }
       ],
-      "codiciStatoSucc": []
+      "codiciStatoSucc": [
+        {
+          "codiceStato": "InRientro"
+        },
+        {
+          "codiceStato": "InSede"
+        }
+      ]
     },
     {
       "codice": "CGB82171",

@@ -56,11 +56,11 @@
           <span class="fa fa-pencil-square-o fa-lg" title="Cambio Stato" aria-hidden="true"></span>
           <span ngbDropdown class="d-inline-block" id="statiMezzo">
             <div *ngFor="let s of fs.codiciStatoSucc; let f=first;">
-              <button *ngIf="f" class="btn btn-primary btn-sm" ngbDropdownToggle>{{s.codiceStato}}</button>
+              <button *ngIf="f" class="btn btn-outline-secondary btn-sm" ngbDropdownToggle>{{getDescrizioneStato(s.codiceStato)}}</button>
             </div>
             <div  ngbDropdownMenu aria-labelledby="statiMezzo">
               <div *ngFor="let a of fs.codiciStatoSucc; let e=first;">
-                <button *ngIf="!e" class="dropdown-item">{{a.codiceStato}}</button>
+                <button *ngIf="!e" class="dropdown-item">{{getDescrizioneStato(a.codiceStato)}}</button>
               </div>
             </div>
           </span>
@@ -68,7 +68,7 @@
           <div *ngIf="statiSucc() == 1">
               <span class="fa fa-pencil-square-o fa-lg" title="Cambio Stato" aria-hidden="true"></span>
                 <span *ngFor="let s of fs.codiciStatoSucc; let f=first;">
-                  <button *ngIf="f" class="btn btn-primary btn-sm">{{s.codiceStato}}</button>
+                  <button *ngIf="f" class="btn btn-outline-secondary btn-sm">{{getDescrizioneStato(s.codiceStato)}}</button>
                 </span>
           </div>
            <div *ngIf="statiSucc() == '0'">
