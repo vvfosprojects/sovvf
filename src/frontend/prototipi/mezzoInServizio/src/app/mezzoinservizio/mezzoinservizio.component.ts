@@ -43,9 +43,12 @@ export class MezzoinservizioComponent implements OnInit {
     return !!this.fs.personeSulMezzo && this.fs.personeSulMezzo.length;
   }
 
-  private statiSucc(): number {
-    // return this.fs.codiciStatoSucc.length;
-    return 1;
+  private statiSucc() : string {
+    var elem_last: string = ' ';
+  
+    elem_last = this.fs.codiciStatoSucc.length.toString();
+
+    return elem_last;
   }
 
   private hideMostraPersone(): void {

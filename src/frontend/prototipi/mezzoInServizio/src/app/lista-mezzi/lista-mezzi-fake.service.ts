@@ -4,11 +4,12 @@ import 'rxjs/add/observable/of';
 
 import { MezzoInServizio } from '../mezzoinservizio/mezzoinservizio.model';
 import { PersonaSulMezzo } from "../mezzoinservizio/persona-sul-mezzo.model";
+import { StatiSuccessivi } from "../mezzoinservizio/codici-stato-mezzo-succ.model";
 
 @Injectable()
 export class ListaMezziService_Fake {
   private mezzi: MezzoInServizio[] = [
-    new MezzoInServizio(
+       new MezzoInServizio(
       "121",
       "Centrale",
       "M_43445   APS",
@@ -25,6 +26,9 @@ export class ListaMezziService_Fake {
         new PersonaSulMezzo("PCCGCM78Y65T453R", "CS Giacomo Puccini", "Giacomino", false, false, false),
         new PersonaSulMezzo("GLLGLL78Y65T453R", "CS Galileo Galilei", "Gelotto", false, false, true),
         new PersonaSulMezzo("DVCLND78Y65T453R", "CS Leonardo Da Vinci", "Leonarduccio", false, false, false)
+      ],
+      [
+       new StatiSuccessivi("")
       ]),
        new MezzoInServizio(
       "123",
@@ -43,6 +47,10 @@ export class ListaMezziService_Fake {
         new PersonaSulMezzo("PCCGCM78Y65T453R", "CS Giacomo Puccini", "Giacomino", false, false, false),
         new PersonaSulMezzo("GLLGLL78Y65T453R", "CS Galileo Galilei", "Gelotto", false, false, true),
         new PersonaSulMezzo("DVCLND78Y65T453R", "CS Leonardo Da Vinci", "Leonarduccio", false, false, false)
+      ],
+      [
+       new StatiSuccessivi("InRientro"),
+       new StatiSuccessivi("InSede")
       ]),
       new MezzoInServizio(
       "54",
@@ -61,6 +69,10 @@ export class ListaMezziService_Fake {
         new PersonaSulMezzo("VRDGSP78Y65T453R", "CS Giacomo Verdi", "Giacomino", false, false, true),
         new PersonaSulMezzo("PLTGSP78Y65T453R", "CS Giuseppe Paoletti", "Giuseppino", false, false, false),
         new PersonaSulMezzo("RSSPAL78Y65T453R", "CS Paolo Rossi", "Paolino", false, false, false)
+      ],
+      [
+       new StatiSuccessivi("InRientro"),
+       new StatiSuccessivi("InSede")
       ])
      /* new MezzoInServizio(
       '12',

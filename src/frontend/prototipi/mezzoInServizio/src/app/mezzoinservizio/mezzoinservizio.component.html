@@ -9,7 +9,6 @@
                        'text-danger'  : !fs.disponibile || fs.codiceStato == 'InViaggio' || fs.codiceStato == 'SulPosto',
                        'text-primary' : fs.codiceStato == 'InRientro',
                        'text-default' : fs.codiceStato == 'FuoriServizio'}"></i>
-            <!--<i class="fa fa-circle-o fa-stack-2x text-success"></i>-->
             <div *ngIf="fs.disponibile">
               <i class="text-success"></i>
             </div>
@@ -45,23 +44,36 @@
             </button>
 
           </div>
+          <div *ngIf="numeroPersone() == 0">
+              <div style="padding-bottom: 50px;"></div> 
+          </div>
           <div>
             <a href="#">{{fs.codiceRichiestaAssistenza}}
             </a>
           </div>
 
-          <div *ngIf="statiSucc() > 0">
-          <div ngbDropdown class="d-inline-block" id="statiMezzo">
+          <div *ngIf="statiSucc() > 1">
+          <span class="fa fa-pencil-square-o fa-lg" title="Cambio Stato" aria-hidden="true"></span>
+          <span ngbDropdown class="d-inline-block" id="statiMezzo">
             <div *ngFor="let s of fs.codiciStatoSucc; let f=first;">
-              <button *ngIf="f" class="btn btn-outline-primary" ngbDropdownToggle>{{s.codiceStato}}</button>
+              <button *ngIf="f" class="btn btn-primary btn-sm" ngbDropdownToggle>{{s.codiceStato}}</button>
             </div>
             <div  ngbDropdownMenu aria-labelledby="statiMezzo">
               <div *ngFor="let a of fs.codiciStatoSucc; let e=first;">
                 <button *ngIf="!e" class="dropdown-item">{{a.codiceStato}}</button>
               </div>
             </div>
+          </span>
           </div>
+          <div *ngIf="statiSucc() == 1">
+              <span class="fa fa-pencil-square-o fa-lg" title="Cambio Stato" aria-hidden="true"></span>
+                <span *ngFor="let s of fs.codiciStatoSucc; let f=first;">
+                  <button *ngIf="f" class="btn btn-primary btn-sm">{{s.codiceStato}}</button>
+                </span>
           </div>
+           <div *ngIf="statiSucc() == '0'">
+            <div style="padding-bottom: 30px;"></div> 
+          </div>  
        </div>
 
 

@@ -368,7 +368,8 @@ export class ListaMezziService_FakeJson {
           "autista": false,
           "rimpiazzo": false
         }
-      ]
+      ],
+      "codiciStatoSucc": []
     },
     {
       "codice": "JWI42179",
@@ -422,7 +423,8 @@ export class ListaMezziService_FakeJson {
           "autista": false,
           "rimpiazzo": false
         }
-      ]
+      ],
+      "codiciStatoSucc": []
     },
     {
       "codice": "UEZ19973",
@@ -476,7 +478,8 @@ export class ListaMezziService_FakeJson {
           "autista": false,
           "rimpiazzo": false
         }
-      ]
+      ],
+      "codiciStatoSucc": []
     },
     {
       "codice": "QVI50644",
@@ -530,7 +533,8 @@ export class ListaMezziService_FakeJson {
           "autista": false,
           "rimpiazzo": false
         }
-      ]
+      ],
+      "codiciStatoSucc": []
     },
     {
       "codice": "ZFG69978",
@@ -584,7 +588,8 @@ export class ListaMezziService_FakeJson {
           "autista": false,
           "rimpiazzo": false
         }
-      ]
+      ],
+      "codiciStatoSucc": []
     },
     {
       "codice": "RDB95997",
@@ -638,7 +643,8 @@ export class ListaMezziService_FakeJson {
           "autista": false,
           "rimpiazzo": false
         }
-      ]
+      ],
+      "codiciStatoSucc": []
     },
     {
       "codice": "RII05860",
@@ -692,7 +698,8 @@ export class ListaMezziService_FakeJson {
           "autista": false,
           "rimpiazzo": false
         }
-      ]
+      ],
+      "codiciStatoSucc": []
     },
     {
       "codice": "OAC38806",
@@ -746,7 +753,8 @@ export class ListaMezziService_FakeJson {
           "autista": false,
           "rimpiazzo": false
         }
-      ]
+      ],
+      "codiciStatoSucc": []
     },
     {
       "codice": "CEN95985",
@@ -800,7 +808,8 @@ export class ListaMezziService_FakeJson {
           "autista": false,
           "rimpiazzo": false
         }
-      ]
+      ],
+      "codiciStatoSucc": []
     },
     {
       "codice": "GZS56982",
@@ -854,7 +863,8 @@ export class ListaMezziService_FakeJson {
           "autista": false,
           "rimpiazzo": false
         }
-      ]
+      ],
+      "codiciStatoSucc": []
     },
     {
       "codice": "CGB82171",
@@ -867,7 +877,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A46",
       "tooltipSquadra": "A01",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "NME67557",
@@ -880,7 +891,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A84",
       "tooltipSquadra": "A56",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "SQL54534",
@@ -893,7 +905,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A67",
       "tooltipSquadra": "A74",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "FIM98453",
@@ -906,7 +919,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A97",
       "tooltipSquadra": "A60",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "SFJ08776",
@@ -919,7 +933,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A37",
       "tooltipSquadra": "A38",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "SPD94653",
@@ -932,7 +947,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A86",
       "tooltipSquadra": "A25",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "DWT19642",
@@ -945,7 +961,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A75",
       "tooltipSquadra": "A71",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "JUK80642",
@@ -958,7 +975,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A12",
       "tooltipSquadra": "A08",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "GYR85351",
@@ -971,7 +989,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A61",
       "tooltipSquadra": "A85",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "TSP49814",
@@ -984,7 +1003,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A34",
       "tooltipSquadra": "A77",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "GVC84649",
@@ -997,7 +1017,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A31",
       "tooltipSquadra": "A74",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "JXM81885",
@@ -1010,7 +1031,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A49",
       "tooltipSquadra": "A86",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "BNX70435",
@@ -1023,7 +1045,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A45",
       "tooltipSquadra": "A07",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "WMX10928",
@@ -1036,7 +1059,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A03",
       "tooltipSquadra": "A16",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "SGN88468",
@@ -1049,7 +1073,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A45",
       "tooltipSquadra": "A68",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "WTS06000",
@@ -1062,7 +1087,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A79",
       "tooltipSquadra": "A14",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "HKX34687",
@@ -1075,7 +1101,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A97",
       "tooltipSquadra": "A50",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "HQD43980",
@@ -1088,7 +1115,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A41",
       "tooltipSquadra": "A45",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "IIB68228",
@@ -1101,7 +1129,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A19",
       "tooltipSquadra": "A63",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "HJM22806",
@@ -1114,7 +1143,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A10",
       "tooltipSquadra": "A00",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "ZJK67668",
@@ -1127,7 +1157,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A23",
       "tooltipSquadra": "A43",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "PKD28225",
@@ -1140,7 +1171,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A10",
       "tooltipSquadra": "A06",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "YFX58427",
@@ -1153,7 +1185,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A21",
       "tooltipSquadra": "A65",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "PDH12730",
@@ -1166,7 +1199,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A97",
       "tooltipSquadra": "A13",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "PTV83448",
@@ -1179,7 +1213,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A25",
       "tooltipSquadra": "A04",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "EVO72431",
@@ -1192,7 +1227,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A52",
       "tooltipSquadra": "A85",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "IJC92334",
@@ -1205,7 +1241,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A32",
       "tooltipSquadra": "A04",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "JVA48916",
@@ -1218,7 +1255,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A08",
       "tooltipSquadra": "A69",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "OVD35766",
@@ -1231,7 +1269,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A72",
       "tooltipSquadra": "A93",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "JDG05400",
@@ -1244,7 +1283,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A09",
       "tooltipSquadra": "A65",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "HSA07361",
@@ -1257,7 +1297,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A03",
       "tooltipSquadra": "A54",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "VDO28458",
@@ -1270,7 +1311,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A66",
       "tooltipSquadra": "A41",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "GPU57754",
@@ -1283,7 +1325,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A58",
       "tooltipSquadra": "A59",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "FUP52784",
@@ -1296,7 +1339,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A09",
       "tooltipSquadra": "A82",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "HWH38334",
@@ -1309,7 +1353,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A66",
       "tooltipSquadra": "A43",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "RES45970",
@@ -1322,7 +1367,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A16",
       "tooltipSquadra": "A14",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "JRF27228",
@@ -1335,7 +1381,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A00",
       "tooltipSquadra": "A18",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "KEK40406",
@@ -1348,7 +1395,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A61",
       "tooltipSquadra": "A13",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "VEY98203",
@@ -1361,7 +1409,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A52",
       "tooltipSquadra": "A24",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "KRF22122",
@@ -1374,7 +1423,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A67",
       "tooltipSquadra": "A33",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "YZC81538",
@@ -1387,7 +1437,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A05",
       "tooltipSquadra": "A14",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "KAV03740",
@@ -1400,7 +1451,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A95",
       "tooltipSquadra": "A54",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "ZGN61110",
@@ -1413,7 +1465,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A02",
       "tooltipSquadra": "A38",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "EGB15358",
@@ -1426,7 +1479,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A12",
       "tooltipSquadra": "A19",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "HRQ90315",
@@ -1439,7 +1493,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A07",
       "tooltipSquadra": "A99",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "FHF11541",
@@ -1452,7 +1507,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A68",
       "tooltipSquadra": "A34",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "CHK14978",
@@ -1465,7 +1521,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A73",
       "tooltipSquadra": "A75",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "XSP55705",
@@ -1478,7 +1535,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A50",
       "tooltipSquadra": "A92",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "CGQ71413",
@@ -1491,7 +1549,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A15",
       "tooltipSquadra": "A13",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "GAL68525",
@@ -1504,7 +1563,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A11",
       "tooltipSquadra": "A01",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "PZI60194",
@@ -1517,7 +1577,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A83",
       "tooltipSquadra": "A86",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "FMY77102",
@@ -1530,7 +1591,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A10",
       "tooltipSquadra": "A79",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "ZOJ60821",
@@ -1543,7 +1605,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A39",
       "tooltipSquadra": "A67",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "HYE22257",
@@ -1556,7 +1619,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A14",
       "tooltipSquadra": "A18",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "PEB44530",
@@ -1569,7 +1633,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A77",
       "tooltipSquadra": "A08",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "OBL90474",
@@ -1582,7 +1647,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A43",
       "tooltipSquadra": "A78",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "LKP94186",
@@ -1595,7 +1661,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A60",
       "tooltipSquadra": "A96",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "HUB90322",
@@ -1608,7 +1675,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A75",
       "tooltipSquadra": "A09",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "PYJ78241",
@@ -1621,7 +1689,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A95",
       "tooltipSquadra": "A38",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "LTD98970",
@@ -1634,7 +1703,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A98",
       "tooltipSquadra": "A38",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "CXX38870",
@@ -1647,7 +1717,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A73",
       "tooltipSquadra": "A47",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "YZF54366",
@@ -1660,7 +1731,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A15",
       "tooltipSquadra": "A32",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "RWU59879",
@@ -1673,7 +1745,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A86",
       "tooltipSquadra": "A70",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "EZD38376",
@@ -1686,7 +1759,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A01",
       "tooltipSquadra": "A53",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "KFY82856",
@@ -1699,7 +1773,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": true,
       "descrizioneSquadra": "A90",
       "tooltipSquadra": "A78",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "JIA87132",
@@ -1712,7 +1787,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A29",
       "tooltipSquadra": "A68",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "UCQ09577",
@@ -1725,7 +1801,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A01",
       "tooltipSquadra": "A11",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "WHB94342",
@@ -1738,7 +1815,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A05",
       "tooltipSquadra": "A15",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "AGN04521",
@@ -1751,7 +1829,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A25",
       "tooltipSquadra": "A58",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "JWF50193",
@@ -1764,7 +1843,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A99",
       "tooltipSquadra": "A85",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "CTY43214",
@@ -1777,7 +1857,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A82",
       "tooltipSquadra": "A24",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "CSR86443",
@@ -1790,7 +1871,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A86",
       "tooltipSquadra": "A22",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "JDD34480",
@@ -1803,7 +1885,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A89",
       "tooltipSquadra": "A24",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "DXW05634",
@@ -1816,7 +1899,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A21",
       "tooltipSquadra": "A58",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "PCV09580",
@@ -1829,7 +1913,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A67",
       "tooltipSquadra": "A41",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "UZI25426",
@@ -1842,7 +1927,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A41",
       "tooltipSquadra": "A61",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "FIB43610",
@@ -1855,7 +1941,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A52",
       "tooltipSquadra": "A44",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "WXB69622",
@@ -1868,7 +1955,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A78",
       "tooltipSquadra": "A11",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "QRU39446",
@@ -1881,7 +1969,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A12",
       "tooltipSquadra": "A32",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "XVK54095",
@@ -1894,7 +1983,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A55",
       "tooltipSquadra": "A25",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "BXY65801",
@@ -1907,7 +1997,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A28",
       "tooltipSquadra": "A87",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "GIE08209",
@@ -1920,7 +2011,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A60",
       "tooltipSquadra": "A13",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "XTN08910",
@@ -1933,7 +2025,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A60",
       "tooltipSquadra": "A33",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "AJP64129",
@@ -1946,7 +2039,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A04",
       "tooltipSquadra": "A97",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     },
     {
       "codice": "CHX40613",
@@ -1959,7 +2053,8 @@ export class ListaMezziService_FakeJson {
       "disponibile": false,
       "descrizioneSquadra": "A21",
       "tooltipSquadra": "A82",
-      "personeSulMezzo": []
+      "personeSulMezzo": [],
+      "codiciStatoSucc": []
     }
   ]`);
   constructor(private http: Http) { }
