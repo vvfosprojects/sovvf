@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { ListaMezziService } from "./lista-mezzi.service";
 import { MezzoInServizio } from "../mezzoinservizio/mezzoinservizio.model";
+import { ModificaStatoMezzo } from '../mezzoinservizio/modifica-stato-mezzo.model';
 import { DescStatoMap } from '../mezzoinservizio/desc-stato-map.class';
 
 @Component({
@@ -18,14 +19,27 @@ export class ListaMezziComponent implements OnInit {
   private filtroStato = {};
   private errorMessage: string;
   private testoRicerca: string;
-
-  constructor(private listaMezziService: ListaMezziService) { }
+   @Output() inviaApp : EventEmitter<ModificaStatoMezzo> = new EventEmitter();
+ 
+   constructor(private listaMezziService: ListaMezziService) { }
 
   ngOnInit() {
     this.getMezzi();
   }
 
   /**
+   * Questo metodo permette di acquisire il codic edel Mezzo (codice) e lo Stato modificato (codiceStato) 
+   * dal Componente mezzoinservizio. Tali dati vengono passati all'App-component per effettuare la 
+   * chiamata al backend di aggiornamento dello stato del mezzo.
+   */
+  private cambioStato(lm : ModificaStatoMezzo) {
+    console.log("lista-mezzi");
+    console.log(lm);
+    this.inviaApp.emit(lm);
+   
+  }
+
+   /**
    * Questo metodo esegue la subscription all'observable del servizio di accesso
    * allo stato dei mezzi. In occasione di una nuova pubblicazione, viene assegnato il
    * vettore this.tuttiIMezzi all'intera collezione dei mezzi ricevuta, vengono aggiornati

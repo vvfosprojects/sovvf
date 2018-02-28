@@ -3,6 +3,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 import { MezzoInServizio } from './mezzoinservizio.model';
+import { ModificaStatoMezzo } from './modifica-stato-mezzo.model';
 import { DescStatoMap } from './desc-stato-map.class';
 
 @Component({
@@ -13,13 +14,18 @@ import { DescStatoMap } from './desc-stato-map.class';
 export class MezzoinservizioComponent implements OnInit {
   private mapperDescStato = new DescStatoMap();
   private _mostraPersone: boolean = false;
-  @Input() mezzo: MezzoInServizio;
-  @Output() eventoStato = new EventEmitter<string>();
+  private mf : ModificaStatoMezzo = new ModificaStatoMezzo('', '','');
+  
 
- 
-  constructor() { }
+  @Input() mezzo: MezzoInServizio;
+  
+  @Output() modificaStato : EventEmitter<ModificaStatoMezzo> = new EventEmitter();
+  
+
+  constructor() {}
 
   ngOnInit() {
+   
   }
 
   get fs(): MezzoInServizio {
@@ -27,7 +33,7 @@ export class MezzoinservizioComponent implements OnInit {
     return this.mezzo;
 
   }
-
+    
   public getDescrizioneStato(codice: string): string {
     return this.mapperDescStato.map(codice);
   }
@@ -60,10 +66,16 @@ export class MezzoinservizioComponent implements OnInit {
   }
 
 
-  public clickStato() {
-        this.eventoStato.emit(this.fs.codiceStato);
+  public clickStato(codiceS: string) {
+      
+    this.mf.codice = this.fs.codice;
+    this.mf.codiceStato = codiceS;
+    console.log("MezzoinServizio");
+    console.log(this.mf);
+    this.modificaStato.emit(this.mf);
 }
 
+  
 }
 
 

@@ -17,8 +17,8 @@
             </div>
           </span>
         </div>
-        <div class="col col-md-4 text-center">
-          <div class="h5">{{fs.descrizione}}</div>
+        <div class="col col-md-3 text-center">
+          <div class="h6">{{fs.descrizione}}</div>
           <div>{{fs.targa}}</div>
           <div class="card-text">{{fs.descrizioneUnitaOperativa}} </div>
         </div>
@@ -32,7 +32,7 @@
             <small> {{fs.istanteAggiornamentoStato | friendlyDate:20}} {{fs.istanteAggiornamentoStato | friendlyHour}} </small>
           </div>
         </div>
-        <div class="col col-md-4 text-right">
+        <div class="col col-md-5 text-right">
           <div *ngIf="numeroPersone() > 0">
             <span class="fa fa-users" aria-hidden="true"></span>
             <span class="badge badge-info">{{numeroPersone()}} </span>
@@ -53,30 +53,42 @@
           </div>
 
           <div *ngIf="statiSucc() > 1">
-          <span class="fa fa-pencil-square-o fa-lg" title="Cambio Stato" aria-hidden="true"></span>
-          <span ngbDropdown class="d-inline-block" id="statiMezzo">
+          <span class="fa fa-pencil-square-o fa-lg text-primary" title="Cambio Stato" aria-hidden="true"></span>
+         <!--  <span ngbDropdown class="d-inline-block" id="statiMezzo">
             <div *ngFor="let s of fs.codiciStatoSucc; let f=first;">
-              <button *ngIf="f" class="btn btn-outline-secondary btn-sm" ngbDropdownToggle>{{getDescrizioneStato(s.codiceStato)}}</button>
+              <button (click)="clickStato(s.codiceStato)" *ngIf="f" class="btn btn-outline-secondary btn-sm" ngbDropdownToggle>{{getDescrizioneStato(s.codiceStato)}}</button>
             </div>
             <div  ngbDropdownMenu aria-labelledby="statiMezzo">
               <div *ngFor="let a of fs.codiciStatoSucc; let e=first;">
-                <button *ngIf="!e" class="dropdown-item">{{getDescrizioneStato(a.codiceStato)}}</button>
+                <button (click)="clickStato(a.codiceStato)" *ngIf="!e" class="dropdown-item">{{getDescrizioneStato(a.codiceStato)}}</button>
               </div>
             </div>
+          </span> -->
+          <span class="btn-group">
+            <span *ngFor="let s of fs.codiciStatoSucc; let f=first;">
+              <button (click)="clickStato(s.codiceStato)" class="btn btn-outline-primary btn-sm" *ngIf="f" >{{getDescrizioneStato(s.codiceStato)}}</button>
+            </span>
+            <span class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+              <button class="btn btn-outline-primary btn-sm dropdown-toggle-split" ngbDropdownToggle></button>
+              <span  ngbDropdownMenu aria-labelledby="statiMezzo">
+                <span *ngFor="let a of fs.codiciStatoSucc; let e=first;">
+                  <button (click)="clickStato(a.codiceStato)" *ngIf="!e" class="dropdown-item">{{getDescrizioneStato(a.codiceStato)}}</button>
+                </span>
+              </span>
+            </span>
           </span>
           </div>
           <div *ngIf="statiSucc() == 1">
-              <span class="fa fa-pencil-square-o fa-lg" title="Cambio Stato" aria-hidden="true"></span>
+              <span class="fa fa-pencil-square-o fa-lg text-primary" title="Cambio Stato" aria-hidden="true"></span>
                 <span *ngFor="let s of fs.codiciStatoSucc; let f=first;">
-                  <button *ngIf="f" class="btn btn-outline-secondary btn-sm">{{getDescrizioneStato(s.codiceStato)}}</button>
+                  <button (click)="clickStato(s.codiceStato)" *ngIf="f" class="btn btn-outline-primary btn-sm">{{getDescrizioneStato(s.codiceStato)}}</button>
                 </span>
           </div>
            <div *ngIf="statiSucc() == '0'">
             <div style="padding-bottom: 30px;"></div> 
           </div>  
        </div>
-
-
+      
         <!--<div hidden>
             <div class="col col-md-4">
               <button type="button" class="btn btn-sm" (click)="setDisponibile(true)">Disponibile</button>

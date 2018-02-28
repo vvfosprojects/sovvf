@@ -4,7 +4,8 @@ import 'rxjs/add/observable/of';
 
 import { MezzoInServizio } from '../mezzoinservizio/mezzoinservizio.model';
 import { PersonaSulMezzo } from "../mezzoinservizio/persona-sul-mezzo.model";
-import { Http } from "@angular/http";
+// import { Http } from "@angular/http";
+import { HttpClientModule } from '@angular/common/http';
 
 @Injectable()
 export class ListaMezziService_FakeJson {
@@ -2113,7 +2114,7 @@ export class ListaMezziService_FakeJson {
       "codiciStatoSucc": []
     }
   ]`);
-  constructor(private http: Http) { }
+  constructor(private http: HttpClientModule) { }
 
   public getMezzi(): Observable<MezzoInServizio[]> {
     return Observable.of(this.mezzi);

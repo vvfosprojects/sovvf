@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
@@ -15,6 +15,9 @@ import { ListaMezziComponent } from './lista-mezzi/lista-mezzi.component';
 import { ListaMezziService } from "app/lista-mezzi/lista-mezzi.service";
 import { ListaMezziService_Fake } from "app/lista-mezzi/lista-mezzi-fake.service";
 import { ListaMezziService_FakeJson } from "app/lista-mezzi/lista-mezzi-fake-json.service";
+import { ModificaStatoService } from "app/modifica-stato-mezzo.service";
+import { ModificaStatoService_Fake } from "app/modifica-stato-mezzo-fake.service";
+import { ModificaStatoMezzoService_FakeJson } from "app/modifica-stato-mezzo-fake-json.service";
 
 @NgModule({
   declarations: [
@@ -30,11 +33,12 @@ import { ListaMezziService_FakeJson } from "app/lista-mezzi/lista-mezzi-fake-jso
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     NgbModule.forRoot()
   ],
   providers: [
     { provide: ListaMezziService, useClass: ListaMezziService_FakeJson },
+    { provide: ModificaStatoService, useClass: ModificaStatoMezzoService_FakeJson}
   ],
   bootstrap: [AppComponent]
 })

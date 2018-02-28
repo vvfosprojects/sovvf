@@ -1,10 +1,9 @@
 <div class="row">
     <div class="col-10">
         <div class="row">
-            <app-mezzoinservizio *ngFor="let m of mezziFiltrati" [mezzo]="m" class="col col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4"></app-mezzoinservizio>
+            <app-mezzoinservizio (modificaStato)="cambioStato($event)" *ngFor="let m of mezziFiltrati" [mezzo]="m" class="col col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4"></app-mezzoinservizio>
         </div>
     </div>
-
     <div class="col-2">
         <div style="position: fixed; margin-top: 1em;">
             <div class="input-group">
@@ -57,3 +56,4 @@
             </div>
         </div>
     </div>
+</div>
