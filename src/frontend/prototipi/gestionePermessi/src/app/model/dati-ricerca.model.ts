@@ -1,7 +1,7 @@
 import { UnitaOperativa } from "app/model/unita-operativa.model";
 
-export class RicercaEvent {
-  unitaOperSel: UnitaOperativa;
-  ricorsivo: boolean;
+export class DatiRicerca {
+  stringaLike: string;
   nodoSelezionato: boolean;
+
 }

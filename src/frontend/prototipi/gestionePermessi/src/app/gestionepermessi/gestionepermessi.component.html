@@ -8,7 +8,7 @@
   
   <div class="col-md-6">
     <p-fieldset legend="Chi">
-      <app-cerca-nominativo></app-cerca-nominativo>
+      <app-cerca-nominativo [risultatiRicerca]="risRic"></app-cerca-nominativo>
     </p-fieldset>
   </div>
 </div>
@@ -29,7 +29,7 @@
     <br>
     <br>
     <div class="offset-md-5">
-      <button type="button" class="btn btn-success btn-lg" (nuovoPermesso)="assegnaPermesso()">Conferma</button>
+      <button type="button" class="btn btn-success btn-lg" (click)="assegnaPermesso()">Conferma</button>
     </div>
     
   </div>
