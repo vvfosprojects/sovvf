@@ -12,7 +12,7 @@ export class ModificaStatoMezzoService_FakeJson {
     {
       "codice": "FRP98903",
       "codiceStato": "InSede",
-      "CodiceStatoPrec": "InRientro"     
+      "codiceStatoPrec": "InRientro"     
     }
   `);
   constructor(private http: HttpClientModule) { }
