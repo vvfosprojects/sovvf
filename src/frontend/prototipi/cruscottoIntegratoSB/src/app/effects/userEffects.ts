@@ -1,4 +1,4 @@
-import { UserLoggedinAction } from "../actions/user";
+import { UserLoginAction } from "../actions/user";
 import { AuthenticationService } from '../login/_services/index';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
@@ -17,10 +17,11 @@ import 'rxjs/add/operator/switchMap';
 export class UserEffects {
     @Effect()
     update$: Observable<Action> = this.actions$
-        .ofType<user.UserLoginAction>(user.USERLOGEDIN)
+        .ofType<user.UserLoginAction>(user.USERLOGIN)
         .switchMap(action =>
-            this.authenticationService.login(action.payload.username, action.payload.password)
-            .map(data => new UserLoggedinAction(data), error => {
+            this.authenticationService.login(action.payload.username, 
+                                             action.payload.password)
+            .map(data => new UserLoginAction(data), error => {
                 console.log("errore autenticazione."+error);
               //  this.alertService.error(error);
               //  this.loading = false;

@@ -21,7 +21,8 @@ export class LoginComponent implements OnInit {
     modelr: any =  {};
     loading = false;
     returnUrl: string;
-    public user$ : Observable<User>;
+    public userLogin$ : Observable<User>;
+    public userLoginSuccess$ : Observable<User>;
 
     constructor(
         public store: Store<fromRoot.State>,
@@ -30,7 +31,8 @@ export class LoginComponent implements OnInit {
         private userService: UserService,
         private authenticationService: AuthenticationService,
         private alertService: AlertService) {
-            this.user$ = store.select(fromRoot.getUserState);
+            this.userLogin$ = store.select(fromRoot.getUserLoginState);
+            this.userLoginSuccess$ = store.select(fromRoot.getUserLoginSuccessState);
         }
 
     ngOnInit() {

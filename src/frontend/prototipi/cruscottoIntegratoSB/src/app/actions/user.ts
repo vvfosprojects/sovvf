@@ -2,7 +2,8 @@ import { User } from "../login/_models/user";
 import { Action } from '@ngrx/store';
 
 export const USERLOGIN = '[User] Login';
-export const USERLOGEDIN = '[User] Loggedin';
+export const USERLOGINSUCCESS = '[User] Loginsuccess';
+export const USERLOGINFAIL = '[User] Loginfail';
 
 export class UserLoginAction implements Action {
     type = USERLOGIN;
@@ -10,8 +11,14 @@ export class UserLoginAction implements Action {
     constructor(public payload: User) { }
 }
 
-export class UserLoggedinAction implements Action {
-    type = USERLOGEDIN;
+export class UserLoginSuccess implements Action {
+    type = USERLOGINSUCCESS;
+
+    constructor(public payload: User) { }
+}
+
+export class UserLoginFail implements Action {
+    type = USERLOGINFAIL;
 
     constructor(public payload: User) { }
 }
