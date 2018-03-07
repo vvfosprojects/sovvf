@@ -68,6 +68,7 @@
             <span *ngFor="let s of fs.codiciStatoSucc; let f=first;">
               <button (click)="clickStato(s.codiceStato)" class="btn btn-outline-primary btn-sm" *ngIf="f" >{{getDescrizioneStato(s.codiceStato)}}</button>
             </span>
+
             <span class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
               <button class="btn btn-outline-primary btn-sm dropdown-toggle-split" ngbDropdownToggle></button>
               <span  ngbDropdownMenu aria-labelledby="statiMezzo">

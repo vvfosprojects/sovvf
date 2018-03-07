@@ -5,6 +5,9 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { MezzoInServizio } from './mezzoinservizio.model';
 import { ModificaStatoMezzo } from './modifica-stato-mezzo.model';
 import { DescStatoMap } from './desc-stato-map.class';
+import { ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+import { GrowlModule, Message } from 'primeng/primeng';
+import { ButtonModule} from 'primeng/primeng';
 
 @Component({
   selector: 'app-mezzoinservizio',
