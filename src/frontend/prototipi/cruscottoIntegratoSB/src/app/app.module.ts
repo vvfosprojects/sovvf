@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpModule } from "@angular/http";
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -12,6 +13,11 @@ import { AuthGuard } from './shared';
 
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './reducers/index';
+
+import { EffectsModule } from '@ngrx/effects';
+import { UserEffects } from './effects/userEffects';
+
+import { AuthenticationService } from "./login/_services/authentication.service";
 
 
 
@@ -28,6 +34,7 @@ export function createTranslateLoader(http: HttpClient) {
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
+        HttpModule, 
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -35,11 +42,12 @@ export function createTranslateLoader(http: HttpClient) {
                 deps: [HttpClient]
             }
         }),
-        AppRoutingModule,
-        StoreModule.forRoot(reducers)
+        AppRoutingModule, 
+        StoreModule.forRoot(reducers),
+        EffectsModule.forRoot([UserEffects])
     ],
     declarations: [AppComponent],
-    providers: [AuthGuard],
+    providers: [AuthGuard, AuthenticationService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
