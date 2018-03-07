@@ -7,7 +7,7 @@ import * as user from '../actions/user';
 export function reducer(state: User, action: user.UserLoginFail) {
     switch (action.type) {
         case user.USERLOGINFAIL:
-            return action.payload;
+            return action;
         default:
             return state;
     }

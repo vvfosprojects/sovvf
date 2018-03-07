@@ -20,5 +20,5 @@ export class UserLoginSuccess implements Action {
 export class UserLoginFail implements Action {
     type = USERLOGINFAIL;
 
-    constructor(public payload: User) { }
+    //constructor(public payload: User) { }
 }

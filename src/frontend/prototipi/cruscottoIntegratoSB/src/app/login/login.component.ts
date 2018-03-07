@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
                 this.loading = false;
             });
 
-         /*   console.log("dispaccio azione");
+          /*  console.log("dispaccio azione");
             this.store.dispatch(new UserLoginAction(this.modelr));
             console.log("utente "+this.user$[1]);
 */
@@ -86,6 +86,7 @@ export class LoginComponent implements OnInit {
                     this.alertService.error(error);
                     this.loading = false;
                 });
+                
 
                  
         //localStorage.setItem('isLoggedin', 'true');
