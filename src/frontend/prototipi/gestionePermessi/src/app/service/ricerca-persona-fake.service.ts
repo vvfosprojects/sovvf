@@ -20,9 +20,15 @@ private ricercaPersona: Persona[] =
 
   constructor() { }
 
-  public cerca(key: string, codiceUo: string): Observable<Persona[]> {
+  /* public cerca(key: string, codiceUo: string): Observable<Persona[]> {
     let result = this.ricercaPersona.filter(p => p.descrizione.match(/key/i));
     console.log("Ricerca persona con chiave", key, "Restituito:", result);
+    return Observable.of(result);
+  } */
+
+  public cerca(key: string, nodoSel: boolean): Observable<Persona[]> {
+    let result = this.ricercaPersona.filter(p => p.descrizione.toLocaleLowerCase().match(key.toLocaleLowerCase()));
+    console.log("Ricerca persona con chiave", key.toLocaleLowerCase(), "Restituito:", result);
     return Observable.of(result);
   }
 }

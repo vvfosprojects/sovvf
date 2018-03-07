@@ -10,6 +10,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 
+import { StoreModule } from '@ngrx/store';
+import { reducers } from './reducers/index';
+
 
 
 // AoT requires an exported function for factories
@@ -32,7 +35,8 @@ export function createTranslateLoader(http: HttpClient) {
                 deps: [HttpClient]
             }
         }),
-        AppRoutingModule
+        AppRoutingModule,
+        StoreModule.forRoot(reducers)
     ],
     declarations: [AppComponent],
     providers: [AuthGuard],

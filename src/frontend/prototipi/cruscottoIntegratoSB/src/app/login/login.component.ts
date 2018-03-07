@@ -41,6 +41,9 @@ export class LoginComponent implements OnInit {
         localStorage.removeItem('users');
         this.modelr.username = "vvf";
         this.modelr.password = "vvf";
+
+        //TODO qui verrà fatto il dispatch dell'action con effect. e la chiamata al service
+        // sottostante dovrebbe andare nella cartella effects.
         this.userService.create(this.modelr)
         .subscribe(
             data => {
@@ -52,6 +55,8 @@ export class LoginComponent implements OnInit {
                 this.loading = false;
             });
 
+            //TODO qui verrà fatto il dispatch dell'action con effect. e la chiamata al service
+            // sottostante dovrebbe andare nella cartella effects.
         this.authenticationService.login(this.model.username, this.model.password)
             .subscribe(
                 data => {
