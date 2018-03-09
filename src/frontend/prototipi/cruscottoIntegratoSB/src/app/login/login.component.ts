@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { routerTransition } from '../router.animations';
+import { Observable } from 'rxjs/Observable';
 
 import { AlertService, AuthenticationService, UserService } from '../login/_services/index';
+
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../reducers';
+import { UserLoginAction } from '../actions/user';
+import { User } from './_models/index';
 
 @Component({
     selector: 'app-login',
@@ -15,13 +21,19 @@ export class LoginComponent implements OnInit {
     modelr: any =  {};
     loading = false;
     returnUrl: string;
+    public userLogin$ : Observable<User>;
+    public userLoginSuccess$ : Observable<User>;
 
     constructor(
+        public store: Store<fromRoot.State>,
         private route: ActivatedRoute,
         private router: Router,
         private userService: UserService,
         private authenticationService: AuthenticationService,
-        private alertService: AlertService) {}
+        private alertService: AlertService) {
+            this.userLogin$ = store.select(fromRoot.getUserLoginState);
+            this.userLoginSuccess$ = store.select(fromRoot.getUserLoginSuccessState);
+        }
 
     ngOnInit() {
         // reset login status
@@ -55,9 +67,14 @@ export class LoginComponent implements OnInit {
                 this.loading = false;
             });
 
+          /*  console.log("dispaccio azione");
+            this.store.dispatch(new UserLoginAction(this.modelr));
+            console.log("utente "+this.user$[1]);
+*/
             //TODO qui verrà fatto il dispatch dell'action con effect. e la chiamata al service
             // sottostante dovrebbe andare nella cartella effects.
-        this.authenticationService.login(this.model.username, this.model.password)
+      
+            this.authenticationService.login(this.model.username, this.model.password)
             .subscribe(
                 data => {
                     console.log("in routing..");
@@ -69,6 +86,9 @@ export class LoginComponent implements OnInit {
                     this.alertService.error(error);
                     this.loading = false;
                 });
+                
+
+                 
         //localStorage.setItem('isLoggedin', 'true');
     }
 }

@@ -2,13 +2,14 @@
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
+import { User } from '../_models/index';
 
 @Injectable()
 export class AuthenticationService {
     constructor(private http: Http) { }
 
-    login(username: string, password: string) {
-        console.log("in autentication service ...");
+    login(username: string, password: string): Observable<User> {
+        console.log("in autentication service ... "+username+password);
         return this.http.post('/api/authenticate', JSON.stringify({ username: username, password: password }))
             .map((response: Response) => {
                 console.log("risposta ottenuta.")
