@@ -1,4 +1,11 @@
 <div class="login-page" [@routerTransition]>
+    <!--
+        <input [ngModel]='amount$ | async' (ngModelChange)="onAmountChange($event)">
+        
+        <p *ngFor="let currency of (currencyRates$ | async)">
+          {{currency.code + ' ' + currency.value * (amount$ | async)}}
+        </p>
+    -->
     <div class="row justify-content-md-center">
         <div class="col-md-4">
             <img src="assets/images/Fiamma.png" width="150px" class="user-avatar" />
@@ -22,6 +29,7 @@
                     <alert></alert>
                     <a class="text-muted" href="https://accounts.dipvvf.it/">Gestione credenziali di accesso.</a>
                     <!--<a class="btn rounded-btn" [routerLink]="['/signup']">Register</a>-->
+               
                 </div>
             </form>
         </div>
