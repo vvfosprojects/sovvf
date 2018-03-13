@@ -21,6 +21,7 @@ import { LoginComponent } from './login.component';
 
 import { CurrencyService } from '../services/currency.service';
 import { CurrencyEffects } from '../effects/currencyEffects';
+import { UserEffects } from '../effects/userEffects';
 
 import { StoreModule } from '@ngrx/store';
 import { reducers } from '../reducers/index';
@@ -35,7 +36,8 @@ import { EffectsModule } from '@ngrx/effects';
         HttpModule,
         HttpClientModule,
         StoreModule.forRoot(reducers),
-        EffectsModule.forRoot([CurrencyEffects])
+        EffectsModule.forRoot([CurrencyEffects,
+                               UserEffects])
     ],
     declarations: [LoginComponent,
         AlertComponent,

@@ -1,7 +1,7 @@
 import { CurrenciesUpdateAction } from '../actions/currency';
 import { Currency } from '../models/currency';
 import { AmountChangeAction } from '../actions/amount';
-import { UserloginSuccess } from '../actions/user';
+import { UserloginSuccess, UserloginAction } from '../actions/user';
 import { Store } from '@ngrx/store';
 
 import * as fromRoot from '../reducers';
@@ -93,7 +93,15 @@ export class LoginComponent implements OnInit {
 */
             //TODO qui verrà fatto il dispatch dell'action con effect. e la chiamata al service
             // sottostante dovrebbe andare nella cartella effects.
-      
+            this.store.dispatch(new UserloginAction(this.model));
+            this.userSuccess$.subscribe(
+                n => {
+                    console.log("utente obs "+JSON.stringify(n))
+                   
+                },
+                e => console.log(e)
+              )
+      /*
             this.authenticationService.login(this.model.username, this.model.password)
             .subscribe(
                 data => {
@@ -111,7 +119,7 @@ export class LoginComponent implements OnInit {
                     this.alertService.error(error);
                     this.loading = false;
                 });
-                
+          */      
 
                  
         //localStorage.setItem('isLoggedin', 'true');
