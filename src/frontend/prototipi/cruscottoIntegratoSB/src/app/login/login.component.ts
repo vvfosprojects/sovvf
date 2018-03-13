@@ -96,7 +96,10 @@ export class LoginComponent implements OnInit {
             this.store.dispatch(new UserloginAction(this.model));
             this.userSuccess$.subscribe(
                 n => {
-                    console.log("utente obs "+JSON.stringify(n))
+                    if (n != undefined){
+                        console.log("utente obs "+JSON.stringify(n));
+                        this.router.navigate([this.returnUrl]);
+                    }
                    
                 },
                 e => console.log(e)
