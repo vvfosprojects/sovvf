@@ -1,12 +1,10 @@
 import { ActionReducer, Action } from '@ngrx/store';
-import { User } from "../login/_models/user";
-import * as user from '../actions/user';
+import * as amount from '../actions/user';
+import { User } from '../login/_models/user';
 
-
-//state è number ma è sbagliato.
-export function reducer(state: User, action: user.UserLoginAction) {
+export function reducer(state: User, action: amount.UserloginAction) {
     switch (action.type) {
-        case user.USERLOGIN:
+        case amount.USERLOGIN:
             return action.payload;
         default:
             return state;

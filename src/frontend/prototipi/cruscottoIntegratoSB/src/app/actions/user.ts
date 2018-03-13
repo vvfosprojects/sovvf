@@ -1,24 +1,17 @@
-import { User } from "../login/_models/user";
+import { User } from '../login/_models/user';
 import { Action } from '@ngrx/store';
 
-export const USERLOGIN = '[User] Login';
-export const USERLOGINSUCCESS = '[User] Loginsuccess';
-export const USERLOGINFAIL = '[User] Loginfail';
+export const USERLOGIN = '[User] Userlogin';
+export const USERLOGINSUCCESS = '[User] USERLOGINSUCCESS';
 
-export class UserLoginAction implements Action {
+export class UserloginAction implements Action {
     type = USERLOGIN;
- 
-    constructor(public payload: User) { }
+
+    constructor(public payload: User) {}
 }
 
-export class UserLoginSuccess implements Action {
+export class UserloginSuccess implements Action {
     type = USERLOGINSUCCESS;
 
-    constructor(public payload: User) { }
-}
-
-export class UserLoginFail implements Action {
-    type = USERLOGINFAIL;
-
-    //constructor(public payload: User) { }
+    constructor(public payload: User) {}
 }

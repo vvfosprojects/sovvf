@@ -1,41 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { CurrenciesUpdateAction } from '../actions/currency';
+import { Currency } from '../models/currency';
+import { AmountChangeAction } from '../actions/amount';
+import { UserloginSuccess } from '../actions/user';
+import { Store } from '@ngrx/store';
+
+import * as fromRoot from '../reducers';
+
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { routerTransition } from '../router.animations';
 import { Observable } from 'rxjs/Observable';
 
 import { AlertService, AuthenticationService, UserService } from '../login/_services/index';
-
-import { Store } from '@ngrx/store';
-import * as fromRoot from '../reducers';
-import { UserLoginAction } from '../actions/user';
-import { User } from './_models/index';
+import { User } from './_models/user';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
-    animations: [routerTransition()]
+    animations: [routerTransition()],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit {
     model: any = {};
     modelr: any =  {};
     loading = false;
     returnUrl: string;
-    public userLogin$ : Observable<User>;
-    public userLoginSuccess$ : Observable<User>;
+    public amount$: Observable<number>;
+    public currencyRates$: Observable<Currency[]>;
+    public userSuccess$: Observable<User>;
+    
 
     constructor(
-        public store: Store<fromRoot.State>,
         private route: ActivatedRoute,
         private router: Router,
         private userService: UserService,
         private authenticationService: AuthenticationService,
-        private alertService: AlertService) {
-            this.userLogin$ = store.select(fromRoot.getUserLoginState);
-            this.userLoginSuccess$ = store.select(fromRoot.getUserLoginSuccessState);
+        private alertService: AlertService,
+        public store: Store<fromRoot.State>
+    ) {
+        this.amount$ = store.select(fromRoot.getAmountState);
+        this.currencyRates$ = store.select(fromRoot.getCurrnecyRates);
+        this.userSuccess$ = store.select(fromRoot.getUserLoginSuccessState);
         }
 
     ngOnInit() {
+        this.store.dispatch(new CurrenciesUpdateAction());
         // reset login status
         this.authenticationService.logout();
         
@@ -44,6 +54,16 @@ export class LoginComponent implements OnInit {
                 console.log("qui...");
                 console.log("loading = "+this.loading);
     }
+
+    onAmountChange(amount: string) {
+        const number = parseFloat(amount);
+        if (!isNaN(number)) this.store.dispatch(new AmountChangeAction(number));
+        
+        this.userSuccess$.subscribe(
+          n => console.log(n),
+          e => console.log(e)
+        )
+      }
 
     onLoggedin() {
         console.log("pure qui..."+this.model.username+this.model.password);
@@ -78,6 +98,11 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 data => {
                     console.log("in routing..");
+                    this.store.dispatch(new UserloginSuccess(this.model));
+                    this.userSuccess$.subscribe(
+                        n => console.log("utente "+JSON.stringify(n)),
+                        e => console.log(e)
+                      )
                     this.router.navigate([this.returnUrl]);
                     console.log("routati");
                 },
