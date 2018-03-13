@@ -1,22 +1,16 @@
 <app-lista-mezzi (inviaApp)="riceviStato($event)"></app-lista-mezzi>
-<div *ngIf="statoPrec() == '1'" >
-<p-dialog [positionTop]="200" [style]="{'background-color':'white','border-width':'1px', 'border-style':'groove', 'border-color':'muted'}"
-    header="" [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="true">Lo stato del mezzo é stato aggiornato. Vuoi Annullare l'operazione?
-    <p-footer >
-          <button class="btn btn-primary b" type="button" pButton icon="fa-check" (click)="annullare('1')" label="Si"></button>
-          <button class="btn btn-primary a" type="button" pButton icon="fa-close" autofocus (click)="annullare('0')" label="No"></button>
-     </p-footer>
-</p-dialog>
+<div *ngIf="statoPrec() == '2'">
+ <p-dialog [positionTop]="0"   [style]="{'background-color':'white'}" [closable]="false" [resizable]="true"
+    [(visible)]="display" [modal]="true" [responsive]="true" [showHeader]="false">Annullamento effettuato
+ </p-dialog>
 </div>
-<div *ngIf="statoPrec() == '2'" >
-    <p-dialog [positionTop]="200" [style]="{'background-color':'white','border-width':'1px', 'border-style':'groove', 'border-color':'muted'}"
-        header="" [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="true">La modifica é stata annullata.
-        <p-footer >
-            <button class="btn btn-primary a" type="button" pButton icon="fa-check" (click)="annullare('0')" label="Ok"></button>
-         </p-footer>
-    </p-dialog>
- </div>
-    
 
+<div *ngIf="statoPrec() == '1'">
+  <p-dialog [positionTop]="0"   [style]="{'background-color':'white'}" [closable]="false" [resizable]="true"
+      [(visible)]="display" [modal]="true" [responsive]="true" [showHeader]="false">Lo stato del mezzo é stato aggiornato. <button class="btn btn-primary" type="button" pButton icon="fa-check" (click)="annullare('1')" label="Annulla"></button>
+  </p-dialog>
+</div>
+
+    
 
 
