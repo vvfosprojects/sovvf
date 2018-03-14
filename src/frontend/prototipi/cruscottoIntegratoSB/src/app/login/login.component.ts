@@ -117,7 +117,7 @@ export class LoginComponent implements OnInit {
            //   this.alertService.error(n.toString);
                     // if(n != undefined){
                           console.log("login fallito obs "+n);
-                          this.alertService.error(n);
+                          this.alertService.error(this.userFail$);
                           this.loading = false;
                       //  this.loginFail(n);
                     //  }
