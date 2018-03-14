@@ -1,7 +1,7 @@
 import { CurrenciesUpdateAction } from '../actions/currency';
 import { Currency } from '../models/currency';
 import { AmountChangeAction } from '../actions/amount';
-import { UserloginSuccess, UserloginAction } from '../actions/user';
+import { UserloginSuccess, UserloginAction, UserloginFail } from '../actions/user';
 import { Store } from '@ngrx/store';
 
 import * as fromRoot from '../reducers';
@@ -29,6 +29,8 @@ export class LoginComponent implements OnInit {
     public amount$: Observable<number>;
     public currencyRates$: Observable<Currency[]>;
     public userSuccess$: Observable<User>;
+    public userFail$: Observable<any>;
+    
     
 
     constructor(
@@ -42,6 +44,8 @@ export class LoginComponent implements OnInit {
         this.amount$ = store.select(fromRoot.getAmountState);
         this.currencyRates$ = store.select(fromRoot.getCurrnecyRates);
         this.userSuccess$ = store.select(fromRoot.getUserLoginSuccessState);
+        this.userFail$ = store.select(fromRoot.getUserLoginFailState);
+        
         }
 
     ngOnInit() {
@@ -53,6 +57,8 @@ export class LoginComponent implements OnInit {
                 this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
                 console.log("qui...");
                 console.log("loading = "+this.loading);
+
+             
     }
 
     onAmountChange(amount: string) {
@@ -73,7 +79,7 @@ export class LoginComponent implements OnInit {
         localStorage.removeItem('users');
         this.modelr.username = "vvf";
         this.modelr.password = "vvf";
-
+        
         //TODO qui verrà fatto il dispatch dell'action con effect. e la chiamata al service
         // sottostante dovrebbe andare nella cartella effects.
         this.userService.create(this.modelr)
@@ -104,6 +110,20 @@ export class LoginComponent implements OnInit {
                 },
                 e => console.log(e)
               )
+            //  console.log("prima di utente fallito.");
+              this.userFail$.subscribe(
+                 n => {
+                     //        console.log("in utente fallito."+n);
+           //   this.alertService.error(n.toString);
+                    // if(n != undefined){
+                          console.log("login fallito obs "+n);
+                          this.alertService.error(n);
+                          this.loading = false;
+                      //  this.loginFail(n);
+                    //  }
+                  e => console.log(e)
+                  })
+            
       /*
             this.authenticationService.login(this.model.username, this.model.password)
             .subscribe(

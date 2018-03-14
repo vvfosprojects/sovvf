@@ -1,4 +1,4 @@
-import { UserloginAction, UserloginSuccess } from './../actions/user';
+import { UserloginAction, UserloginSuccess, UserloginFail } from './../actions/user';
 import { AuthenticationService } from './../login/_services';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
@@ -17,11 +17,11 @@ export class UserEffects {
     @Effect()
     login$: Observable<Action> = this.actions$
         .ofType<user.UserloginAction>(user.USERLOGIN)
-        .debounceTime(500)
         .map(action => action.payload)
         .switchMap(id => this.authenticationService.login(id.username,
                                                           id.password)
             .map(res => new user.UserloginSuccess(res))
+            .catch(error => of(new user.UserloginFail(error))) //cambiami.
         );
 
     constructor(
