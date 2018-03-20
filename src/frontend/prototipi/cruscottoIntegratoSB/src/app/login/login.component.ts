@@ -1,6 +1,5 @@
 import { CurrenciesUpdateAction } from '../actions/currency';
 import { Currency } from '../models/currency';
-import { AmountChangeAction } from '../actions/amount';
 import { UserloginSuccess, UserloginAction, UserloginFail } from '../actions/user';
 import { Store } from '@ngrx/store';
 
@@ -41,7 +40,6 @@ export class LoginComponent implements OnInit {
         public store: Store<fromRoot.State>,
         private _ngZone: NgZone
     ) {
-        this.amount$ = store.select(fromRoot.getAmountState);
         this.currencyRates$ = store.select(fromRoot.getCurrnecyRates);
         this.userSuccess$ = store.select(fromRoot.getUserLoginSuccessState);
         this.userFail$ = store.select(fromRoot.getUserLoginFailState);
@@ -81,16 +79,6 @@ export class LoginComponent implements OnInit {
                 }
                 e => console.log(e)
             })
-    }
-
-    onAmountChange(amount: string) {
-        const number = parseFloat(amount);
-        if (!isNaN(number)) this.store.dispatch(new AmountChangeAction(number));
-
-        this.userSuccess$.subscribe(
-            n => console.log(n),
-            e => console.log(e)
-        )
     }
 
     onLoggedin() {

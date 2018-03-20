@@ -1,4 +1,3 @@
-import * as fromAmount from './amount';
 import * as fromCurrency from './currency';
 import * as fromUserLoginSuccess from './userLoginSuccess';
 import * as fromUserLoginFail from './userLoginFail';
@@ -7,7 +6,6 @@ import { Currency } from './../models/currency';
 import { User } from '../login/_models/user';
 
 export interface State {
-    amount: number;
     currencies: Currency[];
     userLoginSuccess: User;
     userLoginFail: any;
@@ -15,14 +13,11 @@ export interface State {
 };
 
 export const reducers = {
-    amount: fromAmount.reducer,
     currencies: fromCurrency.reducer,
     userLoginSuccess: fromUserLoginSuccess.reducer,
     userLoginFail: fromUserLoginFail.reducer,
     userLogin: fromUserLogin.reducer
 };
-
-export const getAmountState = (state: State) => state.amount;
 
 export const getCurrnecyRates = (state: State) => state.currencies;
 
