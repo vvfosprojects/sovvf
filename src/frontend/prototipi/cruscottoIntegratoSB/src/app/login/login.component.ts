@@ -13,7 +13,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { AlertService, AuthenticationService, UserService } from '../login/_services/index';
 import { User } from './_models/user';
-import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'app-login',
@@ -26,7 +25,6 @@ export class LoginComponent implements OnInit {
     modelr: any = {};
     loading$: Observable<boolean>;
     returnUrl: string;
-    timeSub: Subscription;
     public amount$: Observable<number>;
     public currencyRates$: Observable<Currency[]>;
     public userSuccess$: Observable<User>;
@@ -70,12 +68,8 @@ export class LoginComponent implements OnInit {
             },
             e => console.log(e)
         )
-        //  console.log("prima di utente fallito.");
-        this.timeSub = this.userFail$.subscribe(
+        this.userFail$.subscribe(
             n => {
-                //        console.log("in utente fallito."+n);
-                //   this.alertService.error(n.toString);
-                /* your result-handling code here */
                 if (n != undefined) {
                     console.log("login fallito obs " + n);
 
@@ -84,7 +78,6 @@ export class LoginComponent implements OnInit {
                         this.loading$ = Observable.of(false);
                     })
                     console.log("login fallito obs eseguito " + n);
-                    //  this.loginFail(n);
                 }
                 e => console.log(e)
             })
@@ -122,16 +115,11 @@ export class LoginComponent implements OnInit {
                     this.loading$ = Observable.of(false);
                 });
 
-        /*  console.log("dispaccio azione");
-          this.store.dispatch(new UserLoginAction(this.modelr));
-          console.log("utente "+this.user$[1]);
-*/
-        //TODO qui verrà fatto il dispatch dell'action con effect. e la chiamata al service
-        // sottostante dovrebbe andare nella cartella effects.
+
+        //TODO viene fatto il dispatch dell'action con effect. e la chiamata al service
+        // sottostante è stata messa nella cartella effects.
 
         this.store.dispatch(new UserloginAction(this.model));
-
-
 
         /*
               this.authenticationService.login(this.model.username, this.model.password)
