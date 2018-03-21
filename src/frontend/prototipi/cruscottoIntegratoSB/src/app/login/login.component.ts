@@ -101,7 +101,7 @@ export class LoginComponent implements OnInit {
         // sottostante è stata messa nella cartella effects.
 
         this.store.dispatch(new UserloginAction(this.model));
-
+        
         /*
               this.authenticationService.login(this.model.username, this.model.password)
               .subscribe(

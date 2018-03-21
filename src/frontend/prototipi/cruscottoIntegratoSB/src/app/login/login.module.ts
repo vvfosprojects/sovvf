@@ -26,6 +26,7 @@ import { reducers } from '../reducers/index';
 import { HttpClientModule } from '@angular/common/http';
 
 import { EffectsModule } from '@ngrx/effects';
+import { metaReducers } from "../reducers/clearState";
 
 @NgModule({
     imports: [CommonModule,
@@ -33,7 +34,7 @@ import { EffectsModule } from '@ngrx/effects';
         FormsModule,
         HttpModule,
         HttpClientModule,
-        StoreModule.forRoot(reducers),
+        StoreModule.forRoot(reducers, {metaReducers}),
         EffectsModule.forRoot([UserEffects])
     ],
     declarations: [LoginComponent,
