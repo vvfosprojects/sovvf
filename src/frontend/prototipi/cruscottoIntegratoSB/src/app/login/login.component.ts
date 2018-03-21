@@ -1,4 +1,4 @@
-import { UserloginSuccess, UserloginAction, UserloginFail } from '../actions/user';
+import { UserloginSuccess, UserloginAction, UserloginFail, Userlogout } from '../actions/user';
 import { Store } from '@ngrx/store';
 
 import * as fromRoot from '../reducers';
@@ -101,6 +101,9 @@ export class LoginComponent implements OnInit {
         // sottostante è stata messa nella cartella effects.
 
         this.store.dispatch(new UserloginAction(this.model));
+
+        // spostare la action di logut nel pulsante uscita.
+        this.store.dispatch(new Userlogout(""));
         
         /*
               this.authenticationService.login(this.model.username, this.model.password)
