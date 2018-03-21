@@ -19,8 +19,6 @@ import { HomeComponent } from '../home/index';
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
 
-import { CurrencyService } from '../services/currency.service';
-import { CurrencyEffects } from '../effects/currencyEffects';
 import { UserEffects } from '../effects/userEffects';
 
 import { StoreModule } from '@ngrx/store';
@@ -36,8 +34,7 @@ import { EffectsModule } from '@ngrx/effects';
         HttpModule,
         HttpClientModule,
         StoreModule.forRoot(reducers),
-        EffectsModule.forRoot([CurrencyEffects,
-                               UserEffects])
+        EffectsModule.forRoot([UserEffects])
     ],
     declarations: [LoginComponent,
         AlertComponent,
@@ -48,8 +45,6 @@ import { EffectsModule } from '@ngrx/effects';
         AlertService,
         AuthenticationService,
         UserService,
-        CurrencyService,
-
         // providers used to create fake backend
         fakeBackendProvider,
         MockBackend,

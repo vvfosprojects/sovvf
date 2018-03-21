@@ -1,5 +1,3 @@
-import { CurrenciesUpdateAction } from '../actions/currency';
-import { Currency } from '../models/currency';
 import { UserloginSuccess, UserloginAction, UserloginFail } from '../actions/user';
 import { Store } from '@ngrx/store';
 
@@ -24,8 +22,6 @@ export class LoginComponent implements OnInit {
     modelr: any = {};
     loading$: Observable<boolean>;
     returnUrl: string;
-    public amount$: Observable<number>;
-    public currencyRates$: Observable<Currency[]>;
     public userSuccess$: Observable<User>;
     public userFail$: Observable<any>;
 
@@ -40,14 +36,11 @@ export class LoginComponent implements OnInit {
         public store: Store<fromRoot.State>,
         private _ngZone: NgZone
     ) {
-        this.currencyRates$ = store.select(fromRoot.getCurrnecyRates);
         this.userSuccess$ = store.select(fromRoot.getUserLoginSuccessState);
         this.userFail$ = store.select(fromRoot.getUserLoginFailState);
-
     }
 
     ngOnInit() {
-        this.store.dispatch(new CurrenciesUpdateAction());
         // reset login status
         this.authenticationService.logout();
 
@@ -94,14 +87,14 @@ export class LoginComponent implements OnInit {
         // sottostante dovrebbe andare nella cartella effects.
         this.userService.create(this.modelr)
             .subscribe(
-                data => {
-                    //   this.alertService.success('Registration successful', true);
-                    //   this.router.navigate(['/login']);
-                },
-                error => {
-                    //   this.alertService.error(error);
-                    this.loading$ = Observable.of(false);
-                });
+            data => {
+                //   this.alertService.success('Registration successful', true);
+                //   this.router.navigate(['/login']);
+            },
+            error => {
+                //   this.alertService.error(error);
+                this.loading$ = Observable.of(false);
+            });
 
 
         //TODO viene fatto il dispatch dell'action con effect. e la chiamata al service
