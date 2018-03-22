@@ -19,11 +19,23 @@ import { HomeComponent } from '../home/index';
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
 
+import { UserEffects } from '../effects/userEffects';
+
+import { StoreModule } from '@ngrx/store';
+import { reducers } from '../reducers/index';
+import { HttpClientModule } from '@angular/common/http';
+
+import { EffectsModule } from '@ngrx/effects';
+import { metaReducers } from "../reducers/clearState";
+
 @NgModule({
     imports: [CommonModule,
         LoginRoutingModule,
         FormsModule,
-        HttpModule
+        HttpModule,
+        HttpClientModule,
+        StoreModule.forRoot(reducers, {metaReducers}),
+        EffectsModule.forRoot([UserEffects])
     ],
     declarations: [LoginComponent,
         AlertComponent,
@@ -34,7 +46,6 @@ import { LoginComponent } from './login.component';
         AlertService,
         AuthenticationService,
         UserService,
-
         // providers used to create fake backend
         fakeBackendProvider,
         MockBackend,

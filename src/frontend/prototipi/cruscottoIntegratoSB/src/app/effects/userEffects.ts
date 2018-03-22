@@ -1,11 +1,10 @@
-import { UserLoginAction, UserLoginSuccess, UserLoginFail } from "../actions/user";
-import { AuthenticationService } from '../login/_services/index';
+import { UserloginAction, UserloginSuccess, UserloginFail } from './../actions/user';
+import { AuthenticationService } from './../login/_services';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { Action } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
-import { Http, Headers, Response } from '@angular/http';
 import { of } from 'rxjs/observable/of';
 
 import * as user from '../actions/user';
@@ -16,18 +15,15 @@ import 'rxjs/add/operator/switchMap';
 @Injectable()
 export class UserEffects {
     @Effect()
-    update$: Observable<Action> = this.actions$
-        .ofType<user.UserLoginAction>(user.USERLOGIN)
-        .switchMap(action =>
-            this.authenticationService.login(action.payload.username, 
-                                             action.payload.password)
-            .map(data => new user.UserLoginSuccess(data))
-            .catch((error) => {
-                return Observable.of(new user.UserLoginFail())
-            })      
+    login$: Observable<Action> = this.actions$
+        .ofType<user.UserloginAction>(user.USERLOGIN)
+        .map(action => action.payload)
+        .switchMap(id => this.authenticationService.login(id.username,
+                                                          id.password)
+            .map(res => new user.UserloginSuccess(res))
+            .catch(error => of(new user.UserloginFail(error))) //cambiami.
         );
-        
-        
+
     constructor(
         private authenticationService: AuthenticationService,
         private actions$: Actions

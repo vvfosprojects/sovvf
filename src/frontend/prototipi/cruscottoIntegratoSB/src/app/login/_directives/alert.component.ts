@@ -2,6 +2,7 @@
 import { Subscription } from 'rxjs/Subscription';
 
 import { AlertService } from '../_services/alert.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     moduleId: module.id,
@@ -11,7 +12,7 @@ import { AlertService } from '../_services/alert.service';
 
 export class AlertComponent implements OnDestroy {
     private subscription: Subscription;
-    message: any;
+    message: Observable<string>;
 
     constructor(private alertService: AlertService) { 
         // subscribe to alert messages

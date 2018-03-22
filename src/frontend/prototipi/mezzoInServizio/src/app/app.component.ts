@@ -22,11 +22,7 @@ import  {FormsModule} from '@angular/forms'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
-
-
 const API_URL = environment.apiUrl;  
-
-
 
 @Component({
   selector: 'app-root',
@@ -40,10 +36,9 @@ export class AppComponent {
   private errorMessage: string;
 
   private tipo_win: string;
+  private visualizza: number;
  
   display: boolean = false;
-
-  
 
   
   constructor(private modificaStatoService: ModificaStatoService) {}
@@ -59,14 +54,14 @@ export class AppComponent {
       console.log("riceviStato");
       this.tipo_win = '1';
       this.sendModStatoMezzo(this.rispModStato);
-  
   }
 
   /**
    * Questo metodo esegue la subscription all'observable del servizio che aggiorna
-   * lo stato del mezzo da modificare. Viene assegnata la risposta all'object 
+   * lo stato del mezzo da modificare/annullare. Viene assegnata la risposta all'object 
    * this.rispModStato che contiene anche lo stato precedente del mezzo, per dare
-   * la possibilità di Annullare l'operazione all'utente.
+   * la possibilità di Annullare l'operazione all'utente. Nel caso di chiamata per 
+   * annullamento dello stato mezzo, il servizio ritorna codiceStatoPrec a null.
    */
   private sendModStatoMezzo(upstato : ModificaStatoMezzo) {
     
@@ -75,37 +70,47 @@ export class AppComponent {
       
      console.log("Subscribe");
      console.log(this.rispModStato);
-
-      //  alert("Lo stato del mezzo "+ this.rispModStato.codiceStato +" é stato aggiornato. "+" Si vuole annullare l'operazione? ");
-    
+             
      this.showDialog();
     }
 
-  showDialog() {
-       this.display = true;
-   }
 
+
+ // Mostra la window di dialogo e Wait 3 secondi prima di toglierla
+    showDialog() {
+    
+    clearTimeout(id);
+    var id = null;
+    this.display = true;
+
+    id = setTimeout(()=>{    
+         this.display = false;
+         clearTimeout(id);
+    },3000);
+  
+} 
+   
+
+
+   // Effettua l'annullamento dello stato del mezzo effettuato.
 
    private annullare(risposta : string) {
      
    if (risposta == '1') 
    {
-      this.annModStato.codice = this.rispModStato.codice;
-      this.annModStato.codiceStato = this.rispModStato.codiceStatoPrec;
+      this.annModStato.codice          = this.rispModStato.codice;
+      this.annModStato.codiceStato     = this.rispModStato.codiceStatoPrec;
       this.annModStato.codiceStatoPrec = null;
-      console.log('Prima assegnazione');
+      console.log('Prima di annullare stato mezzo');
       console.log(this.annModStato);
       this.tipo_win = '2';
       this.sendModStatoMezzo(this.annModStato); 
-      
-   }
-   this.display = false;
-   }
+    }
+  }
 
-
+   //Metodo che ritorna al template il tipo di Window Dialog da visualizzare
    private statoPrec() : string {
-   
-    return this.tipo_win;
+      return this.tipo_win;
   } 
 
   };

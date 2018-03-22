@@ -11,12 +11,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 
-import { StoreModule } from '@ngrx/store';
-import { reducers } from './reducers/index';
-
-import { EffectsModule } from '@ngrx/effects';
-import { UserEffects } from './effects/userEffects';
-
 import { AuthenticationService } from "./login/_services/authentication.service";
 
 
@@ -42,9 +36,7 @@ export function createTranslateLoader(http: HttpClient) {
                 deps: [HttpClient]
             }
         }),
-        AppRoutingModule, 
-        StoreModule.forRoot(reducers),
-        EffectsModule.forRoot([UserEffects])
+        AppRoutingModule
     ],
     declarations: [AppComponent],
     providers: [AuthGuard, AuthenticationService],
