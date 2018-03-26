@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
     modelr: any = {};
     loading$: Observable<boolean>;
     returnUrl: string;
+    private sottoscrizione;
     public userSuccess$: Observable<User>;
     public userFail$: Observable<any>;
 
@@ -59,7 +60,7 @@ export class LoginComponent implements OnInit {
             },
             e => console.log(e)
         )
-        this.userFail$.subscribe(
+        this.sottoscrizione = this.userFail$.subscribe(
             n => {
                 if (n != undefined) {
                     console.log("login fallito obs " + n);
@@ -70,8 +71,19 @@ export class LoginComponent implements OnInit {
                     })
                     console.log("login fallito obs eseguito " + n);
                 }
-                e => console.log(e)
+                e => console.log("errore in userFail$ "+e)
             })
+            
+    }
+
+    ngOnDestroy() {
+        console.log("istanza componente distrutta");
+        this.sottoscrizione.unsubscribe();
+        // TODO spostare le 2 righe di codice seguenti nell'azione di logout
+        // menu sidebar di Uscita.
+        this.authenticationService.logout();
+        this.store.dispatch(new Userlogout(""));
+        //
     }
 
     onLoggedin() {
@@ -102,8 +114,7 @@ export class LoginComponent implements OnInit {
 
         this.store.dispatch(new UserloginAction(this.model));
 
-        // spostare la action di logut nel pulsante uscita.
-        this.store.dispatch(new Userlogout(""));
+        
         
         /*
               this.authenticationService.login(this.model.username, this.model.password)
