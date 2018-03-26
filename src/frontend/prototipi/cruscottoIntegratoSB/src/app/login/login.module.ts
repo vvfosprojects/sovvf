@@ -19,14 +19,14 @@ import { HomeComponent } from '../home/index';
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
 
-import { UserEffects } from '../effects/userEffects';
+import { UserEffects } from '../store/effects/userEffects';
 
 import { StoreModule } from '@ngrx/store';
-import { reducers } from '../reducers/index';
+import { reducers } from '../store/reducers/index';
 import { HttpClientModule } from '@angular/common/http';
 
 import { EffectsModule } from '@ngrx/effects';
-import { metaReducers } from "../reducers/clearState";
+import { metaReducers } from "../store/reducers/clearState";
 
 @NgModule({
     imports: [CommonModule,

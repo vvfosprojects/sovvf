@@ -1,7 +1,7 @@
-import { UserloginSuccess, UserloginAction, UserloginFail, Userlogout } from '../actions/user';
+import { UserloginSuccess, UserloginAction, UserloginFail, Userlogout } from '../store/actions/user';
 import { Store } from '@ngrx/store';
 
-import * as fromRoot from '../reducers';
+import * as fromRoot from '../store/reducers';
 
 import { Component, OnInit, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
