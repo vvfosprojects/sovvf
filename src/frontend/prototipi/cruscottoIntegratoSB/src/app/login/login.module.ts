@@ -19,14 +19,14 @@ import { HomeComponent } from '../home/index';
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
 
-import { CurrencyService } from '../services/currency.service';
-import { CurrencyEffects } from '../effects/currencyEffects';
+import { UserEffects } from '../store/effects/userEffects';
 
 import { StoreModule } from '@ngrx/store';
-import { reducers } from '../reducers/index';
+import { reducers } from '../store/reducers/index';
 import { HttpClientModule } from '@angular/common/http';
 
 import { EffectsModule } from '@ngrx/effects';
+import { metaReducers } from "../store/reducers/clearState";
 
 @NgModule({
     imports: [CommonModule,
@@ -34,8 +34,8 @@ import { EffectsModule } from '@ngrx/effects';
         FormsModule,
         HttpModule,
         HttpClientModule,
-        StoreModule.forRoot(reducers),
-        EffectsModule.forRoot([CurrencyEffects])
+        StoreModule.forRoot(reducers, {metaReducers}),
+        EffectsModule.forRoot([UserEffects])
     ],
     declarations: [LoginComponent,
         AlertComponent,
@@ -46,8 +46,6 @@ import { EffectsModule } from '@ngrx/effects';
         AlertService,
         AuthenticationService,
         UserService,
-        CurrencyService,
-
         // providers used to create fake backend
         fakeBackendProvider,
         MockBackend,
