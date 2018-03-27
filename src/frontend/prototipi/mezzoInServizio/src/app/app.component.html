@@ -1,16 +1,10 @@
 <app-lista-mezzi (inviaApp)="riceviStato($event)"></app-lista-mezzi>
-<div *ngIf="statoPrec() == '2'">
- <p-dialog [positionTop]="0"   [style]="{'background-color':'white'}" [closable]="false" [resizable]="true"
-    [(visible)]="display" [modal]="true" [responsive]="true" [showHeader]="false">Annullamento effettuato
- </p-dialog>
-</div>
 
-<div *ngIf="statoPrec() == '1'">
-  <p-dialog [positionTop]="0"   [style]="{'background-color':'white'}" [closable]="false" [resizable]="true"
-      [(visible)]="display" [modal]="true" [responsive]="true" [showHeader]="false">Lo stato del mezzo é stato aggiornato. <button class="btn btn-primary" type="button" pButton icon="fa-check" (click)="annullare('1')" label="Annulla"></button>
-  </p-dialog>
-</div>
+<p-growl  [(value)]="msgs" [life]=10000 [immutable]="false" [sticky]="false" [style]="{'background-color': '#8BC34A', 'color': '#fff', 'width':'400px' ,'margin-top':'0px', 'margin-right':'40em'}" (onClick)="annullare($event)"></p-growl>
 
-    
+<p-growl  [(value)]="annulla" [life]=1000 [immutable]="false" [style]="{'background-color': '#8BC34A', 'color': '#fff', 'width':'400px' ,'margin-top':'0px', 'margin-right':'10em'}"></p-growl>
+
+
+
 
 

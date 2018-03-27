@@ -19,22 +19,9 @@ import { ModificaStatoService } from "app/modifica-stato-mezzo.service";
 import { ModificaStatoService_Fake } from "app/modifica-stato-mezzo-fake.service";
 import { ModificaStatoMezzoService_FakeJson } from "app/modifica-stato-mezzo-fake-json.service";
 
-
-import { TreeModule, TreeNode } from 'primeng/primeng';
+import {SelectItem} from 'primeng/components/common/api';
+import {MessageService} from 'primeng/components/common/messageservice';
 import { GrowlModule, Message } from 'primeng/primeng';
-import { AccordionModule } from 'primeng/primeng';     //accordion and accordion tab
-import { MenuItem } from 'primeng/primeng';            //api
-import { DataTableModule,SharedModule} from 'primeng/primeng';
-import { CheckboxModule} from 'primeng/primeng';
-import { ButtonModule} from 'primeng/primeng';
-import { CalendarModule } from 'primeng/primeng';
-// import { ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
-import { FieldsetModule} from 'primeng/primeng';
-import { AutoCompleteModule} from 'primeng/primeng';
-import { InputSwitchModule} from 'primeng/primeng';
-import {DialogModule} from 'primeng/dialog';
-import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
-
 
 
 @NgModule({
@@ -52,22 +39,10 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule,
-    TreeModule,
     GrowlModule,
-    DataTableModule,
-    CheckboxModule,
-    ButtonModule,
-    FieldsetModule,
-     AutoCompleteModule,
-    // ConfirmDialogModule,
-    CalendarModule,
-    InputSwitchModule,
-   DialogModule,
     NgbModule.forRoot()
   ],
   providers: [
-    // ConfirmationService,
     { provide: ListaMezziService, useClass: ListaMezziService_FakeJson },
     { provide: ModificaStatoService, useClass: ModificaStatoMezzoService_FakeJson}
   ],

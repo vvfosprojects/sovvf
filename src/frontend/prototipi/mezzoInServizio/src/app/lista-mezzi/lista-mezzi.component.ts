@@ -28,7 +28,7 @@ export class ListaMezziComponent implements OnInit {
   }
 
   /**
-   * Questo metodo permette di acquisire il codic edel Mezzo (codice) e lo Stato modificato (codiceStato) 
+   * Questo metodo permette di acquisire il codice del Mezzo (codice) e lo Stato modificato (codiceStato) 
    * dal Componente mezzoinservizio. Tali dati vengono passati all'App-component per effettuare la 
    * chiamata al backend di aggiornamento dello stato del mezzo.
    */
