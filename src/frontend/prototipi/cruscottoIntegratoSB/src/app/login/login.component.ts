@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
         // reset login status
         this.authenticationService.logout();
+        this.store.dispatch(new Userlogout(undefined));
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -78,12 +79,7 @@ export class LoginComponent implements OnInit {
 
     ngOnDestroy() {
         console.log("istanza componente distrutta");
-        this.sottoscrizione.unsubscribe();
-        // TODO spostare le 2 righe di codice seguenti nell'azione di logout
-        // menu sidebar di Uscita.
-        this.authenticationService.logout();
-        this.store.dispatch(new Userlogout(""));
-        //
+        this.sottoscrizione.unsubscribe();       
     }
 
     onLoggedin() {
@@ -113,6 +109,7 @@ export class LoginComponent implements OnInit {
         // sottostante è stata messa nella cartella effects.
 
         this.store.dispatch(new UserloginAction(this.model));
+        
 
         
         

@@ -18,6 +18,7 @@ export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
   export function logout(reducer: ActionReducer<any>) {
     return function (state, action) {
         console.log("chiamata funzione logout.");
+        console.log("tipo azione "+action.type);
       return reducer(action.type === user.USERLOGOUT ? undefined : state, action);
     }
   }
