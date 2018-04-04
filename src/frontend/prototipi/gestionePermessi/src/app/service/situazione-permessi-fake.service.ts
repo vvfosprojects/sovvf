@@ -26,15 +26,15 @@ export class SituazionePermessiFakeService {
       new PermessoAssegnato("1", "Marcello Esposito", "ESPMRC11Y87T745Z", "Può vedere interventi", "Comando Roma", false, new Date(2016, 5, 9, 11, 8, 22), new Date(2017, 5, 9, 11, 8, 22)),      
     ],
   [
-    new Permesso("VisInt", "Visualizzazione interventi", "Consente all'utente di visualizzare gli interventi", ["OPERAT", "SUPERV"], 0),
-    new Permesso("GestInt", "Gestione interventi", "Consente all'utente di gestire un intervento", ["OPERAT"], 1),
-    new Permesso("CreaInt", "Creazione interventi", "Consente all'utente di acquisire una chiamata e generare un intervento", ["OPERAT"], 2),
-    new Permesso("InviaFono", "Invio fonogrammi", "Consente all'utente di inviare un fonogramma", ["SUPERV"], 3),
+    new Permesso("VisInt", "Visualizzazione interventi", "Consente all'utente di visualizzare gli interventi", 0),
+    new Permesso("GestInt", "Gestione interventi", "Consente all'utente di gestire un intervento", 1),
+    new Permesso("CreaInt", "Creazione interventi", "Consente all'utente di acquisire una chiamata e generare un intervento", 2),
+    new Permesso("InviaFono", "Invio fonogrammi", "Consente all'utente di inviare un fonogramma", 3),
   ],
   [
-    new Ruolo("OPERAT", "Operatore", "Generico operatore di Sala Operativa", 0),
-    new Ruolo("SUPERV", "Supervisore", "Supervisore di Sala Operativa", 1),
-    new Ruolo("ADMIN", "Amministratore", "Amministratore di Sala Operativa", 2),
+    new Ruolo("OPERAT", "Operatore", "Generico operatore di Sala Operativa", ["VisInt", "InviaFono"], 0),
+    new Ruolo("SUPERV", "Supervisore", "Supervisore di Sala Operativa", ["VisInt", "GestInt", "CreaInt"],  1),
+    new Ruolo("ADMIN", "Amministratore", "Amministratore di Sala Operativa", ["VisInt", "GestInt", "CreaInt", "InviaFono"], 2),
   ]);
 
   constructor() { }

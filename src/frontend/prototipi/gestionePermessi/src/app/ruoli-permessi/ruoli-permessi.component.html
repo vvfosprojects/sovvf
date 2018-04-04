@@ -1,19 +1,18 @@
-<div class="col-md-3">
+<div class="col-md-5">
   <p-fieldset legend="Ruoli">
-  <!-- <i *ngFor="let ruoli of ruoliSelezionati" style="margin-right:10px">{{ruoli}}</i> -->
-    <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 1" label="Ruolo 1" [(ngModel)]="ruoliSelezionati" (onChange)="salvaRuoliPermessi()"></p-checkbox></div>
-    <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 2" label="Ruolo 2" [(ngModel)]="ruoliSelezionati" (onChange)="salvaRuoliPermessi()"></p-checkbox></div>
-    <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 3" label="Ruolo 3" [(ngModel)]="ruoliSelezionati" (onChange)="salvaRuoliPermessi()"></p-checkbox></div>
-    <div class="ui-g-12"><p-checkbox name="group1" value="Ruolo 4" label="Ruolo 4" [(ngModel)]="ruoliSelezionati" (onChange)="salvaRuoliPermessi()"></p-checkbox></div>
+   <div *ngFor="let ruoli of ruoliDispo" style="margin-right:10px">
+     <div class="ui-g-12"><p-checkbox name="group1" value="{{ruoli.nome}}" label="{{ruoli.nome}}" [(ngModel)]="ruoliSelezionati" (onChange)="selezionaPermessi($event, ruoli)"></p-checkbox></div>
+   </div>  
   </p-fieldset>
 </div> 
 
-<div class="col-md-4">
+<div class="col-md-7">
   <p-fieldset legend="Permessi">
-  <!-- <i *ngFor="let permessi of permessiSelezionati" style="margin-right:10px">{{permessi}}</i> -->
-    <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 1" label="Permesso 1" [(ngModel)]="permessiSelezionati" (onChange)="salvaRuoliPermessi()"></p-checkbox></div>
-    <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 2" label="Permesso 2" [(ngModel)]="permessiSelezionati" (onChange)="salvaRuoliPermessi()"></p-checkbox></div>
+  <div *ngFor="let permessi of permessiDispo" style="margin-right:10px">
+    <div class="ui-g-12"><p-checkbox name="group1" value="{{permessi.nome}}" label="{{permessi.nome}}" [(ngModel)]="permessiSelezionati" (onChange)="salvaRuoliPermessi()"></p-checkbox></div>
+    <!-- <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 2" label="Permesso 2" [(ngModel)]="permessiSelezionati" (onChange)="salvaRuoliPermessi()"></p-checkbox></div>
     <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 3" label="Permesso 3" [(ngModel)]="permessiSelezionati" (onChange)="salvaRuoliPermessi()"></p-checkbox></div>
-    <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 4" label="Permesso 4" [(ngModel)]="permessiSelezionati" (onChange)="salvaRuoliPermessi()"></p-checkbox></div>
+    <div class="ui-g-12"><p-checkbox name="group1" value="Permesso 4" label="Permesso 4" [(ngModel)]="permessiSelezionati" (onChange)="salvaRuoliPermessi()"></p-checkbox></div> -->
+  </div>
   </p-fieldset>
 </div>

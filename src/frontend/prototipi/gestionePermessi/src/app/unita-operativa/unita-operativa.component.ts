@@ -7,7 +7,8 @@ import { AdapterAlberoService } from '../service/adapter-albero.service';
 import { SituazionePermessiFakeService } from "../service/situazione-permessi-fake.service";
 import { Message } from 'primeng/components/common/message';
 import { RicercaUnita } from 'app/model/ricerca-unita.model';
-import { CercaNominativoComponent } from 'app/cerca-nominativo/cerca-nominativo.component';
+//import { CercaNominativoComponent } from 'app/cerca-nominativo/cerca-nominativo.component';
+import { DatiRicerca } from 'app/model/dati-ricerca.model';
 
 @Component({
   selector: 'app-unita-operativa',
