@@ -12,19 +12,6 @@
   },
   "private": true,
   "dependencies": {
-<<<<<<< HEAD
-    "@angular/animations": "^4.0.3",
-    "@angular/common": "^4.0.3",
-    "@angular/compiler": "^4.0.3",
-    "@angular/compiler-cli": "^4.0.3",
-    "@angular/core": "^5.2.7",
-    "@angular/forms": "^4.0.3",
-    "@angular/http": "^4.0.3",
-    "@angular/platform-browser": "^4.0.3",
-    "@angular/platform-browser-dynamic": "^4.0.3",
-    "@angular/platform-server": "^4.0.3",
-    "@angular/router": "^4.0.3",
-=======
     "@angular/animations": "^5.2.9",
     "@angular/common": "^5.2.9",
     "@angular/compiler": "^5.2.9",
@@ -35,19 +22,13 @@
     "@angular/platform-browser-dynamic": "^5.2.9",
     "@angular/platform-server": "^5.2.9",
     "@angular/router": "^5.2.9",
->>>>>>> 64338a18d4943682960bedbc5941ce4de00760a7
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-beta.5",
     "bootstrap": "^4.0.0-beta",
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
     "moment": "^2.18.1",
     "primeng": "^5.2.1",
-<<<<<<< HEAD
-    "rxjs": "^5.1.0",
-    "webpack": "^3.11.0",
-=======
     "rxjs": "^5.4.2",
->>>>>>> 64338a18d4943682960bedbc5941ce4de00760a7
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
@@ -63,18 +44,10 @@
     "karma-cli": "~1.0.1",
     "karma-coverage-istanbul-reporter": "^1.4.2",
     "karma-jasmine": "~1.1.0",
-<<<<<<< HEAD
-    "karma-jasmine-html-reporter": "^0.2.2",
-    "protractor": "~5.1.0",
-    "ts-node": "~2.0.0",
-    "tslint": "~4.5.0",
-    "typescript": "^2.3.4"
-=======
     "karma-jasmine-html-reporter": "^1.0.0",
     "protractor": "~5.3.0",
     "ts-node": "~5.0.1",
     "tslint": "~5.9.1",
     "typescript": "^2.6.2"
->>>>>>> 64338a18d4943682960bedbc5941ce4de00760a7
   }
 }
