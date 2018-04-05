@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthenticationService } from '../../../login/_services/index';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../../store/reducers';
+import { Userlogout } from '../../../store/actions/user';
 
 @Component({
     selector: 'app-header',
@@ -10,7 +14,10 @@ import { TranslateService } from '@ngx-translate/core';
 export class HeaderComponent implements OnInit {
     pushRightClass: string = 'push-right';
 
-    constructor(private translate: TranslateService, public router: Router) {
+    constructor(private translate: TranslateService, 
+                 public router: Router,
+                 private authenticationService: AuthenticationService,
+                 public store: Store<fromRoot.State>) {
         translate.setDefaultLang('it'); //Il linguaggio di default è l'italiano.
         this.router.events.subscribe(val => {
             if (
@@ -42,6 +49,12 @@ export class HeaderComponent implements OnInit {
 
     onLoggedout() {
         localStorage.removeItem('isLoggedin');
+        // TODO spostare le 2 righe di codice seguenti nell'azione di logout
+        // menu sidebar di Uscita.
+        this.authenticationService.logout();
+        this.store.dispatch(new Userlogout(undefined));
+        console.log("messaggio di logout inviato.");
+        //
     }
 
     changeLang(language: string) {

@@ -1,7 +1,7 @@
 import * as fromUserLoginSuccess from './userLoginSuccess';
 import * as fromUserLoginFail from './userLoginFail';
 import * as fromUserLogin from './userLogin';
-import { User } from '../login/_models/user';
+import { User } from '../../login/_models/user';
 
 export interface State {
     userLoginSuccess: User;

@@ -8,18 +8,11 @@ import { environment } from 'environments/environment';
 import { MezzoinservizioComponent } from './mezzoinservizio/mezzoinservizio.component';
 import { ListaMezziComponent } from './lista-mezzi/lista-mezzi.component';
 
-import { TreeModule, TreeNode } from 'primeng/primeng';
-import { DataTableModule, SharedModule } from 'primeng/primeng';
+import {SelectItem} from 'primeng/components/common/api';
+import {MessageService} from 'primeng/components/common/messageservice';
 import { GrowlModule, Message } from 'primeng/primeng';
-import { CalendarModule } from 'primeng/primeng';
-import { CheckboxModule } from 'primeng/primeng';
-import { ButtonModule } from 'primeng/primeng';
-import { ConfirmationService } from 'primeng/primeng';
-import { InputSwitchModule} from 'primeng/primeng';
-import {DialogModule} from 'primeng/dialog';
-import {BrowserModule} from '@angular/platform-browser'
-import  {FormsModule} from '@angular/forms'
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { Key } from 'protractor';
+
 
 
 const API_URL = environment.apiUrl;  
@@ -27,7 +20,8 @@ const API_URL = environment.apiUrl;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [MessageService]
 })
 export class AppComponent {
   
@@ -35,13 +29,13 @@ export class AppComponent {
   private annModStato : ModificaStatoMezzo = new ModificaStatoMezzo('', '','');
   private errorMessage: string;
 
-  private tipo_win: string;
-  private visualizza: number;
- 
-  display: boolean = false;
-
+  private tipo_win: string = '0';
   
-  constructor(private modificaStatoService: ModificaStatoService) {}
+  private  i : number = 0;
+ 
+  msgs: Message[] = [];
+  annulla: Message[] = [];
+  constructor(private modificaStatoService: ModificaStatoService, private messageService: MessageService) {}
 
   /**
    * Questo metodo permette di acquisire il codice del Mezzo (codice) e lo Stato modificato (codiceStato) 
@@ -54,7 +48,8 @@ export class AppComponent {
       console.log("riceviStato");
       this.tipo_win = '1';
       this.sendModStatoMezzo(this.rispModStato);
-  }
+ }
+
 
   /**
    * Questo metodo esegue la subscription all'observable del servizio che aggiorna
@@ -70,52 +65,52 @@ export class AppComponent {
       
      console.log("Subscribe");
      console.log(this.rispModStato);
-             
-     this.showDialog();
+
+     if (this.tipo_win === '1'){
+         
+        //  this.msgs.push({id: this.visualizza, severity: 'info', summary: 'Lo stato del mezzo '+this.rispModStato.codice +' è stato aggiornato.', detail:'<a href="#">Annulla</a>'});
+       
+        this.msgs.push({id: this.i, severity: 'info', summary: 'Lo stato del mezzo '+ this.i +' è stato aggiornato.', detail:'<a href="#">Annulla</a>'});
+        this.i++;
+        }
+
+    if (this.tipo_win === '2') {
+          
+      this.annulla.push({id: this.i, severity: 'info', summary: 'Annullamento effettuato.', detail:''});
+     
+  }
+         
     }
 
+   // Effettua l'annullamento dell'aggiornamento dello stato del mezzo.
 
-
- // Mostra la window di dialogo e Wait 3 secondi prima di toglierla
-    showDialog() {
-    
-    clearTimeout(id);
-    var id = null;
-    this.display = true;
-
-    id = setTimeout(()=>{    
-         this.display = false;
-         clearTimeout(id);
-    },3000);
-  
-} 
-   
-
-
-   // Effettua l'annullamento dello stato del mezzo effettuato.
-
-   private annullare(risposta : string) {
+   private annullare(event) {
      
-   if (risposta == '1') 
-   {
       this.annModStato.codice          = this.rispModStato.codice;
       this.annModStato.codiceStato     = this.rispModStato.codiceStatoPrec;
       this.annModStato.codiceStatoPrec = null;
       console.log('Prima di annullare stato mezzo');
       console.log(this.annModStato);
       this.tipo_win = '2';
-      this.sendModStatoMezzo(this.annModStato); 
-    }
-  }
 
-   //Metodo che ritorna al template il tipo di Window Dialog da visualizzare
-   private statoPrec() : string {
-      return this.tipo_win;
-  } 
+      Object.keys(this.msgs).forEach(key => {
+      
+        if (this.msgs[key].id === event.message.id) {
+        
+          setTimeout(() => {
+              this.msgs.splice(this.msgs.indexOf(this.msgs[key]), 1);
+              }, 500); 
+      }
+   
+    });
+     
+     this.sendModStatoMezzo(this.annModStato);  
+ };
 
-  };
 
 
+
+};
 
     
    

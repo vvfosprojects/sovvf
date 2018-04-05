@@ -1,4 +1,4 @@
-import { User } from '../login/_models/user';
+import { User } from '../../login/_models/user';
 import { Action } from '@ngrx/store';
 
 export const USERLOGIN = '[User] Userlogin';

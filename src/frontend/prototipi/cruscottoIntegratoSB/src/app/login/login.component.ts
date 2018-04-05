@@ -1,7 +1,7 @@
-import { UserloginSuccess, UserloginAction, UserloginFail, Userlogout } from '../actions/user';
+import { UserloginSuccess, UserloginAction, UserloginFail, Userlogout } from '../store/actions/user';
 import { Store } from '@ngrx/store';
 
-import * as fromRoot from '../reducers';
+import * as fromRoot from '../store/reducers';
 
 import { Component, OnInit, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
     modelr: any = {};
     loading$: Observable<boolean>;
     returnUrl: string;
+    private sottoscrizione;
     public userSuccess$: Observable<User>;
     public userFail$: Observable<any>;
 
@@ -43,6 +44,7 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
         // reset login status
         this.authenticationService.logout();
+        this.store.dispatch(new Userlogout(undefined));
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -59,7 +61,7 @@ export class LoginComponent implements OnInit {
             },
             e => console.log(e)
         )
-        this.userFail$.subscribe(
+        this.sottoscrizione = this.userFail$.subscribe(
             n => {
                 if (n != undefined) {
                     console.log("login fallito obs " + n);
@@ -70,8 +72,14 @@ export class LoginComponent implements OnInit {
                     })
                     console.log("login fallito obs eseguito " + n);
                 }
-                e => console.log(e)
+                e => console.log("errore in userFail$ "+e)
             })
+            
+    }
+
+    ngOnDestroy() {
+        console.log("istanza componente distrutta");
+        this.sottoscrizione.unsubscribe();       
     }
 
     onLoggedin() {
@@ -101,9 +109,9 @@ export class LoginComponent implements OnInit {
         // sottostante è stata messa nella cartella effects.
 
         this.store.dispatch(new UserloginAction(this.model));
+        
 
-        // spostare la action di logut nel pulsante uscita.
-        this.store.dispatch(new Userlogout(""));
+        
         
         /*
               this.authenticationService.login(this.model.username, this.model.password)

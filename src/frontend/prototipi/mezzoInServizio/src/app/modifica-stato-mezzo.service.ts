@@ -26,7 +26,7 @@ export class ModificaStatoService {
 
  
   public sendModStatoMezzo(modstato : ModificaStatoMezzo): Observable<ModificaStatoMezzo> {
-     return this.http.put<ModificaStatoMezzo[]>(API_URL + '/modificaMezzo', modstato)
+     return this.http.post<ModificaStatoMezzo[]>(API_URL + '/modificaMezzo', modstato)
                      .map(risposta => risposta['modf'] as ModificaStatoMezzo)
                      .catch(this.handleError);
   }

@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../../../login/_services/index';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../../store/reducers';
+import { Userlogout } from '../../../store/actions/user';
 
 @Component({
     selector: 'app-sidebar',
@@ -8,6 +12,11 @@ import { Component, OnInit } from '@angular/core';
 export class SidebarComponent {
     isActive: boolean = false;
     showMenu: string = '';
+
+    constructor(private authenticationService: AuthenticationService,
+                 public store: Store<fromRoot.State>){
+        
+    }
 
     eventCalled() {
         this.isActive = !this.isActive;
@@ -24,6 +33,12 @@ export class SidebarComponent {
 
     onLoggedout() {
         localStorage.removeItem('isLoggedin');
+         // TODO spostare le 2 righe di codice seguenti nell'azione di logout
+        // menu sidebar di Uscita.
+        this.authenticationService.logout();
+        this.store.dispatch(new Userlogout(undefined));
+        console.log("messaggio di logout inviato.");
+        //
     }
 
 }
