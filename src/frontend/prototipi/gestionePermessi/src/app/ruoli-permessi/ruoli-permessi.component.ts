@@ -38,6 +38,11 @@ export class RuoliPermessiComponent implements OnInit {
     console.log(ruoloSel);
 
     if (event){
+      let ruoliSelezionati = [];
+      let permessiDeiRuoliSelezionati = ruoliSelezionati.reduce((acc, el) => acc.concat(...el), []);
+      
+      permessi.forEach(p => p.stato = (permessiDeiRuoliSelezionati.indexOf(p.codicePermesso) >= 0) );
+
       ruoloSel.codiciPermessi.forEach(key => {
         //this.permessiSelezionati.push(ruoloSel.codiciPermessi[key]);
         console.log("ruoloSel :" + ruoloSel.codiciPermessi[key]);
