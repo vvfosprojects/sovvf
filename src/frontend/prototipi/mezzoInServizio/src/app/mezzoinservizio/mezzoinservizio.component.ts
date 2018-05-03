@@ -73,8 +73,8 @@ export class MezzoinservizioComponent implements OnInit {
       
     this.mf.codice = this.fs.codice;
     this.mf.codiceStato = codiceS;
-    console.log("MezzoinServizio");
-    console.log(this.mf);
+    //console.log("MezzoinServizio");
+    //console.log(this.mf);
     this.modificaStato.emit(this.mf);
 }
 

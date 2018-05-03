@@ -43,9 +43,9 @@ export class AppComponent {
    * chiamata al backend di richiesta di aggiornamento dello stato del mezzo.
    */
   private riceviStato(appmodstato : ModificaStatoMezzo) {
-      console.log("Dati AppComponent:");
-      console.log(appmodstato);
-      console.log("riceviStato");
+      //console.log("Dati AppComponent:");
+      //console.log(appmodstato);
+      //console.log("riceviStato");
       this.tipo_win = '1';
       this.sendModStatoMezzo(this.rispModStato);
  }
@@ -63,14 +63,14 @@ export class AppComponent {
     this.modificaStatoService.sendModStatoMezzo(upstato).subscribe(risp => this.rispModStato = risp,
       error => this.errorMessage = error);
       
-     console.log("Subscribe");
-     console.log(this.rispModStato);
+     //console.log("Subscribe");
+     //console.log(this.rispModStato);
 
      if (this.tipo_win === '1'){
          
         //  this.msgs.push({id: this.visualizza, severity: 'info', summary: 'Lo stato del mezzo '+this.rispModStato.codice +' è stato aggiornato.', detail:'<a href="#">Annulla</a>'});
        
-        this.msgs.push({id: this.i, severity: 'info', summary: 'Lo stato del mezzo '+ this.i +' è stato aggiornato.', detail:'<a href="#">Annulla</a>'});
+        this.msgs.push({id: this.i, severity: 'info', summary: 'Lo stato del mezzo '+ this.rispModStato.codice +' è stato aggiornato.', detail:'<a href="#">Annulla</a>'});
         this.i++;
         }
 
@@ -89,8 +89,8 @@ export class AppComponent {
       this.annModStato.codice          = this.rispModStato.codice;
       this.annModStato.codiceStato     = this.rispModStato.codiceStatoPrec;
       this.annModStato.codiceStatoPrec = null;
-      console.log('Prima di annullare stato mezzo');
-      console.log(this.annModStato);
+      //console.log('Prima di annullare stato mezzo');
+      //console.log(this.annModStato);
       this.tipo_win = '2';
 
       Object.keys(this.msgs).forEach(key => {
