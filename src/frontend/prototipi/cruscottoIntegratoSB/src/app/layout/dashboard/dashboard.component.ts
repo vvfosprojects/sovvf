@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
+import { HubConnection } from "@aspnet/signalr";
 
 @Component({
     selector: 'app-dashboard',
@@ -10,6 +11,8 @@ import { routerTransition } from '../../router.animations';
 export class DashboardComponent implements OnInit {
     public alerts: Array<any> = [];
     public sliders: Array<any> = [];
+
+    private _hubConnection: HubConnection;
 
     constructor() {
         this.sliders.push(
@@ -52,7 +55,26 @@ export class DashboardComponent implements OnInit {
         );
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this._hubConnection = new HubConnection('http://localhost:5000/chat');
+        
+
+    this._hubConnection
+      .start()
+      .then(() => console.log('Connection started!'))
+      .catch(err => console.log('Error while establishing connection :('));
+
+      this._hubConnection.on('sendToAll', (nick: string, receivedMessage: string) => {
+        console.log("messaggio ricevuto");
+        const text = `${nick}: ${receivedMessage}`;
+        this.alerts.push( {
+            id: 1,
+            type: 'success',
+            message: text
+        });
+      });      
+
+    }
 
     public closeAlert(alert: any) {
         const index: number = this.alerts.indexOf(alert);
