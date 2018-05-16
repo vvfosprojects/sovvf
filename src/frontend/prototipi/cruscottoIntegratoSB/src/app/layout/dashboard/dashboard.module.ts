@@ -11,6 +11,7 @@ import {
 } from './components';
 //import { InfoAggregateComponent } from "../bs-component/components";
 import { StatModule, InfoAggregateModule } from '../../shared';
+import { ChatRowComponent } from './components/chat-row/chat-row.component';
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import { StatModule, InfoAggregateModule } from '../../shared';
         DashboardComponent,
         TimelineComponent,
         NotificationComponent,
-        ChatComponent      
+        ChatComponent,
+        ChatRowComponent      
     ]
 })
 export class DashboardModule {}
