@@ -7,13 +7,14 @@ import { ChatRowComponent } from "../chat-row/chat-row.component";
     styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
-    constructor() { }
+    constructor() {
+        
+    }
 
-    righe: ChatRowComponent[] = [];
+    righe: string[] = ["msg uno", "msg due", "msg tre"];
 
     ngOnInit() {
-        this.righe.push(new ChatRowComponent(), 
-                        new ChatRowComponent());
+       
     }
 
 
