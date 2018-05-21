@@ -5,12 +5,12 @@
   <div class="chat-body clearfix">
       <div class="header">
           <small class=" text-muted">
-              <i class="fa fa-clock-o fa-fw"></i> 15 mins ago
+              <i class="fa fa-clock-o fa-fw"></i> {{chatmsg.orario}}
           </small>
-          <strong class="pull-right primary-font">Bhaumik Patel</strong>
+          <strong class="pull-right primary-font">{{chatmsg.username}}</strong>
       </div>
       <p>
-          {{messaggio}}
+          {{chatmsg.messaggio}}
       </p>
   </div>
 </li>

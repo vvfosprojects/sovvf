@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { chat_msg } from "../model/chat_msg";
 
 @Component({
   selector: 'app-chat-row',
@@ -7,18 +8,10 @@ import { Component, OnInit, Input } from '@angular/core';
   
 })
 export class ChatRowComponent implements OnInit {
-  @Input() messaggio: string = "Default messaggio";
-  //nuovo_messaggio: string;
+  @Input() chatmsg: chat_msg;
 
-  testoNuovoMessaggio() {
-    this.messaggio = "New testo!";
+   constructor() {
   }
-
-  constructor() {
-  // this.nuovo_messaggio = msg;
-  // this.nuovo_messaggio ="ciao miao";
-    console.log("messaggio chat inoltrato ");
-   }
 
   ngOnInit() {
   }
