@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatRowComponent } from "../chat-row/chat-row.component";
 import { chat_msg } from "../model/chat_msg";
+import { TimeAgoPipe } from "ngx-moment";
+import 'moment/locale/de';
+
 
 @Component({
     selector: 'app-chat',
@@ -8,8 +11,11 @@ import { chat_msg } from "../model/chat_msg";
     styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
+    
+    myDate: Date;
+    
     constructor() {
-        
+        this.myDate = new Date();
     }
 
     righe_chat:chat_msg[] = [

@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { chat_msg } from "../model/chat_msg";
+import { TimeAgoPipe } from "ngx-moment";
+import 'moment/locale/de';
 
 @Component({
   selector: 'app-chat-row',
@@ -8,6 +10,7 @@ import { chat_msg } from "../model/chat_msg";
   
 })
 export class ChatRowComponent implements OnInit {
+  myDate: Date;
   @Input() chatmsg: chat_msg;
 
    constructor() {

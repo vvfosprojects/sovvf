@@ -12,6 +12,7 @@ import {
 //import { InfoAggregateComponent } from "../bs-component/components";
 import { StatModule, InfoAggregateModule } from '../../shared';
 import { ChatRowComponent } from './components/chat-row/chat-row.component';
+import { MomentModule } from 'ngx-moment';
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import { ChatRowComponent } from './components/chat-row/chat-row.component';
         NgbAlertModule.forRoot(),
         DashboardRoutingModule,
         StatModule,
-        InfoAggregateModule 
+        InfoAggregateModule,
+        MomentModule
     ],
     declarations: [
         DashboardComponent,

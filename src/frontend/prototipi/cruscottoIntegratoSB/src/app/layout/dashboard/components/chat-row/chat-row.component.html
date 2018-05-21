@@ -5,7 +5,7 @@
   <div class="chat-body clearfix">
       <div class="header">
           <small class=" text-muted">
-              <i class="fa fa-clock-o fa-fw"></i> {{chatmsg.orario}}
+              <i class="fa fa-clock-o fa-fw"></i> {{myDate | amLocale:'it' | amTimeAgo}}
           </small>
           <strong class="pull-right primary-font">{{chatmsg.username}}</strong>
       </div>
