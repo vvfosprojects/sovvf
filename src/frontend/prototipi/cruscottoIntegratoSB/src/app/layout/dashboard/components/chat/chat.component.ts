@@ -15,6 +15,8 @@ export class ChatComponent implements OnInit {
     
     myDate: Date;
     private _hubConnection: HubConnection;
+    nick = '';
+    message = '';
     
     constructor() {
         this.myDate = new Date();
@@ -25,6 +27,14 @@ export class ChatComponent implements OnInit {
         {messaggio: "ciao2", username: "pluto", orario: new Date()},
         {messaggio: "ciao3", username: "paperino", orario: new Date()}
     ];
+
+    public sendMessage(): void {
+        this._hubConnection
+          .invoke('sendToAll', this.nick, this.message)
+          .then(() => this.message = '')
+          .catch(err => console.error(err));
+          console.log("messaggio inviato");
+      }
 
     ngOnInit() {
         this._hubConnection = new HubConnection('http://localhost:5000/chat');

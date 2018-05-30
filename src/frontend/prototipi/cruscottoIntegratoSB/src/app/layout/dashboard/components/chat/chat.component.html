@@ -7,14 +7,17 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
-                <li role="menuitem"><a class="dropdown-item" href="#">
-                    <i class="fa fa-refresh fa-fw"></i> Refresh</a>
+                <li role="menuitem">
+                    <a class="dropdown-item" href="#">
+                        <i class="fa fa-refresh fa-fw"></i> Refresh</a>
                 </li>
-                <li role="menuitem"><a class="dropdown-item" href="#">
-                    <i class="fa fa-check-circle fa-fw"></i> Available</a>
+                <li role="menuitem">
+                    <a class="dropdown-item" href="#">
+                        <i class="fa fa-check-circle fa-fw"></i> Available</a>
                 </li>
-                <li role="menuitem"><a class="dropdown-item" href="#">
-                    <i class="fa fa-times fa-fw"></i> Busy</a>
+                <li role="menuitem">
+                    <a class="dropdown-item" href="#">
+                        <i class="fa fa-times fa-fw"></i> Busy</a>
                 </li>
                 <li class="divider dropdown-divider"></li>
                 <li role="menuitem">
@@ -29,9 +32,9 @@
                 </li>
                 <li class="divider"></li>
                 <li>
-                  <a href="#" class="dropdown-item">
-                    <i class="fa fa-sign-out fa-fw"></i> Sign Out
-                  </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-sign-out fa-fw"></i> Sign Out
+                    </a>
                 </li>
             </ul>
         </div>
@@ -104,19 +107,23 @@
                 </div>
             </li>
             <app-chat-row *ngFor="let riga of righe_chat" [chatmsg]="riga"></app-chat-row>
-            
+
         </ul>
     </div>
     <!-- /.card-body -->
     <div class="card-footer">
-        <div class="input-group">
-            <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here...">
-            <span class="input-group-btn">
-                <button class="btn btn-warning btn-sm" id="btn-chat">
-                    invia
-                </button>
-            </span>
-        </div>
+
+        <form (ngSubmit)="sendMessage()" >
+            <div class="input-group">
+                <input type="text" class="form-control input-sm" id="message" name="message" [(ngModel)]="message" placeholder="Type your message here...">
+                <span class="input-group-btn">
+                    <button class="btn btn-warning btn-sm" type="submit" id="sendmessage">
+                        invia
+                    </button>
+                </span>
+            </div>
+        </form>
+    
     </div>
     <!-- /.card-footer -->
 </div>

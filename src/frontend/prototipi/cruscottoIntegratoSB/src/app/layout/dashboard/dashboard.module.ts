@@ -13,6 +13,7 @@ import {
 import { StatModule, InfoAggregateModule } from '../../shared';
 import { ChatRowComponent } from './components/chat-row/chat-row.component';
 import { MomentModule } from 'ngx-moment';
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import { MomentModule } from 'ngx-moment';
         DashboardRoutingModule,
         StatModule,
         InfoAggregateModule,
-        MomentModule
+        MomentModule,
+        FormsModule
     ],
     declarations: [
         DashboardComponent,
