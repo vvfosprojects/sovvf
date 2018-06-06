@@ -4,6 +4,7 @@ import { chat_msg } from "../model/chat_msg";
 import { TimeAgoPipe } from "ngx-moment";
 import { HubConnection } from "@aspnet/signalr";
 import 'moment/locale/de';
+import { v4 as uuid } from 'uuid';
 
 
 @Component({
@@ -12,11 +13,12 @@ import 'moment/locale/de';
     styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
+    public clientId: string;
     
     myDate: Date;
     private _hubConnection: HubConnection;
     nick = '';
-    message = '';
+    message = 'client-so-';
     
     constructor() {
         this.myDate = new Date();
@@ -30,13 +32,16 @@ export class ChatComponent implements OnInit {
 
     public sendMessage(): void {
         this._hubConnection
-          .invoke('sendToAll', this.nick, this.message)
+          .invoke('sendToAll', this.nick+this.clientId, this.message)
           .then(() => this.message = '')
           .catch(err => console.error(err));
           console.log("messaggio inviato");
       }
 
     ngOnInit() {
+
+        this.clientId = uuid();
+
         this._hubConnection = new HubConnection('http://localhost:5000/chat');
         
 
