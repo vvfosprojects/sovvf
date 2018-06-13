@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { chat_msg } from "../model/chat_msg";
+import { Globals } from "../model/globals";
 import { TimeAgoPipe } from "ngx-moment";
 import 'moment/locale/de';
 
@@ -12,8 +13,8 @@ import 'moment/locale/de';
 export class ChatRowComponent implements OnInit {
   myDate: Date;
   @Input() chatmsg: chat_msg;
-
-   constructor() {
+  
+   constructor(private globals: Globals) {
   }
 
   ngOnInit() {

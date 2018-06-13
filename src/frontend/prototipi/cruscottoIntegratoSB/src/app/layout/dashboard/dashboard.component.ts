@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
                 imagePath: 'assets/images/slider1.jpg',
                 label: 'First slide label',
                 text:
-                    'Nulla vitae elit libero, a pharetra augue mollis interdum.'
+                'Nulla vitae elit libero, a pharetra augue mollis interdum.'
             },
             {
                 imagePath: 'assets/images/slider2.jpg',
@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit {
                 imagePath: 'assets/images/slider3.jpg',
                 label: 'Third slide label',
                 text:
-                    'Praesent commodo cursus magna, vel scelerisque nisl consectetur.'
+                'Praesent commodo cursus magna, vel scelerisque nisl consectetur.'
             }
         );
 
@@ -56,24 +56,27 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit() {
+      /**
+      * Test di SignalR per l'invio di alert.
+      */
+        /*
         this._hubConnection = new HubConnection('http://localhost:5000/chat');
-        
+             
+        this._hubConnection
+        .start()
+        .then(() => console.log('Connection started!'))
+        .catch(err => console.log('Error while establishing connection :('));
 
-    this._hubConnection
-      .start()
-      .then(() => console.log('Connection started!'))
-      .catch(err => console.log('Error while establishing connection :('));
-
-      this._hubConnection.on('sendToAll', (nick: string, receivedMessage: string) => {
-        console.log("messaggio ricevuto");
-        const text = `${nick}: ${receivedMessage}`;
-        this.alerts.push( {
-            id: 1,
-            type: 'success',
-            message: text
-        });
-      });      
-
+        this._hubConnection.on('sendToAll', (nick: string, receivedMessage: string) => {
+            console.log("messaggio ricevuto");
+            const text = `${nick}: ${receivedMessage}`;
+            this.alerts.push( {
+                id: 1,
+                type: 'success',
+                message: text
+            });
+        });      
+        */
     }
 
     public closeAlert(alert: any) {

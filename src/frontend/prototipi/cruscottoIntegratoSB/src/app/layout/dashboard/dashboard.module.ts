@@ -14,6 +14,7 @@ import { StatModule, InfoAggregateModule } from '../../shared';
 import { ChatRowComponent } from './components/chat-row/chat-row.component';
 import { MomentModule } from 'ngx-moment';
 import { FormsModule } from "@angular/forms";
+import { Globals } from "./components/model/globals";
 
 @NgModule({
     imports: [
@@ -32,6 +33,7 @@ import { FormsModule } from "@angular/forms";
         NotificationComponent,
         ChatComponent,
         ChatRowComponent      
-    ]
+    ],
+    providers: [ Globals ]
 })
 export class DashboardModule {}

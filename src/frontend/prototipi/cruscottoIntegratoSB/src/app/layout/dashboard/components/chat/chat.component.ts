@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatRowComponent } from "../chat-row/chat-row.component";
 import { chat_msg } from "../model/chat_msg";
+import { Globals } from "../model/globals";
 import { TimeAgoPipe } from "ngx-moment";
 import { HubConnection } from "@aspnet/signalr";
 import 'moment/locale/de';
@@ -17,10 +18,10 @@ export class ChatComponent implements OnInit {
     
     myDate: Date;
     private _hubConnection: HubConnection;
-    nick = '';
-    message = 'client-so-';
+    nick = 'client-so-';
+    message = '';
     
-    constructor() {
+    constructor(private globals: Globals) {
         this.myDate = new Date();
     }
 
@@ -41,6 +42,10 @@ export class ChatComponent implements OnInit {
     ngOnInit() {
 
         this.clientId = uuid();
+        
+        this.nick = this.nick+this.clientId;
+
+        this.globals.mittente = this.nick;
 
         this._hubConnection = new HubConnection('http://localhost:5000/chat');
         
@@ -56,7 +61,7 @@ export class ChatComponent implements OnInit {
             this.righe_chat.push( {
                 messaggio: receivedMessage,
                 username: nick,
-                orario: new Date()
+                orario: new Date()                
             });
           });      
        
