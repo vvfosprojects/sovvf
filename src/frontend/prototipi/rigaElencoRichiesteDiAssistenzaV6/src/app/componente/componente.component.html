@@ -1,0 +1,7 @@
+<div class="componente nowrap">
+    <b class="qualifica mr-1">{{ componente.descrizioneQualifica }}</b>
+    <span title="{{ componente.tooltip }}">{{ componente.nominativo | truncate:16 }}</span>
+    <app-tag-capopartenza *ngIf="componente.capoPartenza"></app-tag-capopartenza>
+    <app-tag-autista *ngIf="componente.autista"></app-tag-autista>
+    <app-tag-rimpiazzo *ngIf="componente.rimpiazzo"></app-tag-rimpiazzo>
+</div>

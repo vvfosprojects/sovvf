@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-12">
+    <div class="row">
+      <!-- filtri (1) -->
+      <div class="col-md-6 ml-auto">
+        <div *ngIf="richieste; else filterButtonFake">
+          <app-filtri [richieste]="richieste" (richiesteFiltrateEvent)="getRichiesteFiltrate($event)"></app-filtri>
+        </div>
+        <ng-template #filterButtonFake>
+          <div ngbDropdown autoClose="outside" class="btn-group">
+            <button ngbDropdownToggle class="btn" [ngClass]="{'btn-outline-primary':filtriAttivi <=0, 'btn-primary':filtriAttivi > 0}" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-filter"></i> Filtri <span *ngIf="filtriAttivi>0" class="badge badge-success text-light">{{ filtriAttivi }}</span>
+            </button>
+          </div>
+        </ng-template>
+      </div>
+      <!-- ricerca (1) -->
+      <div class="col-md-6 ml-auto">
+        <div *ngIf="richiesteFiltrate; else searchButtonFake">
+          <app-ricerca-richieste [richiesteFiltrate]="richiesteFiltrate"></app-ricerca-richieste>
+        </div>
+        <ng-template #searchButtonFake>
+          <div class="input-group mb-3">
+            <input class="form-control" type="text" placeholder="Ricerca un intervento">
+            <div class="input-group-append">
+              <button class="btn btn-primary"><i class="fa fa-search text-light"></i></button>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- lista richieste (1) -->
+  <div class="col-12">  
+    <div class="row">
+      <div *ngIf="!richiesteFiltrate" class="mx-auto">
+        <img src="https://club.entedecontrolderutas.com/assets/ring-spinner-2f2ad9512c7ad4ea794d3a5d6adbd69e.gif">
+      </div>
+      <div *ngFor="let r of richiesteFiltrate" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <app-sintesi-richiesta [richiesta]="r" (LocalizzazioneIntervento)="parametriMappa($event)" (showDettagli)="showDettagliRicevuto($event)"></app-sintesi-richiesta>
+      </div>
+    </div>
+  </div>
+</div>
