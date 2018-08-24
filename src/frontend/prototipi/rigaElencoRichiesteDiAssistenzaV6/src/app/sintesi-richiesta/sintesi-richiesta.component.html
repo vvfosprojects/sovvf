@@ -9,7 +9,7 @@
                             <div class="h6 nowrap">
                                 <i class="guida fa fa-hashtag fa-fw mr-1" aria-hidden="true" title="Identificativo richiesta assistenza"></i>
                                 <a class="h6 num-int" placement="bottom" (click)="toggleEspanso()">{{ richiesta.codice }}</a>
-                                <i *ngIf="richiesta.rilevante" class="fa fa-exclamation text-danger ml-2" aria-hidden="true"></i>
+                                <i *ngIf="richiesta.rilevante" ngbTooltip="Richiesta rilevante" class="fa fa-exclamation text-danger ml-2" aria-hidden="true"></i>
                             </div>
 
                             <div class="h6 nowrap default-cursor">
