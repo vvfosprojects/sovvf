@@ -1,6 +1,8 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {SintesiRichiesta} from '../model/sintesi-richiesta.model';
 import { SintesiRichiesteService } from '../sintesi-richieste-service/sintesi-richieste.service';
+import {MapsService} from '../maps-service/maps-service.service';
+import { Marker } from '../model/marker.model';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -15,7 +17,28 @@ export class ListaRichiesteComponent implements OnInit {
     richiesteFiltrate: SintesiRichiesta[];
     filtriAttivi = 0;
 
-    constructor(private sintesiRichiesteService: SintesiRichiesteService) {
+    markers: Marker[] = [
+        {
+            lat: 51.673858,
+            lng: 7.815982,
+            label: 'A',
+            draggable: true
+        },
+        {
+            lat: 51.373858,
+            lng: 7.215982,
+            label: 'B',
+            draggable: false
+        },
+        {
+            lat: 51.723858,
+            lng: 7.895982,
+            label: 'C',
+            draggable: true
+        }
+    ]
+
+    constructor(private sintesiRichiesteService: SintesiRichiesteService, private mapsService: MapsService) {
     }
 
     ngOnInit() {
@@ -23,6 +46,8 @@ export class ListaRichiesteComponent implements OnInit {
             this.richieste = r;
             this.richiesteFiltrate = r;
         });
+
+        this.mapsService.markers = this.markers;
     }
 
     getRichiesteFiltrate(event) {
