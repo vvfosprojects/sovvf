@@ -34,8 +34,8 @@
   <!-- lista richieste (1) -->
   <div class="col-12">  
     <div class="row">
-      <div *ngIf="!richiesteFiltrate" class="mx-auto">
-        <img src="https://club.entedecontrolderutas.com/assets/ring-spinner-2f2ad9512c7ad4ea794d3a5d6adbd69e.gif">
+      <div *ngIf="!richiesteFiltrate" class="mx-auto my-5">
+        <img src="../../assets/img/pink_loader_resized.gif">
       </div>
       <div *ngFor="let r of richiesteFiltrate" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <app-sintesi-richiesta [richiesta]="r" (LocalizzazioneIntervento)="parametriMappa($event)" (showDettagli)="showDettagliRicevuto($event)"></app-sintesi-richiesta>

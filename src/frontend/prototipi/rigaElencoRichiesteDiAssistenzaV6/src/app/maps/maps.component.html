@@ -1,15 +1,18 @@
-<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
-  <agm-marker 
-      *ngFor="let m of markers; let i = index"
-      (markerClick)="clickedMarker(m.label, i)"
-      [latitude]="m.lat"
-      [longitude]="m.lng"
-      [label]="m.label"
-      [markerDraggable]="m.draggable">
-      
-    <agm-info-window>
-      <strong>InfoWindow content</strong>
-    </agm-info-window>
-  
-  </agm-marker>
+<div *ngIf="!map_loaded" class="mx-auto my-5">
+    <img src="../../assets/img/map_loading_resized.gif">
+</div>
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapReady)="map_loaded = true">
+    <agm-marker
+            *ngFor="let m of markers; let i = index"
+            (markerClick)="clickedMarker(m.label, i)"
+            [latitude]="m.lat"
+            [longitude]="m.lng"
+            [label]="m.label"
+            [markerDraggable]="m.draggable">
+
+        <agm-info-window>
+            <strong>InfoWindow content</strong>
+        </agm-info-window>
+
+    </agm-marker>
 </agm-map>
