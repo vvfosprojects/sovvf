@@ -26,6 +26,7 @@ import {FriendlyDateTooltipPipe} from './shared/pipes/friendly-date-tooltip.pipe
 import {DebounceClickDirective} from './directive/debounce-click';
 import {DebounceKeyUpDirective} from './directive/debounce-keyup';
 import {AgmCoreModule} from '@agm/core';
+import { MapsComponent } from './maps/maps.component';
 
 @NgModule({
     declarations: [
@@ -48,6 +49,7 @@ import {AgmCoreModule} from '@agm/core';
         EsriMapComponent,
         DebounceClickDirective,
         DebounceKeyUpDirective,
+        MapsComponent,
     ],
     imports: [
         BrowserModule,
@@ -55,7 +57,7 @@ import {AgmCoreModule} from '@agm/core';
         NgbModule,
         PipeModule.forRoot(),
         AgmCoreModule.forRoot({
-            apiKey: ''
+            apiKey: 'AIzaSyDYIMWNyVt1X_30PybcDMTZkFkcSsUytDk'
         }),
         FormsModule
     ],
