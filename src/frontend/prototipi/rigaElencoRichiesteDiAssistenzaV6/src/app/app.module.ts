@@ -27,6 +27,7 @@ import {DebounceKeyUpDirective} from './directive/debounce-keyup';
 import {AgmCoreModule} from '@agm/core';
 import {MapsComponent} from './maps/maps.component';
 import {MapsService} from './maps-service/maps-service.service';
+import {googleApiKey} from './maps/apikey';
 
 @NgModule({
     declarations: [
@@ -56,7 +57,7 @@ import {MapsService} from './maps-service/maps-service.service';
         NgbModule,
         PipeModule.forRoot(),
         AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyDYIMWNyVt1X_30PybcDMTZkFkcSsUytDk'
+            apiKey: googleApiKey.apiKey
         }),
         FormsModule
     ],
