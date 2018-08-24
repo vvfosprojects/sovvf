@@ -5,7 +5,7 @@ export class Marker {
         public label?: string,
         public icon?: string,
         public rilevante?: boolean,
-	    public draggable: boolean = false
+	    public draggable: boolean = true
     ) {
     }
 }

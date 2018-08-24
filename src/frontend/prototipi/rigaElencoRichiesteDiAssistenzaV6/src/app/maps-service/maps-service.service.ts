@@ -1,27 +1,22 @@
 import {Injectable} from '@angular/core';
-import {Marker} from '../model/marker.model';
+import { SintesiRichiesteService } from 'src/app/sintesi-richieste-service/sintesi-richieste.service';
+import { Marker } from '../model/marker.model';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class MapsService {
-  lat: number = 42.2417149;
-  lng: number = 12.3346679;
-  zoom: number = 6;
-  markers: Marker[];
+  markers: Marker[] = [];
 
-  constructor() { }
+  constructor(private sintesiRichiesteService: SintesiRichiesteService) { }
 
-  getLat(){
-    return this.lat;
-  }
-  
-  getLng(){
-    return this.lng;
-  }
-
-  getZoom(){
-    return this.zoom;
+  setMarkers(){
+    this.sintesiRichiesteService.getSintesiRichieste().subscribe(richieste =>{
+      richieste.forEach(r => {
+        this.markers.push(new Marker(r.descrizioneLocalita.coordinate[0],r.descrizioneLocalita.coordinate[1]))
+      });
+    })
+    return this.markers;
   }
 }
