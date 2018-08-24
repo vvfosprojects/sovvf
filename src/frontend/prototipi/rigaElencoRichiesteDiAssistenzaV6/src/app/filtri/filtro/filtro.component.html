@@ -1,7 +1,7 @@
 <div class="card-block pt-1 pb-0">
   <h6 class="font-weight-bold">{{ titolo }}</h6>
   <div *ngFor="let v of vociFiltro" class="mb-2">
-    <button class="btn btn-block" [ngClass]="{'btn-outline-primary': !v.selezionato, 'btn-primary': v.selezionato}" (click)="selezione(v.codice)">{{ v.descrizione }} <span class="badge badge-info">{{ v.cardinalita }}</span></button>
+    <button class="btn btn-block" [ngClass]="{'btn-outline-primary': !v.selezionato, 'btn-primary': v.selezionato}" appDebounceClick (debounceClick)="selezione(v.codice)" [debounceTime]="700">{{ v.descrizione }} <span class="badge badge-info">{{ v.cardinalita }}</span></button>
     <!-- <span class=""> (1)
       <input type="checkbox" (click)="selezione($event, v.codice)" /> {{ v.descrizione }}
       <button type="button" class="btn btn-outline-primary" (click)="selezione($event, v.codice)">{{ v.descrizione }}</button>

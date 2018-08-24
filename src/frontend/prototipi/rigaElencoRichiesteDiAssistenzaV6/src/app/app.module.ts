@@ -24,6 +24,8 @@ import {EsriMapComponent} from './esri/esri-map/esri-map.component';
 import {FriendlyTimePipe} from './shared/pipes/friendly-time.pipe';
 import {FriendlyDateTooltipPipe} from './shared/pipes/friendly-date-tooltip.pipe';
 import {DebounceClickDirective} from './directive/debounce-click';
+import {DebounceKeyUpDirective} from './directive/debounce-keyup';
+import {AgmCoreModule} from '@agm/core';
 
 @NgModule({
     declarations: [
@@ -45,12 +47,16 @@ import {DebounceClickDirective} from './directive/debounce-click';
         CompetenzaComponent,
         EsriMapComponent,
         DebounceClickDirective,
+        DebounceKeyUpDirective,
     ],
     imports: [
         BrowserModule,
         HttpClientModule,
         NgbModule,
         PipeModule.forRoot(),
+        AgmCoreModule.forRoot({
+            apiKey: ''
+        }),
         FormsModule
     ],
     providers: [{provide: SintesiRichiesteService, useClass: SintesiRichiesteService}],
