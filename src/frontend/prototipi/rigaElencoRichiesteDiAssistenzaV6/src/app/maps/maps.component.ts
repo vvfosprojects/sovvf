@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {MapsService} from '../maps-service/maps-service.service';
 
 @Component({
   selector: 'app-maps',
@@ -6,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./maps.component.css']
 })
 export class MapsComponent implements OnInit {
-  lat: number = 51.678418;
-  lng: number = 7.809007;
-  
-  constructor() { }
+  lat: number = 42.2417149;
+  lng: number = 12.3346679;
+  zoom: number = 6;
+
+  constructor(private mapService:MapsService) { }
 
   ngOnInit() {
   }

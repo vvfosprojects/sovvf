@@ -9,7 +9,7 @@ import {SintesiRichiesteService} from './sintesi-richieste-service/sintesi-richi
     styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-
+    
     constructor() {
     }
 
@@ -18,6 +18,10 @@ export class AppComponent implements OnInit {
 
     showDettagliRicevuto(richiesta: SintesiRichiesta): void {
         console.log('Sono app.component. Vogliono vedere i dettagli di', richiesta.id);
+    }
+
+    parametriMappa(obj) {
+        console.log(obj);
     }
 
 }

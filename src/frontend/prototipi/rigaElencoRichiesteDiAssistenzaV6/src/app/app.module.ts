@@ -20,13 +20,13 @@ import {FiltriComponent} from './filtri/filtri.component';
 import {FiltroComponent} from './filtri/filtro/filtro.component';
 import {RicercaRichiesteComponent} from './ricerca-richieste/ricerca-richieste.component';
 import {CompetenzaComponent} from './competenza/competenza.component';
-import {EsriMapComponent} from './esri/esri-map/esri-map.component';
 import {FriendlyTimePipe} from './shared/pipes/friendly-time.pipe';
 import {FriendlyDateTooltipPipe} from './shared/pipes/friendly-date-tooltip.pipe';
 import {DebounceClickDirective} from './directive/debounce-click';
 import {DebounceKeyUpDirective} from './directive/debounce-keyup';
 import {AgmCoreModule} from '@agm/core';
-import { MapsComponent } from './maps/maps.component';
+import {MapsComponent} from './maps/maps.component';
+import {MapsService} from './maps-service/maps-service.service';
 
 @NgModule({
     declarations: [
@@ -46,7 +46,6 @@ import { MapsComponent } from './maps/maps.component';
         FiltroComponent,
         RicercaRichiesteComponent,
         CompetenzaComponent,
-        EsriMapComponent,
         DebounceClickDirective,
         DebounceKeyUpDirective,
         MapsComponent,
@@ -61,7 +60,10 @@ import { MapsComponent } from './maps/maps.component';
         }),
         FormsModule
     ],
-    providers: [{provide: SintesiRichiesteService, useClass: SintesiRichiesteService}],
+    providers: [
+        {provide: SintesiRichiesteService, useClass: SintesiRichiesteService},
+        MapsService
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
