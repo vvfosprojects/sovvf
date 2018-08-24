@@ -4,13 +4,7 @@
         <app-lista-richieste (inviaIndirizzo)="parametriMappa($event)" (showDettagli)="showDettagliRicevuto($event)"></app-lista-richieste>
     </div>
     <div class="col-md-6">
-      <!-- <app-esri-map
-              [center]="mapCenter"
-              [basemap]="basemapType"
-              [zoom]="mapZoomLevel"
-              [start]="startMap"
-              (mapLoaded)="mapLoadedEvent($event)">
-      </app-esri-map> -->
+      <app-maps></app-maps>
     </div>
   </div>
 </div>
