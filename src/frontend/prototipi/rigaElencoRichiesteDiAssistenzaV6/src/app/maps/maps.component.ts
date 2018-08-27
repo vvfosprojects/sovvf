@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {RichiestaMarker} from '../model/richiesta-marker.model';
-import {MapsService} from '../maps-service/maps-service.service';
+import {RichiestaMarker} from './maps-model/richiesta-marker.model';
+import {MapsService} from './maps-service/maps-service.service';
 
 @Component({
     selector: 'app-maps',
@@ -21,7 +21,6 @@ export class MapsComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.richiesteMarkers = this.mapsService.getData();
         this.mapsService.getData().subscribe(r => {
             this.richiesteMarkers = r;
         });

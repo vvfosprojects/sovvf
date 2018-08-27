@@ -1,6 +1,7 @@
 import {Marker} from './marker.model';
-import {Squadra} from './squadra.model';
-import {DescrizioneLocalita} from './descrizione-localita.model';
+import {Squadra} from '../../model/squadra.model';
+import {DescrizioneLocalita} from '../../model/descrizione-localita.model';
+import {IconMarker} from '../../model/icon-marker.model';
 
 export class MezzoMarker implements Marker {
     constructor(
@@ -12,8 +13,6 @@ export class MezzoMarker implements Marker {
         public localita: DescrizioneLocalita,
         /* Le squadre presenti sul mezzo */
         public squadre: Squadra[],
-        /* La classe dell'icona da visualizzare */
-        public icon: string,
         /* Contiene la descrizione della label da mostrare */
         public label: string
     ) {
