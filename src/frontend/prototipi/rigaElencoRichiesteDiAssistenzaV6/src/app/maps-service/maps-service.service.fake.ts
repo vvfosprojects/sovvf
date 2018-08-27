@@ -18,9 +18,9 @@ export class MapsServiceFake {
                 new DescrizioneLocalita(
                     'Via Cavour, 5',
                     [41.900570, 12.499370]),
-                'https://goo.gl/BwrbJU',
+                'https://goo.gl/HyNGJm',
                 'Allagamento cantina per rottura tubatura',
-                false
+                true
             )
         ];
     }

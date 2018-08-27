@@ -3,15 +3,13 @@
 </div>
 <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapReady)="map_loaded = true">
     <agm-marker
-            *ngFor="let m of markers; let i = index"
-            (markerClick)="clickedMarker(m.label, i)"
+            *ngFor="let m of richiesteMarkers; let i = index"
             [latitude]="m.indirizzo.coordinate[0]"
             [longitude]="m.indirizzo.coordinate[1]"
-            [label]="m.label"
             [iconUrl]="m.icon">
 
         <agm-info-window>
-            <strong>{{m.indirizzo.indirizzo}}</strong>
+            <strong>{{m.label}}</strong>
         </agm-info-window>
 
     </agm-marker>
