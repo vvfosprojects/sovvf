@@ -66,7 +66,7 @@ import { AnimationPipe } from './maps-service/animation.pipe';
     ],
     providers: [
         {provide: SintesiRichiesteService, useClass: SintesiRichiesteService},
-        MapsService
+        {provide: MapsService, useClass: MapsService},
     ],
     bootstrap: [AppComponent]
 })
