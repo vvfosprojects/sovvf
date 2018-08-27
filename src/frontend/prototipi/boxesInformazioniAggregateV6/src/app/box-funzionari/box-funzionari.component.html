@@ -1,0 +1,69 @@
+<!-- <a class="card card-text" style="color:#33b5e5;">
+  <div class="row">
+      <span class="col col-md-3">
+          <i class="fa fa fa-id-card fa-4x" style="margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px; text-shadow:  4px -2px 3px #9bdbf5"></i>
+      </span>
+      <span class="col col-md-9">
+          <span *ngIf="!getfunzPresente() && !getCapoTurnoPresente()">
+              <ul>
+                  <li class="card-text" style="color:#33b5e5; font-size:13px;margin-top:22px; margin-bottom:20px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Funz. di Guardia</li>
+                  <li class="card-text" style="color:#33b5e5; font-size:13px; margin-top:30px; margin-bottom:20px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Capo Turno</li>
+              </ul>
+          </span>
+          <span *ngIf="!getfunzPresente() && getCapoTurnoPresente()">
+              <ul>
+                  <li class="card-text" style="color:#33b5e5; font-size:13px;margin-top:20px; margin-bottom:18px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Funz. di Guardia</li>
+              </ul>
+          </span>
+          <span *ngIf="getfunzPresente()">
+              <ul>
+                  <li class="card-text" style="color:#33b5e5; font-size:13px; padding-top:8px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Funz. di Guardia</li>
+                  <span *ngFor="let f of funzionari">
+                      <span *ngIf="f.funzGuardia">
+                          <li class="card-text text-muted" style="font-size:13px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title="Qualifica">{{f.qualifica}}</li>
+                          <ng-container *ngIf="f.descrizione.length <= 17; then thenBlock else elseBlock"></ng-container>
+                          <ng-template #thenBlock>
+                              <li class="card-text text-muted" style="font-size:13px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title={{f.tooltip}}>{{f.descrizione}}</li>
+                          </ng-template>
+                          <ng-template #elseBlock>
+                              <li class="card-text text-muted" style="font-size:13px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title={{f.descrizione}}-{{f.tooltip}}>{{f.descrizione.substr(0,17)}}...</li>
+                          </ng-template>
+                      </span>
+                  </span>
+              </ul>
+          </span>
+          <span *ngIf="!getCapoTurnoPresente() && getfunzPresente()">
+              <ul>
+                  <li class="card-text" style="color:#33b5e5; font-size:13px; margin-top:17px; margin-bottom:20px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Capo Turno</li>
+              </ul>
+          </span>
+          <span *ngIf="getCapoTurnoPresente()">
+              <ul>
+                  <li class="card-text" style="color:#33b5e5; font-size:13px; padding-top:8px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5">Capo Turno</li>
+                  <span *ngFor="let f of funzionari">
+                      <span *ngIf="f.capoTurno">
+                          <li class="card-text text-muted" style="font-size:13px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title="Qualifica">{{f.qualifica}}</li>
+                          <ng-container *ngIf="f.descrizione.length <= 17; then thenBlock else elseBlock"></ng-container>
+                          <ng-template #thenBlock>
+                              <li class="card-text text-muted" style="font-size:13px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title={{f.tooltip}}>{{f.descrizione}}</li>
+                          </ng-template>
+                          <ng-template #elseBlock>
+                              <li class="card-text text-muted" style="font-size:13px; font-weight: bold;" data-toggle="tooltip" data-placement="top" title={{f.descrizione}}-{{f.tooltip}}>{{f.descrizione.substr(0,17)}}...</li>
+                          </ng-template>   
+                      </span>
+                  </span>
+              </ul>
+          </span>
+      </span> 
+  </div>
+</a> -->
+
+<div class="card bg-light w-100">
+    <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#" class="card-link">Card link</a>
+        <a href="#" class="card-link">Another link</a>
+    </div>
+</div>
