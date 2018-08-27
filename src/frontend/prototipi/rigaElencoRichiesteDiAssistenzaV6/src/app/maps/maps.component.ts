@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {MapsService} from '../maps-service/maps-service.service';
-import { Marker } from '../model/marker.model';
+import { MapsServiceFake } from '../maps-service/maps-service.service.fake';
+import { RichiestaMarker } from '../model/richiesta-marker.model';
 
 @Component({
   selector: 'app-maps',
@@ -11,11 +11,11 @@ export class MapsComponent implements OnInit {
   lat: number = 42.2417149;
   lng: number = 12.3346679;
   zoom: number = 6;
-  markers: Marker[];
+  richiesteMarkers: RichiestaMarker[];
 
-  constructor(private mapsService:MapsService) { }
+  constructor(private mapsServiceFake:MapsServiceFake) { }
 
   ngOnInit() {
-    this.markers = this.mapsService.setMarkers();
+    this.richiesteMarkers = this.mapsServiceFake.getData();
   }
 }
