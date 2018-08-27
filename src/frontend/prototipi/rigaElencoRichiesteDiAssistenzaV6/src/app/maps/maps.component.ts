@@ -17,5 +17,6 @@ export class MapsComponent implements OnInit {
 
   ngOnInit() {
     this.richiesteMarkers = this.mapsServiceFake.getData();
+    console.log(this.richiesteMarkers);
   }
 }
