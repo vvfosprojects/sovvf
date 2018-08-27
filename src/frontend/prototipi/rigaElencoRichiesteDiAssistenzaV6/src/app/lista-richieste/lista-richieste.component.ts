@@ -1,8 +1,8 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {SintesiRichiesta} from '../model/sintesi-richiesta.model';
 import { SintesiRichiesteService } from '../sintesi-richieste-service/sintesi-richieste.service';
-import {MapsService} from '../maps-service/maps-service.service';
-import { Marker } from '../model/marker.model';
+import {MapsService} from '../maps/maps-service/maps-service.service';
+import { Marker } from '../maps/maps-model/marker.model';
 
 @Component({
     selector: 'app-lista-richieste',

@@ -9,7 +9,7 @@ import {SintesiRichiesteService} from './sintesi-richieste-service/sintesi-richi
     styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-    
+
     constructor() {
     }
 

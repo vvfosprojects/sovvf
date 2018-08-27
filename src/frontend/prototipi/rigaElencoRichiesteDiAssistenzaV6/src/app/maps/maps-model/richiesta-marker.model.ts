@@ -1,20 +1,16 @@
-import { Marker } from "./marker.model";
-import { DescrizioneLocalita } from "./descrizione-localita.model";
+import {Marker} from './marker.model';
+import {DescrizioneLocalita} from '../../model/descrizione-localita.model';
 
 export class RichiestaMarker implements Marker {
     constructor(
         /* id */
-        public id: number,
-
+        public id_richiesta: number,
         /* La stringa dell'indirizzo e le relative coordinate */
-        public indirizzo: DescrizioneLocalita,
-
-        /* La classe dell'icona da visualizzare */
-        public icon: string,
-
+        public localita: DescrizioneLocalita,
+        /* Id del tipo tipologia */
+        public id_tipologia: number,
         /* Contiene la descrizione della label da mostrare */
         public label: string,
-
         /* Determina la rilevanza del marcatore */
         public rilevante: boolean
     ) {
