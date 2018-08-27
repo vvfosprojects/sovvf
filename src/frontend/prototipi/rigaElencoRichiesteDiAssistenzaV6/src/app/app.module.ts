@@ -27,6 +27,7 @@ import {DebounceKeyUpDirective} from './directive/debounce-keyup';
 import {AgmCoreModule} from '@agm/core';
 import {MapsComponent} from './maps/maps.component';
 import {MapsService} from './maps-service/maps-service.service';
+import {MapsServiceFake} from './maps-service/maps-service.service.fake';
 import {googleApiKey} from './maps/apikey';
 
 @NgModule({
