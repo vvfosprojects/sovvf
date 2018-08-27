@@ -1,11 +1,9 @@
-export class Marker {
+import { DescrizioneLocalita } from "./descrizione-localita.model";
+
+export abstract class Marker {
     constructor(
-        public lat: number,
-	    public lng: number,
-        public label?: string,
-        public icon?: string,
-        public rilevante?: boolean,
-	    public draggable: boolean = true
+        /* La stringa dell'indirizzo e le relative coordinate */
+        public indirizzo: DescrizioneLocalita,
     ) {
     }
 }

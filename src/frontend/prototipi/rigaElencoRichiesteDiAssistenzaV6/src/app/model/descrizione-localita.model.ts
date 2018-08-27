@@ -1,7 +1,7 @@
 export class DescrizioneLocalita {
     constructor(
         public indirizzo: string,
-        public coordinate: number[]
+        public coordinate: [string,string]
     ) {
     }
 }

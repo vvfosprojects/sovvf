@@ -34,7 +34,7 @@ export class SintesiRichiesteServiceFake {
                 'Incendio zona III rotonda prima del centro abitato',
                 'Carabinieri',
                 '06 41 42 342',
-                {'indirizzo': 'Via Cavour, 5', 'coordinate': [12.499370, 41.900570]},
+                {'indirizzo': 'Via Cavour, 5', 'coordinate': ['12.499370', '41.900570']},
                 [{'codice': 1, 'descrizione': 'Tuscolana', 'coordinate': [123, 256]}, {
                     'codice': 2,
                     'descrizione': 'Eur',
@@ -243,7 +243,7 @@ export class SintesiRichiesteServiceFake {
                 'Allagamento del secondo piano del condominio per rottura tubazione',
                 'Mario Rossi',
                 '06 41 42 342',
-                {'indirizzo': 'Piazza dell\'indipendenza, 40', 'coordinate': [12.502470, 41.904380]},
+                {'indirizzo': 'Piazza dell\'indipendenza, 40', 'coordinate': ['12.502470', '41.904380']},
                 [{'codice': 1, 'descrizione': 'Tuscolana', 'coordinate': [123, 256]}, {
                     'codice': 2,
                     'descrizione': 'Eur',
@@ -275,7 +275,7 @@ export class SintesiRichiesteServiceFake {
                 'Allagamento cantina per rottura tubatura',
                 'Carabinieri',
                 '06 41 42 342',
-                {'indirizzo': 'Via Cavour, 5', 'coordinate': [12.499370, 41.900570]},
+                {'indirizzo': 'Via Cavour, 5', 'coordinate': ['12.499370', '41.900570']},
                 [{'codice': 1, 'descrizione': 'Tuscolana', 'coordinate': [123, 256]}, {
                     'codice': 3,
                     'descrizione': 'Ostiense',

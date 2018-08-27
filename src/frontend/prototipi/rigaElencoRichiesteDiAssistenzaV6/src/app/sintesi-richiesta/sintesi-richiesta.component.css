@@ -73,7 +73,7 @@ a:hover {
 }
 
 .badge-notify {
-    background: red;
+    background-color:#949494;
     position: absolute;
     top: -8px;
     left: 12px;
