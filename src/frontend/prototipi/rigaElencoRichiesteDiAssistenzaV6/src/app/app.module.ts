@@ -29,6 +29,7 @@ import {MapsComponent} from './maps/maps.component';
 import {MapsService} from './maps-service/maps-service.service';
 import {MapsServiceFake} from './maps-service/maps-service.service.fake';
 import {googleApiKey} from './maps/apikey';
+import { AnimationPipe } from './maps-service/animation.pipe';
 
 @NgModule({
     declarations: [
@@ -51,6 +52,7 @@ import {googleApiKey} from './maps/apikey';
         DebounceClickDirective,
         DebounceKeyUpDirective,
         MapsComponent,
+        AnimationPipe,
     ],
     imports: [
         BrowserModule,
