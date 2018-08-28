@@ -8,12 +8,14 @@ import { InfoAggregateComponent } from './info-aggregate/info-aggregate.componen
 import { InfoAggregateService } from './info-aggregate/info-aggregate.service';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BoxInterventiComponent } from './box-interventi/box-interventi.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BoxFunzionariComponent,
-    InfoAggregateComponent
+    InfoAggregateComponent,
+    BoxInterventiComponent
   ],
   imports: [
     HttpClientModule,
