@@ -11,6 +11,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BoxInterventiComponent } from './box-interventi/box-interventi.component';
 import { TruncatePipe } from './shared/pipes/truncate.pipe';
 import { BoxMezziComponent } from './box-mezzi/box-mezzi.component';
+import { BoxMeteoComponent } from './box-meteo/box-meteo.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { BoxMezziComponent } from './box-mezzi/box-mezzi.component';
     InfoAggregateComponent,
     BoxInterventiComponent,
     TruncatePipe,
-    BoxMezziComponent
+    BoxMezziComponent,
+    BoxMeteoComponent
   ],
   imports: [
     HttpClientModule,
