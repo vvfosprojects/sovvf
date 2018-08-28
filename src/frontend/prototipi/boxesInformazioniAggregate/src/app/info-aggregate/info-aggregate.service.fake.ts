@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from "rxjs/Observable";
 
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -22,9 +21,8 @@ export class InfoAggregateServiceFake {
 
   constructor() { }
 
-  public getInfoAggregate(): Observable<InfoAggregate> {
-    var informazioni: InfoAggregate = (
-      new InfoAggregate(
+  public getInfoAggregate() {
+      return new InfoAggregate(
         new InterventiSo(
           3,
           3,
@@ -80,9 +78,6 @@ export class InfoAggregateServiceFake {
             false,
             true
           ),
-        ]));
-
-
-    return Observable.of(informazioni);
+        ]);
   }
 }
