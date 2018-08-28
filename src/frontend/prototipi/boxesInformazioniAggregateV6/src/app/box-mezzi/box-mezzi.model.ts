@@ -1,10 +1,10 @@
-export class BoxInterventi {
+export class BoxMezzi {
     constructor(
         /* Totale interventi aperti */
-        public interventiAperti: number,
+        public inServizio: number,
         
         /* Chiamate non ancora presidiate */
-        public chiamate: number,
+        public inSede: number,
 
         /* Interventi con mezzi non ancora arrivati sul posto */
         public inViaggio: number,
@@ -13,9 +13,6 @@ export class BoxInterventi {
         public sulPosto: number,
 
         /* Interventi con mezzi in rientro  */
-        public inRientro: number,
-
-        /* Interventi con mezzi in attesa  */
-        public inAttesa: number
+        public inRientro: number
         ) { }
 }

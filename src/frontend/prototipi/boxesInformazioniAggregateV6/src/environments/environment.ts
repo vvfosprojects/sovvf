@@ -4,6 +4,6 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://api.myjson.com/bins/1g1nkg' /* 2 FUNZIONARI */
+  apiUrl: 'https://api.myjson.com/bins/t7hko' /* 2 FUNZIONARI, BOX-RICHIESTE,  */
   /* apiUrl: 'https://api.myjson.com/bins/e2ew0' */ /* 0 FUNZIONARI */
 };

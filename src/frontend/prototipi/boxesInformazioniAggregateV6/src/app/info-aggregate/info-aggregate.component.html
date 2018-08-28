@@ -1,20 +1,25 @@
 <div class="col-12">
-  <div class="row">
+  <div *ngIf="informazioni" class="row mt-2">
     <!-- box-funzionari -->
-    <div *ngIf="informazioni" class="col-md-3 h6">
-      <box-funzionari [funzionari]="informazioni.funzionariSo" class="col-md-12"></box-funzionari>
+    <div class="col-md-3 h6">
+      <app-box-funzionari [funzionari]="informazioni.funzionariSo"></app-box-funzionari>
     </div>
 
-    <!-- 2 -->
+    <!-- box-interventi -->
     <div class="col-md-3 h6">
+      <app-box-interventi [interventi]="informazioni.interventi"></app-box-interventi>
     </div>
 
-    <!-- 3 -->
+    <!-- box-mezzi -->
     <div class="col-md-3 h6">
+      <app-box-mezzi [mezzi]="informazioni.mezzi"></app-box-mezzi>
     </div>
 
     <!-- 4 -->
     <div class="col-md-3 h6">
     </div>
+  </div>
+  <div *ngIf="!informazioni" class="col-12 text-center mt-5">
+    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
   </div>
 </div>

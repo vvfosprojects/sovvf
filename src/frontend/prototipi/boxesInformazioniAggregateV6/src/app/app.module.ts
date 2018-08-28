@@ -9,13 +9,17 @@ import { InfoAggregateService } from './info-aggregate/info-aggregate.service';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BoxInterventiComponent } from './box-interventi/box-interventi.component';
+import { TruncatePipe } from './shared/pipes/truncate.pipe';
+import { BoxMezziComponent } from './box-mezzi/box-mezzi.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BoxFunzionariComponent,
     InfoAggregateComponent,
-    BoxInterventiComponent
+    BoxInterventiComponent,
+    TruncatePipe,
+    BoxMezziComponent
   ],
   imports: [
     HttpClientModule,

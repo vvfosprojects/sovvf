@@ -16,7 +16,7 @@ export class InfoAggregateComponent implements OnInit {
   ngOnInit() {
     this.infoAggregateService.getInfoAggregate()
       .subscribe(informazioni => {
-        /* console.log("Informazioni service: ", informazioni); */
+        //console.log("Informazioni service: ", informazioni.interventi);
         this.informazioni = informazioni;
       });
   }

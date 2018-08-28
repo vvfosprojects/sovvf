@@ -3,7 +3,7 @@ import { FunzionariSo } from "./funzionari-so.model";
 
 
 @Component({
-  selector: 'box-funzionari',
+  selector: 'app-box-funzionari',
   templateUrl: './box-funzionari.component.html',
   styleUrls: ['./box-funzionari.component.css']
 })
@@ -14,11 +14,10 @@ export class BoxFunzionariComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.dir(this.funzionari)
+    //console.log(this.funzionari)
   }
 
- 
-  public getfunzPresente(): boolean{
+  public getFunzPresente(): boolean{
     let presenteFunz = false;
      
     this.funzionari.forEach(c=>  {

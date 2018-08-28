@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { BoxInterventi } from './box-interventi.model';
 
 @Component({
   selector: 'app-box-interventi',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BoxInterventiComponent implements OnInit {
 
+  @Input() interventi: BoxInterventi;
+
   constructor() { }
 
   ngOnInit() {
+    console.log(this.interventi);
   }
 
 }
