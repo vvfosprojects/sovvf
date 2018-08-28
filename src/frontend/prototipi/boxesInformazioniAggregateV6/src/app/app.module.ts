@@ -7,6 +7,7 @@ import { InfoAggregateComponent } from './info-aggregate/info-aggregate.componen
 
 import { InfoAggregateService } from './info-aggregate/info-aggregate.service';
 import { HttpClientModule } from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   imports: [
     HttpClientModule,
-    BrowserModule
+    BrowserModule,
+    NgbModule
   ],
   providers: [{ provide: InfoAggregateService, useClass: InfoAggregateService }],
   bootstrap: [AppComponent]

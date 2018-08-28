@@ -60,10 +60,25 @@
 
 <div class="card bg-light w-100">
     <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="card-link">Card link</a>
-        <a href="#" class="card-link">Another link</a>
+        <!-- Funzionario Guardia -->
+        <div>
+            <h6 class="mb-0"><i class="fa fa-user-secret mr-1" aria-hidden="true"></i>Funzionario Guardia</h6>
+            <hr class="m-0 my-1">
+            <div *ngFor="let f of funzionari">
+                <div *ngIf="f.funzGuardia">
+                    <span class="mr-1" title="Qualifica"><b>{{f.qualifica}}</b></span><span class="text-muted"><b>{{f.descrizione}}</b></span>
+                </div>
+            </div>
+        </div>
+        <!-- Capo Turno -->
+        <div class="mt-3">
+            <h6 class="mb-0"><i class="fa fa-graduation-cap mr-1" aria-hidden="true"></i>Capo Turno</h6>
+            <hr class="m-0 my-1">
+            <div *ngFor="let f of funzionari">
+                <div *ngIf="f.capoTurno">
+                    <span class="mr-1" title="Qualifica"><b>{{f.qualifica}}</b></span><span class="text-muted"><b>{{f.descrizione}}</b></span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
