@@ -7,13 +7,11 @@ import { BoxInterventi } from './box-interventi.model';
   styleUrls: ['./box-interventi.component.css']
 })
 export class BoxInterventiComponent implements OnInit {
-
   @Input() interventi: BoxInterventi;
-
   constructor() { }
 
   ngOnInit() {
-    console.log(this.interventi);
+    //console.log(this.interventi);
   }
 
 }
