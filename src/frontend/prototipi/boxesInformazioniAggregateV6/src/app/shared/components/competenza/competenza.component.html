@@ -1,0 +1,4 @@
+<li class="list-inline-item mr-1">
+    <span class="badge" [ngClass]="{'badge-primary': i==0, 'badge-info': i==1, 'badge-secondary': i>1}"
+          (click)="localizzazioneCompetenza(competenza)" ngbTooltip="{{competenza.descrizione}}" placement="bottom">{{ competenza.descrizione | slice:0:3 }}</span>
+</li>
