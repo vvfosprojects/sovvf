@@ -1,0 +1,7 @@
+.badge-notify{
+	background:red;
+	position: absolute;
+	top: -8px;
+	left: 12px;
+	font-size: .6em;
+}
