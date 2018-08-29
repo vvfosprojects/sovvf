@@ -14,12 +14,6 @@ import {FiltriComponent} from './lista-richieste/filtri/filtri.component';
 import {FiltroComponent} from './lista-richieste/filtri/filtro/filtro.component';
 import {RicercaRichiesteComponent} from './lista-richieste/ricerca-richieste/ricerca-richieste.component';
 
-import {AgmCoreModule} from '@agm/core';
-import {MapsComponent} from './maps/maps.component';
-import {MapsService} from './maps/maps-service/maps-service.service';
-import {MapsServiceFake} from './maps/maps-service/maps-service.service.fake';
-import {googleApiKey} from './maps/apikey';
-import {AnimationPipe} from './maps/maps-service/animation.pipe';
 
 @NgModule({
     declarations: [
@@ -36,24 +30,18 @@ import {AnimationPipe} from './maps/maps-service/animation.pipe';
             Shared.CompetenzaComponent,
             Shared.ComponenteComponent,
             Shared.MezzoComponent
-        ],
+        ]
         // end import of Shared Declarations
-        MapsComponent,
-        AnimationPipe,
     ],
     imports: [
         BrowserModule,
         HttpClientModule,
         NgbModule,
         PipeModule.forRoot(),
-        AgmCoreModule.forRoot({
-            apiKey: googleApiKey.apiKey
-        }),
         FormsModule
     ],
     providers: [
-        {provide: SintesiRichiesteService, useClass: SintesiRichiesteService},
-        {provide: MapsService, useClass: MapsService},
+        {provide: SintesiRichiesteService, useClass: SintesiRichiesteService}
     ],
     bootstrap: [AppComponent]
 })
