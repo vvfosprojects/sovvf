@@ -1,4 +1,4 @@
-import { SintesiRichiesta } from '../model/sintesi-richiesta.model';
+import { SintesiRichiesta } from './sintesi-richiesta.model';
 
 export class RisultatoRicerca {
     constructor(

@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {Competenza} from '../model/competenza.model';
+import {Competenza} from '../../model/competenza.model';
 
 @Component({
     selector: 'app-competenza',
@@ -18,7 +18,8 @@ export class CompetenzaComponent implements OnInit {
     }
 
     private localizzazioneCompetenza(competenza): void {
-        console.log('Sono il componente. Voglio localizzare la competenza', competenza);
-        this.LocalizzazioneCompetenza.emit(competenza.coordinate);
+        // Tolto in attesa di istruzioni
+        // console.log('Sono il componente. Voglio localizzare la competenza', competenza);
+        // this.LocalizzazioneCompetenza.emit(competenza.coordinate);
     }
 }

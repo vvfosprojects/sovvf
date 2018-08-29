@@ -1,8 +1,8 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
-import {SintesiRichiesta} from '../model/sintesi-richiesta.model';
+import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
 
-import {Mezzo} from '../model/mezzo.model';
+import {Mezzo} from '../../model/mezzo.model';
 
 @Component({
     selector: 'app-mezzo',

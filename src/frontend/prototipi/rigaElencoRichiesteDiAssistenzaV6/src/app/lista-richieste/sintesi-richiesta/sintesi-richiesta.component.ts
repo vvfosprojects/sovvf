@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
-import {SintesiRichiesta} from '../model/sintesi-richiesta.model';
+import {SintesiRichiesta} from '../../shared/model/sintesi-richiesta.model';
 import {Observable} from 'rxjs';
 import * as moment from 'moment';
 

@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ComponenteComponent} from './componente.component';
-import {TruncatePipe} from '../pipes/truncate.pipe';
+import {TruncatePipe} from '../../pipes/truncate.pipe';
 
 describe('ComponenteComponent', () => {
     let comp: ComponenteComponent;

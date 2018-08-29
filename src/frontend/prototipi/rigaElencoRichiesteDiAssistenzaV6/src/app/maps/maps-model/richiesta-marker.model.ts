@@ -1,5 +1,5 @@
 import {Marker} from './marker.model';
-import {DescrizioneLocalita} from '../../model/descrizione-localita.model';
+import {DescrizioneLocalita} from '../../shared/model/descrizione-localita.model';
 
 export class RichiestaMarker implements Marker {
     constructor(

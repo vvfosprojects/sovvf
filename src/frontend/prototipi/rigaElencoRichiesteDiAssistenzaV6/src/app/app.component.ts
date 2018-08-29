@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
-import {SintesiRichiesta} from './model/sintesi-richiesta.model';
-import {SintesiRichiesteService} from './sintesi-richieste-service/sintesi-richieste.service';
+import {SintesiRichiesta} from './shared/model/sintesi-richiesta.model';
+import {SintesiRichiesteService} from './lista-richieste/sintesi-richieste-service/sintesi-richieste.service';
 
 @Component({
     selector: 'app-root',
