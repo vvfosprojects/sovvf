@@ -1,0 +1,70 @@
+<li class="list-group-item p-0 border-bottom py-1">
+  <div class="row">
+    <div class="col-md-10">
+      <div class="px-3 py-4">
+        <i class="guida fa fa-tachometer fa-fw mr-1" style="font-size: 1.5em" aria-hidden="true" title="Mezzo"></i>
+        <span ><b>{{ mezzo.descrizione }}</b></span>
+        <span class="badge badge-default m-0">{{ mezzo.genere }}</span>
+        <span class="badge text-white m-0 ml-1" [ngClass]="{'badge-default':mezzo.statoMezzo == 'InSede' || mezzo.statoMezzo == 'Istituto', 'badge-warning':mezzo.statoMezzo == 'InViaggio', 'badge-success':mezzo.statoMezzo == 'SulPosto', 'badge-info':mezzo.statoMezzo == 'InRientro'}">
+        {{ mezzo.descrizioneStato }}
+        </span>
+      </div>
+    </div>
+
+    <!-- indicatori -->
+    <div class="col-md-2 p-0">
+      <div>
+        <a title="Indicatori mezzo" [ngbPopover]="indMez" placement="bottom" popoverTitle="Indicatori" triggers="click" tabindex="0">
+          <i class="guida fa fa-briefcase fa-fw" style="color:cadetblue;" aria-hidden="true"
+            title="Condizione del Mezzo"></i>
+        </a>
+
+        <ng-template #indMez>
+          <div class="h4 nowrap">
+            <div><i class='fa fa-cogs fa-fw' aria-hidden='true' title='Stato di efficienza del mezzo' ></i><span class='badge'
+              [ngClass]="{'badge-danger':mezzo.statoEfficienzaMezzo == 0, 'badge-warning':mezzo.statoEfficienzaMezzo == 1,'badge-success':mezzo.statoEfficienzaMezzo == 2 || mezzo.statoEfficienzaMezzo == 3}">
+              {{ mezzo.descrizioneStatoEfficienza }}</span></div>
+            <div><i class='fa fa-tachometer fa-fw' aria-hidden='true' title='Livello Carburante' ></i><span class='badge'
+              [ngClass]="{'badge-default':mezzo.livelloCarburante == 0, 'badge-danger':mezzo.livelloCarburante == 1 || mezzo.livelloCarburante == 2, 'badge-warning':mezzo.livelloCarburante == 3,'badge-success':mezzo.livelloCarburante == 4}">
+              {{ mezzo.descrizioneLivelloCarburante }}</span></div>
+            <div><i class='fa fa-tint fa-fw' aria-hidden='true' title='Livello Estinguente' ></i><span class='badge'
+              [ngClass]="{'badge-default':mezzo.livelloEstinguente == 0, 'badge-danger':mezzo.livelloEstinguente == 1 || mezzo.livelloEstinguente == 2, 'badge-warning':mezzo.livelloEstinguente == 3,'badge-success':mezzo.livelloEstinguente == 4}">
+              {{ mezzo.descrizioneLivelloEstinguente }}</span></div>
+            <div><i class='fa fa-flag fa-fw' aria-hidden='true' title='Appartenenza del mezzo' ></i><span class='badge'
+              [ngClass]="{'badge-warning':mezzo.appartenenzaMezzo == 1,'badge-success':mezzo.appartenenzaMezzo == 0}">
+              {{ mezzo.descrizioneAppartenenzaMezzo }}</span></div>
+          </div>
+        </ng-template>
+      </div>
+
+      <div>
+        <a [ngbPopover]="equip" placement="bottom" popoverTitle="Equipaggio" triggers="click" tabindex="0">
+          <i class="guida fa fa-user fa-fw" style="color:cadetblue;" aria-hidden="true" title="Equipaggio"></i>	
+        </a>
+        <ng-template #equip>
+          <app-componente *ngFor="let c of mezzo.equipaggio" [componente]="c" class="h5"></app-componente>
+        </ng-template>
+      </div>
+
+      
+
+      <!-- localizzazione mezzo -->
+      <div>
+        <a style="font-weight: bold" href="#" (click)="localizzazioneMezzo(mezzo)">
+          <i class="guida fa fa-globe fa-fw" style="color:cadetblue!important;" aria-hidden="true" title="Localizzazione Mezzo"></i>	
+        </a>
+      </div>
+
+      <!-- notifiche mezzo -->
+      <div>
+        <a [ngbPopover]="notMez" placement="bottom" triggers="click" popoverTitle="Notifiche mezzo" tabindex="0">
+          <i class="guida fa fa-bell fa-fw" style="color:cadetblue!important;" aria-hidden="true"></i>	
+        </a>
+
+        <ng-template #notMez>
+          <span class="h6">Nessuna notifica</span>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</li>
