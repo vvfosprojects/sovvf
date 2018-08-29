@@ -7,12 +7,11 @@ import { BoxMeteo } from './box-meteo.model';
   styleUrls: ['./box-meteo.component.css']
 })
 export class BoxMeteoComponent implements OnInit {
-  iconaUrl:string;
+  iconaUrl: string;
   @Input() meteo: BoxMeteo;
   constructor() { }
 
   ngOnInit() {
-    //console.log(this.meteo);
+    // console.log(this.meteo);
   }
-
 }
