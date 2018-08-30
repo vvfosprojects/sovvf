@@ -11,6 +11,7 @@ import {MapsServiceFake} from './maps/maps-service/maps-service.service.fake';
 import {googleApiKey} from './maps/apikey';
 import {AnimationPipe} from './maps/maps-service/animation.pipe';
 import { AppComponent } from './app.component';
+import { NavComponent } from './maps/nav/nav.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AppComponent } from './app.component';
       // end import of Shared Declarations
       MapsComponent,
       AnimationPipe,
+      NavComponent,
   ],
   imports: [
       BrowserModule,

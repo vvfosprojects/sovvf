@@ -23,7 +23,8 @@ export class MapsServiceFake {
                     [41.900570, 12.499370]),
                 1,
                 'Allagamento cantina per rottura tubatura',
-                true
+                true,
+                3
             )
         ];
         return of(data);
