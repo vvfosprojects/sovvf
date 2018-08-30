@@ -1,4 +1,4 @@
-export class FunzionariSo {
+export class BoxFunzionariSo {
     constructor(
         /**
          * E' il codice fiscale della persona, utile come chiave per eventuali approfondimenti sull'istanza

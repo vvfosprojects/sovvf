@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { BoxMeteo } from './box-meteo.model';
+import { BoxMeteo } from '../../boxes-model/box-meteo.model';
 
 @Component({
   selector: 'app-box-meteo',

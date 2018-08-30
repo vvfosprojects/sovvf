@@ -1,7 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 
-import { InfoAggregate } from './info-aggregate.model';
-import { InfoAggregateService } from './info-aggregate.service';
+import { InfoAggregate } from '../boxes-services/info-aggregate.model';
+import { InfoAggregateService } from '../boxes-services/info-aggregate.service';
 
 @Component({
   selector: 'app-info-aggregate',

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FunzionariSo } from "./funzionari-so.model";
+import { FunzionariSo } from "../../boxes-model/funzionari-so.model";
 
 
 @Component({

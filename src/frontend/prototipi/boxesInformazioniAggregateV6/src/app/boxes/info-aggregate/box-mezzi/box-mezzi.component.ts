@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { BoxMezzi } from './box-mezzi.model';
+import { BoxMezzi } from '../../boxes-model/box-mezzi.model';
 
 @Component({
   selector: 'app-box-mezzi',

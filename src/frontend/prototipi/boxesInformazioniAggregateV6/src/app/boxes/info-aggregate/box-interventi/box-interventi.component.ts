@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { BoxInterventi } from './box-interventi.model';
+import { BoxInterventi } from '../../boxes-model/box-interventi.model';
 
 @Component({
   selector: 'app-box-interventi',
