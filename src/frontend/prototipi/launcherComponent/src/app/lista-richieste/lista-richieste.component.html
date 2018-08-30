@@ -37,7 +37,7 @@
       <div *ngIf="!richiesteFiltrate" class="mx-auto my-5">
         <img src="../../assets/img/pink_loader_resized.gif">
       </div>
-      <div *ngFor="let r of richiesteFiltrate" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <div *ngFor="let r of richiesteFiltrate" class="col-6big">
         <app-sintesi-richiesta [richiesta]="r" (LocalizzazioneIntervento)="parametriMappa($event)" (showDettagli)="showDettagliRicevuto($event)"></app-sintesi-richiesta>
       </div>
     </div>
