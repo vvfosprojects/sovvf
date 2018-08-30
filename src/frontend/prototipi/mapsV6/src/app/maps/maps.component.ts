@@ -34,4 +34,9 @@ export class MapsComponent implements OnInit {
         // console.log(nuovoRichiestaMarker);
         this.richiesteMarkers.push(nuovoRichiestaMarker);
     }
+
+    removeLastMarker() {
+        this.richiesteMarkers.pop();
+        // console.log(this.richiesteMarkers.length);
+    }
 }

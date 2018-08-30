@@ -8,6 +8,7 @@ import { RichiestaMarker } from '../maps-model/richiesta-marker.model';
 })
 export class NavComponent implements OnInit {
   @Output() randomMarker = new EventEmitter();
+  @Output() removeMarker = new EventEmitter();
   newMarker: RichiestaMarker;
   constructor() { }
 
@@ -21,5 +22,9 @@ export class NavComponent implements OnInit {
       1, { 'indirizzo': 'Via Cavour, 5', 'coordinate': [lat, long] }, 1, 'Marker aggiunto Random', false, 3);
     this.randomMarker.emit(this.newMarker);
     // console.log(this.newMarker);
+  }
+
+  removeLastMarker() {
+    this.removeMarker.emit();
   }
 }
