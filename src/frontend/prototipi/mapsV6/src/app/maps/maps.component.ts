@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {RichiestaMarker} from './maps-model/richiesta-marker.model';
-import {MapsService} from './maps-service/maps-service.service';
+import { Component, OnInit } from '@angular/core';
+import { RichiestaMarker } from './maps-model/richiesta-marker.model';
+import { MapsService } from './maps-service/maps-service.service';
 
 @Component({
     selector: 'app-maps',
@@ -23,7 +23,20 @@ export class MapsComponent implements OnInit {
     ngOnInit() {
         this.mapsService.getData().subscribe(r => {
             this.richiesteMarkers = r;
+            // console.log(this.richiesteMarkers);
         });
-        // console.log(this.richiesteMarkers);
+    }
+
+    /* TESTING METHODS */
+    setRandomMarker(newMarker) {
+        let nuovoRichiestaMarker;
+        nuovoRichiestaMarker = newMarker;
+        // console.log(nuovoRichiestaMarker);
+        this.richiesteMarkers.push(nuovoRichiestaMarker);
+    }
+
+    removeLastMarker() {
+        this.richiesteMarkers.pop();
+        // console.log(this.richiesteMarkers.length);
     }
 }
