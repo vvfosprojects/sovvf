@@ -5,3 +5,27 @@
 	left: 12px;
 	font-size: .6em;
 }
+.col-6big {
+	position: relative;
+	min-height: 1px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+@media (min-width: 2560px) {
+	.col-6big {
+		float: left;
+	}
+	.col-6big {
+		width: 50%;
+	}
+}
+
+@media (max-width: 2559px) {
+	.col-6big {
+		float: left;
+	}
+	.col-6big {
+		width: 100%;
+	}
+}
