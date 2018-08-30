@@ -11,7 +11,7 @@ export class BoxMezziComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    //console.log(this.mezzi);
+    // console.log(this.mezzi);
   }
 
 }
