@@ -9,12 +9,13 @@ const API_URL = environment.apiUrl;
 @Injectable()
 export class InfoAggregateService {
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
     public getInfoAggregate(): Observable<any> {
-      return this.http.get(API_URL).pipe(
-        catchError(this.handleErrorObs)
-      );
+        return this.http.get(API_URL).pipe(
+            catchError(this.handleErrorObs)
+        );
     }
 
     private handleErrorObs(error: any) {
