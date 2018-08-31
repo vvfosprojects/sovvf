@@ -3,7 +3,7 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 
-const API_URL = 'https://api.myjson.com/bins/1f5pvk';
+const API_URL = 'https://api.myjson.com/bins/6vlu4';
 
 
 @Injectable({

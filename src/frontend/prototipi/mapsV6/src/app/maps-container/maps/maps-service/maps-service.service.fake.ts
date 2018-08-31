@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {of} from 'rxjs';
 import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
-import {DescrizioneLocalita} from '../../shared/model/descrizione-localita.model';
-import {IconMarker} from '../../shared/model/icon-marker.model';
+import {DescrizioneLocalita} from '../../../shared/model/descrizione-localita.model';
+import {IconMarker} from '../../../shared/model/icon-marker.model';
 
 @Injectable({
     providedIn: 'root'
