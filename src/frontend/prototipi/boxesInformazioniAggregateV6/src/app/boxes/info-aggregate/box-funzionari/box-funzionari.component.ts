@@ -1,41 +1,45 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FunzionariSo } from "../../boxes-model/funzionari-so.model";
+import {Component, OnInit, Input} from '@angular/core';
+import {BoxFunzionariSo} from '../../boxes-model/box-funzionari-so.model';
 
 
 @Component({
-  selector: 'app-box-funzionari',
-  templateUrl: './box-funzionari.component.html',
-  styleUrls: ['./box-funzionari.component.css']
+    selector: 'app-box-funzionari',
+    templateUrl: './box-funzionari.component.html',
+    styleUrls: ['./box-funzionari.component.css']
 })
 export class BoxFunzionariComponent implements OnInit {
 
-  @Input() funzionari: FunzionariSo[];
-  private numero  : number;
-  constructor() { }
+    @Input() funzionari: BoxFunzionariSo[];
+    private numero: number;
 
-  ngOnInit() {
-    //console.log(this.funzionari)
-  }
+    constructor() {
+    }
 
-  public getFunzPresente(): boolean{
-    let presenteFunz = false;
-     
-    this.funzionari.forEach(c=>  {
-    if(c.funzGuardia)
-      presenteFunz = true;
-    });
+    ngOnInit() {
+        // console.log(this.funzionari)
+    }
 
-    return presenteFunz;
-  }
+    public getFunzPresente(): boolean {
+        let presenteFunz = false;
 
-  public getCapoTurnoPresente(): boolean{
-    let presenteCapoTurno = false;
-   
-    this.funzionari.forEach(c=>  {
-    if(c.capoTurno)
-      presenteCapoTurno = true;
-    });
-   
-    return presenteCapoTurno;
-  }
+        this.funzionari.forEach(c => {
+            if (c.funzGuardia) {
+                presenteFunz = true;
+            }
+        });
+
+        return presenteFunz;
+    }
+
+    public getCapoTurnoPresente(): boolean {
+        let presenteCapoTurno = false;
+
+        this.funzionari.forEach(c => {
+            if (c.capoTurno) {
+                presenteCapoTurno = true;
+            }
+        });
+
+        return presenteCapoTurno;
+    }
 }
