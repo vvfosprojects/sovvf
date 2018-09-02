@@ -1,14 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {catchError, retry} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
-import {BoxMeteoWeather} from '../boxes-model/box-meteo-weather.model';
 import {environment} from '../../../environments/environment';
 
-const lang = 'it';
-const key = 'a23cc450dabf63fdb6729696aa29b3a6';
-const unit = 'metric';
-const API_URL = environment.apiUrl.openweathermap;
+const API_URL = environment.apiUrl.owm.url;
+const CFG = environment.apiUrl.owm.option;
 
 
 @Injectable({
@@ -19,11 +16,12 @@ export class BoxMeteoService {
     constructor(private http: HttpClient) {
     }
 
-    public getMeteoData(_lat?, _lon?): Observable<BoxMeteoWeather> {
-        return this.http.get<BoxMeteoWeather>(
+    public getMeteoData(_lat?, _lon?): Observable<any> {
+        return this.http.get(
             API_URL + this.getLocalita(_lat, _lon)
-            + '&lang=' + lang + '&appid=' + key + '&units=' + unit)
+            + '&lang=' + CFG.lang + '&appid=' + CFG.key + '&units=' + CFG.unit)
             .pipe(
+                retry(3),
                 catchError(this.handleErrorObs)
             );
     }

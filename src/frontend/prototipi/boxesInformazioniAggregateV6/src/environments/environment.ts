@@ -5,8 +5,18 @@
 export const environment = {
     production: false,
     apiUrl: {
-        infoAggregateFake: 'https://api.myjson.com/bins/r6m48', /* 2 FUNZIONARI, BOX-RICHIESTE, BOX-MEZZI  */
-        /* infoAggregateFake: 'https://api.myjson.com/bins/e2ew0' */ /* 0 FUNZIONARI, NO BOX-RCHIESTE, NO BOX-MEZZI */
-        openweathermap: 'http://api.openweathermap.org/data/2.5/weather?'
+        infoAggregateFake: {
+            pieno: 'https://api.myjson.com/bins/r6m48', /* 2 FUNZIONARI, BOX-RICHIESTE, BOX-MEZZI  */
+            vuoto: 'https://api.myjson.com/bins/e2ew0' /* 0 FUNZIONARI, NO BOX-RCHIESTE, NO BOX-MEZZI */
+        },
+        owm: {
+            url: 'http://api.openweathermap.org/data/2.5/weather?',
+            option: {
+                lang: 'it',
+                key: 'a23cc450dabf63fdb6729696aa29b3a6',
+                unit: 'metric'
+            },
+
+        }
     }
 };
