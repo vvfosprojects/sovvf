@@ -1,0 +1,13 @@
+<div class="row">
+    <div *ngIf="richiesteMarkers" class="col-12">
+        <app-agm [richiesteMarkers]="richiesteMarkers" (markerSelezionato)="selezioneMarker($event)"
+                 (markerDeselezionato)="deselezionaMarker()"></app-agm>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <app-nav [markerSelezionato]="markerSelezionato" (randomMarker)="setRandomMarker($event)"
+                 (removeLastMarker)="removeLastMarker()"></app-nav>
+    </div>
+</div>
+

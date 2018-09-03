@@ -1,11 +1,16 @@
 <div class="container-fluid">
     <div class="row">
+        <div class="col-12">
+            <app-info-aggregate></app-info-aggregate>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-6">
             <app-lista-richieste (inviaIndirizzo)="parametriMappa($event)"
                                  (showDettagli)="showDettagliRicevuto($event)"></app-lista-richieste>
         </div>
         <div class="col-6">
-            <!--<app-maps></app-maps>-->
+            <app-maps-container></app-maps-container>
         </div>
     </div>
 </div>

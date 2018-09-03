@@ -1,20 +1,20 @@
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {catchError, retry} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 
-const API_URL = environment.apiUrl.rigaElencoRichieste.fake;
+const API_URL = environment.apiUrl.boxes.infoAggregateFake.pieno;
 
-@Injectable({
-    providedIn: 'root'
-})
-export class SintesiRichiesteService {
+@Injectable()
+export class InfoAggregateService {
+
     constructor(private http: HttpClient) {
     }
 
-    getSintesiRichieste(): Observable<any> {
+    public getInfoAggregate(): Observable<any> {
         return this.http.get(API_URL).pipe(
+            retry(3),
             catchError(this.handleErrorObs)
         );
     }

@@ -1,0 +1,14 @@
+<div *ngIf="!map_loaded" class="mx-auto my-5">
+    <img src="../../../assets/img/map_loading_resized.gif">
+</div>
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapReady)="map_loaded = true">
+    <agm-marker *ngFor="let m of richiesteMarkers; let i = index" [latitude]="m.localita.coordinate[0]" [longitude]="m.localita.coordinate[1]" (markerClick)="selezioneMarker(m, infoWindow)"
+        [iconUrl]="icon">
+        <!--[animation]="m.rilevante | animation">Tolto poichè il agm/core non carica correttamente la direttiva di input animation e blocca l'esecuzione-->
+        <agm-info-window #infoWindow (infoWindowClose)="deselezioneMarker()">
+            <strong>{{m.label}}</strong>
+        </agm-info-window>
+        <!--da completare metodo che colora le icone e cambia la visualizzazione del marker in base a una richiesta dal menu della mappa.
+        (es. vedo solo una determinata tipologia-->
+    </agm-marker>
+</agm-map>

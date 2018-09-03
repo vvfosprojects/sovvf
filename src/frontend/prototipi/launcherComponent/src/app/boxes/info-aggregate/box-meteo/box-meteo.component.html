@@ -1,0 +1,49 @@
+<div *ngIf="datimeteo" class="card bg-light w-100">
+    <div class="card-body pt-1">
+        <div class="row">
+            <div class="col-12 text-secondary pt-0 pb-0">
+                <img class="mr-2 iconameteo" src="http://openweathermap.org/img/w/{{datimeteo.icona}}.png"><span class="text-capitalize">{{datimeteo.descrizione}}</span>
+                <hr class="m-0 mb-2">
+            </div>
+            <!-- sinistra -->
+            <div class="col-5 pr-0">
+                <ul class="list-unstyled m-0">
+                    <li>
+                        <div class="h6">Temperatura</div>
+                    </li>
+                    <li>
+                        <div class="h6">Umidità</div>
+                    </li>
+                    <li>
+                        <div class="h6">Vento</div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-2 text-right">
+                <ul class="list-unstyled m-0">
+                    <li>
+                        <div class="h6">&nbsp;</div>
+                    </li>
+                    <li>
+                        <div class="h6">&nbsp;</div>
+                    </li>
+                    <li>
+                        <div class="h6">
+                            <i [ngStyle]="{'transform': 'rotate('+datimeteo.direzione+'deg)', '-webkit-transform': 'rotate('+datimeteo.direzione+'deg)', '-ms-transform': 'rotate('+datimeteo.direzione+'deg)'}" class="pl-2 fa fa-long-arrow-up"></i>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-5 pl-4 text-right">
+                <ul class="list-unstyled m-0">
+                    <li><span class="badge badge-success h6">{{datimeteo.temperatura}}°</span></li>
+                    <li><span class="badge badge-secondary h6">{{datimeteo.umidita}}%</span></li>
+                    <li><span class="badge badge-info h6">{{datimeteo.vento}} km/h</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!datimeteo" class="col-12 text-center mt-5">
+    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+</div>

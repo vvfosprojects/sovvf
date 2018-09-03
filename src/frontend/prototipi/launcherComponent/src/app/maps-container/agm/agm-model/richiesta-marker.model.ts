@@ -1,5 +1,5 @@
-import {Marker} from './marker.model';
-import {DescrizioneLocalita} from '../../shared/model/descrizione-localita.model';
+import { Marker } from './marker.model';
+import { DescrizioneLocalita } from '../../../shared/model/descrizione-localita.model';
 
 export class RichiestaMarker implements Marker {
     constructor(
@@ -12,7 +12,10 @@ export class RichiestaMarker implements Marker {
         /* Contiene la descrizione della label da mostrare */
         public label: string,
         /* Determina la rilevanza del marcatore */
-        public rilevante: boolean
+        public rilevante: boolean,
+        /* Determina la priorità del marcatore per scegliere il colore del marcatore
+        Es: Grave -> Marcatore rosso  */
+        public prioritaRichiesta: number
     ) {
     }
 }
