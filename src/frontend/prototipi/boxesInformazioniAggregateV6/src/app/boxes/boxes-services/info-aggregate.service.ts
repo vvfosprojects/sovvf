@@ -4,7 +4,7 @@ import {catchError, retry} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 
-const API_URL = environment.apiUrl.infoAggregateFake.pieno;
+const API_URL = environment.apiUrl.boxes.infoAggregateFake.pieno;
 
 @Injectable()
 export class InfoAggregateService {
