@@ -1,14 +1,12 @@
 <div class="row">
-  <div *ngIf="markersSelezionati.length > 0" class="col-12 my-2">
-    <h6>Markers Selezionati:</h6>
-    <div class="row">
-      <div *ngFor="let rs of markersSelezionati" class="col-3 card bg-light border">
-        {{rs.id_richiesta}}
-      </div>
-    </div>
-  </div>
   <div class="col-2">
     <app-nav (randomMarker)="setRandomMarker($event)" (removeLastMarker)="removeLastMarker()"></app-nav>
+    <div *ngIf="markerSelezionato" class="col-12 my-2">
+      <h6>Marker selezionato:</h6>
+      <div class="card bg-light border px-2">
+        {{markerSelezionato.id_richiesta}}
+      </div>
+    </div>
   </div>
   <div *ngIf="richiesteMarkers" class="col-10">
     <app-maps [richiesteMarkers]="richiesteMarkers" (markerSelezionato)="selezioneMarker($event)"></app-maps>

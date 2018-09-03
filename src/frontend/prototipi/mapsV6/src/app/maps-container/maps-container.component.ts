@@ -9,7 +9,7 @@ import { MapsService } from './maps/maps-service/maps-service.service';
 })
 export class MapsContainerComponent implements OnInit {
   richiesteMarkers: RichiestaMarker[];
-  markersSelezionati: RichiestaMarker[] = [];
+  markerSelezionato: RichiestaMarker;
   constructor(private mapsService: MapsService) { }
 
   ngOnInit() {
@@ -29,9 +29,8 @@ export class MapsContainerComponent implements OnInit {
     // console.log(this.richiesteMarkers.length);
   }
 
-  selezioneMarker(markerSelezionato) {
-    this.markersSelezionati.push(markerSelezionato);
-    console.log(markerSelezionato);
-    console.log(this.markersSelezionati);
+  selezioneMarker(marker) {
+    this.markerSelezionato = marker;
+    console.log(this.markerSelezionato);
   }
 }

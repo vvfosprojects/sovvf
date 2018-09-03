@@ -9,11 +9,14 @@ import { RichiestaMarker } from './maps-model/richiesta-marker.model';
 export class MapsComponent implements OnInit {
     @Input() richiesteMarkers: RichiestaMarker[];
     @Output() markerSelezionato = new EventEmitter();
+    @Output() markerDeselezionato = new EventEmitter();
 
     /* proprietà iniziali per caricamento mappa */
     lat: number;
     lng: number;
     zoom: number;
+
+    lastSelectedInfoWindow;
 
     constructor() {
         this.lat = 41.890251;
@@ -25,7 +28,21 @@ export class MapsComponent implements OnInit {
         /* console.log(this.richiesteMarkers); */
     }
 
-    selezioneMarker(marker) {
+    selezioneMarker(marker, infoWindow) {
+        console.log(marker.id_richiesta);
+        if (infoWindow === this.lastSelectedInfoWindow) {
+            return;
+        }
+        if (this.lastSelectedInfoWindow != null) {
+         try {
+            this.lastSelectedInfoWindow.close();
+          } catch {}
+        }
+        this.lastSelectedInfoWindow = infoWindow;
         this.markerSelezionato.emit(marker);
+    }
+
+    deselezioneMarker() {
+        this.markerDeselezionato.emit();
     }
 }
