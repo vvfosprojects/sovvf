@@ -12,8 +12,8 @@ export class BoxMeteoComponent implements OnInit {
     datimeteo: BoxMeteo;
     /* Dati coordinate fake in attesa di quelle passate dal servizio località utente*/
     coordinate = {
-        lat: '42',
-        lon: '50'
+        lat: '42.5646',
+        lon: '50.4646'
     };
 
     constructor(private meteoService: BoxMeteoService) {

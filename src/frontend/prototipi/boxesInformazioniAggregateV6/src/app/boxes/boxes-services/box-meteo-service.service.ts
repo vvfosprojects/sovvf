@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import {catchError, retry} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 
 const API_URL = environment.apiUrl.owm.url;
@@ -22,23 +22,30 @@ export class BoxMeteoService {
             + '&lang=' + CFG.lang + '&appid=' + CFG.key + '&units=' + CFG.unit)
             .pipe(
                 retry(3),
-                catchError(this.handleErrorObs)
+                catchError(this.handleError)
             );
     }
 
-    private handleErrorObs(error: any) {
-        console.error('Si è verificato un errore', error);
-        return throwError(error.message || error);
+    private handleError(error: HttpErrorResponse) {
+        if (error.error instanceof ErrorEvent) {
+            console.error('Si è verificato un errore:', error.error.message);
+        } else {
+            console.error(
+                `Errore response: ${error.status}, ` +
+                `Messaggio body: ${error.error.message}`);
+        }
+        return throwError(
+            'Qualcosa è andato storto, per favore riprova più tardi.');
     }
 
 
     public getLocalita(lat?, lon?) {
         if (lat && lon) {
-            // console.log('true ' + lat + lon);
+            lat = Math.floor(lat * 100 ) / 100;
+            lon = Math.floor(lon * 100 ) / 100;
             return 'lat=' + lat + '&lon=' + lon;
         } else {
-            // console.log('false ' + lat + lon);
-            return 'lat=12.48&lon=41.89';
+            return console.log('Errore ricezione coordinate meteo: ' + lat + ',' + lon);
         }
     }
 }

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {catchError, retry} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 
@@ -14,6 +14,7 @@ export class InfoAggregateService {
 
     public getInfoAggregate(): Observable<any> {
         return this.http.get(API_URL).pipe(
+            retry(3),
             catchError(this.handleErrorObs)
         );
     }
