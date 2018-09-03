@@ -4,7 +4,7 @@ import {catchError} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 
-const API_URL = environment.apiUrl;
+const API_URL = environment.apiUrl.rigaElencoRichieste.fake;
 
 @Injectable({
     providedIn: 'root'
