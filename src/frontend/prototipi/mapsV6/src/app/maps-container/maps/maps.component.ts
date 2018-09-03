@@ -15,8 +15,15 @@ export class MapsComponent implements OnInit {
     lat: number;
     lng: number;
     zoom: number;
-
     lastSelectedInfoWindow;
+
+    icon = {
+        url: '../../../assets/img/icone-markers/rosso.png',
+        scaledSize: {
+            width: 50,
+            height: 50
+        }
+    };
 
     constructor() {
         this.lat = 41.890251;
@@ -29,14 +36,13 @@ export class MapsComponent implements OnInit {
     }
 
     selezioneMarker(marker, infoWindow) {
-        console.log(marker.id_richiesta);
         if (infoWindow === this.lastSelectedInfoWindow) {
             return;
         }
         if (this.lastSelectedInfoWindow != null) {
-         try {
-            this.lastSelectedInfoWindow.close();
-          } catch {}
+            try {
+                this.lastSelectedInfoWindow.close();
+            } catch { }
         }
         this.lastSelectedInfoWindow = infoWindow;
         this.markerSelezionato.emit(marker);

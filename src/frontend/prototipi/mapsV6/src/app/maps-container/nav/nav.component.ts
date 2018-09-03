@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { RichiestaMarker } from '../maps/maps-model/richiesta-marker.model';
 
 @Component({
@@ -9,6 +9,8 @@ import { RichiestaMarker } from '../maps/maps-model/richiesta-marker.model';
 export class NavComponent implements OnInit {
   @Output() randomMarker = new EventEmitter();
   @Output() removeLastMarker = new EventEmitter();
+  @Input() markerSelezionato: RichiestaMarker;
+
   newMarker: RichiestaMarker;
   count = 0;
 
@@ -30,4 +32,5 @@ export class NavComponent implements OnInit {
   removeMarker() {
     this.removeLastMarker.emit();
   }
+
 }

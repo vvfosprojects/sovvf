@@ -33,4 +33,12 @@ export class MapsContainerComponent implements OnInit {
     this.markerSelezionato = marker;
     console.log(this.markerSelezionato);
   }
+
+  deselezionaMarker() {
+    this.markerSelezionato = null;
+  }
+
+  changeMarkerColor(marker) {
+    return 0;
+  }
 }
