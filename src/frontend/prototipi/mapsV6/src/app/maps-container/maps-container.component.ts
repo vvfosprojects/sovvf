@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RichiestaMarker } from './maps/maps-model/richiesta-marker.model';
-import { MapsService } from './maps/maps-service/maps-service.service';
+import { RichiestaMarker } from './agm/agm-model/richiesta-marker.model';
+import { MapsService } from './agm/agm-service/maps-service.service';
 
 @Component({
   selector: 'app-maps-container',

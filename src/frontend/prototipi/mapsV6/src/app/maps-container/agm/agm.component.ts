@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { RichiestaMarker } from './maps-model/richiesta-marker.model';
+import { RichiestaMarker } from './agm-model/richiesta-marker.model';
 
 @Component({
-    selector: 'app-maps',
-    templateUrl: './maps.component.html',
-    styleUrls: ['./maps.component.css']
+    selector: 'app-agm',
+    templateUrl: './agm.component.html',
+    styleUrls: ['./agm.component.css']
 })
-export class MapsComponent implements OnInit {
+export class AgmComponent implements OnInit {
     @Input() richiesteMarkers: RichiestaMarker[];
     @Output() markerSelezionato = new EventEmitter();
     @Output() markerDeselezionato = new EventEmitter();

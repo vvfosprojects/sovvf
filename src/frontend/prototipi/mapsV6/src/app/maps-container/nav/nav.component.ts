@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { RichiestaMarker } from '../maps/maps-model/richiesta-marker.model';
+import { RichiestaMarker } from '../agm/agm-model/richiesta-marker.model';
 
 @Component({
   selector: 'app-nav',
@@ -32,5 +32,4 @@ export class NavComponent implements OnInit {
   removeMarker() {
     this.removeLastMarker.emit();
   }
-
 }
