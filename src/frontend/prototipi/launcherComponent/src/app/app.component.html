@@ -1,13 +1,17 @@
-<div class="container-fluid">
+<div class="bg-dark" style="width:4%; float:left; height:100vh">
+    <div class="mt-3 text-center">
+        <button class="btn w-75 py-2"><i class="fa fa-home fa-lg"></i></button>
+        <button class="btn w-75 mt-2 py-2"><i class="fa fa-times fa-lg"></i></button>
+        <button class="btn w-75 mt-2 py-2"><i class="fa fa-truck fa-lg"></i></button>
+    </div>
+</div>
+<div style="width:95%; float:right">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 my-3">
             <app-info-aggregate></app-info-aggregate>
         </div>
-    </div>
-    <div class="row">
         <div class="col-6">
-            <app-lista-richieste (inviaIndirizzo)="parametriMappa($event)"
-                                 (showDettagli)="showDettagliRicevuto($event)"></app-lista-richieste>
+            <app-lista-richieste (inviaIndirizzo)="parametriMappa($event)" (showDettagli)="showDettagliRicevuto($event)"></app-lista-richieste>
         </div>
         <div class="col-6">
             <app-maps-container></app-maps-container>
