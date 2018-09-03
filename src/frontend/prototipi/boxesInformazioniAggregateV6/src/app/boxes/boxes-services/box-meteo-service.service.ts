@@ -4,8 +4,8 @@ import {catchError, retry} from 'rxjs/operators';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 
-const API_URL = environment.apiUrl.owm.url;
-const CFG = environment.apiUrl.owm.option;
+const API_URL = environment.apiUrl.boxes.owm.url;
+const CFG = environment.apiUrl.boxes.owm.option;
 
 
 @Injectable({
