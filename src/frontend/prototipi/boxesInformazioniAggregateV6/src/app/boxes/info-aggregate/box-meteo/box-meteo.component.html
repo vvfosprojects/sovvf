@@ -19,7 +19,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-2 text-right">
+            <div class="col-4 text-right">
                 <ul class="list-unstyled m-0">
                     <li>
                         <div class="h6">&nbsp;</div>
@@ -29,12 +29,13 @@
                     </li>
                     <li>
                         <div class="h6">
-                            <i [ngStyle]="{'transform': 'rotate('+datimeteo.direzione+'deg)', '-webkit-transform': 'rotate('+datimeteo.direzione+'deg)', '-ms-transform': 'rotate('+datimeteo.direzione+'deg)'}" class="pl-2 fa fa-long-arrow-up"></i>
+                            <i [ngStyle]="{'transform': 'rotate('+datimeteo.direzione.gradi*2+'deg)', '-webkit-transform': 'rotate('+datimeteo.direzione.gradi*2+'deg)', '-ms-transform': 'rotate('+datimeteo.direzione.gradi*2+'deg)'}" class="pl-2 fa fa-long-arrow-up"></i>
+                            <small class="text-black-50"> {{datimeteo.direzione.cardinali}}</small>
                         </div>
                     </li>
                 </ul>
             </div>
-            <div class="col-5 pl-4 text-right">
+            <div class="col-3 pl-2 text-right">
                 <ul class="list-unstyled m-0">
                     <li><span class="badge badge-success h6">{{datimeteo.temperatura}}°</span></li>
                     <li><span class="badge badge-secondary h6">{{datimeteo.umidita}}%</span></li>

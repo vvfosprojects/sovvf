@@ -12,9 +12,13 @@ export class BoxMeteoComponent implements OnInit {
     datimeteo: BoxMeteo;
     /* Dati coordinate fake in attesa di quelle passate dal servizio località utente*/
     coordinate = {
-        lat: '42.5646',
-        lon: '50.4646'
+        lat: '41.53',
+        lon: '12.30'
     };
+    // coordinate = {
+    //     lat: '45.28',
+    //     lon: '9.10'
+    // };
 
     constructor(private meteoService: BoxMeteoService) {
     }
@@ -26,9 +30,21 @@ export class BoxMeteoComponent implements OnInit {
                     data.weather[0].description,
                     data.weather[0].icon,
                     data.main.humidity,
-                    Math.floor(data.main['temp'] * 10 ) / 10,
-                    data.wind.speed,
-                    Math.floor(data.wind['deg']));
+                    Math.floor(data.main['temp'] * 10) / 10,
+                    Math.floor(data.wind.speed * 3.6), {
+                        gradi: Math.floor(data.wind['deg']),
+                        cardinali: this.degToCompass(Math.floor(data.wind['deg']))
+                    }
+                );
             });
+    }
+
+    degToCompass(num) {
+        const val = Math.floor((num / 22.5) + 0.5);
+        const arr = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+        // console.log(num);
+        // console.log(val);
+        // console.log(arr[(val % 16)]);
+        return arr[(val % 16)];
     }
 }
