@@ -8,8 +8,10 @@
         </div>
         <ng-template #filterButtonFake>
           <div ngbDropdown autoClose="outside" class="btn-group">
-            <button ngbDropdownToggle class="btn" [ngClass]="{'btn-outline-primary':filtriAttivi <=0, 'btn-primary':filtriAttivi > 0}" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-filter"></i> Filtri <span *ngIf="filtriAttivi>0" class="badge badge-success text-light">{{ filtriAttivi }}</span>
+            <button ngbDropdownToggle class="btn" [ngClass]="{'btn-outline-primary':filtriAttivi <=0, 'btn-primary':filtriAttivi > 0}"
+              type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-filter"></i> Filtri <span *ngIf="filtriAttivi>0" class="badge badge-success text-light">{{
+                filtriAttivi }}</span>
             </button>
           </div>
         </ng-template>
@@ -32,13 +34,21 @@
   </div>
 
   <!-- lista richieste (1) -->
-  <div class="col-12">  
+  <div class="col-12">
     <div class="row">
       <div *ngIf="!richiesteFiltrate" class="mx-auto my-5">
         <img src="../../assets/img/pink_loader_resized.gif">
       </div>
-      <div *ngFor="let r of richiesteFiltrate" class="col-6big">
+      <div *ngFor="let r of richiesteFiltrate | paginate: { id: 'elencoRichieste',
+                                                            itemsPerPage: 2,
+                                                            currentPage: p,
+                                                            totalItems: total }" class="col-6big">
         <app-sintesi-richiesta [richiesta]="r" (LocalizzazioneIntervento)="parametriMappa($event)" (showDettagli)="showDettagliRicevuto($event)"></app-sintesi-richiesta>
+      </div>
+      <div class="col-12 text-center mt-2">
+        <pagination-controls id="elencoRichieste" (pageChange)="p = $event" maxSize="9" directionLinks="true" autoHide="true" responsive="true"
+          previousLabel="Previous" nextLabel="Next" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
       </div>
     </div>
   </div>

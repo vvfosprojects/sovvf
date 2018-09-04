@@ -30,6 +30,7 @@
     "font-awesome": "^4.7.0",
     "hoek": "^5.0.4",
     "moment": "^2.22.2",
+    "ngx-pagination": "^3.2.0",
     "popper.js": "^1.14.4",
     "primeicons": "^1.0.0-beta.10",
     "primeng": "^6.1.2",

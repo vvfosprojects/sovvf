@@ -1,6 +1,6 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {SintesiRichiesta} from '../shared/model/sintesi-richiesta.model';
-import {SintesiRichiesteService} from './sintesi-richieste-service/sintesi-richieste.service';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
+import { SintesiRichiesteService } from './sintesi-richieste-service/sintesi-richieste.service';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -41,5 +41,9 @@ export class ListaRichiesteComponent implements OnInit {
     parametriMappa(obj) {
         // console.log(obj);
         this.inviaIndirizzo.emit(obj);
+    }
+
+    pageChanged(page) {
+        console.log(page);
     }
 }

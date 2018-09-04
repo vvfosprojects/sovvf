@@ -2,6 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {PipeModule} from './shared/pipes/pipe.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgxPaginationModule} from 'ngx-pagination';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import * as Shared from './shared/';
@@ -38,7 +39,8 @@ import {RicercaRichiesteComponent} from './lista-richieste/ricerca-richieste/ric
         HttpClientModule,
         NgbModule,
         PipeModule.forRoot(),
-        FormsModule
+        FormsModule,
+        NgxPaginationModule
     ],
     providers: [
         {provide: SintesiRichiesteService, useClass: SintesiRichiesteService}
