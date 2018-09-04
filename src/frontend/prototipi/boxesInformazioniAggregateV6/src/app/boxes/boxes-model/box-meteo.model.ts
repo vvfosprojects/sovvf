@@ -11,6 +11,11 @@ export class BoxMeteo {
         /* Velocità del vento */
         public vento: number,
         /* Direzione del vento */
-        public direzione: number
+        public direzione: {
+            /* Direzione del vento in gradi*/
+            gradi: number,
+            /* Direzione del vento in cardinali*/
+            cardinali: string
+        }
     ) { }
 }
