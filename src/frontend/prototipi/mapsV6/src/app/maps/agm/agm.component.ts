@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { RichiestaMarker } from './agm-model/richiesta-marker.model';
+import { RichiestaMarker } from '../maps-model/richiesta-marker.model';
 
 @Component({
     selector: 'app-agm',
@@ -15,7 +15,7 @@ export class AgmComponent implements OnInit {
     lat: number;
     lng: number;
     zoom: number;
-    lastSelectedInfoWindow;
+
 
     icon = {
         url: '../../../assets/img/icone-markers/rosso.png',
@@ -32,23 +32,9 @@ export class AgmComponent implements OnInit {
     }
 
     ngOnInit() {
-        /* console.log(this.richiesteMarkers); */
     }
 
-    selezioneMarker(marker, infoWindow) {
-        if (infoWindow === this.lastSelectedInfoWindow) {
-            return;
-        }
-        if (this.lastSelectedInfoWindow != null) {
-            try {
-                this.lastSelectedInfoWindow.close();
-            } catch { }
-        }
-        this.lastSelectedInfoWindow = infoWindow;
+    selezioneMarker(marker) {
         this.markerSelezionato.emit(marker);
-    }
-
-    deselezioneMarker() {
-        this.markerDeselezionato.emit();
     }
 }

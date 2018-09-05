@@ -5,13 +5,13 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from '@angular/common/http';
 import * as Shared from './shared/';
 import {AgmCoreModule} from '@agm/core';
-import {AgmComponent} from './maps-container/agm/agm.component';
-import {MapsService} from './maps-container/agm/agm-service/maps-service.service';
-import {MapsServiceFake} from './maps-container/agm/agm-service/maps-service.service.fake';
-import {AnimationPipe} from './maps-container/agm/agm-service/animation.pipe';
+import {AgmComponent} from './maps/agm/agm.component';
+import {MapsService} from './maps/maps-service/maps-service.service';
+import {MapsServiceFake} from './maps/maps-service/maps-service.service.fake';
+import {AnimationPipe} from './maps/agm/agm-pipe/animation.pipe';
 import {AppComponent} from './app.component';
-import {NavComponent} from './maps-container/nav/nav.component';
-import {MapsContainerComponent} from './maps-container/maps-container.component';
+import {NavComponent} from './maps/nav/nav.component';
+import {MapsComponent} from './maps/maps.component';
 import {environment} from '../environments/environment';
 
 @NgModule({
@@ -23,7 +23,7 @@ import {environment} from '../environments/environment';
         AgmComponent,
         AnimationPipe,
         NavComponent,
-        MapsContainerComponent,
+        MapsComponent,
     ],
     imports: [
         BrowserModule,

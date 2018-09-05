@@ -1,0 +1,28 @@
+<div class="mt-3 text-center">
+    <div class="row">
+        <div class="col-4 p-2">
+            <button class="btn btn-secondary mx-2" (click)="addRandomMarker()">Aggiungi Marker</button>
+            <button class="btn btn-secondary" (click)="removeMarker()">Rimuovi Marker</button>
+        </div>
+        <div class="col-8">
+            <div *ngIf="markerSelezionato">
+                <div class="card bg-light border p-2">
+                    <div>
+                        Marker {{markerSelezionato.id_richiesta}}:
+                        <button class="btn btn-primary mx-2" (click)="changeMarkerColor(markerSelezionato.id_richiesta)">
+                            Cambia
+                            colore
+                        </button>
+                        <button class="btn btn-primary mr-2" (click)="changeMarkerSize(markerSelezionato.id_richiesta)">
+                            Cambia
+                            dimensione
+                        </button>
+                        <button class="btn btn-primary mr-2" (click)="changeMarkerAnimation(markerSelezionato.id_richiesta)">
+                            Animazione
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
