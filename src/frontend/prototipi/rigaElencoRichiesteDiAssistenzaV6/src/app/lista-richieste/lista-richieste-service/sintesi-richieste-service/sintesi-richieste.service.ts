@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {catchError, retry} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
-import {environment} from '../../../environments/environment';
+import {environment} from '../../../../environments/environment';
 
 const API_URL = environment.apiUrl.rigaElencoRichieste.fake;
 
@@ -15,6 +15,7 @@ export class SintesiRichiesteService {
 
     getSintesiRichieste(): Observable<any> {
         return this.http.get(API_URL).pipe(
+            retry(3),
             catchError(this.handleErrorObs)
         );
     }

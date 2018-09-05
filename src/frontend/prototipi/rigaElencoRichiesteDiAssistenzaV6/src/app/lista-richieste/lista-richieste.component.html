@@ -3,32 +3,11 @@
     <div class="row">
       <!-- filtri (1) -->
       <div class="col-md-6 ml-auto">
-        <div *ngIf="richieste; else filterButtonFake">
-          <app-filtri [richieste]="richieste" (richiesteFiltrateEvent)="getRichiesteFiltrate($event)"></app-filtri>
-        </div>
-        <ng-template #filterButtonFake>
-          <div ngbDropdown autoClose="outside" class="btn-group">
-            <button ngbDropdownToggle class="btn" [ngClass]="{'btn-outline-primary':filtriAttivi <=0, 'btn-primary':filtriAttivi > 0}"
-              type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-filter"></i> Filtri <span *ngIf="filtriAttivi>0" class="badge badge-success text-light">{{
-                filtriAttivi }}</span>
-            </button>
-          </div>
-        </ng-template>
+          <app-filtri-richieste></app-filtri-richieste>
       </div>
       <!-- ricerca (1) -->
       <div class="col-md-6 ml-auto">
-        <div *ngIf="richiesteFiltrate; else searchButtonFake">
           <app-ricerca-richieste [richiesteFiltrate]="richiesteFiltrate"></app-ricerca-richieste>
-        </div>
-        <ng-template #searchButtonFake>
-          <div class="input-group mb-3">
-            <input class="form-control" type="text" placeholder="Ricerca un intervento">
-            <div class="input-group-append">
-              <button class="btn btn-primary"><i class="fa fa-search text-light"></i></button>
-            </div>
-          </div>
-        </ng-template>
       </div>
     </div>
   </div>
@@ -36,10 +15,10 @@
   <!-- lista richieste (1) -->
   <div class="col-12">
     <div class="row">
-      <div *ngIf="!richiesteFiltrate" class="mx-auto my-5">
+      <div *ngIf="!richieste" class="mx-auto my-5">
         <img src="../../assets/img/pink_loader_resized.gif">
       </div>
-      <div *ngFor="let r of richiesteFiltrate | paginate: { id: 'elencoRichieste',
+      <div *ngFor="let r of richieste | paginate: { id: 'elencoRichieste',
                                                             itemsPerPage: 2,
                                                             currentPage: p,
                                                             totalItems: total }" class="col-6big">

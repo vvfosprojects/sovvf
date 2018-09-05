@@ -8,14 +8,14 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 })
 export class RicercaRichiesteComponent implements OnInit {
   @Input() richiesteFiltrate: SintesiRichiesta[];
-  text : string;
+  text: string;
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  search(){
+  search() {
     console.log(this.text);
     console.log(this.richiesteFiltrate);
   }

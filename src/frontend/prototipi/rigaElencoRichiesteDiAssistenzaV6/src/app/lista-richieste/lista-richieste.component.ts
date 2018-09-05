@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
-import { SintesiRichiesteService } from './sintesi-richieste-service/sintesi-richieste.service';
+import { SintesiRichiesteService } from './lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -12,35 +12,18 @@ export class ListaRichiesteComponent implements OnInit {
     @Output() inviaIndirizzo = new EventEmitter();
 
     richieste: SintesiRichiesta[];
-    richiesteFiltrate: SintesiRichiesta[];
-    filtriAttivi = 0;
 
     constructor(private sintesiRichiesteService: SintesiRichiesteService) {
     }
 
     ngOnInit() {
-        this.sintesiRichiesteService.getSintesiRichieste().subscribe(r => {
+        this.getRichieste();
+    }
+
+    getRichieste() {
+        this.sintesiRichiesteService.getSintesiRichieste().subscribe((r: SintesiRichiesta[]) => {
             this.richieste = r;
-            this.richiesteFiltrate = r;
         });
-    }
-
-    getRichiesteFiltrate(event) {
-        this.richiesteFiltrate = event;
-    }
-
-    getFiltriAttivi(event) {
-        this.filtriAttivi = event;
-    }
-
-    showDettagliRicevuto(richiesta: SintesiRichiesta): void {
-        console.log('Sono la lista. Vogliono vedere il dettaglio di ', richiesta.id);
-        this.showDettagli.emit(richiesta);
-    }
-
-    parametriMappa(obj) {
-        // console.log(obj);
-        this.inviaIndirizzo.emit(obj);
     }
 
     pageChanged(page) {

@@ -3,10 +3,10 @@ import {Observable} from 'rxjs';
 import { of } from 'rxjs';
 import * as moment from 'moment';
 
-import {SintesiRichiesta} from '../../shared/model/sintesi-richiesta.model';
-import {Squadra} from '../../shared/model/squadra.model';
-import {Componente} from '../../shared/model/componente.model';
-import {Mezzo} from '../../shared/model/mezzo.model';
+import {SintesiRichiesta} from '../../../shared/model/sintesi-richiesta.model';
+import {Squadra} from '../../../shared/model/squadra.model';
+import {Componente} from '../../../shared/model/componente.model';
+import {Mezzo} from '../../../shared/model/mezzo.model';
 
 @Injectable({
     providedIn: 'root'
