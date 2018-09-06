@@ -1,5 +1,5 @@
-import {Component, OnInit, EventEmitter, Output, Input} from '@angular/core';
-import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
+import {Component, OnInit} from '@angular/core';
+import {MarkerService} from '../marker-service/marker-service.service';
 
 @Component({
     selector: 'app-nav',
@@ -7,36 +7,32 @@ import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
     styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
-    @Output() randomMarker = new EventEmitter();
-    @Output() removeLastMarker = new EventEmitter();
-    @Output() changeColorToMarker = new EventEmitter();
-    @Output() changeSizeToMarker = new EventEmitter();
-    @Output() animationToMarker = new EventEmitter();
-    @Input() markerSelezionato: RichiestaMarker;
 
-    constructor() {
+    constructor(private markerService: MarkerService) {
     }
 
     ngOnInit() {
     }
 
     addRandomMarker() {
-        this.randomMarker.emit();
+        this.markerService.setRandomMarker();
     }
 
-    removeMarker() {
-        this.removeLastMarker.emit();
+    removeLastMarker() {
+        this.markerService.removeLastMarker();
     }
 
-    changeMarkerColor(marker) {
-        this.changeColorToMarker.emit(marker);
+    changeMarkerColor() {
+        this.markerService.changeMarkerColor(this.markerService.selectedMarker);
     }
 
-    changeMarkerSize(marker) {
-        this.changeSizeToMarker.emit(marker);
+    changeMarkerSize() {
+        this.markerService.changeMarkerSize(this.markerService.selectedMarker);
     }
 
-    changeMarkerAnimation(marker) {
-        this.animationToMarker.emit(marker);
+    changeMarkerAnimation() {
+        this.markerService.changeMarkerAnimation(this.markerService.selectedMarker);
     }
+
 }
+

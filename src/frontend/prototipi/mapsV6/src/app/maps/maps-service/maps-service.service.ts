@@ -4,8 +4,7 @@ import {catchError, retry} from 'rxjs/operators';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 
-const API_URL = environment.apiUrl.maps.markers.fake;
-
+const API_URL = environment.apiUrl.maps.markers.fake1;
 
 @Injectable({
     providedIn: 'root'
@@ -33,4 +32,5 @@ export class MapsService {
         return throwError(
             'Qualcosa è andato storto, per favore riprova più tardi.');
     }
+
 }

@@ -8,11 +8,13 @@ import {AgmCoreModule} from '@agm/core';
 import {AgmComponent} from './maps/agm/agm.component';
 import {MapsService} from './maps/maps-service/maps-service.service';
 import {MapsServiceFake} from './maps/maps-service/maps-service.service.fake';
+import {MarkerService} from './maps/marker-service/marker-service.service';
 import {AnimationPipe} from './maps/agm/agm-pipe/animation.pipe';
 import {AppComponent} from './app.component';
 import {NavComponent} from './maps/nav/nav.component';
 import {MapsComponent} from './maps/maps.component';
 import {environment} from '../environments/environment';
+
 
 @NgModule({
     declarations: [
@@ -33,7 +35,10 @@ import {environment} from '../environments/environment';
             apiKey: environment.apiUrl.maps.agm.key
         })
     ],
-    providers: [{provide: MapsService, useClass: MapsService}],
+    providers: [
+        {provide: MapsService, useClass: MapsService},
+        {provide: MarkerService, useClass: MarkerService}
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {

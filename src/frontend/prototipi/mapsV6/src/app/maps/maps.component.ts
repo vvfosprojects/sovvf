@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {RichiestaMarker} from './maps-model/richiesta-marker.model';
 import {MapsService} from './maps-service/maps-service.service';
+import {MarkerService} from './marker-service/marker-service.service';
 
 @Component({
     selector: 'app-maps',
@@ -8,59 +9,25 @@ import {MapsService} from './maps-service/maps-service.service';
     styleUrls: ['./maps.component.css']
 })
 export class MapsComponent implements OnInit {
-    richiesteMarkers: RichiestaMarker[];
-    markerSelezionato: RichiestaMarker;
-    count: number;
-    newMarker: RichiestaMarker;
 
-    constructor(private mapsService: MapsService) {
+    richiesteMarkers: RichiestaMarker[];
+
+    constructor(private mapsService: MapsService, private markerService: MarkerService) {
     }
 
     ngOnInit() {
-        this.mapsService.getData().subscribe(r => {
+        this.mapsService.getData().subscribe((r: RichiestaMarker[]) => {
+            r.forEach(rr => {
+                this.markerService.richiesteMarkers.push(rr);
+            });
+            this.markerService.count = this.richiesteMarkers.length;
+        });
+        this.markerService.getMarkers().subscribe(r => {
             this.richiesteMarkers = r;
-            console.log(this.richiesteMarkers);
-            this.count = this.richiesteMarkers.length;
         });
     }
 
-
-
-    /* TESTING METHODS */
-    setRandomMarker() {
-        this.count++;
-        const lat = Math.floor(Math.random() * 10000000) * 0.00000001 + 41.89;
-        const long = Math.floor(Math.random() * 10000000) * 0.00000001 + 12.49;
-        this.newMarker = new RichiestaMarker(
-            this.count, {'indirizzo': 'Via Cavour, 5', 'coordinate': [lat, long]}, 1, 'Marker aggiunto Random', false, 3);
-        this.richiesteMarkers.push(this.newMarker);
-    }
-
-    removeLastMarker() {
-        if (this.markerSelezionato && this.richiesteMarkers.slice(-1).pop().id_richiesta === this.markerSelezionato.id_richiesta) {
-            this.deselezionaMarker();
-        }
-        this.richiesteMarkers.pop();
-    }
-
-    selezioneMarker(marker) {
-        this.markerSelezionato = marker;
-        // console.log('sono il marker ' + this.markerSelezionato.id_richiesta);
-    }
-
-    deselezionaMarker() {
-        this.markerSelezionato = null;
-    }
-
-    changeMarkerColor(marker) {
-        console.log('cambio colore al marker (maps component) ' + marker);
-    }
-
-    changeMarkerSize(marker) {
-        console.log('cambio dimensione al marker (maps component) ' + marker);
-    }
-
-    changeMarkerAnimation(marker) {
-        console.log('imposto animazione al marker( maps component) ' + marker);
+    selezioneMarker(marker: RichiestaMarker) {
+        this.markerService.selectedMarker = marker;
     }
 }

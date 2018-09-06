@@ -3,7 +3,7 @@
         <app-agm [richiesteMarkers]="richiesteMarkers" (markerSelezionato)="selezioneMarker($event)"></app-agm>
     </div>
     <div class="col-12 mx-auto">
-        <app-nav [markerSelezionato]="markerSelezionato" (randomMarker)="setRandomMarker()" (removeLastMarker)="removeLastMarker($event)"
-                 (changeColorToMarker)="changeMarkerColor($event)" (changeSizeToMarker)="changeMarkerSize($event)" (animationToMarker)="changeMarkerAnimation($event)"></app-nav>
+        <app-nav></app-nav>
     </div>
 </div>
+{{richiesteMarkers|json}}

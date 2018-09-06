@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { RichiestaMarker } from '../maps-model/richiesta-marker.model';
+import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
+import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
 
 @Component({
     selector: 'app-agm',
@@ -9,13 +9,11 @@ import { RichiestaMarker } from '../maps-model/richiesta-marker.model';
 export class AgmComponent implements OnInit {
     @Input() richiesteMarkers: RichiestaMarker[];
     @Output() markerSelezionato = new EventEmitter();
-    @Output() markerDeselezionato = new EventEmitter();
 
     /* proprietà iniziali per caricamento mappa */
     lat: number;
     lng: number;
     zoom: number;
-
 
     icon = {
         url: '../../../assets/img/icone-markers/rosso.png',
