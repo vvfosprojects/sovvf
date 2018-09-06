@@ -7,10 +7,16 @@
     </button>
     <div ngbDropdownMenu class="px-3" aria-labelledby="dropdownMenuButton">
       <div class="card-block pt-1 pb-0">
+        <h6 class="font-weight-bold">Principali</h6>
         <div *ngFor="let f of filtri" class="mb-2">
           <button class="btn btn-block" [ngClass]="{'btn-outline-primary': !f.selezionato, 'btn-primary': f.selezionato}" appDebounceClick
             (debounceClick)="selezione(f)" [debounceTime]="700">{{ f.descrizione }}</button>
         </div>
+      </div>
+      <div class="text-center">
+        <hr>
+        <span class="">Visualizza tutto</span>
+        <button class="btn btn-block btn-outline-dark py-0 mt-1"><i class="fa fa-caret-down"></i></button>
       </div>
     </div>
   </div>

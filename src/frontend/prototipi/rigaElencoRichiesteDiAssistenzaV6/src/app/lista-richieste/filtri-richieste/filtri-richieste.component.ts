@@ -12,11 +12,6 @@ export class FiltriRichiesteComponent implements OnInit {
   filtriSelezionati: VoceFiltro[];
   filtriAttivi = 0;
 
-  presidiato = new VoceFiltro('Presidiato');
-  nonPresidiato = new VoceFiltro('Non Presidiato');
-  rilevante = new VoceFiltro('Rilevante');
-  nonRilevante = new VoceFiltro('Non Rilevante');
-
   constructor(private filtriS: FiltriService) { }
 
   ngOnInit() {
@@ -27,9 +22,8 @@ export class FiltriRichiesteComponent implements OnInit {
   getFiltriTipologia() {
     this.filtriS.getTipologie().subscribe((filtri: VoceFiltro[]) => {
       filtri.forEach(filtro => {
-        this.filtri.push(new VoceFiltro(filtro.descrizione));
+        this.filtri.push(filtro);
       });
-      this.filtri.push(this.presidiato, this.nonPresidiato, this.rilevante, this.nonRilevante);
     });
   }
 
