@@ -18,7 +18,8 @@ export const environment = {
         },
         maps: {
             markers: {
-                fake: 'https://api.myjson.com/bins/6vlu4'
+                fake1: 'https://api.myjson.com/bins/6vlu4',
+                fake2: 'https://api.myjson.com/bins/1b6478'
             },
             agm: {
                 key: 'AIzaSyDYIMWNyVt1X_30PybcDMTZkFkcSsUytDk'
@@ -27,6 +28,9 @@ export const environment = {
         rigaElencoRichieste: {
             fake: 'https://api.myjson.com/bins/ze8v4',
             backend: 'http://localhost:2661/api'
+        },
+        elencoFiltri: {
+            fake: 'https://api.myjson.com/bins/qa8as',
         }
     }
 };
