@@ -13,13 +13,12 @@ export class FiltriService {
   constructor(private http: HttpClient) { }
 
   getTipologie() {
-    return this.http.get('https://api.myjson.com/bins/1fe9to').pipe(
+    return this.http.get('https://api.myjson.com/bins/rn3k4').pipe(
       catchError(this.handleErrorObs)
     );
   }
 
-  /* SELEZIONATO */
-  getFiltriSelezionati(): Observable<VoceFiltro[]> {
+  getFiltriSelezionati(): Observable<any> {
     return of(this.filtriSelezionati);
   }
 
@@ -34,10 +33,14 @@ export class FiltriService {
     }
   }
 
-  filtroDeselezione(PARAMETRO) {
-    PARAMETRO.selezionato = false;
-    this.filtriSelezionati.forEach((f, index) => {
-      /* Creare logica per eliminare il filtro che arriva dalla funzione (PARAMETRO) */
+  filtroDeselezione(filtro) {
+    filtro.selezionato = false;
+    this.filtriSelezionati.forEach((filtroSelezionato, index) => {
+      if (filtroSelezionato.codice === filtro.codice) {
+        this.filtriSelezionati.splice(index, 1);
+        /* TEST console.log('Sono il service, ho rimosso il filtro deselezionato');
+        console.log(this.filtriSelezionati); */
+      }
     });
   }
 
