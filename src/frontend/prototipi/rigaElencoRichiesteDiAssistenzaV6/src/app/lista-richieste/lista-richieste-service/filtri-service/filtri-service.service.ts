@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { VoceFiltro } from '../../../shared/model/voce-filtro.model';
+import { VoceFiltro } from '../../filtri-richieste/voce-filtro.model';
 import { Observable, of, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
+
+const API_URL = environment.apiUrl.elencoFiltri.fake;
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +15,8 @@ export class FiltriService {
 
   constructor(private http: HttpClient) { }
 
-  getTipologie() {
-    return this.http.get('https://api.myjson.com/bins/rn3k4').pipe(
+  getFiltri(): Observable<any> {
+    return this.http.get(API_URL).pipe(
       catchError(this.handleErrorObs)
     );
   }
@@ -22,9 +25,9 @@ export class FiltriService {
     return of(this.filtriSelezionati);
   }
 
-  filtroSelezionato(filtro) {
+  filtroSelezionato(filtro: VoceFiltro) {
     if (filtro.selezionato === true) {
-      this.filtroDeselezione(filtro);
+      this.filtroDeselezionato(filtro);
     } else {
       filtro.selezionato = true;
       this.filtriSelezionati.push(filtro);
@@ -33,7 +36,7 @@ export class FiltriService {
     }
   }
 
-  filtroDeselezione(filtro) {
+  filtroDeselezionato(filtro: VoceFiltro) {
     filtro.selezionato = false;
     this.filtriSelezionati.forEach((filtroSelezionato, index) => {
       if (filtroSelezionato.codice === filtro.codice) {
@@ -42,6 +45,18 @@ export class FiltriService {
         console.log(this.filtriSelezionati); */
       }
     });
+  }
+
+  filtroRicercaRilevato(filtro: VoceFiltro) {
+    if (!filtro.selezionato) {
+      console.log('undefined');
+      filtro.selezionato = false;
+    }
+    if (filtro.selezionato === false) {
+      console.log('false');
+      filtro.selezionato = true;
+      this.filtriSelezionati.push(filtro);
+    }
   }
 
   private handleErrorObs(error: any) {

@@ -8,22 +8,20 @@ import { FiltriService } from '../lista-richieste-service/filtri-service/filtri-
   styleUrls: ['./filtri-richieste.component.css']
 })
 export class FiltriRichiesteComponent implements OnInit {
-  filtri: VoceFiltro[] = [];
+  filtri: VoceFiltro[];
   filtriSelezionati: VoceFiltro[];
   filtriAttivi = 0;
 
   constructor(private filtriS: FiltriService) { }
 
   ngOnInit() {
-    this.getFiltriTipologia();
+    this.getFiltri();
     this.getFiltriSelezionati();
   }
 
-  getFiltriTipologia() {
-    this.filtriS.getTipologie().subscribe((filtri: VoceFiltro[]) => {
-      filtri.forEach(filtro => {
-        this.filtri.push(filtro);
-      });
+  getFiltri() {
+    this.filtriS.getFiltri().subscribe((filtri: VoceFiltro[]) => {
+      this.filtri = filtri;
     });
   }
 
@@ -41,14 +39,10 @@ export class FiltriRichiesteComponent implements OnInit {
     console.log(this.filtriSelezionati); */
   }
 
-  deselezione(filtro) {
-    this.filtriS.filtroDeselezione(filtro);
-  }
-
   eliminaFiltriAttivi() {
     this.filtri.forEach(filtro => {
       if (filtro.selezionato === true) {
-        this.deselezione(filtro);
+        this.filtriS.filtroDeselezionato(filtro);
       }
     });
     this.filtriAttivi = 0;
