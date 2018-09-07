@@ -25,26 +25,43 @@ export class FiltriService {
     return of(this.filtriSelezionati);
   }
 
-  filtroSelezionato(filtro: VoceFiltro) {
+  deleteFiltriSelezionati() {
+    this.filtriSelezionati.forEach(filtroSelezionato => {
+      this.setDeselezionato(filtroSelezionato);
+    });
+    this.filtriSelezionati = [];
+    console.log('I filtri attivi sono:');
+    console.log(this.filtriSelezionati);
+  }
+
+  setfiltroSelezionati(filtro: VoceFiltro) {
     if (filtro.selezionato === true) {
-      this.filtroDeselezionato(filtro);
+      this.setfiltroDeselezionati(filtro);
     } else {
-      filtro.selezionato = true;
+      this.setSelezionato(filtro);
       this.filtriSelezionati.push(filtro);
-      /* TEST console.log('Sono il service, ho aggiunto il filtro ricevuto');
-      console.log(this.filtriSelezionati); */
+      // console.log('Sono il service, ho aggiunto il filtro ricevuto');
+      // console.log(this.filtriSelezionati);
     }
   }
 
-  filtroDeselezionato(filtro: VoceFiltro) {
-    filtro.selezionato = false;
+  setfiltroDeselezionati(filtro: VoceFiltro) {
+    this.setDeselezionato(filtro);
     this.filtriSelezionati.forEach((filtroSelezionato, index) => {
       if (filtroSelezionato.codice === filtro.codice) {
         this.filtriSelezionati.splice(index, 1);
-        /* TEST console.log('Sono il service, ho rimosso il filtro deselezionato');
-        console.log(this.filtriSelezionati); */
+        // console.log('Sono il service, ho rimosso il filtro deselezionato');
+        // console.log(this.filtriSelezionati);
       }
     });
+  }
+
+  setSelezionato(filtro: VoceFiltro) {
+    filtro.selezionato = true;
+  }
+
+  setDeselezionato(filtro: VoceFiltro) {
+    filtro.selezionato = false;
   }
 
   filtroRicercaRilevato(filtro: VoceFiltro) {

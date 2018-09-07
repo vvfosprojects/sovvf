@@ -9,14 +9,11 @@ import { FiltriService } from '../lista-richieste-service/filtri-service/filtri-
 })
 export class FiltriRichiesteComponent implements OnInit {
   filtri: VoceFiltro[];
-  filtriSelezionati: VoceFiltro[];
-  filtriAttivi = 0;
 
-  constructor(private filtriS: FiltriService) { }
+  constructor(public filtriS: FiltriService) { }
 
   ngOnInit() {
     this.getFiltri();
-    this.getFiltriSelezionati();
   }
 
   getFiltri() {
@@ -25,14 +22,8 @@ export class FiltriRichiesteComponent implements OnInit {
     });
   }
 
-  getFiltriSelezionati() {
-    this.filtriS.getFiltriSelezionati().subscribe((filtri: VoceFiltro[]) => {
-      this.filtriSelezionati = filtri;
-    });
-  }
-
   selezione(filtro) {
-    this.filtriS.filtroSelezionato(filtro);
+    this.filtriS.setfiltroSelezionati(filtro);
     /* TEST console.log('Selezione inviata al service:');
     console.log(filtro);
     console.log('Sono di nuovo io, ecco il nuovo filtriSelezionati del component:');
@@ -41,10 +32,8 @@ export class FiltriRichiesteComponent implements OnInit {
 
   eliminaFiltriAttivi() {
     this.filtri.forEach(filtro => {
-      if (filtro.selezionato === true) {
-        this.filtriS.filtroDeselezionato(filtro);
-      }
+      filtro.selezionato = false;
     });
-    this.filtriAttivi = 0;
+    this.filtriS.deleteFiltriSelezionati();
   }
 }

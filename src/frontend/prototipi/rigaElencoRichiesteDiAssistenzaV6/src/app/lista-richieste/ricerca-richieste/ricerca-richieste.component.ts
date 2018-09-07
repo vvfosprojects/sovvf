@@ -10,25 +10,17 @@ import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
 })
 export class RicercaRichiesteComponent implements OnInit {
   filtri: VoceFiltro[];
-  filtriSelezionati: VoceFiltro[];
   text: string;
 
   constructor(private filtriS: FiltriService) { }
 
   ngOnInit() {
     this.getFiltri();
-    this.getFiltriSelezionati();
   }
 
   getFiltri() {
     this.filtriS.getFiltri().subscribe((filtri: VoceFiltro[]) => {
       this.filtri = filtri;
-    });
-  }
-
-  getFiltriSelezionati() {
-    this.filtriS.getFiltriSelezionati().subscribe((filtri: VoceFiltro[]) => {
-      this.filtriSelezionati = filtri;
     });
   }
 
@@ -50,6 +42,6 @@ export class RicercaRichiesteComponent implements OnInit {
 
     console.log(arrText);
     console.log(count);
-    console.log(this.filtriSelezionati);
+    console.log(this.filtriS.filtriSelezionati);
   }
 }
