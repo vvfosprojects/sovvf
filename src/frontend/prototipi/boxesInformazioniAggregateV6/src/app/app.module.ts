@@ -11,7 +11,7 @@ import {InfoAggregateService} from './boxes/boxes-services/info-aggregate.servic
 import {BoxInterventiComponent} from './boxes/info-aggregate/box-interventi/box-interventi.component';
 import {BoxMezziComponent} from './boxes/info-aggregate/box-mezzi/box-mezzi.component';
 import {BoxMeteoComponent} from './boxes/info-aggregate/box-meteo/box-meteo.component';
-import {BoxMeteoService} from './boxes/boxes-services/box-meteo-service.service';
+import {MeteoService} from './shared/meteo/meteo-service.service';
 
 @NgModule({
     declarations: [
@@ -30,7 +30,7 @@ import {BoxMeteoService} from './boxes/boxes-services/box-meteo-service.service'
     ],
     providers: [
         {provide: InfoAggregateService, useClass: InfoAggregateService},
-        {provide: BoxMeteoService, useClass: BoxMeteoService}
+        {provide: MeteoService, useClass: MeteoService}
         ],
     bootstrap: [AppComponent]
 })

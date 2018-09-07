@@ -11,7 +11,7 @@ const CFG = environment.apiUrl.boxes.owm.option;
 @Injectable({
     providedIn: 'root'
 })
-export class BoxMeteoService {
+export class MeteoService {
 
     constructor(private http: HttpClient) {
     }

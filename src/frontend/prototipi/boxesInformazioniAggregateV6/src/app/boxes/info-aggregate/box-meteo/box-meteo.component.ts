@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {BoxMeteoService} from '../../boxes-services/box-meteo-service.service';
-import {BoxMeteo} from '../../boxes-model/box-meteo.model';
+import {MeteoService} from '../../../shared/meteo/meteo-service.service';
+import {Meteo} from '../../../shared/model/meteo.model';
 
 @Component({
     selector: 'app-box-meteo',
@@ -9,7 +9,7 @@ import {BoxMeteo} from '../../boxes-model/box-meteo.model';
 })
 export class BoxMeteoComponent implements OnInit {
 
-    datimeteo: BoxMeteo;
+    datimeteo: Meteo;
     /* Dati coordinate fake in attesa di quelle passate dal servizio località utente*/
     coordinate = {
         lat: '41.53',
@@ -20,13 +20,13 @@ export class BoxMeteoComponent implements OnInit {
     //     lon: '9.10'
     // };
 
-    constructor(private meteoService: BoxMeteoService) {
+    constructor(private meteoService: MeteoService) {
     }
 
     ngOnInit() {
         this.meteoService.getMeteoData(this.coordinate.lat, this.coordinate.lon)
             .subscribe(data => {
-                this.datimeteo = new BoxMeteo(
+                this.datimeteo = new Meteo(
                     data.weather[0].description,
                     data.weather[0].icon,
                     data.main.humidity,

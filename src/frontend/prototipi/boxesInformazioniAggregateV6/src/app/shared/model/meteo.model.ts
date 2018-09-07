@@ -1,4 +1,4 @@
-export class BoxMeteo {
+export class Meteo {
     constructor(
         /* Stato del meteo. Es: 'Soleggiato' */
         public descrizione: string,

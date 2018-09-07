@@ -1,16 +1,12 @@
 export class BoxInterventi {
     constructor(
-        /* Totale interventi aperti */
-        public interventiAperti: number,
-        /* Chiamate non ancora presidiate */
-        public chiamate: number,
         /* Interventi con mezzi non ancora arrivati sul posto */
-        public inViaggio: number,
+        public chiamate: number,
         /* Interventi con mezzi sul posto */
-        public sulPosto: number,
+        public assegnati: number,
         /* Interventi con mezzi in rientro  */
-        public inRientro: number,
+        public presidiati: number,
         /* Interventi con mezzi in attesa  */
-        public inAttesa: number
+        public sospesi: number
         ) { }
 }

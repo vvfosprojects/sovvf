@@ -2,49 +2,44 @@
   <div class="card-body">
       <div class="row">
           <div class="col-12 text-secondary">
-              <span><i class="fa fa-medkit mb-2 mr-1"></i>Interventi</span>
+              <span><i class="fa fa-medkit mb-2 mr-1"></i>Richieste di Soccorso {{getTotal()}}</span>
               <hr class="m-0 mb-2">
           </div>
           <!-- sinistra -->
           <div class="col-4 pr-0">
               <ul class="list-unstyled m-0">
                   <li>
-                      <h6>Aperti</h6>
-                  </li>
-                  <li>
                       <h6>Chiamate</h6>
                   </li>
                   <li>
-                      <h6>In viaggio</h6>
+                      <h6>Assegnati</h6>
+                  </li>
+                  <li>
+                      <h6>&nbsp;</h6>
                   </li>
               </ul>
           </div>
           <div class="col-2 px-0 text-center">
               <ul class="list-unstyled m-0">
-                  <li><span class="badge badge-success h6">{{interventi.interventiAperti}}</span></li>
-                  <li><span class="badge badge-secondary h6">{{interventi.chiamate}}</span></li>
-                  <li><span class="badge badge-info h6">{{interventi.inViaggio}}</span></li>
+                  <li><span class="badge badge-warning h6 w-75">{{interventi.chiamate}}</span></li>
+                  <li><span class="badge badge-info h6 w-75">{{interventi.assegnati}}</span></li>
               </ul>
           </div>
           <!-- destra -->
           <div class="col-4 pr-0">
               <ul class="list-unstyled m-0">
                   <li>
-                      <h6>Sul posto</h6>
+                      <h6>Presidiati</h6>
                   </li>
                   <li>
-                      <h6>In rientro</h6>
-                  </li>
-                  <li>
-                      <h6>In attesa</h6>
+                      <h6>Sospesi</h6>
                   </li>
               </ul>
           </div>
           <div class="col-2 px-0 text-center">
               <ul class="list-unstyled m-0">
-                  <li><span class="badge badge-success h6">{{interventi.sulPosto}}</span></li>
-                  <li><span class="badge badge-secondary h6">{{interventi.inRientro}}</span></li>
-                  <li><span class="badge badge-info h6">{{interventi.inAttesa}}</span></li>
+                  <li><span class="badge badge-success h6 w-75">{{interventi.presidiati}}</span></li>
+                  <li><span class="badge badge-secondary h6 w-75">{{interventi.sospesi}}</span></li>
               </ul>
           </div>
       </div>
