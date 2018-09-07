@@ -1,5 +1,6 @@
-import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
+import {MarkedService} from '../marked-service/marked-service.service';
 
 @Component({
     selector: 'app-agm',
@@ -8,7 +9,6 @@ import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
 })
 export class AgmComponent implements OnInit {
     @Input() richiesteMarkers: RichiestaMarker[];
-    @Output() markerSelezionato = new EventEmitter();
 
     /* proprietà iniziali per caricamento mappa */
     lat: number;
@@ -23,7 +23,7 @@ export class AgmComponent implements OnInit {
         }
     };
 
-    constructor() {
+    constructor(private markedService: MarkedService) {
         this.lat = 41.890251;
         this.lng = 12.492373;
         this.zoom = 11;
@@ -32,7 +32,8 @@ export class AgmComponent implements OnInit {
     ngOnInit() {
     }
 
-    selezioneMarker(marker) {
-        this.markerSelezionato.emit(marker);
+    selezioneMarker(marker): void {
+        this.markedService.sendMarked(marker);
     }
+
 }

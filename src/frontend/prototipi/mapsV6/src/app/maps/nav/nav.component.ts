@@ -1,17 +1,27 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {MarkerService} from '../marker-service/marker-service.service';
+import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
+import {MarkedService} from '../marked-service/marked-service.service';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-nav',
     templateUrl: './nav.component.html',
     styleUrls: ['./nav.component.css']
 })
-export class NavComponent implements OnInit {
+export class NavComponent implements OnDestroy {
 
-    constructor(private markerService: MarkerService) {
+    markerSelezionato: RichiestaMarker;
+    subscription: Subscription;
+
+    constructor(private markerService: MarkerService, private markedService: MarkedService) {
+        this.subscription = this.markedService.getMarked().subscribe(marker => {
+            this.markerSelezionato = marker;
+        });
     }
 
-    ngOnInit() {
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
     addRandomMarker() {
@@ -23,15 +33,15 @@ export class NavComponent implements OnInit {
     }
 
     changeMarkerColor() {
-        this.markerService.changeMarkerColor(this.markerService.selectedMarker);
+        this.markerService.changeMarkerColor(this.markerSelezionato);
     }
 
     changeMarkerSize() {
-        this.markerService.changeMarkerSize(this.markerService.selectedMarker);
+        this.markerService.changeMarkerSize(this.markerSelezionato);
     }
 
     changeMarkerAnimation() {
-        this.markerService.changeMarkerAnimation(this.markerService.selectedMarker);
+        this.markerService.changeMarkerAnimation(this.markerSelezionato);
     }
 
 }

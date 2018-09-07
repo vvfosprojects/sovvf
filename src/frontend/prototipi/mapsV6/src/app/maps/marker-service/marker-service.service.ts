@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
-import {Observable, of} from 'rxjs';
+import {Observable, of, Subscription} from 'rxjs';
+import {MarkedService} from '../marked-service/marked-service.service';
 
 @Injectable({
     providedIn: 'root'
@@ -8,22 +9,19 @@ import {Observable, of} from 'rxjs';
 export class MarkerService {
 
     richiesteMarkers: RichiestaMarker[] = [];
+    markerSelezionato: RichiestaMarker;
+    subscription: Subscription;
 
-    markerSelezionato: RichiestaMarker; // da vedere
-
-    constructor() {
+    constructor(private markedService: MarkedService) {
+        this.subscription = this.markedService.getMarked().subscribe(marker => {
+            this.markerSelezionato = marker;
+        });
     }
 
     private _count: number;
 
-    private _marker: RichiestaMarker;
-
     getMarkers(): Observable<RichiestaMarker[]> {
         return of(this.richiesteMarkers);
-    }
-
-    getMarker(): Observable<RichiestaMarker> {
-        return of(this.selectedMarker);
     }
 
     set count(count: number) {
@@ -31,15 +29,7 @@ export class MarkerService {
     }
 
     get count(): number {
-        return this._count++;
-    }
-
-    set selectedMarker(marker: RichiestaMarker) {
-        this._marker = marker;
-    }
-
-    get selectedMarker(): RichiestaMarker {
-        return this._marker;
+        return this._count;
     }
 
     setMarker(marker: RichiestaMarker) {
@@ -48,10 +38,6 @@ export class MarkerService {
 
     removeMarker(marker: RichiestaMarker) {
         this.richiesteMarkers = this.richiesteMarkers.filter(item => item.id_richiesta !== marker.id_richiesta);
-    }
-
-    deselezionaMarker() {
-        this.markerSelezionato = null;
     }
 
     changeMarkerColor(marker) {
@@ -79,7 +65,8 @@ export class MarkerService {
     /* TESTING METHOD */
     removeLastMarker() {
         if (this.markerSelezionato && this.richiesteMarkers.slice(-1).pop().id_richiesta === this.markerSelezionato.id_richiesta) {
-            this.deselezionaMarker();
+            this.markedService.clearMarked();
+            console.log('rimuovo il marker selezionato');
         }
         this.richiesteMarkers.pop();
     }

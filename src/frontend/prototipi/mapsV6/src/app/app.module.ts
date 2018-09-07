@@ -9,6 +9,7 @@ import {AgmComponent} from './maps/agm/agm.component';
 import {MapsService} from './maps/maps-service/maps-service.service';
 import {MapsServiceFake} from './maps/maps-service/maps-service.service.fake';
 import {MarkerService} from './maps/marker-service/marker-service.service';
+import {MarkedService} from './maps/marked-service/marked-service.service';
 import {AnimationPipe} from './maps/agm/agm-pipe/animation.pipe';
 import {AppComponent} from './app.component';
 import {NavComponent} from './maps/nav/nav.component';
@@ -37,7 +38,8 @@ import {environment} from '../environments/environment';
     ],
     providers: [
         {provide: MapsService, useClass: MapsService},
-        {provide: MarkerService, useClass: MarkerService}
+        {provide: MarkerService, useClass: MarkerService},
+        {provide: MarkedService, useClass: MarkedService}
     ],
     bootstrap: [AppComponent]
 })

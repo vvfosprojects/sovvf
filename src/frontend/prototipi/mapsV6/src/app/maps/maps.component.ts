@@ -27,7 +27,4 @@ export class MapsComponent implements OnInit {
         });
     }
 
-    selezioneMarker(marker: RichiestaMarker) {
-        this.markerService.selectedMarker = marker;
-    }
 }

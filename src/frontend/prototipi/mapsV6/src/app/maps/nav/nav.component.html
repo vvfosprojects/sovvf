@@ -5,21 +5,12 @@
             <button class="btn btn-secondary" (click)="removeLastMarker()">Rimuovi Marker</button>
         </div>
         <div class="col-8">
-            <div>
+            <div *ngIf="markerSelezionato">
                 <div class="card bg-light border p-2">
-                    <div>
-                        Marker :
-                        <button class="btn btn-primary mx-2" (click)="changeMarkerColor()">
-                            Cambia
-                            colore
-                        </button>
-                        <button class="btn btn-primary mr-2" (click)="changeMarkerSize()">
-                            Cambia
-                            dimensione
-                        </button>
-                        <button class="btn btn-primary mr-2" (click)="changeMarkerAnimation()">
-                            Animazione
-                        </button>
+                    <div>Marker {{markerSelezionato.id_richiesta}}:
+                        <button class="btn btn-primary mx-2" (click)="changeMarkerColor()">Cambia colore</button>
+                        <button class="btn btn-primary mr-2" (click)="changeMarkerSize()">Cambia dimensione</button>
+                        <button class="btn btn-primary mr-2" (click)="changeMarkerAnimation()">Animazione</button>
                     </div>
                 </div>
             </div>
