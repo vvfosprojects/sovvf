@@ -5,7 +5,7 @@
     <agm-marker *ngFor="let m of richiesteMarkers; let i = index" [latitude]="m.localita.coordinate[0]"
                 [longitude]="m.localita.coordinate[1]" (markerClick)="selezioneMarker(m, infoWindow)"
                 [iconUrl]="m | icon" [animation]="m.rilevante | animation">
-        <agm-info-window #infoWindow (infoWindowClose)="deselezioneMarker()">
+        <agm-info-window>
             <strong>{{m.label}}</strong>
             <div *ngIf="datimeteo" class="h-infowindow">
                 <hr class="my-0">

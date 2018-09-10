@@ -4,7 +4,6 @@ import {MarkedService} from '../marked-service/marked-service.service';
 import {Meteo} from '../../shared/model/meteo.model';
 import {MarkerService} from '../marker-service/marker-service.service';
 import {MeteoService} from '../../shared/meteo/meteo-service.service';
-import {Subject} from 'rxjs';
 
 @Component({
     selector: 'app-agm',
@@ -19,7 +18,6 @@ export class AgmComponent implements OnInit {
     lat: number;
     lng: number;
     zoom: number;
-    lastSelectedInfoWindow;
 
 
     constructor(private markedService: MarkedService, private meteoService: MeteoService) {
@@ -31,17 +29,8 @@ export class AgmComponent implements OnInit {
     ngOnInit() {
     }
 
-    selezioneMarker(marker, infoWindow): void {
-        if (infoWindow === this.lastSelectedInfoWindow) {
-            return;
-        }
-        if (this.lastSelectedInfoWindow != null) {
-            try {
-                this.lastSelectedInfoWindow.close();
-
-            } catch { }
-        }
-        this.lastSelectedInfoWindow = infoWindow;
+    selezioneMarker(marker: RichiestaMarker, infoWindow?): void {
+        this.markedService.clearMarked();
         this.markedService.sendMarked(marker);
         this.meteoService.getMeteoData(marker.localita.coordinate)
             .subscribe(data => {
