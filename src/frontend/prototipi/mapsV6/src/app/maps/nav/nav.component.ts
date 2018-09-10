@@ -33,15 +33,19 @@ export class NavComponent implements OnDestroy {
     }
 
     changeMarkerColor() {
-        this.markerService.changeMarkerColor(this.markerSelezionato);
+        this.markerService.changeMarkerColor();
     }
 
     changeMarkerSize() {
-        this.markerService.changeMarkerSize(this.markerSelezionato);
+        this.markerService.changeMarkerSize();
     }
 
     changeMarkerAnimation() {
-        this.markerService.changeMarkerAnimation(this.markerSelezionato);
+        this.markerService.changeMarkerAnimation();
+    }
+
+    removeMarker() {
+        this.markerService.removeMarker();
     }
 
 }

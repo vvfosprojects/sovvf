@@ -15,18 +15,11 @@ export class AgmComponent implements OnInit {
     lng: number;
     zoom: number;
 
-    icon = {
-        url: '../../../assets/img/icone-markers/rosso.png',
-        scaledSize: {
-            width: 50,
-            height: 50
-        }
-    };
 
     constructor(private markedService: MarkedService) {
-        this.lat = 41.890251;
+        this.lat = 42.290251;
         this.lng = 12.492373;
-        this.zoom = 11;
+        this.zoom = 8;
     }
 
     ngOnInit() {

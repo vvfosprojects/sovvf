@@ -8,9 +8,10 @@
             <div *ngIf="markerSelezionato">
                 <div class="card bg-light border p-2">
                     <div>Marker {{markerSelezionato.id_richiesta}}:
-                        <button class="btn btn-primary mx-2" (click)="changeMarkerColor()">Cambia colore</button>
-                        <button class="btn btn-primary mr-2" (click)="changeMarkerSize()">Cambia dimensione</button>
-                        <button class="btn btn-primary mr-2" (click)="changeMarkerAnimation()">Animazione</button>
+                        <button class="btn btn-primary mx-2" (click)="changeMarkerColor()">Colora</button>
+                        <button class="btn btn-primary mr-2" (click)="changeMarkerSize()">Ridimensiona</button>
+                        <button class="btn btn-primary mr-2" (click)="changeMarkerAnimation()">Anima</button>
+                        <button class="btn btn-primary mr-2" (click)="removeMarker()">Rimuovi</button>
                     </div>
                 </div>
             </div>
