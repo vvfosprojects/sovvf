@@ -1,0 +1,57 @@
+<div class="btn-group">
+  <div ngbDropdown autoClose="outside" class="btn-group">
+    <button ngbDropdownToggle class="btn" [ngClass]="{'btn-outline-primary': filtriS.filtriSelezionati.length==0, 'btn-primary': filtriS.filtriSelezionati.length>0}"
+      type="button" id="dropdownMenuButton" data-toggle="dropdown">
+      <i class="fa fa-filter"></i> Filtri <span *ngIf="filtriS.filtriSelezionati.length>0" class="badge badge-success text-light">{{
+        filtriS.filtriSelezionati.length
+        }}</span>
+    </button>
+    <div ngbDropdownMenu class="px-3" aria-labelledby="dropdownMenuButton">
+      <div class="card-block pt-1 pb-0">
+        <h6 class="font-weight-bold">Principali</h6>
+        <div *ngFor="let f of filtri" class="mb-2">
+          <button *ngIf="f.star === true" class="btn btn-block" [ngClass]="{'btn-outline-primary': !f.selezionato, 'btn-primary': f.selezionato}"
+            appDebounceClick (debounceClick)="selezione(f)" [debounceTime]="700">{{ f.descrizione }}</button>
+        </div>
+      </div>
+      <div class="text-center">
+        <button class="btn btn-block btn-dark mt-1" (click)="open(content)">Visualizza tutti</button>
+        <!-- FILTRI MODAL -->
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Cerca filtri" [(ngModel)]="filtersSearch.descrizione">
+              <div class="input-group-append">
+                <span class="input-group-text"><i class="fa fa-search"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="modal-body my-1 bg-sovvf">
+            <div class="row">
+              <div class="col-6 text-center" *ngFor="let f of filtri | paginate: { id: 'filtri',
+                                                                                                itemsPerPage: 20,
+                                                                                                currentPage: p } | filterBy: filtersSearch">
+                <button class="btn w-75 mb-1" [ngClass]="{'btn-outline-primary': !f.selezionato, 'btn-primary': f.selezionato}"
+                  appDebounceClick (debounceClick)="selezione(f)" [debounceTime]="700">{{ f.descrizione | truncate:30
+                  }}</button>
+              </div>
+              <div *ngIf="(filtri | filterBy: filtersSearch).length === 0" class="col-12 text-center">
+                <h5>Nessun filtro trovato</h5>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="col-12 text-center mt-2">
+              <pagination-controls id="filtri" (pageChange)="p = $event" maxSize="9" directionLinks="true" autoHide="true"
+                responsive="true" previousLabel="Precedente" nextLabel="Successivo" screenReaderPaginationLabel="Pagination"
+                screenReaderPageLabel="page" screenReaderCurrentLabel="Sei sulla pagina">
+              </pagination-controls>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <button *ngIf="filtriS.filtriSelezionati.length>0" class="btn btn-outline-secondary p-1" (click)="eliminaFiltriAttivi()"><i
+      class="fa fa-times text-dark px-1"></i></button>
+</div>
