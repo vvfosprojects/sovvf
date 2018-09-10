@@ -29,9 +29,6 @@ export class RicercaRichiesteComponent implements OnInit {
     const arrText = this.text.split(' ');
     arrText.forEach(word => {
       this.filtri.forEach(filtro => {
-        /* TO LOWER CASE */
-        word = word.toLowerCase();
-        filtro.descrizione = filtro.descrizione.toLowerCase();
         /* CONTROLLO SE LA PAROLA SI TROVA NEI FILTRI (DA FARE INDEXOF)*/
         if (word.toLowerCase() === filtro.descrizione.toLowerCase()) {
           this.filtriS.filtroRicercaRilevato(filtro);
@@ -40,8 +37,9 @@ export class RicercaRichiesteComponent implements OnInit {
       });
     });
 
-    console.log(arrText);
-    console.log(count);
+    console.log('Stringa di ricerca: ' + arrText);
+    // console.log(count);
+    console.log('Filtri applicati alla ricerca:');
     console.log(this.filtriS.filtriSelezionati);
   }
 }

@@ -15,9 +15,40 @@
         </div>
       </div>
       <div class="text-center">
-        <hr class="mb-0">
-        <span class="">Visualizza tutto</span>
-        <button class="btn btn-block btn-outline-dark py-0 mt-1"><i class="fa fa-caret-down"></i></button>
+        <button class="btn btn-block btn-dark mt-1" (click)="open(content)">Visualizza tutti</button>
+        <!-- FILTRI MODAL -->
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Cerca filtri" [(ngModel)]="filtersSearch.descrizione">
+              <div class="input-group-append">
+                <span class="input-group-text"><i class="fa fa-search"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="modal-body my-1 bg-sovvf">
+            <div class="row">
+              <div class="col-6 text-center" *ngFor="let f of filtri | paginate: { id: 'filtri',
+                                                                                                itemsPerPage: 20,
+                                                                                                currentPage: p } | filterBy: filtersSearch">
+                <button class="btn w-75 mb-1" [ngClass]="{'btn-outline-primary': !f.selezionato, 'btn-primary': f.selezionato}"
+                  appDebounceClick (debounceClick)="selezione(f)" [debounceTime]="700">{{ f.descrizione | truncate:30
+                  }}</button>
+              </div>
+              <div *ngIf="(filtri | filterBy: filtersSearch).length === 0" class="col-12 text-center">
+                <h5>Nessun filtro trovato</h5>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="col-12 text-center mt-2">
+              <pagination-controls id="filtri" (pageChange)="p = $event" maxSize="9" directionLinks="true" autoHide="true"
+                responsive="true" previousLabel="Precedente" nextLabel="Successivo" screenReaderPaginationLabel="Pagination"
+                screenReaderPageLabel="page" screenReaderCurrentLabel="Sei sulla pagina">
+              </pagination-controls>
+            </div>
+          </div>
+        </ng-template>
       </div>
     </div>
   </div>

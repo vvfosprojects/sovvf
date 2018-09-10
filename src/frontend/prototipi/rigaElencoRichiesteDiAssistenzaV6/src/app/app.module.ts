@@ -5,6 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { FilterPipeModule } from 'ngx-filter-pipe';
 import * as Shared from './shared/';
 import { AppComponent } from './app.component';
 import { ListaRichiesteComponent } from './lista-richieste/lista-richieste.component';
@@ -38,11 +39,11 @@ import { FiltriRichiesteComponent } from './lista-richieste/filtri-richieste/fil
         NgbModule,
         PipeModule.forRoot(),
         FormsModule,
-        NgxPaginationModule
+        NgxPaginationModule,
+        FilterPipeModule
     ],
     providers: [
-        { provide: SintesiRichiesteService, useClass: SintesiRichiesteService },
-        
+        { provide: SintesiRichiesteService, useClass: SintesiRichiesteService }
     ],
     bootstrap: [AppComponent]
 })

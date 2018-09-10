@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { VoceFiltro } from './voce-filtro.model';
 import { FiltriService } from '../lista-richieste-service/filtri-service/filtri-service.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-filtri-richieste',
@@ -9,8 +10,13 @@ import { FiltriService } from '../lista-richieste-service/filtri-service/filtri-
 })
 export class FiltriRichiesteComponent implements OnInit {
   filtri: VoceFiltro[];
+  filtersSearch = { descrizione: '' };
 
-  constructor(public filtriS: FiltriService) { }
+  constructor(public filtriS: FiltriService, private modalService: NgbModal) { }
+
+  open(content) {
+    this.modalService.open(content, {backdropClass: 'light-blue-backdrop', size: 'lg'});
+  }
 
   ngOnInit() {
     this.getFiltri();
