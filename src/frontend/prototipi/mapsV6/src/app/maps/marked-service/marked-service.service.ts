@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
-import {Observable, of, Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'

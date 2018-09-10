@@ -2,13 +2,23 @@
     <img src="../../../assets/img/map_loading_resized.gif">
 </div>
 <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapReady)="map_loaded = true">
-    <agm-marker *ngFor="let m of richiesteMarkers; let i = index" [latitude]="m.localita.coordinate[0]" [longitude]="m.localita.coordinate[1]" (markerClick)="selezioneMarker(m)"
-        [iconUrl]="icon">
-        <!--[animation]="m.rilevante | animation">Tolto poichè il agm/core non carica correttamente la direttiva di input animation e blocca l'esecuzione-->
+    <agm-marker *ngFor="let m of richiesteMarkers; let i = index" [latitude]="m.localita.coordinate[0]"
+                [longitude]="m.localita.coordinate[1]" (markerClick)="selezioneMarker(m, infoWindow)"
+                [iconUrl]="m | icon" [animation]="m.rilevante | animation">
         <agm-info-window>
             <strong>{{m.label}}</strong>
+            <div *ngIf="datimeteo" class="h-infowindow">
+                <hr class="my-0">
+                <div>
+                    <img class="mr-2 iconameteo w-25" src="http://openweathermap.org/img/w/{{datimeteo.icona}}.png">
+                    <span class="text-capitalize">{{datimeteo.descrizione}}</span>
+                </div>
+                <div class="text-center">{{datimeteo.temperatura}}°C - Umidità: {{datimeteo.umidita}}%</div>
+                <div class="text-center">Vento {{datimeteo.vento}} km/h<i
+                        [ngStyle]="{'transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datimeteo.direzione.gradi+'deg)'}"
+                        class="pl-2 fa fa-long-arrow-up"></i> {{datimeteo.direzione.cardinali}}
+                </div>
+            </div>
         </agm-info-window>
-        <!--da completare metodo che colora le icone e cambia la visualizzazione del marker in base a una richiesta dal menu della mappa.
-        (es. vedo solo una determinata tipologia-->
     </agm-marker>
 </agm-map>
