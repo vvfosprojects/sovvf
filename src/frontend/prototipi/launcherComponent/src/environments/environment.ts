@@ -26,11 +26,12 @@ export const environment = {
             }
         },
         rigaElencoRichieste: {
-            fake: 'https://api.myjson.com/bins/ze8v4',
+            fake: 'https://api.jsonbin.io/b/5b9663a7d6fe677c48d823c3',
+            fake2: 'https://api.myjson.com/bins/ze8v4', // Restituisce 3 richieste di assistenza
             backend: 'http://localhost:2661/api'
         },
         elencoFiltri: {
-            fake: 'https://api.myjson.com/bins/qa8as',
+            fake: 'https://api.myjson.com/bins/yrkns'
         }
     }
 };
