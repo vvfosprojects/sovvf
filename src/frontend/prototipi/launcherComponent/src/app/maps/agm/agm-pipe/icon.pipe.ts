@@ -15,7 +15,7 @@ export class IconPipe implements PipeTransform {
     };
 
     transform(marker: RichiestaMarker): any {
-        const colori = ['rosso', 'verde', 'blu', 'giallo', 'bianco'];
+        const colori = ['success', 'info', 'primary', 'warning', 'secondary'];
         const size = [30, 40, 50, 60, 70];
         this.iconDefault.url = '../../../assets/img/icone-markers/' + colori[marker.id_tipologia - 1] + '.png';
         this.iconDefault.scaledSize.width = size[marker.prioritaRichiesta - 1];

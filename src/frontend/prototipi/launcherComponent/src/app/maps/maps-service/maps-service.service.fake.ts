@@ -16,7 +16,7 @@ export class MapsServiceFake {
             new RichiestaMarker(1,
                 new DescrizioneLocalita(
                     'Via Cavour, 5',
-                    [41.900570, 12.499370]),
+                    [42.5131365, 12.773477]),
                 1,
                 'Allagamento cantina per rottura tubatura',
                 true,

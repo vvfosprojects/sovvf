@@ -29,17 +29,12 @@ export class AgmComponent implements OnInit {
     ngOnInit() {
     }
 
-    selezioneMarker(marker: RichiestaMarker, infoWindow?): void {
-        this.markedService.clearMarked();
+    selezioneMarker(marker: RichiestaMarker): void {
         this.markedService.sendMarked(marker);
         this.meteoService.getMeteoData(marker.localita.coordinate)
             .subscribe(data => {
                 this.datimeteo = data;
             });
-    }
-
-    deselezioneMarker() {
-        this.markedService.clearMarked();
     }
 
 }
