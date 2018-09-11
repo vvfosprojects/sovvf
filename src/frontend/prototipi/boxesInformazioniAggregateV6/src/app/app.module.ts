@@ -8,10 +8,12 @@ import {AppComponent} from './app.component';
 import {BoxFunzionariComponent} from './boxes/info-aggregate/box-funzionari/box-funzionari.component';
 import {InfoAggregateComponent} from './boxes/info-aggregate/info-aggregate.component';
 import {InfoAggregateService} from './boxes/boxes-services/info-aggregate.service';
+import {InfoAggregatServiceFake} from './boxes/boxes-services/info-aggregate.service.fake';
 import {BoxInterventiComponent} from './boxes/info-aggregate/box-interventi/box-interventi.component';
 import {BoxMezziComponent} from './boxes/info-aggregate/box-mezzi/box-mezzi.component';
 import {BoxMeteoComponent} from './boxes/info-aggregate/box-meteo/box-meteo.component';
 import {MeteoService} from './shared/meteo/meteo-service.service';
+
 
 @NgModule({
     declarations: [
