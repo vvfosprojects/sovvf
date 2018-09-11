@@ -14,6 +14,7 @@ import { SintesiRichiesteServiceFake } from './lista-richieste/lista-richieste-s
 import { SintesiRichiestaComponent } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
 import { RicercaRichiesteComponent } from './lista-richieste/ricerca-richieste/ricerca-richieste.component';
 import { FiltriRichiesteComponent } from './lista-richieste/filtri-richieste/filtri-richieste.component';
+import { FiltroComponent } from './lista-richieste/filtri-richieste/filtro/filtro.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { FiltriRichiesteComponent } from './lista-richieste/filtri-richieste/fil
             Shared.MezzoComponent
         ],
         // end import of Shared Declarations
-        FiltriRichiesteComponent
+        FiltriRichiesteComponent,
+        FiltroComponent
     ],
     imports: [
         BrowserModule,

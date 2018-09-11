@@ -19,7 +19,7 @@
         <img src="../../assets/img/pink_loader_resized.gif">
       </div>
       <div *ngFor="let r of richieste | paginate: { id: 'elencoRichieste',
-                                                            itemsPerPage: 2,
+                                                            itemsPerPage: 6,
                                                             currentPage: p,
                                                             totalItems: total }" class="col-6big">
         <app-sintesi-richiesta [richiesta]="r" (LocalizzazioneIntervento)="parametriMappa($event)" (showDettagli)="showDettagliRicevuto($event)"></app-sintesi-richiesta>

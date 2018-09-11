@@ -10,13 +10,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class FiltriRichiesteComponent implements OnInit {
   filtri: VoceFiltro[];
+  categorie: Array<String> = [];
+  categoriaSelezionata = 'Presidiato';
+
   filtersSearch = { descrizione: '' };
 
   constructor(public filtriS: FiltriService, private modalService: NgbModal) { }
-
-  open(content) {
-    this.modalService.open(content, {backdropClass: 'light-blue-backdrop', size: 'lg'});
-  }
 
   ngOnInit() {
     this.getFiltri();
@@ -25,7 +24,30 @@ export class FiltriRichiesteComponent implements OnInit {
   getFiltri() {
     this.filtriS.getFiltri().subscribe((filtri: VoceFiltro[]) => {
       this.filtri = filtri;
+      this.getCategorie();
     });
+  }
+
+  getCategorie() {
+    let count = -1;
+    this.filtri.forEach(filtro => {
+      if (this.categorie) {
+        count = this.categorie.indexOf(filtro.categoria);
+      }
+      if (count <= -1) {
+        this.categorie.push(filtro.categoria);
+      }
+    });
+    // console.log(this.categorie);
+  }
+
+  setCategoriaSelezionata(categoria) {
+    this.categoriaSelezionata = categoria;
+    console.log(this.categoriaSelezionata);
+  }
+
+  open(content) {
+    this.modalService.open(content, { backdropClass: 'light-blue-backdrop', size: 'lg', centered: true });
   }
 
   selezione(filtro) {
