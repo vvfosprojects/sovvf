@@ -9,10 +9,4 @@ export class InfoAggregatServiceFake {
 
   constructor() { }
 
-    getInfoAggregate(): Observable<any> {
-        return this.http.get(API_URL).pipe(
-            retry(3),
-            catchError(this.handleErrorObs)
-        );
-    }
 }
