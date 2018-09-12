@@ -27,6 +27,7 @@ import { SintesiRichiesteServiceFake } from './lista-richieste/lista-richieste-s
 import { SintesiRichiestaComponent } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
 import { RicercaRichiesteComponent } from './lista-richieste/ricerca-richieste/ricerca-richieste.component';
 import { FiltriRichiesteComponent } from './lista-richieste/filtri-richieste/filtri-richieste.component';
+import { FiltroComponent } from './lista-richieste/filtri-richieste/filtro/filtro.component';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
 // end rigaElenco
@@ -47,6 +48,7 @@ import {BoxMeteoComponent} from './boxes/info-aggregate/box-meteo/box-meteo.comp
         SintesiRichiestaComponent,
         RicercaRichiesteComponent,
         FiltriRichiesteComponent,
+        FiltroComponent,
         // start import of Shared Declarations
         [
             Shared.DebounceClickDirective,
