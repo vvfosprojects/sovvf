@@ -1,4 +1,4 @@
-<div #div1 class="card row_text card-shadow pt-3 pb-2 px-3 mb-1" [ngClass]="{'status_presidiato': richiesta.presidiato, 'status_non_presidiato': !richiesta.presidiato}">
+<div #div1 class="card row_text card-shadow pt-3 pb-2 px-3 mb-1" [ngClass]="{'status_presidiato': richiesta.stato === 'presidiato', 'status_chiamata': richiesta.stato === 'chiamata', 'status_assegnato': richiesta.stato === 'assegnato','status_sospeso': richiesta.stato === 'sospeso'}">
     <div class="row align-items-center">
         <div class="col-12">
             <div class="row">
@@ -7,7 +7,7 @@
                         <div class="col-3">
                             <div class="h6 nowrap">
                                 <i class="guida fa fa-hashtag fa-fw mr-1" aria-hidden="true" title="Identificativo richiesta assistenza"></i>
-                                <a class="h6 num-int" placement="bottom" (click)="toggleEspanso()">{{ richiesta.codice
+                                <a class="h6 num-int" (click)="toggleEspanso()">{{ richiesta.codice
                                     }}</a>
                                 <i *ngIf="richiesta.rilevante" ngbTooltip="Richiesta rilevante" class="fa fa-exclamation text-danger ml-2"
                                     aria-hidden="true"></i>
@@ -15,7 +15,7 @@
 
                             <div class="h6 nowrap default-cursor">
                                 <i class="guida fa fa-clock-o fa-fw mr-1" aria-hidden="true" title="Ricezione richiesta"></i>
-                                <a ngbTooltip="{{ richiesta.istanteRicezioneRichiesta | friendlyDateTooltip }}">{{ time
+                                <a ngbTooltip="{{ richiesta.istanteRicezioneRichiesta | friendlyDateTooltip }}" placement="bottom">{{ time
                                     }}</a>
                             </div>
                             <div class="h6 nowrap default-cursor">
@@ -23,7 +23,7 @@
                                     richiesta.istantePrimaAssegnazione | friendlyDateTooltip }}</a>
 
                                 <!-- presidiato / non presidiato (1) -->
-                                <span *ngIf="!richiesta.presidiato">
+                                <span *ngIf="richiesta.stato === 'chiamata'">
                                     <span class="badge badge-warning text-white">non presidiato</span>
                                 </span>
                             </div>
@@ -173,7 +173,7 @@
                             <!-- presa in carico -->
                             <div class="h6">
                                 <i class="guida fa fa-calendar-check-o fa-fw mr-1" aria-hidden="true" title="Presa in carico"></i>
-                                <a ngbTooltip="{{ richiesta.istantePresaInCarico | friendlyDateTooltip }}" placement="top">{{
+                                <a ngbTooltip="{{ richiesta.istantePresaInCarico | friendlyDateTooltip }}" placement="bottom">{{
                                     richiesta.istantePresaInCarico | friendlyDate }} {{ richiesta.istantePresaInCarico
                                     | friendlyHour }}</a>
                             </div>

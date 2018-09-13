@@ -33,9 +33,9 @@ export class SintesiRichiesta {
          */
         public istantePrimaAssegnazione: Date,
         /**
-         * Indica se il luogo del sinistro è presidiato con squadra VVF
+         * Indica lo stato della richiesa di soccorso
          */
-        public presidiato: boolean,
+        public stato: string,
         /**
          * priorita della richiesta (da 0 a 4). 0 = Altissima, 1 = Alta, 2 = Media,
          * 3 = Bassa, 4 = Bassissima.

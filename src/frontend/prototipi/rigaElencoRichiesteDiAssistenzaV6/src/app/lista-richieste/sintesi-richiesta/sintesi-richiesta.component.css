@@ -1,9 +1,17 @@
-.status_non_presidiato {
-    border-left: 10px solid darkorange;
+.status_presidiato {
+    border-left: 10px solid #28a745;
 }
 
-.status_presidiato {
-    border-left: 10px solid green;
+.status_chiamata {
+    border-left: 10px solid #ffc107;
+}
+
+.status_sospeso {
+    border-left: 10px solid #868e96;
+}
+
+.status_assegnato{
+    border-left: 10px solid #17a2b8;
 }
 
 .card-shadow{

@@ -45,7 +45,7 @@ import { FiltroComponent } from './lista-richieste/filtri-richieste/filtro/filtr
         FilterPipeModule
     ],
     providers: [
-        { provide: SintesiRichiesteService, useClass: SintesiRichiesteService }
+        { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }
     ],
     bootstrap: [AppComponent]
 })
