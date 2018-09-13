@@ -1,20 +1,35 @@
-<div class="bg-dark" style="width:4%; float:left; height:100vh">
-    <div class="mt-3 text-center">
-        <button class="btn w-75 py-2"><i class="fa fa-home fa-lg"></i></button>
-        <button class="btn w-75 mt-2 py-2"><i class="fa fa-times fa-lg"></i></button>
-        <button class="btn w-75 mt-2 py-2"><i class="fa fa-truck fa-lg"></i></button>
+<ng-sidebar-container style="height:100vh">
+
+    <ng-sidebar [(opened)]="_opened" [mode]="'over'" [dock]="false" [dockedSize]="'70px'" [sidebarClass]="'w-10 bg-dark'"
+        [animate]="true">
+        <div *ngIf="!_opened" class="text-right">
+        </div>
+        <div *ngIf="_opened">
+            <div class="w-75 mx-auto text-center">
+                <button (click)="_toggleOpened()"><i class="fa fa-times"></i> Chiudi</button>
+                <!-- Bottoni senza scritta-->
+                <button class="btn w-75 py-2"><i class="fa fa-home fa-lg"></i> Test</button>
+                <button class="btn w-75 mt-2"><i class="fa fa-times fa-lg"></i> Test</button>
+                <button class="btn w-75 mt-2"><i class="fa fa-truck fa-lg"></i> Test</button>
+            </div>
+        </div>
+    </ng-sidebar>
+
+    <div ng-sidebar-content>
+        <button (click)="_toggleOpened()">Toggle sidebar</button>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 my-3">
+                    <app-info-aggregate></app-info-aggregate>
+                </div>
+                <div class="col-6">
+                    <app-lista-richieste></app-lista-richieste>
+                </div>
+                <div class="col-6">
+                    <app-maps></app-maps>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-<div style="width:95%; float:right">
-    <div class="row">
-        <div class="col-12 my-3">
-            <app-info-aggregate></app-info-aggregate>
-        </div>
-        <div class="col-6">
-            <app-lista-richieste></app-lista-richieste>
-        </div>
-        <div class="col-6">
-            <app-maps></app-maps>
-        </div>
-    </div>
-</div>
+
+</ng-sidebar-container>

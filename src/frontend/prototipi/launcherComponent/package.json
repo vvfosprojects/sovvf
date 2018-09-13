@@ -31,6 +31,7 @@
     "font-awesome": "^4.7.0",
     "hoek": "^5.0.4",
     "moment": "^2.22.2",
+    "ng-sidebar": "^8.0.0",
     "ngx-filter-pipe": "^2.1.0",
     "ngx-pagination": "^3.2.0",
     "popper.js": "^1.14.4",
