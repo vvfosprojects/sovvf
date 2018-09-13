@@ -66,11 +66,9 @@ export class FiltriService {
 
   filtroRicercaRilevato(filtro: VoceFiltro) {
     if (!filtro.selezionato) {
-      console.log('undefined');
       filtro.selezionato = false;
     }
     if (filtro.selezionato === false) {
-      console.log('false');
       filtro.selezionato = true;
       this.filtriSelezionati.push(filtro);
     }

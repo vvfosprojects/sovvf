@@ -76,8 +76,8 @@
                             <div class="h6 nowrap default-cursor">
                                 <i class="guida fa fa-map-marker fa-fw mr-1" aria-hidden="true" title="Località"></i>
                                 <span><a ngbTooltip="{{ richiesta.descrizioneLocalita.indirizzo }}" placement="bottom"
-                                        [disableTooltip]="richiesta.descrizioneLocalita.indirizzo.length <= 25">{{
-                                        richiesta.descrizioneLocalita.indirizzo | truncate:25 }}</a></span>
+                                        [disableTooltip]="richiesta.descrizioneLocalita.indirizzo.length <= 30">{{
+                                        richiesta.descrizioneLocalita.indirizzo | truncate:30 }}</a></span>
                                 <a href="#">
                                     <i class="guida fa fa-globe fa-fw globo-loc ml-1" aria-hidden="true" title="Localizzazione Richiesta Intervento"
                                         (click)="localizzazioneIntervento(richiesta.descrizioneLocalita.coordinate,true)"></i>

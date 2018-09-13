@@ -47,6 +47,7 @@ export class FiltriRichiesteComponent implements OnInit {
   }
 
   open(content) {
+    this.filtersSearch = { descrizione: '' };
     this.modalService.open(content, { backdropClass: 'light-blue-backdrop', size: 'lg', centered: true });
   }
 
