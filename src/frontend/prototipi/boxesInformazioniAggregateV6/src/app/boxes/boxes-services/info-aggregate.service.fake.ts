@@ -18,7 +18,7 @@ export class InfoAggregateServiceFake {
             new InfoAggregate([
                     new BoxFunzionariSo(
                         'RSSMRA80A01C707K',
-                        'VCTI',
+                        'CRE',
                         'Mario Rossi',
                         true,
                         false,
@@ -26,7 +26,7 @@ export class InfoAggregateServiceFake {
                         false),
                     new BoxFunzionariSo(
                         'BNCMRC80A01H501C',
-                        'VCTI',
+                        'VCSC',
                         'Francesco Bianchi',
                         false,
                         false,
@@ -34,11 +34,19 @@ export class InfoAggregateServiceFake {
                         true),
                     new BoxFunzionariSo(
                         'VRDGPP80A01H501U',
-                        'VCTI',
+                        'CRESC',
                         'Giuseppe Verdi',
                         false,
+                        true,
+                        false,
+                        false),
+                    new BoxFunzionariSo(
+                        'GLLNTN80A01H501U',
+                        'VE AIB',
+                        'Antonio Gialli',
                         false,
                         false,
+                        true,
                         false)
                 ],
                 new BoxInterventi(25, 30, 10, 30),

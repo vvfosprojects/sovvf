@@ -51,15 +51,31 @@ export class BoxFunzionariComponent implements OnInit {
         return presenteCapoTurno;
     }
 
-    getTecnicoGuardia(): boolean {
-        let presenteTecnicoGuardia = false;
+    getTecnicoGuardia(): number {
+        let presenteTecnicoGuardia = 0;
 
         this.funzionari.forEach(c => {
             if (c.tecnicoGuardia1 || c.tecnicoGuardia2) {
-                presenteTecnicoGuardia = true;
+                presenteTecnicoGuardia++;
             }
         });
 
         return presenteTecnicoGuardia;
     }
+
+    // getTecniciGuardiaArray(): object {
+    //     const funzTecnGuardia = [];
+    //
+    //     this.funzionari.forEach(c => {
+    //         if (c.tecnicoGuardia1 && c.tecnicoGuardia2) {
+    //             funzTecnGuardia.push(c.tecnicoGuardia1, c.tecnicoGuardia2);
+    //         } else if (c.tecnicoGuardia1) {
+    //             funzTecnGuardia.push(c.tecnicoGuardia1);
+    //         } else {
+    //             funzTecnGuardia.push(c.tecnicoGuardia2);
+    //         }
+    //     });
+    //
+    //     return funzTecnGuardia;
+    // }
 }
