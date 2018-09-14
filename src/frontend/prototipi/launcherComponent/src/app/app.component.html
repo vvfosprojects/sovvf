@@ -1,7 +1,7 @@
 <ng-sidebar-container style="height:100vh">
 
     <ng-sidebar [(opened)]="_opened" [mode]="'over'" [dock]="false" [dockedSize]="'70px'" [sidebarClass]="'w-10 bg-dark'"
-        [animate]="true">
+        [animate]="true" [closeOnClickOutside]="true">
         <div *ngIf="!_opened" class="text-right">
         </div>
         <div *ngIf="_opened">
@@ -16,10 +16,11 @@
     </ng-sidebar>
 
     <div ng-sidebar-content>
-        <button (click)="_toggleOpened()">Toggle sidebar</button>
+        <!-- Navbar -->
+        <app-navbar (openedSidebar)="_toggleOpened()"></app-navbar>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12 my-3">
+                <div class="col-12 mt-1 mb-2">
                     <app-info-aggregate></app-info-aggregate>
                 </div>
                 <div class="col-6">

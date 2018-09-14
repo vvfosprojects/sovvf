@@ -42,6 +42,7 @@ import {BoxMeteoComponent} from './boxes/info-aggregate/box-meteo/box-meteo.comp
 // end boxes
 // start sidebar
 import {SidebarModule, Sidebar} from 'ng-sidebar';
+import { NavbarComponent } from './navbar/navbar.component';
 
 // end sidebar
 
@@ -74,7 +75,8 @@ import {SidebarModule, Sidebar} from 'ng-sidebar';
         InfoAggregateComponent,
         BoxInterventiComponent,
         BoxMezziComponent,
-        BoxMeteoComponent
+        BoxMeteoComponent,
+        NavbarComponent
     ],
     imports: [
         BrowserModule,

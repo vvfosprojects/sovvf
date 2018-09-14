@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark text-light">
+  <div class="row w-100 px-0">
+    <div class="col-1">
+      <button class="btn btn-light w-100" (click)="openSidebar()"><i class="fa fa-bars"></i> Menu</button>
+    </div>
+    <div class="col-2">
+      <div class="row">
+        <div class="col-4 text-right">
+          <img src="https://via.placeholder.com/40x40">
+        </div>
+        <div class="col-8 px-0 py-2">
+          <span class="h6">Caserma di Roma</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-2 py-2 text-center">
+      <span class="h6">21/06/2018 - 10:12:36</span>
+    </div>
+    <div class="col-2 py-2">
+      <span>
+        Turno:&nbsp;
+        <small>A</small>
+        &nbsp;B&nbsp;
+        <small>C</small>
+      </span>
+    </div>
+    <div class="col-3 ml-auto py-2">
+      <span>
+        <i class="fa fa-bell mr-3" [ngbPopover]="notifiche" placement="bottom"></i>
+        <i class="fa fa-envelope-open-o mr-3" [ngbPopover]="messaggi" placement="bottom"></i>
+      </span>
+      <ng-template #notifiche>
+        <h6>Notifiche</h6>
+      </ng-template>
+      <ng-template #messaggi>
+        <h6>Messaggi</h6>
+      </ng-template>
+    </div>
+  </div>
+</nav>
