@@ -2,12 +2,19 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {PipeModule} from './shared/pipes/pipe.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import * as Shared from './shared/';
 import {MeteoService} from './shared/meteo/meteo-service.service';
 import {AppComponent} from './app.component';
 import {environment} from '../environments/environment';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import {ReactiveFormsModule} from '@angular/forms';
+import {routing} from './app.routing';
+import {BasicAuthInterceptor, ErrorInterceptor} from './auth/_helpers';
+import {HomeComponent} from './auth/home';
+import {LoginComponent} from './auth/login';
+// backend fake per login
+import {fakeBackendProvider} from './auth/_helpers';
 // start maps-container
 import {AgmCoreModule} from '@agm/core';
 import {AgmComponent} from './maps/agm/agm.component';
@@ -42,7 +49,7 @@ import {BoxMeteoComponent} from './boxes/info-aggregate/box-meteo/box-meteo.comp
 // end boxes
 // start sidebar
 import {SidebarModule, Sidebar} from 'ng-sidebar';
-import { NavbarComponent } from './navbar/navbar.component';
+import {NavbarComponent} from './navbar/navbar.component';
 
 // end sidebar
 
@@ -76,11 +83,15 @@ import { NavbarComponent } from './navbar/navbar.component';
         BoxInterventiComponent,
         BoxMezziComponent,
         BoxMeteoComponent,
-        NavbarComponent
+        NavbarComponent,
+        HomeComponent,
+        LoginComponent
     ],
     imports: [
         BrowserModule,
+        ReactiveFormsModule,
         HttpClientModule,
+        routing,
         NgbModule,
         PipeModule.forRoot(),
         AgmCoreModule.forRoot({
@@ -97,7 +108,11 @@ import { NavbarComponent } from './navbar/navbar.component';
         {provide: MarkerService, useClass: MarkerService},
         {provide: MarkedService, useClass: MarkedService},
         {provide: MeteoService, useClass: MeteoService},
-        {provide: InfoAggregateService, useClass: InfoAggregateServiceFake}
+        {provide: InfoAggregateService, useClass: InfoAggregateServiceFake},
+        {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+        // backend fake provider per login
+        fakeBackendProvider
     ],
     bootstrap: [AppComponent]
 })

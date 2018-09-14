@@ -6,14 +6,11 @@ import {Component, OnInit} from '@angular/core';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-    private _opened = false;
+
     constructor() {
     }
 
     ngOnInit() {
     }
 
-    private _toggleOpened() {
-        this._opened = !this._opened;
-    }
 }

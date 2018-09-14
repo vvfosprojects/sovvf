@@ -1,38 +1,91 @@
-<div class="card bg-light w-100 app-shadow" xmlns="http://www.w3.org/1999/html">
+<div class="card bg-light w-100 app-shadow min-height-boxes" xmlns="http://www.w3.org/1999/html">
     <div class="card-body">
+        <!-- Funzionario in Servizio -->
+        <div>
+            <span class="text-secondary"><i class="fa fa-graduation-cap mb-2 mr-1" aria-hidden="true"></i>Funzionari in servizio: {{getTotalFunz()}}</span>
+            <hr class="m-0 mb-2">
+        </div>
         <!-- Funzionario Guardia -->
-        <div class="">
-            <span class="text-secondary"><i class="fa fa-user-secret mr-1" aria-hidden="true"></i>Funzionario Guardia</span>
-            <hr class="m-0 my-1">
-            <div *ngFor="let f of funzionari">
-                <div *ngIf="f.funzGuardia" class="mt-2">
-                    <span title="Qualifica">{{f.qualifica}}</span><i class="fa fa-caret-right mx-2"></i><span class=""
-                                                                                            ngbTooltip="{{f.descrizione}}"
-                                                                                            placement="bottom"
-                                                                                            [disableTooltip]="f.descrizione.length <= 17">{{f.descrizione | truncate:17}}</span>
+        <div>
+        <span *ngIf="getFunzPresente()">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-5 px-0 pr-1">
+                        <span class="text-secondary">Funzionario Guardia</span>
+                    </div>
+                    <div class="col px-0">
+                         <span *ngFor="let f of funzionari">
+                            <span *ngIf="f.funzGuardia" class="mt-2">
+                                <i class="fa fa-caret-right mx-2"></i>
+                                <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
+                                <span class="" ngbTooltip="{{f.descrizione}}" placement="bottom"
+                                      [disableTooltip]="f.descrizione.length <= 18"> {{f.descrizione | truncate:18}}</span>
+                            </span>
+                        </span>
+                    </div>
                 </div>
             </div>
-
-            <div *ngIf="!getFunzPresente()">
+            </span>
+            <span *ngIf="!getFunzPresente()">
                 <span><b>Nessun Funzionario</b></span>
-            </div>
+            </span>
         </div>
         <!-- Capo Turno -->
-        <div class="mt-3">
-            <span class="text-secondary"><i class="fa fa-graduation-cap mr-1 text-secondary" aria-hidden="true"></i>Capo Turno</span>
-            <hr class="m-0 my-1">
-            <div *ngFor="let f of funzionari">
-                <div *ngIf="f.capoTurno" class="mt-2">
-                    <span title="Qualifica">{{f.qualifica}}</span><i class="fa fa-caret-right mx-2"></i><span class=""
-                                                                                            ngbTooltip="{{f.descrizione}}"
-                                                                                            placement="bottom"
-                                                                                            [disableTooltip]="f.descrizione.length <= 17">{{f.descrizione | truncate:17}}</span>
+        <div class="mt-2">
+            <span *ngIf="getCapoTurnoPresente()">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-5 px-0 pr-1">
+                            <span class="text-secondary">Capo Turno</span>
+                        </div>
+                        <div class="col px-0">
+                             <span *ngFor="let f of funzionari">
+                                <span *ngIf="f.capoTurno" class="mt-2">
+                                    <i class="fa fa-caret-right mx-2"></i>
+                                    <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
+                                    <span class="" ngbTooltip="{{f.descrizione}}" placement="bottom"
+                                          [disableTooltip]="f.descrizione.length <= 18"> {{f.descrizione | truncate:18}}</span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div *ngIf="!getCapoTurnoPresente()">
+            </span>
+            <span *ngIf="!getCapoTurnoPresente()">
                 <span><b>Nessun Capo Turno</b></span>
-            </div>
+            </span>
+        </div>
+        <!-- Tecnico Guardia1 -->
+        <div class="mt-2">
+            <span *ngIf="getTecnicoGuardia() > 0">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-5 px-0 pr-1">
+                            <span class="text-secondary" *ngIf="getTecnicoGuardia() === 1">Tecnico di Guardia</span>
+                            <span class="text-secondary" *ngIf="getTecnicoGuardia() === 2">Tecnici di Guardia</span>
+                        </div>
+                        <div class="col px-0">
+                            <span *ngFor="let f of funzionari">
+                            <div *ngIf="f.tecnicoGuardia1">
+                                <i class="fa fa-caret-right mx-2"></i>
+                                <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
+                                <span class="" ngbTooltip="{{f.descrizione}}" placement="bottom"
+                                      [disableTooltip]="f.descrizione.length <= 18"> {{f.descrizione | truncate:18}}</span>
+                            </div>
+                            <div *ngIf="f.tecnicoGuardia2" class="mt-1">
+                                <i class="fa fa-caret-right mx-2"></i>
+                                <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
+                                <span class="" ngbTooltip="{{f.descrizione}}" placement="bottom"
+                                      [disableTooltip]="f.descrizione.length <= 18"> {{f.descrizione | truncate:18}}</span>
+                            </div>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </span>
+            <span *ngIf="getTecnicoGuardia() === 0">
+                <span><b>Nessun Tecnico di Guardia</b></span>
+            </span>
         </div>
     </div>
 </div>

@@ -42,11 +42,11 @@ export class MeteoService {
 
     private handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
-            console.error('Si è verificato un errore:', error.error.message);
+            console.error('Si è verificato un errore:', error.message);
         } else {
             console.error(
                 `Errore response: ${error.status}, ` +
-                `Messaggio body: ${error.error.message}`);
+                `Messaggio body: ${error.message}`);
         }
         return throwError(
             'Qualcosa è andato storto, per favore riprova più tardi.');
