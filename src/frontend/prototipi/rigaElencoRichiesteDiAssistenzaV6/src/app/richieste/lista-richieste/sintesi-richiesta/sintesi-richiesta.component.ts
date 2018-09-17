@@ -1,6 +1,6 @@
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
-import {SintesiRichiesta} from '../../shared/model/sintesi-richiesta.model';
-import {Observable} from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { Observable } from 'rxjs';
 import * as moment from 'moment';
 
 @Component({
@@ -9,16 +9,13 @@ import * as moment from 'moment';
     styleUrls: ['./sintesi-richiesta.component.css']
 })
 export class SintesiRichiestaComponent implements OnInit {
-    /**
-     * Indica se la visualizzazione della richiesta si ferma al primo livello di dettaglio (false) oppure arriva al secondo (true)
-     */
+    /* Indica se si è espanso il livello di dettaglio della richieste (true; else false)*/
     espanso = false;
+    /* Variabile utile al metodo "displayRealTime()" */
     time: any;
 
     @Input() richiesta: SintesiRichiesta;
     @Output() ShowDettagli: EventEmitter<SintesiRichiesta> = new EventEmitter();
-    @Output() InvioPartenza: EventEmitter<SintesiRichiesta> = new EventEmitter();
-    @Output() LocalizzazioneIntervento = new EventEmitter();
 
     observableTime = new Observable<number>((observer) => {
         setInterval(() => observer.next(
@@ -28,79 +25,42 @@ export class SintesiRichiestaComponent implements OnInit {
     constructor() {
     }
 
-    /*
-      Calcola la dimensione del div "div1"
-    */
-
-    @ViewChild('div1') div1: ElementRef; // (1)
     ngOnInit() {
-        // console.log(this.div1.nativeElement.clientWidth); (1)
         this.displayRealTime(this.observableTime);
     }
 
-    /**
-     * restituisce un vettore con tanti elementi quanto è la priorità dell'intervento.
-     * Utile per eseguire un ngFor con i pallini.
-     */
+    /* Restituisce un Array con tanti elementi quanto è la priorità dell'intervento */
     vettorePallini() {
         return new Array(this.richiesta.prioritaRichiesta);
     }
 
-    /**
-     * restituisce un vettore con tanti elementi quanti sono i buchini della priorità dell'intervento.
-     * Utile per eseguire un ngFor con i buchini.
-     */
+    /* Restituisce un Array con tanti elementi quanti sono i buchini della priorità dell'intervento */
     vettoreBuchini() {
         const MAX_PRIORITA = 5;
         return new Array(MAX_PRIORITA - this.richiesta.prioritaRichiesta);
     }
 
-    /**
-     * Espande/comprime il livello di dettaglio visualizzato per la richiesta
-     */
+    /* Espande/Comprime il livello di dettaglio visualizzato per la richiesta */
     toggleEspanso(): void {
-
         this.espanso = !this.espanso;
-
     }
 
-    /**
-     * Restituisce il vettore con i nomi delle squadre
-     */
+    /* Restituisce l'Array con i nomi delle squadre  */
     nomiSquadre(): string[] {
         return this.richiesta.squadre.map(s => s.nome);
     }
 
-    /**
-     * Restituisce il numero delle squadre
-     */
+    /* Restituisce il numero delle squadre */
     numeroSquadre(): number {
         return this.richiesta.squadre.length;
     }
 
-    /**
-     * Restituisce il vettore con il numero dei mezzi
-     */
+    /* Restituisce l'Array con il numero dei mezzi */
     numeroMezzi(): number {
         return this.richiesta.mezzi.length;
     }
 
-    clickDettagli(): void {
-        console.log('Sono il componente. Vogliono vedere i miei dettagli', this.richiesta.id);
-        this.ShowDettagli.emit(this.richiesta);
-    }
-
-    invioPartenza(): void {
-        console.log('Sono il componente. Voglio inviare la partenza per', this.richiesta.id);
-        this.InvioPartenza.emit(this.richiesta);
-    }
-
-    localizzazioneIntervento(coordinate, bool?): void {
-        // console.log('Sono il componente. Voglio localizzare l\'intervento in', indirizzo);
-        const parametri = [coordinate[0], coordinate[1], bool];
-        this.LocalizzazioneIntervento.emit(parametri);
-    }
-
+    /* Data una 'Date' permette di visualizzare il tempo passato fino a questo momento */
     private displayRealTime(observableTime) {
         this.time = '';
         for (let i = 0; i < 5; i++) {
@@ -160,6 +120,7 @@ export class SintesiRichiestaComponent implements OnInit {
 
     }
 
+    /* Permette di colorare l'icona della tipologia */
     coloraIcona(nome): any {
         const colori = [
             {
@@ -183,5 +144,4 @@ export class SintesiRichiestaComponent implements OnInit {
             return nome + ' text-success';
         }
     }
-
 }

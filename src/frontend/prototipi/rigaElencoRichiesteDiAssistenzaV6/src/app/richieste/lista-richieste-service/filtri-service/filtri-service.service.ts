@@ -34,9 +34,9 @@ export class FiltriService {
     console.log(this.filtriSelezionati);
   }
 
-  setfiltroSelezionati(filtro: VoceFiltro) {
+  addfiltroSelezionato(filtro: VoceFiltro) {
     if (filtro.selezionato === true) {
-      this.setfiltroDeselezionati(filtro);
+      this.deletefiltroSelezionato(filtro);
     } else {
       this.setSelezionato(filtro);
       this.filtriSelezionati.push(filtro);
@@ -45,7 +45,7 @@ export class FiltriService {
     }
   }
 
-  setfiltroDeselezionati(filtro: VoceFiltro) {
+  deletefiltroSelezionato(filtro: VoceFiltro) {
     this.setDeselezionato(filtro);
     this.filtriSelezionati.forEach((filtroSelezionato, index) => {
       if (filtroSelezionato.codice === filtro.codice) {

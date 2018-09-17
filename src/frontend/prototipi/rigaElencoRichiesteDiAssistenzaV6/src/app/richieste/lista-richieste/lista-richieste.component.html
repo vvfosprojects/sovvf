@@ -1,0 +1,20 @@
+<div class="row">
+  <!-- Loader (!richieste) -->
+  <div *ngIf="!richieste" class="mx-auto my-5">
+    <img src="../../../assets/img/pink_loader_resized.gif">
+  </div>
+  <!-- Singola Richiesta -->
+  <div *ngFor="let r of richieste | paginate: { id: 'elencoRichieste',
+                                                            itemsPerPage: 6,
+                                                            currentPage: p,
+                                                            totalItems: total }" class="col-6big">
+    <app-sintesi-richiesta [richiesta]="r"></app-sintesi-richiesta>
+  </div>
+  <!-- Paginazione -->
+  <div class="col-12 text-center mt-2">
+    <pagination-controls id="elencoRichieste" (pageChange)="p = $event" maxSize="9" directionLinks="true" autoHide="true"
+      responsive="true" previousLabel="" nextLabel="" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div>
+</div>

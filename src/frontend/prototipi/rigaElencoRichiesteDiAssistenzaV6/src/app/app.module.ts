@@ -8,19 +8,20 @@ import { FormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import * as Shared from './shared/';
 import { AppComponent } from './app.component';
-import { ListaRichiesteComponent } from './lista-richieste/lista-richieste.component';
-import { SintesiRichiesteService } from './lista-richieste/lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service';
-import { SintesiRichiesteServiceFake } from './lista-richieste/lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service.fake';
-import { SintesiRichiestaComponent } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
-import { RicercaRichiesteComponent } from './lista-richieste/ricerca-richieste/ricerca-richieste.component';
-import { FiltriRichiesteComponent } from './lista-richieste/filtri-richieste/filtri-richieste.component';
-import { FiltroComponent } from './lista-richieste/filtri-richieste/filtro/filtro.component';
+import { DbInterventiComponent } from './richieste/db-interventi/db-interventi.component';
+import { SintesiRichiesteService } from './richieste/lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service';
+import { SintesiRichiesteServiceFake } from './richieste/lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service.fake';
+import { SintesiRichiestaComponent } from './richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
+import { RicercaRichiesteComponent } from './richieste/ricerca-richieste/ricerca-richieste.component';
+import { FiltriRichiesteComponent } from './richieste/filtri-richieste/filtri-richieste.component';
+import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.component';
+import { ListaRichiesteComponent } from './richieste/lista-richieste/lista-richieste.component';
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        ListaRichiesteComponent,
+        DbInterventiComponent,
         SintesiRichiestaComponent,
         RicercaRichiesteComponent,
         // start import of Shared Declarations
@@ -33,7 +34,8 @@ import { FiltroComponent } from './lista-richieste/filtri-richieste/filtro/filtr
         ],
         // end import of Shared Declarations
         FiltriRichiesteComponent,
-        FiltroComponent
+        FiltroComponent,
+        ListaRichiesteComponent
     ],
     imports: [
         BrowserModule,

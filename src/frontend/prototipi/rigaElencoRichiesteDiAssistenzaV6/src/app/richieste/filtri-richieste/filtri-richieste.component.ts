@@ -42,16 +42,16 @@ export class FiltriRichiesteComponent implements OnInit {
 
   setCategoriaSelezionata(categoria) {
     this.categoriaSelezionata = categoria;
-    console.log(this.categoriaSelezionata);
+    // console.log(this.categoriaSelezionata);
   }
 
-  open(content) {
+  openFiltersModal(content) {
     this.filtersSearch = { descrizione: '' };
     this.modalService.open(content, { backdropClass: 'light-blue-backdrop', size: 'lg', centered: true });
   }
 
   selezione(filtro) {
-    this.filtriS.setfiltroSelezionati(filtro);
+    this.filtriS.addfiltroSelezionato(filtro);
     /* TEST console.log('Selezione inviata al service:');
     console.log(filtro);
     console.log('Sono di nuovo io, ecco il nuovo filtriSelezionati del component:');
