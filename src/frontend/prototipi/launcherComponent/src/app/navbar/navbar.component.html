@@ -1,35 +1,48 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-light">
-  <div class="row w-100 px-0">
+  <div class="row w-100">
     <!-- Hamburger icon menu -->
-    <div class="col-1">
-      <button class="btn btn-light w-100" (click)="openSidebar()"><i class="fa fa-bars"></i> Menu</button>
+    <div class="col-1 mr-auto">
+      <button class="btn btn-light w-100 h-100" (click)="openSidebar()"><i class="fa fa-bars"></i> Menu</button>
     </div>
     <!-- Logo, Info Caserma, Data e ora, Turni -->
     <div class="col-7 h6 mb-0">
-      <img src="https://placeholder.pics/svg/40/FF0000-FFED5D/logo">
-      <span class="mr-3">
-        Caserma di Roma
-      </span>
-      <span class="mr-3">
-        {{time}}
-      </span>
-      <span class="mr-3">
-        Turno:&nbsp;
-        <small>A</small>
-        &nbsp;B&nbsp;
-        <small>C</small>
-      </span>
+      <div class="row">
+        <div class="col-1 text-center pr-0">
+          <img src="https://placeholder.pics/svg/40/FF0000-FFED5D/logo">
+        </div>
+        <div class="col py-2 pl-0">
+          <span class="mr-3">
+            Caserma di Roma
+          </span>
+          <span class="mr-3">
+            {{time}}
+          </span>
+          <span class="mr-3">
+            Turno:&nbsp;
+            <small>A</small>
+            &nbsp;B&nbsp;
+            <small>C</small>
+          </span>
+        </div>
+      </div>
     </div>
     <!-- Notifiche, messaggi e profilo -->
-    <div class="col-4 ml-auto text-right">
-      <span class="">
-        <i class="fa fa-bell mr-3" [ngbPopover]="notifiche" placement="bottom"></i>
-        <i class="fa fa-envelope-open-o mr-3" [ngbPopover]="messaggi" placement="bottom"></i>
-      </span>
-      <img class="rounded mr-2" src="http://i.pravatar.cc/40?img=53">
-      <span class="mr-3">Ciao, {{user.firstName}} {{user.lastName}}</span>
-      <span class="mr-3"><i class="fa fa-cogs"></i></span>
-      <span class="text-danger"><i class="fa fa-sign-out" [routerLink]="['/login']"></i> Logout</span>
+    <div class="col-4 ml-auto text-right pr-0">
+      <button class="btn btn-light mr-2" ngbTooltip="Notifiche" [ngbPopover]="notifiche" placement="bottom"><i class="fa fa-bell"></i></button>
+      <button class="btn btn-light mr-2" ngbTooltip="Messaggi" [ngbPopover]="messaggi" placement="bottom"><i class="fa fa-envelope-open"></i></button>
+      <button class="btn btn-light mr-2" ngbTooltip="Impostazioni" placement="bottom"><i class="fa fa-cogs"></i></button>
+      <button class="btn btn-light mr-2 p-0">
+        <div class="row">
+          <div class="col-10">
+            <span>{{user.firstName}} {{user.lastName}}</span>
+          </div>
+          <div class="col-2 text-center">
+            <img class="rounded" src="http://i.pravatar.cc/40?img=53">
+          </div>
+        </div>
+      </button>
+      <button class="btn btn-danger" ngbTooltip="Disconnettiti" placement="bottom" [routerLink]="['/login']"><i class="fa fa-sign-out"></i>
+        Esci</button>
       <ng-template #notifiche>
         <h6 class="mb-2">Notifiche</h6>
         <ul class="list-unstyled">

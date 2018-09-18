@@ -1,13 +1,13 @@
 <ng-sidebar-container style="height:100vh;">
 
-    <ng-sidebar [(opened)]="_opened" [mode]="'over'" [dock]="false" [sidebarClass]="'w-200 bg-ultradark'" [animate]="true"
+    <ng-sidebar [(opened)]="_opened" [mode]="'over'" [dock]="false" [sidebarClass]="'w-200 bg-grey-o'" [animate]="true"
         [closeOnClickOutside]="true">
-        <div *ngIf="_opened">
-            <h4 class="my-3 text-center text-light">Menu</h4>
-            <div class="w-75 mx-auto text-center">
-                <button class="btn btn-light btn-block mt-2"><i class="fa fa-home fa-lg"></i> Pagina iniziale</button>
-                <button class="btn btn-outline-light btn-block mt-2"><i class="fa fa-home fa-lg"></i> Pagina 2</button>
-                <button class="btn btn-danger  btn-block mt-2" (click)="_toggleOpened()"><i class="fa fa-times"></i>
+        <div *ngIf="_opened" class="bg-grey py-3">
+            <h4 class="text-center font-weight-bold">Menu</h4>
+            <div class="px-4 mt-3 mx-auto text-center">
+                <button class="btn btn-dark btn-block mt-2"><i class="fa fa-home fa-lg"></i> Pagina iniziale</button>
+                <button class="btn btn-outline-dark btn-block mt-2"><i class="fa fa-home fa-lg"></i> Pagina 2</button>
+                <button class="btn btn-danger btn-block mt-2" (click)="_toggleOpened()"><i class="fa fa-times"></i>
                     Chiudi</button>
             </div>
         </div>

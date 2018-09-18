@@ -10,7 +10,7 @@ export const environment = {
                 url: 'http://api.openweathermap.org/data/2.5/weather?',
                 option: {
                     lang: 'it',
-                    key: 'a23cc450dabf63fdb6729696aa29b3a6',
+                    key: 'cd79e94e4eb143ec7e639da5dbb67386',
                     unit: 'metric'
                 }
 
