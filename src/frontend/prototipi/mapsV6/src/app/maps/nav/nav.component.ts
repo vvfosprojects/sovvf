@@ -1,8 +1,8 @@
 import {Component, OnDestroy} from '@angular/core';
-import {MarkerService} from '../marker-service/marker-service.service';
-import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
-import {MarkedService} from '../marked-service/marked-service.service';
+import {RichiestaMarker} from '../maps-db-interventi/maps-model/richiesta-marker.model';
+import {MarkedService} from '../maps-db-interventi/marked-service/marked-service.service';
 import {Subscription} from 'rxjs';
+import {MapsService} from '../maps-db-interventi/maps-service/maps-service.service';
 
 @Component({
     selector: 'app-nav',
@@ -14,7 +14,7 @@ export class NavComponent implements OnDestroy {
     markerSelezionato: RichiestaMarker;
     subscription: Subscription;
 
-    constructor(private markerService: MarkerService, private markedService: MarkedService) {
+    constructor(private mapsService: MapsService, private markedService: MarkedService) {
         this.subscription = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         });
@@ -25,27 +25,27 @@ export class NavComponent implements OnDestroy {
     }
 
     addRandomMarker() {
-        this.markerService.setRandomMarker();
+        this.mapsService.setRandomMarker();
     }
 
     removeLastMarker() {
-        this.markerService.removeLastMarker();
+        this.mapsService.removeLastMarker();
     }
 
     changeMarkerColor() {
-        this.markerService.changeMarkerColor();
+        this.mapsService.changeMarkerColor();
     }
 
     changeMarkerSize() {
-        this.markerService.changeMarkerSize();
+        this.mapsService.changeMarkerSize();
     }
 
     changeMarkerAnimation() {
-        this.markerService.changeMarkerAnimation();
+        this.mapsService.changeMarkerAnimation();
     }
 
     removeMarker() {
-        this.markerService.removeMarker();
+        this.mapsService.removeMarker();
     }
 
 }
