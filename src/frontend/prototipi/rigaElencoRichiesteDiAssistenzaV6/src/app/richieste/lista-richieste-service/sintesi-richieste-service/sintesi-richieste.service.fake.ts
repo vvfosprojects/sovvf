@@ -12,16 +12,47 @@ import { Mezzo } from '../../../shared/model/mezzo.model';
     providedIn: 'root'
 })
 export class SintesiRichiesteServiceFake {
-
+    richieste: SintesiRichiesta[];
     constructor() {
     }
 
     public getSintesiRichieste(): Observable<SintesiRichiesta[]> {
-        const richieste: SintesiRichiesta[] = [
+        this.richieste = [
+            new SintesiRichiesta(
+                'R1',
+                '333.444.555',
+                false,
+                new Date(),
+                null,
+                'chiamata',
+                3,
+                [{ 'codice': 2, 'descrizione': 'Allagamento', 'icona': 'fa fa-exclamation-triangle' }],
+                'Allagamento del secondo piano del condominio per rottura tubazione',
+                'Mario Rossi',
+                '06 41 42 342',
+                { 'indirizzo': 'Piazza dell\'indipendenza, 40', 'coordinate': [12.502470, 41.904380] },
+                [{ 'codice': 1, 'descrizione': 'Tuscolana', 'coordinate': [123, 256] }, {
+                    'codice': 2,
+                    'descrizione': 'Eur',
+                    'coordinate': [123, 256]
+                }, { 'codice': 3, 'descrizione': 'Ostiense', 'coordinate': [123, 256] }],
+                'Vicino pompa di benzina',
+                ['Sisma'],
+                moment().add(10, 'minutes').toDate(),
+                '333444999',
+                1,
+                'Da inviare',
+                133,
+                0,
+                'Alta',
+                [],
+                [],
+                ['pagamento']
+            ),
             new SintesiRichiesta(
                 'R0',
                 '123.456.999',
-                false,
+                true,
                 moment().add(-29, 'minutes').toDate(),
                 moment().add(-29, 'minutes').toDate(),
                 'presidiato',
@@ -229,37 +260,6 @@ export class SintesiRichiesteServiceFake {
                         ]
                     )
                 ],
-                ['pagamento']
-            ),
-            new SintesiRichiesta(
-                'R1',
-                '333.444.555',
-                true,
-                new Date(),
-                null,
-                'chiamata',
-                3,
-                [{ 'codice': 2, 'descrizione': 'Allagamento', 'icona': 'fa fa-exclamation-triangle' }],
-                'Allagamento del secondo piano del condominio per rottura tubazione',
-                'Mario Rossi',
-                '06 41 42 342',
-                { 'indirizzo': 'Piazza dell\'indipendenza, 40', 'coordinate': [12.502470, 41.904380] },
-                [{ 'codice': 1, 'descrizione': 'Tuscolana', 'coordinate': [123, 256] }, {
-                    'codice': 2,
-                    'descrizione': 'Eur',
-                    'coordinate': [123, 256]
-                }, { 'codice': 3, 'descrizione': 'Ostiense', 'coordinate': [123, 256] }],
-                'Vicino pompa di benzina',
-                ['Sisma'],
-                moment().add(10, 'minutes').toDate(),
-                '333444999',
-                1,
-                'Da inviare',
-                133,
-                0,
-                'Alta',
-                [],
-                [],
                 ['pagamento']
             ),
             new SintesiRichiesta(
@@ -1772,6 +1772,55 @@ export class SintesiRichiesteServiceFake {
             )
         ];
 
-        return of(richieste);
+        return of(this.richieste);
+    }
+
+    addRichiesta() {
+        const nuovaRichiesta = new SintesiRichiesta(
+            'R0',
+            '321.654.987',
+            false,
+            new Date(),
+            null,
+            'chiamata',
+            3,
+            [{ 'codice': 2, 'descrizione': 'Allagamento', 'icona': 'fa fa-exclamation-triangle' }],
+            'Allagamento del secondo piano del condominio per rottura tubazione',
+            'Mario Rossi',
+            '06 41 42 342',
+            { 'indirizzo': 'Piazza dell\'indipendenza, 40', 'coordinate': [12.502470, 41.904380] },
+            [{ 'codice': 1, 'descrizione': 'Tuscolana', 'coordinate': [123, 256] }, {
+                'codice': 2,
+                'descrizione': 'Eur',
+                'coordinate': [123, 256]
+            }, { 'codice': 3, 'descrizione': 'Ostiense', 'coordinate': [123, 256] }],
+            'Vicino pompa di benzina',
+            ['Sisma'],
+            moment().add(10, 'minutes').toDate(),
+            '333444999',
+            1,
+            'Da inviare',
+            133,
+            0,
+            'Alta',
+            [],
+            [],
+            ['pagamento']
+        );
+
+        let richiestaCopia;
+        this.richieste.unshift(nuovaRichiesta);
+        setTimeout(() => {
+            richiestaCopia = JSON.parse(JSON.stringify(this.richieste[1]));
+            richiestaCopia.stato = 'assegnato';
+            richiestaCopia.istantePrimaAssegnazione = new Date();
+            this.richieste[1] = richiestaCopia;
+        }, 4000);
+        setTimeout(() => {
+            richiestaCopia = JSON.parse(JSON.stringify(this.richieste[2]));
+            richiestaCopia.stato = 'presidiato';
+            richiestaCopia.istantePrimaAssegnazione = new Date();
+            this.richieste[2] = richiestaCopia;
+        }, 6000);
     }
 }

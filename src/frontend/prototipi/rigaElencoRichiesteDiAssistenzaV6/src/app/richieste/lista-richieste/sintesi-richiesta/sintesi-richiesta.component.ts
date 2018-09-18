@@ -62,12 +62,12 @@ export class SintesiRichiestaComponent implements OnInit {
 
     /* Data una 'Date' permette di visualizzare il tempo passato fino a questo momento */
     private displayRealTime(observableTime) {
-        this.time = '';
-        for (let i = 0; i < 5; i++) {
+        // this.time = '';
+        /* for (let i = 0; i < 5; i++) {
             setTimeout(() => {
                 this.time += ' . ';
             }, 200 * (i + 1));
-        }
+        } */
         observableTime.subscribe(ms => {
             const setVal = 43200;
             const seconds = ms / 1000;

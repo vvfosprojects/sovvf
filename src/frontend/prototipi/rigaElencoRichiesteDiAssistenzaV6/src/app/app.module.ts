@@ -7,23 +7,29 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import * as Shared from './shared/';
+
 import { AppComponent } from './app.component';
+import { RichiesteComponent } from './richieste/richieste.component';
 import { DbInterventiComponent } from './richieste/db-interventi/db-interventi.component';
 import { SintesiRichiesteService } from './richieste/lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service';
 import { SintesiRichiesteServiceFake } from './richieste/lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service.fake';
+import { ListaRichiesteComponent } from './richieste/lista-richieste/lista-richieste.component';
 import { SintesiRichiestaComponent } from './richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
 import { RicercaRichiesteComponent } from './richieste/ricerca-richieste/ricerca-richieste.component';
 import { FiltriRichiesteComponent } from './richieste/filtri-richieste/filtri-richieste.component';
 import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.component';
-import { ListaRichiesteComponent } from './richieste/lista-richieste/lista-richieste.component';
 
 
 @NgModule({
     declarations: [
         AppComponent,
+        RichiesteComponent,
         DbInterventiComponent,
+        ListaRichiesteComponent,
         SintesiRichiestaComponent,
         RicercaRichiesteComponent,
+        FiltriRichiesteComponent,
+        FiltroComponent,
         // start import of Shared Declarations
         [
             Shared.DebounceClickDirective,
@@ -33,9 +39,6 @@ import { ListaRichiesteComponent } from './richieste/lista-richieste/lista-richi
             Shared.MezzoComponent
         ],
         // end import of Shared Declarations
-        FiltriRichiesteComponent,
-        FiltroComponent,
-        ListaRichiesteComponent
     ],
     imports: [
         BrowserModule,

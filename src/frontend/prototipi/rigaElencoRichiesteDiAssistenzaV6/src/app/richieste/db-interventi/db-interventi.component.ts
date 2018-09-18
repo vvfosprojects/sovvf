@@ -3,7 +3,7 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { SintesiRichiesteService } from '../lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service';
 
 @Component({
-    selector: 'all-richieste',
+    selector: 'app-db-interventi',
     templateUrl: './db-interventi.component.html',
     styleUrls: ['./db-interventi.component.css']
 })
@@ -21,5 +21,9 @@ export class DbInterventiComponent implements OnInit {
         this.sintesiRichiesteService.getSintesiRichieste().subscribe((r: SintesiRichiesta[]) => {
             this.richieste = r;
         });
+    }
+
+    addRichiesta() {
+        this.sintesiRichiesteService.addRichiesta();
     }
 }
