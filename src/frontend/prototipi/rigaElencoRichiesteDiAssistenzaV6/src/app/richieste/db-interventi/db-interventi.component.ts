@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { EventiService } from '../lista-richieste-service/eventi-service/eventi-service.service';
 
@@ -9,10 +9,15 @@ import { EventiService } from '../lista-richieste-service/eventi-service/eventi-
 })
 export class DbInterventiComponent implements OnInit {
     @Input() richieste: SintesiRichiesta[];
+    @Output() nuovaRichiesta: EventEmitter<any> = new EventEmitter();
 
     constructor() {
     }
 
     ngOnInit() {
+    }
+
+    addRichiesta() {
+        this.nuovaRichiesta.emit();
     }
 }
