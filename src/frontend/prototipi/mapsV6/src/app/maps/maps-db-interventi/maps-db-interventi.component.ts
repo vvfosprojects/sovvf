@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {RichiestaMarker} from './maps-model/richiesta-marker.model';
-import {MapsService} from './maps-service/maps-service.service';
 import {CentroMappa} from './maps-model/centro-mappa.model';
 import {Meteo} from '../../shared/model/meteo.model';
 import {MeteoService} from '../../shared/meteo/meteo-service.service';
@@ -17,10 +16,8 @@ export class MapsDbInterventiComponent implements OnInit {
     @Input() richiesteMarkers: RichiestaMarker[];
     datiMeteo: Meteo;
 
-    constructor(
-                private meteoService: MeteoService, /** servizio che innietta dati meteo alla mappa **/
-                private markedService: MarkedService /** servizio che controlla quale marker è selezionato nella mappa **/
-    ) {
+    constructor(private meteoService: MeteoService, /** servizio che innietta dati meteo alla mappa **/
+                private markedService: MarkedService /** servizio che controlla quale marker è selezionato nella mappa **/) {
     }
 
     ngOnInit() {

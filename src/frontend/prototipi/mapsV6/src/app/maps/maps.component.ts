@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CentroMappa} from './maps-db-interventi/maps-model/centro-mappa.model';
 import {RichiestaMarker} from './maps-db-interventi/maps-model/richiesta-marker.model';
 import {MapsService} from './maps-db-interventi/maps-service/maps-service.service';

@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, Output} from '@angular/core';
 import {RichiestaMarker} from '../maps-db-interventi/maps-model/richiesta-marker.model';
 import {MarkedService} from '../maps-db-interventi/marked-service/marked-service.service';
 import {Subscription} from 'rxjs';
@@ -13,6 +13,8 @@ export class NavComponent implements OnDestroy {
 
     markerSelezionato: RichiestaMarker;
     subscription: Subscription;
+
+    @Output() pulsanteCentroMappa: EventEmitter<any> = new EventEmitter();
 
     constructor(private mapsService: MapsService, private markedService: MarkedService) {
         this.subscription = this.markedService.getMarked().subscribe(marker => {
@@ -46,6 +48,10 @@ export class NavComponent implements OnDestroy {
 
     removeMarker() {
         this.mapsService.removeMarker();
+    }
+
+    cambiaCentroMappa() {
+        this.pulsanteCentroMappa.emit();
     }
 
 }

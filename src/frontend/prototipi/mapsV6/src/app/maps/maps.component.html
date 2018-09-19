@@ -1,6 +1,4 @@
-<app-maps-db-interventi [(centroMappa)]="centroMappa" [(richiesteMarkers)]="richiesteMarkers"></app-maps-db-interventi>
-<div class="row">
-    <div class="col-12">
-        <button class="btn btn-success" (click)="setCentroMappa()">Cambia Centro Mappa</button>
-    </div>
+<app-maps-db-interventi [(centroMappa)]="centroMappa" [richiesteMarkers]="richiesteMarkers"></app-maps-db-interventi>
+<div class="col-12 mx-auto">
+    <app-nav (pulsanteCentroMappa)="setCentroMappa($event)"></app-nav>
 </div>
