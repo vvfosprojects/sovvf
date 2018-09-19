@@ -11,22 +11,6 @@
                   <li>
                       <h6>Chiamate</h6>
                   </li>
-              </ul>
-          </div>
-          <div class="col-2 px-0 text-center">
-              <ul class="list-unstyled m-0">
-                  <li><span class="badge badge-warning h6 w-75">{{interventi.chiamate}}</span></li>
-              </ul>
-          </div>
-          <!-- destra -->
-          <div class="col-4 pr-0">
-              <ul class="list-unstyled m-0">
-                  <li>
-                      Assegnati
-                  </li>
-                  <li>
-                      <h6>Presidiati</h6>
-                  </li>
                   <li>
                       <h6>Sospesi</h6>
                   </li>
@@ -34,9 +18,25 @@
           </div>
           <div class="col-2 px-0 text-center">
               <ul class="list-unstyled m-0">
+                  <li><span class="badge h6 w-75" [ngClass]="{'badge-secondary': interventi.chiamate === 0,'badge-warning': interventi.chiamate > 0}">{{interventi.chiamate}}</span></li>
+                  <li><span class="badge badge-warning h6 w-75">{{interventi.sospesi}}</span></li>
+              </ul>
+          </div>
+          <!-- destra -->
+          <div class="col-4 pr-0">
+              <ul class="list-unstyled m-0">
+                  <li>
+                      <h6>Assegnati</h6>
+                  </li>
+                  <li>
+                      <h6>Presidiati</h6>
+                  </li>
+              </ul>
+          </div>
+          <div class="col-2 px-0 text-center">
+              <ul class="list-unstyled m-0">
                   <li><span class="badge badge-info h6 w-75">{{interventi.assegnati}}</span></li>
                   <li><span class="badge badge-success h6 w-75">{{interventi.presidiati}}</span></li>
-                  <li><span class="badge badge-secondary h6 w-75">{{interventi.sospesi}}</span></li>
               </ul>
           </div>
       </div>

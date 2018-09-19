@@ -29,7 +29,8 @@
                     </li>
                     <li>
                         <div class="h6">
-                            <i [ngStyle]="{'transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datimeteo.direzione.gradi+'deg)'}" class="pl-2 fa fa-long-arrow-up"></i>
+                            <i [ngStyle]="{'transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datimeteo.direzione.gradi+'deg)'}"
+                                class="pl-2 fa fa-long-arrow-up"></i>
                             <small class="text-black-50"> {{datimeteo.direzione.cardinali}}</small>
                         </div>
                     </li>
@@ -45,6 +46,8 @@
         </div>
     </div>
 </div>
-<div *ngIf="!datimeteo" class="col-12 text-center mt-5">
-    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+<div *ngIf="!datimeteo" class="card bg-light w-100 app-shadow min-height-boxes">
+    <div class="text-center">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw mt-5"></i>
+    </div>
 </div>

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import {catchError, retry} from 'rxjs/operators';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpBackend, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {map} from 'rxjs/internal/operators';
 import {Meteo} from '../model/meteo.model';
@@ -15,13 +15,21 @@ const CFG = environment.apiUrl.boxes.owm.option;
 })
 export class MeteoService {
 
-    constructor(private http: HttpClient) {
+    private http: HttpClient;
+
+    constructor(
+        handler: HttpBackend) {
+        this.http = new HttpClient(handler);
     }
 
     getMeteoData(_coordinate: Array<number>): Observable<any> {
-        return this.http.get(
-            API_URL + this.wipeCoordinate(_coordinate)
-            + '&lang=' + CFG.lang + '&appid=' + CFG.key + '&units=' + CFG.unit)
+        const httpOptions = {
+            headers: new HttpHeaders({
+            })
+        };
+        const url = API_URL + this.wipeCoordinate(_coordinate)
+            + '&lang=' + CFG.lang + '&appid=' + CFG.key + '&units=' + CFG.unit;
+        return this.http.post(url, null, httpOptions)
             .pipe(
                 map((data: any) => {
                     return new Meteo(

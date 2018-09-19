@@ -11,15 +11,18 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-5 px-0 pr-1">
-                        <span class="text-secondary">Funzionario Guardia</span>
+                        <span class="text-secondary">Funz. Guardia</span>
                     </div>
                     <div class="col px-0">
                          <span *ngFor="let f of funzionari">
                             <span *ngIf="f.funzGuardia" class="mt-2">
-                                <i class="fa fa-caret-right mx-2"></i>
-                                <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
-                                <span class="" ngbTooltip="{{f.descrizione}}" placement="bottom"
-                                      [disableTooltip]="f.descrizione.length <= 18"> {{f.descrizione | truncate:18}}</span>
+                                <ul class="m-0">
+                                    <li>
+                                        <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
+                                        <span class="" ngbTooltip="{{f.descrizione}}" placement="bottom"
+                                        [disableTooltip]="f.descrizione.length <= 18"> {{f.descrizione | truncate:18}}</span>
+                                    </li>
+                                </ul>
                             </span>
                         </span>
                     </div>
@@ -41,10 +44,13 @@
                         <div class="col px-0">
                              <span *ngFor="let f of funzionari">
                                 <span *ngIf="f.capoTurno" class="mt-2">
-                                    <i class="fa fa-caret-right mx-2"></i>
-                                    <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
-                                    <span class="" ngbTooltip="{{f.descrizione}}" placement="bottom"
-                                          [disableTooltip]="f.descrizione.length <= 18"> {{f.descrizione | truncate:18}}</span>
+                                <ul class="m-0">
+                                    <li>
+                                        <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
+                                        <span class="" ngbTooltip="{{f.descrizione}}" placement="bottom"
+                                              [disableTooltip]="f.descrizione.length <= 18"> {{f.descrizione | truncate:18}}</span>
+                                    </li>
+                                </ul>
                                 </span>
                             </span>
                         </div>
@@ -67,16 +73,22 @@
                         <div class="col px-0">
                             <span *ngFor="let f of funzionari">
                             <div *ngIf="f.tecnicoGuardia1">
-                                <i class="fa fa-caret-right mx-2"></i>
-                                <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
-                                <span class="" ngbTooltip="{{f.descrizione}}" placement="bottom"
-                                      [disableTooltip]="f.descrizione.length <= 18"> {{f.descrizione | truncate:18}}</span>
+                                <ul class="m-0">
+                                    <li>
+                                        <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
+                                        <span class="" ngbTooltip="{{f.descrizione}}" placement="bottom"
+                                              [disableTooltip]="f.descrizione.length <= 18"> {{f.descrizione | truncate:18}}</span>
+                                    </li>
+                                </ul>
                             </div>
                             <div *ngIf="f.tecnicoGuardia2" class="mt-1">
-                                <i class="fa fa-caret-right mx-2"></i>
-                                <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
-                                <span class="" ngbTooltip="{{f.descrizione}}" placement="bottom"
-                                      [disableTooltip]="f.descrizione.length <= 18"> {{f.descrizione | truncate:18}}</span>
+                                <ul class="m-0">
+                                    <li>
+                                        <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
+                                        <span class="" ngbTooltip="{{f.descrizione}}" placement="bottom"
+                                              [disableTooltip]="f.descrizione.length <= 18"> {{f.descrizione | truncate:18}}</span>
+                                    </li>
+                                </ul>
                             </div>
                             </span>
                         </div>
