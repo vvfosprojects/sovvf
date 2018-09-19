@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {RichiestaMarker} from './maps-model/richiesta-marker.model';
 import {MapsService} from './maps-service/maps-service.service';
 import {CentroMappa} from './maps-model/centro-mappa.model';
@@ -13,21 +13,18 @@ import {MarkedService} from './marked-service/marked-service.service';
 })
 export class MapsDbInterventiComponent implements OnInit {
 
-    richiesteMarkers: RichiestaMarker[];
-    centroMappa: CentroMappa;
+    @Input() centroMappa: CentroMappa;
+    @Input() richiesteMarkers: RichiestaMarker[];
     datiMeteo: Meteo;
 
-    constructor(private mapsService: MapsService,
-                private meteoService: MeteoService,
-                private markedService: MarkedService) {
-        this.centroMappa = {lat: 42.290251, lng: 12.492373, zoom: 8};
+    constructor(
+                private meteoService: MeteoService, /** servizio che innietta dati meteo alla mappa **/
+                private markedService: MarkedService /** servizio che controlla quale marker è selezionato nella mappa **/
+    ) {
     }
 
     ngOnInit() {
-        this.mapsService.getData().subscribe((r: RichiestaMarker[]) => {
-            this.richiesteMarkers = r;
-            this.mapsService.count = this.richiesteMarkers.length;
-        });
+
     }
 
     markerSelezionato(marker: RichiestaMarker) {
