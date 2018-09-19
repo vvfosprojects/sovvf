@@ -23,13 +23,13 @@ export class MeteoService {
     }
 
     getMeteoData(_coordinate: Array<number>): Observable<any> {
-        const httpOptions = {
-            headers: new HttpHeaders({
-            })
-        };
+        // const httpOptions = {
+        //     headers: new HttpHeaders({
+        //     })
+        // };
         const url = API_URL + this.wipeCoordinate(_coordinate)
             + '&lang=' + CFG.lang + '&appid=' + CFG.key + '&units=' + CFG.unit;
-        return this.http.post(url, null, httpOptions)
+        return this.http.get(url)
             .pipe(
                 map((data: any) => {
                     return new Meteo(
