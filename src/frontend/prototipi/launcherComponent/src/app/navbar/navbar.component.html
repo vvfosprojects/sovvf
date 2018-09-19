@@ -31,15 +31,9 @@
       <button class="btn btn-light mr-2" ngbTooltip="Notifiche" [ngbPopover]="notifiche" placement="bottom"><i class="fa fa-bell"></i></button>
       <button class="btn btn-light mr-2" ngbTooltip="Messaggi" [ngbPopover]="messaggi" placement="bottom"><i class="fa fa-envelope-open"></i></button>
       <button class="btn btn-light mr-2" ngbTooltip="Impostazioni" placement="bottom"><i class="fa fa-cogs"></i></button>
-      <button class="btn btn-light mr-2 p-0">
-        <div class="row">
-          <div class="col-10">
-            <span>{{user.firstName}} {{user.lastName}}</span>
-          </div>
-          <div class="col-2 text-center">
-            <img class="rounded" src="http://i.pravatar.cc/40?img=53">
-          </div>
-        </div>
+      <button class="btn btn-light mr-2 py-0">
+        {{user.firstName}} {{user.lastName}}
+        <img class="rounded ml-2" src="http://i.pravatar.cc/35?img=53">
       </button>
       <button class="btn btn-danger" ngbTooltip="Disconnettiti" placement="bottom" [routerLink]="['/login']"><i class="fa fa-sign-out"></i>
         Esci</button>
