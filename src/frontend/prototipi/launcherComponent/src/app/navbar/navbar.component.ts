@@ -11,7 +11,7 @@ export class NavbarComponent implements OnInit {
   @Input() user: any;
   @Output() openedSidebar: EventEmitter<any> = new EventEmitter();
   moment = new Observable<any>((observer) => {
-    setInterval( () => observer.next(moment().format('DD/MM/YYYY, HH:MM:ss')));
+    setInterval( () => observer.next(moment().format('DD/MM/YYYY, HH:MM')));
   });
   time;
 

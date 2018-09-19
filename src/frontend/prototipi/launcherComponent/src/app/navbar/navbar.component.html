@@ -1,40 +1,32 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-light">
-  <div class="row w-100">
-    <!-- Hamburger icon menu -->
-    <div class="col-1 mr-auto">
-      <button class="btn btn-light w-100 h-100" (click)="openSidebar()"><i class="fa fa-bars"></i> Menu</button>
-    </div>
-    <!-- Logo, Info Caserma, Data e ora, Turni -->
-    <div class="col-7 h6 mb-0">
-      <div class="row">
-        <div class="col-1 text-center pr-0">
-          <img src="https://placeholder.pics/svg/40/FF0000-FFED5D/logo">
-        </div>
-        <div class="col py-2 pl-0">
-          <span class="mr-3">
-            Caserma di Roma
-          </span>
-          <span class="mr-3">
-            {{time}}
-          </span>
-          <span class="mr-3">
-            Turno:&nbsp;
-            <small>A</small>
-            &nbsp;B&nbsp;
-            <small>C</small>
-          </span>
-        </div>
-      </div>
+  <div class="row py-0 w-100">
+    <div class="col-8 mr-auto">
+      <!-- Hamburger icon menu -->
+      <button class="btn btn-light h-100 ml-2 mr-4" (click)="openSidebar()"><i class="fa fa-bars"></i> Menu</button>
+      <!-- Logo, Info Caserma, Data e ora, Turni -->
+      <img src="https://placeholder.pics/svg/40/FF0000-FFED5D/logo">
+      <span class="btn mr-3 pl-2">
+        <span class="mr-2">Comando di Roma</span><i class="fa fa-chevron-down"></i>
+      </span>
+      <span class="btn mr-3">
+        {{time}}
+      </span>
+      <span class="btn mr-3">
+        Turno:&nbsp;
+        <small class="text-muted">A</small>
+        &nbsp;B&nbsp;
+        <small class="text-muted">C</small>
+      </span>
     </div>
     <!-- Notifiche, messaggi e profilo -->
     <div class="col-4 ml-auto text-right pr-0">
       <button class="btn btn-light mr-2" ngbTooltip="Notifiche" [ngbPopover]="notifiche" placement="bottom"><i class="fa fa-bell"></i></button>
       <button class="btn btn-light mr-2" ngbTooltip="Messaggi" [ngbPopover]="messaggi" placement="bottom"><i class="fa fa-envelope-open"></i></button>
       <button class="btn btn-light mr-2" ngbTooltip="Impostazioni" placement="bottom"><i class="fa fa-cogs"></i></button>
-      <button class="btn btn-light mr-2 py-0">
+      <img class="rounded ml-2" src="http://i.pravatar.cc/40?img=53">
+      <span class="btn mr-2">
         {{user.firstName}} {{user.lastName}}
-        <img class="rounded ml-2" src="http://i.pravatar.cc/35?img=53">
-      </button>
+      </span>
       <button class="btn btn-danger" ngbTooltip="Disconnettiti" placement="bottom" [routerLink]="['/login']"><i class="fa fa-sign-out"></i>
         Esci</button>
       <ng-template #notifiche>
