@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef }
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
+import { EventiService } from '../../lista-richieste-service/eventi-service/eventi-service.service';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -9,20 +10,16 @@ import * as moment from 'moment';
     styleUrls: ['./sintesi-richiesta.component.css']
 })
 export class SintesiRichiestaComponent implements OnInit {
-    /* Indica se si è espanso il livello di dettaglio della richieste (true; else false)*/
     espanso = false;
-    /* Variabile utile al metodo "displayRealTime()" */
     time: any;
-
-    @Input() richiesta: SintesiRichiesta;
-    @Output() ShowDettagli: EventEmitter<SintesiRichiesta> = new EventEmitter();
-
     observableTime = new Observable<number>((observer) => {
         setInterval(() => observer.next(
             (new Date(this.richiesta.istanteRicezioneRichiesta).getTime() - new Date().getTime()) * -1), 1000);
     });
+    @Input() richiesta: SintesiRichiesta;
+    @Output() ShowDettagli: EventEmitter<SintesiRichiesta> = new EventEmitter();
 
-    constructor() {
+    constructor(private eventiS: EventiService) {
     }
 
     ngOnInit() {
@@ -143,5 +140,18 @@ export class SintesiRichiestaComponent implements OnInit {
         } else {
             return nome + ' text-success';
         }
+    }
+
+    /* Metodi che richiamano il service degli eventi */
+    invioPartenza(id_richiesta) {
+        this.eventiS.invioPartenza(id_richiesta);
+    }
+
+    visualizzaEventiRichiesta(id_richiesta) {
+        this.eventiS.visualizzaEventiRichiesta(id_richiesta);
+    }
+
+    localizzaIntervento(id_richiesta) {
+        this.eventiS.localizzaIntervento(id_richiesta);
     }
 }

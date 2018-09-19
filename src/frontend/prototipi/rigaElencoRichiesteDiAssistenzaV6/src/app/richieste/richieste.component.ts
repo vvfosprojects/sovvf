@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
+import { SintesiRichiesteService } from './lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service';
 
 @Component({
     selector: 'app-richieste',
@@ -9,9 +10,20 @@ import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
 export class RichiesteComponent implements OnInit {
     richieste: SintesiRichiesta[];
 
-    constructor() {
+    constructor(private sintesiRichiesteService: SintesiRichiesteService) {
     }
 
     ngOnInit() {
+        this.getRichieste();
+    }
+
+    getRichieste() {
+        this.sintesiRichiesteService.getSintesiRichieste().subscribe((r: SintesiRichiesta[]) => {
+            this.richieste = r;
+        });
+    }
+
+    addRichiesta() {
+        this.sintesiRichiesteService.addRichiesta();
     }
 }
