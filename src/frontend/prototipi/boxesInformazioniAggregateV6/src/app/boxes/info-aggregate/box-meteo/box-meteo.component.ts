@@ -17,10 +17,12 @@ export class BoxMeteoComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.meteoService.getMeteoData(this.coordinate)
-            .subscribe(data => {
-                this.datimeteo = data;
-            });
+        setTimeout(() => {
+            this.meteoService.getMeteoData(this.coordinate)
+                .subscribe(data => {
+                    this.datimeteo = data;
+                });
+        }, 2000);
     }
 
 }
