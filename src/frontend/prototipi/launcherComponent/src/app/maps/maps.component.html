@@ -1,8 +1,4 @@
-<div class="row">
-    <div *ngIf="richiesteMarkers" class="col-12">
-        <app-agm [richiesteMarkers]="richiesteMarkers"></app-agm>
-    </div>
-    <div class="col-12 mx-auto">
-        <app-nav></app-nav>
-    </div>
+<app-maps-db-interventi [(centroMappa)]="centroMappa" [richiesteMarkers]="richiesteMarkers"></app-maps-db-interventi>
+<div class="col-12 mx-auto">
+    <app-nav (pulsanteCentroMappa)="setCentroMappa($event)"></app-nav>
 </div>

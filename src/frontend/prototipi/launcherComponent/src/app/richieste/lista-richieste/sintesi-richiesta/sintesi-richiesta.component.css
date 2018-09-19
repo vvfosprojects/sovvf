@@ -1,0 +1,95 @@
+.status_presidiato {
+    border-left: 10px solid #28a745;
+}
+
+.status_chiamata {
+    border-left: 10px solid #ffc107;
+}
+
+.status_sospeso {
+    border-left: 10px solid #868e96;
+}
+
+.status_assegnato{
+    border-left: 10px solid #17a2b8;
+}
+
+.card-shadow{
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+    box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+}
+
+.row_text {
+    color: #666666;
+}
+
+/* icone di guida */
+.guida {
+    color: #bbbbbb;
+}
+
+.big_numbers {
+    color: #a72920 !important;
+    font-weight: bold;
+}
+
+.bg_diagonal_grey {
+    background: repeating-linear-gradient(135deg, white, white 0.1em, #F0F0F0 0.4em, #E9EEFB 0.1em);
+}
+
+.bg_diagonal_grey_big {
+    background: repeating-linear-gradient(135deg, white, white 0.5em, #F0F0F0 1em, #E9EEFB 0.5em);
+}
+
+.bg_card_title {
+    background-color: beige;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+a:hover {
+    /* text-decoration: underline !important; (1) */
+    font-weight: bold !important;
+}
+
+.default-cursor{
+    cursor: default !important;
+}
+
+.tipologia {
+    color: chocolate !important;
+}
+
+.num-int {
+    color: #444444;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.tasto-dettaglio {
+    color: lightblue !important;
+    font-size: 1.5em;
+}
+
+.localita {
+    background-color: gainsboro;
+}
+
+.globo-loc {
+    color: cadetblue;
+}
+
+.note-localita {
+    background-color: white;
+}
+
+.badge-notify {
+    background-color:#949494;
+    position: absolute;
+    top: -8px;
+    left: 12px;
+    font-size: .6em;
+}
