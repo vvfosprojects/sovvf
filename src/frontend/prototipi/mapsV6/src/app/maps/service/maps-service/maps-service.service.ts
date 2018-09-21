@@ -73,5 +73,17 @@ export class MapsService {
         return;
     }
 
+    /* TESTING METHOD */
+    setCentroMappa() {
+        return;
+    }
+
+    /* TESTING METHOD */
+    getCentro(): Observable<any> {
+        return this.http.get(API_URL).pipe(
+            retry(3),
+            catchError(this.handleError)
+        );
+    }
 
 }

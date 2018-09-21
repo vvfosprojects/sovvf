@@ -7,12 +7,11 @@ import * as Shared from './shared/';
 import {AppComponent} from './app.component';
 import {MapsComponent} from './maps/maps.component';
 import {NavComponent} from './maps/nav/nav.component';
-import {MapsDbInterventiComponent} from './maps/maps-db-interventi/maps-db-interventi.component';
-import {MapsService} from './maps/maps-db-interventi/maps-service/maps-service.service';
-import {MapsServiceFake} from './maps/maps-db-interventi/maps-service/maps-service.service.fake';
-import {MarkedService} from './maps/maps-db-interventi/marked-service/marked-service.service';
+import {MapsService} from './maps/service/maps-service/maps-service.service';
+import {MapsServiceFake} from './maps/service/maps-service/maps-service.service.fake';
+import {MarkedService} from './maps/service/marked-service/marked-service.service';
 import {MeteoService} from './shared/meteo/meteo-service.service';
-import {AgmComponent} from './maps/maps-db-interventi/agm/agm.component';
+import {AgmComponent} from './maps/agm/agm.component';
 import {AgmCoreModule} from '@agm/core';
 import {environment} from '../environments/environment';
 
@@ -26,7 +25,6 @@ import {environment} from '../environments/environment';
         // end import of Shared Declarations
         MapsComponent,
         NavComponent,
-        MapsDbInterventiComponent,
         AgmComponent,
     ],
     imports: [

@@ -1,4 +1,4 @@
-import {DescrizioneLocalita} from '../../../shared/model/descrizione-localita.model';
+import {DescrizioneLocalita} from '../../shared/model/descrizione-localita.model';
 
 export abstract class Marker {
     constructor(

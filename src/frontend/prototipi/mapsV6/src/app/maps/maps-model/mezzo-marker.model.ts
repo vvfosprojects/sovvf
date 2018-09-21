@@ -1,6 +1,6 @@
 import {Marker} from './marker.model';
-import {Squadra} from '../../../shared/model/squadra.model';
-import {DescrizioneLocalita} from '../../../shared/model/descrizione-localita.model';
+import {Squadra} from '../../shared/model/squadra.model';
+import {DescrizioneLocalita} from '../../shared/model/descrizione-localita.model';
 
 export class MezzoMarker implements Marker {
     constructor(

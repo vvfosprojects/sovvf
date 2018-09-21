@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Observable, of, Subscription} from 'rxjs';
-import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
+import {RichiestaMarker} from '../../maps-model/richiesta-marker.model';
 import {DescrizioneLocalita} from '../../../shared/model/descrizione-localita.model';
 import {MarkedService} from '../marked-service/marked-service.service';
+import {CentroMappa} from '../../maps-model/centro-mappa.model';
+import {Coordinate} from '../../../shared/model/coordinate.model';
 
 @Injectable({
     providedIn: 'root'
@@ -12,6 +14,9 @@ export class MapsServiceFake {
     private stati: any;
     private statiObj: any;
     private data: RichiestaMarker[] = [];
+    private centroMappa: CentroMappa;
+    private initCentroMappa: CentroMappa;
+    private newCentroMappa: CentroMappa;
 
     markerSelezionato: RichiestaMarker;
     subscription: Subscription;
@@ -27,6 +32,13 @@ export class MapsServiceFake {
             [4, 'sospeso']
         ];
         this.statiObj = new Map(this.stati);
+        /**
+         *  creo un oggetto di tipo centroMappa per inizializzare la mappa
+         */
+        this.centroMappa = new CentroMappa(new Coordinate(42.290251, 12.492373), 8);
+        /* Roma */
+        this.newCentroMappa = new CentroMappa(new Coordinate(45.283828, 9.105340), 8);
+        /* Milano */
     }
 
     private _count: number;
@@ -39,7 +51,7 @@ export class MapsServiceFake {
         return this._count;
     }
 
-    private numeroMarker = 3;
+    private numeroMarker = 30;
 
     public getData(): Observable<RichiestaMarker[]> {
         this.data = [
@@ -87,7 +99,12 @@ export class MapsServiceFake {
         return of(this.data);
     }
 
-    setMarker(marker: RichiestaMarker) {
+    public getCentro(): Observable<CentroMappa> {
+        // this.centroMappa = new CentroMappa(new Coordinate(42.290251, 12.492373), 8);
+        return of(this.centroMappa);
+    }
+
+    private setMarker(marker: RichiestaMarker) {
         this.data.push(marker);
     }
 
@@ -161,6 +178,24 @@ export class MapsServiceFake {
         if (index !== -1) {
             this.data.splice(index, 1);
             this.markedService.clearMarked();
+        }
+    }
+
+    /* TESTING METHOD */
+    setCentroMappa(newCentro = this.newCentroMappa) {
+        console.log('centro mappa');
+        const currentCentroMappa = Object.assign({}, this.centroMappa);
+        if (!this.initCentroMappa) {
+            this.initCentroMappa = Object.assign({}, this.centroMappa);
+            // console.log(this.centroMappa);
+        }
+        if (Object.is(JSON.stringify(this.centroMappa), JSON.stringify(newCentro))) {
+            // console.log('centro mappa attuale e nuovo centro mappa sono identici')
+            this.centroMappa = this.initCentroMappa;
+        }
+        if (Object.is(JSON.stringify(currentCentroMappa), JSON.stringify(this.initCentroMappa))) {
+            // console.log('centro mappa attuale e centro mappa iniziale sono identici');
+            this.centroMappa = newCentro;
         }
     }
 }

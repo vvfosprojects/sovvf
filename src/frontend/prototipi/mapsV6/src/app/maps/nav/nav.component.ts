@@ -1,8 +1,10 @@
 import {Component, EventEmitter, OnDestroy, Output} from '@angular/core';
-import {RichiestaMarker} from '../maps-db-interventi/maps-model/richiesta-marker.model';
-import {MarkedService} from '../maps-db-interventi/marked-service/marked-service.service';
+import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
+import {MarkedService} from '../service/marked-service/marked-service.service';
 import {Subscription} from 'rxjs';
-import {MapsService} from '../maps-db-interventi/maps-service/maps-service.service';
+import {MapsService} from '../service/maps-service/maps-service.service';
+import {CentroMappa} from '../maps-model/centro-mappa.model';
+import {Coordinate} from '../../shared/model/coordinate.model';
 
 @Component({
     selector: 'app-nav',
@@ -51,7 +53,9 @@ export class NavComponent implements OnDestroy {
     }
 
     cambiaCentroMappa() {
+        // const newCentroMappa = new CentroMappa(new Coordinate(45.283828, 9.105340), 15);
         this.pulsanteCentroMappa.emit();
+        // this.mapsService.setCentroMappa();
     }
 
 }
