@@ -5,6 +5,7 @@ import {CentroMappa} from '../maps-model/centro-mappa.model';
 import {MeteoService} from '../../shared/meteo/meteo-service.service';
 import {MarkedService} from '../service/marked-service/marked-service.service';
 import {Coordinate} from '../../shared/model/coordinate.model';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-agm',
@@ -20,7 +21,7 @@ export class AgmComponent implements OnInit {
     /**
      * proprietà per definire lo status dell'oggetto marker della mappa
      */
-    private pathUrl: string;
+    public pathUrl: string;
     private iconeStati: [string, string][];
     private mapIconeUrl: Map<string, string>;
     private iconeGrandezza: [number, string][];
@@ -32,8 +33,14 @@ export class AgmComponent implements OnInit {
     private iconaStatoCorrenteUrl: string;
     private iconaStatoCorrenteSize: string;
 
+    markerSelezionato: RichiestaMarker;
+    subscription: Subscription;
+
     constructor(private meteoService: MeteoService,
                 private markedService: MarkedService) {
+        this.subscription = this.markedService.getMarked().subscribe(marker => {
+            this.markerSelezionato = marker;
+        });
     }
 
     ngOnInit() {
@@ -56,6 +63,12 @@ export class AgmComponent implements OnInit {
          *  ricevo il marker selezionato dal componente mappa (agm)
          */
         this.selezionato(marker);
+    }
+
+    trueMarker(marker: RichiestaMarker) {
+        if (this.markerSelezionato === marker) {
+            return true;
+        }
     }
 
     selezionato(marker: RichiestaMarker) {
@@ -104,15 +117,15 @@ export class AgmComponent implements OnInit {
         this.mapIconeSize = new Map(this.iconeGrandezza);
     }
 
-    tipoIcona(m: RichiestaMarker) {
+    tipoIcona(marker: RichiestaMarker) {
         /**
          * metodo che mi ritorna il tipo di icona da utilizzare (già mappate in precedenza vedi il metodo icone())
          */
-        if (m) {
-            this.iconaStatoCorrenteSize = this.mapIconeSize.get(m.prioritaRichiesta);
-            this.iconaStatoCorrenteUrl = this.pathUrl +
-                this.iconaStatoCorrenteSize +
-                this.mapIconeUrl.get(m.stato.substring(0, 5).toLowerCase());
+        if (marker) {
+            this.iconaStatoCorrenteSize = this.mapIconeSize.get(marker.prioritaRichiesta);
+            const dir = !(this.markerSelezionato === marker) ? this.pathUrl + 'ns/' : this.pathUrl + 's/';
+            this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize
+                + this.mapIconeUrl.get(marker.stato.substring(0, 5).toLowerCase());
             if (!this.iconaStatoCorrenteSize) {
                 return '../../../assets/img/icone-markers/30/success.png';
             }

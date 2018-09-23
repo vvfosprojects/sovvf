@@ -1,12 +1,12 @@
 <div *ngIf="!map_loaded" class="mx-auto my-5">
     <img src="../../../assets/img/map_loading_resized.gif">
 </div>
-<agm-map #gm [latitude]="centroMappa.coordinate.latitudine" [longitude]="centroMappa.coordinate.longitudine" [zoom]="centroMappa.zoom" (mapReady)="mappaCaricata()" [usePanning]="true">
+<agm-map [latitude]="centroMappa.coordinate.latitudine" [longitude]="centroMappa.coordinate.longitudine" [zoom]="centroMappa.zoom" (mapReady)="mappaCaricata()" [usePanning]="true">
     <agm-marker *ngFor="let m of richiesteMarkers;" [latitude]="m.localita.coordinate[0]"
                 [longitude]="m.localita.coordinate[1]"
                 (markerClick)="selezioneMarker(m)"
                 [iconUrl]="tipoIcona(m)" [animation]="tipoAnimazione(m)" [visible]="true">
-        <agm-info-window #infoWindow>
+        <agm-info-window *ngIf="trueMarker(m)">
             <strong>{{m.label}}</strong>
             <div *ngIf="datiMeteo" class="h-infowindow">
                 <hr class="my-0">
