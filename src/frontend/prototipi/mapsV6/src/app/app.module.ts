@@ -9,6 +9,7 @@ import {MapsComponent} from './maps/maps.component';
 import {NavComponent} from './maps/nav/nav.component';
 import {MapsService} from './maps/service/maps-service/maps-service.service';
 import {MapsServiceFake} from './maps/service/maps-service/maps-service.service.fake';
+import {MarkerService} from './maps/service/marker-service/marker-service.service';
 import {MarkedService} from './maps/service/marked-service/marked-service.service';
 import {MeteoService} from './shared/meteo/meteo-service.service';
 import {AgmComponent} from './maps/agm/agm.component';
@@ -38,6 +39,7 @@ import {environment} from '../environments/environment';
     providers: [
         {provide: MapsService, useClass: MapsServiceFake},
         {provide: MarkedService, useClass: MarkedService},
+        {provide: MarkerService, useClass: MarkerService},
         {provide: MeteoService, useClass: MeteoService}
     ],
     bootstrap: [AppComponent]

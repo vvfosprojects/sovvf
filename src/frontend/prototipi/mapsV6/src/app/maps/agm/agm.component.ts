@@ -4,8 +4,9 @@ import {Meteo} from '../../shared/model/meteo.model';
 import {CentroMappa} from '../maps-model/centro-mappa.model';
 import {MeteoService} from '../../shared/meteo/meteo-service.service';
 import {MarkedService} from '../service/marked-service/marked-service.service';
+import {MarkerService} from '../service/marker-service/marker-service.service';
 import {Coordinate} from '../../shared/model/coordinate.model';
-import {Subscription} from 'rxjs';
+
 
 @Component({
     selector: 'app-agm',
@@ -18,37 +19,10 @@ export class AgmComponent implements OnInit {
     datiMeteo: Meteo;
     map_loaded = false;
 
-    /**
-     * proprietà per definire lo status dell'oggetto marker della mappa
-     */
-    public pathUrl: string;
-    private iconeStati: [string, string][];
-    private mapIconeUrl: Map<string, string>;
-    private iconeGrandezza: [number, string][];
-    private mapIconeSize: Map<number, string>;
-
-    /**
-     * proprietà per definire lo status dell'oggetto marker corrente nella mappa
-     */
-    private iconaStatoCorrenteUrl: string;
-    private iconaStatoCorrenteSize: string;
-
-    markerSelezionato: RichiestaMarker;
-    subscription: Subscription;
-
-    constructor(private meteoService: MeteoService,
-                private markedService: MarkedService) {
-        this.subscription = this.markedService.getMarked().subscribe(marker => {
-            this.markerSelezionato = marker;
-        });
+    constructor(private markerService: MarkerService) {
     }
 
     ngOnInit() {
-        /**
-         *  inizializzo i marker di tipo icona da utilizzare nella mappa
-         */
-        this.icone();
-        // console.log(this.centroMappa);
     }
 
     mappaCaricata() {
@@ -62,78 +36,28 @@ export class AgmComponent implements OnInit {
         /**
          *  ricevo il marker selezionato dal componente mappa (agm)
          */
-        this.selezionato(marker);
-    }
-
-    trueMarker(marker: RichiestaMarker) {
-        if (this.markerSelezionato === marker) {
-            return true;
-        }
-    }
-
-    selezionato(marker: RichiestaMarker) {
+        this.markerService.selezionato(marker);
         /**
-         *  imposto nel service marked lo stato del marker a selezionato
+         *  prendo i dati del meteo dal service marker (che li ha già richiesti)
          */
-        this.markedService.sendMarked(marker);
-        /**
-         *  mi arrivano i dati del meteo
-         */
-        this.getDatiMeteo(marker);
-    }
-
-    getDatiMeteo(marker: RichiestaMarker) {
-        /**
-         *  faccio una chiamata all'api del servizio meteo e aspetto i dati del marker selezionato
-         */
-        this.meteoService.getMeteoData(marker.localita.coordinate)
-            .subscribe(data => {
-                this.datiMeteo = data;
-            });
-    }
-
-    icone() {
-        /**
-         * credo due oggetti mappa per avere una corrispondenza tra il tipo di icona da usare e la relativa corrispondenza
-         * per esempio lo stato dell'intervento o la prioprità della richiesta dell'intervento
-         */
-        this.pathUrl = '../../../assets/img/icone-markers/';
-
-        this.iconeStati = [
-            ['chiam', 'warning.png'],
-            ['asseg', 'info.png'],
-            ['presi', 'success.png'],
-            ['sospe', 'secondary.png']
-        ];
-        this.mapIconeUrl = new Map(this.iconeStati);
-
-        this.iconeGrandezza = [
-            [1, '20/'],
-            [2, '25/'],
-            [3, '30/'],
-            [4, '35/'],
-            [5, '40/']
-        ];
-        this.mapIconeSize = new Map(this.iconeGrandezza);
+        this.datiMeteo = this.markerService.datiMeteo;
     }
 
     tipoIcona(marker: RichiestaMarker) {
         /**
-         * metodo che mi ritorna il tipo di icona da utilizzare (già mappate in precedenza vedi il metodo icone())
+         * richiedo al service che gestisce i marker sulla mappa, di ritornarmi l'url dell'icona da utilizzare
          */
-        if (marker) {
-            this.iconaStatoCorrenteSize = this.mapIconeSize.get(marker.prioritaRichiesta);
-            const dir = !(this.markerSelezionato === marker) ? this.pathUrl + 'ns/' : this.pathUrl + 's/';
-            this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize
-                + this.mapIconeUrl.get(marker.stato.substring(0, 5).toLowerCase());
-            if (!this.iconaStatoCorrenteSize) {
-                return '../../../assets/img/icone-markers/30/success.png';
-            }
-            return this.iconaStatoCorrenteUrl;
-        }
+        return this.markerService.tipoIcona(marker);
     }
 
-    tipoAnimazione(m: RichiestaMarker) {
+    trueMarker(marker: RichiestaMarker) {
+        /**
+         * richiedo al service che gestisce i marker sulla mappa, di ritornarmi se il marker cliccato è quello selezionato
+         */
+        return this.markerService.trueMarker(marker);
+    }
+
+    tipoAnimazione(marker: RichiestaMarker) {
         /**
          * metodo non ancora implementato che modifica lo stato dell'icona facendolo rimbalzare o cadere
          */
