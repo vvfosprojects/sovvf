@@ -17,7 +17,6 @@ export class SintesiRichiestaComponent implements OnInit {
             (new Date(this.richiesta.istanteRicezioneRichiesta).getTime() - new Date().getTime()) * -1), 1000);
     });
     @Input() richiesta: SintesiRichiesta;
-    @Output() ShowDettagli: EventEmitter<SintesiRichiesta> = new EventEmitter();
 
     constructor(private eventiS: EventiService) {
     }

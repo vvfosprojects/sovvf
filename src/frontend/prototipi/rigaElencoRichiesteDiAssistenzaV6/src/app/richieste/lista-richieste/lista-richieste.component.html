@@ -1,4 +1,15 @@
 <div class="row">
+  <!-- Filtri e Ricerca -->
+  <div class="col-12">
+      <div class="row">
+          <div class="col-md-6 ml-auto">
+              <app-filtri-richieste class="mr-2"></app-filtri-richieste>
+          </div>
+          <div class="col-md-6 ml-auto">
+              <app-ricerca-richieste></app-ricerca-richieste>
+          </div>
+      </div>
+  </div>
   <!-- Loader (!richieste) -->
   <div *ngIf="!richieste" class="mx-auto my-5">
     <img src="../../../assets/img/pink_loader_resized.gif">

@@ -10,7 +10,6 @@ import * as Shared from './shared/';
 
 import { AppComponent } from './app.component';
 import { RichiesteComponent } from './richieste/richieste.component';
-import { DbInterventiComponent } from './richieste/db-interventi/db-interventi.component';
 import { SintesiRichiesteService } from './richieste/lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service';
 import { SintesiRichiesteServiceFake } from './richieste/lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service.fake';
 import { ListaRichiesteComponent } from './richieste/lista-richieste/lista-richieste.component';
@@ -24,7 +23,6 @@ import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.comp
     declarations: [
         AppComponent,
         RichiesteComponent,
-        DbInterventiComponent,
         ListaRichiesteComponent,
         SintesiRichiestaComponent,
         RicercaRichiesteComponent,

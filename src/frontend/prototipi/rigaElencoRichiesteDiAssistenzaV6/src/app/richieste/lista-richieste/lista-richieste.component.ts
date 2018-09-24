@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { Input } from '@angular/core';
+import { ListaRichiesteManagerService } from '../lista-richieste-manager/lista-richieste-manager.service';
 
 @Component({
   selector: 'app-lista-richieste',
@@ -8,11 +8,13 @@ import { Input } from '@angular/core';
   styleUrls: ['./lista-richieste.component.css']
 })
 export class ListaRichiesteComponent implements OnInit {
-  @Input() richieste: SintesiRichiesta[];
+  richieste: SintesiRichiesta[];
 
-  constructor() { }
+  constructor(private listaRichiesteManager: ListaRichiesteManagerService) { }
 
   ngOnInit() {
+    this.listaRichiesteManager.getData().subscribe(richieste => {
+      this.richieste = richieste;
+    });
   }
-
 }
