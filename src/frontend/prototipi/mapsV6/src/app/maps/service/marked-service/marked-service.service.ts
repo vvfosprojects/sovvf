@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
+import {RichiestaMarker} from '../../maps-model/richiesta-marker.model';
 import {Observable, Subject} from 'rxjs';
 
 @Injectable({
