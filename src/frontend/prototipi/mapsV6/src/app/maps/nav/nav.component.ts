@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs';
 import {MapsService} from '../service/maps-service/maps-service.service';
 import {CentroMappa} from '../maps-model/centro-mappa.model';
 import {Coordinate} from '../../shared/model/coordinate.model';
+import {MapManagerService} from '../service/maps-manager/map-manager-service.service';
 
 @Component({
     selector: 'app-nav',
@@ -18,7 +19,7 @@ export class NavComponent implements OnDestroy {
 
     @Output() pulsanteCentroMappa: EventEmitter<any> = new EventEmitter();
 
-    constructor(private mapsService: MapsService, private markedService: MarkedService) {
+    constructor(private mapsService: MapsService, private markedService: MarkedService, private mapManager: MapManagerService) {
         this.subscription = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         });
@@ -29,27 +30,27 @@ export class NavComponent implements OnDestroy {
     }
 
     addRandomMarker() {
-        this.mapsService.setRandomMarker();
+        this.mapManager.setRandomMarker();
     }
 
     removeLastMarker() {
-        this.mapsService.removeLastMarker();
+        this.mapManager.removeLastMarker();
     }
 
     changeMarkerColor() {
-        this.mapsService.changeMarkerColor();
+        this.mapManager.changeMarkerColor();
     }
 
     changeMarkerSize() {
-        this.mapsService.changeMarkerSize();
+        this.mapManager.changeMarkerSize();
     }
 
     changeMarkerAnimation() {
-        this.mapsService.changeMarkerAnimation();
+        this.mapManager.changeMarkerAnimation();
     }
 
     removeMarker() {
-        this.mapsService.removeMarker();
+        this.mapManager.removeMarker();
     }
 
     cambiaCentroMappa() {

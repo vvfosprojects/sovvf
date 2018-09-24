@@ -3,6 +3,7 @@ import {CentroMappa} from './maps-model/centro-mappa.model';
 import {RichiestaMarker} from './maps-model/richiesta-marker.model';
 import {MapsService} from './service/maps-service/maps-service.service';
 import {Coordinate} from '../shared/model/coordinate.model';
+import {MapManagerService} from './service/maps-manager/map-manager-service.service';
 
 @Component({
     selector: 'app-maps',
@@ -17,7 +18,8 @@ export class MapsComponent implements OnInit {
 
     richiesteMarkers: RichiestaMarker[];
 
-    constructor(private mapsService: MapsService /** servizio che innietta dati alla mappa **/) {
+    constructor(private mapsService: MapsService,
+                private mapManager: MapManagerService /** servizio che innietta dati alla mappa **/) {
         /**
          *  creo un oggetto di tipo centroMappa per inizializzare la mappa
          */
@@ -29,14 +31,14 @@ export class MapsComponent implements OnInit {
 
     ngOnInit() {
         /**
-         *  mi iscrivo all'api che mi invia le richieste
+         *  mi iscrivo al map manager che mi ritorna tutti i marker
          */
-        this.mapsService.getData().subscribe((r: RichiestaMarker[]) => {
+        this.mapManager.getData().subscribe((r: RichiestaMarker[]) => {
             this.richiesteMarkers = r;
             /**
              *  inizializzo un contatore nel servizio per tenere traccia del numero di richieste
              */
-            this.mapsService.count = this.richiesteMarkers.length;
+            this.mapManager.count = this.richiesteMarkers.length;
         });
         // this.mapsService.getCentro().subscribe((r: CentroMappa) => {
         //     console.log('subscribe centro');

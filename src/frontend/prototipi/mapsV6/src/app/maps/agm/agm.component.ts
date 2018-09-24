@@ -2,17 +2,15 @@ import {Component, OnInit, Input} from '@angular/core';
 import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
 import {Meteo} from '../../shared/model/meteo.model';
 import {CentroMappa} from '../maps-model/centro-mappa.model';
-import {MeteoService} from '../../shared/meteo/meteo-service.service';
-import {MarkedService} from '../service/marked-service/marked-service.service';
 import {MarkerService} from '../service/marker-service/marker-service.service';
 import {Coordinate} from '../../shared/model/coordinate.model';
-
 
 @Component({
     selector: 'app-agm',
     templateUrl: './agm.component.html',
     styleUrls: ['./agm.component.css']
 })
+
 export class AgmComponent implements OnInit {
     @Input() richiesteMarkers: RichiestaMarker[];
     @Input() centroMappa: CentroMappa;

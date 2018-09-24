@@ -14,15 +14,15 @@ export class MapsService {
     constructor(private http: HttpClient) {
     }
 
-    private _count: number;
-
-    set count(count: number) {
-        this._count = count;
-    }
-
-    get count(): number {
-        return this._count;
-    }
+    // private _count: number;
+    //
+    // set count(count: number) {
+    //     this._count = count;
+    // }
+    //
+    // get count(): number {
+    //     return this._count;
+    // }
 
     getData(): Observable<any> {
         return this.http.get(API_URL).pipe(
