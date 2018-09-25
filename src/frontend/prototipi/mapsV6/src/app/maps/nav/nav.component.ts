@@ -6,6 +6,7 @@ import {MapsService} from '../service/maps-service/maps-service.service';
 import {CentroMappa} from '../maps-model/centro-mappa.model';
 import {Coordinate} from '../../shared/model/coordinate.model';
 import {MapManagerService} from '../service/maps-manager/map-manager-service.service';
+import {FakeMethodService} from '../service/fake-method/fake-method-service.service';
 
 @Component({
     selector: 'app-nav',
@@ -19,7 +20,7 @@ export class NavComponent implements OnDestroy {
 
     @Output() pulsanteCentroMappa: EventEmitter<any> = new EventEmitter();
 
-    constructor(private mapsService: MapsService, private markedService: MarkedService, private mapManager: MapManagerService) {
+    constructor(private mapsService: MapsService, private markedService: MarkedService, private mapManager: FakeMethodService) {
         this.subscription = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         });

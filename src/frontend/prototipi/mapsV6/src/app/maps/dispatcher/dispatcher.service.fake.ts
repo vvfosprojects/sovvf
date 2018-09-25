@@ -20,6 +20,7 @@ export class DispatcherServiceFake {
     onNewMarkerList(): Observable<RichiestaMarker[]> {
         this.mapsService.getData().subscribe((richiesteMarker: RichiestaMarker[]) => {
             this.richiesteMarker = richiesteMarker;
+
         });
         return of(this.richiesteMarker);
     }
@@ -41,14 +42,17 @@ export class DispatcherServiceFake {
      */
 
     addMarker(marker: RichiestaMarker) {
+        // console.log(this.richiesteMarker);
         this.newMarker$.next(marker);
     }
 
     updateMarker(marker: RichiestaMarker) {
+        // console.log(this.richiesteMarker);
         this.updateMarker$.next(marker);
     }
 
     deleteMarker(marker: RichiestaMarker) {
+        // console.log(this.richiesteMarker);
         this.deleteMarker$.next(marker);
     }
 

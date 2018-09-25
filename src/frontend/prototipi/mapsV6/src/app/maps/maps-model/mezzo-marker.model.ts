@@ -7,7 +7,7 @@ export class MezzoMarker implements Marker {
         /* Codice del mezzo */
         public codice: number,
         /* id della richiesta a cui è associato il mezzo */
-        public id_richiesta: number,
+        public id_richiesta: string,
         /* La stringa dell'indirizzo e le relative coordinate */
         public localita: DescrizioneLocalita,
         /* Le squadre presenti sul mezzo */

@@ -1,10 +1,10 @@
-import { Marker } from './marker.model';
-import { DescrizioneLocalita } from '../../shared/model/descrizione-localita.model';
+import {Marker} from './marker.model';
+import {DescrizioneLocalita} from '../../shared/model/descrizione-localita.model';
 
 export class RichiestaMarker implements Marker {
     constructor(
         /* id */
-        public id_richiesta: number,
+        public id_richiesta: string,
         /* La stringa dell'indirizzo e le relative coordinate */
         public localita: DescrizioneLocalita,
         /* Id del tipo tipologia */

@@ -55,7 +55,7 @@ export class MapsServiceFake {
 
     public getData(): Observable<RichiestaMarker[]> {
         this.richiesteMarker = [
-            new RichiestaMarker(1,
+            new RichiestaMarker('R1',
                 new DescrizioneLocalita(
                     'Via Cavour, 5',
                     [42.5131365, 12.773477]),
@@ -65,7 +65,7 @@ export class MapsServiceFake {
                 3,
                 'assegnata'
             ),
-            new RichiestaMarker(2,
+            new RichiestaMarker('R2',
                 new DescrizioneLocalita(
                     'Via Cavour, 5',
                     [42.8131365, 12.773477]),
@@ -83,7 +83,7 @@ export class MapsServiceFake {
         for (let _i = 2; _i < this.numeroMarker; _i++) {
             const randomNumber = Math.floor(Math.random() * 4) + 1;
             this.richiesteMarker.push(new RichiestaMarker(
-                _i + 1,
+                'R' + (_i + 1),
                 {
                     'indirizzo': 'Via Cavour, 5',
                     'coordinate': [Math.floor(Math.random() * 100) * 0.01 + 41.895, Math.floor(Math.random() * 100) * 0.01 + 12.495]
