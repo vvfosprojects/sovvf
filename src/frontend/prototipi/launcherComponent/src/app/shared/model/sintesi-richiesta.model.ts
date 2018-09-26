@@ -72,7 +72,7 @@ export class SintesiRichiesta {
          */
         public noteLocalita: string,
         /**
-         * descrizione delle zone di emergenza
+         * descrizione di un'area di zona emergenza
          */
         public zoneEmergenza: string[],
         /**
