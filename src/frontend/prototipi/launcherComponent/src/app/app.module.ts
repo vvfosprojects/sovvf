@@ -17,17 +17,13 @@ import {LoginComponent} from './auth/login';
 import {fakeBackendProvider} from './auth/_helpers';
 // start maps-container
 import {MapsComponent} from './maps/maps.component';
-import {NavComponent} from './maps/nav/nav.component';
-import {MapsDbInterventiComponent} from './maps/maps-db-interventi/maps-db-interventi.component';
-import {MapsService} from './maps/maps-db-interventi/maps-service/maps-service.service';
-import {MapsServiceFake} from './maps/maps-db-interventi/maps-service/maps-service.service.fake';
-import {MarkedService} from './maps/maps-db-interventi/marked-service/marked-service.service';
-import {AgmComponent} from './maps/maps-db-interventi/agm/agm.component';
+import {MapsService} from './maps/service/maps-service/maps-service.service';
+import {MapsServiceFake} from './maps/service/maps-service/maps-service.service.fake';
+import {AgmComponent} from './maps/agm/agm.component';
 import {AgmCoreModule} from '@agm/core';
 // end maps-container
 // start rigaElenco
 import { RichiesteComponent } from './richieste/richieste.component';
-import { DbInterventiComponent } from './richieste/db-interventi/db-interventi.component';
 import { SintesiRichiesteService } from './richieste/lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service';
 import { SintesiRichiesteServiceFake } from './richieste/lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service.fake';
 import { ListaRichiesteComponent } from './richieste/lista-richieste/lista-richieste.component';
@@ -50,15 +46,16 @@ import {BoxMeteoComponent} from './boxes/info-aggregate/box-meteo/box-meteo.comp
 // start sidebar
 import {SidebarModule, Sidebar} from 'ng-sidebar';
 import {NavbarComponent} from './navbar/navbar.component';
-
 // end sidebar
+// start navbar
+import { UnitaOperativeServiceFake } from './navbar/navbar-service/unita-operativa.service.fake';
+// end navbar
 
 
 @NgModule({
     declarations: [
         AppComponent,
         RichiesteComponent,
-        DbInterventiComponent,
         ListaRichiesteComponent,
         SintesiRichiestaComponent,
         RicercaRichiesteComponent,
@@ -75,8 +72,6 @@ import {NavbarComponent} from './navbar/navbar.component';
         // end import of Shared Declarations
         // start import maps
         MapsComponent,
-        NavComponent,
-        MapsDbInterventiComponent,
         AgmComponent,
         // end import maps
         BoxFunzionariComponent,
@@ -106,13 +101,13 @@ import {NavbarComponent} from './navbar/navbar.component';
     providers: [
         {provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake},
         {provide: MapsService, useClass: MapsServiceFake},
-        {provide: MarkedService, useClass: MarkedService},
-        {provide: MeteoService, useClass: MeteoService},
         {provide: InfoAggregateService, useClass: InfoAggregateServiceFake},
         {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
         // backend fake provider per login
-        fakeBackendProvider
+        fakeBackendProvider,
+        // Unità Operativa
+        UnitaOperativeServiceFake
     ],
     bootstrap: [AppComponent]
 })

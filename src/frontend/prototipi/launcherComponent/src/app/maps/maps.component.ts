@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {CentroMappa} from './maps-db-interventi/maps-model/centro-mappa.model';
-import {RichiestaMarker} from './maps-db-interventi/maps-model/richiesta-marker.model';
-import {MapsService} from './maps-db-interventi/maps-service/maps-service.service';
+import { Component, OnInit } from '@angular/core';
+import { CentroMappa } from './maps-model/centro-mappa.model';
+import { RichiestaMarker } from './maps-model/richiesta-marker.model';
+import { MapsService } from './service/maps-service/maps-service.service';
+import { Coordinate } from '../shared/model/coordinate.model';
+import { MapManagerService } from './service/maps-manager/map-manager-service.service';
 
 @Component({
     selector: 'app-maps',
@@ -11,29 +13,32 @@ import {MapsService} from './maps-db-interventi/maps-service/maps-service.servic
 export class MapsComponent implements OnInit {
 
     centroMappa: CentroMappa;
+    initCentroMappa: CentroMappa;
+    newCentroMappa: CentroMappa;
+
     richiesteMarkers: RichiestaMarker[];
 
-    constructor(private mapsService: MapsService /** servizio che innietta dati alla mappa **/ ) {
+    constructor(private mapsService: MapsService,
+        private mapManager: MapManagerService /** servizio che innietta dati alla mappa **/) {
+        /**
+         *  creo un oggetto di tipo centroMappa per inizializzare la mappa
+         */
+        this.centroMappa = new CentroMappa(new Coordinate(42.290251, 12.492373), 8);
+        /* Roma */
+        this.newCentroMappa = new CentroMappa(new Coordinate(45.283828, 9.105340), 8);
+        /* Milano */
     }
 
     ngOnInit() {
         /**
-         *  creo una proprietà per testare la ricezione di dati per il db-interventi di mappa
+         *  mi iscrivo al map manager che mi ritorna tutti i marker
          */
-        this.centroMappa = {lat: 42.290251, lng: 12.492373, zoom: 8};
-        /**
-         *  mi iscrivo all'api che mi invia le richieste
-         */
-        this.mapsService.getData().subscribe((r: RichiestaMarker[]) => {
+        this.mapManager.getData().subscribe((r: RichiestaMarker[]) => {
             this.richiesteMarkers = r;
-            /**
-             *  inizializzo un contatore nel servizio per tenere traccia del numero di richieste
-             */
-            this.mapsService.count = this.richiesteMarkers.length;
         });
-    }
-
-    setCentroMappa() {
-        this.centroMappa = {lat: 52.290251, lng: 22.492373, zoom: 7};
+        // this.mapsService.getCentro().subscribe((r: CentroMappa) => {
+        //     console.log('subscribe centro');
+        //     this.centroMappa = r;
+        // });
     }
 }
