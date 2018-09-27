@@ -67,13 +67,14 @@ export class MarkerService {
         this.mapIconeSize = new Map(this.iconeGrandezza);
     }
 
-    tipoIcona(marker: RichiestaMarker) {
+    tipoIcona(marker: any) {
         /**
          * metodo che mi ritorna il tipo di icona da utilizzare (già mappate in precedenza vedi il metodo icone())
          */
         if (marker) {
             this.iconaStatoCorrenteSize = this.mapIconeSize.get(marker.prioritaRichiesta);
-            const dir = !(this.markerSelezionato === marker) ? this.pathUrl + 'ns/' : this.pathUrl + 's/';
+            const check = !(this.markerSelezionato === marker || this.markerSelezionato === marker.id_richiesta);
+            const dir = check ? this.pathUrl + 'ns/' : this.pathUrl + 's/';
             this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize
                 + this.mapIconeUrl.get(marker.stato.substring(0, 5).toLowerCase());
             if (!this.iconaStatoCorrenteSize) {

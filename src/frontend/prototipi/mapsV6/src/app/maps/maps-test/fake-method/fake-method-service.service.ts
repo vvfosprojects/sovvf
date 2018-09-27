@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {RichiestaMarker} from '../../maps-model/richiesta-marker.model';
 import {Subscription} from 'rxjs';
-import {MarkedService} from '../marked-service/marked-service.service';
-import {MapManagerService} from '../maps-manager/map-manager-service.service';
+import {MarkedService} from '../../service/marked-service/marked-service.service';
+import {MapManagerService} from '../../service/maps-manager/map-manager-service.service';
+import {CenterService} from '../../service/center-service/center-service.service';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,9 @@ export class FakeMethodService {
     markerSelezionato: RichiestaMarker;
     subscription: Subscription;
 
-    constructor(private markedService: MarkedService, private mapManager: MapManagerService) {
+    constructor(private markedService: MarkedService,
+                private mapManager: MapManagerService,
+                private centerService: CenterService) {
         this.subscription = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         });
@@ -59,7 +62,7 @@ export class FakeMethodService {
         this.mapManager.richiesteMarker.pop();
     }
 
-    // /* TESTING METHOD */
+    /* TESTING METHOD */
     changeMarkerColor() {
         const statoCasuale = Math.floor(Math.random() * 4) + 1;
         const color = this.mapManager.richiesteMarker.find(x => x.id_richiesta === this.markerSelezionato.id_richiesta);
@@ -97,6 +100,9 @@ export class FakeMethodService {
 
     /* TESTING METHOD */
     changeMarkerAnimation() {
+        /**
+         * metodo da rivedere con gmaps...
+         */
         // const statoCasuale = Math.floor(Math.random() * 4) + 1;
         // console.log(statoCasuale);
         console.log('modifico animazione al marker selezionato');
@@ -110,4 +116,10 @@ export class FakeMethodService {
             this.markedService.clearMarked();
         }
     }
+
+    aggiornaCentro(centro) {
+        this.centerService.clearCentro();
+        this.centerService.sendCentro(centro);
+    }
+
 }

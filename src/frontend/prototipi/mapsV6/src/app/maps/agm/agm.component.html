@@ -1,7 +1,7 @@
 <div *ngIf="!map_loaded" class="mx-auto my-5">
     <img src="../../../assets/img/map_loading_resized.gif">
 </div>
-<agm-map [latitude]="centroMappa.coordinate.latitudine" [longitude]="centroMappa.coordinate.longitudine" [zoom]="centroMappa.zoom" (mapReady)="mappaCaricata()" [usePanning]="true">
+<agm-map [latitude]="centroMappa.coordinate.latitudine" [longitude]="centroMappa.coordinate.longitudine" [zoom]="centroMappa.zoom" (mapReady)="mappaCaricata()" (centerChange)="centroCambiato($event)" [usePanning]="true">
     <agm-marker *ngFor="let m of richiesteMarkers;" [latitude]="m.localita.coordinate[0]"
                 [longitude]="m.localita.coordinate[1]"
                 (markerClick)="selezioneMarker(m)"
@@ -22,4 +22,5 @@
             </div>
         </agm-info-window>
     </agm-marker>
+    <app-agm-content (onMapLoad)='loadAPIWrapper($event)'></app-agm-content>
 </agm-map>

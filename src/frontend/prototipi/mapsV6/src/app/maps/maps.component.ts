@@ -23,10 +23,11 @@ export class MapsComponent implements OnInit {
         /**
          *  creo un oggetto di tipo centroMappa per inizializzare la mappa
          */
-        this.centroMappa = new CentroMappa(new Coordinate(42.290251, 12.492373), 8);
+        this.initCentroMappa = new CentroMappa(new Coordinate(42.290251, 12.492373), 8);
         /* Roma */
         this.newCentroMappa = new CentroMappa(new Coordinate(45.283828, 9.105340), 8);
         /* Milano */
+        this.centroMappa = this.initCentroMappa;
     }
 
     ngOnInit() {
@@ -40,14 +41,11 @@ export class MapsComponent implements OnInit {
              */
             this.mapManager.count = this.richiesteMarkers.length;
         });
-        // this.mapsService.getCentro().subscribe((r: CentroMappa) => {
-        //     console.log('subscribe centro');
-        //     this.centroMappa = r;
-        // });
     }
 
     /* TESTING METHOD */
-    setCentroMappa(newCentro = this.newCentroMappa) {
+    setCentroMappa() {
+        const newCentro = this.newCentroMappa;
         // console.log('centro mappa');
         const currentCentroMappa = Object.assign({}, this.centroMappa);
         if (!this.initCentroMappa) {
