@@ -4,8 +4,9 @@ import {Meteo} from '../../shared/model/meteo.model';
 import {CentroMappa} from '../maps-model/centro-mappa.model';
 import {MarkerService} from '../service/marker-service/marker-service.service';
 import {Coordinate} from '../../shared/model/coordinate.model';
-import {Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {CenterService} from '../service/center-service/center-service.service';
+import {debounceTime} from 'rxjs/operators';
 
 declare var google: any;
 
@@ -22,11 +23,19 @@ export class AgmComponent implements OnInit {
     map_loaded = false;
     map: any;
     subscription: Subscription;
+    centro$ = new Subject();
 
     constructor(private markerService: MarkerService, private centerService: CenterService) {
         this.subscription = this.centerService.getCentro().subscribe(centro => {
             this.centroMappa = centro;
         });
+        this.centro$.pipe(
+            debounceTime(500)).subscribe(
+            coordinate => this.centerService.sendCentro(
+                new CentroMappa(
+                    new Coordinate(coordinate['lat'], coordinate['lng']),
+                    this.map.getZoom()))
+        );
     }
 
     ngOnInit() {
@@ -41,7 +50,7 @@ export class AgmComponent implements OnInit {
 
     loadAPIWrapper(map): void {
         /**
-         * assegno il wrapper di gmaps a una proprietà
+         * importo il wrapper nell'oggetto map
          */
         this.map = map;
     }
@@ -99,7 +108,7 @@ export class AgmComponent implements OnInit {
             } else {
                 this.map.setZoom(zoomCorrente + 2);
                 setTimeout(() => {
-                        this.map.setZoom(zoom );
+                        this.map.setZoom(zoom);
                     }, 450
                 );
             }
@@ -114,8 +123,9 @@ export class AgmComponent implements OnInit {
         this.map.panTo(posizione);
     }
 
-    centroCambiato(coordinate) {
-        // console.log('centro cambiato' + coordinate);
+
+    centroCambiato(centro) {
+        this.centro$.next(centro);
     }
 
 }
