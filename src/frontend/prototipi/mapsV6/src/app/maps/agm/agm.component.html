@@ -5,7 +5,8 @@
          [zoom]="centroMappa.zoom" (mapReady)="mappaCaricata()" (centerChange)="centroCambiato($event)"
          [usePanning]="true">
     <agm-marker-cluster
-            imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
+            imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
+            [minimumClusterSize]="minMarkerCluster">
         <agm-marker *ngFor="let m of richiesteMarkers;" [latitude]="m.localita.coordinate[0]"
                     [longitude]="m.localita.coordinate[1]"
                     (markerClick)="selezioneMarker(m)"
