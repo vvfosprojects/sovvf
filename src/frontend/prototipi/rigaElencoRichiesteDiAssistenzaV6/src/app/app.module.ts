@@ -17,6 +17,7 @@ import { SintesiRichiestaComponent } from './richieste/lista-richieste/sintesi-r
 import { RicercaRichiesteComponent } from './richieste/ricerca-richieste/ricerca-richieste.component';
 import { FiltriRichiesteComponent } from './richieste/filtri-richieste/filtri-richieste.component';
 import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.component';
+import { RichiestaSelezionataComponent } from './richieste/lista-richieste/richiesta-selezionata/richiesta-selezionata.component';
 
 
 @NgModule({
@@ -28,14 +29,14 @@ import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.comp
         RicercaRichiesteComponent,
         FiltriRichiesteComponent,
         FiltroComponent,
+        RichiestaSelezionataComponent,
         // start import of Shared Declarations
         [
             Shared.DebounceClickDirective,
             Shared.DebounceKeyUpDirective,
             Shared.CompetenzaComponent,
             Shared.ComponenteComponent,
-            Shared.MezzoComponent
-        ],
+            Shared.MezzoComponent],
         // end import of Shared Declarations
     ],
     imports: [

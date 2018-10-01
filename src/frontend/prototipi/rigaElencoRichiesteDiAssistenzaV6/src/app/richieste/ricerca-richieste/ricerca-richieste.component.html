@@ -1,4 +1,4 @@
-<div class="input-group mb-3 app-shadow">
+<div class="input-group app-shadow">
   <input [(ngModel)]="searchText" class="form-control" type="text" appDebounceKeyUp (debounceKeyUp)="search()" [debounceTime]="600" placeholder="Ricerca un intervento" name="ricercaRichieste" id="ricercaRichieste">
   <div class="input-group-append">
       <button class="btn btn-primary" (click)="search()"><i class="fa fa-search text-light"></i></button>
