@@ -14,12 +14,24 @@ export class DispatcherServiceFake {
     private updateRichiestaMarker$ = new Subject<RichiestaMarker>();
     private deleteRichiestaMarker$ = new Subject<RichiestaMarker>();
 
+    private newSedeMarker$ = new Subject<SedeMarker>();
+    private updateSedeMarker$ = new Subject<SedeMarker>();
+    private deleteSedeMarker$ = new Subject<SedeMarker>();
+
+    private newMezzoMarker$ = new Subject<MezzoMarker>();
+    private updateMezzoMarker$ = new Subject<MezzoMarker>();
+    private deleteMezzoMarker$ = new Subject<MezzoMarker>();
+
     richiesteMarker: RichiestaMarker[];
     sediMarker: SedeMarker[];
     mezziMarker: MezzoMarker[];
 
     constructor(private mapsService: MapsService) {
     }
+
+    /**
+     *  metodi per richiedere le richieste marker al service
+     */
 
     onNewRichiesteMarkersList(): Observable<RichiestaMarker[]> {
         this.mapsService.getRichiesteMarker().subscribe((richiesteMarker: RichiestaMarker[]) => {
@@ -42,7 +54,55 @@ export class DispatcherServiceFake {
     }
 
     /**
-     *  TESTING METHOD
+     *  metodi per richiedere le sedi marker al service
+     */
+
+    onNewSediMarkersList(): Observable<SedeMarker[]> {
+        this.mapsService.getSediMarker().subscribe((sediMarker: SedeMarker[]) => {
+            this.sediMarker = sediMarker;
+
+        });
+        return of(this.sediMarker);
+    }
+
+    onNewSedeMarker(): Observable<SedeMarker> {
+        return this.newSedeMarker$;
+    }
+
+    onUpdateSedeMarker(): Observable<SedeMarker> {
+        return this.updateSedeMarker$;
+    }
+
+    onDeleteSedeMarker(): Observable<SedeMarker> {
+        return this.deleteSedeMarker$;
+    }
+
+    /**
+     *  metodi per richiedere i mezzi marker al service
+     */
+
+    onNewMezziMarkersList(): Observable<MezzoMarker[]> {
+        this.mapsService.getMezziMarker().subscribe((mezzoMarker: MezzoMarker[]) => {
+            this.mezziMarker = mezzoMarker;
+
+        });
+        return of(this.mezziMarker);
+    }
+
+    onNewMezzoMarker(): Observable<MezzoMarker> {
+        return this.newMezzoMarker$;
+    }
+
+    onUpdateMezzoMarker(): Observable<MezzoMarker> {
+        return this.updateMezzoMarker$;
+    }
+
+    onDeleteMezzoMarker(): Observable<MezzoMarker> {
+        return this.deleteMezzoMarker$;
+    }
+
+    /**
+     *  TESTING METHOD PER RICHIESTE MARKER
      */
 
     addMarker(marker: RichiestaMarker) {

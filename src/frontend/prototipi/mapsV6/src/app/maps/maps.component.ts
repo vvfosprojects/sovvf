@@ -4,6 +4,8 @@ import {RichiestaMarker} from './maps-model/richiesta-marker.model';
 import {MapsService} from './service/maps-service/maps-service.service';
 import {Coordinate} from '../shared/model/coordinate.model';
 import {MapManagerService} from './service/maps-manager/map-manager-service.service';
+import {SedeMarker} from './maps-model/sede-marker.model';
+import {MezzoMarker} from './maps-model/mezzo-marker.model';
 
 @Component({
     selector: 'app-maps',
@@ -14,6 +16,8 @@ export class MapsComponent implements OnInit {
 
     centroMappa: CentroMappa;
     richiesteMarkers: RichiestaMarker[];
+    sediMarkers: SedeMarker[];
+    mezziMarkers: MezzoMarker[];
 
     constructor(private mapsService: MapsService,
                 private mapManager: MapManagerService /** servizio che innietta dati alla mappa **/) {
@@ -35,6 +39,20 @@ export class MapsComponent implements OnInit {
              *  inizializzo un contatore nel servizio per tenere traccia del numero di richieste
              */
             this.mapManager.count = this.richiesteMarkers.length;
+        });
+
+        /**
+         *  mi iscrivo al map manager che mi ritorna tutti i marker di tipo sedeMarker
+         */
+        this.mapManager.getSediMarker().subscribe((r: SedeMarker[]) => {
+            this.sediMarkers = r;
+        });
+
+        /**
+         *  mi iscrivo al map manager che mi ritorna tutti i marker di tipo mezzoMarker
+         */
+        this.mapManager.getMezziMarker().subscribe((r: MezzoMarker[]) => {
+            this.mezziMarkers = r;
         });
     }
 

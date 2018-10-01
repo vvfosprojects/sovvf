@@ -4,7 +4,9 @@ import {catchError, retry} from 'rxjs/operators';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 
-const API_URL = environment.apiUrl.maps.markers.fake1;
+const API_URL_RICHIESTE = environment.apiUrl.maps.markers.richieste;
+const API_URL_SEDI = environment.apiUrl.maps.markers.sedi;
+const API_URL_MEZZI = environment.apiUrl.maps.markers.mezzi;
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +17,21 @@ export class MapsService {
     }
 
     getRichiesteMarker(): Observable<any> {
-        return this.http.get(API_URL).pipe(
+        return this.http.get(API_URL_RICHIESTE).pipe(
+            retry(3),
+            catchError(this.handleError)
+        );
+    }
+
+    getSediMarker(): Observable<any> {
+        return this.http.get(API_URL_SEDI).pipe(
+            retry(3),
+            catchError(this.handleError)
+        );
+    }
+
+    getMezziMarker(): Observable<any> {
+        return this.http.get(API_URL_MEZZI).pipe(
             retry(3),
             catchError(this.handleError)
         );

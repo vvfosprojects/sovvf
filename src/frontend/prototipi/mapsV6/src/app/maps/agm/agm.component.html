@@ -7,12 +7,60 @@
     <agm-marker-cluster
             imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
             [minimumClusterSize]="minMarkerCluster">
-        <agm-marker *ngFor="let m of richiesteMarkers;" [latitude]="m.localita.coordinate[0]"
-                    [longitude]="m.localita.coordinate[1]"
-                    (markerClick)="selezioneMarker(m)"
-                    [iconUrl]="tipoIcona(m)" [animation]="tipoAnimazione(m)" [visible]="true">
-            <agm-info-window *ngIf="trueMarker(m)">
-                <strong>{{m.label}}</strong>
+        <agm-marker *ngFor="let richiesteM of richiesteMarkers;" [latitude]="richiesteM.localita.coordinate.latitudine"
+                    [longitude]="richiesteM.localita.coordinate.longitudine"
+                    (markerClick)="selezioneMarker(richiesteM)"
+                    [iconUrl]="urlIcona(richiesteM, 'richiesta')" [animation]="tipoAnimazione(richiesteM)" [visible]="true">
+            <agm-info-window *ngIf="trueMarker(richiesteM)">
+                <strong>{{richiesteM.label}}</strong>
+                <div *ngIf="datiMeteo" class="h-infowindow">
+                    <hr class="my-0">
+                    <div>
+                        <img class="mr-2 iconameteo w-25" src="http://openweathermap.org/img/w/{{datiMeteo.icona}}.png">
+                        <span class="text-capitalize">{{datiMeteo.descrizione}}</span>
+                    </div>
+                    <div class="text-center">{{datiMeteo.temperatura}}°C - Umidità: {{datiMeteo.umidita}}%</div>
+                    <div class="text-center">Vento {{datiMeteo.vento}} km/h
+                        <i [ngStyle]="{'transform': 'rotate('+datiMeteo.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datiMeteo.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datiMeteo.direzione.gradi+'deg)'}"
+                           class="pl-2 fa fa-long-arrow-up"></i> {{datiMeteo.direzione.cardinali}}
+                    </div>
+                </div>
+            </agm-info-window>
+        </agm-marker>
+    </agm-marker-cluster>
+    <agm-marker-cluster
+            imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
+            [minimumClusterSize]="minMarkerCluster">
+        <agm-marker *ngFor="let sediM of sediMarkers;" [latitude]="sediM.sede.coordinate.latitudine"
+                    [longitude]="sediM.sede.coordinate.longitudine"
+                    (markerClick)="selezioneMarker(sediM)"
+                    [iconUrl]="urlIcona(sediM, 'sede')" [animation]="tipoAnimazione(sediM)" [visible]="true">
+            <agm-info-window *ngIf="trueMarker(sediM)">
+                <strong>{{sediM.sede.descrizione}}</strong>
+                <div *ngIf="datiMeteo" class="h-infowindow">
+                    <hr class="my-0">
+                    <div>
+                        <img class="mr-2 iconameteo w-25" src="http://openweathermap.org/img/w/{{datiMeteo.icona}}.png">
+                        <span class="text-capitalize">{{datiMeteo.descrizione}}</span>
+                    </div>
+                    <div class="text-center">{{datiMeteo.temperatura}}°C - Umidità: {{datiMeteo.umidita}}%</div>
+                    <div class="text-center">Vento {{datiMeteo.vento}} km/h
+                        <i [ngStyle]="{'transform': 'rotate('+datiMeteo.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datiMeteo.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datiMeteo.direzione.gradi+'deg)'}"
+                           class="pl-2 fa fa-long-arrow-up"></i> {{datiMeteo.direzione.cardinali}}
+                    </div>
+                </div>
+            </agm-info-window>
+        </agm-marker>
+    </agm-marker-cluster>
+    <agm-marker-cluster
+            imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
+            [minimumClusterSize]="minMarkerCluster">
+        <agm-marker *ngFor="let mezziM of mezziMarkers;" [latitude]="mezziM.posizione.latitudine"
+                    [longitude]="mezziM.posizione.longitudine"
+                    (markerClick)="selezioneMarker(mezziM)"
+                    [iconUrl]="urlIcona(mezziM, 'mezzo')" [animation]="tipoAnimazione(mezziM)" [visible]="true">
+            <agm-info-window *ngIf="trueMarker(mezziM)">
+                <strong>{{mezziM.label}}</strong>
                 <div *ngIf="datiMeteo" class="h-infowindow">
                     <hr class="my-0">
                     <div>

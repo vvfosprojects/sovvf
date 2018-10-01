@@ -1,5 +1,7 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
+import {SedeMarker} from '../maps-model/sede-marker.model';
+import {MezzoMarker} from '../maps-model/mezzo-marker.model';
 import {Meteo} from '../../shared/model/meteo.model';
 import {CentroMappa} from '../maps-model/centro-mappa.model';
 import {MarkerService} from '../service/marker-service/marker-service.service';
@@ -18,6 +20,8 @@ declare var google: any;
 
 export class AgmComponent implements OnInit {
     @Input() richiesteMarkers: RichiestaMarker[];
+    @Input() sediMarkers: SedeMarker[];
+    @Input() mezziMarkers: MezzoMarker[];
     @Input() centroMappa: CentroMappa;
     minMarkerCluster: number;
     datiMeteo: Meteo;
@@ -57,7 +61,7 @@ export class AgmComponent implements OnInit {
         this.map = map;
     }
 
-    selezioneMarker(marker: RichiestaMarker): void {
+    selezioneMarker(marker: any): void {
         /**
          *  ricevo il marker selezionato dal componente mappa (agm)
          */
@@ -69,25 +73,25 @@ export class AgmComponent implements OnInit {
         /**
          * richiamo i metodi per modficare il centro e lo zoom del marker cliccato
          */
-        this.centraMappa(new Coordinate(marker.localita.coordinate[0], marker.localita.coordinate[1]));
+        this.centraMappa(new Coordinate(marker.localita.coordinate.latitudine, marker.localita.coordinate.longitudine));
         this.cambiaZoom(12);
     }
 
-    tipoIcona(marker: RichiestaMarker): string {
+    urlIcona(marker: any, modello): string {
         /**
          * richiedo al service che gestisce i marker sulla mappa, di ritornarmi l'url dell'icona da utilizzare
          */
-        return this.markerService.tipoIcona(marker);
+        return this.markerService.tipoIcona(marker, modello);
     }
 
-    trueMarker(marker: RichiestaMarker): boolean {
+    trueMarker(marker: any): boolean {
         /**
          * richiedo al service che gestisce i marker sulla mappa, di ritornarmi se il marker cliccato è quello selezionato
          */
         return this.markerService.trueMarker(marker);
     }
 
-    tipoAnimazione(marker: RichiestaMarker) {
+    tipoAnimazione(marker: any) {
         /**
          * metodo non ancora implementato che modifica lo stato dell'icona facendolo rimbalzare o cadere
          */

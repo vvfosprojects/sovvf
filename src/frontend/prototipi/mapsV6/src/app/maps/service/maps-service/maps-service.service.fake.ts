@@ -1,10 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Observable, of, Subscription} from 'rxjs';
 import {RichiestaMarker} from '../../maps-model/richiesta-marker.model';
-import {DescrizioneLocalita} from '../../../shared/model/descrizione-localita.model';
+import {Localita} from '../../../shared/model/localita.model';
 import {MarkedService} from '../marked-service/marked-service.service';
 import {SedeMarker} from '../../maps-model/sede-marker.model';
 import {MezzoMarker} from '../../maps-model/mezzo-marker.model';
+import {Coordinate} from '../../../shared/model/coordinate.model';
+import {Squadra} from '../../../shared/model/squadra.model';
+import {Componente} from '../../../shared/model/componente.model';
+import {Tipologia} from '../../../shared/model/tipologia.model';
+import {Sede} from '../../../shared/model/sede.model';
+import {Mezzo} from '../../../shared/model/mezzo.model';
 
 @Injectable({
     providedIn: 'root'
@@ -36,23 +42,27 @@ export class MapsServiceFake {
 
     private numeroMarker = 30;
 
-    public getRichiesteMarker(): Observable<RichiestaMarker[]> {
+    getRichiesteMarker(): Observable<RichiestaMarker[]> {
         this.richiesteMarker = [
             new RichiestaMarker('R1',
-                new DescrizioneLocalita(
+                new Localita('',
                     'Via Cavour, 5',
-                    [42.5131365, 12.773477]),
-                2,
+                    new Coordinate(42.5131365, 12.773477)),
+                [
+                    new Tipologia(1, 'allagamento', '')
+                ],
                 'Allagamento cantina per rottura tubatura',
                 false,
                 3,
                 'assegnata'
             ),
             new RichiestaMarker('R2',
-                new DescrizioneLocalita(
+                new Localita('',
                     'Via Cavour, 5',
-                    [42.8131365, 12.773477]),
-                5,
+                    new Coordinate(42.8131365, 12.773477)),
+                [
+                    new Tipologia(2, 'incendio', '')
+                ],
                 'Incendio sul bordo autostradale',
                 false,
                 5,
@@ -67,11 +77,13 @@ export class MapsServiceFake {
             const randomNumber = Math.floor(Math.random() * 4) + 1;
             this.richiesteMarker.push(new RichiestaMarker(
                 'R' + (_i + 1),
-                {
-                    'indirizzo': 'Via Cavour, 5',
-                    'coordinate': [Math.floor(Math.random() * 100) * 0.01 + 41.895, Math.floor(Math.random() * 100) * 0.01 + 12.495]
-                },
-                Math.floor(Math.random() * 5) + 1,
+                new Localita('',
+                    'Via Cavour, 5',
+                    new Coordinate(Math.floor(Math.random() * 100) * 0.01 + 41.895, Math.floor(Math.random() * 100) * 0.01 + 12.495)
+                ),
+                [
+                    new Tipologia(1, 'allagamento', '')
+                ],
                 'Marker Random: ' + this.statiObj.get(randomNumber),
                 false,
                 Math.floor(Math.random() * 5) + 1,
@@ -82,10 +94,70 @@ export class MapsServiceFake {
         return of(this.richiesteMarker);
     }
 
-    public getSediMarker(): Observable<SedeMarker[]> {
+    getSediMarker(): Observable<SedeMarker[]> {
         this.sediMarker = [
+            new SedeMarker(
+                new Sede(1, 'Tuscolano I', new Coordinate(41.881490, 12.518700), 'Distaccamento')
+            ),
+            new SedeMarker(
+                new Sede(2, 'Tuscolano II', new Coordinate(41.863930, 12.554420), 'Distaccamento')
+            ),
+            new SedeMarker(
+                new Sede(3, 'Roma', new Coordinate(41.899940, 12.491270), 'Comando')
+            )
         ];
         return of(this.sediMarker);
+    }
+
+    getMezziMarker(): Observable<MezzoMarker[]> {
+        this.mezziMarker = [
+            new MezzoMarker(
+                new Coordinate(42.5131365, 12.773477),
+                new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 5),
+                'R1',
+                [
+                    new Squadra('1A', null,
+                        [
+                            new Componente(
+                                'CR',
+                                'Mario Rossi',
+                                'Mario Rossi - MRORSS45H44T656R',
+                                true,
+                                false,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Antonio Bianchi',
+                                'Antonio Bianchi - NTNBNC76T54H444T',
+                                false,
+                                true,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Matteo Verdi',
+                                'Matteo Verdi - VRDMTT56G77D454I',
+                                false,
+                                false,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Enrico Ottavi',
+                                'Enrico Ottavi - NRCOTT88U75F454H',
+                                false,
+                                false,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Michele Rettore',
+                                'Michele Rettore - MCHRTT65T65K575Q',
+                                false,
+                                false,
+                                true),
+                        ])
+                ], 'Mezzo in soccorso'
+            )
+        ];
+        return of(this.mezziMarker);
     }
 
 }
