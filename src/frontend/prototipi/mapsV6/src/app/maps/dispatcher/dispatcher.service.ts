@@ -2,38 +2,42 @@ import {Injectable} from '@angular/core';
 import {Observable, of, Subject} from 'rxjs';
 import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
 import {MapsService} from '../service/maps-service/maps-service.service';
+import {SedeMarker} from '../maps-model/sede-marker.model';
+import {MezzoMarker} from '../maps-model/mezzo-marker.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DispatcherService {
 
-    private updateMarker$ = new Subject<RichiestaMarker>();
-    private newMarker$ = new Subject<RichiestaMarker>();
-    private deleteMarker$ = new Subject<RichiestaMarker>();
+    private newRichiestaMarker$ = new Subject<RichiestaMarker>();
+    private updateRichiestaMarker$ = new Subject<RichiestaMarker>();
+    private deleteRichiestaMarker$ = new Subject<RichiestaMarker>();
 
     richiesteMarker: RichiestaMarker[];
+    sediMarker: SedeMarker[];
+    mezziMarker: MezzoMarker[];
 
     constructor(private mapsService: MapsService) {
     }
 
-    onNewMarkerList(): Observable<RichiestaMarker[]> {
-        this.mapsService.getData().subscribe((richiesteMarker: RichiestaMarker[]) => {
+    onNewRichiesteMarkersList(): Observable<RichiestaMarker[]> {
+        this.mapsService.getRichiesteMarker().subscribe((richiesteMarker: RichiestaMarker[]) => {
             this.richiesteMarker = richiesteMarker;
         });
         return of(this.richiesteMarker);
     }
 
-    onNewMarker(): Observable<RichiestaMarker> {
-        return this.newMarker$;
+    onNewRichiestaMarker(): Observable<RichiestaMarker> {
+        return this.newRichiestaMarker$;
     }
 
-    onUpdateMarker(): Observable<RichiestaMarker> {
-        return this.updateMarker$;
+    onUpdateRichiestaMarker(): Observable<RichiestaMarker> {
+        return this.updateRichiestaMarker$;
     }
 
-    onDeleteMarker(): Observable<RichiestaMarker> {
-        return this.deleteMarker$;
+    onDeleteRichiestaMarker(): Observable<RichiestaMarker> {
+        return this.deleteRichiestaMarker$;
     }
 
     /**
@@ -41,14 +45,14 @@ export class DispatcherService {
      */
 
     addMarker(marker: RichiestaMarker) {
-        this.newMarker$.next(marker);
+        this.newRichiestaMarker$.next(marker);
     }
 
     updateMarker(marker: RichiestaMarker) {
-        this.updateMarker$.next(marker);
+        this.updateRichiestaMarker$.next(marker);
     }
 
     deleteMarker(marker: RichiestaMarker) {
-        this.deleteMarker$.next(marker);
+        this.deleteRichiestaMarker$.next(marker);
     }
 }

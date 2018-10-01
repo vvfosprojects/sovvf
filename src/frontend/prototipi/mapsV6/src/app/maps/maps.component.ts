@@ -13,9 +13,6 @@ import {MapManagerService} from './service/maps-manager/map-manager-service.serv
 export class MapsComponent implements OnInit {
 
     centroMappa: CentroMappa;
-    initCentroMappa: CentroMappa;
-    newCentroMappa: CentroMappa;
-
     richiesteMarkers: RichiestaMarker[];
 
     constructor(private mapsService: MapsService,
@@ -23,43 +20,22 @@ export class MapsComponent implements OnInit {
         /**
          *  creo un oggetto di tipo centroMappa per inizializzare la mappa
          */
-        this.initCentroMappa = new CentroMappa(new Coordinate(42.290251, 12.492373), 8);
+        const initCentroMappa = new CentroMappa(new Coordinate(42.290251, 12.492373), 8);
         /* Roma */
-        this.newCentroMappa = new CentroMappa(new Coordinate(45.283828, 9.105340), 8);
-        /* Milano */
-        this.centroMappa = this.initCentroMappa;
+        this.centroMappa = initCentroMappa;
     }
 
     ngOnInit() {
         /**
-         *  mi iscrivo al map manager che mi ritorna tutti i marker
+         *  mi iscrivo al map manager che mi ritorna tutti i marker di tipo richiestaMarker
          */
-        this.mapManager.getData().subscribe((r: RichiestaMarker[]) => {
+        this.mapManager.getRichiesteMarker().subscribe((r: RichiestaMarker[]) => {
             this.richiesteMarkers = r;
             /**
              *  inizializzo un contatore nel servizio per tenere traccia del numero di richieste
              */
             this.mapManager.count = this.richiesteMarkers.length;
         });
-    }
-
-    /* TESTING METHOD */
-    setCentroMappa() {
-        const newCentro = this.newCentroMappa;
-        // console.log('centro mappa');
-        const currentCentroMappa = Object.assign({}, this.centroMappa);
-        if (!this.initCentroMappa) {
-            this.initCentroMappa = Object.assign({}, this.centroMappa);
-            // console.log(this.centroMappa);
-        }
-        if (Object.is(JSON.stringify(this.centroMappa), JSON.stringify(newCentro))) {
-            // console.log('centro mappa attuale e nuovo centro mappa sono identici')
-            this.centroMappa = this.initCentroMappa;
-        }
-        if (Object.is(JSON.stringify(currentCentroMappa), JSON.stringify(this.initCentroMappa))) {
-            // console.log('centro mappa attuale e centro mappa iniziale sono identici');
-            this.centroMappa = newCentro;
-        }
     }
 
 }

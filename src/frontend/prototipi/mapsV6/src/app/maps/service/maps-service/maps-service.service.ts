@@ -14,17 +14,7 @@ export class MapsService {
     constructor(private http: HttpClient) {
     }
 
-    // private _count: number;
-    //
-    // set count(count: number) {
-    //     this._count = count;
-    // }
-    //
-    // get count(): number {
-    //     return this._count;
-    // }
-
-    getData(): Observable<any> {
+    getRichiesteMarker(): Observable<any> {
         return this.http.get(API_URL).pipe(
             retry(3),
             catchError(this.handleError)
@@ -41,49 +31,6 @@ export class MapsService {
         }
         return throwError(
             'Qualcosa è andato storto, per favore riprova più tardi.');
-    }
-
-    /* TESTING METHOD */
-    setRandomMarker() {
-        return;
-    }
-
-    /* TESTING METHOD */
-    removeLastMarker() {
-        return;
-    }
-
-    /* TESTING METHOD */
-    changeMarkerColor() {
-        return;
-    }
-
-    /* TESTING METHOD */
-    changeMarkerSize() {
-        return;
-    }
-
-    /* TESTING METHOD */
-    changeMarkerAnimation() {
-        return;
-    }
-
-    /* TESTING METHOD */
-    removeMarker() {
-        return;
-    }
-
-    /* TESTING METHOD */
-    setCentroMappa() {
-        return;
-    }
-
-    /* TESTING METHOD */
-    getCentro(): Observable<any> {
-        return this.http.get(API_URL).pipe(
-            retry(3),
-            catchError(this.handleError)
-        );
     }
 
 }

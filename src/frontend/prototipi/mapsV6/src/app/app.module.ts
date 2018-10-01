@@ -13,6 +13,7 @@ import {AgmComponent} from './maps/agm/agm.component';
 import {AgmCoreModule} from '@agm/core';
 import {environment} from '../environments/environment';
 import {AgmContentComponent} from './maps/agm/agm-content.component';
+import {AgmJsMarkerClustererModule} from '@agm/js-marker-clusterer';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,8 @@ import {AgmContentComponent} from './maps/agm/agm-content.component';
         PipeModule.forRoot(),
         AgmCoreModule.forRoot({
             apiKey: environment.apiUrl.maps.agm.key
-        })
+        }),
+        AgmJsMarkerClustererModule
     ],
     providers: [
         {provide: DispatcherService, useClass: DispatcherServiceFake},

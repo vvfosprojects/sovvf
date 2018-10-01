@@ -19,6 +19,7 @@ declare var google: any;
 export class AgmComponent implements OnInit {
     @Input() richiesteMarkers: RichiestaMarker[];
     @Input() centroMappa: CentroMappa;
+    minMarkerCluster: number;
     datiMeteo: Meteo;
     map_loaded = false;
     map: any;
@@ -36,6 +37,7 @@ export class AgmComponent implements OnInit {
                     new Coordinate(coordinate['lat'], coordinate['lng']),
                     this.map.getZoom()))
         );
+        this.minMarkerCluster = 10;
     }
 
     ngOnInit() {
@@ -125,6 +127,9 @@ export class AgmComponent implements OnInit {
 
 
     centroCambiato(centro) {
+        /**
+         * metodo che fa la next sulla subject di centro
+         */
         this.centro$.next(centro);
     }
 
