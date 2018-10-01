@@ -1,31 +1,32 @@
 <div class="row">
   <!-- Filtri e Ricerca -->
   <div class="col-12">
-      <div class="row">
-          <div class="col-md-6 ml-auto">
-              <app-filtri-richieste class="mr-2"></app-filtri-richieste>
-          </div>
-          <div class="col-md-6 ml-auto">
-              <app-ricerca-richieste></app-ricerca-richieste>
-          </div>
+    <div class="row">
+      <div class="col-md-4 ml-auto">
+        <app-filtri-richieste class="mr-2"></app-filtri-richieste>
       </div>
+      <div class="col-md-2 ml-auto">
+        <button class="btn btn-danger" (click)="deseleziona()">Deseleziona</button>
+      </div>
+      <div class="col-md-6 ml-auto">
+        <app-ricerca-richieste></app-ricerca-richieste>
+      </div>
+    </div>
   </div>
   <!-- Loader (!richieste) -->
   <div *ngIf="!richieste" class="mx-auto my-5">
     <img src="../../../assets/img/pink_loader_resized.gif">
   </div>
-  <!-- Singola Richiesta -->
-  <div *ngFor="let r of richieste | paginate: { id: 'elencoRichieste',
-                                                            itemsPerPage: 6,
-                                                            currentPage: p,
-                                                            totalItems: total }" class="col-6big">
-    <app-sintesi-richiesta [richiesta]="r"></app-sintesi-richiesta>
+
+  <!-- Singola Richiesta Selezionata  -->
+  <div class="col-12 my-1 py-2" style="background-color: blanchedalmond">
+    <app-richiesta-selezionata [richieste]="richieste"></app-richiesta-selezionata>
   </div>
-  <!-- Paginazione -->
-  <div class="col-12 text-center mt-2">
-    <pagination-controls id="elencoRichieste" (pageChange)="p = $event" maxSize="9" directionLinks="true" autoHide="true"
-      responsive="true" previousLabel="" nextLabel="" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
-      screenReaderCurrentLabel="You're on page">
-    </pagination-controls>
+
+  <!-- Singola Richiesta -->
+  <div [ngClass]="{'m-h-700': !richiestaSelezionata, 'm-h-600': richiestaSelezionata}">
+    <div *ngFor="let r of richieste" class="col-6big">
+      <app-sintesi-richiesta [richiesta]="r" (click)="selezionata(r.id)"></app-sintesi-richiesta>
+    </div>
   </div>
 </div>

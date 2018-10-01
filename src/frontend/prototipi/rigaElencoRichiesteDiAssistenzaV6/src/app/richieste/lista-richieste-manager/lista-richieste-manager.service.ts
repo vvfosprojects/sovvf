@@ -1,5 +1,5 @@
-import { Injectable, OnInit } from '@angular/core';
-import { Subject, Observable, of } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { DispatcherFakeService } from '../dispatcher/dispatcher-fake.service';
 

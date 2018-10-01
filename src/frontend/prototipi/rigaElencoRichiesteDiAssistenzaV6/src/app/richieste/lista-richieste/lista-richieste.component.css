@@ -12,6 +12,11 @@
 	padding-left: 15px;
 }
 
+#listaRichieste{
+	max-height: 700px;
+	overflow-y: scroll;
+}
+
 @media (min-width: 2560px) {
 	.col-6big {
 		float: left;
