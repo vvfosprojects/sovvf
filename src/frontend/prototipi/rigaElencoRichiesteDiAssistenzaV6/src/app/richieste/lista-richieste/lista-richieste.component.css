@@ -17,20 +17,27 @@
 	overflow-y: scroll;
 }
 
+.card-shadow{
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+    box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+}
+.card-shadow:hover{
+    -webkit-box-shadow: 2px 0px 2px .5px rgb(255, 82, 82);
+    -moz-box-shadow: 2px 0px 2px .5px rgb(255, 82, 82);
+    box-shadow: 2px 0px 2px .5px rgb(255, 82, 82);
+}
+
 @media (min-width: 2560px) {
 	.col-6big {
-		float: left;
-	}
-	.col-6big {
 		width: 50%;
+		float: left;
 	}
 }
 
 @media (max-width: 2559px) {
 	.col-6big {
-		float: left;
-	}
-	.col-6big {
 		width: 100%;
+		float: left;
 	}
 }

@@ -1,8 +1,19 @@
 import { Injectable } from '@angular/core';
 import { SintesiRichiesteService } from '../lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service';
-import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { of, Observable, Subject } from 'rxjs';
 import * as moment from 'moment';
+
+import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
+import { Operatore } from '../../shared/model/operatore.model';
+import { Tipologia } from '../../shared/model/tipologia.model';
+import { Richiedente } from '../../shared/model/richiedente.model';
+import { Sede } from '../../shared/model/sede.model';
+import { Localita } from '../../shared/model/localita.model';
+import { Coordinate } from '../../shared/model/coordinate.model';
+import { Complessita } from '../../shared/model/complessita.model';
+import { Fonogramma } from '../../shared/model/fonogramma.model';
+import { Partenza } from '../../shared/model/partenza.model';
+import { Squadra } from '../../shared/model/squadra.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +37,7 @@ export class DispatcherFakeService {
     }, 9000);
   }
 
-  onNewSRichiesteArray(): Observable<SintesiRichiesta[]> {
+  onNewSRichiesteList(): Observable<SintesiRichiesta[]> {
     this.sintesiRichiesteService.getSintesiRichieste().subscribe((richieste: SintesiRichiesta[]) => {
       this.richieste = richieste;
     });
@@ -48,42 +59,45 @@ export class DispatcherFakeService {
   /* TESTING METHODS */
   private addRichiesta() {
     const newRichiesta = new SintesiRichiesta(
-      'R10',
-      'RM-23456',
-      false,
-      new Date(),
+      'R1',
+      'RM-24760',
+      new Operatore('Mario', 'Verdi', 'HGM3NS'),
+      true,
+      new Date,
+      new Date,
+      'presidiato',
+      2,
+      [new Tipologia(1, 'Allagamento', 'fa fa-exclamation-triangle')],
+      'Allagamento cantina (Testing)',
+      new Richiedente('Mario Rossi', 3202676253),
+      new Localita(new Coordinate(2.324234, 3.424234), 'Via Cavour, 5', 'Note test'),
+      [
+        new Sede(1, 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando'),
+        new Sede(2, 'Ostiense', new Coordinate(3.423423, 4.423423), 'Comando'),
+        new Sede(3, 'Tuscolana 2', new Coordinate(3.423423, 4.423423), 'Comando'),
+      ],
       null,
-      'chiamata',
-      3,
-      [{ 'codice': 2, 'descrizione': 'Allagamento', 'icona': 'fa fa-exclamation-triangle' }],
-      'Allagamento del secondo piano del condominio per rottura tubazione',
-      'Mario Rossi',
-      '06 41 42 342',
-      { 'indirizzo': 'Piazza dell\'indipendenza, 40', 'coordinate': [12.502470, 41.904380] },
-      [{ 'codice': 1, 'descrizione': 'Tuscolana', 'coordinate': [123, 256] }, {
-        'codice': 2,
-        'descrizione': 'Eur',
-        'coordinate': [123, 256]
-      }, { 'codice': 3, 'descrizione': 'Ostiense', 'coordinate': [123, 256] }],
-      'Vicino pompa di benzina',
-      ['Sisma'],
-      moment().add(10, 'minutes').toDate(),
-      '333444999',
-      1,
-      'Da inviare',
-      133,
-      0,
-      'Alta',
-      [],
-      [],
-      ['pagamento']
+      new Date, // incrementare di qualche minuto
+      'NUE00347',
+      new Fonogramma(1, 'Fonogramma Test'),
+      new Complessita('Alto', 1, 'Descrizione Complessita test'),
+      [
+        new Partenza(
+          [
+          ],
+          [
+            new Squadra('Squadra1', new Date, null)
+          ]
+        ),
+      ],
+      ['Tag1', 'Tag2']
     );
     this.newRichiesta$.next(newRichiesta);
   }
 
   private updateRichiesta() {
     const newRichiesta = this.richieste[0];
-    newRichiesta.rilevante = true;
+    newRichiesta.rilevanza = true;
     setTimeout(() => {
       newRichiesta.stato = 'presidiato';
       newRichiesta.istantePresaInCarico = new Date();

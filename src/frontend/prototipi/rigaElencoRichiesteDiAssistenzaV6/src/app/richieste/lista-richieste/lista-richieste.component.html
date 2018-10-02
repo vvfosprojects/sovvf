@@ -19,14 +19,16 @@
   </div>
 
   <!-- Singola Richiesta Selezionata  -->
-  <div class="col-12 my-1 py-2" style="background-color: blanchedalmond">
-    <app-richiesta-selezionata [richieste]="richieste"></app-richiesta-selezionata>
+  <div *ngIf="richiestaSelezionata" class="col-12 px-0">
+    <app-richiesta-selezionata [richiestaSelezionata]="richiestaSelezionata" [richiestaSelezionataState]='richiestaSelezionataState'></app-richiesta-selezionata>
   </div>
 
-  <!-- Singola Richiesta -->
-  <div [ngClass]="{'m-h-700': !richiestaSelezionata, 'm-h-600': richiestaSelezionata}">
+  <!-- Lista di singole Richieste -->
+  <div class="col-12 px-0" [ngClass]="{'mt-2': !richiestaSelezionata,'m-h-700': !richiestaSelezionata, 'm-h-600': richiestaSelezionata}">
     <div *ngFor="let r of richieste" class="col-6big">
-      <app-sintesi-richiesta [richiesta]="r" (click)="selezionata(r.id)"></app-sintesi-richiesta>
+      <div *ngIf="r !== richiestaSelezionata" class="w-100 card-shadow rounded">
+        <app-sintesi-richiesta #sintesiRichiesta [richiesta]="r" (click)="selezionata(r.id)"></app-sintesi-richiesta>
+      </div>
     </div>
   </div>
 </div>
