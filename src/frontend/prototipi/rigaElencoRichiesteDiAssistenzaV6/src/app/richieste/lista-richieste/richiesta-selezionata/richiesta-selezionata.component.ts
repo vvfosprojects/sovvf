@@ -1,39 +1,32 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { RichiestaSelezionataService } from '../../lista-richieste-service/richiesta-selezionata-service/richiesta-selezionata-service.service';
+import { Component, OnInit, Input } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { transition, animate, style, state, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-richiesta-selezionata',
   templateUrl: './richiesta-selezionata.component.html',
-  styleUrls: ['./richiesta-selezionata.component.css']
+  styleUrls: ['./richiesta-selezionata.component.css'],
+  animations: [
+    trigger('richiestaSelezionata', [
+      state('selected', style({
+        opacity: 1,
+        transform: 'scale(1)'
+      })),
+      state('not-selected', style({
+        opacity: 0,
+        transform: 'scale(1.3)'
+      })),
+      transition('* => selected', animate('200ms ease-in')),
+      transition('* => not-selected', animate('200ms ease-out'))
+    ]),
+  ]
 })
-export class RichiestaSelezionataComponent implements OnInit, OnDestroy {
-  @Input() richieste: SintesiRichiesta[];
-  richiestaSelezionata: SintesiRichiesta;
-  subscription: Subscription;
+export class RichiestaSelezionataComponent implements OnInit {
+  @Input() richiestaSelezionata: SintesiRichiesta;
+  @Input() richiestaSelezionataState: string;
 
-  constructor(private richiestaSelezionataS: RichiestaSelezionataService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.subscription = this.richiestaSelezionataS.getRichiesta().subscribe(richiesta => {
-      this.setSelezionata(richiesta);
-    });
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
-  setSelezionata(id_rSelezionata) {
-    if (typeof id_rSelezionata === 'undefined') {
-      this.richiestaSelezionata = null;
-    } else {
-      this.richieste.forEach(richiesta => {
-        if (richiesta.id === id_rSelezionata) {
-          this.richiestaSelezionata = richiesta;
-        }
-      });
-    }
   }
 }

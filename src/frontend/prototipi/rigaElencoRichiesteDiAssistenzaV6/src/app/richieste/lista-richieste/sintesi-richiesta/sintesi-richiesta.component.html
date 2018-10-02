@@ -1,4 +1,4 @@
-<div class="card row_text card-shadow pt-3 pb-2 px-3 mb-1" [ngClass]="{'status_presidiato': richiesta.stato === 'presidiato', 'status_chiamata': richiesta.stato === 'chiamata', 'status_assegnato': richiesta.stato === 'assegnato','status_sospeso': richiesta.stato === 'sospeso'}">
+<div class="card row_text cursor-pointer pt-3 pb-2 px-3 mb-1" [ngClass]="{'status_presidiato': richiesta.stato === 'presidiato', 'status_chiamata': richiesta.stato === 'chiamata', 'status_assegnato': richiesta.stato === 'assegnato','status_sospeso': richiesta.stato === 'sospeso'}">
     <div class="row align-items-center">
         <div class="col-12">
             <div class="row">
@@ -8,8 +8,8 @@
                             <div class="h6 nowrap">
                                 <i class="guida fa fa-hashtag fa-fw mr-1" aria-hidden="true" title="Identificativo richiesta assistenza"></i>
                                 <a class="h6 num-int" (click)="toggleEspanso()">{{ richiesta.codice
-                                    }}</a>
-                                <i *ngIf="richiesta.rilevante" ngbTooltip="Richiesta rilevante" class="fa fa-exclamation text-danger ml-2"
+                                    }}</a> - {{richiesta.id}}
+                                <i *ngIf="richiesta.rilevanza" ngbTooltip="Richiesta rilevante" class="fa fa-exclamation text-danger ml-2"
                                     aria-hidden="true"></i>
                             </div>
 
@@ -18,12 +18,11 @@
                                 <a ngbTooltip="{{ richiesta.istanteRicezioneRichiesta | friendlyDateTooltip }}"
                                     placement="bottom">{{ time
                                     }}</a>
-                                
+
                             </div>
                             <div class="h6 nowrap default-cursor">
                                 <span *ngIf="richiesta.stato !== 'chiamata'">
-                                    <i class="guida fa fa-bolt fa-fw mr-1"
-                                        aria-hidden="true" title="Prima assegnazione"></i>
+                                    <i class="guida fa fa-bolt fa-fw mr-1" aria-hidden="true" title="Prima assegnazione"></i>
                                     <a>{{ richiesta.istantePrimaAssegnazione | friendlyDateTooltip }}</a>
                                 </span>
 
@@ -71,25 +70,26 @@
                             <!-- richiedente -->
                             <div class="h6 nowrap default-cursor">
                                 <i class="guida fa fa-address-book-o fa-fw mr-1" aria-hidden="true" title="Richiedente"></i>
-                                <span><a ngbTooltip="{{ richiesta.richiedente }}" placement="bottom" [disableTooltip]="richiesta.richiedente.length <= 20">{{
-                                        richiesta.richiedente | truncate:20 }}</a></span>
+                                <span><a ngbTooltip="{{ richiesta.richiedente.nominativo }}" placement="bottom"
+                                        [disableTooltip]="richiesta.richiedente.nominativo.length <= 20">{{
+                                        richiesta.richiedente.nominativo | truncate:20 }}</a></span>
                                 <span class="ml-1">(<i class="guida fa fa-phone fa-fw mr-1" aria-hidden="true" title="Numero richiedente"></i><a>{{
-                                        richiesta.numeroRichiedente}}</a>)</span>
+                                        richiesta.richiedente.telefono}}</a>)</span>
                             </div>
 
                             <!-- indirizzo -->
                             <div class="h6 nowrap default-cursor">
                                 <i class="guida fa fa-map-marker fa-fw mr-1" aria-hidden="true" title="Località"></i>
-                                <span><a ngbTooltip="{{ richiesta.descrizioneLocalita.indirizzo }}" placement="bottom"
-                                        [disableTooltip]="richiesta.descrizioneLocalita.indirizzo.length <= 30">{{
-                                        richiesta.descrizioneLocalita.indirizzo | truncate:30 }}</a></span>
+                                <span><a ngbTooltip="{{ richiesta.localita.indirizzo }}" placement="bottom"
+                                        [disableTooltip]="richiesta.localita.indirizzo.length <= 30">{{
+                                        richiesta.localita.indirizzo | truncate:30 }}</a></span>
                                 <a href="#">
                                     <i class="guida fa fa-globe fa-fw globo-loc ml-1" aria-hidden="true" title="Localizzazione Richiesta Intervento"
                                         (click)="localizzaIntervento(richiesta.id)"></i>
                                 </a>
                                 <span class="list-inline list-unstyled m-0 ml-2">
-                                    <app-competenza *ngFor="let c of richiesta.descrizioneCompetenze; let i = index"
-                                        [competenza]="c" [i]="i"></app-competenza>
+                                    <app-competenza *ngFor="let c of richiesta.competenze; let i = index" [competenza]="c"
+                                        [i]="i"></app-competenza>
                                 </span>
                             </div>
                         </div>
@@ -103,12 +103,11 @@
                                     <a class="h6 big_numbers" [ngbPopover]="popSquadre" placement="bottom" popoverTitle="Squadre"
                                         triggers="click" tabindex="0">{{ numeroSquadre() }}</a>
 
-                                    <!-- ngbPopover squadre -->
                                     <ng-template #popSquadre>
                                         <div class="h6" *ngFor="let s of nomiSquadre()">
                                             <span>{{ s }}</span>
                                         </div>
-                                        <h6 class="mb-0" *ngIf="nomiSquadre().length === 0">Nessuna squadra</h6>
+                                        <h6 class="mb-0" *ngIf="numeroSquadre() === 0">Nessuna squadra</h6>
                                     </ng-template>
                                 </span>
 
@@ -118,20 +117,18 @@
                                     <a class="h6 big_numbers" [ngbPopover]="popMezzi" placement="bottom" popoverTitle="Mezzi"
                                         triggers="click" tabindex="0">{{ numeroMezzi() }}</a>
 
-                                    <!-- ngbPopover mezzi -->
                                     <ng-template #popMezzi>
-                                        <div class="h6 nowrap" *ngFor="let m of richiesta.mezzi">
-                                            <span>{{ m.descrizione }}</span>
+                                        <div class="h6 nowrap" *ngFor="let m of nomiMezzi()">
+                                            <span>{{ m }}</span>
                                         </div>
-                                        <h6 class="mb-0" *ngIf="richiesta.mezzi.length === 0">Nessun mezzo</h6>
+                                        <h6 class="mb-0" *ngIf="numeroMezzi() === 0">Nessun mezzo</h6>
                                     </ng-template>
-
                                 </span>
                             </div>
 
                             <div class="h6 nowrap default-cursor my-1">
                                 <i class="guida fa fa-thermometer-half fa-fw" aria-hidden="true" title="Priorità della richiesta"></i>
-                                <span class="h6" [ngClass]="{'text-success':richiesta.prioritaRichiesta <= 2, 'text-warning':richiesta.prioritaRichiesta > 2 && richiesta.prioritaRichiesta <= 4, 'text-danger': richiesta.prioritaRichiesta == 5}">
+                                <span class="h6" [ngClass]="{'text-success':richiesta.priorita <= 2, 'text-warning':richiesta.priorita > 2 && richiesta.priorita <= 4, 'text-danger': richiesta.priorita == 5}">
                                     <i *ngFor="let n of vettorePallini()" class="fa fa-circle" aria-hidden="true"></i><i
                                         *ngFor="let n of vettoreBuchini()" class="fa fa-circle-o" aria-hidden="true"></i>
                                 </span>
@@ -164,7 +161,7 @@
                             <div class="col-md-12 bg_diagonal_grey">
                                 <div class="h3">
                                     <div class="h6 p-2">
-                                        {{ richiesta.noteLocalita }}
+                                        {{ richiesta.localita.note }}
                                     </div>
                                     <div class="h5 pull-right">
                                         <span *ngFor="let ze of richiesta.zoneEmergenza" class="badge badge-danger pull-right m-1">{{
@@ -182,9 +179,8 @@
                             <!-- presa in carico -->
                             <div class="h6">
                                 <i class="guida fa fa-calendar-check-o fa-fw mr-1" aria-hidden="true" title="Presa in carico"></i>
-                                <a ngbTooltip="{{ richiesta.istantePresaInCarico | friendlyDateTooltip }}" placement="bottom">{{
-                                    richiesta.istantePresaInCarico | friendlyDate }} {{ richiesta.istantePresaInCarico
-                                    | friendlyHour }}</a>
+                                <a ngbTooltip="{{ richiesta.istantePresaInCarico | friendlyDateTooltip }}" placement="bottom">{{richiesta.istantePresaInCarico
+                                    | friendlyDate }} {{ richiesta.istantePresaInCarico | friendlyHour }}</a>
                             </div>
 
                             <!-- scheda nue -->
@@ -196,17 +192,17 @@
                             <!-- fonogramma -->
                             <div class="h6">
                                 <i class="guida fa fa-paper-plane-o fa-fw mr-1" aria-hidden="true" title="Stato Fonogramma"></i>
-                                <span class="h6 badge m-0" [ngClass]="{'badge-success text-white':richiesta.statoFonogrammaRichiesta == 2, 'badge-secondary':richiesta.statoFonogrammaRichiesta == 0, 'badge-warning text-white':richiesta.statoFonogrammaRichiesta == 1}">
-                                    {{ richiesta.descrizioneStatoFonogramma }}
+                                <span class="h6 badge m-0" [ngClass]="{'badge-success text-white':richiesta.fonogramma.codice == 2, 'badge-secondary':richiesta.fonogramma.codice == 0, 'badge-warning text-white':richiesta.fonogramma.codice == 1}">
+                                    {{ richiesta.fonogramma.descrizione }}
                                 </span>
                             </div>
 
                             <!-- complessità -->
                             <div class="h6">
                                 <i class="guida fa fa-gears fa-fw mr-1" aria-hidden="true" title="Complessità"></i>
-                                <a><b>{{ richiesta.indiceComplessita }}</b></a>
-                                <span class="h6 badge m-0 ml-1" [ngClass]="{'badge-success':richiesta.complessitaRichiesta == 2, 'badge-warning':richiesta.complessitaRichiesta == 1, 'badge-danger':richiesta.complessitaRichiesta == 0}">{{
-                                    richiesta.descrizioneComplessita }}</span>
+                                <a><b>{{ richiesta.complessita.indice }}</b></a>
+                                <span class="h6 badge m-0 ml-1" [ngClass]="{'badge-success':richiesta.complessita.codice == 2, 'badge-warning':richiesta.complessita.codice == 1, 'badge-danger':richiesta.complessita.codice == 0}">{{
+                                    richiesta.complessita.descrizione }}</span>
                             </div>
                         </div>
 
@@ -218,8 +214,8 @@
                                             <i class="fa fa-person"></i>Squadre coinvolte
                                         </div>
                                         <div class="h6">
-                                            <ul class="list-group list-group-flush">
-                                                <li *ngFor="let s of richiesta.squadre" class="list-group-item">
+                                            <ul class="list-group list-group-flush" *ngFor="let p of richiesta.partenze">
+                                                <li *ngFor="let s of p.squadre" class="list-group-item">
                                                     <div class="row mx-auto">
                                                         <div class="col-md-8">
                                                             <i class="guida fa fa-fire-extinguisher fa-fw" aria-hidden="true"
@@ -235,16 +231,18 @@
                                                             </a>
 
                                                             <ng-template #popComponenti>
-                                                                <div class="h5">
+                                                                <div class="h6">
                                                                     <div *ngFor="let c of s.componenti">
                                                                         <app-componente [componente]="c"></app-componente>
                                                                     </div>
+                                                                    <span *ngIf="!s.componenti">Nessun
+                                                                        Componente</span>
                                                                 </div>
                                                             </ng-template>
                                                         </div>
                                                     </div>
                                                 </li>
-                                                <li *ngIf="richiesta.squadre.length === 0" class="list-group-item pl-2 pr-2">
+                                                <li *ngIf="numeroSquadre() === 0" class="list-group-item pl-2 pr-2">
                                                     Nessuna squadra
                                                 </li>
                                             </ul>
@@ -256,8 +254,10 @@
                                         </div>
                                         <div class="h6 m-0">
                                             <ul class="list-group list-group-flush border-left">
-                                                <app-mezzo *ngFor="let m of richiesta.mezzi" [mezzo]="m"></app-mezzo>
-                                                <li *ngIf="richiesta.mezzi.length === 0" class="list-group-item pl-2 pr-2">
+                                                <span *ngFor="let p of richiesta.partenze">
+                                                    <app-mezzo *ngFor="let m of p.mezzi" [mezzo]="m"></app-mezzo>
+                                                </span>
+                                                <li *ngIf="numeroMezzi() === 0" class="list-group-item pl-2 pr-2">
                                                     Nessun mezzo
                                                 </li>
                                             </ul>
@@ -270,10 +270,10 @@
                         <!-- TAGS-->
                         <div class="card-text col-md-12">
                             <div class="card mt-3" style="background-color: lavender">
-                                <div class="col-md-12 h6 pull-right mt-2">
-                                    <span class="badge badge-default pull-right m-1">Incendi Estivi</span>
-                                    <span class="badge badge-default pull-right m-1">Fuori Città</span>
-                                    <i class="guida fa fa-tags fa-fw m-1" aria-hidden="true" title="Etichette"></i>
+                                <div class="col-md-12 h6 text-right mt-2">
+                                    <i class="guida fa fa-tags fa-fw text-left m-1" aria-hidden="true" title="Etichette"></i>
+                                    <span class="badge badge-success text-right m-1">Incendi Estivi</span>
+                                    <span class="badge badge-secondary text-right m-1">Fuori Città</span>
                                 </div>
                             </div>
                         </div>
@@ -281,15 +281,5 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="col-md-1"> (1)
-          <div class="h2">
-            <a href="#">
-                        <i class="tasto-dettaglio fa fa-info-circle" aria-hidden="true" title="Vai alla pagina di dettaglio" (click)="clickDettagli()"></i>
-                    </a>
-            <a href="#">
-                        <i class="tasto-dettaglio fa fa-arrow-circle-o-right" aria-hidden="true" title="Invio partenza" (click)="invioPartenza()"></i>
-                    </a>
-          </div>
-        </div> -->
     </div>
 </div>

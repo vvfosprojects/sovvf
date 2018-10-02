@@ -6,6 +6,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as Shared from './shared/';
 
 import { AppComponent } from './app.component';
@@ -41,6 +42,7 @@ import { RichiestaSelezionataComponent } from './richieste/lista-richieste/richi
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         HttpClientModule,
         NgbModule,
         PipeModule.forRoot(),

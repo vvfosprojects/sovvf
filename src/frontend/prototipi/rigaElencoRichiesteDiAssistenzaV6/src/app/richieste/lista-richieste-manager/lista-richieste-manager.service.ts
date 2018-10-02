@@ -11,7 +11,7 @@ export class ListaRichiesteManagerService {
 
   constructor(private dispatcherFakeS: DispatcherFakeService) {
 
-    this.dispatcherFakeS.onNewSRichiesteArray().subscribe(richieste => {
+    this.dispatcherFakeS.onNewSRichiesteList().subscribe(richieste => {
       this.richieste = richieste;
     });
 
@@ -20,8 +20,6 @@ export class ListaRichiesteManagerService {
     });
 
     this.dispatcherFakeS.onDeleteSRichiesta().subscribe(richiesta => {
-      /* const index = this.richieste.indexOf(richiesta);
-      this.richieste = this.richieste.splice(index, 1); */
       this.richieste = this.richieste.filter(x => x.id === richiesta.id);
     });
 

@@ -1,1 +1,6 @@
-<app-sintesi-richiesta *ngIf="richiestaSelezionata" [richiesta]="richiestaSelezionata"></app-sintesi-richiesta>
+<div [@richiestaSelezionata]="richiestaSelezionataState" class="col-12 mt-1 py-2" style="opacity:0">
+    <div class="w-100 rounded card-shadow">
+        <app-sintesi-richiesta [richiesta]="richiestaSelezionata"></app-sintesi-richiesta>
+    </div>
+</div>
+<hr class="mt-0 mb-2">
