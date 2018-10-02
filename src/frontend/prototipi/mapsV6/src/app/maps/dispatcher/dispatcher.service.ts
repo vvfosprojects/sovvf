@@ -8,7 +8,8 @@ import {MezzoMarker} from '../maps-model/mezzo-marker.model';
 @Injectable({
     providedIn: 'root'
 })
-export class DispatcherService {private newRichiestaMarker$ = new Subject<RichiestaMarker>();
+export class DispatcherService {
+    private newRichiestaMarker$ = new Subject<RichiestaMarker>();
     private updateRichiestaMarker$ = new Subject<RichiestaMarker>();
     private deleteRichiestaMarker$ = new Subject<RichiestaMarker>();
 
@@ -34,7 +35,6 @@ export class DispatcherService {private newRichiestaMarker$ = new Subject<Richie
     onNewRichiesteMarkersList(): Observable<RichiestaMarker[]> {
         this.mapsService.getRichiesteMarker().subscribe((richiesteMarker: RichiestaMarker[]) => {
             this.richiesteMarker = richiesteMarker;
-
         });
         return of(this.richiesteMarker);
     }
@@ -104,17 +104,17 @@ export class DispatcherService {private newRichiestaMarker$ = new Subject<Richie
      */
 
     addMarker(marker: RichiestaMarker) {
-        // console.log(this.richiesteMarker);
+        // console.log(marker);
         this.newRichiestaMarker$.next(marker);
     }
 
     updateMarker(marker: RichiestaMarker) {
-        // console.log(this.richiesteMarker);
+        // console.log(marker);
         this.updateRichiestaMarker$.next(marker);
     }
 
     deleteMarker(marker: RichiestaMarker) {
-        // console.log(this.richiesteMarker);
+        // console.log(marker);
         this.deleteRichiestaMarker$.next(marker);
     }
 

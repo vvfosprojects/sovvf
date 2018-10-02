@@ -5,7 +5,7 @@ import {Coordinate} from '../../shared/model/coordinate.model';
 export class RichiestaMarker {
     constructor(
         /* id */
-        public id_richiesta: string,
+        public id: string,
         /* La stringa dell'indirizzo e le relative coordinate */
         public localita: Localita,
         /* Id del tipo tipologia */

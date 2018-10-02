@@ -1,5 +1,4 @@
 import {Component, OnDestroy} from '@angular/core';
-import {RichiestaMarker} from '../../maps-model/richiesta-marker.model';
 import {MarkedService} from '../../service/marked-service/marked-service.service';
 import {Subscription} from 'rxjs';
 import {MapsService} from '../../service/maps-service/maps-service.service';
@@ -14,7 +13,7 @@ import {Coordinate} from '../../../shared/model/coordinate.model';
 })
 export class NavComponent implements OnDestroy {
 
-    markerSelezionato: RichiestaMarker;
+    markerSelezionato: any;
     subscription: Subscription;
 
     constructor(private mapsService: MapsService,

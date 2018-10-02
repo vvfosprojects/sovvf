@@ -32,11 +32,11 @@
             imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
             [minimumClusterSize]="minMarkerCluster">
         <agm-marker *ngFor="let sediM of sediMarkers;" [latitude]="sediM.getCoordinate().latitudine"
-                    [longitude]="sediM.sede.coordinate.longitudine"
+                    [longitude]="sediM.getCoordinate().longitudine"
                     (markerClick)="selezioneMarker(sediM)"
                     [iconUrl]="urlIcona(sediM, 'sede')" [animation]="tipoAnimazione(sediM)" [visible]="true">
             <agm-info-window *ngIf="trueMarker(sediM)">
-                <strong>{{sediM.sede.descrizione}}</strong>
+                <strong>{{sediM.descrizione}}</strong>
                 <div *ngIf="datiMeteo" class="h-infowindow">
                     <hr class="my-0">
                     <div>

@@ -7,6 +7,7 @@ import {CenterService} from '../../service/center-service/center-service.service
 import {Localita} from '../../../shared/model/localita.model';
 import {Coordinate} from '../../../shared/model/coordinate.model';
 import {Tipologia} from '../../../shared/model/tipologia.model';
+import {DispatcherService} from '../../dispatcher/dispatcher.service';
 
 @Injectable({
     providedIn: 'root'
@@ -16,11 +17,12 @@ export class FakeMethodService {
     private stati: any;
     private statiObj: any;
 
-    markerSelezionato: RichiestaMarker;
+    markerSelezionato: any;
     subscription: Subscription;
 
     constructor(private markedService: MarkedService,
                 private mapManager: MapManagerService,
+                private dispatcher: DispatcherService,
                 private centerService: CenterService) {
         this.subscription = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
@@ -36,7 +38,8 @@ export class FakeMethodService {
 
     /* TESTING METHOD */
     setMarker(marker: RichiestaMarker) {
-        this.mapManager.richiesteMarker.push(marker);
+        // this.mapManager.richiesteMarker.push(marker);
+        this.dispatcher.addMarker(marker);
     }
 
     /* TESTING METHOD */
@@ -61,7 +64,7 @@ export class FakeMethodService {
     /* TESTING METHOD */
     removeLastMarker() {
         if (this.markerSelezionato &&
-            this.mapManager.richiesteMarker.slice(-1).pop().id_richiesta === this.markerSelezionato.id_richiesta) {
+            this.mapManager.richiesteMarker.slice(-1).pop().id === this.markerSelezionato.id) {
             this.markedService.clearMarked();
         }
         this.mapManager.richiesteMarker.pop();
@@ -70,36 +73,22 @@ export class FakeMethodService {
     /* TESTING METHOD */
     changeMarkerColor() {
         const statoCasuale = Math.floor(Math.random() * 4) + 1;
-        const color = this.mapManager.richiesteMarker.find(x => x.id_richiesta === this.markerSelezionato.id_richiesta);
+        const color = this.mapManager.richiesteMarker.find(x => x.id === this.markerSelezionato.id);
         color.stato = this.statiObj.get(statoCasuale);
-        const colorCopy = JSON.parse(JSON.stringify(color));
-        this.setMarker(colorCopy);
-        const index = this.mapManager.richiesteMarker.indexOf(this.markerSelezionato);
-        if (index > -1) {
-            this.mapManager.richiesteMarker.splice(index, 1);
-        }
+        this.dispatcher.updateMarker(color);
         this.markedService.clearMarked();
     }
 
 
     /* TESTING METHOD */
     changeMarkerSize() {
-        const size = this.mapManager.richiesteMarker.find(x => x.id_richiesta === this.markerSelezionato.id_richiesta);
+        const size = this.mapManager.richiesteMarker.find(x => x.id === this.markerSelezionato.id);
         if (size.priorita > 0 && size.priorita < 5) {
             size.priorita++;
         } else if (size.priorita === 5) {
             size.priorita = 1;
         }
-        const sizeCopy = JSON.parse(JSON.stringify(size));
-        this.setMarker(sizeCopy);
-        const index = this.mapManager.richiesteMarker.indexOf(this.markerSelezionato);
-        if (index > -1) {
-            this.mapManager.richiesteMarker.splice(index, 1);
-        }
-        /**
-         * da completare
-         */
-        // this.dispatcher.updateMarker(size);
+        this.dispatcher.updateMarker(size);
         this.markedService.clearMarked();
     }
 
@@ -115,11 +104,9 @@ export class FakeMethodService {
 
     /* TESTING METHOD */
     removeMarker() {
-        const index: number = this.mapManager.richiesteMarker.indexOf(this.markerSelezionato);
-        if (index !== -1) {
-            this.mapManager.richiesteMarker.splice(index, 1);
-            this.markedService.clearMarked();
-        }
+        const remove = this.mapManager.richiesteMarker.find(x => x.id === this.markerSelezionato.id);
+        this.dispatcher.deleteMarker(remove);
+        this.markedService.clearMarked();
     }
 
     aggiornaCentro(centro) {

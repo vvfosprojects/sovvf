@@ -98,7 +98,7 @@ export class IconMappe {
          */
         const pathModello = this.mapIconeModelloPath.get(modello);
         const path = this.pathUrl + pathModello;
-        const check = !(markerS === marker || markerS === marker.id_richiesta);
+        const check = !(markerS === marker || markerS === marker.id);
         const dir = check ? path + 'ns/' : path + 's/';
         if (marker) {
             switch (modello) {
@@ -119,7 +119,7 @@ export class IconMappe {
                     return this.iconaStatoCorrenteUrl;
                 }
                 case 'sede': {
-                    this.iconaStatoCorrenteUrl = dir + this.mapIconeSedi.get(marker.sede.tipologia.toLowerCase());
+                    this.iconaStatoCorrenteUrl = dir + this.mapIconeSedi.get(marker.tipologia.toLowerCase());
                     if (!this.iconaStatoCorrenteUrl) {
                         return null;
                     }

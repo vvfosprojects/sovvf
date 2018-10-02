@@ -56,7 +56,6 @@ export class MarkerService {
         /**
          *  faccio una chiamata all'api del servizio meteo e aspetto i dati del marker selezionato
          */
-        console.log(marker.getCoordinate());
         this.meteoService.getMeteoData(marker.getCoordinate())
             .subscribe({
                 next: data => this.datiMeteo = data,

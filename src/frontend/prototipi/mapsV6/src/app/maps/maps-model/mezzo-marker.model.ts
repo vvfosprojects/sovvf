@@ -5,7 +5,7 @@ import {Coordinate} from '../../shared/model/coordinate.model';
 export class MezzoMarker {
     constructor(
         /* La stringa dell'indirizzo e le relative coordinate */
-        public posizione: Coordinate,
+        public coordinate: Coordinate,
         /* Contiene le proprietà del mezzo */
         public mezzo: Mezzo,
         /* id della richiesta a cui è associato il mezzo */
@@ -18,6 +18,6 @@ export class MezzoMarker {
     }
 
     getCoordinate() {
-        return new Coordinate(this.posizione.latitudine, this.posizione.longitudine);
+        return new Coordinate(this.coordinate.latitudine, this.coordinate.longitudine);
     }
 }

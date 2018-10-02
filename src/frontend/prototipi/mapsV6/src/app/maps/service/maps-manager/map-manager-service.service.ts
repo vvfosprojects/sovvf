@@ -39,11 +39,11 @@ export class MapManagerService {
         });
 
         this.dispatcher.onUpdateRichiestaMarker().subscribe(richiesta => {
-            this.richiesteMarker = this.richiesteMarker.map(r => r.id_richiesta === richiesta.id_richiesta ? richiesta : r);
+            this.richiesteMarker = this.richiesteMarker.map(r => r.id === richiesta.id ? richiesta : r);
         });
 
         this.dispatcher.onDeleteRichiestaMarker().subscribe(richiesta => {
-            this.richiesteMarker = this.richiesteMarker.filter(x => x.id_richiesta === richiesta.id_richiesta);
+            this.richiesteMarker.splice(this.richiesteMarker.indexOf(richiesta), 1);
         });
 
         /**
@@ -58,11 +58,11 @@ export class MapManagerService {
         });
 
         this.dispatcher.onUpdateSedeMarker().subscribe(s => {
-            this.sediMarker = this.sediMarker.map(r => r.sede.codice === s.sede.codice ? s : r);
+            this.sediMarker = this.sediMarker.map(r => r.codice === s.codice ? s : r);
         });
 
         this.dispatcher.onDeleteSedeMarker().subscribe(s => {
-            this.sediMarker = this.sediMarker.filter(x => x.sede.codice === s.sede.codice);
+            this.sediMarker = this.sediMarker.filter(x => x.codice === s.codice);
         });
 
         /**

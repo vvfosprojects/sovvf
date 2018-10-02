@@ -98,15 +98,11 @@ export class MapsServiceFake {
 
     getSediMarker(): Observable<SedeMarker[]> {
         this.sediMarker = [
-            new SedeMarker(
-                new Sede(1, 'Tuscolano I', new Coordinate(41.881490, 12.518700), 'Distaccamento')
-            ),
-            new SedeMarker(
-                new Sede(2, 'Tuscolano II', new Coordinate(41.863930, 12.554420), 'Distaccamento')
-            ),
-            new SedeMarker(
-                new Sede(3, 'Roma', new Coordinate(41.899940, 12.491270), 'Comando')
-            )
+            new SedeMarker(1, 'Tuscolano I', new Coordinate(41.881490, 12.518700), 'Distaccamento')
+            ,
+            new SedeMarker(2, 'Tuscolano II', new Coordinate(41.863930, 12.554420), 'Distaccamento')
+            ,
+            new SedeMarker(3, 'Roma', new Coordinate(41.899940, 12.491270), 'Comando')
         ];
         return of(this.sediMarker);
     }
