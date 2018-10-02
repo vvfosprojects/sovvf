@@ -47,7 +47,7 @@ export class FakeMethodService {
         const long = Math.floor(Math.random() * 10) * 0.1 + 12.49;
         const markerRandom = new RichiestaMarker(
             'R' + this.mapManager.count,
-            new Localita('', 'Via Cavour, 5', new Coordinate(lat, long)),
+            new Localita(new Coordinate(lat, long), 'Via Cavour, 5'),
             [
                 new Tipologia(1, 'allagamento', '')
             ],

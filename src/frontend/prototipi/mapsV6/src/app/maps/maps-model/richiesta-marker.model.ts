@@ -1,5 +1,6 @@
 import {Localita} from '../../shared/model/localita.model';
 import {Tipologia} from '../../shared/model/tipologia.model';
+import {Coordinate} from '../../shared/model/coordinate.model';
 
 export class RichiestaMarker {
     constructor(
@@ -19,5 +20,9 @@ export class RichiestaMarker {
         /* Determina lo stato della richiesta */
         public stato: string
     ) {
+    }
+
+    getCoordinate() {
+        return new Coordinate(this.localita.coordinate.latitudine, this.localita.coordinate.longitudine);
     }
 }

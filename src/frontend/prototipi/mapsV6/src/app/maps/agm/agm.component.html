@@ -7,8 +7,8 @@
     <agm-marker-cluster
             imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
             [minimumClusterSize]="minMarkerCluster">
-        <agm-marker *ngFor="let richiesteM of richiesteMarkers;" [latitude]="richiesteM.localita.coordinate.latitudine"
-                    [longitude]="richiesteM.localita.coordinate.longitudine"
+        <agm-marker *ngFor="let richiesteM of richiesteMarkers;" [latitude]="richiesteM.getCoordinate().latitudine"
+                    [longitude]="richiesteM.getCoordinate().longitudine"
                     (markerClick)="selezioneMarker(richiesteM)"
                     [iconUrl]="urlIcona(richiesteM, 'richiesta')" [animation]="tipoAnimazione(richiesteM)" [visible]="true">
             <agm-info-window *ngIf="trueMarker(richiesteM)">
@@ -31,7 +31,7 @@
     <agm-marker-cluster
             imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
             [minimumClusterSize]="minMarkerCluster">
-        <agm-marker *ngFor="let sediM of sediMarkers;" [latitude]="sediM.sede.coordinate.latitudine"
+        <agm-marker *ngFor="let sediM of sediMarkers;" [latitude]="sediM.getCoordinate().latitudine"
                     [longitude]="sediM.sede.coordinate.longitudine"
                     (markerClick)="selezioneMarker(sediM)"
                     [iconUrl]="urlIcona(sediM, 'sede')" [animation]="tipoAnimazione(sediM)" [visible]="true">
@@ -55,8 +55,8 @@
     <agm-marker-cluster
             imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
             [minimumClusterSize]="minMarkerCluster">
-        <agm-marker *ngFor="let mezziM of mezziMarkers;" [latitude]="mezziM.posizione.latitudine"
-                    [longitude]="mezziM.posizione.longitudine"
+        <agm-marker *ngFor="let mezziM of mezziMarkers;" [latitude]="mezziM.getCoordinate().latitudine"
+                    [longitude]="mezziM.getCoordinate().longitudine"
                     (markerClick)="selezioneMarker(mezziM)"
                     [iconUrl]="urlIcona(mezziM, 'mezzo')" [animation]="tipoAnimazione(mezziM)" [visible]="true">
             <agm-info-window *ngIf="trueMarker(mezziM)">

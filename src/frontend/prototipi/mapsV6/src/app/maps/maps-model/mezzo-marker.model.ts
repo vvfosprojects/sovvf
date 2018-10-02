@@ -16,4 +16,8 @@ export class MezzoMarker {
         public label?: string
     ) {
     }
+
+    getCoordinate() {
+        return new Coordinate(this.posizione.latitudine, this.posizione.longitudine);
+    }
 }

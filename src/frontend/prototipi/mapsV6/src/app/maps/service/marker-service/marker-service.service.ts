@@ -26,6 +26,9 @@ export class MarkerService {
     }
 
     tipoIcona(marker: any, modello: string): string {
+        /**
+         * metodo che mi ritorna il tipo di icona da utilizzare
+         */
         return this.icone.tipoIcona(marker, modello, this.markerSelezionato);
     }
 
@@ -53,9 +56,11 @@ export class MarkerService {
         /**
          *  faccio una chiamata all'api del servizio meteo e aspetto i dati del marker selezionato
          */
-        this.meteoService.getMeteoData(marker.localita.coordinate)
-            .subscribe(data => {
-                this.datiMeteo = data;
+        console.log(marker.getCoordinate());
+        this.meteoService.getMeteoData(marker.getCoordinate())
+            .subscribe({
+                next: data => this.datiMeteo = data,
+                error: data => console.log(`Errore: ${data}`)
             });
     }
 }

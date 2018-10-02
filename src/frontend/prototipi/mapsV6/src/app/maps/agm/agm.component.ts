@@ -73,7 +73,7 @@ export class AgmComponent implements OnInit {
         /**
          * richiamo i metodi per modficare il centro e lo zoom del marker cliccato
          */
-        this.centraMappa(new Coordinate(marker.localita.coordinate.latitudine, marker.localita.coordinate.longitudine));
+        this.centraMappa(marker.getCoordinate());
         this.cambiaZoom(12);
     }
 

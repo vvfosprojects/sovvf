@@ -45,9 +45,10 @@ export class MapsServiceFake {
     getRichiesteMarker(): Observable<RichiestaMarker[]> {
         this.richiesteMarker = [
             new RichiestaMarker('R1',
-                new Localita('',
+                new Localita(
+                    new Coordinate(42.5131365, 12.773477),
                     'Via Cavour, 5',
-                    new Coordinate(42.5131365, 12.773477)),
+                ),
                 [
                     new Tipologia(1, 'allagamento', '')
                 ],
@@ -57,9 +58,10 @@ export class MapsServiceFake {
                 'assegnata'
             ),
             new RichiestaMarker('R2',
-                new Localita('',
+                new Localita(
+                    new Coordinate(42.8131365, 12.773477),
                     'Via Cavour, 5',
-                    new Coordinate(42.8131365, 12.773477)),
+                ),
                 [
                     new Tipologia(2, 'incendio', '')
                 ],
@@ -77,9 +79,9 @@ export class MapsServiceFake {
             const randomNumber = Math.floor(Math.random() * 4) + 1;
             this.richiesteMarker.push(new RichiestaMarker(
                 'R' + (_i + 1),
-                new Localita('',
-                    'Via Cavour, 5',
-                    new Coordinate(Math.floor(Math.random() * 100) * 0.01 + 41.895, Math.floor(Math.random() * 100) * 0.01 + 12.495)
+                new Localita(
+                    new Coordinate(Math.floor(Math.random() * 100) * 0.01 + 41.895, Math.floor(Math.random() * 100) * 0.01 + 12.495),
+                    'Via Cavour, 5'
                 ),
                 [
                     new Tipologia(1, 'allagamento', '')
