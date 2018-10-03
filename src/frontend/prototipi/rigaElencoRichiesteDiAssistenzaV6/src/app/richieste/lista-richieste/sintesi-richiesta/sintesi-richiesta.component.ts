@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef }
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
-import { EventiService } from '../../lista-richieste-service/eventi-service/eventi-service.service';
 
 @Component({
     selector: 'app-sintesi-richiesta',

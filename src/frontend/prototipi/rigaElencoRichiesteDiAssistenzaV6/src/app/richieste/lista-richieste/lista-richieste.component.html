@@ -1,18 +1,4 @@
 <div class="row">
-  <!-- Filtri e Ricerca -->
-  <div class="col-12">
-    <div class="row">
-      <div class="col-md-4 ml-auto">
-        <app-filtri-richieste class="mr-2"></app-filtri-richieste>
-      </div>
-      <div class="col-md-2 ml-auto">
-        <button class="btn btn-danger" (click)="deseleziona()">Deseleziona</button>
-      </div>
-      <div class="col-md-6 ml-auto">
-        <app-ricerca-richieste></app-ricerca-richieste>
-      </div>
-    </div>
-  </div>
   <!-- Loader (!richieste) -->
   <div *ngIf="!richieste" class="mx-auto my-5">
     <img src="../../../assets/img/pink_loader_resized.gif">
@@ -26,8 +12,8 @@
   <!-- Lista di singole Richieste -->
   <div class="col-12 px-0" [ngClass]="{'mt-2': !richiestaSelezionata,'m-h-700': !richiestaSelezionata, 'm-h-600': richiestaSelezionata}">
     <div *ngFor="let r of richieste" class="col-6big">
-      <div *ngIf="r !== richiestaSelezionata" class="w-100 card-shadow rounded">
-        <app-sintesi-richiesta #sintesiRichiesta [richiesta]="r" (click)="selezionata(r.id)"></app-sintesi-richiesta>
+      <div *ngIf="r !== richiestaSelezionata" class="w-100 rounded" [ngClass]="{'card-shadow': r !== richiestaHover, 'card-shadow-hover': r === richiestaHover}">
+        <app-sintesi-richiesta [richiesta]="r"></app-sintesi-richiesta>
       </div>
     </div>
   </div>

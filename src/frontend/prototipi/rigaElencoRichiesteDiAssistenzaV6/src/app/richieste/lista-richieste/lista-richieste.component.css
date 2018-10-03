@@ -22,7 +22,7 @@
     -moz-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
     box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
 }
-.card-shadow:hover{
+.card-shadow-hover{
     -webkit-box-shadow: 2px 0px 2px .5px rgb(255, 82, 82);
     -moz-box-shadow: 2px 0px 2px .5px rgb(255, 82, 82);
     box-shadow: 2px 0px 2px .5px rgb(255, 82, 82);

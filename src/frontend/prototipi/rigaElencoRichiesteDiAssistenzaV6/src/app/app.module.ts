@@ -19,6 +19,7 @@ import { RicercaRichiesteComponent } from './richieste/ricerca-richieste/ricerca
 import { FiltriRichiesteComponent } from './richieste/filtri-richieste/filtri-richieste.component';
 import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.component';
 import { RichiestaSelezionataComponent } from './richieste/lista-richieste/richiesta-selezionata/richiesta-selezionata.component';
+import { NavTestComponent } from './richieste/lista-richieste-test/nav-test/nav-test.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { RichiestaSelezionataComponent } from './richieste/lista-richieste/richi
         FiltriRichiesteComponent,
         FiltroComponent,
         RichiestaSelezionataComponent,
+        NavTestComponent,
         // start import of Shared Declarations
         [
             Shared.DebounceClickDirective,

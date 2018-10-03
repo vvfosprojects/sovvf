@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { VoceFiltro } from './voce-filtro.model';
-import { FiltriService } from '../lista-richieste-service/filtri-service/filtri-service.service';
+import { FiltriService } from './filtri-service/filtri-service.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-filtri-richieste',

@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { MarkedServiceService } from './marked-service.service';
+import { RichiestaSelezionataService } from './richiesta-selezionata-service.service';
 
-describe('MarkedServiceService', () => {
+describe('RichiestaSelezionataService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MarkedServiceService]
+      providers: [RichiestaSelezionataService]
     });
   });
 
-  it('should be created', inject([MarkedServiceService], (service: MarkedServiceService) => {
+  it('should be created', inject([RichiestaSelezionataService], (service: RichiestaSelezionataService) => {
     expect(service).toBeTruthy();
   }));
 });
