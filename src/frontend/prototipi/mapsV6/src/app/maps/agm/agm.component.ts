@@ -5,13 +5,9 @@ import {MezzoMarker} from '../maps-model/mezzo-marker.model';
 import {Meteo} from '../../shared/model/meteo.model';
 import {CentroMappa} from '../maps-model/centro-mappa.model';
 import {MarkerService} from '../service/marker-service/marker-service.service';
-import {Coordinate} from '../../shared/model/coordinate.model';
-import {Subject, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {CenterService} from '../service/center-service/center-service.service';
-import {debounceTime} from 'rxjs/operators';
-
-
-declare var google: any;
+import {AgmService} from './agm-service.service';
 
 @Component({
     selector: 'app-agm',
@@ -27,21 +23,14 @@ export class AgmComponent implements OnInit {
     minMarkerCluster: number;
     datiMeteo: Meteo;
     map_loaded = false;
-    map: any;
     subscription: Subscription;
-    centro$ = new Subject();
 
-    constructor(private markerService: MarkerService, private centerService: CenterService) {
+    constructor(private markerService: MarkerService,
+                private centerService: CenterService,
+                private agmService: AgmService) {
         this.subscription = this.centerService.getCentro().subscribe(centro => {
             this.centroMappa = centro;
         });
-        this.centro$.pipe(
-            debounceTime(500)).subscribe(
-            coordinate => this.centerService.sendCentro(
-                new CentroMappa(
-                    new Coordinate(coordinate['lat'], coordinate['lng']),
-                    this.map.getZoom()))
-        );
         this.minMarkerCluster = 10;
     }
 
@@ -59,7 +48,7 @@ export class AgmComponent implements OnInit {
         /**
          * importo il wrapper nell'oggetto map
          */
-        this.map = map;
+        this.agmService.map = map;
     }
 
     selezioneMarker(marker: any): void {
@@ -74,8 +63,8 @@ export class AgmComponent implements OnInit {
         /**
          * richiamo i metodi per modficare il centro e lo zoom del marker cliccato
          */
-        this.centraMappa(marker.getCoordinate());
-        this.cambiaZoom(12);
+        this.agmService.centraMappa(marker.getCoordinate());
+        this.agmService.cambiaZoom(12);
     }
 
     urlIcona(marker: any): string {
@@ -92,50 +81,20 @@ export class AgmComponent implements OnInit {
         return this.markerService.trueMarker(marker);
     }
 
-    tipoAnimazione(marker: any) {
+    isVisible(marker: any): boolean {
         /**
-         * metodo non ancora implementato che modifica lo stato dell'icona facendolo rimbalzare o cadere
+         * metodo che nasconde o mostra i marker sulla mappa - in lavorazione
          */
-        return null;
-    }
-
-    cambiaZoom(zoom: number): void {
-        /**
-         * metodo che cambia lo zoom e si aspetta il number dello zoom,
-         * inoltre effettua una transazione tra i vari livelli di zoom creando un effetto animato
-         */
-        if (!this.map) {
-            return;
-        }
-        const zoomCorrente = this.map.getZoom();
-        const livelliZoom = Math.floor((zoom - zoomCorrente) / 2);
-        if (zoom - zoomCorrente > 0) {
-            if (livelliZoom === 1) {
-                this.map.setZoom(zoom);
-            } else {
-                this.map.setZoom(zoomCorrente + 2);
-                setTimeout(() => {
-                        this.map.setZoom(zoom);
-                    }, 450
-                );
-            }
+        if (marker) {
+            return true;
         }
     }
-
-    centraMappa(coordinate: Coordinate): void {
-        /**
-         * metodo che ricentra la mappa e si aspetta le coordinate del nuovo centro
-         */
-        const posizione = new google.maps.LatLng(coordinate.latitudine, coordinate.longitudine);
-        this.map.panTo(posizione);
-    }
-
 
     centroCambiato(centro) {
         /**
          * metodo che fa la next sulla subject di centro
          */
-        this.centro$.next(centro);
+        this.agmService.centro$.next(centro);
     }
 
 }

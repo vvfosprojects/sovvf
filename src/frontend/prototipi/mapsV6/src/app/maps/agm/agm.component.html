@@ -10,7 +10,7 @@
         <agm-marker *ngFor="let richiestaMarker of richiesteMarkers;" [latitude]="richiestaMarker.getCoordinate().latitudine"
                     [longitude]="richiestaMarker.getCoordinate().longitudine"
                     (markerClick)="selezioneMarker(richiestaMarker)"
-                    [iconUrl]="urlIcona(richiestaMarker)" [animation]="tipoAnimazione(richiestaMarker)" [visible]="true">
+                    [iconUrl]="urlIcona(richiestaMarker)" [visible]="isVisible(richiestaMarker)">
             <agm-info-window *ngIf="trueMarker(richiestaMarker)">
                 <strong>{{richiestaMarker.label}}</strong>
                 <div *ngIf="datiMeteo" class="h-infowindow">
@@ -34,7 +34,7 @@
         <agm-marker *ngFor="let sedeMarker of sediMarkers;" [latitude]="sedeMarker.getCoordinate().latitudine"
                     [longitude]="sedeMarker.getCoordinate().longitudine"
                     (markerClick)="selezioneMarker(sedeMarker)"
-                    [iconUrl]="urlIcona(sedeMarker)" [animation]="tipoAnimazione(sedeMarker)" [visible]="true">
+                    [iconUrl]="urlIcona(sedeMarker)" [visible]="isVisible(sedeMarker)">
             <agm-info-window *ngIf="trueMarker(sedeMarker)">
                 <strong>{{sedeMarker.descrizione}}</strong>
                 <div *ngIf="datiMeteo" class="h-infowindow">
@@ -58,7 +58,7 @@
         <agm-marker *ngFor="let mezzoMarker of mezziMarkers;" [latitude]="mezzoMarker.getCoordinate().latitudine"
                     [longitude]="mezzoMarker.getCoordinate().longitudine"
                     (markerClick)="selezioneMarker(mezzoMarker)"
-                    [iconUrl]="urlIcona(mezzoMarker)" [animation]="tipoAnimazione(mezzoMarker)" [visible]="true">
+                    [iconUrl]="urlIcona(mezzoMarker)" [visible]="isVisible(mezzoMarker)">
             <agm-info-window *ngIf="trueMarker(mezzoMarker)">
                 <strong>{{mezzoMarker.label}}</strong>
                 <div *ngIf="datiMeteo" class="h-infowindow">

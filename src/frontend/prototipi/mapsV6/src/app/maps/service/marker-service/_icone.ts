@@ -107,21 +107,21 @@ export class IconMappe {
                     this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize
                         + this.mapIconeUrl.get(marker.stato.substring(0, 5).toLowerCase());
                     if (!this.iconaStatoCorrenteSize) {
-                        return dir + '30/success.png';
+                        return undefined;
                     }
                     return this.iconaStatoCorrenteUrl;
                 }
                 case 'mezzo': {
                     this.iconaStatoCorrenteUrl = dir + this.mapIconeMezzi.get(marker.mezzo.descrizione.toLowerCase());
                     if (!this.iconaStatoCorrenteUrl) {
-                        return dir + 'default.png';
+                        return undefined;
                     }
                     return this.iconaStatoCorrenteUrl;
                 }
                 case 'sede': {
                     this.iconaStatoCorrenteUrl = dir + this.mapIconeSedi.get(marker.tipologia.toLowerCase());
                     if (!this.iconaStatoCorrenteUrl) {
-                        return null;
+                        return undefined;
                     }
                     return this.iconaStatoCorrenteUrl;
                 }
