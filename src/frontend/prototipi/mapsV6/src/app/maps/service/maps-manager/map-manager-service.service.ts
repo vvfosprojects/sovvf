@@ -49,20 +49,20 @@ export class MapManagerService {
         /**
          * dispatcher sedi
          */
-        this.dispatcher.onNewSediMarkersList().subscribe(s => {
-            this.sediMarker = s;
+        this.dispatcher.onNewSediMarkersList().subscribe(sedi => {
+            this.sediMarker = sedi;
         });
 
-        this.dispatcher.onNewSedeMarker().subscribe(s => {
-            this.sediMarker.push(s);
+        this.dispatcher.onNewSedeMarker().subscribe(sede => {
+            this.sediMarker.push(sede);
         });
 
-        this.dispatcher.onUpdateSedeMarker().subscribe(s => {
-            this.sediMarker = this.sediMarker.map(r => r.codice === s.codice ? s : r);
+        this.dispatcher.onUpdateSedeMarker().subscribe(sede => {
+            this.sediMarker = this.sediMarker.map(r => r.codice === sede.codice ? sede : r);
         });
 
-        this.dispatcher.onDeleteSedeMarker().subscribe(s => {
-            this.sediMarker = this.sediMarker.filter(x => x.codice === s.codice);
+        this.dispatcher.onDeleteSedeMarker().subscribe(sede => {
+            this.sediMarker.splice(this.sediMarker.indexOf(sede), 1);
         });
 
         /**
@@ -81,7 +81,7 @@ export class MapManagerService {
         });
 
         this.dispatcher.onDeleteMezzoMarker().subscribe(mezzi => {
-            this.mezziMarker = this.mezziMarker.filter(x => x.id_richiesta === mezzi.id_richiesta);
+            this.mezziMarker.splice(this.mezziMarker.indexOf(mezzi), 1);
         });
     }
 

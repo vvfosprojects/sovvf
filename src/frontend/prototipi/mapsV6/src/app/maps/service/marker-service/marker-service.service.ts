@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {RichiestaMarker} from '../../maps-model/richiesta-marker.model';
 import {Subscription} from 'rxjs';
 import {MarkedService} from '../marked-service/marked-service.service';
 import {Meteo} from '../../../shared/model/meteo.model';
@@ -16,7 +15,7 @@ export class MarkerService {
     icone = new IconMappe();
     tipo = new TipoMappe();
 
-    markerSelezionato: RichiestaMarker;
+    markerSelezionato: any;
     subscription: Subscription;
 
 
@@ -34,7 +33,10 @@ export class MarkerService {
         return this.icone.tipoIcona(marker, this.modelloMarker(marker), this.markerSelezionato);
     }
 
-    modelloMarker(marker) {
+    modelloMarker(marker): string {
+        /**
+         * metodo che mi ritorna il modello del marker come stringa
+         */
         return this.tipo.markerType(marker);
     }
 
@@ -42,9 +44,7 @@ export class MarkerService {
         /**
          * metodo che mi ritorna true, se il marker selezionato è lo stesso che è stato cliccato
          */
-        if (this.markerSelezionato === marker) {
-            return true;
-        }
+        return this.markerSelezionato === marker;
     }
 
     selezionato(marker: any): void {

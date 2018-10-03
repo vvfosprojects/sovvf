@@ -18,13 +18,13 @@ export class FakeMethodService {
     private statiObj: any;
 
     markerSelezionato: any;
-    subscription: Subscription;
+    selezione: Subscription;
 
     constructor(private markedService: MarkedService,
                 private mapManager: MapManagerService,
                 private dispatcher: DispatcherService,
                 private centerService: CenterService) {
-        this.subscription = this.markedService.getMarked().subscribe(marker => {
+        this.selezione = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         });
         this.stati = [
@@ -75,7 +75,7 @@ export class FakeMethodService {
         const statoCasuale = Math.floor(Math.random() * 4) + 1;
         const color = this.mapManager.richiesteMarker.find(x => x.id === this.markerSelezionato.id);
         color.stato = this.statiObj.get(statoCasuale);
-        this.dispatcher.updateMarker(color);
+        // this.dispatcher.updateMarker(color);
         this.markedService.clearMarked();
     }
 
@@ -88,7 +88,7 @@ export class FakeMethodService {
         } else if (size.priorita === 5) {
             size.priorita = 1;
         }
-        this.dispatcher.updateMarker(size);
+        // this.dispatcher.updateMarker(size);
         this.markedService.clearMarked();
     }
 

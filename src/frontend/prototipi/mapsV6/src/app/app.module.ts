@@ -36,7 +36,7 @@ import {AgmJsMarkerClustererModule} from '@agm/js-marker-clusterer';
         AgmJsMarkerClustererModule
     ],
     providers: [
-        {provide: DispatcherService, useClass: DispatcherService},
+        {provide: DispatcherService, useClass: DispatcherServiceFake},
         {provide: MapsService, useClass: MapsServiceFake}
     ],
     bootstrap: [AppComponent]
