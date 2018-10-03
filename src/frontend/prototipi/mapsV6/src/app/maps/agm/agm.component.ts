@@ -10,6 +10,7 @@ import {Subject, Subscription} from 'rxjs';
 import {CenterService} from '../service/center-service/center-service.service';
 import {debounceTime} from 'rxjs/operators';
 
+
 declare var google: any;
 
 @Component({
@@ -77,11 +78,11 @@ export class AgmComponent implements OnInit {
         this.cambiaZoom(12);
     }
 
-    urlIcona(marker: any, modello): string {
+    urlIcona(marker: any): string {
         /**
          * richiedo al service che gestisce i marker sulla mappa, di ritornarmi l'url dell'icona da utilizzare
          */
-        return this.markerService.tipoIcona(marker, modello);
+        return this.markerService.tipoIcona(marker);
     }
 
     trueMarker(marker: any): boolean {

@@ -5,6 +5,7 @@ import {MarkedService} from '../marked-service/marked-service.service';
 import {Meteo} from '../../../shared/model/meteo.model';
 import {MeteoService} from '../../../shared/meteo/meteo-service.service';
 import {IconMappe} from './_icone';
+import {TipoMappe} from './_typeof';
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +14,7 @@ export class MarkerService {
 
     datiMeteo: Meteo;
     icone = new IconMappe();
+    tipo = new TipoMappe();
 
     markerSelezionato: RichiestaMarker;
     subscription: Subscription;
@@ -25,11 +27,15 @@ export class MarkerService {
         });
     }
 
-    tipoIcona(marker: any, modello: string): string {
+    tipoIcona(marker: any): string {
         /**
          * metodo che mi ritorna il tipo di icona da utilizzare
          */
-        return this.icone.tipoIcona(marker, modello, this.markerSelezionato);
+        return this.icone.tipoIcona(marker, this.modelloMarker(marker), this.markerSelezionato);
+    }
+
+    modelloMarker(marker) {
+        return this.tipo.markerType(marker);
     }
 
     trueMarker(marker: any): boolean {

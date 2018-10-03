@@ -7,12 +7,12 @@
     <agm-marker-cluster
             imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
             [minimumClusterSize]="minMarkerCluster">
-        <agm-marker *ngFor="let richiesteM of richiesteMarkers;" [latitude]="richiesteM.getCoordinate().latitudine"
-                    [longitude]="richiesteM.getCoordinate().longitudine"
-                    (markerClick)="selezioneMarker(richiesteM)"
-                    [iconUrl]="urlIcona(richiesteM, 'richiesta')" [animation]="tipoAnimazione(richiesteM)" [visible]="true">
-            <agm-info-window *ngIf="trueMarker(richiesteM)">
-                <strong>{{richiesteM.label}}</strong>
+        <agm-marker *ngFor="let richiestaMarker of richiesteMarkers;" [latitude]="richiestaMarker.getCoordinate().latitudine"
+                    [longitude]="richiestaMarker.getCoordinate().longitudine"
+                    (markerClick)="selezioneMarker(richiestaMarker)"
+                    [iconUrl]="urlIcona(richiestaMarker)" [animation]="tipoAnimazione(richiestaMarker)" [visible]="true">
+            <agm-info-window *ngIf="trueMarker(richiestaMarker)">
+                <strong>{{richiestaMarker.label}}</strong>
                 <div *ngIf="datiMeteo" class="h-infowindow">
                     <hr class="my-0">
                     <div>
@@ -31,12 +31,12 @@
     <agm-marker-cluster
             imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
             [minimumClusterSize]="minMarkerCluster">
-        <agm-marker *ngFor="let sediM of sediMarkers;" [latitude]="sediM.getCoordinate().latitudine"
-                    [longitude]="sediM.getCoordinate().longitudine"
-                    (markerClick)="selezioneMarker(sediM)"
-                    [iconUrl]="urlIcona(sediM, 'sede')" [animation]="tipoAnimazione(sediM)" [visible]="true">
-            <agm-info-window *ngIf="trueMarker(sediM)">
-                <strong>{{sediM.descrizione}}</strong>
+        <agm-marker *ngFor="let sedeMarker of sediMarkers;" [latitude]="sedeMarker.getCoordinate().latitudine"
+                    [longitude]="sedeMarker.getCoordinate().longitudine"
+                    (markerClick)="selezioneMarker(sedeMarker)"
+                    [iconUrl]="urlIcona(sedeMarker)" [animation]="tipoAnimazione(sedeMarker)" [visible]="true">
+            <agm-info-window *ngIf="trueMarker(sedeMarker)">
+                <strong>{{sedeMarker.descrizione}}</strong>
                 <div *ngIf="datiMeteo" class="h-infowindow">
                     <hr class="my-0">
                     <div>
@@ -55,12 +55,12 @@
     <agm-marker-cluster
             imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
             [minimumClusterSize]="minMarkerCluster">
-        <agm-marker *ngFor="let mezziM of mezziMarkers;" [latitude]="mezziM.getCoordinate().latitudine"
-                    [longitude]="mezziM.getCoordinate().longitudine"
-                    (markerClick)="selezioneMarker(mezziM)"
-                    [iconUrl]="urlIcona(mezziM, 'mezzo')" [animation]="tipoAnimazione(mezziM)" [visible]="true">
-            <agm-info-window *ngIf="trueMarker(mezziM)">
-                <strong>{{mezziM.label}}</strong>
+        <agm-marker *ngFor="let mezzoMarker of mezziMarkers;" [latitude]="mezzoMarker.getCoordinate().latitudine"
+                    [longitude]="mezzoMarker.getCoordinate().longitudine"
+                    (markerClick)="selezioneMarker(mezzoMarker)"
+                    [iconUrl]="urlIcona(mezzoMarker)" [animation]="tipoAnimazione(mezzoMarker)" [visible]="true">
+            <agm-info-window *ngIf="trueMarker(mezzoMarker)">
+                <strong>{{mezzoMarker.label}}</strong>
                 <div *ngIf="datiMeteo" class="h-infowindow">
                     <hr class="my-0">
                     <div>

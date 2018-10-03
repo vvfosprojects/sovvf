@@ -30,7 +30,7 @@ export class IconMappe {
         this.icone();
     }
 
-    icone() {
+    private icone() {
         /**
          * creo delle mappe di oggetti per ricavare il path dell'immagine date le proprietà del marker
          */
