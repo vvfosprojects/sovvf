@@ -18,6 +18,8 @@ export class MarkerService {
     markerSelezionato: any;
     subscription: Subscription;
 
+    filtro: Array<any>;
+
 
     constructor(private markedService: MarkedService,
                 private meteoService: MeteoService) {
@@ -58,6 +60,23 @@ export class MarkerService {
         this.getDatiMeteo(marker);
     }
 
+    deseleziona(): void {
+        this.markedService.clearMarked();
+    }
+
+    visibile(marker: any, selected?: any): boolean {
+        /**
+         * metodo che nasconde o mostra i marker sulla mappa
+         */
+        if (selected) {
+            return (this.modelloMarker(marker).includes(selected));
+        }
+        if (this.filtro && this.filtro.length > 0) {
+            return this.filtro.includes(this.modelloMarker(marker));
+        }
+        return true;
+    }
+
     getDatiMeteo(marker: any): void {
         /**
          *  faccio una chiamata all'api del servizio meteo e aspetto i dati del marker selezionato
@@ -67,5 +86,12 @@ export class MarkerService {
                 next: data => this.datiMeteo = data,
                 error: data => console.log(`Errore: ${data}`)
             });
+    }
+
+    filtroMarker(filtro) {
+        /**
+         * metodo che riceve il filtro selezionato dal menu
+         */
+        this.filtro = filtro;
     }
 }

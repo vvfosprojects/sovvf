@@ -14,17 +14,28 @@ import {AgmCoreModule} from '@agm/core';
 import {environment} from '../environments/environment';
 import {AgmContentComponent} from './maps/agm/agm-content.component';
 import {AgmJsMarkerClustererModule} from '@agm/js-marker-clusterer';
+import {NgSelectModule} from '@ng-select/ng-select';
+import {FormsModule} from '@angular/forms';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+/*
+non importare su launcher
+ */
+import {DebounceClickDirective} from './shared';
+import { MapsFiltroComponent } from './maps/maps-filtro/maps-filtro.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         // start import of Shared Declarations
-        [],
+        [
+            DebounceClickDirective,
+        ],
         // end import of Shared Declarations
         MapsComponent,
         NavComponent,
         AgmComponent,
         AgmContentComponent,
+        MapsFiltroComponent,
     ],
     imports: [
         BrowserModule,
@@ -33,7 +44,10 @@ import {AgmJsMarkerClustererModule} from '@agm/js-marker-clusterer';
         AgmCoreModule.forRoot({
             apiKey: environment.apiUrl.maps.agm.key
         }),
-        AgmJsMarkerClustererModule
+        AgmJsMarkerClustererModule,
+        NgbModule,
+        NgSelectModule,
+        FormsModule
     ],
     providers: [
         {provide: DispatcherService, useClass: DispatcherServiceFake},

@@ -1,6 +1,7 @@
 agm-map {
-  height: 450px;
+    height: 450px;
 }
-.h-infowindow{
-  min-height: 70px;
+
+.h-infowindow {
+    min-height: 70px;
 }

@@ -1,5 +1,7 @@
 @import '../node_modules/bootstrap/dist/css/bootstrap.css';
 @import '../node_modules/font-awesome/css/font-awesome.css';
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
 
 .app-shadow{
   -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);

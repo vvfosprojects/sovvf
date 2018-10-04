@@ -7,14 +7,14 @@ import {GoogleMapsAPIWrapper} from '@agm/core';
 })
 export class AgmContentComponent implements OnInit {
 
-    @Output() onMapLoad: EventEmitter<{}> = new EventEmitter<{}>();
+    @Output() mapLoad: EventEmitter<{}> = new EventEmitter<{}>();
 
     constructor(public gMaps: GoogleMapsAPIWrapper) {
     }
 
     ngOnInit() {
         this.gMaps.getNativeMap().then((map) => {
-            this.onMapLoad.emit(map);
+            this.mapLoad.emit(map);
         });
     }
 }
