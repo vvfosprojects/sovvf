@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FiltriService } from '../lista-richieste-service/filtri-service/filtri-service.service';
+import { FiltriService } from '../filtri-richieste/filtri-service/filtri-service.service';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
 

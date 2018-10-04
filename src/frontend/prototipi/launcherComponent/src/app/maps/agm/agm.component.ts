@@ -1,9 +1,15 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
+import {SedeMarker} from '../maps-model/sede-marker.model';
+import {MezzoMarker} from '../maps-model/mezzo-marker.model';
 import {Meteo} from '../../shared/model/meteo.model';
 import {CentroMappa} from '../maps-model/centro-mappa.model';
 import {MarkerService} from '../service/marker-service/marker-service.service';
-import {Coordinate} from '../../shared/model/coordinate.model';
+import {Subscription} from 'rxjs';
+import {CenterService} from '../service/center-service/center-service.service';
+import {AgmService} from './agm-service.service';
+import { RichiestaSelezionataService } from '../../richieste/lista-richieste-service/richiesta-selezionata-service/richiesta-selezionata-service.service';
+import { RichiestaHoverService } from '../../richieste/lista-richieste-service/richiesta-hover-service/richiesta-hover-service.service';
 
 @Component({
     selector: 'app-agm',
@@ -13,24 +19,43 @@ import {Coordinate} from '../../shared/model/coordinate.model';
 
 export class AgmComponent implements OnInit {
     @Input() richiesteMarkers: RichiestaMarker[];
+    @Input() sediMarkers: SedeMarker[];
+    @Input() mezziMarkers: MezzoMarker[];
     @Input() centroMappa: CentroMappa;
+    minMarkerCluster: number;
     datiMeteo: Meteo;
     map_loaded = false;
+    subscription: Subscription;
 
-    constructor(private markerService: MarkerService) {
+    constructor(private markerService: MarkerService,
+                private richiestaSelezionataS: RichiestaSelezionataService,
+                private richiestaHoverS: RichiestaHoverService,
+                private centerService: CenterService,
+                private agmService: AgmService) {
+        this.subscription = this.centerService.getCentro().subscribe(centro => {
+            this.centroMappa = centro;
+        });
+        this.minMarkerCluster = 10;
     }
 
     ngOnInit() {
     }
 
-    mappaCaricata() {
+    mappaCaricata(): void {
         /**
          *  imposto una proprietà a true quando la mappa è caricata
          */
         this.map_loaded = true;
     }
 
-    selezioneMarker(marker: RichiestaMarker) {
+    loadAPIWrapper(map): void {
+        /**
+         * importo il wrapper nell'oggetto map
+         */
+        this.agmService.map = map;
+    }
+
+    selezioneMarker(marker: any): void {
         /**
          *  ricevo il marker selezionato dal componente mappa (agm)
          */
@@ -39,43 +64,51 @@ export class AgmComponent implements OnInit {
          *  prendo i dati del meteo dal service marker (che li ha già richiesti)
          */
         this.datiMeteo = this.markerService.datiMeteo;
+        /**
+         * richiamo i metodi per modficare il centro e lo zoom del marker cliccato
+         */
+        this.agmService.centraMappa(marker.getCoordinate());
+        this.agmService.cambiaZoom(12);
+
+        this.richiestaSelezionataS.sendRichiesta(marker.id);
     }
 
-    tipoIcona(marker: RichiestaMarker) {
+    hoverMarker(marker: any, type) {
+        if (type === 'in') {
+            this.richiestaHoverS.sendRichiesta(marker.id);
+        } else if (type === 'out') {
+            this.richiestaHoverS.clearRichiesta();
+        }
+    }
+
+    urlIcona(marker: any): string {
         /**
          * richiedo al service che gestisce i marker sulla mappa, di ritornarmi l'url dell'icona da utilizzare
          */
         return this.markerService.tipoIcona(marker);
     }
 
-    trueMarker(marker: RichiestaMarker) {
+    trueMarker(marker: any): boolean {
         /**
          * richiedo al service che gestisce i marker sulla mappa, di ritornarmi se il marker cliccato è quello selezionato
          */
         return this.markerService.trueMarker(marker);
     }
 
-    tipoAnimazione(marker: RichiestaMarker) {
+    isVisible(marker: any): boolean {
         /**
-         * metodo non ancora implementato che modifica lo stato dell'icona facendolo rimbalzare o cadere
+         * metodo che nasconde o mostra i marker sulla mappa - in lavorazione
          */
-        return null;
+        if (marker) {
+            return true;
+        }
     }
 
-    ricentraMappa(nuovoCentro: CentroMappa) {
+    centroCambiato(centro) {
         /**
-         * metodo che riceve il nuovo centroMappa
+         * metodo che fa la next sulla subject di centro
          */
-        this.centroMappa.zoom = nuovoCentro.zoom;
-        this.cambiaCoordinate(nuovoCentro.coordinate);
-    }
-
-    cambiaCoordinate(coordinate: Coordinate) {
-        /**
-         * metodo che ricentra la mappa e si aspetta le coordinate
-         */
-        this.centroMappa.coordinate.latitudine = coordinate.latitudine;
-        this.centroMappa.coordinate.longitudine = coordinate.longitudine;
+        this.agmService.centro$.next(centro);
     }
 
 }

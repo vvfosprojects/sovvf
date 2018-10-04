@@ -1,20 +1,36 @@
-import {Marker} from './marker.model';
-import {DescrizioneLocalita} from '../../shared/model/descrizione-localita.model';
+import {Sede} from '../../shared/model/sede.model';
+import {Coordinate} from '../../shared/model/coordinate.model';
 
-export class SedeMarker implements Marker {
+export class SedeMarker implements Sede {
     constructor(
-        /* Codice della sede */
+        /**
+         * Codice sede
+         */
         public codice: number,
-        /* nominativo della sede */
+        /**
+         * Descrizione della sede
+         */
         public descrizione: string,
-        /* tipologia della sede */
-        public tipologiaSede: string,
-        /* La stringa dell'indirizzo e le relative coordinate */
-        public localita: DescrizioneLocalita,
-        /* Contiene la descrizione della label da mostrare */
-        public label: string,
-        /* stemma della sede */
-        public icona: string
+        /**
+         * coordinate sede
+         */
+        public coordinate: Coordinate,
+        /**
+         * tipologia sede (Es: Comando, Distaccamento)
+         */
+        public tipologia: string,
+        /**
+         * label (da decidere)
+         */
+        public label?: string,
+        /**
+         * icona della sede
+         */
+        public icona?: string
     ) {
+    }
+
+    getCoordinate() {
+        return new Coordinate(this.coordinate.latitudine, this.coordinate.longitudine);
     }
 }

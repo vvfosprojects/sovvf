@@ -4,7 +4,9 @@ import {catchError, retry} from 'rxjs/operators';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 
-const API_URL = environment.apiUrl.maps.markers.fake1;
+const API_URL_RICHIESTE = environment.apiUrl.maps.markers.richieste;
+const API_URL_SEDI = environment.apiUrl.maps.markers.sedi;
+const API_URL_MEZZI = environment.apiUrl.maps.markers.mezzi;
 
 @Injectable({
     providedIn: 'root'
@@ -14,18 +16,22 @@ export class MapsService {
     constructor(private http: HttpClient) {
     }
 
-    // private _count: number;
-    //
-    // set count(count: number) {
-    //     this._count = count;
-    // }
-    //
-    // get count(): number {
-    //     return this._count;
-    // }
+    getRichiesteMarker(): Observable<any> {
+        return this.http.get(API_URL_RICHIESTE).pipe(
+            retry(3),
+            catchError(this.handleError)
+        );
+    }
 
-    getData(): Observable<any> {
-        return this.http.get(API_URL).pipe(
+    getSediMarker(): Observable<any> {
+        return this.http.get(API_URL_SEDI).pipe(
+            retry(3),
+            catchError(this.handleError)
+        );
+    }
+
+    getMezziMarker(): Observable<any> {
+        return this.http.get(API_URL_MEZZI).pipe(
             retry(3),
             catchError(this.handleError)
         );
@@ -41,49 +47,6 @@ export class MapsService {
         }
         return throwError(
             'Qualcosa è andato storto, per favore riprova più tardi.');
-    }
-
-    /* TESTING METHOD */
-    setRandomMarker() {
-        return;
-    }
-
-    /* TESTING METHOD */
-    removeLastMarker() {
-        return;
-    }
-
-    /* TESTING METHOD */
-    changeMarkerColor() {
-        return;
-    }
-
-    /* TESTING METHOD */
-    changeMarkerSize() {
-        return;
-    }
-
-    /* TESTING METHOD */
-    changeMarkerAnimation() {
-        return;
-    }
-
-    /* TESTING METHOD */
-    removeMarker() {
-        return;
-    }
-
-    /* TESTING METHOD */
-    setCentroMappa() {
-        return;
-    }
-
-    /* TESTING METHOD */
-    getCentro(): Observable<any> {
-        return this.http.get(API_URL).pipe(
-            retry(3),
-            catchError(this.handleError)
-        );
     }
 
 }

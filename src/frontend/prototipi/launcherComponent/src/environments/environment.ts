@@ -10,7 +10,7 @@ export const environment = {
                 url: 'http://api.openweathermap.org/data/2.5/weather?',
                 option: {
                     lang: 'it',
-                    key: 'cd79e94e4eb143ec7e639da5dbb67386',
+                    key: 'a23cc450dabf63fdb6729696aa29b3a6',
                     unit: 'metric'
                 }
 
@@ -18,24 +18,20 @@ export const environment = {
         },
         maps: {
             markers: {
-                fake1: 'https://api.myjson.com/bins/6vlu4',
-                fake2: 'https://api.myjson.com/bins/1b6478'
+                richieste: 'https://api.myjson.com/bins/6vlu4',
+                sedi: '',
+                mezzi: ''
             },
             agm: {
                 key: 'AIzaSyDYIMWNyVt1X_30PybcDMTZkFkcSsUytDk'
             }
         },
         rigaElencoRichieste: {
-            fake: 'https://api.jsonbin.io/b/5b9663a7d6fe677c48d823c3',
-            fake2: 'https://api.myjson.com/bins/ze8v4', // Restituisce 3 richieste di assistenza
+            fake: 'https://api.myjson.com/bins/ze8v4',
             backend: 'http://localhost:2661/api'
         },
         elencoFiltri: {
-            fake: 'https://api.myjson.com/bins/yrkns'
-        },
-        eventiRichieste: {
-            fake: 'https://api.myjson.com/bins/kz0w0',
-            backend: 'http://localhost:2661/api'
+            fake: 'https://api.myjson.com/bins/qa8as',
         }
     }
 };

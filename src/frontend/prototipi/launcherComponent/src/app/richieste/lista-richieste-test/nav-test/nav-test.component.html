@@ -1,0 +1,8 @@
+<span>
+  <select class="custom-select w-25" (change)="hover($event.target.value)">
+    <option value="null" selected>Nessuno</option>
+    <option *ngFor="let r of richieste.slice().reverse()" value="{{r.id}}">{{r.id}}</option>
+  </select>
+  <button class="btn btn-secondary ml-2" (click)="selezionata()">Seleziona</button>
+  <button class="btn btn-danger" (click)="deselezionata()">Deseleziona</button>
+</span>

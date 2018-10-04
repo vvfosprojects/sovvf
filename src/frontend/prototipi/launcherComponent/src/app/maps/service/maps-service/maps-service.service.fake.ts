@@ -1,22 +1,28 @@
 import {Injectable} from '@angular/core';
 import {Observable, of, Subscription} from 'rxjs';
 import {RichiestaMarker} from '../../maps-model/richiesta-marker.model';
-import {DescrizioneLocalita} from '../../../shared/model/descrizione-localita.model';
+import {Localita} from '../../../shared/model/localita.model';
 import {MarkedService} from '../marked-service/marked-service.service';
-import {CentroMappa} from '../../maps-model/centro-mappa.model';
+import {SedeMarker} from '../../maps-model/sede-marker.model';
+import {MezzoMarker} from '../../maps-model/mezzo-marker.model';
 import {Coordinate} from '../../../shared/model/coordinate.model';
+import {Squadra} from '../../../shared/model/squadra.model';
+import {Componente} from '../../../shared/model/componente.model';
+import {Tipologia} from '../../../shared/model/tipologia.model';
+import {Sede} from '../../../shared/model/sede.model';
+import {Mezzo} from '../../../shared/model/mezzo.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MapsServiceFake {
 
+    private richiesteMarker: RichiestaMarker[] = [];
+    private sediMarker: SedeMarker[] = [];
+    private mezziMarker: MezzoMarker[] = [];
+
     private stati: any;
     private statiObj: any;
-    private richiesteMarker: RichiestaMarker[] = [];
-    private centroMappa: CentroMappa;
-    private initCentroMappa: CentroMappa;
-    private newCentroMappa: CentroMappa;
 
     markerSelezionato: RichiestaMarker;
     subscription: Subscription;
@@ -32,44 +38,33 @@ export class MapsServiceFake {
             [4, 'sospeso']
         ];
         this.statiObj = new Map(this.stati);
-        /**
-         *  creo un oggetto di tipo centroMappa per inizializzare la mappa
-         */
-        this.centroMappa = new CentroMappa(new Coordinate(42.290251, 12.492373), 8);
-        /* Roma */
-        this.newCentroMappa = new CentroMappa(new Coordinate(45.283828, 9.105340), 8);
-        /* Milano */
     }
-
-    // private _count: number;
-    //
-    // set count(count: number) {
-    //     this._count = count;
-    // }
-    //
-    // get count(): number {
-    //     return this._count;
-    // }
 
     private numeroMarker = 30;
 
-    public getData(): Observable<RichiestaMarker[]> {
+    getRichiesteMarker(): Observable<RichiestaMarker[]> {
         this.richiesteMarker = [
             new RichiestaMarker('R1',
-                new DescrizioneLocalita(
+                new Localita(
+                    new Coordinate(42.5131365, 12.773477),
                     'Via Cavour, 5',
-                    [42.5131365, 12.773477]),
-                2,
+                ),
+                [
+                    new Tipologia(1, 'allagamento', '')
+                ],
                 'Allagamento cantina per rottura tubatura',
                 false,
                 3,
                 'assegnata'
             ),
             new RichiestaMarker('R2',
-                new DescrizioneLocalita(
+                new Localita(
+                    new Coordinate(42.8131365, 12.773477),
                     'Via Cavour, 5',
-                    [42.8131365, 12.773477]),
-                5,
+                ),
+                [
+                    new Tipologia(2, 'incendio', '')
+                ],
                 'Incendio sul bordo autostradale',
                 false,
                 5,
@@ -84,11 +79,13 @@ export class MapsServiceFake {
             const randomNumber = Math.floor(Math.random() * 4) + 1;
             this.richiesteMarker.push(new RichiestaMarker(
                 'R' + (_i + 1),
-                {
-                    'indirizzo': 'Via Cavour, 5',
-                    'coordinate': [Math.floor(Math.random() * 100) * 0.01 + 41.895, Math.floor(Math.random() * 100) * 0.01 + 12.495]
-                },
-                Math.floor(Math.random() * 5) + 1,
+                new Localita(
+                    new Coordinate(Math.floor(Math.random() * 100) * 0.01 + 41.895, Math.floor(Math.random() * 100) * 0.01 + 12.495),
+                    'Via Cavour, 5'
+                ),
+                [
+                    new Tipologia(1, 'allagamento', '')
+                ],
                 'Marker Random: ' + this.statiObj.get(randomNumber),
                 false,
                 Math.floor(Math.random() * 5) + 1,
@@ -99,104 +96,66 @@ export class MapsServiceFake {
         return of(this.richiesteMarker);
     }
 
-    public getCentro(): Observable<CentroMappa> {
-        // this.centroMappa = new CentroMappa(new Coordinate(42.290251, 12.492373), 8);
-        return of(this.centroMappa);
+    getSediMarker(): Observable<SedeMarker[]> {
+        this.sediMarker = [
+            new SedeMarker(1, 'Tuscolano I', new Coordinate(41.881490, 12.518700), 'Distaccamento')
+            ,
+            new SedeMarker(2, 'Tuscolano II', new Coordinate(41.863930, 12.554420), 'Distaccamento')
+            ,
+            new SedeMarker(3, 'Roma', new Coordinate(41.899940, 12.491270), 'Comando')
+        ];
+        return of(this.sediMarker);
     }
 
-    // /* TESTING METHOD */
-    // private setMarker(marker: RichiestaMarker) {
-    //     this.richiesteMarker.push(marker);
-    // }
-    //
-    // /* TESTING METHOD */
-    // setRandomMarker() {
-    //     this.count++;
-    //     const randomNumber = Math.floor(Math.random() * 4) + 1;
-    //     const lat = Math.floor(Math.random() * 10) * 0.1 + 41.89;
-    //     const long = Math.floor(Math.random() * 10) * 0.1 + 12.49;
-    //     const markerRandom = new RichiestaMarker(
-    //         this.count,
-    //         {'indirizzo': 'Via Cavour, 5', 'coordinate': [lat, long]},
-    //         Math.floor(Math.random() * 5) + 1,
-    //         'Marker Random: ' + this.statiObj.get(randomNumber),
-    //         false,
-    //         Math.floor(Math.random() * 5) + 1,
-    //         this.statiObj.get(randomNumber));
-    //     this.setMarker(markerRandom);
-    // }
-    //
-    // /* TESTING METHOD */
-    // removeLastMarker() {
-    //     if (this.markerSelezionato && this.richiesteMarker.slice(-1).pop().id_richiesta === this.markerSelezionato.id_richiesta) {
-    //         this.markedService.clearMarked();
-    //     }
-    //     this.richiesteMarker.pop();
-    // }
-    //
-    // // /* TESTING METHOD */
-    // changeMarkerColor() {
-    //     const statoCasuale = Math.floor(Math.random() * 4) + 1;
-    //     const color = this.richiesteMarker.find(x => x.id_richiesta === this.markerSelezionato.id_richiesta);
-    //     color.stato = this.statiObj.get(statoCasuale);
-    //     const colorCopy = JSON.parse(JSON.stringify(color));
-    //     this.setMarker(colorCopy);
-    //     const index = this.richiesteMarker.indexOf(this.markerSelezionato);
-    //     if (index > -1) {
-    //         this.richiesteMarker.splice(index, 1);
-    //     }
-    //     this.markedService.clearMarked();
-    // }
-    //
-    //
-    // /* TESTING METHOD */
-    // changeMarkerSize() {
-    //     const size = this.richiesteMarker.find(x => x.id_richiesta === this.markerSelezionato.id_richiesta);
-    //     if (size.prioritaRichiesta > 0 && size.prioritaRichiesta < 5) {
-    //         size.prioritaRichiesta++;
-    //     } else if (size.prioritaRichiesta === 5) {
-    //         size.prioritaRichiesta = 1;
-    //     }
-    //     const sizeCopy = JSON.parse(JSON.stringify(size));
-    //     this.setMarker(sizeCopy);
-    //     const index = this.richiesteMarker.indexOf(this.markerSelezionato);
-    //     if (index > -1) {
-    //         this.richiesteMarker.splice(index, 1);
-    //     }
-    //     this.markedService.clearMarked();
-    // }
-    //
-    // /* TESTING METHOD */
-    // changeMarkerAnimation() {
-    //     // const statoCasuale = Math.floor(Math.random() * 4) + 1;
-    //     // console.log(statoCasuale);
-    //     console.log('modifico animazione al marker selezionato');
-    // }
-    //
-    // /* TESTING METHOD */
-    // removeMarker() {
-    //     const index: number = this.richiesteMarker.indexOf(this.markerSelezionato);
-    //     if (index !== -1) {
-    //         this.richiesteMarker.splice(index, 1);
-    //         this.markedService.clearMarked();
-    //     }
-    // }
-
-    /* TESTING METHOD */
-    setCentroMappa(newCentro = this.newCentroMappa) {
-        console.log('centro mappa');
-        const currentCentroMappa = Object.assign({}, this.centroMappa);
-        if (!this.initCentroMappa) {
-            this.initCentroMappa = Object.assign({}, this.centroMappa);
-            // console.log(this.centroMappa);
-        }
-        if (Object.is(JSON.stringify(this.centroMappa), JSON.stringify(newCentro))) {
-            // console.log('centro mappa attuale e nuovo centro mappa sono identici')
-            this.centroMappa = this.initCentroMappa;
-        }
-        if (Object.is(JSON.stringify(currentCentroMappa), JSON.stringify(this.initCentroMappa))) {
-            // console.log('centro mappa attuale e centro mappa iniziale sono identici');
-            this.centroMappa = newCentro;
-        }
+    getMezziMarker(): Observable<MezzoMarker[]> {
+        this.mezziMarker = [
+            new MezzoMarker(
+                new Coordinate(42.5131365, 12.773477),
+                new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 5),
+                'R1',
+                [
+                    new Squadra('1A', null,
+                        [
+                            new Componente(
+                                'CR',
+                                'Mario Rossi',
+                                'Mario Rossi - MRORSS45H44T656R',
+                                true,
+                                false,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Antonio Bianchi',
+                                'Antonio Bianchi - NTNBNC76T54H444T',
+                                false,
+                                true,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Matteo Verdi',
+                                'Matteo Verdi - VRDMTT56G77D454I',
+                                false,
+                                false,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Enrico Ottavi',
+                                'Enrico Ottavi - NRCOTT88U75F454H',
+                                false,
+                                false,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Michele Rettore',
+                                'Michele Rettore - MCHRTT65T65K575Q',
+                                false,
+                                false,
+                                true),
+                        ])
+                ], 'Mezzo in soccorso'
+            )
+        ];
+        return of(this.mezziMarker);
     }
+
 }

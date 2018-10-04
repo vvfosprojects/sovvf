@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {Competenza} from '../../model/competenza.model';
+import {Sede} from '../../model/sede.model';
 
 @Component({
     selector: 'app-competenza',
@@ -7,9 +7,9 @@ import {Competenza} from '../../model/competenza.model';
     styleUrls: ['./competenza.component.scss']
 })
 export class CompetenzaComponent implements OnInit {
-    @Input() competenza: Competenza;
+    @Input() competenza: Sede;
     @Input() i: number;
-    @Output() LocalizzazioneCompetenza: EventEmitter<Competenza> = new EventEmitter(); // (1)
+    @Output() LocalizzazioneCompetenza: EventEmitter<Sede> = new EventEmitter(); // (1)
 
     constructor() {
     }

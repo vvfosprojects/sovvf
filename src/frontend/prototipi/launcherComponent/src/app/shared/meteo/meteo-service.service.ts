@@ -5,6 +5,7 @@ import {HttpClient, HttpBackend, HttpErrorResponse, HttpHeaders} from '@angular/
 import {environment} from '../../../environments/environment';
 import {map} from 'rxjs/internal/operators';
 import {Meteo} from '../model/meteo.model';
+import { Coordinate } from '../model/coordinate.model';
 
 const API_URL = environment.apiUrl.boxes.owm.url;
 const CFG = environment.apiUrl.boxes.owm.option;
@@ -22,7 +23,7 @@ export class MeteoService {
         this.http = new HttpClient(handler);
     }
 
-    getMeteoData(_coordinate: Array<number>): Observable<any> {
+    getMeteoData(_coordinate: Coordinate): Observable<any> {
         // const httpOptions = {
         //     headers: new HttpHeaders({
         //     })
@@ -61,8 +62,8 @@ export class MeteoService {
     }
 
 
-    private wipeCoordinate(coordinate?: Array<number>) {
-        if (coordinate.length === 2) {
+    private wipeCoordinate(coordinate: Coordinate) {
+        if (coordinate) {
             return 'lat=' + Math.floor(coordinate[0] * 100) / 100 + '&lon=' + Math.floor(coordinate[1] * 100) / 100;
         } else {
             return console.error('Errore ricezione coordinate meteo: ', coordinate);

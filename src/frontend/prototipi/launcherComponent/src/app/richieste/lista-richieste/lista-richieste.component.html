@@ -1,31 +1,20 @@
 <div class="row">
-  <!-- Filtri e Ricerca -->
-  <div class="col-12">
-      <div class="row">
-          <div class="col-md-6 ml-auto">
-              <app-filtri-richieste class="mr-2"></app-filtri-richieste>
-          </div>
-          <div class="col-md-6 ml-auto">
-              <app-ricerca-richieste></app-ricerca-richieste>
-          </div>
-      </div>
-  </div>
   <!-- Loader (!richieste) -->
   <div *ngIf="!richieste" class="mx-auto my-5">
     <img src="../../../assets/img/pink_loader_resized.gif">
   </div>
-  <!-- Singola Richiesta -->
-  <div *ngFor="let r of richieste | paginate: { id: 'elencoRichieste',
-                                                            itemsPerPage: 6,
-                                                            currentPage: p,
-                                                            totalItems: total }" class="col-6big">
-    <app-sintesi-richiesta [richiesta]="r" (click)="selezionato(r.id)"></app-sintesi-richiesta>
+
+  <!-- Singola Richiesta Selezionata  -->
+  <div *ngIf="richiestaSelezionata" class="col-12 px-0">
+    <app-richiesta-selezionata [richiestaSelezionata]="richiestaSelezionata" [richiestaSelezionataState]='richiestaSelezionataState'></app-richiesta-selezionata>
   </div>
-  <!-- Paginazione -->
-  <div class="col-12 text-center mt-2">
-    <pagination-controls id="elencoRichieste" (pageChange)="p = $event" maxSize="9" directionLinks="true" autoHide="true"
-      responsive="true" previousLabel="" nextLabel="" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
-      screenReaderCurrentLabel="You're on page">
-    </pagination-controls>
+
+  <!-- Lista di singole Richieste -->
+  <div class="col-12 px-0" [ngClass]="{'mt-2': !richiestaSelezionata,'m-h-700': !richiestaSelezionata, 'm-h-600': richiestaSelezionata}">
+    <div *ngFor="let r of richieste" class="col-6big">
+      <div *ngIf="r !== richiestaSelezionata" class="w-100 rounded" [ngClass]="{'card-shadow': r !== richiestaHover, 'card-shadow-hover': r === richiestaHover}">
+        <app-sintesi-richiesta [richiesta]="r"></app-sintesi-richiesta>
+      </div>
+    </div>
   </div>
 </div>

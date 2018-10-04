@@ -16,7 +16,9 @@
           </div>
         </div>
         <ul class="my-2 list-unstyled">
-          <li *ngFor="let unita of unitaOperative | filterBy: searchUnita" class="mt-1"><button *ngIf="unita !== unitaAttuale" class="btn btn-block btn-outline-secondary">{{unita}}</button></li>
+          <li *ngFor="let unita of unitaOperative | filterBy: searchUnita" class="mt-1">
+            <button *ngIf="unita !== unitaAttuale" class="btn btn-block btn-outline-secondary" (click)="changeUnitaAttuale(unita)">{{unita}}</button>
+          </li>
         </ul>
         <button class="btn btn-block btn-secondary">Tutti i comandi</button>
       </ng-template>

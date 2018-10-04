@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { DispatcherService } from '../../dispatcher/dispatcher.service';
-import { Richiesta } from '../../shared/model/richiesta.model';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
+import { DispatcherFakeService } from '../dispatcher/dispatcher-fake.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,24 +9,23 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 export class ListaRichiesteManagerService {
   richieste: SintesiRichiesta[];
 
-  constructor(private dispatcherService: DispatcherService) {
+  constructor(private dispatcherFakeS: DispatcherFakeService) {
 
-    this.dispatcherService.onNewSRichiesteList().subscribe((richieste: SintesiRichiesta[]) => {
-      console.log(richieste);
+    this.dispatcherFakeS.onNewSRichiesteList().subscribe(richieste => {
       this.richieste = richieste;
     });
 
-    /* this.dispatcherService.onNewRichiesta().subscribe(richiesta => {
-      this.richieste.unshift(richiesta.sRichiesta);
+    this.dispatcherFakeS.onNewSRichiesta().subscribe(richiesta => {
+      this.richieste.unshift(richiesta);
     });
 
-    this.dispatcherService.onDeleteRichiesta().subscribe(richiesta => {
+    this.dispatcherFakeS.onDeleteSRichiesta().subscribe(richiesta => {
       this.richieste = this.richieste.filter(x => x.id === richiesta.id);
     });
 
-    this.dispatcherService.onUpdateRichiesta().subscribe(richiesta => {
+    this.dispatcherFakeS.onUpdateSRichiesta().subscribe(richiesta => {
       this.richieste = this.richieste.map(r => r.id === richiesta.id ? richiesta : r);
-    }); */
+    });
   }
 
   getData(): Observable<SintesiRichiesta[]> {

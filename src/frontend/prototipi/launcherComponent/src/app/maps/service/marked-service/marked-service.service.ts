@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {RichiestaMarker} from '../../maps-model/richiesta-marker.model';
 import {Observable, Subject} from 'rxjs';
 
 @Injectable({
@@ -9,8 +8,7 @@ export class MarkedService {
 
     private subject = new Subject<any>();
 
-    sendMarked(marker) {
-        console.log(marker);
+    sendMarked(marker: any) {
         this.subject.next(marker);
     }
 

@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef }
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
-import { EventiService } from '../../lista-richieste-service/eventi-service/eventi-service.service';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -10,15 +9,15 @@ import { EventiService } from '../../lista-richieste-service/eventi-service/even
     styleUrls: ['./sintesi-richiesta.component.css']
 })
 export class SintesiRichiestaComponent implements OnInit {
+    @Input() richiesta: SintesiRichiesta;
     espanso = false;
     time: any;
     observableTime = new Observable<number>((observer) => {
         setInterval(() => observer.next(
             (new Date(this.richiesta.istanteRicezioneRichiesta).getTime() - new Date().getTime()) * -1), 1000);
     });
-    @Input() richiesta: SintesiRichiesta;
 
-    constructor(private eventiS: EventiService) {
+    constructor() {
     }
 
     ngOnInit() {
@@ -27,35 +26,49 @@ export class SintesiRichiestaComponent implements OnInit {
 
     /* Restituisce un Array con tanti elementi quanto è la priorità dell'intervento */
     vettorePallini() {
-        return new Array(this.richiesta.prioritaRichiesta);
+        return new Array(this.richiesta.priorita);
     }
-
     /* Restituisce un Array con tanti elementi quanti sono i buchini della priorità dell'intervento */
     vettoreBuchini() {
         const MAX_PRIORITA = 5;
-        return new Array(MAX_PRIORITA - this.richiesta.prioritaRichiesta);
+        return new Array(MAX_PRIORITA - this.richiesta.priorita);
     }
-
     /* Espande/Comprime il livello di dettaglio visualizzato per la richiesta */
     toggleEspanso(): void {
         this.espanso = !this.espanso;
     }
-
-    /* Restituisce l'Array con i nomi delle squadre  */
+    /* Restituisce i nomi delle squadre  */
     nomiSquadre(): string[] {
-        return this.richiesta.squadre.map(s => s.nome);
+        let nomiSquadre: string[];
+        this.richiesta.partenze.forEach(partenza => {
+            nomiSquadre = partenza.squadre.map(s => s.nome);
+        });
+        return nomiSquadre;
     }
-
     /* Restituisce il numero delle squadre */
     numeroSquadre(): number {
-        return this.richiesta.squadre.length;
+        let numeroSquadre = 0;
+        this.richiesta.partenze.forEach(partenza => {
+            numeroSquadre = numeroSquadre + partenza.squadre.length;
+        });
+        return numeroSquadre;
     }
-
-    /* Restituisce l'Array con il numero dei mezzi */
+    /* Restituisce i nomi dei mezzi  */
+    nomiMezzi(): string[] {
+        let nomiMezzi: string[];
+        this.richiesta.partenze.forEach(partenza => {
+            nomiMezzi = partenza.mezzi.map(s => s.descrizione);
+        });
+        return nomiMezzi;
+    }
+    /* Restituisce il numero dei mezzi */
     numeroMezzi(): number {
-        return this.richiesta.mezzi.length;
+        let numeroMezzi = 0;
+        this.richiesta.partenze.forEach(partenza => {
+            numeroMezzi = numeroMezzi + partenza.mezzi.length;
+        });
+        return numeroMezzi;
     }
-
     /* Data una 'Date' permette di visualizzare il tempo passato fino a questo momento */
     private displayRealTime(observableTime) {
         // this.time = '';
@@ -115,7 +128,6 @@ export class SintesiRichiestaComponent implements OnInit {
         });
 
     }
-
     /* Permette di colorare l'icona della tipologia */
     coloraIcona(nome): any {
         const colori = [
@@ -139,18 +151,5 @@ export class SintesiRichiestaComponent implements OnInit {
         } else {
             return nome + ' text-success';
         }
-    }
-
-    /* Metodi che richiamano il service degli eventi */
-    invioPartenza(id_richiesta) {
-        this.eventiS.invioPartenza(id_richiesta);
-    }
-
-    visualizzaEventiRichiesta(id_richiesta) {
-        this.eventiS.visualizzaEventiRichiesta(id_richiesta);
-    }
-
-    localizzaIntervento(id_richiesta) {
-        this.eventiS.localizzaIntervento(id_richiesta);
     }
 }
