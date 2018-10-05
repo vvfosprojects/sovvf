@@ -28,6 +28,18 @@
     box-shadow: 2px 0px 2px .5px rgb(255, 82, 82);
 }
 
+.m-h-750{
+	max-height: 750px;
+}
+
+.m-h-600{
+	max-height: 610px;
+}
+
+.scroll{
+	overflow-y: scroll;
+}
+
 @media (min-width: 2560px) {
 	.col-6big {
 		width: 50%;

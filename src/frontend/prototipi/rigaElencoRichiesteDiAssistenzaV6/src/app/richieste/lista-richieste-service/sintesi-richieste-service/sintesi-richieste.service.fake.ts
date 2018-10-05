@@ -61,6 +61,216 @@ export class SintesiRichiesteServiceFake {
                     ),
                 ],
                 ['Tag1', 'Tag2']
+            ),
+            new SintesiRichiesta(
+                'R2',
+                'RM-24759',
+                new Operatore('Mario', 'Verdi', 'HGM3NS'),
+                false,
+                new Date,
+                new Date,
+                'presidiato',
+                2,
+                [new Tipologia(1, 'Allagamento', 'fa fa-exclamation-triangle')],
+                'Allagamento cantina',
+                new Richiedente('Mario Rossi', 3202676253),
+                new Localita( new Coordinate(2.324234, 3.424234), 'Via Cavour, 5', 'Note test'),
+                [
+                    new Sede(1, 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando'),
+                    new Sede(2, 'Ostiense', new Coordinate(3.423423, 4.423423), 'Comando'),
+                    new Sede(3, 'Tuscolana 2', new Coordinate(3.423423, 4.423423), 'Comando'),
+                ],
+                null,
+                new Date, // incrementare di qualche minuto
+                'NUE00006',
+                new Fonogramma(1, 'non inviato'),
+                new Complessita('100', 0, 'Alto'),
+                [
+                    new Partenza(
+                        [
+                            new Mezzo('M1', 'A1', 'Autopompa', 'In viaggio', 1),
+                        ],
+                        [
+                            new Squadra('Squadra1', new Date, null),
+                        ]
+                    ),
+                ],
+                ['Tag1', 'Tag2']
+            ),
+            new SintesiRichiesta(
+                'R3',
+                'RM-24759',
+                new Operatore('Mario', 'Verdi', 'HGM3NS'),
+                false,
+                new Date,
+                new Date,
+                'presidiato',
+                2,
+                [new Tipologia(1, 'Allagamento', 'fa fa-exclamation-triangle')],
+                'Allagamento cantina',
+                new Richiedente('Mario Rossi', 3202676253),
+                new Localita( new Coordinate(2.324234, 3.424234), 'Via Cavour, 5', 'Note test'),
+                [
+                    new Sede(1, 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando'),
+                    new Sede(2, 'Ostiense', new Coordinate(3.423423, 4.423423), 'Comando'),
+                    new Sede(3, 'Tuscolana 2', new Coordinate(3.423423, 4.423423), 'Comando'),
+                ],
+                null,
+                new Date, // incrementare di qualche minuto
+                'NUE00006',
+                new Fonogramma(1, 'non inviato'),
+                new Complessita('100', 0, 'Alto'),
+                [
+                    new Partenza(
+                        [
+                            new Mezzo('M1', 'A1', 'Autopompa', 'In viaggio', 1),
+                        ],
+                        [
+                            new Squadra('Squadra1', new Date, null),
+                        ]
+                    ),
+                ],
+                ['Tag1', 'Tag2']
+            ),
+            new SintesiRichiesta(
+                'R4',
+                'RM-24759',
+                new Operatore('Mario', 'Verdi', 'HGM3NS'),
+                false,
+                new Date,
+                new Date,
+                'presidiato',
+                2,
+                [new Tipologia(1, 'Allagamento', 'fa fa-exclamation-triangle')],
+                'Allagamento cantina',
+                new Richiedente('Mario Rossi', 3202676253),
+                new Localita( new Coordinate(2.324234, 3.424234), 'Via Cavour, 5', 'Note test'),
+                [
+                    new Sede(1, 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando'),
+                    new Sede(2, 'Ostiense', new Coordinate(3.423423, 4.423423), 'Comando'),
+                    new Sede(3, 'Tuscolana 2', new Coordinate(3.423423, 4.423423), 'Comando'),
+                ],
+                null,
+                new Date, // incrementare di qualche minuto
+                'NUE00006',
+                new Fonogramma(1, 'non inviato'),
+                new Complessita('100', 0, 'Alto'),
+                [
+                    new Partenza(
+                        [
+                            new Mezzo('M1', 'A1', 'Autopompa', 'In viaggio', 1),
+                        ],
+                        [
+                            new Squadra('Squadra1', new Date, null),
+                        ]
+                    ),
+                ],
+                ['Tag1', 'Tag2']
+            ),
+            new SintesiRichiesta(
+                'R5',
+                'RM-24759',
+                new Operatore('Mario', 'Verdi', 'HGM3NS'),
+                false,
+                new Date,
+                new Date,
+                'presidiato',
+                2,
+                [new Tipologia(1, 'Allagamento', 'fa fa-exclamation-triangle')],
+                'Allagamento cantina',
+                new Richiedente('Mario Rossi', 3202676253),
+                new Localita( new Coordinate(2.324234, 3.424234), 'Via Cavour, 5', 'Note test'),
+                [
+                    new Sede(1, 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando'),
+                    new Sede(2, 'Ostiense', new Coordinate(3.423423, 4.423423), 'Comando'),
+                    new Sede(3, 'Tuscolana 2', new Coordinate(3.423423, 4.423423), 'Comando'),
+                ],
+                null,
+                new Date, // incrementare di qualche minuto
+                'NUE00006',
+                new Fonogramma(1, 'non inviato'),
+                new Complessita('100', 0, 'Alto'),
+                [
+                    new Partenza(
+                        [
+                            new Mezzo('M1', 'A1', 'Autopompa', 'In viaggio', 1),
+                        ],
+                        [
+                            new Squadra('Squadra1', new Date, null),
+                        ]
+                    ),
+                ],
+                ['Tag1', 'Tag2']
+            ),
+            new SintesiRichiesta(
+                'R6',
+                'RM-24759',
+                new Operatore('Mario', 'Verdi', 'HGM3NS'),
+                false,
+                new Date,
+                new Date,
+                'presidiato',
+                2,
+                [new Tipologia(1, 'Allagamento', 'fa fa-exclamation-triangle')],
+                'Allagamento cantina',
+                new Richiedente('Mario Rossi', 3202676253),
+                new Localita( new Coordinate(2.324234, 3.424234), 'Via Cavour, 5', 'Note test'),
+                [
+                    new Sede(1, 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando'),
+                    new Sede(2, 'Ostiense', new Coordinate(3.423423, 4.423423), 'Comando'),
+                    new Sede(3, 'Tuscolana 2', new Coordinate(3.423423, 4.423423), 'Comando'),
+                ],
+                null,
+                new Date, // incrementare di qualche minuto
+                'NUE00006',
+                new Fonogramma(1, 'non inviato'),
+                new Complessita('100', 0, 'Alto'),
+                [
+                    new Partenza(
+                        [
+                            new Mezzo('M1', 'A1', 'Autopompa', 'In viaggio', 1),
+                        ],
+                        [
+                            new Squadra('Squadra1', new Date, null),
+                        ]
+                    ),
+                ],
+                ['Tag1', 'Tag2']
+            ),
+            new SintesiRichiesta(
+                'R7',
+                'RM-24759',
+                new Operatore('Mario', 'Verdi', 'HGM3NS'),
+                false,
+                new Date,
+                new Date,
+                'presidiato',
+                2,
+                [new Tipologia(1, 'Allagamento', 'fa fa-exclamation-triangle')],
+                'Allagamento cantina',
+                new Richiedente('Mario Rossi', 3202676253),
+                new Localita( new Coordinate(2.324234, 3.424234), 'Via Cavour, 5', 'Note test'),
+                [
+                    new Sede(1, 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando'),
+                    new Sede(2, 'Ostiense', new Coordinate(3.423423, 4.423423), 'Comando'),
+                    new Sede(3, 'Tuscolana 2', new Coordinate(3.423423, 4.423423), 'Comando'),
+                ],
+                null,
+                new Date, // incrementare di qualche minuto
+                'NUE00006',
+                new Fonogramma(1, 'non inviato'),
+                new Complessita('100', 0, 'Alto'),
+                [
+                    new Partenza(
+                        [
+                            new Mezzo('M1', 'A1', 'Autopompa', 'In viaggio', 1),
+                        ],
+                        [
+                            new Squadra('Squadra1', new Date, null),
+                        ]
+                    ),
+                ],
+                ['Tag1', 'Tag2']
             )
         ];
 
