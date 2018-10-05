@@ -2,12 +2,16 @@
     <img src="../../../assets/img/map_loading_resized.gif">
 </div>
 <agm-map [latitude]="centroMappa.coordinate.latitudine" [longitude]="centroMappa.coordinate.longitudine"
-         [zoom]="centroMappa.zoom" (mapReady)="mappaCaricata()" (centerChange)="centroCambiato($event)"
-         [usePanning]="true">
+         [zoom]="centroMappa.zoom" (mapReady)="mappaCaricata($event)" (centerChange)="centroCambiato($event)"
+         [usePanning]="true" (mapClick)="mappaCliccata()">
+<span id="Settings">
+    <app-maps-filtro></app-maps-filtro>
+</span>
     <agm-marker-cluster
             imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
             [minimumClusterSize]="minMarkerCluster">
-        <agm-marker *ngFor="let richiestaMarker of richiesteMarkers;" [latitude]="richiestaMarker.getCoordinate().latitudine"
+        <agm-marker *ngFor="let richiestaMarker of richiesteMarkers;"
+                    [latitude]="richiestaMarker.getCoordinate().latitudine"
                     [longitude]="richiestaMarker.getCoordinate().longitudine"
                     (markerClick)="selezioneMarker(richiestaMarker)"
                     [iconUrl]="urlIcona(richiestaMarker)" [visible]="isVisible(richiestaMarker)">
@@ -76,5 +80,5 @@
             </agm-info-window>
         </agm-marker>
     </agm-marker-cluster>
-    <app-agm-content (onMapLoad)='loadAPIWrapper($event)'></app-agm-content>
+    <app-agm-content (mapLoad)='loadAPIWrapper($event)'></app-agm-content>
 </agm-map>

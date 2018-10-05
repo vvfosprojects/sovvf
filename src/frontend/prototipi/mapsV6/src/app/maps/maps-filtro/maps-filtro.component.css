@@ -1,0 +1,26 @@
+.menuMarker {
+    background-color: white !important;
+    color: gray !important;
+}
+
+.menuMarker:focus {
+    box-shadow: none !important;
+}
+
+.menuMarker:hover {
+    color: black !important;
+}
+
+.voce-green {
+    background-color: green !important;
+    color: white !important;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+.filtro-hover:hover {
+    background-color: blue !important;
+    color: white !important;
+}

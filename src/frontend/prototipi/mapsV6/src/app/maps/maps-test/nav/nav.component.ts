@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MarkedService} from '../../service/marked-service/marked-service.service';
 import {Subscription} from 'rxjs';
 import {FakeMethodService} from '../fake-method/fake-method-service.service';
@@ -15,11 +15,13 @@ export class NavComponent implements OnDestroy {
     markerSelezionato: any;
     subscription: Subscription;
 
+
     constructor(private markedService: MarkedService,
                 private fakeManager: FakeMethodService) {
         this.subscription = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         });
+
     }
 
     ngOnDestroy(): void {

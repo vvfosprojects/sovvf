@@ -9,6 +9,9 @@ import {Subscription} from 'rxjs';
 import {CenterService} from '../service/center-service/center-service.service';
 import {AgmService} from './agm-service.service';
 
+declare var google: any;
+
+
 @Component({
     selector: 'app-agm',
     templateUrl: './agm.component.html',
@@ -24,6 +27,7 @@ export class AgmComponent implements OnInit {
     datiMeteo: Meteo;
     map_loaded = false;
     subscription: Subscription;
+    map: any;
 
     constructor(private markerService: MarkerService,
                 private centerService: CenterService,
@@ -31,24 +35,26 @@ export class AgmComponent implements OnInit {
         this.subscription = this.centerService.getCentro().subscribe(centro => {
             this.centroMappa = centro;
         });
-        this.minMarkerCluster = 10;
+        this.minMarkerCluster = 99999;
     }
 
     ngOnInit() {
     }
 
-    mappaCaricata(): void {
+    mappaCaricata(event: any): void {
         /**
-         *  imposto una proprietà a true quando la mappa è caricata
+         *  imposto una proprietà a true quando la mappa è caricata e inserisco nell'oggetto map il menù
          */
         this.map_loaded = true;
+        this.map = event;
+        this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById('Settings'));
     }
 
-    loadAPIWrapper(map): void {
+    loadAPIWrapper(mapWrapper): void {
         /**
          * importo il wrapper nell'oggetto map
          */
-        this.agmService.map = map;
+        this.agmService.map = mapWrapper;
     }
 
     selezioneMarker(marker: any): void {
@@ -64,7 +70,7 @@ export class AgmComponent implements OnInit {
          * richiamo i metodi per modficare il centro e lo zoom del marker cliccato
          */
         this.agmService.centraMappa(marker.getCoordinate());
-        this.agmService.cambiaZoom(12);
+        this.agmService.cambiaZoom(16);
     }
 
     urlIcona(marker: any): string {
@@ -83,11 +89,9 @@ export class AgmComponent implements OnInit {
 
     isVisible(marker: any): boolean {
         /**
-         * metodo che nasconde o mostra i marker sulla mappa - in lavorazione
+         * richiedo al service che gestisce i marker sulla mappa, di ritornarmi se il marker è visibile
          */
-        if (marker) {
-            return true;
-        }
+        return this.markerService.visibile(marker);
     }
 
     centroCambiato(centro) {
@@ -95,6 +99,14 @@ export class AgmComponent implements OnInit {
          * metodo che fa la next sulla subject di centro
          */
         this.agmService.centro$.next(centro);
+    }
+
+    mappaCliccata() {
+        /**
+         * metodo che ritorna allo zoom iniziale e deseleziona un marker se clicco sulla mappa
+         */
+        this.agmService.cambiaZoom(8);
+        this.markerService.deseleziona();
     }
 
 }
