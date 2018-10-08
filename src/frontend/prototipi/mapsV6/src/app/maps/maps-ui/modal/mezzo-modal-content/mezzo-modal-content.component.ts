@@ -23,4 +23,8 @@ export class MezzoModalContentComponent implements OnInit {
         this.markerService.cambioSede();
     }
 
+    annullaCambioSede() {
+        this.markerService.deseleziona();
+    }
+
 }
