@@ -83,10 +83,6 @@
                                 <span><a ngbTooltip="{{ richiesta.localita.indirizzo }}" placement="bottom"
                                         [disableTooltip]="richiesta.localita.indirizzo.length <= 30">{{
                                         richiesta.localita.indirizzo | truncate:30 }}</a></span>
-                                <a href="#">
-                                    <i class="guida fa fa-globe fa-fw globo-loc ml-1" aria-hidden="true" title="Localizzazione Richiesta Intervento"
-                                        (click)="localizzaIntervento(richiesta.id)"></i>
-                                </a>
                                 <span class="list-inline list-unstyled m-0 ml-2">
                                     <app-competenza *ngFor="let c of richiesta.competenze; let i = index" [competenza]="c"
                                         [i]="i"></app-competenza>
@@ -135,6 +131,9 @@
                             </div>
 
                             <div class="h5 nowrap">
+                                <button class="btn btn-default py-0 mr-1" ngbTooltip="Localizza" placement="bottom">
+                                    <i class="fa fa-fw fa-globe text-secondary"></i>
+                                </button>
                                 <button class="btn btn-default py-0 mr-1" ngbTooltip="Espandi" placement="bottom"
                                     (click)="toggleEspanso()">
                                     <i class="fa fa-fw fa-info text-secondary"></i>

@@ -1,9 +1,10 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { ListaRichiesteManagerService } from '../lista-richieste-manager/lista-richieste-manager.service';
+import { ListaRichiesteManagerService } from '../lista-richieste-service/lista-richieste-manager/lista-richieste-manager.service';
 import { RichiestaSelezionataService } from '../lista-richieste-service/richiesta-selezionata-service/richiesta-selezionata-service.service';
 import { RichiestaHoverService } from '../lista-richieste-service/richiesta-hover-service/richiesta-hover-service.service';
 import { ScrollEvent } from 'ngx-scroll-event';
+import { ListaRichiesteService } from '../lista-richieste-service/lista-richieste-service.service';
 
 @Component({
   selector: 'app-lista-richieste',
@@ -20,7 +21,8 @@ export class ListaRichiesteComponent implements OnInit {
 
   constructor(private listaRichiesteManager: ListaRichiesteManagerService,
     private richiestaSelezionataS: RichiestaSelezionataService,
-    private richiestaHoverS: RichiestaHoverService) { }
+    private richiestaHoverS: RichiestaHoverService,
+    private listaRichiesteS: ListaRichiesteService) { }
 
   ngOnInit() {
     // Restituisce le Richieste
@@ -68,4 +70,15 @@ export class ListaRichiesteComponent implements OnInit {
       });
     }
   }
+
+  richiestaClick(richiesta) {
+    this.listaRichiesteS.richiestaClick(richiesta);
+  }
+  richiestaHoverIn(richiesta) {
+    this.listaRichiesteS.richiestaHoverIn(richiesta);
+  }
+  richiestaHoverOut(richiesta) {
+    this.listaRichiesteS.richiestaHoverOut(richiesta);
+  }
+
 }

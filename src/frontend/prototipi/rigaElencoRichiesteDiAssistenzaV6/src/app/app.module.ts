@@ -21,6 +21,8 @@ import { FiltriRichiesteComponent } from './richieste/filtri-richieste/filtri-ri
 import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.component';
 import { RichiestaSelezionataComponent } from './richieste/lista-richieste/richiesta-selezionata/richiesta-selezionata.component';
 import { NavTestComponent } from './richieste/lista-richieste-test/nav-test/nav-test.component';
+import { EventiService } from './shared/eventi/eventi.service';
+import { EventiServiceFake } from './eventi-fake/eventi.service.fake';
 
 
 @NgModule({
@@ -55,7 +57,8 @@ import { NavTestComponent } from './richieste/lista-richieste-test/nav-test/nav-
         ScrollEventModule
     ],
     providers: [
-        { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }
+        { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake },
+        { provide: EventiService, useClass: EventiServiceFake }
     ],
     bootstrap: [AppComponent]
 })

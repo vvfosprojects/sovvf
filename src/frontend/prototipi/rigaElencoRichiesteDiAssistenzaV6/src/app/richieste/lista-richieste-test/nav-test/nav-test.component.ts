@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { ListaRichiesteManagerService } from '../../lista-richieste-manager/lista-richieste-manager.service';
+import { ListaRichiesteManagerService } from '../../lista-richieste-service/lista-richieste-manager/lista-richieste-manager.service';
 import { RichiestaHoverService } from '../../lista-richieste-service/richiesta-hover-service/richiesta-hover-service.service';
 import { MethodTestService } from '../method-test/method-test.service';
 

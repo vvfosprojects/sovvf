@@ -126,7 +126,6 @@ export class SintesiRichiestaComponent implements OnInit {
                 this.time = parseToday ? 'Oggi alle ' + timeR : parseYesterday;
             }
         });
-
     }
     /* Permette di colorare l'icona della tipologia */
     coloraIcona(nome): any {

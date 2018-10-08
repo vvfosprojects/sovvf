@@ -27,7 +27,6 @@
     -moz-box-shadow: 2px 0px 2px .5px rgb(255, 82, 82);
     box-shadow: 2px 0px 2px .5px rgb(255, 82, 82);
 }
-
 .m-h-750{
 	max-height: 750px;
 }
@@ -36,7 +35,7 @@
 	max-height: 610px;
 }
 
-.scroll{
+.scroll-y{
 	overflow-y: scroll;
 }
 
