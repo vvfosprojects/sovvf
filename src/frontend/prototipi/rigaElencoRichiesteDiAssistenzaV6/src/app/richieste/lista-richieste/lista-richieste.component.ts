@@ -3,6 +3,7 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { ListaRichiesteManagerService } from '../lista-richieste-manager/lista-richieste-manager.service';
 import { RichiestaSelezionataService } from '../lista-richieste-service/richiesta-selezionata-service/richiesta-selezionata-service.service';
 import { RichiestaHoverService } from '../lista-richieste-service/richiesta-hover-service/richiesta-hover-service.service';
+import { ScrollEvent } from 'ngx-scroll-event';
 
 @Component({
   selector: 'app-lista-richieste',
@@ -10,7 +11,7 @@ import { RichiestaHoverService } from '../lista-richieste-service/richiesta-hove
   styleUrls: ['./lista-richieste.component.css']
 })
 export class ListaRichiesteComponent implements OnInit {
-  richieste: SintesiRichiesta[];
+  richieste: SintesiRichiesta[] = [];
   id_richiestaHover: any;
   id_richiestaSelezionata: any;
   richiestaHover: SintesiRichiesta;
@@ -56,5 +57,15 @@ export class ListaRichiesteComponent implements OnInit {
         this.id_richiestaHover = null;
       }
     });
+  }
+
+  handleScroll(event: ScrollEvent) {
+    if (event.isReachingBottom) {
+      this.listaRichiesteManager.nuoveRichieste().subscribe(nuoveRichieste => {
+        nuoveRichieste.forEach(r => {
+          this.richieste.push(r);
+        });
+      });
+    }
   }
 }

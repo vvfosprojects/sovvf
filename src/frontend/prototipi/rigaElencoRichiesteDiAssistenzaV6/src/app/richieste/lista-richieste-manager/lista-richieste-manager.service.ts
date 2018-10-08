@@ -10,11 +10,6 @@ export class ListaRichiesteManagerService {
   richieste: SintesiRichiesta[];
 
   constructor(private dispatcherFakeS: DispatcherFakeService) {
-
-    this.dispatcherFakeS.onNewSRichiesteList().subscribe(richieste => {
-      this.richieste = richieste;
-    });
-
     this.dispatcherFakeS.onNewSRichiesta().subscribe(richiesta => {
       this.richieste.unshift(richiesta);
     });
@@ -29,6 +24,17 @@ export class ListaRichiesteManagerService {
   }
 
   getData(): Observable<SintesiRichiesta[]> {
+    this.dispatcherFakeS.onNewSRichiesteList().subscribe(richieste => {
+      this.richieste = richieste;
+    });
     return of(this.richieste);
+  }
+
+  nuoveRichieste() {
+    let nuoveRichieste;
+    this.dispatcherFakeS.onNewSRichiesteListScroll().subscribe(r => {
+      nuoveRichieste = r;
+    });
+    return of(nuoveRichieste);
   }
 }

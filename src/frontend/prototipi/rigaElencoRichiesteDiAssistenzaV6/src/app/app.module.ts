@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ScrollEventModule } from 'ngx-scroll-event';
 import * as Shared from './shared/';
 
 import { AppComponent } from './app.component';
@@ -50,7 +51,8 @@ import { NavTestComponent } from './richieste/lista-richieste-test/nav-test/nav-
         PipeModule.forRoot(),
         FormsModule,
         NgxPaginationModule,
-        FilterPipeModule
+        FilterPipeModule,
+        ScrollEventModule
     ],
     providers: [
         { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }
