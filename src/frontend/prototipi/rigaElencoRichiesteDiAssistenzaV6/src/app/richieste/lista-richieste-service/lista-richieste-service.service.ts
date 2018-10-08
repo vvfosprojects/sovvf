@@ -17,4 +17,7 @@ export class ListaRichiesteService {
   richiestaHoverOut(richiesta) {
     this.eventi.richiesta.richiestaHoverOut(richiesta);
   }
+  unClick() {
+    this.eventi.richiesta.unClick();
+  }
 }

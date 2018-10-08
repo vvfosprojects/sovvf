@@ -80,5 +80,7 @@ export class ListaRichiesteComponent implements OnInit {
   richiestaHoverOut(richiesta) {
     this.listaRichiesteS.richiestaHoverOut(richiesta);
   }
-
+  unClick() {
+    this.listaRichiesteS.unClick();
+  }
 }

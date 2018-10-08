@@ -13,8 +13,9 @@
   <div class="col-12 pt-1 px-0 scroll-y" detect-scroll (onScroll)="handleScroll($event)" [bottomOffset]="50" [ngClass]="{'mt-2 m-h-750': !richiestaSelezionata, 'm-h-600': richiestaSelezionata}">
     <div *ngFor="let r of richieste" class="col-6big">
       <div *ngIf="r !== richiestaSelezionata" class="w-100 rounded" [ngClass]="{'card-shadow': r !== richiestaHover, 'card-shadow-hover': r === richiestaHover}">
-        <app-sintesi-richiesta [richiesta]="r" (click)="richiestaClick(r)" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)"></app-sintesi-richiesta>
+        <app-sintesi-richiesta [richiesta]="r" (richiestaClick)="richiestaClick(r)" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)"></app-sintesi-richiesta>
       </div>
     </div>
   </div>
+  <button class="btn btn-danger" (click)="unClick()">Deseleziona</button>
 </div>
