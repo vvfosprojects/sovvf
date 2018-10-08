@@ -6,6 +6,7 @@ import {Fonogramma} from './fonogramma.model';
 import {Complessita} from './complessita.model';
 import { Partenza } from './partenza.model';
 import { Operatore } from './operatore.model';
+import {Evento} from './evento.model';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -93,7 +94,11 @@ export class SintesiRichiesta {
         /**
          * etichette associate all'intervento (per es. aPagamento, imp, ecc.)
          */
-        public etichette: string[]
+        public etichette: string[],
+        /**
+         * lista degli eventi associati all'intervento
+         */
+        public eventi: Evento[]
     ) {
     }
 }

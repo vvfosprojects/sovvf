@@ -18,7 +18,7 @@ export class SedeMarker implements Sede {
         /**
          * tipologia sede (Es: Comando, Distaccamento)
          */
-        public tipologia: string,
+        public tipo: string,
         /**
          * label (da decidere)
          */

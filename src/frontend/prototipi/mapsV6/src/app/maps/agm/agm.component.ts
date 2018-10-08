@@ -8,6 +8,7 @@ import {MarkerService} from '../service/marker-service/marker-service.service';
 import {Subscription} from 'rxjs';
 import {CenterService} from '../service/center-service/center-service.service';
 import {AgmService} from './agm-service.service';
+import {ControlPosition, FullscreenControlOptions, ZoomControlOptions} from '@agm/core/services/google-maps-types';
 
 declare var google: any;
 
@@ -29,6 +30,15 @@ export class AgmComponent implements OnInit {
     subscription: Subscription;
     map: any;
 
+    zoomControlOptions: ZoomControlOptions = {
+        position: ControlPosition.BOTTOM_RIGHT
+    };
+
+    fullscreenControlOptions: FullscreenControlOptions = {
+        position: ControlPosition.TOP_LEFT
+    };
+
+
     constructor(private markerService: MarkerService,
                 private centerService: CenterService,
                 private agmService: AgmService) {
@@ -47,7 +57,7 @@ export class AgmComponent implements OnInit {
          */
         this.map_loaded = true;
         this.map = event;
-        this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById('Settings'));
+        this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('Settings'));
     }
 
     loadAPIWrapper(mapWrapper): void {
@@ -70,7 +80,14 @@ export class AgmComponent implements OnInit {
          * richiamo i metodi per modficare il centro e lo zoom del marker cliccato
          */
         this.agmService.centraMappa(marker.getCoordinate());
-        this.agmService.cambiaZoom(16);
+        this.agmService.cambiaZoom(14);
+    }
+
+    hoverMarker(marker: any, type) {
+        /**
+         * richiamo il service marker e gli passo marker e tipo hover
+         */
+        this.markerService.hover(marker, type);
     }
 
     urlIcona(marker: any): string {
@@ -105,8 +122,10 @@ export class AgmComponent implements OnInit {
         /**
          * metodo che ritorna allo zoom iniziale e deseleziona un marker se clicco sulla mappa
          */
-        this.agmService.cambiaZoom(8);
-        this.markerService.deseleziona();
+        if (this.markerService.markerSelezionato) {
+            this.agmService.cambiaZoom(11);
+            this.markerService.deseleziona();
+        }
     }
 
 }

@@ -23,7 +23,7 @@ export const environment = {
                 mezzi: ''
             },
             agm: {
-                key: 'AIzaSyDYIMWNyVt1X_30PybcDMTZkFkcSsUytDk'
+                key: 'AIzaSyAqr7bgViJbF0ckCnNzg9f64P1drVXVqa8'
             }
         },
         rigaElencoRichieste: {

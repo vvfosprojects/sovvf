@@ -20,4 +20,8 @@ export class MezzoMarker {
     getCoordinate() {
         return new Coordinate(this.coordinate.latitudine, this.coordinate.longitudine);
     }
+
+    inSoccorso() {
+        return !!this.id_richiesta;
+    }
 }

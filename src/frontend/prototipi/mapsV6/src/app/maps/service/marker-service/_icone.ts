@@ -87,7 +87,7 @@ export class IconMappe {
         this.mapIconeSedi = new Map(this.iconeSedi);
 
         this.iconeMezzi = [
-            ['autobotte', 'default.png']
+            ['autobotte', 'map-marker-icon.png']
         ];
         this.mapIconeMezzi = new Map(this.iconeMezzi);
     }
@@ -119,7 +119,7 @@ export class IconMappe {
                     return this.iconaStatoCorrenteUrl;
                 }
                 case 'sede': {
-                    this.iconaStatoCorrenteUrl = dir + this.mapIconeSedi.get(marker.tipologia.toLowerCase());
+                    this.iconaStatoCorrenteUrl = dir + this.mapIconeSedi.get(marker.tipo.toLowerCase());
                     if (!this.iconaStatoCorrenteUrl) {
                         return undefined;
                     }

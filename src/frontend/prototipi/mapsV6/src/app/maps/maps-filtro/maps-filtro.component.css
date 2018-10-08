@@ -1,13 +1,16 @@
-.menuMarker {
+.button-menu {
     background-color: white !important;
     color: gray !important;
+    border-radius: 1px !important;
+    padding: 0px 4px;
+    margin-right: 1.8px;
 }
 
-.menuMarker:focus {
+.button-menu:focus {
     box-shadow: none !important;
 }
 
-.menuMarker:hover {
+.button-menu:hover {
     color: black !important;
 }
 

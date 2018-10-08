@@ -1,5 +1,5 @@
-<div ngbDropdown class="mt-2">
-  <button class="mr-1 p-1 btn menuMarker" id="dropdownConfig" ngbDropdownToggle><i class="fa fa-bars"></i>
+<div ngbDropdown class="mt-2 mr-2">
+  <button class="btn button-menu" id="dropdownConfig" ngbDropdownToggle><i class="fa fa-bars"></i>
   </button>
   <div ngbDropdownMenu class="px-2">
     <button *ngFor="let voce of markerMenu" class="btn dropdown-item filtro-hover mb-1" [ngClass]="{'voce-green': voce.isActive}" appDebounceClick (debounceClick)="onSelected(voce.id)" [debounceTime]="300">
