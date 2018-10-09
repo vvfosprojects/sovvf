@@ -98,7 +98,7 @@ export class SintesiRichiesta {
         /**
          * lista degli eventi associati all'intervento
          */
-        public eventi: Evento[]
+        public eventi?: Evento[]
     ) {
     }
 }

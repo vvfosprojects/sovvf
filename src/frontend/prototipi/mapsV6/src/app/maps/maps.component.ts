@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CentroMappa} from './maps-model/centro-mappa.model';
 import {RichiestaMarker} from './maps-model/richiesta-marker.model';
-import {MapsService} from './service/maps-service/maps-service.service';
 import {Coordinate} from '../shared/model/coordinate.model';
 import {MapManagerService} from './service/maps-manager/map-manager-service.service';
 import {SedeMarker} from './maps-model/sede-marker.model';
@@ -19,14 +18,11 @@ export class MapsComponent implements OnInit {
     sediMarkers: SedeMarker[];
     mezziMarkers: MezzoMarker[];
 
-    constructor(private mapsService: MapsService,
-                private mapManager: MapManagerService /** servizio che innietta dati alla mappa **/) {
+    constructor(private mapManager: MapManagerService /** servizio che innietta dati alla mappa **/) {
         /**
          *  creo un oggetto di tipo centroMappa per inizializzare la mappa
          */
-        const initCentroMappa = new CentroMappa(new Coordinate(42.290251, 12.492373), 8);
-        /* Roma */
-        this.centroMappa = initCentroMappa;
+        this.centroMappa = new CentroMappa(new Coordinate(42.290251, 12.492373), 8);
     }
 
     ngOnInit() {
