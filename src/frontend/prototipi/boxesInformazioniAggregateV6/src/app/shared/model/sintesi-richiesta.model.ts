@@ -1,9 +1,12 @@
-import {Squadra} from './squadra.model';
-import {Mezzo} from './mezzo.model';
-import {Componente} from './componente.model';
 import {Tipologia} from './tipologia.model';
-import {Competenza} from './competenza.model';
-import {DescrizioneLocalita} from './descrizione-localita.model';
+import {Sede} from './sede.model';
+import {Localita} from './localita.model';
+import {Richiedente} from './richiedente.model';
+import {Fonogramma} from './fonogramma.model';
+import {Complessita} from './complessita.model';
+import { Partenza } from './partenza.model';
+import { Operatore } from './operatore.model';
+import {Evento} from './evento.model';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -20,10 +23,12 @@ export class SintesiRichiesta {
          * E' il codice della Richiesta di Assistenza
          */
         public codice: string,
+
+        public operatore: Operatore,
         /**
          * Indica se la richiesta è rilevante
          */
-        public rilevante: boolean,
+        public rilevanza: boolean,
         /**
          * ricezione della richiesta (via telefono, ecc.)
          */
@@ -33,19 +38,18 @@ export class SintesiRichiesta {
          */
         public istantePrimaAssegnazione: Date,
         /**
-         * Indica se il luogo del sinistro è presidiato con squadra VVF
+         * Indica lo stato della richiesa di soccorso
          */
-        public presidiato: boolean,
+        public stato: string,
         /**
          * priorita della richiesta (da 0 a 4). 0 = Altissima, 1 = Alta, 2 = Media,
          * 3 = Bassa, 4 = Bassissima.
          */
-        public prioritaRichiesta: number,
+        public priorita: number,
         /**
          * descrizione delle tipologie
          */
-        public tipologie: Tipologia[], // (1)
-
+        public tipologie: Tipologia[],
         /**
          * descrizione della richiesta
          */
@@ -53,24 +57,15 @@ export class SintesiRichiesta {
         /**
          * descrizione del richiedente
          */
-        public richiedente: string,
-        /**
-         * numero telefonico del richiedente (se appropriato)
-         */
-        public numeroRichiedente: string,
+        public richiedente: Richiedente,
         /**
          * descrizione della località dell'evento
          */
-        public descrizioneLocalita: DescrizioneLocalita,
+        public localita: Localita,
         /**
          * descrizione delle sedi di prima, seconda e terza competenza
          */
-        public descrizioneCompetenze: Competenza[],
-        /**
-         * note sulla località della richiesta (per es. "accanto a ingresso
-         * carico/scarico del supermercato Spendibene")
-         */
-        public noteLocalita: string,
+        public competenze: Sede[],
         /**
          * descrizione delle zone di emergenza
          */
@@ -80,51 +75,30 @@ export class SintesiRichiesta {
          */
         public istantePresaInCarico: Date,
         /**
-         * codice della scheda nue
+         * codice della scheda NUE
          */
         public codiceSchedaNue: string,
         /**
          * codice dello stato di invio del fonogramma (0 = Non necessario, 1 = Da inviare,
          * 2 = Inviato). Utile a calcolare il colore della segnalazione.
          */
-        public statoFonogrammaRichiesta: number,
-        /**
-         * segnalazione sullo stato di invio del fonogramma
-         */
-        public descrizioneStatoFonogramma: string,
+        public fonogramma: Fonogramma,
         /**
          * indice di complessità dell'intervento (per es. numero di eventi collegati alla richiesta)
          */
-        public indiceComplessita: number,
+        public complessita: Complessita,
         /**
-         * codice della complessità dell'intervento (0 = Alta, 1 = Media, 2 = Bassa). Utile
-         * a calcolare il colore della segnalazione sulla complessità.
+         * lista delle partenze
          */
-        public complessitaRichiesta: number,
-        /**
-         * segnalazione sulla complessità dell'intervento.
-         */
-        public descrizioneComplessita: string,
-        /**
-         * dati sulle squadre coinvolte nella richiesta
-         */
-        public squadre: Squadra[],
-        /**
-         * dati sui mezzi impegnati sull'intervento
-         */
-        public mezzi: Mezzo[],
+        public partenze: Partenza[],
         /**
          * etichette associate all'intervento (per es. aPagamento, imp, ecc.)
          */
-        public etichette: string[]
+        public etichette: string[],
+        /**
+         * lista degli eventi associati all'intervento
+         */
+        public eventi?: Evento[]
     ) {
-    }
-
-    public tuttiIComponenti(): Componente[] {
-        return this.squadre.reduce((a, c) => {
-            a.push(...c.componenti);
-
-            return a;
-        }, []);
     }
 }

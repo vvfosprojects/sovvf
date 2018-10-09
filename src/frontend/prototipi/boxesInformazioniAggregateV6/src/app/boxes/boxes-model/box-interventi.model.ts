@@ -8,5 +8,10 @@ export class BoxInterventi {
         public presidiati: number,
         /* Interventi con mezzi in attesa  */
         public sospesi: number
-        ) { }
+    ) {
+    }
+
+    getTotal() {
+        return Object.values(this).reduce((a, b) => a + b, 0);
+    }
 }

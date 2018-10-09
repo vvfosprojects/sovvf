@@ -2,7 +2,7 @@
   <div class="card-body">
       <div class="row">
           <div class="col-12 text-secondary">
-              <span><i class="fa fa-medkit mb-2 mr-1"></i>Richieste di Soccorso: {{getTotal()}}</span>
+              <span><i class="fa fa-medkit mb-2 mr-1"></i>Richieste di Soccorso: {{interventi.getTotal()}}</span>
               <hr class="m-0 mb-2">
           </div>
           <!-- sinistra -->
@@ -18,7 +18,7 @@
           </div>
           <div class="col-2 px-0 text-center">
               <ul class="list-unstyled m-0">
-                  <li><span class="badge h6 w-75" [ngClass]="{'badge-secondary': interventi.chiamate === 0,'badge-warning': interventi.chiamate > 0}">{{interventi.chiamate}}</span></li>
+                  <li><span class="badge h6 w-75" [ngClass]="{'badge-secondary': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0}">{{interventi.chiamate}}</span></li>
                   <li><span class="badge badge-warning h6 w-75">{{interventi.sospesi}}</span></li>
               </ul>
           </div>
