@@ -7,6 +7,11 @@ export class Squadra {
          */
         public nome: string,
         /**
+         * Stato del squadra (InSede, InViaggio, SulPosto,
+         * InRientro, Istituto).
+         */
+        public stato: string,
+        /**
          * E' l'istante in cui la squadra ha terminato il suo impegno sulla richiesta.
          * Se è null, la squadra è ancora impegnata sulla richiesta.
          */

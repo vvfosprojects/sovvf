@@ -61,7 +61,7 @@ export class DispatcherFakeService {
     const newRichiesta = new SintesiRichiesta(
       'R1',
       'RM-24760',
-      new Operatore('Mario', 'Verdi', 'HGM3NS'),
+      new Operatore('Mario76', 'Mario', 'Rossi', 'RSSMRA67A01H501X', 'CDXXH', 'password', new Sede(null, null, null, null)),
       true,
       new Date,
       new Date,
@@ -86,7 +86,7 @@ export class DispatcherFakeService {
           [
           ],
           [
-            new Squadra('Squadra1', new Date, null)
+            new Squadra('Squadra1', 'Stato', new Date, [])
           ]
         ),
       ],
