@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FiltriService } from '../filtri-richieste/filtri-service/filtri-service.service';
-import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
+import { RicercaRichiesteService } from './ricerca-richieste-service/ricerca-richieste.service';
 
 @Component({
   selector: 'app-ricerca-richieste',
@@ -14,7 +14,7 @@ export class RicercaRichiesteComponent implements OnInit {
   filtriSelezionatiBySearch: VoceFiltro[] = [];
   arrCounters: Array<number> = [];
 
-  constructor(private filtriS: FiltriService) { }
+  constructor(public ricercaS: RicercaRichiesteService, private filtriS: FiltriService) { }
 
   ngOnInit() {
     this.getFiltri();

@@ -5,6 +5,7 @@ import { RichiestaSelezionataService } from '../lista-richieste-service/richiest
 import { RichiestaHoverService } from '../lista-richieste-service/richiesta-hover-service/richiesta-hover-service.service';
 import { ScrollEvent } from 'ngx-scroll-event';
 import { ListaRichiesteService } from '../lista-richieste-service/lista-richieste-service.service';
+import { RicercaRichiesteService } from '../ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
 
 @Component({
   selector: 'app-lista-richieste',
@@ -22,7 +23,8 @@ export class ListaRichiesteComponent implements OnInit {
   constructor(private listaRichiesteManager: ListaRichiesteManagerService,
     private richiestaSelezionataS: RichiestaSelezionataService,
     private richiestaHoverS: RichiestaHoverService,
-    private listaRichiesteS: ListaRichiesteService) { }
+    private listaRichiesteS: ListaRichiesteService,
+    public ricercaS: RicercaRichiesteService) { }
 
   ngOnInit() {
     // Restituisce le Richieste
