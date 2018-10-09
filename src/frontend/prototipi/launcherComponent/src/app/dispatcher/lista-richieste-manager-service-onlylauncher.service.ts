@@ -3,6 +3,7 @@ import { Observable, of } from 'rxjs';
 
 import { DispatcherService } from './dispatcher.service';
 import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
+import { Richiesta } from './richiesta.model';
 
 
 @Injectable({
@@ -11,16 +12,6 @@ import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
 export class ListaRichiesteManagerServiceOnlylauncher {
 
     richieste: SintesiRichiesta[];
-
-    private _count: number;
-
-    set count(count: number) {
-        this._count = count;
-    }
-
-    get count(): number {
-        return this._count;
-    }
 
     constructor(private dispatcher: DispatcherService) {
 
@@ -32,8 +23,9 @@ export class ListaRichiesteManagerServiceOnlylauncher {
             this.richieste.unshift(richiesta.sRichiesta);
         });
 
-        this.dispatcher.onUpdateRichiesta().subscribe(richiesta => {
+        this.dispatcher.onUpdateRichiesta().subscribe((richiesta: Richiesta) => {
             this.richieste = this.richieste.map(r => r.id === richiesta.sRichiesta.id ? richiesta.sRichiesta : r);
+            console.log(this.richieste);
         });
 
         this.dispatcher.onDeleteRichiesta().subscribe(richiesta => {

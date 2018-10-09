@@ -1,0 +1,11 @@
+.h-info-window {
+    min-height: 100px !important;
+    min-width: 150px !important;
+    text-align: center !important;
+}
+
+.h-info-window-sede {
+    min-height: 130px !important;
+    min-width: 150px !important;
+    text-align: center !important;
+}

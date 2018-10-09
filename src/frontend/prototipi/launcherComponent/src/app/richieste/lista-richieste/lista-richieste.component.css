@@ -27,6 +27,35 @@
     -moz-box-shadow: 2px 0px 2px .5px rgb(255, 82, 82);
     box-shadow: 2px 0px 2px .5px rgb(255, 82, 82);
 }
+.m-h-750{
+	max-height: 750px;
+}
+
+.m-h-600{
+	max-height: 610px;
+}
+
+.scroll-y{
+	overflow-y: scroll;
+}
+
+.scroll-y::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+.scroll-y::-webkit-scrollbar
+{
+	width: 10px;
+	background-color: #F5F5F5;
+}
+
+.scroll-y::-webkit-scrollbar-thumb
+{
+	background-color: #000000;
+	border: 2px solid #555555;
+}
 
 @media (min-width: 2560px) {
 	.col-6big {

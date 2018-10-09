@@ -14,6 +14,7 @@ import { Complessita } from '../../shared/model/complessita.model';
 import { Fonogramma } from '../../shared/model/fonogramma.model';
 import { Partenza } from '../../shared/model/partenza.model';
 import { Squadra } from '../../shared/model/squadra.model';
+import { Mezzo } from '../../shared/model/mezzo.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,12 +30,6 @@ export class DispatcherFakeService {
     setTimeout(() => {
       this.addRichiesta();
     }, 3000);
-    setTimeout(() => {
-      this.updateRichiesta();
-    }, 5000);
-    setTimeout(() => {
-      this.deleteRichiesta();
-    }, 9000);
   }
 
   onNewSRichiesteList(): Observable<SintesiRichiesta[]> {
@@ -42,6 +37,11 @@ export class DispatcherFakeService {
       this.richieste = richieste;
     });
     return of(this.richieste);
+  }
+
+  onNewSRichiesteListScroll(): Observable<SintesiRichiesta[]> {
+    const nuoveRichieste = this.sintesiRichiesteService.nuoveRichieste();
+    return of(nuoveRichieste);
   }
 
   onNewSRichiesta(): Observable<SintesiRichiesta> {
@@ -61,7 +61,7 @@ export class DispatcherFakeService {
     const newRichiesta = new SintesiRichiesta(
       'R1',
       'RM-24760',
-      new Operatore('Mario', 'Verdi', 'HGM3NS'),
+      new Operatore('Mario76', 'Mario', 'Rossi', 'RSSMRA67A01H501X', 'CDXXH', 'password', new Sede(null, null, null, null)),
       true,
       new Date,
       new Date,
@@ -86,28 +86,12 @@ export class DispatcherFakeService {
           [
           ],
           [
-            new Squadra('Squadra1', new Date, null)
+            new Squadra('Squadra1', 'Stato', new Date, [])
           ]
         ),
       ],
       ['Tag1', 'Tag2']
     );
     this.newRichiesta$.next(newRichiesta);
-  }
-
-  private updateRichiesta() {
-    const newRichiesta = this.richieste[0];
-    newRichiesta.rilevanza = true;
-    setTimeout(() => {
-      newRichiesta.stato = 'presidiato';
-      newRichiesta.istantePresaInCarico = new Date();
-      newRichiesta.istantePrimaAssegnazione = new Date();
-    }, 3000);
-    this.updateRichiesta$.next(newRichiesta);
-  }
-
-  private deleteRichiesta() {
-    const newRichiesta = this.richieste[0];
-    this.deleteRichiesta$.next(newRichiesta);
   }
 }

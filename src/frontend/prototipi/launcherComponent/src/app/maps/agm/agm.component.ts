@@ -8,8 +8,10 @@ import {MarkerService} from '../service/marker-service/marker-service.service';
 import {Subscription} from 'rxjs';
 import {CenterService} from '../service/center-service/center-service.service';
 import {AgmService} from './agm-service.service';
-import { RichiestaSelezionataService } from '../../richieste/lista-richieste-service/richiesta-selezionata-service/richiesta-selezionata-service.service';
-import { RichiestaHoverService } from '../../richieste/lista-richieste-service/richiesta-hover-service/richiesta-hover-service.service';
+import {ControlPosition, FullscreenControlOptions, ZoomControlOptions} from '@agm/core/services/google-maps-types';
+
+declare var google: any;
+
 
 @Component({
     selector: 'app-agm',
@@ -26,33 +28,43 @@ export class AgmComponent implements OnInit {
     datiMeteo: Meteo;
     map_loaded = false;
     subscription: Subscription;
+    map: any;
+
+    zoomControlOptions: ZoomControlOptions = {
+        position: ControlPosition.BOTTOM_RIGHT
+    };
+
+    fullscreenControlOptions: FullscreenControlOptions = {
+        position: ControlPosition.TOP_LEFT
+    };
+
 
     constructor(private markerService: MarkerService,
-                private richiestaSelezionataS: RichiestaSelezionataService,
-                private richiestaHoverS: RichiestaHoverService,
                 private centerService: CenterService,
                 private agmService: AgmService) {
         this.subscription = this.centerService.getCentro().subscribe(centro => {
             this.centroMappa = centro;
         });
-        this.minMarkerCluster = 10;
+        this.minMarkerCluster = 99999;
     }
 
     ngOnInit() {
     }
 
-    mappaCaricata(): void {
+    mappaCaricata(event: any): void {
         /**
-         *  imposto una proprietà a true quando la mappa è caricata
+         *  imposto una proprietà a true quando la mappa è caricata e inserisco nell'oggetto map il menù
          */
         this.map_loaded = true;
+        this.map = event;
+        this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('Settings'));
     }
 
-    loadAPIWrapper(map): void {
+    loadAPIWrapper(mapWrapper): void {
         /**
          * importo il wrapper nell'oggetto map
          */
-        this.agmService.map = map;
+        this.agmService.map = mapWrapper;
     }
 
     selezioneMarker(marker: any): void {
@@ -68,17 +80,14 @@ export class AgmComponent implements OnInit {
          * richiamo i metodi per modficare il centro e lo zoom del marker cliccato
          */
         this.agmService.centraMappa(marker.getCoordinate());
-        this.agmService.cambiaZoom(12);
-
-        this.richiestaSelezionataS.sendRichiesta(marker.id);
+        this.agmService.cambiaZoom(14);
     }
 
     hoverMarker(marker: any, type) {
-        if (type === 'in') {
-            this.richiestaHoverS.sendRichiesta(marker.id);
-        } else if (type === 'out') {
-            this.richiestaHoverS.clearRichiesta();
-        }
+        /**
+         * richiamo il service marker e gli passo marker e tipo hover
+         */
+        this.markerService.hover(marker, type);
     }
 
     urlIcona(marker: any): string {
@@ -97,11 +106,9 @@ export class AgmComponent implements OnInit {
 
     isVisible(marker: any): boolean {
         /**
-         * metodo che nasconde o mostra i marker sulla mappa - in lavorazione
+         * richiedo al service che gestisce i marker sulla mappa, di ritornarmi se il marker è visibile
          */
-        if (marker) {
-            return true;
-        }
+        return this.markerService.visibile(marker);
     }
 
     centroCambiato(centro) {
@@ -109,6 +116,16 @@ export class AgmComponent implements OnInit {
          * metodo che fa la next sulla subject di centro
          */
         this.agmService.centro$.next(centro);
+    }
+
+    mappaCliccata() {
+        /**
+         * metodo che ritorna allo zoom iniziale e deseleziona un marker se clicco sulla mappa
+         */
+        if (this.markerService.markerSelezionato) {
+            this.agmService.cambiaZoom(11);
+            this.markerService.deseleziona();
+        }
     }
 
 }

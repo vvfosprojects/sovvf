@@ -33,9 +33,9 @@ export class RichiesteServiceFake {
         this.richieste = [
             new Richiesta(
                 new SintesiRichiesta(
-                    'R0',
+                    'R9',
                     'RM-24759',
-                    new Operatore('Mario', 'Verdi', 'HGM3NS'),
+                    new Operatore('Mario76', 'Mario', 'Rossi', 'RSSMRA67A01H501X', 'CDXXH', 'password', new Sede(null, null, null, null)),
                     false,
                     new Date,
                     new Date,
@@ -44,7 +44,7 @@ export class RichiesteServiceFake {
                     [new Tipologia(1, 'Allagamento', '')],
                     'Allagamento cantina per rottura tubatura',
                     new Richiedente('Mario Rossi', 3202676253),
-                    new Localita(new Coordinate(41.900570, 12.499370), 'Via Cavour, 5', 'Note test'),
+                    new Localita(new Coordinate(41.903567, 12.500859), 'Via Cavour, 5', 'Note test'),
                     [
                         new Sede(1, 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando'),
                         new Sede(2, 'Ostiense', new Coordinate(3.423423, 4.423423), 'Comando'),
@@ -61,16 +61,16 @@ export class RichiesteServiceFake {
                                 new Mezzo('M1', 'A1', 'Autopompa', 'In viaggio', 1),
                             ],
                             [
-                                new Squadra('Squadra1', new Date, null),
+                                new Squadra('Squadra1', 'Stato', new Date, null),
                             ]
                         ),
                     ],
                     ['Tag1', 'Tag2'],
                 ),
                 new RichiestaMarker(
-                    'R0',
+                    'R9',
                     new Localita(
-                        new Coordinate(41.900570, 12.499370),
+                        new Coordinate(41.903567, 12.500859),
                         'Via Cavour, 5',
                     ),
                     [
@@ -81,7 +81,7 @@ export class RichiesteServiceFake {
                     3,
                     'presidiato'
                 )
-            ),
+            )
         ];
 
         return of(this.richieste);

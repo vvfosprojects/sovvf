@@ -27,6 +27,9 @@ export class SintesiRichiesteService {
         return;
     }
 
+    nuoveRichieste() {
+        return [];
+    }
     private handleErrorObs(error: any) {
         console.error('Si è verificato un errore', error);
         return throwError(error.message || error);

@@ -1,82 +1,67 @@
 <div *ngIf="!map_loaded" class="mx-auto my-5">
     <img src="../../../assets/img/map_loading_resized.gif">
 </div>
-<agm-map [latitude]="centroMappa.coordinate.latitudine" [longitude]="centroMappa.coordinate.longitudine"
-         [zoom]="centroMappa.zoom" (mapReady)="mappaCaricata()" (centerChange)="centroCambiato($event)"
-         [usePanning]="true">
+<agm-map [disableDefaultUI]="true"
+         [zoomControl]="true"
+         [zoomControlOptions]="zoomControlOptions"
+         [fullscreenControl]="true"
+         [fullscreenControlOptions]="fullscreenControlOptions"
+         [mapTypeControl]="true"
+         [streetViewControl]="true"
+         [latitude]="centroMappa.coordinate.latitudine"
+         [longitude]="centroMappa.coordinate.longitudine"
+         [zoom]="centroMappa.zoom"
+         (mapReady)="mappaCaricata($event)"
+         (centerChange)="centroCambiato($event)"
+         [usePanning]="true" (mapClick)="mappaCliccata()">
+    <app-maps-filtro id="Settings"></app-maps-filtro>
     <agm-marker-cluster
             imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
             [minimumClusterSize]="minMarkerCluster">
-        <agm-marker *ngFor="let richiestaMarker of richiesteMarkers;" [latitude]="richiestaMarker.getCoordinate().latitudine"
+        <agm-marker *ngFor="let richiestaMarker of richiesteMarkers;"
+                    [latitude]="richiestaMarker.getCoordinate().latitudine"
                     [longitude]="richiestaMarker.getCoordinate().longitudine"
                     (markerClick)="selezioneMarker(richiestaMarker)"
                     (mouseOver)="hoverMarker(richiestaMarker, 'in')"
                     (mouseOut)="hoverMarker(richiestaMarker, 'out')"
-                    [iconUrl]="urlIcona(richiestaMarker)" [visible]="isVisible(richiestaMarker)">
+                    [iconUrl]="urlIcona(richiestaMarker)"
+                    [visible]="isVisible(richiestaMarker)">
             <agm-info-window *ngIf="trueMarker(richiestaMarker)">
-                <strong>{{richiestaMarker.label}}</strong>
-                <div *ngIf="datiMeteo" class="h-infowindow">
-                    <hr class="my-0">
-                    <div>
-                        <img class="mr-2 iconameteo w-25" src="http://openweathermap.org/img/w/{{datiMeteo.icona}}.png">
-                        <span class="text-capitalize">{{datiMeteo.descrizione}}</span>
-                    </div>
-                    <div class="text-center">{{datiMeteo.temperatura}}°C - Umidità: {{datiMeteo.umidita}}%</div>
-                    <div class="text-center">Vento {{datiMeteo.vento}} km/h
-                        <i [ngStyle]="{'transform': 'rotate('+datiMeteo.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datiMeteo.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datiMeteo.direzione.gradi+'deg)'}"
-                           class="pl-2 fa fa-long-arrow-up"></i> {{datiMeteo.direzione.cardinali}}
-                    </div>
-                </div>
+                <app-info-window [richiestaMarker]="richiestaMarker" [datiMeteo]="datiMeteo"></app-info-window>
             </agm-info-window>
         </agm-marker>
     </agm-marker-cluster>
     <agm-marker-cluster
             imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
             [minimumClusterSize]="minMarkerCluster">
-        <agm-marker *ngFor="let sedeMarker of sediMarkers;" [latitude]="sedeMarker.getCoordinate().latitudine"
+        <agm-marker *ngFor="let sedeMarker of sediMarkers;"
+                    [latitude]="sedeMarker.getCoordinate().latitudine"
                     [longitude]="sedeMarker.getCoordinate().longitudine"
                     (markerClick)="selezioneMarker(sedeMarker)"
-                    [iconUrl]="urlIcona(sedeMarker)" [visible]="isVisible(sedeMarker)">
+                    (mouseOver)="hoverMarker(sedeMarker, 'in')"
+                    (mouseOut)="hoverMarker(sedeMarker, 'out')"
+                    [iconUrl]="urlIcona(sedeMarker)"
+                    [visible]="isVisible(sedeMarker)">
             <agm-info-window *ngIf="trueMarker(sedeMarker)">
-                <strong>{{sedeMarker.descrizione}}</strong>
-                <div *ngIf="datiMeteo" class="h-infowindow">
-                    <hr class="my-0">
-                    <div>
-                        <img class="mr-2 iconameteo w-25" src="http://openweathermap.org/img/w/{{datiMeteo.icona}}.png">
-                        <span class="text-capitalize">{{datiMeteo.descrizione}}</span>
-                    </div>
-                    <div class="text-center">{{datiMeteo.temperatura}}°C - Umidità: {{datiMeteo.umidita}}%</div>
-                    <div class="text-center">Vento {{datiMeteo.vento}} km/h
-                        <i [ngStyle]="{'transform': 'rotate('+datiMeteo.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datiMeteo.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datiMeteo.direzione.gradi+'deg)'}"
-                           class="pl-2 fa fa-long-arrow-up"></i> {{datiMeteo.direzione.cardinali}}
-                    </div>
-                </div>
+                <app-info-window [sedeMarker]="sedeMarker" [datiMeteo]="datiMeteo"></app-info-window>
             </agm-info-window>
         </agm-marker>
     </agm-marker-cluster>
     <agm-marker-cluster
             imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
             [minimumClusterSize]="minMarkerCluster">
-        <agm-marker *ngFor="let mezzoMarker of mezziMarkers;" [latitude]="mezzoMarker.getCoordinate().latitudine"
+        <agm-marker *ngFor="let mezzoMarker of mezziMarkers;"
+                    [latitude]="mezzoMarker.getCoordinate().latitudine"
                     [longitude]="mezzoMarker.getCoordinate().longitudine"
                     (markerClick)="selezioneMarker(mezzoMarker)"
-                    [iconUrl]="urlIcona(mezzoMarker)" [visible]="isVisible(mezzoMarker)">
+                    (mouseOver)="hoverMarker(mezzoMarker, 'in')"
+                    (mouseOut)="hoverMarker(mezzoMarker, 'out')"
+                    [iconUrl]="urlIcona(mezzoMarker)"
+                    [visible]="isVisible(mezzoMarker)">
             <agm-info-window *ngIf="trueMarker(mezzoMarker)">
-                <strong>{{mezzoMarker.label}}</strong>
-                <div *ngIf="datiMeteo" class="h-infowindow">
-                    <hr class="my-0">
-                    <div>
-                        <img class="mr-2 iconameteo w-25" src="http://openweathermap.org/img/w/{{datiMeteo.icona}}.png">
-                        <span class="text-capitalize">{{datiMeteo.descrizione}}</span>
-                    </div>
-                    <div class="text-center">{{datiMeteo.temperatura}}°C - Umidità: {{datiMeteo.umidita}}%</div>
-                    <div class="text-center">Vento {{datiMeteo.vento}} km/h
-                        <i [ngStyle]="{'transform': 'rotate('+datiMeteo.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datiMeteo.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datiMeteo.direzione.gradi+'deg)'}"
-                           class="pl-2 fa fa-long-arrow-up"></i> {{datiMeteo.direzione.cardinali}}
-                    </div>
-                </div>
+                <app-info-window [mezzoMarker]="mezzoMarker" [datiMeteo]="datiMeteo"></app-info-window>
             </agm-info-window>
         </agm-marker>
     </agm-marker-cluster>
-    <app-agm-content (onMapLoad)='loadAPIWrapper($event)'></app-agm-content>
+    <app-agm-content (mapLoad)='loadAPIWrapper($event)'></app-agm-content>
 </agm-map>

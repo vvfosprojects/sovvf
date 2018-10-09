@@ -9,6 +9,7 @@ import * as moment from 'moment';
     styleUrls: ['./sintesi-richiesta.component.css']
 })
 export class SintesiRichiestaComponent implements OnInit {
+    @Output() richiestaClick: EventEmitter<any> = new EventEmitter();
     @Input() richiesta: SintesiRichiesta;
     espanso = false;
     time: any;
@@ -24,6 +25,9 @@ export class SintesiRichiestaComponent implements OnInit {
         this.displayRealTime(this.observableTime);
     }
 
+    richiestaCliccata() {
+        this.richiestaClick.emit();
+    }
     /* Restituisce un Array con tanti elementi quanto è la priorità dell'intervento */
     vettorePallini() {
         return new Array(this.richiesta.priorita);
@@ -126,7 +130,6 @@ export class SintesiRichiestaComponent implements OnInit {
                 this.time = parseToday ? 'Oggi alle ' + timeR : parseYesterday;
             }
         });
-
     }
     /* Permette di colorare l'icona della tipologia */
     coloraIcona(nome): any {

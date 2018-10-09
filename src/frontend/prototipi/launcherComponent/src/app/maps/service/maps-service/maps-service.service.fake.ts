@@ -40,7 +40,7 @@ export class MapsServiceFake {
         this.statiObj = new Map(this.stati);
     }
 
-    private numeroMarker = 30;
+    private numeroMarker = 20;
 
     getRichiesteMarker(): Observable<RichiestaMarker[]> {
         this.richiesteMarker = [
@@ -110,11 +110,11 @@ export class MapsServiceFake {
     getMezziMarker(): Observable<MezzoMarker[]> {
         this.mezziMarker = [
             new MezzoMarker(
-                new Coordinate(42.5131365, 12.773477),
+                new Coordinate( 41.3593378, 13.4284407),
                 new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 5),
                 'R1',
                 [
-                    new Squadra('1A', null,
+                    new Squadra('1A', 'Stato', null,
                         [
                             new Componente(
                                 'CR',

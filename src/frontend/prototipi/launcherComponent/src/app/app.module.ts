@@ -22,9 +22,14 @@ import { MapsService } from './maps/service/maps-service/maps-service.service';
 import { MapsServiceFake } from './maps/service/maps-service/maps-service.service.fake';
 import { AgmComponent } from './maps/agm/agm.component';
 import { AgmContentComponent } from './maps/agm/agm-content.component';
-import {AgmJsMarkerClustererModule} from '@agm/js-marker-clusterer';
+import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import { AgmCoreModule } from '@agm/core';
 import { MapManagerService } from './maps/service/maps-manager/map-manager-service.service';
+import { InfoWindowComponent } from './maps/maps-ui/info-window/info-window.component';
+import { MapsFiltroComponent } from './maps/maps-filtro/maps-filtro.component';
+import { MezzoModalComponent } from './maps/maps-ui/modal/mezzo-modal/mezzo-modal.component';
+import { MezzoModalContentComponent } from './maps/maps-ui/modal/mezzo-modal-content/mezzo-modal-content.component';
+
 // end maps-container
 // start rigaElenco
 import { RichiesteComponent } from './richieste/richieste.component';
@@ -39,7 +44,8 @@ import { FiltriRichiesteComponent } from './richieste/filtri-richieste/filtri-ri
 import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.component';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { ListaRichiesteManagerService } from './richieste/lista-richieste-manager/lista-richieste-manager.service';
+import { ListaRichiesteManagerService } from './richieste/lista-richieste-service/lista-richieste-manager/lista-richieste-manager.service';
+import { ScrollEventModule } from 'ngx-scroll-event';
 // end rigaElenco
 // start boxes
 import { BoxFunzionariComponent } from './boxes/info-aggregate/box-funzionari/box-funzionari.component';
@@ -55,7 +61,7 @@ import { SidebarModule, Sidebar } from 'ng-sidebar';
 import { NavbarComponent } from './navbar/navbar.component';
 // end sidebar
 // start navbar
-import { UnitaOperativaService } from './navbar/navbar-service/richiesta-selezionata-service/unita-operativa.service';
+import { UnitaOperativaService } from './navbar/navbar-service/unita-operativa-service/unita-operativa.service';
 // end navbar
 // managers only launcher
 import { MapManagerServiceOnlylauncher } from './dispatcher/map-manager-service-onlylauncher.service';
@@ -86,6 +92,10 @@ import { ListaRichiesteManagerServiceOnlylauncher } from './dispatcher/lista-ric
         MapsComponent,
         AgmComponent,
         AgmContentComponent,
+        MapsFiltroComponent,
+        InfoWindowComponent,
+        MezzoModalComponent,
+        MezzoModalContentComponent,
         // end import maps
         BoxFunzionariComponent,
         InfoAggregateComponent,
@@ -111,7 +121,8 @@ import { ListaRichiesteManagerServiceOnlylauncher } from './dispatcher/lista-ric
         FormsModule,
         NgxPaginationModule,
         FilterPipeModule,
-        SidebarModule.forRoot()
+        SidebarModule.forRoot(),
+        ScrollEventModule
     ],
     providers: [
         { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake },

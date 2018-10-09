@@ -17,7 +17,7 @@ export class Sede {
         /**
          * tipologia sede (Es: Comando, Distaccamento)
          */
-        public tipologia: string,
+        public tipo: string,
         /**
          * label (da decidere)
          */

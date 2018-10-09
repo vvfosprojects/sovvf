@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import {catchError, retry} from 'rxjs/operators';
-import {HttpClient, HttpBackend, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpBackend, HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {map} from 'rxjs/internal/operators';
 import {Meteo} from '../model/meteo.model';
-import { Coordinate } from '../model/coordinate.model';
+import {Coordinate} from '../model/coordinate.model';
 
 const API_URL = environment.apiUrl.boxes.owm.url;
 const CFG = environment.apiUrl.boxes.owm.option;
@@ -24,13 +24,9 @@ export class MeteoService {
     }
 
     getMeteoData(_coordinate: Coordinate): Observable<any> {
-        // const httpOptions = {
-        //     headers: new HttpHeaders({
-        //     })
-        // };
-        const url = API_URL + this.wipeCoordinate(_coordinate)
-            + '&lang=' + CFG.lang + '&appid=' + CFG.key + '&units=' + CFG.unit;
-        return this.http.get(url)
+        return this.http.get(
+            API_URL + this.wipeCoordinate(_coordinate)
+            + '&lang=' + CFG.lang + '&appid=' + CFG.key + '&units=' + CFG.unit)
             .pipe(
                 map((data: any) => {
                     return new Meteo(
@@ -51,11 +47,11 @@ export class MeteoService {
 
     private handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
-            console.error('Si è verificato un errore:', error.message);
+            console.error('Si è verificato un errore:', error.error.message);
         } else {
             console.error(
                 `Errore response: ${error.status}, ` +
-                `Messaggio body: ${error.message}`);
+                `Messaggio body: ${error.error.message}`);
         }
         return throwError(
             'Qualcosa è andato storto, per favore riprova più tardi.');
@@ -64,7 +60,7 @@ export class MeteoService {
 
     private wipeCoordinate(coordinate: Coordinate) {
         if (coordinate) {
-            return 'lat=' + Math.floor(coordinate[0] * 100) / 100 + '&lon=' + Math.floor(coordinate[1] * 100) / 100;
+            return 'lat=' + Math.floor(coordinate.latitudine * 100) / 100 + '&lon=' + Math.floor(coordinate.longitudine * 100) / 100;
         } else {
             return console.error('Errore ricezione coordinate meteo: ', coordinate);
         }

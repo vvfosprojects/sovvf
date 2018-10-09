@@ -6,6 +6,19 @@ import { RichiesteServiceFake } from '../service/richieste.service.fake';
 import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
 import { RichiestaMarker } from '../maps/maps-model/richiesta-marker.model';
 
+// Models
+import { Operatore } from '../shared/model/operatore.model';
+import { Tipologia } from '../shared/model/tipologia.model';
+import { Richiedente } from '../shared/model/richiedente.model';
+import { Localita } from '../shared/model/localita.model';
+import { Coordinate } from '../shared/model/coordinate.model';
+import { Sede } from '../shared/model/sede.model';
+import { Complessita } from '../shared/model/complessita.model';
+import { Fonogramma } from '../shared/model/fonogramma.model';
+import { Squadra } from '../shared/model/squadra.model';
+import { Mezzo } from '../shared/model/mezzo.model';
+import { Partenza } from '../shared/model/partenza.model';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,6 +35,9 @@ export class DispatcherService {
     setTimeout(() => {
       this.newRichiesta();
     }, 5000);
+    setTimeout(() => {
+      this.updateRichiesta();
+    }, 9000);
   }
 
   onNewSintesiRichiesteList(): Observable<SintesiRichiesta[]> {
@@ -56,7 +72,12 @@ export class DispatcherService {
 
   /* TESTING METHODS */
   newRichiesta() {
-    /* const nuovaRichiesta = ...
+    /* const nuovaRichiesta = ;
     this.newRichiesta$.next(nuovaRichiesta); */
+  }
+
+  updateRichiesta() {
+    /* const richiestaAggiornata = ;
+    this.updateRichiesta$.next(richiestaAggiornata); */
   }
 }

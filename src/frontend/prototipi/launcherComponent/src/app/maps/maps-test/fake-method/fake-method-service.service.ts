@@ -38,7 +38,6 @@ export class FakeMethodService {
 
     /* TESTING METHOD */
     setMarker(marker: RichiestaMarker) {
-        // this.mapManager.richiesteMarker.push(marker);
         this.dispatcher.addMarker(marker);
     }
 

@@ -1,7 +1,10 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UnitaOperativaService } from './navbar-service/richiesta-selezionata-service/unita-operativa.service';
 import * as moment from 'moment';
+
+import { UnitaOperativaService } from './navbar-service/unita-operativa-service/unita-operativa.service';
+import { Sede } from '../shared/model/sede.model';
+import { Coordinate } from '../shared/model/coordinate.model';
 
 
 @Component({
@@ -12,8 +15,8 @@ import * as moment from 'moment';
 export class NavbarComponent implements OnInit {
   @Input() user: any;
   @Output() openedSidebar: EventEmitter<any> = new EventEmitter();
-  unitaOperative: Array<string>;
-  unitaAttuale: string;
+  unitaOperative: Sede[];
+  unitaAttuale: Sede;
   time: string;
   searchUnita: string;
 
@@ -25,7 +28,8 @@ export class NavbarComponent implements OnInit {
     this.getUnitaAttuale();
 
     /* Setto il comando a 'Roma' */
-    this.unitaOperativaS.sendUnitaOperativaAttuale('Comando di Roma');
+    const sedeAttuale = new Sede(1, 'Comando di Roma', new Coordinate(41.900170, 12.491000), 'Comando');
+    this.unitaOperativaS.sendUnitaOperativaAttuale(sedeAttuale);
   }
 
   /* Unità operativa methods */

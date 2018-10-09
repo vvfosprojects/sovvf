@@ -1,0 +1,41 @@
+<div [ngClass]="{'h-info-window': !sedeMarker, 'h-info-window-sede': sedeMarker }">
+<span *ngIf="richiestaMarker && richiestaMarker.label">
+    <div class="font-weight-bold" ngbTooltip="{{ richiestaMarker.label }}" placement="bottom"
+         [disableTooltip]="richiestaMarker.label.length <= 30">
+        {{richiestaMarker.label | truncate:30 }}
+    </div>
+</span>
+
+    <span *ngIf="sedeMarker">
+    <div class="font-weight-bold" ngbTooltip="{{ sedeMarker.descrizione }}" placement="bottom"
+         [disableTooltip]="sedeMarker.descrizione.length <= 30">
+    {{sedeMarker.descrizione | truncate:30 }}
+    </div>
+</span>
+
+    <span *ngIf="mezzoMarker && mezzoMarker.label">
+    <div class="font-weight-bold" ngbTooltip="{{ mezzoMarker.label }}" placement="bottom"
+         [disableTooltip]="mezzoMarker.label.length <= 30">
+    {{mezzoMarker.label | truncate:30 }}
+    </div>
+</span>
+
+    <div *ngIf="datiMeteo">
+        <hr class="my-0">
+        <ng-template #vento>
+            <div class="tooltip-richiesta">Vento {{datiMeteo.vento}} km/h
+                <i [ngStyle]="{'transform': 'rotate('+datiMeteo.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datiMeteo.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datiMeteo.direzione.gradi+'deg)'}"
+                   class="pl-2 fa fa-long-arrow-up"></i> {{datiMeteo.direzione.cardinali}}
+            </div>
+        </ng-template>
+        <div placement="bottom" [ngbTooltip]="vento">
+            <img class="mr-2 iconameteo w-25" src="http://openweathermap.org/img/w/{{datiMeteo.icona}}.png">
+            <span class="text-capitalize">{{datiMeteo.descrizione}}</span>
+        </div>
+        <div>{{datiMeteo.temperatura}}°C - Umidità: {{datiMeteo.umidita}}%</div>
+    </div>
+
+    <span class="h-infowindow-sede" *ngIf="sedeMarker">
+    <app-mezzo-modal></app-mezzo-modal>
+</span>
+</div>
