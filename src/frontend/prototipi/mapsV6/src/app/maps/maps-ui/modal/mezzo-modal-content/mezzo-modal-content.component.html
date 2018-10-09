@@ -1,6 +1,7 @@
 <div class="modal-header">
   <h4 class="modal-title" id="modal-title">Cambio Sede Unità Operativa</h4>
   <button type="button" class="close" (click)="modal.dismiss('Cross click')">
+    <span>&times;</span>
   </button>
 </div>
 <div class="modal-body">
@@ -10,6 +11,6 @@
   </p>
 </div>
 <div class="modal-footer">
-  <button type="button" ngbAutofocus class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Annulla</button>
+  <button type="button" ngbAutofocus class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click');annullaCambioSede()">Annulla</button>
   <button type="button" class="btn btn-danger" (click)="modal.close('Ok click');cambioSede()">Ok</button>
 </div>

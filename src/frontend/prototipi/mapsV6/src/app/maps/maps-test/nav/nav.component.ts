@@ -63,4 +63,3 @@ export class NavComponent implements OnDestroy {
     }
 
 }
-
