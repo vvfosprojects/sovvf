@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MezzoModalComponent } from './mezzo-modal.component';
+import { EventiRichiestaComponent } from './eventi-richiesta.component';
 
-describe('MezzoModalComponent', () => {
-  let component: MezzoModalComponent;
-  let fixture: ComponentFixture<MezzoModalComponent>;
+describe('EventiRichiestaComponent', () => {
+  let component: EventiRichiestaComponent;
+  let fixture: ComponentFixture<EventiRichiestaComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MezzoModalComponent ]
+      declarations: [ EventiRichiestaComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MezzoModalComponent);
+    fixture = TestBed.createComponent(EventiRichiestaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
