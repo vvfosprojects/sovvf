@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import {catchError, retry} from 'rxjs/operators';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpBackend, HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {map} from 'rxjs/internal/operators';
 import {Meteo} from '../model/meteo.model';
+import {Coordinate} from '../model/coordinate.model';
 
 const API_URL = environment.apiUrl.boxes.owm.url;
 const CFG = environment.apiUrl.boxes.owm.option;
@@ -15,10 +16,14 @@ const CFG = environment.apiUrl.boxes.owm.option;
 })
 export class MeteoService {
 
-    constructor(private http: HttpClient) {
+    private http: HttpClient;
+
+    constructor(
+        handler: HttpBackend) {
+        this.http = new HttpClient(handler);
     }
 
-    getMeteoData(_coordinate: Array<number>): Observable<any> {
+    getMeteoData(_coordinate: Coordinate): Observable<any> {
         return this.http.get(
             API_URL + this.wipeCoordinate(_coordinate)
             + '&lang=' + CFG.lang + '&appid=' + CFG.key + '&units=' + CFG.unit)
@@ -53,9 +58,9 @@ export class MeteoService {
     }
 
 
-    private wipeCoordinate(coordinate?: Array<number>) {
-        if (coordinate.length === 2) {
-            return 'lat=' + Math.floor(coordinate[0] * 100) / 100 + '&lon=' + Math.floor(coordinate[1] * 100) / 100;
+    private wipeCoordinate(coordinate: Coordinate) {
+        if (coordinate) {
+            return 'lat=' + Math.floor(coordinate.latitudine * 100) / 100 + '&lon=' + Math.floor(coordinate.longitudine * 100) / 100;
         } else {
             return console.error('Errore ricezione coordinate meteo: ', coordinate);
         }
