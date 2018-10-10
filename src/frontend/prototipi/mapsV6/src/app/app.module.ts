@@ -20,8 +20,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MapsFiltroComponent} from './maps/maps-filtro/maps-filtro.component';
 import {EventiServiceFake} from './eventi-fake/eventi.service.fake';
 import {EventiService} from './shared/eventi/eventi.service';
-import {MezzoModalComponent} from './maps/maps-ui/modal/mezzo-modal/mezzo-modal.component';
-import {MezzoModalContentComponent} from './maps/maps-ui/modal/mezzo-modal-content/mezzo-modal-content.component';
+import {MezzoModalContentComponent} from './maps/maps-ui/info-window/mezzo-modal-content/mezzo-modal-content.component';
 import {InfoWindowComponent} from './maps/maps-ui/info-window/info-window.component';
 /*
 non importare su launcher
@@ -42,7 +41,6 @@ import {DebounceClickDirective} from './shared';
         AgmComponent,
         AgmContentComponent,
         MapsFiltroComponent,
-        MezzoModalComponent,
         MezzoModalContentComponent,
         InfoWindowComponent,
     ],
