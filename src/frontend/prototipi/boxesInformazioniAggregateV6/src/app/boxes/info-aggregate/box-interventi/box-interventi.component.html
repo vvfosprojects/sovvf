@@ -1,44 +1,32 @@
-<div class="card bg-light w-100 app-shadow min-height-boxes">
-  <div class="card-body">
-      <div class="row">
-          <div class="col-12 text-secondary">
-              <span><i class="fa fa-medkit mb-2 mr-1"></i>Richieste di Soccorso: {{interventi.getTotal()}}</span>
-              <hr class="m-0 mb-2">
-          </div>
-          <!-- sinistra -->
-          <div class="col-4 pr-0">
-              <ul class="list-unstyled m-0">
-                  <li>
-                      <h6>Chiamate</h6>
-                  </li>
-                  <li>
-                      <h6>Sospesi</h6>
-                  </li>
-              </ul>
-          </div>
-          <div class="col-2 px-0 text-center">
-              <ul class="list-unstyled m-0">
-                  <li><span class="badge h6 w-75" [ngClass]="{'badge-secondary': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0}">{{interventi.chiamate}}</span></li>
-                  <li><span class="badge badge-warning h6 w-75">{{interventi.sospesi}}</span></li>
-              </ul>
-          </div>
-          <!-- destra -->
-          <div class="col-4 pr-0">
-              <ul class="list-unstyled m-0">
-                  <li>
-                      <h6>Assegnati</h6>
-                  </li>
-                  <li>
-                      <h6>Presidiati</h6>
-                  </li>
-              </ul>
-          </div>
-          <div class="col-2 px-0 text-center">
-              <ul class="list-unstyled m-0">
-                  <li><span class="badge badge-info h6 w-75">{{interventi.assegnati}}</span></li>
-                  <li><span class="badge badge-success h6 w-75">{{interventi.presidiati}}</span></li>
-              </ul>
-          </div>
-      </div>
-  </div>
+<div class="row p-2">
+    <div class="col-12 text-secondary">
+        <span><i class="fa fa-medkit mb-2 mr-1"></i>Richieste di Soccorso: {{interventi.getTotal()}}</span>
+        <hr class="m-0 mb-2">
+    </div>
+    <!-- sinistra -->
+    <div class="col-4 pr-0">
+        <ul class="list-unstyled m-0">
+            <li><span class="d-inline-block h6">Chiamate</span></li>
+            <li><span class="d-inline-block h6">Sospesi</span></li>
+        </ul>
+    </div>
+    <div class="col-2 px-0 text-center">
+        <ul class="list-unstyled m-0">
+            <li><span class="badge h6 w-75" [ngClass]="{'badge-secondary': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0}">{{interventi.chiamate}}</span></li>
+            <li><span class="badge badge-warning h6 w-75">{{interventi.sospesi}}</span></li>
+        </ul>
+    </div>
+    <!-- destra -->
+    <div class="col-4 pr-0">
+        <ul class="list-unstyled m-0">
+            <li><span class="d-inline-block h6">Assegnati</span></li>
+            <li><span class="d-inline-block h6">Presidiati</span></li>
+        </ul>
+    </div>
+    <div class="col-2 px-0 text-center">
+        <ul class="list-unstyled m-0">
+            <li><span class="badge badge-info h6 w-75">{{interventi.assegnati}}</span></li>
+            <li><span class="badge badge-success h6 w-75">{{interventi.presidiati}}</span></li>
+        </ul>
+    </div>
 </div>

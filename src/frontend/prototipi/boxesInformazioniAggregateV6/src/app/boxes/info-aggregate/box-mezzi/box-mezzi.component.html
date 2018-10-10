@@ -1,48 +1,39 @@
-<div class="card bg-light w-100 app-shadow min-height-boxes">
-  <div class="card-body">
-      <div class="row">
-          <div class="col-12 text-secondary">
-              <span><i class="fa fa-truck mb-2 mr-1"></i>Mezzi in servizio: {{mezzi.getTotal()}}</span>
-              <hr class="m-0 mb-2">
-          </div>
-          <!-- sinistra -->
-          <div class="col-4 pr-0">
-              <ul class="list-unstyled m-0">
-                  <li>
-                      <h6>In sede</h6>
-                  </li>
-                  <li>
-                      <h6>In rientro</h6>
-                  </li>
-              </ul>
-          </div>
-          <div class="col-2 px-0 text-center">
-              <ul class="list-unstyled m-0">
-                  <li><span class="badge badge-secondary h6 w-75">{{mezzi.inSede}}</span></li>
-                  <li><span class="badge badge-primary h6 w-75">{{mezzi.inRientro}}</span></li>
-              </ul>
-          </div>
-          <!-- destra -->
-          <div class="col-4 pr-0">
-              <ul class="list-unstyled m-0">
-                  <li>
-                      <h6>In viaggio</h6>
-                  </li>
-                  <li>
-                      <h6>Sul posto</h6>
-                  </li>
-                  <li>
-                      <h6>Istituto</h6>
-                  </li>
-              </ul>
-          </div>
-          <div class="col-2 px-0 text-center">
-              <ul class="list-unstyled m-0">
-                  <li><span class="badge badge-info h6 w-75">{{mezzi.inViaggio}}</span></li>
-                  <li><span class="badge badge-success h6 w-75">{{mezzi.sulPosto}}</span></li>
-                  <li><span class="badge badge-warning h6 w-75">{{mezzi.istituto}}</span></li>
-              </ul>
-          </div>
-      </div>
-  </div>
+<div class="row p-2">
+    <div class="col-12 text-secondary">
+        <div class="row">
+            <div class="col">
+                <span><i class="fa fa-truck mb-2 mr-1"></i>Mezzi in servizio: {{mezzi.getTotal()}}</span>
+            </div>
+            <div class="col ml-auto text-right">
+                <span><i class="fa fa-truck mb-2 mr-1"></i>Istituto: {{mezzi.istituto}}</span>
+            </div>
+        </div>
+        <hr class="m-0 mb-2">
+    </div>
+    <!-- sinistra -->
+    <div class="col-4 pr-0">
+        <ul class="list-unstyled m-0">
+            <li><span class="d-inline-block h6">In sede</span></li>
+            <li><span class="d-inline-block h6">In rientro</span></li>
+        </ul>
+    </div>
+    <div class="col-2 px-0 text-center">
+        <ul class="list-unstyled m-0">
+            <li><span class="badge badge-secondary h6 w-75">{{mezzi.inSede}}</span></li>
+            <li><span class="badge badge-primary h6 w-75">{{mezzi.inRientro}}</span></li>
+        </ul>
+    </div>
+    <!-- destra -->
+    <div class="col-4 pr-0">
+        <ul class="list-unstyled m-0">
+            <li><span class="d-inline-block h6">In viaggio</span></li>
+            <li><span class="d-inline-block h6">Sul posto</span></li>
+        </ul>
+    </div>
+    <div class="col-2 px-0 text-center">
+        <ul class="list-unstyled m-0">
+            <li><span class="badge badge-info h6 w-75">{{mezzi.inViaggio}}</span></li>
+            <li><span class="badge badge-success h6 w-75">{{mezzi.sulPosto}}</span></li>
+        </ul>
+    </div>
 </div>

@@ -1,26 +1,24 @@
-<div class="col-12">
-  <div *ngIf="interventi || mezzi || funzionariSo" class="row mt-2">
-    <!-- box-interventi -->
-    <div class="col-md-3 h6">
-      <app-box-interventi [interventi]="interventi"></app-box-interventi>
+<div class="col-12 bg-light mb-2">
+  <div class="row">
+    <div class="col-10 border-left">
+      <div class="row">
+        <!-- box interventi -->
+        <div class="col-4 border-right">
+          <app-box-interventi [interventi]="interventi"></app-box-interventi>
+        </div>
+        <!-- box interventi -->
+        <div class="col-4 border-right">
+          <app-box-mezzi [mezzi]="mezzi"></app-box-mezzi>
+        </div>
+        <!-- box interventi -->
+        <div class="col-4 border-right">
+          <app-box-funzionari [funzionari]="funzionariSo"></app-box-funzionari>
+        </div>
+      </div>
     </div>
-
-    <!-- box-mezzi -->
-    <div class="col-md-3 h6">
-      <app-box-mezzi [mezzi]="mezzi"></app-box-mezzi>
-    </div>
-
-    <!-- box-funzionari -->
-    <div class="col-md-3 h6">
-      <app-box-funzionari [funzionari]="funzionariSo"></app-box-funzionari>
-    </div>
-
-    <!-- box-meteo -->
-    <div class="col-md-3 h6">
+    <!-- box interventi -->
+    <div class="col-2 border-right">
       <app-box-meteo></app-box-meteo>
     </div>
-  </div>
-  <div *ngIf="!interventi || !mezzi || !funzionariSo" class="col-12 text-center mt-5">
-    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
   </div>
 </div>
