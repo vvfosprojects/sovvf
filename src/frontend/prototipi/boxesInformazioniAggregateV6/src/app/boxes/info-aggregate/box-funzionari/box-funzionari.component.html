@@ -3,11 +3,10 @@
         <!-- Funzionario in Servizio -->
         <div class="row">
             <div class="col-6">
-                <span class="text-secondary"><i class="fa fa-graduation-cap mb-2 mr-1"></i>Funzionari
-                    in
-                    servizio: {{getTotalFunz()}}</span>
+                <i class="fa fa-graduation-cap mb-2 mr-1"></i>
+                <span class="font-weight-bold">Funzionari in servizio: {{getTotalFunz()}}</span>
             </div>
-            <div class="col-6 ml-auto text-right">
+            <div class="col-6 ml-auto text-right text-secondary">
                 <ng-template #tecniciGuardia>
                     <!-- Tecnico Guardia1 -->
                     <div *ngIf="getTecnicoGuardia() > 0">
@@ -31,9 +30,9 @@
                     </div>
                 </ng-template>
                 <i class="fa fa-wrench mr-1"></i>
-                <span class="text-secondary mr-1" *ngIf="getTecnicoGuardia() === 1">Tecnico:</span>
-                <span class="text-secondary mr-1" *ngIf="getTecnicoGuardia() === 2">Tecnici:</span>
-                <a href="javascript:void(0)" [ngbPopover]="tecniciGuardia" placement="bottom">{{getTecnicoGuardia()}}</a>
+                <span class="mr-1" *ngIf="getTecnicoGuardia() === 1">Tecnico:</span>
+                <span class="mr-1" *ngIf="getTecnicoGuardia() === 2">Tecnici:</span>
+                <a class="font-weight-bold" href="javascript:void(0)" [ngbPopover]="tecniciGuardia" placement="bottom">{{getTecnicoGuardia()}}</a>
             </div>
         </div>
         <hr class="m-0 mb-2">
@@ -41,7 +40,7 @@
     <!-- Funzionario Guardia -->
     <div class="col-12">
         <span *ngIf="getFunzPresente()">
-            <div class="col-12">
+            <div class="col-12 text-secondary">
                 <div class="row">
                     <div class="col-5 px-0 pr-1">
                         <span class="h6">Funz. Guardia</span>
@@ -52,7 +51,7 @@
                                 <ul class="m-0">
                                     <li>
                                         <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
-                                        <span class="" ngbTooltip="{{f.descrizione}}" placement="bottom"
+                                        <span class="text-dark" ngbTooltip="{{f.descrizione}}" placement="bottom"
                                             [disableTooltip]="f.descrizione.length <= 18">
                                             {{f.descrizione | truncate:18}}</span>
                                     </li>
@@ -70,7 +69,7 @@
     <!-- Capo Turno -->
     <div class="col-12 mt-2">
         <span *ngIf="getCapoTurnoPresente()">
-            <div class="col-12">
+            <div class="col-12 text-secondary">
                 <div class="row">
                     <div class="col-5 px-0 pr-1">
                         <span class="h6">Capo Turno</span>
@@ -81,7 +80,7 @@
                                 <ul class="m-0">
                                     <li>
                                         <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
-                                        <span class="" ngbTooltip="{{f.descrizione}}" placement="bottom"
+                                        <span class="text-dark" ngbTooltip="{{f.descrizione}}" placement="bottom"
                                             [disableTooltip]="f.descrizione.length <= 18">
                                             {{f.descrizione | truncate:18}}</span>
                                     </li>
