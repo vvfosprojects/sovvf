@@ -27,7 +27,7 @@
             <li>
                 <div class="h6">
                     <i [ngStyle]="{'transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datimeteo.direzione.gradi+'deg)'}"
-                        class="pl-2 fa fa-long-arrow-up"></i>
+                       class="pl-2 fa fa-long-arrow-up"></i>
                     <small class="text-black-50"> {{datimeteo.direzione.cardinali}}</small>
                 </div>
             </li>
@@ -41,8 +41,8 @@
         </ul>
     </div>
 </div>
-<div *ngIf="!datimeteo" class="w-100 min-height-boxes">
+<div *ngIf="!datimeteo" class="w-100">
     <div class="text-center">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw mt-5"></i>
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw my-5"></i>
     </div>
 </div>
