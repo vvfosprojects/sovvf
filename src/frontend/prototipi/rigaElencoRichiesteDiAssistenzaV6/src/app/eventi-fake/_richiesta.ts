@@ -18,4 +18,9 @@ export class EventiListaRichiesteFake {
     unClick() {
         console.log('unClick');
     }
+
+    eventiRichiestaModal(richiesta) {
+        console.log(richiesta);
+        console.log('eventiRichiestaModal');
+    }
 }

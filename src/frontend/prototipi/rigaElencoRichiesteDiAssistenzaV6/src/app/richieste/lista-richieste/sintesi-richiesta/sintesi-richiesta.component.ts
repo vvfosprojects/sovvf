@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { Observable } from 'rxjs';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
+import {SintesiRichiesta} from '../../../shared/model/sintesi-richiesta.model';
+import {Observable} from 'rxjs';
 import * as moment from 'moment';
 
 @Component({
@@ -10,6 +10,8 @@ import * as moment from 'moment';
 })
 export class SintesiRichiestaComponent implements OnInit {
     @Output() richiestaClick: EventEmitter<any> = new EventEmitter();
+    @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
+
     @Input() richiesta: SintesiRichiesta;
     espanso = false;
     time: any;
@@ -28,19 +30,23 @@ export class SintesiRichiestaComponent implements OnInit {
     richiestaCliccata() {
         this.richiestaClick.emit();
     }
+
     /* Restituisce un Array con tanti elementi quanto è la priorità dell'intervento */
     vettorePallini() {
         return new Array(this.richiesta.priorita);
     }
+
     /* Restituisce un Array con tanti elementi quanti sono i buchini della priorità dell'intervento */
     vettoreBuchini() {
         const MAX_PRIORITA = 5;
         return new Array(MAX_PRIORITA - this.richiesta.priorita);
     }
+
     /* Espande/Comprime il livello di dettaglio visualizzato per la richiesta */
     toggleEspanso(): void {
         this.espanso = !this.espanso;
     }
+
     /* Restituisce i nomi delle squadre  */
     nomiSquadre(): string[] {
         let nomiSquadre: string[];
@@ -49,6 +55,7 @@ export class SintesiRichiestaComponent implements OnInit {
         });
         return nomiSquadre;
     }
+
     /* Restituisce il numero delle squadre */
     numeroSquadre(): number {
         let numeroSquadre = 0;
@@ -57,6 +64,7 @@ export class SintesiRichiestaComponent implements OnInit {
         });
         return numeroSquadre;
     }
+
     /* Restituisce i nomi dei mezzi  */
     nomiMezzi(): string[] {
         let nomiMezzi: string[];
@@ -65,6 +73,7 @@ export class SintesiRichiestaComponent implements OnInit {
         });
         return nomiMezzi;
     }
+
     /* Restituisce il numero dei mezzi */
     numeroMezzi(): number {
         let numeroMezzi = 0;
@@ -73,6 +82,7 @@ export class SintesiRichiestaComponent implements OnInit {
         });
         return numeroMezzi;
     }
+
     /* Data una 'Date' permette di visualizzare il tempo passato fino a questo momento */
     private displayRealTime(observableTime) {
         // this.time = '';
@@ -131,6 +141,7 @@ export class SintesiRichiestaComponent implements OnInit {
             }
         });
     }
+
     /* Permette di colorare l'icona della tipologia */
     coloraIcona(nome): any {
         const colori = [
@@ -155,4 +166,14 @@ export class SintesiRichiestaComponent implements OnInit {
             return nome + ' text-success';
         }
     }
+
+    visualizzaEventiRichiesta(richiesta) {
+        this.eventiRichiesta.emit(richiesta);
+    }
+
+    invioPartenza() {
+        console.log('invio partenza');
+    }
 }
+
+
