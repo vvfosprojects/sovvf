@@ -50,36 +50,44 @@ export class SintesiRichiestaComponent implements OnInit {
     /* Restituisce i nomi delle squadre  */
     nomiSquadre(): string[] {
         let nomiSquadre: string[];
-        this.richiesta.partenze.forEach(partenza => {
-            nomiSquadre = partenza.squadre.map(s => s.nome);
-        });
+        if (this.richiesta.partenze) {
+            this.richiesta.partenze.forEach(partenza => {
+                nomiSquadre = partenza.squadre.map(s => s.nome);
+            });
+        }
         return nomiSquadre;
     }
 
     /* Restituisce il numero delle squadre */
     numeroSquadre(): number {
         let numeroSquadre = 0;
-        this.richiesta.partenze.forEach(partenza => {
-            numeroSquadre = numeroSquadre + partenza.squadre.length;
-        });
+        if (this.richiesta.partenze) {
+            this.richiesta.partenze.forEach(partenza => {
+                numeroSquadre = numeroSquadre + partenza.squadre.length;
+            });
+        }
         return numeroSquadre;
     }
 
     /* Restituisce i nomi dei mezzi  */
     nomiMezzi(): string[] {
-        let nomiMezzi: string[];
-        this.richiesta.partenze.forEach(partenza => {
-            nomiMezzi = partenza.mezzi.map(s => s.descrizione);
-        });
+        let nomiMezzi = [];
+        if (this.richiesta.partenze) {
+            this.richiesta.partenze.forEach(partenza => {
+                nomiMezzi = partenza.mezzi.map(s => s.descrizione);
+            });
+        }
         return nomiMezzi;
     }
 
     /* Restituisce il numero dei mezzi */
     numeroMezzi(): number {
         let numeroMezzi = 0;
-        this.richiesta.partenze.forEach(partenza => {
-            numeroMezzi = numeroMezzi + partenza.mezzi.length;
-        });
+        if (this.richiesta.partenze) {
+            this.richiesta.partenze.forEach(partenza => {
+                numeroMezzi = numeroMezzi + partenza.mezzi.length;
+            });
+        }
         return numeroMezzi;
     }
 
