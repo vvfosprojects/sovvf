@@ -1,21 +1,21 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
 
 // Models
-import { Richiesta } from '../dispatcher/richiesta.model';
-import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
-import { Operatore } from '../shared/model/operatore.model';
-import { Tipologia } from '../shared/model/tipologia.model';
-import { Richiedente } from '../shared/model/richiedente.model';
-import { Localita } from '../shared/model/localita.model';
-import { Coordinate } from '../shared/model/coordinate.model';
-import { Sede } from '../shared/model/sede.model';
-import { Complessita } from '../shared/model/complessita.model';
-import { Partenza } from '../shared/model/partenza.model';
-import { Mezzo } from '../shared/model/mezzo.model';
-import { Fonogramma } from '../shared/model/fonogramma.model';
-import { Squadra } from '../shared/model/squadra.model';
-import { RichiestaMarker } from '../maps/maps-model/richiesta-marker.model';
+import {Richiesta} from '../dispatcher/richiesta.model';
+import {SintesiRichiesta} from '../shared/model/sintesi-richiesta.model';
+import {Operatore} from '../shared/model/operatore.model';
+import {Tipologia} from '../shared/model/tipologia.model';
+import {Richiedente} from '../shared/model/richiedente.model';
+import {Localita} from '../shared/model/localita.model';
+import {Coordinate} from '../shared/model/coordinate.model';
+import {Sede} from '../shared/model/sede.model';
+import {Complessita} from '../shared/model/complessita.model';
+import {Partenza} from '../shared/model/partenza.model';
+import {Mezzo} from '../shared/model/mezzo.model';
+import {Fonogramma} from '../shared/model/fonogramma.model';
+import {Squadra} from '../shared/model/squadra.model';
+import {RichiestaMarker} from '../maps/maps-model/richiesta-marker.model';
 
 import * as moment from 'moment';
 
@@ -33,42 +33,34 @@ export class RichiesteServiceFake {
         this.richieste = [
             new Richiesta(
                 new SintesiRichiesta(
-                    'R9',
+                    'R1',
                     'RM-24759',
-                    new Operatore('Mario76', 'Mario', 'Rossi', 'RSSMRA67A01H501X', 'CDXXH', 'password', new Sede(null, null, null, null)),
+                    new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X', 'CDXXH', 'password', new Sede(1, 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando')),
                     false,
-                    new Date,
-                    new Date,
-                    'presidiato',
-                    2,
-                    [new Tipologia(1, 'Allagamento', '')],
-                    'Allagamento cantina per rottura tubatura',
+                    moment().subtract(59, 'minutes').toDate(),
+                    moment().subtract(60, 'minutes').toDate(),
+                    'chiamata',
+                    5,
+                    [new Tipologia(1, 'Esplosione', '')],
+                    'Esplosione nei pressi di un centro abitato',
                     new Richiedente('Mario Rossi', 3202676253),
-                    new Localita(new Coordinate(41.903567, 12.500859), 'Via Cavour, 5', 'Note test'),
+                    new Localita(new Coordinate(41.8624992, 12.5532867), 'Via Scribonio Curione, 22', 'nei pressi dell\'uscita della metro'),
                     [
                         new Sede(1, 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando'),
                         new Sede(2, 'Ostiense', new Coordinate(3.423423, 4.423423), 'Comando'),
                         new Sede(3, 'Tuscolana 2', new Coordinate(3.423423, 4.423423), 'Comando'),
                     ],
-                    null,
-                    new Date, // incrementare di qualche minuto
-                    'NUE00006',
                     new Fonogramma(1, 'non inviato'),
                     new Complessita('100', 0, 'Alto'),
-                    [
-                        new Partenza(
-                            [
-                                new Mezzo('M1', 'A1', 'Autopompa', 'In viaggio', 1),
-                            ],
-                            [
-                                new Squadra('Squadra1', 'Stato', new Date, null),
-                            ]
-                        ),
-                    ],
-                    ['Tag1', 'Tag2'],
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
                 ),
                 new RichiestaMarker(
-                    'R9',
+                    'R1',
                     new Localita(
                         new Coordinate(41.903567, 12.500859),
                         'Via Cavour, 5',

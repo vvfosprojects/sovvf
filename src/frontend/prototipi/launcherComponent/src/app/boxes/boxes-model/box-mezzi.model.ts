@@ -12,4 +12,8 @@ export class BoxMezzi {
         public istituto: number
     ) {
     }
+
+    getTotal() {
+        return Object.values(this).reduce((a, b) => a + b, 0) - this.istituto;
+    }
 }

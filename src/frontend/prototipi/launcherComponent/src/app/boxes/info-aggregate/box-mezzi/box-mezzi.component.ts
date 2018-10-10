@@ -15,8 +15,4 @@ export class BoxMezziComponent implements OnInit {
     ngOnInit() {
     }
 
-    getTotal() {
-        return Object.values(this.mezzi).reduce((a, b) => a + b, 0);
-    }
-
 }

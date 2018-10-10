@@ -14,8 +14,4 @@ export class BoxInterventiComponent implements OnInit {
     ngOnInit() {
     }
 
-    getTotal() {
-        return Object.values(this.interventi).reduce((a, b) => a + b, 0);
-    }
-
 }

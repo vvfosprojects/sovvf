@@ -53,8 +53,8 @@ import {ListaEventiRichiestaComponent} from './eventi-richiesta/lista-eventi-ric
 // start boxes
 import {BoxFunzionariComponent} from './boxes/info-aggregate/box-funzionari/box-funzionari.component';
 import {InfoAggregateComponent} from './boxes/info-aggregate/info-aggregate.component';
-import {InfoAggregateService} from './boxes/boxes-services/info-aggregate.service';
-import {InfoAggregateServiceFake} from './boxes/boxes-services/info-aggregate.service.fake';
+import {InfoAggregateService} from './boxes/service/boxes-services/info-aggregate.service';
+import {InfoAggregateServiceFake} from './boxes/service/boxes-services/info-aggregate.service.fake';
 import {BoxInterventiComponent} from './boxes/info-aggregate/box-interventi/box-interventi.component';
 import {BoxMezziComponent} from './boxes/info-aggregate/box-mezzi/box-mezzi.component';
 import {BoxMeteoComponent} from './boxes/info-aggregate/box-meteo/box-meteo.component';

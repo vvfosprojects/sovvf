@@ -28,39 +28,31 @@ export class SintesiRichiesteServiceFake {
     constructor() {
         this.dbRichieste = [
             new SintesiRichiesta(
-                'R0',
+                'R1',
                 'RM-24759',
-                new Operatore('Mario76', 'Mario', 'Rossi', 'RSSMRA67A01H501X', 'CDXXH', 'password', new Sede(null, null, null, null)),
+                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X', 'CDXXH', 'password', new Sede(1, 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando')),
                 false,
-                new Date,
-                new Date,
-                'presidiato',
-                2,
-                [new Tipologia(1, 'Allagamento', 'fa fa-exclamation-triangle')],
-                'Allagamento cantina',
+                moment().subtract(59, 'minutes').toDate(),
+                moment().subtract(60, 'minutes').toDate(),
+                'chiamata',
+                5,
+                [new Tipologia(1, 'Esplosione', '')],
+                'Esplosione nei pressi di un centro abitato',
                 new Richiedente('Mario Rossi', 3202676253),
-                new Localita(new Coordinate(2.324234, 3.424234), 'Via Cavour, 5', 'Note test'),
+                new Localita(new Coordinate(41.8624992, 12.5532867), 'Via Scribonio Curione, 22', 'nei pressi dell\'uscita della metro'),
                 [
                     new Sede(1, 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando'),
                     new Sede(2, 'Ostiense', new Coordinate(3.423423, 4.423423), 'Comando'),
                     new Sede(3, 'Tuscolana 2', new Coordinate(3.423423, 4.423423), 'Comando'),
                 ],
-                null,
-                new Date, // incrementare di qualche minuto
-                'NUE00006',
                 new Fonogramma(1, 'non inviato'),
                 new Complessita('100', 0, 'Alto'),
-                [
-                    new Partenza(
-                        [
-                            new Mezzo('M1', 'A1', 'Autopompa', 'In viaggio', 1),
-                        ],
-                        [
-                            new Squadra('Squadra1', 'Stato', new Date, null),
-                        ]
-                    ),
-                ],
-                ['Tag1', 'Tag2']
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
             )
         ];
     }
@@ -79,39 +71,31 @@ export class SintesiRichiesteServiceFake {
             const id = this.id_ultimaRichiesta + 1;
             nuoveRichieste.push(
                 new SintesiRichiesta(
-                    'R' + id,
+                    'R1',
                     'RM-24759',
-                    new Operatore('Mario76', 'Mario', 'Rossi', 'RSSMRA67A01H501X', 'CDXXH', 'password', new Sede(null, null, null, null)),
+                    new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X', 'CDXXH', 'password', new Sede(1, 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando')),
                     false,
-                    new Date,
-                    new Date,
-                    'presidiato',
-                    2,
-                    [new Tipologia(1, 'Allagamento', 'fa fa-exclamation-triangle')],
-                    'Allagamento cantina',
+                    moment().subtract(59, 'minutes').toDate(),
+                    moment().subtract(60, 'minutes').toDate(),
+                    'chiamata',
+                    5,
+                    [new Tipologia(1, 'Esplosione', '')],
+                    'Esplosione nei pressi di un centro abitato',
                     new Richiedente('Mario Rossi', 3202676253),
-                    new Localita(new Coordinate(2.324234, 3.424234), 'Via Cavour, 5', 'Note test'),
+                    new Localita(new Coordinate(41.8624992, 12.5532867), 'Via Scribonio Curione, 22', 'nei pressi dell\'uscita della metro'),
                     [
                         new Sede(1, 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando'),
                         new Sede(2, 'Ostiense', new Coordinate(3.423423, 4.423423), 'Comando'),
                         new Sede(3, 'Tuscolana 2', new Coordinate(3.423423, 4.423423), 'Comando'),
                     ],
-                    null,
-                    new Date, // incrementare di qualche minuto
-                    'NUE00006',
                     new Fonogramma(1, 'non inviato'),
                     new Complessita('100', 0, 'Alto'),
-                    [
-                        new Partenza(
-                            [
-                                new Mezzo('M1', 'A1', 'Autopompa', 'In viaggio', 1),
-                            ],
-                            [
-                                new Squadra('Squadra1', 'Stato', new Date, null),
-                            ]
-                        ),
-                    ],
-                    ['Tag1', 'Tag2']
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
                 )
             );
             this.id_ultimaRichiesta++;

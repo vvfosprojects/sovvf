@@ -1,53 +1,48 @@
-<div *ngIf="datimeteo" class="card bg-light w-100 app-shadow min-height-boxes">
-    <div class="card-body pt-1">
+<div *ngIf="datimeteo" class="row p-1">
+    <div class="col-12 pt-0 pb-0">
         <div class="row">
-            <div class="col-12 text-secondary pt-0 pb-0">
-                <img class="mr-2 iconameteo" src="http://openweathermap.org/img/w/{{datimeteo.icona}}.png"><span class="text-capitalize">{{datimeteo.descrizione}}</span>
-                <hr class="m-0 mb-2">
-            </div>
-            <!-- sinistra -->
-            <div class="col-5 pr-0">
-                <ul class="list-unstyled m-0">
-                    <li>
-                        <div class="h6">Temperatura</div>
-                    </li>
-                    <li>
-                        <div class="h6">Umidità</div>
-                    </li>
-                    <li>
-                        <div class="h6">Vento</div>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-4 text-right">
-                <ul class="list-unstyled m-0">
-                    <li>
-                        <div class="h6">&nbsp;</div>
-                    </li>
-                    <li>
-                        <div class="h6">&nbsp;</div>
-                    </li>
-                    <li>
-                        <div class="h6">
-                            <i [ngStyle]="{'transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datimeteo.direzione.gradi+'deg)'}"
-                                class="pl-2 fa fa-long-arrow-up"></i>
-                            <small class="text-black-50"> {{datimeteo.direzione.cardinali}}</small>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-3 pl-2 text-right">
-                <ul class="list-unstyled m-0">
-                    <li><span class="badge badge-success h6">{{datimeteo.temperatura}}°</span></li>
-                    <li><span class="badge badge-secondary h6">{{datimeteo.umidita}}%</span></li>
-                    <li><span class="badge badge-info h6">{{datimeteo.vento}} km/h</span></li>
-                </ul>
+            <div class="col">
+                <img class="iconameteo" src="http://openweathermap.org/img/w/{{datimeteo.icona}}.png"><span class=" font-weight-bold text-capitalize">{{datimeteo.descrizione}}</span>
+                <span class="badge badge-success h6 ml-2">{{datimeteo.temperatura}}°</span>
             </div>
         </div>
+        <hr class="m-0 mb-2">
+    </div>
+    <!-- sinistra -->
+    <div class="col-5 pr-0 text-secondary">
+        <ul class="list-unstyled m-0">
+            <li>
+                <div class="h6">Umidità</div>
+            <li>
+                <div class="h6">Vento</div>
+            </li>
+        </ul>
+    </div>
+    <!-- centro -->
+    <div class="col-4 text-right text-secondary">
+        <ul class="list-unstyled m-0">
+            <li>
+                <div class="h6">&nbsp;</div>
+            </li>
+            <li>
+                <div class="h6">
+                    <i [ngStyle]="{'transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datimeteo.direzione.gradi+'deg)'}"
+                        class="pl-2 fa fa-long-arrow-up"></i>
+                    <small class="text-black-50"> {{datimeteo.direzione.cardinali}}</small>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- destra -->
+    <div class="col-3 pl-2 text-right">
+        <ul class="list-unstyled m-0">
+            <li><span class="badge badge-secondary h6">{{datimeteo.umidita}}%</span></li>
+            <li><span class="badge badge-info h6">{{datimeteo.vento}} km/h</span></li>
+        </ul>
     </div>
 </div>
-<div *ngIf="!datimeteo" class="card bg-light w-100 app-shadow min-height-boxes">
+<div *ngIf="!datimeteo" class="w-100">
     <div class="text-center">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw mt-5"></i>
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw my-5"></i>
     </div>
 </div>
