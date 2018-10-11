@@ -27,10 +27,6 @@ export class SintesiRichiestaComponent implements OnInit {
         this.displayRealTime(this.observableTime);
     }
 
-    richiestaCliccata() {
-        this.richiestaClick.emit();
-    }
-
     /* Restituisce un Array con tanti elementi quanto è la priorità dell'intervento */
     vettorePallini() {
         return new Array(this.richiesta.priorita);
@@ -173,6 +169,10 @@ export class SintesiRichiestaComponent implements OnInit {
         } else {
             return nome + ' text-success';
         }
+    }
+
+    richiestaCliccata() {
+        this.richiestaClick.emit();
     }
 
     visualizzaEventiRichiesta(richiesta) {

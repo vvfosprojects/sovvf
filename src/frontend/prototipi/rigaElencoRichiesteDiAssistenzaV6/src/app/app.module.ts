@@ -19,7 +19,7 @@ import { SintesiRichiestaComponent } from './richieste/lista-richieste/sintesi-r
 import { RicercaRichiesteComponent } from './richieste/ricerca-richieste/ricerca-richieste.component';
 import { FiltriRichiesteComponent } from './richieste/filtri-richieste/filtri-richieste.component';
 import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.component';
-import { RichiestaSelezionataComponent } from './richieste/lista-richieste/richiesta-selezionata/richiesta-selezionata.component';
+import { RichiestaFissataComponent } from './richieste/lista-richieste/richiesta-fissata/richiesta-fissata.component';
 import { NavTestComponent } from './richieste/lista-richieste-test/nav-test/nav-test.component';
 import { EventiService } from './shared/eventi/eventi.service';
 import { EventiServiceFake } from './eventi-fake/eventi.service.fake';
@@ -34,7 +34,7 @@ import { EventiServiceFake } from './eventi-fake/eventi.service.fake';
         RicercaRichiesteComponent,
         FiltriRichiesteComponent,
         FiltroComponent,
-        RichiestaSelezionataComponent,
+        RichiestaFissataComponent,
         NavTestComponent,
         // start import of Shared Declarations
         [

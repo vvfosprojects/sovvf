@@ -3,9 +3,9 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
 import { transition, animate, style, state, trigger } from '@angular/animations';
 
 @Component({
-  selector: 'app-richiesta-selezionata',
-  templateUrl: './richiesta-selezionata.component.html',
-  styleUrls: ['./richiesta-selezionata.component.css'],
+  selector: 'app-richiesta-fissata',
+  templateUrl: './richiesta-fissata.component.html',
+  styleUrls: ['./richiesta-fissata.component.css'],
   animations: [
     trigger('richiestaSelezionata', [
       state('selected', style({
@@ -21,9 +21,9 @@ import { transition, animate, style, state, trigger } from '@angular/animations'
     ]),
   ]
 })
-export class RichiestaSelezionataComponent implements OnInit {
-  @Input() richiestaSelezionata: SintesiRichiesta;
-  @Input() richiestaSelezionataState: string;
+export class RichiestaFissataComponent implements OnInit {
+  @Input() richiestaFissata: SintesiRichiesta;
+  @Input() richiestaFissataState: string;
 
   constructor() { }
 
