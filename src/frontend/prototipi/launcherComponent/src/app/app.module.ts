@@ -25,8 +25,8 @@ import {AgmJsMarkerClustererModule} from '@agm/js-marker-clusterer';
 import {AgmCoreModule} from '@agm/core';
 import {MapManagerService} from './maps/service/maps-manager/map-manager-service.service';
 import {InfoWindowComponent} from './maps/maps-ui/info-window/info-window.component';
-import {MapsFiltroComponent} from './maps/maps-filtro/maps-filtro.component';
-import {MezzoModalContentComponent} from './maps/maps-ui/info-window/mezzo-modal-content/mezzo-modal-content.component';
+import {MapsFiltroComponent} from './maps/maps-ui/filtro/filtro.component';
+import {CambioSedeModalComponent} from './maps/maps-ui/info-window/cambio-sede-modal/cambio-sede-modal.component';
 
 // end maps-container
 // start rigaElenco
@@ -104,7 +104,7 @@ import {EventiRichiestaService} from './eventi-richiesta/eventi-richiesta-servic
         AgmContentComponent,
         MapsFiltroComponent,
         InfoWindowComponent,
-        MezzoModalContentComponent,
+        CambioSedeModalComponent,
         // end import maps
         BoxFunzionariComponent,
         InfoAggregateComponent,
@@ -133,7 +133,7 @@ import {EventiRichiestaService} from './eventi-richiesta/eventi-richiesta-servic
         SidebarModule.forRoot(),
         ScrollEventModule
     ],
-    entryComponents: [MezzoModalContentComponent, EventiRichiestaComponent],
+    entryComponents: [CambioSedeModalComponent, EventiRichiestaComponent],
     providers: [
         {provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake},
         {provide: EventiRichiestaService, useClass: EventiRichiestaServiceFake},

@@ -3,7 +3,7 @@ import {Meteo} from '../../../shared/model/meteo.model';
 import {RichiestaMarker} from '../../maps-model/richiesta-marker.model';
 import {SedeMarker} from '../../maps-model/sede-marker.model';
 import {MezzoMarker} from '../../maps-model/mezzo-marker.model';
-import {MezzoModalContentComponent} from './mezzo-modal-content/mezzo-modal-content.component';
+import {CambioSedeModalComponent} from './cambio-sede-modal/cambio-sede-modal.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -22,7 +22,7 @@ export class InfoWindowComponent implements OnInit {
     }
 
     openModal() {
-        this._modalService.open(MezzoModalContentComponent);
+        this._modalService.open(CambioSedeModalComponent);
     }
 
     ngOnInit() {
