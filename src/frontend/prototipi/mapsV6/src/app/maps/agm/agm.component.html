@@ -22,8 +22,8 @@
                     [latitude]="richiestaMarker.getCoordinate().latitudine"
                     [longitude]="richiestaMarker.getCoordinate().longitudine"
                     (markerClick)="selezioneMarker(richiestaMarker)"
-                    (mouseOver)="hoverMarker(richiestaMarker, 'in')"
-                    (mouseOut)="hoverMarker(richiestaMarker, 'out')"
+                    (mouseOver)="hoverMarker(richiestaMarker, 'hover-in')"
+                    (mouseOut)="hoverMarker(richiestaMarker, 'hover-out')"
                     [iconUrl]="urlIcona(richiestaMarker)"
                     [visible]="isVisible(richiestaMarker)">
             <agm-info-window *ngIf="trueMarker(richiestaMarker)">

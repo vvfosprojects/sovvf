@@ -71,23 +71,19 @@ export class AgmComponent implements OnInit {
         /**
          *  ricevo il marker selezionato dal componente mappa (agm)
          */
-        this.markerService.selezionato(marker);
+        this.markerService.action(marker, 'click');
         /**
          *  prendo i dati del meteo dal service marker (che li ha già richiesti)
          */
         this.datiMeteo = this.markerService.datiMeteo;
-        /**
-         * richiamo i metodi per modficare il centro e lo zoom del marker cliccato
-         */
-        this.agmService.centraMappa(marker.getCoordinate());
-        this.agmService.cambiaZoom(14);
+
     }
 
     hoverMarker(marker: any, type) {
         /**
          * richiamo il service marker e gli passo marker e tipo hover
          */
-        this.markerService.hover(marker, type);
+        this.markerService.action(marker, type);
     }
 
     urlIcona(marker: any): string {

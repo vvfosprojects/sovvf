@@ -97,4 +97,8 @@ export class MapManagerService {
         return of(this.mezziMarker);
     }
 
+    getMarkerFromId(id) {
+        return this.richiesteMarker.find(x => x.id === id);
+    }
+
 }

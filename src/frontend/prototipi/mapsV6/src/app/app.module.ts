@@ -17,10 +17,8 @@ import {AgmJsMarkerClustererModule} from '@agm/js-marker-clusterer';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {MapsFiltroComponent} from './maps/maps-filtro/maps-filtro.component';
-import {EventiServiceFake} from './eventi-fake/eventi.service.fake';
-import {EventiService} from './shared/eventi/eventi.service';
-import {MezzoModalContentComponent} from './maps/maps-ui/info-window/mezzo-modal-content/mezzo-modal-content.component';
+import {MapsFiltroComponent} from './maps/maps-ui/filtro/filtro.component';
+import {CambioSedeModalComponent} from './maps/maps-ui/info-window/cambio-sede-modal/cambio-sede-modal.component';
 import {InfoWindowComponent} from './maps/maps-ui/info-window/info-window.component';
 /*
 non importare su launcher
@@ -41,7 +39,7 @@ import {DebounceClickDirective} from './shared';
         AgmComponent,
         AgmContentComponent,
         MapsFiltroComponent,
-        MezzoModalContentComponent,
+        CambioSedeModalComponent,
         InfoWindowComponent,
     ],
     imports: [
@@ -56,11 +54,10 @@ import {DebounceClickDirective} from './shared';
         NgSelectModule,
         FormsModule
     ],
-    entryComponents: [MezzoModalContentComponent],
+    entryComponents: [CambioSedeModalComponent],
     providers: [
         {provide: DispatcherService, useClass: DispatcherServiceFake},
         {provide: MapsService, useClass: MapsServiceFake},
-        {provide: EventiService, useClass: EventiServiceFake},
     ],
     bootstrap: [AppComponent]
 })

@@ -3,11 +3,11 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {MarkerService} from '../../../service/marker-service/marker-service.service';
 
 @Component({
-    selector: 'app-mezzo-modal-content',
-    templateUrl: './mezzo-modal-content.component.html',
-    styleUrls: ['./mezzo-modal-content.component.css']
+    selector: 'app-cambio-sede-modal',
+    templateUrl: './cambio-sede-modal.component.html',
+    styleUrls: ['./cambio-sede-modal.component.css']
 })
-export class MezzoModalContentComponent implements OnInit {
+export class CambioSedeModalComponent implements OnInit {
 
     nomeSede: string;
 
@@ -21,6 +21,7 @@ export class MezzoModalContentComponent implements OnInit {
 
     cambioSede() {
         this.markerService.cambioSede();
+        this.markerService.deseleziona();
     }
 
     annullaCambioSede() {

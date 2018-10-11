@@ -2,12 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {DataService, Menu} from './maps-filtro.service';
 import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 import {map} from 'rxjs/operators';
-import {MarkerService} from '../service/marker-service/marker-service.service';
+import {MarkerService} from '../../service/marker-service/marker-service.service';
 
 @Component({
     selector: 'app-maps-filtro',
-    templateUrl: './maps-filtro.component.html',
-    styleUrls: ['./maps-filtro.component.css']
+    templateUrl: './filtro.component.html',
+    styleUrls: ['./filtro.component.css']
 })
 export class MapsFiltroComponent implements OnInit {
 
