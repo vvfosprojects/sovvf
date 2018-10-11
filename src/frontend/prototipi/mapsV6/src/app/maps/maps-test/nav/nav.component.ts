@@ -14,6 +14,7 @@ export class NavComponent implements OnDestroy {
 
     markerSelezionato: any;
     subscription: Subscription;
+    testS: string;
 
 
     constructor(private markedService: MarkedService,
@@ -60,6 +61,10 @@ export class NavComponent implements OnDestroy {
     centroRoma() {
         const roma = new CentroMappa(new Coordinate(41.5330, 12.3040), 8);
         this.fakeManager.aggiornaCentro(roma);
+    }
+
+    getMarker(id) {
+        this.fakeManager.getMarker(id);
     }
 
 }

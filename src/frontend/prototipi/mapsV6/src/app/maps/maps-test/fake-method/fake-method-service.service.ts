@@ -113,4 +113,9 @@ export class FakeMethodService {
         this.centerService.sendCentro(centro);
     }
 
+    getMarker(id) {
+        const marker = this.mapManager.richiesteMarker.find(x => x.id === id);
+        console.log(marker);
+    }
 }
+

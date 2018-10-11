@@ -1,6 +1,6 @@
-export class EventiMapsFake {
+export class EventiListaRichieste {
 
-    constructor() {
+    constructor(private markerC) {
     }
 
     richiestaClick(richiesta) {
@@ -15,21 +15,11 @@ export class EventiMapsFake {
         console.log('richiestaHoverOut');
     }
 
-    mezzoClick(mezzo) {
-        console.log('mezzoClick');
-    }
-
-    sedeClick(sede) {
-        console.log('sedeClick');
-    }
-
     unClick() {
         console.log('unClick');
     }
 
-    cambioSede(sede) {
-        console.log('cambioSede');
-        console.log(sede);
+    getMarkerR(id) {
+        return this.markerC.richiesteMarker.find(x => x.id === id);
     }
-
 }

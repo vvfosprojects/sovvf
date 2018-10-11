@@ -32,8 +32,5 @@ export class EventiMaps {
         console.log(sede);
     }
 
-    test() {
-        console.log('test');
-    }
 
 }
