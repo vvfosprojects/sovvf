@@ -92,13 +92,13 @@ export class IconMappe {
         this.mapIconeMezzi = new Map(this.iconeMezzi);
     }
 
-    tipoIcona(marker: any, modello: string, markerS: any): string {
+    tipoIcona(marker: any, modello: string, markerS: boolean): string {
         /**
          * metodo che mi ritorna il tipo di icona da utilizzare
          */
         const pathModello = this.mapIconeModelloPath.get(modello);
         const path = this.pathUrl + pathModello;
-        const check = !(markerS === marker || markerS === marker.id);
+        const check = !(markerS);
         const dir = check ? path + 'ns/' : path + 's/';
         if (marker) {
             switch (modello) {

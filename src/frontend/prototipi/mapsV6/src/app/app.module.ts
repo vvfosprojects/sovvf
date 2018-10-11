@@ -18,8 +18,6 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MapsFiltroComponent} from './maps/maps-ui/filtro/filtro.component';
-import {EventiServiceFake} from './eventi-fake/eventi.service.fake';
-import {EventiService} from './shared/eventi/eventi.service';
 import {CambioSedeModalComponent} from './maps/maps-ui/info-window/cambio-sede-modal/cambio-sede-modal.component';
 import {InfoWindowComponent} from './maps/maps-ui/info-window/info-window.component';
 /*
@@ -60,7 +58,6 @@ import {DebounceClickDirective} from './shared';
     providers: [
         {provide: DispatcherService, useClass: DispatcherServiceFake},
         {provide: MapsService, useClass: MapsServiceFake},
-        {provide: EventiService, useClass: EventiServiceFake},
     ],
     bootstrap: [AppComponent]
 })

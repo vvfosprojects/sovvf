@@ -5,7 +5,8 @@ import {Meteo} from '../../../shared/model/meteo.model';
 import {MeteoService} from '../../../shared/meteo/meteo-service.service';
 import {IconMappe} from './_icone';
 import {TipoMappe} from './_typeof';
-import {EventiService} from '../../../shared/eventi/eventi.service';
+import {AgmService} from '../../agm/agm-service.service';
+import {FakerCambioSedeService} from '../../maps-test/fake-cambio-sede/faker-cambio-sede.service';
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +17,7 @@ export class MarkerService {
     icone = new IconMappe();
     tipo = new TipoMappe();
 
+    markerColorato: boolean;
     markerSelezionato: any;
     subscription: Subscription;
 
@@ -24,7 +26,8 @@ export class MarkerService {
 
     constructor(private markedService: MarkedService,
                 private meteoService: MeteoService,
-                private eventi: EventiService) {
+                private agmService: AgmService,
+                private fakeCambioSede: FakerCambioSedeService) {
         this.subscription = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         });
@@ -34,7 +37,7 @@ export class MarkerService {
         /**
          * metodo che mi ritorna il tipo di icona da utilizzare
          */
-        return this.icone.tipoIcona(marker, this.modelloMarker(marker), this.markerSelezionato);
+        return this.icone.tipoIcona(marker, this.modelloMarker(marker), this.iconaSelezionata(marker));
     }
 
     modelloMarker(marker): string {
@@ -44,11 +47,39 @@ export class MarkerService {
         return this.tipo.markerType(marker);
     }
 
-    trueMarker(marker: any): boolean {
+    trueMarker(marker?: any, cross?: boolean): boolean {
         /**
          * metodo che mi ritorna true, se il marker selezionato è lo stesso che è stato cliccato
          */
-        return this.markerSelezionato === marker;
+        if (cross) {
+            return true;
+        } else {
+            return this.markerSelezionato === marker;
+        }
+    }
+
+    iconaSelezionata(marker): boolean {
+        if (this.markerSelezionato === marker) {
+            return true;
+        } else if (this.markerColorato === marker) {
+            return true;
+        }
+    }
+
+    cliccato(marker: any): void {
+        /**
+         *  imposto nel service marked lo stato del marker a selezionato
+         */
+        this.selezionato(marker);
+        /**
+         *  mi arrivano i dati del meteo
+         */
+        this.getDatiMeteo(marker);
+        /**
+         * richiamo i metodi per modficare il centro e lo zoom del marker cliccato
+         */
+        this.agmService.centraMappa(marker.getCoordinate());
+        this.agmService.cambiaZoom(14);
     }
 
     selezionato(marker: any): void {
@@ -56,33 +87,13 @@ export class MarkerService {
          *  imposto nel service marked lo stato del marker a selezionato
          */
         this.markedService.sendMarked(marker);
-        /**
-         *  mi arrivano i dati del meteo
-         */
-        this.getDatiMeteo(marker);
-        /**
-         * richiamo il metodo action che determina cosa eseguire
-         */
-        this.action(marker, 'click');
     }
 
     deseleziona(): void {
         /**
          * deseleziono il marker
          */
-        this.eventi.marker.unClick();
         this.markedService.clearMarked();
-    }
-
-    hover(marker: any, mouse) {
-        /**
-         * controllo il tipo di mouse hover ricevuto
-         */
-        if (mouse === 'in') {
-            this.action(marker, 'hover-in');
-        } else if (mouse === 'out') {
-            this.action(marker, 'hover-out');
-        }
     }
 
     action(marker, mouse) {
@@ -92,29 +103,29 @@ export class MarkerService {
         const modello = this.modelloMarker(marker);
         switch (modello + '|' + mouse) {
             case 'richiesta|hover-in': {
-                this.eventi.marker.richiestaHoverIn(marker);
+                this.markerColorato = marker;
             }
                 break;
             case 'richiesta|hover-out': {
-                this.eventi.marker.richiestaHoverOut(marker);
+                this.markerColorato = null;
             }
                 break;
             case 'richiesta|click': {
-                this.eventi.marker.richiestaClick(marker);
+                this.cliccato(marker);
             }
                 break;
             case 'mezzo|click': {
+                this.cliccato(marker);
                 if (marker.inSoccorso()) {
-                    this.eventi.marker.mezzoClick(marker);
                 }
             }
                 break;
             case 'sede|click': {
-                this.eventi.marker.sedeClick(marker);
+                this.cliccato(marker);
             }
                 break;
             default: {
-                // this.eventi.marker.test();
+                console.log('no action');
             }
                 break;
         }
@@ -156,6 +167,7 @@ export class MarkerService {
         /**
          * evento che cambia la sede
          */
-        this.eventi.marker.cambioSede(this.markerSelezionato);
+        // console.log('cambio sede');
+        this.fakeCambioSede.cambioSedeFake();
     }
 }
