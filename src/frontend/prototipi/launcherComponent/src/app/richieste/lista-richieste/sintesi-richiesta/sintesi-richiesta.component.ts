@@ -1,6 +1,7 @@
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
-import {SintesiRichiesta} from '../../../shared/model/sintesi-richiesta.model';
-import {Observable} from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { LayoutMethods } from './_layout-methods';
+import { Observable } from 'rxjs';
 import * as moment from 'moment';
 
 @Component({
@@ -11,84 +12,21 @@ import * as moment from 'moment';
 export class SintesiRichiestaComponent implements OnInit {
     @Output() richiestaClick: EventEmitter<any> = new EventEmitter();
     @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
-
     @Input() richiesta: SintesiRichiesta;
-    espanso = false;
-    time: any;
+
     observableTime = new Observable<number>((observer) => {
         setInterval(() => observer.next(
             (new Date(this.richiesta.istanteRicezioneRichiesta).getTime() - new Date().getTime()) * -1), 1000);
     });
+    espanso = false;
+    time: any;
+    methods = new LayoutMethods;
 
     constructor() {
     }
 
     ngOnInit() {
         this.displayRealTime(this.observableTime);
-    }
-
-    richiestaCliccata() {
-        this.richiestaClick.emit();
-    }
-
-    /* Restituisce un Array con tanti elementi quanto è la priorità dell'intervento */
-    vettorePallini() {
-        return new Array(this.richiesta.priorita);
-    }
-
-    /* Restituisce un Array con tanti elementi quanti sono i buchini della priorità dell'intervento */
-    vettoreBuchini() {
-        const MAX_PRIORITA = 5;
-        return new Array(MAX_PRIORITA - this.richiesta.priorita);
-    }
-
-    /* Espande/Comprime il livello di dettaglio visualizzato per la richiesta */
-    toggleEspanso(): void {
-        this.espanso = !this.espanso;
-    }
-
-    /* Restituisce i nomi delle squadre  */
-    nomiSquadre(): string[] {
-        let nomiSquadre: string[];
-        if (this.richiesta.partenze) {
-            this.richiesta.partenze.forEach(partenza => {
-                nomiSquadre = partenza.squadre.map(s => s.nome);
-            });
-        }
-        return nomiSquadre;
-    }
-
-    /* Restituisce il numero delle squadre */
-    numeroSquadre(): number {
-        let numeroSquadre = 0;
-        if (this.richiesta.partenze) {
-            this.richiesta.partenze.forEach(partenza => {
-                numeroSquadre = numeroSquadre + partenza.squadre.length;
-            });
-        }
-        return numeroSquadre;
-    }
-
-    /* Restituisce i nomi dei mezzi  */
-    nomiMezzi(): string[] {
-        let nomiMezzi = [];
-        if (this.richiesta.partenze) {
-            this.richiesta.partenze.forEach(partenza => {
-                nomiMezzi = partenza.mezzi.map(s => s.descrizione);
-            });
-        }
-        return nomiMezzi;
-    }
-
-    /* Restituisce il numero dei mezzi */
-    numeroMezzi(): number {
-        let numeroMezzi = 0;
-        if (this.richiesta.partenze) {
-            this.richiesta.partenze.forEach(partenza => {
-                numeroMezzi = numeroMezzi + partenza.mezzi.length;
-            });
-        }
-        return numeroMezzi;
     }
 
     /* Data una 'Date' permette di visualizzare il tempo passato fino a questo momento */
@@ -150,35 +88,44 @@ export class SintesiRichiestaComponent implements OnInit {
         });
     }
 
-    /* Permette di colorare l'icona della tipologia */
+    /* Layout Methods */
+    toggleEspanso(): void {
+        this.espanso = !this.espanso;
+    }
+    vettorePallini() {
+        return this.methods.vettorePallini(this.richiesta);
+    }
+    vettoreBuchini() {
+        return this.methods.vettoreBuchini(this.richiesta);
+    }
+    nomiSquadre() {
+        return this.methods.nomiSquadre(this.richiesta);
+    }
+    numeroSquadre() {
+        return this.methods.numeroSquadre(this.richiesta);
+    }
+    nomiMezzi() {
+        return this.methods.nomiMezzi(this.richiesta);
+    }
+    numeroMezzi() {
+        return this.methods.numeroMezzi(this.richiesta);
+    }
     coloraIcona(nome): any {
-        const colori = [
-            {
-                icon: 'fa fa-fire',
-                color: 'text-danger'
-            },
-            {
-                icon: 'fa fa-exclamation-triangle',
-                color: 'text-warning'
-            },
-            {
-                icon: 'fa fa-medkit',
-                color: 'text-primary'
-            }
-        ];
-
-        const colore = colori.find(x => x.icon === nome);
-        if (colore !== undefined) {
-            return nome + ' ' + colore.color;
-        } else {
-            return nome + ' text-success';
-        }
+        return this.methods.coloraIcona(nome);
     }
 
+    /* NgClass Methods */
+    statusClass(richiesta) {
+        return this.methods.statusClass(richiesta);
+    }
+
+    /* Eventi */
+    richiestaCliccata() {
+        this.richiestaClick.emit();
+    }
     visualizzaEventiRichiesta(richiesta) {
         this.eventiRichiesta.emit(richiesta);
     }
-
     invioPartenza() {
         console.log('invio partenza');
     }

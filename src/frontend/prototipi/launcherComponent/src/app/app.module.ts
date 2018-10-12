@@ -31,11 +31,9 @@ import {CambioSedeModalComponent} from './maps/maps-ui/info-window/cambio-sede-m
 // end maps-container
 // start rigaElenco
 import {RichiesteComponent} from './richieste/richieste.component';
-import {SintesiRichiesteService} from './richieste/lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service';
-import {SintesiRichiesteServiceFake} from './richieste/lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service.fake';
 import {ListaRichiesteComponent} from './richieste/lista-richieste/lista-richieste.component';
 import {SintesiRichiestaComponent} from './richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
-import {RichiestaSelezionataComponent} from './richieste/lista-richieste/richiesta-selezionata/richiesta-selezionata.component';
+import {RichiestaFissataComponent} from './richieste/lista-richieste/richiesta-fissata/richiesta-fissata.component';
 import {NavTestComponent} from './richieste/lista-richieste-test/nav-test/nav-test.component';
 import {RicercaRichiesteComponent} from './richieste/ricerca-richieste/ricerca-richieste.component';
 import {FiltriRichiesteComponent} from './richieste/filtri-richieste/filtri-richieste.component';
@@ -69,15 +67,13 @@ import {UnitaOperativaService} from './navbar/navbar-service/unita-operativa-ser
 // managers only launcher
 import {MapManagerServiceOnlylauncher} from './dispatcher/map-manager-service-onlylauncher.service';
 import {ListaRichiesteManagerServiceOnlylauncher} from './dispatcher/lista-richieste-manager-service-onlylauncher.service';
-import {EventiRichiestaServiceFake} from './eventi-richiesta/eventi-richiesta-service/eventi-richiesta.service.fake';
-import {EventiRichiestaService} from './eventi-richiesta/eventi-richiesta-service/eventi-richiesta.service';
 
 
 @NgModule({
     declarations: [
         AppComponent,
         RichiesteComponent,
-        RichiestaSelezionataComponent,
+        RichiestaFissataComponent,
         ListaRichiesteComponent,
         SintesiRichiestaComponent,
         NavTestComponent,

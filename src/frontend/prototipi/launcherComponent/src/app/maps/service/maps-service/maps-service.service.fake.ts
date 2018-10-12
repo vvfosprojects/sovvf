@@ -1,16 +1,16 @@
-import {Injectable} from '@angular/core';
-import {Observable, of, Subscription} from 'rxjs';
-import {RichiestaMarker} from '../../maps-model/richiesta-marker.model';
-import {Localita} from '../../../shared/model/localita.model';
-import {MarkedService} from '../marked-service/marked-service.service';
-import {SedeMarker} from '../../maps-model/sede-marker.model';
-import {MezzoMarker} from '../../maps-model/mezzo-marker.model';
-import {Coordinate} from '../../../shared/model/coordinate.model';
-import {Squadra} from '../../../shared/model/squadra.model';
-import {Componente} from '../../../shared/model/componente.model';
-import {Tipologia} from '../../../shared/model/tipologia.model';
-import {Sede} from '../../../shared/model/sede.model';
-import {Mezzo} from '../../../shared/model/mezzo.model';
+import { Injectable } from '@angular/core';
+import { Observable, of, Subscription } from 'rxjs';
+import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
+import { Localita } from '../../../shared/model/localita.model';
+import { MarkedService } from '../marked-service/marked-service.service';
+import { SedeMarker } from '../../maps-model/sede-marker.model';
+import { MezzoMarker } from '../../maps-model/mezzo-marker.model';
+import { Coordinate } from '../../../shared/model/coordinate.model';
+import { Squadra } from '../../../shared/model/squadra.model';
+import { Componente } from '../../../shared/model/componente.model';
+import { Tipologia } from '../../../shared/model/tipologia.model';
+import { Sede } from '../../../shared/model/sede.model';
+import { Mezzo } from '../../../shared/model/mezzo.model';
 
 @Injectable({
     providedIn: 'root'
@@ -90,7 +90,7 @@ export class MapsServiceFake {
                 false,
                 Math.floor(Math.random() * 5) + 1,
                 this.statiObj.get(randomNumber)
-                )
+            )
             );
         }
         return of(this.richiesteMarker);
@@ -103,6 +103,8 @@ export class MapsServiceFake {
             new SedeMarker(2, 'Tuscolano II', new Coordinate(41.863930, 12.554420), 'Distaccamento')
             ,
             new SedeMarker(3, 'Roma', new Coordinate(41.899940, 12.491270), 'Comando')
+            ,
+            new SedeMarker(3, 'Roma', new Coordinate(41.8748856, 12.4071855), 'Direzioni')
         ];
         return of(this.sediMarker);
     }
@@ -151,7 +153,97 @@ export class MapsServiceFake {
                                 false,
                                 false,
                                 true),
-                        ])
+                        ], null)
+                ], 'Mezzo in soccorso'
+            ),
+            new MezzoMarker(
+                new Coordinate(41.4171741, 13.5509798),
+                new Mezzo('1', 'Autobotte2', 'ABP', 'InViaggio', 5),
+                'R1',
+                [
+                    new Squadra('1A', 'InViaggio',
+                        [
+                            new Componente(
+                                'CR',
+                                'Mario Rossi',
+                                'Mario Rossi - MRORSS45H44T656R',
+                                true,
+                                false,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Antonio Bianchi',
+                                'Antonio Bianchi - NTNBNC76T54H444T',
+                                false,
+                                true,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Matteo Verdi',
+                                'Matteo Verdi - VRDMTT56G77D454I',
+                                false,
+                                false,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Enrico Ottavi',
+                                'Enrico Ottavi - NRCOTT88U75F454H',
+                                false,
+                                false,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Michele Rettore',
+                                'Michele Rettore - MCHRTT65T65K575Q',
+                                false,
+                                false,
+                                true),
+                        ], null)
+                ], 'Mezzo in soccorso'
+            ),
+            new MezzoMarker(
+                new Coordinate(41.4023582, 13.3406784),
+                new Mezzo('1', 'Autobotte3', 'ABP', 'InViaggio', 5),
+                'R1',
+                [
+                    new Squadra('1A', 'InViaggio',
+                        [
+                            new Componente(
+                                'CR',
+                                'Mario Rossi',
+                                'Mario Rossi - MRORSS45H44T656R',
+                                true,
+                                false,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Antonio Bianchi',
+                                'Antonio Bianchi - NTNBNC76T54H444T',
+                                false,
+                                true,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Matteo Verdi',
+                                'Matteo Verdi - VRDMTT56G77D454I',
+                                false,
+                                false,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Enrico Ottavi',
+                                'Enrico Ottavi - NRCOTT88U75F454H',
+                                false,
+                                false,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Michele Rettore',
+                                'Michele Rettore - MCHRTT65T65K575Q',
+                                false,
+                                false,
+                                true),
+                        ], null)
                 ], 'Mezzo in soccorso'
             )
         ];

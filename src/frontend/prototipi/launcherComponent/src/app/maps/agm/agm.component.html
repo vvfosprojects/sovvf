@@ -22,8 +22,8 @@
                     [latitude]="richiestaMarker.getCoordinate().latitudine"
                     [longitude]="richiestaMarker.getCoordinate().longitudine"
                     (markerClick)="selezioneMarker(richiestaMarker)"
-                    (mouseOver)="hoverMarker(richiestaMarker, 'in')"
-                    (mouseOut)="hoverMarker(richiestaMarker, 'out')"
+                    (mouseOver)="hoverMarker(richiestaMarker, 'hover-in')"
+                    (mouseOut)="hoverMarker(richiestaMarker, 'hover-out')"
                     [iconUrl]="urlIcona(richiestaMarker)"
                     [visible]="isVisible(richiestaMarker)">
             <agm-info-window *ngIf="trueMarker(richiestaMarker)">
@@ -38,12 +38,12 @@
                     [latitude]="sedeMarker.getCoordinate().latitudine"
                     [longitude]="sedeMarker.getCoordinate().longitudine"
                     (markerClick)="selezioneMarker(sedeMarker)"
-                    (mouseOver)="hoverMarker(sedeMarker, 'in')"
-                    (mouseOut)="hoverMarker(sedeMarker, 'out')"
+                    (mouseOver)="hoverMarker(sedeMarker, 'hover-in')"
+                    (mouseOut)="hoverMarker(sedeMarker, 'hover-out')"
                     [iconUrl]="urlIcona(sedeMarker)"
                     [visible]="isVisible(sedeMarker)">
             <agm-info-window *ngIf="trueMarker(sedeMarker)">
-                <app-info-window [sedeMarker]="sedeMarker" [datiMeteo]="datiMeteo"></app-info-window>
+                <app-info-window [sedeMarker]="sedeMarker" [tipoSedeIcona]="urlIcona(sedeMarker, true)" [datiMeteo]="datiMeteo"></app-info-window>
             </agm-info-window>
         </agm-marker>
     </agm-marker-cluster>
@@ -54,8 +54,8 @@
                     [latitude]="mezzoMarker.getCoordinate().latitudine"
                     [longitude]="mezzoMarker.getCoordinate().longitudine"
                     (markerClick)="selezioneMarker(mezzoMarker)"
-                    (mouseOver)="hoverMarker(mezzoMarker, 'in')"
-                    (mouseOut)="hoverMarker(mezzoMarker, 'out')"
+                    (mouseOver)="hoverMarker(mezzoMarker, 'hover-in')"
+                    (mouseOut)="hoverMarker(mezzoMarker, 'hover-out')"
                     [iconUrl]="urlIcona(mezzoMarker)"
                     [visible]="isVisible(mezzoMarker)">
             <agm-info-window *ngIf="trueMarker(mezzoMarker)">

@@ -1,4 +1,4 @@
-<div class="card row_text pt-3 pb-2 px-3 mb-1" [ngClass]="{'status_presidiato': richiesta.stato === 'presidiato', 'status_chiamata': richiesta.stato === 'chiamata', 'status_assegnato': richiesta.stato === 'assegnato','status_sospeso': richiesta.stato === 'sospeso'}">
+<div class="card row_text pt-3 pb-2 px-3 mb-1 transparent" [ngClass]="statusClass(richiesta)">
     <div class="row align-items-center">
         <div class="col-12">
             <div class="row">
@@ -131,19 +131,19 @@
                             </div>
 
                             <div class="h5 nowrap">
-                                <button class="btn btn-default py-0 mr-1" ngbTooltip="Localizza" placement="bottom"
+                                <button class="btn btn-default py-0 mr-1" ngbTooltip="Localizza" placement="top"
                                     (click)="richiestaCliccata()">
                                     <i class="fa fa-fw fa-globe text-secondary"></i>
                                 </button>
-                                <button class="btn btn-default py-0 mr-1" ngbTooltip="Espandi" placement="bottom"
+                                <button class="btn btn-default py-0 mr-1" ngbTooltip="Espandi" placement="top"
                                     (click)="toggleEspanso()">
                                     <i class="fa fa-fw fa-info text-secondary"></i>
                                 </button>
-                                <button class="btn btn-default py-0 mr-1" ngbTooltip="Elenco eventi" placement="bottom"
+                                <button class="btn btn-default py-0 mr-1" ngbTooltip="Elenco eventi" placement="top"
                                     (click)="visualizzaEventiRichiesta(richiesta.id)">
                                     <i class="fa fa-fw fa-list text-secondary"></i>
                                 </button>
-                                <button class="btn btn-default py-0" ngbTooltip="Invio partenza" placement="bottom"
+                                <button class="btn btn-default py-0" ngbTooltip="Invio partenza" placement="top"
                                     (click)="invioPartenza(richiesta.id)">
                                     <i class="fa fa-fw fa-arrow-right text-secondary"></i>
                                 </button>
@@ -151,9 +151,7 @@
                         </div>
                     </div>
                 </div>
-
-
-
+                
                 <!-- box note localita e zone emergenza -->
                 <div *ngIf="espanso" class="col-md-12 default-cursor">
                     <div class="col-md-12">

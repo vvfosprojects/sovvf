@@ -1,13 +1,10 @@
-import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
-import {SintesiRichiesta} from '../../shared/model/sintesi-richiesta.model';
-import {ListaRichiesteManagerService} from '../lista-richieste-service/lista-richieste-manager/lista-richieste-manager.service';
-import {RichiestaSelezionataService} from '../lista-richieste-service/richiesta-selezionata-service/richiesta-selezionata-service.service';
-import {RichiestaHoverService} from '../lista-richieste-service/richiesta-hover-service/richiesta-hover-service.service';
-import {ScrollEvent} from 'ngx-scroll-event';
-import {ListaRichiesteService} from '../lista-richieste-service/lista-richieste-service.service';
-import {RicercaRichiesteService} from '../ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {EventiRichiestaComponent} from '../../eventi-richiesta/eventi-richiesta.component';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
+import { ListaRichiesteManagerService } from '../lista-richieste-service/lista-richieste-manager/lista-richieste-manager.service';
+import { ScrollEvent } from 'ngx-scroll-event';
+import { ListaRichiesteService } from '../lista-richieste-service/lista-richieste-service.service';
+import { RicercaRichiesteService } from '../ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -16,18 +13,15 @@ import {EventiRichiestaComponent} from '../../eventi-richiesta/eventi-richiesta.
 })
 export class ListaRichiesteComponent implements OnInit {
     richieste: SintesiRichiesta[] = [];
-    id_richiestaHover: any;
-    id_richiestaSelezionata: any;
     richiestaHover: SintesiRichiesta;
     richiestaSelezionata: SintesiRichiesta;
-    richiestaSelezionataState: string;
+    richiestaFissata: SintesiRichiesta;
+    richiestaSelezionataState: string; // Animazione
 
     constructor(private listaRichiesteManager: ListaRichiesteManagerService,
-                private richiestaSelezionataS: RichiestaSelezionataService,
-                private richiestaHoverS: RichiestaHoverService,
-                private listaRichiesteS: ListaRichiesteService,
-                public ricercaS: RicercaRichiesteService,
-                private modalService: NgbModal) {
+        private richiesteS: ListaRichiesteService,
+        public ricercaS: RicercaRichiesteService,
+        private modalService: NgbModal) {
     }
 
     ngOnInit() {
@@ -35,40 +29,34 @@ export class ListaRichiesteComponent implements OnInit {
         this.listaRichiesteManager.getData().subscribe(richieste => {
             this.richieste = richieste;
         });
-
-        // Restituisce la Richiesta Selezionata
-        this.richiestaSelezionataS.getRichiesta().subscribe(idRichiesta => {
-            if (idRichiesta) {
-                this.id_richiestaSelezionata = idRichiesta;
-                this.richieste.forEach((r: SintesiRichiesta) => {
-                    if (r.id === idRichiesta) {
-                        this.richiestaSelezionata = r;
-                    }
-                });
+        // Restituisce la Richiesta Hover
+        this.richiesteS.subjects.getRichiestaHover().subscribe(richiestaHover => {
+            if (richiestaHover) {
+                this.richiestaHover = richiestaHover;
             } else {
-                this.id_richiestaSelezionata = null;
+                this.richiestaHover = null;
+            }
+        });
+        // Restituisce la Richiesta Selezionata
+        this.richiesteS.subjects.getRichiestaSelezionata().subscribe(richiestaSelezionata => {
+            if (richiestaSelezionata) {
+                this.richiestaSelezionata = richiestaSelezionata;
+            } else {
                 this.richiestaSelezionata = null;
             }
         });
-
-        // Restituisce la Richiesta Hover
-        this.richiestaHoverS.getRichiesta().subscribe(idRichiesta => {
-            if (idRichiesta) {
-                this.id_richiestaHover = idRichiesta;
-                this.richieste.forEach((r: SintesiRichiesta) => {
-                    if (r.id === idRichiesta) {
-                        this.richiestaHover = r;
-                    }
-                });
+        // Restituisce la Richiesta Fissata in alto
+        this.richiesteS.subjects.getRichiestaFissata().subscribe(richiestaFissata => {
+            if (richiestaFissata) {
+                this.richiestaFissata = richiestaFissata;
             } else {
-                this.richiestaHover = null;
-                this.id_richiestaHover = null;
+                this.richiestaFissata = null;
             }
         });
     }
 
     handleScroll(event: ScrollEvent) {
-        if (event.isReachingBottom) {
+        if (event.isReachingBottom && event.isWindowEvent === false) {
             this.listaRichiesteManager.nuoveRichieste().subscribe(nuoveRichieste => {
                 nuoveRichieste.forEach(r => {
                     this.richieste.push(r);
@@ -78,24 +66,38 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     richiestaClick(richiesta) {
-        this.listaRichiesteS.richiestaClick(richiesta);
+        this.richiesteS.selezionata(richiesta);
+    }
+
+    localizzaClick(richiesta) {
+        // this.markerS.
     }
 
     richiestaHoverIn(richiesta) {
-        this.listaRichiesteS.richiestaHoverIn(richiesta);
+        this.richiesteS.hoverIn(richiesta);
     }
 
-    richiestaHoverOut(richiesta) {
-        this.listaRichiesteS.richiestaHoverOut(richiesta);
+    richiestaHoverOut() {
+        this.richiesteS.hoverOut();
     }
 
     unClick() {
-        this.listaRichiesteS.unClick();
+        this.richiesteS.deselezionata();
     }
 
     visualizzaEventiRichiesta(richiesta) {
-        // console.log('test');
-        // console.log(richiesta);
-        this.modalService.open(EventiRichiestaComponent, { size: 'lg'});
+        console.log(richiesta);
+        this.modalService.open('Eventi della Richiesta');
+    }
+
+    /* NgClass Template */
+    cardShadowClass(r) {
+        return {
+            'card-shadow-primary': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'assegnato',
+            'card-shadow-success': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'presidiato',
+            'card-shadow-danger': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'chiamata',
+            'card-shadow-warning': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'sospeso',
+            'bg-light': r === this.richiestaSelezionata || r === this.richiestaHover,
+        };
     }
 }

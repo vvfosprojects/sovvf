@@ -5,6 +5,7 @@ import {Coordinate} from '../shared/model/coordinate.model';
 import {MapManagerService} from './service/maps-manager/map-manager-service.service';
 import {SedeMarker} from './maps-model/sede-marker.model';
 import {MezzoMarker} from './maps-model/mezzo-marker.model';
+import {FakerCambioSedeService} from './maps-test/fake-cambio-sede/faker-cambio-sede.service';
 
 @Component({
     selector: 'app-maps',
@@ -18,11 +19,15 @@ export class MapsComponent implements OnInit {
     sediMarkers: SedeMarker[];
     mezziMarkers: MezzoMarker[];
 
-    constructor(private mapManager: MapManagerService /** servizio che innietta dati alla mappa **/) {
+    constructor(private mapManager: MapManagerService /** servizio che innietta dati alla mappa **/,
+                public fakeCambioSede: FakerCambioSedeService) {
         /**
          *  creo un oggetto di tipo centroMappa per inizializzare la mappa
          */
-        this.centroMappa = new CentroMappa(new Coordinate(41.8917098, 12.5005402), 11);
+        this.centroMappa = new CentroMappa(new Coordinate(42.290251, 12.492373), 8);
+        /**
+         * imposto true la proprietà preLoader per far visualizzare di default il div che contiene il component maps
+         */
     }
 
     ngOnInit() {
@@ -50,6 +55,7 @@ export class MapsComponent implements OnInit {
         this.mapManager.getMezziMarker().subscribe((r: MezzoMarker[]) => {
             this.mezziMarkers = r;
         });
+
     }
 
 }

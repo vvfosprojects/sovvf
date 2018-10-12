@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { ListaRichiesteManagerService } from '../../lista-richieste-service/lista-richieste-manager/lista-richieste-manager.service';
-import { RichiestaHoverService } from '../../lista-richieste-service/richiesta-hover-service/richiesta-hover-service.service';
-import { MethodTestService } from '../method-test/method-test.service';
+import { ListaRichiesteService } from '../../lista-richieste-service/lista-richieste-service.service';
 
 @Component({
   selector: 'app-nav-test',
@@ -12,9 +11,9 @@ import { MethodTestService } from '../method-test/method-test.service';
 export class NavTestComponent implements OnInit {
   richieste: SintesiRichiesta[];
   id_richiestaScelta: any;
+  fissata = false;
 
-  constructor(private richiesteManager: ListaRichiesteManagerService,
-    private methods: MethodTestService) { }
+  constructor(private richiesteManager: ListaRichiesteManagerService, private richiesteS: ListaRichiesteService) { }
 
   ngOnInit() {
     // Restituisce le richieste
@@ -23,27 +22,24 @@ export class NavTestComponent implements OnInit {
     });
   }
 
-  hover(id_richiesta) {
-    if (id_richiesta === 'null') {
-      this.id_richiestaScelta = null;
-      this.methods.clearHover();
+  hover(id) {
+    if (id !== null) {
+      this.id_richiestaScelta = id;
     } else {
-      this.id_richiestaScelta = id_richiesta;
-      this.methods.hover(this.id_richiestaScelta);
+      this.id_richiestaScelta = null;
     }
+    this.richiesteS.hoverIn(this.getRichiestaById(id));
+  }
+  fissa() {
+    this.fissata = !this.fissata;
+    this.richiesteS.fissata(this.getRichiestaById(this.id_richiestaScelta));
+  }
+  defissa() {
+    this.fissata = !this.fissata;
+    this.richiesteS.defissata();
   }
 
-  selezionata() {
-    if (this.id_richiestaScelta !== null) {
-      this.methods.seleziona(this.id_richiestaScelta);
-    }
-  }
-
-  deselezionata() {
-    this.methods.deselezionaRichiestaSelezionata();
-  }
-
-  a() {
-    console.log('a');
+  getRichiestaById(id) {
+    return this.richiesteS.getRichiestaById(id);
   }
 }

@@ -1,23 +1,49 @@
 import { Injectable } from '@angular/core';
-import { EventiService } from '../../shared/eventi/eventi.service';
+import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
+import { ListaRichiesteManagerService } from './lista-richieste-manager/lista-richieste-manager.service';
+import { ListaRichiesteSubjects } from './_lista-richieste-subjects';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListaRichiesteService {
+  subjects = new ListaRichiesteSubjects;
 
-  constructor(private eventi: EventiService) { }
+  constructor(private richiesteManager: ListaRichiesteManagerService) {
+  }
 
-  richiestaClick(richiesta) {
-    this.eventi.richiesta.richiestaClick(richiesta);
+  getRichiestaById(id) {
+    let richieste: SintesiRichiesta[];
+    let richiesta: SintesiRichiesta;
+
+    this.richiesteManager.getData().subscribe((r: SintesiRichiesta[]) => {
+      richieste = r;
+    });
+
+    richieste.forEach(r => {
+      if (r.id === id) {
+        richiesta = r;
+      }
+    });
+    return richiesta;
   }
-  richiestaHoverIn(richiesta) {
-    this.eventi.richiesta.richiestaHoverIn(richiesta);
+
+  hoverIn(richiesta) {
+    this.subjects.sendRichiestaHover(richiesta);
   }
-  richiestaHoverOut(richiesta) {
-    this.eventi.richiesta.richiestaHoverOut(richiesta);
+  hoverOut() {
+    this.subjects.clearRichiestaHover();
   }
-  unClick() {
-    this.eventi.richiesta.unClick();
+  selezionata(richiesta) {
+    this.subjects.sendRichiestaSelezionata(richiesta);
+  }
+  deselezionata() {
+    this.subjects.clearRichiestaSelezionata();
+  }
+  fissata(richiesta) {
+    this.subjects.sendRichiestaFissata(richiesta);
+  }
+  defissata() {
+    this.subjects.clearRichiestaFissata();
   }
 }
