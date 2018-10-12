@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { ListaRichiesteManagerService } from './lista-richieste-manager/lista-richieste-manager.service';
+import { ListaRichiesteSubjects } from './_lista-richieste-subjects';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListaRichiesteService {
-  private richiestaHover = new Subject<SintesiRichiesta>();
-  private richiestaFissata = new Subject<SintesiRichiesta>();
-  private richiestaSelezionata = new Subject<SintesiRichiesta>();
+  subjects = new ListaRichiesteSubjects;
 
   constructor(private richiesteManager: ListaRichiesteManagerService) {
   }
@@ -30,60 +28,22 @@ export class ListaRichiesteService {
     return richiesta;
   }
 
-  /* <== Richiesta Hover ==> */
   hoverIn(richiesta) {
-    this.sendRichiestaHover(richiesta);
+    this.subjects.sendRichiestaHover(richiesta);
   }
   hoverOut() {
-    this.clearRichiestaHover();
+    this.subjects.clearRichiestaHover();
   }
-
-  sendRichiestaHover(richiesta) {
-    this.richiestaHover.next(richiesta);
-  }
-  clearRichiestaHover() {
-    this.richiestaHover.next();
-  }
-  getRichiestaHover(): Observable<any> {
-    return this.richiestaHover.asObservable();
-  }
-  /* <== End Richiesta Hover ==> */
-
-  /* <== Richiesta Fissata ==> */
-  fissata(richiesta) {
-    this.sendRichiestaFissata(richiesta);
-  }
-  defissata() {
-    this.clearRichiestaFissata();
-  }
-
-  sendRichiestaFissata(richiesta) {
-    this.richiestaFissata.next(richiesta);
-  }
-  clearRichiestaFissata() {
-    this.richiestaFissata.next();
-  }
-  getRichiestaFissata(): Observable<any> {
-    return this.richiestaFissata.asObservable();
-  }
-  /* <== End Richiesta Fissata ==> */
-
-  /* <== Richiesta Selezionata ==> */
   selezionata(richiesta) {
-    this.sendRichiestaSelezionata(richiesta);
+    this.subjects.sendRichiestaSelezionata(richiesta);
   }
   deselezionata() {
-    this.clearRichiestaSelezionata();
+    this.subjects.clearRichiestaSelezionata();
   }
-
-  sendRichiestaSelezionata(richiesta) {
-    this.richiestaSelezionata.next(richiesta);
+  fissata(richiesta) {
+    this.subjects.sendRichiestaFissata(richiesta);
   }
-  clearRichiestaSelezionata() {
-    this.richiestaSelezionata.next();
+  defissata() {
+    this.subjects.clearRichiestaFissata();
   }
-  getRichiestaSelezionata(): Observable<any> {
-    return this.richiestaSelezionata.asObservable();
-  }
-  /* <== End Richiesta Selezionata ==> */
 }

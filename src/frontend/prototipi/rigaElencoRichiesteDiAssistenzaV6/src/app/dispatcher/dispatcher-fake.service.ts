@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
-import { SintesiRichiesteService } from '../lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service';
+import { SintesiRichiesteService } from '../sintesi-richieste-service/sintesi-richieste.service';
 import { of, Observable, Subject } from 'rxjs';
 import * as moment from 'moment';
 
-import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { Operatore } from '../../shared/model/operatore.model';
-import { Tipologia } from '../../shared/model/tipologia.model';
-import { Richiedente } from '../../shared/model/richiedente.model';
-import { Sede } from '../../shared/model/sede.model';
-import { Localita } from '../../shared/model/localita.model';
-import { Coordinate } from '../../shared/model/coordinate.model';
-import { Complessita } from '../../shared/model/complessita.model';
-import { Fonogramma } from '../../shared/model/fonogramma.model';
-import { Partenza } from '../../shared/model/partenza.model';
-import { Squadra } from '../../shared/model/squadra.model';
-import { Mezzo } from '../../shared/model/mezzo.model';
+import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
+import { Operatore } from '../shared/model/operatore.model';
+import { Tipologia } from '../shared/model/tipologia.model';
+import { Richiedente } from '../shared/model/richiedente.model';
+import { Sede } from '../shared/model/sede.model';
+import { Localita } from '../shared/model/localita.model';
+import { Coordinate } from '../shared/model/coordinate.model';
+import { Complessita } from '../shared/model/complessita.model';
+import { Fonogramma } from '../shared/model/fonogramma.model';
+import { Partenza } from '../shared/model/partenza.model';
+import { Squadra } from '../shared/model/squadra.model';
+import { Mezzo } from '../shared/model/mezzo.model';
 
 @Injectable({
   providedIn: 'root'

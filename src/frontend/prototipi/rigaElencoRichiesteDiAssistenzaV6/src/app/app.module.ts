@@ -12,8 +12,6 @@ import * as Shared from './shared/';
 
 import { AppComponent } from './app.component';
 import { RichiesteComponent } from './richieste/richieste.component';
-import { SintesiRichiesteService } from './richieste/lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service';
-import { SintesiRichiesteServiceFake } from './richieste/lista-richieste-service/sintesi-richieste-service/sintesi-richieste.service.fake';
 import { ListaRichiesteComponent } from './richieste/lista-richieste/lista-richieste.component';
 import { SintesiRichiestaComponent } from './richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
 import { RicercaRichiesteComponent } from './richieste/ricerca-richieste/ricerca-richieste.component';
@@ -21,9 +19,9 @@ import { FiltriRichiesteComponent } from './richieste/filtri-richieste/filtri-ri
 import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.component';
 import { RichiestaFissataComponent } from './richieste/lista-richieste/richiesta-fissata/richiesta-fissata.component';
 import { NavTestComponent } from './richieste/lista-richieste-test/nav-test/nav-test.component';
-import { EventiService } from './shared/eventi/eventi.service';
-import { EventiServiceFake } from './eventi-fake/eventi.service.fake';
 
+import { SintesiRichiesteService } from './sintesi-richieste-service/sintesi-richieste.service';
+import { SintesiRichiesteServiceFake } from './sintesi-richieste-service/sintesi-richieste.service.fake';
 
 @NgModule({
     declarations: [
@@ -57,8 +55,7 @@ import { EventiServiceFake } from './eventi-fake/eventi.service.fake';
         ScrollEventModule
     ],
     providers: [
-        { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake },
-        { provide: EventiService, useClass: EventiServiceFake }
+        { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }
     ],
     bootstrap: [AppComponent]
 })

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
-import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { environment } from '../../environments/environment';
+import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
 
 const API_URL = environment.apiUrl.rigaElencoRichieste.fake;
 

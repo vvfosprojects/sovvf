@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { DispatcherFakeService } from '../../dispatcher/dispatcher-fake.service';
+import { DispatcherFakeService } from '../../../dispatcher/dispatcher-fake.service';
 
 @Injectable({
   providedIn: 'root'

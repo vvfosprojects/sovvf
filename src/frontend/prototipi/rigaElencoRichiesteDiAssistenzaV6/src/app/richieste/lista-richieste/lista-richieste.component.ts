@@ -1,10 +1,10 @@
-import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
-import {SintesiRichiesta} from '../../shared/model/sintesi-richiesta.model';
-import {ListaRichiesteManagerService} from '../lista-richieste-service/lista-richieste-manager/lista-richieste-manager.service';
-import {ScrollEvent} from 'ngx-scroll-event';
-import {ListaRichiesteService} from '../lista-richieste-service/lista-richieste-service.service';
-import {RicercaRichiesteService} from '../ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
+import { ListaRichiesteManagerService } from '../lista-richieste-service/lista-richieste-manager/lista-richieste-manager.service';
+import { ScrollEvent } from 'ngx-scroll-event';
+import { ListaRichiesteService } from '../lista-richieste-service/lista-richieste-service.service';
+import { RicercaRichiesteService } from '../ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -19,9 +19,9 @@ export class ListaRichiesteComponent implements OnInit {
     richiestaSelezionataState: string; // Animazione
 
     constructor(private listaRichiesteManager: ListaRichiesteManagerService,
-                private richiesteS: ListaRichiesteService,
-                public ricercaS: RicercaRichiesteService,
-                private modalService: NgbModal) {
+        private richiesteS: ListaRichiesteService,
+        public ricercaS: RicercaRichiesteService,
+        private modalService: NgbModal) {
     }
 
     ngOnInit() {
@@ -30,7 +30,7 @@ export class ListaRichiesteComponent implements OnInit {
             this.richieste = richieste;
         });
         // Restituisce la Richiesta Hover
-        this.richiesteS.getRichiestaHover().subscribe(richiestaHover => {
+        this.richiesteS.subjects.getRichiestaHover().subscribe(richiestaHover => {
             if (richiestaHover) {
                 this.richiestaHover = richiestaHover;
             } else {
@@ -38,7 +38,7 @@ export class ListaRichiesteComponent implements OnInit {
             }
         });
         // Restituisce la Richiesta Selezionata
-        this.richiesteS.getRichiestaSelezionata().subscribe(richiestaSelezionata => {
+        this.richiesteS.subjects.getRichiestaSelezionata().subscribe(richiestaSelezionata => {
             if (richiestaSelezionata) {
                 this.richiestaSelezionata = richiestaSelezionata;
             } else {
@@ -46,7 +46,7 @@ export class ListaRichiesteComponent implements OnInit {
             }
         });
         // Restituisce la Richiesta Fissata in alto
-        this.richiesteS.getRichiestaFissata().subscribe(richiestaFissata => {
+        this.richiesteS.subjects.getRichiestaFissata().subscribe(richiestaFissata => {
             if (richiestaFissata) {
                 this.richiestaFissata = richiestaFissata;
             } else {
@@ -66,23 +66,38 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     richiestaClick(richiesta) {
-        // console.log('Richiesta cliccata');
+        this.richiesteS.selezionata(richiesta);
+    }
+
+    localizzaClick(richiesta) {
+        // this.markerS.
     }
 
     richiestaHoverIn(richiesta) {
-        console.log('Richiesta Over In');
+        this.richiesteS.hoverIn(richiesta);
     }
 
     richiestaHoverOut() {
-        console.log('Richiesta Over Out');
+        this.richiesteS.hoverOut();
     }
 
     unClick() {
-        console.log('Richiesta Deselezionata');
+        this.richiesteS.deselezionata();
     }
 
     visualizzaEventiRichiesta(richiesta) {
         console.log(richiesta);
         this.modalService.open('Eventi della Richiesta');
+    }
+
+    /* NgClass Template */
+    cardShadowClass(r) {
+        return {
+            'card-shadow-primary': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'assegnato',
+            'card-shadow-success': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'presidiato',
+            'card-shadow-danger': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'chiamata',
+            'card-shadow-warning': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'sospeso',
+            'bg-light': r === this.richiestaSelezionata || r === this.richiestaHover,
+        };
     }
 }

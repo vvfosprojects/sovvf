@@ -29,4 +29,14 @@ export class RichiestaFissataComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  /* NgClass Template */
+  cardShadowClass(r) {
+    return {
+      'card-shadow-primary': r.stato === 'assegnato',
+      'card-shadow-success': r.stato === 'presidiato',
+      'card-shadow-danger': r.stato === 'chiamata',
+      'card-shadow-warning': r.stato === 'sospeso',
+    };
+  }
 }

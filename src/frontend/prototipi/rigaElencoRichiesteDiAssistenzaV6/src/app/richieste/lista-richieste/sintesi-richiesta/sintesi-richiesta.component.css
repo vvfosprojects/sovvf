@@ -3,11 +3,11 @@
 }
 
 .status_chiamata {
-    border-left: 10px solid #ffc107;
+    border-left: 10px solid #dc3545;
 }
 
 .status_sospeso {
-    border-left: 10px solid #868e96;
+    border-left: 10px solid #ffc107;
 }
 
 .status_assegnato{
@@ -86,4 +86,8 @@ a:hover {
     top: -8px;
     left: 12px;
     font-size: .6em;
+}
+
+.transparent {
+    background-color: transparent !important;
 }

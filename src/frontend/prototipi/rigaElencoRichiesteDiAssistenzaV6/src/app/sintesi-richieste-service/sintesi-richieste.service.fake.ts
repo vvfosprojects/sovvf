@@ -3,19 +3,19 @@ import { Observable } from 'rxjs';
 import { of } from 'rxjs';
 import * as moment from 'moment';
 
-import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { Squadra } from '../../../shared/model/squadra.model';
-import { Componente } from '../../../shared/model/componente.model';
-import { Mezzo } from '../../../shared/model/mezzo.model';
-import { Tipologia } from '../../../shared/model/tipologia.model';
-import { Richiedente } from '../../../shared/model/richiedente.model';
-import { Localita } from '../../../shared/model/localita.model';
-import { Coordinate } from '../../../shared/model/coordinate.model';
-import { Operatore } from '../../../shared/model/operatore.model';
-import { Sede } from '../../../shared/model/sede.model';
-import { Fonogramma } from '../../../shared/model/fonogramma.model';
-import { Complessita } from '../../../shared/model/complessita.model';
-import { Partenza } from '../../../shared/model/partenza.model';
+import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
+import { Squadra } from '../shared/model/squadra.model';
+import { Componente } from '../shared/model/componente.model';
+import { Mezzo } from '../shared/model/mezzo.model';
+import { Tipologia } from '../shared/model/tipologia.model';
+import { Richiedente } from '../shared/model/richiedente.model';
+import { Localita } from '../shared/model/localita.model';
+import { Coordinate } from '../shared/model/coordinate.model';
+import { Operatore } from '../shared/model/operatore.model';
+import { Sede } from '../shared/model/sede.model';
+import { Fonogramma } from '../shared/model/fonogramma.model';
+import { Complessita } from '../shared/model/complessita.model';
+import { Partenza } from '../shared/model/partenza.model';
 
 @Injectable({
     providedIn: 'root'
@@ -34,7 +34,7 @@ export class SintesiRichiesteServiceFake {
                 false,
                 new Date,
                 new Date,
-                'presidiato',
+                'chiamata',
                 2,
                 [new Tipologia(1, 'Allagamento', 'fa fa-exclamation-triangle')],
                 'Allagamento cantina',
@@ -73,9 +73,10 @@ export class SintesiRichiesteServiceFake {
     }
 
     nuoveRichieste(): Array<any> {
-        console.log('Nuove richieste');
+        const quantitaNuoveRichieste = 7;
         const nuoveRichieste = [];
-        for (let i = 0; i < 7; i++) {
+
+        for (let i = 0; i < quantitaNuoveRichieste; i++) {
             const id = this.id_ultimaRichiesta + 1;
             nuoveRichieste.push(
                 new SintesiRichiesta(
@@ -85,7 +86,7 @@ export class SintesiRichiesteServiceFake {
                     false,
                     new Date,
                     new Date,
-                    'presidiato',
+                    'chiamata',
                     2,
                     [new Tipologia(1, 'Allagamento', 'fa fa-exclamation-triangle')],
                     'Allagamento cantina',
@@ -117,5 +118,11 @@ export class SintesiRichiesteServiceFake {
             this.id_ultimaRichiesta++;
         }
         return nuoveRichieste;
+    }
+
+    getRandStato() {
+        const stati = ['presidiato', 'chiamata', 'sospeso', 'assegnato'];
+        const randStato = stati[Math.floor(Math.random() * stati.length)];
+        return randStato;
     }
 }
