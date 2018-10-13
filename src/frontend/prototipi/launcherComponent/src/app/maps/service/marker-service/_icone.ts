@@ -104,23 +104,25 @@ export class IconMappe {
             switch (modello) {
                 case 'richiesta': {
                     this.iconaStatoCorrenteSize = this.mapIconeSize.get(marker.priorita);
-                    this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize
-                        + this.mapIconeUrl.get(marker.stato.substring(0, 5).toLowerCase());
-                    if (!this.iconaStatoCorrenteSize) {
+                    const statoRichiesta = this.mapIconeUrl.get(marker.stato.substring(0, 5).toLowerCase());
+                    this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize + statoRichiesta;
+                    if (!this.iconaStatoCorrenteSize || !statoRichiesta) {
                         return undefined;
                     }
                     return this.iconaStatoCorrenteUrl;
                 }
                 case 'mezzo': {
-                    this.iconaStatoCorrenteUrl = dir + this.mapIconeMezzi.get(marker.mezzo.descrizione.toLowerCase());
-                    if (!this.iconaStatoCorrenteUrl) {
+                    const tipoMezzo = this.mapIconeMezzi.get(marker.mezzo.descrizione.toLowerCase());
+                    this.iconaStatoCorrenteUrl = dir + tipoMezzo;
+                    if (!this.iconaStatoCorrenteUrl || !tipoMezzo) {
                         return undefined;
                     }
                     return this.iconaStatoCorrenteUrl;
                 }
                 case 'sede': {
-                    this.iconaStatoCorrenteUrl = dir + this.mapIconeSedi.get(marker.tipo.toLowerCase());
-                    if (!this.iconaStatoCorrenteUrl) {
+                    const tipoSede = this.mapIconeSedi.get(marker.tipo.toLowerCase());
+                    this.iconaStatoCorrenteUrl = dir + tipoSede;
+                    if (!this.iconaStatoCorrenteUrl || !tipoSede) {
                         return undefined;
                     }
                     return this.iconaStatoCorrenteUrl;

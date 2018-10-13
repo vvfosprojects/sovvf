@@ -27,7 +27,7 @@ export class MapManagerServiceOnlylauncher {
 
     constructor(private dispatcher: DispatcherService) {
 
-         /**
+        /**
          * dispatcher richieste
          */
         this.dispatcher.onNewRichiesteMarkersList().subscribe(richieste => {
@@ -92,5 +92,9 @@ export class MapManagerServiceOnlylauncher {
 
     getMezziMarker(): Observable<MezzoMarker[]> {
         return of(this.mezziMarker);
+    }
+
+    getMarkerFromId(id) {
+        return this.richiesteMarker.find(x => x.id === id);
     }
 }

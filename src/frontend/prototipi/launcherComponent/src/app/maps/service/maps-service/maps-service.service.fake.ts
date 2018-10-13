@@ -114,7 +114,7 @@ export class MapsServiceFake {
                 new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 5),
                 'R1',
                 [
-                    new Squadra('1A', 'InViaggio', null,
+                    new Squadra('1A', 'InViaggio',
                         [
                             new Componente(
                                 'CR',

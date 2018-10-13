@@ -22,7 +22,7 @@ export class MapsComponent implements OnInit {
         /**
          *  creo un oggetto di tipo centroMappa per inizializzare la mappa
          */
-        this.centroMappa = new CentroMappa(new Coordinate(42.290251, 12.492373), 8);
+        this.centroMappa = new CentroMappa(new Coordinate(41.8917098, 12.5005402), 11);
     }
 
     ngOnInit() {

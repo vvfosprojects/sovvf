@@ -36,10 +36,6 @@ export class SintesiRichiesta {
          */
         public istanteRicezioneRichiesta: Date,
         /**
-         * eventuale istante di prima assegnazione di risorse alla richiesta
-         */
-        public istantePrimaAssegnazione: Date,
-        /**
          * Indica lo stato della richiesa di soccorso
          */
         public stato: string,
@@ -69,11 +65,6 @@ export class SintesiRichiesta {
          */
         public competenze: Sede[],
         /**
-         * codice dello stato di invio del fonogramma (0 = Non necessario, 1 = Da inviare,
-         * 2 = Inviato). Utile a calcolare il colore della segnalazione.
-         */
-        public fonogramma: Fonogramma,
-        /**
          * indice di complessità dell'intervento (per es. numero di eventi collegati alla richiesta)
          */
         public complessita: Complessita,
@@ -86,6 +77,10 @@ export class SintesiRichiesta {
          */
         public istantePresaInCarico?: Date,
         /**
+         * eventuale istante di prima assegnazione di risorse alla richiesta
+         */
+        public istantePrimaAssegnazione?: Date,
+        /**
          * codice della scheda NUE
          */
         public codiceSchedaNue?: string,
@@ -93,6 +88,11 @@ export class SintesiRichiesta {
          * descrizione delle zone di emergenza
          */
         public zoneEmergenza?: string[],
+        /**
+         * codice dello stato di invio del fonogramma (0 = Non necessario, 1 = Da inviare,
+         * 2 = Inviato). Utile a calcolare il colore della segnalazione.
+         */
+        public fonogramma?: Fonogramma,
         /**
          * lista delle partenze
          */

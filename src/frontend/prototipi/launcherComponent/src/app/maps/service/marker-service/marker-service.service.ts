@@ -5,7 +5,6 @@ import {Meteo} from '../../../shared/model/meteo.model';
 import {MeteoService} from '../../../shared/meteo/meteo-service.service';
 import {IconMappe} from './_icone';
 import {TipoMappe} from './_typeof';
-import {EventiService} from '../../../shared/eventi/eventi.service';
 
 @Injectable({
     providedIn: 'root'
@@ -23,8 +22,7 @@ export class MarkerService {
 
 
     constructor(private markedService: MarkedService,
-                private meteoService: MeteoService,
-                private eventi: EventiService) {
+                private meteoService: MeteoService) {
         this.subscription = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         });
@@ -70,7 +68,6 @@ export class MarkerService {
         /**
          * deseleziono il marker
          */
-        this.eventi.marker.unClick();
         this.markedService.clearMarked();
     }
 
@@ -92,29 +89,23 @@ export class MarkerService {
         const modello = this.modelloMarker(marker);
         switch (modello + '|' + mouse) {
             case 'richiesta|hover-in': {
-                this.eventi.marker.richiestaHoverIn(marker);
             }
                 break;
             case 'richiesta|hover-out': {
-                this.eventi.marker.richiestaHoverOut(marker);
             }
                 break;
             case 'richiesta|click': {
-                this.eventi.marker.richiestaClick(marker);
             }
                 break;
             case 'mezzo|click': {
                 if (marker.inSoccorso()) {
-                    this.eventi.marker.mezzoClick(marker);
                 }
             }
                 break;
             case 'sede|click': {
-                this.eventi.marker.sedeClick(marker);
             }
                 break;
             default: {
-                // this.eventi.marker.test();
             }
                 break;
         }
@@ -156,6 +147,5 @@ export class MarkerService {
         /**
          * evento che cambia la sede
          */
-        this.eventi.marker.cambioSede(this.markerSelezionato);
     }
 }

@@ -135,9 +135,6 @@ import {EventiRichiestaService} from './eventi-richiesta/eventi-richiesta-servic
     ],
     entryComponents: [CambioSedeModalComponent, EventiRichiestaComponent],
     providers: [
-        {provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake},
-        {provide: EventiRichiestaService, useClass: EventiRichiestaServiceFake},
-        {provide: MapsService, useClass: MapsServiceFake},
         {provide: InfoAggregateService, useClass: InfoAggregateServiceFake},
         {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
