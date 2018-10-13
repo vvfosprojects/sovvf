@@ -33,11 +33,15 @@ export class MarkerService {
         });
     }
 
-    tipoIcona(marker: any): string {
+    tipoIcona(marker: any, tipoSede: boolean): string {
         /**
          * metodo che mi ritorna il tipo di icona da utilizzare
          */
-        return this.icone.tipoIcona(marker, this.modelloMarker(marker), this.iconaSelezionata(marker));
+        if (!tipoSede) {
+            return this.icone.tipoIcona(marker, this.modelloMarker(marker), this.iconaSelezionata(marker));
+        } else {
+            return this.icone.tipoIcona(marker, 'tipo-sede', this.iconaSelezionata(marker));
+        }
     }
 
     modelloMarker(marker): string {
@@ -114,14 +118,34 @@ export class MarkerService {
                 this.cliccato(marker);
             }
                 break;
+            case 'mezzo|hover-in': {
+                this.markerColorato = marker;
+            }
+                break;
+            case 'mezzo|hover-out': {
+                this.markerColorato = null;
+            }
+                break;
             case 'mezzo|click': {
                 this.cliccato(marker);
                 if (marker.inSoccorso()) {
+                    console.log('il mezzo è in soccorso');
+                    /**
+                     * lanciare azione solo quando il mezzo è in soccorso
+                     */
                 }
             }
                 break;
             case 'sede|click': {
                 this.cliccato(marker);
+            }
+                break;
+            case 'sede|hover-in': {
+                this.markerColorato = marker;
+            }
+                break;
+            case 'sede|hover-out': {
+                this.markerColorato = null;
             }
                 break;
             default: {
@@ -167,7 +191,6 @@ export class MarkerService {
         /**
          * evento che cambia la sede
          */
-        // console.log('cambio sede');
         this.fakeCambioSede.cambioSedeFake();
     }
 }

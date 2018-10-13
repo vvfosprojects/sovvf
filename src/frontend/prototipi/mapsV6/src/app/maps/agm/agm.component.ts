@@ -86,11 +86,15 @@ export class AgmComponent implements OnInit {
         this.markerService.action(marker, type);
     }
 
-    urlIcona(marker: any): string {
+    urlIcona(marker: any, tipoSede?: boolean): string {
         /**
          * richiedo al service che gestisce i marker sulla mappa, di ritornarmi l'url dell'icona da utilizzare
          */
-        return this.markerService.tipoIcona(marker);
+        if (!tipoSede) {
+            return this.markerService.tipoIcona(marker, false);
+        } else {
+            return this.markerService.tipoIcona(marker, true);
+        }
     }
 
     trueMarker(marker: any): boolean {

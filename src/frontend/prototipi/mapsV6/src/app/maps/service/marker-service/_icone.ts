@@ -14,6 +14,8 @@ export class IconMappe {
     private mapIconeSize: Map<number, string>;
     private iconeSedi: [string, string][];
     private mapIconeSedi: Map<string, string>;
+    private iconeTipoSedi: [string, string][];
+    private mapIconeTipoSedi: Map<string, string>;
     private iconeMezzi: [string, string][];
     private mapIconeMezzi: Map<string, string>;
 
@@ -39,28 +41,30 @@ export class IconMappe {
         this.iconeModello = [
             ['richiesta', 'richieste/'],
             ['mezzo', 'mezzi/'],
-            ['sede', 'sedi/']
+            ['sede', 'sedi/'],
+            ['tipo-sede', 'tipo-sedi/']
         ];
         this.mapIconeModelloPath = new Map(this.iconeModello);
 
         this.iconeStati = [
-            ['chiam', 'warning.png'],
+            ['chiam', 'danger.png'],
             ['asseg', 'info.png'],
             ['presi', 'success.png'],
-            ['sospe', 'secondary.png']
+            ['sospe', 'warning.png'],
+            ['chius', 'secondary.png']
         ];
         this.mapIconeUrl = new Map(this.iconeStati);
 
         this.iconeGrandezza = [
-            [1, '20/'],
-            [2, '25/'],
-            [3, '30/'],
-            [4, '35/'],
-            [5, '40/']
+            [1, '32/'],
+            [2, '40/'],
+            [3, '48/'],
+            [4, '56/'],
+            [5, '64/']
         ];
         this.mapIconeSize = new Map(this.iconeGrandezza);
 
-        this.iconeSedi = [
+        this.iconeTipoSedi = [
             ['aeroportuale', 'aeroportuale.gif'],
             ['afmp', 'afmp.jpg'],
             ['centri_polifunzionali', 'centri_polifunzionali.gif'],
@@ -84,12 +88,21 @@ export class IconMappe {
             ['volontari', 'volontari.gif'],
             ['volontari_stag', 'volontari_stag.gif']
         ];
-        this.mapIconeSedi = new Map(this.iconeSedi);
+        this.mapIconeTipoSedi = new Map(this.iconeTipoSedi);
 
         this.iconeMezzi = [
-            ['autobotte', 'map-marker-icon.png']
+            ['autobotte', 'mezzo.png'],
+            ['autobotte2', 'mezzo2.png'],
+            ['autobotte3', 'mezzo3.png']
         ];
         this.mapIconeMezzi = new Map(this.iconeMezzi);
+
+        this.iconeSedi = [
+            ['comando', 'sede.png'],
+            ['distaccamento', 'sede2.png'],
+            ['direzioni', 'sede3.png']
+        ];
+        this.mapIconeSedi = new Map(this.iconeSedi);
     }
 
     tipoIcona(marker: any, modello: string, markerS: boolean): string {
@@ -104,23 +117,33 @@ export class IconMappe {
             switch (modello) {
                 case 'richiesta': {
                     this.iconaStatoCorrenteSize = this.mapIconeSize.get(marker.priorita);
-                    this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize
-                        + this.mapIconeUrl.get(marker.stato.substring(0, 5).toLowerCase());
-                    if (!this.iconaStatoCorrenteSize) {
+                    const statoRichiesta = this.mapIconeUrl.get(marker.stato.substring(0, 5).toLowerCase());
+                    this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize + statoRichiesta;
+                    if (!this.iconaStatoCorrenteSize || !statoRichiesta) {
                         return undefined;
                     }
                     return this.iconaStatoCorrenteUrl;
                 }
                 case 'mezzo': {
-                    this.iconaStatoCorrenteUrl = dir + this.mapIconeMezzi.get(marker.mezzo.descrizione.toLowerCase());
-                    if (!this.iconaStatoCorrenteUrl) {
+                    const tipoMezzo = this.mapIconeMezzi.get(marker.mezzo.descrizione.toLowerCase());
+                    this.iconaStatoCorrenteUrl = dir + tipoMezzo;
+                    if (!this.iconaStatoCorrenteUrl || !tipoMezzo) {
                         return undefined;
                     }
                     return this.iconaStatoCorrenteUrl;
                 }
                 case 'sede': {
-                    this.iconaStatoCorrenteUrl = dir + this.mapIconeSedi.get(marker.tipo.toLowerCase());
-                    if (!this.iconaStatoCorrenteUrl) {
+                    const sede = this.mapIconeSedi.get(marker.tipo.toLowerCase());
+                    this.iconaStatoCorrenteUrl = dir + sede;
+                    if (!this.iconaStatoCorrenteUrl || !sede) {
+                        return undefined;
+                    }
+                    return this.iconaStatoCorrenteUrl;
+                }
+                case 'tipo-sede': {
+                    const tipoSede = this.mapIconeTipoSedi.get(marker.tipo.toLowerCase());
+                    this.iconaStatoCorrenteUrl = dir + tipoSede;
+                    if (!this.iconaStatoCorrenteUrl || !tipoSede) {
                         return undefined;
                     }
                     return this.iconaStatoCorrenteUrl;

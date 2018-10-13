@@ -17,6 +17,8 @@ export class InfoWindowComponent implements OnInit {
     @Input() richiestaMarker: RichiestaMarker;
     @Input() sedeMarker: SedeMarker;
     @Input() mezzoMarker: MezzoMarker;
+    @Input() tipoSedeIcona: string;
+
 
     constructor(private _modalService: NgbModal) {
     }
