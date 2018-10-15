@@ -24,7 +24,7 @@ export class MapsComponent implements OnInit {
         /**
          *  creo un oggetto di tipo centroMappa per inizializzare la mappa
          */
-        this.centroMappa = new CentroMappa(new Coordinate(42.290251, 12.492373), 8);
+        this.centroMappa = new CentroMappa(new Coordinate(41.8959045, 12.497792), 12);
         /**
          * imposto true la proprietà preLoader per far visualizzare di default il div che contiene il component maps
          */

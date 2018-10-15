@@ -81,7 +81,7 @@ export class RichiesteServiceFake {
                     'R2',
                     'RM-24760',
                     new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X', 'CDXXH', 'password',
-                        new Sede(1, 'Roma', new Coordinate(41.9004733, 12.4906652), 'Comando Provinciale')),
+                        new Sede(1, 'Roma', new Coordinate(41.8549993, 12.5688578), 'Comando Provinciale')),
                     false,
                     moment().subtract(4, 'minutes').toDate(),
                     'assegnato',
@@ -90,7 +90,7 @@ export class RichiesteServiceFake {
                     'Incidente automobile ribaltata',
                     new Richiedente('Polizia', '113'),
                     new Localita(
-                        new Coordinate(41.8607234, 12.555459), 'Via Tuscolana, 1022', 'automobile ribaltata, persona anziana'),
+                        new Coordinate(41.8531486, 12.5411702), 'Via Tuscolana, 1500', 'automobile ribaltata, persona anziana'),
                     [
                         new Sede(2, 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Distaccamento'),
                         new Sede(4, 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Distaccamento'),
@@ -109,7 +109,7 @@ export class RichiesteServiceFake {
                 new RichiestaMarker(
                     'R2',
                     new Localita(
-                        new Coordinate(41.8607234, 12.555459), 'Via Tuscolana, 1022', 'automobile ribaltata, persona anziana'),
+                        new Coordinate(41.8549993, 12.5688578), 'Via Tuscolana, 1500', 'automobile ribaltata, persona anziana'),
                     [
                         new Tipologia(2, 'Incidente stradale generico', 'fa fa-car')
                     ],
@@ -158,7 +158,7 @@ export class RichiesteServiceFake {
                     'Scintille da palo elettrico',
                     false,
                     1,
-                    'presidiato'
+                    'chiamata'
                 )
             ),
             new Richiesta(
