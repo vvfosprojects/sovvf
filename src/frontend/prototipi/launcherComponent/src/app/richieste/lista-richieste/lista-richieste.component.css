@@ -13,7 +13,7 @@
 }
 
 #listaRichieste{
-	max-height: 700px;
+	max-height: 800px;
 	overflow-y: scroll;
 }
 
@@ -42,13 +42,18 @@
     -moz-box-shadow: 2px 0px 2px .5px #ffc107;
     box-shadow: 2px 0px 2px .5px #ffc107;
 }
+.card-shadow-secondary{
+    -webkit-box-shadow: 2px 0px 2px .5px #868e96;
+    -moz-box-shadow: 2px 0px 2px .5px #868e96;
+    box-shadow: 2px 0px 2px .5px #868e96;
+}
 
 .m-h-750{
-	max-height: 804px;
+	max-height: 750px;
 }
 
 .m-h-600{
-	max-height: 664px;
+	max-height: 610px;
 }
 
 .scroll-y{

@@ -14,6 +14,10 @@
     border-left: 10px solid #17a2b8;
 }
 
+.status_chiuso{
+    border-left: 10px solid #868e96;
+}
+
 .row_text {
     color: #666666;
 }

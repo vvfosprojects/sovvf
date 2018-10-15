@@ -37,4 +37,8 @@ export class ListaRichiesteManagerServiceOnlylauncher {
     getData(): Observable<SintesiRichiesta[]> {
         return of(this.richieste);
     }
+
+    getRichiestaFromId(id) {
+        return this.richieste.find(x => x.id === id);
+    }
 }

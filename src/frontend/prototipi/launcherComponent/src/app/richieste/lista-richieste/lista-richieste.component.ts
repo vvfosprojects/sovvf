@@ -5,6 +5,9 @@ import { ScrollEvent } from 'ngx-scroll-event';
 import { ListaRichiesteService } from '../lista-richieste-service/lista-richieste-service.service';
 import { RicercaRichiesteService } from '../ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
+import { MapManagerService } from '../../maps/service/maps-manager/map-manager-service.service';
+import { EventiRichiestaComponent } from 'src/app/eventi-richiesta/eventi-richiesta.component';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -21,7 +24,9 @@ export class ListaRichiesteComponent implements OnInit {
     constructor(private listaRichiesteManager: ListaRichiesteManagerService,
         private richiesteS: ListaRichiesteService,
         public ricercaS: RicercaRichiesteService,
-        private modalService: NgbModal) {
+        private modalService: NgbModal,
+        private markerS: MarkerService,
+        private mapManager: MapManagerService) {
     }
 
     ngOnInit() {
@@ -67,27 +72,36 @@ export class ListaRichiesteComponent implements OnInit {
 
     richiestaClick(richiesta) {
         this.richiesteS.selezionata(richiesta);
+        const marker = this.mapManager.getMarkerFromId(richiesta.id);
+        this.markerS.action(marker, 'click');
     }
 
     localizzaClick(richiesta) {
-        // this.markerS.
+        const marker = this.mapManager.getMarkerFromId(richiesta.id);
+        this.markerS.action(marker, 'click');
     }
 
     richiestaHoverIn(richiesta) {
         this.richiesteS.hoverIn(richiesta);
+        const marker = this.mapManager.getMarkerFromId(richiesta.id);
+        this.markerS.action(marker, 'hover-in');
     }
 
-    richiestaHoverOut() {
+    richiestaHoverOut(richiesta) {
         this.richiesteS.hoverOut();
+        const marker = this.mapManager.getMarkerFromId(richiesta.id);
+        this.markerS.action(marker, 'hover-out');
     }
 
     unClick() {
         this.richiesteS.deselezionata();
+        this.richiesteS.defissata();
+        this.markerS.action('a', 'unclick');
     }
 
     visualizzaEventiRichiesta(richiesta) {
         console.log(richiesta);
-        this.modalService.open('Eventi della Richiesta');
+        this.modalService.open(EventiRichiestaComponent, {size: 'lg'});
     }
 
     /* NgClass Template */

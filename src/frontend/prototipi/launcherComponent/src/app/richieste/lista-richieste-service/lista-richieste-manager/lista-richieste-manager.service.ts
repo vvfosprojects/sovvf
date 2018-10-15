@@ -19,4 +19,8 @@ export class ListaRichiesteManagerService {
     const nuoveRichieste = [];
     return of(nuoveRichieste);
   }
+
+  getRichiestaFromId(id) {
+    return this.richieste.find(x => x.id === id);
+  }
 }
