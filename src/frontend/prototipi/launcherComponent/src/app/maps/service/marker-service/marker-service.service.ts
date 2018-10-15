@@ -149,7 +149,7 @@ export class MarkerService {
             }
                 break;
             default: {
-                console.log('no action');
+                this.noAction();
             }
                 break;
         }
@@ -192,5 +192,12 @@ export class MarkerService {
          * evento che cambia la sede
          */
         this.fakeCambioSede.cambioSedeFake();
+    }
+
+    noAction() {
+        if (this.markerSelezionato) {
+            this.agmService.cambiaZoom(11);
+            this.deseleziona();
+        }
     }
 }
