@@ -1,15 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Observable, of, Subscription} from 'rxjs';
-import {RichiestaMarker} from '../../maps-model/richiesta-marker.model';
+import {RichiestaMarker} from '../../../maps/maps-model/richiesta-marker.model';
 import {Localita} from '../../../shared/model/localita.model';
-import {MarkedService} from '../marked-service/marked-service.service';
-import {SedeMarker} from '../../maps-model/sede-marker.model';
-import {MezzoMarker} from '../../maps-model/mezzo-marker.model';
+import {MarkedService} from '../../../maps/service/marked-service/marked-service.service';
+import {SedeMarker} from '../../../maps/maps-model/sede-marker.model';
+import {MezzoMarker} from '../../../maps/maps-model/mezzo-marker.model';
 import {Coordinate} from '../../../shared/model/coordinate.model';
 import {Squadra} from '../../../shared/model/squadra.model';
 import {Componente} from '../../../shared/model/componente.model';
 import {Tipologia} from '../../../shared/model/tipologia.model';
-import {Sede} from '../../../shared/model/sede.model';
 import {Mezzo} from '../../../shared/model/mezzo.model';
 
 @Injectable({
@@ -50,7 +49,7 @@ export class MapsServiceFake {
                     'Via Cavour, 5',
                 ),
                 [
-                    new Tipologia(1, 'allagamento', '')
+                    new Tipologia('1', 'allagamento', '')
                 ],
                 'Allagamento cantina per rottura tubatura',
                 false,
@@ -63,7 +62,7 @@ export class MapsServiceFake {
                     'Via Cavour, 5',
                 ),
                 [
-                    new Tipologia(2, 'incendio', '')
+                    new Tipologia('2', 'incendio', '')
                 ],
                 'Incendio sul bordo autostradale',
                 false,
@@ -84,7 +83,7 @@ export class MapsServiceFake {
                     'Via Cavour, 5'
                 ),
                 [
-                    new Tipologia(1, 'allagamento', '')
+                    new Tipologia('1', 'allagamento', '')
                 ],
                 'Marker Random: ' + this.statiObj.get(randomNumber),
                 false,
@@ -98,13 +97,13 @@ export class MapsServiceFake {
 
     getSediMarker(): Observable<SedeMarker[]> {
         this.sediMarker = [
-            new SedeMarker(1, 'Tuscolano I', new Coordinate(41.881490, 12.518700), 'Distaccamento')
+            new SedeMarker('1', 'Tuscolano I', new Coordinate(41.881490, 12.518700), 'Distaccamento')
             ,
-            new SedeMarker(2, 'Tuscolano II', new Coordinate(41.863930, 12.554420), 'Distaccamento')
+            new SedeMarker('2', 'Tuscolano II', new Coordinate(41.863930, 12.554420), 'Distaccamento')
             ,
-            new SedeMarker(3, 'Roma', new Coordinate(41.899940, 12.491270), 'Comando')
+            new SedeMarker('3', 'Roma', new Coordinate(41.899940, 12.491270), 'Comando')
             ,
-            new SedeMarker(3, 'Roma', new Coordinate(41.8748856, 12.4071855), 'Direzioni')
+            new SedeMarker('3', 'Roma', new Coordinate(41.8748856, 12.4071855), 'Direzioni')
         ];
         return of(this.sediMarker);
     }
@@ -116,7 +115,7 @@ export class MapsServiceFake {
                 new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 5),
                 'R1',
                 [
-                    new Squadra('1A', 'InViaggio', null,
+                    new Squadra('1A', 'InViaggio',
                         [
                             new Componente(
                                 'CR',
@@ -161,7 +160,7 @@ export class MapsServiceFake {
                 new Mezzo('1', 'Autobotte2', 'ABP', 'InViaggio', 5),
                 'R1',
                 [
-                    new Squadra('1A', 'InViaggio', null,
+                    new Squadra('1A', 'InViaggio',
                         [
                             new Componente(
                                 'CR',
@@ -206,7 +205,7 @@ export class MapsServiceFake {
                 new Mezzo('1', 'Autobotte3', 'ABP', 'InViaggio', 5),
                 'R1',
                 [
-                    new Squadra('1A', 'InViaggio', null,
+                    new Squadra('1A', 'InViaggio',
                         [
                             new Componente(
                                 'CR',

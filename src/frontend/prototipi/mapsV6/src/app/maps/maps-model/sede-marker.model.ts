@@ -6,7 +6,7 @@ export class SedeMarker implements Sede {
         /**
          * Codice sede
          */
-        public codice: number,
+        public codice: string,
         /**
          * Descrizione della sede
          */

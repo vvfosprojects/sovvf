@@ -6,8 +6,8 @@ export class Operatore {
         public nome: string,
         public cognome: string,
         public codiceFiscale: string,
-        public tipo: string,
-        public password: string,
-        public sede: Sede
+        // public tipo: string,
+        // public password: string,
+        // public sede: Sede
     ) { }
 }

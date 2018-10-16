@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {MarkedService} from '../../service/marked-service/marked-service.service';
 import {Subscription} from 'rxjs';
 import {FakeMethodService} from '../fake-method/fake-method-service.service';

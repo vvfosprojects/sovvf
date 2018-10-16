@@ -6,7 +6,7 @@ export class Tipologia {
         /**
          * Codice tipologia
          */
-        public codice: number,
+        public codice: string,
         /**
          * Descrizione della tipologia
          */

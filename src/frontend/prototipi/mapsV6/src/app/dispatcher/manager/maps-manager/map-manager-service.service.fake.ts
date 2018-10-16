@@ -1,15 +1,15 @@
 import {Injectable} from '@angular/core';
-import {RichiestaMarker} from '../../maps-model/richiesta-marker.model';
-import {SedeMarker} from '../../maps-model/sede-marker.model';
-import {MezzoMarker} from '../../maps-model/mezzo-marker.model';
+import {RichiestaMarker} from '../../../maps/maps-model/richiesta-marker.model';
+import {SedeMarker} from '../../../maps/maps-model/sede-marker.model';
+import {MezzoMarker} from '../../../maps/maps-model/mezzo-marker.model';
 import {Observable, of} from 'rxjs';
-import {DispatcherService} from '../../dispatcher/dispatcher.service';
+import {DispatcherService} from '../../dispatcher.service';
 
 
 @Injectable({
     providedIn: 'root'
 })
-export class MapManagerService {
+export class MapManagerServiceFake {
 
     richiesteMarker: RichiestaMarker[];
     sediMarker: SedeMarker[];

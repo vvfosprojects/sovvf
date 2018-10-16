@@ -1,14 +1,15 @@
 import {Injectable} from '@angular/core';
+import {RichiestaMarker} from '../maps/maps-model/richiesta-marker.model';
 import {Observable, of, Subject} from 'rxjs';
-import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
-import {MapsService} from '../service/maps-service/maps-service.service';
-import {SedeMarker} from '../maps-model/sede-marker.model';
-import {MezzoMarker} from '../maps-model/mezzo-marker.model';
+import {MapsService} from './data/maps-service/maps-service.service';
+import {SedeMarker} from '../maps/maps-model/sede-marker.model';
+import {MezzoMarker} from '../maps/maps-model/mezzo-marker.model';
 
 @Injectable({
     providedIn: 'root'
 })
-export class DispatcherService {
+export class DispatcherServiceFake {
+
     private newRichiestaMarker$ = new Subject<RichiestaMarker>();
     private updateRichiestaMarker$ = new Subject<RichiestaMarker>();
     private deleteRichiestaMarker$ = new Subject<RichiestaMarker>();
@@ -35,6 +36,7 @@ export class DispatcherService {
     onNewRichiesteMarkersList(): Observable<RichiestaMarker[]> {
         this.mapsService.getRichiesteMarker().subscribe((richiesteMarker: RichiestaMarker[]) => {
             this.richiesteMarker = richiesteMarker;
+
         });
         return of(this.richiesteMarker);
     }
@@ -104,17 +106,17 @@ export class DispatcherService {
      */
 
     addMarker(marker: RichiestaMarker) {
-        // console.log(marker);
+        // console.log(this.richiesteMarker);
         this.newRichiestaMarker$.next(marker);
     }
 
     updateMarker(marker: RichiestaMarker) {
-        // console.log(marker);
+        // console.log(this.richiesteMarker);
         this.updateRichiestaMarker$.next(marker);
     }
 
     deleteMarker(marker: RichiestaMarker) {
-        // console.log(marker);
+        // console.log(this.richiesteMarker);
         this.deleteRichiestaMarker$.next(marker);
     }
 

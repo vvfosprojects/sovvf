@@ -20,7 +20,7 @@ export class CambioSedeModalComponent implements OnInit {
     }
 
     cambioSede() {
-        this.markerService.cambioSede();
+        this.markerService.cambioSede(this.markerService.markerSelezionato);
         this.markerService.deseleziona();
     }
 

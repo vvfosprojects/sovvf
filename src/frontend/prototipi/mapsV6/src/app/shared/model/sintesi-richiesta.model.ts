@@ -23,20 +23,14 @@ export class SintesiRichiesta {
          * E' il codice della Richiesta di Assistenza
          */
         public codice: string,
-
-        public operatore: Operatore,
         /**
-         * Indica se la richiesta è rilevante
+         * è l'operatore che inserisce la richiesta
          */
-        public rilevanza: boolean,
+        public operatore: Operatore,
         /**
          * ricezione della richiesta (via telefono, ecc.)
          */
         public istanteRicezioneRichiesta: Date,
-        /**
-         * eventuale istante di prima assegnazione di risorse alla richiesta
-         */
-        public istantePrimaAssegnazione: Date,
         /**
          * Indica lo stato della richiesa di soccorso
          */
@@ -67,38 +61,42 @@ export class SintesiRichiesta {
          */
         public competenze: Sede[],
         /**
-         * descrizione delle zone di emergenza
-         */
-        public zoneEmergenza: string[],
-        /**
-         * eventuale istante di presa in carico della richiesta
-         */
-        public istantePresaInCarico: Date,
-        /**
-         * codice della scheda NUE
-         */
-        public codiceSchedaNue: string,
-        /**
-         * codice dello stato di invio del fonogramma (0 = Non necessario, 1 = Da inviare,
-         * 2 = Inviato). Utile a calcolare il colore della segnalazione.
-         */
-        public fonogramma: Fonogramma,
-        /**
          * indice di complessità dell'intervento (per es. numero di eventi collegati alla richiesta)
          */
         public complessita: Complessita,
         /**
+         * eventuale istante di presa in carico della richiesta
+         */
+        public istantePresaInCarico?: Date,
+        /**
+         * eventuale istante di prima assegnazione di risorse alla richiesta
+         */
+        public istantePrimaAssegnazione?: Date,
+        /**
+         * Indica se la richiesta è rilevante
+         */
+        public rilevanza?: Date,
+        /**
+         * codice della scheda NUE
+         */
+        public codiceSchedaNue?: string,
+        /**
+         * descrizione delle zone di emergenza
+         */
+        public zoneEmergenza?: string[],
+        /**
+         * codice dello stato di invio del fonogramma (0 = Non necessario, 1 = Da inviare,
+         * 2 = Inviato). Utile a calcolare il colore della segnalazione.
+         */
+        public fonogramma?: Fonogramma,
+        /**
          * lista delle partenze
          */
-        public partenze: Partenza[],
+        public partenze?: Partenza[],
         /**
          * etichette associate all'intervento (per es. aPagamento, imp, ecc.)
          */
-        public etichette: string[],
-        /**
-         * lista degli eventi associati all'intervento
-         */
-        public eventi?: Evento[]
+        public etichette?: string[],
     ) {
     }
 }

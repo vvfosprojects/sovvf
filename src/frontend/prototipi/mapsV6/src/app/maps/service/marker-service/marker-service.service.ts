@@ -6,7 +6,8 @@ import {MeteoService} from '../../../shared/meteo/meteo-service.service';
 import {IconMappe} from './_icone';
 import {TipoMappe} from './_typeof';
 import {AgmService} from '../../agm/agm-service.service';
-import {FakerCambioSedeService} from '../../maps-test/fake-cambio-sede/faker-cambio-sede.service';
+import {UnitaOperativaService} from '../../../navbar/navbar-service/unita-operativa-service/unita-operativa.service';
+import {ListaRichiesteService} from '../../../richieste/lista-richieste-service/lista-richieste-service.service';
 
 @Injectable({
     providedIn: 'root'
@@ -27,7 +28,8 @@ export class MarkerService {
     constructor(private markedService: MarkedService,
                 private meteoService: MeteoService,
                 private agmService: AgmService,
-                private fakeCambioSede: FakerCambioSedeService) {
+                private richiesteService: ListaRichiesteService,
+                private fakeCambioSede: UnitaOperativaService) {
         this.subscription = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         });
@@ -108,14 +110,18 @@ export class MarkerService {
         switch (modello + '|' + mouse) {
             case 'richiesta|hover-in': {
                 this.markerColorato = marker;
+                this.richiesteService.hoverIn(marker.id);
             }
                 break;
             case 'richiesta|hover-out': {
                 this.markerColorato = null;
+                this.richiesteService.hoverOut();
             }
                 break;
             case 'richiesta|click': {
                 this.cliccato(marker);
+                this.richiesteService.fissata(marker.id);
+                this.richiesteService.deselezionata();
             }
                 break;
             case 'mezzo|hover-in': {
@@ -149,7 +155,8 @@ export class MarkerService {
             }
                 break;
             default: {
-                console.log('no action');
+                this.noAction();
+                this.richiesteService.defissata();
             }
                 break;
         }
@@ -187,10 +194,17 @@ export class MarkerService {
         this.filtro = filtro;
     }
 
-    cambioSede() {
+    cambioSede(sede) {
         /**
          * evento che cambia la sede
          */
-        this.fakeCambioSede.cambioSedeFake();
+        this.fakeCambioSede.sendUnitaOperativaAttuale(sede);
+    }
+
+    noAction() {
+        if (this.markerSelezionato) {
+            this.agmService.cambiaZoom(11);
+            this.deseleziona();
+        }
     }
 }

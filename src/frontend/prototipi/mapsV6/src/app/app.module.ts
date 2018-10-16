@@ -5,10 +5,10 @@ import {HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
 import {MapsComponent} from './maps/maps.component';
 import {NavComponent} from './maps/maps-test/nav/nav.component';
-import {DispatcherService} from './maps/dispatcher/dispatcher.service';
-import {DispatcherServiceFake} from './maps/dispatcher/dispatcher.service.fake';
-import {MapsService} from './maps/service/maps-service/maps-service.service';
-import {MapsServiceFake} from './maps/service/maps-service/maps-service.service.fake';
+import {DispatcherService} from './dispatcher/dispatcher.service';
+import {DispatcherServiceFake} from './dispatcher/dispatcher.service.fake';
+import {MapsService} from './dispatcher/data/maps-service/maps-service.service';
+import {MapsServiceFake} from './dispatcher/data/maps-service/maps-service.service.fake';
 import {AgmComponent} from './maps/agm/agm.component';
 import {AgmCoreModule} from '@agm/core';
 import {environment} from '../environments/environment';
@@ -24,6 +24,8 @@ import {InfoWindowComponent} from './maps/maps-ui/info-window/info-window.compon
 non importare su launcher
  */
 import {DebounceClickDirective} from './shared';
+import {MapManagerService} from './dispatcher/manager/maps-manager/map-manager-service.service';
+import {MapManagerServiceFake} from './dispatcher/manager/maps-manager/map-manager-service.service.fake';
 
 
 @NgModule({
@@ -56,6 +58,7 @@ import {DebounceClickDirective} from './shared';
     ],
     entryComponents: [CambioSedeModalComponent],
     providers: [
+        {provide: MapManagerService, useClass: MapManagerServiceFake},
         {provide: DispatcherService, useClass: DispatcherServiceFake},
         {provide: MapsService, useClass: MapsServiceFake},
     ],
