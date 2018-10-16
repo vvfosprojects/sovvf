@@ -1,14 +1,15 @@
 import {Injectable} from '@angular/core';
 import {of, Observable, Subject} from 'rxjs';
 import {Richiesta} from './richiesta.model';
-import {RichiesteServiceFake} from './data/service/richieste.service.fake';
 import {SintesiRichiesta} from '../shared/model/sintesi-richiesta.model';
 import {RichiestaMarker} from '../maps/maps-model/richiesta-marker.model';
+import {RichiesteService} from './data/service/richieste.service';
+
 
 @Injectable({
     providedIn: 'root'
 })
-export class DispatcherService {
+export class DispatcherServiceFake {
     private updateRichiesta$ = new Subject<Richiesta>();
     private newRichiesta$ = new Subject<Richiesta>();
     private deleteRichiesta$ = new Subject<Richiesta>();
@@ -17,7 +18,7 @@ export class DispatcherService {
     sRichieste: SintesiRichiesta[];
     mRichieste: RichiestaMarker[];
 
-    constructor(private richiesteService: RichiesteServiceFake) {
+    constructor(private richiesteService: RichiesteService) {
         setTimeout(() => {
             this.newRichiesta();
         }, 5000);

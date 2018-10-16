@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { MarkedService } from '../marked-service/marked-service.service';
-import { Meteo } from '../../../shared/model/meteo.model';
-import { MeteoService } from '../../../shared/meteo/meteo-service.service';
-import { IconMappe } from './_icone';
-import { TipoMappe } from './_typeof';
-import { AgmService } from '../../agm/agm-service.service';
-import { FakerCambioSedeService } from '../../maps-test/fake-cambio-sede/faker-cambio-sede.service';
-import { ListaRichiesteService } from 'src/app/richieste/lista-richieste-service/lista-richieste-service.service';
-import { ListaRichiesteManagerService } from 'src/app/richieste/lista-richieste-service/lista-richieste-manager/lista-richieste-manager.service';
+import {Injectable} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {MarkedService} from '../marked-service/marked-service.service';
+import {Meteo} from '../../../shared/model/meteo.model';
+import {MeteoService} from '../../../shared/meteo/meteo-service.service';
+import {IconMappe} from './_icone';
+import {TipoMappe} from './_typeof';
+import {AgmService} from '../../agm/agm-service.service';
+import {UnitaOperativaService} from '../../../navbar/navbar-service/unita-operativa-service/unita-operativa.service';
+import {ListaRichiesteService} from '../../../richieste/lista-richieste-service/lista-richieste-service.service';
 
 @Injectable({
     providedIn: 'root'
@@ -27,11 +26,10 @@ export class MarkerService {
 
 
     constructor(private markedService: MarkedService,
-        private meteoService: MeteoService,
-        private agmService: AgmService,
-        private fakeCambioSede: FakerCambioSedeService,
-        private richiesteManager: ListaRichiesteManagerService,
-        private richiesteS: ListaRichiesteService) {
+                private meteoService: MeteoService,
+                private agmService: AgmService,
+                private richiesteService: ListaRichiesteService,
+                private fakeCambioSede: UnitaOperativaService) {
         this.subscription = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         });
@@ -105,8 +103,6 @@ export class MarkerService {
     }
 
     action(marker, mouse) {
-        let richiesta = null;
-        richiesta = this.richiesteManager.getRichiestaFromId(marker.id);
         /**
          * controllo il tipo di marker e il suo mouse event
          */
@@ -114,18 +110,18 @@ export class MarkerService {
         switch (modello + '|' + mouse) {
             case 'richiesta|hover-in': {
                 this.markerColorato = marker;
-                this.richiesteS.hoverIn(richiesta);
+                this.richiesteService.hoverIn(marker.id);
             }
                 break;
             case 'richiesta|hover-out': {
                 this.markerColorato = null;
-                this.richiesteS.hoverOut();
+                this.richiesteService.hoverOut();
             }
                 break;
             case 'richiesta|click': {
                 this.cliccato(marker);
-                this.richiesteS.fissata(richiesta);
-                this.richiesteS.deselezionata();
+                this.richiesteService.fissata(marker.id);
+                this.richiesteService.deselezionata();
             }
                 break;
             case 'mezzo|hover-in': {
@@ -160,7 +156,7 @@ export class MarkerService {
                 break;
             default: {
                 this.noAction();
-                this.richiesteS.defissata();
+                this.richiesteService.defissata();
             }
                 break;
         }
@@ -198,11 +194,11 @@ export class MarkerService {
         this.filtro = filtro;
     }
 
-    cambioSede() {
+    cambioSede(sede) {
         /**
          * evento che cambia la sede
          */
-        this.fakeCambioSede.cambioSedeFake();
+        this.fakeCambioSede.sendUnitaOperativaAttuale(sede);
     }
 
     noAction() {

@@ -28,10 +28,6 @@ export class SintesiRichiesta {
          */
         public operatore: Operatore,
         /**
-         * Indica se la richiesta è rilevante
-         */
-        public rilevanza: boolean,
-        /**
          * ricezione della richiesta (via telefono, ecc.)
          */
         public istanteRicezioneRichiesta: Date,
@@ -69,10 +65,6 @@ export class SintesiRichiesta {
          */
         public complessita: Complessita,
         /**
-         * lista degli eventi associati all'intervento
-         */
-        public eventi: Evento[],
-        /**
          * eventuale istante di presa in carico della richiesta
          */
         public istantePresaInCarico?: Date,
@@ -80,6 +72,10 @@ export class SintesiRichiesta {
          * eventuale istante di prima assegnazione di risorse alla richiesta
          */
         public istantePrimaAssegnazione?: Date,
+        /**
+         * Indica se la richiesta è rilevante
+         */
+        public rilevanza?: Date,
         /**
          * codice della scheda NUE
          */

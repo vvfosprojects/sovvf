@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-import { DispatcherService } from './dispatcher.service';
-import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
-import { Richiesta } from './richiesta.model';
+import { DispatcherService } from '../../dispatcher.service';
+import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { Richiesta } from '../../richiesta.model';
 
 
 @Injectable({
     providedIn: 'root'
 })
-export class ListaRichiesteManagerServiceOnlylauncher {
+export class ListaRichiesteManagerService {
 
     richieste: SintesiRichiesta[];
 

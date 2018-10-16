@@ -17,13 +17,10 @@ import {LoginComponent} from './auth/login';
 import {fakeBackendProvider} from './auth/_helpers';
 // start maps-container
 import {MapsComponent} from './maps/maps.component';
-import {MapsService} from './maps/service/maps-service/maps-service.service';
-import {MapsServiceFake} from './maps/service/maps-service/maps-service.service.fake';
 import {AgmComponent} from './maps/agm/agm.component';
 import {AgmContentComponent} from './maps/agm/agm-content.component';
 import {AgmJsMarkerClustererModule} from '@agm/js-marker-clusterer';
 import {AgmCoreModule} from '@agm/core';
-import {MapManagerService} from './maps/service/maps-manager/map-manager-service.service';
 import {InfoWindowComponent} from './maps/maps-ui/info-window/info-window.component';
 import {MapsFiltroComponent} from './maps/maps-ui/filtro/filtro.component';
 import {CambioSedeModalComponent} from './maps/maps-ui/info-window/cambio-sede-modal/cambio-sede-modal.component';
@@ -40,7 +37,6 @@ import {FiltriRichiesteComponent} from './richieste/filtri-richieste/filtri-rich
 import {FiltroComponent} from './richieste/filtri-richieste/filtro/filtro.component';
 import {FilterPipeModule} from 'ngx-filter-pipe';
 import {NgxPaginationModule} from 'ngx-pagination';
-import {ListaRichiesteManagerService} from './richieste/lista-richieste-service/lista-richieste-manager/lista-richieste-manager.service';
 import {ScrollEventModule} from 'ngx-scroll-event';
 // end rigaElenco
 // start eventiRichiesta
@@ -65,8 +61,11 @@ import {NavbarComponent} from './navbar/navbar.component';
 import {UnitaOperativaService} from './navbar/navbar-service/unita-operativa-service/unita-operativa.service';
 // end navbar
 // managers only launcher
-import {MapManagerServiceOnlylauncher} from './dispatcher/map-manager-service-onlylauncher.service';
-import {ListaRichiesteManagerServiceOnlylauncher} from './dispatcher/lista-richieste-manager-service-onlylauncher.service';
+import {MapManagerService} from './dispatcher/manager/maps-manager/map-manager-service.service';
+import {DispatcherService} from './dispatcher/dispatcher.service';
+import {DispatcherServiceFake} from './dispatcher/dispatcher.service.fake';
+import {RichiesteService} from './dispatcher/data/service/richieste.service';
+import {RichiesteServiceFake} from './dispatcher/data/service/richieste.service.fake';
 
 
 @NgModule({
@@ -139,8 +138,8 @@ import {ListaRichiesteManagerServiceOnlylauncher} from './dispatcher/lista-richi
         // Unità Operativa
         UnitaOperativaService,
         // Managers launcher only
-        {provide: MapManagerService, useClass: MapManagerServiceOnlylauncher},
-        {provide: ListaRichiesteManagerService, useClass: ListaRichiesteManagerServiceOnlylauncher},
+        {provide: RichiesteService, useClass: RichiesteServiceFake},
+        {provide: DispatcherService, useClass: DispatcherServiceFake},
     ],
     bootstrap: [AppComponent]
 })
