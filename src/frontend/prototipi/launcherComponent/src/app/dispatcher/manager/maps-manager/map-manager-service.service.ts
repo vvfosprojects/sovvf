@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
+
+import {DispatcherMapsService} from '../../dispatcher-maps.service';
+
 import {RichiestaMarker} from '../../../maps/maps-model/richiesta-marker.model';
 import {SedeMarker} from '../../../maps/maps-model/sede-marker.model';
 import {MezzoMarker} from '../../../maps/maps-model/mezzo-marker.model';
-import {Observable, of} from 'rxjs';
-import {DispatcherService} from '../../dispatcher.service';
 
 
 @Injectable({
@@ -25,29 +27,31 @@ export class MapManagerService {
         return this._count;
     }
 
-    constructor(private dispatcher: DispatcherService) {
+    constructor(private dispatcher: DispatcherMapsService) {
 
         /**
-         * dispatcher richieste
+         * dispatcher marker richieste
          */
-        this.dispatcher.onNewRichiesteMarkersList().subscribe(richieste => {
-            this.richiesteMarker = richieste;
+        this.dispatcher.onNewRichiesteMarkerList().subscribe((marker: RichiestaMarker[]) => {
+            this.richiesteMarker = marker;
         });
 
-        this.dispatcher.onNewRichiesta().subscribe(richiesta => {
-            this.richiesteMarker.push(richiesta.mRichiesta);
+        this.dispatcher.onNewRichiestaMarker().subscribe((marker: RichiestaMarker) => {
+            this.richiesteMarker.push(marker);
         });
 
-        this.dispatcher.onUpdateRichiesta().subscribe(richiesta => {
-            this.richiesteMarker = this.richiesteMarker.map(r => r.id === richiesta.mRichiesta.id ? richiesta.mRichiesta : r);
+        this.dispatcher.onUpdateRichiestaMarker().subscribe((marker: RichiestaMarker) => {
+            this.richiesteMarker = this.richiesteMarker.map(r => r.id === marker.id ? marker : r);
         });
 
-        this.dispatcher.onDeleteRichiesta().subscribe(richiesta => {
-            this.richiesteMarker.splice(this.richiesteMarker.indexOf(richiesta.mRichiesta), 1);
+        this.dispatcher.onDeleteRichiestaMarker().subscribe((marker: RichiestaMarker) => {
+            this.richiesteMarker.splice(this.richiesteMarker.indexOf(marker), 1);
         });
 
-        /* dispatcher sedi
-        this.dispatcher.onNewSediMarkersList().subscribe(sedi => {
+        /**
+         * dispatcher sedi
+         */
+        this.dispatcher.onNewSediMarkerList().subscribe(sedi => {
             this.sediMarker = sedi;
         });
 
@@ -63,9 +67,10 @@ export class MapManagerService {
             this.sediMarker.splice(this.sediMarker.indexOf(sede), 1);
         });
 
-
-        // dispatcher mezzi
-        this.dispatcher.onNewMezziMarkersList().subscribe(mezzi => {
+        /**
+         * dispatcher mezzi
+         */
+        this.dispatcher.onNewMezziMarkerList().subscribe(mezzi => {
             this.mezziMarker = mezzi;
         });
 
@@ -79,7 +84,7 @@ export class MapManagerService {
 
         this.dispatcher.onDeleteMezzoMarker().subscribe(mezzi => {
             this.mezziMarker.splice(this.mezziMarker.indexOf(mezzi), 1);
-        }); */
+        });
     }
 
     getRichiesteMarker(): Observable<RichiestaMarker[]> {

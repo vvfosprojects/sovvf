@@ -60,13 +60,15 @@ import {NavbarComponent} from './navbar/navbar.component';
 // start navbar
 import {UnitaOperativaService} from './navbar/navbar-service/unita-operativa-service/unita-operativa.service';
 // end navbar
-// managers only launcher
-import {MapManagerService} from './dispatcher/manager/maps-manager/map-manager-service.service';
-import {DispatcherService} from './dispatcher/dispatcher.service';
-import {DispatcherServiceFake} from './dispatcher/dispatcher.service.fake';
-import {RichiesteService} from './dispatcher/data/service/richieste.service';
-import {RichiesteServiceFake} from './dispatcher/data/service/richieste.service.fake';
 
+import {RichiesteMarkerService} from './dispatcher/data/service/maps-service/richieste-marker/richieste-marker.service';
+import {RichiesteMarkerServiceFake} from './dispatcher/data/service/maps-service/richieste-marker/richieste-marker.service.fake';
+import {SediMarkerService} from './dispatcher/data/service/maps-service/sedi-marker/sedi-marker.service';
+import {SediMarkerServiceFake} from './dispatcher/data/service/maps-service/sedi-marker/sedi-marker.service.fake';
+import {MezziMarkerService} from './dispatcher/data/service/maps-service/mezzi-marker/mezzi-marker.service';
+import {MezziMarkerServiceFake} from './dispatcher/data/service/maps-service/mezzi-marker/mezzi-marker.service.fake';
+import {RichiesteService} from './dispatcher/data/service/lista-richieste-service/richieste.service';
+import {RichiesteServiceFake} from './dispatcher/data/service/lista-richieste-service/richieste.service.fake';
 
 @NgModule({
     declarations: [
@@ -137,9 +139,10 @@ import {RichiesteServiceFake} from './dispatcher/data/service/richieste.service.
         fakeBackendProvider,
         // Unità Operativa
         UnitaOperativaService,
-        // Managers launcher only
+        {provide: RichiesteMarkerService, useClass: RichiesteMarkerServiceFake},
+        {provide: SediMarkerService, useClass: SediMarkerServiceFake},
         {provide: RichiesteService, useClass: RichiesteServiceFake},
-        {provide: DispatcherService, useClass: DispatcherServiceFake},
+        {provide: MezziMarkerService, useClass: MezziMarkerServiceFake}
     ],
     bootstrap: [AppComponent]
 })
