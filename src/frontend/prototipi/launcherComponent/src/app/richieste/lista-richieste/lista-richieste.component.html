@@ -10,7 +10,7 @@
   </div>
 
   <!-- Lista di singole Richieste -->
-  <div id="listaRichieste" class="col-12 pt-1 mt-2 px-0 scroll-y" [ngClass]="{'m-h-750': !richiestaSelezionata, 'm-h-600': richiestaSelezionata}" detect-scroll (onScroll)="handleScroll($event)" [bottomOffset]="50">
+  <div class="col-12 pt-1 px-0 scroll-y" [ngClass]="{'m-h-750 mt-2': !richiestaFissata, 'm-h-600': richiestaFissata}" detect-scroll (onScroll)="handleScroll($event)" [bottomOffset]="50">
     <div *ngFor="let r of richieste | filterBy: ricercaS.searchTerm" class="col-6big">
       <div *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="cardShadowClass(r)">
         <app-sintesi-richiesta [richiesta]="r" (richiestaClick)="localizzaClick(r)" (eventiRichiesta)="visualizzaEventiRichiesta(r)" (click)="richiestaClick(r)" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)"></app-sintesi-richiesta>
@@ -18,4 +18,4 @@
     </div>
   </div>
 </div>
-<button class="btn btn-danger mt-1" (click)="unClick()">Deseleziona</button>
+<button class="btn btn-danger" (click)="unClick()">Deseleziona</button>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { ListaRichiesteManagerService } from '../../lista-richieste-service/lista-richieste-manager/lista-richieste-manager.service';
+import { ListaRichiesteManagerService } from '../../../dispatcher/manager/lista-richieste-manager/lista-richieste-manager.service';
 import { ListaRichiesteService } from '../../lista-richieste-service/lista-richieste-service.service';
 
 @Component({
@@ -23,23 +23,21 @@ export class NavTestComponent implements OnInit {
   }
 
   hover(id) {
+    const richiesta = this.richiesteManager.getRichiestaFromId(id);
     if (id !== null) {
       this.id_richiestaScelta = id;
     } else {
       this.id_richiestaScelta = null;
     }
-    this.richiesteS.hoverIn(this.getRichiestaById(id));
+    this.richiesteS.hoverIn(richiesta);
   }
   fissa() {
+    const richiesta = this.richiesteManager.getRichiestaFromId(this.id_richiestaScelta);
     this.fissata = !this.fissata;
-    this.richiesteS.fissata(this.getRichiestaById(this.id_richiestaScelta));
+    this.richiesteS.fissata(richiesta);
   }
   defissa() {
     this.fissata = !this.fissata;
     this.richiesteS.defissata();
-  }
-
-  getRichiestaById(id) {
-    return this.richiesteS.getRichiestaById(id);
   }
 }

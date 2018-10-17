@@ -1,13 +1,12 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { ListaRichiesteManagerService } from '../lista-richieste-service/lista-richieste-manager/lista-richieste-manager.service';
+import { ListaRichiesteManagerService } from '../../dispatcher/manager/lista-richieste-manager/lista-richieste-manager.service';
 import { ScrollEvent } from 'ngx-scroll-event';
 import { ListaRichiesteService } from '../lista-richieste-service/lista-richieste-service.service';
 import { RicercaRichiesteService } from '../ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
-import { MapManagerService } from '../../maps/service/maps-manager/map-manager-service.service';
-import { EventiRichiestaComponent } from 'src/app/eventi-richiesta/eventi-richiesta.component';
+import { EventiRichiestaComponent } from '../../eventi-richiesta/eventi-richiesta.component';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -25,8 +24,7 @@ export class ListaRichiesteComponent implements OnInit {
         private richiesteS: ListaRichiesteService,
         public ricercaS: RicercaRichiesteService,
         private modalService: NgbModal,
-        private markerS: MarkerService,
-        private mapManager: MapManagerService) {
+        private markerS: MarkerService) {
     }
 
     ngOnInit() {
@@ -60,7 +58,7 @@ export class ListaRichiesteComponent implements OnInit {
         });
     }
 
-    handleScroll(event: ScrollEvent) {
+    /* handleScroll(event: ScrollEvent) {
         if (event.isReachingBottom && event.isWindowEvent === false) {
             this.listaRichiesteManager.nuoveRichieste().subscribe(nuoveRichieste => {
                 nuoveRichieste.forEach(r => {
@@ -68,29 +66,25 @@ export class ListaRichiesteComponent implements OnInit {
                 });
             });
         }
-    }
+    } */
 
     richiestaClick(richiesta) {
-        this.richiesteS.selezionata(richiesta);
-        const marker = this.mapManager.getMarkerFromId(richiesta.id);
-        this.markerS.action(marker, 'click');
+        this.markerS.actionById(richiesta.id, 'click');
     }
 
     localizzaClick(richiesta) {
-        const marker = this.mapManager.getMarkerFromId(richiesta.id);
-        this.markerS.action(marker, 'click');
+        this.richiesteS.fissata(richiesta.id);
+        this.markerS.actionById(richiesta.id, 'click');
     }
 
     richiestaHoverIn(richiesta) {
         this.richiesteS.hoverIn(richiesta);
-        const marker = this.mapManager.getMarkerFromId(richiesta.id);
-        this.markerS.action(marker, 'hover-in');
+        this.markerS.actionById(richiesta.id, 'hover-in');
     }
 
     richiestaHoverOut(richiesta) {
         this.richiesteS.hoverOut();
-        const marker = this.mapManager.getMarkerFromId(richiesta.id);
-        this.markerS.action(marker, 'hover-out');
+        this.markerS.actionById(richiesta.id, 'hover-out');
     }
 
     unClick() {
@@ -100,7 +94,6 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     visualizzaEventiRichiesta(richiesta) {
-        console.log(richiesta);
         this.modalService.open(EventiRichiestaComponent, {size: 'lg'});
     }
 
@@ -111,6 +104,7 @@ export class ListaRichiesteComponent implements OnInit {
             'card-shadow-success': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'presidiato',
             'card-shadow-danger': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'chiamata',
             'card-shadow-warning': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'sospeso',
+            'card-shadow-secondary': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'chiuso',
             'bg-light': r === this.richiestaSelezionata || r === this.richiestaHover,
         };
     }
