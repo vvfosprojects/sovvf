@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SintesiRichiesteService } from '../sintesi-richieste-service/sintesi-richieste.service';
+import { SintesiRichiesteService } from './data/sintesi-richieste-service/sintesi-richieste.service';
 import { of, Observable, Subject } from 'rxjs';
 import * as moment from 'moment';
 
@@ -59,38 +59,39 @@ export class DispatcherFakeService {
   /* TESTING METHODS */
   private addRichiesta() {
     const newRichiesta = new SintesiRichiesta(
-      'R1',
-      'RM-24760',
-      new Operatore('Mario76', 'Mario', 'Rossi', 'RSSMRA67A01H501X', 'CDXXH', 'password', new Sede(null, null, null, null)),
-      true,
-      new Date,
-      new Date,
-      'presidiato',
-      2,
-      [new Tipologia(1, 'Allagamento', 'fa fa-exclamation-triangle')],
-      'Allagamento cantina (Testing)',
-      new Richiedente('Mario Rossi', 3202676253),
-      new Localita(new Coordinate(2.324234, 3.424234), 'Via Cavour, 5', 'Note test'),
-      [
-        new Sede(1, 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando'),
-        new Sede(2, 'Ostiense', new Coordinate(3.423423, 4.423423), 'Comando'),
-        new Sede(3, 'Tuscolana 2', new Coordinate(3.423423, 4.423423), 'Comando'),
-      ],
-      null,
-      new Date, // incrementare di qualche minuto
-      'NUE00347',
-      new Fonogramma(1, 'Fonogramma Test'),
-      new Complessita('Alto', 1, 'Descrizione Complessita test'),
-      [
-        new Partenza(
-          [
-          ],
-          [
-            new Squadra('Squadra1', 'Stato', new Date, [])
-          ]
-        ),
-      ],
-      ['Tag1', 'Tag2']
+        'R1',
+        'RM-24759',
+        new Operatore('Mario76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+        new Date,
+        'chiamata',
+        2,
+        [new Tipologia('1', 'Allagamento', 'fa fa-exclamation-triangle')],
+        'Allagamento cantina',
+        new Richiedente('Mario Rossi', '3202676253'),
+        new Localita(new Coordinate(2.324234, 3.424234), 'Via Cavour, 5', 'Note test'),
+        [
+            new Sede('1', 'Tuscolana', new Coordinate(3.423423, 4.423423), 'Comando'),
+            new Sede('2', 'Ostiense', new Coordinate(3.423423, 4.423423), 'Comando'),
+            new Sede('3', 'Tuscolana 2', new Coordinate(3.423423, 4.423423), 'Comando'),
+        ],
+        new Complessita('100', 'Alto'),
+        new Date, // incrementare di qualche minuto
+        new Date,
+        new Date,
+        'NUE00006',
+        null,
+        new Fonogramma('1', 'non inviato'),
+        [
+            new Partenza(
+                [
+                    new Mezzo('M1', 'A1', 'Autopompa', 'In viaggio', 1),
+                ],
+                [
+                    new Squadra('Squadra1', 'Stato', null, new Date),
+                ]
+            ),
+        ],
+        ['Tag1', 'Tag2']
     );
     this.newRichiesta$.next(newRichiesta);
   }

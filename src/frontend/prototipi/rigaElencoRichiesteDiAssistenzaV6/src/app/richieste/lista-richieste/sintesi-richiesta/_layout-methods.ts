@@ -92,6 +92,7 @@ export class LayoutMethods {
             'status_presidiato': richiesta.stato === 'presidiato',
             'status_assegnato': richiesta.stato === 'assegnato',
             'status_sospeso': richiesta.stato === 'sospeso',
+            'status_chiuso': richiesta.stato === 'chiuso'
         };
     }
 }

@@ -1,10 +1,12 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { ListaRichiesteManagerService } from '../lista-richieste-service/lista-richieste-manager/lista-richieste-manager.service';
+import { ListaRichiesteManagerService } from '../../dispatcher/manager/lista-richieste-manager/lista-richieste-manager.service';
 import { ScrollEvent } from 'ngx-scroll-event';
 import { ListaRichiesteService } from '../lista-richieste-service/lista-richieste-service.service';
 import { RicercaRichiesteService } from '../ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
+import { EventiRichiestaComponent } from '../../eventi-richiesta/eventi-richiesta.component';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -21,7 +23,8 @@ export class ListaRichiesteComponent implements OnInit {
     constructor(private listaRichiesteManager: ListaRichiesteManagerService,
         private richiesteS: ListaRichiesteService,
         public ricercaS: RicercaRichiesteService,
-        private modalService: NgbModal) {
+        private modalService: NgbModal,
+        private markerS: MarkerService) {
     }
 
     ngOnInit() {
@@ -55,7 +58,7 @@ export class ListaRichiesteComponent implements OnInit {
         });
     }
 
-    handleScroll(event: ScrollEvent) {
+    /* handleScroll(event: ScrollEvent) {
         if (event.isReachingBottom && event.isWindowEvent === false) {
             this.listaRichiesteManager.nuoveRichieste().subscribe(nuoveRichieste => {
                 nuoveRichieste.forEach(r => {
@@ -63,31 +66,35 @@ export class ListaRichiesteComponent implements OnInit {
                 });
             });
         }
-    }
+    } */
 
     richiestaClick(richiesta) {
-        this.richiesteS.selezionata(richiesta);
+        this.markerS.actionById(richiesta.id, 'click');
     }
 
     localizzaClick(richiesta) {
-        // this.markerS.
+        this.richiesteS.fissata(richiesta.id);
+        this.markerS.actionById(richiesta.id, 'click');
     }
 
     richiestaHoverIn(richiesta) {
         this.richiesteS.hoverIn(richiesta);
+        this.markerS.actionById(richiesta.id, 'hover-in');
     }
 
-    richiestaHoverOut() {
+    richiestaHoverOut(richiesta) {
         this.richiesteS.hoverOut();
+        this.markerS.actionById(richiesta.id, 'hover-out');
     }
 
     unClick() {
         this.richiesteS.deselezionata();
+        this.richiesteS.defissata();
+        this.markerS.action('a', 'unclick');
     }
 
     visualizzaEventiRichiesta(richiesta) {
-        console.log(richiesta);
-        this.modalService.open('Eventi della Richiesta');
+        this.modalService.open(EventiRichiestaComponent, {size: 'lg'});
     }
 
     /* NgClass Template */
@@ -97,6 +104,7 @@ export class ListaRichiesteComponent implements OnInit {
             'card-shadow-success': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'presidiato',
             'card-shadow-danger': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'chiamata',
             'card-shadow-warning': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'sospeso',
+            'card-shadow-secondary': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'chiuso',
             'bg-light': r === this.richiestaSelezionata || r === this.richiestaHover,
         };
     }

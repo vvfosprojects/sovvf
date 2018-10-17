@@ -1,6 +1,7 @@
 export class Richiedente {
     constructor(
         public nominativo: string,
-        public telefono: number,
+        public telefono: string,
+        public etichette?: string[]
     ) { }
 }

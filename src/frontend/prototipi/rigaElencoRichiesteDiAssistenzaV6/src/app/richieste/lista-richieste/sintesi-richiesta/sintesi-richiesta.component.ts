@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { LayoutMethods } from './_layout-methods';
 import { Observable } from 'rxjs';
@@ -22,7 +22,7 @@ export class SintesiRichiestaComponent implements OnInit {
     time: any;
     methods = new LayoutMethods;
 
-    constructor() {
+    constructor(private eRef: ElementRef) {
     }
 
     ngOnInit() {
@@ -88,6 +88,14 @@ export class SintesiRichiestaComponent implements OnInit {
         });
     }
 
+    @HostListener('click', ['$event.target'])
+    clickout(target) {
+        if (this.eRef.nativeElement.contains(target)) {
+            console.log('click-inside');
+        } else {
+            console.log('click-outside');
+        }
+    }
     /* Layout Methods */
     toggleEspanso(): void {
         this.espanso = !this.espanso;
@@ -120,7 +128,7 @@ export class SintesiRichiestaComponent implements OnInit {
     }
 
     /* Eventi */
-    richiestaCliccata() {
+    localizzaClick() {
         this.richiestaClick.emit();
     }
     visualizzaEventiRichiesta(richiesta) {

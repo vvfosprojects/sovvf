@@ -12,28 +12,7 @@
                                 <i *ngIf="richiesta.rilevanza" ngbTooltip="Richiesta rilevante" class="fa fa-exclamation text-danger ml-2"
                                     aria-hidden="true"></i>
                             </div>
-
-                            <div class="h6 nowrap default-cursor">
-                                <i class="guida fa fa-clock-o fa-fw mr-1" aria-hidden="true" title="Ricezione richiesta"></i>
-                                <a ngbTooltip="{{ richiesta.istanteRicezioneRichiesta | friendlyDateTooltip }}"
-                                    placement="bottom">{{ time
-                                    }}</a>
-
-                            </div>
-                            <div class="h6 nowrap default-cursor">
-                                <span *ngIf="richiesta.stato !== 'chiamata'">
-                                    <i class="guida fa fa-bolt fa-fw mr-1" aria-hidden="true" title="Prima assegnazione"></i>
-                                    <a>{{ richiesta.istantePrimaAssegnazione | friendlyDateTooltip }}</a>
-                                </span>
-
-                                <!-- presidiato / non presidiato (1) -->
-                                <span *ngIf="richiesta.stato === 'chiamata'">
-                                    <span class="badge badge-warning text-white">non presidiato</span>
-                                </span>
-                            </div>
                         </div>
-
-                        <!-- II colonna primo livello di dettaglio -->
                         <div class="col-6">
                             <!-- descrizione intervento (1) -->
                             <div class="h6 nowrap default-cursor">
@@ -66,31 +45,7 @@
                                         ngbTooltip="{{ richiesta.descrizione }}" placement="bottom" [disableTooltip]="richiesta.descrizione.length <= 45">{{
                                         richiesta.descrizione | truncate:45 }}</a></span>
                             </div>
-
-                            <!-- richiedente -->
-                            <div class="h6 nowrap default-cursor">
-                                <i class="guida fa fa-address-book-o fa-fw mr-1" aria-hidden="true" title="Richiedente"></i>
-                                <span><a ngbTooltip="{{ richiesta.richiedente.nominativo }}" placement="bottom"
-                                        [disableTooltip]="richiesta.richiedente.nominativo.length <= 20">{{
-                                        richiesta.richiedente.nominativo | truncate:20 }}</a></span>
-                                <span class="ml-1">(<i class="guida fa fa-phone fa-fw mr-1" aria-hidden="true" title="Numero richiedente"></i><a>{{
-                                        richiesta.richiedente.telefono}}</a>)</span>
-                            </div>
-
-                            <!-- indirizzo -->
-                            <div class="h6 nowrap default-cursor">
-                                <i class="guida fa fa-map-marker fa-fw mr-1" aria-hidden="true" title="Località"></i>
-                                <span><a ngbTooltip="{{ richiesta.localita.indirizzo }}" placement="bottom"
-                                        [disableTooltip]="richiesta.localita.indirizzo.length <= 30">{{
-                                        richiesta.localita.indirizzo | truncate:30 }}</a></span>
-                                <span class="list-inline list-unstyled m-0 ml-2">
-                                    <app-competenza *ngFor="let c of richiesta.competenze; let i = index" [competenza]="c"
-                                        [i]="i"></app-competenza>
-                                </span>
-                            </div>
                         </div>
-
-                        <!-- indicatori stato richiesta -->
                         <div class="col-3 pr-3 text-right">
                             <div class="h6">
                                 <!-- squadre -->
@@ -121,7 +76,28 @@
                                     </ng-template>
                                 </span>
                             </div>
-
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="h6 nowrap default-cursor">
+                                <i class="guida fa fa-clock-o fa-fw mr-1" aria-hidden="true" title="Ricezione richiesta"></i>
+                                <a ngbTooltip="{{ richiesta.istanteRicezioneRichiesta | friendlyDateTooltip }}"
+                                    placement="bottom">{{ time }}</a>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <!-- richiedente -->
+                            <div class="h6 nowrap default-cursor">
+                                <i class="guida fa fa-address-book-o fa-fw mr-1" aria-hidden="true" title="Richiedente"></i>
+                                <span><a ngbTooltip="{{ richiesta.richiedente.nominativo }}" placement="bottom"
+                                        [disableTooltip]="richiesta.richiedente.nominativo.length <= 20">{{
+                                        richiesta.richiedente.nominativo | truncate:20 }}</a></span>
+                                <span class="ml-1">(<i class="guida fa fa-phone fa-fw mr-1" aria-hidden="true" title="Numero richiedente"></i><a>{{
+                                        richiesta.richiedente.telefono}}</a>)</span>
+                            </div>
+                        </div>
+                        <div class="col-3 pr-3 text-right">
                             <div class="h6 nowrap default-cursor my-1">
                                 <i class="guida fa fa-thermometer-half fa-fw" aria-hidden="true" title="Priorità della richiesta"></i>
                                 <span class="h6" [ngClass]="{'text-success':richiesta.priorita <= 2, 'text-warning':richiesta.priorita > 2 && richiesta.priorita <= 4, 'text-danger': richiesta.priorita == 5}">
@@ -129,14 +105,42 @@
                                         *ngFor="let n of vettoreBuchini()" class="fa fa-circle-o" aria-hidden="true"></i>
                                 </span>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="h6 nowrap default-cursor">
+                                <span *ngIf="richiesta.stato !== 'chiamata'">
+                                    <i class="guida fa fa-bolt fa-fw mr-1" aria-hidden="true" title="Prima assegnazione"></i>
+                                    <a>{{ richiesta.istantePrimaAssegnazione | friendlyDateTooltip }}</a>
+                                </span>
 
+                                <!-- presidiato / non presidiato (1) -->
+                                <span *ngIf="richiesta.stato === 'chiamata'">
+                                    <span class="badge badge-warning text-white">non presidiato</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <!-- indirizzo -->
+                            <div class="h6 nowrap default-cursor">
+                                <i class="guida fa fa-map-marker fa-fw mr-1" aria-hidden="true" title="Località"></i>
+                                <span><a ngbTooltip="{{ richiesta.localita.indirizzo }}" placement="bottom"
+                                        [disableTooltip]="richiesta.localita.indirizzo.length <= 30">{{
+                                        richiesta.localita.indirizzo | truncate:30 }}</a></span>
+                                <span class="list-inline list-unstyled m-0 ml-2">
+                                    <app-competenza *ngFor="let c of richiesta.competenze; let i = index" [competenza]="c"
+                                        [i]="i"></app-competenza>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-5 pr-3 text-right">
                             <div class="h5 nowrap">
                                 <button class="btn btn-default py-0 mr-1" ngbTooltip="Localizza" placement="top"
-                                    (click)="richiestaCliccata()">
-                                    <i class="fa fa-fw fa-globe text-secondary"></i>
+                                    (click)="localizzaClick()">
+                                    <i class="fa fa-fw fa-thumb-tack text-secondary"></i>
                                 </button>
-                                <button class="btn btn-default py-0 mr-1" ngbTooltip="Espandi" placement="top"
-                                    (click)="toggleEspanso()">
+                                <button class="btn btn-default py-0 mr-1" ngbTooltip="Espandi" placement="top" (click)="toggleEspanso()">
                                     <i class="fa fa-fw fa-info text-secondary"></i>
                                 </button>
                                 <button class="btn btn-default py-0 mr-1" ngbTooltip="Elenco eventi" placement="top"
@@ -151,7 +155,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- box note localita e zone emergenza -->
                 <div *ngIf="espanso" class="col-md-12 default-cursor">
                     <div class="col-md-12">

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import { ListaRichiesteManagerService } from './lista-richieste-manager/lista-richieste-manager.service';
+import { ListaRichiesteManagerService } from '../../dispatcher/manager/lista-richieste-manager/lista-richieste-manager.service';
 import { ListaRichiesteSubjects } from './_lista-richieste-subjects';
 
 @Injectable({
@@ -12,35 +11,26 @@ export class ListaRichiesteService {
   constructor(private richiesteManager: ListaRichiesteManagerService) {
   }
 
-  getRichiestaById(id) {
-    let richieste: SintesiRichiesta[];
-    let richiesta: SintesiRichiesta;
-
-    this.richiesteManager.getData().subscribe((r: SintesiRichiesta[]) => {
-      richieste = r;
-    });
-
-    richieste.forEach(r => {
-      if (r.id === id) {
-        richiesta = r;
-      }
-    });
-    return richiesta;
+  getRichiestaFromId(id) {
+    return this.richiesteManager.getRichiestaFromId(id);
   }
 
-  hoverIn(richiesta) {
+  hoverIn(id) {
+    const richiesta = this.getRichiestaFromId(id);
     this.subjects.sendRichiestaHover(richiesta);
   }
   hoverOut() {
     this.subjects.clearRichiestaHover();
   }
-  selezionata(richiesta) {
+  selezionata(id) {
+    const richiesta = this.getRichiestaFromId(id);
     this.subjects.sendRichiestaSelezionata(richiesta);
   }
   deselezionata() {
     this.subjects.clearRichiestaSelezionata();
   }
-  fissata(richiesta) {
+  fissata(id) {
+    const richiesta = this.getRichiestaFromId(id);
     this.subjects.sendRichiestaFissata(richiesta);
   }
   defissata() {

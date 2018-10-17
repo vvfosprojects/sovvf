@@ -5,7 +5,7 @@ export class Sede {
         /**
          * Codice sede
          */
-        public codice: number,
+        public codice: string,
         /**
          * Descrizione della sede
          */

@@ -20,8 +20,8 @@ import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.comp
 import { RichiestaFissataComponent } from './richieste/lista-richieste/richiesta-fissata/richiesta-fissata.component';
 import { NavTestComponent } from './richieste/lista-richieste-test/nav-test/nav-test.component';
 
-import { SintesiRichiesteService } from './sintesi-richieste-service/sintesi-richieste.service';
-import { SintesiRichiesteServiceFake } from './sintesi-richieste-service/sintesi-richieste.service.fake';
+import { SintesiRichiesteService } from './dispatcher/data/sintesi-richieste-service/sintesi-richieste.service';
+import { SintesiRichiesteServiceFake } from './dispatcher/data/sintesi-richieste-service/sintesi-richieste.service.fake';
 
 @NgModule({
     declarations: [

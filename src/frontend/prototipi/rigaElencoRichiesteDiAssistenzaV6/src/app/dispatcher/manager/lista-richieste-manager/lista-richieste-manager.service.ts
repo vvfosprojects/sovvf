@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { DispatcherFakeService } from '../../../dispatcher/dispatcher-fake.service';
+import { DispatcherFakeService } from '../../dispatcher-fake.service';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +36,9 @@ export class ListaRichiesteManagerService {
       nuoveRichieste = r;
     });
     return of(nuoveRichieste);
+  }
+
+  getRichiestaFromId(id) {
+    return this.richieste.find(x => x.id === id);
   }
 }
