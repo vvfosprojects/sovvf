@@ -25,4 +25,8 @@ export class RichiestaMarker {
     getCoordinate() {
         return new Coordinate(this.localita.coordinate.latitudine, this.localita.coordinate.longitudine);
     }
+
+    getStato() {
+        return this.stato;
+    }
 }

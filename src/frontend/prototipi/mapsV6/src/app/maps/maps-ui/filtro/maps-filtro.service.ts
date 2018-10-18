@@ -29,7 +29,7 @@ function vociMarker() {
         {
             'id': 'richiesta',
             'index': 1,
-            'isActive': false,
+            'isActive': true,
             'picture': 'fa fa-calendar-plus-o',
             'name': 'Richieste'
         },

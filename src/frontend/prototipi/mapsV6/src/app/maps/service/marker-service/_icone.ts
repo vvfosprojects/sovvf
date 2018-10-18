@@ -98,9 +98,9 @@ export class IconMappe {
         this.mapIconeMezzi = new Map(this.iconeMezzi);
 
         this.iconeSedi = [
-            ['comando', 'sede.png'],
-            ['distaccamento', 'sede2.png'],
-            ['direzioni', 'sede3.png']
+            ['comando', 'sede5.png'],
+            ['distaccamento', 'sede5.png'],
+            ['direzioni', 'sede5.png']
         ];
         this.mapIconeSedi = new Map(this.iconeSedi);
     }

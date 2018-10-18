@@ -17,6 +17,8 @@ import {AgmCoreModule} from '@agm/core';
 import {AgmJsMarkerClustererModule} from '@agm/js-marker-clusterer';
 import {AgmComponent} from './maps/agm/agm.component';
 import {AgmContentComponent} from './maps/agm/agm-content.component';
+import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
+
 /**
  *  solo per il componente
  */
@@ -46,6 +48,7 @@ import {MapManagerServiceFake} from './dispatcher/manager/maps-manager/map-manag
             apiKey: environment.apiUrl.maps.agm.key
         }),
         AgmJsMarkerClustererModule,
+        AgmSnazzyInfoWindowModule
     ],
     entryComponents: [CambioSedeModalComponent],
     providers: [

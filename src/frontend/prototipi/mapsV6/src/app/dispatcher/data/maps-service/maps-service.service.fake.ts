@@ -39,7 +39,7 @@ export class MapsServiceFake {
         this.statiObj = new Map(this.stati);
     }
 
-    private numeroMarker = 20;
+    private numeroMarker = 1;
 
     getRichiesteMarker(): Observable<RichiestaMarker[]> {
         this.richiesteMarker = [

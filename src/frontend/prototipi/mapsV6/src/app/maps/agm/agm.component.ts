@@ -26,6 +26,7 @@ export class AgmComponent implements OnInit {
     @Input() centroMappa: CentroMappa;
     minMarkerCluster: number;
     datiMeteo: Meteo;
+    coloreStato: string;
     map_loaded = false;
     subscription: Subscription;
     map: any;
@@ -46,6 +47,7 @@ export class AgmComponent implements OnInit {
             this.centroMappa = centro;
         });
         this.minMarkerCluster = 99999;
+        this.coloreStato = '#343a40';
     }
 
     ngOnInit() {
@@ -76,7 +78,10 @@ export class AgmComponent implements OnInit {
          *  prendo i dati del meteo dal service marker (che li ha già richiesti)
          */
         this.datiMeteo = this.markerService.datiMeteo;
-
+        /**
+         * prendo il colore della richiesta dallo stato
+         */
+        this.coloreStato = this.markerService.coloreStato;
     }
 
     hoverMarker(marker: any, type) {

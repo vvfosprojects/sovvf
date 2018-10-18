@@ -24,4 +24,8 @@ export class MezzoMarker {
     inSoccorso() {
         return !!this.id_richiesta;
     }
+
+    getStato() {
+        return this.mezzo.stato;
+    }
 }

@@ -26,9 +26,14 @@
                     (mouseOut)="hoverMarker(richiestaMarker, 'hover-out')"
                     [iconUrl]="urlIcona(richiestaMarker)"
                     [visible]="isVisible(richiestaMarker)">
-            <agm-info-window *ngIf="trueMarker(richiestaMarker)">
-                <app-info-window [richiestaMarker]="richiestaMarker" [datiMeteo]="datiMeteo"></app-info-window>
-            </agm-info-window>
+            <agm-snazzy-info-window *ngIf="trueMarker(richiestaMarker)" [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: coloreStato}" [pointer]="'10px'" [backgroundColor]="'#f5f5f0'" [border]="{width: '2px', color: coloreStato}" [borderRadius]="'10px 10px'" [maxHeight]="1000" [maxWidth]="1000" [isOpen]="false">
+                <ng-template>
+                    <app-info-window [richiestaMarker]="richiestaMarker" [datiMeteo]="datiMeteo"></app-info-window>
+                </ng-template>
+            </agm-snazzy-info-window>
+            <!--<agm-info-window *ngIf="trueMarker(richiestaMarker)">-->
+            <!--<app-info-window [richiestaMarker]="richiestaMarker" [datiMeteo]="datiMeteo"></app-info-window>-->
+            <!--</agm-info-window>-->
         </agm-marker>
     </agm-marker-cluster>
     <agm-marker-cluster
@@ -42,9 +47,12 @@
                     (mouseOut)="hoverMarker(sedeMarker, 'hover-out')"
                     [iconUrl]="urlIcona(sedeMarker)"
                     [visible]="isVisible(sedeMarker)">
-            <agm-info-window *ngIf="trueMarker(sedeMarker)">
-                <app-info-window [sedeMarker]="sedeMarker" [tipoSedeIcona]="urlIcona(sedeMarker, true)" [datiMeteo]="datiMeteo"></app-info-window>
-            </agm-info-window>
+            <agm-snazzy-info-window *ngIf="trueMarker(sedeMarker)" [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: coloreStato}" [pointer]="'10px'" [backgroundColor]="'#f5f5f0'" [border]="{width: '2px', color: coloreStato}" [borderRadius]="'10px 10px'" [maxHeight]="1000" [maxWidth]="1000" [isOpen]="false">
+                <ng-template>
+                    <app-info-window [sedeMarker]="sedeMarker" [tipoSedeIcona]="urlIcona(sedeMarker, true)"
+                                     [datiMeteo]="datiMeteo"></app-info-window>
+                </ng-template>
+            </agm-snazzy-info-window>
         </agm-marker>
     </agm-marker-cluster>
     <agm-marker-cluster
@@ -58,9 +66,11 @@
                     (mouseOut)="hoverMarker(mezzoMarker, 'hover-out')"
                     [iconUrl]="urlIcona(mezzoMarker)"
                     [visible]="isVisible(mezzoMarker)">
-            <agm-info-window *ngIf="trueMarker(mezzoMarker)">
-                <app-info-window [mezzoMarker]="mezzoMarker" [datiMeteo]="datiMeteo"></app-info-window>
-            </agm-info-window>
+            <agm-snazzy-info-window *ngIf="trueMarker(mezzoMarker)" [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: coloreStato}" [pointer]="'10px'" [backgroundColor]="'#f5f5f0'" [border]="{width: '2px', color: coloreStato}" [borderRadius]="'10px 10px'" [maxHeight]="1000" [maxWidth]="1000" [isOpen]="false">
+                <ng-template>
+                    <app-info-window [mezzoMarker]="mezzoMarker" [datiMeteo]="datiMeteo"></app-info-window>
+                </ng-template>
+            </agm-snazzy-info-window>
         </agm-marker>
     </agm-marker-cluster>
     <app-agm-content (mapLoad)='loadAPIWrapper($event)'></app-agm-content>

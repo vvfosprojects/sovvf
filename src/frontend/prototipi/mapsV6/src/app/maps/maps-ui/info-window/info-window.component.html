@@ -1,4 +1,4 @@
-<div [ngClass]="{'h-info-window': !sedeMarker, 'h-info-window-sede': sedeMarker }">
+<div class="w-100" style="min-width: 300px">
 <span *ngIf="richiestaMarker && richiestaMarker.label">
     <div class="font-weight-bold" ngbTooltip="{{ richiestaMarker.label }}" placement="bottom"
          [disableTooltip]="richiestaMarker.label.length <= 30">

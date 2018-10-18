@@ -5,10 +5,12 @@ import {Meteo} from '../../../shared/model/meteo.model';
 import {MeteoService} from '../../../shared/meteo/meteo-service.service';
 import {IconMappe} from './_icone';
 import {TipoMappe} from './_typeof';
+import {TipoColori} from './_color';
 import {AgmService} from '../../agm/agm-service.service';
 import {UnitaOperativaService} from '../../../navbar/navbar-service/unita-operativa-service/unita-operativa.service';
 import {ListaRichiesteService} from '../../../richieste/lista-richieste-service/lista-richieste-service.service';
 import {MapManagerService} from '../../../dispatcher/manager/maps-manager/map-manager-service.service';
+
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +20,8 @@ export class MarkerService {
     datiMeteo: Meteo;
     icone = new IconMappe();
     tipo = new TipoMappe();
+    colori = new TipoColori();
+    coloreStato: string;
 
     markerColorato: boolean;
     markerSelezionato: any;
@@ -35,6 +39,7 @@ export class MarkerService {
         this.subscription = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         });
+        this.filtro = ['richiesta'];
     }
 
     tipoIcona(marker: any, tipoSede: boolean): string {
@@ -120,6 +125,7 @@ export class MarkerService {
                 break;
             case 'richiesta|click': {
                 this.cliccato(marker);
+                this.coloreStato = this.colori.markerColor(marker.getStato());
             }
                 break;
             case 'mezzo|hover-in': {
@@ -133,10 +139,10 @@ export class MarkerService {
             case 'mezzo|click': {
                 this.cliccato(marker);
                 if (marker.inSoccorso()) {
-                    console.log('il mezzo è in soccorso');
                     /**
                      * lanciare azione solo quando il mezzo è in soccorso
                      */
+                    this.coloreStato = this.colori.markerColor(marker.getStato());
                 }
             }
                 break;
@@ -227,6 +233,7 @@ export class MarkerService {
             }
         }
     }
+
 
     getMarkerFromId(id) {
         return this.mapsManager.getMarkerFromId(id);
