@@ -14,8 +14,8 @@
     detect-scroll (onScroll)="handleScroll($event)" [bottomOffset]="5">
     <div *ngFor="let r of richieste | filterBy: ricercaS.searchTerm" class="col-6big">
       <div *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="cardShadowClass(r)">
-        <app-sintesi-richiesta [richiesta]="r" (click)="richiestaClick(r)" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)"
-          (fissaInAlto)="fissaInAlto(r)" (eventiRichiesta)="visualizzaEventiRichiesta(r)"></app-sintesi-richiesta>
+        <app-sintesi-richiesta [richiesta]="r" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)"
+          (fissaInAlto)="fissaInAlto(r)" (clickRichiesta)="richiestaClick(r)" (doubleClickRichiesta)="richiestaDoubleClick(r)" (eventiRichiesta)="visualizzaEventiRichiesta(r)"></app-sintesi-richiesta>
       </div>
     </div>
   </div>

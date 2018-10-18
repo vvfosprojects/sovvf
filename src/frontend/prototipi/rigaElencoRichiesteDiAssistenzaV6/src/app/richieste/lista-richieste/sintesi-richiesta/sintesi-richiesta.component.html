@@ -1,4 +1,4 @@
-<div class="card row_text py-2 px-3 mb-1 transparent" [ngClass]="statusClass(richiesta)">
+<div class="card row_text py-2 px-3 mb-1 transparent" [ngClass]="statusClass(richiesta)" (click)="richiestaClick()" (dblclick)="richiestaDoubleClick()">
     <div class="row align-items-center">
         <div class="col-12">
             <div class="row">

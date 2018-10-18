@@ -3,7 +3,7 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
 import { LayoutMethods } from './_layout-methods';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
-import {NgbPopoverConfig, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -15,6 +15,8 @@ import {NgbPopoverConfig, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
     ]
 })
 export class SintesiRichiestaComponent implements OnInit {
+    @Output() clickRichiesta: EventEmitter<any> = new EventEmitter();
+    @Output() doubleClickRichiesta: EventEmitter<any> = new EventEmitter();
     @Output() fissaInAlto: EventEmitter<any> = new EventEmitter();
     @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
     @Input() richiesta: SintesiRichiesta;
@@ -26,6 +28,7 @@ export class SintesiRichiestaComponent implements OnInit {
     espanso = false;
     time: any;
     methods = new LayoutMethods;
+    isSingleClick = true;
 
     constructor(popoverConfig: NgbPopoverConfig, tooltipConfig: NgbTooltipConfig) {
         popoverConfig.container = 'body';
@@ -132,6 +135,19 @@ export class SintesiRichiestaComponent implements OnInit {
     }
 
     /* Eventi */
+    richiestaClick() {
+        this.isSingleClick = true;
+        setTimeout(() => {
+            if (this.isSingleClick) {
+                this.clickRichiesta.emit();
+            }
+        }, 250);
+    }
+    richiestaDoubleClick() {
+        this.isSingleClick = false;
+        this.toggleEspanso();
+        this.doubleClickRichiesta.emit();
+    }
     fissaClick() {
         this.fissaInAlto.emit();
     }

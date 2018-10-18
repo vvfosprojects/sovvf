@@ -76,6 +76,11 @@ export class ListaRichiesteComponent implements OnInit {
         this.markerS.actionById(richiesta.id, 'click');
     }
 
+    richiestaDoubleClick(richiesta) {
+        this.richiesteS.selezionata(richiesta.id);
+        console.log('Doppio click su richiesta');
+    }
+
     fissaInAlto(richiesta) {
         this.richiesteS.fissata(richiesta.id);
         this.markerS.actionById(richiesta.id, 'click');
