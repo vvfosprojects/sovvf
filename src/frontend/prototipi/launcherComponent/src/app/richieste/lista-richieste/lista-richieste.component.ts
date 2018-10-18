@@ -20,6 +20,9 @@ export class ListaRichiesteComponent implements OnInit {
     richiestaFissata: SintesiRichiesta;
     richiestaSelezionataState: string; // Animazione
 
+    preventSimpleClick: boolean;
+    timer: any;
+
     constructor(private listaRichiesteManager: ListaRichiesteManagerService,
         private richiesteS: ListaRichiesteService,
         public ricercaS: RicercaRichiesteService,
@@ -58,21 +61,27 @@ export class ListaRichiesteComponent implements OnInit {
         });
     }
 
-    /* handleScroll(event: ScrollEvent) {
-        if (event.isReachingBottom && event.isWindowEvent === false) {
-            this.listaRichiesteManager.nuoveRichieste().subscribe(nuoveRichieste => {
-                nuoveRichieste.forEach(r => {
-                    this.richieste.push(r);
-                });
-            });
-        }
-    } */
+    // handleScroll(event: ScrollEvent) {
+    //     if (event.isReachingBottom && event.isWindowEvent === false) {
+    //         this.listaRichiesteManager.nuoveRichieste().subscribe(nuoveRichieste => {
+    //             nuoveRichieste.forEach(r => {
+    //                 this.richieste.push(r);
+    //             });
+    //         });
+    //     }
+    // }
 
     richiestaClick(richiesta) {
+        this.richiesteS.selezionata(richiesta.id);
         this.markerS.actionById(richiesta.id, 'click');
     }
 
-    localizzaClick(richiesta) {
+    richiestaDoubleClick(richiesta) {
+        this.richiesteS.selezionata(richiesta.id);
+        console.log('Doppio click su richiesta');
+    }
+
+    fissaInAlto(richiesta) {
         this.richiesteS.fissata(richiesta.id);
         this.markerS.actionById(richiesta.id, 'click');
     }
@@ -94,18 +103,47 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     visualizzaEventiRichiesta(richiesta) {
-        this.modalService.open(EventiRichiestaComponent, {size: 'lg'});
+        this.modalService.open(EventiRichiestaComponent, { size: 'lg' });
+    }
+
+    /* Ritorna true se le parole matchano almeno in parte */
+    match(word1: string, word2: string) {
+        const word1San = word1.toLowerCase().substr(0, word1.length - 1);
+        const word2San = word2.toLowerCase().substr(0, word2.length - 1);
+        if (word1San === word2San) {
+            return true;
+        }
     }
 
     /* NgClass Template */
     cardShadowClass(r) {
         return {
-            'card-shadow-primary': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'assegnato',
-            'card-shadow-success': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'presidiato',
-            'card-shadow-danger': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'chiamata',
-            'card-shadow-warning': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'sospeso',
-            'card-shadow-secondary': (r === this.richiestaHover || r === this.richiestaSelezionata) && r.stato === 'chiuso',
+            'card-shadow-info': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'assegnato'),
+            'card-shadow-success': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'presidiato'),
+            'card-shadow-danger': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiamata'),
+            'card-shadow-warning': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'sospeso'),
+            'card-shadow-secondary': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiuso'),
             'bg-light': r === this.richiestaSelezionata || r === this.richiestaHover,
         };
     }
+
+    /* Test Methods
+    richiestaSingleClick(r): void {
+        this.timer = 0;
+        this.preventSimpleClick = false;
+        const delay = 200;
+
+        this.timer = setTimeout(() => {
+            if (!this.preventSimpleClick) {
+                console.log('Singolo Click');
+            }
+        }, delay);
+
+    }
+
+    richiestaDoubleClick(r): void {
+        this.preventSimpleClick = true;
+        clearTimeout(this.timer);
+        console.log('Doppi Click');
+    } */
 }

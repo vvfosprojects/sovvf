@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { of, Observable, Subject } from 'rxjs';
-import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
-import { RichiesteService } from './data/service/lista-richieste-service/richieste.service';
+import {Injectable} from '@angular/core';
+import {of, Observable, Subject} from 'rxjs';
+import {SintesiRichiesta} from '../shared/model/sintesi-richiesta.model';
+import {RichiesteService} from './data/service/lista-richieste-service/richieste.service';
 
 
 @Injectable({

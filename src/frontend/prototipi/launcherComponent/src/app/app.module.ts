@@ -21,6 +21,7 @@ import {AgmComponent} from './maps/agm/agm.component';
 import {AgmContentComponent} from './maps/agm/agm-content.component';
 import {AgmJsMarkerClustererModule} from '@agm/js-marker-clusterer';
 import {AgmCoreModule} from '@agm/core';
+import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
 import {InfoWindowComponent} from './maps/maps-ui/info-window/info-window.component';
 import {MapsFiltroComponent} from './maps/maps-ui/filtro/filtro.component';
 import {CambioSedeModalComponent} from './maps/maps-ui/info-window/cambio-sede-modal/cambio-sede-modal.component';
@@ -128,7 +129,8 @@ import {RichiesteServiceFake} from './dispatcher/data/service/lista-richieste-se
         NgxPaginationModule,
         FilterPipeModule,
         SidebarModule.forRoot(),
-        ScrollEventModule
+        ScrollEventModule,
+        AgmSnazzyInfoWindowModule
     ],
     entryComponents: [CambioSedeModalComponent, EventiRichiestaComponent],
     providers: [

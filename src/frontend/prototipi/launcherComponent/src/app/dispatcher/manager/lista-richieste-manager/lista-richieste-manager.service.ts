@@ -36,13 +36,13 @@ export class ListaRichiesteManagerService {
         return of(this.richieste);
     }
 
-    nuoveRichieste() {
-        /* let nuoveRichieste;
-        this.dispatcher.onNewSRichiesteListScroll().subscribe(r => {
-            nuoveRichieste = r;
-        });
-        return of(nuoveRichieste); */
-    }
+    // nuoveRichieste() {
+    //     let nuoveRichieste;
+    //     this.dispatcher.onNewSRichiesteListScroll().subscribe(r => {
+    //         nuoveRichieste = r;
+    //     });
+    //     return of(nuoveRichieste);
+    // }
 
     getRichiestaFromId(id) {
         return this.richieste.find(x => x.id === id);

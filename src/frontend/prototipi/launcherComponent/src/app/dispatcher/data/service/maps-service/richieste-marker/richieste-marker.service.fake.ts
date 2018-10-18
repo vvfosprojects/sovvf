@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
 
 // Models
-import { Tipologia } from '../../../../../shared/model/tipologia.model';
-import { Localita } from '../../../../../shared/model/localita.model';
-import { Coordinate } from '../../../../../shared/model/coordinate.model';
-import { RichiestaMarker } from '../../../../../maps/maps-model/richiesta-marker.model';
+import {Tipologia} from '../../../../../shared/model/tipologia.model';
+import {Localita} from '../../../../../shared/model/localita.model';
+import {Coordinate} from '../../../../../shared/model/coordinate.model';
+import {RichiestaMarker} from '../../../../../maps/maps-model/richiesta-marker.model';
 
 @Injectable({
     providedIn: 'root'

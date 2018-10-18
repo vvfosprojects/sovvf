@@ -3,14 +3,21 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
 import { LayoutMethods } from './_layout-methods';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
+import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-sintesi-richiesta',
     templateUrl: './sintesi-richiesta.component.html',
-    styleUrls: ['./sintesi-richiesta.component.css']
+    styleUrls: ['./sintesi-richiesta.component.css'],
+    providers: [
+        NgbPopoverConfig,
+        NgbTooltipConfig
+    ]
 })
 export class SintesiRichiestaComponent implements OnInit {
-    @Output() richiestaClick: EventEmitter<any> = new EventEmitter();
+    @Output() clickRichiesta: EventEmitter<any> = new EventEmitter();
+    @Output() doubleClickRichiesta: EventEmitter<any> = new EventEmitter();
+    @Output() fissaInAlto: EventEmitter<any> = new EventEmitter();
     @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
     @Input() richiesta: SintesiRichiesta;
 
@@ -21,8 +28,12 @@ export class SintesiRichiestaComponent implements OnInit {
     espanso = false;
     time: any;
     methods = new LayoutMethods;
+    isSingleClick = true;
 
-    constructor(private eRef: ElementRef) {
+    constructor(popoverConfig: NgbPopoverConfig, tooltipConfig: NgbTooltipConfig) {
+        popoverConfig.container = 'body';
+        tooltipConfig.container = 'body';
+        tooltipConfig.placement = 'bottom';
     }
 
     ngOnInit() {
@@ -88,14 +99,6 @@ export class SintesiRichiestaComponent implements OnInit {
         });
     }
 
-    @HostListener('click', ['$event.target'])
-    clickout(target) {
-        if (this.eRef.nativeElement.contains(target)) {
-            console.log('click-inside');
-        } else {
-            console.log('click-outside');
-        }
-    }
     /* Layout Methods */
     toggleEspanso(): void {
         this.espanso = !this.espanso;
@@ -127,9 +130,26 @@ export class SintesiRichiestaComponent implements OnInit {
         return this.methods.statusClass(richiesta);
     }
 
+    complessitaClass(richiesta) {
+        return this.methods.complessitaClass(richiesta);
+    }
+
     /* Eventi */
-    localizzaClick() {
-        this.richiestaClick.emit();
+    richiestaClick() {
+        this.isSingleClick = true;
+        setTimeout(() => {
+            if (this.isSingleClick) {
+                this.clickRichiesta.emit();
+            }
+        }, 250);
+    }
+    richiestaDoubleClick() {
+        this.isSingleClick = false;
+        this.toggleEspanso();
+        this.doubleClickRichiesta.emit();
+    }
+    fissaClick() {
+        this.fissaInAlto.emit();
     }
     visualizzaEventiRichiesta(richiesta) {
         this.eventiRichiesta.emit(richiesta);

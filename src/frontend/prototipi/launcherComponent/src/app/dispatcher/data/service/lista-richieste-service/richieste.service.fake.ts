@@ -1,22 +1,22 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
 
 // Models
-import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
-import { Operatore } from '../../../../shared/model/operatore.model';
-import { Tipologia } from '../../../../shared/model/tipologia.model';
-import { Richiedente } from '../../../../shared/model/richiedente.model';
-import { Localita } from '../../../../shared/model/localita.model';
-import { Coordinate } from '../../../../shared/model/coordinate.model';
-import { Sede } from '../../../../shared/model/sede.model';
-import { Complessita } from '../../../../shared/model/complessita.model';
-import { Partenza } from '../../../../shared/model/partenza.model';
-import { Mezzo } from '../../../../shared/model/mezzo.model';
-import { Fonogramma } from '../../../../shared/model/fonogramma.model';
-import { Squadra } from '../../../../shared/model/squadra.model';
+import {SintesiRichiesta} from '../../../../shared/model/sintesi-richiesta.model';
+import {Operatore} from '../../../../shared/model/operatore.model';
+import {Tipologia} from '../../../../shared/model/tipologia.model';
+import {Richiedente} from '../../../../shared/model/richiedente.model';
+import {Localita} from '../../../../shared/model/localita.model';
+import {Coordinate} from '../../../../shared/model/coordinate.model';
+import {Sede} from '../../../../shared/model/sede.model';
+import {Complessita} from '../../../../shared/model/complessita.model';
+import {Partenza} from '../../../../shared/model/partenza.model';
+import {Mezzo} from '../../../../shared/model/mezzo.model';
+import {Fonogramma} from '../../../../shared/model/fonogramma.model';
+import {Squadra} from '../../../../shared/model/squadra.model';
 
 import * as moment from 'moment';
-import { Componente } from '../../../../shared/model/componente.model';
+import {Componente} from '../../../../shared/model/componente.model';
 
 
 @Injectable({
@@ -43,15 +43,14 @@ export class RichiesteServiceFake {
                 new Richiedente('Alessandro Palletta', '3202676253'),
                 new Localita(new Coordinate(41.8624992, 12.5532867), 'Via Scribonio Curione, 22', 'nei pressi dell\'uscita della metro'),
                 [
-                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Distaccamento'),
-                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Distaccamento'),
-                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Distaccamento'),
+                    new Sede('2', 'Tuscolano II', new Localita(new Coordinate(41.8638843, 12.5522048)), 'Distaccamento'),
+                    new Sede('4', 'Ostiense', new Localita(new Coordinate(41.8606045, 12.4730873)), 'Distaccamento'),
+                    new Sede('3', 'Tuscolana I', new Localita(new Coordinate(41.8607859, 12.5226281)), 'Distaccamento'),
                 ],
                 new Complessita('100', 'Alto'),
                 null,
                 null,
-                null,
-                null,
+                moment().subtract(0, 'minutes').toDate(), null,
                 null,
                 new Fonogramma('0', 'Non necessario'),
                 null,
@@ -70,14 +69,14 @@ export class RichiesteServiceFake {
                 new Localita(
                     new Coordinate(41.8531486, 12.5411702), 'Via Tuscolana, 1500', 'automobile ribaltata, persona anziana'),
                 [
-                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Distaccamento'),
-                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Distaccamento'),
-                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Distaccamento'),
+                    new Sede('2', 'Tuscolano II', new Localita(new Coordinate(41.8638843, 12.5522048)), 'Distaccamento'),
+                    new Sede('4', 'Ostiense', new Localita(new Coordinate(41.8606045, 12.4730873)), 'Distaccamento'),
+                    new Sede('3', 'Tuscolana I', new Localita(new Coordinate(41.8607859, 12.5226281)), 'Distaccamento'),
                 ],
                 new Complessita('20', 'Media'),
-                null,
                 moment().subtract(2, 'minutes').toDate(),
                 moment().subtract(1, 'minutes').toDate(),
+                null,
                 null,
                 null,
                 new Fonogramma('0', 'Non necessario'),
@@ -97,13 +96,13 @@ export class RichiesteServiceFake {
                 new Localita(
                     new Coordinate(41.8607234, 12.555459), 'Viale Giuseppe Mazzini, 159', 'nelle vicinanze di un ristorante'),
                 [
-                    new Sede('5', 'Prati', new Coordinate(41.9184282, 12.4635564), 'Distaccamento'),
-                    new Sede('6', 'Monte Mario', new Coordinate(41.9186602, 12.4360771), 'Distaccamento'),
+                    new Sede('5', 'Prati', new Localita(new Coordinate(41.9184282, 12.4635564)), 'Distaccamento'),
+                    new Sede('6', 'Monte Mario', new Localita(new Coordinate(41.9186602, 12.4360771)), 'Distaccamento'),
                 ],
                 new Complessita('20', 'Media'),
-                null,
                 moment().subtract(16, 'minutes').toDate(),
                 moment().subtract(12, 'minutes').toDate(),
+                null,
                 null,
                 null,
                 new Fonogramma('0', 'Non necessario'),
@@ -123,14 +122,14 @@ export class RichiesteServiceFake {
                 new Localita(
                     new Coordinate(41.8932662, 12.5417044), 'Via di Portonaccio', 'incrocio con Via Prenestina'),
                 [
-                    new Sede('7', 'La Rustica', new Coordinate(41.9073166, 12.5934988), 'Distaccamento'),
-                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Distaccamento'),
-                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Distaccamento'),
+                    new Sede('7', 'La Rustica', new Localita(new Coordinate(41.9073166, 12.5934988)), 'Distaccamento'),
+                    new Sede('2', 'Tuscolano II', new Localita(new Coordinate(41.8638843, 12.5522048)), 'Distaccamento'),
+                    new Sede('3', 'Tuscolana I', new Localita(new Coordinate(41.8607859, 12.5226281)), 'Distaccamento'),
                 ],
                 new Complessita('20', 'Media'),
-                null,
                 moment().subtract(18, 'minutes').toDate(),
                 moment().subtract(16, 'minutes').toDate(),
+                null,
                 null,
                 null,
                 new Fonogramma('0', 'Non necessario'),
@@ -196,13 +195,13 @@ export class RichiesteServiceFake {
                 new Localita(
                     new Coordinate(41.8311007, 12.4683518), 'Viale Europa, 184', 'dal palazzo delle Poste Italiane'),
                 [
-                    new Sede('8', 'EUR', new Coordinate(41.8315918, 12.4666971), 'Distaccamento'),
-                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Distaccamento'),
+                    new Sede('8', 'EUR', new Localita(new Coordinate(41.8315918, 12.4666971)), 'Distaccamento'),
+                    new Sede('4', 'Ostiense', new Localita(new Coordinate(41.8606045, 12.4730873)), 'Distaccamento'),
                 ],
                 new Complessita('80', 'Alta'),
-                null,
                 moment().subtract(30, 'minutes').toDate(),
                 moment().subtract(29, 'minutes').toDate(),
+                moment().subtract(35, 'minutes').toDate(),
                 null,
                 null,
                 new Fonogramma('0', 'Non necessario'),

@@ -26,7 +26,7 @@ export class MapsFiltroComponent implements OnInit {
             .pipe(map(x => x.filter(y => !y.disabled)))
             .subscribe((res) => {
                 this.markerMenu = res;
-                this.selectedMarker = [];
+                this.selectedMarker = [this.markerMenu[0].id];
             });
     }
 

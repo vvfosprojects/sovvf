@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { MarkedService } from '../marked-service/marked-service.service';
-import { Meteo } from '../../../shared/model/meteo.model';
-import { MeteoService } from '../../../shared/meteo/meteo-service.service';
-import { IconMappe } from './_icone';
-import { TipoMappe } from './_typeof';
-import { AgmService } from '../../agm/agm-service.service';
-import { UnitaOperativaService } from '../../../navbar/navbar-service/unita-operativa-service/unita-operativa.service';
-import { ListaRichiesteService } from '../../../richieste/lista-richieste-service/lista-richieste-service.service';
-import { MapManagerService } from '../../../dispatcher/manager/maps-manager/map-manager-service.service';
+import {Injectable} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {MarkedService} from '../marked-service/marked-service.service';
+import {Meteo} from '../../../shared/model/meteo.model';
+import {MeteoService} from '../../../shared/meteo/meteo-service.service';
+import {IconMappe} from './_icone';
+import {TipoMappe} from './_typeof';
+import {TipoColori} from './_color';
+import {AgmService} from '../../agm/agm-service.service';
+import {UnitaOperativaService} from '../../../navbar/navbar-service/unita-operativa-service/unita-operativa.service';
+import {ListaRichiesteService} from '../../../richieste/lista-richieste-service/lista-richieste-service.service';
+import {MapManagerService} from '../../../dispatcher/manager/maps-manager/map-manager-service.service';
+
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +20,8 @@ export class MarkerService {
     datiMeteo: Meteo;
     icone = new IconMappe();
     tipo = new TipoMappe();
+    colori = new TipoColori();
+    coloreStato: string;
 
     markerColorato: boolean;
     markerSelezionato: any;
@@ -27,14 +31,15 @@ export class MarkerService {
 
 
     constructor(private markedService: MarkedService,
-        private meteoService: MeteoService,
-        private agmService: AgmService,
-        private richiesteService: ListaRichiesteService,
-        private mapsManager: MapManagerService,
-        private fakeCambioSede: UnitaOperativaService) {
+                private meteoService: MeteoService,
+                private agmService: AgmService,
+                private richiesteService: ListaRichiesteService,
+                private mapsManager: MapManagerService,
+                private fakeCambioSede: UnitaOperativaService) {
         this.subscription = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         });
+        this.filtro = ['richiesta'];
     }
 
     tipoIcona(marker: any, tipoSede: boolean): string {
@@ -104,33 +109,23 @@ export class MarkerService {
         this.markedService.clearMarked();
     }
 
-    action(marker, mouse, fromRichiestaId?: boolean) {
+    action(marker, mouse) {
         /**
          * controllo il tipo di marker e il suo mouse event
          */
-        let modello;
-        if (fromRichiestaId) {
-            modello = this.modelloMarker(marker);
-        } else {
-            modello = 'richiesta';
-        }
+        const modello = this.modelloMarker(marker);
         switch (modello + '|' + mouse) {
             case 'richiesta|hover-in': {
                 this.markerColorato = marker;
-                this.richiesteService.hoverIn(marker.id);
             }
                 break;
             case 'richiesta|hover-out': {
                 this.markerColorato = null;
-                this.richiesteService.hoverOut();
             }
                 break;
             case 'richiesta|click': {
                 this.cliccato(marker);
-                this.richiesteService.selezionata(marker.id);
-                if (!fromRichiestaId) {
-                    this.richiesteService.fissata(marker.id);
-                }
+                this.coloreStato = this.colori.markerColor(marker.getStato());
             }
                 break;
             case 'mezzo|hover-in': {
@@ -144,10 +139,10 @@ export class MarkerService {
             case 'mezzo|click': {
                 this.cliccato(marker);
                 if (marker.inSoccorso()) {
-                    console.log('il mezzo è in soccorso');
                     /**
                      * lanciare azione solo quando il mezzo è in soccorso
                      */
+                    this.coloreStato = this.colori.markerColor(marker.getStato());
                 }
             }
                 break;
@@ -165,6 +160,7 @@ export class MarkerService {
                 break;
             default: {
                 this.noAction();
+                this.richiesteService.defissata();
             }
                 break;
         }
@@ -214,19 +210,30 @@ export class MarkerService {
             this.agmService.cambiaZoom(11);
             this.deseleziona();
         }
-        this.richiesteService.defissata();
-        this.richiesteService.deselezionata();
     }
 
-    actionById(id, mouse, localizza?) {
+    actionById(id, mouse) {
         let marker: any;
         marker = this.getMarkerFromId(id);
-        if (!localizza) {
-            this.action(marker, mouse, true);
-        } else {
-            this.action(marker, mouse);
+        switch (mouse) {
+            case 'hover-in': {
+                this.markerColorato = marker;
+                this.richiesteService.hoverIn(marker.id);
+            }
+                break;
+            case 'hover-out': {
+                this.markerColorato = null;
+                this.richiesteService.hoverOut();
+            }
+                break;
+            case 'click': {
+                this.cliccato(marker);
+                this.richiesteService.fissata(marker.id);
+                this.richiesteService.deselezionata();
+            }
         }
     }
+
 
     getMarkerFromId(id) {
         return this.mapsManager.getMarkerFromId(id);

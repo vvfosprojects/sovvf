@@ -1,7 +1,7 @@
 <ng-sidebar-container style="height:100vh;">
-
-    <ng-sidebar [(opened)]="_opened" [mode]="'over'" [dock]="false" [sidebarClass]="'sidebar bg-grey'" [animate]="true"
-                [closeOnClickOutside]="true">
+        <ng-sidebar [(opened)]="_opened" [mode]="'over'" [dock]="false" [sidebarClass]="'sidebar bg-grey'"
+                    [animate]="true"
+                    [closeOnClickOutside]="true">
             <div class="container-fluid py-2">
                 <div class="row">
                     <div class="col-2 text-right px-4">
@@ -18,28 +18,34 @@
                     </div>
                     <div class="col-2 text-center px-4">
                         <button class="btn btn-danger w-50" (click)="_toggleOpened()"><i class="fa fa-times"></i>
-                            Chiudi</button>
+                            Chiudi
+                        </button>
                     </div>
                 </div>
             </div>
-    </ng-sidebar>
-    <div ng-sidebar-content>
-        <!-- Navbar -->
-        <span *ngFor="let user of users">
+        </ng-sidebar>
+        <div ng-sidebar-content>
+            <!-- Navbar -->
+            <span *ngFor="let user of users">
             <app-navbar (openedSidebar)="_toggleOpened()" [user]="user"></app-navbar>
         </span>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12 px-0">
-                    <app-info-aggregate></app-info-aggregate>
+            <div *ngIf="!fakeCambioSede.preLoader">
+                <div class="w-75 mx-auto text-center my-3">
+                    <img class="img-fluid" src="../../assets/img/wallpaper_on_loading.gif">
                 </div>
-                <div class="col-6">
-                    <app-richieste></app-richieste>
-                </div>
-                <div class="col-6">
-                    <app-maps></app-maps>
+            </div>
+            <div *ngIf="fakeCambioSede.preLoader" class="container-fluid">
+                <div class="row">
+                    <div class="col-12 px-0">
+                        <app-info-aggregate></app-info-aggregate>
+                    </div>
+                    <div class="col-6">
+                        <app-richieste></app-richieste>
+                    </div>
+                    <div class="col-6">
+                        <app-maps></app-maps>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</ng-sidebar-container>
+    </ng-sidebar-container>

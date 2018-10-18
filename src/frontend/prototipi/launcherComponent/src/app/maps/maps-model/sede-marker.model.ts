@@ -1,5 +1,6 @@
 import {Sede} from '../../shared/model/sede.model';
 import {Coordinate} from '../../shared/model/coordinate.model';
+import {Localita} from '../../shared/model/localita.model';
 
 export class SedeMarker implements Sede {
     constructor(
@@ -14,7 +15,7 @@ export class SedeMarker implements Sede {
         /**
          * coordinate sede
          */
-        public coordinate: Coordinate,
+        public localita: Localita,
         /**
          * tipologia sede (Es: Comando, Distaccamento)
          */
@@ -31,6 +32,6 @@ export class SedeMarker implements Sede {
     }
 
     getCoordinate() {
-        return new Coordinate(this.coordinate.latitudine, this.coordinate.longitudine);
+        return new Coordinate(this.localita.coordinate.latitudine, this.localita.coordinate.longitudine);
     }
 }

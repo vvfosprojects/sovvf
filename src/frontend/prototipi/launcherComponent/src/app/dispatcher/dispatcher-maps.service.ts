@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { of, Observable, Subject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {of, Observable, Subject} from 'rxjs';
 
-import { RichiesteMarkerService } from './data/service/maps-service/richieste-marker/richieste-marker.service';
-import { SediMarkerService } from './data/service/maps-service/sedi-marker/sedi-marker.service';
-import { MezziMarkerService } from './data/service/maps-service/mezzi-marker/mezzi-marker.service';
+import {RichiesteMarkerService} from './data/service/maps-service/richieste-marker/richieste-marker.service';
+import {SediMarkerService} from './data/service/maps-service/sedi-marker/sedi-marker.service';
+import {MezziMarkerService} from './data/service/maps-service/mezzi-marker/mezzi-marker.service';
 
-import { RichiestaMarker } from '../maps/maps-model/richiesta-marker.model';
-import { SedeMarker } from '../maps/maps-model/sede-marker.model';
-import { MezzoMarker } from '../maps/maps-model/mezzo-marker.model';
+import {RichiestaMarker} from '../maps/maps-model/richiesta-marker.model';
+import {SedeMarker} from '../maps/maps-model/sede-marker.model';
+import {MezzoMarker} from '../maps/maps-model/mezzo-marker.model';
 
 
 @Injectable({
