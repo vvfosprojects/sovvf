@@ -65,6 +65,10 @@ export class SintesiRichiesta {
          */
         public complessita: Complessita,
         /**
+         * Indica se la richiesta è rilevante
+         */
+        public rilevanza?: Date,
+        /**
          * eventuale istante di presa in carico della richiesta
          */
         public istantePresaInCarico?: Date,
@@ -72,10 +76,6 @@ export class SintesiRichiesta {
          * eventuale istante di prima assegnazione di risorse alla richiesta
          */
         public istantePrimaAssegnazione?: Date,
-        /**
-         * Indica se la richiesta è rilevante
-         */
-        public rilevanza?: Date,
         /**
          * codice della scheda NUE
          */

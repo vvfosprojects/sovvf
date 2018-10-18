@@ -85,14 +85,31 @@ export class LayoutMethods {
         }
     }
 
+    /* Ritorna true se le parole matchano almeno in parte */
+    match(word1: string, word2: string) {
+        const word1San = word1.toLowerCase().substr(0, word1.length - 1);
+        const word2San = word2.toLowerCase().substr(0, word2.length - 1);
+        if (word1San === word2San) {
+            return true;
+        }
+    }
+
     /* NgClass status */
     statusClass(richiesta) {
         return {
-            'status_chiamata': richiesta.stato === 'chiamata',
-            'status_presidiato': richiesta.stato === 'presidiato',
-            'status_assegnato': richiesta.stato === 'assegnato',
-            'status_sospeso': richiesta.stato === 'sospeso',
-            'status_chiuso': richiesta.stato === 'chiuso'
+            'status_chiamata': this.match(richiesta.stato, 'chiamata'),
+            'status_presidiato': this.match(richiesta.stato, 'presidiato'),
+            'status_assegnato': this.match(richiesta.stato, 'assegnato'),
+            'status_sospeso': this.match(richiesta.stato, 'sospeso'),
+            'status_chiuso': this.match(richiesta.stato, 'chiuso')
+        };
+    }
+
+    complessitaClass(richiesta) {
+        return {
+            'badge-success': this.match(richiesta.complessita.descrizione, 'bassa'),
+            'badge-warning': this.match(richiesta.complessita.descrizione, 'media'),
+            'badge-danger': this.match(richiesta.complessita.descrizione, 'alta')
         };
     }
 }

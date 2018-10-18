@@ -27,9 +27,6 @@ export class DispatcherFakeService {
   richieste: SintesiRichiesta[];
 
   constructor(private sintesiRichiesteService: SintesiRichiesteService) {
-    setTimeout(() => {
-      this.addRichiesta();
-    }, 3000);
   }
 
   onNewSRichiesteList(): Observable<SintesiRichiesta[]> {
