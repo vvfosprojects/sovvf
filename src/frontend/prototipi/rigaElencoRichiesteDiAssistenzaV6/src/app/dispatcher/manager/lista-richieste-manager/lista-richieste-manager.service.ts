@@ -30,7 +30,7 @@ export class ListaRichiesteManagerService {
     return of(this.richieste);
   }
 
-  nuoveRichieste() {
+  onNewRichiesteList() {
     let nuoveRichieste;
     this.dispatcherFakeS.onNewSRichiesteListScroll().subscribe(r => {
       nuoveRichieste = r;

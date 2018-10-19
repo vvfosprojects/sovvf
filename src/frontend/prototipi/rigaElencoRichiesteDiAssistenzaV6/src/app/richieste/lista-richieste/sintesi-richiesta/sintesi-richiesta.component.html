@@ -1,4 +1,4 @@
-<div class="card row_text py-2 px-3 mb-1 transparent" [ngClass]="statusClass(richiesta)" (click)="richiestaClick()" (dblclick)="richiestaDoubleClick()">
+<div class="card row_text py-2 px-3 mb-1 transparent" [ngClass]="statusClass(richiesta)" (click)="richiestaClick(richiesta)" (dblclick)="richiestaDoubleClick(richiesta)">
     <div class="row align-items-center">
         <div class="col-12">
             <div class="row">
@@ -52,13 +52,13 @@
                                 <span class="nowrap default-cursor text-right">
                                     <i class="guida fa fa-users fa-fw mr-1" ngbTooltip="Numero Squadre"></i>
                                     <a class="big_numbers" [ngbPopover]="popSquadre" container="body" popoverTitle="Squadre"
-                                        triggers="click" tabindex="0">{{ numeroSquadre() }}</a>
+                                        triggers="click" tabindex="0">{{ numeroSquadre(richiesta) }}</a>
 
                                     <ng-template #popSquadre>
-                                        <div class="h6" *ngFor="let s of nomiSquadre()">
+                                        <div class="h6" *ngFor="let s of nomiSquadre(richiesta)">
                                             <span>{{ s }}</span>
                                         </div>
-                                        <h6 class="mb-0" *ngIf="numeroSquadre() === 0">Nessuna squadra</h6>
+                                        <h6 class="mb-0" *ngIf="numeroSquadre(richiesta) === 0">Nessuna squadra</h6>
                                     </ng-template>
                                 </span>
 
@@ -66,13 +66,13 @@
                                 <span class="nowrap default-cursor text-right">
                                     <i class="guida fa fa-truck fa-fw ml-1 mr-1" ngbTooltip="Numero Mezzi"></i>
                                     <a class="big_numbers" [ngbPopover]="popMezzi" popoverTitle="Mezzi" triggers="click"
-                                        tabindex="0">{{ numeroMezzi() }}</a>
+                                        tabindex="0">{{ numeroMezzi(richiesta) }}</a>
 
                                     <ng-template #popMezzi>
-                                        <div class="h6 nowrap" *ngFor="let m of nomiMezzi()">
+                                        <div class="h6 nowrap" *ngFor="let m of nomiMezzi(richiesta)">
                                             <span>{{ m }}</span>
                                         </div>
-                                        <h6 class="mb-0" *ngIf="numeroMezzi() === 0">Nessun mezzo</h6>
+                                        <h6 class="mb-0" *ngIf="numeroMezzi(richiesta) === 0">Nessun mezzo</h6>
                                     </ng-template>
                                 </span>
                             </div>
@@ -102,7 +102,7 @@
                             <div class="h6 mt-1 mb-2 nowrap default-cursor">
                                 <i class="guida fa fa-thermometer-half fa-fw" ngbTooltip="Priorità della richiesta"></i>
                                 <span class="h6" [ngClass]="{'text-success':richiesta.priorita <= 2, 'text-warning':richiesta.priorita > 2 && richiesta.priorita <= 4, 'text-danger': richiesta.priorita == 5}">
-                                    <i *ngFor="let n of vettorePallini()" class="fa fa-circle"></i><i *ngFor="let n of vettoreBuchini()"
+                                    <i *ngFor="let n of vettorePallini(richiesta)" class="fa fa-circle"></i><i *ngFor="let n of vettoreBuchini(richiesta)"
                                         class="fa fa-circle-o"></i>
                                 </span>
                             </div>
@@ -136,7 +136,7 @@
                         </div>
                         <div class="col-4 pr-3 text-right" [ngClass]="{'mb-1': espanso}">
                             <div class="h6 m-0 nowrap">
-                                <button class="btn btn-default py-0 mr-1" ngbTooltip="Fissa in alto" (click)="fissaClick()">
+                                <button class="btn btn-default py-0 mr-1" ngbTooltip="Fissa in alto" (click)="fissaClick(richiesta)">
                                     <i class="fa fa-fw fa-thumb-tack text-secondary"></i>
                                 </button>
                                 <button class="btn btn-default py-0 mr-1" ngbTooltip="Espandi" (click)="toggleEspanso()">
@@ -245,7 +245,7 @@
                                                         </span>
                                                     </li>
                                                 </span>
-                                                <li *ngIf="numeroSquadre() === 0" class="list-group-item pl-2 pr-2">
+                                                <li *ngIf="numeroSquadre(richiesta) === 0" class="list-group-item pl-2 pr-2">
                                                     Nessuna squadra
                                                 </li>
                                             </ul>

@@ -61,47 +61,47 @@ export class ListaRichiesteComponent implements OnInit {
         });
     }
 
-    handleScroll(event: ScrollEvent) {
+    nuoveRichieste(event: ScrollEvent) {
         if (event.isReachingBottom && event.isWindowEvent === false) {
-            this.listaRichiesteManager.nuoveRichieste().subscribe(nuoveRichieste => {
-                nuoveRichieste.forEach(r => {
-                    this.richieste.push(r);
-                });
-            });
+            this.listaRichiesteManager.onNewRichiesteList();
         }
     }
 
     richiestaClick(richiesta) {
-        this.richiesteS.selezionata(richiesta.id);
-        this.markerS.actionById(richiesta.id, 'click');
+        if (richiesta) {
+            this.richiesteS.selezionata(richiesta.id);
+            this.markerS.actionById(richiesta.id, 'click');
+        }
     }
-
     richiestaDoubleClick(richiesta) {
-        this.richiesteS.selezionata(richiesta.id);
-        console.log('Doppio click su richiesta');
+        if (richiesta) {
+            this.richiesteS.selezionata(richiesta.id);
+            console.log('Doppio click su richiesta');
+        }
     }
-
     fissaInAlto(richiesta) {
-        this.richiesteS.fissata(richiesta.id);
-        this.markerS.actionById(richiesta.id, 'click');
+        if (richiesta) {
+            this.richiesteS.fissata(richiesta.id);
+            this.markerS.actionById(richiesta.id, 'click');
+        }
     }
-
     richiestaHoverIn(richiesta) {
-        this.richiesteS.hoverIn(richiesta);
-        this.markerS.actionById(richiesta.id, 'hover-in');
+        if (richiesta) {
+            this.richiesteS.hoverIn(richiesta);
+            this.markerS.actionById(richiesta.id, 'hover-in');
+        }
     }
-
     richiestaHoverOut(richiesta) {
-        this.richiesteS.hoverOut();
-        this.markerS.actionById(richiesta.id, 'hover-out');
+        if (richiesta) {
+            this.richiesteS.hoverOut();
+            this.markerS.actionById(richiesta.id, 'hover-out');
+        }
     }
-
     unClick() {
         this.richiesteS.deselezionata();
         this.richiesteS.defissata();
         this.markerS.action('a', 'unclick');
     }
-
     visualizzaEventiRichiesta(richiesta) {
         this.modalService.open(EventiRichiestaComponent, { size: 'lg' });
     }
@@ -126,24 +126,4 @@ export class ListaRichiesteComponent implements OnInit {
             'bg-light': r === this.richiestaSelezionata || r === this.richiestaHover,
         };
     }
-
-    /* Test Methods
-    richiestaSingleClick(r): void {
-        this.timer = 0;
-        this.preventSimpleClick = false;
-        const delay = 200;
-
-        this.timer = setTimeout(() => {
-            if (!this.preventSimpleClick) {
-                console.log('Singolo Click');
-            }
-        }, delay);
-
-    }
-
-    richiestaDoubleClick(r): void {
-        this.preventSimpleClick = true;
-        clearTimeout(this.timer);
-        console.log('Doppi Click');
-    } */
 }
