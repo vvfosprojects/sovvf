@@ -32,6 +32,7 @@ export class SintesiRichiestaComponent implements OnInit {
 
     constructor(popoverConfig: NgbPopoverConfig, tooltipConfig: NgbTooltipConfig) {
         popoverConfig.container = 'body';
+        popoverConfig.placement = 'bottom';
         tooltipConfig.container = 'body';
         tooltipConfig.placement = 'bottom';
     }
@@ -103,23 +104,35 @@ export class SintesiRichiestaComponent implements OnInit {
     toggleEspanso(): void {
         this.espanso = !this.espanso;
     }
-    vettorePallini() {
-        return this.methods.vettorePallini(this.richiesta);
+    vettorePallini(richiesta) {
+        if (richiesta) {
+            return this.methods.vettorePallini(richiesta);
+        }
     }
-    vettoreBuchini() {
-        return this.methods.vettoreBuchini(this.richiesta);
+    vettoreBuchini(richiesta) {
+        if (richiesta) {
+            return this.methods.vettoreBuchini(richiesta);
+        }
     }
-    nomiSquadre() {
-        return this.methods.nomiSquadre(this.richiesta);
+    nomiSquadre(richiesta) {
+        if (richiesta) {
+            return this.methods.nomiSquadre(richiesta);
+        }
     }
-    numeroSquadre() {
-        return this.methods.numeroSquadre(this.richiesta);
+    numeroSquadre(richiesta) {
+        if (richiesta) {
+            return this.methods.numeroSquadre(richiesta);
+        }
     }
-    nomiMezzi() {
-        return this.methods.nomiMezzi(this.richiesta);
+    nomiMezzi(richiesta) {
+        if (richiesta) {
+            return this.methods.nomiMezzi(richiesta);
+        }
     }
-    numeroMezzi() {
-        return this.methods.numeroMezzi(this.richiesta);
+    numeroMezzi(richiesta) {
+        if (richiesta) {
+            return this.methods.numeroMezzi(richiesta);
+        }
     }
     coloraIcona(nome): any {
         return this.methods.coloraIcona(nome);
@@ -135,21 +148,27 @@ export class SintesiRichiestaComponent implements OnInit {
     }
 
     /* Eventi */
-    richiestaClick() {
-        this.isSingleClick = true;
-        setTimeout(() => {
-            if (this.isSingleClick) {
-                this.clickRichiesta.emit();
-            }
-        }, 250);
+    richiestaClick(richiesta) {
+        if (richiesta) {
+            this.isSingleClick = true;
+            setTimeout(() => {
+                if (this.isSingleClick) {
+                    this.clickRichiesta.emit(richiesta);
+                }
+            }, 250);
+        }
     }
-    richiestaDoubleClick() {
-        this.isSingleClick = false;
-        this.toggleEspanso();
-        this.doubleClickRichiesta.emit();
+    richiestaDoubleClick(richiesta) {
+        if (richiesta) {
+            this.isSingleClick = false;
+            this.toggleEspanso();
+            this.doubleClickRichiesta.emit(richiesta);
+        }
     }
-    fissaClick() {
-        this.fissaInAlto.emit();
+    fissaClick(richiesta) {
+        if (richiesta) {
+            this.fissaInAlto.emit(richiesta);
+        }
     }
     visualizzaEventiRichiesta(richiesta) {
         this.eventiRichiesta.emit(richiesta);
