@@ -5,6 +5,8 @@ import {UnitaOperativaService} from './navbar-service/unita-operativa-service/un
 import {Sede} from '../shared/model/sede.model';
 import {Coordinate} from '../shared/model/coordinate.model';
 import {Localita} from '../shared/model/localita.model';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {CambioSedeModalNavComponent} from './cambio-sede-modal-nav/cambio-sede-modal-nav.component';
 
 
 @Component({
@@ -20,7 +22,7 @@ export class NavbarComponent implements OnInit {
     time: string;
     searchUnita: string;
 
-    constructor(private unitaOperativaS: UnitaOperativaService) {
+    constructor(private _modalService: NgbModal, private unitaOperativaS: UnitaOperativaService) {
     }
 
     ngOnInit() {
@@ -48,7 +50,7 @@ export class NavbarComponent implements OnInit {
     }
 
     changeUnitaAttuale(newUnita) {
-        this.unitaOperativaS.sendUnitaOperativaAttuale(newUnita);
+        this.openModal(newUnita);
     }
 
     /* End unità operativa methods */
@@ -64,5 +66,10 @@ export class NavbarComponent implements OnInit {
 
     openSidebar() {
         this.openedSidebar.emit();
+    }
+
+    openModal(newUnita) {
+        this.unitaOperativaS.unitaS = newUnita;
+        this._modalService.open(CambioSedeModalNavComponent);
     }
 }

@@ -5,7 +5,7 @@
       <button class="btn btn-light h-100 ml-2 mr-4" (click)="openSidebar()"><i class="fa fa-bars"></i> Menu</button>
       <!-- Logo, Info Caserma, Data e ora, Turni -->
       <img src="https://placeholder.pics/svg/40/FF0000-FFED5D/logo">
-      <span class="btn mr-3 pl-2" [ngbPopover]="unitaOperativa" [autoClose]="'outside'" placement="bottom">
+      <span class="btn mr-3 pl-2" [ngbPopover]="unitaOperativa" placement="bottom">
         <span class="mr-2">{{unitaAttuale.descrizione}} <i class="fa fa-chevron-down"></i></span>
       </span>
       <ng-template #unitaOperativa class="app-shadow">

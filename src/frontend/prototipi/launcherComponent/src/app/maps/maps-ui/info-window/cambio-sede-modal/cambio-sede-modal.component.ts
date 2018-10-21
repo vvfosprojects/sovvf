@@ -4,8 +4,8 @@ import {MarkerService} from '../../../service/marker-service/marker-service.serv
 
 @Component({
     selector: 'app-cambio-sede-modal',
-    templateUrl: './cambio-sede-modal.component.html',
-    styleUrls: ['./cambio-sede-modal.component.css']
+    templateUrl: '../../../../shared/modal/cambio-sede-modal.component.html',
+    styleUrls: ['../../../../shared/modal/cambio-sede-modal.component.css']
 })
 export class CambioSedeModalComponent implements OnInit {
 

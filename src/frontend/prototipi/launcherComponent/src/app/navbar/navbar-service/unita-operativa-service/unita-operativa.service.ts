@@ -13,6 +13,7 @@ export class UnitaOperativaService {
     startCount = 0;
     unitaOperative: Sede[];
     preLoader: boolean;
+    unitaS: Sede;
 
     constructor() {
         this.preLoader = true;

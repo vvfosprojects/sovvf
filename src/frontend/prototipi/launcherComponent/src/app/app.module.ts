@@ -25,6 +25,8 @@ import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
 import {InfoWindowComponent} from './maps/maps-ui/info-window/info-window.component';
 import {MapsFiltroComponent} from './maps/maps-ui/filtro/filtro.component';
 import {CambioSedeModalComponent} from './maps/maps-ui/info-window/cambio-sede-modal/cambio-sede-modal.component';
+import {CambioSedeModalNavComponent} from './navbar/cambio-sede-modal-nav/cambio-sede-modal-nav.component';
+
 
 // end maps-container
 // start rigaElenco
@@ -103,6 +105,7 @@ import {RichiesteServiceFake} from './dispatcher/data/service/lista-richieste-se
         MapsFiltroComponent,
         InfoWindowComponent,
         CambioSedeModalComponent,
+        CambioSedeModalNavComponent,
         // end import maps
         BoxFunzionariComponent,
         InfoAggregateComponent,
@@ -132,7 +135,7 @@ import {RichiesteServiceFake} from './dispatcher/data/service/lista-richieste-se
         ScrollEventModule,
         AgmSnazzyInfoWindowModule
     ],
-    entryComponents: [CambioSedeModalComponent, EventiRichiestaComponent],
+    entryComponents: [CambioSedeModalComponent, CambioSedeModalNavComponent, EventiRichiestaComponent],
     providers: [
         {provide: InfoAggregateService, useClass: InfoAggregateServiceFake},
         {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},
