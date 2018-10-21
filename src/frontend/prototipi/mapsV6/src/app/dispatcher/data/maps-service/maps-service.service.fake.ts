@@ -43,20 +43,21 @@ export class MapsServiceFake {
 
     getRichiesteMarker(): Observable<RichiestaMarker[]> {
         this.richiesteMarker = [
-            new RichiestaMarker('R1',
+            new RichiestaMarker('RM-00001',
                 new Localita(
                     new Coordinate(42.5131365, 12.773477),
                     'Via Cavour, 5',
+                    'vicino al distributore di benzina'
                 ),
                 [
                     new Tipologia('1', 'allagamento', '')
                 ],
                 'Allagamento cantina per rottura tubatura',
-                false,
+                true,
                 3,
                 'assegnata'
             ),
-            new RichiestaMarker('R2',
+            new RichiestaMarker('RM-00002',
                 new Localita(
                     new Coordinate(42.8131365, 12.773477),
                     'Via Cavour, 5',
@@ -97,13 +98,13 @@ export class MapsServiceFake {
 
     getSediMarker(): Observable<SedeMarker[]> {
         this.sediMarker = [
-            new SedeMarker('1', 'Tuscolano I', new Coordinate(41.881490, 12.518700), 'Distaccamento')
+            new SedeMarker('1', 'Tuscolano I', new Localita(new Coordinate(41.881490, 12.518700), 'Via Tuscolana 1'), 'Distaccamento')
             ,
-            new SedeMarker('2', 'Tuscolano II', new Coordinate(41.863930, 12.554420), 'Distaccamento')
+            new SedeMarker('2', 'Tuscolano II', new Localita(new Coordinate(41.863930, 12.554420), 'Via Tuscolana 1'), 'Distaccamento')
             ,
-            new SedeMarker('3', 'Roma', new Coordinate(41.899940, 12.491270), 'Comando')
+            new SedeMarker('3', 'Roma', new Localita(new Coordinate(41.899940, 12.491270), 'Via Roma 1'), 'Comando')
             ,
-            new SedeMarker('3', 'Roma', new Coordinate(41.8748856, 12.4071855), 'Direzioni')
+            new SedeMarker('3', 'Roma', new Localita(new Coordinate(41.8748856, 12.4071855), 'Via Roma 2'), 'Direzioni')
         ];
         return of(this.sediMarker);
     }
@@ -112,9 +113,48 @@ export class MapsServiceFake {
         this.mezziMarker = [
             new MezzoMarker(
                 new Coordinate(41.3593378, 13.4284407),
-                new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 5),
-                'R1',
+                new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 1, 'appartenenza', 'stato', 2, 'efficienza',
+                    3, 'carburante', 2, 'estinguente'),
+                'RM-00001',
                 [
+                    new Squadra('1A', 'InViaggio',
+                        [
+                            new Componente(
+                                'CR',
+                                'Mario Rossi',
+                                'Mario Rossi - MRORSS45H44T656R',
+                                true,
+                                false,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Antonio Bianchi',
+                                'Antonio Bianchi - NTNBNC76T54H444T',
+                                false,
+                                true,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Matteo Verdi',
+                                'Matteo Verdi - VRDMTT56G77D454I',
+                                false,
+                                false,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Enrico Ottavi',
+                                'Enrico Ottavi - NRCOTT88U75F454H',
+                                false,
+                                false,
+                                false),
+                            new Componente(
+                                'VIG',
+                                'Michele Rettore',
+                                'Michele Rettore - MCHRTT65T65K575Q',
+                                false,
+                                false,
+                                true),
+                        ]),
                     new Squadra('1A', 'InViaggio',
                         [
                             new Componente(
@@ -157,8 +197,8 @@ export class MapsServiceFake {
             ),
             new MezzoMarker(
                 new Coordinate(41.4171741, 13.5509798),
-                new Mezzo('1', 'Autobotte2', 'ABP', 'InViaggio', 5),
-                'R1',
+                new Mezzo('1', 'Autobotte2', 'ABP', 'InRientro', 1),
+                'RM-00002',
                 [
                     new Squadra('1A', 'InViaggio',
                         [
@@ -202,7 +242,7 @@ export class MapsServiceFake {
             ),
             new MezzoMarker(
                 new Coordinate(41.4023582, 13.3406784),
-                new Mezzo('1', 'Autobotte3', 'ABP', 'InViaggio', 5),
+                new Mezzo('1', 'Autobotte3', 'ABP', 'SulPosto', 5),
                 'R1',
                 [
                     new Squadra('1A', 'InViaggio',

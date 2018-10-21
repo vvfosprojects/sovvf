@@ -4,11 +4,12 @@ import {FriendlyDatePipe} from './friendly-date.pipe';
 import {FriendlyDateTooltipPipe} from './friendly-date-tooltip.pipe';
 import {FriendlyHourPipe} from './friendly-hour.pipe';
 import {FriendlyTimePipe} from './friendly-time.pipe';
+import {DistanzaTemporalePipe} from './distanza-temporale.pipe';
 
 @NgModule({
     imports: [],
-    declarations: [TruncatePipe, FriendlyDatePipe, FriendlyDateTooltipPipe, FriendlyHourPipe, FriendlyTimePipe],
-    exports: [TruncatePipe, FriendlyDatePipe, FriendlyDateTooltipPipe, FriendlyHourPipe, FriendlyTimePipe],
+    declarations: [TruncatePipe, FriendlyDatePipe, FriendlyDateTooltipPipe, FriendlyHourPipe, FriendlyTimePipe, DistanzaTemporalePipe],
+    exports: [TruncatePipe, FriendlyDatePipe, FriendlyDateTooltipPipe, FriendlyHourPipe, FriendlyTimePipe, DistanzaTemporalePipe],
 })
 
 export class PipeModule {

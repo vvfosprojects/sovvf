@@ -21,9 +21,14 @@ export class MezzoComponent implements OnInit {
     ngOnInit() {
     }
 
-    private localizzazioneMezzo(mezzo: Mezzo): void {
-        console.log(mezzo.codice);
-        // console.log("Sono il componente. Voglio localizzare il mezzo", this.richiesta.mezzi[id].descrizione);
-        // this.LocalizzazioneMezzo.emit(this.richiesta);
+    nessunIndMezzo(mezzo) {
+        if (
+            !mezzo.descrizioneStatoEfficienza &&
+            !mezzo.descrizioneLivelloCarburante &&
+            !mezzo.descrizioneLivelloEstinguente &&
+            !mezzo.descrizioneAppartenenzaMezzo
+        ) {
+            return true;
+        }
     }
 }

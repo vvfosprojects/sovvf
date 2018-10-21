@@ -23,8 +23,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "../node_modules/snazzy-info-window/dist/snazzy-info-window.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },

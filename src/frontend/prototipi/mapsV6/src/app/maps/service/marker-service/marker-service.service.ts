@@ -117,15 +117,19 @@ export class MarkerService {
         switch (modello + '|' + mouse) {
             case 'richiesta|hover-in': {
                 this.markerColorato = marker;
+                this.richiesteService.hoverIn(marker.id);
             }
                 break;
             case 'richiesta|hover-out': {
                 this.markerColorato = null;
+                this.richiesteService.hoverOut();
             }
                 break;
             case 'richiesta|click': {
                 this.cliccato(marker);
                 this.coloreStato = this.colori.markerColor(marker.getStato());
+                this.richiesteService.fissata(marker.id);
+                this.richiesteService.deselezionata();
             }
                 break;
             case 'mezzo|hover-in': {
@@ -228,9 +232,8 @@ export class MarkerService {
                 break;
             case 'click': {
                 this.cliccato(marker);
-                this.richiesteService.fissata(marker.id);
-                this.richiesteService.deselezionata();
             }
+                break;
         }
     }
 

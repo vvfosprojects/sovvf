@@ -29,6 +29,7 @@ import {MapsService} from './dispatcher/data/maps-service/maps-service.service';
 import {MapsServiceFake} from './dispatcher/data/maps-service/maps-service.service.fake';
 import {MapManagerService} from './dispatcher/manager/maps-manager/map-manager-service.service';
 import {MapManagerServiceFake} from './dispatcher/manager/maps-manager/map-manager-service.service.fake';
+import {ComponenteComponent} from './shared';
 
 @NgModule({
     declarations: [
@@ -40,6 +41,7 @@ import {MapManagerServiceFake} from './dispatcher/manager/maps-manager/map-manag
         MapsFiltroComponent,
         CambioSedeModalComponent,
         InfoWindowComponent,
+        ComponenteComponent
     ],
     imports: [
         SharedModule,

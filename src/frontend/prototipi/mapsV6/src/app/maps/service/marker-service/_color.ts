@@ -16,7 +16,7 @@ export class TipoColori {
             ['insed', '#6c757d'],
             ['invia', '#17a2b8'],
             ['inrie', '#007bff'],
-            ['sulpos', '#28a745'],
+            ['sulpo', '#28a745'],
             ['istit', '#ffc107'],
         ];
         this.mapColorStato = new Map(this.colorStato);

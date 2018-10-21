@@ -91,9 +91,11 @@ export class IconMappe {
         this.mapIconeTipoSedi = new Map(this.iconeTipoSedi);
 
         this.iconeMezzi = [
-            ['autobotte', 'mezzo.png'],
-            ['autobotte2', 'mezzo2.png'],
-            ['autobotte3', 'mezzo3.png']
+            ['insed', 'insede.png'],
+            ['invia', 'inviaggio.png'],
+            ['inrie', 'inrientro.png'],
+            ['sulpo', 'sulposto.png'],
+            ['istit', 'istituto.png']
         ];
         this.mapIconeMezzi = new Map(this.iconeMezzi);
 
@@ -125,7 +127,7 @@ export class IconMappe {
                     return this.iconaStatoCorrenteUrl;
                 }
                 case 'mezzo': {
-                    const tipoMezzo = this.mapIconeMezzi.get(marker.mezzo.descrizione.toLowerCase());
+                    const tipoMezzo = this.mapIconeMezzi.get(marker.mezzo.stato.substring(0, 5).toLowerCase());
                     this.iconaStatoCorrenteUrl = dir + tipoMezzo;
                     if (!this.iconaStatoCorrenteUrl || !tipoMezzo) {
                         return undefined;
