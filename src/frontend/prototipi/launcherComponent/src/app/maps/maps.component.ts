@@ -5,7 +5,6 @@ import {Coordinate} from '../shared/model/coordinate.model';
 import {MapManagerService} from '../dispatcher/manager/maps-manager/map-manager-service.service';
 import {SedeMarker} from './maps-model/sede-marker.model';
 import {MezzoMarker} from './maps-model/mezzo-marker.model';
-import {UnitaOperativaService} from '../navbar/navbar-service/unita-operativa-service/unita-operativa.service';
 
 @Component({
     selector: 'app-maps',
@@ -19,8 +18,7 @@ export class MapsComponent implements OnInit {
     sediMarkers: SedeMarker[];
     mezziMarkers: MezzoMarker[];
 
-    constructor(private mapManager: MapManagerService /** servizio che innietta dati alla mappa **/,
-                public fakeCambioSede: UnitaOperativaService) {
+    constructor(private mapManager: MapManagerService /** servizio che innietta dati alla mappa **/) {
         /**
          *  creo un oggetto di tipo centroMappa per inizializzare la mappa
          */
