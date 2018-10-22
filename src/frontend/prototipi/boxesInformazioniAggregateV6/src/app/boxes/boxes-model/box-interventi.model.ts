@@ -7,11 +7,20 @@ export class BoxInterventi {
         /* Interventi con mezzi in rientro  */
         public presidiati: number,
         /* Interventi con mezzi in attesa  */
-        public sospesi: number
+        public sospesi: number,
+        /* Interventi totali turno corrente  */
+        public totTurnoCorrente: number,
+        /* Descrizione turno corrente  */
+        public nomeTurnoCorrente: string,
+        /* Interventi totali turno precedente  */
+        public totTurnoPrecedente: number,
+        /* Descrizione turno precedente  */
+        public nomeTurnoPrecedente: string
     ) {
     }
 
-    getTotal() {
-        return Object.values(this).reduce((a, b) => a + b, 0);
+    getTotal(): number {
+        return this.chiamate + this.assegnati + this.presidiati + this.sospesi;
     }
+
 }
