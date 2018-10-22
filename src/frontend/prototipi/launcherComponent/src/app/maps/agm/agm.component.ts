@@ -102,6 +102,10 @@ export class AgmComponent implements OnInit {
         }
     }
 
+    zIndex() {
+        return this.markerService.zIndex();
+    }
+
     trueMarker(marker: any): boolean {
         /**
          * richiedo al service che gestisce i marker sulla mappa, di ritornarmi se il marker cliccato è quello selezionato
