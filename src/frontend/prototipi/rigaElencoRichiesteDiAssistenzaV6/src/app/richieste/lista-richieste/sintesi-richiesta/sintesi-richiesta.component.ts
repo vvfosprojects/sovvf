@@ -21,10 +21,10 @@ export class SintesiRichiestaComponent implements OnInit {
     @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
     @Input() richiesta: SintesiRichiesta;
 
-    observableTime = new Observable<number>((observer) => {
+    /* observableTime = new Observable<number>((observer) => {
         setInterval(() => observer.next(
             (new Date(this.richiesta.istanteRicezioneRichiesta).getTime() - new Date().getTime()) * -1), 1000);
-    });
+    }); */
     espanso = false;
     time: any;
     methods = new LayoutMethods;
@@ -38,7 +38,7 @@ export class SintesiRichiestaComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.displayRealTime(this.observableTime);
+        /* this.displayRealTime(this.observableTime); */
     }
 
     /* Data una 'Date' permette di visualizzare il tempo passato fino a questo momento */
@@ -177,5 +177,3 @@ export class SintesiRichiestaComponent implements OnInit {
         console.log('invio partenza');
     }
 }
-
-

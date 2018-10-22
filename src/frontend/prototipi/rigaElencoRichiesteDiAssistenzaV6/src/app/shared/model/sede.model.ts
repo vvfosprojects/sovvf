@@ -1,4 +1,4 @@
-import { Coordinate } from './coordinate.model';
+import {Localita} from './localita.model';
 
 export class Sede {
     constructor(
@@ -13,7 +13,7 @@ export class Sede {
         /**
          * coordinate sede
          */
-        public coordinate: Coordinate,
+        public localita: Localita,
         /**
          * tipologia sede (Es: Comando, Distaccamento)
          */
