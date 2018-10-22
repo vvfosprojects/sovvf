@@ -11,7 +11,7 @@ export class BoxInterventiComponent implements OnInit {
 
     constructor() {
     }
+
     ngOnInit() {
     }
-
 }
