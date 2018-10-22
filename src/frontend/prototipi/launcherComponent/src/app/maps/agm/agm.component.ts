@@ -102,8 +102,8 @@ export class AgmComponent implements OnInit {
         }
     }
 
-    zIndex() {
-        return this.markerService.zIndex();
+    zIndex(marker: any): number {
+        return this.markerService.zIndex(marker);
     }
 
     trueMarker(marker: any): boolean {

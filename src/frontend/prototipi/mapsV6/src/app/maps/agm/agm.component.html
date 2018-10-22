@@ -25,7 +25,7 @@
                     (mouseOver)="hoverMarker(richiestaMarker, 'hover-in')"
                     (mouseOut)="hoverMarker(richiestaMarker, 'hover-out')"
                     [iconUrl]="urlIcona(richiestaMarker)"
-                    [zIndex]="zIndex()"
+                    [zIndex]="zIndex(richiestaMarker)"
                     [visible]="isVisible(richiestaMarker)">
             <agm-snazzy-info-window *ngIf="trueMarker(richiestaMarker)"
                                     [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: coloreStato}"
@@ -54,7 +54,6 @@
                     (mouseOver)="hoverMarker(sedeMarker, 'hover-in')"
                     (mouseOut)="hoverMarker(sedeMarker, 'hover-out')"
                     [iconUrl]="urlIcona(sedeMarker)"
-                    [zIndex]="zIndex(sedeMarker)"
                     [visible]="isVisible(sedeMarker)">
             <agm-snazzy-info-window *ngIf="trueMarker(sedeMarker)"
                                     [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: coloreStato}"
@@ -84,7 +83,6 @@
                     (mouseOver)="hoverMarker(mezzoMarker, 'hover-in')"
                     (mouseOut)="hoverMarker(mezzoMarker, 'hover-out')"
                     [iconUrl]="urlIcona(mezzoMarker)"
-                    [zIndex]="zIndex(mezzoMarker)"
                     [visible]="isVisible(mezzoMarker)">
             <agm-snazzy-info-window *ngIf="trueMarker(mezzoMarker)"
                                     [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: coloreStato}"

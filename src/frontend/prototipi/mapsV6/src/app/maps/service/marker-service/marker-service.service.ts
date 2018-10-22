@@ -25,7 +25,7 @@ export class MarkerService {
 
     markerColorato: boolean;
     markerSelezionato: any;
-    markerZIndex: number;
+    markerZIndex: any;
     subscription: Subscription;
 
     filtro: Array<any>;
@@ -80,11 +80,9 @@ export class MarkerService {
         }
     }
 
-    zIndex(): number {
-        if (!this.markerZIndex) {
-            return 1;
-        } else {
-            return this.markerZIndex;
+    zIndex(marker): number {
+        if (this.markerZIndex === marker) {
+            return 99999;
         }
     }
 
@@ -126,13 +124,13 @@ export class MarkerService {
         switch (modello + '|' + mouse) {
             case 'richiesta|hover-in': {
                 this.markerColorato = marker;
-                this.markerZIndex = 99999;
+                this.markerZIndex = marker;
                 this.richiesteService.hoverIn(marker.id);
             }
                 break;
             case 'richiesta|hover-out': {
                 this.markerColorato = null;
-                this.markerZIndex = 1;
+                this.markerZIndex = null;
                 this.richiesteService.hoverOut();
             }
                 break;
@@ -233,11 +231,13 @@ export class MarkerService {
         switch (mouse) {
             case 'hover-in': {
                 this.markerColorato = marker;
+                this.markerZIndex = marker;
                 this.richiesteService.hoverIn(marker.id);
             }
                 break;
             case 'hover-out': {
                 this.markerColorato = null;
+                this.markerZIndex = null;
                 this.richiesteService.hoverOut();
             }
                 break;
