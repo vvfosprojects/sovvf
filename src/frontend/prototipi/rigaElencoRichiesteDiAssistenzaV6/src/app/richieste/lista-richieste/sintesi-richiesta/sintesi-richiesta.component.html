@@ -1,4 +1,5 @@
-<div class="card row_text py-2 px-3 mb-1 transparent" [ngClass]="statusClass(richiesta)" (click)="richiestaClick(richiesta)" (dblclick)="richiestaDoubleClick(richiesta)">
+<div class="card row_text py-2 px-3 mb-1 transparent" [ngClass]="statusClass(richiesta)" (click)="richiestaClick(richiesta)"
+    (dblclick)="richiestaDoubleClick(richiesta)">
     <div class="row align-items-center">
         <div class="col-12">
             <div class="row">
@@ -9,8 +10,9 @@
                                 <i class="guida fa fa-hashtag fa-fw mr-1" ngbTooltip="Identificativo richiesta assistenza"
                                     placement="right"></i>
                                 <a class="h6 num-int" (click)="toggleEspanso()">{{ richiesta.codice
-                                    }}</a> - {{richiesta.id}}
-                                <i *ngIf="richiesta.rilevanza" ngbTooltip="Rilevante il: {{richiesta.rilevanza | date: 'dd/MM/yyyy'}}" class="fa fa-exclamation text-danger ml-2"></i>
+                                    }}</a><!--  - {{richiesta.id}} -->
+                                <i *ngIf="richiesta.rilevanza" ngbTooltip="Rilevante il: {{richiesta.rilevanza | date: 'dd/MM/yyyy'}}"
+                                    class="fa fa-exclamation text-danger ml-2"></i>
                             </div>
                         </div>
                         <div class="col-6">
@@ -177,7 +179,8 @@
 
                             <!-- presa in carico -->
                             <div class="h6">
-                                <i class="guida fa fa-calendar-check-o fa-fw mr-1" ngbTooltip="Presa in carico" placement="right"></i>
+                                <i class="guida fa fa-calendar-check-o fa-fw mr-1" ngbTooltip="Presa in carico"
+                                    placement="right"></i>
                                 <a *ngIf="richiesta.istantePresaInCarico; else nonPresaInCarico" ngbTooltip="{{ richiesta.istantePresaInCarico | friendlyDateTooltip }}">{{richiesta.istantePresaInCarico
                                     | friendlyDate }}{{ richiesta.istantePresaInCarico | friendlyHour }}</a>
                                 <ng-template #nonPresaInCarico>
@@ -220,17 +223,16 @@
                                             <i class="fa fa-person"></i>Squadre coinvolte
                                         </div>
                                         <div class="h6">
-                                            <ul class="list-group list-group-flush" *ngFor="let p of richiesta.partenze">
-                                                <span *ngFor="let s of p.squadre">
-                                                    <li class="row mx-auto list-group-item">
+                                            <ul class="list-group list-group-flush">
+                                                <span *ngFor="let p of richiesta.partenze">
+                                                    <li *ngFor="let s of p.squadre" class="row mx-auto list-group-item border-bottom p-0 py-2">
                                                         <span class="h6 mr-2">
                                                             <i class="guida fa fa-fire-extinguisher fa-fw" title="Squadra"></i>
                                                             <span>{{ s.nome }}</span>
                                                         </span>
                                                         <span class="text-right">
                                                             <a title="Componenti squadra" [ngbPopover]="popComponenti"
-                                                                placement="top" popoverTitle="Componenti" triggers="click"
-                                                                tabindex="0">
+                                                                popoverTitle="Componenti" triggers="click" tabindex="0">
                                                                 <i class="guida fa fa-address-book-o" title="Componenti squadra"></i>
                                                             </a>
 
@@ -244,10 +246,13 @@
                                                             </ng-template>
                                                         </span>
                                                     </li>
+                                                    <span *ngIf="!p.squadre" class="p-2">
+                                                        Nessun mezzo
+                                                    </span>
                                                 </span>
-                                                <li *ngIf="numeroSquadre(richiesta) === 0" class="list-group-item pl-2 pr-2">
+                                                <span *ngIf="!richiesta.partenze" class="p-2">
                                                     Nessuna squadra
-                                                </li>
+                                                </span>
                                             </ul>
                                         </div>
                                     </div>
@@ -259,10 +264,13 @@
                                             <ul class="list-group list-group-flush border-left">
                                                 <span *ngFor="let p of richiesta.partenze">
                                                     <app-mezzo *ngFor="let m of p.mezzi" [mezzo]="m"></app-mezzo>
+                                                    <span *ngIf="!p.mezzi" class="p-2">
+                                                        Nessun mezzo
+                                                    </span>
                                                 </span>
-                                                <li *ngIf="numeroMezzi() === 0" class="list-group-item pl-2 pr-2">
+                                                <span *ngIf="!richiesta.partenze" class="p-2">
                                                     Nessun mezzo
-                                                </li>
+                                                </span>
                                             </ul>
                                         </div>
                                     </div>
@@ -271,15 +279,15 @@
                         </div>
 
                         <!-- TAGS-->
-                        <div *ngIf="richiesta.etichette" class="card-text col-md-12">
-                            <div class="card mt-3 bg-light">
+                        <!-- <div *ngIf="richiesta.etichette" class="card-text col-md-12">
+                            <div class="card mt-3 border-secondary">
                                 <div class="col-md-12 h6 text-right my-1">
                                     <i class="guida fa fa-tags fa-fw text-left m-1" title="Etichette"></i>
                                     <span *ngFor="let etichetta of richiesta.etichette" class="badge badge-secondary text-right py-2 m-1"><i
                                             class="fa fa-hashtag fa-fw text-left"></i>{{etichetta}}</span>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

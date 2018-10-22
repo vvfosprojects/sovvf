@@ -81,8 +81,12 @@ export class ListaRichiesteComponent implements OnInit {
     }
     fissaInAlto(richiesta) {
         if (richiesta) {
-            this.richiesteS.fissata(richiesta.id);
-            this.markerS.actionById(richiesta.id, 'click');
+            if (richiesta !== this.richiestaFissata) {
+                this.richiesteS.fissata(richiesta.id);
+                this.markerS.actionById(richiesta.id, 'click');
+            } else {
+                this.unClick();
+            }
         }
     }
     richiestaHoverIn(richiesta) {

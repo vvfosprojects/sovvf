@@ -1,6 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { transition, animate, style, state, trigger } from '@angular/animations';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { EventiRichiestaComponent } from '../../../eventi-richiesta/eventi-richiesta.component';
 
 @Component({
   selector: 'app-richiesta-fissata',
@@ -24,10 +26,21 @@ import { transition, animate, style, state, trigger } from '@angular/animations'
 export class RichiestaFissataComponent implements OnInit {
   @Input() richiestaFissata: SintesiRichiesta;
   @Input() richiestaFissataState: string;
+  @Output() defissaRichiesta: EventEmitter<any> = new EventEmitter();
+  @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
 
-  constructor() { }
+
+  constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
+  }
+
+  defissa(richiestaFissata) {
+    this.defissaRichiesta.emit(richiestaFissata);
+  }
+
+  visualizzaEventiRichiesta(richiesta) {
+    this.eventiRichiesta.emit(richiesta);
   }
 
   /* NgClass Template */
