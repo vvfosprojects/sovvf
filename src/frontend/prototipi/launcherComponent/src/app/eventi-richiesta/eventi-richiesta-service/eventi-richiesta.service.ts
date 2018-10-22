@@ -33,5 +33,4 @@ export class EventiRichiestaService {
         return throwError(
             'Qualcosa è andato storto, per favore riprova più tardi.');
     }
-
 }

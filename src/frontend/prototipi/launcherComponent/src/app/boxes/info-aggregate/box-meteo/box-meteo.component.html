@@ -27,7 +27,7 @@
             <li>
                 <div class="h6">
                     <i [ngStyle]="{'transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datimeteo.direzione.gradi+'deg)'}"
-                        class="pl-2 fa fa-long-arrow-up"></i>
+                       class="pl-2 fa fa-long-arrow-up"></i>
                     <small class="text-black-50"> {{datimeteo.direzione.cardinali}}</small>
                 </div>
             </li>
@@ -36,8 +36,8 @@
     <!-- destra -->
     <div class="col-3 pl-2 text-right">
         <ul class="list-unstyled m-0">
-            <li><span class="badge badge-secondary h6">{{datimeteo.umidita}}%</span></li>
-            <li><span class="badge badge-info h6">{{datimeteo.vento}} km/h</span></li>
+            <li><span class="badge badge-secondary h6 mb-1">{{datimeteo.umidita}}%</span></li>
+            <li><span class="badge badge-info h6 mb-1">{{datimeteo.vento}} km/h</span></li>
         </ul>
     </div>
 </div>

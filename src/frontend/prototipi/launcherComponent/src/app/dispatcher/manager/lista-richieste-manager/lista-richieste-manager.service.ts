@@ -22,22 +22,20 @@ export class ListaRichiesteManagerService {
 
     onNewRichiesteList() {
         this.dispatcher.onNewRichiesteList().subscribe((richieste: SintesiRichiesta[]) => {
-            const nPerPagina = 15;
+            const nPerPagina = 10;
             if (richieste[this.prossimaRichiesta]) {
                 for (let i = this.prossimaRichiesta; i < (this.prossimaRichiesta + nPerPagina); i++) {
                     if (richieste[i]) {
                         this.richieste.push(richieste[i]);
                         this.ultima = i;
-                        console.log('a');
                     } else {
                         this.prossimaRichiesta = this.ultima + 1;
-                        console.log('b');
                         return;
                     }
                 }
                 this.prossimaRichiesta = this.ultima + 1;
             } else {
-                console.log('bb');
+                console.log('Richieste Terminate');
             }
         });
     }
