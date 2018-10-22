@@ -17,7 +17,7 @@ export class InfoAggregateServiceFake {
     }
 
     public getInterventi(): Observable<BoxInterventi> {
-        this.interventi = new BoxInterventi(25, 30, 10, 30, 104, 'B', 90, 'A');
+        this.interventi = new BoxInterventi(25, 30, 10, 30, 105, 'B', 90, 'A');
         return of(this.interventi);
 
     }
