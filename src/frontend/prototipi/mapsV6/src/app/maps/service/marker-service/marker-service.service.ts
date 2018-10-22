@@ -25,6 +25,7 @@ export class MarkerService {
 
     markerColorato: boolean;
     markerSelezionato: any;
+    markerZIndex: number;
     subscription: Subscription;
 
     filtro: Array<any>;
@@ -79,6 +80,14 @@ export class MarkerService {
         }
     }
 
+    zIndex(): number {
+        if (!this.markerZIndex) {
+            return 1;
+        } else {
+            return this.markerZIndex;
+        }
+    }
+
     cliccato(marker: any): void {
         /**
          *  imposto nel service marked lo stato del marker a selezionato
@@ -117,11 +126,13 @@ export class MarkerService {
         switch (modello + '|' + mouse) {
             case 'richiesta|hover-in': {
                 this.markerColorato = marker;
+                this.markerZIndex = 99999;
                 this.richiesteService.hoverIn(marker.id);
             }
                 break;
             case 'richiesta|hover-out': {
                 this.markerColorato = null;
+                this.markerZIndex = 1;
                 this.richiesteService.hoverOut();
             }
                 break;
