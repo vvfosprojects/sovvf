@@ -63,6 +63,10 @@ export class ListaRichiesteManagerService {
     }
 
     getRichiestaFromId(id) {
-        return this.richieste.find(x => x.id === id);
+        let allRichieste;
+        this.dispatcher.onNewRichiesteList().subscribe((richieste: SintesiRichiesta[]) => {
+            allRichieste = richieste;
+        });
+        return allRichieste.find(x => x.id === id);
     }
 }

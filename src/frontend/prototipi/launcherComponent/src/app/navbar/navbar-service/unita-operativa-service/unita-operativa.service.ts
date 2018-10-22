@@ -18,11 +18,11 @@ export class UnitaOperativaService {
     constructor() {
         this.preLoader = true;
         this.unitaOperative = [
-            new Sede('1', 'Comando di Roma', new Localita(new Coordinate(41.900170, 12.491000)), 'Comando'),
-            new Sede('2', 'Comando di Latina', new Localita(new Coordinate(41.474260, 12.903250)), 'Comando'),
-            new Sede('3', 'Comando di Frosinone', new Localita(new Coordinate(41.634870, 13.328760)), 'Comando'),
-            new Sede('4', 'Comando di Rieti', new Localita(new Coordinate(42.397130, 12.858720)), 'Comando'),
-            new Sede('4', 'Comando di Viterbo', new Localita(new Coordinate(42.437820, 12.093420)), 'Comando')
+            new Sede('1', 'Comando di Roma', new Localita(new Coordinate(41.899940, 12.491270)), 'Comando'),
+            new Sede('2', 'Comando di Latina', new Localita(new Coordinate(41.474258, 12.903250)), 'Comando'),
+            new Sede('3', 'Comando di Frosinone', new Localita(new Coordinate(41.616320, 13.310050)), 'Comando'),
+            new Sede('4', 'Comando di Rieti', new Localita(new Coordinate(42.397678, 12.858020)), 'Comando'),
+            new Sede('5', 'Comando di Viterbo', new Localita(new Coordinate(42.482290, 12.069130)), 'Comando')
         ];
     }
 

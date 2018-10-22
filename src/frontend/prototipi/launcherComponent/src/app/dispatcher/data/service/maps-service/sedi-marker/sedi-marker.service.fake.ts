@@ -28,11 +28,11 @@ export class SediMarkerServiceFake {
             new SedeMarker('3', 'Roma', new Localita(new Coordinate(41.8748856, 12.4071855)), 'Direzioni')
         ]; */
         this.sedi = [
-            new SedeMarker('1', 'Roma', new Localita(new Coordinate(41.899940, 12.491270)), 'Comando'),
-            new SedeMarker('2', 'Latina', new Localita(new Coordinate(41.474258, 12.903250)), 'Comando'),
-            new SedeMarker('3', 'Frosinone', new Localita(new Coordinate(41.616320, 13.310050)), 'Comando'),
-            new SedeMarker('4', 'Rieti', new Localita(new Coordinate(42.397678, 12.858020)), 'Comando'),
-            new SedeMarker('5', 'Viterbo', new Localita(new Coordinate(42.482290, 12.069130)), 'Comando')
+            new SedeMarker('1', 'Comando di Roma', new Localita(new Coordinate(41.899940, 12.491270)), 'Comando'),
+            new SedeMarker('2', 'Comando di Latina', new Localita(new Coordinate(41.474258, 12.903250)), 'Comando'),
+            new SedeMarker('3', 'Comando di Frosinone', new Localita(new Coordinate(41.616320, 13.310050)), 'Comando'),
+            new SedeMarker('4', 'Comando di Rieti', new Localita(new Coordinate(42.397678, 12.858020)), 'Comando'),
+            new SedeMarker('5', 'Comando di Viterbo', new Localita(new Coordinate(42.482290, 12.069130)), 'Comando')
         ];
         return of(this.sedi);
     }

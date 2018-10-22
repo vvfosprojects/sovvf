@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CambioSedeModalComponent } from './cambio-sede-modal.component';
+import { CambioSedeModalNavComponent } from './cambio-sede-modal-nav.component';
 
 describe('MezzoModalContentComponent', () => {
-  let component: CambioSedeModalComponent;
-  let fixture: ComponentFixture<CambioSedeModalComponent>;
+  let component: CambioSedeModalNavComponent;
+  let fixture: ComponentFixture<CambioSedeModalNavComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CambioSedeModalComponent ]
+      declarations: [ CambioSedeModalNavComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CambioSedeModalComponent);
+    fixture = TestBed.createComponent(CambioSedeModalNavComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
