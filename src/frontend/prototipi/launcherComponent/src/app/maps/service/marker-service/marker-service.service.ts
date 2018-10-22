@@ -142,10 +142,12 @@ export class MarkerService {
             }
                 break;
             case 'mezzo|hover-in': {
+                this.markerZIndex = marker;
                 this.markerColorato = marker;
             }
                 break;
             case 'mezzo|hover-out': {
+                this.markerZIndex = null;
                 this.markerColorato = null;
             }
                 break;
@@ -164,10 +166,12 @@ export class MarkerService {
             }
                 break;
             case 'sede|hover-in': {
+                this.markerZIndex = marker;
                 this.markerColorato = marker;
             }
                 break;
             case 'sede|hover-out': {
+                this.markerZIndex = null;
                 this.markerColorato = null;
             }
                 break;
