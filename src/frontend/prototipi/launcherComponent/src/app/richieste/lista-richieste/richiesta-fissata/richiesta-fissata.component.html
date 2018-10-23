@@ -1,4 +1,4 @@
-<div [@richiestaSelezionata]="richiestaSelezionataState" class="col-12 mt-1 py-2">
+<div class="col-12 mt-1 py-2">
     <div class="w-100 rounded bg-light" [ngClass]="cardShadowClass(richiestaFissata)">
         <app-sintesi-richiesta [richiesta]="richiestaFissata" (fissaInAlto)="defissa($event)" (eventiRichiesta)="visualizzaEventiRichiesta($event)"></app-sintesi-richiesta>
     </div>

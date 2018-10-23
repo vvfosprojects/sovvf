@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
 
 // Models
-import { SedeMarker } from '../../../../../maps/maps-model/sede-marker.model';
+import {SedeMarker} from '../../../../../maps/maps-model/sede-marker.model';
 
 @Injectable({
     providedIn: 'root'

@@ -25,7 +25,7 @@ export class ListaRichiesteService {
         console.log('');
     }
 
-    fissata(richiesta) {
+    fissata(id, fromMap?: boolean) {
         console.log('');
     }
 

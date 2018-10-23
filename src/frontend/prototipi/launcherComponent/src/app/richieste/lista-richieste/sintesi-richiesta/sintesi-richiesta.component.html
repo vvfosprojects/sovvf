@@ -10,7 +10,7 @@
                                 <i class="guida fa fa-hashtag fa-fw mr-1" ngbTooltip="Identificativo richiesta assistenza"
                                     placement="right"></i>
                                 <a class="h6 num-int" (click)="toggleEspanso()">{{ richiesta.codice
-                                    }}</a><!--  - {{richiesta.id}} -->
+                                    }}</a> - {{richiesta.id}}
                                 <i *ngIf="richiesta.rilevanza" ngbTooltip="Rilevante il: {{richiesta.rilevanza | date: 'dd/MM/yyyy'}}"
                                     class="fa fa-exclamation text-danger ml-2"></i>
                             </div>
@@ -85,8 +85,8 @@
                             <div class="h6 mt-1 mb-2 nowrap default-cursor">
                                 <i class="guida fa fa-clock-o fa-fw mr-1" ngbTooltip="Ricezione richiesta" placement="right"
                                     container="body"></i>
-                                <a ngbTooltip="{{ richiesta.istanteRicezioneRichiesta | friendlyDateTooltip }}">{{ time
-                                    }}</a>
+                                <a ngbTooltip="{{ richiesta.istanteRicezioneRichiesta | friendlyDateTooltip }}">{{
+                                    richiesta.istanteRicezioneRichiesta | timeago:live}}</a>
                             </div>
                         </div>
                         <div class="col-6">

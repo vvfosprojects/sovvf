@@ -206,13 +206,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngIf="sedeMarker.localita.indirizzo">
+            <tr *ngIf="sedeMarker.indirizzo">
                 <th scope="row" class="py-1 s-info-window">
                     <span class="guida fa fa-hashtag fa-fw mr-0">
                         </span>{{sedeMarker.codice}}
                     <span class="guida fa fa-map-marker fa-fw ml-1 mr-0" ngbTooltip="Località"></span>
-                    <span ngbTooltip="{{ sedeMarker.localita.indirizzo }}"
-                          [disableTooltip]="sedeMarker.localita.indirizzo.length <= 33">{{sedeMarker.localita.indirizzo | truncate:33 }}</span>
+                    <span ngbTooltip="{{ sedeMarker.indirizzo }}"
+                          [disableTooltip]="sedeMarker.indirizzo.length <= 33">{{sedeMarker.indirizzo | truncate:33 }}</span>
                     <span class="guida fa fa-sticky-note-o fa-fw ml-2 mr-0">
                         </span>{{sedeMarker.label}}
                 </th>

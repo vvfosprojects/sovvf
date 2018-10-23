@@ -18,21 +18,12 @@ export class SediMarkerServiceFake {
     }
 
     public getSedi(): Observable<SedeMarker[]> {
-        /* this.sedi = [
-            new SedeMarker('1', 'Tuscolano I', new Localita(new Coordinate(41.881490, 12.518700)), 'Distaccamento')
-            ,
-            new SedeMarker('2', 'Tuscolano II', new Localita(new Coordinate(41.863930, 12.554420)), 'Distaccamento')
-            ,
-            new SedeMarker('3', 'Roma', new Localita(new Coordinate(41.899940, 12.491270)), 'Comando')
-            ,
-            new SedeMarker('3', 'Roma', new Localita(new Coordinate(41.8748856, 12.4071855)), 'Direzioni')
-        ]; */
         this.sedi = [
-            new SedeMarker('1', 'Comando di Roma', new Localita(new Coordinate(41.899940, 12.491270)), 'Comando'),
-            new SedeMarker('2', 'Comando di Latina', new Localita(new Coordinate(41.474258, 12.903250)), 'Comando'),
-            new SedeMarker('3', 'Comando di Frosinone', new Localita(new Coordinate(41.616320, 13.310050)), 'Comando'),
-            new SedeMarker('4', 'Comando di Rieti', new Localita(new Coordinate(42.397678, 12.858020)), 'Comando'),
-            new SedeMarker('5', 'Comando di Viterbo', new Localita(new Coordinate(42.482290, 12.069130)), 'Comando')
+            new SedeMarker('1', 'Comando di Roma', new Coordinate(41.899940, 12.491270), 'Via Genova, 1, 00184 Roma RM', 'Comando'),
+            new SedeMarker('2', 'Comando di Latina', new Coordinate(41.474258, 12.903250), 'Piazzale G. Carturan, 1, 04100 Latina LT', 'Comando'),
+            new SedeMarker('3', 'Comando di Frosinone', new Coordinate(41.616320, 13.310050), 'Via Dei Monti Lepini, 03100 Frosinone FR', 'Comando'),
+            new SedeMarker('4', 'Comando di Rieti', new Coordinate(42.397678, 12.858020), 'Via Sacchetti Sassetti, 1, 02100 Rieti RI', 'Comando'),
+            new SedeMarker('5', 'Comando di Viterbo', new Coordinate(42.482290, 12.069130), 'Str. Cassia Nord, km 84, 01100 Viterbo VT', 'Comando')
         ];
         return of(this.sedi);
     }

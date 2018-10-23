@@ -31,7 +31,7 @@ export class NavbarComponent implements OnInit {
         this.getUnitaAttuale();
 
         /* Setto il comando a 'Roma' */
-        const sedeAttuale = new Sede('1', 'Comando di Roma', new Localita(new Coordinate(41.900170, 12.491000)), 'Comando');
+        const sedeAttuale = new Sede('1', 'Comando di Roma', new Coordinate(41.900170, 12.491000), 'Via Genova, 1, 00184 Roma RM', 'Comando');
         this.unitaOperativaS.sendUnitaOperativaAttuale(sedeAttuale);
         this.unitaOperativaS.startCount++;
     }

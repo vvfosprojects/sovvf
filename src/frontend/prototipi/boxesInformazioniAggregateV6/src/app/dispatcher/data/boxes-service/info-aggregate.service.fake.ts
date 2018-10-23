@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {BoxFunzionariSo} from '../../boxes-model/box-funzionari-so.model';
-import {BoxInterventi} from '../../boxes-model/box-interventi.model';
-import {BoxMezzi} from '../../boxes-model/box-mezzi.model';
+import {BoxFunzionariSo} from '../../../boxes/boxes-model/box-funzionari-so.model';
+import {BoxInterventi} from '../../../boxes/boxes-model/box-interventi.model';
+import {BoxMezzi} from '../../../boxes/boxes-model/box-mezzi.model';
 
 @Injectable({
     providedIn: 'root'

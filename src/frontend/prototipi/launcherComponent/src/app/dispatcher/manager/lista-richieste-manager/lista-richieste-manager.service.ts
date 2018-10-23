@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { DispatcherListaRichiesteService } from '../../dispatcher-lista-richieste.service';
-import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
+import {DispatcherListaRichiesteService} from '../../dispatcher-lista-richieste.service';
+import {SintesiRichiesta} from '../../../shared/model/sintesi-richiesta.model';
 
 
 @Injectable({
@@ -13,6 +13,7 @@ export class ListaRichiesteManagerService {
 
     prossimaRichiesta = 0;
     ultima = 0;
+
     constructor(private dispatcher: DispatcherListaRichiesteService) {
         this.onNewRichiesteList();
         this.onNewRichiesta();
@@ -52,6 +53,7 @@ export class ListaRichiesteManagerService {
             console.log(this.richieste);
         });
     }
+
     onDeleteRichiesta() {
         this.dispatcher.onDeleteRichiesta().subscribe((richiesta: SintesiRichiesta) => {
             this.richieste = this.richieste.filter(x => x.id === richiesta.id);
@@ -62,11 +64,16 @@ export class ListaRichiesteManagerService {
         return of(this.richieste);
     }
 
-    getRichiestaFromId(id) {
-        let allRichieste;
-        this.dispatcher.onNewRichiesteList().subscribe((richieste: SintesiRichiesta[]) => {
-            allRichieste = richieste;
-        });
-        return allRichieste.find(x => x.id === id);
+    getRichiestaFromId(id, fromMap?: boolean) {
+        let richiesta;
+        richiesta = this.richieste.find(x => x.id === id);
+
+        if (!richiesta && fromMap) {
+            this.dispatcher.onNewRichiesteList().subscribe((richieste: SintesiRichiesta[]) => {
+                richiesta = richieste.find(x => x.id === id);
+            });
+            console.log('Ho preso la richiesta dal service perchè non presente nella lista.');
+        }
+        return richiesta;
     }
 }

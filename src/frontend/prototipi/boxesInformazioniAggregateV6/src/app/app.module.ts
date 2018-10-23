@@ -5,33 +5,40 @@ import {HttpClientModule} from '@angular/common/http';
 import {PipeModule} from './shared/pipes/pipe.module';
 import * as Shared from './shared/';
 import {AppComponent} from './app.component';
-import {BoxFunzionariComponent} from './boxes/info-aggregate/box-funzionari/box-funzionari.component';
-import {InfoAggregateComponent} from './boxes/info-aggregate/info-aggregate.component';
-import {InfoAggregateService} from './boxes/service/boxes-services/info-aggregate.service';
-import {InfoAggregateServiceFake} from './boxes/service/boxes-services/info-aggregate.service.fake';
-import {BoxInterventiComponent} from './boxes/info-aggregate/box-interventi/box-interventi.component';
-import {BoxMezziComponent} from './boxes/info-aggregate/box-mezzi/box-mezzi.component';
-import {BoxMeteoComponent} from './boxes/info-aggregate/box-meteo/box-meteo.component';
-import {DispatcherServiceFake} from './boxes/dispatcher/dispatcher.service.fake';
-import {DispatcherService} from './boxes/dispatcher/dispatcher.service';
+import {InfoAggregateService} from './dispatcher/data/boxes-service/info-aggregate.service';
+import {InfoAggregateServiceFake} from './dispatcher/data/boxes-service/info-aggregate.service.fake';
+import {DispatcherServiceFake} from './dispatcher/dispatcher.service.fake';
+import {DispatcherService} from './dispatcher/dispatcher.service';
+import {BoxManagerService} from './dispatcher/manager/boxes-manager/box-manager-service.service';
+import {BoxManagerServiceFake} from './dispatcher/manager/boxes-manager/box-manager-service.service.fake';
+
+/**
+ * importare solo il modulo sul launcher
+ */
+import {BoxesModule} from './boxes/boxes.module';
+
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        BoxFunzionariComponent,
-        InfoAggregateComponent,
-        BoxInterventiComponent,
-        BoxMezziComponent,
-        BoxMeteoComponent
+        [
+            Shared.DebounceClickDirective,
+            Shared.DebounceKeyUpDirective,
+            Shared.CompetenzaComponent,
+            Shared.ComponenteComponent,
+            Shared.MezzoComponent
+        ],
     ],
     imports: [
         HttpClientModule,
         BrowserModule,
         NgbModule,
         PipeModule.forRoot(),
+        BoxesModule,
     ],
     providers: [
+        {provide: BoxManagerService, useClass: BoxManagerServiceFake},
         {provide: DispatcherService, useClass: DispatcherServiceFake},
         {provide: InfoAggregateService, useClass: InfoAggregateServiceFake}
         ],
