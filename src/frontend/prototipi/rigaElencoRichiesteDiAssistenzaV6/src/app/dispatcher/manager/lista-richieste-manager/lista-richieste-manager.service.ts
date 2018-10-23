@@ -62,11 +62,16 @@ export class ListaRichiesteManagerService {
         return of(this.richieste);
     }
 
-    getRichiestaFromId(id) {
-        let allRichieste;
-        this.dispatcher.onNewRichiesteList().subscribe((richieste: SintesiRichiesta[]) => {
-            allRichieste = richieste;
-        });
-        return allRichieste.find(x => x.id === id);
+    getRichiestaFromId(id, fromMap?: boolean) {
+        let richiesta;
+        richiesta = this.richieste.find(x => x.id === id);
+
+        if (!richiesta && fromMap) {
+            this.dispatcher.onNewRichiesteList().subscribe((richieste: SintesiRichiesta[]) => {
+                richiesta = richieste.find(x => x.id === id);
+            });
+            console.log('Ho preso la richiesta dal service perchè non presente nella lista.');
+        }
+        return richiesta;
     }
 }

@@ -1,9 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
-import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { LayoutMethods } from './_layout-methods';
-import { Observable } from 'rxjs';
-import * as moment from 'moment';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { TimeagoIntl } from 'ngx-timeago';
+
+import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
+import { strings as frenchStrings } from 'ngx-timeago/language-strings/fr';
+
+import { LayoutMethods } from './_layout-methods';
+import * as moment from 'moment';
+
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -12,7 +17,8 @@ import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
     providers: [
         NgbPopoverConfig,
         NgbTooltipConfig
-    ]
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SintesiRichiestaComponent implements OnInit {
     @Output() clickRichiesta: EventEmitter<any> = new EventEmitter();
@@ -29,12 +35,18 @@ export class SintesiRichiestaComponent implements OnInit {
     time: any;
     methods = new LayoutMethods;
     isSingleClick = true;
+    it = italianStrings;
+    fr = frenchStrings;
 
-    constructor(popoverConfig: NgbPopoverConfig, tooltipConfig: NgbTooltipConfig) {
+    constructor(popoverConfig: NgbPopoverConfig,
+        tooltipConfig: NgbTooltipConfig,
+        private intl: TimeagoIntl) {
+
         popoverConfig.container = 'body';
         popoverConfig.placement = 'bottom';
         tooltipConfig.container = 'body';
         tooltipConfig.placement = 'bottom';
+        // this.setLang();
     }
 
     ngOnInit() {
@@ -100,6 +112,11 @@ export class SintesiRichiestaComponent implements OnInit {
         });
     }
 
+    setLang() {
+        this.intl.strings = this.fr;
+        this.intl.changes.next();
+    }
+
     /* Layout Methods */
     toggleEspanso(): void {
         this.espanso = !this.espanso;
@@ -142,7 +159,6 @@ export class SintesiRichiestaComponent implements OnInit {
     statusClass(richiesta) {
         return this.methods.statusClass(richiesta);
     }
-
     complessitaClass(richiesta) {
         return this.methods.complessitaClass(richiesta);
     }
@@ -173,7 +189,7 @@ export class SintesiRichiestaComponent implements OnInit {
     visualizzaEventiRichiesta(richiesta) {
         this.eventiRichiesta.emit(richiesta);
     }
-    invioPartenza() {
+    invioPartenza(id) {
         console.log('invio partenza');
     }
 }

@@ -19,6 +19,7 @@ export class ListaRichiesteComponent implements OnInit {
     richiestaSelezionata: SintesiRichiesta;
     richiestaFissata: SintesiRichiesta;
     richiestaSelezionataState: string; // Animazione
+    loaderRichieste = true;
 
     preventSimpleClick: boolean;
     timer: any;
@@ -34,6 +35,7 @@ export class ListaRichiesteComponent implements OnInit {
         // Restituisce le Richieste
         this.listaRichiesteManager.getData().subscribe(richieste => {
             this.richieste = richieste;
+            this.loaderRichieste = false;
         });
         // Restituisce la Richiesta Hover
         this.richiesteS.subjects.getRichiestaHover().subscribe(richiestaHover => {
@@ -91,7 +93,7 @@ export class ListaRichiesteComponent implements OnInit {
     }
     richiestaHoverIn(richiesta) {
         if (richiesta) {
-            this.richiesteS.hoverIn(richiesta);
+            this.richiesteS.hoverIn(richiesta.id);
             this.markerS.actionById(richiesta.id, 'hover-in');
         }
     }
@@ -106,6 +108,7 @@ export class ListaRichiesteComponent implements OnInit {
         this.richiesteS.defissata();
         this.markerS.action('a', 'unclick');
     }
+
     visualizzaEventiRichiesta(richiesta) {
         this.modalService.open(EventiRichiestaComponent, { size: 'lg' });
     }
@@ -121,13 +124,15 @@ export class ListaRichiesteComponent implements OnInit {
 
     /* NgClass Template */
     cardShadowClass(r) {
-        return {
-            'card-shadow-info': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'assegnato'),
-            'card-shadow-success': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'presidiato'),
-            'card-shadow-danger': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiamata'),
-            'card-shadow-warning': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'sospeso'),
-            'card-shadow-secondary': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiuso'),
-            'bg-light': r === this.richiestaSelezionata || r === this.richiestaHover,
-        };
+        if (r) {
+            return {
+                'card-shadow-info': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'assegnato'),
+                'card-shadow-success': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'presidiato'),
+                'card-shadow-danger': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiamata'),
+                'card-shadow-warning': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'sospeso'),
+                'card-shadow-secondary': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiuso'),
+                'bg-light': r === this.richiestaSelezionata || r === this.richiestaHover,
+            };
+        }
     }
 }

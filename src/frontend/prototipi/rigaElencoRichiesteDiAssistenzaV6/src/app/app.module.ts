@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ScrollEventModule } from 'ngx-scroll-event';
+import { TimeagoModule, TimeagoIntl } from 'ngx-timeago';
 import * as Shared from './shared/';
 
 import { AppComponent } from './app.component';
@@ -22,6 +23,10 @@ import { NavTestComponent } from './richieste/lista-richieste-test/nav-test/nav-
 
 import { SintesiRichiesteService } from './dispatcher/data/sintesi-richieste-service/sintesi-richieste.service';
 import { SintesiRichiesteServiceFake } from './dispatcher/data/sintesi-richieste-service/sintesi-richieste.service.fake';
+
+export class MyIntl extends TimeagoIntl {
+    // do extra stuff here...
+}
 
 @NgModule({
     declarations: [
@@ -52,10 +57,13 @@ import { SintesiRichiesteServiceFake } from './dispatcher/data/sintesi-richieste
         FormsModule,
         NgxPaginationModule,
         FilterPipeModule,
-        ScrollEventModule
+        ScrollEventModule,
+        TimeagoModule.forRoot({
+            intl: { provide: TimeagoIntl, useClass: MyIntl },
+        })
     ],
     providers: [
-        { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }
+        { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake },
     ],
     bootstrap: [AppComponent]
 })

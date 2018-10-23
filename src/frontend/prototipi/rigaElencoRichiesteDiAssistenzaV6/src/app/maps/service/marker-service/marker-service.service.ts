@@ -9,14 +9,14 @@ export class MarkerService {
     }
 
     action(marker, mouse) {
-        console.log('Action: ' + marker + ' | ' + mouse);
+        // console.log('Action: ' + marker + ' | ' + mouse);
     }
 
     actionById(id, mouse) {
-        console.log('Action: ' + id + ' | ' + mouse);
+        // console.log('Action: ' + id + ' | ' + mouse);
     }
 
     noAction() {
-        console.log('No action');
+        // console.log('No action');
     }
 }

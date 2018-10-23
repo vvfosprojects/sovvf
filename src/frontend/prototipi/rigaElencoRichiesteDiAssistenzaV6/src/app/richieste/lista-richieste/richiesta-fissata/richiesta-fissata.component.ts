@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { transition, animate, style, state, trigger } from '@angular/animations';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { EventiRichiestaComponent } from '../../../eventi-richiesta/eventi-richiesta.component';
 
 @Component({
   selector: 'app-richiesta-fissata',
@@ -30,7 +29,8 @@ export class RichiestaFissataComponent implements OnInit {
   @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
 
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal) {
+  }
 
   ngOnInit() {
   }
