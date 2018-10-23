@@ -155,28 +155,28 @@
                            popoverTitle="Stato di efficienza del mezzo" triggers="click"
                            tabindex="0">
                             <i class='fa fa-cogs fa-fw'
-                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.statoEfficienza, 'efficienza')"></i>
+                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.statoEfficienza, 'efficienza', 'text')"></i>
                         </a>
                         <a class="mr-1" href="javascript:void(0)" title="Livello Carburante"
                            ngbPopover="{{mezzoMarker.mezzo.descrizioneLivelloCarburante }}"
                            popoverTitle="Livello Carburante" triggers="click"
                            tabindex="0">
                             <i class='fa fa-tachometer fa-fw'
-                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.livelloCarburante, 'carburante')"></i>
+                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.livelloCarburante, 'carburante', 'text')"></i>
                         </a>
                         <a class="mr-1" href="javascript:void(0)" title="Livello Estinguente"
                            ngbPopover="{{mezzoMarker.mezzo.descrizioneLivelloEstinguente }}"
                            popoverTitle="Livello Estinguente" triggers="click"
                            tabindex="0">
                             <i class='fa fa-tint fa-fw'
-                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.livelloEstinguente, 'estinguente')"></i>
+                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.livelloEstinguente, 'estinguente', 'text')"></i>
                         </a>
                         <a class="mr-1" href="javascript:void(0)" title="Appartenenza del mezzo"
                            ngbPopover="{{mezzoMarker.mezzo.descrizioneAppartenenza }}"
                            popoverTitle="Appartenenza del mezzo" triggers="click"
                            tabindex="0">
                             <i class='fa fa-flag fa-fw'
-                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.appartenenza, 'appartenenza')"></i>
+                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.appartenenza, 'appartenenza', 'text')"></i>
                         </a>
                     </div>
                 </th>

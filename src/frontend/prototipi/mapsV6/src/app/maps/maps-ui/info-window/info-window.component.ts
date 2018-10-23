@@ -5,7 +5,7 @@ import {SedeMarker} from '../../maps-model/sede-marker.model';
 import {MezzoMarker} from '../../maps-model/mezzo-marker.model';
 import {CambioSedeModalComponent} from './cambio-sede-modal/cambio-sede-modal.component';
 import {NgbModal, NgbPopoverConfig, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
-import {ColoriStatoMezzo} from './_colori';
+import {ColoriStatoMezzo} from '../../../shared/helper/_colori';
 
 @Component({
     selector: 'app-info-window',
@@ -71,8 +71,8 @@ export class InfoWindowComponent implements OnInit {
         return new Array(MAX_PRIORITA - richiesta.priorita);
     }
 
-    dettagliMezzo(stato, tipostato) {
-        return this.stato.getColor(stato, tipostato);
+    dettagliMezzo(stato, tipostato, classe) {
+        return this.stato.getColor(stato, tipostato, classe);
     }
 
 }

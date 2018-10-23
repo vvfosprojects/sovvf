@@ -97,14 +97,18 @@ export class ColoriStatoMezzo {
     }
 
     /**
-     * metodo che ritorna il colore, passando il valore e il tipo dello stato del mezzo
+     * metodo che ritorna il colore, passando il valore e il tipo dello stato del mezzo,
+     * come parametro opzionale il nome della classe bootstrap da appendere
      * @param stato
      * @param tipostato
+     * @param classBootstrap
      */
-    getColor(stato, tipostato) {
+    getColor(stato: string | number, tipostato: string, classBootstrap?: string) {
         const method = this.mapTipoStato.get(tipostato);
         const colore = this[method].get(stato);
-        return colore ? 'text-' + colore : 'guida';
+        const color_default = 'guida';
+        const classe = classBootstrap ? classBootstrap + '-' : '';
+        return colore ? classe + colore : color_default;
     }
 
 }
