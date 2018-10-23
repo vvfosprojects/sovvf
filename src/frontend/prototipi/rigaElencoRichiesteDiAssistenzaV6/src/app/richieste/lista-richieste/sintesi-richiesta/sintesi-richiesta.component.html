@@ -10,8 +10,8 @@
                                 <i class="guida fa fa-hashtag fa-fw mr-1" ngbTooltip="Identificativo richiesta assistenza"
                                     placement="right"></i>
                                 <a class="h6 num-int" (click)="toggleEspanso()">{{ richiesta.codice
-                                    }}</a> - {{richiesta.id}}
-                                <i *ngIf="richiesta.rilevanza" ngbTooltip="Rilevante il: {{richiesta.rilevanza | date: 'dd/MM/yyyy'}}"
+                                    }}</a><!--  - {{richiesta.id}} -->
+                                <i *ngIf="richiesta.rilevanza" ngbTooltip="Rilevante dal: {{richiesta.rilevanza | date: 'dd/MM/yyyy - hh:mm:ss'}}"
                                     class="fa fa-exclamation text-danger ml-2"></i>
                             </div>
                         </div>
@@ -174,6 +174,9 @@
                                         <i class="guida fa fa-tags fa-fw text-left mr-1" title="Etichette"></i>
                                         <span *ngFor="let etichetta of richiesta.etichette" class="badge badge-secondary text-right py-2 m-1"><i
                                                 class="fa fa-hashtag fa-fw text-left"></i>{{etichetta}}</span>
+                                        <span *ngIf="!richiesta.etichette">
+                                            Non ci sono tags
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="h3">

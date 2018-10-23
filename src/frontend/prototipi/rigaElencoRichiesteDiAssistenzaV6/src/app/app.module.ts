@@ -1,16 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+/*
+    Modules
+ */
 import { PipeModule } from './shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ScrollEventModule } from 'ngx-scroll-event';
-import { TimeagoModule, TimeagoIntl } from 'ngx-timeago';
+import { TimeagoModule, TimeagoFormatter, TimeagoCustomFormatter, TimeagoIntl } from 'ngx-timeago';
 import * as Shared from './shared/';
-
+/*
+    Components
+ */
 import { AppComponent } from './app.component';
 import { RichiesteComponent } from './richieste/richieste.component';
 import { ListaRichiesteComponent } from './richieste/lista-richieste/lista-richieste.component';
@@ -20,13 +25,15 @@ import { FiltriRichiesteComponent } from './richieste/filtri-richieste/filtri-ri
 import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.component';
 import { RichiestaFissataComponent } from './richieste/lista-richieste/richiesta-fissata/richiesta-fissata.component';
 import { NavTestComponent } from './richieste/lista-richieste-test/nav-test/nav-test.component';
-
+/*
+    Services
+ */
 import { SintesiRichiesteService } from './dispatcher/data/sintesi-richieste-service/sintesi-richieste.service';
 import { SintesiRichiesteServiceFake } from './dispatcher/data/sintesi-richieste-service/sintesi-richieste.service.fake';
-
-export class MyIntl extends TimeagoIntl {
-    // do extra stuff here...
-}
+import { ListaRichiesteManagerService } from './dispatcher/manager/lista-richieste-manager/lista-richieste-manager.service';
+import { ListaRichiesteManagerServiceFake } from './dispatcher/manager/lista-richieste-manager/lista-richieste-manager.service.fake';
+import { DispatcherService } from './dispatcher/dispatcher.service';
+import { DispatcherFakeService } from './dispatcher/dispatcher-fake.service';
 
 @NgModule({
     declarations: [
@@ -59,11 +66,14 @@ export class MyIntl extends TimeagoIntl {
         FilterPipeModule,
         ScrollEventModule,
         TimeagoModule.forRoot({
-            intl: { provide: TimeagoIntl, useClass: MyIntl },
+            intl: TimeagoIntl,
+            formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
         })
     ],
     providers: [
-        { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake },
+        { provide: DispatcherService, useClass: DispatcherFakeService },
+        { provide: ListaRichiesteManagerService, useClass: ListaRichiesteManagerServiceFake },
+        { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }
     ],
     bootstrap: [AppComponent]
 })

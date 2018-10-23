@@ -7,7 +7,7 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
 @Injectable({
     providedIn: 'root'
 })
-export class ListaRichiesteManagerService {
+export class ListaRichiesteManagerServiceFake {
 
     richieste: SintesiRichiesta[] = [];
 
