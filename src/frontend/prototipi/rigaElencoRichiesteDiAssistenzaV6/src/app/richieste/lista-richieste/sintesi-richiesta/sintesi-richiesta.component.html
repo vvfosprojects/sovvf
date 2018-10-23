@@ -160,14 +160,23 @@
                     <div class="col-md-12">
                         <div class="row card bt-0 note-localita">
                             <div class="col-md-12 bg_diagonal_grey">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="h6 mb-0 pt-2 pb-1">
+                                            {{ richiesta.localita.note }}
+                                        </div>
+                                        <div class="h5 mb-0 pull-right">
+                                            <span *ngFor="let ze of richiesta.zoneEmergenza" class="badge badge-danger pull-right m-1">{{
+                                                ze }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-right">
+                                        <i class="guida fa fa-tags fa-fw text-left mr-1" title="Etichette"></i>
+                                        <span *ngFor="let etichetta of richiesta.etichette" class="badge badge-secondary text-right py-2 m-1"><i
+                                                class="fa fa-hashtag fa-fw text-left"></i>{{etichetta}}</span>
+                                    </div>
+                                </div>
                                 <div class="h3">
-                                    <div class="h6 p-2">
-                                        {{ richiesta.localita.note }}
-                                    </div>
-                                    <div class="h5 pull-right">
-                                        <span *ngFor="let ze of richiesta.zoneEmergenza" class="badge badge-danger pull-right m-1">{{
-                                            ze }}</span>
-                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -20,9 +20,11 @@ export class ListaRichiesteComponent implements OnInit {
     richiestaFissata: SintesiRichiesta;
     richiestaSelezionataState: string; // Animazione
     loaderRichieste = true;
+    loaderNuoveRichieste = false;
 
     preventSimpleClick: boolean;
     timer: any;
+    contatoreNuoveRichieste = 9;
 
     constructor(private listaRichiesteManager: ListaRichiesteManagerService,
         private richiesteS: ListaRichiesteService,
@@ -64,8 +66,14 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     nuoveRichieste(event: ScrollEvent) {
-        if (event.isReachingBottom && event.isWindowEvent === false) {
-            this.listaRichiesteManager.onNewRichiesteList();
+        if (event.isReachingBottom && event.isWindowEvent === false && this.contatoreNuoveRichieste < 10) {
+            this.contatoreNuoveRichieste = 10;
+            this.loaderNuoveRichieste = true;
+            setTimeout(() => {
+                this.listaRichiesteManager.onNewRichiesteList();
+                this.loaderNuoveRichieste = false;
+                this.contatoreNuoveRichieste = 9;
+            }, 3000);
         }
     }
 

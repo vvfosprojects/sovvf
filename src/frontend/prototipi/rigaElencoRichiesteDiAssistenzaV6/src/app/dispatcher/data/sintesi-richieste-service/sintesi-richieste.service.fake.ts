@@ -107,7 +107,10 @@ export class SintesiRichiesteServiceFake {
                 null,
                 new Fonogramma('0', 'Non necessario'),
                 null,
-                null
+                [
+                    'Tag 1',
+                    'Tag 2 Test'
+                ]
             ),
             new SintesiRichiesta(
                 'R4',
