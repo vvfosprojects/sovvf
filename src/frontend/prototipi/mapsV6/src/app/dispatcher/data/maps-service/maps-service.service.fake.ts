@@ -98,13 +98,13 @@ export class MapsServiceFake {
 
     getSediMarker(): Observable<SedeMarker[]> {
         this.sediMarker = [
-            new SedeMarker('1', 'Tuscolano I', new Localita(new Coordinate(41.881490, 12.518700), 'Via Tuscolana 1'), 'Distaccamento')
+            new SedeMarker('1', 'Tuscolano I', new Coordinate(41.881490, 12.518700), 'Via Tuscolana 1', 'Distaccamento')
             ,
-            new SedeMarker('2', 'Tuscolano II', new Localita(new Coordinate(41.863930, 12.554420), 'Via Tuscolana 1'), 'Distaccamento')
+            new SedeMarker('2', 'Tuscolano II', new Coordinate(41.863930, 12.554420), 'Via Tuscolana 1', 'Distaccamento')
             ,
-            new SedeMarker('3', 'Roma', new Localita(new Coordinate(41.899940, 12.491270), 'Via Roma 1'), 'Comando')
+            new SedeMarker('3', 'Roma', new Coordinate(41.899940, 12.491270), 'Via Roma 1', 'Comando')
             ,
-            new SedeMarker('3', 'Roma', new Localita(new Coordinate(41.8748856, 12.4071855), 'Via Roma 2'), 'Direzioni')
+            new SedeMarker('3', 'Roma', new Coordinate(41.8748856, 12.4071855), 'Via Roma 2', 'Direzioni')
         ];
         return of(this.sediMarker);
     }
@@ -117,7 +117,7 @@ export class MapsServiceFake {
                     3, 'carburante', 2, 'estinguente'),
                 'RM-00001',
                 [
-                    new Squadra('1A', 'InViaggio',
+                    new Squadra('1A', '1', 'InViaggio',
                         [
                             new Componente(
                                 'CR',
@@ -155,7 +155,7 @@ export class MapsServiceFake {
                                 false,
                                 true),
                         ]),
-                    new Squadra('1A', 'InViaggio',
+                    new Squadra('1A', '1', 'InViaggio',
                         [
                             new Componente(
                                 'CR',
@@ -200,7 +200,7 @@ export class MapsServiceFake {
                 new Mezzo('1', 'Autobotte2', 'ABP', 'InRientro', 1),
                 'RM-00002',
                 [
-                    new Squadra('1A', 'InViaggio',
+                    new Squadra('1A', '1', 'InViaggio',
                         [
                             new Componente(
                                 'CR',
@@ -245,7 +245,7 @@ export class MapsServiceFake {
                 new Mezzo('1', 'Autobotte3', 'ABP', 'SulPosto', 5),
                 'R1',
                 [
-                    new Squadra('1A', 'InViaggio',
+                    new Squadra('1A', '1', 'InViaggio',
                         [
                             new Componente(
                                 'CR',

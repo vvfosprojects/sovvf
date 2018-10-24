@@ -16,7 +16,7 @@ export class UnitaOperativaService {
          * progress bar fake
          */
         this.preLoader = false;
-        console.log(sede);
+        // console.log(sede);
         /** request completed */
         setTimeout(() => {
             this.preLoader = true;
