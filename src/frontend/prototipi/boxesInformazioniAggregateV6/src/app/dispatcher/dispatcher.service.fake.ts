@@ -8,7 +8,7 @@ import {InfoAggregateService} from './data/boxes-service/info-aggregate.service'
 @Injectable({
     providedIn: 'root'
 })
-export class DispatcherServiceFake {
+export class DispatcherInfoAggregateServiceFake {
     /**
      * dispatcher interventi
      */

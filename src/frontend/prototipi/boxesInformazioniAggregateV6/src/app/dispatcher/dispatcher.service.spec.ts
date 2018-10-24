@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
+import {DispatcherInfoAggregateService} from './dispatcher.service';
 
-import { DispatcherService } from './dispatcher.service';
 
-describe('DispatcherService', () => {
+describe('DispatcherInfoAggregateService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DispatcherService]
+      providers: [DispatcherInfoAggregateService]
     });
   });
 
-  it('should be created', inject([DispatcherService], (service: DispatcherService) => {
+  it('should be created', inject([DispatcherInfoAggregateService], (service: DispatcherInfoAggregateService) => {
     expect(service).toBeTruthy();
   }));
 });
