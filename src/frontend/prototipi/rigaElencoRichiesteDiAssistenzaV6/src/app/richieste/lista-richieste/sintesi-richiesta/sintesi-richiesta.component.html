@@ -206,14 +206,14 @@
                                 <a *ngIf="richiesta.codiceSchedaNue; else nessunCodiceNue">{{ richiesta.codiceSchedaNue
                                     }}</a>
                                 <ng-template #nessunCodiceNue>
-                                    <a class="badge badge-secondary text-light">Non presente</a>
+                                    <span class="badge badge-secondary text-light">Non presente</span>
                                 </ng-template>
                             </div>
 
                             <!-- fonogramma -->
                             <div class="h6">
                                 <i class="guida fa fa-paper-plane-o fa-fw mr-1" ngbTooltip="Stato Fonogramma" placement="right"></i>
-                                <span class="h6 badge m-0" [ngClass]="{'badge-success text-light':richiesta.fonogramma.codice === '2', 'badge-secondary':richiesta.fonogramma.codice === '0', 'badge-warning text-light':richiesta.fonogramma.codice === '1'}">
+                                <span class="h6 badge m-0" [ngClass]="{'badge-success text-light':richiesta.fonogramma.codice === '2', 'badge-secondary text-light':richiesta.fonogramma.codice === '0', 'badge-warning text-light':richiesta.fonogramma.codice === '1'}">
                                     {{ richiesta.fonogramma.descrizione }}
                                 </span>
                             </div>
