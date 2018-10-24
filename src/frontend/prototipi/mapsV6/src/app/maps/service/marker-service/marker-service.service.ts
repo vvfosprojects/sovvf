@@ -137,7 +137,7 @@ export class MarkerService {
             case 'richiesta|click': {
                 this.cliccato(marker);
                 this.coloreStato = this.colori.markerColor(marker.getStato());
-                this.richiesteService.fissata(marker.id);
+                this.richiesteService.fissata(marker.id, true);
                 this.richiesteService.deselezionata();
             }
                 break;
@@ -236,13 +236,11 @@ export class MarkerService {
             case 'hover-in': {
                 this.markerColorato = marker;
                 this.markerZIndex = marker;
-                this.richiesteService.hoverIn(marker.id);
             }
                 break;
             case 'hover-out': {
                 this.markerColorato = null;
                 this.markerZIndex = null;
-                this.richiesteService.hoverOut();
             }
                 break;
             case 'click': {

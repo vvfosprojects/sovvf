@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 import {PipeModule} from './shared/pipes/pipe.module';
 import {SharedModule} from './shared/shared.module';
 import {environment} from '../environments/environment';
+
 /**
  *  maps component
  */
@@ -10,6 +11,7 @@ import {MapsFiltroComponent} from './maps/maps-ui/filtro/filtro.component';
 import {CambioSedeModalComponent} from './maps/maps-ui/info-window/cambio-sede-modal/cambio-sede-modal.component';
 import {InfoWindowComponent} from './maps/maps-ui/info-window/info-window.component';
 import {MapsComponent} from './maps/maps.component';
+
 /**
  * agm core
  */
