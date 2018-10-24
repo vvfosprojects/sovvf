@@ -1,11 +1,11 @@
-import { Coordinate } from './coordinate.model';
+import {Coordinate} from './coordinate.model';
 
 export class Sede {
     constructor(
         /**
          * Codice sede
          */
-        public codice: number,
+        public codice: string,
         /**
          * Descrizione della sede
          */
@@ -14,6 +14,10 @@ export class Sede {
          * coordinate sede
          */
         public coordinate: Coordinate,
+        /**
+         * indirizzo sede
+         */
+        public indirizzo: string,
         /**
          * tipologia sede (Es: Comando, Distaccamento)
          */

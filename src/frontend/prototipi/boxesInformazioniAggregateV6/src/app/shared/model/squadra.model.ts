@@ -7,19 +7,23 @@ export class Squadra {
          */
         public nome: string,
         /**
+         * Il codice del mezzo dove si trova la squadra
+         */
+        public codiceMezzo: string,
+        /**
          * Stato del squadra (InSede, InViaggio, SulPosto,
          * InRientro, Istituto).
          */
         public stato: string,
         /**
+         * I componenti della squadra
+         */
+        public componenti: Componente[],
+        /**
          * E' l'istante in cui la squadra ha terminato il suo impegno sulla richiesta.
          * Se è null, la squadra è ancora impegnata sulla richiesta.
          */
-        public istanteTermineImpegno: Date,
-        /**
-         * I componenti della squadra
-         */
-        public componenti: Componente[]
+        public istanteTermineImpegno?: Date
     ) {
     }
 }

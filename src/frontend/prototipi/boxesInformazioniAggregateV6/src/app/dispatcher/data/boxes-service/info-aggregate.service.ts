@@ -3,9 +3,9 @@ import {Observable, throwError} from 'rxjs';
 import {catchError, retry} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
-import {BoxInterventi} from '../../boxes-model/box-interventi.model';
-import {BoxMezzi} from '../../boxes-model/box-mezzi.model';
-import {BoxFunzionariSo} from '../../boxes-model/box-funzionari-so.model';
+import {BoxInterventi} from '../../../boxes/boxes-model/box-interventi.model';
+import {BoxMezzi} from '../../../boxes/boxes-model/box-mezzi.model';
+import {BoxFunzionariSo} from '../../../boxes/boxes-model/box-funzionari-so.model';
 
 const API_URL = environment.apiUrl.boxes.infoAggregateFake.pieno;
 
