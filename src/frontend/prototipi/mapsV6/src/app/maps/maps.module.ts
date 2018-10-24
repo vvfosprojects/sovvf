@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 import {PipeModule} from '../shared/pipes/pipe.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {environment} from '../../environments/environment';
-import {ComponenteComponent, DebounceClickDirective} from '../shared';
 /**
  * AGM CORE
  */
@@ -22,21 +21,21 @@ import {AgmContentComponent} from './agm/agm-content.component';
 import {MapsFiltroComponent} from './maps-ui/filtro/filtro.component';
 import {InfoWindowComponent} from './maps-ui/info-window/info-window.component';
 import {CambioSedeModalComponent} from './maps-ui/info-window/cambio-sede-modal/cambio-sede-modal.component';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
     imports: [
         CommonModule,
-        NgbModule,
+        NgbModule.forRoot(),
         PipeModule.forRoot(),
         AgmCoreModule.forRoot({
             apiKey: environment.apiUrl.maps.agm.key
         }),
         AgmJsMarkerClustererModule,
-        AgmSnazzyInfoWindowModule
+        AgmSnazzyInfoWindowModule,
+        SharedModule.forRoot()
     ],
     declarations: [
-        DebounceClickDirective,
-        ComponenteComponent,
         MapsComponent,
         AgmComponent,
         AgmContentComponent,

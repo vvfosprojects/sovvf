@@ -1,9 +1,9 @@
 import {Component, OnDestroy} from '@angular/core';
-import {MarkedService} from '../../service/marked-service/marked-service.service';
+import {MarkedService} from '../../maps/service/marked-service/marked-service.service';
 import {Subscription} from 'rxjs';
 import {FakeMethodService} from '../fake-method/fake-method-service.service';
-import {CentroMappa} from '../../maps-model/centro-mappa.model';
-import {Coordinate} from '../../../shared/model/coordinate.model';
+import {CentroMappa} from '../../maps/maps-model/centro-mappa.model';
+import {Coordinate} from '../../shared/model/coordinate.model';
 
 @Component({
     selector: 'app-nav',

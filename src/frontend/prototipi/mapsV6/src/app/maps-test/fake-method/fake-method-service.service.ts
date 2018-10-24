@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
-import {RichiestaMarker} from '../../maps-model/richiesta-marker.model';
+import {RichiestaMarker} from '../../maps/maps-model/richiesta-marker.model';
 import {Subscription} from 'rxjs';
-import {MarkedService} from '../../service/marked-service/marked-service.service';
-import {MapManagerService} from '../../../dispatcher/manager/maps-manager/map-manager-service.service';
-import {CenterService} from '../../service/center-service/center-service.service';
-import {Localita} from '../../../shared/model/localita.model';
-import {Coordinate} from '../../../shared/model/coordinate.model';
-import {Tipologia} from '../../../shared/model/tipologia.model';
-import {DispatcherService} from '../../../dispatcher/dispatcher.service';
+import {MarkedService} from '../../maps/service/marked-service/marked-service.service';
+import {MapManagerService} from '../../dispatcher/manager/maps-manager/map-manager-service.service';
+import {CenterService} from '../../maps/service/center-service/center-service.service';
+import {Localita} from '../../shared/model/localita.model';
+import {Coordinate} from '../../shared/model/coordinate.model';
+import {Tipologia} from '../../shared/model/tipologia.model';
+import {DispatcherService} from '../../dispatcher/dispatcher.service';
 
 @Injectable({
     providedIn: 'root'

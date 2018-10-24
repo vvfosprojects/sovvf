@@ -6,18 +6,18 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {PipeModule} from './shared/pipes/pipe.module';
-import * as Shared from './shared/index';
-
 /**
- *  maps component
+ *  Maps Module
  */
 import {MapsModule} from './maps/maps.module';
-
-
+/**
+ * Shared Module
+ */
+import {SharedModule} from './shared/shared.module';
 /**
  *  solo per il componente
  */
-import {NavComponent} from './maps/maps-test/nav/nav.component';
+import {NavComponent} from './maps-test/nav/nav.component';
 import {DispatcherService} from './dispatcher/dispatcher.service';
 import {DispatcherServiceFake} from './dispatcher/dispatcher.service.fake';
 import {MapsService} from './dispatcher/data/maps-service/maps-service.service';
@@ -26,16 +26,10 @@ import {MapManagerService} from './dispatcher/manager/maps-manager/map-manager-s
 import {MapManagerServiceFake} from './dispatcher/manager/maps-manager/map-manager-service.service.fake';
 
 
-
 @NgModule({
     declarations: [
         AppComponent,
-        NavComponent,
-        [
-            Shared.DebounceKeyUpDirective,
-            Shared.CompetenzaComponent,
-            Shared.MezzoComponent
-        ]
+        NavComponent
     ],
     imports: [
         BrowserModule,
@@ -44,7 +38,8 @@ import {MapManagerServiceFake} from './dispatcher/manager/maps-manager/map-manag
         NgSelectModule,
         FormsModule,
         MapsModule,
-        PipeModule.forRoot(),
+        SharedModule,
+        PipeModule,
     ],
     providers: [
         {provide: MapManagerService, useClass: MapManagerServiceFake},
