@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Observable, of, Subject} from 'rxjs';
-import {BoxInterventi} from '../boxes-model/box-interventi.model';
-import {BoxMezzi} from '../boxes-model/box-mezzi.model';
-import {BoxFunzionariSo} from '../boxes-model/box-funzionari-so.model';
-import {InfoAggregateService} from '../service/boxes-services/info-aggregate.service';
+import {BoxInterventi} from '../boxes/boxes-model/box-interventi.model';
+import {BoxMezzi} from '../boxes/boxes-model/box-mezzi.model';
+import {BoxFunzionariSo} from '../boxes/boxes-model/box-funzionari-so.model';
+import {InfoAggregateService} from './data/service/boxes-service/info-aggregate.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class DispatcherServiceFake {
+export class DispatcherInfoAggregateService {
     /**
      * dispatcher interventi
      */

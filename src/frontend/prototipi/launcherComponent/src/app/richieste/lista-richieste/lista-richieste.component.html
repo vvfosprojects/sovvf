@@ -11,14 +11,14 @@
 
   <!-- Lista di singole Richieste -->
   <div class="col-12 pt-1 px-0 scroll-y" [ngClass]="{'m-h-750 mt-2': !richiestaFissata, 'm-h-600': richiestaFissata}"
-    detect-scroll (onScroll)="nuoveRichieste($event)" [bottomOffset]="5">
+    detect-scroll (onScroll)="nuoveRichieste($event)" [bottomOffset]="1">
     <div *ngFor="let r of richieste | filterBy: ricercaS.searchTerm" class="col-6big">
       <div *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="cardShadowClass(r)">
         <app-sintesi-richiesta [richiesta]="r" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)"
           (fissaInAlto)="fissaInAlto($event)" (clickRichiesta)="richiestaClick($event)" (doubleClickRichiesta)="richiestaDoubleClick($event)" (eventiRichiesta)="visualizzaEventiRichiesta($event)"></app-sintesi-richiesta>
       </div>
     </div>
-    <div *ngIf="loaderNuoveRichieste" class="text-center my-1">
+    <div *ngIf="loaderNuoveRichieste" class="text-center mt-5">
       <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
     </div>
   </div>
