@@ -10,8 +10,8 @@
                                 <i class="guida fa fa-hashtag fa-fw mr-1" ngbTooltip="Identificativo richiesta assistenza"
                                     placement="right"></i>
                                 <a class="h6 num-int" (click)="toggleEspanso()">{{ richiesta.codice
-                                    }}</a> - {{richiesta.id}}
-                                <i *ngIf="richiesta.rilevanza" ngbTooltip="Rilevante il: {{richiesta.rilevanza | date: 'dd/MM/yyyy'}}"
+                                    }}</a><!--  - {{richiesta.id}} -->
+                                <i *ngIf="richiesta.rilevanza" ngbTooltip="Rilevante dal: {{richiesta.rilevanza | date: 'dd/MM/yyyy - hh:mm:ss'}}"
                                     class="fa fa-exclamation text-danger ml-2"></i>
                             </div>
                         </div>
@@ -160,14 +160,26 @@
                     <div class="col-md-12">
                         <div class="row card bt-0 note-localita">
                             <div class="col-md-12 bg_diagonal_grey">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="h6 mb-0 pt-2 pb-1">
+                                            {{ richiesta.localita.note }}
+                                        </div>
+                                        <div class="h5 mb-0 pull-right">
+                                            <span *ngFor="let ze of richiesta.zoneEmergenza" class="badge badge-danger pull-right m-1">{{
+                                                ze }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-right">
+                                        <i class="guida fa fa-tags fa-fw text-left mr-1" title="Etichette"></i>
+                                        <span *ngFor="let etichetta of richiesta.etichette" class="badge badge-secondary text-right py-2 m-1"><i
+                                                class="fa fa-hashtag fa-fw text-left"></i>{{etichetta}}</span>
+                                        <span *ngIf="!richiesta.etichette">
+                                            Non ci sono tags
+                                        </span>
+                                    </div>
+                                </div>
                                 <div class="h3">
-                                    <div class="h6 p-2">
-                                        {{ richiesta.localita.note }}
-                                    </div>
-                                    <div class="h5 pull-right">
-                                        <span *ngFor="let ze of richiesta.zoneEmergenza" class="badge badge-danger pull-right m-1">{{
-                                            ze }}</span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -194,14 +206,14 @@
                                 <a *ngIf="richiesta.codiceSchedaNue; else nessunCodiceNue">{{ richiesta.codiceSchedaNue
                                     }}</a>
                                 <ng-template #nessunCodiceNue>
-                                    <a class="badge badge-secondary text-light">Non presente</a>
+                                    <span class="badge badge-secondary text-light">Non presente</span>
                                 </ng-template>
                             </div>
 
                             <!-- fonogramma -->
                             <div class="h6">
                                 <i class="guida fa fa-paper-plane-o fa-fw mr-1" ngbTooltip="Stato Fonogramma" placement="right"></i>
-                                <span class="h6 badge m-0" [ngClass]="{'badge-success text-light':richiesta.fonogramma.codice === '2', 'badge-secondary':richiesta.fonogramma.codice === '0', 'badge-warning text-light':richiesta.fonogramma.codice === '1'}">
+                                <span class="h6 badge m-0" [ngClass]="{'badge-success text-light':richiesta.fonogramma.codice === '2', 'badge-secondary text-light':richiesta.fonogramma.codice === '0', 'badge-warning text-light':richiesta.fonogramma.codice === '1'}">
                                     {{ richiesta.fonogramma.descrizione }}
                                 </span>
                             </div>

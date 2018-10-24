@@ -236,13 +236,11 @@ export class MarkerService {
             case 'hover-in': {
                 this.markerColorato = marker;
                 this.markerZIndex = marker;
-                this.richiesteService.hoverIn(marker.id);
             }
                 break;
             case 'hover-out': {
                 this.markerColorato = null;
                 this.markerZIndex = null;
-                this.richiesteService.hoverOut();
             }
                 break;
             case 'click': {

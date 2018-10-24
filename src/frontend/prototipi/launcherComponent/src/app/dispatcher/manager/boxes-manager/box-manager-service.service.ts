@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {DispatcherService} from '../../dispatcher/dispatcher.service';
-import {BoxInterventi} from '../../boxes-model/box-interventi.model';
-import {BoxMezzi} from '../../boxes-model/box-mezzi.model';
-import {BoxFunzionariSo} from '../../boxes-model/box-funzionari-so.model';
+import {BoxInterventi} from '../../../boxes/boxes-model/box-interventi.model';
+import {BoxMezzi} from '../../../boxes/boxes-model/box-mezzi.model';
+import {BoxFunzionariSo} from '../../../boxes/boxes-model/box-funzionari-so.model';
+import {DispatcherInfoAggregateService} from '../../dispatcher-boxes.service';
 
 
 @Injectable({
@@ -15,7 +15,7 @@ export class BoxManagerService {
     boxMezzi: BoxMezzi;
     boxFunzionari: BoxFunzionariSo[];
 
-    constructor(private dispatcher: DispatcherService) {
+    constructor(private dispatcher: DispatcherInfoAggregateService) {
 
         /**
          * dispatcher interventi
