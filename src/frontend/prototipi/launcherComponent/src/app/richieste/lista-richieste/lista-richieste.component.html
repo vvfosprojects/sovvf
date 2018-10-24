@@ -1,6 +1,6 @@
 <div class="row">
   <!-- Loader (!richieste) -->
-  <div *ngIf="!richieste" class="mx-auto my-5">
+  <div *ngIf="loaderRichieste" class="mx-auto my-5">
     <img src="../../../assets/img/pink_loader_resized.gif">
   </div>
 
@@ -17,6 +17,9 @@
         <app-sintesi-richiesta [richiesta]="r" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)"
           (fissaInAlto)="fissaInAlto($event)" (clickRichiesta)="richiestaClick($event)" (doubleClickRichiesta)="richiestaDoubleClick($event)" (eventiRichiesta)="visualizzaEventiRichiesta($event)"></app-sintesi-richiesta>
       </div>
+    </div>
+    <div *ngIf="loaderNuoveRichieste" class="text-center my-1">
+      <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
     </div>
   </div>
 </div>

@@ -41,6 +41,7 @@ import {FiltroComponent} from './richieste/filtri-richieste/filtro/filtro.compon
 import {FilterPipeModule} from 'ngx-filter-pipe';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {ScrollEventModule} from 'ngx-scroll-event';
+import {TimeagoModule, TimeagoIntl} from 'ngx-timeago';
 // end rigaElenco
 // start eventiRichiesta
 import {EventiRichiestaComponent} from './eventi-richiesta/eventi-richiesta.component';
@@ -72,6 +73,10 @@ import {MezziMarkerService} from './dispatcher/data/service/maps-service/mezzi-m
 import {MezziMarkerServiceFake} from './dispatcher/data/service/maps-service/mezzi-marker/mezzi-marker.service.fake';
 import {RichiesteService} from './dispatcher/data/service/lista-richieste-service/richieste.service';
 import {RichiesteServiceFake} from './dispatcher/data/service/lista-richieste-service/richieste.service.fake';
+
+export class MyIntl extends TimeagoIntl {
+    // do extra stuff here...
+}
 
 @NgModule({
     declarations: [
@@ -133,7 +138,10 @@ import {RichiesteServiceFake} from './dispatcher/data/service/lista-richieste-se
         FilterPipeModule,
         SidebarModule.forRoot(),
         ScrollEventModule,
-        AgmSnazzyInfoWindowModule
+        AgmSnazzyInfoWindowModule,
+        TimeagoModule.forRoot({
+            intl: { provide: TimeagoIntl, useClass: MyIntl },
+        })
     ],
     entryComponents: [CambioSedeModalComponent, CambioSedeModalNavComponent, EventiRichiestaComponent],
     providers: [

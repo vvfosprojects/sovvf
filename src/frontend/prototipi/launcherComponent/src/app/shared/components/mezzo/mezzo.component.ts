@@ -1,8 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-
 import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
-
 import {Mezzo} from '../../model/mezzo.model';
+import {ColoriStatoMezzo} from '../../helper/_colori';
 
 @Component({
     selector: 'app-mezzo',
@@ -11,9 +10,8 @@ import {Mezzo} from '../../model/mezzo.model';
 })
 export class MezzoComponent implements OnInit {
 
-    @Input() richiesta: SintesiRichiesta;
     @Input() mezzo: Mezzo;
-    @Output() LocalizzazioneMezzo: EventEmitter<SintesiRichiesta> = new EventEmitter();
+    stato = new ColoriStatoMezzo();
 
     constructor() {
     }
@@ -26,9 +24,14 @@ export class MezzoComponent implements OnInit {
             !mezzo.descrizioneStatoEfficienza &&
             !mezzo.descrizioneLivelloCarburante &&
             !mezzo.descrizioneLivelloEstinguente &&
-            !mezzo.descrizioneAppartenenzaMezzo
+            !mezzo.descrizioneAppartenenza
         ) {
             return true;
         }
     }
+
+    dettagliMezzo(stato, tipostato, classe) {
+        return this.stato.getColor(stato, tipostato, classe);
+    }
+
 }

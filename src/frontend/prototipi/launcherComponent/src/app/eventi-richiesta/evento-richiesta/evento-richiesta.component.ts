@@ -9,9 +9,9 @@ import {EventoRichiesta} from './evento-richiesta.model';
 export class EventoRichiestaComponent implements OnInit {
 
     private espanso = false;
-    private iconeClasseEventoCorrente: any;
     private iconeClassiEvento: any;
     private myMap: any;
+    iconeClasseEventoCorrente: any;
 
     @Input() eventoRichiesta: EventoRichiesta;
     @Output() mostraDettaglio: EventEmitter<EventoRichiesta> = new EventEmitter();
