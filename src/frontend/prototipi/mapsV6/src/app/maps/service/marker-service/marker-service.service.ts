@@ -99,7 +99,7 @@ export class MarkerService {
          * richiamo i metodi per modficare il centro e lo zoom del marker cliccato
          */
         this.agmService.centraMappa(marker.getCoordinate());
-        this.agmService.cambiaZoom(14);
+        this.agmService.cambiaZoom(18);
     }
 
     selezionato(marker: any): void {

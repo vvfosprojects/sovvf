@@ -1,25 +1,18 @@
 import {AppComponent} from './app.component';
 import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http';
+import {NgSelectModule} from '@ng-select/ng-select';
+import {FormsModule} from '@angular/forms';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {PipeModule} from './shared/pipes/pipe.module';
-import {SharedModule} from './shared/shared.module';
-import {environment} from '../environments/environment';
+import * as Shared from './shared/index';
 
 /**
  *  maps component
  */
-import {MapsFiltroComponent} from './maps/maps-ui/filtro/filtro.component';
-import {CambioSedeModalComponent} from './maps/maps-ui/info-window/cambio-sede-modal/cambio-sede-modal.component';
-import {InfoWindowComponent} from './maps/maps-ui/info-window/info-window.component';
-import {MapsComponent} from './maps/maps.component';
+import {MapsModule} from './maps/maps.module';
 
-/**
- * agm core
- */
-import {AgmCoreModule} from '@agm/core';
-import {AgmJsMarkerClustererModule} from '@agm/js-marker-clusterer';
-import {AgmComponent} from './maps/agm/agm.component';
-import {AgmContentComponent} from './maps/agm/agm-content.component';
-import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
 
 /**
  *  solo per il componente
@@ -31,30 +24,28 @@ import {MapsService} from './dispatcher/data/maps-service/maps-service.service';
 import {MapsServiceFake} from './dispatcher/data/maps-service/maps-service.service.fake';
 import {MapManagerService} from './dispatcher/manager/maps-manager/map-manager-service.service';
 import {MapManagerServiceFake} from './dispatcher/manager/maps-manager/map-manager-service.service.fake';
-import {ComponenteComponent} from './shared';
+
+
 
 @NgModule({
     declarations: [
         AppComponent,
-        MapsComponent,
         NavComponent,
-        AgmComponent,
-        AgmContentComponent,
-        MapsFiltroComponent,
-        CambioSedeModalComponent,
-        InfoWindowComponent,
-        ComponenteComponent
+        [
+            Shared.DebounceKeyUpDirective,
+            Shared.CompetenzaComponent,
+            Shared.MezzoComponent
+        ]
     ],
     imports: [
-        SharedModule,
+        BrowserModule,
+        HttpClientModule,
+        NgbModule,
+        NgSelectModule,
+        FormsModule,
+        MapsModule,
         PipeModule.forRoot(),
-        AgmCoreModule.forRoot({
-            apiKey: environment.apiUrl.maps.agm.key
-        }),
-        AgmJsMarkerClustererModule,
-        AgmSnazzyInfoWindowModule
     ],
-    entryComponents: [CambioSedeModalComponent],
     providers: [
         {provide: MapManagerService, useClass: MapManagerServiceFake},
         {provide: DispatcherService, useClass: DispatcherServiceFake},

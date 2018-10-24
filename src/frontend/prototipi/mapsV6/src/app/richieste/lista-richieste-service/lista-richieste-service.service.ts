@@ -10,26 +10,26 @@ export class ListaRichiesteService {
     }
 
     hoverIn(richiesta) {
-        console.log('');
+        // console.log('');
     }
 
     hoverOut() {
-        console.log('');
+        // console.log('');
     }
 
     selezionata(richiesta) {
-        console.log('');
+        // console.log('');
     }
 
     deselezionata() {
-        console.log('');
+        // console.log('');
     }
 
     fissata(id, fromMap?: boolean) {
-        console.log('');
+        // console.log('');
     }
 
     defissata() {
-        console.log('');
+        // console.log('');
     }
 }
