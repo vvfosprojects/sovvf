@@ -7,6 +7,10 @@ export class Squadra {
          */
         public nome: string,
         /**
+         * Il codice del mezzo dove si trova la squadra
+         */
+        public codiceMezzo: string,
+        /**
          * Stato del squadra (InSede, InViaggio, SulPosto,
          * InRientro, Istituto).
          */
