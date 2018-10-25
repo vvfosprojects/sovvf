@@ -131,7 +131,7 @@ export class AgmComponent implements OnInit {
         /**
          * metodo che ritorna allo zoom iniziale e deseleziona un marker se clicco sulla mappa
          */
-        this.markerService.noAction();
+        this.markerService.action('', '');
     }
 
 }
