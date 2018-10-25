@@ -1,6 +1,6 @@
 export class Fonogramma {
     constructor(
-        public codice: number,
+        public codice: string,
         public descrizione: string
     ) { }
 }

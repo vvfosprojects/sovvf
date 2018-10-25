@@ -2,41 +2,43 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {PipeModule} from './shared/pipes/pipe.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {HttpClientModule} from '@angular/common/http';
-import {FormsModule} from '@angular/forms';
-import * as Shared from './shared/';
-import {MeteoService} from './shared/meteo/meteo-service.service';
 import {AppComponent} from './app.component';
-import {environment} from '../environments/environment';
-import {EventiRichiestaComponent} from './eventi-richiesta/eventi-richiesta.component';
-import {EventoRichiestaComponent} from './eventi-richiesta/evento-richiesta/evento-richiesta.component';
-import {ListaEventiRichiestaComponent} from './eventi-richiesta/lista-eventi-richiesta/lista-eventi-richiesta.component';
-import {EventiRichiestaService} from './eventi-richiesta/eventi-richiesta-service/eventi-richiesta.service';
-import {EventiRichiestaServiceFake} from './eventi-richiesta/eventi-richiesta-service/eventi-richiesta.service.fake';
+/**
+ * Eventi Richiesta Module
+ */
+import {EventiRichiestaModule} from './eventi-richiesta/eventi-richiesta.module';
+/**
+ * Shared Module
+ */
+import {SharedModule} from './shared/shared.module';
+/**
+ * solo per il componente
+ */
+import {EventiRichiestaService} from './dispatcher/data/eventi-richiesta-service/eventi-richiesta.service';
+import {EventiRichiestaServiceFake} from './dispatcher/data/eventi-richiesta-service/eventi-richiesta.service.fake';
+import {EventiManagerService} from './dispatcher/manager/eventi-richiesta-manager/eventi-manager-service.service';
+import {EventiManagerServiceFake} from './dispatcher/manager/eventi-richiesta-manager/eventi-manager-service.service.fake';
+import {DispatcherEventiRichiestaService} from './dispatcher/dispatcher-eventi-richiesta.service';
+import {DispatcherEventiRichiestaServiceFake} from './dispatcher/dispatcher-eventi-richiesta.service.fake';
 
 
 @NgModule({
     declarations: [
-        AppComponent,
-        EventiRichiestaComponent,
-        EventoRichiestaComponent,
-        ListaEventiRichiestaComponent,
-        // start import of Shared Declarations
-        [
-            Shared.DebounceClickDirective,
-            Shared.DebounceKeyUpDirective,
-            Shared.CompetenzaComponent,
-            Shared.ComponenteComponent,
-            Shared.MezzoComponent
-            ],
-        // end import of Shared Declarations
+        AppComponent
+
     ],
     imports: [
         BrowserModule,
         NgbModule,
         PipeModule.forRoot(),
+        SharedModule,
+        EventiRichiestaModule
     ],
-    providers: [{provide: EventiRichiestaService, useClass: EventiRichiestaServiceFake}],
+    providers: [
+        {provide: EventiManagerService, useClass: EventiManagerServiceFake},
+        {provide: DispatcherEventiRichiestaService, useClass: DispatcherEventiRichiestaServiceFake},
+        {provide: EventiRichiestaService, useClass: EventiRichiestaServiceFake}
+        ],
     bootstrap: [AppComponent]
 })
 export class AppModule {

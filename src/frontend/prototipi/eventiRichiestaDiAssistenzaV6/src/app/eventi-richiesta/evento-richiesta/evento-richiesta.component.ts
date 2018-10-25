@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {EventoRichiesta} from './evento-richiesta.model';
+import {EventoRichiesta} from '../eventi-model/evento-richiesta.model';
 
 @Component({
     selector: '[app-evento-richiesta]',
@@ -9,7 +9,7 @@ import {EventoRichiesta} from './evento-richiesta.model';
 export class EventoRichiestaComponent implements OnInit {
 
     private espanso = false;
-    private iconeClasseEventoCorrente: any;
+    iconeClasseEventoCorrente: any;
     private iconeClassiEvento: any;
     private myMap: any;
 
@@ -51,7 +51,7 @@ export class EventoRichiestaComponent implements OnInit {
 
         this.iconeClasseEventoCorrente = this.myMap.get(this.nomeClasseEvento);
 
-        console.log(this.iconeClasseEventoCorrente);
+        // console.log(this.iconeClasseEventoCorrente);
         // this.iconaClasseEventoCorrente = myMap.get("telefonata");
         // this.iconaClasseEventoCorrente = "fa-phone-square";
         /*

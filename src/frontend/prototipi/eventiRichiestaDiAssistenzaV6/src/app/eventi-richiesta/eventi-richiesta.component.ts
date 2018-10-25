@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {EventoRichiesta} from './evento-richiesta/evento-richiesta.model';
-import {EventiRichiestaService} from './eventi-richiesta-service/eventi-richiesta.service';
+import {EventoRichiesta} from './eventi-model/evento-richiesta.model';
+import {EventiManagerService} from '../dispatcher/manager/eventi-richiesta-manager/eventi-manager-service.service';
 
 @Component({
     selector: 'app-eventi-richiesta',
@@ -11,7 +11,7 @@ export class EventiRichiestaComponent implements OnInit {
 
     elencoEventiRichiesta: EventoRichiesta[] = [];
 
-    constructor(private eventiRichiestaService: EventiRichiestaService) {
+    constructor(private eventiRichiestaManager: EventiManagerService) {
 
     }
 
@@ -20,9 +20,9 @@ export class EventiRichiestaComponent implements OnInit {
     }
 
     getEventi() {
-        this.eventiRichiestaService.getEventiRichiesta()
+        this.eventiRichiestaManager.getEventiRichiesta()
             .subscribe(eventiRichieste => {
-                console.log('eventiRichiestaService: ', eventiRichieste);
+                // console.log('eventiRichiestaService: ', eventiRichieste);
                 this.elencoEventiRichiesta = eventiRichieste;
             });
     }
