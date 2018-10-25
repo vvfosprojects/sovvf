@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {EventoRichiesta} from '../evento-richiesta/evento-richiesta.model';
+import {EventoRichiesta} from '../eventi-model/evento-richiesta.model';
 import * as moment from 'moment';
 
 @Component({
@@ -31,13 +31,13 @@ export class ListaEventiRichiestaComponent implements OnInit, OnChanges {
                 const curVal = JSON.stringify(change.currentValue);
                 const prevVal = JSON.stringify(change.previousValue);
 
-                console.log('ngOnChanges Felix');
-                console.log(propName);
-                console.log(curVal);
-                console.log(prevVal);
+                // console.log('ngOnChanges Felix');
+                // console.log(propName);
+                // console.log(curVal);
+                // console.log(prevVal);
 
                 if (propName === 'istanteEvento') {
-                    console.log('ngOnChanges Felix istanteEvento');
+                    // console.log('ngOnChanges Felix istanteEvento');
                     // this.setIstanteEventoPrecedente(new Date(curVal));
                 }
             }
@@ -50,11 +50,11 @@ export class ListaEventiRichiestaComponent implements OnInit, OnChanges {
     }
     */
     private setIstanteEventoPrecedente(i: number): Date {
-        console.log('setIstanteEventoPrecedente');
+        // console.log('setIstanteEventoPrecedente');
         if (i > 0) {
             this.istanteEventoPrecedente = this.elencoEventi[i - 1].istanteEvento;
-            console.log('ok');
-            console.log(this.istanteEventoPrecedente);
+            // console.log('ok');
+            // console.log(this.istanteEventoPrecedente);
         } else {
             this.istanteEventoPrecedente = this.elencoEventi[0].istanteEvento;
         }

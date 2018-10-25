@@ -39,9 +39,7 @@ import {TimeagoModule, TimeagoFormatter, TimeagoCustomFormatter, TimeagoIntl} fr
 /**
  * eventi richieste component da sistemare...
  */
-import {EventiRichiestaComponent} from './eventi-richiesta/eventi-richiesta.component';
-import {EventoRichiestaComponent} from './eventi-richiesta/evento-richiesta/evento-richiesta.component';
-import {ListaEventiRichiestaComponent} from './eventi-richiesta/lista-eventi-richiesta/lista-eventi-richiesta.component';
+import {EventiRichiestaModule} from './eventi-richiesta/eventi-richiesta.module';
 /**
  * import navbar
  */
@@ -60,6 +58,8 @@ import {InfoAggregateService} from './dispatcher/data/service/boxes-service/info
 import {InfoAggregateServiceFake} from './dispatcher/data/service/boxes-service/info-aggregate.service.fake';
 import {MezziMarkerService} from './dispatcher/data/service/maps-service/mezzi-marker/mezzi-marker.service';
 import {MezziMarkerServiceFake} from './dispatcher/data/service/maps-service/mezzi-marker/mezzi-marker.service.fake';
+import {EventiRichiestaService} from './dispatcher/data/eventi-richiesta-service/eventi-richiesta.service';
+import {EventiRichiestaServiceFake} from './dispatcher/data/eventi-richiesta-service/eventi-richiesta.service.fake';
 
 
 @NgModule({
@@ -75,12 +75,6 @@ import {MezziMarkerServiceFake} from './dispatcher/data/service/maps-service/mez
         RicercaRichiesteComponent,
         FiltriRichiesteComponent,
         FiltroComponent,
-        /**
-         * Eveni richiesta da spostare in un modulo...
-         */
-        EventiRichiestaComponent,
-        EventoRichiestaComponent,
-        ListaEventiRichiestaComponent,
         /**
          * Navbar
          */
@@ -108,9 +102,10 @@ import {MezziMarkerServiceFake} from './dispatcher/data/service/maps-service/mez
         }),
         BoxesModule,
         MapsModule,
-        SharedModule
+        SharedModule,
+        EventiRichiestaModule
     ],
-    entryComponents: [CambioSedeModalNavComponent, EventiRichiestaComponent],
+    entryComponents: [CambioSedeModalNavComponent],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
@@ -120,6 +115,7 @@ import {MezziMarkerServiceFake} from './dispatcher/data/service/maps-service/mez
         fakeBackendProvider,
         {provide: InfoAggregateService, useClass: InfoAggregateServiceFake},
         {provide: RichiesteService, useClass: RichiesteServiceFake},
+        {provide: EventiRichiestaService, useClass: EventiRichiestaServiceFake},
         {provide: RichiesteMarkerService, useClass: RichiesteMarkerServiceFake},
         {provide: SediMarkerService, useClass: SediMarkerServiceFake},
         {provide: MezziMarkerService, useClass: MezziMarkerServiceFake}
