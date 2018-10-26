@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { DispatcherService } from './dispatcher.service';
+import { DispatcherService } from './dispatcher-lista-richieste.service';
 
 describe('DispatcherFakeService', () => {
   beforeEach(() => {

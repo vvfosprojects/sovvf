@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
 import {of, Observable, Subject} from 'rxjs';
 import {SintesiRichiesta} from '../shared/model/sintesi-richiesta.model';
-import {SintesiRichiesteService} from './data/sintesi-richieste-service/sintesi-richieste.service';
+import {SintesiRichiesteService} from './service/sintesi-richieste-service/sintesi-richieste.service';
 
 
 @Injectable({
     providedIn: 'root'
 })
-export class DispatcherService {
+export class DispatcherFakeService {
     private updateRichiesta$ = new Subject<SintesiRichiesta>();
     private newRichiesta$ = new Subject<SintesiRichiesta>();
     private deleteRichiesta$ = new Subject<SintesiRichiesta>();
