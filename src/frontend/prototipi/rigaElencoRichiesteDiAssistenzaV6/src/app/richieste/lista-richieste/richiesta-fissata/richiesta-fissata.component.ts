@@ -32,18 +32,17 @@ export class RichiestaFissataComponent implements OnInit {
         this.animazioneIn();
       } else {
         this.animazioneOut();
-        this.richiestaFissata = null;
+        setTimeout(() => {
+          this.richiestaFissata = null;
+        }, 300);
       }
     });
   }
 
   // Defissa, deseleziona e attende 300ms per visualizzare l'intera animazione
   defissa() {
-    this.animazioneOut();
-    setTimeout(() => {
       this.richiesteS.defissata();
       this.richiesteS.deselezionata();
-    }, 300);
   }
 
   // Animazioni

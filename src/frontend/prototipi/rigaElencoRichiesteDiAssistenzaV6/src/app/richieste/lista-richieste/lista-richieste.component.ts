@@ -122,11 +122,6 @@ export class ListaRichiesteComponent implements OnInit {
     /* Fissa in alto la richiesta */
     fissaInAlto(richiesta) {
         if (richiesta) {
-            // Se esiste già una richiesta fissata la rimetto nella lista e riordino
-            if (this.richiestaFissata) {
-                this.rimettiNellaLista(this.richiestaFissata);
-                this.ordinaRichieste();
-            }
             this.richiesteS.deselezionata();
             this.richiesteS.fissata(richiesta.id);
             this.markerS.actionById(richiesta.id, 'click');

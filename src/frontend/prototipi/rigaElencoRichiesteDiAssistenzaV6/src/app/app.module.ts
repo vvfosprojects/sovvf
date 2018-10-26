@@ -24,7 +24,7 @@ import { RicercaRichiesteComponent } from './richieste/ricerca-richieste/ricerca
 import { FiltriRichiesteComponent } from './richieste/filtri-richieste/filtri-richieste.component';
 import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.component';
 import { RichiestaFissataComponent } from './richieste/lista-richieste/richiesta-fissata/richiesta-fissata.component';
-import { NavTestComponent } from './richieste/lista-richieste-test/nav-test/nav-test.component';
+import { NavTestComponent } from './lista-richieste-test/nav-test/nav-test.component';
 import { EventiRichiestaComponent } from './eventi-richiesta/eventi-richiesta.component';
 /*
     Services
