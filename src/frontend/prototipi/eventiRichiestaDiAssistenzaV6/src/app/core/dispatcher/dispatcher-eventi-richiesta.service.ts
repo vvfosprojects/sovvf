@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {EventoRichiesta} from '../eventi-richiesta/eventi-model/evento-richiesta.model';
+import {EventoRichiesta} from '../../eventi-richiesta/eventi-model/evento-richiesta.model';
 import {Observable, of, Subject} from 'rxjs';
-import {EventiRichiestaService} from './data/eventi-richiesta-service/eventi-richiesta.service';
+import {EventiRichiestaService} from '../service/eventi-richiesta-service/eventi-richiesta.service';
 
 @Injectable({
     providedIn: 'root'

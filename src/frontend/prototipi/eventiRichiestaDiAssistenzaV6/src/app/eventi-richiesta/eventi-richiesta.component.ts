@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {EventoRichiesta} from './eventi-model/evento-richiesta.model';
-import {EventiManagerService} from '../dispatcher/manager/eventi-richiesta-manager/eventi-manager-service.service';
+import {EventiManagerService} from '../core/manager/eventi-richiesta-manager/eventi-manager-service.service';
 
 @Component({
     selector: 'app-eventi-richiesta',

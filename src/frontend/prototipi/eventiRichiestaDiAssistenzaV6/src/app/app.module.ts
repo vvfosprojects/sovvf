@@ -14,12 +14,12 @@ import {SharedModule} from './shared/shared.module';
 /**
  * solo per il componente
  */
-import {EventiRichiestaService} from './dispatcher/data/eventi-richiesta-service/eventi-richiesta.service';
-import {EventiRichiestaServiceFake} from './dispatcher/data/eventi-richiesta-service/eventi-richiesta.service.fake';
-import {EventiManagerService} from './dispatcher/manager/eventi-richiesta-manager/eventi-manager-service.service';
-import {EventiManagerServiceFake} from './dispatcher/manager/eventi-richiesta-manager/eventi-manager-service.service.fake';
-import {DispatcherEventiRichiestaService} from './dispatcher/dispatcher-eventi-richiesta.service';
-import {DispatcherEventiRichiestaServiceFake} from './dispatcher/dispatcher-eventi-richiesta.service.fake';
+import {EventiRichiestaService} from './core/service/eventi-richiesta-service/eventi-richiesta.service';
+import {EventiRichiestaServiceFake} from './core/service/eventi-richiesta-service/eventi-richiesta.service.fake';
+import {EventiManagerService} from './core/manager/eventi-richiesta-manager/eventi-manager-service.service';
+import {EventiManagerServiceFake} from './core/manager/eventi-richiesta-manager/eventi-manager-service.service.fake';
+import {DispatcherEventiRichiestaService} from './core/dispatcher/dispatcher-eventi-richiesta.service';
+import {DispatcherEventiRichiestaServiceFake} from './core/dispatcher/dispatcher-eventi-richiesta.service.fake';
 
 
 @NgModule({
