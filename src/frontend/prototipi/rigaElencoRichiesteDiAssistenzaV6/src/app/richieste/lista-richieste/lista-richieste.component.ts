@@ -64,15 +64,12 @@ export class ListaRichiesteComponent implements OnInit {
         // Restituisce la Richiesta Fissata in alto
         this.richiesteS.subjects.getRichiestaFissata().subscribe(richiestaFissata => {
             if (richiestaFissata) {
-                // Se esiste già una richiesta fissata la rimetto nella lista e riordino
+                // Se esiste già una richiesta fissata riordino la lista
                 if (this.richiestaFissata) {
-                    this.rimettiNellaLista(this.richiestaFissata);
                     this.ordinaRichieste();
                 }
                 this.richiestaFissata = richiestaFissata;
-                this.eliminaDallaLista(richiestaFissata);
             } else {
-                this.rimettiNellaLista(this.richiestaFissata);
                 this.ordinaRichieste();
                 this.richiestaFissata = null;
             }
@@ -81,15 +78,9 @@ export class ListaRichiesteComponent implements OnInit {
         this.ordinaRichieste();
     }
 
-    /* Ordina le richieste dalla piu recente */
+    /* Ordina le richieste per data dalla piu recente */
     ordinaRichieste() {
         this.richieste.sort((a, b) => new Date(b.istanteRicezioneRichiesta).getTime() - new Date(a.istanteRicezioneRichiesta).getTime());
-    }
-    eliminaDallaLista(richiestaFissata) {
-        this.richieste = this.richieste.filter(r => r !== richiestaFissata);
-    }
-    rimettiNellaLista(richiestaDefissata) {
-        this.richieste.unshift(richiestaDefissata);
     }
 
     /* Permette di visualizzare il loader e caricare nuove richieste */
