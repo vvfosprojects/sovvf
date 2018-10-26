@@ -63,6 +63,14 @@ export class NavComponent implements OnDestroy {
         this.fakeManager.aggiornaCentro(roma);
     }
 
+    nuovoCentro() {
+        this.fakeManager.aggiornaCentro();
+    }
+
+    calcolaCentro() {
+        this.fakeManager.calcolaCentro();
+    }
+
     getMarker(id) {
         this.fakeManager.getMarker(id);
     }

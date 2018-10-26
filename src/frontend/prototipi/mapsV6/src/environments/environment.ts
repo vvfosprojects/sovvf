@@ -20,7 +20,8 @@ export const environment = {
             markers: {
                 richieste: 'https://api.myjson.com/bins/6vlu4',
                 sedi: '',
-                mezzi: ''
+                mezzi: '',
+                centro: ''
             },
             agm: {
                 key: 'AIzaSyDYIMWNyVt1X_30PybcDMTZkFkcSsUytDk'

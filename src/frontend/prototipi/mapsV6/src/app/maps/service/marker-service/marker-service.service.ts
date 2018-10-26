@@ -9,7 +9,7 @@ import {TipoColori} from './_color';
 import {AgmService} from '../../agm/agm-service.service';
 import {UnitaOperativaService} from '../../../navbar/navbar-service/unita-operativa-service/unita-operativa.service';
 import {ListaRichiesteService} from '../../../richieste/lista-richieste-service/lista-richieste-service.service';
-import {MapManagerService} from '../../../dispatcher/manager/maps-manager/map-manager-service.service';
+import {RichiesteMarkerManagerService} from '../../../core/manager/maps-manager';
 
 
 @Injectable({
@@ -35,7 +35,7 @@ export class MarkerService {
                 private meteoService: MeteoService,
                 private agmService: AgmService,
                 private richiesteService: ListaRichiesteService,
-                private mapsManager: MapManagerService,
+                private markerRichiesteManager: RichiesteMarkerManagerService,
                 private fakeCambioSede: UnitaOperativaService) {
         this.subscription = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
@@ -252,6 +252,6 @@ export class MarkerService {
 
 
     getMarkerFromId(id) {
-        return this.mapsManager.getMarkerFromId(id);
+        return this.markerRichiesteManager.getMarkerFromId(id);
     }
 }

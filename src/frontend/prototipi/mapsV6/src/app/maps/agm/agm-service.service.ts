@@ -16,6 +16,9 @@ export class AgmService {
     centro$ = new Subject();
 
     constructor(private centerService: CenterService) {
+        /**
+         * subscribe che tiene aggiornato il centro mappa, quando questo viene cambiato dall'utente
+         */
         this.centro$.pipe(
             debounceTime(500)).subscribe(
             coordinate => this.centerService.sendCentro(

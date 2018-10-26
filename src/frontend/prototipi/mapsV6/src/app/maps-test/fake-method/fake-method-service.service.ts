@@ -2,12 +2,14 @@ import {Injectable} from '@angular/core';
 import {RichiestaMarker} from '../../maps/maps-model/richiesta-marker.model';
 import {Subscription} from 'rxjs';
 import {MarkedService} from '../../maps/service/marked-service/marked-service.service';
-import {MapManagerService} from '../../dispatcher/manager/maps-manager/map-manager-service.service';
 import {CenterService} from '../../maps/service/center-service/center-service.service';
 import {Localita} from '../../shared/model/localita.model';
 import {Coordinate} from '../../shared/model/coordinate.model';
 import {Tipologia} from '../../shared/model/tipologia.model';
-import {DispatcherService} from '../../dispatcher/dispatcher.service';
+import {CentroMappa} from '../../maps/maps-model/centro-mappa.model';
+import {DispatcherRichiesteMarkerService} from '../../core/dispatcher/dispatcher-maps/richieste-marker/dispatcher-richieste-marker.service';
+import {DispatcherCentroMappaService} from '../../core/dispatcher/dispatcher-maps/centro-mappa/dispatcher-centro-mappa.service';
+import {CentroMappaManagerService, RichiesteMarkerManagerService} from '../../core/manager/maps-manager';
 
 @Injectable({
     providedIn: 'root'
@@ -21,8 +23,10 @@ export class FakeMethodService {
     selezione: Subscription;
 
     constructor(private markedService: MarkedService,
-                private mapManager: MapManagerService,
-                private dispatcher: DispatcherService,
+                private richiesteManager: RichiesteMarkerManagerService,
+                private centroManager: CentroMappaManagerService,
+                private dispatcherRichieste: DispatcherRichiesteMarkerService,
+                private dispatcherCentro: DispatcherCentroMappaService,
                 private centerService: CenterService) {
         this.selezione = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
@@ -38,23 +42,22 @@ export class FakeMethodService {
 
     /* TESTING METHOD */
     setMarker(marker: RichiestaMarker) {
-        this.dispatcher.addMarker(marker);
+        this.dispatcherRichieste.addMarker(marker);
     }
 
     /* TESTING METHOD */
     setRandomMarker() {
-        this.mapManager.count++;
+        this.richiesteManager.count++;
         const randomNumber = Math.floor(Math.random() * 4) + 1;
         const lat = Math.floor(Math.random() * 10) * 0.1 + 41.89;
         const long = Math.floor(Math.random() * 10) * 0.1 + 12.49;
         const markerRandom = new RichiestaMarker(
-            'R' + this.mapManager.count,
+            'R' + this.richiesteManager.count,
             new Localita(new Coordinate(lat, long), 'Via Cavour, 5'),
             [
                 new Tipologia('1', 'allagamento', '')
             ],
             'Marker Random: ' + this.statiObj.get(randomNumber),
-            false,
             Math.floor(Math.random() * 5) + 1,
             this.statiObj.get(randomNumber));
         this.setMarker(markerRandom);
@@ -63,16 +66,16 @@ export class FakeMethodService {
     /* TESTING METHOD */
     removeLastMarker() {
         if (this.markerSelezionato &&
-            this.mapManager.richiesteMarker.slice(-1).pop().id === this.markerSelezionato.id) {
+            this.richiesteManager.richiesteMarker.slice(-1).pop().id === this.markerSelezionato.id) {
             this.markedService.clearMarked();
         }
-        this.mapManager.richiesteMarker.pop();
+        this.richiesteManager.richiesteMarker.pop();
     }
 
     /* TESTING METHOD */
     changeMarkerColor() {
         const statoCasuale = Math.floor(Math.random() * 4) + 1;
-        const color = this.mapManager.richiesteMarker.find(x => x.id === this.markerSelezionato.id);
+        const color = this.richiesteManager.richiesteMarker.find(x => x.id === this.markerSelezionato.id);
         color.stato = this.statiObj.get(statoCasuale);
         // this.dispatcher.updateMarker(color);
         this.markedService.clearMarked();
@@ -81,7 +84,7 @@ export class FakeMethodService {
 
     /* TESTING METHOD */
     changeMarkerSize() {
-        const size = this.mapManager.richiesteMarker.find(x => x.id === this.markerSelezionato.id);
+        const size = this.richiesteManager.richiesteMarker.find(x => x.id === this.markerSelezionato.id);
         if (size.priorita > 0 && size.priorita < 5) {
             size.priorita++;
         } else if (size.priorita === 5) {
@@ -103,19 +106,28 @@ export class FakeMethodService {
 
     /* TESTING METHOD */
     removeMarker() {
-        const remove = this.mapManager.richiesteMarker.find(x => x.id === this.markerSelezionato.id);
-        this.dispatcher.deleteMarker(remove);
+        const remove = this.richiesteManager.richiesteMarker.find(x => x.id === this.markerSelezionato.id);
+        this.dispatcherRichieste.deleteMarker(remove);
         this.markedService.clearMarked();
     }
 
-    aggiornaCentro(centro) {
-        this.centerService.clearCentro();
-        this.centerService.sendCentro(centro);
+    aggiornaCentro(centro?) {
+        if (centro) {
+            this.centerService.clearCentro();
+            this.centerService.sendCentro(centro);
+        } else {
+            const test = new CentroMappa(new Coordinate(43.5330, 11.3040), 8);
+            this.dispatcherCentro.updateCentro(test);
+        }
     }
 
     getMarker(id) {
-        const marker = this.mapManager.richiesteMarker.find(x => x.id === id);
+        const marker = this.richiesteManager.richiesteMarker.find(x => x.id === id);
         console.log(marker);
+    }
+
+    calcolaCentro() {
+        this.centroManager.calcCenter();
     }
 }
 
