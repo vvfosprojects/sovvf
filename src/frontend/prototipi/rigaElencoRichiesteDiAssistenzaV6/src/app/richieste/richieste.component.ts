@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-richieste',

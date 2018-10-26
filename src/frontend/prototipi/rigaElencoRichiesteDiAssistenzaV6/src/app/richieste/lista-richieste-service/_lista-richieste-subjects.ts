@@ -9,6 +9,7 @@ export class ListaRichiesteSubjects {
     constructor() {
     }
 
+    // Richiesta Hover
     sendRichiestaHover(richiesta) {
         this.richiestaHover.next(richiesta);
     }
@@ -19,6 +20,7 @@ export class ListaRichiesteSubjects {
         return this.richiestaHover.asObservable();
     }
 
+    // Richiesta Fissata
     sendRichiestaFissata(richiesta) {
         this.richiestaFissata.next(richiesta);
     }
@@ -29,6 +31,7 @@ export class ListaRichiesteSubjects {
         return this.richiestaFissata.asObservable();
     }
 
+    // Richiesta Selezionata
     sendRichiestaSelezionata(richiesta) {
         this.richiestaSelezionata.next(richiesta);
     }

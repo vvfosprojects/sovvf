@@ -25,6 +25,7 @@ import { FiltriRichiesteComponent } from './richieste/filtri-richieste/filtri-ri
 import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.component';
 import { RichiestaFissataComponent } from './richieste/lista-richieste/richiesta-fissata/richiesta-fissata.component';
 import { NavTestComponent } from './richieste/lista-richieste-test/nav-test/nav-test.component';
+import { EventiRichiestaComponent } from './eventi-richiesta/eventi-richiesta.component';
 /*
     Services
  */
@@ -46,6 +47,7 @@ import { DispatcherFakeService } from './dispatcher/dispatcher-fake.service';
         FiltroComponent,
         RichiestaFissataComponent,
         NavTestComponent,
+        EventiRichiestaComponent,
         // start import of Shared Declarations
         [
             Shared.DebounceClickDirective,

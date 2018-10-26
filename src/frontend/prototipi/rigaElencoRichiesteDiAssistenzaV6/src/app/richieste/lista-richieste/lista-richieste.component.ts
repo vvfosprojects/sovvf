@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, OnChanges } from '@angular/core';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { ListaRichiesteManagerService } from '../../dispatcher/manager/lista-richieste-manager/lista-richieste-manager.service';
 import { ScrollEvent } from 'ngx-scroll-event';
@@ -7,6 +7,7 @@ import { RicercaRichiesteService } from '../ricerca-richieste/ricerca-richieste-
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { EventiRichiestaComponent } from '../../eventi-richiesta/eventi-richiesta.component';
+import { AnimationPlayer, animate, style, AnimationBuilder } from '@angular/animations';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -24,7 +25,12 @@ export class ListaRichiesteComponent implements OnInit {
 
     preventSimpleClick: boolean;
     timer: any;
-    contatoreNuoveRichieste = 9;
+    contatoreNuoveRichieste = 0;
+
+    // Animazioni TEST
+    richiesta: ElementRef;
+
+    private playerRichiesta: AnimationPlayer;
 
     constructor(private listaRichiesteManager: ListaRichiesteManagerService,
         private richiesteS: ListaRichiesteService,
@@ -58,65 +64,96 @@ export class ListaRichiesteComponent implements OnInit {
         // Restituisce la Richiesta Fissata in alto
         this.richiesteS.subjects.getRichiestaFissata().subscribe(richiestaFissata => {
             if (richiestaFissata) {
+                // Se esiste già una richiesta fissata la rimetto nella lista e riordino
+                if (this.richiestaFissata) {
+                    this.rimettiNellaLista(this.richiestaFissata);
+                    this.ordinaRichieste();
+                }
                 this.richiestaFissata = richiestaFissata;
+                this.eliminaDallaLista(richiestaFissata);
             } else {
+                this.rimettiNellaLista(this.richiestaFissata);
+                this.ordinaRichieste();
                 this.richiestaFissata = null;
             }
         });
+        // Ordina le richieste dalla piu recente
+        this.ordinaRichieste();
     }
 
+    /* Ordina le richieste dalla piu recente */
+    ordinaRichieste() {
+        this.richieste.sort((a, b) => new Date(b.istanteRicezioneRichiesta).getTime() - new Date(a.istanteRicezioneRichiesta).getTime());
+    }
+    eliminaDallaLista(richiestaFissata) {
+        this.richieste = this.richieste.filter(r => r !== richiestaFissata);
+    }
+    rimettiNellaLista(richiestaDefissata) {
+        this.richieste.unshift(richiestaDefissata);
+    }
+
+    /* Permette di visualizzare il loader e caricare nuove richieste */
     nuoveRichieste(event: ScrollEvent) {
-        if (event.isReachingBottom && event.isWindowEvent === false && this.contatoreNuoveRichieste < 10) {
-            this.contatoreNuoveRichieste = 10;
+        if (event.isReachingBottom && event.isWindowEvent === false && this.contatoreNuoveRichieste === 0) {
+            this.contatoreNuoveRichieste++;
             this.loaderNuoveRichieste = true;
             setTimeout(() => {
                 this.listaRichiesteManager.onNewRichiesteList();
                 this.loaderNuoveRichieste = false;
-                this.contatoreNuoveRichieste = 9;
+                this.contatoreNuoveRichieste = 0;
             }, 3000);
         }
     }
 
+    /* Gestisce il singolo click sulla richiesta */
     richiestaClick(richiesta) {
         if (richiesta) {
             this.richiesteS.selezionata(richiesta.id);
             this.markerS.actionById(richiesta.id, 'click');
         }
     }
+    /* Gestisce il double click sulla richiesta */
     richiestaDoubleClick(richiesta) {
         if (richiesta) {
             this.richiesteS.selezionata(richiesta.id);
             console.log('Doppio click su richiesta');
         }
     }
+    /* Fissa in alto la richiesta */
     fissaInAlto(richiesta) {
         if (richiesta) {
-            if (richiesta !== this.richiestaFissata) {
-                this.richiesteS.fissata(richiesta.id);
-                this.markerS.actionById(richiesta.id, 'click');
-            } else {
-                this.unClick();
+            // Se esiste già una richiesta fissata la rimetto nella lista e riordino
+            if (this.richiestaFissata) {
+                this.rimettiNellaLista(this.richiestaFissata);
+                this.ordinaRichieste();
             }
+            this.richiesteS.deselezionata();
+            this.richiesteS.fissata(richiesta.id);
+            this.markerS.actionById(richiesta.id, 'click');
         }
     }
+    /* Gestisce l'hover in */
     richiestaHoverIn(richiesta) {
         if (richiesta) {
             this.richiesteS.hoverIn(richiesta.id);
             this.markerS.actionById(richiesta.id, 'hover-in');
         }
     }
+    /* Gestisce l'hover out */
     richiestaHoverOut(richiesta) {
         if (richiesta) {
             this.richiesteS.hoverOut();
             this.markerS.actionById(richiesta.id, 'hover-out');
         }
     }
+    /* Deseleziona e defissa la richiesta */
     unClick() {
         this.richiesteS.deselezionata();
         this.richiesteS.defissata();
         this.markerS.action('a', 'unclick');
     }
 
+    /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(richiesta) {
         this.modalService.open(EventiRichiestaComponent, { size: 'lg' });
     }

@@ -26,6 +26,7 @@ export class SintesiRichiestaComponent implements OnInit {
     methods = new LayoutMethods;
     espanso = false;
     isSingleClick = true;
+    live: any;
 
     constructor(popoverConfig: NgbPopoverConfig,
         tooltipConfig: NgbTooltipConfig,

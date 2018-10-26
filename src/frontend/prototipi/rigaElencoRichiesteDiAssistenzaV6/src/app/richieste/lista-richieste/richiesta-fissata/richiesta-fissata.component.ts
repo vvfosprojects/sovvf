@@ -1,55 +1,120 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, OnChanges } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { transition, animate, style, state, trigger } from '@angular/animations';
+import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/animations';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { EventiRichiestaComponent } from '../../../eventi-richiesta/eventi-richiesta.component';
+import { ListaRichiesteService } from '../../lista-richieste-service/lista-richieste-service.service';
 
 @Component({
   selector: 'app-richiesta-fissata',
   templateUrl: './richiesta-fissata.component.html',
-  styleUrls: ['./richiesta-fissata.component.css'],
-  animations: [
-    trigger('richiestaSelezionata', [
-      state('selected', style({
-        opacity: 1,
-        transform: 'scale(1)'
-      })),
-      state('not-selected', style({
-        opacity: 0,
-        transform: 'scale(1.3)'
-      })),
-      transition('* => selected', animate('200ms ease-in')),
-      transition('* => not-selected', animate('200ms ease-out'))
-    ]),
-  ]
+  styleUrls: ['./richiesta-fissata.component.css']
 })
 export class RichiestaFissataComponent implements OnInit {
-  @Input() richiestaFissata: SintesiRichiesta;
-  @Input() richiestaFissataState: string;
-  @Output() defissaRichiesta: EventEmitter<any> = new EventEmitter();
   @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
+  @ViewChild('richiestaContainer') private richiestaContainer: ElementRef;
+  @ViewChild('richiesta') private richiesta: ElementRef;
 
+  private playerContainer: AnimationPlayer;
+  private playerRichiesta: AnimationPlayer;
+  richiestaFissata: SintesiRichiesta;
 
-  constructor(private modalService: NgbModal) {
+  constructor(private richiesteS: ListaRichiesteService,
+    private animationBuilder: AnimationBuilder,
+    private modalService: NgbModal) {
   }
 
   ngOnInit() {
+    // Restituisce la Richiesta Fissata
+    this.richiesteS.subjects.getRichiestaFissata().subscribe(richiestaFissata => {
+      if (richiestaFissata) {
+        this.richiestaFissata = richiestaFissata;
+        this.animazioneIn();
+      } else {
+        this.animazioneOut();
+        this.richiestaFissata = null;
+      }
+    });
   }
 
-  defissa(richiestaFissata) {
-    this.defissaRichiesta.emit(richiestaFissata);
+  // Defissa, deseleziona e attende 300ms per visualizzare l'intera animazione
+  defissa() {
+    this.animazioneOut();
+    setTimeout(() => {
+      this.richiesteS.defissata();
+      this.richiesteS.deselezionata();
+    }, 300);
   }
 
+  // Animazioni
+  createAnimazioneIn() {
+    if (this.playerContainer) {
+      this.playerContainer.destroy();
+    } else if (this.playerRichiesta) {
+      this.playerRichiesta.destroy();
+    }
+
+    const animationContainerRichiesta = this.animationBuilder
+      .build([
+        style({ width: '0' }),
+        animate(300, style({ width: '100%' }))
+      ]);
+
+    const animationRichiesta = this.animationBuilder
+      .build([
+        style({ height: '0', opacity: '0' }),
+        animate(300, style({ height: 'auto', opacity: '1' }))
+      ]);
+
+    this.playerContainer = animationContainerRichiesta.create(this.richiestaContainer.nativeElement);
+    this.playerRichiesta = animationRichiesta.create(this.richiesta.nativeElement);
+  }
+  createAnimazioneOut() {
+    if (this.playerContainer) {
+      this.playerContainer.destroy();
+    } else if (this.playerRichiesta) {
+      this.playerRichiesta.destroy();
+    }
+
+    const animationContainerRichiesta = this.animationBuilder
+      .build([
+        style({ width: '100%' }),
+        animate(300, style({ width: '0' }))
+      ]);
+
+    const animationRichiesta = this.animationBuilder
+      .build([
+        style({ height: 'auto', opacity: '1' }),
+        animate(300, style({ height: '0', opacity: '0' }))
+      ]);
+
+    this.playerContainer = animationContainerRichiesta.create(this.richiestaContainer.nativeElement);
+    this.playerRichiesta = animationRichiesta.create(this.richiesta.nativeElement);
+  }
+  animazioneIn() {
+    this.createAnimazioneIn();
+    this.playerContainer.play();
+    this.playerRichiesta.play();
+  }
+  animazioneOut() {
+    this.createAnimazioneOut();
+    this.playerContainer.play();
+    this.playerRichiesta.play();
+  }
+
+  /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
   visualizzaEventiRichiesta(richiesta) {
-    this.eventiRichiesta.emit(richiesta);
+    this.modalService.open(EventiRichiestaComponent, { size: 'lg' });
   }
-
   /* NgClass Template */
   cardShadowClass(r) {
-    return {
-      'card-shadow-info': r.stato === 'assegnato',
-      'card-shadow-success': r.stato === 'presidiato',
-      'card-shadow-danger': r.stato === 'chiamata',
-      'card-shadow-warning': r.stato === 'sospeso',
-    };
+    if (r) {
+      return {
+        'card-shadow-info': r.stato === 'assegnato',
+        'card-shadow-success': r.stato === 'presidiato',
+        'card-shadow-danger': r.stato === 'chiamata',
+        'card-shadow-warning': r.stato === 'sospeso',
+      };
+    }
   }
 }
