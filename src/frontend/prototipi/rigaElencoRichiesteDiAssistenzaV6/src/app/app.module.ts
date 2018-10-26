@@ -29,12 +29,12 @@ import { EventiRichiestaComponent } from './eventi-richiesta/eventi-richiesta.co
 /*
     Services
  */
-import { SintesiRichiesteService } from './dispatcher/service/sintesi-richieste-service/sintesi-richieste.service';
-import { SintesiRichiesteServiceFake } from './dispatcher/service/sintesi-richieste-service/sintesi-richieste.service.fake';
-import { ListaRichiesteManagerService } from './dispatcher/manager/lista-richieste-manager/lista-richieste-manager.service';
-import { ListaRichiesteManagerServiceFake } from './dispatcher/manager/lista-richieste-manager/lista-richieste-manager.service.fake';
-import { DispatcherService } from './dispatcher/dispatcher-lista-richieste.service';
-import { DispatcherFakeService } from './dispatcher/dispatcher-lista-richieste-fake.service';
+import { SintesiRichiesteService } from './core/service/sintesi-richieste-service/sintesi-richieste.service';
+import { SintesiRichiesteServiceFake } from './core/service/sintesi-richieste-service/sintesi-richieste.service.fake';
+import { ListaRichiesteManagerService } from './core/manager/lista-richieste-manager/lista-richieste-manager.service';
+import { ListaRichiesteManagerServiceFake } from './core/manager/lista-richieste-manager/lista-richieste-manager.service.fake';
+import { DispatcherService } from './core/dispatcher/dispatcher-lista-richieste.service';
+import { DispatcherFakeService } from './core/dispatcher/dispatcher-lista-richieste-fake.service';
 
 @NgModule({
     declarations: [

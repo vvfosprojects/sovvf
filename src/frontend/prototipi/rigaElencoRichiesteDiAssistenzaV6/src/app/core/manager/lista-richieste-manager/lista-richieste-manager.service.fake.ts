@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { DispatcherService } from '../../dispatcher-lista-richieste.service';
+import { DispatcherService } from '../../dispatcher/dispatcher-lista-richieste.service';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
 
 @Injectable({
     providedIn: 'root'
 })
-export class ListaRichiesteManagerService {
+export class ListaRichiesteManagerServiceFake {
 
     richieste: SintesiRichiesta[] = [];
 
