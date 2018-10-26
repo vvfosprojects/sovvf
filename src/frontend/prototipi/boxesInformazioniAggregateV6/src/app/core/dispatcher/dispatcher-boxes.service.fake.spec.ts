@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import {DispatcherInfoAggregateServiceFake} from './dispatcher.service.fake';
+import {DispatcherInfoAggregateServiceFake} from './dispatcher-boxes.service.fake';
 
 
 describe('DispatcherInfoAggregateServiceFake', () => {

@@ -3,13 +3,13 @@ import {Observable, of} from 'rxjs';
 import {BoxInterventi} from '../../../boxes/boxes-model/box-interventi.model';
 import {BoxMezzi} from '../../../boxes/boxes-model/box-mezzi.model';
 import {BoxFunzionariSo} from '../../../boxes/boxes-model/box-funzionari-so.model';
-import {DispatcherInfoAggregateService} from '../../dispatcher.service';
+import {DispatcherInfoAggregateService} from '../../dispatcher/dispatcher-boxes.service';
 
 
 @Injectable({
     providedIn: 'root'
 })
-export class BoxManagerService {
+export class BoxManagerServiceFake {
 
     boxInterventi: BoxInterventi;
     boxMezzi: BoxMezzi;
