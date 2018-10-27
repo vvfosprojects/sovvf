@@ -1,6 +1,6 @@
 import {TestBed, inject} from '@angular/core/testing';
 
-import {SintesiRichiesteService} from './sintesi-richieste.service';
+import {SintesiRichiesteService} from './lista-richieste.service';
 
 describe('SintesiRichiesteService', () => {
     beforeEach(() => {
