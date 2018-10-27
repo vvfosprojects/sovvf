@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Injectable, OnDestroy} from '@angular/core';
+import {Observable, Subject, Subscription} from 'rxjs';
 import {MarkedService} from '../marked-service/marked-service.service';
 import {Meteo} from '../../../shared/model/meteo.model';
 import {MeteoService} from '../../../shared/meteo/meteo-service.service';
@@ -15,9 +15,9 @@ import {RichiesteMarkerManagerService} from '../../../core/manager/maps-manager'
 @Injectable({
     providedIn: 'root'
 })
-export class MarkerService {
+export class MarkerService implements OnDestroy {
 
-    datiMeteo: Meteo;
+    private subjectMeteo = new Subject<Meteo>();
     icone = new IconMappe();
     tipo = new TipoMappe();
     colori = new TipoColori();
@@ -26,7 +26,7 @@ export class MarkerService {
     markerColorato: boolean;
     markerSelezionato: any;
     markerZIndex: any;
-    subscription: Subscription;
+    subscriptionMarked: Subscription;
 
     filtro: Array<any>;
 
@@ -37,10 +37,14 @@ export class MarkerService {
                 private richiesteService: ListaRichiesteService,
                 private markerRichiesteManager: RichiesteMarkerManagerService,
                 private fakeCambioSede: UnitaOperativaService) {
-        this.subscription = this.markedService.getMarked().subscribe(marker => {
+        this.subscriptionMarked = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         });
         this.filtro = ['richiesta'];
+    }
+
+    ngOnDestroy() {
+        this.subscriptionMarked.unsubscribe();
     }
 
     tipoIcona(marker: any, tipoSede: boolean): string {
@@ -201,11 +205,16 @@ export class MarkerService {
         /**
          *  faccio una chiamata all'api del servizio meteo e aspetto i dati del marker selezionato
          */
+        this.subjectMeteo.next();
         this.meteoService.getMeteoData(marker.getCoordinate())
             .subscribe({
-                next: data => this.datiMeteo = data,
+                next: data => this.subjectMeteo.next(data),
                 error: data => console.log(`Errore: ${data}`)
             });
+    }
+
+    getMeteo(): Observable<Meteo> {
+        return this.subjectMeteo.asObservable();
     }
 
     filtroMarker(filtro) {
@@ -254,4 +263,5 @@ export class MarkerService {
     getMarkerFromId(id) {
         return this.markerRichiesteManager.getMarkerFromId(id);
     }
+
 }
