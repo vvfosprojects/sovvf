@@ -26,8 +26,8 @@ export const environment = {
             }
         },
         rigaElencoRichieste: {
-            fake: 'http://api.myjson.com/bins/x09t6',
-            fake2: 'https://api.myjson.com/bins/ze8v4', // 3 Richieste
+            fake: 'https://api.myjson.com/bins/ajv6q',
+            fake2: 'https://api.myjson.com/bins/1djrb6',
             backend: 'http://localhost:2661/api'
         },
         elencoFiltri: {

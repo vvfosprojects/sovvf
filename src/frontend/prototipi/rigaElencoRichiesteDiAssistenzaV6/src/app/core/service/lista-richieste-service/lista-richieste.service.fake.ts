@@ -148,7 +148,6 @@ export class SintesiRichiesteServiceFake {
                         [
                             new Squadra(
                                 '2A',
-                                'COD2',
                                 'SulPosto',
                                 [
                                     new Componente(
@@ -221,7 +220,6 @@ export class SintesiRichiesteServiceFake {
                         [
                             new Squadra(
                                 '3A',
-                                'COD3',
                                 'InRientro',
                                 [
                                     new Componente(

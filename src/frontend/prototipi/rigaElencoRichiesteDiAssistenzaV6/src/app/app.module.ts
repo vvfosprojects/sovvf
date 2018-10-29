@@ -26,7 +26,7 @@ import { FiltriRichiesteComponent } from './richieste/filtri-richieste/filtri-ri
 import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.component';
 import { RichiestaFissataComponent } from './richieste/lista-richieste/richiesta-fissata/richiesta-fissata.component';
 import { NavTestComponent } from './lista-richieste-test/nav-test/nav-test.component';
-import { EventiRichiestaComponent } from './eventi-richiesta/eventi-richiesta.component';
+import { EventiRichiestaComponent } from './eventi/eventi-richiesta.component';
 /*
     Services
  */
@@ -76,9 +76,9 @@ import { DispatcherFakeService } from './core/dispatcher/dispatcher-lista-richie
         })
     ],
     providers: [
-        { provide: DispatcherService, useClass: DispatcherFakeService },
-        { provide: ListaRichiesteManagerService, useClass: ListaRichiesteManagerServiceFake },
-        { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }
+        // { provide: DispatcherService, useClass: DispatcherFakeService },
+        // { provide: ListaRichiesteManagerService, useClass: ListaRichiesteManagerServiceFake },
+        // { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }
     ],
     bootstrap: [AppComponent]
 })

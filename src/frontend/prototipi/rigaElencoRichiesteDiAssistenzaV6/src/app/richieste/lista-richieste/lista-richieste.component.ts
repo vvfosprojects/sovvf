@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, OnChanges } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, OnChanges, OnDestroy } from '@angular/core';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { ListaRichiesteManagerService } from '../../core/manager/lista-richieste-manager/lista-richieste-manager.service';
 import { ScrollEvent } from 'ngx-scroll-event';
@@ -7,18 +7,20 @@ import { RicercaRichiesteService } from '../ricerca-richieste/ricerca-richieste-
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-lista-richieste',
     templateUrl: './lista-richieste.component.html',
     styleUrls: ['./lista-richieste.component.css']
 })
-export class ListaRichiesteComponent implements OnInit {
+export class ListaRichiesteComponent implements OnInit, OnDestroy {
+    subscription = new Subscription();
+
     richieste: SintesiRichiesta[] = [];
     richiestaHover: SintesiRichiesta;
     richiestaSelezionata: SintesiRichiesta;
     richiestaFissata: SintesiRichiesta;
-    richiestaSelezionataState: string; // Animazione
     loaderRichieste = true;
     loaderNuoveRichieste = false;
 
@@ -31,14 +33,19 @@ export class ListaRichiesteComponent implements OnInit {
         public ricercaS: RicercaRichiesteService,
         private modalService: NgbModal,
         private markerS: MarkerService) {
+
+        // Restituisce le Richieste
+        this.subscription.add(
+            this.listaRichiesteManager.getRichieste().subscribe(richieste => {
+                console.log('Sono listaRichieste, ho ricevuto le richieste');
+                console.log(richieste);
+                this.richieste = richieste;
+                this.loaderRichieste = false;
+            })
+        );
     }
 
     ngOnInit() {
-        // Restituisce le Richieste
-        this.listaRichiesteManager.getData().subscribe(richieste => {
-            this.richieste = richieste;
-            this.loaderRichieste = false;
-        });
         // Restituisce la Richiesta Hover
         this.richiesteS.subjects.getRichiestaHover().subscribe(richiestaHover => {
             if (richiestaHover) {
@@ -72,6 +79,10 @@ export class ListaRichiesteComponent implements OnInit {
         this.ordinaRichieste();
     }
 
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+
     /* Ordina le richieste per data dalla piu recente */
     ordinaRichieste() {
         this.richieste.sort((a, b) => new Date(b.istanteRicezioneRichiesta).getTime() - new Date(a.istanteRicezioneRichiesta).getTime());
@@ -83,7 +94,7 @@ export class ListaRichiesteComponent implements OnInit {
             this.contatoreNuoveRichieste++;
             this.loaderNuoveRichieste = true;
             setTimeout(() => {
-                this.listaRichiesteManager.onNewRichiesteList();
+                this.listaRichiesteManager.getRichieste();
                 this.loaderNuoveRichieste = false;
                 this.contatoreNuoveRichieste = 0;
             }, 3000);

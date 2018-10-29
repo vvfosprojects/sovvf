@@ -6,7 +6,7 @@
 
   <!-- Singola Richiesta Fissata  -->
   <div class="col-12 pl-0 pr-4">
-    <app-richiesta-fissata (tornaNellaLista)="rimettiNellaLista($event)" (eventiRichiesta)="visualizzaEventiRichiesta($event)"></app-richiesta-fissata>
+    <app-richiesta-fissata (eventiRichiesta)="visualizzaEventiRichiesta($event)"></app-richiesta-fissata>
   </div>
   <!-- Lista di singole Richieste -->
   <div class="col-12 pt-1 px-0 m-h-750 scroll-y" detect-scroll (onScroll)="nuoveRichieste($event)" [bottomOffset]="1">

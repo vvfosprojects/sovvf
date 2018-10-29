@@ -17,7 +17,7 @@ export class NavTestComponent implements OnInit {
 
   ngOnInit() {
     // Restituisce le richieste
-    this.richiesteManager.getData().subscribe((richieste: SintesiRichiesta[]) => {
+    this.richiesteManager.getRichieste().subscribe((richieste: SintesiRichiesta[]) => {
       this.richieste = richieste;
     });
   }

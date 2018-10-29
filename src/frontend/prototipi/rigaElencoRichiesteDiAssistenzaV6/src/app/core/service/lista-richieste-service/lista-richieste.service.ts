@@ -15,11 +15,10 @@ export class SintesiRichiesteService {
     }
 
     public getRichieste(): Observable<any> {
-        let a;
         return this.http.get(API_URL_RICHIESTE).pipe(
-            map(data => {
-                a = data;
-                return a;
+            map((data: any) => {
+                const richieste = data.SintesiRichiesta;
+                return richieste;
             }),
             retry(3),
             catchError(this.handleError)
@@ -28,13 +27,13 @@ export class SintesiRichiesteService {
 
     private handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
-            console.error('Si è verificato un errore:', error.error.message);
+            console.error('Si è verificato un errore:', error.message);
         } else {
             console.error(
                 `Errore response: ${error.status}, ` +
-                `Messaggio body: ${error.error.message}`);
+                `Messaggio body: ${error.message}`);
         }
         return throwError(
-            'Qualcosa è andato storto, per favore riprova più tardi.');
+            'API Richieste: Qualcosa è andato storto, per favore riprova più tardi.');
     }
 }
