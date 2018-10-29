@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 /**
  * Eventi Richiesta Module
  */
-import {EventiRichiestaModule} from './eventi-richiesta/eventi-richiesta.module';
+import {EventiRichiestaModule} from './eventi/eventi-richiesta.module';
 /**
  * Shared Module
  */
