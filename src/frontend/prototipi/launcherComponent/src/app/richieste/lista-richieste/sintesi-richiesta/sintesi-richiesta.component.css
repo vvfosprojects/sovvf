@@ -1,30 +1,5 @@
-.status_presidiato {
-    border-left: 10px solid #28a745;
-}
-
-.status_chiamata {
-    border-left: 10px solid #dc3545;
-}
-
-.status_sospeso {
-    border-left: 10px solid #ffc107;
-}
-
-.status_assegnato{
-    border-left: 10px solid #17a2b8;
-}
-
-.status_chiuso{
-    border-left: 10px solid #868e96;
-}
-
 .row_text {
     color: #666666;
-}
-
-/* icone di guida */
-.guida {
-    color: #bbbbbb;
 }
 
 .big_numbers {
@@ -44,27 +19,8 @@
     background-color: beige;
 }
 
-.nowrap {
-    white-space: nowrap;
-}
-
-a:hover {
-    /* text-decoration: underline !important; (1) */
-    font-weight: bold !important;
-}
-
 .default-cursor{
     cursor: default !important;
-}
-
-.tipologia {
-    color: chocolate !important;
-}
-
-.num-int {
-    color: #444444;
-    font-weight: bold;
-    cursor: pointer;
 }
 
 .tasto-dettaglio {

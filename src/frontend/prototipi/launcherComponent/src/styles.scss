@@ -10,48 +10,91 @@
   -moz-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
   box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
 }
+
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: none !important;
+    /* font-weight: bold !important; */
+}
+
+/* icone di guida */
+.guida {
+    color: #bbbbbb;
+}
+
+.cod-int {
+    color: rgb(99, 99, 99) !important;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.descrizione-int {
+    color: rgb(221, 132, 68) !important;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
 .card-shadow{
-  -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
-  -moz-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
-  box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+    box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
 }
 .card-shadow-primary{
-  -webkit-box-shadow: 2px 0px 2px .5px #007bff;
-  -moz-box-shadow: 2px 0px 2px .5px #007bff;
-  box-shadow: 2px 0px 2px .5px #007bff;
+    -webkit-box-shadow: 2px 0px 2px .5px #007bff;
+    -moz-box-shadow: 2px 0px 2px .5px #007bff;
+    box-shadow: 2px 0px 2px .5px #007bff;
 }
 .card-shadow-info{
-  -webkit-box-shadow: 2px 0px 2px .5px #17a2b8;
-  -moz-box-shadow: 2px 0px 2px .5px #17a2b8;
-  box-shadow: 2px 0px 2px .5px #17a2b8;
+    -webkit-box-shadow: 2px 0px 2px .5px #17a2b8;
+    -moz-box-shadow: 2px 0px 2px .5px #17a2b8;
+    box-shadow: 2px 0px 2px .5px #17a2b8;
 }
 .card-shadow-success{
-  -webkit-box-shadow: 2px 0px 2px .5px #28a745;
-  -moz-box-shadow: 2px 0px 2px .5px #28a745;
-  box-shadow: 2px 0px 2px .5px #28a745;
+    -webkit-box-shadow: 2px 0px 2px .5px #28a745;
+    -moz-box-shadow: 2px 0px 2px .5px #28a745;
+    box-shadow: 2px 0px 2px .5px #28a745;
 }
 .card-shadow-danger{
-  -webkit-box-shadow: 2px 0px 2px .5px #dc3545;
-  -moz-box-shadow: 2px 0px 2px .5px #dc3545;
-  box-shadow: 2px 0px 2px .5px #dc3545;
+    -webkit-box-shadow: 2px 0px 2px .5px #dc3545;
+    -moz-box-shadow: 2px 0px 2px .5px #dc3545;
+    box-shadow: 2px 0px 2px .5px #dc3545;
 }
 .card-shadow-warning{
-  -webkit-box-shadow: 2px 0px 2px .5px #ffc107;
-  -moz-box-shadow: 2px 0px 2px .5px #ffc107;
-  box-shadow: 2px 0px 2px .5px #ffc107;
+    -webkit-box-shadow: 2px 0px 2px .5px #ffc107;
+    -moz-box-shadow: 2px 0px 2px .5px #ffc107;
+    box-shadow: 2px 0px 2px .5px #ffc107;
 }
 .card-shadow-secondary{
-  -webkit-box-shadow: 2px 0px 2px .5px #868e96;
-  -moz-box-shadow: 2px 0px 2px .5px #868e96;
-  box-shadow: 2px 0px 2px .5px #868e96;
+    -webkit-box-shadow: 2px 0px 2px .5px #868e96;
+    -moz-box-shadow: 2px 0px 2px .5px #868e96;
+    box-shadow: 2px 0px 2px .5px #868e96;
 }
-.min-height-boxes{
-  height:170px;
+
+.status_presidiato {
+    border-left: 10px solid #28a745;
 }
-.sidebar{
-  width:100%;
-  height: 55px;
+
+.status_chiamata {
+    border-left: 10px solid #dc3545;
 }
-.bg-grey{
-  background-color:rgba(206, 206, 206, 1);
+
+.status_sospeso {
+    border-left: 10px solid #ffc107;
+}
+
+.status_assegnato{
+    border-left: 10px solid #17a2b8;
+}
+
+.status_chiuso{
+    border-left: 10px solid #868e96;
+}
+
+.fa-rotate-45 {
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
 }

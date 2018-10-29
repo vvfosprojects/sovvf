@@ -18,16 +18,17 @@ export const environment = {
         },
         maps: {
             markers: {
-                richieste: 'https://api.myjson.com/bins/6vlu4',
-                sedi: '',
-                mezzi: ''
+                richieste: 'https://api.myjson.com/bins/xua22',
+                sedi: 'https://api.myjson.com/bins/18m83u',
+                mezzi: '',
+                centro: ''
             },
             agm: {
                 key: 'AIzaSyDYIMWNyVt1X_30PybcDMTZkFkcSsUytDk'
             }
         },
         rigaElencoRichieste: {
-            fake: 'https://api.myjson.com/bins/ze8v4',
+            fake: 'https://api.myjson.com/bins/x09t6',
             backend: 'http://localhost:2661/api'
         },
         elencoFiltri: {
