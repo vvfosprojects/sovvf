@@ -8,16 +8,29 @@ export class TipoMappe {
     }
 
     private marker() {
+        // this.modelMarker = [
+        //     ['RichiestaMarker', 'richiesta'],
+        //     ['MezzoMarker', 'mezzo'],
+        //     ['SedeMarker', 'sede']
+        // ];
         this.modelMarker = [
-            ['RichiestaMarker', 'richiesta'],
-            ['MezzoMarker', 'mezzo'],
-            ['SedeMarker', 'sede']
+            ['id', 'richiesta'],
+            ['coordinate', 'mezzo'],
+            ['codice', 'sede']
         ];
         this.mapModelMarker = new Map(this.modelMarker);
     }
 
+    // markerType(marker) {
+    //     const markerModel = this.mapModelMarker.get(marker.constructor.name.toString());
+    //     // console.log(markerModel);
+    //     return markerModel;
+    // }
+
     markerType(marker) {
-        return this.mapModelMarker.get(marker.constructor.name.toString());
+        const keyNames = Object.keys(marker);
+        const markerModel = this.mapModelMarker.get(keyNames[0]);
+        return markerModel;
     }
 
 }

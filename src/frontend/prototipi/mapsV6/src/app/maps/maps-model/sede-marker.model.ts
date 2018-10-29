@@ -34,7 +34,7 @@ export class SedeMarker implements Sede {
     ) {
     }
 
-    getCoordinate() {
-        return new Coordinate(this.coordinate.latitudine, this.coordinate.longitudine);
-    }
+    // getCoordinate() {
+    //     return new Coordinate(this.coordinate.latitudine, this.coordinate.longitudine);
+    // }
 }

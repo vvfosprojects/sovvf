@@ -19,8 +19,8 @@
             imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
             [minimumClusterSize]="minMarkerCluster">
         <agm-marker *ngFor="let richiestaMarker of richiesteMarkers;"
-                    [latitude]="richiestaMarker.getCoordinate().latitudine"
-                    [longitude]="richiestaMarker.getCoordinate().longitudine"
+                    [latitude]="richiestaMarker.localita.coordinate.latitudine"
+                    [longitude]="richiestaMarker.localita.coordinate.longitudine"
                     (markerClick)="selezioneMarker(richiestaMarker)"
                     (mouseOver)="hoverMarker(richiestaMarker, 'hover-in')"
                     (mouseOut)="hoverMarker(richiestaMarker, 'hover-out')"
@@ -48,8 +48,8 @@
             imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
             [minimumClusterSize]="minMarkerCluster">
         <agm-marker *ngFor="let sedeMarker of sediMarkers;"
-                    [latitude]="sedeMarker.getCoordinate().latitudine"
-                    [longitude]="sedeMarker.getCoordinate().longitudine"
+                    [latitude]="sedeMarker.coordinate.latitudine"
+                    [longitude]="sedeMarker.coordinate.longitudine"
                     (markerClick)="selezioneMarker(sedeMarker)"
                     (mouseOver)="hoverMarker(sedeMarker, 'hover-in')"
                     (mouseOut)="hoverMarker(sedeMarker, 'hover-out')"
@@ -78,8 +78,8 @@
             imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
             [minimumClusterSize]="minMarkerCluster">
         <agm-marker *ngFor="let mezzoMarker of mezziMarkers;"
-                    [latitude]="mezzoMarker.getCoordinate().latitudine"
-                    [longitude]="mezzoMarker.getCoordinate().longitudine"
+                    [latitude]="mezzoMarker.coordinate.latitudine"
+                    [longitude]="mezzoMarker.coordinate.longitudine"
                     (markerClick)="selezioneMarker(mezzoMarker)"
                     (mouseOver)="hoverMarker(mezzoMarker, 'hover-in')"
                     (mouseOut)="hoverMarker(mezzoMarker, 'hover-out')"

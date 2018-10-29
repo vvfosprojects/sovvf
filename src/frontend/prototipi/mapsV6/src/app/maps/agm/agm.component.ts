@@ -28,8 +28,7 @@ export class AgmComponent implements OnInit, OnDestroy {
     datiMeteo: Meteo;
     coloreStato: string;
     map_loaded = false;
-    subscriptionCentroMappa: Subscription;
-    subscriptionDatiMeteo: Subscription;
+    subscription = new Subscription();
     map: any;
 
     zoomControlOptions: ZoomControlOptions = {
@@ -48,17 +47,17 @@ export class AgmComponent implements OnInit, OnDestroy {
          * dati del centro mappa attuale
          * @type {Subscription}
          */
-        this.subscriptionCentroMappa = this.centerService.getCentro().subscribe((centro: CentroMappa) => {
+        this.subscription.add(this.centerService.getCentro().subscribe((centro: CentroMappa) => {
             this.centroMappa = centro;
-        });
+        }));
         /**
          * dati meteo del marker cliccato/selezionato
          * @type {Subscription}
          */
-        this.subscriptionDatiMeteo = this.markerService.getMeteo().subscribe((meteo: Meteo) => {
+        this.subscription.add(this.markerService.getMeteo().subscribe((meteo: Meteo) => {
             this.datiMeteo = meteo;
-        });
-        this.minMarkerCluster = 99999;
+        }));
+        this.minMarkerCluster = 9;
         this.coloreStato = '#343a40';
     }
 
@@ -66,8 +65,7 @@ export class AgmComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.subscriptionCentroMappa.unsubscribe();
-        this.subscriptionDatiMeteo.unsubscribe();
+        this.subscription.unsubscribe();
     }
 
     mappaCaricata(event: any): void {
@@ -91,7 +89,7 @@ export class AgmComponent implements OnInit, OnDestroy {
          *  ricevo il marker selezionato dal componente mappa (agm)
          */
         this.markerService.action(marker, 'click');
-         /**
+        /**
          * prendo il colore della richiesta dallo stato
          */
         this.coloreStato = this.markerService.coloreStato;
@@ -123,7 +121,7 @@ export class AgmComponent implements OnInit, OnDestroy {
         /**
          * richiedo al service che gestisce i marker sulla mappa, di ritornarmi se il marker cliccato è quello selezionato
          */
-        return this.markerService.trueMarker(marker, true);
+        return this.markerService.trueMarker(marker);
     }
 
     isVisible(marker: any): boolean {

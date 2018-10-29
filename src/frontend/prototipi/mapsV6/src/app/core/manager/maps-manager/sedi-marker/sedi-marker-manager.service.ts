@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {DispatcherSediMarkerService} from '../../../dispatcher/dispatcher-maps/sedi-marker/dispatcher-sedi-marker.service';
-import {SedeMarker} from '../../../../maps/maps-model/sede-marker.model';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { DispatcherSediMarkerService } from '../../../dispatcher/dispatcher-maps/sedi-marker/dispatcher-sedi-marker.service';
+import { SedeMarker } from '../../../../maps/maps-model/sede-marker.model';
 
 
 @Injectable({
@@ -10,15 +10,13 @@ import {SedeMarker} from '../../../../maps/maps-model/sede-marker.model';
 export class SediMarkerManagerService {
 
     sediMarker: SedeMarker[];
+    private subjectSediMarkers$ = new Subject<SedeMarker[]>();
 
     constructor(private dispatcher: DispatcherSediMarkerService) {
 
         /**
          * dispatcher sedi
          */
-        this.dispatcher.onNewSediMarkersList().subscribe(sedi => {
-            this.sediMarker = sedi;
-        });
 
         this.dispatcher.onNewSedeMarker().subscribe(sede => {
             this.sediMarker.push(sede);
@@ -34,9 +32,14 @@ export class SediMarkerManagerService {
 
     }
 
-    getSediMarker(): Observable<SedeMarker[]> {
-        return of(this.sediMarker);
+    getSediMarker() {
+        this.subjectSediMarkers$.next();
+        this.dispatcher.onNewSediMarkersList()
+            .subscribe({
+                next: data => this.subjectSediMarkers$.next(data),
+                error: data => console.log(`Errore: ${data}`)
+            });
+        return this.subjectSediMarkers$.asObservable();
     }
-
 
 }
