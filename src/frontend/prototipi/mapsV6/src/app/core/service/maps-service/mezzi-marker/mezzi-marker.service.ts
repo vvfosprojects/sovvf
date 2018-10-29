@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
-import {catchError, retry} from 'rxjs/operators';
+import { catchError, map, retry } from 'rxjs/operators';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {environment} from '../../../../../environments/environment';
 
@@ -19,6 +19,10 @@ export class MezziMarkerService {
 
     public getMezziMarkers(): Observable<any> {
         return this.http.get(API_URL_MEZZI).pipe(
+            map((data: any) => {
+                const mezziMarker = data;
+                return mezziMarker;
+            }),
             retry(3),
             catchError(this.handleError)
         );
@@ -26,13 +30,13 @@ export class MezziMarkerService {
 
     private handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
-            console.error('Si è verificato un errore:', error.error.message);
+            console.error('Si è verificato un errore:', error.message);
         } else {
             console.error(
                 `Errore response: ${error.status}, ` +
-                `Messaggio body: ${error.error.message}`);
+                `Messaggio body: ${error.message}`);
         }
         return throwError(
-            'Qualcosa è andato storto, per favore riprova più tardi.');
+            'API MezziMarker: qualcosa è andato storto, per favore riprova più tardi.');
     }
 }

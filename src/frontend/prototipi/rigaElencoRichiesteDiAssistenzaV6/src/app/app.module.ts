@@ -30,8 +30,8 @@ import { EventiRichiestaComponent } from './eventi-richiesta/eventi-richiesta.co
 /*
     Services
  */
-import { SintesiRichiesteService } from './core/service/sintesi-richieste-service/sintesi-richieste.service';
-import { SintesiRichiesteServiceFake } from './core/service/sintesi-richieste-service/sintesi-richieste.service.fake';
+import { SintesiRichiesteService } from './core/service/lista-richieste-service/lista-richieste.service';
+import { SintesiRichiesteServiceFake } from './core/service/lista-richieste-service/lista-richieste.service.fake';
 import { ListaRichiesteManagerService } from './core/manager/lista-richieste-manager/lista-richieste-manager.service';
 import { ListaRichiesteManagerServiceFake } from './core/manager/lista-richieste-manager/lista-richieste-manager.service.fake';
 import { DispatcherService } from './core/dispatcher/dispatcher-lista-richieste.service';

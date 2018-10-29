@@ -17,15 +17,15 @@ export class MezzoMarker {
     ) {
     }
 
-    getCoordinate() {
-        return new Coordinate(this.coordinate.latitudine, this.coordinate.longitudine);
-    }
-
-    inSoccorso() {
-        return !!this.id_richiesta;
-    }
-
-    getStato() {
-        return this.mezzo.stato;
-    }
+    // getCoordinate() {
+    //     return new Coordinate(this.coordinate.latitudine, this.coordinate.longitudine);
+    // }
+    //
+    // inSoccorso() {
+    //     return !!this.id_richiesta;
+    // }
+    //
+    // getStato() {
+    //     return this.mezzo.stato;
+    // }
 }

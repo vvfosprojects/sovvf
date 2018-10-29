@@ -15,7 +15,7 @@ export class CentroMappaServiceFake {
     }
 
     getCentroMappa(): Observable<CentroMappa> {
-        this.centroMappa = new CentroMappa(new Coordinate(41.8917098, 12.5005402), 11);
+        this.centroMappa = new CentroMappa(new Coordinate(41.8917098, 12.5005402), 12);
         return of(this.centroMappa);
     }
 }

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {EventoRichiesta} from '../../../eventi-richiesta/eventi-model/evento-richiesta.model';
+import {EventoRichiesta} from '../../../eventi/eventi-model/evento-richiesta.model';
 
 @Injectable()
 export class EventiRichiestaServiceFake {

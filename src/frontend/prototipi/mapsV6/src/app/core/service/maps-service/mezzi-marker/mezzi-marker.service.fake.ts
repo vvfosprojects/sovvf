@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {MezzoMarker} from '../../../../maps/maps-model/mezzo-marker.model';
-import {Coordinate} from '../../../../shared/model/coordinate.model';
-import {Squadra} from '../../../../shared/model/squadra.model';
-import {Componente} from '../../../../shared/model/componente.model';
-import {Mezzo} from '../../../../shared/model/mezzo.model';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { MezzoMarker } from '../../../../maps/maps-model/mezzo-marker.model';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { Squadra } from '../../../../shared/model/squadra.model';
+import { Componente } from '../../../../shared/model/componente.model';
+import { Mezzo } from '../../../../shared/model/mezzo.model';
 
 
 @Injectable({
@@ -25,7 +25,7 @@ export class MezziMarkerServiceFake {
                     3, 'carburante', 2, 'estinguente'),
                 'RM-00001',
                 [
-                    new Squadra('1A', '1', 'InViaggio',
+                    new Squadra('1A', 'InViaggio',
                         [
                             new Componente(
                                 'CR',
@@ -63,7 +63,7 @@ export class MezziMarkerServiceFake {
                                 false,
                                 true),
                         ]),
-                    new Squadra('1A', '1', 'InViaggio',
+                    new Squadra('1A', 'InViaggio',
                         [
                             new Componente(
                                 'CR',
@@ -108,7 +108,7 @@ export class MezziMarkerServiceFake {
                 new Mezzo('1', 'Autobotte2', 'ABP', 'InRientro', 1),
                 'RM-00002',
                 [
-                    new Squadra('1A', '1', 'InViaggio',
+                    new Squadra('1A', 'InViaggio',
                         [
                             new Componente(
                                 'CR',
@@ -153,7 +153,7 @@ export class MezziMarkerServiceFake {
                 new Mezzo('1', 'Autobotte3', 'ABP', 'SulPosto', 5),
                 'R1',
                 [
-                    new Squadra('1A', '1', 'InViaggio',
+                    new Squadra('1A', 'InViaggio',
                         [
                             new Componente(
                                 'CR',

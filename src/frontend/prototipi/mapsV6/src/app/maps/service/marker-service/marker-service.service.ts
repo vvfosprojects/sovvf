@@ -1,23 +1,24 @@
-import {Injectable} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {MarkedService} from '../marked-service/marked-service.service';
-import {Meteo} from '../../../shared/model/meteo.model';
-import {MeteoService} from '../../../shared/meteo/meteo-service.service';
-import {IconMappe} from './_icone';
-import {TipoMappe} from './_typeof';
-import {TipoColori} from './_color';
-import {AgmService} from '../../agm/agm-service.service';
-import {UnitaOperativaService} from '../../../navbar/navbar-service/unita-operativa-service/unita-operativa.service';
-import {ListaRichiesteService} from '../../../richieste/lista-richieste-service/lista-richieste-service.service';
-import {RichiesteMarkerManagerService} from '../../../core/manager/maps-manager';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { MarkedService } from '../marked-service/marked-service.service';
+import { Meteo } from '../../../shared/model/meteo.model';
+import { MeteoService } from '../../../shared/meteo/meteo-service.service';
+import { IconMappe } from './_icone';
+import { TipoMappe } from './_typeof';
+import { TipoColori } from './_color';
+import { AgmService } from '../../agm/agm-service.service';
+import { UnitaOperativaService } from '../../../navbar/navbar-service/unita-operativa-service/unita-operativa.service';
+import { ListaRichiesteService } from '../../../richieste/lista-richieste-service/lista-richieste-service.service';
+import { RichiesteMarkerManagerService } from '../../../core/manager/maps-manager';
+import { Coordinate } from '../../../shared/model/coordinate.model';
 
 
 @Injectable({
     providedIn: 'root'
 })
-export class MarkerService {
+export class MarkerService implements OnDestroy {
 
-    datiMeteo: Meteo;
+    private subjectMeteo = new Subject<Meteo>();
     icone = new IconMappe();
     tipo = new TipoMappe();
     colori = new TipoColori();
@@ -26,7 +27,7 @@ export class MarkerService {
     markerColorato: boolean;
     markerSelezionato: any;
     markerZIndex: any;
-    subscription: Subscription;
+    subscription = new Subscription();
 
     filtro: Array<any>;
 
@@ -37,10 +38,14 @@ export class MarkerService {
                 private richiesteService: ListaRichiesteService,
                 private markerRichiesteManager: RichiesteMarkerManagerService,
                 private fakeCambioSede: UnitaOperativaService) {
-        this.subscription = this.markedService.getMarked().subscribe(marker => {
+        this.subscription.add(this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
-        });
+        }));
         this.filtro = ['richiesta'];
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 
     tipoIcona(marker: any, tipoSede: boolean): string {
@@ -98,7 +103,7 @@ export class MarkerService {
         /**
          * richiamo i metodi per modficare il centro e lo zoom del marker cliccato
          */
-        this.agmService.centraMappa(marker.getCoordinate());
+        this.agmService.centraMappa(this.getCoordinate(marker));
         this.agmService.cambiaZoom(18);
     }
 
@@ -136,7 +141,7 @@ export class MarkerService {
                 break;
             case 'richiesta|click': {
                 this.cliccato(marker);
-                this.coloreStato = this.colori.markerColor(marker.getStato());
+                this.coloreStato = this.colori.markerColor(marker.stato);
                 this.richiesteService.fissata(marker.id, true);
                 this.richiesteService.deselezionata();
             }
@@ -153,11 +158,11 @@ export class MarkerService {
                 break;
             case 'mezzo|click': {
                 this.cliccato(marker);
-                if (marker.inSoccorso()) {
+                if (!!marker.id_richiesta) {
                     /**
                      * lanciare azione solo quando il mezzo è in soccorso
                      */
-                    this.coloreStato = this.colori.markerColor(marker.getStato());
+                    this.coloreStato = this.colori.markerColor(marker.mezzo.stato);
                 }
             }
                 break;
@@ -201,11 +206,16 @@ export class MarkerService {
         /**
          *  faccio una chiamata all'api del servizio meteo e aspetto i dati del marker selezionato
          */
-        this.meteoService.getMeteoData(marker.getCoordinate())
+        this.subjectMeteo.next();
+        this.meteoService.getMeteoData(this.getCoordinate(marker))
             .subscribe({
-                next: data => this.datiMeteo = data,
+                next: data => this.subjectMeteo.next(data),
                 error: data => console.log(`Errore: ${data}`)
             });
+    }
+
+    getMeteo(): Observable<Meteo> {
+        return this.subjectMeteo.asObservable();
     }
 
     filtroMarker(filtro) {
@@ -250,8 +260,24 @@ export class MarkerService {
         }
     }
 
+    getCoordinate(marker): Coordinate {
+        const modello = this.modelloMarker(marker);
+        let coordinate: Coordinate = null;
+        switch (modello) {
+            case 'richiesta': {
+                coordinate = marker.localita.coordinate;
+            }
+                break;
+            default: {
+                coordinate = marker.coordinate;
+            }
+                break;
+        }
+        return coordinate;
+    }
 
     getMarkerFromId(id) {
         return this.markerRichiesteManager.getMarkerFromId(id);
     }
+
 }

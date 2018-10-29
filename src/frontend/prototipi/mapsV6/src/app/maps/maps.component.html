@@ -1,9 +1,9 @@
 <div class="row">
-    <div *ngIf="richiesteMarkers" class="col-12">
-        <app-agm [richiesteMarkers]="richiesteMarkers"
+    <div *ngIf="centroMappa" class="col-12">
+        <app-agm [centroMappa]="centroMappa"
+                 [richiesteMarkers]="richiesteMarkers"
                  [sediMarkers]="sediMarkers"
-                 [mezziMarkers]="mezziMarkers"
-                 [centroMappa]="centroMappa"></app-agm>
+                 [mezziMarkers]="mezziMarkers"></app-agm>
     </div>
 </div>
 
