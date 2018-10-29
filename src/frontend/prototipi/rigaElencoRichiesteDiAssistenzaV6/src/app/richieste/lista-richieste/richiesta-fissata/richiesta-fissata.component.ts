@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, OnChang
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/animations';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { EventiRichiestaComponent } from '../../../eventi-richiesta/eventi-richiesta.component';
+import { EventiRichiestaComponent } from '../../../eventi/eventi-richiesta.component';
 import { ListaRichiesteService } from '../../lista-richieste-service/lista-richieste-service.service';
 
 @Component({

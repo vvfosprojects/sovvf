@@ -92,3 +92,8 @@ a:hover {
 .status_chiuso{
     border-left: 10px solid #868e96;
 }
+
+.fa-rotate-45 {
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}

@@ -6,8 +6,7 @@ import { ListaRichiesteService } from '../lista-richieste-service/lista-richiest
 import { RicercaRichiesteService } from '../ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
-import { EventiRichiestaComponent } from '../../eventi-richiesta/eventi-richiesta.component';
-import { AnimationPlayer} from '@angular/animations';
+import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
 
 @Component({
     selector: 'app-lista-richieste',
