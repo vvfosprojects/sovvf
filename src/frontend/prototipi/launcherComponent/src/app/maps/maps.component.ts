@@ -1,59 +1,67 @@
-import {Component, OnInit} from '@angular/core';
-import {CentroMappa} from './maps-model/centro-mappa.model';
-import {RichiestaMarker} from './maps-model/richiesta-marker.model';
-import {Coordinate} from '../shared/model/coordinate.model';
-import {MapManagerService} from '../dispatcher/manager/maps-manager/map-manager-service.service';
-import {SedeMarker} from './maps-model/sede-marker.model';
-import {MezzoMarker} from './maps-model/mezzo-marker.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import * as MapManager from '../core/manager/maps-manager';
+import { CentroMappa } from './maps-model/centro-mappa.model';
+import { RichiestaMarker } from './maps-model/richiesta-marker.model';
+import { SedeMarker } from './maps-model/sede-marker.model';
+import { MezzoMarker } from './maps-model/mezzo-marker.model';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-maps',
     templateUrl: './maps.component.html',
     styleUrls: ['./maps.component.css']
 })
-export class MapsComponent implements OnInit {
+export class MapsComponent implements OnInit, OnDestroy {
 
     centroMappa: CentroMappa;
     richiesteMarkers: RichiestaMarker[];
     sediMarkers: SedeMarker[];
     mezziMarkers: MezzoMarker[];
+    subscription = new Subscription();
 
-    constructor(private mapManager: MapManagerService /** servizio che innietta dati alla mappa **/) {
+    constructor(private richiesteManager: MapManager.RichiesteMarkerManagerService,
+                private sediManager: MapManager.SediMarkerManagerService,
+                private mezziManager: MapManager.MezziMarkerManagerService,
+                private centroManager: MapManager.CentroMappaManagerService) {
         /**
-         *  creo un oggetto di tipo centroMappa per inizializzare la mappa
+         *  mi iscrivo al map manager che mi ritorna il centro della mappa
          */
-        this.centroMappa = new CentroMappa(new Coordinate(41.8917098, 12.5005402), 11);
-        /**
-         * imposto true la proprietà preLoader per far visualizzare di default il div che contiene il component maps
-         */
-    }
+        this.subscription.add(this.centroManager.getCentro().subscribe((r: CentroMappa) => {
+            this.centroMappa = r;
+        }));
 
-    ngOnInit() {
         /**
          *  mi iscrivo al map manager che mi ritorna tutti i marker di tipo richiestaMarker
          */
-        this.mapManager.getRichiesteMarker().subscribe((r: RichiestaMarker[]) => {
+        this.subscription.add(this.richiesteManager.getRichiesteMarker().subscribe((r: RichiestaMarker[]) => {
             this.richiesteMarkers = r;
             /**
              *  inizializzo un contatore nel servizio per tenere traccia del numero di richieste
              */
-            this.mapManager.count = this.richiesteMarkers.length;
-        });
-
-        /**
-         *  mi iscrivo al map manager che mi ritorna tutti i marker di tipo sedeMarker
-         */
-        this.mapManager.getSediMarker().subscribe((r: SedeMarker[]) => {
-            this.sediMarkers = r;
-        });
+            this.richiesteManager.count = this.richiesteMarkers.length;
+        }));
 
         /**
          *  mi iscrivo al map manager che mi ritorna tutti i marker di tipo mezzoMarker
          */
-        this.mapManager.getMezziMarker().subscribe((r: MezzoMarker[]) => {
+        this.subscription.add(this.mezziManager.getMezziMarker().subscribe((r: MezzoMarker[]) => {
             this.mezziMarkers = r;
-        });
+        }));
 
+        /**
+         *  mi iscrivo al map manager che mi ritorna tutti i marker di tipo richiestaMarker
+         */
+        this.subscription.add(this.sediManager.getSediMarker().subscribe((r: SedeMarker[]) => {
+            this.sediMarkers = r;
+        }));
+    }
+
+    ngOnInit() {
+
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 
 }

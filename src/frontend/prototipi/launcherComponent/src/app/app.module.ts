@@ -1,65 +1,57 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {NgModule} from '@angular/core';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {PipeModule} from './shared/pipes/pipe.module';
-import {FormsModule} from '@angular/forms';
-import {ReactiveFormsModule} from '@angular/forms';
-import {SidebarModule} from 'ng-sidebar';
-import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-import {AppComponent} from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PipeModule } from './shared/pipes/pipe.module';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SidebarModule } from 'ng-sidebar';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AppComponent } from './app.component';
 /**
  * Route & Page
  */
-import {routing} from './app.routing';
-import {HomeComponent} from './auth/home';
-import {LoginComponent} from './auth/login';
-import {BasicAuthInterceptor, ErrorInterceptor} from './auth/_helpers';
-import {fakeBackendProvider} from './auth/_helpers';
+import { routing } from './app.routing';
+import { HomeComponent } from './auth/home';
+import { LoginComponent } from './auth/login';
+import { BasicAuthInterceptor, ErrorInterceptor } from './auth/_helpers';
+import { fakeBackendProvider } from './auth/_helpers';
 /**
  * Module Components
  */
-import {BoxesModule} from './boxes/boxes.module';
-import {MapsModule} from './maps/maps.module';
-import {SharedModule} from './shared/shared.module';
+import { SharedModule } from './shared/shared.module';
+import { BoxesModule } from './boxes/boxes.module';
+import { MapsModule } from './maps/maps.module';
+import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
 /**
  * Richieste component da sistemare...
  */
-import {RichiesteComponent} from './richieste/richieste.component';
-import {ListaRichiesteComponent} from './richieste/lista-richieste/lista-richieste.component';
-import {SintesiRichiestaComponent} from './richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
-import {RichiestaFissataComponent} from './richieste/lista-richieste/richiesta-fissata/richiesta-fissata.component';
-import {RicercaRichiesteComponent} from './richieste/ricerca-richieste/ricerca-richieste.component';
-import {FiltriRichiesteComponent} from './richieste/filtri-richieste/filtri-richieste.component';
-import {FiltroComponent} from './richieste/filtri-richieste/filtro/filtro.component';
-import {FilterPipeModule} from 'ngx-filter-pipe';
-import {NgxPaginationModule} from 'ngx-pagination';
-import {ScrollEventModule} from 'ngx-scroll-event';
-import {TimeagoModule, TimeagoFormatter, TimeagoCustomFormatter, TimeagoIntl} from 'ngx-timeago';
-/**
- * eventi richieste component da sistemare...
- */
-import {EventiRichiestaModule} from './eventi-richiesta/eventi-richiesta.module';
+import { RichiesteComponent } from './richieste/richieste.component';
+import { ListaRichiesteComponent } from './richieste/lista-richieste/lista-richieste.component';
+import { SintesiRichiestaComponent } from './richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
+import { SintesiRichiestaSmComponent } from './richieste/lista-richieste/sintesi-richiesta-sm/sintesi-richiesta-sm.component';
+import { RichiestaFissataComponent } from './richieste/lista-richieste/richiesta-fissata/richiesta-fissata.component';
+import { RicercaRichiesteComponent } from './richieste/ricerca-richieste/ricerca-richieste.component';
+import { FiltriRichiesteComponent } from './richieste/filtri-richieste/filtri-richieste.component';
+import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.component';
+import { FilterPipeModule } from 'ngx-filter-pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { ScrollEventModule } from 'ngx-scroll-event';
+import { TimeagoModule, TimeagoFormatter, TimeagoCustomFormatter, TimeagoIntl } from 'ngx-timeago';
 /**
  * import navbar
  */
-import {NavbarComponent} from './navbar/navbar.component';
-import {CambioSedeModalNavComponent} from './navbar/cambio-sede-modal-nav/cambio-sede-modal-nav.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { CambioSedeModalNavComponent } from './navbar/cambio-sede-modal-nav/cambio-sede-modal-nav.component';
 /**
  * Fake Service
  */
-import {RichiesteService} from './dispatcher/data/service/lista-richieste-service/richieste.service';
-import {RichiesteServiceFake} from './dispatcher/data/service/lista-richieste-service/richieste.service.fake';
-import {RichiesteMarkerService} from './dispatcher/data/service/maps-service/richieste-marker/richieste-marker.service';
-import {RichiesteMarkerServiceFake} from './dispatcher/data/service/maps-service/richieste-marker/richieste-marker.service.fake';
-import {SediMarkerService} from './dispatcher/data/service/maps-service/sedi-marker/sedi-marker.service';
-import {SediMarkerServiceFake} from './dispatcher/data/service/maps-service/sedi-marker/sedi-marker.service.fake';
-import {InfoAggregateService} from './dispatcher/data/service/boxes-service/info-aggregate.service';
-import {InfoAggregateServiceFake} from './dispatcher/data/service/boxes-service/info-aggregate.service.fake';
-import {MezziMarkerService} from './dispatcher/data/service/maps-service/mezzi-marker/mezzi-marker.service';
-import {MezziMarkerServiceFake} from './dispatcher/data/service/maps-service/mezzi-marker/mezzi-marker.service.fake';
-import {EventiRichiestaService} from './dispatcher/data/eventi-richiesta-service/eventi-richiesta.service';
-import {EventiRichiestaServiceFake} from './dispatcher/data/eventi-richiesta-service/eventi-richiesta.service.fake';
+import { InfoAggregateService } from './core/service/boxes-service/info-aggregate.service';
+import { InfoAggregateServiceFake } from './core/service/boxes-service/info-aggregate.service.fake';
+import { RichiesteService } from './core/service/lista-richieste-service/lista-richieste.service';
+import { RichiesteServiceFake } from './core/service/lista-richieste-service/lista-richieste.service.fake';
+import { EventiRichiestaService } from './core/service/eventi-richiesta-service/eventi-richiesta.service';
+import { EventiRichiestaServiceFake } from './core/service/eventi-richiesta-service/eventi-richiesta.service.fake';
 
 
 @NgModule({
@@ -75,6 +67,7 @@ import {EventiRichiestaServiceFake} from './dispatcher/data/eventi-richiesta-ser
         RicercaRichiesteComponent,
         FiltriRichiesteComponent,
         FiltroComponent,
+        SintesiRichiestaSmComponent,
         /**
          * Navbar
          */
@@ -98,7 +91,7 @@ import {EventiRichiestaServiceFake} from './dispatcher/data/eventi-richiesta-ser
         ScrollEventModule,
         TimeagoModule.forRoot({
             intl: TimeagoIntl,
-            formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter },
+            formatter: {provide: TimeagoFormatter, useClass: TimeagoCustomFormatter},
         }),
         BoxesModule,
         MapsModule,
@@ -115,10 +108,7 @@ import {EventiRichiestaServiceFake} from './dispatcher/data/eventi-richiesta-ser
         fakeBackendProvider,
         {provide: InfoAggregateService, useClass: InfoAggregateServiceFake},
         {provide: RichiesteService, useClass: RichiesteServiceFake},
-        {provide: EventiRichiestaService, useClass: EventiRichiestaServiceFake},
-        {provide: RichiesteMarkerService, useClass: RichiesteMarkerServiceFake},
-        {provide: SediMarkerService, useClass: SediMarkerServiceFake},
-        {provide: MezziMarkerService, useClass: MezziMarkerServiceFake}
+        {provide: EventiRichiestaService, useClass: EventiRichiestaServiceFake}
     ],
     bootstrap: [AppComponent]
 })

@@ -4,22 +4,24 @@
     <img src="../../../assets/img/pink_loader_resized.gif">
   </div>
 
-  <!-- Singola Richiesta Selezionata  -->
-  <div *ngIf="richiestaFissata" class="col-12 px-0">
-    <app-richiesta-fissata [richiestaFissata]="richiestaFissata" [richiestaFissataState]='richiestaSelezionataState' (defissaRichiesta)="fissaInAlto($event)" (eventiRichiesta)="visualizzaEventiRichiesta($event)"></app-richiesta-fissata>
+  <!-- Singola Richiesta Fissata  -->
+  <div class="col-12 pl-0 pr-4">
+    <app-richiesta-fissata (tornaNellaLista)="rimettiNellaLista($event)" (eventiRichiesta)="visualizzaEventiRichiesta($event)"></app-richiesta-fissata>
   </div>
-
   <!-- Lista di singole Richieste -->
-  <div class="col-12 pt-1 px-0 scroll-y" [ngClass]="{'m-h-750 mt-2': !richiestaFissata, 'm-h-600': richiestaFissata}"
-    detect-scroll (onScroll)="nuoveRichieste($event)" [bottomOffset]="1">
+  <div class="col-12 pt-1 px-0 m-h-750 scroll-y" detect-scroll (onScroll)="nuoveRichieste($event)" [bottomOffset]="1">
     <div *ngFor="let r of richieste | filterBy: ricercaS.searchTerm" class="col-6big">
-      <div *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="cardShadowClass(r)">
-        <app-sintesi-richiesta [richiesta]="r" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)"
-          (fissaInAlto)="fissaInAlto($event)" (clickRichiesta)="richiestaClick($event)" (doubleClickRichiesta)="richiestaDoubleClick($event)" (eventiRichiesta)="visualizzaEventiRichiesta($event)"></app-sintesi-richiesta>
+      <div *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="primaryCardClasses(r)">
+        <app-sintesi-richiesta [richiesta]="r" [fissata]="false" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)"
+          (fissaInAlto)="fissaInAlto($event)" (clickRichiesta)="richiestaClick($event)" (doubleClickRichiesta)="richiestaDoubleClick($event)"
+          (eventiRichiesta)="visualizzaEventiRichiesta($event)"></app-sintesi-richiesta>
+      </div>
+      <div *ngIf="r === richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="secondaryCardClasses(r)">
+        <app-sintesi-richiesta-sm [richiesta]="r" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)"></app-sintesi-richiesta-sm>
       </div>
     </div>
-    <div *ngIf="loaderNuoveRichieste" class="text-center mt-5">
-      <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
-    </div>
+  </div>
+  <div *ngIf="loaderNuoveRichieste" class="col-12 text-center mt-1">
+    <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
   </div>
 </div>

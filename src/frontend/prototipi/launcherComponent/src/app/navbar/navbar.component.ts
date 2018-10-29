@@ -4,7 +4,6 @@ import * as moment from 'moment';
 import {UnitaOperativaService} from './navbar-service/unita-operativa-service/unita-operativa.service';
 import {Sede} from '../shared/model/sede.model';
 import {Coordinate} from '../shared/model/coordinate.model';
-import {Localita} from '../shared/model/localita.model';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CambioSedeModalNavComponent} from './cambio-sede-modal-nav/cambio-sede-modal-nav.component';
 

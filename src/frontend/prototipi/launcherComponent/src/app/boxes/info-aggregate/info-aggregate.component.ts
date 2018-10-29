@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BoxManagerService} from '../../dispatcher/manager/boxes-manager/box-manager-service.service';
+import {BoxManagerService} from '../../core/manager/boxes-manager/box-manager-service.service';
 import {BoxInterventi} from '../boxes-model/box-interventi.model';
 import {BoxMezzi} from '../boxes-model/box-mezzi.model';
 import {BoxFunzionariSo} from '../boxes-model/box-funzionari-so.model';

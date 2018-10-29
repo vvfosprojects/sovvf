@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
 import {SedeMarker} from '../maps-model/sede-marker.model';
 import {MezzoMarker} from '../maps-model/mezzo-marker.model';
@@ -19,7 +19,7 @@ declare var google: any;
     styleUrls: ['./agm.component.css']
 })
 
-export class AgmComponent implements OnInit {
+export class AgmComponent implements OnInit, OnDestroy {
     @Input() richiesteMarkers: RichiestaMarker[];
     @Input() sediMarkers: SedeMarker[];
     @Input() mezziMarkers: MezzoMarker[];
@@ -28,7 +28,7 @@ export class AgmComponent implements OnInit {
     datiMeteo: Meteo;
     coloreStato: string;
     map_loaded = false;
-    subscription: Subscription;
+    subscription = new Subscription();
     map: any;
 
     zoomControlOptions: ZoomControlOptions = {
@@ -43,14 +43,29 @@ export class AgmComponent implements OnInit {
     constructor(private markerService: MarkerService,
                 private centerService: CenterService,
                 private agmService: AgmService) {
-        this.subscription = this.centerService.getCentro().subscribe(centro => {
+        /**
+         * dati del centro mappa attuale
+         * @type {Subscription}
+         */
+        this.subscription.add(this.centerService.getCentro().subscribe((centro: CentroMappa) => {
             this.centroMappa = centro;
-        });
-        this.minMarkerCluster = 99999;
+        }));
+        /**
+         * dati meteo del marker cliccato/selezionato
+         * @type {Subscription}
+         */
+        this.subscription.add(this.markerService.getMeteo().subscribe((meteo: Meteo) => {
+            this.datiMeteo = meteo;
+        }));
+        this.minMarkerCluster = 9;
         this.coloreStato = '#343a40';
     }
 
     ngOnInit() {
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 
     mappaCaricata(event: any): void {
@@ -75,16 +90,12 @@ export class AgmComponent implements OnInit {
          */
         this.markerService.action(marker, 'click');
         /**
-         *  prendo i dati del meteo dal service marker (che li ha già richiesti)
-         */
-        this.datiMeteo = this.markerService.datiMeteo;
-        /**
          * prendo il colore della richiesta dallo stato
          */
         this.coloreStato = this.markerService.coloreStato;
     }
 
-    hoverMarker(marker: any, type) {
+    hoverMarker(marker: any, type): void {
         /**
          * richiamo il service marker e gli passo marker e tipo hover
          */
@@ -120,14 +131,14 @@ export class AgmComponent implements OnInit {
         return this.markerService.visibile(marker);
     }
 
-    centroCambiato(centro) {
+    centroCambiato(centro): void {
         /**
          * metodo che fa la next sulla subject di centro
          */
         this.agmService.centro$.next(centro);
     }
 
-    mappaCliccata() {
+    mappaCliccata(): void {
         /**
          * metodo che ritorna allo zoom iniziale e deseleziona un marker se clicco sulla mappa
          */
