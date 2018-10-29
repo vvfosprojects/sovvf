@@ -39,7 +39,7 @@ export class RichiestaFissataComponent implements OnInit {
     });
   }
 
-  // Defissa, deseleziona e attende 300ms per visualizzare l'intera animazione
+  // Ritorna la richiesta nella lista, defissandola
   defissa() {
       this.richiesteS.defissata();
       this.richiesteS.deselezionata();

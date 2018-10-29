@@ -7,7 +7,7 @@ import { RicercaRichiesteService } from '../ricerca-richieste/ricerca-richieste-
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { EventiRichiestaComponent } from '../../eventi-richiesta/eventi-richiesta.component';
-import { AnimationPlayer, animate, style, AnimationBuilder } from '@angular/animations';
+import { AnimationPlayer} from '@angular/animations';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -26,11 +26,6 @@ export class ListaRichiesteComponent implements OnInit {
     preventSimpleClick: boolean;
     timer: any;
     contatoreNuoveRichieste = 0;
-
-    // Animazioni TEST
-    richiesta: ElementRef;
-
-    private playerRichiesta: AnimationPlayer;
 
     constructor(private listaRichiesteManager: ListaRichiesteManagerService,
         private richiesteS: ListaRichiesteService,
@@ -133,11 +128,11 @@ export class ListaRichiesteComponent implements OnInit {
         }
     }
     /* Deseleziona e defissa la richiesta */
-    unClick() {
+    /* unClick() {
         this.richiesteS.deselezionata();
         this.richiesteS.defissata();
         this.markerS.action('a', 'unclick');
-    }
+    } */
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(richiesta) {
@@ -154,9 +149,10 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     /* NgClass Template */
-    cardShadowClass(r) {
+    primaryCardClasses(r) {
         if (r) {
             return {
+                // Hover (stato)
                 'card-shadow-info': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'assegnato'),
                 'card-shadow-success': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'presidiato'),
                 'card-shadow-danger': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiamata'),
@@ -165,5 +161,25 @@ export class ListaRichiesteComponent implements OnInit {
                 'bg-light': r === this.richiestaSelezionata || r === this.richiestaHover,
             };
         }
+    }
+
+    /* NgClass status */
+    secondaryCardClasses(r) {
+        return {
+            // Hover (stato)
+            'card-shadow-info': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'assegnato'),
+            'card-shadow-success': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'presidiato'),
+            'card-shadow-danger': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiamata'),
+            'card-shadow-warning': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'sospeso'),
+            'card-shadow-secondary': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiuso'),
+            'bg-light': r === this.richiestaSelezionata || r === this.richiestaHover,
+
+            // Bordo sinistro (stato)
+            'status_chiamata': this.match(r.stato, 'chiamata'),
+            'status_presidiato': this.match(r.stato, 'presidiato'),
+            'status_assegnato': this.match(r.stato, 'assegnato'),
+            'status_sospeso': this.match(r.stato, 'sospeso'),
+            'status_chiuso': this.match(r.stato, 'chiuso')
+        };
     }
 }

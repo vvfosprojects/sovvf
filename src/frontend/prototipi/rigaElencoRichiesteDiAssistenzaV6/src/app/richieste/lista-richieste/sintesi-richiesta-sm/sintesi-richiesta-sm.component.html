@@ -1,0 +1,43 @@
+<div class="mb-1 py-2 px-3">
+  <div class="row">
+    <div class="col-3">
+      <div class="h6 mb-0 nowrap">
+        <i class="fa fa-hashtag fa-fw mr-1 guida"></i><a class="cod-int">{{ richiesta.codice }}</a>
+      </div>
+    </div>
+    <div class="col-6">
+      <!-- descrizione intervento -->
+      <div class="h6 mb-0 nowrap default-cursor">
+        <div *ngIf="richiesta.tipologie.length === 1; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock>
+          <span>
+            <i class="fa-fw mr-1 {{ methods.coloraIcona(richiesta.tipologie[0].icona) }}" ngbTooltip="{{ richiesta.tipologie[0].descrizione }}"></i>
+          </span>
+        </ng-template>
+        <ng-template #elseBlock>
+          <span [ngbPopover]="popTipologie" popoverTitle="Tipologie" triggers="click" tabindex="0">
+            <span class="position-relative">
+              <i class="fa-fw mr-1 {{ methods.coloraIcona(richiesta.tipologie[0].icona) }}" ngbTooltip="{{ richiesta.tipologie[0].descrizione }}"></i>
+              <span class="badge badge-notify text-light">{{richiesta.tipologie.length}}</span>
+            </span>
+          </span>
+        </ng-template>
+        <!-- ngbPopover tipologie intervento -->
+        <ng-template #popTipologie>
+          <div class="h6" *ngFor="let t of richiesta.tipologie">
+            <i class="fa-fw mr-1 {{ methods.coloraIcona(t.icona) }}"></i>&nbsp;{{ t.descrizione }}
+          </div>
+        </ng-template>
+        <span><a *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="font-weight-bold descrizione-int" ngbTooltip="{{ richiesta.descrizione }}"
+            [disableTooltip]="richiesta.descrizione.length <= 45">{{
+            richiesta.descrizione | truncate:45 }}</a></span>
+      </div>
+    </div>
+    <div class="col-3 text-right">
+      <div class="h6 mb-0 nowrap">
+        <a href="javascript:void(0)" class="text-secondary" (click)="defissa()"><i class="fa fa-thumb-tack mr-1"></i>Torna
+          nella lista</a>
+      </div>
+    </div>
+  </div>
+</div>

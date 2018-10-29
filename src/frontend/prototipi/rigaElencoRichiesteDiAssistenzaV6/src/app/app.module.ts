@@ -20,6 +20,7 @@ import { AppComponent } from './app.component';
 import { RichiesteComponent } from './richieste/richieste.component';
 import { ListaRichiesteComponent } from './richieste/lista-richieste/lista-richieste.component';
 import { SintesiRichiestaComponent } from './richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
+import { SintesiRichiestaSmComponent } from './richieste/lista-richieste/sintesi-richiesta-sm/sintesi-richiesta-sm.component';
 import { RicercaRichiesteComponent } from './richieste/ricerca-richieste/ricerca-richieste.component';
 import { FiltriRichiesteComponent } from './richieste/filtri-richieste/filtri-richieste.component';
 import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.component';
@@ -48,6 +49,8 @@ import { DispatcherFakeService } from './core/dispatcher/dispatcher-lista-richie
         RichiestaFissataComponent,
         NavTestComponent,
         EventiRichiestaComponent,
+        SintesiRichiestaSmComponent,
+        SintesiRichiestaSmComponent,
         // start import of Shared Declarations
         [
             Shared.DebounceClickDirective,
