@@ -43,6 +43,8 @@ import { TimeagoModule, TimeagoFormatter, TimeagoCustomFormatter, TimeagoIntl } 
  */
 import { NavbarComponent } from './navbar/navbar.component';
 import { CambioSedeModalNavComponent } from './navbar/cambio-sede-modal-nav/cambio-sede-modal-nav.component';
+import { TurnoComponent } from './navbar/turno/turno.component';
+
 /**
  * Fake Service
  */
@@ -52,6 +54,8 @@ import { RichiesteService } from './core/service/lista-richieste-service/lista-r
 import { RichiesteServiceFake } from './core/service/lista-richieste-service/lista-richieste.service.fake';
 import { EventiRichiestaService } from './core/service/eventi-richiesta-service/eventi-richiesta.service';
 import { EventiRichiestaServiceFake } from './core/service/eventi-richiesta-service/eventi-richiesta.service.fake';
+import { TurnoService } from './navbar/turno/turno.service';
+import { TurnoServiceFake } from './navbar/turno/turno.service.fake';
 
 
 @NgModule({
@@ -75,6 +79,7 @@ import { EventiRichiestaServiceFake } from './core/service/eventi-richiesta-serv
         LoginComponent,
         NavbarComponent,
         CambioSedeModalNavComponent,
+        TurnoComponent,
     ],
     imports: [
         BrowserModule,
@@ -106,9 +111,13 @@ import { EventiRichiestaServiceFake } from './core/service/eventi-richiesta-serv
          * provider fake per la login
          */
         fakeBackendProvider,
+        /**
+         * servizi provider componenti launcher
+         */
         {provide: InfoAggregateService, useClass: InfoAggregateServiceFake},
         {provide: RichiesteService, useClass: RichiesteServiceFake},
-        {provide: EventiRichiestaService, useClass: EventiRichiestaServiceFake}
+        {provide: EventiRichiestaService, useClass: EventiRichiestaServiceFake},
+        {provide: TurnoService, useClass: TurnoServiceFake}
     ],
     bootstrap: [AppComponent]
 })
