@@ -1,84 +1,49 @@
+import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-/*
-    Modules
- */
 import { PipeModule } from './shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { ScrollEventModule } from 'ngx-scroll-event';
 import { TimeagoModule, TimeagoFormatter, TimeagoCustomFormatter, TimeagoIntl } from 'ngx-timeago';
-import * as Shared from './shared/';
 /*
-    Components
+    Richieste Module
  */
-import { AppComponent } from './app.component';
-import { RichiesteComponent } from './richieste/richieste.component';
-import { ListaRichiesteComponent } from './richieste/lista-richieste/lista-richieste.component';
-import { SintesiRichiestaComponent } from './richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
-import { SintesiRichiestaSmComponent } from './richieste/lista-richieste/sintesi-richiesta-sm/sintesi-richiesta-sm.component';
-import { RicercaRichiesteComponent } from './richieste/ricerca-richieste/ricerca-richieste.component';
-import { FiltriRichiesteComponent } from './richieste/filtri-richieste/filtri-richieste.component';
-import { FiltroComponent } from './richieste/filtri-richieste/filtro/filtro.component';
-import { RichiestaFissataComponent } from './richieste/lista-richieste/richiesta-fissata/richiesta-fissata.component';
+import { RichiesteModule } from './richieste/richieste.module';
+/*
+    Shared Module
+ */
+import {SharedModule} from './shared/shared.module';
+/*
+    solo per il componente
+ */
 import { NavTestComponent } from './lista-richieste-test/nav-test/nav-test.component';
-import { EventiRichiestaComponent } from './eventi/eventi-richiesta.component';
-/*
-    Services
- */
-import { SintesiRichiesteService } from './core/service/lista-richieste-service/lista-richieste.service';
-import { SintesiRichiesteServiceFake } from './core/service/lista-richieste-service/lista-richieste.service.fake';
-import { ListaRichiesteManagerService } from './core/manager/lista-richieste-manager/lista-richieste-manager.service';
-import { ListaRichiesteManagerServiceFake } from './core/manager/lista-richieste-manager/lista-richieste-manager.service.fake';
-import { DispatcherService } from './core/dispatcher/dispatcher-lista-richieste.service';
-import { DispatcherFakeService } from './core/dispatcher/dispatcher-lista-richieste-fake.service';
+
 
 @NgModule({
     declarations: [
         AppComponent,
-        RichiesteComponent,
-        ListaRichiesteComponent,
-        SintesiRichiestaComponent,
-        RicercaRichiesteComponent,
-        FiltriRichiesteComponent,
-        FiltroComponent,
-        RichiestaFissataComponent,
-        NavTestComponent,
-        EventiRichiestaComponent,
-        SintesiRichiestaSmComponent,
-        SintesiRichiestaSmComponent,
-        // start import of Shared Declarations
-        [
-            Shared.DebounceClickDirective,
-            Shared.DebounceKeyUpDirective,
-            Shared.CompetenzaComponent,
-            Shared.ComponenteComponent,
-            Shared.MezzoComponent],
-        // end import of Shared Declarations
+        NavTestComponent
     ],
     imports: [
+        RichiesteModule,
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        NgbModule,
-        PipeModule.forRoot(),
+        FilterPipeModule,
         FormsModule,
-        NgxPaginationModule,
         FilterPipeModule,
         ScrollEventModule,
+        SharedModule,
+        NgbModule,
+        PipeModule.forRoot(),
         TimeagoModule.forRoot({
             intl: TimeagoIntl,
             formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
         })
-    ],
-    providers: [
-        // { provide: DispatcherService, useClass: DispatcherFakeService },
-        // { provide: ListaRichiesteManagerService, useClass: ListaRichiesteManagerServiceFake },
-        // { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }
     ],
     bootstrap: [AppComponent]
 })

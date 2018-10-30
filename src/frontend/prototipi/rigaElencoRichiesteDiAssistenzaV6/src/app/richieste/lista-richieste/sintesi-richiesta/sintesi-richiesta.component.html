@@ -21,7 +21,7 @@
                                 <div *ngIf="richiesta.tipologie.length === 1; then thenBlock else elseBlock"></div>
                                 <ng-template #thenBlock>
                                     <span>
-                                        <i class="fa-fw mr-1 {{ coloraIcona(richiesta.tipologie[0].icona) }}"
+                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(richiesta.tipologie[0].icona) }}"
                                             ngbTooltip="{{ richiesta.tipologie[0].descrizione }}"></i>
                                     </span>
                                 </ng-template>
@@ -53,13 +53,13 @@
                                     <i class="guida fa fa-users fa-fw mr-1" ngbTooltip="Numero Squadre"></i>
                                     <a class="big_numbers" [ngbPopover]="popSquadre" container="body" popoverTitle="Squadre"
                                         triggers="click" tabindex="0" style="cursor:pointer">{{
-                                        numeroSquadre(richiesta) }}</a>
+                                        methods.numeroSquadre(richiesta) }}</a>
 
                                     <ng-template #popSquadre>
-                                        <div class="h6" *ngFor="let s of nomiSquadre(richiesta)">
+                                        <div class="h6" *ngFor="let s of methods.nomiSquadre(richiesta)">
                                             <span>{{ s }}</span>
                                         </div>
-                                        <h6 class="mb-0" *ngIf="numeroSquadre(richiesta) === 0">Nessuna squadra</h6>
+                                        <h6 class="mb-0" *ngIf="methods.numeroSquadre(richiesta) === 0">Nessuna squadra</h6>
                                     </ng-template>
                                 </span>
 
@@ -67,13 +67,13 @@
                                 <span class="nowrap default-cursor text-right">
                                     <i class="guida fa fa-truck fa-fw ml-1 mr-1" ngbTooltip="Numero Mezzi"></i>
                                     <a class="big_numbers" [ngbPopover]="popMezzi" popoverTitle="Mezzi" triggers="click"
-                                        tabindex="0" style="cursor:pointer">{{ numeroMezzi(richiesta) }}</a>
+                                        tabindex="0" style="cursor:pointer">{{ methods.numeroMezzi(richiesta) }}</a>
 
                                     <ng-template #popMezzi>
-                                        <div class="h6 nowrap" *ngFor="let m of nomiMezzi(richiesta)">
+                                        <div class="h6 nowrap" *ngFor="let m of methods.nomiMezzi(richiesta)">
                                             <span>{{ m }}</span>
                                         </div>
-                                        <h6 class="mb-0" *ngIf="numeroMezzi(richiesta) === 0">Nessun mezzo</h6>
+                                        <h6 class="mb-0" *ngIf="methods.numeroMezzi(richiesta) === 0">Nessun mezzo</h6>
                                     </ng-template>
                                 </span>
                             </div>
@@ -103,8 +103,8 @@
                             <div class="h6 mt-1 mb-2 nowrap default-cursor">
                                 <i class="guida fa fa-thermometer-half fa-fw" ngbTooltip="Priorità della richiesta"></i>
                                 <span class="h6" [ngClass]="{'text-success':richiesta.priorita <= 2, 'text-warning':richiesta.priorita > 2 && richiesta.priorita <= 4, 'text-danger': richiesta.priorita == 5}">
-                                    <i *ngFor="let n of vettorePallini(richiesta)" class="fa fa-circle"></i><i *ngFor="let n of vettoreBuchini(richiesta)"
-                                        class="fa fa-circle-o"></i>
+                                    <i *ngFor="let n of methods.vettorePallini(richiesta)" class="fa fa-circle"></i><i
+                                        *ngFor="let n of methods.vettoreBuchini(richiesta)" class="fa fa-circle-o"></i>
                                 </span>
                             </div>
                         </div>
@@ -112,13 +112,14 @@
                     <div class="row">
                         <div class="col-3">
                             <div class="h6 m-0 nowrap default-cursor">
+                                <i class="guida fa fa-bolt fa-fw mr-1" ngbTooltip="Prima assegnazione" placement="right"></i>
                                 <span *ngIf="richiesta.stato !== 'chiamata'">
-                                    <i class="guida fa fa-bolt fa-fw mr-1" ngbTooltip="Prima assegnazione" placement="right"></i>
-                                    <a>{{ richiesta.istantePrimaAssegnazione | friendlyDateTooltip }}</a>
+                                    <span *ngIf="richiesta.istantePrimaAssegnazione">{{richiesta.istantePrimaAssegnazione
+                                        | friendlyDateTooltip }}</span>
                                 </span>
 
                                 <!-- presidiato / non presidiato (1) -->
-                                <span *ngIf="richiesta.stato === 'chiamata'">
+                                <span *ngIf="richiesta.stato === 'chiamata' || !richiesta.istantePrimaAssegnazione">
                                     <span class="badge badge-warning text-white">non presidiato</span>
                                 </span>
                             </div>
@@ -183,8 +184,6 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="h3">
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -217,9 +216,11 @@
                             <!-- fonogramma -->
                             <div class="h6">
                                 <i class="guida fa fa-paper-plane-o fa-fw mr-1" ngbTooltip="Stato Fonogramma" placement="right"></i>
-                                <span class="h6 badge m-0" [ngClass]="{'badge-success text-light':richiesta.fonogramma.codice === '2', 'badge-secondary text-light':richiesta.fonogramma.codice === '0', 'badge-warning text-light':richiesta.fonogramma.codice === '1'}">
+                                <span *ngIf="richiesta.fonogramma.descrizione" class="h6 badge m-0" [ngClass]="{'badge-success text-light':richiesta.fonogramma.codice === '2', 'badge-secondary text-light':richiesta.fonogramma.codice === '0', 'badge-warning text-light':richiesta.fonogramma.codice === '1'}">
                                     {{ richiesta.fonogramma.descrizione }}
                                 </span>
+                                <span *ngIf="!richiesta.fonogramma.descrizione" class="badge badge-secondary text-white">Non
+                                    presente</span>
                             </div>
 
                             <!-- complessità -->

@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
     templateUrl: './lista-richieste.component.html',
     styleUrls: ['./lista-richieste.component.css']
 })
-export class ListaRichiesteComponent implements OnInit, OnDestroy {
+export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     subscription = new Subscription();
 
     richieste: SintesiRichiesta[] = [];
@@ -37,8 +37,8 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
         // Restituisce le Richieste
         this.subscription.add(
             this.listaRichiesteManager.getRichieste().subscribe(richieste => {
-                console.log('Sono listaRichieste, ho ricevuto le richieste');
-                console.log(richieste);
+                // console.log('Sono listaRichieste, ho ricevuto le richieste');
+                // console.log(richieste);
                 this.richieste = richieste;
                 this.loaderRichieste = false;
             })
@@ -77,6 +77,10 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
         });
         // Ordina le richieste dalla piu recente
         this.ordinaRichieste();
+    }
+
+    ngOnChanges() {
+        console.log('Change detected');
     }
 
     ngOnDestroy() {
@@ -138,6 +142,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
         }
     }
     /* Deseleziona e defissa la richiesta */
+    /* Decidere quando fare l'unclick della richiesta */
     /* unClick() {
         this.richiesteS.deselezionata();
         this.richiesteS.defissata();
@@ -159,7 +164,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     }
 
     /* NgClass Template */
-    primaryCardClasses(r) {
+    CardClasses(r) {
         if (r) {
             return {
                 // Hover (stato)
@@ -174,7 +179,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     }
 
     /* NgClass status */
-    secondaryCardClasses(r) {
+    CardSmClasses(r) {
         return {
             // Hover (stato)
             'card-shadow-info': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'assegnato'),

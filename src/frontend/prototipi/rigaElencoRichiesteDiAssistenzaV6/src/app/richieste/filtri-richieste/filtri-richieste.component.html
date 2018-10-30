@@ -50,17 +50,14 @@
             <div class="row w-100">
               <div class="col-12">
                 <div class="mb-2">
-                  <span class="h5 mb-0">Filtri attivi</span>
-                  <button *ngIf="filtriS.filtriSelezionati.length > 0" class="btn btn-sm btn-danger py-0 ml-2" (click)="eliminaFiltriAttivi()"><i
-                      class="fa fa-times"></i></button>
+                  <span class="h5 mb-0 mr-2">Filtri attivi</span>
+                  <span *ngIf="filtriS.filtriSelezionati.length > 0" class="text-danger cursor-pointer" (click)="eliminaFiltriAttivi()">Elimina tutti</span>
                 </div>
-                <span class="w-25 mx-1 text-center" *ngFor="let f of filtriS.filtriSelezionati | paginate: { id: 'filtri',
-                  itemsPerPage: 4,
-                  currentPage: p}">
-                  <button class="btn btn-success mb-1" ngbTooltip="{{ f.descrizione }}"
-                  placement="bottom" [disableTooltip]="f.descrizione.length <= 20">{{ f.descrizione | truncate: 20 }}</button>
+                <span class="w-25 mx-1 text-center" *ngFor="let f of filtriS.filtriSelezionati | paginate: { id: 'filtri', itemsPerPage: 4, currentPage: p}">
+                  <button class="btn btn-success" ngbTooltip="{{ f.descrizione }}" placement="bottom"
+                    [disableTooltip]="f.descrizione.length <= 20">{{ f.descrizione | truncate: 20 }}</button>
                 </span>
-                <h6 *ngIf="filtriS.filtriSelezionati.length <= 0">Seleziona un filtro per migliorare la ricerca!</h6>
+                <button *ngIf="filtriS.filtriSelezionati.length <= 0" class="btn btn-outline-secondary disabled">Seleziona un filtro per migliorare la ricerca!</button>
               </div>
               <div class="col-12 text-center mt-2">
                 <pagination-controls id="filtri" (pageChange)="p = $event" maxSize="9" directionLinks="true" autoHide="true"

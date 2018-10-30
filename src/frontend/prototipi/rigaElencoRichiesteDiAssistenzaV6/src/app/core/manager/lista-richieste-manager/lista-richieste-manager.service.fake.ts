@@ -58,7 +58,7 @@ export class ListaRichiesteManagerServiceFake {
         });
     }
 
-    getData(): Observable<SintesiRichiesta[]> {
+    getRichieste(): Observable<SintesiRichiesta[]> {
         return of(this.richieste);
     }
 

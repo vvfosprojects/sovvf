@@ -11,12 +11,12 @@
   <!-- Lista di singole Richieste -->
   <div class="col-12 pt-1 px-0 m-h-750 scroll-y" detect-scroll (onScroll)="nuoveRichieste($event)" [bottomOffset]="1">
     <div *ngFor="let r of richieste | filterBy: ricercaS.searchTerm" class="col-6big">
-      <div *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="primaryCardClasses(r)">
+      <div *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="CardClasses(r)">
         <app-sintesi-richiesta [richiesta]="r" [fissata]="false" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)"
           (fissaInAlto)="fissaInAlto($event)" (clickRichiesta)="richiestaClick($event)" (doubleClickRichiesta)="richiestaDoubleClick($event)"
           (eventiRichiesta)="visualizzaEventiRichiesta($event)"></app-sintesi-richiesta>
       </div>
-      <div *ngIf="r === richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="secondaryCardClasses(r)">
+      <div *ngIf="r === richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="CardSmClasses(r)">
         <app-sintesi-richiesta-sm [richiesta]="r" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)"></app-sintesi-richiesta-sm>
       </div>
     </div>
