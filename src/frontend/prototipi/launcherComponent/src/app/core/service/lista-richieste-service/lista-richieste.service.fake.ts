@@ -104,7 +104,7 @@ export class RichiesteServiceFake {
                 moment().subtract(12, 'minutes').toDate(),
                 null,
                 null,
-                null,
+                ['prova','prova'],
                 new Fonogramma('0', 'Non necessario'),
                 null,
                 null
