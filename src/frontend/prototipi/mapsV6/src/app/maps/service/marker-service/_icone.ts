@@ -115,22 +115,22 @@ export class IconMappe {
         const path = this.pathUrl + pathModello;
         const check = !(markerS);
         let dir = check ? path + 'ns/' : path + 's/';
+        /**
+         * verifico se il marker è opaco, e cambio directory
+         */
+        if (modello !== 'tipo-sede' && marker.opacita) {
+            dir = path + 'o/';
+        }
         if (marker) {
             switch (modello) {
                 case 'richiesta': {
                     this.iconaStatoCorrenteSize = this.mapIconeSize.get(marker.priorita);
                     const statoRichiesta = this.mapIconeUrl.get(marker.stato.substring(0, 5).toLowerCase());
-                    /**
-                     * inizio implementazione issues #32
-                     */
-                    if (marker.opacita) {
-                        dir = path + 's/';
-                    }
                     this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize + statoRichiesta;
                     if (!this.iconaStatoCorrenteSize || !statoRichiesta) {
                         return undefined;
                     }
-                    return this.iconaStatoCorrenteUrl;
+                    break;
                 }
                 case 'mezzo': {
                     const tipoMezzo = this.mapIconeMezzi.get(marker.mezzo.stato.substring(0, 5).toLowerCase());
@@ -138,7 +138,7 @@ export class IconMappe {
                     if (!this.iconaStatoCorrenteUrl || !tipoMezzo) {
                         return undefined;
                     }
-                    return this.iconaStatoCorrenteUrl;
+                    break;
                 }
                 case 'sede': {
                     const sede = this.mapIconeSedi.get(marker.tipo.toLowerCase());
@@ -146,7 +146,7 @@ export class IconMappe {
                     if (!this.iconaStatoCorrenteUrl || !sede) {
                         return undefined;
                     }
-                    return this.iconaStatoCorrenteUrl;
+                    break;
                 }
                 case 'tipo-sede': {
                     const tipoSede = this.mapIconeTipoSedi.get(marker.tipo.toLowerCase());
@@ -154,9 +154,10 @@ export class IconMappe {
                     if (!this.iconaStatoCorrenteUrl || !tipoSede) {
                         return undefined;
                     }
-                    return this.iconaStatoCorrenteUrl;
+                    break;
                 }
             }
+            return this.iconaStatoCorrenteUrl;
         }
     }
 }

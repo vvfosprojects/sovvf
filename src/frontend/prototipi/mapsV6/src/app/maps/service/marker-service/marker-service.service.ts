@@ -280,4 +280,8 @@ export class MarkerService implements OnDestroy {
         return this.markerRichiesteManager.getMarkerFromId(id);
     }
 
+    opacizzaMarkers(search) {
+        this.markerRichiesteManager.getIdFromOpacizza(search);
+    }
+
 }

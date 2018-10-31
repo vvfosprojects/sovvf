@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {DispatcherRichiesteMarkerService} from '../../../dispatcher/dispatcher-maps/richieste-marker/dispatcher-richieste-marker.service';
-import {RichiestaMarker} from '../../../../maps/maps-model/richiesta-marker.model';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { DispatcherRichiesteMarkerService } from '../../../dispatcher/dispatcher-maps/richieste-marker/dispatcher-richieste-marker.service';
+import { RichiestaMarker } from '../../../../maps/maps-model/richiesta-marker.model';
 
 
 @Injectable({
@@ -50,6 +50,17 @@ export class RichiesteMarkerManagerService {
 
     getMarkerFromId(id) {
         return this.richiesteMarker.find(x => x.id === id);
+    }
+
+    getIdFromOpacizza(search) {
+        const test = '1';
+        this.richiesteMarker.forEach(
+            data => {
+                if (data.id !== test) {
+                    data.opacita = true;
+                }
+            }
+        );
     }
 
 }
