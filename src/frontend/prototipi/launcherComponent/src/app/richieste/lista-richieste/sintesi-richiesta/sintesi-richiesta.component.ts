@@ -49,39 +49,6 @@ export class SintesiRichiestaComponent implements OnInit {
     toggleEspanso(): void {
         this.espanso = !this.espanso;
     }
-    vettorePallini(richiesta) {
-        if (richiesta) {
-            return this.methods.vettorePallini(richiesta);
-        }
-    }
-    vettoreBuchini(richiesta) {
-        if (richiesta) {
-            return this.methods.vettoreBuchini(richiesta);
-        }
-    }
-    nomiSquadre(richiesta) {
-        if (richiesta) {
-            return this.methods.nomiSquadre(richiesta);
-        }
-    }
-    numeroSquadre(richiesta) {
-        if (richiesta) {
-            return this.methods.numeroSquadre(richiesta);
-        }
-    }
-    nomiMezzi(richiesta) {
-        if (richiesta) {
-            return this.methods.nomiMezzi(richiesta);
-        }
-    }
-    numeroMezzi(richiesta) {
-        if (richiesta) {
-            return this.methods.numeroMezzi(richiesta);
-        }
-    }
-    coloraIcona(nome): any {
-        return this.methods.coloraIcona(nome);
-    }
 
     /* NgClass Methods */
     statusClass(richiesta) {

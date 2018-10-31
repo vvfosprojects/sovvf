@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, OnChanges } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, OnChanges, OnDestroy } from '@angular/core';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { ListaRichiesteManagerService } from '../../core/manager/lista-richieste-manager/lista-richieste-manager.service';
 import { ScrollEvent } from 'ngx-scroll-event';
@@ -7,18 +7,21 @@ import { RicercaRichiesteService } from '../ricerca-richieste/ricerca-richieste-
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
+import { Subscription } from 'rxjs';
+import { FilterPipe } from 'ngx-filter-pipe';
 
 @Component({
     selector: 'app-lista-richieste',
     templateUrl: './lista-richieste.component.html',
     styleUrls: ['./lista-richieste.component.css']
 })
-export class ListaRichiesteComponent implements OnInit {
+export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
+    subscription = new Subscription();
+
     richieste: SintesiRichiesta[] = [];
     richiestaHover: SintesiRichiesta;
     richiestaSelezionata: SintesiRichiesta;
     richiestaFissata: SintesiRichiesta;
-    richiestaSelezionataState: string; // Animazione
     loaderRichieste = true;
     loaderNuoveRichieste = false;
 
@@ -27,18 +30,27 @@ export class ListaRichiesteComponent implements OnInit {
     contatoreNuoveRichieste = 0;
 
     constructor(private listaRichiesteManager: ListaRichiesteManagerService,
-        private richiesteS: ListaRichiesteService,
-        public ricercaS: RicercaRichiesteService,
-        private modalService: NgbModal,
-        private markerS: MarkerService) {
+                private richiesteS: ListaRichiesteService,
+                public ricercaS: RicercaRichiesteService,
+                private modalService: NgbModal,
+                private markerS: MarkerService,
+                private filter: FilterPipe) {
+
+        // Restituisce le Richieste
+        this.subscription.add(
+            this.listaRichiesteManager.getRichieste().subscribe(richieste => {
+                // console.log('Sono listaRichieste, ho ricevuto le richieste');
+                // console.log(richieste);
+                this.richieste = richieste;
+                this.loaderRichieste = false;
+            })
+        );
+        this.subscription.add(this.ricercaS.getRicerca().subscribe(stringa => {
+            this.opacizzaRichieste(stringa);
+        }));
     }
 
     ngOnInit() {
-        // Restituisce le Richieste
-        this.listaRichiesteManager.getData().subscribe(richieste => {
-            this.richieste = richieste;
-            this.loaderRichieste = false;
-        });
         // Restituisce la Richiesta Hover
         this.richiesteS.subjects.getRichiestaHover().subscribe(richiestaHover => {
             if (richiestaHover) {
@@ -72,6 +84,27 @@ export class ListaRichiesteComponent implements OnInit {
         this.ordinaRichieste();
     }
 
+    ngOnChanges() {
+        console.log('Change detected');
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+
+    opacizzaRichieste(ricerca) {
+        const result = this.filter.transform(this.richieste, ricerca);
+        result.forEach(
+            r => {
+                console.log(r.id);
+                /**
+                 * inizio implementazione issues #32
+                 */
+                // this.markerS.actionById(r.id, 'opacizza');
+            }
+        );
+    }
+
     /* Ordina le richieste per data dalla piu recente */
     ordinaRichieste() {
         this.richieste.sort((a, b) => new Date(b.istanteRicezioneRichiesta).getTime() - new Date(a.istanteRicezioneRichiesta).getTime());
@@ -83,7 +116,7 @@ export class ListaRichiesteComponent implements OnInit {
             this.contatoreNuoveRichieste++;
             this.loaderNuoveRichieste = true;
             setTimeout(() => {
-                this.listaRichiesteManager.onNewRichiesteList();
+                this.listaRichiesteManager.getRichieste();
                 this.loaderNuoveRichieste = false;
                 this.contatoreNuoveRichieste = 0;
             }, 3000);
@@ -97,6 +130,7 @@ export class ListaRichiesteComponent implements OnInit {
             this.markerS.actionById(richiesta.id, 'click');
         }
     }
+
     /* Gestisce il double click sulla richiesta */
     richiestaDoubleClick(richiesta) {
         if (richiesta) {
@@ -104,6 +138,7 @@ export class ListaRichiesteComponent implements OnInit {
             console.log('Doppio click su richiesta');
         }
     }
+
     /* Fissa in alto la richiesta */
     fissaInAlto(richiesta) {
         if (richiesta) {
@@ -112,6 +147,7 @@ export class ListaRichiesteComponent implements OnInit {
             this.markerS.actionById(richiesta.id, 'click');
         }
     }
+
     /* Gestisce l'hover in */
     richiestaHoverIn(richiesta) {
         if (richiesta) {
@@ -119,6 +155,7 @@ export class ListaRichiesteComponent implements OnInit {
             this.markerS.actionById(richiesta.id, 'hover-in');
         }
     }
+
     /* Gestisce l'hover out */
     richiestaHoverOut(richiesta) {
         if (richiesta) {
@@ -126,7 +163,9 @@ export class ListaRichiesteComponent implements OnInit {
             this.markerS.actionById(richiesta.id, 'hover-out');
         }
     }
+
     /* Deseleziona e defissa la richiesta */
+    /* Decidere quando fare l'unclick della richiesta */
     /* unClick() {
         this.richiesteS.deselezionata();
         this.richiesteS.defissata();
@@ -135,7 +174,7 @@ export class ListaRichiesteComponent implements OnInit {
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(richiesta) {
-        this.modalService.open(EventiRichiestaComponent, { size: 'lg' });
+        this.modalService.open(EventiRichiestaComponent, {size: 'lg'});
     }
 
     /* Ritorna true se le parole matchano almeno in parte */
@@ -148,7 +187,7 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     /* NgClass Template */
-    primaryCardClasses(r) {
+    CardClasses(r) {
         if (r) {
             return {
                 // Hover (stato)
@@ -163,7 +202,7 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     /* NgClass status */
-    secondaryCardClasses(r) {
+    CardSmClasses(r) {
         return {
             // Hover (stato)
             'card-shadow-info': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'assegnato'),

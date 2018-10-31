@@ -22,7 +22,7 @@ import { Componente } from '../../../shared/model/componente.model';
 @Injectable({
     providedIn: 'root'
 })
-export class RichiesteServiceFake {
+export class SintesiRichiesteServiceFake {
 
     private richieste: SintesiRichiesta[] = [];
 
@@ -104,10 +104,13 @@ export class RichiesteServiceFake {
                 moment().subtract(12, 'minutes').toDate(),
                 null,
                 null,
-                ['prova','prova'],
+                null,
                 new Fonogramma('0', 'Non necessario'),
                 null,
-                null
+                [
+                    'Tag1',
+                    'Tag2'
+                ]
             ),
             new SintesiRichiesta(
                 'R4',

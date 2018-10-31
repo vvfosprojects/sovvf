@@ -114,12 +114,18 @@ export class IconMappe {
         const pathModello = this.mapIconeModelloPath.get(modello);
         const path = this.pathUrl + pathModello;
         const check = !(markerS);
-        const dir = check ? path + 'ns/' : path + 's/';
+        let dir = check ? path + 'ns/' : path + 's/';
         if (marker) {
             switch (modello) {
                 case 'richiesta': {
                     this.iconaStatoCorrenteSize = this.mapIconeSize.get(marker.priorita);
                     const statoRichiesta = this.mapIconeUrl.get(marker.stato.substring(0, 5).toLowerCase());
+                    /**
+                     * inizio implementazione issues #32
+                     */
+                    if (marker.opacita) {
+                        dir = path + 's/';
+                    }
                     this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize + statoRichiesta;
                     if (!this.iconaStatoCorrenteSize || !statoRichiesta) {
                         return undefined;

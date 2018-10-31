@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { of, Observable, Subject } from 'rxjs';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { SintesiRichiesteService } from '../service/lista-richieste-service/lista-richieste.service';
 
@@ -7,8 +7,7 @@ import { SintesiRichiesteService } from '../service/lista-richieste-service/list
 @Injectable({
     providedIn: 'root'
 })
-export class DispatcherService {
-    private newRichiesteList$ = new Subject<SintesiRichiesta[]>();
+export class DispatcherFakeService {
     private updateRichiesta$ = new Subject<SintesiRichiesta>();
     private newRichiesta$ = new Subject<SintesiRichiesta>();
     private deleteRichiesta$ = new Subject<SintesiRichiesta>();
@@ -18,14 +17,11 @@ export class DispatcherService {
     constructor(private richiesteService: SintesiRichiesteService) {
     }
 
-    onNewRichiesteList() {
-        this.newRichiesteList$.next();
-        this.richiesteService.getRichieste()
-            .subscribe({
-                next: data => this.newRichiesteList$.next(data),
-                error: data => console.log(`Errore: + ${data}`)
-            });
-        return this.newRichiesteList$.asObservable();
+    onNewRichiesteList(): Observable<SintesiRichiesta[]> {
+        this.richiesteService.getRichieste().subscribe((richieste: SintesiRichiesta[]) => {
+            this.richieste = richieste;
+        });
+        return of(this.richieste);
     }
 
     onNewRichiesta(): Observable<SintesiRichiesta> {
