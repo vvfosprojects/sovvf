@@ -1,7 +1,7 @@
 export class Turno {
     constructor(
         /**
-         * nome turno precedente
+         * stringa di turno: precedente, corrente, successivo
          */
         public turni: string[]
     ) {
