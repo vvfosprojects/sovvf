@@ -30,7 +30,11 @@ export class SedeMarker implements Sede {
         /**
          * icona della sede
          */
-        public icona?: string
+        public icona?: string,
+        /**
+         * Determina se il marcatore è opaco o meno
+         */
+        public opacita?: boolean
     ) {
     }
 

@@ -8,6 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
 import { Subscription } from 'rxjs';
+import { FilterPipe } from 'ngx-filter-pipe';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -29,10 +30,11 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     contatoreNuoveRichieste = 0;
 
     constructor(private listaRichiesteManager: ListaRichiesteManagerService,
-        private richiesteS: ListaRichiesteService,
-        public ricercaS: RicercaRichiesteService,
-        private modalService: NgbModal,
-        private markerS: MarkerService) {
+                private richiesteS: ListaRichiesteService,
+                public ricercaS: RicercaRichiesteService,
+                private modalService: NgbModal,
+                private markerS: MarkerService,
+                private filter: FilterPipe) {
 
         // Restituisce le Richieste
         this.subscription.add(
@@ -43,6 +45,9 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
                 this.loaderRichieste = false;
             })
         );
+        this.subscription.add(this.ricercaS.getRicerca().subscribe(stringa => {
+            this.opacizzaRichieste(stringa);
+        }));
     }
 
     ngOnInit() {
@@ -87,6 +92,19 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         this.subscription.unsubscribe();
     }
 
+    opacizzaRichieste(ricerca) {
+        const result = this.filter.transform(this.richieste, ricerca);
+        result.forEach(
+            r => {
+                console.log(r.id);
+                /**
+                 * inizio implementazione issues #32
+                 */
+                // this.markerS.actionById(r.id, 'opacizza');
+            }
+        );
+    }
+
     /* Ordina le richieste per data dalla piu recente */
     ordinaRichieste() {
         this.richieste.sort((a, b) => new Date(b.istanteRicezioneRichiesta).getTime() - new Date(a.istanteRicezioneRichiesta).getTime());
@@ -112,6 +130,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
             this.markerS.actionById(richiesta.id, 'click');
         }
     }
+
     /* Gestisce il double click sulla richiesta */
     richiestaDoubleClick(richiesta) {
         if (richiesta) {
@@ -119,6 +138,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
             console.log('Doppio click su richiesta');
         }
     }
+
     /* Fissa in alto la richiesta */
     fissaInAlto(richiesta) {
         if (richiesta) {
@@ -127,6 +147,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
             this.markerS.actionById(richiesta.id, 'click');
         }
     }
+
     /* Gestisce l'hover in */
     richiestaHoverIn(richiesta) {
         if (richiesta) {
@@ -134,6 +155,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
             this.markerS.actionById(richiesta.id, 'hover-in');
         }
     }
+
     /* Gestisce l'hover out */
     richiestaHoverOut(richiesta) {
         if (richiesta) {
@@ -141,6 +163,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
             this.markerS.actionById(richiesta.id, 'hover-out');
         }
     }
+
     /* Deseleziona e defissa la richiesta */
     /* Decidere quando fare l'unclick della richiesta */
     /* unClick() {
@@ -151,7 +174,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(richiesta) {
-        this.modalService.open(EventiRichiestaComponent, { size: 'lg' });
+        this.modalService.open(EventiRichiestaComponent, {size: 'lg'});
     }
 
     /* Ritorna true se le parole matchano almeno in parte */
