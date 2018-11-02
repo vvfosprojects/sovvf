@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ClockService } from '../clock-service/clock.service';
+import { ClockService } from '../navbar-service/clock-service/clock.service';
 
 @Component({
   selector: 'app-clock',
