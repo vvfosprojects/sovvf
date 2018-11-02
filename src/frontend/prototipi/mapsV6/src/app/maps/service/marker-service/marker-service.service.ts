@@ -280,8 +280,17 @@ export class MarkerService implements OnDestroy {
         return this.markerRichiesteManager.getMarkerFromId(id);
     }
 
-    opacizzaMarkers(search) {
-        this.markerRichiesteManager.getIdFromOpacizza(search);
+    /**
+     * metodo che chiama il manager e cambia la proprietà opacità al marker
+     * @param action
+     * @param stringSearch
+     */
+    opacizzaMarkers(action: boolean, stringSearch?: string[]): void {
+        if (action) {
+            this.markerRichiesteManager.cambiaOpacitaMarker(true, stringSearch);
+        } else {
+            this.markerRichiesteManager.cambiaOpacitaMarker(false);
+        }
     }
 
 }

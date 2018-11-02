@@ -92,17 +92,17 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    opacizzaRichieste(ricerca) {
+    opacizzaRichieste(ricerca): void {
         const result = this.filter.transform(this.richieste, ricerca);
-        result.forEach(
-            r => {
-                console.log(r.id);
-                /**
-                 * inizio implementazione issues #32
-                 */
-                // this.markerS.actionById(r.id, 'opacizza');
-            }
-        );
+        if (!(this.richieste.length === result.length) && result.length > 0) {
+            const string = [];
+            result.forEach( c => {
+                string.push(c.id);
+            });
+            this.markerS.opacizzaMarkers(true, string);
+        } else {
+            this.markerS.opacizzaMarkers(false);
+        }
     }
 
     /* Ordina le richieste per data dalla piu recente */

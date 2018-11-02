@@ -52,15 +52,40 @@ export class RichiesteMarkerManagerService {
         return this.richiesteMarker.find(x => x.id === id);
     }
 
-    getIdFromOpacizza(search) {
-        const test = '1';
-        this.richiesteMarker.forEach(
-            data => {
-                if (data.id !== test) {
-                    data.opacita = true;
-                }
-            }
-        );
+    /**
+     * metodo che opacizza i marker
+     * @param action
+     * @param stringSearch
+     */
+    cambiaOpacitaMarker(action: boolean, stringSearch?: string[]) {
+        if (action) {
+            /**
+             * annullo la precedente ricerca e ritorno null tutte le opacità
+             */
+            this.richiesteMarker.forEach(r => {
+                r.opacita = null;
+            });
+            /**
+             * opacizzo i marker con id diverso a quelli della ricerca
+             */
+            this.richiesteMarker.forEach( r => {
+                stringSearch.forEach( c => {
+                    if (r.id === c) {
+                        // console.log(r.id);
+                        r.opacita = false;
+                    } else if (r.opacita !== false ) {
+                        r.opacita = true;
+                    }
+                });
+            });
+        } else {
+            /**
+             * ritorno null a tutti i marker e tolgo l'opacità
+             */
+            this.richiesteMarker.forEach(r => {
+                r.opacita = null;
+            });
+        }
     }
 
 }
