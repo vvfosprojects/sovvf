@@ -1,62 +1,69 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-light">
-  <div class="row py-0 w-100">
-    <div class="col-8 mr-auto">
-      <!-- Hamburger icon menu -->
-      <button class="btn btn-light h-100 ml-2 mr-4" (click)="openSidebar()"><i class="fa fa-bars"></i> Menu</button>
-      <!-- Logo, Info Caserma, Data e ora, Turni -->
-      <img src="https://placeholder.pics/svg/40/FF0000-FFED5D/logo">
-      <span class="btn mr-3 pl-2" [ngbPopover]="unitaOperativa" placement="bottom">
+    <div class="row py-0 w-100">
+        <div class="col-8 mr-auto">
+            <!-- Hamburger icon menu -->
+            <button class="btn btn-light h-100 ml-2 mr-4" (click)="openSidebar()"><i class="fa fa-bars"></i> Menu
+            </button>
+            <!-- Logo, Info Caserma, Data e ora, Turni -->
+            <img src="https://placeholder.pics/svg/40/FF0000-FFED5D/logo">
+            <span class="btn mr-3 pl-2" [ngbPopover]="unitaOperativa" placement="bottom">
         <span class="mr-2">{{unitaAttuale.descrizione}} <i class="fa fa-chevron-down"></i></span>
       </span>
-      <ng-template #unitaOperativa class="app-shadow">
-        <div class="input-group">
-          <input class="form-control" type="text" placeholder="Cerca unità operativa" [(ngModel)]="searchUnita">
-          <div class="input-group-append">
-            <button class="btn btn-secondary"><i class="fa fa-search text-light"></i></button>
-          </div>
+            <ng-template #unitaOperativa class="app-shadow">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Cerca unità operativa"
+                           [(ngModel)]="searchUnita">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary"><i class="fa fa-search text-light"></i></button>
+                    </div>
+                </div>
+                <ul class="my-2 list-unstyled">
+                    <li *ngFor="let unita of unitaOperative | filterBy: searchUnita" class="mt-1">
+                        <button *ngIf="unita !== unitaAttuale" class="btn btn-block btn-outline-secondary"
+                                (click)="changeUnitaAttuale(unita)">{{unita.descrizione}}
+                        </button>
+                    </li>
+                </ul>
+                <button class="btn btn-block btn-secondary">Tutti i comandi</button>
+            </ng-template>
+            <app-clock></app-clock>
+            <app-turno></app-turno>
         </div>
-        <ul class="my-2 list-unstyled">
-          <li *ngFor="let unita of unitaOperative | filterBy: searchUnita" class="mt-1">
-            <button *ngIf="unita !== unitaAttuale" class="btn btn-block btn-outline-secondary" (click)="changeUnitaAttuale(unita)">{{unita.descrizione}}</button>
-          </li>
-        </ul>
-        <button class="btn btn-block btn-secondary">Tutti i comandi</button>
-      </ng-template>
-      <span class="btn mr-3">
-        {{time}}
-      </span>
-      <app-turno></app-turno>
-    </div>
-    <!-- Notifiche, messaggi e profilo -->
-    <div class="col-4 ml-auto text-right pr-0">
-      <button class="btn btn-light mr-2" ngbTooltip="Notifiche" [ngbPopover]="notifiche" placement="bottom"><i class="fa fa-bell"></i></button>
-      <button class="btn btn-light mr-2" ngbTooltip="Messaggi" [ngbPopover]="messaggi" placement="bottom"><i class="fa fa-envelope-open"></i></button>
-      <button class="btn btn-light mr-2" ngbTooltip="Impostazioni" placement="bottom"><i class="fa fa-cogs"></i></button>
-      <img class="rounded ml-2" src="http://i.pravatar.cc/40?img=53">
-      <span class="btn mr-2">
+        <!-- Notifiche, messaggi e profilo -->
+        <div class="col-4 ml-auto text-right pr-0">
+            <button class="btn btn-light mr-2" ngbTooltip="Notifiche" [ngbPopover]="notifiche" placement="bottom"><i
+                    class="fa fa-bell"></i></button>
+            <button class="btn btn-light mr-2" ngbTooltip="Messaggi" [ngbPopover]="messaggi" placement="bottom"><i
+                    class="fa fa-envelope-open"></i></button>
+            <button class="btn btn-light mr-2" ngbTooltip="Impostazioni" placement="bottom"><i class="fa fa-cogs"></i>
+            </button>
+            <img class="rounded ml-2" src="http://i.pravatar.cc/40?img=53">
+            <span class="btn mr-2">
         {{user.firstName}} {{user.lastName}}
       </span>
-      <button class="btn btn-danger" ngbTooltip="Disconnettiti" placement="bottom" [routerLink]="['/login']"><i class="fa fa-sign-out"></i>
-        Esci</button>
-      <ng-template #notifiche>
-        <h6 class="mb-2">Notifiche</h6>
-        <ul class="list-unstyled">
-          <li style="width:200px">
-            <div class="row px-0">
-              <div class="col-10">
-                Sono una notifica
-              </div>
-              <div class="col-2">
-                <i class="fa fa-times text-danger"></i>
-              </div>
-              <hr class="w-100">
-            </div>
-          </li>
-        </ul>
-      </ng-template>
-      <ng-template #messaggi>
-        <h6>Messaggi</h6>
-      </ng-template>
+            <button class="btn btn-danger" ngbTooltip="Disconnettiti" placement="bottom" [routerLink]="['/login']"><i
+                    class="fa fa-sign-out"></i>
+                Esci
+            </button>
+            <ng-template #notifiche>
+                <h6 class="mb-2">Notifiche</h6>
+                <ul class="list-unstyled">
+                    <li style="width:200px">
+                        <div class="row px-0">
+                            <div class="col-10">
+                                Sono una notifica
+                            </div>
+                            <div class="col-2">
+                                <i class="fa fa-times text-danger"></i>
+                            </div>
+                            <hr class="w-100">
+                        </div>
+                    </li>
+                </ul>
+            </ng-template>
+            <ng-template #messaggi>
+                <h6>Messaggi</h6>
+            </ng-template>
+        </div>
     </div>
-  </div>
 </nav>

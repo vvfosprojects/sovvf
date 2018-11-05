@@ -31,13 +31,6 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import { ScrollEventModule } from 'ngx-scroll-event';
 import { TimeagoModule, TimeagoFormatter, TimeagoCustomFormatter, TimeagoIntl } from 'ngx-timeago';
 /**
- * import navbar
- */
-import { NavbarComponent } from './navbar/navbar.component';
-import { CambioSedeModalNavComponent } from './navbar/cambio-sede-modal-nav/cambio-sede-modal-nav.component';
-import { TurnoComponent } from './navbar/turno/turno.component';
-
-/**
  * Fake Service
  */
 import { InfoAggregateService } from './core/service/boxes-service/info-aggregate.service';
@@ -46,19 +39,14 @@ import { EventiRichiestaService } from './core/service/eventi-richiesta-service/
 import { EventiRichiestaServiceFake } from './core/service/eventi-richiesta-service/eventi-richiesta.service.fake';
 import { TurnoService } from './navbar/turno/turno.service';
 import { TurnoServiceFake } from './navbar/turno/turno.service.fake';
+import { NavbarModule } from './navbar/navbar.module';
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        /**
-         * Navbar
-         */
         HomeComponent,
         LoginComponent,
-        NavbarComponent,
-        CambioSedeModalNavComponent,
-        TurnoComponent,
     ],
     imports: [
         BrowserModule,
@@ -80,9 +68,9 @@ import { TurnoServiceFake } from './navbar/turno/turno.service.fake';
         BoxesModule,
         MapsModule,
         SharedModule,
-        EventiRichiestaModule
+        EventiRichiestaModule,
+        NavbarModule
     ],
-    entryComponents: [CambioSedeModalNavComponent],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

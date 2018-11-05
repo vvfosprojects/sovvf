@@ -1,6 +1,4 @@
 import {Component, OnInit, EventEmitter, Output, Input} from '@angular/core';
-import {Observable} from 'rxjs';
-import * as moment from 'moment';
 import {UnitaOperativaService} from './navbar-service/unita-operativa-service/unita-operativa.service';
 import {Sede} from '../shared/model/sede.model';
 import {Coordinate} from '../shared/model/coordinate.model';
@@ -18,14 +16,12 @@ export class NavbarComponent implements OnInit {
     @Output() openedSidebar: EventEmitter<any> = new EventEmitter();
     unitaOperative: Sede[];
     unitaAttuale: Sede;
-    time: string;
     searchUnita: string;
 
     constructor(private _modalService: NgbModal, private unitaOperativaS: UnitaOperativaService) {
     }
 
     ngOnInit() {
-        this.nowDate();
         this.getUnitaOperative();
         this.getUnitaAttuale();
 
@@ -50,17 +46,6 @@ export class NavbarComponent implements OnInit {
 
     changeUnitaAttuale(newUnita) {
         this.openModal(newUnita);
-    }
-
-    /* End unità operativa methods */
-
-    nowDate() {
-        const moment$ = new Observable<any>((observer) => {
-            setInterval(() => observer.next(moment().format('DD/MM/YYYY, HH:MM')));
-        });
-        moment$.subscribe(res => {
-            this.time = res;
-        });
     }
 
     openSidebar() {
