@@ -62,7 +62,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
         SintesiRichiestaSmComponent
     ],
     exports: [
-        RichiesteComponent
+        RichiesteComponent,
+        RicercaRichiesteComponent,
+        FiltriRichiesteComponent
     ],
     providers: [
         { provide: DispatcherService, useClass: DispatcherFakeService },
