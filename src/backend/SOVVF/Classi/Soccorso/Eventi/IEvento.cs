@@ -29,13 +29,13 @@ namespace Modello.Classi.Soccorso.Eventi
         /// <summary>
         ///   E' l'istante in cui si è verificato l'evento.
         /// </summary>
-        string CodiceFonte { get; }
+        string codiceFonte { get; }
 
         /// <summary>
         ///   E' l'identificativo univoco della fonte informativa sull'evento, che ha anche la
         ///   responsabilità di garantirne la veridicità. Può essere per esempio un operatore SO, un
         ///   sensore, un altro sistema informativo, lo stesso SOVVF.
         /// </summary>
-        DateTime Istante { get; }
+        DateTime istante { get; }
     }
 }

@@ -21,6 +21,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Modello.Classi.Autenticazione;
+using Modello.Classi.Condivise;
 using Modello.Classi.Geo;
 using Modello.Classi.Persistenza;
 using Modello.Classi.Soccorso.Eventi;
@@ -53,8 +55,9 @@ namespace Modello.Classi.Soccorso
         public RichiestaAssistenza()
         {
             this.eventi = new List<Evento>();
-            this.Tipologie = new List<TipologiaRichiesta>();
+            this.Tipologie = new List<Tipologia>();
             this.Tags = new HashSet<string>();
+            this.ListaPartenze = new List<Partenza>();
         }
 
         /// <summary>
@@ -66,18 +69,29 @@ namespace Modello.Classi.Soccorso
         /// </remarks>
         public enum Priorita
         {
+
             /// <summary>
-            ///   Bassa priorità
+            ///   Livello 1
             /// </summary>
             Bassa,
 
             /// <summary>
-            ///   Media priorità
+            ///   Livello 2
+            /// </summary>
+            Bassa2,
+
+            /// <summary>
+            ///   Livello 3 
             /// </summary>
             Media,
 
             /// <summary>
-            ///   Alta priorità
+            ///   Livello 4 
+            /// </summary>
+            Media2,
+
+            /// <summary>
+            ///   Livello 5 
             /// </summary>
             Alta
         }
@@ -146,7 +160,7 @@ namespace Modello.Classi.Soccorso
         /// <summary>
         ///   E' la geolocalizzazione dell'evento calamitoso, vigilanza, ecc.
         /// </summary>
-        public Geolocalizzazione Geolocalizzazione { get; set; }
+        public Coordinate Geolocalizzazione { get; set; }
 
         /// <summary>
         ///   Restituisce le sole istanze della classe Telefonata presenti all'interno della lista
@@ -162,6 +176,11 @@ namespace Modello.Classi.Soccorso
                     .ToList();
             }
         }
+
+        /// <summary>
+        ///   Operatore che ha generato la segnalazione
+        /// </summary>
+        public Utente Operatore { get; set; }
 
         /// <summary>
         ///   Indica se la richiesta è sospesa
@@ -181,7 +200,7 @@ namespace Modello.Classi.Soccorso
         /// <summary>
         ///   Indica se la <see cref="RichiestaAssistenza" /> è marcata come rilevante.
         /// </summary>
-        public virtual bool Rilevante
+        public virtual string Rilevante
         {
             get
             {
@@ -189,7 +208,11 @@ namespace Modello.Classi.Soccorso
                     .Where(e => (e is MarcaRilevante) || (e is MarcaNonRilevante))
                     .LastOrDefault();
 
-                return (ultimoEventoRilevanza != null) && (ultimoEventoRilevanza is MarcaRilevante);
+                if ((ultimoEventoRilevanza != null) && (ultimoEventoRilevanza is MarcaRilevante))
+                    return ultimoEventoRilevanza.istante.ToString();
+                else
+                    return null;
+                
             }
         }
 
@@ -244,6 +267,8 @@ namespace Modello.Classi.Soccorso
             }
         }
 
+        public List<Partenza> ListaPartenze{   get; set;  }
+
         /// <summary>
         ///   Indica l'istante di chiusura della richiesta, impostato dall'evento <see cref="ChiusuraRichiesta" />
         /// </summary>
@@ -256,7 +281,13 @@ namespace Modello.Classi.Soccorso
         ///   Per es. è la lista { valanga, soccorso a persona, ricerca disperso, messa in sicurezza
         ///   } in un sinistro simile al Rigopiano
         /// </remarks>
-        public virtual IList<TipologiaRichiesta> Tipologie { get; set; }
+        public virtual List<Tipologia> Tipologie { get; set; }
+
+
+        /// <summary>
+        ///   La località dove è avvenuto il fatto
+        /// </summary>
+        public virtual Localita Localita { get; set; }
 
         /// <summary>
         ///   E' l'indirizzo della richiesta
@@ -336,7 +367,7 @@ namespace Modello.Classi.Soccorso
                         .Where(e => e is Segnalazione)
                         .First() as Segnalazione;
 
-                    return eventoSegnalazione.Istante;
+                    return eventoSegnalazione.istante;
                 }
                 catch (Exception ex)
                 {
@@ -363,7 +394,7 @@ namespace Modello.Classi.Soccorso
                 }
                 else
                 {
-                    return eventoPresaInCarico.Istante;
+                    return eventoPresaInCarico.istante;
                 }
             }
         }
@@ -385,7 +416,7 @@ namespace Modello.Classi.Soccorso
                 }
                 else
                 {
-                    return eventoAssegnazione.Istante;
+                    return eventoAssegnazione.istante;
                 }
             }
         }
@@ -438,7 +469,7 @@ namespace Modello.Classi.Soccorso
         /// <summary>
         ///   Il richiedente della richiesta.
         /// </summary>
-        public virtual string Richiedente { get; set; }
+        public virtual Richiedente Richiedente { get; set; }
 
         /// <summary>
         ///   Il numero telefonico del richiedente della richiesta, se appropriato.
@@ -449,6 +480,12 @@ namespace Modello.Classi.Soccorso
         ///   E' il codice delle unità operative di prima, seconda, terza... competenza, in ordine di preferenza.
         /// </summary>
         public virtual string[] CodiciUOCompetenza { get; set; }
+
+        /// <summary>
+        ///   Lista delle Competenze della richiesta
+        /// </summary>
+        public virtual List<Sede> Competenze { get; set; }
+
 
         /// <summary>
         ///   Codice della scheda Nue, estratto dalla prima telefonata che è legata ad una scheda
@@ -525,7 +562,7 @@ namespace Modello.Classi.Soccorso
         /// <param name="evento">L'evento da aggiungere</param>
         public void AddEvento(Evento evento)
         {
-            if (this.eventi.Any() && this.eventi.Last().Istante > evento.Istante)
+            if (this.eventi.Any() && this.eventi.Last().istante > evento.istante)
             {
                 throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
             }

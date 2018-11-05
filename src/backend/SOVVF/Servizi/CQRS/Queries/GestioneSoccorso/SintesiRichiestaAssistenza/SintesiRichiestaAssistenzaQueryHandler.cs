@@ -58,7 +58,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssisten
             {
                 SintesiRichiesta = new SintesiRichiesta()
                 {
-                    Codice = richiesteAssistenza.Codice
+                    codice = richiesteAssistenza.Codice
                 }
             };
 

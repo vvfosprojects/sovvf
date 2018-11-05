@@ -81,7 +81,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Lo stato <see cref="FuoriServizio" /></returns>
         public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
         {
-            return new FuoriServizio(vaInFuoriServizio.Istante);
+            return new FuoriServizio(vaInFuoriServizio.istante);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Lo stato <see cref="Assegnato" /></returns>
         public override IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze)
         {
-            return new Assegnato(composizionePartenze.Istante, composizionePartenze.CodiceRichiesta);
+            return new Assegnato(composizionePartenze.istante, composizionePartenze.codiceRichiesta);
         }
     }
 }

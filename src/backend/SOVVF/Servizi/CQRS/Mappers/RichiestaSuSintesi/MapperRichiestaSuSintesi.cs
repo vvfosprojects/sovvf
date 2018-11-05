@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Linq;
 using Modello.Classi.Soccorso;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
@@ -66,28 +67,24 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
 #warning Sarebbe conveniente usare la libreria AutoMapper per garantire la copertura completa
             return new SintesiRichiesta()
             {
-                Id = richiesta.Id,
-                Codice = richiesta.Codice,
-                Rilevante = richiesta.Rilevante,
-                IstanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta,
-                IstantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione,
-                Presidiato = richiesta.Presidiato,
-                PrioritaRichiesta = richiesta.PrioritaRichiesta,
-                Tipologie = richiesta.Tipologie.Select(t => t.Descrizione).ToArray(),
-                Descrizione = richiesta.Descrizione,
-                Richiedente = richiesta.Richiedente,
-                NumeroRichiedente = richiesta.NumeroRichiedente,
-                DescrizioneLocalita = richiesta.Indirizzo,
-                DescrizioneCompetenze = richiesta.CodiciUOCompetenza.Select(cod => this.getUnitaOperativaPerCodice.Get(cod).Nome).ToArray(),
-                NoteLocalita = richiesta.NoteLocalita,
-                ZoneEmergenza = richiesta.ZoneEmergenza,
-                IstantePresaInCarico = richiesta.IstantePresaInCarico,
-                CodiceSchedaNue = richiesta.CodiceSchedaNue,
-                StatoFonogrammaRichiesta = richiesta.StatoInvioFonogramma.Codice,
-                DescrizioneStatoFonogramma = richiesta.StatoInvioFonogramma.Descrizione,
-                ComplessitaRichiesta = richiesta.Complessita.Codice,
-                DescrizioneComplessita = richiesta.Complessita.Descrizione,
-                Mezzi = richiesta.MezziCoinvolti.Select(mc => this.mapperMezzoSuSintesi.Map(mc.Key, mc.Value)).ToArray()
+                id = richiesta.Id,
+                codice = richiesta.Codice,
+                rilevanza = null, //richiesta.Rilevante != null ? richiesta.Rilevante : null,
+                istanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta,
+                istantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione,
+                priorita = richiesta.PrioritaRichiesta,
+                tipologie = richiesta.Tipologie,
+                descrizione = richiesta.Descrizione,
+                richiedente = richiesta.Richiedente,
+                localita = richiesta.Localita,
+                competenze = richiesta.Competenze,
+                zoneEmergenza = richiesta.ZoneEmergenza,
+                istantePresaInCarico = richiesta.IstantePresaInCarico,
+                codiceSchedaNue = richiesta.CodiceSchedaNue,
+                //fonogramma = richiesta.StatoInvioFonogramma,
+                //ComplessitaIntervento = richiesta.Complessita,
+                partenze = richiesta.ListaPartenze
+               
             };
         }
     }

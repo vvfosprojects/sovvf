@@ -21,9 +21,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Bogus;
+using Modello.Classi.Autenticazione;
+using Modello.Classi.Condivise;
 using Modello.Classi.Geo;
 using Modello.Classi.Soccorso;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
+using MongoDB.Driver;
 using SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.AzioniSuRichiesta;
 
 namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
@@ -33,7 +36,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
     ///   rispettano la fisica realizzabilità, rispetto ad un parco mezzi fornito in ingresso al
     ///   costruttore e dotato di uno specifico numero di mezzi.
     /// </summary>
-    internal class GeneratoreRichieste
+    public class GeneratoreRichieste
     {
         /// <summary>
         ///   Il generatore random utilizzato dall'implementazione dei metodi
@@ -164,23 +167,36 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(g => g.Latitudine, f => f.Address.Latitude())
                 .RuleFor(g => g.Longitudine, f => f.Address.Longitude());
 
+
+            //Questi Faker sono messi qui perchè contengono dei dati comuni a più proprietà
+            Faker generaFaker = new Faker("it");
+            string indirizzo = generaFaker.Address.StreetAddress();
+            string NoteLocalita = generaFaker.Lorem.Sentence();
+            Coordinate coordinateLocalita = new Coordinate(generaFaker.Random.Double() + 41.895, generaFaker.Random.Double() + 12.495);
+
+
+
             var zoneEmergenza = new[] { "Sisma Gotham City", "Alluvione Smallville", "Uragano Metropolis" }.ToList();
             var fakerRichiesteAssistenza = new Faker<RichiestaAssistenza>("it")
                 .StrictMode(true)
                 .RuleFor(ra => ra.Id, f => f.UniqueIndex.ToString())
                 .RuleFor(ra => ra.Codice, f => f.IndexGlobal.ToString())
                 .RuleFor(ra => ra.CodiceUnitaOperativaCompetente, f => this.codiceUnitaOperativa)
+                .RuleFor(ra => ra.Operatore, f=> GeneraOperatore())
                 .RuleFor(ra => ra.CodiciUnitaOperativeAllertate, f => new HashSet<string> { this.codiceUnitaOperativa })
-                .RuleFor(ra => ra.Geolocalizzazione, f => fakerGeolocalizzazione.Generate())
+                //.RuleFor(ra => ra.Geolocalizzazione, f => fakerGeolocalizzazione.Generate())
                 .RuleFor(ra => ra.Tipologie, f => this.GeneraTipologie())
                 .RuleFor(ra => ra.IstanteChiusura, f => null)
-                .RuleFor(ra => ra.Indirizzo, f => f.Address.StreetAddress())
-                .RuleFor(ra => ra.NoteLocalita, f => f.Lorem.Sentence())
+                .RuleFor(ra => ra.Indirizzo, f => indirizzo)
+                .RuleFor(ra => ra.NoteLocalita, f => NoteLocalita)
                 .RuleFor(ra => ra.ZoneEmergenza, f => f.Random.Float() < 0.001 ? new[] { f.Random.ListItem(zoneEmergenza) } : new string[0])
                 .RuleFor(ra => ra.Descrizione, f => f.Lorem.Sentence())
-                .RuleFor(ra => ra.Richiedente, f => $"{f.Name.FirstName()} {f.Name.LastName()}")
+                .RuleFor(ra => ra.Richiedente, f => new Richiedente ( f.Name.FirstName() + " " + f.Name.LastName(), f.Phone.Locale ))
                 .RuleFor(ra => ra.NumeroRichiedente, f => f.Phone.PhoneNumber())
                 .RuleFor(ra => ra.CodiciUOCompetenza, f => new[] { f.Address.StateAbbr(), f.Address.StateAbbr(), f.Address.StateAbbr() })
+                .RuleFor(ra => ra.ListaPartenze, f => null)
+                .RuleFor(ra => ra.Localita, f => new Localita(coordinateLocalita, indirizzo, NoteLocalita))
+                .RuleFor(ra => ra.Competenze, f => GeneraCompetenze())
                 .Ignore(ra => ra.Tags);
 
             var fakerTelefonata = new Faker<Telefonata>()
@@ -260,7 +276,90 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                     .ToList();
             }
 
+
+            //var client = new MongoClient();
+            //var database = client.GetDatabase("SO115");
+            //var collection = database.GetCollection<RichiestaConParametri>("RichiesteAssistenza");
+            //collection.InsertMany(richiesteConParametri);
+
             return richiesteConParametri.Select(r => r.Richiesta);
+        }
+
+
+        public static Utente GeneraOperatore()
+        {
+
+            Bogus.Faker faker = new Bogus.Faker("it");
+
+            string Nome = faker.Name.FirstName();
+            string Cognome = faker.Name.LastName();
+
+            return new Utente(Nome + Cognome + faker.Random.Number(0, 99).ToString(), Nome, Cognome, faker.Random.AlphaNumeric(16));
+
+        }
+
+
+        private List<Sede> GeneraCompetenze()
+        {
+            Bogus.Faker faker = new Bogus.Faker();
+
+            int numeroFaker = faker.Random.Number(0, 100);
+
+            List<Sede> sede = new List<Sede>()
+            {
+                new Sede("1", "Tuscolano I","Via Tuscolana 2", new Coordinate(faker.Random.Double() + 41.895, faker.Random.Double() + 12.495), "Distaccamento", null, null,"Lazio","Roma"),
+                new Sede("2", "Tuscolano II","Via Tuscolana 2", new Coordinate(faker.Random.Double() + 41.895, faker.Random.Double() + 12.495), "Distaccamento", null, null,"Lazio","Roma"),
+                new Sede("3", "Ostiense","Via Ostiense 2", new Coordinate(faker.Random.Double() + 41.895, faker.Random.Double() + 12.495), "Distaccamento", null, null,"Lazio","Roma")
+            };
+
+            List<Sede> sede2 = new List<Sede>()
+            {
+                new Sede("1", "Eur","Viale delle tre fontane 2", new Coordinate(faker.Random.Double() + 41.895, faker.Random.Double() + 12.495), "Distaccamento", null, null,"Lazio","Roma"),
+                new Sede("2", "Torrino", "Via della grande muraglia 2", new Coordinate(faker.Random.Double() + 41.895, faker.Random.Double() + 12.495), "Distaccamento", null, null,"Lazio","Roma"),
+                new Sede("3", "Colombo", "via Leonori 2", new Coordinate(faker.Random.Double() + 41.895, faker.Random.Double() + 12.495), "Distaccamento", null, null,"Lazio","Roma")
+            };
+
+            List<Sede> sede3 = new List<Sede>()
+            {
+                new Sede("1", "Pisana","Via della Pisana 2", new Coordinate(faker.Random.Double() + 41.895, faker.Random.Double() + 12.495), "Distaccamento", null, null,"Lazio","Roma"),
+                new Sede("2", "Aurelia", "Via Aurelia 44", new Coordinate(faker.Random.Double() + 41.895, faker.Random.Double() + 12.495), "Distaccamento", null, null,"Lazio","Roma"),
+                new Sede("3", "Bufalotta", "Via della Bufalotta 54", new Coordinate(faker.Random.Double() + 41.895, faker.Random.Double() + 12.495), "Distaccamento", null, null,"Lazio","Roma")
+            };
+
+
+            switch (numeroFaker)
+            {
+                case int n when (n <= 30):
+                    return sede;
+
+
+                case int n when (n > 30) && (n <= 60):
+                    return sede2;
+
+                case int n when (n >= 61):
+                    return sede3;
+
+                default:
+                    return sede;
+
+            }
+
+        }
+
+        private Localita GeneraLocalita()
+        {
+            throw new NotImplementedException();
+        }
+
+        private Richiedente GeneraRichiedente()
+        {
+
+            var fakerRichiedente = new Faker<Richiedente>()
+                .StrictMode(true)                
+                .RuleFor(t => t.nominativo, f => f.Name.FirstName() + " " + f.Name.LastName())
+                .RuleFor(t => t.telefono, f => f.Phone.PhoneNumber());
+
+            return fakerRichiedente;
         }
 
         /// <summary>
@@ -269,25 +368,25 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         ///   lista contiene tre tipologie.
         /// </summary>
         /// <returns>La lista delle tipologie</returns>
-        private List<TipologiaRichiesta> GeneraTipologie()
+        private List<Tipologia> GeneraTipologie()
         {
             var tipologie =
-                new TipologiaRichiesta[]
+                new Tipologia[]
                 {
-                    new TipologiaRichiesta("Soccorso a persona", "Soccorso a persona"),
-                    new TipologiaRichiesta("Incendio generico", "Incendio generico"),
-                    new TipologiaRichiesta("Incendio boschivo", "Incendio boschivo"),
-                    new TipologiaRichiesta("Danni d'acqua", "Danni d'acqua"),
-                    new TipologiaRichiesta("Alluvione", "Alluvione"),
-                    new TipologiaRichiesta("Esplosione", "Esplosione"),
-                    new TipologiaRichiesta("Incidente stradale", "Incidente stradale"),
-                    new TipologiaRichiesta("Apertura porta", "Apertura porta"),
+                    new Tipologia("Soccorso a persona", "Soccorso a persona","fa fa-ambulance"),
+                    new Tipologia("Incendio generico", "Incendio generico","fa fa-fire"),
+                    new Tipologia("Incendio boschivo", "Incendio boschivo","fa fa-fire"),
+                    new Tipologia("Danni d'acqua", "Danni d'acqua",""),
+                    new Tipologia("Alluvione", "Alluvione",""),
+                    new Tipologia("Esplosione", "Esplosione",""),
+                    new Tipologia("Incidente stradale", "Incidente stradale","fa fa-car"),
+                    new Tipologia("Apertura porta", "Apertura porta",""),
                 };
 
             var f = new Faker();
             var numeroTipologie = f.Random.WeightedRandom<int>(new int[] { 1, 2, 3 }, new float[] { .7F, .2F, .1F });
             var range = Enumerable.Range(1, numeroTipologie).Select(x => f.PickRandom(tipologie));
-            var set = new HashSet<TipologiaRichiesta>(range); // elimina i duplicati
+            var set = new HashSet<Tipologia>(range); // elimina i duplicati
 
             return set.ToList();
         }

@@ -31,16 +31,29 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SimpleInjector, Version=4.0.6.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.4.0.6\lib\net45\SimpleInjector.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Bogus, Version=24.3.0.0, Culture=neutral, PublicKeyToken=fa1bb3f3f218129a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bogus.24.3.0\lib\net40\Bogus.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleInjector.Packaging, Version=4.0.6.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.Packaging.4.0.6\lib\net40\SimpleInjector.Packaging.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DnsClient, Version=1.0.7.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
+      <HintPath>..\packages\DnsClient.1.0.7\lib\net45\DnsClient.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.7.0\lib\net45\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.2.7.0\lib\net45\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.7.0\lib\net45\MongoDB.Driver.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.3.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,7 +62,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bindings.cs" />
+    <Compile Include="AOP\Logging\LoggingCommandHandlerDecorator.cs" />
+    <Compile Include="AOP\Validation\IQueryValidator.cs" />
+    <Compile Include="AOP\Validation\ICommandValidator.cs" />
+    <Compile Include="AOP\Validation\ValidatingQueryHandlerDecorator.cs" />
+    <Compile Include="AOP\Validation\ValidatingCommandHandlerDecorator.cs" />
+    <Compile Include="AOP\Validation\ValidationException.cs" />
+    <Compile Include="AOP\Validation\ValidationResult.cs" />
+    <Compile Include="Classi\Condivise\Complessita.cs" />
+    <Compile Include="Classi\Condivise\ComponenteSquadra.cs" />
+    <Compile Include="Classi\Condivise\Coordinate.cs" />
+    <Compile Include="Classi\Condivise\Localita.cs" />
+    <Compile Include="Classi\Condivise\Mezzo.cs" />
+    <Compile Include="Classi\Condivise\Partenza.cs" />
+    <Compile Include="Classi\Condivise\Richiedente.cs" />
+    <Compile Include="Classi\Condivise\Sede.cs" />
+    <Compile Include="Classi\Condivise\Squadra.cs" />
+    <Compile Include="Classi\Condivise\Tipologia.cs" />
     <Compile Include="Classi\Persistenza\Entity.cs" />
     <Compile Include="Classi\Organigramma\PinNodo.cs" />
     <Compile Include="Classi\Persistenza\IEntity.cs" />
@@ -143,7 +172,9 @@
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\InserisciTelefonata\CommandDTO\Azione.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\InserisciTelefonata\CommandDTO\InserisciTelefonataCommand.cs" />
     <Compile Include="Servizi\CQRS\Commands\GestioneSoccorso\InserisciTelefonata\InserisciTelefonataCommandHandler.cs" />
+    <Compile Include="Servizi\CQRS\Faker\GeneraFakerSintesiRichieste.cs" />
     <Compile Include="Servizi\CQRS\Mappers\RichiestaSuSintesi\IMapperRichiestaSuSintesi.cs" />
+    <Compile Include="Servizi\CQRS\Mappers\RichiestaSuSintesi\MapperListaRichiesteSuListaSintesiRichieste.cs" />
     <Compile Include="Servizi\CQRS\Mappers\RichiestaSuSintesi\MapperMezzoSuSintesi.cs" />
     <Compile Include="Servizi\CQRS\Mappers\RichiestaSuSintesi\MapperRichiestaSuSintesi.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SintesiRichiestaAssistenza\QueryDTO\SintesiRichiestaAssistenzaQuery.cs" />
@@ -159,6 +190,7 @@
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SintesiRichiesteAssistenza\ResultDTO\SintesiRichiesteAssistenzaResult.cs" />
     <Compile Include="Servizi\Infrastruttura\Anagrafiche\IGetTipoInterventoByCodice.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\CompetenzeTerritoriali\IGetCompetenzeByPunto.cs" />
+    <Compile Include="Classi\Soccorso\ListaRichiesteAssistenza.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetSintesiRichiestaAssistenzaById.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\IGetRichiestePerSituazioneMezzi.cs" />
     <Compile Include="Servizi\CQRS\Queries\GestioneSoccorso\SituazioneMezzi\QueryDTO\SituazioneMezziQuery.cs" />
@@ -172,7 +204,6 @@
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\RicercaRichiesteAssistenza\ICercaRichiesteAssistenza.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\Mezzi\IGetSituazioneMezzi.cs" />
     <Compile Include="Servizi\Infrastruttura\GestioneSoccorso\Mezzi\Implementation\GetSituazioneMezzi.cs" />
-    <Compile Include="Servizi\Infrastruttura\Organigramma\Bindings.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\Implementazioni\EspandiPinNodoSuOrganigramma.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\Implementazioni\GetUnitaOperativaPerCodice.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\IEspandiPinNodoSuOrganigramma.cs" />
@@ -211,7 +242,9 @@
     <Compile Include="Servizi\Infrastruttura\Autenticazione\IGetOperatoreAutenticato.cs" />
     <Compile Include="Servizi\Infrastruttura\Organigramma\IGetUnitaOperativaRadice.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="AOP\PerfAnalysis\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\SOVVF.licenseheader">
       <Link>SOVVF.licenseheader</Link>

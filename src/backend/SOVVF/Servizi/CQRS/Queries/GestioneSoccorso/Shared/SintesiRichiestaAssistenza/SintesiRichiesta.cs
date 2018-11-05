@@ -18,8 +18,14 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
+using Modello.Classi.Autenticazione;
+using Modello.Classi.Condivise;
 using Modello.Classi.Soccorso;
+using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Fonogramma;
+using Modello.Classi.Soccorso.Complessita;
+using System.Linq;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
@@ -33,147 +39,160 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         ///   Costruttore della classe
         /// </summary>
         public SintesiRichiesta()
-        {
-            this.Tipologie = new string[0];
-            this.DescrizioneCompetenze = new string[0];
-            this.ZoneEmergenza = new string[0];
-            this.Squadre = new Squadra[0];
-            this.Mezzi = new Mezzo[0];
-            this.Etichette = new string[0];
+        {  
+            this.zoneEmergenza = new string[0]; 
+            this.etichette = new string[0];
+            this.eventi = new List<Evento>();
+            this.competenze = new List<Sede>();
         }
 
         /// <summary>
         ///   L'id della richiesta
         /// </summary>
-        public string Id { get; set; }
+        public string id { get; set; }
 
         /// <summary>
         ///   E' il codice della Richiesta di Assistenza
         /// </summary>
-        public string Codice { get; set; }
+        public string codice { get; set; }
 
         /// <summary>
-        ///   Indica se la richiesta è rilevante
+        ///   Utente che ha generato la segnalazione
+        /// </summary>
+        public Utente operatore { get; set; }
+
+        /// <summary>
+        ///   Ricezione della richiesta (via telefono, ecc.)
+        /// </summary>
+        public DateTime istanteRicezioneRichiesta { get; set; }
+
+        /// <summary>
+        ///   Stato della richiesta
+        /// </summary>
+        public string stato { get; set; }
+
+
+        /// <summary>
+        ///   Priorita della richiesta
+        /// </summary>
+        public RichiestaAssistenza.Priorita priorita { get; set; }
+
+
+        public List<Tipologia> tipologie { get; set; }
+
+        /// <summary>
+        ///   Descrizione della richiesta
+        /// </summary>
+        public string descrizione { get; set; }
+
+        /// <summary>
+        ///   Descrizione del richiedente
+        /// </summary>
+        public Richiedente richiedente { get; set; }
+
+        /// <summary>
+        ///   Localita della richiesta
+        /// </summary>
+        public Localita localita { get; set; }
+
+        /// <summary>
+        ///   Competenze della richiesta
+        /// </summary>
+        public List<Sede> competenze { get; set; }
+
+        /// <summary>
+        ///   Complessità della richiesta
+        /// </summary>
+        public Complessita complessita {
+
+            get
+            {
+                if (this.eventi.Count <= 20)
+                {
+                    return new Complessita("0","Basso", this.eventi.Count.ToString());
+                }
+
+                if (this.eventi.Count <= 60)
+                {
+                    return new Complessita("1", "Media", this.eventi.Count.ToString());
+                }
+
+                return new Complessita("2", "Alta", this.eventi.Count.ToString());
+            }
+      
+        }
+
+        /// <summary>
+        ///   Eventuale istante di presa in carico della richiesta
+        /// </summary>
+        public DateTime? istantePresaInCarico { get; set; }
+
+        /// <summary>
+        ///   Eventuale istante di prima assegnazione di risorse alla richiesta
+        /// </summary>
+        public DateTime? istantePrimaAssegnazione { get; set; }
+
+
+        /// <summary>
+        ///   Indica la data in cui è stato marcato RILEVANTE l'ultima volta 
         /// </summary>
         /// <remarks>
         ///   Una richiesta può essere rilevante se è l'operatore a marcarla come tale, oppure in
         ///   base ad un insieme di regole automatiche deterministiche o basate su algoritmi di
         ///   machine learning.
         /// </remarks>
-        public bool Rilevante { get; set; }
+        public DateTime? rilevanza { get; set; }
 
-        /// <summary>
-        ///   Ricezione della richiesta (via telefono, ecc.)
-        /// </summary>
-        public DateTime IstanteRicezioneRichiesta { get; set; }
-
-        /// <summary>
-        ///   Eventuale istante di prima assegnazione di risorse alla richiesta
-        /// </summary>
-        public DateTime? IstantePrimaAssegnazione { get; set; }
-
-        /// <summary>
-        ///   Indica se il luogo del sinistro è presidiato con squadra VVF
-        /// </summary>
-        public bool Presidiato { get; set; }
-
-        /// <summary>
-        ///   Priorita della richiesta
-        /// </summary>
-        public RichiestaAssistenza.Priorita PrioritaRichiesta { get; set; }
-
-        /// <summary>
-        ///   Descrizione delle tipologie
-        /// </summary>
-        public string[] Tipologie { get; set; }
-
-        /// <summary>
-        ///   Descrizione della richiesta
-        /// </summary>
-        public string Descrizione { get; set; }
-
-        /// <summary>
-        ///   Descrizione del richiedente
-        /// </summary>
-        public string Richiedente { get; set; }
-
-        /// <summary>
-        ///   Numero telefonico del richiedente (se appropriato)
-        /// </summary>
-        public string NumeroRichiedente { get; set; }
-
-        /// <summary>
-        ///   Descrizione della località dell'evento
-        /// </summary>
-        public string DescrizioneLocalita { get; set; }
-
-        /// <summary>
-        ///   Note sulla località della richiesta (per es. "accanto a ingresso carico/scarico del
-        ///   supermercato Spendibene")
-        /// </summary>
-        public string NoteLocalita { get; set; }
-
-        /// <summary>
-        ///   Descrizione delle sedi di prima, seconda e terza competenza
-        /// </summary>
-        public string[] DescrizioneCompetenze { get; set; }
-
-        /// <summary>
-        ///   Descrizione delle zone di emergenza
-        /// </summary>
-        public string[] ZoneEmergenza { get; set; }
-
-        /// <summary>
-        ///   Eventuale istante di presa in carico della richiesta
-        /// </summary>
-        public DateTime? IstantePresaInCarico { get; set; }
 
         /// <summary>
         ///   Codice della scheda Nue
         /// </summary>
-        public virtual string CodiceSchedaNue { get; set; }
+        public virtual string codiceSchedaNue { get; set; }
+
+        /// <summary>
+        ///   Descrizione delle zone di emergenza
+        /// </summary>
+        public string[] zoneEmergenza { get; set; }
 
         /// <summary>
         ///   Codice dello stato di invio del fonogramma (0 = Non necessario, 1 = Da inviare, 2 =
         ///   Inviato). Utile a calcolare il colore della segnalazione.
         /// </summary>
-        public string StatoFonogrammaRichiesta { get; set; }
+        public virtual Classi.Soccorso.Fonogramma.IStatoFonogramma fonogramma
+        {
+            get
+            {
+                var ultimoEventoFonogramma = this.eventi
+                    .Where(e => e is Classi.Soccorso.Eventi.Fonogramma.IFonogramma)
+                    .LastOrDefault();
 
-        /// <summary>
-        ///   Segnalazione sullo stato di invio del fonogramma.
-        /// </summary>
-        public string DescrizioneStatoFonogramma { get; set; }
+                if (ultimoEventoFonogramma is Classi.Soccorso.Eventi.Fonogramma.FonogrammaInviato)
+                {
+                    return new Classi.Soccorso.Fonogramma.Inviato();
+                }
 
-        /// <summary>
-        ///   Numero di eventi collegati alla richiesta (che è un'indicazione di massima sulla stima
-        ///   della complessità dell'intervento)
-        /// </summary>
-        public int IndiceComplessita { get; set; }
+                if (ultimoEventoFonogramma is Classi.Soccorso.Eventi.Fonogramma.InviareFonogramma)
+                {
+                    return new Classi.Soccorso.Fonogramma.DaInviare();
+                }
 
+                return new Classi.Soccorso.Fonogramma.NonNecessario();
+            }
+        }
         /// <summary>
-        ///   Codice della complessità dell'intervento (0 = alta, 1 = media, 2 = bassa). Utile a
-        ///   calcolare il colore della segnalazione sulla complessità.
+        ///  Lista eventi associato alla richiesta
         /// </summary>
-        public string ComplessitaRichiesta { get; set; }
-
-        /// <summary>
-        ///   Segnalazione sulla complessità dell'intervento.
-        /// </summary>
-        public string DescrizioneComplessita { get; set; }
-
-        /// <summary>
-        ///   Dati sulle squadre coinvolte nella richiesta
-        /// </summary>
-        public Squadra[] Squadre { get; set; }
-
-        /// <summary>
-        ///   Dati sui mezzi impegnati sull'intervento
-        /// </summary>
-        public Mezzo[] Mezzi { get; set; }
+        public List<Partenza> partenze { get; set; }
 
         /// <summary>
         ///   Etichette associate all'intervento (per es. aPagamento, imp, ecc.)
         /// </summary>
-        public string[] Etichette { get; set; }
+        public string[] etichette { get; set; }
+
+        /// <summary>
+        ///  Lista eventi associato alla richiesta
+        /// </summary>
+        public List<Evento> eventi { get; }
+
     }
 }

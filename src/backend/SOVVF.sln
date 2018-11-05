@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modello", "SOVVF\Modello.csproj", "{24FF6BB3-EFFC-499F-9F86-F849454A7217}"
 EndProject
@@ -20,6 +20,29 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOVVF.FakeImplementations.Test", "SOVVF.FakeImplementations.Test\SOVVF.FakeImplementations.Test.csproj", "{971B0A3A-43D0-4912-AB06-B6B3F29996BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modello.IntegrationTest", "Modello.IntegrationTest\Modello.IntegrationTest.csproj", "{5AE922A7-36E6-45BD-A5D2-69F3428C3488}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompositionRoot", "CompositionRoot\CompositionRoot.csproj", "{2634F074-B26E-43A5-82F1-394944B47611}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "so115", "http://localhost/so115", "{CD5D8F76-61D0-4A1C-B9BC-C786EDD37A93}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "false"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
+		Debug.AspNetCompiler.VirtualPath = "/so115"
+		Debug.AspNetCompiler.PhysicalPath = "RestInterface\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\so115\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/so115"
+		Release.AspNetCompiler.PhysicalPath = "RestInterface\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\so115\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "RestInterface\"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,8 +74,19 @@ Global
 		{5AE922A7-36E6-45BD-A5D2-69F3428C3488}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AE922A7-36E6-45BD-A5D2-69F3428C3488}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AE922A7-36E6-45BD-A5D2-69F3428C3488}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2634F074-B26E-43A5-82F1-394944B47611}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2634F074-B26E-43A5-82F1-394944B47611}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2634F074-B26E-43A5-82F1-394944B47611}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2634F074-B26E-43A5-82F1-394944B47611}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD5D8F76-61D0-4A1C-B9BC-C786EDD37A93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD5D8F76-61D0-4A1C-B9BC-C786EDD37A93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD5D8F76-61D0-4A1C-B9BC-C786EDD37A93}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD5D8F76-61D0-4A1C-B9BC-C786EDD37A93}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C7A92627-78DD-44B0-8FF6-E79A116AFFB8}
 	EndGlobalSection
 EndGlobal

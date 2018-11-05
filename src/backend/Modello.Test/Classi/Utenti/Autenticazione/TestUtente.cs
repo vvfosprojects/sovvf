@@ -31,10 +31,10 @@ namespace Modello.Test.Classi.Autenticazione
         {
             var utente = new Utente("username");
 
-            Assert.That(utente.Username, Is.EqualTo("username"));
-            Assert.That(utente.ValidoDa, Is.Null);
-            Assert.That(utente.ValidoFinoA, Is.Null);
-            Assert.That(utente.Attivo, Is.True);
+            Assert.That(utente.username, Is.EqualTo("username"));
+            Assert.That(utente.validoDa, Is.Null);
+            Assert.That(utente.validoFinoA, Is.Null);
+            Assert.That(utente.attivo, Is.True);
         }
 
         [Test]
@@ -51,10 +51,10 @@ namespace Modello.Test.Classi.Autenticazione
             var fine = DateTime.Now;
             var utente = new Utente("username", fine);
 
-            Assert.That(utente.Username, Is.EqualTo("username"));
-            Assert.That(utente.ValidoDa, Is.Null);
-            Assert.That(utente.ValidoFinoA, Is.EqualTo(fine));
-            Assert.That(utente.Attivo, Is.True);
+            Assert.That(utente.username, Is.EqualTo("username"));
+            Assert.That(utente.validoDa, Is.Null);
+            Assert.That(utente.validoFinoA, Is.EqualTo(fine));
+            Assert.That(utente.attivo, Is.True);
         }
 
         [Test]
@@ -72,10 +72,10 @@ namespace Modello.Test.Classi.Autenticazione
             var fine = DateTime.Now.AddDays(1);
             var utente = new Utente("username", inizio, fine);
 
-            Assert.That(utente.Username, Is.EqualTo("username"));
-            Assert.That(utente.ValidoDa, Is.EqualTo(inizio));
-            Assert.That(utente.ValidoFinoA, Is.EqualTo(fine));
-            Assert.That(utente.Attivo, Is.True);
+            Assert.That(utente.username, Is.EqualTo("username"));
+            Assert.That(utente.validoDa, Is.EqualTo(inizio));
+            Assert.That(utente.validoFinoA, Is.EqualTo(fine));
+            Assert.That(utente.attivo, Is.True);
         }
 
         [Test]

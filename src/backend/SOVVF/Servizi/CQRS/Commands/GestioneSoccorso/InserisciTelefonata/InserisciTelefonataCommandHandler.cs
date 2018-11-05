@@ -18,7 +18,9 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using Modello.Classi.Condivise;
 using Modello.Classi.Soccorso;
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Classi.Soccorso.Eventi.Segnalazioni;
@@ -79,10 +81,19 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata
         {
             var fonte = string.Format("op: {0}", this.getOperatoreAutenticato.Get());
 
+            
+            List<Tipologia> ListaTipologie = new List<Tipologia>();
+            foreach (string codice in command.CodiciTipiIntervento)
+            {
+                Tipologia tipologiaRichiesta = new Tipologia(getTipoInterventoByCodice.Get(codice).Codice, getTipoInterventoByCodice.Get(codice).Descrizione,"");
+                ListaTipologie.Add(tipologiaRichiesta);
+            }
+
+           
             var richiesta = new RichiestaAssistenza()
             {
-                Geolocalizzazione = command.Geolocalizzazione,
-                Tipologie = command.CodiciTipiIntervento.Select(c => this.getTipoInterventoByCodice.Get(c)).ToList(),
+                //Geolocalizzazione = command.Geolocalizzazione,
+                Tipologie = ListaTipologie,
                 Indirizzo = command.Indirizzo,
                 ZoneEmergenza = command.ZoneEmergenza,
             };

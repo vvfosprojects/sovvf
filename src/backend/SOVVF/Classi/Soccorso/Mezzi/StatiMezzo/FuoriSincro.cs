@@ -116,11 +116,11 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         {
             if (composizionePartenze.FuoriSede)
             {
-                return new Libero(composizionePartenze.Istante);
+                return new Libero(composizionePartenze.istante);
             }
             else
             {
-                return new Assegnato(composizionePartenze.Istante, composizionePartenze.CodiceRichiesta);
+                return new Assegnato(composizionePartenze.istante, composizionePartenze.codiceRichiesta);
             }
         }
 
@@ -131,7 +131,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Nulla perché solleva un'eccezione</returns>
         public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
         {
-            return new FuoriServizio(vaInFuoriServizio.Istante);
+            return new FuoriServizio(vaInFuoriServizio.istante);
         }
     }
 }

@@ -30,6 +30,7 @@ namespace Modello.Classi.Soccorso.Complessita
     /// </summary>
     public interface IComplessita
     {
+
         /// <summary>
         ///   Il codice
         /// </summary>

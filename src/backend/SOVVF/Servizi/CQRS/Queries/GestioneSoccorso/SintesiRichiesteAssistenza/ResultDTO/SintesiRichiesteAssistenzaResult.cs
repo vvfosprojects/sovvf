@@ -30,6 +30,9 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssisten
         /// <summary>
         ///   La sintesi delle richieste di assistenza
         /// </summary>
-        public IEnumerable<SintesiRichiesta> SintesiRichieste { get; set; }
+        public IEnumerable<SintesiRichiesta> SintesiRichiesta
+        { get; set; }
+
+
     }
 }

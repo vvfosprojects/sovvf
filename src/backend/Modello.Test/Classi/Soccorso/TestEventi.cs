@@ -54,8 +54,8 @@ namespace Modello.Test.Classi.Soccorso
             var now = DateTime.Now;
             var evento = new InizioPresaInCarico(this.richiesta, now, "Fonte");
 
-            Assert.That(evento.Istante, Is.EqualTo(now));
-            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
+            Assert.That(evento.istante, Is.EqualTo(now));
+            Assert.That(evento.codiceFonte, Is.EqualTo("Fonte"));
         }
 
         [Test]
@@ -65,8 +65,8 @@ namespace Modello.Test.Classi.Soccorso
             var evento = new ArrivoSulPosto(this.richiesta, "M1", now, "Fonte");
 
             Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
-            Assert.That(evento.Istante, Is.EqualTo(now));
-            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
+            Assert.That(evento.istante, Is.EqualTo(now));
+            Assert.That(evento.codiceFonte, Is.EqualTo("Fonte"));
         }
 
         [Test]
@@ -100,8 +100,8 @@ namespace Modello.Test.Classi.Soccorso
             var evento = new PartenzaInRientro(this.richiesta, "M1", now, "Fonte");
 
             Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
-            Assert.That(evento.Istante, Is.EqualTo(now));
-            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
+            Assert.That(evento.istante, Is.EqualTo(now));
+            Assert.That(evento.codiceFonte, Is.EqualTo("Fonte"));
         }
 
         [Test]
@@ -135,8 +135,8 @@ namespace Modello.Test.Classi.Soccorso
             var evento = new PartenzaRientrata(this.richiesta, "M1", now, "Fonte");
 
             Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
-            Assert.That(evento.Istante, Is.EqualTo(now));
-            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
+            Assert.That(evento.istante, Is.EqualTo(now));
+            Assert.That(evento.codiceFonte, Is.EqualTo("Fonte"));
         }
 
         [Test]
@@ -171,8 +171,8 @@ namespace Modello.Test.Classi.Soccorso
 
             Assert.That(evento.RichiestaSubentrata, Is.SameAs(this.richiestaSubentrata));
             Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
-            Assert.That(evento.Istante, Is.EqualTo(now));
-            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
+            Assert.That(evento.istante, Is.EqualTo(now));
+            Assert.That(evento.codiceFonte, Is.EqualTo("Fonte"));
         }
 
         [Test]
@@ -270,8 +270,8 @@ namespace Modello.Test.Classi.Soccorso
             var now = DateTime.Now;
             var evento = new ComposizionePartenze(this.richiesta, now, "Fonte", false);
 
-            Assert.That(evento.Istante, Is.EqualTo(now));
-            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
+            Assert.That(evento.istante, Is.EqualTo(now));
+            Assert.That(evento.codiceFonte, Is.EqualTo("Fonte"));
         }
 
         [Test]
@@ -337,8 +337,8 @@ namespace Modello.Test.Classi.Soccorso
             var evento = new VaInFuoriServizio(this.richiesta, "M1", now, "Fonte", "motivazione");
 
             Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
-            Assert.That(evento.Istante, Is.EqualTo(now));
-            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
+            Assert.That(evento.istante, Is.EqualTo(now));
+            Assert.That(evento.codiceFonte, Is.EqualTo("Fonte"));
             Assert.That(evento.Motivazione, Is.EqualTo("motivazione"));
         }
 
@@ -349,8 +349,8 @@ namespace Modello.Test.Classi.Soccorso
             var evento = new UscitaPartenza(this.richiesta, "M1", now, "Fonte");
 
             Assert.That(evento.CodiceMezzo, Is.EqualTo("M1"));
-            Assert.That(evento.Istante, Is.EqualTo(now));
-            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
+            Assert.That(evento.istante, Is.EqualTo(now));
+            Assert.That(evento.codiceFonte, Is.EqualTo("Fonte"));
         }
 
         [Test]
@@ -384,8 +384,8 @@ namespace Modello.Test.Classi.Soccorso
             var evento = new Telefonata(this.richiesta, "ABC123", now, "Fonte");
 
             Assert.That(evento.Codice, Is.EqualTo("ABC123"));
-            Assert.That(evento.Istante, Is.EqualTo(now));
-            Assert.That(evento.CodiceFonte, Is.EqualTo("Fonte"));
+            Assert.That(evento.istante, Is.EqualTo(now));
+            Assert.That(evento.codiceFonte, Is.EqualTo("Fonte"));
         }
 
         [Test]

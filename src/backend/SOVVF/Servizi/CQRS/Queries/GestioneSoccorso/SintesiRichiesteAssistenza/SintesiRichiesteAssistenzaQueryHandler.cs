@@ -17,10 +17,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using Modello.Classi.Autenticazione;
+using Modello.Classi.Condivise;
+using Modello.Classi.Soccorso.Eventi;
+using Modello.Classi.Soccorso.Fonogramma;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
 using Modello.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using Modello.Servizi.CQRS.Faker;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
@@ -72,16 +79,22 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssisten
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
         {
-            var richieste = this.cercaRichiesteAssistenza.Get(query.Filtro);
+            //var richieste = this.cercaRichiesteAssistenza.Get(query.Filtro);
 
 #warning va realizzato il servizio di mapping delle richieste di assistenza sulla loro sintesi
-            // var sintesiRichieste = richieste.Select(r => mappaSuSintesi(r));
-            var sintesiRichieste = new SintesiRichiesta[0];
-
+            var sintesiRichiesta = new List<SintesiRichiesta>();
+            
+            if(query.Filtro==null)
+                sintesiRichiesta = GeneraFakerSintesiRichieste.ElencoSintesiRichiestaMarker();
+            else
+            { 
+                    sintesiRichiesta = GeneraFakerSintesiRichieste.ElencoSintesiRichiesta(query);
+            }
             return new SintesiRichiesteAssistenzaResult()
             {
-                SintesiRichieste = sintesiRichieste
+                SintesiRichiesta = sintesiRichiesta
             };
         }
+
     }
 }

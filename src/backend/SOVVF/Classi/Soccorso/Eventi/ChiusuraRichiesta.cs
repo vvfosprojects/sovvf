@@ -38,7 +38,7 @@ namespace Modello.Classi.Soccorso.Eventi
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
         public ChiusuraRichiesta(string motivazione, RichiestaAssistenza richiesta, DateTime istante, string codiceFonte) : base(richiesta, istante, codiceFonte)
         {
-            richiesta.IstanteChiusura = this.Istante;
+            richiesta.IstanteChiusura = this.istante;
             this.Motivazione = motivazione;
         }
 

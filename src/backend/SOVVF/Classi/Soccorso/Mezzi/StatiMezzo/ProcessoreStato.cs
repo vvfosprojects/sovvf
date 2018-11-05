@@ -64,7 +64,7 @@ namespace Modello.Classi.Soccorso.Mezzi.StatiMezzo
             {
                 if (ultimoEvento != null)
                 {
-                    Debug.Assert(ultimoEvento.Istante <= e.Istante, "Gli eventi non risultano ordinati in ordine crescente");
+                    Debug.Assert(ultimoEvento.istante <= e.istante, "Gli eventi non risultano ordinati in ordine crescente");
                 }
 
                 ultimoEvento = e;

@@ -33,36 +33,9 @@ namespace RestInterface
     /// </summary>
     public class WebApiApplication : System.Web.HttpApplication
     {
-        /// <summary>
-        ///   Metodo di inizializzazione della web application. Contiene, tra l'altro, la
-        ///   configurazione del motore di dependency injection SimpleInjector.
-        /// </summary>
         protected void Application_Start()
         {
-            // Create the container as usual.
-            var container = new Container();
-            container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
-
-            // Scan all the referenced assemblies for packages containing DI wiring rules
-            var assemblies = BuildManager.GetReferencedAssemblies().Cast<Assembly>();
-            container.RegisterPackages(assemblies);
-
-            // This is an extension method from the integration package.
-            container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
-
-#if DEBUG
-            container.Verify();
-#endif
-
-            GlobalConfiguration.Configuration.DependencyResolver =
-                new SimpleInjectorWebApiDependencyResolver(container);
-
-            // Here your usual Web API configuration stuff.
             GlobalConfiguration.Configure(WebApiConfig.Register);
-
-            // Configurazione serializzazione Json
-            HttpConfiguration config = GlobalConfiguration.Configuration;
-            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
     }
 }

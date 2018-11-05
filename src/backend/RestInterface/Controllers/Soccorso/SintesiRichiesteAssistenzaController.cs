@@ -17,11 +17,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using System.Linq;
 using System.Web.Http;
+using Modello.Classi.Soccorso.Eventi;
 using Modello.Servizi.CQRS.Queries;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
 using Modello.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste;
 
 namespace RestInterface.Controllers.Soccorso
 {
@@ -52,6 +56,7 @@ namespace RestInterface.Controllers.Soccorso
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         public SintesiRichiesteAssistenzaResult Get(FiltroRicercaRichiesteAssistenza filtro)
         {
+
             var query = new SintesiRichiesteAssistenzaQuery()
             {
                 Filtro = filtro
@@ -59,5 +64,20 @@ namespace RestInterface.Controllers.Soccorso
 
             return this.handler.Handle(query);
         }
+
+
+        [HttpPost]
+        public SintesiRichiesteAssistenzaResult Post([FromBody]FiltroRicercaRichiesteAssistenza filtro)
+        {
+            
+            var query = new SintesiRichiesteAssistenzaQuery()
+            {
+                Filtro = filtro
+            };
+
+            return this.handler.Handle(query);
+        }
+
+
     }
 }

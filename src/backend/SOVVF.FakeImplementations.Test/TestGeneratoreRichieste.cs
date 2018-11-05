@@ -32,7 +32,7 @@ namespace SOVVF.FakeImplementations.Test
         public void GeneraRichieste()
         {
             var gi = new GeneratoreRichieste(
-                "MI",
+                "RM",
                 5,
                 DateTime.Now.AddHours(-12),
                 DateTime.Now,
@@ -44,7 +44,7 @@ namespace SOVVF.FakeImplementations.Test
                 new float[] { .85F, .7F, .4F, .3F, .1F });
 
             var richieste = gi.Genera()
-                .OrderBy(r => (r.Eventi.First() as Evento).Istante)
+                .OrderBy(r => (r.Eventi.First() as Evento).istante)
                 .ToList();
         }
     }

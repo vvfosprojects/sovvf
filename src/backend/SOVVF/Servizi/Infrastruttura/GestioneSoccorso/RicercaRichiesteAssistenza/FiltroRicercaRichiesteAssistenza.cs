@@ -69,6 +69,8 @@ namespace Modello.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssist
         /// </summary>
         public string SearchKey { get; set; }
 
+        public bool RichiestaSingola { get; set; }
+
         /// <summary>
         ///   Indica l'estensione territoriale delle richieste da cercare
         /// </summary>

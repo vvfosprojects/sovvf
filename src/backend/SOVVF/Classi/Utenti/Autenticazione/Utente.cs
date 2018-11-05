@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Modello.Classi.Condivise;
 using System;
 
 namespace Modello.Classi.Autenticazione
@@ -38,8 +39,8 @@ namespace Modello.Classi.Autenticazione
                 throw new ArgumentException("Cannot be null or whitespace", nameof(username));
             }
 
-            this.Username = username;
-            this.Attivo = true;
+            this.username = username;
+            this.attivo = true;
         }
 
         /// <summary>
@@ -48,14 +49,14 @@ namespace Modello.Classi.Autenticazione
         /// <param name="username">La username associata all'utente</param>
         /// <param name="validoFinoA">La data di fine validità dell'utenza</param>
         /// <remarks>La data di inizio validità è il big bang</remarks>
-        public Utente(string username, DateTime validoFinoA) : this(username)
+        public Utente(string username, DateTime ValidoFinoA) : this(username)
         {
-            if (validoFinoA == DateTime.MinValue)
+            if (ValidoFinoA == DateTime.MinValue)
             {
-                throw new ArgumentOutOfRangeException(nameof(validoFinoA));
+                throw new ArgumentOutOfRangeException(nameof(ValidoFinoA));
             }
 
-            this.ValidoFinoA = validoFinoA;
+            this.validoFinoA = ValidoFinoA;
         }
 
         /// <summary>
@@ -65,34 +66,75 @@ namespace Modello.Classi.Autenticazione
         /// <param name="username">La username associata all'utente</param>
         /// <param name="validoDa">La data di inizio validità dell'utenza</param>
         /// <param name="validoFinoA">La data di fine validità dell'utenza</param>
-        public Utente(string username, DateTime validoDa, DateTime validoFinoA) : this(username, validoFinoA)
+        public Utente(string username, DateTime ValidoDa, DateTime validoFinoA) : this(username, validoFinoA)
         {
-            if (validoDa == DateTime.MinValue)
+            if (ValidoDa == DateTime.MinValue)
             {
-                throw new ArgumentOutOfRangeException(nameof(validoDa));
+                throw new ArgumentOutOfRangeException(nameof(ValidoDa));
             }
 
-            this.ValidoDa = validoDa;
+            this.validoDa = ValidoDa;
+        }
+
+
+        public Utente(string username,string nome, string cognome, string codiceFiscale)
+        {
+            this.username = username;
+            this.nome = nome;
+            this.cognome = cognome;
+            this.codiceFiscale = codiceFiscale;
         }
 
         /// <summary>
         ///   La username
         /// </summary>
-        public string Username { get; private set; }
+        public string username { get; set; }
+
+        /// <summary>
+        ///   Nome Operatore
+        /// </summary>
+        public string nome { get; set; }
+
+        /// <summary>
+        ///   Cognome Operatore
+        /// </summary>
+        public string cognome { get; set; }
+
+        /// <summary>
+        ///   CodiceFiscale Operatore
+        /// </summary>
+        public string codiceFiscale { get; set; }
 
         /// <summary>
         ///   La data di inizio della validità dell'account. Se è null, la validità inizia dal big bang.
         /// </summary>
-        public DateTime? ValidoDa { get; set; }
+        public DateTime? validoDa { get; set; }
 
         /// <summary>
         ///   La data di fine della validità dell'account. Se è null, la validità ha durata indefinita.
         /// </summary>
-        public DateTime? ValidoFinoA { get; set; }
+        public DateTime? validoFinoA { get; set; }
 
         /// <summary>
         ///   Indica se l'account è attivo.
         /// </summary>
-        public bool Attivo { get; set; }
+        public bool attivo { get; set; }
+
+        /// <summary>
+        ///   Password dell'utente loggato
+        /// </summary>
+        public string password { get; set; }
+
+        /// <summary>
+        ///   Tipologia utente loggato
+        /// </summary>
+        public string tipo { get; set; }
+
+        /// <summary>
+        ///   Sede utente loggato
+        /// </summary>
+        public Sede sede { get; set; }
+
+
     }
 }
