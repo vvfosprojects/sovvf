@@ -6,6 +6,12 @@ import {EventoRichiestaComponent} from './evento-richiesta/evento-richiesta.comp
 import {ListaEventiRichiestaComponent} from './lista-eventi-richiesta/lista-eventi-richiesta.component';
 import {PipeModule} from '../shared/pipes/pipe.module';
 import {SharedModule} from '../shared/shared.module';
+import {EventiManagerService} from '../core/manager/eventi-richiesta-manager/eventi-manager-service.service';
+import {EventiManagerServiceFake} from '../core/manager/eventi-richiesta-manager/eventi-manager-service.service.fake';
+import {DispatcherEventiRichiestaService} from '../core/dispatcher/dispatcher-eventi-richiesta.service';
+import {DispatcherEventiRichiestaServiceFake} from '../core/dispatcher/dispatcher-eventi-richiesta.service.fake';
+import {EventiRichiestaService} from '../core/service/eventi-richiesta-service/eventi-richiesta.service';
+import {EventiRichiestaServiceFake} from '../core/service/eventi-richiesta-service/eventi-richiesta.service.fake';
 
 
 @NgModule({
@@ -23,7 +29,12 @@ import {SharedModule} from '../shared/shared.module';
     exports: [
         EventiRichiestaComponent
     ],
-    entryComponents: [EventiRichiestaComponent]
+    entryComponents: [EventiRichiestaComponent],
+    providers: [
+        {provide: EventiManagerService, useClass: EventiManagerServiceFake},
+        {provide: DispatcherEventiRichiestaService, useClass: DispatcherEventiRichiestaServiceFake},
+        {provide: EventiRichiestaService, useClass: EventiRichiestaServiceFake}
+    ],
 })
 export class EventiRichiestaModule {
 }
