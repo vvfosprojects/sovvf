@@ -31,6 +31,8 @@ export class MarkerService implements OnDestroy {
 
     filtro: Array<any>;
 
+    checkMarker: any;
+
 
     constructor(private markedService: MarkedService,
                 private meteoService: MeteoService,
@@ -140,10 +142,13 @@ export class MarkerService implements OnDestroy {
             }
                 break;
             case 'richiesta|click': {
-                this.cliccato(marker);
-                this.coloreStato = this.colori.markerColor(marker.stato);
-                this.richiesteService.fissata(marker.id, true);
-                this.richiesteService.deselezionata();
+                if (this.checkMarker !== marker.id) {
+                    this.cliccato(marker);
+                    this.checkMarker = marker.id;
+                    this.coloreStato = this.colori.markerColor(marker.stato);
+                    this.richiesteService.fissata(marker.id, true);
+                    this.richiesteService.deselezionata();
+                }
             }
                 break;
             case 'mezzo|hover-in': {
@@ -183,6 +188,7 @@ export class MarkerService implements OnDestroy {
             default: {
                 this.noAction();
                 this.richiesteService.defissata();
+                this.richiesteService.deselezionata();
             }
                 break;
         }
@@ -254,13 +260,19 @@ export class MarkerService implements OnDestroy {
             }
                 break;
             case 'click': {
-                this.cliccato(marker);
+                if (this.checkMarker !== marker) {
+                    this.cliccato(marker);
+                    this.checkMarker = marker.id;
+                }
             }
                 break;
         }
     }
 
     getCoordinate(marker): Coordinate {
+        /**
+         * fa il mapping dell'oggetto coordinate a seconda del modello di marker
+         */
         const modello = this.modelloMarker(marker);
         let coordinate: Coordinate = null;
         switch (modello) {
@@ -276,7 +288,7 @@ export class MarkerService implements OnDestroy {
         return coordinate;
     }
 
-    getMarkerFromId(id) {
+    getMarkerFromId(id: string) {
         return this.markerRichiesteManager.getMarkerFromId(id);
     }
 
