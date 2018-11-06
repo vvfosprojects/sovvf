@@ -196,8 +196,10 @@
                             <div class="h6">
                                 <i class="guida fa fa-calendar-check-o fa-fw mr-1" ngbTooltip="Presa in carico"
                                     placement="right"></i>
-                                <a *ngIf="richiesta.istantePresaInCarico; else nonPresaInCarico" ngbTooltip="{{ richiesta.istantePresaInCarico | friendlyDateTooltip }}">{{richiesta.istantePresaInCarico
-                                    | friendlyDate }}{{ richiesta.istantePresaInCarico | friendlyHour }}</a>
+                                <a *ngIf="richiesta.istantePresaInCarico; else nonPresaInCarico" ngbTooltip="{{ richiesta.istantePresaInCarico | friendlyDateTooltip }}">
+                                    {{richiesta.istantePresaInCarico | friendlyDate }} 
+                                    {{ richiesta.istantePresaInCarico | friendlyHour }}
+                                </a>
                                 <ng-template #nonPresaInCarico>
                                     <a class="badge badge-secondary text-light">Non presa in carico</a>
                                 </ng-template>
