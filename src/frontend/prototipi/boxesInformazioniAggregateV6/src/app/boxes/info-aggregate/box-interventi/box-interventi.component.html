@@ -1,17 +1,20 @@
 <div class="row p-2">
     <div class="col-12">
         <div class="row">
-            <div class="col-7">
-                <i class="fa fa-medkit mb-2 mr-1"></i><span class="font-weight-bold">Richieste di Soccorso: {{interventi.getTotal()}}</span>
-            </div>
-            <div class="col-5 ml-auto pl-0 text-right text-secondary">
+            <div class="col-8">
+                <i class="fa fa-medkit mb-2 mr-1"></i><span class="font-weight-bold">Richieste: {{interventi.totale}}</span>
                 <small>
-                    <span class="mr-1">Turno {{interventi.nomeTurnoPrecedente}}:</span>
+                    <span class="ml-2 mr-1">Turno {{interventi.nomeTurnoPrecedente}}:</span>
                     <span class="font-weight-bold">{{interventi.totTurnoPrecedente}}</span>
                     <span class="mx-1 fa fa-arrow-right fa-fw"></span>
                     <span class="mr-1">Turno {{interventi.nomeTurnoCorrente}}:</span>
                     <span class="font-weight-bold">{{interventi.totTurnoCorrente}}</span>
                 </small>
+            </div>
+            <div class="col-4 ml-auto pl-0 text-right text-secondary">
+                <i class="fa fa-calendar-plus-o mb-2 mr-1"></i>
+                <span class="mr-1">{{interventi.annoCorrente}}:</span>
+                <span class="font-weight-bold">{{interventi.totAnnoCorrente}}</span>
             </div>
         </div>
         <hr class="m-0 mb-2">
@@ -29,7 +32,9 @@
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
-                            <li><span class="badge h6 w-75" [ngClass]="{'badge-secondary': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0}">{{interventi.chiamate}}</span></li>
+                            <li><span class="badge h6 w-75"
+                                      [ngClass]="{'badge-secondary': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0}">{{interventi.chiamate}}</span>
+                            </li>
                             <li><span class="badge badge-warning h6 w-75">{{interventi.sospesi}}</span></li>
                         </ul>
                     </div>

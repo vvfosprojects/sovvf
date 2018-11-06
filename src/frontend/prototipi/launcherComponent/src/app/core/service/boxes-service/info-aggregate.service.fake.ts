@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {BoxMezzi} from '../../../boxes/boxes-model/box-mezzi.model';
-import {BoxInterventi} from '../../../boxes/boxes-model/box-interventi.model';
 import {BoxFunzionariSo} from '../../../boxes/boxes-model/box-funzionari-so.model';
+import {BoxInterventi} from '../../../boxes/boxes-model/box-interventi.model';
+import {BoxMezzi} from '../../../boxes/boxes-model/box-mezzi.model';
 
 @Injectable({
     providedIn: 'root'
@@ -17,13 +17,13 @@ export class InfoAggregateServiceFake {
     }
 
     public getInterventi(): Observable<BoxInterventi> {
-        this.interventi = new BoxInterventi(25, 30, 10, 30, 104, 'B', 90, 'A');
+        this.interventi = new BoxInterventi(25, 30, 10, 30, 95, 104, 'B', 90, 'A', '2018', '12.842');
         return of(this.interventi);
 
     }
 
     public getMezzi(): Observable<BoxMezzi> {
-        this.mezzi = new BoxMezzi(20, 4, 3, 3, 2);
+        this.mezzi = new BoxMezzi(20, 4, 3, 3, 2, 30);
         return of(this.mezzi);
     }
 
