@@ -17,10 +17,6 @@ export class MezzoMarker {
          */
         public id_richiesta?: string,
         /**
-         * Le squadre presenti sul mezzo
-         */
-        public squadre?: Squadra[],
-        /**
          * Contiene la descrizione della label da mostrare
          */
         public label?: string,

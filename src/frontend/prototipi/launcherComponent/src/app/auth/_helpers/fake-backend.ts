@@ -10,7 +10,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const testUser = {id: 1, username: 'test', password: 'test', firstName: 'Test', lastName: 'Utente'};
+        const testUser = {id: 1, username: 'test', password: 'test', firstName: 'Mario', lastName: 'Rossi'};
 
         return of(null).pipe(mergeMap(() => {
 

@@ -116,7 +116,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
             this.contatoreNuoveRichieste++;
             this.loaderNuoveRichieste = true;
             setTimeout(() => {
-                this.listaRichiesteManager.getRichieste();
+                this.listaRichiesteManager.onNewRichiesteList();
                 this.loaderNuoveRichieste = false;
                 this.contatoreNuoveRichieste = 0;
             }, 3000);
@@ -174,7 +174,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(richiesta) {
-        this.modalService.open(EventiRichiestaComponent, {size: 'lg'});
+        this.modalService.open(EventiRichiestaComponent, { size: 'lg', centered: true});
     }
 
     /* Ritorna true se le parole matchano almeno in parte */

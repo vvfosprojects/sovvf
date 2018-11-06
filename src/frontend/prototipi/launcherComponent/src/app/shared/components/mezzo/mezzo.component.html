@@ -1,10 +1,10 @@
 <li class="list-group-item p-0 border-bottom py-1">
   <div class="row">
-    <span class="d-inline-block pl-4 border-right">
+    <span class="d-inline-block pl-4">
       <i class="guida fa fa-tachometer fa-fw mr-1" style="font-size: 1.5em" aria-hidden="true" title="Mezzo"></i>
-      <span><b>{{ mezzo.descrizione }}</b></span>
-      <span class="badge badge-default m-0">{{ mezzo.genere }}</span>
-      <span class="badge text-white m-0 ml-1" [ngClass]="{'badge-default':mezzo.stato == 'InSede' || mezzo.stato == 'Istituto', 'badge-warning':mezzo.stato == 'InViaggio', 'badge-success':mezzo.stato == 'SulPosto', 'badge-info':mezzo.stato == 'InRientro'}">
+      <span *ngIf="mezzo.descrizione"><b>{{ mezzo.descrizione }}</b></span>
+      <span *ngIf="mezzo.genere" class="badge badge-default m-0">{{ mezzo.genere }}</span>
+      <span *ngIf="mezzo.descrizioneStato" class="badge text-white m-0 ml-1" [ngClass]="{'badge-default':mezzo.stato == 'InSede' || mezzo.stato == 'Istituto', 'badge-warning':mezzo.stato == 'InViaggio', 'badge-success':mezzo.stato == 'SulPosto', 'badge-info':mezzo.stato == 'InRientro'}">
         {{ mezzo.descrizioneStato }}
       </span>
     </span>

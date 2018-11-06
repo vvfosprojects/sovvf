@@ -143,43 +143,43 @@ export class SintesiRichiesteServiceFake {
                                 'AS1',
                                 'AS',
                                 'SulPosto',
-                                0)
-                        ],
-                        [
-                            new Squadra(
-                                '2A',
-                                'SulPosto',
                                 [
-                                    new Componente(
-                                        'CS',
-                                        'Tiziana Rossetti',
-                                        'Tiziana Rossetti - RSSTZN56T56R454E',
-                                        true,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Marco Antonio Marchi Moschetti',
-                                        'Marco Antonio Marchi Moschetti - MRCMRC66T66R454F',
-                                        false,
-                                        true,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Raffaele Cantoni',
-                                        'Raffaele Cantoni - CNTRFL66T45R343E',
-                                        false,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Giovanni Carta',
-                                        'Giovanni Carta - VRTGVN56T74H565Y',
-                                        false,
-                                        false,
-                                        false)
-                                ]
-                            )
+                                    new Squadra(
+                                        '2A',
+                                        'SulPosto',
+                                        [
+                                            new Componente(
+                                                'CS',
+                                                'Tiziana Rossetti',
+                                                'Tiziana Rossetti - RSSTZN56T56R454E',
+                                                true,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Marco Antonio Marchi Moschetti',
+                                                'Marco Antonio Marchi Moschetti - MRCMRC66T66R454F',
+                                                false,
+                                                true,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Raffaele Cantoni',
+                                                'Raffaele Cantoni - CNTRFL66T45R343E',
+                                                false,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Giovanni Carta',
+                                                'Giovanni Carta - VRTGVN56T74H565Y',
+                                                false,
+                                                false,
+                                                false)
+                                        ]
+                                    )
+                                ],
+                                0)
                         ]
                     )
                 ],
@@ -215,43 +215,43 @@ export class SintesiRichiesteServiceFake {
                                 'AS1',
                                 'AS',
                                 'InRientro',
-                                0)
-                        ],
-                        [
-                            new Squadra(
-                                '3A',
-                                'InRientro',
                                 [
-                                    new Componente(
-                                        'CS',
-                                        'Paolo Di Tonno',
-                                        'Paolo Di Tonno - RSSTZN56T56R454E',
-                                        true,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Antonio Marsalà',
-                                        'Antonio Marsalà - MRCMRC66T66R454F',
-                                        false,
-                                        true,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Bernardo Belli',
-                                        'Bernardo Belli - CNTRFL66T45R343E',
-                                        false,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Maurizio Cutolo',
-                                        'Maurizio Cutolo - VRTGVN56T74H565Y',
-                                        false,
-                                        false,
-                                        false)
-                                ]
-                            )
+                                    new Squadra(
+                                        '3A',
+                                        'InRientro',
+                                        [
+                                            new Componente(
+                                                'CS',
+                                                'Paolo Di Tonno',
+                                                'Paolo Di Tonno - RSSTZN56T56R454E',
+                                                true,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Antonio Marsalà',
+                                                'Antonio Marsalà - MRCMRC66T66R454F',
+                                                false,
+                                                true,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Bernardo Belli',
+                                                'Bernardo Belli - CNTRFL66T45R343E',
+                                                false,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Maurizio Cutolo',
+                                                'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                                false,
+                                                false,
+                                                false)
+                                        ]
+                                    )
+                                ],
+                                0)
                         ]
                     )
                 ],
@@ -307,6 +307,78 @@ export class SintesiRichiesteServiceFake {
                 null,
                 new Fonogramma('0', 'Non necessario'),
                 null,
+                null
+            ),
+            new SintesiRichiesta(
+                'R8',
+                'RM-24766',
+                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                moment().subtract(35, 'minutes').toDate(),
+                'sospeso',
+                4,
+                [new Tipologia('360', 'Salvataggio persone', '')],
+                'Persona che minaccia di buttarsi da un tetto',
+                new Richiedente('Carabinieri', '112'),
+                new Localita(
+                    new Coordinate(41.8311007, 12.4683518), 'Viale Europa, 184', 'dal palazzo delle Poste Italiane'),
+                [
+                    new Sede('8', 'EUR', new Coordinate(41.8315918, 12.4666971), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                ],
+                new Complessita('80', 'Alta'),
+                moment().subtract(30, 'minutes').toDate(),
+                moment().subtract(29, 'minutes').toDate(),
+                moment().subtract(35, 'minutes').toDate(),
+                null,
+                null,
+                new Fonogramma('0', 'Non necessario'),
+                [
+                    new Partenza(
+                        [
+                            new Mezzo('COD3',
+                                'AS1',
+                                'AS',
+                                'InRientro',
+                                [
+                                    new Squadra(
+                                        '3A',
+                                        'InRientro',
+                                        [
+                                            new Componente(
+                                                'CS',
+                                                'Paolo Di Tonno',
+                                                'Paolo Di Tonno - RSSTZN56T56R454E',
+                                                true,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Antonio Marsalà',
+                                                'Antonio Marsalà - MRCMRC66T66R454F',
+                                                false,
+                                                true,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Bernardo Belli',
+                                                'Bernardo Belli - CNTRFL66T45R343E',
+                                                false,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Maurizio Cutolo',
+                                                'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                                false,
+                                                false,
+                                                false)
+                                        ]
+                                    )
+                                ],
+                                0)
+                        ]
+                    )
+                ],
                 null
             )
         ];

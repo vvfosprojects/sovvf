@@ -239,32 +239,34 @@
                                         <div class="h6 text-center text-light bg-secondary py-2 m-0">
                                             <i class="fa fa-person"></i>Squadre coinvolte
                                         </div>
-                                        <div class="h6">
+                                        <div class="h6 mb-0">
                                             <ul class="list-group list-group-flush">
                                                 <span *ngFor="let p of richiesta.partenze">
-                                                    <li *ngFor="let s of p.squadre" class="row mx-auto list-group-item border-bottom p-0 py-2">
-                                                        <span class="h6 mr-2">
-                                                            <i class="guida fa fa-fire-extinguisher fa-fw" title="Squadra"></i>
-                                                            <span>{{ s.nome }}</span>
-                                                        </span>
-                                                        <span class="text-right">
-                                                            <a title="Componenti squadra" [ngbPopover]="popComponenti"
-                                                                popoverTitle="Componenti" triggers="click" tabindex="0">
-                                                                <i class="guida fa fa-address-book-o" title="Componenti squadra"></i>
-                                                            </a>
+                                                    <span *ngFor="let m of p.mezzi">
+                                                        <li *ngFor="let s of m.squadre" class="row mx-auto list-group-item border-bottom p-0 py-2">
+                                                            <span class="h6 mb-0 mr-2">
+                                                                <i class="guida fa fa-fire-extinguisher fa-fw" title="Squadra"></i>
+                                                                <span>{{ s.nome }}</span>
+                                                            </span>
+                                                            <span class="text-right">
+                                                                <a title="Componenti squadra" [ngbPopover]="popComponenti"
+                                                                    popoverTitle="Componenti" triggers="click" tabindex="0">
+                                                                    <i class="guida fa fa-address-book-o" title="Componenti squadra"></i>
+                                                                </a>
 
-                                                            <ng-template #popComponenti>
-                                                                <div class="h6">
-                                                                    <div *ngFor="let c of s.componenti">
-                                                                        <app-componente [componente]="c"></app-componente>
+                                                                <ng-template #popComponenti>
+                                                                    <div class="h6">
+                                                                        <div *ngFor="let c of s.componenti">
+                                                                            <app-componente [componente]="c"></app-componente>
+                                                                        </div>
+                                                                        <span *ngIf="!s.componenti">Nessun Componente</span>
                                                                     </div>
-                                                                    <span *ngIf="!s.componenti">Nessun Componente</span>
-                                                                </div>
-                                                            </ng-template>
+                                                                </ng-template>
+                                                            </span>
+                                                        </li>
+                                                        <span *ngIf="!m.squadre" class="p-2">
+                                                            Nessun squadra
                                                         </span>
-                                                    </li>
-                                                    <span *ngIf="!p.squadre" class="p-2">
-                                                        Nessun mezzo
                                                     </span>
                                                 </span>
                                                 <span *ngIf="!richiesta.partenze" class="p-2">
