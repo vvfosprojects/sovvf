@@ -380,7 +380,126 @@ export class SintesiRichiesteServiceFake {
                     )
                 ],
                 null
-            )
+            ),
+            new SintesiRichiesta(
+                'R9',
+                'RM-24767',
+                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                moment().subtract(6, 'minutes').toDate(),
+                'chiamata',
+                3,
+                [new Tipologia('1', 'Alberi pericolanti', '')],
+                'Alberi o rami pericolanti/caduti',
+                new Richiedente('Vincenzo Neri', '345.7284729'),
+                new Localita(
+                    new Coordinate(41.92221, 12.41895), 'Via Stefano Borgia, 102', ''),
+                [
+                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                ],
+                new Complessita('20', 'Media'),
+                moment().subtract(12, 'minutes').toDate(),
+                moment().subtract(11, 'minutes').toDate(),
+                null,
+                null,
+                null,
+                new Fonogramma('0', 'Non necessario'),
+                null,
+                null
+            ),
+            new SintesiRichiesta(
+                'R10',
+                'RM-24768',
+                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                moment().subtract(27, 'minutes').toDate(),
+                'chiamata',
+                3,
+                [new Tipologia('1', 'Danni d\'acqua in genere', 'fa fa-tint')],
+                'Danni d\'acqua in genere',
+                new Richiedente('Francesca Baroni', '327.2282329'),
+                new Localita(
+                    new Coordinate(41.74317, 12.34693), 'Via Cratete di Mallo, 13', ''),
+                [
+                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                ],
+                new Complessita('20', 'Media'),
+                moment().subtract(15, 'minutes').toDate(),
+                moment().subtract(14, 'minutes').toDate(),
+                null,
+                null,
+                null,
+                new Fonogramma('0', 'Non necessario'),
+                null,
+                null
+            ),
+            new SintesiRichiesta(
+                'R11',
+                'RM-24769',
+                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                moment().subtract(50, 'minutes').toDate(),
+                'presidiato',
+                3,
+                [new Tipologia('360', 'Recupero merci e beni', '')],
+                'Bonifica da insetti',
+                new Richiedente('Maria Franceschini', '333.4589002'),
+                new Localita(
+                    new Coordinate(41.783819, 12.44016), 'Via Salvatore Lorizzo', ''),
+                [
+                    new Sede('8', 'EUR', new Coordinate(41.8315918, 12.4666971), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                ],
+                new Complessita('19', 'Bassa'),
+                moment().subtract(30, 'minutes').toDate(),
+                moment().subtract(29, 'minutes').toDate(),
+                null,
+                'NUE4152346',
+                null,
+                new Fonogramma('0', 'Non necessario'),
+                [
+                    new Partenza(
+                        [
+                            new Mezzo('COD3',
+                                'AS1',
+                                'APS',
+                                'SulPosto',
+                                [
+                                    new Squadra(
+                                        '3A',
+                                        'InRientro',
+                                        [
+                                            new Componente(
+                                                'VIG',
+                                                'Antonio Marsalà',
+                                                'Antonio Marsalà - MRCMRC66T66R454F',
+                                                false,
+                                                true,
+                                                false),
+                                            new Componente(
+                                                'CS',
+                                                'Paolo Di Tonno',
+                                                'Paolo Di Tonno - RSSTZN56T56R454E',
+                                                true,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Bernardo Belli',
+                                                'Bernardo Belli - CNTRFL66T45R343E',
+                                                false,
+                                                false,
+                                                false)
+                                        ]
+                                    )
+                                ],
+                                0
+                            )
+                        ]
+                    )
+                ],
+                null
+            ),
         ];
 
         return of(this.richieste);

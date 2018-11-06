@@ -22,7 +22,7 @@ export class ListaRichiesteManagerServiceFake {
 
     onNewRichiesteList() {
         this.dispatcher.onNewRichiesteList().subscribe((richieste: SintesiRichiesta[]) => {
-            const nPerPagina = 10;
+            const nPerPagina = 9;
             if (richieste[this.prossimaRichiesta]) {
                 for (let i = this.prossimaRichiesta; i < (this.prossimaRichiesta + nPerPagina); i++) {
                     if (richieste[i]) {

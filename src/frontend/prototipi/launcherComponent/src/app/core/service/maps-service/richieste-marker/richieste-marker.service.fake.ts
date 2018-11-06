@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {Tipologia} from '../../../../shared/model/tipologia.model';
-import {Localita} from '../../../../shared/model/localita.model';
-import {Coordinate} from '../../../../shared/model/coordinate.model';
-import {RichiestaMarker} from '../../../../maps/maps-model/richiesta-marker.model';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { Tipologia } from '../../../../shared/model/tipologia.model';
+import { Localita } from '../../../../shared/model/localita.model';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { RichiestaMarker } from '../../../../maps/maps-model/richiesta-marker.model';
 import * as moment from 'moment';
 
 @Injectable({
@@ -98,7 +98,51 @@ export class RichiesteMarkerServiceFake {
                 'Incidente d\'auto persona anziana',
                 3,
                 'assegnato'
-            )
+            ),
+            new RichiestaMarker(
+                'R8',
+                new Localita(
+                    new Coordinate(41.9125723, 12.4952921), 'Via Isonzo, 21', 'beni alimentari di vario tipo'),
+                [
+                    new Tipologia('360', 'Recupero merci e beni', '')
+                ],
+                'Recupero merci e beni da camion ribaltato',
+                2,
+                'sospeso'
+            ),
+            new RichiestaMarker(
+                'R9',
+                new Localita(
+                    new Coordinate(41.92221, 12.41895), 'Via Stefano Borgia, 102', ''),
+                [
+                    new Tipologia('1', 'Alberi pericolanti', '')
+                ],
+                'Alberi o rami pericolanti/caduti',
+                3,
+                'chiamata'
+            ),
+            new RichiestaMarker(
+                'R10',
+                new Localita(
+                    new Coordinate(41.74317, 12.34693), 'Via Cratete di Mallo, 13', ''),
+                [
+                    new Tipologia('1', 'Danni d\'acqua in genere', 'fa fa-tint')
+                ],
+                'Danni d\'acqua in genere',
+                3,
+                'chiamata'
+            ),
+            new RichiestaMarker(
+                'R11',
+                new Localita(
+                    new Coordinate(41.783819, 12.44016), 'Via Salvatore Lorizzo', ''),
+                [
+                    new Tipologia('360', 'Recupero merci e beni', '')
+                ],
+                'Danni d\'acqua in genere',
+                3,
+                'presidiato'
+            ),
         ];
 
         return of(this.richiesteMarkers);
