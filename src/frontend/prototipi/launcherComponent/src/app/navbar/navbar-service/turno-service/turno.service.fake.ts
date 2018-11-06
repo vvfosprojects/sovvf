@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Turno } from './turno.model';
-import * as moment from 'moment';
+import { Turno } from '../../turno/turno.model';
 
 
 @Injectable({

@@ -19,6 +19,7 @@ import { fakeBackendProvider } from './auth/_helpers';
 /**
  * Module Components
  */
+import { NavbarModule } from './navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
 import { RichiesteModule } from './richieste/richieste.module';
 import { BoxesModule } from './boxes/boxes.module';
@@ -33,13 +34,8 @@ import { TimeagoModule, TimeagoFormatter, TimeagoCustomFormatter, TimeagoIntl } 
 /**
  * Fake Service
  */
-import { InfoAggregateService } from './core/service/boxes-service/info-aggregate.service';
-import { InfoAggregateServiceFake } from './core/service/boxes-service/info-aggregate.service.fake';
 import { EventiRichiestaService } from './core/service/eventi-richiesta-service/eventi-richiesta.service';
 import { EventiRichiestaServiceFake } from './core/service/eventi-richiesta-service/eventi-richiesta.service.fake';
-import { TurnoService } from './navbar/turno/turno.service';
-import { TurnoServiceFake } from './navbar/turno/turno.service.fake';
-import { NavbarModule } from './navbar/navbar.module';
 
 
 @NgModule({
@@ -78,12 +74,6 @@ import { NavbarModule } from './navbar/navbar.module';
          * provider fake per la login
          */
         fakeBackendProvider,
-        /**
-         * servizi provider componenti launcher
-         */
-        {provide: InfoAggregateService, useClass: InfoAggregateServiceFake},
-        {provide: EventiRichiestaService, useClass: EventiRichiestaServiceFake},
-        {provide: TurnoService, useClass: TurnoServiceFake}
     ],
     bootstrap: [AppComponent]
 })

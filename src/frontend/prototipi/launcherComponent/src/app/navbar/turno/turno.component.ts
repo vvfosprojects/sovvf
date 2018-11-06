@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { TurnoService } from './turno.service';
+import { TurnoService } from '../navbar-service/turno-service/turno.service';
 import { Turno } from './turno.model';
 import { Subscription } from 'rxjs';
 

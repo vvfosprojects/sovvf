@@ -31,39 +31,9 @@
         </div>
         <!-- Notifiche, messaggi e profilo -->
         <div class="col-4 ml-auto text-right pr-0">
-            <button class="btn btn-light mr-2" ngbTooltip="Notifiche" [ngbPopover]="notifiche" placement="bottom"><i
-                    class="fa fa-bell"></i></button>
-            <button class="btn btn-light mr-2" ngbTooltip="Messaggi" [ngbPopover]="messaggi" placement="bottom"><i
-                    class="fa fa-envelope-open"></i></button>
-            <button class="btn btn-light mr-2" ngbTooltip="Impostazioni" placement="bottom"><i class="fa fa-cogs"></i>
-            </button>
-            <img class="rounded ml-2" src="http://i.pravatar.cc/40?img=53">
-            <span class="btn mr-2">
-        {{user.firstName}} {{user.lastName}}
-      </span>
-            <button class="btn btn-danger" ngbTooltip="Disconnettiti" placement="bottom" [routerLink]="['/login']"><i
-                    class="fa fa-sign-out"></i>
-                Esci
-            </button>
-            <ng-template #notifiche>
-                <h6 class="mb-2">Notifiche</h6>
-                <ul class="list-unstyled">
-                    <li style="width:200px">
-                        <div class="row px-0">
-                            <div class="col-10">
-                                Sono una notifica
-                            </div>
-                            <div class="col-2">
-                                <i class="fa fa-times text-danger"></i>
-                            </div>
-                            <hr class="w-100">
-                        </div>
-                    </li>
-                </ul>
-            </ng-template>
-            <ng-template #messaggi>
-                <h6>Messaggi</h6>
-            </ng-template>
+            <span *ngFor="let user of users">
+            <app-operatore [user]="user"></app-operatore>
+            </span>
         </div>
     </div>
 </nav>

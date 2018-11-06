@@ -37,6 +37,10 @@ export const environment = {
         eventiRichieste: {
             fake: 'https://api.myjson.com/bins/kz0w0',
             backend: 'http://localhost:2661/api'
+        },
+        turno: {
+            fake: '',
+            backend: ''
         }
     }
 };

@@ -147,7 +147,7 @@ export class MarkerService implements OnDestroy {
                     this.checkMarker = marker.id;
                     this.coloreStato = this.colori.markerColor(marker.stato);
                     this.richiesteService.fissata(marker.id, true);
-                    // this.richiesteService.deselezionata(); // serve @notmikenot ???
+                    this.richiesteService.deselezionata();
                 }
             }
                 break;
@@ -188,6 +188,7 @@ export class MarkerService implements OnDestroy {
             default: {
                 this.noAction();
                 this.richiesteService.defissata();
+                this.richiesteService.deselezionata();
             }
                 break;
         }

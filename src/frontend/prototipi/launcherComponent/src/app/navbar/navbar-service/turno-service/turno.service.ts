@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 const API_URL_TURNO = environment.apiUrl.turno.fake;
 
@@ -18,8 +18,8 @@ export class TurnoService {
     getTurni(): Observable<any> {
         return this.http.get(API_URL_TURNO).pipe(
             map((data: any) => {
-                const turni = data;
-                return turni;
+                // const turni = data;
+                return data;
             }),
             retry(3),
             catchError(this.handleError)

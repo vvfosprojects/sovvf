@@ -24,21 +24,22 @@ export class SedeMarker implements Sede {
          */
         public tipo: string,
         /**
+         * indica la regione della sede
+         */
+        public regione: string,
+        /**
+         * indica la provincia della sede
+         */
+        public provincia: string,
+        /**
          * label (da decidere)
          */
         public label?: string,
         /**
          * icona della sede
          */
-        public icona?: string,
-        /**
-         * Determina se il marcatore è opaco o meno
-         */
-        public opacita?: boolean
+        public icona?: string
     ) {
     }
 
-    // getCoordinate() {
-    //     return new Coordinate(this.coordinate.latitudine, this.coordinate.longitudine);
-    // }
 }

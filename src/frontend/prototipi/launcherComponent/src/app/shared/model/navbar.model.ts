@@ -1,4 +1,0 @@
-export class Navbar {
-    constructor() {
-    }
-}

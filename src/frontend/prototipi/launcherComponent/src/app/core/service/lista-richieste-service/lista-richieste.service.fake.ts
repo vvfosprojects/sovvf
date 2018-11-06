@@ -43,9 +43,9 @@ export class SintesiRichiesteServiceFake {
                 new Richiedente('Alessandro Palletta', '3202676253'),
                 new Localita(new Coordinate(41.8624992, 12.5532867), 'Via Scribonio Curione, 22', 'nei pressi dell\'uscita della metro'),
                 [
-                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento'),
-                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento'),
-                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento'),
+                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
                 ],
                 new Complessita('100', 'Alto'),
                 null,
@@ -69,9 +69,9 @@ export class SintesiRichiesteServiceFake {
                 new Localita(
                     new Coordinate(41.8531486, 12.5411702), 'Via Tuscolana, 1500', 'automobile ribaltata, persona anziana'),
                 [
-                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento'),
-                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento'),
-                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento'),
+                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
                 ],
                 new Complessita('20', 'Media'),
                 moment().subtract(2, 'minutes').toDate(),
@@ -96,8 +96,8 @@ export class SintesiRichiesteServiceFake {
                 new Localita(
                     new Coordinate(41.8607234, 12.555459), 'Viale Giuseppe Mazzini, 159', 'nelle vicinanze di un ristorante'),
                 [
-                    new Sede('5', 'Prati', new Coordinate(41.9184282, 12.4635564), 'Via Ignorasi', 'Distaccamento'),
-                    new Sede('6', 'Monte Mario', new Coordinate(41.9186602, 12.4360771), 'Via Ignorasi', 'Distaccamento'),
+                    new Sede('5', 'Prati', new Coordinate(41.9184282, 12.4635564), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('6', 'Monte Mario', new Coordinate(41.9186602, 12.4360771), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
                 ],
                 new Complessita('20', 'Media'),
                 moment().subtract(16, 'minutes').toDate(),
@@ -125,9 +125,9 @@ export class SintesiRichiesteServiceFake {
                 new Localita(
                     new Coordinate(41.8932662, 12.5417044), 'Via di Portonaccio', 'incrocio con Via Prenestina'),
                 [
-                    new Sede('7', 'La Rustica', new Coordinate(41.9073166, 12.5934988), 'Via Ignorasi', 'Distaccamento'),
-                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento'),
-                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento'),
+                    new Sede('7', 'La Rustica', new Coordinate(41.9073166, 12.5934988), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
                 ],
                 new Complessita('20', 'Media'),
                 moment().subtract(18, 'minutes').toDate(),
@@ -198,8 +198,8 @@ export class SintesiRichiesteServiceFake {
                 new Localita(
                     new Coordinate(41.8311007, 12.4683518), 'Viale Europa, 184', 'dal palazzo delle Poste Italiane'),
                 [
-                    new Sede('8', 'EUR', new Coordinate(41.8315918, 12.4666971), 'Via Ignorasi', 'Distaccamento'),
-                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento'),
+                    new Sede('8', 'EUR', new Coordinate(41.8315918, 12.4666971), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
                 ],
                 new Complessita('80', 'Alta'),
                 moment().subtract(30, 'minutes').toDate(),
@@ -269,8 +269,8 @@ export class SintesiRichiesteServiceFake {
                 new Richiedente('Marco Liguori', '3245898977'),
                 new Localita(new Coordinate(41.8654843, 12.5805044), 'Viale dei Romanisti, 40', 'vicino ai secchi dell\'immondizia'),
                 [
-                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento'),
-                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento'),
+                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
                 ],
                 new Complessita('10', 'Basso'),
                 null,
@@ -295,9 +295,9 @@ export class SintesiRichiesteServiceFake {
                 new Localita(
                     new Coordinate(41.82699, 12.4874854), 'Via Simone Martini, 125', 'persone all\'interno del garage'),
                 [
-                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento'),
-                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento'),
-                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento'),
+                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
                 ],
                 new Complessita('20', 'Media'),
                 moment().subtract(12, 'minutes').toDate(),

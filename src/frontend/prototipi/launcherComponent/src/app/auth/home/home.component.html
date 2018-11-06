@@ -25,9 +25,7 @@
     </ng-sidebar>
     <div ng-sidebar-content>
         <!-- Navbar -->
-        <span *ngFor="let user of users">
-            <app-navbar (openedSidebar)="_toggleOpened()" [user]="user"></app-navbar>
-        </span>
+        <app-navbar (openedSidebar)="_toggleOpened()"></app-navbar>
         <div *ngIf="!fakeCambioSede.preLoader">
             <div class="w-75 mx-auto text-center my-3">
                 <img class="img-fluid" src="../../assets/img/wallpaper_on_loading.gif">

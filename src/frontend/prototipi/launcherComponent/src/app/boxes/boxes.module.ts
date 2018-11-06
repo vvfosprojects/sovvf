@@ -8,6 +8,12 @@ import {BoxMezziComponent} from './info-aggregate/box-mezzi/box-mezzi.component'
 import {BoxMeteoComponent} from './info-aggregate/box-meteo/box-meteo.component';
 import {PipeModule} from '../shared/pipes/pipe.module';
 import {SharedModule} from '../shared/shared.module';
+import {BoxManagerService} from '../core/manager/boxes-manager/box-manager-service.service';
+import {BoxManagerServiceFake} from '../core/manager/boxes-manager/box-manager-service.service.fake';
+import {DispatcherInfoAggregateService} from '../core/dispatcher/dispatcher-boxes.service';
+import {DispatcherInfoAggregateServiceFake} from '../core/dispatcher/dispatcher-boxes.service.fake';
+import {InfoAggregateService} from '../core/service/boxes-service/info-aggregate.service';
+import {InfoAggregateServiceFake} from '../core/service/boxes-service/info-aggregate.service.fake';
 
 
 @NgModule({
@@ -26,6 +32,11 @@ import {SharedModule} from '../shared/shared.module';
     ],
     exports: [
         InfoAggregateComponent
+    ],
+    providers: [
+        {provide: BoxManagerService, useClass: BoxManagerServiceFake},
+        {provide: DispatcherInfoAggregateService, useClass: DispatcherInfoAggregateServiceFake},
+        {provide: InfoAggregateService, useClass: InfoAggregateServiceFake}
     ]
 })
 export class BoxesModule {

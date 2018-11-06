@@ -10,6 +10,10 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import { routing } from '../app.routing';
 import { FormsModule } from '@angular/forms';
 import { CambioSedeModalNavComponent } from './cambio-sede-modal-nav/cambio-sede-modal-nav.component';
+import { TurnoService } from './navbar-service/turno-service/turno.service';
+import { TurnoServiceFake } from './navbar-service/turno-service/turno.service.fake';
+import { OperatoreComponent } from './operatore/operatore.component';
+import { UnitaOperativaComponent } from './unita-operativa/unita-operativa.component';
 
 @NgModule({
     imports: [
@@ -22,8 +26,18 @@ import { CambioSedeModalNavComponent } from './cambio-sede-modal-nav/cambio-sede
         FormsModule
     ],
     entryComponents: [CambioSedeModalNavComponent],
-    declarations: [NavbarComponent, TurnoComponent, ClockComponent, CambioSedeModalNavComponent],
-    exports: [NavbarComponent]
+    declarations: [
+        NavbarComponent,
+        TurnoComponent,
+        ClockComponent,
+        CambioSedeModalNavComponent,
+        OperatoreComponent,
+        UnitaOperativaComponent,
+    ],
+    exports: [NavbarComponent],
+    providers: [
+        {provide: TurnoService, useClass: TurnoServiceFake}
+    ]
 })
 export class NavbarModule {
 }
