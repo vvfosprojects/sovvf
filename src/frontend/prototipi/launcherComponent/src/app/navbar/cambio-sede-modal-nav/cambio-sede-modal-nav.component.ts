@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {UnitaOperativaService} from '../navbar-service/unita-operativa-service/unita-operativa.service';
-import {Sede} from '../../shared/model/sede.model';
+import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Sede } from '../../shared/model/sede.model';
+import { UnitaAttualeService } from '../navbar-service/unita-attuale/unita-attuale.service';
 
 @Component({
     selector: 'app-cambio-sede-nav-modal',
@@ -13,17 +13,16 @@ export class CambioSedeModalNavComponent implements OnInit {
     nomeSede: string;
     newUnita: Sede;
 
-    constructor(public modal: NgbActiveModal, private unitaOperativaS: UnitaOperativaService) {
-
+    constructor(public modal: NgbActiveModal, private unitaAttualeS: UnitaAttualeService) {
     }
 
     ngOnInit() {
-        this.newUnita = this.unitaOperativaS.unitaS;
-        this.nomeSede = this.newUnita.descrizione;
+        this.newUnita = this.unitaAttualeS.unitaSelezionata;
+        this.nomeSede = this.unitaAttualeS.unitaSelezionata.descrizione;
     }
 
     cambioSede() {
-        this.unitaOperativaS.sendUnitaOperativaAttuale(this.newUnita);
+        this.unitaAttualeS.sendUnitaOperativaAttuale(this.newUnita);
     }
 
     annullaCambioSede() {

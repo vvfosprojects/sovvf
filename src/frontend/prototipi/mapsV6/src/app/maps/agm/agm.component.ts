@@ -57,7 +57,7 @@ export class AgmComponent implements OnInit, OnDestroy {
         this.subscription.add(this.markerService.getMeteo().subscribe((meteo: Meteo) => {
             this.datiMeteo = meteo;
         }));
-        this.minMarkerCluster = 9;
+        this.minMarkerCluster = 99999;
         this.coloreStato = '#343a40';
     }
 

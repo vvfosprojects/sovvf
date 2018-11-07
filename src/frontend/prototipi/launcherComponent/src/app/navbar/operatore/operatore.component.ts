@@ -1,4 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { first } from 'rxjs/operators';
+import { UserService } from '../../auth/_services';
+import { User } from '../../auth/_models';
 
 @Component({
     selector: 'app-operatore',
@@ -7,12 +10,15 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class OperatoreComponent implements OnInit {
 
-    @Input() user: any;
+    user: User[] = [];
 
-    constructor() {
+    constructor(private userService: UserService) {
     }
 
     ngOnInit() {
+        this.userService.getAll().pipe(first()).subscribe(users => {
+            this.user = users;
+        });
     }
 
 }

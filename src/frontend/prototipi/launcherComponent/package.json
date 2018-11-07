@@ -26,7 +26,7 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
-    "@ng-bootstrap/ng-bootstrap": "^3.3.0",
+    "@ng-bootstrap/ng-bootstrap": "^3.3.1",
     "@ng-select/ng-select": "^2.10.1",
     "angular-popper": "^2.0.0",
     "bootstrap": "^4.1.3",

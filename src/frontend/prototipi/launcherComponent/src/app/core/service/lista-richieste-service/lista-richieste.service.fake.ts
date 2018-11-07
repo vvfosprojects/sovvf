@@ -32,7 +32,7 @@ export class SintesiRichiesteServiceFake {
     public getRichieste(): Observable<SintesiRichiesta[]> {
         this.richieste = [
             new SintesiRichiesta(
-                'R1',
+                'RM-022',
                 'RM-022',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(0, 'minutes').toDate(),
@@ -58,7 +58,7 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'R3',
+                'RM-021',
                 'RM-021',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(22, 'minutes').toDate(),
@@ -86,9 +86,9 @@ export class SintesiRichiesteServiceFake {
                     'Mazzini',
                     'Di Tonno'
                 ]
-            ),   
+            ),
             new SintesiRichiesta(
-                'R6',
+                'RM-020',
                 'RM-020',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(23, 'minutes').toDate(),
@@ -111,9 +111,9 @@ export class SintesiRichiesteServiceFake {
                 new Fonogramma('0', 'Non necessario'),
                 null,
                 null
-            ),         
+            ),
             new SintesiRichiesta(
-                'R5',
+                'RM-41312',
                 'RM-41312',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(35, 'minutes').toDate(),
@@ -183,9 +183,9 @@ export class SintesiRichiesteServiceFake {
                     )
                 ],
                 null
-            ),   
+            ),
             new SintesiRichiesta(
-                'R7',
+                'RM-41311',
                 'RM-41311',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(4, 'minutes').toDate(),
@@ -210,9 +210,9 @@ export class SintesiRichiesteServiceFake {
                 new Fonogramma('0', 'Non necessario'),
                 null,
                 null
-            ),                                
+            ),
             new SintesiRichiesta(
-                'R2',
+                'RM-41310',
                 'RM-41310',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(6, 'minutes').toDate(),
@@ -239,7 +239,7 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'R4',
+                'RM-41309',
                 'RM-41309',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(25, 'minutes').toDate(),
@@ -312,7 +312,7 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'R8',
+                'RM-41308',
                 'RM-41308',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(37, 'minutes').toDate(),
@@ -346,7 +346,7 @@ export class SintesiRichiesteServiceFake {
                                         '3A',
                                         'InRientro',
                                         [
-                                            new Componente( 
+                                            new Componente(
                                                 'CS',
                                                 'Paolo Di Tonno',
                                                 'Paolo Di Tonno - RSSTZN56T56R454E',

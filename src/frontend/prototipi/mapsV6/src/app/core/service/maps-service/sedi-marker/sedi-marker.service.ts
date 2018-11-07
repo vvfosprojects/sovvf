@@ -3,7 +3,6 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
-import { tap } from 'rxjs/internal/operators';
 
 const API_URL_SEDI = environment.apiUrl.maps.markers.sedi;
 

@@ -19,7 +19,7 @@ export class RichiesteMarkerServiceFake {
     public getRichiesteMarkers(): Observable<RichiestaMarker[]> {
         this.richiesteMarkers = [
             new RichiestaMarker(
-                'R1',
+                'RM-022',
                 new Localita(
                     new Coordinate(41.8624992, 12.5532867),
                     'Via Scribonio Curione, 22', 'nei pressi dell\'uscita della metro'
@@ -34,7 +34,7 @@ export class RichiesteMarkerServiceFake {
 
             ),
             new RichiestaMarker(
-                'R2',
+                'RM-41310',
                 new Localita(
                     new Coordinate(41.8549993, 12.5688578), 'Via Tuscolana, 1500', 'automobile ribaltata, persona anziana'),
                 [
@@ -45,7 +45,7 @@ export class RichiesteMarkerServiceFake {
                 'assegnato'
             ),
             new RichiestaMarker(
-                'R3',
+                'RM-021',
                 new Localita(
                     new Coordinate(41.9161894, 12.4554147), 'Viale Giuseppe Mazzini, 159', 'nelle vicinanze di un ristorante'),
                 [
@@ -56,7 +56,7 @@ export class RichiesteMarkerServiceFake {
                 'chiamata'
             ),
             new RichiestaMarker(
-                'R4',
+                'RM-41309',
                 new Localita(
                     new Coordinate(41.8932662, 12.5417044), 'Via di Portonaccio', 'incrocio con Via Prenestina'),
                 [
@@ -67,7 +67,7 @@ export class RichiesteMarkerServiceFake {
                 'presidiato'
             ),
             new RichiestaMarker(
-                'R5',
+                'RM-41312',
                 new Localita(
                     new Coordinate(41.8311007, 12.4683518), 'Viale Europa, 184', 'dal palazzo delle Poste Italiane'),
                 [
@@ -79,7 +79,7 @@ export class RichiesteMarkerServiceFake {
                 moment().subtract(35, 'minutes').toDate()
             ),
             new RichiestaMarker(
-                'R6',
+                'RM-020',
                 new Localita(new Coordinate(41.8654843, 12.5805044), 'Viale dei Romanisti, 40', 'vicino ai secchi dell\'immondizia'),
                 [
                     new Tipologia('2', 'Incendio ed esplosione', 'fa fa-fire')
@@ -89,7 +89,7 @@ export class RichiesteMarkerServiceFake {
                 'chiamata'
             ),
             new RichiestaMarker(
-                'R7',
+                'RM-41311',
                 new Localita(
                     new Coordinate(41.82699, 12.4874854), 'Via Simone Martini, 125', 'persone all\'interno del garage'),
                 [
@@ -100,7 +100,7 @@ export class RichiesteMarkerServiceFake {
                 'assegnato'
             ),
             new RichiestaMarker(
-                'R8',
+                'RM-41308',
                 new Localita(
                     new Coordinate(41.9125723, 12.4952921), 'Via Isonzo, 21', 'beni alimentari di vario tipo'),
                 [
@@ -110,6 +110,9 @@ export class RichiesteMarkerServiceFake {
                 2,
                 'sospeso'
             ),
+            /**
+             * richieste mancanti sul fake di richieste
+             */
             new RichiestaMarker(
                 'R9',
                 new Localita(

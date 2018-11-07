@@ -7,7 +7,7 @@ import { IconMappe } from './_icone';
 import { TipoMappe } from './_typeof';
 import { TipoColori } from './_color';
 import { AgmService } from '../../agm/agm-service.service';
-import { UnitaOperativaService } from '../../../navbar/navbar-service/unita-operativa-service/unita-operativa.service';
+import { UnitaAttualeService } from '../../../navbar/navbar-service/unita-attuale/unita-attuale.service';
 import { ListaRichiesteService } from '../../../richieste/lista-richieste-service/lista-richieste-service.service';
 import { RichiesteMarkerManagerService } from '../../../core/manager/maps-manager';
 import { Coordinate } from '../../../shared/model/coordinate.model';
@@ -39,7 +39,7 @@ export class MarkerService implements OnDestroy {
                 private agmService: AgmService,
                 private richiesteService: ListaRichiesteService,
                 private markerRichiesteManager: RichiesteMarkerManagerService,
-                private fakeCambioSede: UnitaOperativaService) {
+                private unitaAttualeS: UnitaAttualeService) {
         this.subscription.add(this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         }));
@@ -235,7 +235,7 @@ export class MarkerService implements OnDestroy {
         /**
          * evento che cambia la sede
          */
-        this.fakeCambioSede.sendUnitaOperativaAttuale(sede);
+        this.unitaAttualeS.sendUnitaOperativaAttuale(sede);
     }
 
     noAction() {

@@ -66,15 +66,15 @@ import {
     providers: [
         {provide: RichiesteMarkerManagerService, useClass: RichiesteMarkerManagerServiceFake},
         {provide: MezziMarkerManagerService, useClass: MezziMarkerManagerServiceFake},
-        // {provide: SediMarkerManagerService, useClass: SediMarkerManagerServiceFake},
+        {provide: SediMarkerManagerService, useClass: SediMarkerManagerServiceFake},
         {provide: CentroMappaManagerService, useClass: CentroMappaManagerServiceFake},
         {provide: DispatcherRichiesteMarkerService, useClass: DispatcherRichiesteMarkerServiceFake},
         {provide: DispatcherMezziMarkerService, useClass: DispatcherMezziMarkerServiceFake},
-        // {provide: DispatcherSediMarkerService, useClass: DispatcherSediMarkerServiceFake},
+        {provide: DispatcherSediMarkerService, useClass: DispatcherSediMarkerServiceFake},
         {provide: DispatcherCentroMappaService, useClass: DispatcherCentroMappaServiceFake},
         {provide: RichiesteMarkerService, useClass: RichiesteMarkerServiceFake},
         {provide: MezziMarkerService, useClass: MezziMarkerServiceFake},
-        // {provide: SediMarkerService, useClass: SediMarkerServiceFake},
+        {provide: SediMarkerService, useClass: SediMarkerServiceFake},
         {provide: CentroMappaService, useClass: CentroMappaServiceFake},
     ]
 })

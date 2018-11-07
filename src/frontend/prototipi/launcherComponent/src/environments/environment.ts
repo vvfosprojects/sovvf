@@ -41,6 +41,10 @@ export const environment = {
         turno: {
             fake: '',
             backend: ''
+        },
+        sedi: {
+            fake: '',
+            backend: ''
         }
     }
 };

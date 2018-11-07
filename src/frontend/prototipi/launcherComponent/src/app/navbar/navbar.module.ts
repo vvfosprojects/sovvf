@@ -10,10 +10,12 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import { routing } from '../app.routing';
 import { FormsModule } from '@angular/forms';
 import { CambioSedeModalNavComponent } from './cambio-sede-modal-nav/cambio-sede-modal-nav.component';
-import { TurnoService } from './navbar-service/turno-service/turno.service';
-import { TurnoServiceFake } from './navbar-service/turno-service/turno.service.fake';
 import { OperatoreComponent } from './operatore/operatore.component';
 import { UnitaOperativaComponent } from './unita-operativa/unita-operativa.component';
+import { TurnoService } from './navbar-service/turno-service/turno.service';
+import { TurnoServiceFake } from './navbar-service/turno-service/turno.service.fake';
+import { UnitaOperativaService } from './navbar-service/unita-operativa-service/unita-operativa.service';
+import { UnitaOperativaServiceFake } from './navbar-service/unita-operativa-service/unita-operativa.service.fake';
 
 @NgModule({
     imports: [
@@ -32,11 +34,12 @@ import { UnitaOperativaComponent } from './unita-operativa/unita-operativa.compo
         ClockComponent,
         CambioSedeModalNavComponent,
         OperatoreComponent,
-        UnitaOperativaComponent,
+        UnitaOperativaComponent
     ],
     exports: [NavbarComponent],
     providers: [
-        {provide: TurnoService, useClass: TurnoServiceFake}
+        {provide: TurnoService, useClass: TurnoServiceFake},
+        {provide: UnitaOperativaService, useClass: UnitaOperativaServiceFake}
     ]
 })
 export class NavbarModule {

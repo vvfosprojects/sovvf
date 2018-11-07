@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { UnitaOperativaService } from '../../navbar/navbar-service/unita-operativa-service/unita-operativa.service';
+import { UnitaAttualeService } from '../../navbar/navbar-service/unita-attuale/unita-attuale.service';
 
 @Component({templateUrl: 'home.component.html'})
 export class HomeComponent implements OnInit {
     _opened = false;
 
-    constructor(public fakeCambioSede: UnitaOperativaService) {
+    constructor(public fakeCambioSede: UnitaAttualeService) {
     }
 
     ngOnInit() {

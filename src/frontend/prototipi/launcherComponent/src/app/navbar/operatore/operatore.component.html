@@ -1,13 +1,15 @@
 <button class="btn btn-light mr-2" ngbTooltip="Notifiche" [ngbPopover]="notifiche" placement="bottom"><i class="fa fa-bell"></i></button>
 <button class="btn btn-light mr-2" ngbTooltip="Impostazioni" [ngbPopover]="impostazioni" placement="bottom"><i class="fa fa-cogs"></i>
 </button>
-<img class="rounded ml-2" src="http://i.pravatar.cc/40?img=53">
-<span class="btn mr-2">
-  {{user.firstName}} {{user.lastName}}
+<span *ngIf="user.length > 0">
+  <img class="rounded ml-2" src="http://i.pravatar.cc/40?img=53">
+  <span class="btn mr-2">
+    {{user[0].firstName}} {{user[0].lastName}}
+  </span>
+  <button class="btn btn-danger" ngbTooltip="Disconnettiti" placement="bottom" [routerLink]="['/login']"><i class="fa fa-sign-out"></i>
+    Esci
+  </button>
 </span>
-<button class="btn btn-danger" ngbTooltip="Disconnettiti" placement="bottom" [routerLink]="['/login']"><i class="fa fa-sign-out"></i>
-  Esci
-</button>
 <ng-template #notifiche>
   <h6 class="mb-2">Notifiche</h6>
 </ng-template>
