@@ -184,7 +184,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(ra => ra.CodiceUnitaOperativaCompetente, f => this.codiceUnitaOperativa)
                 .RuleFor(ra => ra.Operatore, f=> GeneraOperatore())
                 .RuleFor(ra => ra.CodiciUnitaOperativeAllertate, f => new HashSet<string> { this.codiceUnitaOperativa })
-                //.RuleFor(ra => ra.Geolocalizzazione, f => fakerGeolocalizzazione.Generate())
+                .RuleFor(ra => ra.Geolocalizzazione, f => coordinateLocalita)
                 .RuleFor(ra => ra.Tipologie, f => this.GeneraTipologie())
                 .RuleFor(ra => ra.IstanteChiusura, f => null)
                 .RuleFor(ra => ra.Indirizzo, f => indirizzo)
@@ -194,7 +194,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(ra => ra.Richiedente, f => new Richiedente ( f.Name.FirstName() + " " + f.Name.LastName(), f.Phone.Locale ))
                 .RuleFor(ra => ra.NumeroRichiedente, f => f.Phone.PhoneNumber())
                 .RuleFor(ra => ra.CodiciUOCompetenza, f => new[] { f.Address.StateAbbr(), f.Address.StateAbbr(), f.Address.StateAbbr() })
-                .RuleFor(ra => ra.ListaPartenze, f => null)
+                .RuleFor(ra => ra.ListaPartenze, f => GeneraListaPartenze())
                 .RuleFor(ra => ra.Localita, f => new Localita(coordinateLocalita, indirizzo, NoteLocalita))
                 .RuleFor(ra => ra.Competenze, f => GeneraCompetenze())
                 .Ignore(ra => ra.Tags);
@@ -277,10 +277,10 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             }
 
 
-            //var client = new MongoClient();
-            //var database = client.GetDatabase("SO115");
-            //var collection = database.GetCollection<RichiestaConParametri>("RichiesteAssistenza");
-            //collection.InsertMany(richiesteConParametri);
+            var client = new MongoClient();
+            var database = client.GetDatabase("SO115");
+            var collection = database.GetCollection<RichiestaConParametri>("RichiesteAssistenza");
+            collection.InsertMany(richiesteConParametri);
 
             return richiesteConParametri.Select(r => r.Richiesta);
         }
@@ -390,6 +390,42 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
 
             return set.ToList();
         }
+
+
+        private static List<Partenza> GeneraListaPartenze()
+        {
+
+            List<ComponenteSquadra> ListaComponentiSquadra = new List<ComponenteSquadra>()
+            {
+                new ComponenteSquadra("CS","Riccardo Trionfera", "RT", true,false,false),
+                new ComponenteSquadra("CS","Davide Cappa", "DC", false,true,false),
+                new ComponenteSquadra("CS","Michele Dragonetti", "MD", false,false,false),
+            };
+
+
+            List<Squadra> ListaSquadre = new List<Squadra>()
+            {
+                new Squadra("SO115",Squadra.StatoSquadra.InViaggio,ListaComponentiSquadra)
+
+            };
+
+
+            List<Mezzo> ListaMezzi = new List<Mezzo>()
+                {
+                    new Mezzo("0", "APS", "Auto pompa serbatoio", "In sede", 0,ListaSquadre)
+                };
+
+            Partenza partenza = new Partenza();
+            partenza.mezzi = ListaMezzi;
+            
+            List<Partenza> NewPartenza = new List<Partenza>()
+            {
+                partenza
+            };
+
+            return NewPartenza;
+        }
+
 
         /// <summary>
         ///   Restituisce l'elenco delle azioni iniziali da aggiungere ad una richiesta. L'azione si

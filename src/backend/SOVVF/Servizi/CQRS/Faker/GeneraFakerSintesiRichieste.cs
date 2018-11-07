@@ -48,12 +48,6 @@ namespace Modello.Servizi.CQRS.Faker
                     partenze = GeneraListaPartenze(),
                     etichette = null
                 };
-
-
-                var client = new MongoClient();
-                var database = client.GetDatabase("SO115");
-                var collection = database.GetCollection<SintesiRichiesta>("ElencoSintesiRichieste");
-                collection.InsertOne(sintesi); 
                
                 ListaSintesi.Add(sintesi);
             }
@@ -63,12 +57,6 @@ namespace Modello.Servizi.CQRS.Faker
 
         private static List<Partenza> GeneraListaPartenze()
         {
-
-            List<Classi.Condivise.Mezzo> ListaMezzi  = new List<Classi.Condivise.Mezzo>()
-                {
-                    new Classi.Condivise.Mezzo("0", "APS", "Auto pompa serbatoio", "In sede", 0)
-                };
-
 
             List<ComponenteSquadra> ListaComponentiSquadra = new List<ComponenteSquadra>()
             {
@@ -85,9 +73,15 @@ namespace Modello.Servizi.CQRS.Faker
             };
 
 
+            List<Classi.Condivise.Mezzo> ListaMezzi  = new List<Classi.Condivise.Mezzo>()
+                {
+                    new Classi.Condivise.Mezzo("0", "APS", "Auto pompa serbatoio", "In sede", 0,ListaSquadre)
+                };
+
+
             Partenza partenza = new Partenza();
             partenza.mezzi = ListaMezzi;
-            partenza.squadre = ListaSquadre;
+            //partenza.squadre = ListaSquadre;
 
             List<Partenza> NewPartenza = new List<Partenza>()
             {
@@ -231,11 +225,8 @@ namespace Modello.Servizi.CQRS.Faker
 
 
             MapperListaRichiesteSuListaSintesiRichieste mapper = new MapperListaRichiesteSuListaSintesiRichieste();
-            List<SintesiRichiesta> ListaSintesi = mapper.MapRichiesteSuSintesi(elenco);
-
-
-
-            return null;
+            
+            return mapper.MapRichiesteSuSintesi(elenco);
 
 
         }

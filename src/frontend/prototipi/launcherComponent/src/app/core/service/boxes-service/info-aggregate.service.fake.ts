@@ -17,7 +17,7 @@ export class InfoAggregateServiceFake {
     }
 
     public getInterventi(): Observable<BoxInterventi> {
-        this.interventi = new BoxInterventi(25, 30, 10, 30, 95, 104, 'B', 90, 'A', '2018', '12.842');
+        this.interventi = new BoxInterventi(25, 30, 10, 30, 95, 104, 'B', 90, 'A', '2018', '41.312');
         return of(this.interventi);
 
     }
@@ -25,6 +25,11 @@ export class InfoAggregateServiceFake {
     public getMezzi(): Observable<BoxMezzi> {
         this.mezzi = new BoxMezzi(20, 4, 3, 3, 2, 30);
         return of(this.mezzi);
+    }
+
+    public getSquadre(): Observable<any> {
+        const InfoSquadre = [10, 4];
+        return of(InfoSquadre);
     }
 
     public getFunzionariSo(): Observable<BoxFunzionariSo[]> {

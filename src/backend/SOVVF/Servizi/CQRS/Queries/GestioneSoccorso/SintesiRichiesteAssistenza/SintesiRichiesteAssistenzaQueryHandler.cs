@@ -83,13 +83,15 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssisten
 
 #warning va realizzato il servizio di mapping delle richieste di assistenza sulla loro sintesi
             var sintesiRichiesta = new List<SintesiRichiesta>();
-            
-            if(query.Filtro==null)
+
+            if (query.Filtro == null)
                 sintesiRichiesta = GeneraFakerSintesiRichieste.ElencoSintesiRichiestaMarker();
             else
-            { 
-                    sintesiRichiesta = GeneraFakerSintesiRichieste.ElencoSintesiRichiesta(query);
+            {
+                sintesiRichiesta = GeneraFakerSintesiRichieste.ElencoSintesiRichiesta(query);
             }
+
+
             return new SintesiRichiesteAssistenzaResult()
             {
                 SintesiRichiesta = sintesiRichiesta

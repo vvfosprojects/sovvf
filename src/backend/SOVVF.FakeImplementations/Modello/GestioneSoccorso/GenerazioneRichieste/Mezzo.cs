@@ -27,7 +27,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
     /// <summary>
     ///   Il mezzo utilizzato per evadere una richiesta
     /// </summary>
-    internal class Mezzo
+    internal class Mezzo2
     {
         /// <summary>
         ///   Il generatore random utilizzato
@@ -42,12 +42,12 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         /// <summary>
         ///   Il generatore di istanze fake del mezzo
         /// </summary>
-        private static Faker<Mezzo> fakerMezzo = null;
+        private static Faker<Mezzo2> fakerMezzo = null;
 
         /// <summary>
         ///   Il costruttore della classe
         /// </summary>
-        public Mezzo()
+        public Mezzo2()
         {
             ContestoMezzo = new ContestoMezzo();
         }
@@ -85,11 +85,11 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         ///   L'unità operativa utilizzata nella generazione delle informazioni
         /// </param>
         /// <returns>Il mezzo fake creato</returns>
-        public static Mezzo CreateMezzoFake(string codiceUnitaOperativa)
+        public static Mezzo2 CreateMezzoFake(string codiceUnitaOperativa)
         {
             if (fakerMezzo == null)
             {
-                fakerMezzo = new Faker<Mezzo>()
+                fakerMezzo = new Faker<Mezzo2>()
                     .StrictMode(true)
                     .RuleFor(m => m.Codice, f => codiceUnitaOperativa + "/APS/" + f.Random.Number(10000, 99999))
                     .RuleFor(m => m.Membri, f => Enumerable.Range(1, 5).Select(n => GeneraCodiceFiscale()).ToArray());

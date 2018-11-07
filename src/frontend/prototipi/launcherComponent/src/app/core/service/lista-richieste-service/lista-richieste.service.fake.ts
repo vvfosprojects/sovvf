@@ -33,7 +33,7 @@ export class SintesiRichiesteServiceFake {
         this.richieste = [
             new SintesiRichiesta(
                 'R1',
-                'RM-24759',
+                'RM-022',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(0, 'minutes').toDate(),
                 'chiamata',
@@ -50,17 +50,172 @@ export class SintesiRichiesteServiceFake {
                 new Complessita('100', 'Alto'),
                 null,
                 null,
-                moment().subtract(0, 'minutes').toDate(), null,
+                null,
+                null,
                 null,
                 new Fonogramma('0', 'Non necessario'),
                 null,
                 null
             ),
             new SintesiRichiesta(
-                'R2',
-                'RM-24760',
+                'R3',
+                'RM-021',
+                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                moment().subtract(22, 'minutes').toDate(),
+                'chiamata',
+                1,
+                [new Tipologia('360', 'Messa in sicurezza impianti tecnologici di servizio (acqua, energia elettrica, gas)', '')],
+                'Scintille da palo elettrico',
+                new Richiedente('Rosalba Di Tonno', '062815692'),
+                new Localita(
+                    new Coordinate(41.8607234, 12.555459), 'Viale Giuseppe Mazzini, 159', 'nelle vicinanze di un ristorante'),
+                [
+                    new Sede('5', 'Prati', new Coordinate(41.9184282, 12.4635564), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('6', 'Monte Mario', new Coordinate(41.9186602, 12.4360771), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                ],
+                new Complessita('20', 'Media'),
+                moment().subtract(16, 'minutes').toDate(),
+                moment().subtract(12, 'minutes').toDate(),
+                null,
+                null,
+                null,
+                new Fonogramma('0', 'Non necessario'),
+                null,
+                [
+                    'Scintille',
+                    'Mazzini',
+                    'Di Tonno'
+                ]
+            ),   
+            new SintesiRichiesta(
+                'R6',
+                'RM-020',
+                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                moment().subtract(23, 'minutes').toDate(),
+                'chiamata',
+                1,
+                [new Tipologia('2', 'Incendio ed esplosione', 'fa fa-fire')],
+                'Incendio a bordo strada',
+                new Richiedente('Marco Liguori', '3245898977'),
+                new Localita(new Coordinate(41.8654843, 12.5805044), 'Viale dei Romanisti, 40', 'vicino ai secchi dell\'immondizia'),
+                [
+                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                ],
+                new Complessita('10', 'Basso'),
+                null,
+                null,
+                null,
+                null,
+                null,
+                new Fonogramma('0', 'Non necessario'),
+                null,
+                null
+            ),         
+            new SintesiRichiesta(
+                'R5',
+                'RM-41312',
+                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                moment().subtract(35, 'minutes').toDate(),
+                'assegnata',
+                4,
+                [new Tipologia('360', 'Salvataggio persone', '')],
+                'Persona che minaccia di buttarsi da un tetto',
+                new Richiedente('Carabinieri', '112'),
+                new Localita(
+                    new Coordinate(41.8311007, 12.4683518), 'Viale Europa, 184', 'dal palazzo delle Poste Italiane'),
+                [
+                    new Sede('8', 'EUR', new Coordinate(41.8315918, 12.4666971), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                ],
+                new Complessita('80', 'Alta'),
+                moment().subtract(30, 'minutes').toDate(),
+                moment().subtract(29, 'minutes').toDate(),
+                moment().subtract(35, 'minutes').toDate(),
+                null,
+                null,
+                new Fonogramma('0', 'Non necessario'),
+                [
+                    new Partenza(
+                        [
+                            new Mezzo('COD3',
+                                'AS1',
+                                'AS',
+                                'InRientro',
+                                [
+                                    new Squadra(
+                                        '3A',
+                                        'InRientro',
+                                        [
+                                            new Componente(
+                                                'CS',
+                                                'Paolo Di Tonno',
+                                                'Paolo Di Tonno - RSSTZN56T56R454E',
+                                                true,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Antonio Marsalà',
+                                                'Antonio Marsalà - MRCMRC66T66R454F',
+                                                false,
+                                                true,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Bernardo Belli',
+                                                'Bernardo Belli - CNTRFL66T45R343E',
+                                                false,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Maurizio Cutolo',
+                                                'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                                false,
+                                                false,
+                                                false)
+                                        ]
+                                    )
+                                ],
+                                0)
+                        ]
+                    )
+                ],
+                null
+            ),   
+            new SintesiRichiesta(
+                'R7',
+                'RM-41311',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(4, 'minutes').toDate(),
+                'assegnato',
+                3,
+                [new Tipologia('1', 'Danni d\'acqua in genere', 'fa fa-tint')],
+                'Allagamento garage con personale da soccorrere',
+                new Richiedente('Polizia', '113'),
+                new Localita(
+                    new Coordinate(41.82699, 12.4874854), 'Via Simone Martini, 125', 'persone all\'interno del garage'),
+                [
+                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                ],
+                new Complessita('20', 'Media'),
+                moment().subtract(12, 'minutes').toDate(),
+                moment().subtract(11, 'minutes').toDate(),
+                null,
+                null,
+                null,
+                new Fonogramma('0', 'Non necessario'),
+                null,
+                null
+            ),                                
+            new SintesiRichiesta(
+                'R2',
+                'RM-41310',
+                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                moment().subtract(6, 'minutes').toDate(),
                 'assegnato',
                 3,
                 [new Tipologia('1', 'Incidente stradale generico', 'fa fa-car')],
@@ -84,37 +239,8 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'R3',
-                'RM-24761',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
-                moment().subtract(22, 'minutes').toDate(),
-                'chiamata',
-                1,
-                [new Tipologia('360', 'Messa in sicurezza impianti tecnologici di servizio (acqua, energia elettrica, gas)', '')],
-                'Scintille da palo elettrico',
-                new Richiedente('Rosalba Di Tonno', '062815692'),
-                new Localita(
-                    new Coordinate(41.8607234, 12.555459), 'Viale Giuseppe Mazzini, 159', 'nelle vicinanze di un ristorante'),
-                [
-                    new Sede('5', 'Prati', new Coordinate(41.9184282, 12.4635564), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                    new Sede('6', 'Monte Mario', new Coordinate(41.9186602, 12.4360771), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                ],
-                new Complessita('20', 'Media'),
-                moment().subtract(16, 'minutes').toDate(),
-                moment().subtract(12, 'minutes').toDate(),
-                null,
-                null,
-                null,
-                new Fonogramma('0', 'Non necessario'),
-                null,
-                [
-                    'Tag1',
-                    'Tag2'
-                ]
-            ),
-            new SintesiRichiesta(
                 'R4',
-                'RM-24762',
+                'RM-41309',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(25, 'minutes').toDate(),
                 'presidiato',
@@ -186,132 +312,8 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'R5',
-                'RM-24763',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
-                moment().subtract(35, 'minutes').toDate(),
-                'sospeso',
-                4,
-                [new Tipologia('360', 'Salvataggio persone', '')],
-                'Persona che minaccia di buttarsi da un tetto',
-                new Richiedente('Carabinieri', '112'),
-                new Localita(
-                    new Coordinate(41.8311007, 12.4683518), 'Viale Europa, 184', 'dal palazzo delle Poste Italiane'),
-                [
-                    new Sede('8', 'EUR', new Coordinate(41.8315918, 12.4666971), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                ],
-                new Complessita('80', 'Alta'),
-                moment().subtract(30, 'minutes').toDate(),
-                moment().subtract(29, 'minutes').toDate(),
-                moment().subtract(35, 'minutes').toDate(),
-                null,
-                null,
-                new Fonogramma('0', 'Non necessario'),
-                [
-                    new Partenza(
-                        [
-                            new Mezzo('COD3',
-                                'AS1',
-                                'AS',
-                                'InRientro',
-                                [
-                                    new Squadra(
-                                        '3A',
-                                        'InRientro',
-                                        [
-                                            new Componente(
-                                                'CS',
-                                                'Paolo Di Tonno',
-                                                'Paolo Di Tonno - RSSTZN56T56R454E',
-                                                true,
-                                                false,
-                                                false),
-                                            new Componente(
-                                                'VIG',
-                                                'Antonio Marsalà',
-                                                'Antonio Marsalà - MRCMRC66T66R454F',
-                                                false,
-                                                true,
-                                                false),
-                                            new Componente(
-                                                'VIG',
-                                                'Bernardo Belli',
-                                                'Bernardo Belli - CNTRFL66T45R343E',
-                                                false,
-                                                false,
-                                                false),
-                                            new Componente(
-                                                'VIG',
-                                                'Maurizio Cutolo',
-                                                'Maurizio Cutolo - VRTGVN56T74H565Y',
-                                                false,
-                                                false,
-                                                false)
-                                        ]
-                                    )
-                                ],
-                                0)
-                        ]
-                    )
-                ],
-                null
-            ),
-            new SintesiRichiesta(
-                'R6',
-                'RM-24764',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
-                moment().subtract(23, 'minutes').toDate(),
-                'chiamata',
-                1,
-                [new Tipologia('2', 'Incendio ed esplosione', 'fa fa-fire')],
-                'Incendio a bordo strada',
-                new Richiedente('Marco Liguori', '3245898977'),
-                new Localita(new Coordinate(41.8654843, 12.5805044), 'Viale dei Romanisti, 40', 'vicino ai secchi dell\'immondizia'),
-                [
-                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                ],
-                new Complessita('10', 'Basso'),
-                null,
-                null,
-                null,
-                null,
-                null,
-                new Fonogramma('0', 'Non necessario'),
-                null,
-                null
-            ),
-            new SintesiRichiesta(
-                'R7',
-                'RM-24765',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
-                moment().subtract(6, 'minutes').toDate(),
-                'assegnato',
-                3,
-                [new Tipologia('1', 'Danni d\'acqua in genere', 'fa fa-tint')],
-                'Allagamento garage con personale da soccorrere',
-                new Richiedente('Polizia', '113'),
-                new Localita(
-                    new Coordinate(41.82699, 12.4874854), 'Via Simone Martini, 125', 'persone all\'interno del garage'),
-                [
-                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                ],
-                new Complessita('20', 'Media'),
-                moment().subtract(12, 'minutes').toDate(),
-                moment().subtract(11, 'minutes').toDate(),
-                null,
-                null,
-                null,
-                new Fonogramma('0', 'Non necessario'),
-                null,
-                null
-            ),
-            new SintesiRichiesta(
                 'R8',
-                'RM-24766',
+                'RM-41308',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(37, 'minutes').toDate(),
                 'sospeso',
@@ -344,7 +346,7 @@ export class SintesiRichiesteServiceFake {
                                         '3A',
                                         'InRientro',
                                         [
-                                            new Componente(
+                                            new Componente( 
                                                 'CS',
                                                 'Paolo Di Tonno',
                                                 'Paolo Di Tonno - RSSTZN56T56R454E',
@@ -376,125 +378,6 @@ export class SintesiRichiesteServiceFake {
                                     )
                                 ],
                                 0)
-                        ]
-                    )
-                ],
-                null
-            ),
-            new SintesiRichiesta(
-                'R9',
-                'RM-24767',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
-                moment().subtract(6, 'minutes').toDate(),
-                'chiamata',
-                3,
-                [new Tipologia('1', 'Alberi pericolanti', '')],
-                'Alberi o rami pericolanti/caduti',
-                new Richiedente('Vincenzo Neri', '345.7284729'),
-                new Localita(
-                    new Coordinate(41.92221, 12.41895), 'Via Stefano Borgia, 102', ''),
-                [
-                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                    new Sede('3', 'Tuscolana I', new Coordinate(41.8607859, 12.5226281), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                ],
-                new Complessita('20', 'Media'),
-                moment().subtract(12, 'minutes').toDate(),
-                moment().subtract(11, 'minutes').toDate(),
-                null,
-                null,
-                null,
-                new Fonogramma('0', 'Non necessario'),
-                null,
-                null
-            ),
-            new SintesiRichiesta(
-                'R10',
-                'RM-24768',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
-                moment().subtract(27, 'minutes').toDate(),
-                'chiamata',
-                3,
-                [new Tipologia('1', 'Danni d\'acqua in genere', 'fa fa-tint')],
-                'Danni d\'acqua in genere',
-                new Richiedente('Francesca Baroni', '327.2282329'),
-                new Localita(
-                    new Coordinate(41.74317, 12.34693), 'Via Cratete di Mallo, 13', ''),
-                [
-                    new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                ],
-                new Complessita('20', 'Media'),
-                moment().subtract(15, 'minutes').toDate(),
-                moment().subtract(14, 'minutes').toDate(),
-                null,
-                null,
-                null,
-                new Fonogramma('0', 'Non necessario'),
-                null,
-                null
-            ),
-            new SintesiRichiesta(
-                'R11',
-                'RM-24769',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
-                moment().subtract(50, 'minutes').toDate(),
-                'presidiato',
-                3,
-                [new Tipologia('360', 'Recupero merci e beni', '')],
-                'Bonifica da insetti',
-                new Richiedente('Maria Franceschini', '333.4589002'),
-                new Localita(
-                    new Coordinate(41.783819, 12.44016), 'Via Salvatore Lorizzo', ''),
-                [
-                    new Sede('8', 'EUR', new Coordinate(41.8315918, 12.4666971), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
-                ],
-                new Complessita('19', 'Bassa'),
-                moment().subtract(30, 'minutes').toDate(),
-                moment().subtract(29, 'minutes').toDate(),
-                null,
-                'NUE4152346',
-                null,
-                new Fonogramma('0', 'Non necessario'),
-                [
-                    new Partenza(
-                        [
-                            new Mezzo('COD3',
-                                'AS1',
-                                'APS',
-                                'SulPosto',
-                                [
-                                    new Squadra(
-                                        '3A',
-                                        'InRientro',
-                                        [
-                                            new Componente(
-                                                'VIG',
-                                                'Antonio Marsalà',
-                                                'Antonio Marsalà - MRCMRC66T66R454F',
-                                                false,
-                                                true,
-                                                false),
-                                            new Componente(
-                                                'CS',
-                                                'Paolo Di Tonno',
-                                                'Paolo Di Tonno - RSSTZN56T56R454E',
-                                                true,
-                                                false,
-                                                false),
-                                            new Componente(
-                                                'VIG',
-                                                'Bernardo Belli',
-                                                'Bernardo Belli - CNTRFL66T45R343E',
-                                                false,
-                                                false,
-                                                false)
-                                        ]
-                                    )
-                                ],
-                                0
-                            )
                         ]
                     )
                 ],

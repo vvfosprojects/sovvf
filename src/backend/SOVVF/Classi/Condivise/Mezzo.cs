@@ -18,13 +18,15 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Modello.Classi.Condivise
 {
     public class Mezzo
     {
 
         public Mezzo(string Codice, string Descrizione, string Genere,string  Stato, 
-                     int Appartenenza)
+                     int Appartenenza, List<Squadra> Squadre)
         {
 
             this.codice = Codice;
@@ -32,6 +34,7 @@ namespace Modello.Classi.Condivise
             this.genere = Genere;
             this.stato = Stato;
             this.appartenenza = Appartenenza;
+            this.squadre = Squadre;
 
         }
 
@@ -56,6 +59,10 @@ namespace Modello.Classi.Condivise
         /// </summary>
         public string stato { get; set; }
 
+        /// <summary>
+        ///  Lista delle squadre coinvolte
+        /// </summary>
+        public List<Squadra> squadre { get; set; }
 
         /// <summary>
         ///   Appartenenza del mezzo

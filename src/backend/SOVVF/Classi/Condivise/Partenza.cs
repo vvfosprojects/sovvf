@@ -30,10 +30,5 @@ namespace Modello.Classi.Condivise
         /// </summary>
         public List<Mezzo> mezzi { get; set; }
 
-        /// <summary>
-        ///  Lista delle squadre coinvolte
-        /// </summary>
-        public List<Squadra> squadre { get; set; }
-
     }
 }

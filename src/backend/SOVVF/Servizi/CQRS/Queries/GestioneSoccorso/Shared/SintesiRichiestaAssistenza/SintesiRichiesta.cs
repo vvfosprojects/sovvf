@@ -192,7 +192,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         /// <summary>
         ///  Lista eventi associato alla richiesta
         /// </summary>
-        public List<Evento> eventi { get; }
+        public List<Evento> eventi { get; set; }
 
     }
 }

@@ -56,7 +56,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         /// <summary>
         ///   E' il mezzo che, dinamicamente, viene selezionato per evadere la richiesta.
         /// </summary>
-        public Mezzo MezzoUtilizzato { get; set; }
+        public Mezzo2 MezzoUtilizzato { get; set; }
 
         /// <summary>
         ///   Genera un'istanza della classe in modo casuale

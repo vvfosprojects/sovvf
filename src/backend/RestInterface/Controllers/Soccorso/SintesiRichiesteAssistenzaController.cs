@@ -57,6 +57,26 @@ namespace RestInterface.Controllers.Soccorso
         public SintesiRichiesteAssistenzaResult Get(FiltroRicercaRichiesteAssistenza filtro)
         {
 
+            //VIENE UTILIZZATO SOLO PER TEST E FAKE INSERT SU MONGO DB
+            //CON QUESTI PARAMETRI INSERISCE 200 RICHIESTE
+            //var gi = new GeneratoreRichieste(
+            //"RM",
+            //50,
+            //DateTime.Now.AddHours(-12),
+            //DateTime.Now,
+            //400,
+            //30 * 60,
+            //15 * 60,
+            //45 * 60,
+            //15 * 60,
+            //new float[] { .85F, .7F, .4F, .3F, .1F });
+
+            //var richieste = gi.Genera()
+            //    .OrderBy(r => (r.Eventi.First() as Evento).istante)
+            //    .ToList();
+
+
+
             var query = new SintesiRichiesteAssistenzaQuery()
             {
                 Filtro = filtro

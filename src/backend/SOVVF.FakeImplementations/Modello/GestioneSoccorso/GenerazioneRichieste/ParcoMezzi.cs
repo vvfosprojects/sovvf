@@ -30,7 +30,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         /// <summary>
         ///   L'array dei mezzi fake
         /// </summary>
-        private Mezzo[] mezzi;
+        private Mezzo2[] mezzi;
 
         /// <summary>
         ///   Costruttore della classe
@@ -42,11 +42,11 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         /// </param>
         public ParcoMezzi(int numeroMezzi, string codiceUnitaOperativa)
         {
-            this.mezzi = new Mezzo[numeroMezzi];
+            this.mezzi = new Mezzo2[numeroMezzi];
 
             for (int i = 0; i < numeroMezzi; i++)
             {
-                this.mezzi[i] = Mezzo.CreateMezzoFake(codiceUnitaOperativa);
+                this.mezzi[i] = Mezzo2.CreateMezzoFake(codiceUnitaOperativa);
             }
         }
 
@@ -54,7 +54,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         ///   Restituisce il primo mezzo disponibile, se esistente
         /// </summary>
         /// <returns>Il primo mezzo disponibile, null se nessun mezzo è disponibile</returns>
-        public Mezzo GetPrimoMezzoDisponibile()
+        public Mezzo2 GetPrimoMezzoDisponibile()
         {
             return this.mezzi.FirstOrDefault(m => m.ContestoMezzo.State.Disponibile);
         }
