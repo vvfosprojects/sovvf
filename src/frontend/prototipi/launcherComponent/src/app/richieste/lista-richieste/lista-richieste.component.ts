@@ -70,18 +70,11 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         // Restituisce la Richiesta Fissata in alto
         this.richiesteS.subjects.getRichiestaFissata().subscribe(richiestaFissata => {
             if (richiestaFissata) {
-                // Se esiste già una richiesta fissata riordino la lista
-                if (this.richiestaFissata) {
-                    this.ordinaRichieste();
-                }
                 this.richiestaFissata = richiestaFissata;
             } else {
-                this.ordinaRichieste();
                 this.richiestaFissata = null;
             }
         });
-        // Ordina le richieste dalla piu recente
-        this.ordinaRichieste();
     }
 
     ngOnChanges() {
@@ -103,11 +96,6 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         } else {
             this.markerS.opacizzaMarkers(false);
         }
-    }
-
-    /* Ordina le richieste per data dalla piu recente */
-    ordinaRichieste() {
-        this.richieste.sort((a, b) => new Date(b.istanteRicezioneRichiesta).getTime() - new Date(a.istanteRicezioneRichiesta).getTime());
     }
 
     /* Permette di visualizzare il loader e caricare nuove richieste */

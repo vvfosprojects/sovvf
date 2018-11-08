@@ -1,0 +1,75 @@
+<div class="row mt-3">
+  <div class="col">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa fa-hashtag dont-weight-bold"></i></span>
+      </div>
+      <input type="text" class="form-control" value="123.456.789" disabled>
+    </div>
+  </div>
+  <div class="col">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa fa-calendar dont-weight-bold"></i></span>
+      </div>
+      <input type="text" class="form-control" value="07/11/2018" disabled>
+    </div>
+  </div>
+  <div class="col">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa fa-clock-o dont-weight-bold"></i></span>
+      </div>
+      <input type="text" class="form-control" value="17:39" disabled>
+    </div>
+  </div>
+  <div class="col">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa fa-user dont-weight-bold"></i></span>
+      </div>
+      <input type="text" class="form-control" value="Mario Rossi" disabled>
+    </div>
+  </div>
+  <div class="col-12">
+    <form>
+      <div class="form-group">
+        <ng-select
+        [items]="people"
+        [multiple]="true"
+        [closeOnSelect]="true"
+        [hideSelected]="true"
+        placeholder="Seleziona Tipologia Intervento">
+      </ng-select>
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlInput1">Email address</label>
+        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">Example select</label>
+        <select class="form-control" id="exampleFormControlSelect1">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlSelect2">Example multiple select</label>
+        <select multiple class="form-control" id="exampleFormControlSelect2">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlTextarea1">Example textarea</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+      </div>
+    </form>
+  </div>
+</div>

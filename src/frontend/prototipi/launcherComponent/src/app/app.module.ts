@@ -32,10 +32,15 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import { ScrollEventModule } from 'ngx-scroll-event';
 import { TimeagoModule, TimeagoFormatter, TimeagoCustomFormatter, TimeagoIntl } from 'ngx-timeago';
 /**
+ * Chiamata Component
+ */
+import { NgSelectModule } from '@ng-select/ng-select';
+/**
  * Fake Service
  */
 import { EventiRichiestaService } from './core/service/eventi-richiesta-service/eventi-richiesta.service';
 import { EventiRichiestaServiceFake } from './core/service/eventi-richiesta-service/eventi-richiesta.service.fake';
+import { ChiamataComponent } from './chiamata/chiamata.component';
 
 
 @NgModule({
@@ -43,6 +48,7 @@ import { EventiRichiestaServiceFake } from './core/service/eventi-richiesta-serv
         AppComponent,
         HomeComponent,
         LoginComponent,
+        ChiamataComponent,
     ],
     imports: [
         BrowserModule,
@@ -65,7 +71,8 @@ import { EventiRichiestaServiceFake } from './core/service/eventi-richiesta-serv
         MapsModule,
         SharedModule,
         EventiRichiestaModule,
-        NavbarModule
+        NavbarModule,
+        NgSelectModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},

@@ -41,7 +41,7 @@
                 <div class="col-6">
                     <div class="row">
                         <div class="col-1 pr-0 text-center">
-                            <button class="btn btn-success"><i class="fa fa-phone"></i></button>
+                            <button class="btn btn-success" (click)="_toggleChiamata()"><i class="fa fa-phone"></i></button>
                         </div>
                         <div class="col-5">
                             <app-filtri-richieste></app-filtri-richieste>
@@ -57,9 +57,10 @@
             </div>
             <div class="row">
                 <div class="col-6">
-                    <app-richieste></app-richieste>
+                    <app-richieste *ngIf="_richieste"></app-richieste>
+                    <app-chiamata *ngIf="_chiamata"></app-chiamata>
                 </div>
-                <div class="col-6">
+                <div class="col-6 mt-2">
                     <app-maps></app-maps>
                 </div>
             </div>
