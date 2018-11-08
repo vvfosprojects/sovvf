@@ -6,6 +6,9 @@ import { PipeModule } from './shared/pipes/pipe.module';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SidebarModule } from 'ng-sidebar';
+import { FilterPipeModule } from 'ngx-filter-pipe';
+import { ScrollEventModule } from 'ngx-scroll-event';
+import { TimeagoModule, TimeagoFormatter, TimeagoCustomFormatter, TimeagoIntl } from 'ngx-timeago';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 /**
@@ -25,30 +28,16 @@ import { RichiesteModule } from './richieste/richieste.module';
 import { BoxesModule } from './boxes/boxes.module';
 import { MapsModule } from './maps/maps.module';
 import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
-/**
- * Richieste component da sistemare...
- */
-import { FilterPipeModule } from 'ngx-filter-pipe';
-import { ScrollEventModule } from 'ngx-scroll-event';
-import { TimeagoModule, TimeagoFormatter, TimeagoCustomFormatter, TimeagoIntl } from 'ngx-timeago';
-/**
- * Chiamata Component
- */
-import { NgSelectModule } from '@ng-select/ng-select';
-/**
- * Fake Service
- */
-import { EventiRichiestaService } from './core/service/eventi-richiesta-service/eventi-richiesta.service';
-import { EventiRichiestaServiceFake } from './core/service/eventi-richiesta-service/eventi-richiesta.service.fake';
-import { ChiamataComponent } from './chiamata/chiamata.component';
+import { ChiamataModule } from './chiamata/chiamata.module';
+
+// import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
     declarations: [
         AppComponent,
         HomeComponent,
-        LoginComponent,
-        ChiamataComponent,
+        LoginComponent
     ],
     imports: [
         BrowserModule,
@@ -72,7 +61,8 @@ import { ChiamataComponent } from './chiamata/chiamata.component';
         SharedModule,
         EventiRichiestaModule,
         NavbarModule,
-        NgSelectModule
+        // NgSelectModule
+        ChiamataModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},

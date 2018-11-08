@@ -6,8 +6,8 @@ export class HomeComponent implements OnInit {
     _opened = false;
 
     // visibilità componenti
-    _richieste = false;
-    _chiamata = true;
+    _richieste = true;
+    _chiamata = false;
 
 
     constructor(public fakeCambioSede: UnitaAttualeService) {

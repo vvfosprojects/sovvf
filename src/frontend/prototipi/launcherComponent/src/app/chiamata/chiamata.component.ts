@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChiamataComponent implements OnInit {
   people = ['ciao', 'ciao2'];
+
   constructor() { }
 
   ngOnInit() {
