@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {CommonModule} from '@angular/common';
 import {InfoAggregateComponent} from './info-aggregate/info-aggregate.component';
-import {BoxFunzionariComponent} from './info-aggregate/box-funzionari/box-funzionari.component';
+import {BoxPersonaleComponent} from './info-aggregate/box-personale/box-personale.component';
 import {BoxInterventiComponent} from './info-aggregate/box-interventi/box-interventi.component';
 import {BoxMezziComponent} from './info-aggregate/box-mezzi/box-mezzi.component';
 import {BoxMeteoComponent} from './info-aggregate/box-meteo/box-meteo.component';
@@ -25,7 +25,7 @@ import {InfoAggregateServiceFake} from '../core/service/boxes-service/info-aggre
     ],
     declarations: [
         InfoAggregateComponent,
-        BoxFunzionariComponent,
+        BoxPersonaleComponent,
         BoxInterventiComponent,
         BoxMezziComponent,
         BoxMeteoComponent

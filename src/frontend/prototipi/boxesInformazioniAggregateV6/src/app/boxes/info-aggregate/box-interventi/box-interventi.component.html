@@ -1,7 +1,7 @@
 <div class="row p-2">
     <div class="col-12">
         <div class="row">
-            <div class="col-8">
+            <div class="col-8 pr-0">
                 <i class="fa fa-medkit mb-2 mr-1"></i><span class="font-weight-bold">Richieste: {{interventi.totale}}</span>
                 <small>
                     <span class="ml-2 mr-1">Turno {{interventi.nomeTurnoPrecedente}}:</span>
@@ -13,8 +13,10 @@
             </div>
             <div class="col-4 ml-auto pl-0 text-right text-secondary">
                 <i class="fa fa-calendar-plus-o mb-2 mr-1"></i>
-                <span class="mr-1">{{interventi.annoCorrente}}:</span>
-                <span class="font-weight-bold">{{interventi.totAnnoCorrente}}</span>
+                <small>
+                    <span class="mr-1">{{interventi.annoCorrente}}:</span>
+                    <span class="font-weight-bold">{{interventi.totAnnoCorrente}}</span>
+                </small>
             </div>
         </div>
         <hr class="m-0 mb-2">

@@ -1,0 +1,116 @@
+<div class="row p-2">
+    <div class="col-12">
+        <!-- Funzionario in Servizio -->
+        <div class="row">
+            <div class="col-7">
+                <i class="fa fa-users mb-2 mr-1"></i>
+                <span class="font-weight-bold">Personale: <a href="javascript:void(0)">{{personale.personaleTotale}}</a></span>
+            </div>
+            <div class="col-5 ml-auto text-right text-secondary">
+                <ng-template #funzionariGuardia>
+                    <!-- Funzionario Guardia -->
+                    <div *ngIf="getFunzPresente()">
+                        <div class="h6">Funz. Guardia</div>
+                        <div class="px-0 h6">
+                            <span *ngFor="let f of personale.funzionari">
+                                <div *ngIf="f.funzGuardia">
+                                    <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
+                                    <span class="ml-1">{{f.descrizione}}</span>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                    <div *ngIf="!getFunzPresente()">
+                        <span><b>Nessun Funzionario</b></span>
+                    </div>
+                    <hr class="m-0 mb-2">
+
+                    <!-- Capo Turno -->
+                    <div *ngIf="getCapoTurnoPresente()">
+                        <div class="h6">Capo Turno</div>
+                        <div class="px-0 h6">
+                            <span *ngFor="let f of personale.funzionari">
+                                <div *ngIf="f.capoTurno">
+
+                                    <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
+                                    <span class="ml-1">{{f.descrizione}}</span>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                    <div *ngIf="!getCapoTurnoPresente()">
+                        <span><b>Nessun Capo Turno</b></span>
+                    </div>
+                </ng-template>
+                <ng-template #tecniciGuardia>
+                    <!-- Tecnico Guardia1 -->
+                    <div *ngIf="getTecnicoGuardia() > 0">
+                        <div class="px-0 h6">
+                            <span *ngFor="let f of personale.funzionari">
+                                <div *ngIf="f.tecnicoGuardia1">
+                                    <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
+                                    <span class="ml-1">{{f.descrizione}}</span>
+                                </div>
+                                <div *ngIf="f.tecnicoGuardia2" class="mt-1">
+                                    <small title="Qualifica" class="text-secondary">{{f.qualifica}}</small>
+                                    <span class="ml-1">{{f.descrizione}}</span>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                    <div *ngIf="getTecnicoGuardia() === 0">
+                        <span><b>Nessun Tecnico di Guardia</b></span>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+        <hr class="m-0 mb-2">
+    </div>
+    <!-- sinistra -->
+    <div class="col-7">
+        <div class="row">
+            <div class="col-12 mx-auto">
+                <div class="row">
+                    <div class="col pr-0 text-secondary">
+                        <ul class="list-unstyled m-0">
+                            <li><span class="d-inline-block h6">Squadre in servizio</span></li>
+                            <li><span class="d-inline-block h6">di cui assegnate</span></li>
+                        </ul>
+                    </div>
+                    <div class="col px-0  text-secondary text-center">
+                        <ul class="list-unstyled m-0">
+                            <li><span class="badge badge-secondary h6 w-50">{{personale.squadreServizio}}</span></li>
+                            <li><span class="badge h6 w-50" [ngClass]="squadreAssegnate()">{{personale.squadreAssegnate}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- destra -->
+    <div class="col-5">
+        <div class="row">
+            <div class="col-11 mx-auto">
+                <div class="row">
+                    <div class="col pr-0 text-secondary">
+                        <ul class="list-unstyled m-0">
+                            <li><span class="d-inline-block h6">{{getTotalFunz().nome}}</span></li>
+                            <li><span class="d-inline-block h6">{{getTotalTecn().nome}}</span></li>
+                        </ul>
+                    </div>
+                    <div class="col px-0 text-secondary text-center">
+                        <ul class="list-unstyled m-0">
+                            <li [ngbPopover]="funzionariGuardia" triggers="mouseenter:mouseleave" container="body"
+                                placement="bottom"><span
+                                    class="badge badge-dark cursor-pointer h6 w-75">{{getTotalFunz().numero}}</span></li>
+                            <li [ngbPopover]="tecniciGuardia" triggers="mouseenter:mouseleave" container="body"
+                                placement="bottom"><span
+                                    class="badge badge-secondary cursor-pointer h6 w-75">{{getTotalTecn().numero}}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

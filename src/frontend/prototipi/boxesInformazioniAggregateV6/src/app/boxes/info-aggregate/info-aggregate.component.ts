@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {BoxManagerService} from '../../core/manager/boxes-manager/box-manager-service.service';
 import {BoxInterventi} from '../boxes-model/box-interventi.model';
 import {BoxMezzi} from '../boxes-model/box-mezzi.model';
-import {BoxFunzionariSo} from '../boxes-model/box-funzionari-so.model';
+import {BoxPersonale} from '../boxes-model/box-personale.model';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -12,7 +12,7 @@ import {BoxFunzionariSo} from '../boxes-model/box-funzionari-so.model';
 export class InfoAggregateComponent implements OnInit {
     interventi: BoxInterventi;
     mezzi: BoxMezzi;
-    funzionariSo: BoxFunzionariSo[];
+    personale: BoxPersonale;
 
     constructor(private boxManager: BoxManagerService) {
     }
@@ -24,8 +24,8 @@ export class InfoAggregateComponent implements OnInit {
         this.boxManager.getBoxMezzi().subscribe((r: BoxMezzi) => {
             this.mezzi = r;
         });
-        this.boxManager.getBoxFunzionariSo().subscribe((r: BoxFunzionariSo[]) => {
-            this.funzionariSo = r;
+        this.boxManager.getBoxPersonale().subscribe((r: BoxPersonale) => {
+            this.personale = r;
         });
     }
 }

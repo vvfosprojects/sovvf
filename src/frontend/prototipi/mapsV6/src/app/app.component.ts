@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {UnitaOperativaService} from './navbar/navbar-service/unita-operativa-service/unita-operativa.service';
+import { Component } from '@angular/core';
+import { UnitaAttualeService } from './navbar/navbar-service/unita-attuale/unita-attuale.service';
 
 @Component({
     selector: 'app-root',
@@ -9,6 +9,6 @@ import {UnitaOperativaService} from './navbar/navbar-service/unita-operativa-ser
 export class AppComponent {
     title = 'mapsV6';
 
-    constructor(public fakeCambioSede: UnitaOperativaService) {
+    constructor(public fakeCambioSede: UnitaAttualeService) {
     }
 }

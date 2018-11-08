@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable, of, Subject} from 'rxjs';
 import {BoxInterventi} from '../../boxes/boxes-model/box-interventi.model';
 import {BoxMezzi} from '../../boxes/boxes-model/box-mezzi.model';
-import {BoxFunzionariSo} from '../../boxes/boxes-model/box-funzionari-so.model';
+import {BoxPersonale} from '../../boxes/boxes-model/box-personale.model';
 import {InfoAggregateService} from '../service/boxes-service/info-aggregate.service';
 
 @Injectable({
@@ -19,13 +19,13 @@ export class DispatcherInfoAggregateService {
     private updateBoxMezzi$ = new Subject<BoxMezzi>();
 
     /**
-     * dispatcher funzionari
+     * dispatcher personale
      */
-    private updateBoxFunzionario$ = new Subject<BoxFunzionariSo[]>();
+    private updateBoxPersonale$ = new Subject<BoxPersonale>();
 
     boxInterventi: BoxInterventi;
     boxMezzi: BoxMezzi;
-    boxFunzionari: BoxFunzionariSo[];
+    boxPersonale: BoxPersonale;
 
     constructor(private infoService: InfoAggregateService) {
     }
@@ -63,18 +63,18 @@ export class DispatcherInfoAggregateService {
 
 
     /**
-     *  metodi per richiedere lo stato dei funzionari
+     *  metodi per richiedere lo stato del personale
      */
 
-    onNewBoxFunzionariList(): Observable<BoxFunzionariSo[]> {
-        this.infoService.getFunzionariSo().subscribe((funzionariSo: BoxFunzionariSo[]) => {
-            this.boxFunzionari = funzionariSo;
+    onNewBoxPersonaleList(): Observable<BoxPersonale> {
+        this.infoService.getPersonale().subscribe((personale: BoxPersonale) => {
+            this.boxPersonale = personale;
         });
-        return of(this.boxFunzionari);
+        return of(this.boxPersonale);
     }
 
-    onUpdateBoxFunzionario(): Observable<BoxFunzionariSo[]> {
-        return this.updateBoxFunzionario$;
+    onUpdateBoxPersonale(): Observable<BoxPersonale> {
+        return this.updateBoxPersonale$;
     }
 
 }
