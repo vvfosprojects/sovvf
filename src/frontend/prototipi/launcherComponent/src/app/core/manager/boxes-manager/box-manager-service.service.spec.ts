@@ -1,15 +1,15 @@
 import {TestBed, inject} from '@angular/core/testing';
-import {DispatcherInfoAggregateService} from '../../dispatcher/dispatcher-boxes.service';
 
+import {BoxManagerService} from './box-manager-service.service';
 
-describe('DispatcherInfoAggregateService', () => {
+describe('MapManagerService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [DispatcherInfoAggregateService]
+            providers: [BoxManagerService]
         });
     });
 
-    it('should be created', inject([DispatcherInfoAggregateService], (service: DispatcherInfoAggregateService) => {
+    it('should be created', inject([BoxManagerService], (service: BoxManagerService) => {
         expect(service).toBeTruthy();
     }));
 });

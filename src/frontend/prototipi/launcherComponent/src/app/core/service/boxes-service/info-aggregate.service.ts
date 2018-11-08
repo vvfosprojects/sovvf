@@ -5,8 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {BoxInterventi} from '../../../boxes/boxes-model/box-interventi.model';
 import {BoxMezzi} from '../../../boxes/boxes-model/box-mezzi.model';
-import {BoxFunzionariSo} from '../../../boxes/boxes-model/box-funzionari-so.model';
-
+import {BoxPersonale} from '../../../boxes/boxes-model/box-personale.model';
 
 const API_URL = environment.apiUrl.boxes.infoAggregateFake.pieno;
 
@@ -34,8 +33,8 @@ export class InfoAggregateService {
         );
     }
 
-    public getFunzionariSo(): Observable<BoxFunzionariSo[]> {
-        return this.http.get<BoxFunzionariSo[]>(API_URL).pipe(
+    public getPersonale(): Observable<BoxPersonale> {
+        return this.http.get<BoxPersonale>(API_URL).pipe(
             retry(3),
             catchError(this.handleErrorObs)
         );

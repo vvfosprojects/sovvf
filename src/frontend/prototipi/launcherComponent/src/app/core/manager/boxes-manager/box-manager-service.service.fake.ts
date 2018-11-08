@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {BoxInterventi} from '../../../boxes/boxes-model/box-interventi.model';
 import {BoxMezzi} from '../../../boxes/boxes-model/box-mezzi.model';
-import {BoxFunzionariSo} from '../../../boxes/boxes-model/box-funzionari-so.model';
+import {BoxPersonale} from '../../../boxes/boxes-model/box-personale.model';
 import {DispatcherInfoAggregateService} from '../../dispatcher/dispatcher-boxes.service';
 
 
@@ -13,7 +13,7 @@ export class BoxManagerServiceFake {
 
     boxInterventi: BoxInterventi;
     boxMezzi: BoxMezzi;
-    boxFunzionari: BoxFunzionariSo[];
+    boxPersonale: BoxPersonale;
 
     constructor(private dispatcher: DispatcherInfoAggregateService) {
 
@@ -43,12 +43,12 @@ export class BoxManagerServiceFake {
         /**
          * dispatcher funzionariSo
          */
-        this.dispatcher.onNewBoxFunzionariList().subscribe(funzionariSo => {
-            this.boxFunzionari = funzionariSo;
+        this.dispatcher.onNewBoxPersonaleList().subscribe(personale => {
+            this.boxPersonale = personale;
         });
 
-        this.dispatcher.onUpdateBoxFunzionario().subscribe(funzionariSo => {
-            this.boxFunzionari = funzionariSo;
+        this.dispatcher.onUpdateBoxPersonale().subscribe(personale => {
+            this.boxPersonale = personale;
         });
 
     }
@@ -61,8 +61,8 @@ export class BoxManagerServiceFake {
         return of(this.boxMezzi);
     }
 
-    getBoxFunzionariSo(): Observable<BoxFunzionariSo[]> {
-        return of(this.boxFunzionari);
+    getBoxPersonale(): Observable<BoxPersonale> {
+        return of(this.boxPersonale);
     }
 
 }
