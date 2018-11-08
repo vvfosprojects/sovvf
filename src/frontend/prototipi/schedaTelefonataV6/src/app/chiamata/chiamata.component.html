@@ -1,0 +1,142 @@
+<div class="row mt-3">
+  <div class="col-11 mx-auto">
+    <span class="h5"><i class="fa fa-fw fa-hashtag mr-1"></i>RM-004</span>
+  </div>
+  <div class="col-12">
+    <hr class="my-2">
+  </div>
+  <div class="col-11 mx-auto">
+    <form>
+      <div class="form-group">
+        <label for="tipologie">Tipologia intervento</label>
+        <ng-select [items]="people" [multiple]="true" [closeOnSelect]="true" [hideSelected]="true" placeholder="Seleziona Tipologia Intervento">
+        </ng-select>
+      </div>
+      <div class="form-group">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-address-card"></i></span>
+          </div>
+          <input type="text" id="cognome" class="form-control" placeholder="Cognome">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-address-card-o"></i></span>
+          </div>
+          <input type="text" id="nome" class="form-control" placeholder="Nome">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group mb-1">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-industry"></i></span>
+          </div>
+          <input type="text" id="ragioneSociale" class="form-control" placeholder="Ragione Sociale">
+        </div>
+        <!-- Tasti veloci per ragione sociale -->
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-block btn-outline-secondary">CC</button>
+          </div>
+          <div class="col">
+            <button class="btn btn-block btn-outline-secondary">PS</button>
+          </div>
+          <div class="col">
+            <button class="btn btn-block btn-outline-secondary">PM</button>
+          </div>
+          <div class="col">
+            <button class="btn btn-block btn-outline-secondary">SSU</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-phone"></i></span>
+          </div>
+          <input type="text" id="telefono" class="form-control" placeholder="Telefono">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
+          </div>
+          <input type="text" id="coordinate" class="form-control" placeholder="Lat. 42.543, Long. 12.533" disabled>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-map"></i></span>
+          </div>
+          <input type="text" id="indirizzo" class="form-control" placeholder="Ricerca indirizzo">
+        </div>
+      </div>
+      <div class="row">
+        <!-- Divisione in due colonne: colonna sinistra -->
+        <div class="col-6">
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-map-pin"></i></span>
+              </div>
+              <input type="text" id="zonaEmergenza" class="form-control" placeholder="Zona Emergenza">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-commenting"></i></span>
+              </div>
+              <textarea class="form-control" placeholder="Motivazione"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-bullhorn"></i></span>
+              </div>
+              <textarea class="form-control">Note pubbliche</textarea>
+            </div>
+          </div>
+        </div>
+        <!-- Divisione in due colonne: colonna destra -->
+        <div class="col-6">
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-tag"></i></span>
+              </div>
+              <input type="text" id="tag" class="form-control" placeholder="Tag">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-comments"></i></span>
+              </div>
+              <textarea class="form-control" placeholder="Note indirizzo"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-headphones"></i></span>
+              </div>
+              <textarea class="form-control">Note private</textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-11 mx-auto">
+    <div class="text-right">
+        <button class="btn btn-lg btn-primary mr-2">Conferma</button>
+        <button class="btn btn-secondary">Reset</button>
+    </div>
+  </div>
+</div>
