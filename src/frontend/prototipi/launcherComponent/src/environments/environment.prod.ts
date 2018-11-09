@@ -1,5 +1,5 @@
 export const environment = {
-    production: true,
+    production: false,
     apiUrl: {
         boxes: {
             infoAggregateFake: {
@@ -31,14 +31,18 @@ export const environment = {
             fake: 'https://api.myjson.com/bins/x09t6',
             backend: 'http://localhost:2661/api'
         },
-        elencoFiltri: {
-            fake: 'https://api.myjson.com/bins/c9b50',
+        elencoTipologie: {
+            fake: 'https://api.myjson.com/bins/1b3l06',
         },
         eventiRichieste: {
             fake: 'https://api.myjson.com/bins/kz0w0',
             backend: 'http://localhost:2661/api'
         },
         turno: {
+            fake: '',
+            backend: ''
+        },
+        sedi: {
             fake: '',
             backend: ''
         }
