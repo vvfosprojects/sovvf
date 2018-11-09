@@ -19,4 +19,7 @@ export class MarkerService {
     noAction() {
         // console.log('No action');
     }
+
+    opacizzaMarkers(a, b?) {
+    }
 }

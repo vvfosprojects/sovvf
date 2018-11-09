@@ -3,7 +3,7 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { ListaRichiesteManagerService } from '../../core/manager/lista-richieste-manager/lista-richieste-manager.service';
 import { ScrollEvent } from 'ngx-scroll-event';
 import { ListaRichiesteService } from '../lista-richieste-service/lista-richieste-service.service';
-import { RicercaRichiesteService } from '../ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
+import { RicercaRichiesteService } from '../../filterbar/ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
