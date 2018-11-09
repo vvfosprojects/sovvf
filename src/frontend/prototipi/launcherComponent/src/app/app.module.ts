@@ -29,8 +29,7 @@ import { BoxesModule } from './boxes/boxes.module';
 import { MapsModule } from './maps/maps.module';
 import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
 import { ChiamataModule } from './chiamata/chiamata.module';
-
-// import { NgSelectModule } from '@ng-select/ng-select';
+import { FilterbarModule } from './filterbar/filterbar.module';
 
 
 @NgModule({
@@ -61,8 +60,8 @@ import { ChiamataModule } from './chiamata/chiamata.module';
         SharedModule,
         EventiRichiestaModule,
         NavbarModule,
-        // NgSelectModule
-        ChiamataModule
+        ChiamataModule,
+        FilterbarModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},

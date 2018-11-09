@@ -10,7 +10,7 @@
   </div>
   <!-- Lista di singole Richieste -->
   <div class="col-12 pt-1 px-0 scroll-y" detect-scroll (onScroll)="nuoveRichieste($event)" [bottomOffset]="1" [ngClass]="{'m-h-750': !richiestaFissata, 'm-h-600': richiestaFissata}">
-    <div *ngFor="let r of richieste | filterBy: ricercaS.searchTerm" class="col-6big">
+    <div *ngFor="let r of richieste | filterBy: ricercaS.searchTerm" class="" [ngClass]="{'col-double': !_split, 'col-12': _split}">
       <div *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="CardClasses(r)">
         <app-sintesi-richiesta [richiesta]="r" [fissata]="false" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)"
           (fissaInAlto)="fissaInAlto($event)" (clickRichiesta)="richiestaClick($event)" (doubleClickRichiesta)="richiestaDoubleClick($event)"

@@ -15,12 +15,9 @@ import { TimeagoModule, TimeagoFormatter, TimeagoCustomFormatter, TimeagoIntl } 
     Components
  */
 import { RichiesteComponent } from './richieste.component';
-import { ListaRichiesteComponent } from './/lista-richieste/lista-richieste.component';
+import { ListaRichiesteComponent } from './lista-richieste/lista-richieste.component';
 import { SintesiRichiestaComponent } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
 import { SintesiRichiestaSmComponent } from './lista-richieste/sintesi-richiesta-sm/sintesi-richiesta-sm.component';
-import { RicercaRichiesteComponent } from './ricerca-richieste/ricerca-richieste.component';
-import { FiltriRichiesteComponent } from './filtri-richieste/filtri-richieste.component';
-import { FiltroComponent } from './filtri-richieste/filtro/filtro.component';
 import { RichiestaFissataComponent } from './lista-richieste/richiesta-fissata/richiesta-fissata.component';
 /*
     Provider
@@ -55,16 +52,11 @@ import { NgxPaginationModule } from 'ngx-pagination';
         RichiesteComponent,
         ListaRichiesteComponent,
         SintesiRichiestaComponent,
-        RicercaRichiesteComponent,
-        FiltriRichiesteComponent,
-        FiltroComponent,
         RichiestaFissataComponent,
         SintesiRichiestaSmComponent
     ],
     exports: [
-        RichiesteComponent,
-        RicercaRichiesteComponent,
-        FiltriRichiesteComponent
+        RichiesteComponent
     ],
     providers: [
         { provide: DispatcherService, useClass: DispatcherFakeService },

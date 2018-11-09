@@ -189,6 +189,9 @@ export class MarkerService implements OnDestroy {
                 this.noAction();
                 this.richiesteService.defissata();
                 this.richiesteService.deselezionata();
+                this.checkMarker = null;
+                this.markerZIndex = null;
+                this.markerColorato = null;
             }
                 break;
         }

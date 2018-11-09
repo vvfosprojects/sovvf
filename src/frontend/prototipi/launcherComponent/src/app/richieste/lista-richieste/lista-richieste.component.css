@@ -5,11 +5,18 @@
 	left: 12px;
 	font-size: .6em;
 }
+
 .col-6big {
 	position: relative;
 	min-height: 1px;
 	padding-right: 15px;
 	padding-left: 15px;
+}
+
+.col-double {
+	float: left;
+	width: 50%;
+	padding: 0px 15px;
 }
 
 #listaRichieste{

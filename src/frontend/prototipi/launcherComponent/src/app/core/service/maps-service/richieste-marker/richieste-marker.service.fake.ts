@@ -75,7 +75,7 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Persona che minaccia di buttarsi da un tetto',
                 4,
-                'sospeso',
+                'assegnato',
                 moment().subtract(35, 'minutes').toDate()
             ),
             new RichiestaMarker(

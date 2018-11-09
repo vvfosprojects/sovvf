@@ -1,6 +1,6 @@
 <ng-sidebar-container style="height:100vh;">
     <ng-sidebar [(opened)]="_opened" [mode]="'over'" [dock]="false" [sidebarClass]="'sidebar bg-grey'" [animate]="true"
-        [closeOnClickOutside]="true">
+                [closeOnClickOutside]="true">
         <div class="container-fluid py-2">
             <div class="row">
                 <div class="col-2 text-right px-4">
@@ -38,53 +38,19 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-6">
-                    <div class="row">
-                        <div class="col-1 pr-0 text-center">
-                            <button class="btn btn-success" (click)="_toggleChiamata()"><i class="fa fa-phone"></i></button>
-                        </div>
-                        <div class="col-5">
-                            <app-filtri-richieste></app-filtri-richieste>
-                        </div>
-                        <div class="col-6">
-                            <app-ricerca-richieste></app-ricerca-richieste>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <!-- parte destra -->
+                <div class="col-12">
+                    <app-filterbar></app-filterbar>
                 </div>
             </div>
             <div class="row">
-                <div class="col-6">
-                    <app-richieste *ngIf="_richieste"></app-richieste>
-                    <app-chiamata *ngIf="_chiamata"></app-chiamata>
+                <div class="" [ngClass]="column[0]">
+                    <app-richieste *ngIf="viewState.richieste"></app-richieste>
+                    <app-chiamata *ngIf="viewState.chiamata"></app-chiamata>
                 </div>
-                <div class="col-6 mt-2">
+                <div *ngIf="viewState.mappa" class="mt-2" [ngClass]="column[1]">
                     <app-maps></app-maps>
                 </div>
             </div>
-            <!-- <div class="row">
-                <div class="col-6">
-                    <div class="row">
-                        <div class="col-1">
-                            <button class="btn btn-block btn-success"><i class="fa fa-phone"></i></button>
-                        </div>
-                        <div class="col-5">
-                            <app-filtri-richieste></app-filtri-richieste>
-                        </div>
-                        <div class="col-6">
-                            <app-ricerca-richieste></app-ricerca-richieste>
-                        </div>
-                        <div class="col-12">
-                            <app-richieste></app-richieste>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <app-maps></app-maps>
-                </div>
-            </div> -->
         </div>
     </div>
 </ng-sidebar-container>

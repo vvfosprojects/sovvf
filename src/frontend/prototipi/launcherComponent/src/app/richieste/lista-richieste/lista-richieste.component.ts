@@ -3,12 +3,14 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { ListaRichiesteManagerService } from '../../core/manager/lista-richieste-manager/lista-richieste-manager.service';
 import { ScrollEvent } from 'ngx-scroll-event';
 import { ListaRichiesteService } from '../lista-richieste-service/lista-richieste-service.service';
-import { RicercaRichiesteService } from '../ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
+import { RicercaRichiesteService } from '../../filterbar/ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
 import { Subscription } from 'rxjs';
 import { FilterPipe } from 'ngx-filter-pipe';
+import { ViewInterface } from '../../filterbar/view-mode/view.interface';
+import { FilterbarService } from '../../filterbar/filterbar-service/filterbar-service.service';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -28,13 +30,15 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     preventSimpleClick: boolean;
     timer: any;
     contatoreNuoveRichieste = 0;
+    _split = true;
 
     constructor(private listaRichiesteManager: ListaRichiesteManagerService,
                 private richiesteS: ListaRichiesteService,
                 public ricercaS: RicercaRichiesteService,
                 private modalService: NgbModal,
                 private markerS: MarkerService,
-                private filter: FilterPipe) {
+                private filter: FilterPipe,
+                private viewService: FilterbarService) {
 
         // Restituisce le Richieste
         this.subscription.add(
@@ -48,6 +52,15 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         this.subscription.add(this.ricercaS.getRicerca().subscribe(stringa => {
             this.opacizzaRichieste(stringa);
         }));
+        this.subscription.add(
+            this.viewService.getView().subscribe((r: ViewInterface) => {
+                if (r.split) {
+                    this._split = true;
+                } else {
+                    this._split = false;
+                }
+            })
+        );
     }
 
     ngOnInit() {

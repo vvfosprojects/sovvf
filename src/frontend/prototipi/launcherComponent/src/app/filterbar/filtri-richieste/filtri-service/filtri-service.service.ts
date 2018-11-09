@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { VoceFiltro } from '../../filtri-richieste/voce-filtro.model';
+import { VoceFiltro } from '../voce-filtro.model';
 import { Observable, of, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
+import { catchError} from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 
 const API_URL = environment.apiUrl.elencoFiltri.fake;
