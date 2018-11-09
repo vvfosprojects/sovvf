@@ -1,15 +1,50 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
-
 export const environment = {
-  production: false
-};
+    production: false,
+    apiUrl: {
+        boxes: {
+            infoAggregateFake: {
+                pieno: 'https://api.myjson.com/bins/16f4c4', /* 2 FUNZIONARI, BOX-RICHIESTE, BOX-MEZZI  */
+                vuoto: 'https://api.myjson.com/bins/e2ew0' /* 0 FUNZIONARI, NO BOX-RCHIESTE, NO BOX-MEZZI */
+            },
+            owm: {
+                url: 'http://api.openweathermap.org/data/2.5/weather?',
+                option: {
+                    lang: 'it',
+                    key: 'a23cc450dabf63fdb6729696aa29b3a6',
+                    unit: 'metric'
+                }
 
-/*
- * In development mode, for easier debugging, you can ignore zone related error
- * stack frames such as `zone.run`/`zoneDelegate.invokeTask` by importing the
- * below file. Don't forget to comment it out in production mode
- * because it will have a performance impact when errors are thrown
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+            }
+        },
+        maps: {
+            markers: {
+                richieste: 'https://api.myjson.com/bins/xua22',
+                sedi: 'https://api.myjson.com/bins/18m83u',
+                mezzi: '',
+                centro: ''
+            },
+            agm: {
+                key: 'AIzaSyDYIMWNyVt1X_30PybcDMTZkFkcSsUytDk'
+            }
+        },
+        rigaElencoRichieste: {
+            fake: 'https://api.myjson.com/bins/x09t6',
+            backend: 'http://localhost:2661/api'
+        },
+        elencoTipologie: {
+            fake: '../assets/json/tipologie.json',
+        },
+        eventiRichieste: {
+            fake: 'https://api.myjson.com/bins/kz0w0',
+            backend: 'http://localhost:2661/api'
+        },
+        turno: {
+            fake: '',
+            backend: ''
+        },
+        sedi: {
+            fake: '',
+            backend: ''
+        }
+    }
+};

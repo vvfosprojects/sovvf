@@ -1,3 +1,13 @@
 @import '../node_modules/bootstrap/dist/css/bootstrap.css';
 @import '../node_modules/font-awesome/css/font-awesome.css';
 @import "~@ng-select/ng-select/themes/default.theme.css";
+
+.status_chiamata {
+    border-left: 10px solid #dc3545;
+}
+
+.card-shadow-danger{
+    -webkit-box-shadow: 2px 0px 2px .5px #dc3545;
+    -moz-box-shadow: 2px 0px 2px .5px #dc3545;
+    box-shadow: 2px 0px 2px .5px #dc3545;
+}

@@ -1,31 +1,34 @@
-<div class="row mt-3">
-  <div class="col-11 mx-auto">
-    <span class="h5"><i class="fa fa-fw fa-hashtag mr-1"></i>RM-004</span>
-  </div>
-  <div class="col-12">
-    <hr class="my-2">
-  </div>
-  <div class="col-11 mx-auto">
+<div *ngIf="tipologie" class="row mt-3">
+  <div class="col-11 py-3 px-5 mx-auto rounded status_chiamata card-shadow-danger">
     <form>
       <div class="form-group">
         <label for="tipologie">Tipologia intervento</label>
-        <ng-select [items]="people" [multiple]="true" [closeOnSelect]="true" [hideSelected]="true" placeholder="Seleziona Tipologia Intervento">
+        <ng-select [items]="tipologie" [multiple]="true" [closeOnSelect]="true" [hideSelected]="true" 
+        bindLabel="descrizione" placeholder="Seleziona Tipologia Intervento">
         </ng-select>
       </div>
-      <div class="form-group">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-address-card"></i></span>
+      <div class="row">
+        <!-- Divisione in due colonne: cognome -->
+        <div class="col">
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-address-card"></i></span>
+              </div>
+              <input type="text" id="cognome" class="form-control" placeholder="Cognome">
+            </div>
           </div>
-          <input type="text" id="cognome" class="form-control" placeholder="Cognome">
         </div>
-      </div>
-      <div class="form-group">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-address-card-o"></i></span>
+        <!-- Divisione in due colonne: nome -->
+        <div class="col">
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-address-card-o"></i></span>
+              </div>
+              <input type="text" id="nome" class="form-control" placeholder="Nome">
+            </div>
           </div>
-          <input type="text" id="nome" class="form-control" placeholder="Nome">
         </div>
       </div>
       <div class="form-group">
@@ -38,16 +41,16 @@
         <!-- Tasti veloci per ragione sociale -->
         <div class="row">
           <div class="col">
-            <button class="btn btn-block btn-outline-secondary">CC</button>
+            <button class="btn btn-block btn-outline-secondary py-1">CC</button>
           </div>
           <div class="col">
-            <button class="btn btn-block btn-outline-secondary">PS</button>
+            <button class="btn btn-block btn-outline-secondary py-1">PS</button>
           </div>
           <div class="col">
-            <button class="btn btn-block btn-outline-secondary">PM</button>
+            <button class="btn btn-block btn-outline-secondary py-1">PM</button>
           </div>
           <div class="col">
-            <button class="btn btn-block btn-outline-secondary">SSU</button>
+            <button class="btn btn-block btn-outline-secondary py-1">SSU</button>
           </div>
         </div>
       </div>
@@ -99,7 +102,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fa fa-bullhorn"></i></span>
               </div>
-              <textarea class="form-control">Note pubbliche</textarea>
+              <textarea class="form-control" placeholder="Note pubbliche"></textarea>
             </div>
           </div>
         </div>
@@ -126,17 +129,20 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fa fa-headphones"></i></span>
               </div>
-              <textarea class="form-control">Note private</textarea>
+              <textarea class="form-control" placeholder="Note private"></textarea>
             </div>
           </div>
         </div>
       </div>
     </form>
-  </div>
-  <div class="col-11 mx-auto">
-    <div class="text-right">
-        <button class="btn btn-lg btn-primary mr-2">Conferma</button>
-        <button class="btn btn-secondary">Reset</button>
+    <div class="row">
+      <div class="col">
+          <h5 class="py-3 text-danger"><i class="fa fa-fw fa-hashtag mr-1"></i>RM-004</h5>
+      </div>
+      <div class="col text-right">
+        <button class="btn btn-lg btn-secondary mr-2" disabled><i class="fa fa-check mr-1"></i>Conferma</button>
+        <button class="btn btn-lg btn-danger"><i class="fa fa-trash"></i></button>
+      </div>
     </div>
   </div>
 </div>

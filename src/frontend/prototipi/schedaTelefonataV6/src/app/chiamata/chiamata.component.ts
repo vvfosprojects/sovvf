@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TipologieService } from '../shared/tipologie/tipologie.service';
 
 @Component({
   selector: 'app-chiamata',
@@ -6,11 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chiamata.component.css']
 })
 export class ChiamataComponent implements OnInit {
-  people = ['ciao', 'ciao2'];
+  tipologie: any;
 
-  constructor() { }
+  constructor(private tipologieS: TipologieService) { }
 
   ngOnInit() {
+    this.tipologieS.getTipologie().subscribe(t => {
+      this.tipologie = t;
+    });
   }
-
 }
