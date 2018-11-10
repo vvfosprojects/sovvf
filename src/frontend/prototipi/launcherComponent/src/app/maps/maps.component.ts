@@ -17,6 +17,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     richiesteMarkers: RichiestaMarker[];
     sediMarkers: SedeMarker[];
     mezziMarkers: MezzoMarker[];
+    chiamataMarker: any;
     subscription = new Subscription();
 
     constructor(private richiesteManager: MapManager.RichiesteMarkerManagerService,
@@ -54,6 +55,11 @@ export class MapsComponent implements OnInit, OnDestroy {
         this.subscription.add(this.sediManager.getSediMarker().subscribe((r: SedeMarker[]) => {
             this.sediMarkers = r;
         }));
+
+        /**
+         * placeholder di una chiamata vuota
+         */
+        this.chiamataMarker = null;
     }
 
     ngOnInit() {

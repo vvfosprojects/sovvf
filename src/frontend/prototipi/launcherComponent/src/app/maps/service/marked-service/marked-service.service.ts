@@ -1,22 +1,23 @@
-import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MarkedService {
 
-    private subject = new Subject<any>();
+    private marked = new Subject<any>();
 
     sendMarked(marker: any) {
-        this.subject.next(marker);
+        this.marked.next(marker);
     }
 
     clearMarked() {
-        this.subject.next();
+        this.marked.next();
     }
 
     getMarked(): Observable<any> {
-        return this.subject.asObservable();
+        return this.marked.asObservable();
     }
+
 }

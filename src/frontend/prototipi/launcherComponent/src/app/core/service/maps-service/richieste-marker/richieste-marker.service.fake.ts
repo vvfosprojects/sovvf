@@ -109,43 +109,7 @@ export class RichiesteMarkerServiceFake {
                 'Recupero merci e beni da camion ribaltato',
                 2,
                 'sospeso'
-            ),
-            /**
-             * richieste mancanti sul fake di richieste
-             */
-            new RichiestaMarker(
-                'R9',
-                new Localita(
-                    new Coordinate(41.92221, 12.41895), 'Via Stefano Borgia, 102', ''),
-                [
-                    new Tipologia('1', 'Alberi pericolanti', '')
-                ],
-                'Alberi o rami pericolanti/caduti',
-                3,
-                'chiamata'
-            ),
-            new RichiestaMarker(
-                'R10',
-                new Localita(
-                    new Coordinate(41.74317, 12.34693), 'Via Cratete di Mallo, 13', ''),
-                [
-                    new Tipologia('1', 'Danni d\'acqua in genere', 'fa fa-tint')
-                ],
-                'Danni d\'acqua in genere',
-                3,
-                'chiamata'
-            ),
-            new RichiestaMarker(
-                'R11',
-                new Localita(
-                    new Coordinate(41.783819, 12.44016), 'Via Salvatore Lorizzo', ''),
-                [
-                    new Tipologia('360', 'Recupero merci e beni', '')
-                ],
-                'Danni d\'acqua in genere',
-                3,
-                'presidiato'
-            ),
+            )
         ];
 
         return of(this.richiesteMarkers);
