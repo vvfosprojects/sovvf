@@ -19,6 +19,7 @@ import { Coordinate } from '../../../shared/model/coordinate.model';
 export class MarkerService implements OnDestroy {
 
     private subjectMeteo = new Subject<Meteo>();
+    private markedColor = new Subject<string>();
     icone = new IconMappe();
     tipo = new TipoMappe();
     colori = new TipoColori();
@@ -93,6 +94,17 @@ export class MarkerService implements OnDestroy {
         }
     }
 
+    coloraMarker(marker) {
+        if (!!marker.id_richiesta && marker.mezzo.stato) {
+            this.coloreStato = this.colori.markerColor(marker.mezzo.stato);
+        } else if (marker.stato) {
+            this.coloreStato = this.colori.markerColor(marker.stato);
+        } else {
+            this.coloreStato = '#343a40';
+        }
+        this.markedColor.next(this.coloreStato);
+    }
+
     cliccato(marker: any): void {
         /**
          *  imposto nel service marked lo stato del marker a selezionato
@@ -107,6 +119,7 @@ export class MarkerService implements OnDestroy {
          */
         this.agmService.centraMappa(this.getCoordinate(marker));
         this.agmService.cambiaZoom(18);
+        this.coloraMarker(marker);
     }
 
     selezionato(marker: any): void {
@@ -145,7 +158,6 @@ export class MarkerService implements OnDestroy {
                 if (this.checkMarker !== marker.id) {
                     this.cliccato(marker);
                     this.checkMarker = marker.id;
-                    this.coloreStato = this.colori.markerColor(marker.stato);
                     this.richiesteService.fissata(marker.id, true);
                     this.richiesteService.deselezionata();
                 }
@@ -167,7 +179,6 @@ export class MarkerService implements OnDestroy {
                     /**
                      * lanciare azione solo quando il mezzo è in soccorso
                      */
-                    this.coloreStato = this.colori.markerColor(marker.mezzo.stato);
                 }
             }
                 break;
@@ -189,9 +200,16 @@ export class MarkerService implements OnDestroy {
                 this.noAction();
                 this.richiesteService.defissata();
                 this.richiesteService.deselezionata();
+                this.checkMarker = null;
+                this.markerZIndex = null;
+                this.markerColorato = null;
             }
                 break;
         }
+    }
+
+    getMarkedColor(): Observable<any> {
+        return this.markedColor.asObservable();
     }
 
 

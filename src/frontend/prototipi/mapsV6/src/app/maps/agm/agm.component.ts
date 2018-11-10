@@ -24,6 +24,7 @@ export class AgmComponent implements OnInit, OnDestroy {
     @Input() sediMarkers: SedeMarker[];
     @Input() mezziMarkers: MezzoMarker[];
     @Input() centroMappa: CentroMappa;
+    @Input() chiamataMarker: any;
     minMarkerCluster: number;
     datiMeteo: Meteo;
     coloreStato: string;
@@ -57,8 +58,14 @@ export class AgmComponent implements OnInit, OnDestroy {
         this.subscription.add(this.markerService.getMeteo().subscribe((meteo: Meteo) => {
             this.datiMeteo = meteo;
         }));
+        /**
+         * colore del marker cliccato
+         * @type {Subscription}
+         */
+        this.subscription.add(this.markerService.getMarkedColor().subscribe(colore => {
+            this.coloreStato = colore;
+        }));
         this.minMarkerCluster = 99999;
-        this.coloreStato = '#343a40';
     }
 
     ngOnInit() {

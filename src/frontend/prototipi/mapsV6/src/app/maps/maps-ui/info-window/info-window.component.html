@@ -117,11 +117,11 @@
             </tr>
             <tr>
                 <th scope="row" class="py-1 s-info-window">
-                    <span *ngIf="mezzoMarker.squadre">
+                    <span *ngIf="mezzoMarker.mezzo.squadre">
                         <span class="mx-auto">
-                        <span class="mr-2" *ngIf="mezzoMarker.squadre.length == 1">Squadra</span>
-                        <span class="mr-2" *ngIf="mezzoMarker.squadre.length > 1">Squadre</span>
-                        <span *ngFor="let s of mezzoMarker.squadre">
+                        <span class="mr-2" *ngIf="mezzoMarker.mezzo.squadre.length == 1">Squadra</span>
+                        <span class="mr-2" *ngIf="mezzoMarker.mezzo.squadre.length > 1">Squadre</span>
+                        <span *ngFor="let s of mezzoMarker.mezzo.squadre">
                             <span class="mr-2">
                                 <a class="mr-1" href="javascript:void(0)" title="Componenti squadra"
                                    [ngbPopover]="popComponenti"
@@ -141,7 +141,7 @@
                         </span>
                         </span>
                     </span>
-                    <span *ngIf="!mezzoMarker.squadre">
+                    <span *ngIf="!mezzoMarker.mezzo.squadre">
                         Nessuna squadra
                     </span>
                 </th>
