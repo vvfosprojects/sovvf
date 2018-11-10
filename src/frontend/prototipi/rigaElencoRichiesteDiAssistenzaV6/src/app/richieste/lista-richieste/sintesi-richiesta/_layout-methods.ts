@@ -19,7 +19,9 @@ export class LayoutMethods {
         let nomiSquadre: string[];
         if (richiesta.partenze) {
             richiesta.partenze.forEach(partenza => {
-                nomiSquadre = partenza.squadre.map(s => s.nome);
+                partenza.mezzi.forEach(mezzo => {
+                    nomiSquadre = mezzo.squadre.map(s => s.nome);
+                });
             });
         }
         return nomiSquadre;
@@ -30,7 +32,9 @@ export class LayoutMethods {
         let numeroSquadre = 0;
         if (richiesta.partenze) {
             richiesta.partenze.forEach(partenza => {
-                numeroSquadre = numeroSquadre + partenza.squadre.length;
+                partenza.mezzi.forEach(mezzo => {
+                    numeroSquadre = numeroSquadre + mezzo.squadre.length;
+                });
             });
         }
         return numeroSquadre;

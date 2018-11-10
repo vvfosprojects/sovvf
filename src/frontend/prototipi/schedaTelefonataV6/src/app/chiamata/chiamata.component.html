@@ -1,8 +1,8 @@
 <div *ngIf="tipologie" class="row mt-3">
-  <div class="col-11 py-3 px-5 mx-auto rounded status_chiamata card-shadow-danger">
+  <div class="col-11 py-3 px-5 mx-auto rounded status_chiamata card-shadow-danger" style="height: 740px">
     <form>
       <div class="form-group">
-        <label for="tipologie">Tipologia intervento</label>
+        <label>Tipologia intervento</label>
         <ng-select [items]="tipologie" [multiple]="true" [closeOnSelect]="true" [hideSelected]="true" 
         bindLabel="descrizione" placeholder="Seleziona Tipologia Intervento">
         </ng-select>

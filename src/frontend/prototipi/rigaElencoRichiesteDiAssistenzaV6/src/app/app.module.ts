@@ -21,6 +21,7 @@ import {SharedModule} from './shared/shared.module';
     solo per il componente
  */
 import { NavTestComponent } from './lista-richieste-test/nav-test/nav-test.component';
+import {FilterbarModule} from './filterbar/filterbar.module';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { NavTestComponent } from './lista-richieste-test/nav-test/nav-test.compo
     ],
     imports: [
         RichiesteModule,
+        FilterbarModule,
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,

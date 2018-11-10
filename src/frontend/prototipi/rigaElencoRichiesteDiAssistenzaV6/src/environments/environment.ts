@@ -18,21 +18,33 @@ export const environment = {
         },
         maps: {
             markers: {
-                fake1: 'https://api.myjson.com/bins/6vlu4',
-                fake2: 'https://api.myjson.com/bins/1b6478'
+                richieste: 'https://api.myjson.com/bins/xua22',
+                sedi: 'https://api.myjson.com/bins/18m83u',
+                mezzi: '',
+                centro: ''
             },
             agm: {
                 key: 'AIzaSyDYIMWNyVt1X_30PybcDMTZkFkcSsUytDk'
             }
         },
         rigaElencoRichieste: {
-            fake: 'https://api.myjson.com/bins/ajv6q',
-            fake2: 'https://api.myjson.com/bins/1djrb6',
+            fake: 'https://api.myjson.com/bins/x09t6',
             backend: 'http://localhost:2661/api'
         },
-        elencoFiltri: {
-            fake: 'https://api.myjson.com/bins/yrkns',
-            fake2: 'https://api.myjson.com/bins/qa8as' // Errore nel json
+        elencoTipologie: {
+            fake: '../assets/json/tipologie.json',
+        },
+        eventiRichieste: {
+            fake: 'https://api.myjson.com/bins/kz0w0',
+            backend: 'http://localhost:2661/api'
+        },
+        turno: {
+            fake: '',
+            backend: ''
+        },
+        sedi: {
+            fake: '',
+            backend: ''
         }
     }
 };

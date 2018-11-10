@@ -1,8 +1,8 @@
 <li class="list-group-item p-0 border-bottom py-1">
   <div class="row">
-    <span class="d-inline-block pl-4 border-right">
+    <span class="d-inline-block pl-4">
       <i class="guida fa fa-tachometer fa-fw mr-1" style="font-size: 1.5em" aria-hidden="true" title="Mezzo"></i>
-      <span *ngIf="mezzo.descrizione" class="font-weight-bold">{{ mezzo.descrizione }}</span>
+      <span *ngIf="mezzo.descrizione"><b>{{ mezzo.descrizione }}</b></span>
       <span *ngIf="mezzo.genere" class="badge badge-default m-0">{{ mezzo.genere }}</span>
       <span *ngIf="mezzo.descrizioneStato" class="badge text-white m-0 ml-1" [ngClass]="{'badge-default':mezzo.stato == 'InSede' || mezzo.stato == 'Istituto', 'badge-warning':mezzo.stato == 'InViaggio', 'badge-success':mezzo.stato == 'SulPosto', 'badge-info':mezzo.stato == 'InRientro'}">
         {{ mezzo.descrizioneStato }}
@@ -16,7 +16,6 @@
         <i class="guida fa fa-briefcase fa-fw" style="color:cadetblue;" aria-hidden="true" title="Condizione del Mezzo"></i>
       </a>
 
-      <!-- ng-template indicatori -->
       <ng-template #indMez>
         <div *ngIf="!nessunIndMezzo(mezzo)" class="h6 m-0 nowrap">
           <div *ngIf="mezzo.descrizioneStatoEfficienza">
@@ -24,8 +23,7 @@
             <span class='badge' [ngClass]="dettagliMezzo(mezzo.statoEfficienza, 'efficienza', 'badge')">
               {{ mezzo.descrizioneStatoEfficienza }}</span>
           </div>
-          <div *ngIf="mezzo.descrizioneLivelloCarburante">
-            <i class='fa fa-tachometer fa-fw' title='Livello Carburante'></i>
+          <div *ngIf="mezzo.descrizioneLivelloCarburante"><i class='fa fa-tachometer fa-fw' title='Livello Carburante'></i>
             <span class='badge' [ngClass]="dettagliMezzo(mezzo.livelloCarburante, 'carburante', 'badge')">
               {{ mezzo.descrizioneLivelloCarburante }}</span>
           </div>
@@ -45,14 +43,11 @@
         </div>
       </ng-template>
     </span>
-
     <!-- notifiche mezzo -->
     <span class="d-inline-block py-1">
       <a [ngbPopover]="notMez" placement="top" triggers="click" popoverTitle="Notifiche mezzo" tabindex="0">
         <i class="guida fa fa-bell fa-fw" style="color:cadetblue!important;"></i>
       </a>
-
-      <!-- ng-template notifiche mezzo -->
       <ng-template #notMez>
         <span *ngIf="mezzo.notifiche">
           <span *ngFor="let n of mezzo.notifiche">

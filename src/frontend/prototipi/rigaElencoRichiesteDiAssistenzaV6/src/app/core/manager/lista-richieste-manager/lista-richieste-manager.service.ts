@@ -37,4 +37,8 @@ export class ListaRichiesteManagerService {
         }
         return richiesta;
     }
+
+    onNewRichiesteList() {
+        return;
+    }
 }

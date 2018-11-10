@@ -1,5 +1,12 @@
 <div class="row">
-    <div class="col-6">
+    <div class="col-12">
+        <app-filterbar></app-filterbar>
+    </div>
+</div>
+<div class="row">
+    <div class="" [ngClass]="viewState.columns[0]">
         <app-richieste></app-richieste>
+    </div>
+    <div *ngIf="viewState.mappa" class="mt-2" [ngClass]="viewState.columns[1]">
     </div>
 </div>

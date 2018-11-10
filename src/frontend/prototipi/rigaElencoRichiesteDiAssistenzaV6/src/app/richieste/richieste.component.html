@@ -1,14 +1,1 @@
-<!-- Filtri e Ricerca -->
-<div class="row">
-    <div class="col-md-6 ml-auto">
-        <app-filtri-richieste></app-filtri-richieste>
-    </div><!-- 
-    <div class="col-md-5 ml-auto">
-        <app-nav-test></app-nav-test>
-    </div> -->
-    <div class="col-md-6 ml-auto pr-0">
-        <app-ricerca-richieste></app-ricerca-richieste>
-    </div>
-</div>
-<hr class="mt-3 mb-1">
-<app-lista-richieste></app-lista-richieste>
+<app-lista-richieste *ngIf="viewState.richieste" [_split]="viewState.split"></app-lista-richieste>
