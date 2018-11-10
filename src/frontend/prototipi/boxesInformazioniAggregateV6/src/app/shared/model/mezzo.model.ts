@@ -1,3 +1,4 @@
+import {Squadra} from './squadra.model';
 /**
  * Modella un mezzo impegnato su una richiesta di assistenza
  */
@@ -20,6 +21,10 @@ export class Mezzo {
          * InRientro, Istituto). Utile a definire il colore del segnale di stato.
          */
         public stato: string,
+        /**
+         * Lista di squadre presenti a bordo del mezzo
+         */
+        public squadre: Squadra[],
         /**
          * Codice dello stato di appartenenza del mezzo (0 = Proprio, 1 = Altra sede).
          * Utile a definire il colore della segnalazione sullo stato di appartenenza.

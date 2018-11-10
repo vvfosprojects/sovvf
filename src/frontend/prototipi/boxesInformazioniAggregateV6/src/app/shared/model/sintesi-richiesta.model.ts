@@ -97,6 +97,10 @@ export class SintesiRichiesta {
          * etichette associate all'intervento (per es. aPagamento, imp, ecc.)
          */
         public etichette?: string[],
+        /**
+         * eventi della richiesta, serve al back-end per determinare il valore della complessità
+         */
+        public eventi?: Evento[]
     ) {
     }
 }
