@@ -3,4 +3,5 @@ export interface ViewInterface {
     richieste: boolean;
     chiamata: boolean;
     split: boolean;
+    columns?: string[];
 }

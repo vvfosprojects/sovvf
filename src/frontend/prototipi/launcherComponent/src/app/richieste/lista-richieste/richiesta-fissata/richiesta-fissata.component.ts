@@ -1,13 +1,10 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, OnChanges } from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input} from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/animations';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EventiRichiestaComponent } from '../../../eventi/eventi-richiesta.component';
 import { ListaRichiesteService } from '../../lista-richieste-service/lista-richieste-service.service';
-import { FilterPipe } from 'ngx-filter-pipe';
-import { FilterbarService } from '../../../filterbar/filterbar-service/filterbar-service.service';
-import { ViewInterface } from '../../../filterbar/view-mode/view.interface';
-import { Subscription } from 'rxjs';
+
 
 @Component({
     selector: 'app-richiesta-fissata',
@@ -19,27 +16,14 @@ export class RichiestaFissataComponent implements OnInit {
     @ViewChild('richiestaContainer') private richiestaContainer: ElementRef;
     @ViewChild('richiesta') private richiesta: ElementRef;
 
-    subscription = new Subscription();
-
     private playerContainer: AnimationPlayer;
     private playerRichiesta: AnimationPlayer;
     richiestaFissata: SintesiRichiesta;
-    _split = true;
+    @Input() _split: boolean;
 
     constructor(public richiesteS: ListaRichiesteService,
                 private animationBuilder: AnimationBuilder,
-                private modalService: NgbModal,
-                private viewService: FilterbarService) {
-        this.subscription.add(
-            this.viewService.getView().subscribe((r: ViewInterface) => {
-                if (r.split) {
-                    this._split = true;
-                } else {
-                    this._split = false;
-                }
-                console.log(this._split);
-            })
-        );
+                private modalService: NgbModal) {
     }
 
     ngOnInit() {

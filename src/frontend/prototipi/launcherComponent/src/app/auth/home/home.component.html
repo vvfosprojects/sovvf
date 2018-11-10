@@ -43,11 +43,11 @@
                 </div>
             </div>
             <div class="row">
-                <div class="" [ngClass]="column[0]">
-                    <app-richieste *ngIf="viewState.richieste"></app-richieste>
+                <div class="" [ngClass]="viewState.columns[0]">
+                    <app-richieste></app-richieste>
                     <app-chiamata *ngIf="viewState.chiamata"></app-chiamata>
                 </div>
-                <div *ngIf="viewState.mappa" class="mt-2" [ngClass]="column[1]">
+                <div *ngIf="viewState.mappa" class="mt-2" [ngClass]="viewState.columns[1]">
                     <app-maps></app-maps>
                 </div>
             </div>

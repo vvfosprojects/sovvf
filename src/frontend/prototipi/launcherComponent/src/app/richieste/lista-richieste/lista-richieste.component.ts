@@ -1,16 +1,14 @@
-import { Component, OnInit, ElementRef, ViewChild, OnChanges, OnDestroy } from '@angular/core';
-import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { ListaRichiesteManagerService } from '../../core/manager/lista-richieste-manager/lista-richieste-manager.service';
-import { ScrollEvent } from 'ngx-scroll-event';
-import { ListaRichiesteService } from '../lista-richieste-service/lista-richieste-service.service';
-import { RicercaRichiesteService } from '../../filterbar/ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
-import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
-import { Subscription } from 'rxjs';
-import { FilterPipe } from 'ngx-filter-pipe';
-import { ViewInterface } from '../../filterbar/view-mode/view.interface';
-import { FilterbarService } from '../../filterbar/filterbar-service/filterbar-service.service';
+import {Component, OnInit, ElementRef, ViewChild, OnChanges, OnDestroy, Input} from '@angular/core';
+import {SintesiRichiesta} from '../../shared/model/sintesi-richiesta.model';
+import {ListaRichiesteManagerService} from '../../core/manager/lista-richieste-manager/lista-richieste-manager.service';
+import {ScrollEvent} from 'ngx-scroll-event';
+import {ListaRichiesteService} from '../lista-richieste-service/lista-richieste-service.service';
+import {RicercaRichiesteService} from '../../filterbar/ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {MarkerService} from '../../maps/service/marker-service/marker-service.service';
+import {EventiRichiestaComponent} from '../../eventi/eventi-richiesta.component';
+import {Subscription} from 'rxjs';
+import {FilterPipe} from 'ngx-filter-pipe';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -30,15 +28,15 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     preventSimpleClick: boolean;
     timer: any;
     contatoreNuoveRichieste = 0;
-    _split = true;
+
+    @Input() _split: boolean;
 
     constructor(private listaRichiesteManager: ListaRichiesteManagerService,
                 private richiesteS: ListaRichiesteService,
                 public ricercaS: RicercaRichiesteService,
                 private modalService: NgbModal,
                 private markerS: MarkerService,
-                private filter: FilterPipe,
-                private viewService: FilterbarService) {
+                private filter: FilterPipe) {
 
         // Restituisce le Richieste
         this.subscription.add(
@@ -49,18 +47,10 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
                 this.loaderRichieste = false;
             })
         );
-        this.subscription.add(this.ricercaS.getRicerca().subscribe(stringa => {
-            this.opacizzaRichieste(stringa);
-        }));
         this.subscription.add(
-            this.viewService.getView().subscribe((r: ViewInterface) => {
-                if (r.split) {
-                    this._split = true;
-                } else {
-                    this._split = false;
-                }
-            })
-        );
+            this.ricercaS.getRicerca().subscribe(stringa => {
+                this.opacizzaRichieste(stringa);
+            }));
     }
 
     ngOnInit() {
@@ -91,7 +81,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnChanges() {
-        console.log('Change detected');
+        // console.log('Change detected');
     }
 
     ngOnDestroy() {
@@ -102,7 +92,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         const result = this.filter.transform(this.richieste, ricerca);
         if (!(this.richieste.length === result.length) && result.length > 0) {
             const string = [];
-            result.forEach( c => {
+            result.forEach(c => {
                 string.push(c.id);
             });
             this.markerS.opacizzaMarkers(true, string);
@@ -175,7 +165,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(richiesta) {
-        this.modalService.open(EventiRichiestaComponent, { size: 'lg', centered: true});
+        this.modalService.open(EventiRichiestaComponent, {size: 'lg', centered: true});
     }
 
     /* Ritorna true se le parole matchano almeno in parte */

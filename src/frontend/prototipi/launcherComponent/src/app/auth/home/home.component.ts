@@ -9,20 +9,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     _opened = false;
     subscription = new Subscription();
-    viewState: ViewInterface = {
-        richieste: true,
-        mappa: true,
-        split: true,
-        chiamata: false,
-    };
-    column = ['col-6', 'col-6'];
+    viewState: ViewInterface;
 
     constructor(public fakeCambioSede: UnitaAttualeService, private viewService: FilterbarService) {
+        this.viewState = viewService.viewState;
         this.subscription.add(
             this.viewService.getView().subscribe((r: ViewInterface) => {
                 this.viewState = r;
-                console.log(r);
-                this._column();
             })
         );
     }
@@ -37,18 +30,5 @@ export class HomeComponent implements OnInit, OnDestroy {
     _toggleOpened() {
         this._opened = !this._opened;
     }
-
-    _column(): void {
-        if (this.viewState.split) {
-            this.column = ['col-6', 'col-6'];
-        } else {
-            if (!this.viewState.mappa) {
-                this.column = ['col-12', ''];
-            } else {
-                this.column = ['', 'col-12'];
-            }
-        }
-    }
-
 
 }
