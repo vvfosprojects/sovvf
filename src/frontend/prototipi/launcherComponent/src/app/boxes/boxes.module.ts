@@ -14,6 +14,7 @@ import {DispatcherInfoAggregateService} from '../core/dispatcher/dispatcher-boxe
 import {DispatcherInfoAggregateServiceFake} from '../core/dispatcher/dispatcher-boxes.service.fake';
 import {InfoAggregateService} from '../core/service/boxes-service/info-aggregate.service';
 import {InfoAggregateServiceFake} from '../core/service/boxes-service/info-aggregate.service.fake';
+import { ModalServiziComponent } from './info-aggregate/modal-servizi/modal-servizi.component';
 
 
 @NgModule({
@@ -28,11 +29,13 @@ import {InfoAggregateServiceFake} from '../core/service/boxes-service/info-aggre
         BoxPersonaleComponent,
         BoxInterventiComponent,
         BoxMezziComponent,
-        BoxMeteoComponent
+        BoxMeteoComponent,
+        ModalServiziComponent
     ],
     exports: [
         InfoAggregateComponent
     ],
+    entryComponents: [ModalServiziComponent],
     providers: [
         {provide: BoxManagerService, useClass: BoxManagerServiceFake},
         {provide: DispatcherInfoAggregateService, useClass: DispatcherInfoAggregateServiceFake},
