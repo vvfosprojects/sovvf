@@ -12,13 +12,16 @@ export class ViewModeComponent implements OnInit, OnDestroy {
 
     subscription = new Subscription();
     viewState: ViewInterface;
-    colorButton = ['btn-outline-secondary', 'btn-secondary', 'btn-outline-secondary'];
+    colorButton: any;
 
     constructor(private viewService: FilterbarService) {
+        this.colorButton = this.viewService.colorButton;
+        this.viewState = this.viewService.viewState;
         this.subscription.add(
             this.viewService.getView().subscribe((r: ViewInterface) => {
                 this.viewState = r;
                 this._colorButton();
+                this.viewService.colorButton = this.colorButton;
             })
         );
     }

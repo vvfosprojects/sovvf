@@ -3,7 +3,7 @@
   </button>
   <div ngbDropdownMenu class="px-2">
     <button *ngFor="let voce of markerMenu" class="btn dropdown-item filtro-hover mb-1" [ngClass]="{'voce-green': voce.isActive}" appDebounceClick (debounceClick)="onSelected(voce.id)" [debounceTime]="300">
-      <i class="pr-2 {{voce.picture}}"></i>{{voce.name}}
+      <i class="pr-2 h3 {{voce.picture}}"></i>{{voce.name}}
     </button>
   </div>
 </div>

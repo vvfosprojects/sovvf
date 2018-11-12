@@ -13,7 +13,7 @@ export class RichiesteComponent implements OnDestroy {
     viewState: ViewInterface;
 
     constructor(private viewService: FilterbarService) {
-        this.viewState = viewService.viewState;
+        this.viewState = this.viewService.viewState;
         this.subscription.add(
             this.viewService.getView().subscribe((r: ViewInterface) => {
                 this.viewState = r;

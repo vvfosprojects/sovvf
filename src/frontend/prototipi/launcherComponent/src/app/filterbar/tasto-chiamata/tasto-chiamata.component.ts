@@ -15,7 +15,7 @@ export class TastoChiamataComponent implements OnInit, OnDestroy {
     colorButton = 'btn-outline-success';
 
     constructor(private viewService: FilterbarService) {
-        this.viewState = viewService.viewState;
+        this.viewState = this.viewService.viewState;
         this.subscription.add(
             this.viewService.getView().subscribe((r: ViewInterface) => {
                 this.viewState = r;

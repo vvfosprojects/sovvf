@@ -32,7 +32,6 @@ export class FiltriService {
                 new VoceFiltro('3', 'Rilevante', 'Rilevante', true),
                 new VoceFiltro('4', 'Rilevante', 'Non Rilevante', true),
               );
-              console.log(filtri);
               this.newFiltriList$.next(filtri);
             },
             error: err => console.log(`Errore: + ${err}`)
@@ -49,8 +48,8 @@ export class FiltriService {
       this.setDeselezionato(filtroSelezionato);
     });
     this.filtriSelezionati = [];
-    console.log('I filtri attivi sono:');
-    console.log(this.filtriSelezionati);
+    // console.log('I filtri attivi sono:');
+    // console.log(this.filtriSelezionati);
   }
 
   addfiltroSelezionato(filtro: VoceFiltro) {

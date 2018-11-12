@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     viewState: ViewInterface;
 
     constructor(public fakeCambioSede: UnitaAttualeService, private viewService: FilterbarService) {
-        this.viewState = viewService.viewState;
+        this.viewState = this.viewService.viewState;
         this.subscription.add(
             this.viewService.getView().subscribe((r: ViewInterface) => {
                 this.viewState = r;
