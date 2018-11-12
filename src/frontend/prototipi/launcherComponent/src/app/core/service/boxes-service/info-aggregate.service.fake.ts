@@ -19,13 +19,13 @@ export class InfoAggregateServiceFake {
     }
 
     public getInterventi(): Observable<BoxInterventi> {
-        this.interventi = new BoxInterventi(25, 30, 10, 30, 95, 104, 'B', 90, 'A', '2018', '12.842');
+        this.interventi = new BoxInterventi(5, 3, 1, 5, 25, 20, 'B', 30, 'A', '2018', '12.842');
         return of(this.interventi);
 
     }
 
     public getMezzi(): Observable<BoxMezzi> {
-        this.mezzi = new BoxMezzi(20, 4, 3, 3, 2, 30);
+        this.mezzi = new BoxMezzi(24, 3, 2, 1, 2, 30);
         return of(this.mezzi);
     }
 
