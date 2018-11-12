@@ -18,10 +18,10 @@
   <span>{{eventoRichiesta.istanteEvento | distanzaTemporale : istantePrimoEvento : "N" }}</span>
 </td>
 <td>
-  <span *ngIf="eventoRichiesta.targa">
+  <small *ngIf="eventoRichiesta.targa">
     <i class="fa fa-hashtag" aria-hidden="true"></i>
     {{eventoRichiesta.targa}}
-  </span>
+  </small>
 </td>
 <td>
   <span *ngIf="eventoRichiesta.note">

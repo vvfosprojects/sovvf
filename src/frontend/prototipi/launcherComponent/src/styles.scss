@@ -103,7 +103,9 @@ a:hover {
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
 }
-
+.scroll-y{
+    overflow-y: scroll;
+}
 .sidebar{
     width:100%;
     height: 55px;
