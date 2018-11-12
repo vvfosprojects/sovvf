@@ -26,6 +26,8 @@
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
     "moment": "^2.22.2",
+    "ngx-clipboard": "^11.1.9",
+    "ngx-google-places-autocomplete": "^2.0.1",
     "rxjs": "^6.0.0",
     "zone.js": "~0.8.26"
   },

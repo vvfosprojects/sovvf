@@ -4,12 +4,10 @@ import { ChiamataModule } from './chiamata/chiamata.module';
 import { SharedModule } from './shared/shared.module';
 
 import { AppComponent } from './app.component';
-import { SchedaTelefonataComponent } from './chiamata/scheda-telefonata/scheda-telefonata.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    SchedaTelefonataComponent
+    AppComponent
   ],
   imports: [
     ChiamataModule,
