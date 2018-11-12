@@ -30,22 +30,22 @@ function vociMarker() {
             'id': 'richiesta',
             'index': 1,
             'isActive': true,
-            'picture': 'fa fa-calendar-plus-o',
+            'picture': 'icon-fa-richieste',
             'name': 'Richieste'
         },
         {
-            'id': 'mezzo',
+            'id': 'sede',
             'index': 2,
             'isActive': false,
-            'picture': 'fa fa-truck',
-            'name': 'Mezzi'
+            'picture': 'icon-fa-sedi',
+            'name': 'Sedi'
         },
         {
-            'id': 'sede',
+            'id': 'mezzo',
             'index': 3,
             'isActive': false,
-            'picture': 'fa fa-university',
-            'name': 'Sedi'
+            'picture': 'icon-truck-fire-q',
+            'name': 'Mezzi'
         }
     ];
 }

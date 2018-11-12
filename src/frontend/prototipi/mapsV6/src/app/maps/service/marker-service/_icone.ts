@@ -90,20 +90,20 @@ export class IconMappe {
         ];
         this.mapIconeTipoSedi = new Map(this.iconeTipoSedi);
 
-        // this.iconeMezzi = [
-        //     ['insed', 'insede.png'],
-        //     ['invia', 'inviaggio.png'],
-        //     ['inrie', 'inrientro.png'],
-        //     ['sulpo', 'sulposto.png'],
-        //     ['istit', 'istituto.png']
-        // ];
         this.iconeMezzi = [
-            ['insed', 'insede2.png'],
-            ['invia', 'inviaggio2.png'],
-            ['inrie', 'inrientro2.png'],
-            ['sulpo', 'sulposto2.png'],
-            ['istit', 'istituto2.png']
+            ['insed', 'insede.png'],
+            ['invia', 'inviaggio.png'],
+            ['inrie', 'inrientro.png'],
+            ['sulpo', 'sulposto.png'],
+            ['istit', 'istituto.png']
         ];
+        // this.iconeMezzi = [
+        //     ['insed', 'insede2.png'],
+        //     ['invia', 'inviaggio2.png'],
+        //     ['inrie', 'inrientro2.png'],
+        //     ['sulpo', 'sulposto2.png'],
+        //     ['istit', 'istituto2.png']
+        // ];
         this.mapIconeMezzi = new Map(this.iconeMezzi);
 
         this.iconeSedi = [

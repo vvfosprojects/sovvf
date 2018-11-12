@@ -31,8 +31,20 @@ export const environment = {
             fake: 'https://api.myjson.com/bins/x09t6',
             backend: 'http://localhost:2661/api'
         },
-        elencoFiltri: {
-            fake: 'https://api.myjson.com/bins/qa8as',
+        elencoTipologie: {
+            fake: '../assets/json/tipologie.json',
+        },
+        eventiRichieste: {
+            fake: 'https://api.myjson.com/bins/kz0w0',
+            backend: 'http://localhost:2661/api'
+        },
+        turno: {
+            fake: '',
+            backend: ''
+        },
+        sedi: {
+            fake: '',
+            backend: ''
         }
     }
 };

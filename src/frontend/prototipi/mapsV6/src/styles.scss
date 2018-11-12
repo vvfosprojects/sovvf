@@ -3,6 +3,16 @@
 @import '../node_modules/snazzy-info-window/dist/snazzy-info-window.css';
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
+@font-face {
+  font-family: 'icon-marker';
+  src:  url('./assets/fonts/icon-marker.eot?lo2034');
+  src:  url('./assets/fonts/icon-marker.eot?lo2034#iefix') format('embedded-opentype'),
+  url('./assets/fonts/icon-marker.ttf?lo2034') format('truetype'),
+  url('./assets/fonts/icon-marker.woff?lo2034') format('woff'),
+  url('./assets/fonts/icon-marker.svg?lo2034#icon-marker') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
 
 .app-shadow{
   -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
@@ -43,4 +53,33 @@
   -webkit-box-shadow: 2px 0px 2px .5px #868e96;
   -moz-box-shadow: 2px 0px 2px .5px #868e96;
   box-shadow: 2px 0px 2px .5px #868e96;
+}
+
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icon-marker' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-truck-fire-q:before {
+  content: "\e900";
+}
+.icon-fa-sedi:before {
+  content: "\e901";
+}
+.icon-fa-richieste:before {
+  content: "\e902";
+}
+.icon-truck-fire:before {
+  content: "\e903";
 }

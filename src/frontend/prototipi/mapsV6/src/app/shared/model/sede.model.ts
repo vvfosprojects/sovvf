@@ -23,6 +23,14 @@ export class Sede {
          */
         public tipo: string,
         /**
+         * indica la regione della sede
+         */
+        public regione: string,
+        /**
+         * indica la provincia della sede
+         */
+        public provincia: string,
+        /**
          * label (da decidere)
          */
         public label?: string,

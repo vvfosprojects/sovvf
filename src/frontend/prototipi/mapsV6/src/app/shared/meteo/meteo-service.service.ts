@@ -51,7 +51,7 @@ export class MeteoService {
                 `Messaggio body: ${error.message}`);
         }
         return throwError(
-            'API Meteo: qualcosa è andato storto, per favore riprova più tardi.');
+            'Qualcosa è andato storto, per favore riprova più tardi.');
     }
 
 
