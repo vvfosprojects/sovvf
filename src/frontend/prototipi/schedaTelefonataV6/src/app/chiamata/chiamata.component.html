@@ -1,5 +1,5 @@
 <div *ngIf="tipologie" class="row mt-3">
-  <div class="col-11 py-3 px-5 mx-auto rounded status_chiamata card-shadow-danger" style="height: 740px">
+  <div class="col-11 pt-4 px-5 mx-auto rounded status_chiamata card-shadow-danger" style="height: 740px">
     <form>
       <div class="form-group">
         <label>Tipologia intervento</label>
@@ -141,7 +141,7 @@
       </div>
       <div class="col text-right">
         <button class="btn btn-lg btn-secondary mr-2" disabled><i class="fa fa-check mr-1"></i>Conferma</button>
-        <button class="btn btn-lg btn-danger"><i class="fa fa-trash"></i></button>
+        <button class="btn btn-lg btn-danger" (click)="annullaChiamata()"><i class="fa fa-trash"></i></button>
       </div>
     </div>
   </div>

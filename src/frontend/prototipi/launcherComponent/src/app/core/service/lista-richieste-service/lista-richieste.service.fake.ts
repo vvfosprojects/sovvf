@@ -117,7 +117,7 @@ export class SintesiRichiesteServiceFake {
                 'RM-41312',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(35, 'minutes').toDate(),
-                'assegnata',
+                'assegnato',
                 4,
                 [new Tipologia('360', 'Salvataggio persone', '')],
                 'Persona che minaccia di buttarsi da un tetto',

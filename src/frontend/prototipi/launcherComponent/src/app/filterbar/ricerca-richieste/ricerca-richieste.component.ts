@@ -13,7 +13,7 @@ export class RicercaRichiesteComponent implements OnInit {
     searchText: string;
     filtriSelezionatiBySearch: VoceFiltro[] = [];
     arrCounters: Array<number> = [];
-    stringaRicerca = {descrizione: ''};
+    stringaRicerca = { descrizione: '' };
 
     constructor(public ricercaS: RicercaRichiesteService, private filtriS: FiltriService) {
     }
@@ -24,7 +24,9 @@ export class RicercaRichiesteComponent implements OnInit {
 
     getFiltri() {
         this.filtriS.getFiltri().subscribe((filtri: VoceFiltro[]) => {
-            this.filtri = filtri;
+            if (filtri) {
+                this.filtri = filtri;
+            }
         });
     }
 
