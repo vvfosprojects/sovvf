@@ -125,6 +125,9 @@ a:hover {
 .bg-grey{
     background-color:rgba(206, 206, 206, 1);
 }
+.no-resize {
+    resize: none; 
+}
 
 [class^="icon-"], [class*=" icon-"] {
     /* use !important to prevent issues with browser extensions that change fonts */
