@@ -12,7 +12,6 @@ import { ListaRichiesteService } from '../../../richieste/lista-richieste-servic
 import { RichiesteMarkerManagerService } from '../../../core/manager/maps-manager';
 import { Coordinate } from '../../../shared/model/coordinate.model';
 
-
 @Injectable({
     providedIn: 'root'
 })

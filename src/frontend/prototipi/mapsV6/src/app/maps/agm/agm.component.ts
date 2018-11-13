@@ -1,14 +1,23 @@
-import {Component, OnInit, Input, OnDestroy} from '@angular/core';
-import {RichiestaMarker} from '../maps-model/richiesta-marker.model';
-import {SedeMarker} from '../maps-model/sede-marker.model';
-import {MezzoMarker} from '../maps-model/mezzo-marker.model';
-import {Meteo} from '../../shared/model/meteo.model';
-import {CentroMappa} from '../maps-model/centro-mappa.model';
-import {MarkerService} from '../service/marker-service/marker-service.service';
-import {Subscription} from 'rxjs';
-import {CenterService} from '../service/center-service/center-service.service';
-import {AgmService} from './agm-service.service';
-import {ControlPosition, FullscreenControlOptions, ZoomControlOptions} from '@agm/core/services/google-maps-types';
+import {
+    Component,
+    OnInit,
+    Input,
+    OnDestroy,
+    ViewChild,
+    ElementRef
+} from '@angular/core';
+import { RichiestaMarker } from '../maps-model/richiesta-marker.model';
+import { SedeMarker } from '../maps-model/sede-marker.model';
+import { MezzoMarker } from '../maps-model/mezzo-marker.model';
+import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
+import { Meteo } from '../../shared/model/meteo.model';
+import { CentroMappa } from '../maps-model/centro-mappa.model';
+import { MarkerService } from '../service/marker-service/marker-service.service';
+import { Subscription } from 'rxjs';
+import { CenterService } from '../service/center-service/center-service.service';
+import { AgmService } from './agm-service.service';
+import { ControlPosition, FullscreenControlOptions, ZoomControlOptions } from '@agm/core/services/google-maps-types';
+
 
 declare var google: any;
 
@@ -24,7 +33,7 @@ export class AgmComponent implements OnInit, OnDestroy {
     @Input() sediMarkers: SedeMarker[];
     @Input() mezziMarkers: MezzoMarker[];
     @Input() centroMappa: CentroMappa;
-    @Input() chiamataMarker: any;
+    @Input() chiamataMarker: ChiamataMarker;
     minMarkerCluster: number;
     datiMeteo: Meteo;
     coloreStato: string;
@@ -40,6 +49,7 @@ export class AgmComponent implements OnInit, OnDestroy {
         position: ControlPosition.TOP_LEFT
     };
 
+    @ViewChild('agmContainer') agmContainer: ElementRef;
 
     constructor(private markerService: MarkerService,
                 private centerService: CenterService,
