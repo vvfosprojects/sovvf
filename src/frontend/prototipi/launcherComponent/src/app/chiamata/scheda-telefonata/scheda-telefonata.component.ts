@@ -10,6 +10,7 @@ import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { CenterService } from '../../maps/service/center-service/center-service.service';
 import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
+import { FormChiamataModel } from './model/form-scheda-telefonata.model';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -17,14 +18,15 @@ import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
     styleUrls: ['./scheda-telefonata.component.css'],
     animations: [
         trigger('hideShowAnimator', [
-            state('true', style({opacity: 1})),
-            state('false', style({opacity: 0})),
+            state('true', style({ opacity: 1 })),
+            state('false', style({ opacity: 0 })),
             transition('0 => 1', animate('.1s')),
             transition('1 => 0', animate('.1s'))
         ])
     ]
 })
 export class SchedaTelefonataComponent implements OnInit {
+    chiamataCorrente = new FormChiamataModel;
     coords: Localita;
     tipologie: any;
     hideShowAnimator = false;
@@ -32,11 +34,11 @@ export class SchedaTelefonataComponent implements OnInit {
     centroMappa: CentroMappa;
 
     constructor(private tipologieS: TipologieService,
-                private viewService: FilterbarService,
-                private _clipboardService: ClipboardService,
-                private chiamataManager: MapManager.ChiamataMarkerManagerService,
-                private markerService: MarkerService,
-                private centerService: CenterService) {
+        private viewService: FilterbarService,
+        private _clipboardService: ClipboardService,
+        private chiamataManager: MapManager.ChiamataMarkerManagerService,
+        private markerService: MarkerService,
+        private centerService: CenterService) {
     }
 
     ngOnInit() {
@@ -59,11 +61,24 @@ export class SchedaTelefonataComponent implements OnInit {
         });
     }
 
+    onAddTipologia(tipologia) {
+        this.chiamataCorrente.tipo_interv.push(tipologia);
+    }
+
+    onRemoveTipologia(tipologia) {
+        this.chiamataCorrente.tipo_interv.splice(this.chiamataCorrente.tipo_interv.indexOf(tipologia.value), 1);
+    }
+
+    insertRagioneSociale(RS) {
+        this.chiamataCorrente.ragione_sociale = RS;
+    }
+
     handleAddressChange(result) {
         this.coords = new Localita(new Coordinate(result.geometry.location.lat(), result.geometry.location.lng()));
-        const chiamataCorrente = new ChiamataMarker('RM-004', this.coords);
-        this.chiamataManager.chiamataMarker[0] = chiamataCorrente;
-        this.markerService.chiamata(chiamataCorrente, 'centra');
+        this.chiamataCorrente.coordinate = this.coords;
+        const markerChiamataCorrente = new ChiamataMarker('RM-004', this.coords);
+        this.chiamataManager.chiamataMarker[0] = markerChiamataCorrente;
+        this.markerService.chiamata(markerChiamataCorrente, 'centra');
     }
 
     copy(lat: number, lng: number) {
@@ -85,5 +100,37 @@ export class SchedaTelefonataComponent implements OnInit {
         const chiamataVuota = new ChiamataMarker('RM-004', new Localita(new Coordinate(null, null)));
         this.chiamataManager.chiamataMarker[0] = chiamataVuota;
         this.markerService.chiamata(null, '', this.centroMappa);
+    }
+
+    // Ng Class
+    tipologiaClass() {
+        if (this.chiamataCorrente.tipo_interv.length === 0) {
+            return 'border rounded border-danger';
+        }
+    }
+    cognomeClass() {
+        if (!this.chiamataCorrente.cognome && (!this.chiamataCorrente.ragione_sociale)) {
+            return 'border-danger';
+        }
+    }
+    nomeClass() {
+        if (!this.chiamataCorrente.nome && (!this.chiamataCorrente.ragione_sociale)) {
+            return 'border-danger';
+        }
+    }
+    ragioneSocialeClass() {
+        if (!this.chiamataCorrente.ragione_sociale && (!this.chiamataCorrente.nome || !this.chiamataCorrente.cognome)) {
+            return 'border-danger';
+        }
+    }
+    telefonoClass() {
+        if (!this.chiamataCorrente.telefono) {
+            return 'border-danger';
+        }
+    }
+    coordinateClass() {
+        if (!this.chiamataCorrente.coordinate) {
+            return 'border-danger';
+        }
     }
 }

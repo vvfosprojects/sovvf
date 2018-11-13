@@ -1,5 +1,6 @@
-<img src="https://placeholder.pics/svg/40/FF0000-FFED5D/logo">
-<span class="btn mr-3 pl-2" [ngbPopover]="unitaOperativa" placement="bottom">
+<!-- <img src="https://placeholder.pics/svg/40/FF0000-FFED5D/logo"> -->
+<img src="../../../assets/img/comando-avatar.svg">
+<span class="btn mr-3 pl-2" [ngbPopover]="unitaOperativa" [autoClose]="'outside'" placement="bottom">
         <span class="mr-2">{{unitaAttuale.descrizione}} <i class="fa fa-chevron-down"></i></span>
       </span>
 <ng-template #unitaOperativa class="app-shadow">
