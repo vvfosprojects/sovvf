@@ -219,7 +219,7 @@ export class SintesiRichiesteServiceFake {
                                     new Squadra(
                                         '2A',
                                         'SulPosto',
-                                        [ 
+                                        [
                                             new Componente(
                                                 'CS',
                                                 'Tiziana Rossetti',
@@ -488,7 +488,7 @@ export class SintesiRichiesteServiceFake {
                 new Localita(
                     new Coordinate(41.856683, 12.471484), 'Viale Guglielmo Marconi, 21', 'Presidio e aiuto alla popolazione'),
                 [
-                    new Sede('8', 'EUR', new Coordinate(41.8334226,12.4652289), 'Piazza Francesco Vivona, 4', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('8', 'EUR', new Coordinate(41.8334226, 12.4652289), 'Piazza Francesco Vivona, 4', 'Distaccamento', 'Lazio', 'Roma'),
                     new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
                 ],
                 new Complessita('19', 'Bassa'),
@@ -496,7 +496,7 @@ export class SintesiRichiesteServiceFake {
                 moment().subtract(29, 'minutes').toDate(),
                 null,
                 'NUE4382746',
-                null, 
+                null,
                 new Fonogramma('0', 'Non necessario'),
                 [
                     new Partenza(
@@ -546,7 +546,7 @@ export class SintesiRichiesteServiceFake {
                     )
                 ],
                 null
-            ), 
+            ),
             new SintesiRichiesta(
                 'RM-12836',
                 'RM-12836',
@@ -560,7 +560,7 @@ export class SintesiRichiesteServiceFake {
                 new Localita(
                     new Coordinate(41.9113629, 12.4652858), 'Viale Giulio Cesare, 21', 'Intervento per spegnimento incendio e salvataggio inquilini'),
                 [
-                    new Sede('8', 'PRATI', new Coordinate(41.9116264,12.467068), 'Via Caposile, 9', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('8', 'PRATI', new Coordinate(41.9116264, 12.467068), 'Via Caposile, 9', 'Distaccamento', 'Lazio', 'Roma'),
                     new Sede('4', 'Ostiense', new Coordinate(41.9046958, 12.4809725), 'Via Genova, 1', 'Comando Provinciale', 'Lazio', 'Roma'),
                 ],
                 new Complessita('30', 'Media'),
@@ -568,7 +568,7 @@ export class SintesiRichiesteServiceFake {
                 moment().subtract(29, 'minutes').toDate(),
                 null,
                 'NUE4382746',
-                null, 
+                null,
                 new Fonogramma('0', 'Non necessario'),
                 [
                     new Partenza(
@@ -577,7 +577,7 @@ export class SintesiRichiesteServiceFake {
                                 'AS1',
                                 'AS',
                                 'InRientro',
-                                [ 
+                                [
                                     new Squadra(
                                         '3A',
                                         'InRientro',
@@ -618,7 +618,7 @@ export class SintesiRichiesteServiceFake {
                     )
                 ],
                 null
-            ), 
+            ),
             new SintesiRichiesta(
                 'RM-12835',
                 'RM-12835',
@@ -632,7 +632,7 @@ export class SintesiRichiesteServiceFake {
                 new Localita(
                     new Coordinate(41.870025, 12.4647536), 'Piazzale della radio, 21', 'Intervento per estrarre persone dalle lamiere di una automobile'),
                 [
-                    new Sede('8', 'EUR', new Coordinate(41.8735128,12.4551751), 'Piazza Francesco Vivona, 4', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('8', 'EUR', new Coordinate(41.8735128, 12.4551751), 'Piazza Francesco Vivona, 4', 'Distaccamento', 'Lazio', 'Roma'),
                     new Sede('4', 'Ostiense', new Coordinate(41.9046958, 12.4809725), 'Via Genova, 1', 'Comando Provinciale', 'Lazio', 'Roma'),
                 ],
                 new Complessita('30', 'Media'),
@@ -640,7 +640,7 @@ export class SintesiRichiesteServiceFake {
                 moment().subtract(29, 'minutes').toDate(),
                 null,
                 'NUE4382746',
-                null, 
+                null,
                 new Fonogramma('0', 'Non necessario'),
                 [
                     new Partenza(
@@ -649,7 +649,7 @@ export class SintesiRichiesteServiceFake {
                                 'AS1',
                                 'AS',
                                 'InRientro',
-                                [ 
+                                [
                                     new Squadra(
                                         '3A',
                                         'InRientro',
@@ -690,7 +690,7 @@ export class SintesiRichiesteServiceFake {
                     )
                 ],
                 null
-            ),            
+            ),
         ];
 
         return of(this.richieste);
