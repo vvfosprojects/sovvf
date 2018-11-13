@@ -4,7 +4,10 @@ import { CentroMappa } from './maps-model/centro-mappa.model';
 import { RichiestaMarker } from './maps-model/richiesta-marker.model';
 import { SedeMarker } from './maps-model/sede-marker.model';
 import { MezzoMarker } from './maps-model/mezzo-marker.model';
+import { ChiamataMarker } from './maps-model/chiamata-marker.model';
 import { Subscription } from 'rxjs';
+import { Localita } from '../shared/model/localita.model';
+import { Coordinate } from '../shared/model/coordinate.model';
 
 @Component({
     selector: 'app-maps',
@@ -17,7 +20,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     richiesteMarkers: RichiestaMarker[];
     sediMarkers: SedeMarker[];
     mezziMarkers: MezzoMarker[];
-    chiamataMarker: any;
+    chiamataMarker: ChiamataMarker;
     subscription = new Subscription();
 
     constructor(private richiesteManager: MapManager.RichiesteMarkerManagerService,
@@ -59,7 +62,7 @@ export class MapsComponent implements OnInit, OnDestroy {
         /**
          * placeholder di una chiamata vuota
          */
-        this.chiamataMarker = null;
+        this.chiamataMarker = new ChiamataMarker('RM-004', new Localita(new Coordinate(41.80, 12.20)));
     }
 
     ngOnInit() {
