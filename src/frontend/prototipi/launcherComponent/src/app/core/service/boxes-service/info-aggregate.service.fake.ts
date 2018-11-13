@@ -19,7 +19,7 @@ export class InfoAggregateServiceFake {
     }
 
     public getInterventi(): Observable<BoxInterventi> {
-        this.interventi = new BoxInterventi(5, 3, 1, 5, 25, 20, 'B', 30, 'A', '2018', '12.842');
+        this.interventi = new BoxInterventi(3, 3, 1, 2, 9, 20, 'B', 30, 'A', '2018', '12.842');
         return of(this.interventi);
 
     }
@@ -67,7 +67,7 @@ export class InfoAggregateServiceFake {
                     false)
             ],
             59,
-            23
+            8
         );
         return of(this.personale);
     }
