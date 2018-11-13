@@ -113,11 +113,11 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'RM-41312',
-                'RM-41312',
+                'RM-12842',
+                'RM-12842',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(35, 'minutes').toDate(),
-                'assegnata',
+                'assegnato',
                 4,
                 [new Tipologia('360', 'Salvataggio persone', '')],
                 'Persona che minaccia di buttarsi da un tetto',
@@ -185,8 +185,8 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'RM-41311',
-                'RM-41311',
+                'RM-12841',
+                'RM-12841',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(4, 'minutes').toDate(),
                 'assegnato',
@@ -208,12 +208,58 @@ export class SintesiRichiesteServiceFake {
                 null,
                 null,
                 new Fonogramma('0', 'Non necessario'),
-                null,
+                [
+                    new Partenza(
+                        [
+                            new Mezzo('COD2',
+                                'AS1',
+                                'AS',
+                                'SulPosto',
+                                [
+                                    new Squadra(
+                                        '2A',
+                                        'SulPosto',
+                                        [
+                                            new Componente(
+                                                'CS',
+                                                'Tiziana Rossetti',
+                                                'Tiziana Rossetti - RSSTZN56T56R454E',
+                                                true,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Marco Antonio Marchi Moschetti',
+                                                'Marco Antonio Marchi Moschetti - MRCMRC66T66R454F',
+                                                false,
+                                                true,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Raffaele Cantoni',
+                                                'Raffaele Cantoni - CNTRFL66T45R343E',
+                                                false,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Giovanni Carta',
+                                                'Giovanni Carta - VRTGVN56T74H565Y',
+                                                false,
+                                                false,
+                                                false)
+                                        ]
+                                    )
+                                ],
+                                0)
+                        ]
+                    )
+                ],
                 null
             ),
             new SintesiRichiesta(
-                'RM-41310',
-                'RM-41310',
+                'RM-12840',
+                'RM-12840',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(6, 'minutes').toDate(),
                 'assegnato',
@@ -235,12 +281,58 @@ export class SintesiRichiesteServiceFake {
                 null,
                 null,
                 new Fonogramma('0', 'Non necessario'),
-                null,
+                [
+                    new Partenza(
+                        [
+                            new Mezzo('COD2',
+                                'AS1',
+                                'AS',
+                                'SulPosto',
+                                [
+                                    new Squadra(
+                                        '2A',
+                                        'SulPosto',
+                                        [
+                                            new Componente(
+                                                'CS',
+                                                'Tiziana Rossetti',
+                                                'Tiziana Rossetti - RSSTZN56T56R454E',
+                                                true,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Marco Antonio Marchi Moschetti',
+                                                'Marco Antonio Marchi Moschetti - MRCMRC66T66R454F',
+                                                false,
+                                                true,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Raffaele Cantoni',
+                                                'Raffaele Cantoni - CNTRFL66T45R343E',
+                                                false,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Giovanni Carta',
+                                                'Giovanni Carta - VRTGVN56T74H565Y',
+                                                false,
+                                                false,
+                                                false)
+                                        ]
+                                    )
+                                ],
+                                0)
+                        ]
+                    )
+                ],
                 null
             ),
             new SintesiRichiesta(
-                'RM-41309',
-                'RM-41309',
+                'RM-12839',
+                'RM-12839',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(25, 'minutes').toDate(),
                 'presidiato',
@@ -312,8 +404,8 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'RM-41308',
-                'RM-41308',
+                'RM-12838',
+                'RM-12838',
                 new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
                 moment().subtract(37, 'minutes').toDate(),
                 'sospeso',
@@ -328,6 +420,222 @@ export class SintesiRichiesteServiceFake {
                     new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
                 ],
                 new Complessita('19', 'Bassa'),
+                moment().subtract(30, 'minutes').toDate(),
+                moment().subtract(29, 'minutes').toDate(),
+                null,
+                'NUE4382746',
+                null,
+                new Fonogramma('0', 'Non necessario'),
+                [
+                    new Partenza(
+                        [
+                            new Mezzo('COD3',
+                                'AS1',
+                                'AS',
+                                'InRientro',
+                                [
+                                    new Squadra(
+                                        '3A',
+                                        'InRientro',
+                                        [
+                                            new Componente(
+                                                'CS',
+                                                'Paolo Di Tonno',
+                                                'Paolo Di Tonno - RSSTZN56T56R454E',
+                                                true,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Antonio Marsalà',
+                                                'Antonio Marsalà - MRCMRC66T66R454F',
+                                                false,
+                                                true,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Bernardo Belli',
+                                                'Bernardo Belli - CNTRFL66T45R343E',
+                                                false,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Maurizio Cutolo',
+                                                'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                                false,
+                                                false,
+                                                false)
+                                        ]
+                                    )
+                                ],
+                                0)
+                        ]
+                    )
+                ],
+                null
+            ),
+            new SintesiRichiesta(
+                'RM-12837',
+                'RM-12837',
+                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                moment().subtract(39, 'minutes').toDate(),
+                'sospeso',
+                2,
+                [new Tipologia('360', 'Terremoto', '')],
+                'Scossa di terremoto a Roma',
+                new Richiedente('Polizia', '113'),
+                new Localita(
+                    new Coordinate(41.856683, 12.471484), 'Viale Guglielmo Marconi, 21', 'Presidio e aiuto alla popolazione'),
+                [
+                    new Sede('8', 'EUR', new Coordinate(41.8334226, 12.4652289), 'Piazza Francesco Vivona, 4', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('4', 'Ostiense', new Coordinate(41.8606045, 12.4730873), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
+                ],
+                new Complessita('19', 'Bassa'),
+                moment().subtract(30, 'minutes').toDate(),
+                moment().subtract(29, 'minutes').toDate(),
+                null,
+                'NUE4382746',
+                null,
+                new Fonogramma('0', 'Non necessario'),
+                [
+                    new Partenza(
+                        [
+                            new Mezzo('COD3',
+                                'AS1',
+                                'AS',
+                                'InRientro',
+                                [
+                                    new Squadra(
+                                        '3A',
+                                        'InRientro',
+                                        [
+                                            new Componente(
+                                                'CS',
+                                                'Paolo Di Tonno',
+                                                'Paolo Di Tonno - RSSTZN56T56R454E',
+                                                true,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Antonio Marsalà',
+                                                'Antonio Marsalà - MRCMRC66T66R454F',
+                                                false,
+                                                true,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Bernardo Belli',
+                                                'Bernardo Belli - CNTRFL66T45R343E',
+                                                false,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Maurizio Cutolo',
+                                                'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                                false,
+                                                false,
+                                                false)
+                                        ]
+                                    )
+                                ],
+                                0)
+                        ]
+                    )
+                ],
+                null
+            ),
+            new SintesiRichiesta(
+                'RM-12836',
+                'RM-12836',
+                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                moment().subtract(42, 'minutes').toDate(),
+                'chiusa',
+                4,
+                [new Tipologia('360', 'Incendio', 'fa fa-fire')],
+                'Incendio in appartamento',
+                new Richiedente('Polizia', '113'),
+                new Localita(
+                    new Coordinate(41.9113629, 12.4652858), 'Viale Giulio Cesare, 21', 'Intervento per spegnimento incendio e salvataggio inquilini'),
+                [
+                    new Sede('8', 'PRATI', new Coordinate(41.9116264, 12.467068), 'Via Caposile, 9', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('4', 'Ostiense', new Coordinate(41.9046958, 12.4809725), 'Via Genova, 1', 'Comando Provinciale', 'Lazio', 'Roma'),
+                ],
+                new Complessita('30', 'Media'),
+                moment().subtract(30, 'minutes').toDate(),
+                moment().subtract(29, 'minutes').toDate(),
+                null,
+                'NUE4382746',
+                null,
+                new Fonogramma('0', 'Non necessario'),
+                [
+                    new Partenza(
+                        [
+                            new Mezzo('COD3',
+                                'AS1',
+                                'AS',
+                                'InRientro',
+                                [
+                                    new Squadra(
+                                        '3A',
+                                        'InRientro',
+                                        [
+                                            new Componente(
+                                                'CS',
+                                                'Paolo Di Tonno',
+                                                'Paolo Di Tonno - RSSTZN56T56R454E',
+                                                true,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Antonio Marsalà',
+                                                'Antonio Marsalà - MRCMRC66T66R454F',
+                                                false,
+                                                true,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Bernardo Belli',
+                                                'Bernardo Belli - CNTRFL66T45R343E',
+                                                false,
+                                                false,
+                                                false),
+                                            new Componente(
+                                                'VIG',
+                                                'Maurizio Cutolo',
+                                                'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                                false,
+                                                false,
+                                                false)
+                                        ]
+                                    )
+                                ],
+                                0)
+                        ]
+                    )
+                ],
+                null
+            ),
+            new SintesiRichiesta(
+                'RM-12835',
+                'RM-12835',
+                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                moment().subtract(45, 'minutes').toDate(),
+                'chiusa',
+                3,
+                [new Tipologia('360', 'Incidente', 'fa fa-car')],
+                'Incidente stradale',
+                new Richiedente('Polizia', '113'),
+                new Localita(
+                    new Coordinate(41.870025, 12.4647536), 'Piazzale della radio, 21', 'Intervento per estrarre persone dalle lamiere di una automobile'),
+                [
+                    new Sede('8', 'EUR', new Coordinate(41.8735128, 12.4551751), 'Piazza Francesco Vivona, 4', 'Distaccamento', 'Lazio', 'Roma'),
+                    new Sede('4', 'Ostiense', new Coordinate(41.9046958, 12.4809725), 'Via Genova, 1', 'Comando Provinciale', 'Lazio', 'Roma'),
+                ],
+                new Complessita('30', 'Media'),
                 moment().subtract(30, 'minutes').toDate(),
                 moment().subtract(29, 'minutes').toDate(),
                 null,

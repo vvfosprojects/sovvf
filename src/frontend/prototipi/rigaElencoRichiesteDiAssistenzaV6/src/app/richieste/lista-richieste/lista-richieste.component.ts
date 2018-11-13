@@ -175,6 +175,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         if (word1San === word2San) {
             return true;
         }
+        return false;
     }
 
     /* NgClass Template */
@@ -187,7 +188,8 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
                 'card-shadow-danger': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiamata'),
                 'card-shadow-warning': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'sospeso'),
                 'card-shadow-secondary': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiuso'),
-                'bg-light': r === this.richiestaSelezionata || r === this.richiestaHover,
+                'bg-light': (r === this.richiestaSelezionata || r === this.richiestaHover) && !this.match(r.stato, 'chiuso'),
+                'bg-pattern-chiuso': this.match(r.stato, 'chiuso'),
             };
         }
     }
