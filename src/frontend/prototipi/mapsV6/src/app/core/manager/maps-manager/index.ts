@@ -10,3 +10,5 @@ export * from './mezzi-marker/mezzi-marker-manager.service.fake';
 export * from './sedi-marker/sedi-marker-manager.service';
 export * from './sedi-marker/sedi-marker-manager.service.fake';
 
+export * from './chiamata-marker/chiamata-marker-manager.service';
+

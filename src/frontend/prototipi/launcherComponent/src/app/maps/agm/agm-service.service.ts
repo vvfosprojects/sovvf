@@ -36,19 +36,6 @@ export class AgmService {
         if (!this.map) {
             return;
         }
-        // const zoomCorrente = this.map.getZoom();
-        // const livelliZoom = Math.floor((zoom - zoomCorrente) / 2);
-        // if (zoom - zoomCorrente > 0) {
-        //     if (livelliZoom === 1) {
-        //         this.map.setZoom(zoom);
-        //     } else {
-        //         this.map.setZoom(zoomCorrente + 2);
-        //         setTimeout(() => {
-        //                 this.map.setZoom(zoom);
-        //             }, 450
-        //         );
-        //     }
-        // }
         this.map.setZoom(zoom);
     }
 

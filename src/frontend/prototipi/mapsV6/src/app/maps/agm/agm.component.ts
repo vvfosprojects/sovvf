@@ -19,6 +19,7 @@ import { AgmService } from './agm-service.service';
 import { ControlPosition, FullscreenControlOptions, ZoomControlOptions } from '@agm/core/services/google-maps-types';
 
 
+
 declare var google: any;
 
 
@@ -33,7 +34,7 @@ export class AgmComponent implements OnInit, OnDestroy {
     @Input() sediMarkers: SedeMarker[];
     @Input() mezziMarkers: MezzoMarker[];
     @Input() centroMappa: CentroMappa;
-    @Input() chiamataMarker: ChiamataMarker;
+    @Input() chiamataMarker: ChiamataMarker[];
     minMarkerCluster: number;
     datiMeteo: Meteo;
     coloreStato: string;
@@ -79,6 +80,7 @@ export class AgmComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.centerService.centroMappaIniziale = this.centroMappa;
     }
 
     ngOnDestroy() {

@@ -11,6 +11,8 @@ import { UnitaAttualeService } from '../../../navbar/navbar-service/unita-attual
 import { ListaRichiesteService } from '../../../richieste/lista-richieste-service/lista-richieste-service.service';
 import { RichiesteMarkerManagerService } from '../../../core/manager/maps-manager';
 import { Coordinate } from '../../../shared/model/coordinate.model';
+import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
+import { CentroMappa } from '../../maps-model/centro-mappa.model';
 
 @Injectable({
     providedIn: 'root'
@@ -257,7 +259,7 @@ export class MarkerService implements OnDestroy {
 
     noAction() {
         if (this.markerSelezionato) {
-            this.agmService.cambiaZoom(11);
+            this.agmService.cambiaZoom(12);
             this.deseleziona();
         }
     }
@@ -319,6 +321,23 @@ export class MarkerService implements OnDestroy {
             this.markerRichiesteManager.cambiaOpacitaMarker(true, stringSearch);
         } else {
             this.markerRichiesteManager.cambiaOpacitaMarker(false);
+        }
+    }
+
+    chiamata(marker: ChiamataMarker, action: string, centroMappa?: CentroMappa) {
+        switch (action) {
+            case 'centra': {
+                this.agmService.centraMappa(this.getCoordinate(marker));
+                this.agmService.cambiaZoom(18);
+                this.markerZIndex = marker;
+            }
+                break;
+            default: {
+                this.agmService.centraMappa(centroMappa.coordinate);
+                this.agmService.cambiaZoom(12);
+                this.markerZIndex = null;
+            }
+                break;
         }
     }
 

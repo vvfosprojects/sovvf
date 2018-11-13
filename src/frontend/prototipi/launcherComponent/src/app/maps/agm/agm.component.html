@@ -1,6 +1,7 @@
 <div *ngIf="!map_loaded" class="col-12 text-center my-5">
     <img src="../../../assets/img/map_loading_resized.gif">
 </div>
+<div #agmContainer>
 <agm-map [disableDefaultUI]="true"
          [zoomControl]="true"
          [zoomControlOptions]="zoomControlOptions"
@@ -103,5 +104,10 @@
             </agm-snazzy-info-window>
         </agm-marker>
     </agm-marker-cluster>
+    <agm-marker *ngFor="let chiamata of chiamataMarker;"
+                [latitude]="chiamata.localita.coordinate.latitudine"
+                [longitude]="chiamata.localita.coordinate.longitudine">
+    </agm-marker>
     <app-agm-content (mapLoad)='loadAPIWrapper($event)'></app-agm-content>
 </agm-map>
+</div>

@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {CentroMappa} from '../../maps-model/centro-mappa.model';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { CentroMappa } from '../../maps-model/centro-mappa.model';
 
 @Injectable({
     providedIn: 'root'
@@ -8,6 +8,8 @@ import {CentroMappa} from '../../maps-model/centro-mappa.model';
 export class CenterService {
 
     private subject = new Subject<CentroMappa>();
+
+    centroMappaIniziale: CentroMappa;
 
     constructor() {
     }

@@ -20,13 +20,14 @@ export class MapsComponent implements OnInit, OnDestroy {
     richiesteMarkers: RichiestaMarker[];
     sediMarkers: SedeMarker[];
     mezziMarkers: MezzoMarker[];
-    chiamataMarker: ChiamataMarker;
+    chiamataMarker: ChiamataMarker[];
     subscription = new Subscription();
 
     constructor(private richiesteManager: MapManager.RichiesteMarkerManagerService,
                 private sediManager: MapManager.SediMarkerManagerService,
                 private mezziManager: MapManager.MezziMarkerManagerService,
-                private centroManager: MapManager.CentroMappaManagerService) {
+                private centroManager: MapManager.CentroMappaManagerService,
+                private chiamataManager: MapManager.ChiamataMarkerManagerService) {
         /**
          *  mi iscrivo al map manager che mi ritorna il centro della mappa
          */
@@ -62,7 +63,9 @@ export class MapsComponent implements OnInit, OnDestroy {
         /**
          * placeholder di una chiamata vuota
          */
-        this.chiamataMarker = new ChiamataMarker('RM-004', new Localita(new Coordinate(41.80, 12.20)));
+        this.subscription.add(this.chiamataManager.getChiamataMarker().subscribe((r: ChiamataMarker[]) => {
+            this.chiamataMarker = r;
+        }));
     }
 
     ngOnInit() {

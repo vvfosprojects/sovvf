@@ -4,7 +4,10 @@ import { CentroMappa } from './maps-model/centro-mappa.model';
 import { RichiestaMarker } from './maps-model/richiesta-marker.model';
 import { SedeMarker } from './maps-model/sede-marker.model';
 import { MezzoMarker } from './maps-model/mezzo-marker.model';
+import { ChiamataMarker } from './maps-model/chiamata-marker.model';
 import { Subscription } from 'rxjs';
+import { Localita } from '../shared/model/localita.model';
+import { Coordinate } from '../shared/model/coordinate.model';
 
 @Component({
     selector: 'app-maps',
@@ -17,13 +20,14 @@ export class MapsComponent implements OnInit, OnDestroy {
     richiesteMarkers: RichiestaMarker[];
     sediMarkers: SedeMarker[];
     mezziMarkers: MezzoMarker[];
-    chiamataMarker: any;
+    chiamataMarker: ChiamataMarker[];
     subscription = new Subscription();
 
     constructor(private richiesteManager: MapManager.RichiesteMarkerManagerService,
                 private sediManager: MapManager.SediMarkerManagerService,
                 private mezziManager: MapManager.MezziMarkerManagerService,
-                private centroManager: MapManager.CentroMappaManagerService) {
+                private centroManager: MapManager.CentroMappaManagerService,
+                private chiamataManager: MapManager.ChiamataMarkerManagerService) {
         /**
          *  mi iscrivo al map manager che mi ritorna il centro della mappa
          */
@@ -59,7 +63,9 @@ export class MapsComponent implements OnInit, OnDestroy {
         /**
          * placeholder di una chiamata vuota
          */
-        this.chiamataMarker = null;
+        this.subscription.add(this.chiamataManager.getChiamataMarker().subscribe((r: ChiamataMarker[]) => {
+            this.chiamataMarker = r;
+        }));
     }
 
     ngOnInit() {
