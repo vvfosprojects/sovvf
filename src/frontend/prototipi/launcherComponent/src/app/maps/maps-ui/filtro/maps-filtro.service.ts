@@ -2,15 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-export interface Menu {
-    id: string;
-    index: number;
-    isActive: boolean;
-    picture: string;
-    name: string;
-    disabled?: boolean;
-}
-
 @Injectable({
     providedIn: 'root'
 })
@@ -20,7 +11,7 @@ export class MapsFiltroService {
 
     filtroAttivo = ['richiesta'];
 
-    menu: Menu[] = [
+    filtroMarker: Menu[] = [
         {
             'id': 'richiesta',
             'index': 1,
@@ -47,8 +38,21 @@ export class MapsFiltroService {
     private subject = new Subject<Menu[]>();
 
     sendMenu(menu: Menu[]) {
-        this.subject.next(menu);
-        // console.log(menu);
+        let count = 0;
+        const menuIsNotActive = menu;
+        menu.forEach(r => {
+            if (r.isActive) {
+                count++;
+            }
+        });
+        if (menu.length === count) {
+            menuIsNotActive.forEach( r => {
+                r.isActive = false;
+            });
+            this.subject.next(menuIsNotActive);
+        } else {
+            this.subject.next(menu);
+        }
     }
 
     getMenu(): Observable<Menu[]> {
@@ -57,6 +61,14 @@ export class MapsFiltroService {
 
 
     getVociMenu(): Observable<Menu[]> {
-        return of(this.menu).pipe(delay(200));
+        return of(this.filtroMarker).pipe(delay(200));
     }
+}
+
+export interface Menu {
+    id: string;
+    index: number;
+    isActive: boolean;
+    picture: string;
+    name: string;
 }

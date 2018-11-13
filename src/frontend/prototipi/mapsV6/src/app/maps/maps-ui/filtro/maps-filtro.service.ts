@@ -1,31 +1,17 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {delay} from 'rxjs/operators';
-
-export interface Menu {
-    id: string;
-    index: number;
-    isActive: boolean;
-    picture: string;
-    name: string;
-    disabled?: boolean;
-}
+import { Injectable } from '@angular/core';
+import { Observable, of, Subject } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
-export class DataService {
+export class MapsFiltroService {
     constructor() {
     }
 
+    filtroAttivo = ['richiesta'];
 
-    getVociMarker(): Observable<Menu[]> {
-        return of(vociMarker()).pipe(delay(200));
-    }
-}
-
-function vociMarker() {
-    return [
+    filtroMarker: Menu[] = [
         {
             'id': 'richiesta',
             'index': 1,
@@ -48,4 +34,41 @@ function vociMarker() {
             'name': 'Mezzi'
         }
     ];
+
+    private subject = new Subject<Menu[]>();
+
+    sendMenu(menu: Menu[]) {
+        let count = 0;
+        const menuIsNotActive = menu;
+        menu.forEach(r => {
+            if (r.isActive) {
+                count++;
+            }
+        });
+        if (menu.length === count) {
+            menuIsNotActive.forEach( r => {
+                r.isActive = false;
+            });
+            this.subject.next(menuIsNotActive);
+        } else {
+            this.subject.next(menu);
+        }
+    }
+
+    getMenu(): Observable<Menu[]> {
+        return this.subject.asObservable();
+    }
+
+
+    getVociMenu(): Observable<Menu[]> {
+        return of(this.filtroMarker).pipe(delay(200));
+    }
+}
+
+export interface Menu {
+    id: string;
+    index: number;
+    isActive: boolean;
+    picture: string;
+    name: string;
 }

@@ -18,8 +18,6 @@ import { CenterService } from '../service/center-service/center-service.service'
 import { AgmService } from './agm-service.service';
 import { ControlPosition, FullscreenControlOptions, ZoomControlOptions } from '@agm/core/services/google-maps-types';
 
-
-
 declare var google: any;
 
 
@@ -41,6 +39,7 @@ export class AgmComponent implements OnInit, OnDestroy {
     map_loaded = false;
     subscription = new Subscription();
     map: any;
+    richiestaMarkerIconUrl = '../../../assets/img/icone-markers/chiamata-marker.png';
 
     zoomControlOptions: ZoomControlOptions = {
         position: ControlPosition.BOTTOM_RIGHT

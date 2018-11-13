@@ -49,7 +49,12 @@ export class MarkerService implements OnDestroy {
         }));
         this.filtro = this.mapsFiltroService.filtroAttivo;
         this.subscription.add(this.mapsFiltroService.getMenu().subscribe(menu => {
-            this.filtro = menu;
+            this.filtro = [];
+            menu.forEach( r => {
+                if (r.isActive) {
+                    this.filtro.push(r.id);
+                }
+            });
             this.mapsFiltroService.filtroAttivo = this.filtro;
         }));
     }
@@ -247,13 +252,6 @@ export class MarkerService implements OnDestroy {
 
     getMeteo(): Observable<Meteo> {
         return this.subjectMeteo.asObservable();
-    }
-
-    filtroMarker(filtro) {
-        /**
-         * metodo che riceve il filtro selezionato dal menu
-         */
-        this.filtro = filtro;
     }
 
     cambioSede(sede) {
