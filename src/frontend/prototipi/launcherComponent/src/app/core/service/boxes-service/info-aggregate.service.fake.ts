@@ -25,7 +25,7 @@ export class InfoAggregateServiceFake {
     }
 
     public getMezzi(): Observable<BoxMezzi> {
-        this.mezzi = new BoxMezzi(24, 3, 2, 1, 2, 30);
+        this.mezzi = new BoxMezzi(95, 2, 2, 1, 1, 30);
         return of(this.mezzi);
     }
 
