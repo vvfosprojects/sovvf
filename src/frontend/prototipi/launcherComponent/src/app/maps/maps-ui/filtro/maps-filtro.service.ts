@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {delay} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { Observable, of, Subject } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 export interface Menu {
     id: string;
@@ -14,18 +14,13 @@ export interface Menu {
 @Injectable({
     providedIn: 'root'
 })
-export class DataService {
+export class MapsFiltroService {
     constructor() {
     }
 
+    filtroAttivo = ['richiesta'];
 
-    getVociMarker(): Observable<Menu[]> {
-        return of(vociMarker()).pipe(delay(200));
-    }
-}
-
-function vociMarker() {
-    return [
+    menu: Menu[] = [
         {
             'id': 'richiesta',
             'index': 1,
@@ -48,4 +43,20 @@ function vociMarker() {
             'name': 'Mezzi'
         }
     ];
+
+    private subject = new Subject<Menu[]>();
+
+    sendMenu(menu: Menu[]) {
+        this.subject.next(menu);
+        // console.log(menu);
+    }
+
+    getMenu(): Observable<Menu[]> {
+        return this.subject.asObservable();
+    }
+
+
+    getVociMenu(): Observable<Menu[]> {
+        return of(this.menu).pipe(delay(200));
+    }
 }

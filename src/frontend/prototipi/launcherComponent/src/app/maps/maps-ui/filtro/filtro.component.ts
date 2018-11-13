@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DataService, Menu} from './maps-filtro.service';
+import {MapsFiltroService, Menu} from './maps-filtro.service';
 import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 import {map} from 'rxjs/operators';
 import {MarkerService} from '../../service/marker-service/marker-service.service';
@@ -15,14 +15,14 @@ export class MapsFiltroComponent implements OnInit {
     selectedMarker = [];
 
     constructor(private markerService: MarkerService,
-                private dataService: DataService,
+                private mapsFiltroService: MapsFiltroService,
                 config: NgbDropdownConfig) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
 
     ngOnInit() {
-        this.dataService.getVociMarker()
+        this.mapsFiltroService.getVociMenu()
             .pipe(map(x => x.filter(y => !y.disabled)))
             .subscribe((res) => {
                 this.markerMenu = res;
@@ -43,7 +43,7 @@ export class MapsFiltroComponent implements OnInit {
                 this.markerMenu.forEach(r => r.isActive = false);
             }
         }
-        this.markerService.filtroMarker(this.selectedMarker);
+        this.mapsFiltroService.sendMenu(this.selectedMarker);
     }
 
 }

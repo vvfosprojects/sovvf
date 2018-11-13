@@ -1,9 +1,7 @@
 <div class="text-right pr-0">
     <div class="btn-group" role="group">
-        <button type="button" class="btn btn-outline-primary w-75" (click)="richieste()"><i
-                class="icon-fa-richieste pr-1"></i>Richieste</button>
-        <button type="button" class="btn btn-outline-primary w-75" (click)="mezzi()"><i class="icon-truck-fire-q pr-1"></i>Mezzi</button>
-        <button type="button" class="btn btn-outline-primary w-75" (click)="sedi()"><i class="icon-fa-sedi pr-1"></i>Sedi
+        <button *ngFor="let voce of markerMenu" class="btn w-75" [ngClass]="{'btn-primary': voce.isActive, 'btn-outline-primary': !voce.isActive}" appDebounceClick (debounceClick)="onSelected(voce.id)" [debounceTime]="300">
+            <i class="{{voce.picture}} pr-1"></i>{{voce.name}}
         </button>
     </div>
 </div>

@@ -13,6 +13,7 @@ import { RichiesteMarkerManagerService } from '../../../core/manager/maps-manage
 import { Coordinate } from '../../../shared/model/coordinate.model';
 import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
 import { CentroMappa } from '../../maps-model/centro-mappa.model';
+import { MapsFiltroService } from '../../maps-ui/filtro/maps-filtro.service';
 
 @Injectable({
     providedIn: 'root'
@@ -41,11 +42,16 @@ export class MarkerService implements OnDestroy {
                 private agmService: AgmService,
                 private richiesteService: ListaRichiesteService,
                 private markerRichiesteManager: RichiesteMarkerManagerService,
-                private unitaAttualeS: UnitaAttualeService) {
+                private unitaAttualeS: UnitaAttualeService,
+                private mapsFiltroService: MapsFiltroService) {
         this.subscription.add(this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         }));
-        this.filtro = ['richiesta'];
+        this.filtro = this.mapsFiltroService.filtroAttivo;
+        this.subscription.add(this.mapsFiltroService.getMenu().subscribe(menu => {
+            this.filtro = menu;
+            this.mapsFiltroService.filtroAttivo = this.filtro;
+        }));
     }
 
     ngOnDestroy() {
