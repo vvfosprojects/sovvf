@@ -111,14 +111,24 @@ export class RichiestaFissataComponent implements OnInit {
         this.modalService.open(EventiRichiestaComponent, {size: 'lg'});
     }
 
+    match(word1: string, word2: string) {
+        const word1San = word1.toLowerCase().substr(0, word1.length - 1);
+        const word2San = word2.toLowerCase().substr(0, word2.length - 1);
+        if (word1San === word2San) {
+            return true;
+        }
+    }
+
     /* NgClass Template */
     cardShadowClass(r) {
         if (r) {
             return {
-                'card-shadow-info': r.stato === 'assegnato',
-                'card-shadow-success': r.stato === 'presidiato',
-                'card-shadow-danger': r.stato === 'chiamata',
-                'card-shadow-warning': r.stato === 'sospeso',
+                'card-shadow-info': this.match(r.stato, 'assegnato'),
+                'card-shadow-success': this.match(r.stato, 'presidiato'),
+                'card-shadow-danger': this.match(r.stato, 'chiamata'),
+                'card-shadow-warning': this.match(r.stato, 'sospeso'),
+                'card-shadow-secondary': this.match(r.stato, 'chiuso'),
+                'bg-pattern-chiuso': this.match(r.stato, 'chiuso'),
             };
         }
     }
