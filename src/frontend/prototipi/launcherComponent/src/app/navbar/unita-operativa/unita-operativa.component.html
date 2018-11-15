@@ -1,22 +1,22 @@
-<!-- <img src="https://placeholder.pics/svg/40/FF0000-FFED5D/logo"> -->
+<img src="https://placeholder.pics/svg/40/FF0000-FFED5D/logo">
 <img src="../../../assets/img/comando-avatar.svg">
 <span class="btn mr-3 pl-2" [ngbPopover]="unitaOperativa" [autoClose]="'outside'" placement="bottom">
-        <span class="mr-2">{{unitaAttuale.descrizione}} <i class="fa fa-chevron-down"></i></span>
-      </span>
+<span class="mr-2">{{unitaAttuale.descrizione}} <i class="fa fa-chevron-down"></i></span>
+</span>
 <ng-template #unitaOperativa class="app-shadow">
-  <div class="input-group">
-    <input class="form-control" type="text" placeholder="Cerca unità operativa"
-           [(ngModel)]="searchUnita">
-    <div class="input-group-append">
-      <button class="btn btn-secondary"><i class="fa fa-search text-light"></i></button>
-    </div>
-  </div>
-  <ul class="my-2 list-unstyled">
-    <li *ngFor="let unita of unitaOperative | filterBy: searchUnita" class="mt-1">
-      <button *ngIf="unita !== unitaAttuale" class="btn btn-block btn-outline-secondary"
-              (click)="changeUnitaAttuale(unita)">{{unita.descrizione}}
-      </button>
-    </li>
-  </ul>
-  <button class="btn btn-block btn-secondary">Tutti i comandi</button>
+<div class="input-group">
+<input class="form-control" type="text" placeholder="Cerca unità operativa"
+[(ngModel)]="searchUnita">
+<div class="input-group-append">
+<button class="btn btn-secondary"><i class="fa fa-search text-light"></i></button>
+</div>
+</div>
+<ul class="my-2 list-unstyled">
+<li *ngFor="let unita of unitaOperative | filterBy: searchUnita" class="mt-1">
+<button *ngIf="unita !== unitaAttuale" class="btn btn-block btn-outline-secondary"
+(click)="changeUnitaAttuale(unita)">{{unita.descrizione}}
+</button>
+</li>
+</ul>
+<button class="btn btn-block btn-secondary">Tutti i comandi</button>
 </ng-template>

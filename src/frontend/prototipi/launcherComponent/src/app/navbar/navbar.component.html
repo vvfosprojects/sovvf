@@ -1,17 +1,28 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-light">
     <div class="row py-0 w-100">
-        <div class="col-8 mr-auto">
-            <!-- Hamburger icon menu -->
-            <button class="btn btn-light h-100 ml-2 mr-4" (click)="openSidebar()"><i class="fa fa-bars"></i> Menu
-            </button>
-            <!-- Logo, Info Caserma, Data e ora, Turni -->
-            <app-unita-operativa></app-unita-operativa>
-            <app-clock></app-clock>
-            <app-turno></app-turno>
+        <div class="col-6 mr-auto">
+            <div class="row">
+                <div class="col-2 text-left">
+                    <button class="btn btn-light h-100 ml-2 mr-4" (click)="openSidebar()"><i class="fa fa-bars"></i> Menu
+                    </button>
+                </div>
+                <div class="col-4 text-left">
+                    <app-unita-operativa-treeview></app-unita-operativa-treeview>
+                </div>
+                <div class="col-3 px-0 text-center">
+                    <app-clock></app-clock>
+                </div>
+                <div class="col-2">
+                    <app-turno></app-turno>
+                </div>
+            </div>
         </div>
-        <!-- Notifiche, messaggi e profilo -->
-        <div class="col-4 ml-auto text-right pr-0">
-            <app-operatore></app-operatore>
+        <div class="col-6 ml-auto text-right pr-0">
+            <div class="row">
+                <div class="col-12">
+                    <app-operatore></app-operatore>
+                </div>
+            </div>
         </div>
     </div>
 </nav>

@@ -31,7 +31,6 @@ export class RichiesteMarkerServiceFake {
                 5,
                 'chiamata',
                 moment().subtract(0, 'minutes').toDate()
-
             ),
             new RichiestaMarker(
                 'RM-021',
@@ -65,7 +64,7 @@ export class RichiesteMarkerServiceFake {
                 4,
                 'assegnato',
                 moment().subtract(35, 'minutes').toDate()
-            ),                       
+            ),
             new RichiestaMarker(
                 'RM-12841',
                 new Localita(

@@ -30,6 +30,7 @@ import { MapsModule } from './maps/maps.module';
 import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
 import { ChiamataModule } from './chiamata/chiamata.module';
 import { FilterbarModule } from './filterbar/filterbar.module';
+import { I18n } from './i18n';
 
 
 @NgModule({
@@ -66,6 +67,7 @@ import { FilterbarModule } from './filterbar/filterbar.module';
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+        I18n,
         /**
          * provider fake per la login
          */
