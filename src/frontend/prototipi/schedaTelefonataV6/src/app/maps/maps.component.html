@@ -1,0 +1,10 @@
+<div class="row">
+    <div *ngIf="centroMappa" class="col-12">
+        <app-agm [centroMappa]="centroMappa"
+                 [richiesteMarkers]="richiesteMarkers"
+                 [sediMarkers]="sediMarkers"
+                 [mezziMarkers]="mezziMarkers"
+                 [chiamataMarker]="chiamataMarker"></app-agm>
+    </div>
+</div>
+

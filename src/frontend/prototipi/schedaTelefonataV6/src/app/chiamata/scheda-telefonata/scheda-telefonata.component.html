@@ -1,11 +1,15 @@
 <div *ngIf="tipologie" [@hideShowAnimator]="hideShowAnimator" class="row mt-3">
   <div class="col-11 pt-5 px-5 mx-auto rounded status_chiamata card-shadow-danger" style="height: 740px">
-    <form>
-      <div class="form-group">
+    <form [formGroup]="chiamataForm" (ngSubmit)="onSubmit()">
+      <!-- <div class="form-group mb-1">
         <label>Tipologia intervento</label>
-        <ng-select [items]="tipologie" [multiple]="true" [closeOnSelect]="true" [hideSelected]="true" bindLabel="descrizione"
-          placeholder="Seleziona Tipologia Intervento">
+        <ng-select class="border" [items]="tipologie" [multiple]="true" [closeOnSelect]="true" [hideSelected]="true"
+          bindLabel="descrizione" (add)="onAddTipologia($event)" (remove)="onRemoveTipologia($event)" placeholder="Seleziona Tipologia Intervento"
+          [ngClass]="tipologiaClass()">
         </ng-select>
+      </div> -->
+      <div class="form-group">
+        <input type="text" formControlName="dettaglioTipologia" class="form-control" placeholder="Dettaglio tipologia">
       </div>
       <div class="row">
         <!-- Divisione in due colonne: cognome -->
@@ -15,7 +19,11 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fa fa-address-card"></i></span>
               </div>
-              <input type="text" id="cognome" class="form-control" placeholder="Cognome">
+              <input type="text" formControlName="cognome" class="form-control" [(ngModel)]="chiamataCorrente.cognome"
+                [ngClass]="{ 'is-invalid': f.cognome.errors }" placeholder="Cognome">
+              <div *ngIf="submitted && f.cognome.errors" class="invalid-feedback">
+                <div *ngIf="f.cognome.errors.required">Il Cognome è obbligatorio</div>
+              </div>
             </div>
           </div>
         </div>
@@ -26,7 +34,11 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fa fa-address-card-o"></i></span>
               </div>
-              <input type="text" id="nome" class="form-control" placeholder="Nome">
+              <input type="text" formControlName="nome" class="form-control" [(ngModel)]="chiamataCorrente.nome"
+                [ngClass]="{ 'is-invalid': f.nome.errors }" placeholder="Nome">
+              <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
+                <div *ngIf="f.nome.errors">Il Nome è obbligatorio</div>
+              </div>
             </div>
           </div>
         </div>
@@ -36,21 +48,25 @@
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fa fa-industry"></i></span>
           </div>
-          <input type="text" id="ragioneSociale" class="form-control" placeholder="Ragione Sociale">
+          <input type="text" formControlName="ragioneSociale" class="form-control" [(ngModel)]="chiamataCorrente.ragione_sociale"
+            [ngClass]="{ 'is-invalid': f.ragioneSociale.errors }" placeholder="Ragione Sociale">
+          <div *ngIf="submitted && f.ragioneSociale.errors" class="invalid-feedback">
+            <div *ngIf="f.ragioneSociale.errors">La Ragione Sociale è obbligatoria</div>
+          </div>
         </div>
         <!-- Tasti veloci per ragione sociale -->
         <div class="row">
           <div class="col">
-            <button class="btn btn-block btn-outline-secondary py-1">CC</button>
+            <button class="btn btn-block btn-outline-secondary py-1" (click)="insertRagioneSociale('112')">112</button>
           </div>
           <div class="col">
-            <button class="btn btn-block btn-outline-secondary py-1">PS</button>
+            <button class="btn btn-block btn-outline-secondary py-1" (click)="insertRagioneSociale('113')">113</button>
           </div>
           <div class="col">
-            <button class="btn btn-block btn-outline-secondary py-1">PM</button>
+            <button class="btn btn-block btn-outline-secondary py-1" (click)="insertRagioneSociale('118')">118</button>
           </div>
           <div class="col">
-            <button class="btn btn-block btn-outline-secondary py-1">SSU</button>
+            <button class="btn btn-block btn-outline-secondary py-1" (click)="insertRagioneSociale('VV.UU.')">VV.UU.</button>
           </div>
         </div>
       </div>
@@ -59,40 +75,40 @@
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fa fa-phone"></i></span>
           </div>
-          <input type="text" id="telefono" class="form-control" placeholder="Telefono">
+          <input type="text" formControlName="telefono" class="form-control" [ngClass]="{ 'is-invalid': f.telefono.errors }"
+            placeholder="Telefono" />
+          <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
+            <div *ngIf="f.telefono.errors">Il telefono è obbligatorio</div>
+          </div>
         </div>
       </div>
-      <!-- <div class="form-group">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
-          </div>
-          <input type="text" id="coordinate" class="form-control" [value]="coords.longitudine" disabled>
-        </div>
-      </div> -->
       <div class="row">
-        <div class="col-11 pr-0">
+        <div class="col-11">
           <div class="form-group">
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fa fa-map"></i></span>
               </div>
-              <input ngx-google-places-autocomplete type="text" id="indirizzo" class="form-control" placeholder="Ricerca indirizzo"
-                [options]='options' #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)" />
+              <input ngx-google-places-autocomplete type="text" formControlName="indirizzo" class="form-control"
+                [ngClass]="{ 'is-invalid': f.indirizzo.errors }" placeholder="Ricerca indirizzo" [options]='options'
+                #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)" />
+                <div *ngIf="submitted && f.indirizzo.errors" class="invalid-feedback">
+                  <div *ngIf="f.indirizzo.errors">L' indirizzo è obbligatorio</div>
+                </div>
             </div>
           </div>
         </div>
         <div class="col-1 pl-0 text-center">
-          <button class="btn btn-secondary" [ngbTooltip]="coordsTooltip" placement="bottom" (click)="copy(coords.coordinate.latitudine, coords.coordinate.longitudine)" [disabled]="!coords"><i
-              class="fa fa-clipboard"></i></button>
+          <button class="btn btn-secondary" [ngbTooltip]="coordsTooltip" placement="bottom" (click)="copy(coords.coordinate.latitudine, coords.coordinate.longitudine)"
+            [disabled]="!coords"><i class="fa fa-clipboard"></i></button>
 
           <ng-template #coordsTooltip>
             Copia: {{coords.coordinate.latitudine}} - {{coords.coordinate.longitudine}}
           </ng-template>
         </div>
       </div>
+      <!-- Divisione in due colonne: colonna sinistra -->
       <div class="row">
-        <!-- Divisione in due colonne: colonna sinistra -->
         <div class="col-6">
           <div class="form-group">
             <div class="input-group mb-3">
@@ -119,6 +135,7 @@
             </div>
           </div>
         </div>
+
         <!-- Divisione in due colonne: colonna destra -->
         <div class="col-6">
           <div class="form-group">
@@ -147,15 +164,16 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col">
+          <h5 class="py-3 text-danger"><i class="fa fa-fw fa-hashtag mr-1"></i>RM-004</h5>
+        </div>
+        <div class="col text-right">
+          <button class="btn btn-lg btn-secondary mr-2"><i class="fa fa-check mr-1"></i>Conferma</button>
+          <button class="btn btn-lg btn-danger" (click)="annullaChiamata()"><i class="fa fa-trash"></i></button>
+        </div>
+      </div>
     </form>
-    <div class="row">
-      <div class="col">
-        <h5 class="py-3 text-danger"><i class="fa fa-fw fa-hashtag mr-1"></i>RM-004</h5>
-      </div>
-      <div class="col text-right">
-        <button class="btn btn-lg btn-secondary mr-2" disabled><i class="fa fa-check mr-1"></i>Conferma</button>
-        <button class="btn btn-lg btn-danger" (click)="annullaChiamata()"><i class="fa fa-trash"></i></button>
-      </div>
-    </div>
   </div>
 </div>
+<span *ngIf="chiamataCorrente.nome">{{chiamataCorrente.nome}}</span>

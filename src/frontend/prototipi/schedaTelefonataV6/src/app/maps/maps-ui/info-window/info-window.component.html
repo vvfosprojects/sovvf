@@ -1,0 +1,241 @@
+<div class="w-100 h-info-window">
+    <ng-template #meteo>
+        <ng-template #vento>
+            <div class="tooltip-richiesta">Vento {{datiMeteo.vento}} km/h - Direzione
+                <i [ngStyle]="{'transform': 'rotate('+datiMeteo.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datiMeteo.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datiMeteo.direzione.gradi+'deg)'}"
+                   class="pl-2 fa fa-long-arrow-up"></i> {{datiMeteo.direzione.cardinali}}
+            </div>
+        </ng-template>
+        <table class="w-100" [ngbTooltip]="vento">
+            <tr>
+                <td class="border-0 p-0" colspan="2">
+                    <div placement="bottom" >
+                        <img class="iconameteo w-25" src="http://openweathermap.org/img/w/{{datiMeteo.icona}}.png">
+                        <span class="text-capitalize">{{datiMeteo.descrizione}}</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="border-0 p-0">
+                    <span class="fa fa-thermometer-empty">Temperatura: {{datiMeteo.temperatura}}°C</span>
+                </td>
+                <td class="border-0 p-0">
+                    <span class="fa fa-shower">Umidità: {{datiMeteo.umidita}}%</span>
+                    </td>
+            </tr>
+        </table>
+    </ng-template>
+    <div *ngIf="richiestaMarker">
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col" class="py-1 px-0 mx-0 row w-100">
+                    <div class="col pr-0">
+                        <span class="fa fa-hashtag guida"></span>
+                        {{richiestaMarker.id}}
+                        <i *ngIf="richiestaMarker.rilevanza"
+                           ngbTooltip="Rilevante il: {{richiestaMarker.rilevanza | date: 'dd/MM/yyyy'}}"
+                           class="fa fa-exclamation text-danger m-0"></i>
+                    </div>
+                    <div class="col text-right">
+                        <span>
+                            <i class="guida fa fa-thermometer-half fa-fw" ngbTooltip="Priorità della richiesta"></i>
+                        </span>
+                        <span [ngClass]="{'text-success':richiestaMarker.priorita <= 2,
+                    'text-warning':richiestaMarker.priorita > 2 && richiestaMarker.priorita <= 4,
+                    'text-danger': richiestaMarker.priorita == 5}">
+                            <i *ngFor="let n of vettorePallini(richiestaMarker)" class="fa fa-circle"></i>
+                            <i *ngFor="let n of vettoreBuchini(richiestaMarker)" class="fa fa-circle-o"></i>
+                        </span>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row" class="py-1 s-info-window">
+                    <span class="fa-fw mr-1 {{ coloraIcona(richiestaMarker.tipologia[0].icona) }}"
+                          ngbTooltip="{{ richiestaMarker.tipologia[0].descrizione }}">
+                    </span>
+                    <span ngbTooltip="{{ richiestaMarker.label }}"
+                          [disableTooltip]="richiestaMarker.label.length <= 30">
+                        {{richiestaMarker.label | truncate:30 }}
+                    </span>
+                </th>
+            </tr>
+            <tr *ngIf="richiestaMarker.localita.indirizzo">
+                <th scope="row" class="py-1 s-info-window">
+                    <span class="guida fa fa-map-marker fa-fw mr-1" ngbTooltip="Località"></span>
+                    <span ngbTooltip="{{ richiestaMarker.localita.indirizzo }}"
+                          [disableTooltip]="richiestaMarker.localita.indirizzo.length <= 33">{{richiestaMarker.localita.indirizzo | truncate:33 }}</span>
+                </th>
+            </tr>
+            <tr *ngIf="richiestaMarker.localita.note">
+                <th scope="row" class="py-1 s-info-window">
+                    <span class="guida fa fa-sticky-note-o fa-fw mr-1" ngbTooltip="Località"></span>
+                    <span ngbTooltip="{{ richiestaMarker.localita.note }}"
+                          [disableTooltip]="richiestaMarker.localita.note.length <= 33">{{richiestaMarker.localita.note | truncate:33 }}</span>
+                </th>
+            </tr>
+            <tr *ngIf="datiMeteo">
+                <th scope="row" class="py-1 s-info-window">
+                    <div *ngIf="datiMeteo; then meteo"></div>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="mezzoMarker">
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col" class="py-1 px-2">
+                    <span ngbTooltip="{{ mezzoMarker.mezzo.descrizione }}"
+                          [disableTooltip]="mezzoMarker.mezzo.descrizione.length <= 15">
+                        {{mezzoMarker.mezzo.descrizione | truncate:15 }}
+                    </span>
+                    <span ngbTooltip="{{ mezzoMarker.mezzo.genere }}"
+                          [disableTooltip]="mezzoMarker.mezzo.genere.length <= 15">
+                        &nbsp;({{mezzoMarker.mezzo.genere | truncate:15 }})
+                    </span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row" class="py-1 s-info-window">
+                    <span *ngIf="!!mezzoMarker.id_richiesta" ngbTooltip="ID Richiesta Soccorso">
+                        <span class="guida fa fa-hashtag fa-fw mr-1"></span>
+                        {{mezzoMarker.id_richiesta}}
+                    </span>
+                    <span class="ml-5 mr-2 text-right" ngbTooltip="Stato del Mezzo">
+                        <span class="guida fa fa-truck fa-fw mr-1"></span>
+                        {{mezzoMarker.mezzo.stato}}
+                    </span>
+                </th>
+            </tr>
+            <tr>
+                <th scope="row" class="py-1 s-info-window">
+                    <span *ngIf="mezzoMarker.mezzo.squadre">
+                        <span class="mx-auto">
+                        <span class="mr-2" *ngIf="mezzoMarker.mezzo.squadre.length == 1">Squadra</span>
+                        <span class="mr-2" *ngIf="mezzoMarker.mezzo.squadre.length > 1">Squadre</span>
+                        <span *ngFor="let s of mezzoMarker.mezzo.squadre">
+                            <span class="mr-2">
+                                <a class="mr-1" href="javascript:void(0)" title="Componenti squadra"
+                                   [ngbPopover]="popComponenti"
+                                   popoverTitle="Componenti" triggers="click"
+                                   tabindex="0">
+                                <i class="guida fa fa-address-book-o" title="Componenti squadra"></i>
+                                </a>
+                                <span>{{ s.nome }}</span>
+                            </span>
+                            <span class="mr-2 text-right">
+                                <ng-template #popComponenti>
+                                    <div *ngFor="let c of s.componenti">
+                                        <app-componente [componente]="c"></app-componente>
+                                    </div>
+                                </ng-template>
+                            </span>
+                        </span>
+                        </span>
+                    </span>
+                    <span *ngIf="!mezzoMarker.mezzo.squadre">
+                        Nessuna squadra
+                    </span>
+                </th>
+            </tr>
+            <tr>
+                <th scope="row" class="py-1 s-info-window">
+                    <div class="nowrap">
+                        <span class="mr-2">Condizioni mezzo</span>
+                        <a class="mr-1" href="javascript:void(0)" title="Stato di efficienza del mezzo"
+                           ngbPopover="{{mezzoMarker.mezzo.descrizioneStatoEfficienza}}"
+                           popoverTitle="Stato di efficienza del mezzo" triggers="click"
+                           tabindex="0">
+                            <i class='fa fa-cogs fa-fw'
+                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.statoEfficienza, 'efficienza', 'text')"></i>
+                        </a>
+                        <a class="mr-1" href="javascript:void(0)" title="Livello Carburante"
+                           ngbPopover="{{mezzoMarker.mezzo.descrizioneLivelloCarburante }}"
+                           popoverTitle="Livello Carburante" triggers="click"
+                           tabindex="0">
+                            <i class='fa fa-tachometer fa-fw'
+                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.livelloCarburante, 'carburante', 'text')"></i>
+                        </a>
+                        <a class="mr-1" href="javascript:void(0)" title="Livello Estinguente"
+                           ngbPopover="{{mezzoMarker.mezzo.descrizioneLivelloEstinguente }}"
+                           popoverTitle="Livello Estinguente" triggers="click"
+                           tabindex="0">
+                            <i class='fa fa-tint fa-fw'
+                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.livelloEstinguente, 'estinguente', 'text')"></i>
+                        </a>
+                        <a class="mr-1" href="javascript:void(0)" title="Appartenenza del mezzo"
+                           ngbPopover="{{mezzoMarker.mezzo.descrizioneAppartenenza }}"
+                           popoverTitle="Appartenenza del mezzo" triggers="click"
+                           tabindex="0">
+                            <i class='fa fa-flag fa-fw'
+                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.appartenenza, 'appartenenza', 'text')"></i>
+                        </a>
+                    </div>
+                </th>
+            </tr>
+            <tr *ngIf="datiMeteo">
+                <th scope="row" class="py-1 s-info-window">
+                    <div *ngIf="datiMeteo; then meteo"></div>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="sedeMarker">
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col" class="py-1 px-0 mx-0 row w-100">
+                    <div class="col" ngbTooltip="Tipologia Sede" placement="bottom">
+                        {{sedeMarker.tipo}}
+                    </div>
+                    <div class="col text-right ml-2" ngbTooltip="{{ sedeMarker.descrizione }}" placement="bottom"
+                         [disableTooltip]="sedeMarker.descrizione.length <= 30">
+                        {{sedeMarker.descrizione | truncate:30 }}
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngIf="sedeMarker.indirizzo">
+                <th scope="row" class="py-1 s-info-window">
+                    <span class="guida fa fa-hashtag fa-fw mr-0">
+                        </span>{{sedeMarker.codice}}
+                    <span class="guida fa fa-map-marker fa-fw ml-1 mr-0" ngbTooltip="Località"></span>
+                    <span ngbTooltip="{{ sedeMarker.indirizzo }}"
+                          [disableTooltip]="sedeMarker.indirizzo.length <= 33">{{sedeMarker.indirizzo | truncate:33 }}</span>
+                    <span class="guida fa fa-sticky-note-o fa-fw ml-2 mr-0">
+                        </span>{{sedeMarker.label}}
+                </th>
+            </tr>
+            <tr *ngIf="sedeMarker.tipo">
+                <th scope="row" class="s-info-window row py-1 px-0 mx-0 w-100">
+                    <div class="col">
+                        <button class="btn btn-outline-dark px-1 py-1 my-3" (click)="openModal()"> Portami lì
+                            <i class="fa fa-sign-out"></i>
+                        </button>
+                    </div>
+                    <div class="col" ngbTooltip="{{ sedeMarker.tipo }}" placement="bottom">
+                        <img class="w-75" src="{{tipoSedeIcona}}">
+                    </div>
+                </th>
+            </tr>
+            <tr *ngIf="datiMeteo">
+                <th scope="row" class="py-1 s-info-window">
+                    <div *ngIf="datiMeteo; then meteo"></div>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

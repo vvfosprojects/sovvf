@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
+import { ReactiveFormsModule } from '@angular/forms';
 /*
     Components
  */
@@ -24,7 +25,8 @@ import { SchedaTelefonataComponent } from './scheda-telefonata/scheda-telefonata
         FormsModule,
         GooglePlaceModule,
         NgbModule,
-        ClipboardModule
+        ClipboardModule,
+        ReactiveFormsModule
     ],
     declarations: [
         ChiamataComponent,
