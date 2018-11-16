@@ -7,7 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PipeModule } from '../shared/pipes/pipe.module';
 import { SharedModule } from '../shared/shared.module';
 import { FilterPipeModule } from 'ngx-filter-pipe';
-import { OrderDownlineTreeviewEventParser, TreeviewEventParser, TreeviewI18n, TreeviewModule } from 'ngx-treeview';
+import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
 import { routing } from '../app.routing';
 import { FormsModule } from '@angular/forms';
 import { CambioSedeModalNavComponent } from './cambio-sede-modal-nav/cambio-sede-modal-nav.component';

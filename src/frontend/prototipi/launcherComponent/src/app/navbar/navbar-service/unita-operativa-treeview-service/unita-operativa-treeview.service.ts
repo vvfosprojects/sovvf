@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs';
 })
 export class UnitaOperativaTreeviewService {
 
-    sedi: any;
+    sedi: TreeviewItem[];
 
     constructor() {
     }

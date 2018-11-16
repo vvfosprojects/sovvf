@@ -48,7 +48,7 @@ export class UnitaOperativaComponent implements OnInit, OnDestroy {
     }
 
     openModal(newUnita) {
-        this.unitaAttualeS.unitaSelezionata[0] = newUnita;
+        this.unitaAttualeS.unitaSelezionata.push(newUnita);
         this._modalService.open(CambioSedeModalNavComponent);
     }
 

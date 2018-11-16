@@ -1,9 +1,12 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { UnitaOperativaTreeviewService } from '../navbar-service/unita-operativa-treeview-service/unita-operativa-treeview.service';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { CambioSedeModalNavComponent } from '../cambio-sede-modal-nav/cambio-sede-modal-nav.component';
 import { UnitaAttualeService } from '../navbar-service/unita-attuale/unita-attuale.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
+import { Sede } from '../../shared/model/sede.model';
+import { Coordinate } from '../../shared/model/coordinate.model';
 
 
 @Component({
@@ -11,12 +14,16 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
     templateUrl: './unita-operativa-treeview.component.html',
     styleUrls: ['./unita-operativa-treeview.component.css']
 })
-export class UnitaOperativaTreeviewComponent implements OnInit {
+export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
+
+    subscription = new Subscription();
+    unitaAttuale: Sede[];
 
     items: TreeviewItem[];
     initItem: any[];
     selectedItem: any[];
     checkedCount = 0;
+    sedeCorrenteString: string;
 
     config = TreeviewConfig.create({
         hasAllCheckBox: false,
@@ -29,6 +36,18 @@ export class UnitaOperativaTreeviewComponent implements OnInit {
     constructor(private treeviewService: UnitaOperativaTreeviewService,
                 private unitaAttualeS: UnitaAttualeService,
                 private _modalService: NgbModal) {
+        this.unitaAttuale = this.unitaAttualeS.unitaSelezionata;
+        this.subscription.add(
+            this.unitaAttualeS.getUnitaOperativaAttuale().subscribe(unitaAttuale => {
+                this.unitaAttuale = unitaAttuale;
+            })
+        );
+        /**
+         * provvisorio
+         */
+        const sedeAttuale = [new Sede('1', 'Comando di Roma', new Coordinate(41.900170, 12.491000), 'Via Genova, 1, 00184 Roma RM', 'Comando', 'Lazio', 'Roma')];
+        this.unitaAttualeS.sendUnitaOperativaAttuale(sedeAttuale);
+        this.unitaAttualeS.startCount++;
     }
 
     @HostListener('document:keydown.escape') onKeydownHandler() {
@@ -39,6 +58,16 @@ export class UnitaOperativaTreeviewComponent implements OnInit {
         this.treeviewService.getSedi().subscribe(r => {
             this.items = r;
         });
+        if (this.unitaAttuale.length > 1) {
+            this.sedeCorrenteString = 'più sedi selezionate';
+        } else {
+            this.sedeCorrenteString = this.unitaAttuale[0].descrizione;
+        }
+    }
+
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 
 
@@ -64,8 +93,12 @@ export class UnitaOperativaTreeviewComponent implements OnInit {
         console.log('annulla cambio sede');
     }
 
+    changeUnitaAttuale(newUnita) {
+        this.openModal(newUnita);
+    }
+
     openModal(newUnita) {
-        this.unitaAttualeS.unitaSelezionata = newUnita;
+        this.unitaAttualeS.unitaSelezionata.push(newUnita);
         this._modalService.open(CambioSedeModalNavComponent);
     }
 
