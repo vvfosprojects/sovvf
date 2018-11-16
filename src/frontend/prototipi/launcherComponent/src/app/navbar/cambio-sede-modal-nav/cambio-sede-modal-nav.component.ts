@@ -11,14 +11,18 @@ import { UnitaAttualeService } from '../navbar-service/unita-attuale/unita-attua
 export class CambioSedeModalNavComponent implements OnInit {
 
     nomeSede: string;
-    newUnita: Sede;
+    newUnita: Sede[];
 
     constructor(public modal: NgbActiveModal, private unitaAttualeS: UnitaAttualeService) {
     }
 
     ngOnInit() {
         this.newUnita = this.unitaAttualeS.unitaSelezionata;
-        this.nomeSede = this.unitaAttualeS.unitaSelezionata.descrizione;
+        if (this.unitaAttualeS.unitaSelezionata.length > 1) {
+            this.nomeSede = 'più sedi selezionate';
+        } else {
+            this.nomeSede = this.unitaAttualeS.unitaSelezionata[0].descrizione;
+        }
     }
 
     cambioSede() {
@@ -26,7 +30,6 @@ export class CambioSedeModalNavComponent implements OnInit {
     }
 
     annullaCambioSede() {
-
     }
 
 }

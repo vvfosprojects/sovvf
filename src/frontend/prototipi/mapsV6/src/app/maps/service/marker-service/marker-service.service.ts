@@ -50,7 +50,7 @@ export class MarkerService implements OnDestroy {
         this.filtro = this.mapsFiltroService.filtroAttivo;
         this.subscription.add(this.mapsFiltroService.getMenu().subscribe(menu => {
             this.filtro = [];
-            menu.forEach( r => {
+            menu.forEach(r => {
                 if (r.isActive) {
                     this.filtro.push(r.id);
                 }
@@ -258,7 +258,9 @@ export class MarkerService implements OnDestroy {
         /**
          * evento che cambia la sede
          */
-        this.unitaAttualeS.sendUnitaOperativaAttuale(sede);
+        const sedeAttuale = [];
+        sedeAttuale.push(sede);
+        this.unitaAttualeS.sendUnitaOperativaAttuale(sedeAttuale);
     }
 
     noAction() {

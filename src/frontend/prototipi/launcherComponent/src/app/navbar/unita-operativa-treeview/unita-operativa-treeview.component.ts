@@ -1,6 +1,10 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { UnitaOperativaTreeviewService } from '../navbar-service/unita-operativa-treeview-service/unita-operativa-treeview.service';
-import { TreeviewConfig, TreeviewItem, DropdownTreeviewComponent } from 'ngx-treeview';
+import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
+import { CambioSedeModalNavComponent } from '../cambio-sede-modal-nav/cambio-sede-modal-nav.component';
+import { UnitaAttualeService } from '../navbar-service/unita-attuale/unita-attuale.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
     selector: 'app-unita-operativa-treeview',
@@ -10,9 +14,9 @@ import { TreeviewConfig, TreeviewItem, DropdownTreeviewComponent } from 'ngx-tre
 export class UnitaOperativaTreeviewComponent implements OnInit {
 
     items: TreeviewItem[];
-    initItem: any;
-    selectedItem: any;
-    countOpen = 0;
+    initItem: any[];
+    selectedItem: any[];
+    checkedCount = 0;
 
     config = TreeviewConfig.create({
         hasAllCheckBox: false,
@@ -22,41 +26,47 @@ export class UnitaOperativaTreeviewComponent implements OnInit {
         maxHeight: 400
     });
 
-    constructor(private treeviewService: UnitaOperativaTreeviewService) {
+    constructor(private treeviewService: UnitaOperativaTreeviewService,
+                private unitaAttualeS: UnitaAttualeService,
+                private _modalService: NgbModal) {
     }
 
-    @ViewChild(DropdownTreeviewComponent) dropdownTreeviewComponent: DropdownTreeviewComponent;
-
     @HostListener('document:keydown.escape') onKeydownHandler() {
-        this.cambioSede();
+        this.annullaCambioSede();
     }
 
     ngOnInit() {
-        this.treeviewService.getBooks().subscribe( r => {
+        this.treeviewService.getSedi().subscribe(r => {
             this.items = r;
         });
     }
 
 
-    onSelectedChange(value: string) {
+    onSelectedChange(value) {
         if (!this.initItem) {
             this.initItem = value;
         } else {
-            this.countOpen++;
+            this.checkedCount++;
             this.selectedItem = value;
         }
-        console.log('Sedi selezionate: ', value);
+        console.log('Sedi selezionate: ', value.toString());
     }
 
     cambioSede() {
-        if (this.initItem !== this.selectedItem && this.countOpen > 0) {
+        if (this.checkedCount > 0 && this.initItem.toString() !== this.selectedItem.toString()) {
             console.log('La sede è cambiata!');
-            this.initItem = this.selectedItem;
+        } else {
+            console.log('la sede non è cambiata');
         }
     }
 
     annullaCambioSede() {
-        console.log('premuto tasto esce');
+        console.log('annulla cambio sede');
+    }
+
+    openModal(newUnita) {
+        this.unitaAttualeS.unitaSelezionata = newUnita;
+        this._modalService.open(CambioSedeModalNavComponent);
     }
 
 }

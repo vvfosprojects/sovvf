@@ -7,11 +7,13 @@ import { Observable, of } from 'rxjs';
 })
 export class UnitaOperativaTreeviewService {
 
+    sedi: any;
+
     constructor() {
     }
 
-    getBooks(): Observable<TreeviewItem[]> {
-        const sedi = [
+    getSedi(): Observable<TreeviewItem[]> {
+        this.sedi = [
             new TreeviewItem({
                 text: 'CON', value: 9, collapsed: false, children: [
                     {
@@ -47,6 +49,6 @@ export class UnitaOperativaTreeviewService {
                     }]
             })];
 
-        return of(sedi);
+        return of(this.sedi);
     }
 }

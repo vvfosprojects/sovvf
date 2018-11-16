@@ -7,27 +7,23 @@ import { Sede } from '../../../shared/model/sede.model';
 })
 export class UnitaAttualeService {
 
-    private unitaAttuale = new Subject<Sede>();
+    private unitaAttuale = new Subject<Sede[]>();
     startCount = 0;
     preLoader: boolean;
-    unitaSelezionata: any;
+    unitaSelezionata: Sede[] = [];
 
     constructor() {
         this.preLoader = true;
     }
 
-    sendUnitaOperativaAttuale(sede: Sede) {
+    sendUnitaOperativaAttuale(sede: Sede[]) {
         this.unitaAttuale.next(sede);
         if (this.startCount > 0) {
             this.preloading();
         }
     }
 
-    clearUnitaOperativaAttuale() {
-        this.unitaAttuale.next();
-    }
-
-    getUnitaOperativaAttuale(): Observable<Sede> {
+    getUnitaOperativaAttuale(): Observable<Sede[]> {
         return this.unitaAttuale.asObservable();
     }
 

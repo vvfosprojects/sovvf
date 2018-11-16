@@ -16,7 +16,7 @@ export class UnitaOperativaComponent implements OnInit, OnDestroy {
 
     subscription = new Subscription();
     unitaOperative: Sede[];
-    unitaAttuale: Sede;
+    unitaAttuale: Sede[];
     searchUnita: string;
 
 
@@ -31,7 +31,7 @@ export class UnitaOperativaComponent implements OnInit, OnDestroy {
                 this.unitaAttuale = unitaAttuale;
             })
         );
-        const sedeAttuale = new Sede('1', 'Comando di Roma', new Coordinate(41.900170, 12.491000), 'Via Genova, 1, 00184 Roma RM', 'Comando', 'Lazio', 'Roma');
+        const sedeAttuale = [new Sede('1', 'Comando di Roma', new Coordinate(41.900170, 12.491000), 'Via Genova, 1, 00184 Roma RM', 'Comando', 'Lazio', 'Roma')];
         this.unitaAttualeS.sendUnitaOperativaAttuale(sedeAttuale);
         this.unitaAttualeS.startCount++;
     }
@@ -48,7 +48,7 @@ export class UnitaOperativaComponent implements OnInit, OnDestroy {
     }
 
     openModal(newUnita) {
-        this.unitaAttualeS.unitaSelezionata = newUnita;
+        this.unitaAttualeS.unitaSelezionata[0] = newUnita;
         this._modalService.open(CambioSedeModalNavComponent);
     }
 

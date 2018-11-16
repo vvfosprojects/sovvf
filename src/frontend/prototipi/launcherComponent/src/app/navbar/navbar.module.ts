@@ -7,7 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PipeModule } from '../shared/pipes/pipe.module';
 import { SharedModule } from '../shared/shared.module';
 import { FilterPipeModule } from 'ngx-filter-pipe';
-import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
+import { OrderDownlineTreeviewEventParser, TreeviewEventParser, TreeviewI18n, TreeviewModule } from 'ngx-treeview';
 import { routing } from '../app.routing';
 import { FormsModule } from '@angular/forms';
 import { CambioSedeModalNavComponent } from './cambio-sede-modal-nav/cambio-sede-modal-nav.component';
@@ -47,7 +47,7 @@ import { DefaultTreeviewI18n } from './navbar-service/unita-operativa-treeview-s
     providers: [
         {provide: TurnoService, useClass: TurnoServiceFake},
         {provide: UnitaOperativaService, useClass: UnitaOperativaServiceFake},
-        {provide: TreeviewI18n, useClass: DefaultTreeviewI18n}
+        {provide: TreeviewI18n, useClass: DefaultTreeviewI18n},
     ]
 })
 export class NavbarModule {
