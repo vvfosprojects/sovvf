@@ -29,6 +29,7 @@ namespace SOVVF.FakeImplementations.Test
     public class TestGeneratoreRichieste
     {
         [Test]
+        [Ignore("Non è un test ma un metodo fake di generazione richieste")]
         public void GeneraRichieste()
         {
             var gi = new GeneratoreRichieste(
