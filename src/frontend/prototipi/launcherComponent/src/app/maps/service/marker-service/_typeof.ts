@@ -8,11 +8,6 @@ export class TipoMappe {
     }
 
     private marker() {
-        // this.modelMarker = [
-        //     ['RichiestaMarker', 'richiesta'],
-        //     ['MezzoMarker', 'mezzo'],
-        //     ['SedeMarker', 'sede']
-        // ];
         this.modelMarker = [
             ['id', 'richiesta'],
             ['coordinate', 'mezzo'],
@@ -20,12 +15,6 @@ export class TipoMappe {
         ];
         this.mapModelMarker = new Map(this.modelMarker);
     }
-
-    // markerType(marker) {
-    //     const markerModel = this.mapModelMarker.get(marker.constructor.name.toString());
-    //     // console.log(markerModel);
-    //     return markerModel;
-    // }
 
     markerType(marker) {
         const keyNames = Object.keys(marker);

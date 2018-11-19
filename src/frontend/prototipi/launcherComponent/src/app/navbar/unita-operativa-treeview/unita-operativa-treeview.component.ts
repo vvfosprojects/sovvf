@@ -36,7 +36,7 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
     constructor(private treeviewService: UnitaOperativaTreeviewService,
                 private unitaAttualeS: UnitaAttualeService,
                 private _modalService: NgbModal) {
-        this.unitaAttuale = this.unitaAttualeS.unitaSelezionata;
+        // this.unitaAttuale = this.unitaAttualeS.unitaSelezionata;
         this.subscription.add(
             this.unitaAttualeS.getUnitaOperativaAttuale().subscribe(unitaAttuale => {
                 this.unitaAttuale = unitaAttuale;
@@ -45,7 +45,12 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
         /**
          * provvisorio
          */
-        const sedeAttuale = [new Sede('1', 'Comando di Roma', new Coordinate(41.900170, 12.491000), 'Via Genova, 1, 00184 Roma RM', 'Comando', 'Lazio', 'Roma')];
+        const sedeAttuale = [
+            new Sede('2', 'Comando di Latina', new Coordinate(41.474258, 12.903250), 'Piazzale G. Carturan, 1, 04100 Latina LT', 'Comando', 'Lazio', 'Latina'),
+            new Sede('6', 'Distaccamento Cittadino Eur', null, 'Piazza F. Vivona, 4 00144 Roma', 'Distaccamento', 'Lazio', 'Roma'),
+            new Sede('8', 'Distaccamento Cittadino La Rustica', null, 'Via Achille Vertunni, 98 00155 Roma', 'Distaccamento', 'Lazio', 'Roma'),
+        ];
+        this.unitaAttualeS.unitaSelezionata = sedeAttuale;
         this.unitaAttualeS.sendUnitaOperativaAttuale(sedeAttuale);
         this.unitaAttualeS.startCount++;
     }
@@ -63,13 +68,12 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
         } else {
             this.sedeCorrenteString = this.unitaAttuale[0].descrizione;
         }
+        this.treeviewService._get.textSedi('a');
     }
-
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
     }
-
 
     onSelectedChange(value) {
         if (!this.initItem) {
@@ -81,11 +85,11 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
         console.log('Sedi selezionate: ', value.toString());
     }
 
-    cambioSede() {
+    checkCambioSede() {
         if (this.checkedCount > 0 && this.initItem.toString() !== this.selectedItem.toString()) {
-            console.log('La sede è cambiata!');
+            console.log('La sede selezionata è cambiata!');
         } else {
-            console.log('la sede non è cambiata');
+            console.log('la sede selezionata non è cambiata');
         }
     }
 
@@ -93,11 +97,18 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
         console.log('annulla cambio sede');
     }
 
+    cambioSede() {
+        console.log('la sede è cambiata');
+    }
+
     changeUnitaAttuale(newUnita) {
         this.openModal(newUnita);
     }
 
     openModal(newUnita) {
+        /**
+         * da cambiare
+         */
         this.unitaAttualeS.unitaSelezionata.push(newUnita);
         this._modalService.open(CambioSedeModalNavComponent);
     }
