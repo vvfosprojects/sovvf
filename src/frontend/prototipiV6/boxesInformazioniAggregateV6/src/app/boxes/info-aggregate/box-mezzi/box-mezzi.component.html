@@ -1,0 +1,58 @@
+<div class="row p-2">
+    <div class="col-12">
+        <div class="row">
+            <div class="col">
+                <i class="fa fa-truck mb-2 mr-1"></i><span class="font-weight-bold">Mezzi in servizio:
+                    {{mezzi.inServizio}}</span>
+            </div>
+            <div class="col ml-auto text-secondary text-right">
+                <i class="fa fa-truck mb-2 mr-1"></i>
+                <span class="mr-1">Istituto:</span>
+                <span class="font-weight-bold">{{mezzi.istituto}}</span>
+            </div>
+        </div>
+        <hr class="m-0 mb-2">
+    </div>
+    <!-- sinistra -->
+    <div class="col-6">
+        <div class="row">
+            <div class="col-10 mx-auto">
+                <div class="row">
+                    <div class="col pr-0 text-secondary">
+                        <ul class="list-unstyled m-0">
+                            <li><span class="d-inline-block h6">In sede</span></li>
+                            <li><span class="d-inline-block h6">In rientro</span></li>
+                        </ul>
+                    </div>
+                    <div class="col px-0  text-secondary text-center">
+                        <ul class="list-unstyled m-0">
+                            <li><span class="badge badge-secondary h6 w-75">{{mezzi.inSede}}</span></li>
+                            <li><span class="badge badge-primary h6 w-75">{{mezzi.inRientro}}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- destra -->
+    <div class="col-6">
+        <div class="row">
+            <div class="col-10 mx-auto">
+                <div class="row">
+                    <div class="col pr-0 text-secondary">
+                        <ul class="list-unstyled m-0">
+                            <li><span class="d-inline-block h6">In viaggio</span></li>
+                            <li><span class="d-inline-block h6">Sul posto</span></li>
+                        </ul>
+                    </div>
+                    <div class="col px-0 text-secondary text-center">
+                        <ul class="list-unstyled m-0">
+                            <li><span class="badge badge-info h6 w-75">{{mezzi.inViaggio}}</span></li>
+                            <li><span class="badge badge-success h6 w-75">{{mezzi.sulPosto}}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
