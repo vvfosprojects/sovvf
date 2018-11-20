@@ -11,6 +11,9 @@
   },
   "private": true,
   "dependencies": {
+    "@agm/core": "^1.0.0-beta.5",
+    "@agm/js-marker-clusterer": "^1.0.0-beta.5",
+    "@agm/snazzy-info-window": "^1.0.0-beta.5",
     "@angular/animations": "^6.1.0",
     "@angular/common": "^6.1.0",
     "@angular/compiler": "^6.1.0",
@@ -28,6 +31,7 @@
     "moment": "^2.22.2",
     "ngx-clipboard": "^11.1.9",
     "ngx-google-places-autocomplete": "^2.0.1",
+    "node-sass": "^4.10.0",
     "rxjs": "^6.0.0",
     "zone.js": "~0.8.26"
   },
