@@ -34,6 +34,19 @@ export class CompPartenzaServiceFake {
       ),
       new PreAccoppiato('2',
         new Mezzo('A2', '', 'APS', 'inRientro', [], 0),
+        new Squadra('Verde', 'inSede', [
+          new Componente('QF', 'Mario Verdi', '', true, false, false),
+          new Componente('QF', 'Roberto Merlo', '', false, true, false),
+          new Componente('QF', 'Francesca De Simone', '', false, false, false),
+          new Componente('QF', 'Emanuele Catti', '', false, false, false),
+          new Componente('QF', 'Mariangela Rossi', '', false, false, false),
+        ]),
+        'Ostiense',
+        5.5,
+        '6 min.'
+      ),
+      new PreAccoppiato('2',
+        new Mezzo('A3', '', 'APS', 'inRientro', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -46,7 +59,20 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A2', '', 'APS', 'inRientro', [], 0),
+        new Mezzo('A4', '', 'APS', 'inRientro', [], 0),
+        new Squadra('Marrone', 'inSede', [
+          new Componente('QF', 'Mario Verdi', '', true, false, false),
+          new Componente('QF', 'Roberto Merlo', '', false, true, false),
+          new Componente('QF', 'Francesca De Simone', '', false, false, false),
+          new Componente('QF', 'Emanuele Catti', '', false, false, false),
+          new Componente('QF', 'Mariangela Rossi', '', false, false, false),
+        ]),
+        'Ostiense',
+        5.5,
+        '6 min.'
+      ),
+      new PreAccoppiato('2',
+        new Mezzo('A5', '', 'APS', 'inRientro', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -59,7 +85,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A2', '', 'APS', 'inRientro', [], 0),
+        new Mezzo('A6', '', 'APS', 'inRientro', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -72,7 +98,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A2', '', 'APS', 'inRientro', [], 0),
+        new Mezzo('A7', '', 'APS', 'inRientro', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -85,7 +111,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A2', '', 'APS', 'inRientro', [], 0),
+        new Mezzo('A8', '', 'APS', 'inRientro', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -98,7 +124,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A2', '', 'APS', 'inRientro', [], 0),
+        new Mezzo('A9', '', 'APS', 'inRientro', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -111,7 +137,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A2', '', 'APS', 'inRientro', [], 0),
+        new Mezzo('A10', '', 'APS', 'inRientro', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -124,7 +150,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A2', '', 'APS', 'inRientro', [], 0),
+        new Mezzo('A11', '', 'APS', 'inRientro', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -137,33 +163,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A2', '', 'APS', 'inRientro', [], 0),
-        new Squadra('Gialla', 'inSede', [
-          new Componente('QF', 'Mario Verdi', '', true, false, false),
-          new Componente('QF', 'Roberto Merlo', '', false, true, false),
-          new Componente('QF', 'Francesca De Simone', '', false, false, false),
-          new Componente('QF', 'Emanuele Catti', '', false, false, false),
-          new Componente('QF', 'Mariangela Rossi', '', false, false, false),
-        ]),
-        'Ostiense',
-        5.5,
-        '6 min.'
-      ),
-      new PreAccoppiato('2',
-        new Mezzo('A2', '', 'APS', 'inRientro', [], 0),
-        new Squadra('Gialla', 'inSede', [
-          new Componente('QF', 'Mario Verdi', '', true, false, false),
-          new Componente('QF', 'Roberto Merlo', '', false, true, false),
-          new Componente('QF', 'Francesca De Simone', '', false, false, false),
-          new Componente('QF', 'Emanuele Catti', '', false, false, false),
-          new Componente('QF', 'Mariangela Rossi', '', false, false, false),
-        ]),
-        'Ostiense',
-        5.5,
-        '6 min.'
-      ),
-      new PreAccoppiato('2',
-        new Mezzo('A2', '', 'APS', 'inRientro', [], 0),
+        new Mezzo('A12', '', 'APS', 'inRientro', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),

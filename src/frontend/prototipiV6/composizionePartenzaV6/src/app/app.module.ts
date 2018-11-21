@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { ComposizionePartenzaComponent } from './composizione-partenza/composizione-partenza.component';
-import { FasterComponent } from './composizione-partenza/faster/faster.component';
-import { SlowerComponent } from './composizione-partenza/slower/slower.component';
+import { FasterComponent } from './composizione-partenza/composizione-veloce/faster.component';
+import { SlowerComponent } from './composizione-partenza/composizione-avanzata/slower.component';
 import { SintesiRichiestaComponent } from './richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
 // Module
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -20,12 +20,12 @@ import { ListaRichiesteManagerServiceFake } from './core/manager/lista-richieste
 import { SintesiRichiesteService } from './core/service/lista-richieste-service/lista-richieste.service';
 import { SintesiRichiesteServiceFake } from './core/service/lista-richieste-service/lista-richieste.service.fake';
 import { DispatcherCompPartenzaService } from './core/dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.service';
-import { DispatcherCompPartenzaFakeService } from './core/dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza-fake.service';
+import { DispatcherCompPartenzaFakeService } from './core/dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.fake.service';
 import { CompPartenzaManagerService } from './core/manager/comp-partenza-manager/comp-partenza-manager.service';
 import { CompPartenzaManagerServiceFake } from './core/manager/comp-partenza-manager/comp-partenza-manager.service.fake';
 import { CompPartenzaService } from './core/service/comp-partenza-service/comp-partenza.service';
 import { CompPartenzaServiceFake } from './core/service/comp-partenza-service/comp-partenza.service.fake';
-import { NavComponent } from './composizione-partenza/faster/nav/nav.component';
+import { NavComponent } from './composizione-partenza/composizione-veloce/nav/nav.component';
 
 @NgModule({
   declarations: [
