@@ -2,14 +2,58 @@
 @import '../node_modules/bootstrap/dist/css/bootstrap.css';
 @import '../node_modules/font-awesome/css/font-awesome.css';
 
+.app-shadow-danger{
+    -webkit-box-shadow: 1px 1px 2px 1px #dc3545;
+    -moz-box-shadow: 1px 1px 2px 1px #dc3545;
+    box-shadow: 1px 1px 2px 1px #dc3545;
+}
+.app-shadow-primary{
+    -webkit-box-shadow: 1px 1px 2px 1px #007bff;
+    -moz-box-shadow: 1px 1px 2px 1px #007bff;
+    box-shadow: 1px 1px 2px 1px #007bff;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .card-shadow{
     -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
     -moz-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
     box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
 }
-
-.nowrap {
-    white-space: nowrap;
+.card-shadow-primary{
+    -webkit-box-shadow: 2px 0px 2px .5px #007bff;
+    -moz-box-shadow: 2px 0px 2px .5px #007bff;
+    box-shadow: 2px 0px 2px .5px #007bff;
+}
+.card-shadow-info{
+    -webkit-box-shadow: 2px 0px 2px .5px #17a2b8;
+    -moz-box-shadow: 2px 0px 2px .5px #17a2b8;
+    box-shadow: 2px 0px 2px .5px #17a2b8;
+}
+.card-shadow-success{
+    -webkit-box-shadow: 2px 0px 2px .5px #28a745;
+    -moz-box-shadow: 2px 0px 2px .5px #28a745;
+    box-shadow: 2px 0px 2px .5px #28a745;
+}
+.card-shadow-danger{
+    -webkit-box-shadow: 2px 0px 2px .5px #dc3545;
+    -moz-box-shadow: 2px 0px 2px .5px #dc3545;
+    box-shadow: 2px 0px 2px .5px #dc3545;
+}
+.card-shadow-warning{
+    -webkit-box-shadow: 2px 0px 2px .5px #ffc107;
+    -moz-box-shadow: 2px 0px 2px .5px #ffc107;
+    box-shadow: 2px 0px 2px .5px #ffc107;
+}
+.card-shadow-secondary{
+    -webkit-box-shadow: 2px 0px 2px .5px #868e96;
+    -moz-box-shadow: 2px 0px 2px .5px #868e96;
+    box-shadow: 2px 0px 2px .5px #868e96;
 }
 
 .status_presidiato {
@@ -30,4 +74,16 @@
 
 .status_chiuso{
     border-left: 10px solid #868e96;
+}
+
+.status_preaccoppiato_nonselezionato{
+    border-top: 5px solid #dc3545;
+}
+.status_preaccoppiato_selezionato{
+    border-top: 5px solid #007bff;
+}
+
+/* icone di guida */
+.guida {
+    color: #bbbbbb;
 }

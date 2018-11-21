@@ -11,12 +11,21 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from './shared/shared.module';
 import { PipeModule } from './shared/pipes/pipe.module';
 import { TimeagoModule, TimeagoIntl, TimeagoFormatter, TimeagoCustomFormatter } from 'ngx-timeago';
+
+// Service
 import { DispatcherService } from './core/dispatcher/dispatcher-lista-richieste.service';
 import { DispatcherFakeService } from './core/dispatcher/dispatcher-lista-richieste-fake.service';
 import { ListaRichiesteManagerService } from './core/manager/lista-richieste-manager/lista-richieste-manager.service';
 import { ListaRichiesteManagerServiceFake } from './core/manager/lista-richieste-manager/lista-richieste-manager.service.fake';
 import { SintesiRichiesteService } from './core/service/lista-richieste-service/lista-richieste.service';
 import { SintesiRichiesteServiceFake } from './core/service/lista-richieste-service/lista-richieste.service.fake';
+import { DispatcherCompPartenzaService } from './core/dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.service';
+import { DispatcherCompPartenzaFakeService } from './core/dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza-fake.service';
+import { CompPartenzaManagerService } from './core/manager/comp-partenza-manager/comp-partenza-manager.service';
+import { CompPartenzaManagerServiceFake } from './core/manager/comp-partenza-manager/comp-partenza-manager.service.fake';
+import { CompPartenzaService } from './core/service/comp-partenza-service/comp-partenza.service';
+import { CompPartenzaServiceFake } from './core/service/comp-partenza-service/comp-partenza.service.fake';
+import { NavComponent } from './composizione-partenza/faster/nav/nav.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +33,8 @@ import { SintesiRichiesteServiceFake } from './core/service/lista-richieste-serv
     ComposizionePartenzaComponent,
     FasterComponent,
     SlowerComponent,
-    SintesiRichiestaComponent
+    SintesiRichiestaComponent,
+    NavComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +50,11 @@ import { SintesiRichiesteServiceFake } from './core/service/lista-richieste-serv
   providers: [
     { provide: DispatcherService, useClass: DispatcherFakeService },
     { provide: ListaRichiesteManagerService, useClass: ListaRichiesteManagerServiceFake },
-    { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }
+    { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake },
+    
+    { provide: DispatcherCompPartenzaService, useClass: DispatcherCompPartenzaFakeService },
+    { provide: CompPartenzaManagerService, useClass: CompPartenzaManagerServiceFake },
+    { provide: CompPartenzaService, useClass: CompPartenzaServiceFake }
   ],
   bootstrap: [AppComponent]
 })
