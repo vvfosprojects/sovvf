@@ -24,6 +24,7 @@ export class SintesiRichiestaComponent implements OnInit {
     @Input() richiesta: SintesiRichiesta;
     @Input() fissata: boolean;
     @Input() espanso: boolean;
+    @Input() espandibile: boolean;
 
     methods = new LayoutMethods;
     isSingleClick = true;
@@ -47,7 +48,9 @@ export class SintesiRichiestaComponent implements OnInit {
 
     /* Layout Methods */
     toggleEspanso(): void {
-        this.espanso = !this.espanso;
+        if (this.espandibile) {
+            this.espanso = !this.espanso;
+        }
     }
 
     /* NgClass Methods */
@@ -70,7 +73,7 @@ export class SintesiRichiestaComponent implements OnInit {
         }
     }
     richiestaDoubleClick(richiesta) {
-        if (richiesta) {
+        if (richiesta && this.espandibile) {
             this.isSingleClick = false;
             this.toggleEspanso();
             this.doubleClickRichiesta.emit(richiesta);

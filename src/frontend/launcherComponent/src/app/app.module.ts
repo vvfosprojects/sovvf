@@ -31,6 +31,7 @@ import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
 import { ChiamataModule } from './chiamata/chiamata.module';
 import { FilterbarModule } from './filterbar/filterbar.module';
 import { I18n } from './i18n';
+import { ComposizionePartenzaModule } from './composizione-partenza/composizione-partenza.module';
 
 
 @NgModule({
@@ -62,7 +63,8 @@ import { I18n } from './i18n';
         EventiRichiestaModule,
         NavbarModule,
         ChiamataModule,
-        FilterbarModule
+        FilterbarModule,
+        ComposizionePartenzaModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},

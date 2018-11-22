@@ -10,13 +10,11 @@ import { PipeModule } from '../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { ScrollEventModule } from 'ngx-scroll-event';
-import { TimeagoModule, TimeagoFormatter, TimeagoCustomFormatter, TimeagoIntl } from 'ngx-timeago';
 /*
     Components
  */
 import { RichiesteComponent } from './richieste.component';
 import { ListaRichiesteComponent } from './lista-richieste/lista-richieste.component';
-import { SintesiRichiestaComponent } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
 import { SintesiRichiestaSmComponent } from './lista-richieste/sintesi-richiesta-sm/sintesi-richiesta-sm.component';
 import { RichiestaFissataComponent } from './lista-richieste/richiesta-fissata/richiesta-fissata.component';
 /*
@@ -30,6 +28,7 @@ import { DispatcherService } from '../core/dispatcher/dispatcher-lista-richieste
 import { DispatcherFakeService } from '../core/dispatcher/dispatcher-lista-richieste-fake.service';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { SintesiRichiestaModule } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 
 @NgModule({
     imports: [
@@ -40,18 +39,14 @@ import { NgxPaginationModule } from 'ngx-pagination';
         BrowserAnimationsModule,
         ScrollEventModule,
         FilterPipeModule,
+        SintesiRichiestaModule,
         NgbModule.forRoot(),
         PipeModule.forRoot(),
-        SharedModule.forRoot(),
-        TimeagoModule.forRoot({
-            intl: TimeagoIntl,
-            formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
-        })
+        SharedModule.forRoot()
     ],
     declarations: [
         RichiesteComponent,
         ListaRichiesteComponent,
-        SintesiRichiestaComponent,
         RichiestaFissataComponent,
         SintesiRichiestaSmComponent
     ],
