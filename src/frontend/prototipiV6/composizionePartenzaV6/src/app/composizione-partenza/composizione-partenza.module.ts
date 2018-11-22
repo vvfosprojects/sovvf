@@ -7,13 +7,13 @@ import { PipeModule } from '../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { TimeagoModule, TimeagoIntl, TimeagoFormatter, TimeagoCustomFormatter } from 'ngx-timeago';
+import { SintesiRichiestaModule } from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 /*
     Component
   */
 import { ComposizionePartenzaComponent } from './composizione-partenza.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NavComponent } from './composizione-veloce/nav/nav.component';
-import { SintesiRichiestaComponent } from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
 import { SlowerComponent } from './composizione-avanzata/slower.component';
 import { FasterComponent } from './composizione-veloce/faster.component';
 /*
@@ -37,7 +37,6 @@ import { CompPartenzaServiceFake } from '../core/service/comp-partenza-service/c
     ComposizionePartenzaComponent,
     FasterComponent,
     SlowerComponent,
-    SintesiRichiestaComponent,
     NavComponent
   ],
   imports: [
@@ -49,7 +48,8 @@ import { CompPartenzaServiceFake } from '../core/service/comp-partenza-service/c
     TimeagoModule.forRoot({
         intl: TimeagoIntl,
         formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
-    })
+    }),
+    SintesiRichiestaModule
   ],
   exports: [
     ComposizionePartenzaComponent
