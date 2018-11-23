@@ -8,15 +8,19 @@ import { PartenzaService } from './service/partenza/partenza.service';
 })
 export class ComposizionePartenzaComponent implements OnInit {
   @Input() richiesta: SintesiRichiesta;
+  viewMode = 'faster';
 
-  constructor(private partenzaService: PartenzaService) {
+  constructor(public partenzaS: PartenzaService) {
+    this.partenzaS.getViewMode().subscribe(viewMode => {
+      this.viewMode = viewMode;
+    });
   }
 
   ngOnInit() {
   }
 
   dismissPartenza() {
-    this.partenzaService.dismissPartenza();
+    this.partenzaS.dismissPartenza();
   }
 
   CardClasses(r) {

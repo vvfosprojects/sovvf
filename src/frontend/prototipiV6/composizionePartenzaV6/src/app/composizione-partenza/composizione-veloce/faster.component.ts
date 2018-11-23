@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { PreAccoppiato } from '../model/pre-accoppiato.model';
 import { CompPartenzaManagerService } from 'src/app/core/manager/comp-partenza-manager/comp-partenza-manager.service';
 import { PreAccoppiatiService } from '../service/pre-accoppiati/pre-accoppiati.service';
+import { PartenzaService } from '../service/partenza/partenza.service';
 
 @Component({
   selector: 'app-faster',
@@ -15,7 +16,8 @@ export class FasterComponent implements OnInit {
   preAccoppiatiSelezionati: PreAccoppiato[] = [];
 
   constructor(private compPartenzaManager: CompPartenzaManagerService,
-    private preAccoppiatiS: PreAccoppiatiService) {
+    private preAccoppiatiS: PreAccoppiatiService,
+    private partenzaS: PartenzaService) {
     // Restituisce i PreAccoppiati
     this.compPartenzaManager.getPreAccoppiati().subscribe((preAccoppiati: PreAccoppiato[]) => {
       this.preAccoppiati = preAccoppiati;
@@ -29,15 +31,19 @@ export class FasterComponent implements OnInit {
   ngOnInit() {
   }
 
-  preAccoppiatoSelezionato(preAccoppiato){
+  preAccoppiatoSelezionato(preAccoppiato) {
     this.preAccoppiatiS.sendPreAccoppiatoSelezionato(preAccoppiato);
+  }
+
+  changeMode(newMode: string) {
+    this.partenzaS.changeViewMode(newMode);
   }
 
   cardClasses(preAccoppiato): string {
     let returnClass = 'status_preaccoppiato_nonselezionato app-shadow-danger';
-    if(this.preAccoppiatiSelezionati){
+    if (this.preAccoppiatiSelezionati) {
       this.preAccoppiatiSelezionati.forEach(preAcc => {
-        if (preAcc === preAccoppiato){
+        if (preAcc === preAccoppiato) {
           returnClass = 'status_preaccoppiato_selezionato  app-shadow-primary';
         }
       });

@@ -6,8 +6,11 @@
           (dismissNuovaPartenza)="dismissPartenza()"></app-sintesi-richiesta>
       </div>
     </div>
-    <div class="col-12">
+    <div *ngIf="viewMode === 'faster'" class="col-12">
       <app-faster></app-faster>
+    </div>
+    <div *ngIf="viewMode === 'slower'" class="col-12">
+      <app-slower></app-slower>
     </div>
   </div>
 </div>
