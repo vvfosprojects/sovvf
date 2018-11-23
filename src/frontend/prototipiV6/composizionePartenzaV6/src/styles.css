@@ -87,3 +87,7 @@
 .guida {
     color: #bbbbbb;
 }
+
+.scroll-y{
+    overflow-y: scroll;
+}

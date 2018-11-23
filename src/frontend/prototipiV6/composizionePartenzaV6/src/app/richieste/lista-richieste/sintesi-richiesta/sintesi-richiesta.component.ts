@@ -6,6 +6,9 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
 
 import { LayoutMethods } from './_layout-methods';
+import { ViewInterface } from 'src/app/filterbar/view-mode/view.interface';
+import { FilterbarService } from 'src/app/filterbar/filterbar-service/filterbar-service.service';
+import { PartenzaService } from 'src/app/composizione-partenza/service/partenza/partenza.service';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -21,10 +24,13 @@ export class SintesiRichiestaComponent implements OnInit {
     @Output() doubleClickRichiesta: EventEmitter<any> = new EventEmitter();
     @Output() fissaInAlto: EventEmitter<any> = new EventEmitter();
     @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
+    @Output() nuovaPartenza: EventEmitter<any> = new EventEmitter();
+    @Output() dismissNuovaPartenza: EventEmitter<any> = new EventEmitter();
     @Input() richiesta: SintesiRichiesta;
     @Input() fissata: boolean;
     @Input() espanso: boolean;
     @Input() espandibile: boolean;
+    @Input() partenza: boolean;
 
     methods = new LayoutMethods;
     isSingleClick = true;
@@ -87,7 +93,11 @@ export class SintesiRichiestaComponent implements OnInit {
     visualizzaEventiRichiesta(richiesta) {
         this.eventiRichiesta.emit(richiesta);
     }
-    invioPartenza(id) {
-        console.log('invio partenza');
+    invioPartenza(richiesta) {
+        if(this.partenza) {
+            this.dismissNuovaPartenza.emit();
+        } else {
+            this.nuovaPartenza.emit(richiesta);
+        }
     }
 }

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 // Model
 import { PreAccoppiato } from '../model/pre-accoppiato.model';
 import { CompPartenzaManagerService } from 'src/app/core/manager/comp-partenza-manager/comp-partenza-manager.service';
-import { PreAccoppiatiService } from '../service/pre-accoppiati.service';
+import { PreAccoppiatiService } from '../service/pre-accoppiati/pre-accoppiati.service';
 
 @Component({
   selector: 'app-faster',

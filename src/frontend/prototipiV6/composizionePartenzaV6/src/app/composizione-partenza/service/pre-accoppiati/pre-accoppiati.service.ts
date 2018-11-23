@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
-import { PreAccoppiato } from '../model/pre-accoppiato.model';
+import { PreAccoppiato } from '../../model/pre-accoppiato.model';
 
 @Injectable({
   providedIn: 'root'
