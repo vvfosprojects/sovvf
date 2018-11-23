@@ -107,6 +107,7 @@ export class SchedaTelefonataComponent implements OnInit {
             this.viewService.sendView({
                 richieste: true,
                 mappa: true,
+                comp_partenza: false,
                 split: true,
                 chiamata: false,
             });
