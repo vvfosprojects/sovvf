@@ -35,6 +35,7 @@ export class TastoChiamataComponent implements OnInit, OnDestroy {
         this.viewService.sendView({
             richieste: false,
             mappa: true,
+            comp_partenza: false,
             split: true,
             chiamata: true,
         });

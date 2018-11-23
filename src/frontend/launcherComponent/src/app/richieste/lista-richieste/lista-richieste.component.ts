@@ -1,14 +1,15 @@
-import {Component, OnInit, ElementRef, ViewChild, OnChanges, OnDestroy, Input} from '@angular/core';
-import {SintesiRichiesta} from '../../shared/model/sintesi-richiesta.model';
-import {ListaRichiesteManagerService} from '../../core/manager/lista-richieste-manager/lista-richieste-manager.service';
-import {ScrollEvent} from 'ngx-scroll-event';
-import {ListaRichiesteService} from '../lista-richieste-service/lista-richieste-service.service';
-import {RicercaRichiesteService} from '../../filterbar/ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {MarkerService} from '../../maps/service/marker-service/marker-service.service';
-import {EventiRichiestaComponent} from '../../eventi/eventi-richiesta.component';
-import {Subscription} from 'rxjs';
-import {FilterPipe} from 'ngx-filter-pipe';
+import { Component, OnInit, ElementRef, ViewChild, OnChanges, OnDestroy, Input } from '@angular/core';
+import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
+import { ListaRichiesteManagerService } from '../../core/manager/lista-richieste-manager/lista-richieste-manager.service';
+import { ScrollEvent } from 'ngx-scroll-event';
+import { ListaRichiesteService } from '../lista-richieste-service/lista-richieste-service.service';
+import { RicercaRichiesteService } from '../../filterbar/ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
+import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
+import { Subscription } from 'rxjs';
+import { FilterPipe } from 'ngx-filter-pipe';
+import { PartenzaService } from 'src/app/composizione-partenza/service/partenza/partenza.service';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -32,11 +33,12 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     @Input() _split: boolean;
 
     constructor(private listaRichiesteManager: ListaRichiesteManagerService,
-                private richiesteS: ListaRichiesteService,
-                public ricercaS: RicercaRichiesteService,
-                private modalService: NgbModal,
-                private markerS: MarkerService,
-                private filter: FilterPipe) {
+        private richiesteS: ListaRichiesteService,
+        public ricercaS: RicercaRichiesteService,
+        private modalService: NgbModal,
+        private markerS: MarkerService,
+        private filter: FilterPipe,
+        private partenzaService: PartenzaService) {
 
         // Restituisce le Richieste
         this.subscription.add(
@@ -139,6 +141,10 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
+    nuovaPartenza(richiesta) {
+        this.partenzaService.nuovaPartenza(richiesta);
+    }
+
     /* Gestisce l'hover in */
     richiestaHoverIn(richiesta) {
         if (richiesta) {
@@ -165,7 +171,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(richiesta) {
-        this.modalService.open(EventiRichiestaComponent, {size: 'lg', centered: true});
+        this.modalService.open(EventiRichiestaComponent, { size: 'lg', centered: true });
     }
 
     /* Ritorna true se le parole matchano almeno in parte */

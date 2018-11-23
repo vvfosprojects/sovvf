@@ -47,6 +47,7 @@
                 <div class="" [ngClass]="viewState.columns[0]">
                     <app-richieste></app-richieste>
                     <app-chiamata *ngIf="viewState.chiamata"></app-chiamata>
+                    <app-composizione-partenza *ngIf="viewState.comp_partenza" [richiesta]="richiestaNuovaPartenza"></app-composizione-partenza>
                 </div>
                 <div *ngIf="viewState.mappa" class="mt-2" [ngClass]="viewState.columns[1]">
                     <app-maps></app-maps>

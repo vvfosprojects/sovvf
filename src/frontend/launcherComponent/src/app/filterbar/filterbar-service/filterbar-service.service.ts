@@ -10,6 +10,7 @@ export class FilterbarService {
     viewState: ViewInterface = {
         richieste: true,
         mappa: true,
+        comp_partenza: false,
         split: true,
         chiamata: false,
         columns: ['col-6', 'col-6']

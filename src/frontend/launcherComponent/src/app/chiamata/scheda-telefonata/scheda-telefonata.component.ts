@@ -11,6 +11,7 @@ import { MarkerService } from '../../maps/service/marker-service/marker-service.
 import { CenterService } from '../../maps/service/center-service/center-service.service';
 import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
 import { FormChiamataModel } from './model/form-scheda-telefonata.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -26,7 +27,10 @@ import { FormChiamataModel } from './model/form-scheda-telefonata.model';
     ]
 })
 export class SchedaTelefonataComponent implements OnInit {
-    chiamataCorrente = new FormChiamataModel;
+    chiamataForm: FormGroup;
+    submitted = false;
+
+    chiamataCorrente = new FormChiamataModel();
     coords: Localita;
     tipologie: any;
     hideShowAnimator = false;
@@ -38,7 +42,8 @@ export class SchedaTelefonataComponent implements OnInit {
         private _clipboardService: ClipboardService,
         private chiamataManager: MapManager.ChiamataMarkerManagerService,
         private markerService: MarkerService,
-        private centerService: CenterService) {
+        private centerService: CenterService,
+        private formBuilder: FormBuilder) {
     }
 
     ngOnInit() {
@@ -47,6 +52,15 @@ export class SchedaTelefonataComponent implements OnInit {
             setTimeout(() => {
                 this.hideShowAnimator = true;
             }, 1);
+        });
+
+        this.chiamataForm = this.formBuilder.group({
+            dettaglioTipologia: ['', [Validators.required]],
+            cognome: ['', [Validators.required]],
+            nome: ['', [Validators.required]],
+            ragioneSociale: ['', [Validators.required]],
+            telefono: ['', [Validators.required]],
+            indirizzo: ['', [Validators.required]],
         });
 
         this.centroMappa = this.centerService.centroMappaIniziale;
@@ -93,6 +107,7 @@ export class SchedaTelefonataComponent implements OnInit {
             this.viewService.sendView({
                 richieste: true,
                 mappa: true,
+                comp_partenza: false,
                 split: true,
                 chiamata: false,
             });
@@ -101,36 +116,48 @@ export class SchedaTelefonataComponent implements OnInit {
         this.chiamataManager.chiamataMarker[0] = chiamataVuota;
         this.markerService.chiamata(null, '', this.centroMappa);
     }
+    get f() { return this.chiamataForm.controls; }
+
+    onSubmit() {
+        this.submitted = true;
+
+        // stop here if form is invalid
+        if (this.chiamataForm.invalid) {
+            return;
+        }
+
+        alert('SUCCESS!! :-)' + JSON.stringify(this.chiamataCorrente));
+    }
 
     // Ng Class
-    tipologiaClass() {
+    /* tipologiaClass() {
         if (this.chiamataCorrente.tipo_interv.length === 0) {
             return 'border rounded border-danger';
         }
     }
     cognomeClass() {
         if (!this.chiamataCorrente.cognome && (!this.chiamataCorrente.ragione_sociale)) {
-            return 'border-danger';
+            return 'is-invalid';
         }
     }
     nomeClass() {
         if (!this.chiamataCorrente.nome && (!this.chiamataCorrente.ragione_sociale)) {
-            return 'border-danger';
+            return 'is-invalid';
         }
     }
     ragioneSocialeClass() {
         if (!this.chiamataCorrente.ragione_sociale && (!this.chiamataCorrente.nome || !this.chiamataCorrente.cognome)) {
-            return 'border-danger';
+            return 'is-invalid';
         }
     }
     telefonoClass() {
         if (!this.chiamataCorrente.telefono) {
-            return 'border-danger';
+            return 'is-invalid';
         }
     }
     coordinateClass() {
         if (!this.chiamataCorrente.coordinate) {
-            return 'border-danger';
+            return 'is-invalid';
         }
-    }
+    } */
 }

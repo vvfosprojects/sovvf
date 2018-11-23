@@ -1,33 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
-import { Subscription } from 'rxjs';
-import { ListaRichiesteManagerService } from '../core/manager/lista-richieste-manager/lista-richieste-manager.service';
-
+import { PartenzaService } from './service/partenza/partenza.service';
 @Component({
   selector: 'app-composizione-partenza',
   templateUrl: './composizione-partenza.component.html',
   styleUrls: ['./composizione-partenza.component.css']
 })
 export class ComposizionePartenzaComponent implements OnInit {
-  subscription = new Subscription();
+  @Input() richiesta: SintesiRichiesta;
 
-  richiesta: SintesiRichiesta;
-
-  constructor(private listaRichiesteManager: ListaRichiesteManagerService) { 
-        // Restituisce le Richieste
-        this.subscription.add(
-            this.listaRichiesteManager.getRichieste().subscribe(richieste => {
-                // console.log('Sono listaRichieste, ho ricevuto le richieste');
-                // console.log(richieste);
-                this.richiesta = richieste[0];
-            })
-        );
-      }
+  constructor(private partenzaService: PartenzaService) {
+  }
 
   ngOnInit() {
   }
 
-  CardClasses(r){
+  dismissPartenza() {
+    this.partenzaService.dismissPartenza();
+  }
+
+  CardClasses(r) {
     return;
   }
 
