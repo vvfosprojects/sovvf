@@ -12,7 +12,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ViewModeComponent } from './view-mode/view-mode.component';
-import { FiltriMappaComponent } from './filtri-mappa/filtri-mappa.component';
 import { TastoChiamataComponent } from './tasto-chiamata/tasto-chiamata.component';
 
 @NgModule({
@@ -32,7 +31,6 @@ import { TastoChiamataComponent } from './tasto-chiamata/tasto-chiamata.componen
         FiltriRichiesteComponent,
         FiltroComponent,
         ViewModeComponent,
-        FiltriMappaComponent,
         TastoChiamataComponent,
     ],
     exports: [

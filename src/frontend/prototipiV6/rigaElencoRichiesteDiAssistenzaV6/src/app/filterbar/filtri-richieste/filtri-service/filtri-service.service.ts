@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { VoceFiltro } from '../voce-filtro.model';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of, throwError, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { catchError} from 'rxjs/operators';
+import { catchError, map} from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 
 const API_URL = environment.apiUrl.elencoTipologie.fake;
@@ -11,14 +11,32 @@ const API_URL = environment.apiUrl.elencoTipologie.fake;
   providedIn: 'root'
 })
 export class FiltriService {
+  private newFiltriList$ = new Subject<VoceFiltro[]>();
   filtriSelezionati: VoceFiltro[] = [];
 
   constructor(private http: HttpClient) { }
 
-  getFiltri(): Observable<any> {
-    return this.http.get(API_URL).pipe(
+  getTipologie() {
+    return this.http.get<VoceFiltro[]>(API_URL).pipe(
       catchError(this.handleErrorObs)
     );
+  }
+
+  getFiltri() {
+    this.newFiltriList$.next();
+    this.getTipologie().subscribe({
+            next: (filtri: VoceFiltro[]) => {
+              filtri.unshift(
+                new VoceFiltro('1', 'Presidiato', 'Presidiato', true),
+                new VoceFiltro('2', 'Presidiato', 'Non Presidiato', true),
+                new VoceFiltro('3', 'Rilevante', 'Rilevante', true),
+                new VoceFiltro('4', 'Rilevante', 'Non Rilevante', true),
+              );
+              this.newFiltriList$.next(filtri);
+            },
+            error: err => console.log(`Errore: + ${err}`)
+        });
+    return this.newFiltriList$.asObservable();
   }
 
   getFiltriSelezionati(): Observable<any> {
@@ -30,8 +48,8 @@ export class FiltriService {
       this.setDeselezionato(filtroSelezionato);
     });
     this.filtriSelezionati = [];
-    console.log('I filtri attivi sono:');
-    console.log(this.filtriSelezionati);
+    // console.log('I filtri attivi sono:');
+    // console.log(this.filtriSelezionati);
   }
 
   addfiltroSelezionato(filtro: VoceFiltro) {

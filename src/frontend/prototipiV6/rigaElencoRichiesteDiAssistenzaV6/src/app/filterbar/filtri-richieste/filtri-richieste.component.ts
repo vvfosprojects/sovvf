@@ -22,8 +22,10 @@ export class FiltriRichiesteComponent implements OnInit {
 
   getFiltri() {
     this.filtriS.getFiltri().subscribe((filtri: VoceFiltro[]) => {
-      this.filtri = filtri;
-      this.getCategorie();
+      if (filtri) {
+        this.filtri = filtri;
+        this.getCategorie();
+      }
     });
   }
 
