@@ -18,11 +18,7 @@ export class CambioSedeModalNavComponent implements OnInit {
 
     ngOnInit() {
         this.newUnita = this.unitaAttualeS.unitaSelezionata;
-        if (this.unitaAttualeS.unitaSelezionata.length > 1) {
-            this.nomeSede = 'più sedi selezionate';
-        } else {
-            this.nomeSede = this.unitaAttualeS.unitaSelezionata[0].descrizione;
-        }
+        this.nomeSede = this.unitaAttualeS.unitaSelezionata.length > 1 ? this.unitaAttualeS.unitaSelezionataString : this.unitaAttualeS.unitaSelezionata[0].descrizione;
     }
 
     cambioSede() {
@@ -30,6 +26,7 @@ export class CambioSedeModalNavComponent implements OnInit {
     }
 
     annullaCambioSede() {
+        this.unitaAttualeS.annullaTreeView();
     }
 
 }

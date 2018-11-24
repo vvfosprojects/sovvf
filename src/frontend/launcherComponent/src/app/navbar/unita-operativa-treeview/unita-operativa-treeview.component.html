@@ -2,8 +2,9 @@
     <div class="col-2 text center">
         <img src="../../../assets/img/comando-avatar.svg">
     </div>
-    <div class="col-10" ngbDropdown #myDrop="ngbDropdown" (openChange)="checkCambioSede()" (keypress.esc)="annullaCambioSede()">
-        <button class="btn btn-dark ml-2" ngbDropdownToggle>{{sedeCorrenteString}}</button>
+    <div class="col-10" ngbDropdown #myDrop="ngbDropdown" (openChange)="checkCambioSede()"
+         (keypress.esc)="annullaCambioSede()">
+        <button class="btn btn-block btn-dark ml-2" ngbDropdownToggle>{{sedeCorrenteString}}</button>
         <div ngbDropdownMenu class="px-2" (click)="$event.stopPropagation()">
             <ngx-treeview [config]="config" [items]="items" (selectedChange)="onSelectedChange($event)">
             </ngx-treeview>
