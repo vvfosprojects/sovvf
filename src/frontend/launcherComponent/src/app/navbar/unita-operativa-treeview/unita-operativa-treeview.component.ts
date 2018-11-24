@@ -110,6 +110,7 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
          * inserire alert di annullo cambio sede
          */
         this.getTreeViewItems();
+        this.checkedCount = 0;
         this.selectedItem = this.initItem;
     }
 
