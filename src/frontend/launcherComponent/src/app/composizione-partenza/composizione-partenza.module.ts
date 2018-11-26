@@ -13,9 +13,10 @@ import { SintesiRichiestaModule } from '../richieste/lista-richieste/sintesi-ric
   */
 import { ComposizionePartenzaComponent } from './composizione-partenza.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { NavComponent } from './composizione-veloce/nav/nav.component';
+import { NavFasterComponent } from './composizione-veloce/nav-faster/nav.component';
 import { SlowerComponent } from './composizione-avanzata/slower.component';
 import { FasterComponent } from './composizione-veloce/faster.component';
+import { NavSlowerComponent } from './composizione-avanzata/nav-slower/nav.component';
 /*
     Provider
  */
@@ -37,7 +38,8 @@ import { CompPartenzaServiceFake } from '../core/service/comp-partenza-service/c
     ComposizionePartenzaComponent,
     FasterComponent,
     SlowerComponent,
-    NavComponent
+    NavFasterComponent,
+    NavSlowerComponent
   ],
   imports: [
     BrowserModule,
@@ -46,8 +48,8 @@ import { CompPartenzaServiceFake } from '../core/service/comp-partenza-service/c
     PipeModule.forRoot(),
     SharedModule.forRoot(),
     TimeagoModule.forRoot({
-        intl: TimeagoIntl,
-        formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
+      intl: TimeagoIntl,
+      formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
     }),
     SintesiRichiestaModule
   ],
@@ -58,7 +60,7 @@ import { CompPartenzaServiceFake } from '../core/service/comp-partenza-service/c
     { provide: DispatcherService, useClass: DispatcherFakeService },
     { provide: ListaRichiesteManagerService, useClass: ListaRichiesteManagerServiceFake },
     { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake },
-    
+
     { provide: DispatcherCompPartenzaService, useClass: DispatcherCompPartenzaFakeService },
     { provide: CompPartenzaManagerService, useClass: CompPartenzaManagerServiceFake },
     { provide: CompPartenzaService, useClass: CompPartenzaServiceFake }

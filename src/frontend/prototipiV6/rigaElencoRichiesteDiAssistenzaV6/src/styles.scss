@@ -41,6 +41,7 @@ a:hover {
     white-space: nowrap;
 }
 
+/* Shadow */
 .card-shadow{
     -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
     -moz-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
@@ -77,6 +78,39 @@ a:hover {
     box-shadow: 2px 0px 2px .5px #868e96;
 }
 
+/* Shadow soft */
+.card-shadow-primary-soft{
+    -webkit-box-shadow: 0px 0px 4px 2px #007bffa2;
+    -moz-box-shadow: 0px 0px 4px 2px #007bffa2;
+    box-shadow: 0px 0px 4px 2px #007bffa2;
+}
+.card-shadow-info-soft{
+    -webkit-box-shadow: 0px 0px 4px 2px #17a2b8;
+    -moz-box-shadow: 0px 0px 4px 2px #17a2b8;
+    box-shadow: 0px 0px 4px 2px #17a2b8;
+}
+.card-shadow-success-soft{
+    -webkit-box-shadow: 0px 0px 4px 2px #28a745;
+    -moz-box-shadow: 0px 0px 4px 2px #28a745;
+    box-shadow: 0px 0px 4px 2px #28a745;
+}
+.card-shadow-danger-soft{
+    -webkit-box-shadow: 0px 0px 4px 2px #dc3545;
+    -moz-box-shadow: 0px 0px 4px 2px #dc3545;
+    box-shadow: 0px 0px 4px 2px #dc3545;
+}
+.card-shadow-warning-soft{
+    -webkit-box-shadow: 0px 0px 4px 2px #ffc107;
+    -moz-box-shadow: 0px 0px 4px 2px #ffc107;
+    box-shadow: 0px 0px 4px 2px #ffc107;
+}
+.card-shadow-secondary-soft{
+    -webkit-box-shadow: 0px 0px 4px 2px #868e96;
+    -moz-box-shadow: 0px 0px 4px 2px #868e96;
+    box-shadow: 0px 0px 4px 2px #868e96;
+}
+
+/* Status richieste */
 .status_presidiato {
     border-left: 10px solid #28a745;
 }
@@ -95,6 +129,20 @@ a:hover {
 
 .status_chiuso{
     border-left: 10px solid #868e96;
+}
+
+/* Status Mezzo */
+.status_inSede{
+    border-top: 5px solid #868e96;
+}
+.status_inRientro{
+    border-top: 5px solid #007bff;
+}
+.status_inViaggio{
+    border-top: 5px solid #17a2b8;
+}
+.status_sulPosto{
+    border-top: 5px solid #28a745;
 }
 
 .bg-pattern-chiuso{

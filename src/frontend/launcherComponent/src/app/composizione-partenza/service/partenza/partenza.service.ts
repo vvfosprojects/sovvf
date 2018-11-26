@@ -8,6 +8,7 @@ import { FilterbarService } from 'src/app/filterbar/filterbar-service/filterbar-
 })
 export class PartenzaService {
   private richiestaNuovaPartenza$ = new Subject<SintesiRichiesta>();
+  private viewMode$ = new Subject<any>();
 
   constructor(private viewService: FilterbarService) { }
 
@@ -34,5 +35,13 @@ export class PartenzaService {
 
   getRichiestaPartenza(): Observable<any> {
     return this.richiestaNuovaPartenza$.asObservable();
+  }
+
+  changeViewMode(newMode) {
+    this.viewMode$.next(newMode);
+  }
+
+  getViewMode(): Observable<any> {
+    return this.viewMode$.asObservable();
   }
 }

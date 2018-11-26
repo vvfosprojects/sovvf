@@ -28,8 +28,10 @@ export class SintesiRichiestaComponent implements OnInit {
     @Output() dismissNuovaPartenza: EventEmitter<any> = new EventEmitter();
     @Input() richiesta: SintesiRichiesta;
     @Input() fissata: boolean;
+    @Input() fissabile: boolean;
     @Input() espanso: boolean;
     @Input() espandibile: boolean;
+    @Input() listaEventi: boolean;
     @Input() partenza: boolean;
 
     methods = new LayoutMethods;

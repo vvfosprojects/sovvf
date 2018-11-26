@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PartenzaService } from '../service/partenza/partenza.service';
 
 @Component({
   selector: 'app-slower',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SlowerComponent implements OnInit {
 
-  constructor() { }
+  constructor(private partenzaS: PartenzaService) { }
 
   ngOnInit() {
   }
 
+  changeMode(newMode: string) {
+    this.partenzaS.changeViewMode(newMode);
+  }
 }

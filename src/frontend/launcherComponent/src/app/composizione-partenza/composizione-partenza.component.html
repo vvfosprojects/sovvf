@@ -2,12 +2,15 @@
   <div class="col-12 pt-1 px-0">
     <div *ngIf="richiesta" class="col-12 mb-3">
       <div class="w-100 rounded card-shadow" [ngClass]="CardClasses(r)">
-        <app-sintesi-richiesta [richiesta]="richiesta" [fissata]="false" [espanso]="true" [partenza]="true"
+        <app-sintesi-richiesta [richiesta]="richiesta" [fissata]="false" [espanso]="true" [partenza]="true" [listaEventi]="true"
           (dismissNuovaPartenza)="dismissPartenza()"></app-sintesi-richiesta>
       </div>
     </div>
-    <div class="col-12">
-      <app-faster></app-faster>
+    <div *ngIf="viewMode === 'faster'" class="col-12">
+      <app-faster [richiesta]="richiesta"></app-faster>
+    </div>
+    <div *ngIf="viewMode === 'slower'" class="col-12">
+      <app-slower></app-slower>
     </div>
   </div>
 </div>
