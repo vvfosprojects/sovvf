@@ -108,6 +108,21 @@
                     [latitude]="chiamata.localita.coordinate.latitudine"
                     [longitude]="chiamata.localita.coordinate.longitudine"
                     [iconUrl]="richiestaMarkerIconUrl">
+          <agm-snazzy-info-window
+                                  [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: '#dc3545'}"
+                                  [pointer]="'10px'"
+                                  [backgroundColor]="'#f5f5f0'"
+                                  [border]="{width: '2px', color: '#dc3545'}"
+                                  [borderRadius]="'10px 10px'"
+                                  [maxHeight]="1000"
+                                  [maxWidth]="1000"
+                                  [padding]="'10px'"
+                                  [isOpen]="true"
+                                  [showCloseButton]="false">
+            <ng-template>
+              <app-info-window [chiamata]="chiamata" [datiMeteo]="datiMeteo"></app-info-window>
+            </ng-template>
+          </agm-snazzy-info-window>
         </agm-marker>
         <app-agm-content (mapLoad)='loadAPIWrapper($event)'></app-agm-content>
     </agm-map>

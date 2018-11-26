@@ -242,7 +242,7 @@ export class MarkerService implements OnDestroy {
         /**
          *  faccio una chiamata all'api del servizio meteo e aspetto i dati del marker selezionato
          */
-        this.subjectMeteo.next();
+        // this.subjectMeteo.next();
         this.meteoService.getMeteoData(this.getCoordinate(marker))
             .subscribe({
                 next: data => this.subjectMeteo.next(data),
@@ -330,12 +330,14 @@ export class MarkerService implements OnDestroy {
         }
     }
 
+
     chiamata(marker: ChiamataMarker, action: string, centroMappa?: CentroMappa) {
         switch (action) {
             case 'centra': {
                 this.agmService.centraMappa(this.getCoordinate(marker));
                 this.agmService.cambiaZoom(18);
                 this.markerZIndex = marker;
+                this.getDatiMeteo(marker);
             }
                 break;
             default: {
