@@ -7,7 +7,7 @@
       </div>
     </div>
     <div *ngIf="viewMode === 'faster'" class="col-12">
-      <app-faster></app-faster>
+      <app-faster [richiesta]="richiesta"></app-faster>
     </div>
     <div *ngIf="viewMode === 'slower'" class="col-12">
       <app-slower></app-slower>
