@@ -9,7 +9,7 @@
         <table class="w-100" [ngbTooltip]="vento">
             <tr>
                 <td class="border-0 p-0" colspan="2">
-                    <div placement="bottom" >
+                    <div placement="bottom">
                         <img class="iconameteo w-25" src="http://openweathermap.org/img/w/{{datiMeteo.icona}}.png">
                         <span class="text-capitalize">{{datiMeteo.descrizione}}</span>
                     </div>
@@ -21,7 +21,7 @@
                 </td>
                 <td class="border-0 p-0">
                     <span class="fa fa-shower">Umidità: {{datiMeteo.umidita}}%</span>
-                    </td>
+                </td>
             </tr>
         </table>
     </ng-template>
@@ -225,10 +225,31 @@
                         </button>
                     </div>
                     <div class="col" ngbTooltip="{{ sedeMarker.tipo }}" placement="bottom">
-                        <img class="w-75" src="{{tipoSedeIcona}}">
+                        <img class="w-75" src="{{ tipoSedeIcona }}">
                     </div>
                 </th>
             </tr>
+            <tr *ngIf="datiMeteo">
+                <th scope="row" class="py-1 s-info-window">
+                    <div *ngIf="datiMeteo; then meteo"></div>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="chiamata">
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col" class="py-1 px-0 mx-0 row w-100">
+                    <div class="col text-danger"><i class="fa fa-hashtag"></i>
+                        {{chiamata.id}}
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
             <tr *ngIf="datiMeteo">
                 <th scope="row" class="py-1 s-info-window">
                     <div *ngIf="datiMeteo; then meteo"></div>

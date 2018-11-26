@@ -60,10 +60,10 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
          */
         const attuale = this.unitaAttuale;
 
-        /**
-         * array di oggetti di tutte le sedi esistenti
-         * @type {Sede[]}
-         */
+      /**
+       * array di oggetti di tutte le sedi esistenti
+       * @type {Sede[]}
+       */
         const unitaOperative = this.unitaOperative;
 
 
@@ -120,11 +120,11 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
             };
         }
 
-        /**
-         * funzione che ritorna i distaccamenti di una provincia, e ritorna true se c'è almeno un distaccamento presente
-         * @param {string} value
-         * @returns {{distaccamenti: TreeItem[]; checkedD: boolean}}
-         */
+      /**
+       * funzione che ritorna i distaccamenti di una provincia, e ritorna true se c'è almeno un distaccamento presente
+       * @param {string} value
+       * @returns {{distaccamenti: TreeItem[]; checkedD: boolean}}
+       */
         function getDistaccamenti(value: string): { distaccamenti: TreeItem[]; collapsed: boolean; allChecked: boolean } {
             const distaccamenti: TreeItem[] = [];
             let countD = 0;

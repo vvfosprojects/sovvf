@@ -42,7 +42,7 @@ export class TastoChiamataComponent implements OnInit, OnDestroy {
     }
 
     _colorButton(): void {
-        this.viewState.chiamata ? this.colorButton = 'btn-success' : this.colorButton = 'btn-outline-success';
+        this.viewState.chiamata ? this.colorButton = 'btn-danger' : this.colorButton = 'btn-outline-success';
     }
 
 }
