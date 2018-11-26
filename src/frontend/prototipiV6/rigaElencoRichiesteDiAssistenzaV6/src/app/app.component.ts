@@ -1,7 +1,7 @@
-import {Component, OnDestroy} from '@angular/core';
-import {FilterbarService} from './filterbar/filterbar-service/filterbar-service.service';
-import {ViewInterface} from './filterbar/view-mode/view.interface';
-import {Subscription} from 'rxjs';
+import { Component, OnDestroy } from '@angular/core';
+import { FilterbarService } from './filterbar/filterbar-service/filterbar-service.service';
+import { ViewInterface } from './filterbar/view-mode/view.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-root',

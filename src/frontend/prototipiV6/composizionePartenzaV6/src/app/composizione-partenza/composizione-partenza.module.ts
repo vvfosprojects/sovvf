@@ -48,8 +48,8 @@ import { CompPartenzaServiceFake } from '../core/service/comp-partenza-service/c
     PipeModule.forRoot(),
     SharedModule.forRoot(),
     TimeagoModule.forRoot({
-        intl: TimeagoIntl,
-        formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
+      intl: TimeagoIntl,
+      formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
     }),
     SintesiRichiestaModule
   ],
@@ -60,7 +60,7 @@ import { CompPartenzaServiceFake } from '../core/service/comp-partenza-service/c
     { provide: DispatcherService, useClass: DispatcherFakeService },
     { provide: ListaRichiesteManagerService, useClass: ListaRichiesteManagerServiceFake },
     { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake },
-    
+
     { provide: DispatcherCompPartenzaService, useClass: DispatcherCompPartenzaFakeService },
     { provide: CompPartenzaManagerService, useClass: CompPartenzaManagerServiceFake },
     { provide: CompPartenzaService, useClass: CompPartenzaServiceFake }

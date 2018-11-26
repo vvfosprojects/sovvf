@@ -1,8 +1,5 @@
 <div class="row">
-  <div class="col-12 bg-light mb-2">
-    <app-nav-faster [preAccoppiatiSelezionati]="preAccoppiatiSelezionati" (cambioModalita)="changeMode($event)"></app-nav-faster>
-  </div>
-  <div class="col-12 border-bottom scroll-y" style="max-height:392px;">
+  <div class="col-12 border-bottom border-top scroll-y pt-2 pb-1" style="max-height:440px;">
     <div class="row">
       <div class="col-3" *ngFor="let preAcc of preAccoppiati">
         <div class="card cursor-pointer p-2 mb-2" [ngClass]="cardClasses(preAcc)" (click)="preAccoppiatoSelezionato(preAcc)">
