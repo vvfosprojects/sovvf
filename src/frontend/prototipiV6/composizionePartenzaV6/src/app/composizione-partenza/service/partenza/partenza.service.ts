@@ -8,7 +8,8 @@ import { FilterbarService } from 'src/app/filterbar/filterbar-service/filterbar-
 })
 export class PartenzaService {
   private richiestaNuovaPartenza$ = new Subject<SintesiRichiesta>();
-  private viewMode$ = new Subject<any>();
+  private compPartenzaMode = new Subject<any>();
+  compPartenzaModeIniziale = 'faster';
 
   constructor(private viewService: FilterbarService) { }
 
@@ -37,11 +38,11 @@ export class PartenzaService {
     return this.richiestaNuovaPartenza$.asObservable();
   }
 
-  changeViewMode(newMode) {
-    this.viewMode$.next(newMode);
+  changeCompPartenzaMode(newMode) {
+    this.compPartenzaMode.next(newMode);
   }
 
-  getViewMode(): Observable<any> {
-    return this.viewMode$.asObservable();
+  getCompPartenzaMode(): Observable<any> {
+    return this.compPartenzaMode.asObservable();
   }
 }
