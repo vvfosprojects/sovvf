@@ -73,7 +73,7 @@ export class PreaccoppiatoComponent implements OnInit {
 
     this.richiesta.competenze.forEach(c => {
       count += 1;
-      if (c.codice === preAccoppiato.distaccamento.codice) {
+      if (c.descrizione === preAccoppiato.distaccamento) {
         switch (count) {
           case 1:
             returnClass = 'badge-primary'
