@@ -14,7 +14,7 @@
              [zoom]="centroMappa.zoom"
              (mapReady)="mappaCaricata($event)"
              (centerChange)="centroCambiato($event)"
-             [usePanning]="true" (mapClick)="mappaCliccata()">
+             [usePanning]="true" (mapClick)="mappaCliccata();getCoordinateMarker($event)">
         <app-maps-filtro id="Settings"></app-maps-filtro>
         <agm-marker-cluster
                 imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
@@ -108,21 +108,41 @@
                     [latitude]="chiamata.localita.coordinate.latitudine"
                     [longitude]="chiamata.localita.coordinate.longitudine"
                     [iconUrl]="richiestaMarkerIconUrl">
-          <agm-snazzy-info-window
-                                  [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: '#dc3545'}"
-                                  [pointer]="'10px'"
-                                  [backgroundColor]="'#f5f5f0'"
-                                  [border]="{width: '2px', color: '#dc3545'}"
-                                  [borderRadius]="'10px 10px'"
-                                  [maxHeight]="1000"
-                                  [maxWidth]="1000"
-                                  [padding]="'10px'"
-                                  [isOpen]="true"
-                                  [showCloseButton]="false">
-            <ng-template>
-              <app-info-window [chiamata]="chiamata" [datiMeteo]="datiMeteo"></app-info-window>
-            </ng-template>
-          </agm-snazzy-info-window>
+            <agm-snazzy-info-window
+                    [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: '#dc3545'}"
+                    [pointer]="'0px'"
+                    [backgroundColor]="'#f5f5f0'"
+                    [border]="{width: '2px', color: '#dc3545'}"
+                    [borderRadius]="'10px 10px'"
+                    [maxHeight]="1000"
+                    [maxWidth]="1000"
+                    [padding]="'10px'"
+                    [isOpen]="true"
+                    [showCloseButton]="false">
+                <ng-template>
+                    <app-info-window [chiamata]="chiamata" [datiMeteo]="datiMeteo"></app-info-window>
+                </ng-template>
+            </agm-snazzy-info-window>
+        </agm-marker>
+        <agm-marker *ngFor="let mMarker of meteoMarkers;"
+                    [latitude]="mMarker.localita.coordinate.latitudine"
+                    [longitude]="mMarker.localita.coordinate.longitudine"
+                    [iconUrl]="meteoMarkerIconUrl">
+            <agm-snazzy-info-window
+                    [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: '#6c757d'}"
+                    [pointer]="'5px'"
+                    [backgroundColor]="'#f5f5f0'"
+                    [border]="{width: '2px', color: '#6c757d'}"
+                    [borderRadius]="'10px 10px'"
+                    [maxHeight]="1000"
+                    [maxWidth]="1000"
+                    [padding]="'10px'"
+                    [isOpen]="true"
+                    [showCloseButton]="false">
+                <ng-template>
+                    <app-info-window [meteoMarker]="mMarker" [datiMeteo]="datiMeteo"></app-info-window>
+                </ng-template>
+            </agm-snazzy-info-window>
         </agm-marker>
         <app-agm-content (mapLoad)='loadAPIWrapper($event)'></app-agm-content>
     </agm-map>

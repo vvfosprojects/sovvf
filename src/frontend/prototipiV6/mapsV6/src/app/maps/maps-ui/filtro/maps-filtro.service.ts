@@ -9,6 +9,8 @@ export class MapsFiltroService {
     constructor() {
     }
 
+    meteoSwitchDefault = false;
+
     filtroAttivo = ['richiesta'];
 
     filtroMarker: Menu[] = [
@@ -37,6 +39,8 @@ export class MapsFiltroService {
 
     private subject = new Subject<Menu[]>();
 
+    private meteoSwitch = new Subject<boolean>();
+
     sendMenu(menu: Menu[]) {
         let count = 0;
         const menuIsNotActive = menu;
@@ -46,7 +50,7 @@ export class MapsFiltroService {
             }
         });
         if (menu.length === count) {
-            menuIsNotActive.forEach( r => {
+            menuIsNotActive.forEach(r => {
                 r.isActive = false;
             });
             this.subject.next(menuIsNotActive);
@@ -62,6 +66,15 @@ export class MapsFiltroService {
 
     getVociMenu(): Observable<Menu[]> {
         return of(this.filtroMarker).pipe(delay(200));
+    }
+
+    sendMeteoSwitch(result: boolean) {
+        this.meteoSwitchDefault = result;
+        this.meteoSwitch.next(result);
+    }
+
+    getMeteoSwitch(): Observable<boolean> {
+        return this.meteoSwitch.asObservable();
     }
 }
 
