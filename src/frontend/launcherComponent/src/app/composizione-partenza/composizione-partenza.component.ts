@@ -8,11 +8,12 @@ import { PartenzaService } from './service/partenza/partenza.service';
 })
 export class ComposizionePartenzaComponent implements OnInit {
   @Input() richiesta: SintesiRichiesta;
-  viewMode = 'faster';
+  compPartenzaMode = 'faster';
 
   constructor(public partenzaS: PartenzaService) {
-    this.partenzaS.getViewMode().subscribe(viewMode => {
-      this.viewMode = viewMode;
+    this.compPartenzaMode = this.partenzaS.compPartenzaModeIniziale;
+    this.partenzaS.getCompPartenzaMode().subscribe(viewMode => {
+      this.compPartenzaMode = viewMode;
     });
   }
 

@@ -41,7 +41,7 @@ export class FasterComponent implements OnInit {
   }
 
   changeMode(newMode: string) {
-    this.partenzaS.changeViewMode(newMode);
+    this.partenzaS.changeCompPartenzaMode(newMode);
   }
 
   /* NgClass status */

@@ -14,6 +14,6 @@ export class SlowerComponent implements OnInit {
   }
 
   changeMode(newMode: string) {
-    this.partenzaS.changeViewMode(newMode);
+    this.partenzaS.changeCompPartenzaMode(newMode);
   }
 }

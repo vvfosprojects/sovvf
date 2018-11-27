@@ -14,6 +14,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ViewModeComponent } from './view-mode/view-mode.component';
 import { FiltriMappaComponent } from './filtri-mappa/filtri-mappa.component';
 import { TastoChiamataComponent } from './tasto-chiamata/tasto-chiamata.component';
+import { TastoCompPartenzaComponent } from './tasto-comp-partenza/tasto-comp-partenza.component';
 
 @NgModule({
     imports: [
@@ -34,6 +35,7 @@ import { TastoChiamataComponent } from './tasto-chiamata/tasto-chiamata.componen
         ViewModeComponent,
         FiltriMappaComponent,
         TastoChiamataComponent,
+        TastoCompPartenzaComponent,
     ],
     exports: [
         FilterbarComponent
