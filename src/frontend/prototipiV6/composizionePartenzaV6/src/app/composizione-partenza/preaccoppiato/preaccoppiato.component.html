@@ -1,0 +1,28 @@
+<div class="card cursor-pointer p-2 mb-2" [ngClass]="cardClasses(preAcc)" (click)="preAccoppiatoSelezionato(preAcc)">
+  <div class="row">
+    <div class="col">
+      <div class="nowrap">
+        <small><i class="guida fa fa-truck mr-1"></i><span class="font-weight-bold">{{preAcc.mezzo.descrizione}}
+            <small>{{preAcc.mezzo.genere}}</small></span></small>
+      </div>
+    </div>
+    <div class="col">
+      <div class="nowrap">
+        <small><i class="guida fa fa-group mr-1"></i><span>{{preAcc.squadra.nome}}</span></small>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col nowrap">
+      <i class="guida fa fa-road mr-1"></i><small>{{preAcc.km}} Km</small>
+    </div>
+    <div class="col">
+      <i class="guida fa fa-clock-o mr-1"></i><small>{{preAcc.tempoPercorrenza}}</small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <i class="guida fa fa-map-marker mr-1"></i><span class="badge" [ngClass]="compotenzaClasses(preAcc)">{{preAcc.distaccamento}}</span>
+    </div>
+  </div>
+</div>

@@ -13,10 +13,9 @@ import { SintesiRichiestaModule } from '../richieste/lista-richieste/sintesi-ric
   */
 import { ComposizionePartenzaComponent } from './composizione-partenza.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { NavFasterComponent } from './composizione-veloce/nav-faster/nav.component';
 import { SlowerComponent } from './composizione-avanzata/slower.component';
 import { FasterComponent } from './composizione-veloce/faster.component';
-import { NavSlowerComponent } from './composizione-avanzata/nav-slower/nav.component';
+import { PreaccoppiatoComponent } from './preaccoppiato/preaccoppiato.component';
 /*
     Provider
  */
@@ -38,8 +37,7 @@ import { CompPartenzaServiceFake } from '../core/service/comp-partenza-service/c
     ComposizionePartenzaComponent,
     FasterComponent,
     SlowerComponent,
-    NavFasterComponent,
-    NavSlowerComponent
+    PreaccoppiatoComponent
   ],
   imports: [
     BrowserModule,

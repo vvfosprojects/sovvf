@@ -20,7 +20,7 @@ export class CompPartenzaServiceFake {
   public getPreAccoppiati(): Observable<PreAccoppiato[]> {
     this.preAccoppiati = [
       new PreAccoppiato('1',
-        new Mezzo('A1', '', 'APS', 'inSede', [], 0),
+        new Mezzo('1', 'A1', 'APS', 'inSede', [], 0),
         new Squadra('Rossa', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -33,7 +33,7 @@ export class CompPartenzaServiceFake {
         '24 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A2', '', 'APS', 'inSede', [], 0),
+        new Mezzo('2', 'A2', 'APS', 'inSede', [], 0),
         new Squadra('Verde', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -46,7 +46,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A3', '', 'APS', 'inSede', [], 0),
+        new Mezzo('3', 'A3', 'APS', 'inSede', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -59,7 +59,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A4', '', 'APS', 'inSede', [], 0),
+        new Mezzo('4', 'A4', 'APS', 'inSede', [], 0),
         new Squadra('Marrone', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -72,7 +72,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A5', '', 'APS', 'inSede', [], 0),
+        new Mezzo('5', 'A5', 'APS', 'inSede', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -85,7 +85,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A6', '', 'APS', 'inSede', [], 0),
+        new Mezzo('6', 'A6', 'APS', 'inSede', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -98,7 +98,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A7', '', 'APS', 'inRientro', [], 0),
+        new Mezzo('7', 'A7', 'APS', 'inRientro', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -111,7 +111,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A8', '', 'APS', 'inRientro', [], 0),
+        new Mezzo('8', 'A8', 'APS', 'inRientro', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -124,7 +124,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A9', '', 'APS', 'inRientro', [], 0),
+        new Mezzo('9', 'A9', 'APS', 'inRientro', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -137,7 +137,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A10', '', 'APS', 'inRientro', [], 0),
+        new Mezzo('10', 'A10', 'APS', 'inRientro', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -150,7 +150,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A11', '', 'APS', 'inRientro', [], 0),
+        new Mezzo('11', 'A11', 'APS', 'inRientro', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -163,7 +163,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A12', '', 'APS', 'inRientro', [], 0),
+        new Mezzo('12', 'A12', 'APS', 'inRientro', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -176,7 +176,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A12', '', 'APS', 'inViaggio', [], 0),
+        new Mezzo('13', 'A13', 'APS', 'inViaggio', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -189,7 +189,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A12', '', 'APS', 'inViaggio', [], 0),
+        new Mezzo('14', 'A14', 'APS', 'inViaggio', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -202,7 +202,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A12', '', 'APS', 'inViaggio', [], 0),
+        new Mezzo('15', 'A15', 'APS', 'inViaggio', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -215,7 +215,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A12', '', 'APS', 'inViaggio', [], 0),
+        new Mezzo('16', 'A16', 'APS', 'inViaggio', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -228,7 +228,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A12', '', 'APS', 'inViaggio', [], 0),
+        new Mezzo('17', 'A17', 'APS', 'inViaggio', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -241,7 +241,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A12', '', 'APS', 'sulPosto', [], 0),
+        new Mezzo('18', 'A18', 'APS', 'sulPosto', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -254,7 +254,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A12', '', 'APS', 'sulPosto', [], 0),
+        new Mezzo('19', 'A19', 'APS', 'sulPosto', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),
@@ -267,7 +267,7 @@ export class CompPartenzaServiceFake {
         '6 min.'
       ),
       new PreAccoppiato('2',
-        new Mezzo('A12', '', 'APS', 'sulPosto', [], 0),
+        new Mezzo('20', 'A20', 'APS', 'sulPosto', [], 0),
         new Squadra('Gialla', 'inSede', [
           new Componente('QF', 'Mario Verdi', '', true, false, false),
           new Componente('QF', 'Roberto Merlo', '', false, true, false),

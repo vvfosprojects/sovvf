@@ -121,3 +121,8 @@
 .scroll-y{
     overflow-y: scroll;
 }
+
+.border-dashed-3{
+    border-width:3px;  
+    border-style:dashed;
+}
