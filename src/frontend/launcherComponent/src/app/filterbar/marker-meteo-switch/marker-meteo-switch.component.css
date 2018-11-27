@@ -1,0 +1,11 @@
+.custom-switches {
+    display: inline-block;
+    padding-top: 5px;
+    /*padding-top: 5px !important;*/
+}
+
+.text-switches {
+    display: inline-block;
+    padding-top: 6px;
+    /*padding-top: 5px !important;*/
+}

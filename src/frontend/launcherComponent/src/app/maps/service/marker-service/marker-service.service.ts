@@ -14,6 +14,8 @@ import { Coordinate } from '../../../shared/model/coordinate.model';
 import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
 import { CentroMappa } from '../../maps-model/centro-mappa.model';
 import { MapsFiltroService } from '../../maps-ui/filtro/maps-filtro.service';
+import { MeteoMarker } from '../../maps-model/meteo-marker.model';
+import { Localita } from '../../../shared/model/localita.model';
 
 @Injectable({
     providedIn: 'root'
@@ -21,6 +23,7 @@ import { MapsFiltroService } from '../../maps-ui/filtro/maps-filtro.service';
 export class MarkerService implements OnDestroy {
 
     private subjectMeteo = new Subject<Meteo>();
+    private subjectMeteoMarkers = new Subject<MeteoMarker[]>();
     private markedColor = new Subject<string>();
     icone = new IconMappe();
     tipo = new TipoMappe();
@@ -35,7 +38,7 @@ export class MarkerService implements OnDestroy {
     filtro: Array<any>;
 
     checkMarker: any;
-
+    switchMeteo: boolean;
 
     constructor(private markedService: MarkedService,
                 private meteoService: MeteoService,
@@ -56,6 +59,12 @@ export class MarkerService implements OnDestroy {
                 }
             });
             this.mapsFiltroService.filtroAttivo = this.filtro;
+        }));
+        this.subscription.add(this.mapsFiltroService.getMeteoSwitch().subscribe(switchM => {
+            this.switchMeteo = switchM;
+            if (!this.switchMeteo) {
+                this.subjectMeteoMarkers.next([]);
+            }
         }));
     }
 
@@ -347,6 +356,32 @@ export class MarkerService implements OnDestroy {
             }
                 break;
         }
+    }
+
+    createMeteoMarker(event) {
+        if (this.switchMeteo) {
+            const x = event.coords.lat;
+            const y = event.coords.lng;
+            const id = `(lat: ${coord2String(x)} - lng: ${coord2String(y)})`;
+            const mMarker: MeteoMarker = new MeteoMarker(id, new Localita(new Coordinate(x, y)));
+            const arrayM: MeteoMarker[] = [];
+            arrayM.push(mMarker);
+            this.getDatiMeteo(mMarker);
+            this.subjectMeteoMarkers.next(arrayM);
+        } else {
+            const arrayEmpty = [];
+            this.subjectMeteoMarkers.next(arrayEmpty);
+        }
+
+        function coord2String(number: number) {
+            const string = number.toString();
+            const countString = string.length;
+            return string.slice(0, ((countString - 5) * -1));
+        }
+    }
+
+    getMeteoMarker(): Observable<MeteoMarker[]> {
+        return this.subjectMeteoMarkers.asObservable();
     }
 
 }
