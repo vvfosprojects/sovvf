@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.subscription.add(
             // Restituisce la Richiesta
             this.partenzaService.getRichiestaPartenza().subscribe(richiesta => {
-                this.richiestaNuovaPartenza = richiesta
+                this.richiestaNuovaPartenza = richiesta;
             })
         );
     }

@@ -34,10 +34,10 @@
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
-                            <li><span class="badge h6 w-75"
-                                      [ngClass]="{'badge-secondary': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0}">{{interventi.chiamate}}</span>
+                            <li><span class="badge h6 w-75 cursor-pointer"
+                                      [ngClass]="{'badge-secondary': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0, 'border-click-checked': boxClick.richieste.chiamate}" (click)="clickRichieste('chiamate')">{{interventi.chiamate}}</span>
                             </li>
-                            <li><span class="badge badge-warning h6 w-75">{{interventi.sospesi}}</span></li>
+                            <li><span class="badge badge-warning h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick.richieste.sospesi}" (click)="clickRichieste('sospesi')">{{interventi.sospesi}}</span></li>
                         </ul>
                     </div>
                 </div>
@@ -57,8 +57,8 @@
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
-                            <li><span class="badge badge-info h6 w-75">{{interventi.assegnati}}</span></li>
-                            <li><span class="badge badge-success h6 w-75">{{interventi.presidiati}}</span></li>
+                            <li><span class="badge badge-info h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick.richieste.assegnati}" (click)="clickRichieste('assegnati')">{{interventi.assegnati}}</span></li>
+                            <li><span class="badge badge-success h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick.richieste.presidiati}" (click)="clickRichieste('presidiati')">{{interventi.presidiati}}</span></li>
                         </ul>
                     </div>
                 </div>
