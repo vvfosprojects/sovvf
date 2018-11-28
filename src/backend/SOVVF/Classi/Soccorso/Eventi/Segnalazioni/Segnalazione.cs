@@ -72,7 +72,7 @@ namespace Modello.Classi.Soccorso.Eventi.Segnalazioni
         ///   112 (scheda contatto) nella forma di un punto, una poligonale, un cerchio, ecc.
         ///   Nota: non è la geolocalizzazione dell'evento calamitoso, vigilanza, ecc.
         /// </summary>
-        public Geolocalizzazione Geolocalizzazione { get; set; }
+        //public Geolocalizzazione Geolocalizzazione { get; set; }
 
         /// <summary>
         ///   Indica la motivazione per la quale è stata inoltrata segnalazione ai VVF

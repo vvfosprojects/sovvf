@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="WebApiConfig.cs" company="CNVVF">
+// <copyright file="SintesiRichiesteAssistenzaResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,38 +17,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Web;
-using System.Web.Http;
-using System.Web.Http.WebHost;
-using System.Web.Routing;
-using System.Web.SessionState;
+using System.Collections.Generic;
+using Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 
-namespace RestInterface
+namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO
 {
     /// <summary>
-    ///   Configurazione dell'architettura WebApi
+    ///   DTO di output
     /// </summary>
-    public static class WebApiConfig
+    public class SintesiRichiesteAssistenzaMarkerResult
     {
         /// <summary>
-        ///   Registrazione della configurazione
+        ///   La sintesi delle richieste di assistenza
         /// </summary>
-        /// <param name="config">La configurazione HTTP</param>
-        public static string UrlPrefix { get { return "api"; } }
-        public static string UrlPrefixRelative { get { return "~/api"; } }
-        public static void Register(HttpConfiguration config)
-        {
-            // Web API configuration and services
+        public IEnumerable<SintesiRichiestaMarker> SintesiRichiesta
+        { get; set; }
 
-            // Web API routes
-            config.MapHttpAttributeRoutes();
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-                );            
-        }
     }
-
 }

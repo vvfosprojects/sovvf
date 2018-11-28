@@ -59,7 +59,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssisten
     ///       richieste negli stati specificati.
     ///   </para>
     /// </summary>
-    public class SintesiRichiesteAssistenzaQueryHandler : IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult>
+    public class SintesiRichiesteAssistenzaMarkerQueryHandler : IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult>
     {
         /// <summary>
         ///   Istanza del servizio
@@ -70,7 +70,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssisten
         ///   Costruttore della classe
         /// </summary>
         /// <param name="cercaRichiesteAssistenza">L'istanza del servizio</param>
-        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza)
+        public SintesiRichiesteAssistenzaMarkerQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza)
         {
             this.cercaRichiesteAssistenza = cercaRichiesteAssistenza;
         }
@@ -80,42 +80,33 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssisten
         /// </summary>
         /// <param name="query">Il DTO di ingresso della query</param>
         /// <returns>Il DTO di uscita della query</returns>
-        public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
+        public SintesiRichiesteAssistenzaMarkerResult Handle(SintesiRichiesteAssistenzaMarkerQuery query)
         {
             //var richieste = this.cercaRichiesteAssistenza.Get(query.Filtro);
 
 #warning va realizzato il servizio di mapping delle richieste di assistenza sulla loro sintesi
-            var sintesiRichiesta = new List<SintesiRichiesta>();
+            var sintesiRichiesta = new List<SintesiRichiestaMarker>();
 
-                sintesiRichiesta = ElencoSintesiRichiesta(query);
+            sintesiRichiesta = ElencoSintesiRichiestaMarker();
 
-           
-            return new SintesiRichiesteAssistenzaResult()
+            return new SintesiRichiesteAssistenzaMarkerResult()
             {
                 SintesiRichiesta = sintesiRichiesta
             };
         }
 
-        #region Interrogazione Fake da Session + Mapper della Richiesta sulla Sintesi
+        #region Interrogazione Fake da Session + Mapper della Richiesta sul Marker
 
-        public static List<SintesiRichiesta> ElencoSintesiRichiesta(SintesiRichiesteAssistenzaQuery query)
+        public static List<SintesiRichiestaMarker> ElencoSintesiRichiestaMarker()
         {
 
             var session = HttpContext.Current.Session;
-            List<RichiestaAssistenza> listaRichieste = new List<RichiestaAssistenza>();
 
-            if (query.Filtro != null)
-            {
-                if (!query.Filtro.RichiestaSingola)
-                    listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).OrderBy(p => p.PrioritaRichiesta).Where(p => Convert.ToInt16(p.Id) >= Convert.ToInt16(query.Filtro.SearchKey.Substring(1)) + 1).Take(15).ToList();
-                else
-                    listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).Where(p => Convert.ToInt16(p.Id) == Convert.ToInt16(query.Filtro.SearchKey.Substring(1))).ToList();
-            }else
-                listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).OrderBy(p => p.PrioritaRichiesta).Where(p => Convert.ToInt16(p.Id) >= 1).Take(15).ToList();
+            List<RichiestaAssistenza> listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).OrderBy(p => p.PrioritaRichiesta).Where(p => Convert.ToInt16(p.Id) >= 1).Take(99999).ToList();
 
             MapperListaRichieste mapper = new MapperListaRichieste();
 
-            return mapper.MapRichiesteSuSintesi(listaRichieste);
+            return mapper.MapRichiesteSuMarkerSintesi(listaRichieste);
 
         }
        

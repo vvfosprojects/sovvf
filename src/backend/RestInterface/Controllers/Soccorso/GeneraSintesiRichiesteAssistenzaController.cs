@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -33,7 +34,7 @@ namespace RestInterface.Controllers.Soccorso
     /// <summary>
     ///   Controller per l'accesso alla sintesi sulle richieste di assistenza
     /// </summary>
-    public class SintesiRichiesteAssistenzaController : ApiController
+    public class GeneraSintesiRichiesteAssistenzaController : ApiController
     {
         /// <summary>
         ///   Handler del servizio
@@ -44,7 +45,7 @@ namespace RestInterface.Controllers.Soccorso
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public SintesiRichiesteAssistenzaController(
+        public GeneraSintesiRichiesteAssistenzaController(
             IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler)
         {
             this.handler = handler;
@@ -58,6 +59,36 @@ namespace RestInterface.Controllers.Soccorso
         public SintesiRichiesteAssistenzaResult Get(FiltroRicercaRichiesteAssistenza filtro)
         {
 
+            var session = HttpContext.Current.Session;
+            if (session != null)
+            {
+                if (session["JSonRichieste"] == null)
+                {
+                    //VIENE UTILIZZATO SOLO PER TEST E FAKE INSERT SU MONGO DB
+                    //CON QUESTI PARAMETRI INSERISCE 200 RICHIESTE
+                    var gi = new GeneratoreRichieste(
+                    "RM",
+                    5,
+                    DateTime.Now.AddHours(-12),
+                    DateTime.Now,
+                    25,
+                    30 * 60,
+                    15 * 60,
+                    45 * 60,
+                    15 * 60,
+                    new float[] { .85F, .7F, .4F, .3F, .1F });
+
+                    var richieste = gi.Genera()
+                        .OrderBy(r => (r.Eventi.First() as Evento).istante)
+                        .ToList();
+
+                   
+                    session.Add("JSonRichieste", richieste);
+
+                }
+            }
+
+
             var query = new SintesiRichiesteAssistenzaQuery()
             {
                 Filtro = filtro
@@ -68,7 +99,7 @@ namespace RestInterface.Controllers.Soccorso
 
 
         [HttpPost]
-        public SintesiRichiesteAssistenzaResult Post(FiltroRicercaRichiesteAssistenza filtro)
+        public SintesiRichiesteAssistenzaResult Post([FromBody]FiltroRicercaRichiesteAssistenza filtro)
         {
             
             var query = new SintesiRichiesteAssistenzaQuery()

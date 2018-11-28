@@ -9,40 +9,40 @@ using System.Threading.Tasks;
 
 namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
 {
-    class MapperListaRichiesteSuListaSintesiRichieste
+    class MapperListaRichieste
     {
 
-        public List<SintesiRichiesta> MapRichiesteSuSintesi(List<ListaRichiesteAssistenza> ListaRichiesta)
+        public List<SintesiRichiesta> MapRichiesteSuSintesi(List<RichiestaAssistenza> ListaRichieste)
         {            
             List<SintesiRichiesta> ListaSintesi = new List<SintesiRichiesta>();
 
-            foreach(ListaRichiesteAssistenza elemento in ListaRichiesta)
+            foreach(RichiestaAssistenza elemento in ListaRichieste)
             {
                 SintesiRichiesta sintesi = new SintesiRichiesta();
-                string statoRichiesta = DecodifcaStatoRichiesta(elemento.Richiesta.StatoRichiesta);
+                string statoRichiesta = DecodifcaStatoRichiesta(elemento.StatoRichiesta);
 
-                sintesi.codice = elemento.Richiesta.Codice;
-                sintesi.codiceSchedaNue = elemento.Richiesta.CodiceSchedaNue;
-                sintesi.competenze = elemento.Richiesta.Competenze;
+                sintesi.codice = elemento.Codice;
+                sintesi.codiceSchedaNue = elemento.CodiceSchedaNue;
+                sintesi.competenze = elemento.Competenze;
                 //sintesi.complessita = elemento.Richiesta.Complessita;
-                sintesi.descrizione = elemento.Richiesta.Descrizione;
-                sintesi.etichette = elemento.Richiesta.Tags.ToArray();
-                sintesi.eventi = elemento.Richiesta.Eventi.ToList();
+                sintesi.descrizione = elemento.Descrizione;
+                sintesi.etichette = elemento.Tags.ToArray();
+                sintesi.eventi = elemento.Eventi.ToList();
                 //sintesi.fonogramma = elemento.Richiesta.StatoInvioFonogramma;
-                sintesi.id = elemento.Richiesta.Id;
-                sintesi.istantePresaInCarico = elemento.Richiesta.IstantePresaInCarico;
-                sintesi.istantePrimaAssegnazione = elemento.Richiesta.IstantePrimaAssegnazione;
+                sintesi.id = elemento.Id;
+                sintesi.istantePresaInCarico = elemento.IstantePresaInCarico;
+                sintesi.istantePrimaAssegnazione = elemento.IstantePrimaAssegnazione;
                 
-                sintesi.istanteRicezioneRichiesta = sintesi.eventi.Count > 0 ? elemento.Richiesta.IstanteRicezioneRichiesta : DateTime.MinValue;
-                sintesi.localita = elemento.Richiesta.Localita;
-                sintesi.operatore = elemento.Richiesta.Operatore;
-                sintesi.partenze = elemento.Richiesta.ListaPartenze;
-                sintesi.priorita = elemento.Richiesta.PrioritaRichiesta;
-                sintesi.richiedente = elemento.Richiesta.Richiedente;
+                sintesi.istanteRicezioneRichiesta = sintesi.eventi.Count > 0 ? elemento.IstanteRicezioneRichiesta : DateTime.MinValue;
+                sintesi.localita = elemento.Localita;
+                sintesi.operatore = elemento.Operatore;
+                sintesi.partenze = elemento.ListaPartenze;
+                sintesi.priorita = elemento.PrioritaRichiesta;
+                sintesi.richiedente = elemento.Richiedente;
                 sintesi.rilevanza = DateTime.Now;
                 sintesi.stato = statoRichiesta;
-                sintesi.tipologie = elemento.Richiesta.Tipologie;
-                sintesi.zoneEmergenza = elemento.Richiesta.ZoneEmergenza;
+                sintesi.tipologie = elemento.Tipologie;
+                sintesi.zoneEmergenza = elemento.ZoneEmergenza;
 
                 ListaSintesi.Add(sintesi);
 
@@ -50,6 +50,30 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
 
             return ListaSintesi;
 
+        }
+
+        public List<SintesiRichiestaMarker> MapRichiesteSuMarkerSintesi(List<RichiestaAssistenza> listaRichieste)
+        {
+            List<SintesiRichiestaMarker> ListaSintesi = new List<SintesiRichiestaMarker>();
+
+            foreach (RichiestaAssistenza elemento in listaRichieste)
+            {
+                SintesiRichiestaMarker sintesi = new SintesiRichiestaMarker();
+                string statoRichiesta = DecodifcaStatoRichiesta(elemento.StatoRichiesta);
+
+                sintesi.id = elemento.Id;
+                sintesi.localita = elemento.Localita;
+                sintesi.tipologie = elemento.Tipologie;
+                sintesi.label = elemento.Descrizione;
+                sintesi.priorita = elemento.PrioritaRichiesta;
+                sintesi.stato = statoRichiesta;
+                sintesi.rilevanza = DateTime.Now;
+
+                ListaSintesi.Add(sintesi);
+
+            }
+
+            return ListaSintesi;
         }
 
         private string DecodifcaStatoRichiesta(IStatoRichiesta statoRichiesta)
@@ -71,5 +95,7 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
             }
 
         }
+
+
     }
 }

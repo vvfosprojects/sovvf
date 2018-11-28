@@ -85,6 +85,7 @@
     <None Include="..\SOVVF.licenseheader">
       <Link>SOVVF.licenseheader</Link>
     </None>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

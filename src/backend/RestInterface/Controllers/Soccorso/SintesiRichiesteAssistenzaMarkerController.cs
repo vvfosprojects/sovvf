@@ -33,19 +33,19 @@ namespace RestInterface.Controllers.Soccorso
     /// <summary>
     ///   Controller per l'accesso alla sintesi sulle richieste di assistenza
     /// </summary>
-    public class SintesiRichiesteAssistenzaController : ApiController
+    public class SintesiRichiesteAssistenzaMarkerController : ApiController
     {
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler;
+        private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> handler;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public SintesiRichiesteAssistenzaController(
-            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler)
+        public SintesiRichiesteAssistenzaMarkerController(
+            IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> handler)
         {
             this.handler = handler;
         }
@@ -55,10 +55,10 @@ namespace RestInterface.Controllers.Soccorso
         /// </summary>
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
-        public SintesiRichiesteAssistenzaResult Get(FiltroRicercaRichiesteAssistenza filtro)
+        public SintesiRichiesteAssistenzaMarkerResult Get(FiltroRicercaRichiesteAssistenza filtro)
         {
 
-            var query = new SintesiRichiesteAssistenzaQuery()
+            var query = new SintesiRichiesteAssistenzaMarkerQuery()
             {
                 Filtro = filtro
             };
@@ -68,10 +68,10 @@ namespace RestInterface.Controllers.Soccorso
 
 
         [HttpPost]
-        public SintesiRichiesteAssistenzaResult Post(FiltroRicercaRichiesteAssistenza filtro)
+        public SintesiRichiesteAssistenzaMarkerResult Post([FromBody]FiltroRicercaRichiesteAssistenza filtro)
         {
             
-            var query = new SintesiRichiesteAssistenzaQuery()
+            var query = new SintesiRichiesteAssistenzaMarkerQuery()
             {
                 Filtro = filtro
             };
