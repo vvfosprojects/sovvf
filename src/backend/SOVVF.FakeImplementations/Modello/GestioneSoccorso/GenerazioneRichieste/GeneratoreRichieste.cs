@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Bogus;
@@ -204,7 +205,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(t => t.CodiceSchedaContatto, f => f.Random.Replace("??###"))
                 .RuleFor(t => t.CognomeChiamante, f => f.Name.LastName())
                 .RuleFor(t => t.Esito, f => "Avente seguito")
-                .RuleFor(t => t.Geolocalizzazione, f => fakerGeolocalizzazione.Generate())
+                //.RuleFor(t => t.Geolocalizzazione, f => fakerGeolocalizzazione.Generate())
                 .RuleFor(t => t.Motivazione, f => f.Lorem.Text())
                 .RuleFor(t => t.NomeChiamante, f => f.Name.FirstName())
                 .RuleFor(t => t.NotePrivate, f => f.Lorem.Sentence(10))
@@ -274,17 +275,11 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                     .Where(a => !a.Eseguita())
                     .OrderBy(a => a.IstantePrevisto)
                     .ToList();
-            }
-
-
-            var client = new MongoClient();
-            var database = client.GetDatabase("SO115");
-            var collection = database.GetCollection<RichiestaConParametri>("RichiesteAssistenza");
-            collection.InsertMany(richiesteConParametri);
+            }   
+        
 
             return richiesteConParametri.Select(r => r.Richiesta);
         }
-
 
         public static Utente GeneraOperatore()
         {

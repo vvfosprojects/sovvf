@@ -1,0 +1,19 @@
+.custom-switches {
+    display: inline-block;
+    padding-top: 5px;
+}
+
+.text-switches {
+    display: inline-block;
+    padding-top: 6px;
+}
+
+.tooltip-switches .tooltip-inner {
+    background-color: #007bff;
+    font-size: 125%;
+    min-width: 230px;
+    padding-bottom: 2px;
+}
+.tooltip-switches .arrow::before {
+    border-top-color: #007bff;
+}

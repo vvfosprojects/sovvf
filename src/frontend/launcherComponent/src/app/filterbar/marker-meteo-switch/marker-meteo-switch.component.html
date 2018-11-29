@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-12 ml-auto" [ngbTooltip]="meteoSwitch" placement="bottom" tooltipClass="tooltip-switches">
+        <div class="row">
+            <div class="col-5 ml-auto mr-1 pr-0 text-right text-primary text-switches">
+                <i class="fa fa-map-marker mr-1"></i>Meteo
+            </div>
+            <div class="col-4 px-0 custom-switches">
+                <ui-switch checkedLabel="On"
+                           uncheckedLabel="Off"
+                           defaultBoColor="#007bff"
+                           [checked]="stateSwitch"
+                           [switchColor]="returnColor()"
+                           color="#FFF"
+                           size="small"
+                           (change)="onChange($event)">
+                </ui-switch>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #meteoSwitch>
+        <h6 class="mb-2">Abilita sulla mappa,<br>il meteo del punto cliccato</h6>
+</ng-template>

@@ -1,5 +1,7 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {BoxPersonale} from '../../boxes-model/box-personale.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalServiziComponent } from '../modal-servizi/modal-servizi.component';
 
 
 @Component({
@@ -14,7 +16,7 @@ export class BoxPersonaleComponent implements OnInit {
     private colorStato: [string, string][];
     private mapColorStato: Map<string, string>;
 
-    constructor() {
+    constructor(private modalService: NgbModal) {
         this.color();
     }
 
@@ -122,6 +124,9 @@ export class BoxPersonaleComponent implements OnInit {
         return presenteTecnicoGuardia;
     }
 
+    openModalServizi() {
+        this.modalService.open(ModalServiziComponent, {size: 'lg', centered: true});
+    }
 }
 
 interface Result {

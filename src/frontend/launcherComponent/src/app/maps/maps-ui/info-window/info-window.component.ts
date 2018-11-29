@@ -7,6 +7,7 @@ import { CambioSedeModalComponent } from './cambio-sede-modal/cambio-sede-modal.
 import { NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ColoriStatoMezzo } from '../../../shared/helper/_colori';
 import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
+import { MeteoMarker } from '../../maps-model/meteo-marker.model';
 
 @Component({
   selector: 'app-info-window',
@@ -20,6 +21,7 @@ export class InfoWindowComponent implements OnInit {
   @Input() sedeMarker: SedeMarker;
   @Input() chiamata: ChiamataMarker;
   @Input() mezzoMarker: MezzoMarker;
+  @Input() meteoMarker: MeteoMarker;
   @Input() tipoSedeIcona: string;
   stato = new ColoriStatoMezzo();
 

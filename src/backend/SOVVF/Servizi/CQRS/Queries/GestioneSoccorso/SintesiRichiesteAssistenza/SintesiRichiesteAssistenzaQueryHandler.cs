@@ -27,7 +27,10 @@ using Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssis
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
 using Modello.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using Modello.Servizi.CQRS.Faker;
+using Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi;
+using Modello.Classi.Soccorso;
+using System.Web;
+using System.Linq;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
@@ -84,19 +87,38 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssisten
 #warning va realizzato il servizio di mapping delle richieste di assistenza sulla loro sintesi
             var sintesiRichiesta = new List<SintesiRichiesta>();
 
-            if (query.Filtro == null)
-                sintesiRichiesta = GeneraFakerSintesiRichieste.ElencoSintesiRichiestaMarker();
-            else
-            {
-                sintesiRichiesta = GeneraFakerSintesiRichieste.ElencoSintesiRichiesta(query);
-            }
+                sintesiRichiesta = ElencoSintesiRichiesta(query);
 
-
+           
             return new SintesiRichiesteAssistenzaResult()
             {
                 SintesiRichiesta = sintesiRichiesta
             };
         }
 
+        #region Interrogazione Fake da Session + Mapper della Richiesta sulla Sintesi
+
+        public static List<SintesiRichiesta> ElencoSintesiRichiesta(SintesiRichiesteAssistenzaQuery query)
+        {
+
+            var session = HttpContext.Current.Session;
+            List<RichiestaAssistenza> listaRichieste = new List<RichiestaAssistenza>();
+
+            if (query.Filtro != null)
+            {
+                if (!query.Filtro.RichiestaSingola)
+                    listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).OrderBy(p => p.PrioritaRichiesta).Where(p => Convert.ToInt16(p.Id) >= Convert.ToInt16(query.Filtro.SearchKey.Substring(1)) + 1).Take(15).ToList();
+                else
+                    listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).Where(p => Convert.ToInt16(p.Id) == Convert.ToInt16(query.Filtro.SearchKey.Substring(1))).ToList();
+            }else
+                listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).OrderBy(p => p.PrioritaRichiesta).Where(p => Convert.ToInt16(p.Id) >= 1).Take(15).ToList();
+
+            MapperListaRichieste mapper = new MapperListaRichieste();
+
+            return mapper.MapRichiesteSuSintesi(listaRichieste);
+
+        }
+       
+        #endregion
     }
 }

@@ -15,6 +15,8 @@ import { ViewModeComponent } from './view-mode/view-mode.component';
 import { FiltriMappaComponent } from './filtri-mappa/filtri-mappa.component';
 import { TastoChiamataComponent } from './tasto-chiamata/tasto-chiamata.component';
 import { TastoCompPartenzaComponent } from './tasto-comp-partenza/tasto-comp-partenza.component';
+import { MarkerMeteoSwitchComponent } from './marker-meteo-switch/marker-meteo-switch.component';
+import { UiSwitchModule } from 'ngx-ui-switch';
 
 @NgModule({
     imports: [
@@ -26,6 +28,7 @@ import { TastoCompPartenzaComponent } from './tasto-comp-partenza/tasto-comp-par
         NgbModule.forRoot(),
         PipeModule.forRoot(),
         SharedModule.forRoot(),
+        UiSwitchModule
     ],
     declarations: [
         FilterbarComponent,
@@ -36,6 +39,7 @@ import { TastoCompPartenzaComponent } from './tasto-comp-partenza/tasto-comp-par
         FiltriMappaComponent,
         TastoChiamataComponent,
         TastoCompPartenzaComponent,
+        MarkerMeteoSwitchComponent,
     ],
     exports: [
         FilterbarComponent

@@ -258,5 +258,28 @@
             </tbody>
         </table>
     </div>
-
+    <div *ngIf="meteoMarker">
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col" class="py-1 px-0 mx-0 row w-100">
+                    <div class="col">
+                        <span>
+                            <i class="fa fa-sun-o"></i>
+                    Meteo
+                </span>
+                        {{meteoMarker.id}}
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngIf="datiMeteo">
+                <th scope="row" class="py-1 s-info-window">
+                    <div *ngIf="datiMeteo; then meteo"></div>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -108,7 +108,7 @@ namespace Modello.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata
                 CognomeChiamante = command.Cognome,
                 NomeChiamante = command.Nome,
                 RagioneSociale = command.RagioneSociale,
-                Geolocalizzazione = command.Geolocalizzazione,
+                //Geolocalizzazione = command.Geolocalizzazione,
                 Motivazione = command.Motivazione,
                 NotePrivate = command.NotePrivate,
                 NotePubbliche = command.NotePubbliche,

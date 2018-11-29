@@ -17,7 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Web;
 using System.Web.Http;
+using System.Web.Http.WebHost;
+using System.Web.Routing;
+using System.Web.SessionState;
 
 namespace RestInterface
 {
@@ -30,6 +34,8 @@ namespace RestInterface
         ///   Registrazione della configurazione
         /// </summary>
         /// <param name="config">La configurazione HTTP</param>
+        public static string UrlPrefix { get { return "api"; } }
+        public static string UrlPrefixRelative { get { return "~/api"; } }
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
@@ -40,7 +46,9 @@ namespace RestInterface
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional });
+                defaults: new { id = RouteParameter.Optional }
+                );            
         }
     }
+
 }
