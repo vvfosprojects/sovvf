@@ -40,7 +40,13 @@ import { DefaultTreeviewI18n } from './navbar-service/unita-operativa-treeview-s
         ClockComponent,
         CambioSedeModalNavComponent,
         OperatoreComponent,
+        /**
+         * unita operativa selezione singola
+         */
         UnitaOperativaComponent,
+        /**
+         * unita operativa selezione multipla
+         */
         UnitaOperativaTreeviewComponent
     ],
     exports: [NavbarComponent],
