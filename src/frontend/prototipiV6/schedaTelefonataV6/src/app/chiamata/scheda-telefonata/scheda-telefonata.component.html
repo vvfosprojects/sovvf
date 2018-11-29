@@ -1,16 +1,15 @@
 <div *ngIf="tipologie" [@hideShowAnimator]="hideShowAnimator" class="row mt-3">
   <div class="col-11 pt-5 px-5 mx-auto rounded status_chiamata card-shadow-danger" style="height: 740px">
     <form [formGroup]="chiamataForm" (ngSubmit)="onSubmit()">
-      <!-- <div class="form-group mb-1">
+      <div class="form-group mb-1">
         <label>Tipologia intervento</label>
         <ng-select class="border" [items]="tipologie" [multiple]="true" [closeOnSelect]="true" [hideSelected]="true"
-          bindLabel="descrizione" (add)="onAddTipologia($event)" (remove)="onRemoveTipologia($event)" placeholder="Seleziona Tipologia Intervento"
-          [ngClass]="tipologiaClass()">
+          bindLabel="descrizione" (add)="onAddTipologia($event)" (remove)="onRemoveTipologia($event)" placeholder="Seleziona Tipologia Intervento">
         </ng-select>
-      </div> -->
-      <div class="form-group">
-        <input type="text" formControlName="dettaglioTipologia" class="form-control" placeholder="Dettaglio tipologia">
       </div>
+      <!--<div class="form-group">-->
+        <!--<input type="text" formControlName="dettaglioTipologia" class="form-control" placeholder="Dettaglio tipologia">-->
+      <!--</div>-->
       <div class="row">
         <!-- Divisione in due colonne: cognome -->
         <div class="col">
