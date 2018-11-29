@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PreAccoppiato } from '../model/pre-accoppiato.model';
-import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
+import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 
 @Component({
   selector: 'app-preaccoppiato',
@@ -89,7 +89,7 @@ export class PreaccoppiatoComponent implements OnInit {
             break;
         }
       }
-    })
+    });
     return returnClass;
   }
 }

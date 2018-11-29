@@ -4,164 +4,28 @@
       <div class="col-4">
         <div class="card card-shadow w-75 mx-auto">
           <div class="card-header">
-            Mezzi
+            <i class="fa fa-group mr-2"></i><span class="h6">Squadre</span>
           </div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-3 pr-0 text-center">
-                  <i class="fa fa-truck"></i>
-                </div>
-                <div class="col-5 pl-1">
-                  <span>A1</span>
-                </div>
-                <div class="col-3 pl-1 text-right">
-                  <i class="fa fa-group"></i>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-3 pr-0 text-center">
-                  <i class="fa fa-truck"></i>
-                </div>
-                <div class="col-5 pl-1">
-                  <span>A2</span>
-                </div>
-                <div class="col-3 pl-1 text-right">
-                  <i class="fa fa-group"></i>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-3 pr-0 text-center">
-                  <i class="fa fa-truck"></i>
-                </div>
-                <div class="col-5 pl-1">
-                  <span>A3</span>
-                </div>
-                <div class="col-3 pl-1 text-right">
-                  <i class="fa fa-group"></i>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-3 pr-0 text-center">
-                  <i class="fa fa-truck"></i>
-                </div>
-                <div class="col-5 pl-1">
-                  <span>A4</span>
-                </div>
-                <div class="col-3 pl-1 text-right">
-                  <i class="fa fa-group"></i>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-3 pr-0 text-center">
-                  <i class="fa fa-truck"></i>
-                </div>
-                <div class="col-5 pl-1">
-                  <span>A5</span>
-                </div>
-                <div class="col-3 pl-1 text-right">
-                  <i class="fa fa-group"></i>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-3 pr-0 text-center">
-                  <i class="fa fa-truck"></i>
-                </div>
-                <div class="col-5 pl-1">
-                  <span>A6</span>
-                </div>
-                <div class="col-3 pl-1 text-right">
-                  <i class="fa fa-group"></i>
-                </div>
-              </div>
-            </li>
+            <app-squadra-composizione *ngFor="let s of squadre" [squadra]="s"></app-squadra-composizione>
           </ul>
         </div>
       </div>
-      <div class="col-4">
-        <div class="card card-shadow w-75 mx-auto">
+      <div class="col-4 pl-0">
+        <div class="card card-shadow mx-auto">
           <div class="card-header">
-            Squadre
+            <i class="fa fa-truck mr-2"></i><span class="h6">Mezzi</span>
           </div>
           <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-3 pr-0 text-center">
-                    <i class="fa fa-group"></i>
-                  </div>
-                  <div class="col-5 pl-1">
-                    <span>Rossa</span>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-3 pr-0 text-center">
-                    <i class="fa fa-group"></i>
-                  </div>
-                  <div class="col-5 pl-1">
-                    <span>Gialla</span>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-3 pr-0 text-center">
-                    <i class="fa fa-group"></i>
-                  </div>
-                  <div class="col-5 pl-1">
-                    <span>Blu</span>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-3 pr-0 text-center">
-                    <i class="fa fa-group"></i>
-                  </div>
-                  <div class="col-5 pl-1 pr-0">
-                    <span>Marrone</span>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-3 pr-0 text-center">
-                    <i class="fa fa-group"></i>
-                  </div>
-                  <div class="col-5 pl-1">
-                    <span>Viola</span>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-3 pr-0 text-center">
-                    <i class="fa fa-group"></i>
-                  </div>
-                  <div class="col-5 pl-1">
-                    <span>Verde</span>
-                  </div>
-                </div>
-              </li>
+            <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC"></app-mezzo-composizione>
           </ul>
         </div>
       </div>
       <div class="col-4">
-        <div class="card card-shadow border-dashed-3 w-100 py-3 px-2">
-            <app-preaccoppiato [preAcc]="preAcc" [richiesta]="richiesta"></app-preaccoppiato>
-            <app-preaccoppiato [preAcc]="preAcc" [richiesta]="richiesta"></app-preaccoppiato>
-            <app-preaccoppiato [preAcc]="preAcc" [richiesta]="richiesta"></app-preaccoppiato>
+        <div class="card border-dashed-3 w-100 py-3 px-2">
+          <app-preaccoppiato [preAcc]="preAcc" [richiesta]="richiesta"></app-preaccoppiato>
+          <app-preaccoppiato [preAcc]="preAcc" [richiesta]="richiesta"></app-preaccoppiato>
+          <app-preaccoppiato [preAcc]="preAcc" [richiesta]="richiesta"></app-preaccoppiato>
         </div>
       </div>
     </div>

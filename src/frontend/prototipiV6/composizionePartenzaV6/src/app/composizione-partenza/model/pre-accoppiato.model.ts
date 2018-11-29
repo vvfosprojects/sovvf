@@ -1,5 +1,5 @@
-import { Squadra } from "src/app/shared/model/squadra.model";
-import { Mezzo } from "src/app/shared/model/mezzo.model";
+import { Squadra } from "../../shared/model/squadra.model";
+import { Mezzo } from "../../shared/model/mezzo.model";
 
 export class PreAccoppiato {
     constructor(

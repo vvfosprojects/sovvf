@@ -4,8 +4,10 @@ import { Observable, of } from 'rxjs';
 // Models
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { Squadra } from '../../../shared/model/squadra.model';
+import { MezzoComposizione } from "../../../composizione-partenza/model/mezzo-composizione.model";
 import { Componente } from '../../../shared/model/componente.model';
-import { PreAccoppiato } from 'src/app/composizione-partenza/model/pre-accoppiato.model';
+import { PreAccoppiato } from '../../../composizione-partenza/model/pre-accoppiato.model';
+
 
 
 @Injectable({
@@ -13,6 +15,8 @@ import { PreAccoppiato } from 'src/app/composizione-partenza/model/pre-accoppiat
 })
 export class CompPartenzaServiceFake {
   preAccoppiati: PreAccoppiato[];
+  mezzi: MezzoComposizione[];
+  squadre: Squadra[];
 
   constructor() {
   }
@@ -284,4 +288,74 @@ export class CompPartenzaServiceFake {
     return of(this.preAccoppiati);
   }
 
+  public getMezziComposizione(): Observable<MezzoComposizione[]> {
+    this.mezzi = [
+      new MezzoComposizione(
+        '1',
+        new Mezzo('1',
+        'A1',
+        'APS',
+        'inSede',
+        [
+          new Squadra('Rossa',
+            'InSede',
+            [
+              new Componente('CP', 'Mario Rossi', '', true, false, false)
+            ]
+          )
+        ],
+        0
+      ),
+      '20.2 km',
+      '20 min'
+      ),
+      new MezzoComposizione(
+        '2',
+        new Mezzo('2',
+        'A2',
+        'APS',
+        'inSede',
+        [
+          new Squadra('Gialla',
+            'InSede',
+            [
+              new Componente('CP', 'Francesco Verdi', '', true, false, false)
+            ]
+          )
+        ],
+        0
+      ),
+      '34.6 km',
+      '43 min'
+      ),
+    ];
+
+    return of(this.mezzi);
+  }
+
+  public getSquadre(): Observable<Squadra[]> {
+    this.squadre = [
+      new Squadra('Rossa',
+      'InSede',
+      [
+        new Componente('CP', 'Mario Rossi', '', true, false, false),
+        new Componente('AA', 'Mario Rossi', '', false, false, false),
+        new Componente('BB', 'Mario Rossi', '', false, false, false),
+        new Componente('CC', 'Mario Rossi', '', false, false, false),
+        new Componente('DD', 'Mario Rossi', '', false, false, false),
+      ]
+      ),
+      new Squadra('Gialla',
+      'InSede',
+      [
+        new Componente('CP', 'Francesco Verdi', '', true, false, false),
+        new Componente('EE', 'Francesco Verdi', '', false, false, false),
+        new Componente('FF', 'Francesco Verdi', '', false, false, false),
+        new Componente('GG', 'Francesco Verdi', '', false, false, false),
+      ]
+      )
+    ];
+
+    return of(this.squadre);
+  }
 }

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 /*
-    Modules
+    Module
  */
 import { PipeModule } from '../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -19,25 +19,23 @@ import { PreaccoppiatoComponent } from './preaccoppiato/preaccoppiato.component'
 /*
     Provider
  */
-import { DispatcherService } from '../core/dispatcher/dispatcher-lista-richieste.service';
-import { DispatcherFakeService } from '../core/dispatcher/dispatcher-lista-richieste-fake.service';
-import { ListaRichiesteManagerService } from '../core/manager/lista-richieste-manager/lista-richieste-manager.service';
-import { ListaRichiesteManagerServiceFake } from '../core/manager/lista-richieste-manager/lista-richieste-manager.service.fake';
-import { SintesiRichiesteService } from '../core/service/lista-richieste-service/lista-richieste.service';
-import { SintesiRichiesteServiceFake } from '../core/service/lista-richieste-service/lista-richieste.service.fake';
 import { DispatcherCompPartenzaService } from '../core/dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.service';
 import { DispatcherCompPartenzaFakeService } from '../core/dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.fake.service';
 import { CompPartenzaManagerService } from '../core/manager/comp-partenza-manager/comp-partenza-manager.service';
 import { CompPartenzaManagerServiceFake } from '../core/manager/comp-partenza-manager/comp-partenza-manager.service.fake';
 import { CompPartenzaService } from '../core/service/comp-partenza-service/comp-partenza.service';
 import { CompPartenzaServiceFake } from '../core/service/comp-partenza-service/comp-partenza.service.fake';
+import { MezzoComposizioneComponent } from './composizione-avanzata/mezzo-composizione/mezzo-composizione.component';
+import { SquadraComposizioneComponent } from './composizione-avanzata/squadra-composizione/squadra-composizione.component';
 
 @NgModule({
   declarations: [
     ComposizionePartenzaComponent,
     FasterComponent,
     SlowerComponent,
-    PreaccoppiatoComponent
+    PreaccoppiatoComponent,
+    MezzoComposizioneComponent,
+    SquadraComposizioneComponent
   ],
   imports: [
     BrowserModule,
@@ -55,10 +53,6 @@ import { CompPartenzaServiceFake } from '../core/service/comp-partenza-service/c
     ComposizionePartenzaComponent
   ],
   providers: [
-    { provide: DispatcherService, useClass: DispatcherFakeService },
-    { provide: ListaRichiesteManagerService, useClass: ListaRichiesteManagerServiceFake },
-    { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake },
-
     { provide: DispatcherCompPartenzaService, useClass: DispatcherCompPartenzaFakeService },
     { provide: CompPartenzaManagerService, useClass: CompPartenzaManagerServiceFake },
     { provide: CompPartenzaService, useClass: CompPartenzaServiceFake }
