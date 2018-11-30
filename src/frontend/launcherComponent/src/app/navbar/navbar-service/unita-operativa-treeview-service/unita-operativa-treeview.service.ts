@@ -5,6 +5,7 @@ import { Sede } from '../../../shared/model/sede.model';
 import { UnitaOperativaService } from '../unita-operativa-service/unita-operativa.service';
 import { UnitaAttualeService } from '../unita-attuale/unita-attuale.service';
 import { GetSediSelezionateTreeView } from './_get-sedi-selezionate-treeview';
+import { AbbreviaSedi } from './_abbrevia-sedi';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,9 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
     private unitaOperative: Sede[];
     private unitaAttuale: string[] = [];
     private treeViewSedi;
+    private _truncate: any;
     _get: any;
+
     /**
      * inserire qui la "configurazione" dei livelli del treeview di sedi
      */
@@ -27,6 +30,7 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
 
     constructor(private unitaOperativaS: UnitaOperativaService,
                 private unitaAttualeS: UnitaAttualeService) {
+        this._truncate = new AbbreviaSedi();
         this.unitaOperativaS.getUnitaOperative().subscribe(unitaOperative => {
             this.unitaOperative = unitaOperative;
             this._get = new GetSediSelezionateTreeView(unitaOperative, this.createSediTreeItem());
@@ -48,7 +52,7 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
     }
 
     getSediAttualiString(): string {
-        return this._get.sediSelezionate(this.unitaAttuale).testo;
+        return this._truncate.sedeString(this._get.sediSelezionate(this.unitaAttuale).testo);
     }
 
     createSediTreeItem(): TreeItem {
@@ -60,10 +64,10 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
          */
         const attuale = this.unitaAttuale;
 
-      /**
-       * array di oggetti di tutte le sedi esistenti
-       * @type {Sede[]}
-       */
+        /**
+         * array di oggetti di tutte le sedi esistenti
+         * @type {Sede[]}
+         */
         const unitaOperative = this.unitaOperative;
 
 
@@ -120,11 +124,11 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
             };
         }
 
-      /**
-       * funzione che ritorna i distaccamenti di una provincia, e ritorna true se c'è almeno un distaccamento presente
-       * @param {string} value
-       * @returns {{distaccamenti: TreeItem[]; checkedD: boolean}}
-       */
+        /**
+         * funzione che ritorna i distaccamenti di una provincia, e ritorna true se c'è almeno un distaccamento presente
+         * @param {string} value
+         * @returns {{distaccamenti: TreeItem[]; checkedD: boolean}}
+         */
         function getDistaccamenti(value: string): { distaccamenti: TreeItem[]; collapsed: boolean; allChecked: boolean } {
             const distaccamenti: TreeItem[] = [];
             let countD = 0;
@@ -150,7 +154,7 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
          * ritorno l'oggetto CON completo di tipo TreeItem
          * @type {TreeItem[]}
          */
-        return {text: 'CON', value: '0', collapsed: (countR === 0), children: direzioni};
+        return { text: 'CON', value: '0', collapsed: (countR === 0), children: direzioni };
     }
 
     /**
