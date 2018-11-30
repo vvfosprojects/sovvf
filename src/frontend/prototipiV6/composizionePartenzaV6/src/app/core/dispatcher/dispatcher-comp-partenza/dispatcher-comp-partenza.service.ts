@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 
 // Model
 import { Squadra } from '../../../shared/model/squadra.model';
-import { PreAccoppiato } from '../../../composizione-partenza/model/pre-accoppiato.model';
+import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
 import { MezzoComposizione } from 'src/app/composizione-partenza/model/mezzo-composizione.model';
 
 // Service
@@ -13,7 +13,7 @@ import { CompPartenzaService } from '../../service/comp-partenza-service/comp-pa
     providedIn: 'root'
 })
 export class DispatcherCompPartenzaService {
-    private newPreaccoppiatiList$ = new Subject<PreAccoppiato[]>();
+    private newPreaccoppiatiList$ = new Subject<BoxPartenza[]>();
     private newMezziComposizioneList$ = new Subject<MezzoComposizione[]>();
     private newSquadreList$ = new Subject<Squadra[]>();
 

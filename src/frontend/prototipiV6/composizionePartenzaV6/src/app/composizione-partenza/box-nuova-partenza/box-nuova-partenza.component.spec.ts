@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PreaccoppiatoComponent } from './preaccoppiato.component';
+import { BoxNuovaPartenzaComponent } from './box-nuova-partenza.component';
 
 describe('PreaccoppiatoComponent', () => {
-  let component: PreaccoppiatoComponent;
-  let fixture: ComponentFixture<PreaccoppiatoComponent>;
+  let component: BoxNuovaPartenzaComponent;
+  let fixture: ComponentFixture<BoxNuovaPartenzaComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PreaccoppiatoComponent ]
+      declarations: [ BoxNuovaPartenzaComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PreaccoppiatoComponent);
+    fixture = TestBed.createComponent(BoxNuovaPartenzaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

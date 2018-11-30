@@ -5,7 +5,7 @@ import { of, Observable } from 'rxjs';
 import { CompPartenzaService } from '../../service/comp-partenza-service/comp-partenza.service';
 
 // Model
-import { PreAccoppiato } from '../../../composizione-partenza/model/pre-accoppiato.model';
+import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { Squadra } from '../../../shared/model/squadra.model';
 import { MezzoComposizione } from '../../../composizione-partenza/model/mezzo-composizione.model';
@@ -15,15 +15,15 @@ import { MezzoComposizione } from '../../../composizione-partenza/model/mezzo-co
     providedIn: 'root'
 })
 export class DispatcherCompPartenzaFakeService {
-    preAccoppiati: PreAccoppiato[];
+    preAccoppiati: BoxPartenza[];
     mezziComposizione: MezzoComposizione[];
     squadre: Squadra[];
 
     constructor(private compPartenzaService: CompPartenzaService) {
     }
 
-    onNewPreAccoppiatiList(): Observable<PreAccoppiato[]> {
-        this.compPartenzaService.getPreAccoppiati().subscribe((preAcc: PreAccoppiato[]) => {
+    onNewPreAccoppiatiList(): Observable<BoxPartenza[]> {
+        this.compPartenzaService.getPreAccoppiati().subscribe((preAcc: BoxPartenza[]) => {
             this.preAccoppiati = preAcc;
         });
         return of(this.preAccoppiati);

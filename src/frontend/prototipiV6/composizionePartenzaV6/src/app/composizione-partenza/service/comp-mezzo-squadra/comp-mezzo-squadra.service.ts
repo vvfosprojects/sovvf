@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 
 // Model
-import { Mezzo } from 'src/app/shared/model/mezzo.model';
 import { Squadra } from 'src/app/shared/model/squadra.model';
 import { MezzoComposizione } from '../../model/mezzo-composizione.model';
+import { BoxPartenza } from '../../model/box-partenza.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,7 @@ import { MezzoComposizione } from '../../model/mezzo-composizione.model';
 export class CompMezzoSquadraService {
   private mezzo$ = new Subject<MezzoComposizione>();
   private squadra$ = new Subject<Squadra>();
+  private partenze$ = new Subject<BoxPartenza[]>();
 
   constructor() { }
 
@@ -33,5 +34,15 @@ export class CompMezzoSquadraService {
   }
   clearSquadra() {
     this.squadra$.next();
+  }
+
+  setPartenze(partenze) {
+    this.partenze$.next(partenze);
+  }
+  getPartenze(): Observable<any> {
+    return this.partenze$.asObservable();
+  }
+  clearPartenze() {
+    this.partenze$.next();
   }
 }

@@ -1,11 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
 // Model
 import { MezzoComposizione } from '../../model/mezzo-composizione.model';
 
 // Service
 import { CompMezzoSquadraService } from '../../service/comp-mezzo-squadra/comp-mezzo-squadra.service';
-import { Mezzo } from 'src/app/shared/model/mezzo.model';
+import { Squadra } from 'src/app/shared/model/squadra.model';
+import { BoxPartenza } from '../../model/box-partenza.model';
 
 @Component({
   selector: 'app-mezzo-composizione',
@@ -14,6 +15,9 @@ import { Mezzo } from 'src/app/shared/model/mezzo.model';
 })
 export class MezzoComposizioneComponent implements OnInit {
   @Input() mezzoComp: MezzoComposizione;
+  @Input() squadre: Squadra[];
+  @Input() partenze: BoxPartenza[];
+  @Output() nuovoMezzo: EventEmitter<any> = new EventEmitter();
 
   mezzoSelezionato: MezzoComposizione;
   hover = false;
@@ -21,6 +25,8 @@ export class MezzoComposizioneComponent implements OnInit {
   constructor(private compMezzoSquadra: CompMezzoSquadraService) {
     this.compMezzoSquadra.getMezzo().subscribe(mezzo => {
       this.mezzoSelezionato = mezzo;
+      
+      this.compMezzoSquadra.setSquadra(this.squadre[0]);
     });
   }
 
@@ -35,6 +41,7 @@ export class MezzoComposizioneComponent implements OnInit {
       this.compMezzoSquadra.setMezzo(mezzo);
     } else if (this.mezzoSelezionato === mezzo) {
       this.compMezzoSquadra.clearMezzo();
+      this.compMezzoSquadra.clearSquadra();
     }
   }
 
@@ -45,6 +52,13 @@ export class MezzoComposizioneComponent implements OnInit {
   hoverOut() {
     this.hover = false;
   }
+
+  clickNuovoMezzo() {
+    console.log('Nuovo mezzo');
+    this.nuovoMezzo.emit();
+  }
+
+
 
   // NgClass
   mezzoCompClass() {

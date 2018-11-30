@@ -1,8 +1,18 @@
 <div class="row">
   <div class="col-12 mt-2">
     <div class="row">
-      <div class="col-4">
-        <div class="card card-shadow w-75 mx-auto">
+      <div class="col-5 pr-0">
+        <div class="card card-shadow mx-auto">
+          <div class="card-header">
+            <i class="fa fa-truck mr-2"></i><span class="h6">Mezzi</span>
+          </div>
+          <ul class="list-group list-group-flush">
+            <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC" [squadre]="squadre" [partenze]="partenze" (nuovoMezzo)="nuovoMezzo()"></app-mezzo-composizione>
+          </ul>
+        </div>
+      </div>
+      <div class="col-3 pr-0">
+        <div class="card card-shadow mx-auto">
           <div class="card-header">
             <i class="fa fa-group mr-2"></i><span class="h6">Squadre</span>
           </div>
@@ -11,21 +21,16 @@
           </ul>
         </div>
       </div>
-      <div class="col-4 pl-0">
-        <div class="card card-shadow mx-auto">
-          <div class="card-header">
-            <i class="fa fa-truck mr-2"></i><span class="h6">Mezzi</span>
-          </div>
-          <ul class="list-group list-group-flush">
-            <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC"></app-mezzo-composizione>
-          </ul>
-        </div>
-      </div>
       <div class="col-4">
         <div class="card border-dashed-3 w-100 py-3 px-2">
-          <app-preaccoppiato [preAcc]="preAcc" [richiesta]="richiesta"></app-preaccoppiato>
-          <app-preaccoppiato [preAcc]="preAcc" [richiesta]="richiesta"></app-preaccoppiato>
-          <app-preaccoppiato [preAcc]="preAcc" [richiesta]="richiesta"></app-preaccoppiato>
+          <div *ngIf="partenze.length > 0">
+            <app-box-nuova-partenza *ngFor="let p of partenze" [preAcc]="p" [richiesta]="richiesta"></app-box-nuova-partenza>
+            <button class="btn btn-block btn-success">Conferma</button>
+          </div>
+          <div *ngIf="partenze.length === 0" class="py-5 text-center">
+            <h6>Nessuna partenza</h6>
+            <small>Seleziona un mezzo o una squadra per crearne una.</small>
+          </div>
         </div>
       </div>
     </div>

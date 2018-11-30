@@ -15,7 +15,7 @@ import { ComposizionePartenzaComponent } from './composizione-partenza.component
 import { BrowserModule } from '@angular/platform-browser';
 import { SlowerComponent } from './composizione-avanzata/slower.component';
 import { FasterComponent } from './composizione-veloce/faster.component';
-import { PreaccoppiatoComponent } from './preaccoppiato/preaccoppiato.component';
+import { BoxNuovaPartenzaComponent } from './box-nuova-partenza/box-nuova-partenza.component';
 /*
     Provider
  */
@@ -33,7 +33,7 @@ import { SquadraComposizioneComponent } from './composizione-avanzata/squadra-co
     ComposizionePartenzaComponent,
     FasterComponent,
     SlowerComponent,
-    PreaccoppiatoComponent,
+    BoxNuovaPartenzaComponent,
     MezzoComposizioneComponent,
     SquadraComposizioneComponent
   ],

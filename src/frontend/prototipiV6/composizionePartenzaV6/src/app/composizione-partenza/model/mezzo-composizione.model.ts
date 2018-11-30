@@ -5,7 +5,8 @@ export class MezzoComposizione {
         public id: string,
         public mezzo: Mezzo,
         public km: string,
-        public tempoPercorrenza: string
+        public tempoPercorrenza: string,
+        public distaccamento: string
     ) {
     }
 }

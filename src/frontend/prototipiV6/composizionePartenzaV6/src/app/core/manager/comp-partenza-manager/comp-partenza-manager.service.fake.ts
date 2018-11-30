@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { PreAccoppiato } from '../../../composizione-partenza/model/pre-accoppiato.model';
+import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
 import { DispatcherCompPartenzaService } from '../../dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.service';
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { Squadra } from '../../../shared/model/squadra.model';
@@ -11,7 +11,7 @@ import { MezzoComposizione } from '../../../composizione-partenza/model/mezzo-co
     providedIn: 'root'
 })
 export class CompPartenzaManagerServiceFake {
-    preAccoppiati: PreAccoppiato[];
+    preAccoppiati: BoxPartenza[];
     mezziComposizione: MezzoComposizione[];
     squadre: Squadra[];
 
@@ -22,7 +22,7 @@ export class CompPartenzaManagerServiceFake {
     }
 
     onNewPreAccoppiatiList() {
-        this.compPartenzaDispatcher.onNewPreAccoppiatiList().subscribe((preAcc: PreAccoppiato[]) => {
+        this.compPartenzaDispatcher.onNewPreAccoppiatiList().subscribe((preAcc: BoxPartenza[]) => {
             this.preAccoppiati = preAcc;
         });
     }
@@ -39,7 +39,7 @@ export class CompPartenzaManagerServiceFake {
         });
     }
 
-    getPreAccoppiati(): Observable<PreAccoppiato[]> {
+    getPreAccoppiati(): Observable<BoxPartenza[]> {
         return of(this.preAccoppiati);
     }
 
