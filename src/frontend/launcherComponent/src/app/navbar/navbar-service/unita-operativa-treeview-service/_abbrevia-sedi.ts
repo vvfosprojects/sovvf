@@ -44,14 +44,10 @@ export class AbbreviaSedi {
                 const wordTruncate = AbbreviaSedi.getWord(string);
                 const diffWordLength = string.length - wordTruncate.length;
                 currentLength -= diffWordLength;
-                if (index === 0) {
+                if (index === 0 || currentLength >= maxLength) {
                     truncateString += wordTruncate;
                 } else {
-                    if (currentLength >= maxLength) {
-                        truncateString += wordTruncate;
-                    } else {
-                        truncateString += string;
-                    }
+                    truncateString += string;
                 }
                 truncateString += (index - (array.length - 1)) ? ' ' : '';
             });
