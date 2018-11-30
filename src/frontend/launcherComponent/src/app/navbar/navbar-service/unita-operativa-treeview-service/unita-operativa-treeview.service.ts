@@ -100,6 +100,7 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
         function getComandi(value: string): { comandi: TreeItem[]; collapsed: boolean; allChecked: boolean } {
             const comandi: TreeItem[] = [];
             let countC = 0;
+            let countCollapsed = 0;
             unitaOperative.forEach(c => {
                 if (self.secondo.includes(c.tipo) && c.regione === value) {
                     comandi.push({
@@ -109,6 +110,7 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
                         checked: attuale.includes(c.codice),
                         children: getDistaccamenti(c.provincia).distaccamenti
                     });
+                    countCollapsed += !getDistaccamenti(c.provincia).collapsed ? 1 : 0;
                     if (getDistaccamenti(c.provincia).allChecked || !getDistaccamenti(c.provincia).collapsed) {
                         countC += 1;
                     } else {
@@ -117,9 +119,13 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
                 }
             });
             const allChecked = (comandi.length === countC);
+            let collapsed = (countC === 0 || countC > 0 && allChecked);
+            if (countCollapsed !== 0) {
+                collapsed = false;
+            }
             return {
                 comandi: comandi,
-                collapsed: (countC === 0 || countC > 0 && allChecked),
+                collapsed: collapsed,
                 allChecked: allChecked
             };
         }
@@ -149,7 +155,6 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
                 allChecked: allChecked
             };
         }
-
         /**
          * ritorno l'oggetto CON completo di tipo TreeItem
          * @type {TreeItem[]}
