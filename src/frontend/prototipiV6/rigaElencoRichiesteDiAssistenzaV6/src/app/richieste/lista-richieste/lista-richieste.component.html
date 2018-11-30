@@ -9,7 +9,7 @@
     <app-richiesta-fissata (eventiRichiesta)="visualizzaEventiRichiesta($event)" [_split]="_split"></app-richiesta-fissata>
   </div>
   <!-- Lista di singole Richieste -->
-  <div class="col-12 pt-1 px-0 scroll-y" detect-scroll (onScroll)="nuoveRichieste($event)" [bottomOffset]="1" [ngClass]="{'m-h-750': !richiestaFissata, 'm-h-600 border-top': richiestaFissata}">
+  <div class="col-12 pt-1 px-0 border-bottom scroll-y" detect-scroll (onScroll)="nuoveRichieste($event)" [bottomOffset]="1" [ngClass]="{'m-h-750': !richiestaFissata, 'm-h-600 border-top': richiestaFissata}">
     <div *ngFor="let r of richieste | filterBy: ricercaS.searchTerm" class="" [ngClass]="{'col-double': !_split, 'col-12': _split}">
       <div *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="CardClasses(r)">
         <app-sintesi-richiesta [richiesta]="r" [fissata]="false" [fissabile]="true" [espanso]="false" [espandibile]="true"

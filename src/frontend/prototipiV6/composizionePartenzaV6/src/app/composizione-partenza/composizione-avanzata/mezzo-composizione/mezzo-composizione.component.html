@@ -1,4 +1,4 @@
-<li class="list-group-item cursor-pointer border-bottom px-2" (mouseover)="hoverIn()" (mouseout)="hoverOut()" [ngClass]="{'bg-light': hover}">
+<li class="list-group-item cursor-pointer border px-2" (click)="click(mezzoComp)" (mouseover)="hoverIn()" (mouseout)="hoverOut()" [ngClass]="mezzoCompClass()">
   <div class="row">
     <div class="col-12 text-center">
       <span class="d-inline-block font-weight-bold mr-1">{{mezzoComp.mezzo.descrizione}}</span>
