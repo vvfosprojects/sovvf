@@ -1,5 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
+
+// Model
 import { Squadra } from '../../../shared/model/squadra.model';
+
+// Service
+import { CompMezzoSquadraService } from '../../service/comp-mezzo-squadra/comp-mezzo-squadra.service';
 
 @Component({
   selector: 'app-squadra-composizione',
@@ -8,11 +13,28 @@ import { Squadra } from '../../../shared/model/squadra.model';
 })
 export class SquadraComposizioneComponent implements OnInit {
   @Input() squadra: Squadra;
+
+  squadraSelezionata: Squadra;
   hover = false;
 
-  constructor() { }
+  constructor(private compMezzoSquadra: CompMezzoSquadraService) {
+    this.compMezzoSquadra.getSquadra().subscribe(squadra => {
+      this.squadraSelezionata = squadra;
+    });
+  }
 
   ngOnInit() {
+  }
+
+  click(squadra) {
+    if (!this.squadraSelezionata) {
+      this.compMezzoSquadra.setSquadra(squadra);
+    } else if (this.squadraSelezionata !== squadra) {
+      this.compMezzoSquadra.clearSquadra();
+      this.compMezzoSquadra.setSquadra(squadra);
+    } else if (this.squadraSelezionata === squadra) {
+      this.compMezzoSquadra.clearSquadra();
+    }
   }
 
   hoverIn() {
@@ -23,4 +45,11 @@ export class SquadraComposizioneComponent implements OnInit {
     this.hover = false;
   }
 
+  // NgClass
+  squadraCompClass() {
+    return {
+      'bg-light': this.hover,
+      'bg-light border-danger': this.squadra === this.squadraSelezionata
+    };
+  }
 }
