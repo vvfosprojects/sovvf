@@ -18,8 +18,9 @@ import { TurnoServiceFake } from './navbar-service/turno-service/turno.service.f
 import { UnitaOperativaService } from './navbar-service/unita-operativa-service/unita-operativa.service';
 import { UnitaOperativaServiceFake } from './navbar-service/unita-operativa-service/unita-operativa.service.fake';
 import { UnitaOperativaTreeviewComponent } from './unita-operativa-treeview/unita-operativa-treeview.component';
-import { ClickOutsideModule } from 'ng-click-outside';
 import { DefaultTreeviewI18n } from './navbar-service/unita-operativa-treeview-service/default-treeview-i18n';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     imports: [
@@ -28,10 +29,11 @@ import { DefaultTreeviewI18n } from './navbar-service/unita-operativa-treeview-s
         PipeModule.forRoot(),
         SharedModule.forRoot(),
         TreeviewModule.forRoot(),
+        BrowserAnimationsModule,
+        ToastrModule.forRoot(),
         FilterPipeModule,
         routing,
-        FormsModule,
-        ClickOutsideModule
+        FormsModule
     ],
     entryComponents: [CambioSedeModalNavComponent],
     declarations: [
