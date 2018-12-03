@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {MarkerService} from '../../../service/marker-service/marker-service.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-cambio-sede-modal',
@@ -11,7 +12,7 @@ export class CambioSedeModalComponent implements OnInit {
 
     nomeSede: string;
 
-    constructor(public modal: NgbActiveModal, private markerService: MarkerService) {
+    constructor(public modal: NgbActiveModal, private markerService: MarkerService, private toastr: ToastrService) {
 
     }
 
@@ -25,6 +26,7 @@ export class CambioSedeModalComponent implements OnInit {
     }
 
     annullaCambioSede() {
+        this.toastr.warning('Azione annullata', 'Attenzione');
         this.markerService.deseleziona();
     }
 
