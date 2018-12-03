@@ -109,10 +109,6 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
                 // console.log('La sede selezionata è cambiata!');
                 this.changeUnitaAttuale(this.selectedItem);
             } else {
-                /**
-                 * inserire alert quando utente non ha selezionato alcuna sede
-                 */
-                // console.log('nessuna sede selezionata');
                 this.annullaCambioSede('nessuna');
             }
         } else {
@@ -126,9 +122,6 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
 
     annullaCambioSede(tipo: string) {
         // console.log('cambio sede è annullato');
-        /**
-         * inserire alert di annullo cambio sede
-         */
         this.getTreeViewItems();
         this.selectedItem = this.initItem;
         const mAlertObj = mAlert(tipo);

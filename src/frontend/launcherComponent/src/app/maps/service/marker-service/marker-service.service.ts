@@ -267,9 +267,7 @@ export class MarkerService implements OnDestroy {
         /**
          * evento che cambia la sede
          */
-        const sedeAttuale = [];
-        sedeAttuale.push(sede);
-        this.unitaAttualeS.sendUnitaOperativaAttuale(sedeAttuale);
+        this.unitaAttualeS.sendUnitaOperativaAttualeMaps(sede);
     }
 
     noAction() {
