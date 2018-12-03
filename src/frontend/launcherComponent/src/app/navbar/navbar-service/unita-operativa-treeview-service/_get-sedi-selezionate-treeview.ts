@@ -1,5 +1,6 @@
-import {Sede} from '../../../shared/model/sede.model';
-import {TreeItem} from 'ngx-treeview';
+import { Sede } from '../../../shared/model/sede.model';
+import { TreeItem } from 'ngx-treeview';
+import { ChildCON } from './treeview.interface';
 
 export class GetSediSelezionateTreeView {
     constructor(private unitaOperative: Sede[], private sediTreeView: TreeItem) {
@@ -146,11 +147,4 @@ export class GetSediSelezionateTreeView {
 
     }
 
-}
-
-export interface ChildCON {
-    testo: string;
-    sedi: Sede[];
-    error: boolean;
-    allChecked: boolean;
 }
