@@ -41,10 +41,20 @@ export class SlowerComponent implements OnInit {
     this.compMezzoSquadra.getMezzo().subscribe((mezzo: MezzoComposizione) => {
       this.nuovaPartenza(this.idPartenzaAttuale);
       this.setMezzo(mezzo, this.idPartenzaAttuale);
+
+      // Attendo che arrivi il mezzo per selezionare la prima squadra nella lista ....
+      // (dovrà essere fatta la logica che restituisce la squadra migliore da selezionare).
+      // this.compMezzoSquadra.setSquadra(this.squadre[0]);
     });
     // Resto in ascolto per un eventuale squadra selezionata
-    this.compMezzoSquadra.getSquadra().subscribe((squadra: Squadra) => {
-      this.setSquadra(squadra, this.idPartenzaAttuale);
+    this.compMezzoSquadra.getSquadra().subscribe((squadre: Squadra[]) => {
+      console.log(squadre);
+      if (squadre) {
+        this.partenze[this.idPartenzaAttuale].squadra = [];
+        squadre.forEach(s => {
+          this.setSquadra(s, this.idPartenzaAttuale);
+        });
+      }
     });
   }
 
@@ -56,12 +66,13 @@ export class SlowerComponent implements OnInit {
     let partenzaDuplicata = false;
     this.partenze.forEach((p: BoxPartenza) => {
       if (p.id === id) {
+        console.log('partenza duplicata');
         partenzaDuplicata = true;
       }
     });
 
     // Se non ci sono partenze con lo stesso id creo un nuova partenza
-    if(!partenzaDuplicata) {
+    if (!partenzaDuplicata) {
       this.partenze.push(
         new BoxPartenza(
           id
@@ -73,10 +84,13 @@ export class SlowerComponent implements OnInit {
 
   setMezzo(mezzo: MezzoComposizione, id: number) {
     this.partenze[id].mezzoComposizione = mezzo;
+    // avendo inserito il mezzo alla partenza attuale posso incrementare l'id
+    // in questo modo inserendo un altro mezzo verrà creata una nuova partenza
+    /* this.idPartenzaAttuale += 1; */
   }
 
   setSquadra(squadra: Squadra, id: number) {
-    this.partenze[id].squadra = squadra;
+    this.partenze[id].squadra.push(squadra);
   }
 
   nuovoMezzo() {

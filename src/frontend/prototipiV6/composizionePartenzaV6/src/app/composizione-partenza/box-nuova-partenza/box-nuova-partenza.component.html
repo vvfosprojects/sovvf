@@ -9,10 +9,23 @@
         </small>
       </div>
     </div>
-    <div class="col">
+    <div *ngIf="preAcc.squadra.length === 0" class="col">
+      <small class="text-danger">Nessuna Squadra</small>
+    </div>
+    <div *ngIf="preAcc.squadra.length === 1" class="col">
       <div class="nowrap">
-        <i class="guida fa fa-group mr-1"></i><small *ngIf="preAcc.squadra" >{{preAcc.squadra.nome}}</small>
+        <i class="guida fa fa-group mr-1"></i><small *ngIf="preAcc.squadra">{{preAcc.squadra[0].nome}}</small>
       </div>
+    </div>
+    <div *ngIf="preAcc.squadra.length > 1" class="col">
+      <span [ngbPopover]="piusquadre" popoverTitle="Squadre" triggers="mouseenter:mouseleave"><i class="guida fa fa-group mr-1"></i><small>{{preAcc.squadra.length}}
+          squadre</small></span>
+      <ng-template #piusquadre>
+        <div *ngFor="let s of preAcc.squadra" class="text-center nowrap">
+          <span>{{s.nome}}</span>
+          <hr class="my-1">
+        </div>
+      </ng-template>
     </div>
   </div>
   <div class="row">
@@ -25,7 +38,8 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <i class="guida fa fa-map-marker mr-1"></i><span *ngIf="preAcc.mezzoComposizione.distaccamento" class="badge" [ngClass]="compotenzaClasses(preAcc)">{{preAcc.mezzoComposizione.distaccamento}}</span>
+      <i class="guida fa fa-map-marker mr-1"></i><span *ngIf="preAcc.mezzoComposizione.distaccamento" class="badge"
+        [ngClass]="compotenzaClasses(preAcc)">{{preAcc.mezzoComposizione.distaccamento}}</span>
     </div>
   </div>
 </div>

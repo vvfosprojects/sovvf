@@ -23,7 +23,7 @@ export class CompPartenzaServiceFake {
 
   public getPreAccoppiati(): Observable<BoxPartenza[]> {
     this.preAccoppiati = [
-      new BoxPartenza('1',
+      new BoxPartenza(1,
         new MezzoComposizione(
           '1',
           new Mezzo('1', 'A1', 'APS', 'inSede', [], 0),
@@ -31,13 +31,15 @@ export class CompPartenzaServiceFake {
           '35 min',
           'Tuscolana II'
         ),
-        new Squadra('Rossa', 'inSede', [
-          new Componente('QF', 'Mario Verdi', '', true, false, false),
-          new Componente('QF', 'Roberto Merlo', '', false, true, false),
-          new Componente('QF', 'Francesca De Simone', '', false, false, false),
-          new Componente('QF', 'Emanuele Catti', '', false, false, false),
-          new Componente('QF', 'Mariangela Rossi', '', false, false, false),
-        ])
+        [
+          new Squadra('Rossa', 'inSede', [
+            new Componente('QF', 'Mario Verdi', '', true, false, false),
+            new Componente('QF', 'Roberto Merlo', '', false, true, false),
+            new Componente('QF', 'Francesca De Simone', '', false, false, false),
+            new Componente('QF', 'Emanuele Catti', '', false, false, false),
+            new Componente('QF', 'Mariangela Rossi', '', false, false, false),
+          ])
+        ]
       )
     ];
 
@@ -99,7 +101,16 @@ export class CompPartenzaServiceFake {
           new Componente('FF', 'Francesco Verdi', '', false, false, false),
           new Componente('GG', 'Francesco Verdi', '', false, false, false),
         ]
-      )
+      ),
+      new Squadra('Verde',
+        'InSede',
+        [
+          new Componente('CP', 'Francesco Verdi', '', true, false, false),
+          new Componente('EE', 'Francesco Verdi', '', false, false, false),
+          new Componente('FF', 'Francesco Verdi', '', false, false, false),
+          new Componente('GG', 'Francesco Verdi', '', false, false, false),
+        ]
+      ),
     ];
 
     return of(this.squadre);

@@ -7,7 +7,8 @@
             <i class="fa fa-truck mr-2"></i><span class="h6">Mezzi</span>
           </div>
           <ul class="list-group list-group-flush">
-            <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC" [squadre]="squadre" [partenze]="partenze" (nuovoMezzo)="nuovoMezzo()"></app-mezzo-composizione>
+            <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC" [squadre]="squadre"
+              [partenze]="partenze" (nuovoMezzo)="nuovoMezzo()"></app-mezzo-composizione>
           </ul>
         </div>
       </div>
@@ -36,3 +37,5 @@
     </div>
   </div>
 </div>
+<!-- <div *ngIf="partenze[0]" class="bg-primary">{{partenze[0].squadra|json}}</div>
+<div *ngIf="partenze[1]" class="bg-success">{{partenze[1].squadra|json}}</div> -->

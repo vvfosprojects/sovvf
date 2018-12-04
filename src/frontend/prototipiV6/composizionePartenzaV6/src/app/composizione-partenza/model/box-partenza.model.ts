@@ -5,7 +5,7 @@ export class BoxPartenza {
     constructor(
         public id: number,
         public mezzoComposizione?: MezzoComposizione,
-        public squadra?: Squadra,
+        public squadra: Squadra[] = [],
     ) {
     }
 }

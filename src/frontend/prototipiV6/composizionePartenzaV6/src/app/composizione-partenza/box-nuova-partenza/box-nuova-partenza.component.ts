@@ -16,6 +16,7 @@ export class BoxNuovaPartenzaComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.preAcc);
   }
 
   preAccoppiatoSelezionato(preAcc: BoxPartenza) {

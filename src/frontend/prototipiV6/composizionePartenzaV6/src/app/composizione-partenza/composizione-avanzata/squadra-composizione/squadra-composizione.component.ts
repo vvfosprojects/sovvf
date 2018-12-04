@@ -14,12 +14,12 @@ import { CompMezzoSquadraService } from '../../service/comp-mezzo-squadra/comp-m
 export class SquadraComposizioneComponent implements OnInit {
   @Input() squadra: Squadra;
 
-  squadraSelezionata: Squadra;
+  squadreSelezionate: Squadra[];
   hover = false;
 
   constructor(private compMezzoSquadra: CompMezzoSquadraService) {
-    this.compMezzoSquadra.getSquadra().subscribe(squadra => {
-      this.squadraSelezionata = squadra;
+    this.compMezzoSquadra.getSquadra().subscribe(squadre => {
+      this.squadreSelezionate = squadre;
     });
   }
 
@@ -27,14 +27,23 @@ export class SquadraComposizioneComponent implements OnInit {
   }
 
   click(squadra) {
-    if (!this.squadraSelezionata) {
+    if (!this.squadreSelezionate) {
       this.compMezzoSquadra.setSquadra(squadra);
-    } else if (this.squadraSelezionata !== squadra) {
-      this.compMezzoSquadra.clearSquadra();
+    } else if (!this.checkSquadraSelezionata(squadra)) {
       this.compMezzoSquadra.setSquadra(squadra);
-    } else if (this.squadraSelezionata === squadra) {
-      this.compMezzoSquadra.clearSquadra();
+    } else if (this.checkSquadraSelezionata(squadra)) {
+      this.compMezzoSquadra.clearSingleSquadra(squadra);
     }
+  }
+
+  checkSquadraSelezionata(squadra) {
+    let selezionata = false;
+    this.squadreSelezionate.forEach(ss => {
+      if (squadra === ss) {
+        selezionata = true;
+      }
+    });
+    return selezionata;
   }
 
   hoverIn() {
@@ -45,11 +54,18 @@ export class SquadraComposizioneComponent implements OnInit {
     this.hover = false;
   }
 
-  // NgClass
-  squadraCompClass() {
-    return {
-      'bg-light': this.hover,
-      'bg-light border-danger': this.squadra === this.squadraSelezionata
-    };
+  squadraCompClass(squadra) {
+    let returnClass = '';
+    if (this.squadreSelezionate) {
+      this.squadreSelezionate.forEach(ss => {
+        if (squadra === ss) {
+          returnClass = 'border-danger';
+        }
+      });
+    }
+    if(this.hover){
+      returnClass = returnClass + ' bg-light';
+    }
+    return returnClass;
   }
 }

@@ -25,8 +25,6 @@ export class MezzoComposizioneComponent implements OnInit {
   constructor(private compMezzoSquadra: CompMezzoSquadraService) {
     this.compMezzoSquadra.getMezzo().subscribe(mezzo => {
       this.mezzoSelezionato = mezzo;
-      
-      this.compMezzoSquadra.setSquadra(this.squadre[0]);
     });
   }
 
