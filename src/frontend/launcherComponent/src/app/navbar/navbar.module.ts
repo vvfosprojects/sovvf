@@ -30,7 +30,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         SharedModule.forRoot(),
         TreeviewModule.forRoot(),
         BrowserAnimationsModule,
-        ToastrModule.forRoot(),
+        ToastrModule.forRoot({
+            timeOut: 2500,
+            // extendedTimeOut: 300,
+            positionClass: 'toast-top-center',
+            preventDuplicates: true,
+        }),
         FilterPipeModule,
         routing,
         FormsModule

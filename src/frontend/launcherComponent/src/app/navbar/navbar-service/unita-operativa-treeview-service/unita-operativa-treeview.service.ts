@@ -6,6 +6,7 @@ import { UnitaOperativaService } from '../unita-operativa-service/unita-operativ
 import { UnitaAttualeService } from '../unita-attuale/unita-attuale.service';
 import { GetSediSelezionateTreeView } from './_get-sedi-selezionate-treeview';
 import { AbbreviaSedi } from './_abbrevia-sedi';
+import { LivelliSedi } from './treeview.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -23,16 +24,18 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
      * inserire qui la "configurazione" dei livelli del treeview di sedi
      */
     private livelli: LivelliSedi = {
-        primo: ['Direzione'],
-        secondo: ['Comando'],
-        terzo: ['Distaccamento']
+        primo: ['direzione'],
+        secondo: ['comando'],
+        terzo: ['distaccamento']
     };
 
     constructor(private unitaOperativaS: UnitaOperativaService,
                 private unitaAttualeS: UnitaAttualeService) {
         this._truncate = new AbbreviaSedi();
+        this.unitaAttualeS.livelli = this.livelli;
         this.unitaOperativaS.getUnitaOperative().subscribe(unitaOperative => {
             this.unitaOperative = unitaOperative;
+            this.unitaAttualeS.unitaOC = unitaOperative;
             this._get = new GetSediSelezionateTreeView(unitaOperative, this.createSediTreeItem());
         });
         this.subscription.add(
@@ -76,7 +79,7 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
          */
         const direzioni: TreeItem[] = [];
         unitaOperative.forEach(r => {
-            if (!r.provincia && self.primo.includes(r.tipo)) {
+            if (!r.provincia && self.primo.includes(r.tipo.toLowerCase())) {
                 direzioni.push({
                     text: r.descrizione,
                     value: r.codice,
@@ -102,7 +105,7 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
             let countC = 0;
             let countCollapsed = 0;
             unitaOperative.forEach(c => {
-                if (self.secondo.includes(c.tipo) && c.regione === value) {
+                if (self.secondo.includes(c.tipo.toLowerCase()) && c.regione === value) {
                     comandi.push({
                         text: c.descrizione,
                         value: c.codice,
@@ -139,7 +142,7 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
             const distaccamenti: TreeItem[] = [];
             let countD = 0;
             unitaOperative.forEach(d => {
-                if (self.terzo.includes(d.tipo) && d.provincia === value) {
+                if (self.terzo.includes(d.tipo.toLowerCase()) && d.provincia === value) {
                     distaccamenti.push({
                         text: d.descrizione,
                         value: d.codice,
@@ -170,10 +173,4 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
         return of([new TreeviewItem(this.treeViewSedi)]);
     }
 
-}
-
-export interface LivelliSedi {
-    primo: string[];
-    secondo: string[];
-    terzo: string[];
 }

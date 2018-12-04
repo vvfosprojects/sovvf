@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { Sede } from '../../shared/model/sede.model';
 import { Coordinate } from '../../shared/model/coordinate.model';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
 
     constructor(private treeviewService: UnitaOperativaTreeviewService,
                 private unitaAttualeS: UnitaAttualeService,
-                private _modalService: NgbModal) {
+                private _modalService: NgbModal,
+                private toastr: ToastrService) {
         this.unitaAttuale = this.unitaAttualeS.unitaSelezionata;
         this.subscription.add(
             this.unitaAttualeS.getUnitaOperativaAttuale().subscribe(unitaAttuale => {
@@ -107,10 +109,6 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
                 // console.log('La sede selezionata è cambiata!');
                 this.changeUnitaAttuale(this.selectedItem);
             } else {
-                /**
-                 * inserire alert quando utente non ha selezionato alcuna sede
-                 */
-                // console.log('nessuna sede selezionata');
                 this.annullaCambioSede('nessuna');
             }
         } else {
@@ -124,12 +122,33 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
 
     annullaCambioSede(tipo: string) {
         // console.log('cambio sede è annullato');
-        /**
-         * inserire alert di annullo cambio sede
-         */
         this.getTreeViewItems();
         this.selectedItem = this.initItem;
-        console.log(tipo);
+        const mAlertObj = mAlert(tipo);
+
+        this.showAlert(mAlertObj.title, mAlertObj.message, mAlertObj.type);
+
+        function mAlert(value) {
+            const title = 'Attenzione';
+            const type = 'warning';
+            let message = '';
+            switch (value) {
+                case 'esc':
+                    message = 'Azione annullata';
+                    break;
+                case 'annulla':
+                    message = 'Cambio sede annullato';
+                    break;
+                case 'nessuna':
+                    message = 'Nessuna sede selezionata';
+                    break;
+            }
+            return {
+                title: title,
+                message: message,
+                type: type
+            };
+        }
     }
 
     changeUnitaAttuale(newUnita) {
@@ -155,6 +174,10 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
         this.treeviewService.getSedi().subscribe(r => {
             this.items = r;
         });
+    }
+
+    showAlert(title, message, type) {
+        this.toastr[type](message, title);
     }
 
 }
