@@ -49,7 +49,7 @@ export class SlowerComponent implements OnInit {
     // Resto in ascolto per un eventuale squadra selezionata
     this.compMezzoSquadra.getSquadra().subscribe((squadre: Squadra[]) => {
       if (squadre) {
-        console.log('Squadre: ', squadre);
+        // console.log('Squadre:', squadre);
         this.partenze[this.idPartenzaAttuale].squadra = [];
         squadre.forEach(s => {
           this.setSquadra(s, this.idPartenzaAttuale);
@@ -59,8 +59,8 @@ export class SlowerComponent implements OnInit {
     // Resto in ascolto per ricevere le partenze create fino ad adesso
     this.compMezzoSquadra.getPartenze().subscribe((partenze: BoxPartenza[]) => {
       if (partenze) {
+        // console.log('Partenze:', this.partenze);
         this.partenze = partenze;
-        console.log('Partenze: ', this.partenze);
       }
     });
   }
@@ -95,10 +95,14 @@ export class SlowerComponent implements OnInit {
   }
 
   nuovoMezzo() {
-    this.idPartenzaAttuale += 1;
+    this.idPartenzaAttuale = this.partenze.length;
   }
 
   changeMode(newMode: string) {
     this.partenzaS.changeCompPartenzaMode(newMode);
+  }
+
+  modificaPartenza(partenza) {
+    this.idPartenzaAttuale = partenza.id;
   }
 }

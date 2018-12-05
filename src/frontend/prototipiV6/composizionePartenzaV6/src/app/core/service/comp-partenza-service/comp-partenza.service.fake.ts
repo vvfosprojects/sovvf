@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 // Models
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { Squadra } from '../../../shared/model/squadra.model';
-import { MezzoComposizione } from "../../../composizione-partenza/model/mezzo-composizione.model";
+import { MezzoComposizione } from '../../../composizione-partenza/model/mezzo-composizione.model';
 import { Componente } from '../../../shared/model/componente.model';
 import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
 

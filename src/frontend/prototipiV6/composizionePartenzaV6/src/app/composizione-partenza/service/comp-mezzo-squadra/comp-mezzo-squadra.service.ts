@@ -34,8 +34,10 @@ export class CompMezzoSquadraService {
   /* Squadre */
   setSquadra(squadra) {
     if (squadra) {
-      this.squadreSelezionate.push(squadra);
-      this.squadra$.next(this.squadreSelezionate);
+      if (!this.checkSquadra(squadra)) {
+        this.squadreSelezionate.push(squadra);
+        this.squadra$.next(this.squadreSelezionate);
+      }
     }
   }
   getSquadra(): Observable<any> {
@@ -53,6 +55,17 @@ export class CompMezzoSquadraService {
       }
     });
     this.squadra$.next(this.squadreSelezionate);
+  }
+  checkSquadra(squadra) {
+    let check = false;
+    if (this.squadreSelezionate.length > 0) {
+      this.squadreSelezionate.forEach(sS => {
+        if (squadra === sS) {
+          check = true;
+        }
+      });
+    }
+    return check;
   }
 
   /* Partenze */

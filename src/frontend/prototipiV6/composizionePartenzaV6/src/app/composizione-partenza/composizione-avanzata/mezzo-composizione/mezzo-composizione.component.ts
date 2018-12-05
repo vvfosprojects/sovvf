@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 
 // Model
 import { MezzoComposizione } from '../../model/mezzo-composizione.model';
@@ -13,7 +13,7 @@ import { BoxPartenza } from '../../model/box-partenza.model';
   templateUrl: './mezzo-composizione.component.html',
   styleUrls: ['./mezzo-composizione.component.css']
 })
-export class MezzoComposizioneComponent implements OnInit {
+export class MezzoComposizioneComponent implements OnInit, OnChanges {
   @Input() mezzoComp: MezzoComposizione;
   @Input() squadre: Squadra[];
   @Input() partenze: BoxPartenza[];
@@ -30,6 +30,14 @@ export class MezzoComposizioneComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnChanges() {
+    if (this.partenze.length > 0 && this.partenze[this.idPartenzaAttuale]) {
+      // console.log(this.partenze[this.idPartenzaAttuale].mezzoComposizione);
+      // this.compMezzoSquadra.clearMezzo();
+      this.compMezzoSquadra.setMezzo(this.partenze[this.idPartenzaAttuale].mezzoComposizione);
+    }
   }
 
   click(mezzo) {
@@ -54,7 +62,7 @@ export class MezzoComposizioneComponent implements OnInit {
   }
 
   clickNuovoMezzo() {
-    console.log('Nuovo mezzo');
+    // console.log('Nuovo mezzo');
     this.nuovoMezzo.emit();
   }
 

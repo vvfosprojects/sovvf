@@ -1,5 +1,6 @@
 <div class="row">
-  <div class="col-12 mt-2">
+  <div class="col-12">
+    <app-composizione-filterbar></app-composizione-filterbar>
     <div class="row">
       <div class="col-5 pr-0">
         <div class="card card-shadow mx-auto">
@@ -24,13 +25,13 @@
       </div>
       <div class="col-4">
         <div class="card border-dashed-3 w-100 py-3 px-2">
-          <div *ngIf="partenze.length > 0">
-            <app-box-nuova-partenza *ngFor="let p of partenze" [partenza]="p" [richiesta]="richiesta"></app-box-nuova-partenza>
-            <button class="btn btn-block btn-success">Conferma</button>
-          </div>
           <div *ngIf="partenze.length === 0" class="py-5 text-center">
             <h6>Nessuna partenza</h6>
             <small>Seleziona un mezzo o una squadra per crearne una.</small>
+          </div>
+          <div *ngIf="partenze.length > 0">
+            <app-box-nuova-partenza *ngFor="let p of partenze" [partenza]="p" [richiesta]="richiesta" [idPartenzaAttuale]="idPartenzaAttuale" (selezionato)="modificaPartenza($event)"></app-box-nuova-partenza>
+            <button class="btn btn-block btn-success card-shadow">Conferma</button>
           </div>
         </div>
       </div>

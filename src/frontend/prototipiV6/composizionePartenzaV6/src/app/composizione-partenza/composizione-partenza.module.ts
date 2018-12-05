@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { TimeagoModule, TimeagoIntl, TimeagoFormatter, TimeagoCustomFormatter } from 'ngx-timeago';
 import { SintesiRichiestaModule } from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 /*
     Component
   */
@@ -16,6 +17,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { SlowerComponent } from './composizione-avanzata/slower.component';
 import { FasterComponent } from './composizione-veloce/faster.component';
 import { BoxNuovaPartenzaComponent } from './box-nuova-partenza/box-nuova-partenza.component';
+import { MezzoComposizioneComponent } from './composizione-avanzata/mezzo-composizione/mezzo-composizione.component';
+import { SquadraComposizioneComponent } from './composizione-avanzata/squadra-composizione/squadra-composizione.component';
+import { ComposizioneFilterbarComponent } from './composizione-filterbar/composizione-filterbar.component';
 /*
     Provider
  */
@@ -25,8 +29,6 @@ import { CompPartenzaManagerService } from '../core/manager/comp-partenza-manage
 import { CompPartenzaManagerServiceFake } from '../core/manager/comp-partenza-manager/comp-partenza-manager.service.fake';
 import { CompPartenzaService } from '../core/service/comp-partenza-service/comp-partenza.service';
 import { CompPartenzaServiceFake } from '../core/service/comp-partenza-service/comp-partenza.service.fake';
-import { MezzoComposizioneComponent } from './composizione-avanzata/mezzo-composizione/mezzo-composizione.component';
-import { SquadraComposizioneComponent } from './composizione-avanzata/squadra-composizione/squadra-composizione.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import { SquadraComposizioneComponent } from './composizione-avanzata/squadra-co
     SlowerComponent,
     BoxNuovaPartenzaComponent,
     MezzoComposizioneComponent,
-    SquadraComposizioneComponent
+    SquadraComposizioneComponent,
+    ComposizioneFilterbarComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +50,7 @@ import { SquadraComposizioneComponent } from './composizione-avanzata/squadra-co
       intl: TimeagoIntl,
       formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
     }),
+    NgSelectModule,
     SintesiRichiestaModule
   ],
   exports: [

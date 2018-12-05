@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 
 // Model
 import { Squadra } from '../../../shared/model/squadra.model';
@@ -12,7 +12,7 @@ import { CompMezzoSquadraService } from '../../service/comp-mezzo-squadra/comp-m
   templateUrl: './squadra-composizione.component.html',
   styleUrls: ['./squadra-composizione.component.css']
 })
-export class SquadraComposizioneComponent implements OnInit {
+export class SquadraComposizioneComponent implements OnInit, OnChanges {
   @Input() squadra: Squadra;
   @Input() partenze: BoxPartenza[];
   @Input() idPartenzaAttuale: number;
@@ -27,6 +27,21 @@ export class SquadraComposizioneComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnChanges() {
+    if (this.partenze.length > 0) {
+      if (this.partenze[this.idPartenzaAttuale]) {
+        // squadre selezionate relative all'id attuale
+        const squadre = this.partenze[this.idPartenzaAttuale].squadra;
+        // elimino dalla subject le squadra selezionate
+        this.compMezzoSquadra.clearSquadra();
+        // next nella subject delle squadre selezionate relative all'id attuale
+        squadre.forEach((s: Squadra) => {
+          this.compMezzoSquadra.setSquadra(s);
+        });
+      }
+    }
   }
 
   click(squadra) {
@@ -69,16 +84,6 @@ export class SquadraComposizioneComponent implements OnInit {
 
     if (this.hover) {
       returnClass = returnClass + ' bg-light';
-    }
-
-    if (this.partenze.length > 0) {
-      this.partenze.forEach((p: BoxPartenza) => {
-        p.squadra.forEach(s => {
-          if (squadra === s && p.id !== this.idPartenzaAttuale) {
-            returnClass = 'disabled';
-          }
-        });
-      });
     }
     return returnClass;
   }

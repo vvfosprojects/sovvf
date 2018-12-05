@@ -30,7 +30,7 @@ export class CompPartenzaManagerService {
       });
     return this.newPreAccoppiatieList$.asObservable();
   }
-  
+
   getMezziComposizione() {
     this.newMezziComposizioneList$.next();
     this.compPartenzaDispatcher.onNewMezziComposizioneList()

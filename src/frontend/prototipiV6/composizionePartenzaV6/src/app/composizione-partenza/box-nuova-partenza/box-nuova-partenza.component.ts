@@ -11,16 +11,17 @@ export class BoxNuovaPartenzaComponent implements OnInit {
   @Input() richiesta: SintesiRichiesta;
   @Input() partenza: BoxPartenza;
   @Input() preAccoppiatiSelezionati: BoxPartenza[];
+  @Input() idPartenzaAttuale: number;
   @Output() selezionato: EventEmitter<BoxPartenza> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
-    // console.log(this.preAcc);
+    // console.log(this.partenza);
   }
 
-  preAccoppiatoSelezionato(preAcc: BoxPartenza) {
-    this.selezionato.emit(preAcc);
+  partenzaSelezionata(partenza: BoxPartenza) {
+    this.selezionato.emit(partenza);
   }
 
   /* NgClass status */
@@ -67,10 +68,16 @@ export class BoxNuovaPartenzaComponent implements OnInit {
         }
       });
     }
+
+    if (this.partenza[this.idPartenzaAttuale] === partenza) {
+      console.log('a');
+      returnClass = 'border-danger';
+    }
+
     return returnClass;
   }
 
-  compotenzaClasses(preAccoppiato: BoxPartenza) {
+  competenzaClasses(preAccoppiato: BoxPartenza) {
     let returnClass = 'badge-secondary';
     let count = 0;
 
