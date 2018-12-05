@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 // Model
 import { Squadra } from '../../../shared/model/squadra.model';
+import { BoxPartenza } from '../../model/box-partenza.model';
 
 // Service
 import { CompMezzoSquadraService } from '../../service/comp-mezzo-squadra/comp-mezzo-squadra.service';
@@ -13,6 +14,8 @@ import { CompMezzoSquadraService } from '../../service/comp-mezzo-squadra/comp-m
 })
 export class SquadraComposizioneComponent implements OnInit {
   @Input() squadra: Squadra;
+  @Input() partenze: BoxPartenza[];
+  @Input() idPartenzaAttuale: number;
 
   squadreSelezionate: Squadra[];
   hover = false;
@@ -63,8 +66,19 @@ export class SquadraComposizioneComponent implements OnInit {
         }
       });
     }
-    if(this.hover){
+
+    if (this.hover) {
       returnClass = returnClass + ' bg-light';
+    }
+
+    if (this.partenze.length > 0) {
+      this.partenze.forEach((p: BoxPartenza) => {
+        p.squadra.forEach(s => {
+          if (squadra === s && p.id !== this.idPartenzaAttuale) {
+            returnClass = 'disabled';
+          }
+        });
+      });
     }
     return returnClass;
   }

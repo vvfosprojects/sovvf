@@ -8,7 +8,7 @@
           </div>
           <ul class="list-group list-group-flush">
             <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC" [squadre]="squadre"
-              [partenze]="partenze" (nuovoMezzo)="nuovoMezzo()"></app-mezzo-composizione>
+              [partenze]="partenze" [idPartenzaAttuale]="idPartenzaAttuale" (nuovoMezzo)="nuovoMezzo()"></app-mezzo-composizione>
           </ul>
         </div>
       </div>
@@ -18,14 +18,14 @@
             <i class="fa fa-group mr-2"></i><span class="h6">Squadre</span>
           </div>
           <ul class="list-group list-group-flush">
-            <app-squadra-composizione *ngFor="let s of squadre" [squadra]="s"></app-squadra-composizione>
+            <app-squadra-composizione *ngFor="let s of squadre" [squadra]="s" [partenze]="partenze" [idPartenzaAttuale]="idPartenzaAttuale"></app-squadra-composizione>
           </ul>
         </div>
       </div>
       <div class="col-4">
         <div class="card border-dashed-3 w-100 py-3 px-2">
           <div *ngIf="partenze.length > 0">
-            <app-box-nuova-partenza *ngFor="let p of partenze" [preAcc]="p" [richiesta]="richiesta"></app-box-nuova-partenza>
+            <app-box-nuova-partenza *ngFor="let p of partenze" [partenza]="p" [richiesta]="richiesta"></app-box-nuova-partenza>
             <button class="btn btn-block btn-success">Conferma</button>
           </div>
           <div *ngIf="partenze.length === 0" class="py-5 text-center">
@@ -37,5 +37,3 @@
     </div>
   </div>
 </div>
-<!-- <div *ngIf="partenze[0]" class="bg-primary">{{partenze[0].squadra|json}}</div>
-<div *ngIf="partenze[1]" class="bg-success">{{partenze[1].squadra|json}}</div> -->

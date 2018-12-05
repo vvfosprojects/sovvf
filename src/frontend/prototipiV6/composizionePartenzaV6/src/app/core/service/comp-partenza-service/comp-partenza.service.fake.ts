@@ -76,6 +76,20 @@ export class CompPartenzaServiceFake {
         '43 min',
         'Tuscolana II'
       ),
+      new MezzoComposizione(
+        '3',
+        new Mezzo('3',
+          'A3',
+          'APS',
+          'inSede',
+          [
+          ],
+          0
+        ),
+        '10.4 km',
+        '16 min',
+        'Tuscolano II'
+      ),
     ];
 
     return of(this.mezzi);

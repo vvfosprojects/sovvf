@@ -126,3 +126,8 @@
     border-width:3px;  
     border-style:dashed;
 }
+
+.disabled {
+    pointer-events:none;
+    opacity:0.6;
+}

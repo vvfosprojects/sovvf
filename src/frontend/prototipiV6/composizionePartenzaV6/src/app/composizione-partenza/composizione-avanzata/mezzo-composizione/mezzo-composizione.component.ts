@@ -17,6 +17,7 @@ export class MezzoComposizioneComponent implements OnInit {
   @Input() mezzoComp: MezzoComposizione;
   @Input() squadre: Squadra[];
   @Input() partenze: BoxPartenza[];
+  @Input() idPartenzaAttuale: number;
   @Output() nuovoMezzo: EventEmitter<any> = new EventEmitter();
 
   mezzoSelezionato: MezzoComposizione;
@@ -32,7 +33,8 @@ export class MezzoComposizioneComponent implements OnInit {
   }
 
   click(mezzo) {
-    if (!this.mezzoSelezionato) {
+    this.compMezzoSquadra.setMezzo(mezzo);
+    /* if (!this.mezzoSelezionato) {
       this.compMezzoSquadra.setMezzo(mezzo);
     } else if (this.mezzoSelezionato !== mezzo) {
       this.compMezzoSquadra.clearMezzo();
@@ -40,7 +42,7 @@ export class MezzoComposizioneComponent implements OnInit {
     } else if (this.mezzoSelezionato === mezzo) {
       this.compMezzoSquadra.clearMezzo();
       this.compMezzoSquadra.clearSquadra();
-    }
+    } */
   }
 
   hoverIn() {
@@ -56,13 +58,24 @@ export class MezzoComposizioneComponent implements OnInit {
     this.nuovoMezzo.emit();
   }
 
-
-
   // NgClass
-  mezzoCompClass() {
-    return {
-      'bg-light': this.hover,
-      'bg-light border-danger': this.mezzoComp === this.mezzoSelezionato
-    };
+  mezzoCompClass(mezzoComp) {
+    let returnClass = '';
+    if (this.mezzoSelezionato && this.mezzoSelezionato === mezzoComp) {
+      returnClass = 'border-danger';
+    }
+
+    if (this.hover) {
+      returnClass = returnClass + ' bg-light';
+    }
+
+    if (this.partenze.length > 0) {
+      this.partenze.forEach((p: BoxPartenza) => {
+        if (mezzoComp === p.mezzoComposizione && p.id !== this.idPartenzaAttuale) {
+          returnClass = 'disabled';
+        }
+      });
+    }
+    return returnClass;
   }
 }

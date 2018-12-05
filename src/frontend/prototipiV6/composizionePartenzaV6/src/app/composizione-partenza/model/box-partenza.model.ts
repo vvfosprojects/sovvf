@@ -1,5 +1,5 @@
-import { Squadra } from "../../shared/model/squadra.model";
-import { MezzoComposizione } from "./mezzo-composizione.model";
+import { Squadra } from '../../shared/model/squadra.model';
+import { MezzoComposizione } from './mezzo-composizione.model';
 
 export class BoxPartenza {
     constructor(

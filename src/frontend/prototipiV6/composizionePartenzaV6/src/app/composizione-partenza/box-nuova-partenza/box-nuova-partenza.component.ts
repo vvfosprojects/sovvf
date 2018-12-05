@@ -9,14 +9,14 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 })
 export class BoxNuovaPartenzaComponent implements OnInit {
   @Input() richiesta: SintesiRichiesta;
-  @Input() preAcc: BoxPartenza;
+  @Input() partenza: BoxPartenza;
   @Input() preAccoppiatiSelezionati: BoxPartenza[];
   @Output() selezionato: EventEmitter<BoxPartenza> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
-    console.log(this.preAcc);
+    // console.log(this.preAcc);
   }
 
   preAccoppiatoSelezionato(preAcc: BoxPartenza) {
@@ -80,13 +80,13 @@ export class BoxNuovaPartenzaComponent implements OnInit {
         if (c.descrizione === preAccoppiato.mezzoComposizione.distaccamento) {
           switch (count) {
             case 1:
-              returnClass = 'badge-primary'
+              returnClass = 'badge-primary';
               break;
             case 2:
-              returnClass = 'badge-info'
+              returnClass = 'badge-info';
               break;
             case 3:
-              returnClass = 'badge-secondary'
+              returnClass = 'badge-secondary';
               break;
 
             default:

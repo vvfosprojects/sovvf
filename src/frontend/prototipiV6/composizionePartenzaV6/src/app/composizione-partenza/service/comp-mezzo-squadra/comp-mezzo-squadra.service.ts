@@ -11,10 +11,12 @@ import { BoxPartenza } from '../../model/box-partenza.model';
 })
 export class CompMezzoSquadraService {
   private mezzo$ = new Subject<MezzoComposizione>();
+
   private squadra$ = new Subject<Squadra[]>();
   squadreSelezionate: Squadra[] = [];
 
   private partenze$ = new Subject<BoxPartenza[]>();
+  partenze: BoxPartenza[] = [];
 
   constructor() { }
 
@@ -33,7 +35,6 @@ export class CompMezzoSquadraService {
   setSquadra(squadra) {
     if (squadra) {
       this.squadreSelezionate.push(squadra);
-      this.clearSquadra();
       this.squadra$.next(this.squadreSelezionate);
     }
   }
@@ -41,7 +42,8 @@ export class CompMezzoSquadraService {
     return this.squadra$.asObservable();
   }
   clearSquadra() {
-    this.squadra$.next();
+    this.squadreSelezionate = [];
+    this.squadra$.next(this.squadreSelezionate);
   }
   clearSingleSquadra(squadra) {
     this.squadreSelezionate.forEach((ss: Squadra, index) => {
@@ -54,8 +56,11 @@ export class CompMezzoSquadraService {
   }
 
   /* Partenze */
-  setPartenze(partenze) {
-    this.partenze$.next(partenze);
+  setPartenze(partenza) {
+    if (partenza) {
+      this.partenze.push(partenza);
+      this.partenze$.next(this.partenze);
+    }
   }
   getPartenze(): Observable<any> {
     return this.partenze$.asObservable();
