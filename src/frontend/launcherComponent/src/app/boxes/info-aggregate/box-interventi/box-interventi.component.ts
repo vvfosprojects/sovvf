@@ -32,8 +32,16 @@ export class BoxInterventiComponent implements OnInit, OnDestroy {
     }
 
     clickRichieste(tipo: string) {
-        this.boxClick.richieste[tipo] = !this.boxClick.richieste[tipo];
-        this.boxClickService.sendBoxClick(this.boxClick);
+        if (tipo !== 'tutti') {
+            this.boxClick.richieste[tipo] = !this.boxClick.richieste[tipo];
+            this.boxClickService.sendBoxClick(this.boxClick);
+        } else {
+            const keysBoxClick = Object.keys(this.boxClick.richieste);
+            // console.log(keysBoxClick);
+            keysBoxClick.forEach( r => {
+                this.boxClick.richieste[r] = false;
+            });
+        }
     }
 
 }
