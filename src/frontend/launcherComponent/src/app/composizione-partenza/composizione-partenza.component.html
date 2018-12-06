@@ -1,6 +1,6 @@
 <div class="row mt-2">
   <div class="col-12 pt-1 px-0">
-    <div *ngIf="richiesta" class="col-12 mb-3">
+    <div *ngIf="richiesta" class="col-12 mb-2">
       <div class="w-100 rounded card-shadow" [ngClass]="CardClasses(r)">
         <app-sintesi-richiesta [richiesta]="richiesta" [fissata]="false" [espanso]="true" [partenza]="true" [listaEventi]="true"
           (dismissNuovaPartenza)="dismissPartenza()"></app-sintesi-richiesta>
@@ -10,7 +10,7 @@
       <app-faster [richiesta]="richiesta"></app-faster>
     </div>
     <div *ngIf="compPartenzaMode === 'slower'" class="col-12">
-      <app-slower></app-slower>
+      <app-slower [richiesta]="richiesta"></app-slower>
     </div>
   </div>
 </div>

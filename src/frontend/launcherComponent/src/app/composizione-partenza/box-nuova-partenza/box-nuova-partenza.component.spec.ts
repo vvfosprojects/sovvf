@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NavFasterComponent } from './nav.component';
+import { BoxNuovaPartenzaComponent } from './box-nuova-partenza.component';
 
-describe('NavComponent', () => {
-  let component: NavFasterComponent;
-  let fixture: ComponentFixture<NavFasterComponent>;
+describe('PreaccoppiatoComponent', () => {
+  let component: BoxNuovaPartenzaComponent;
+  let fixture: ComponentFixture<BoxNuovaPartenzaComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavFasterComponent ]
+      declarations: [ BoxNuovaPartenzaComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NavFasterComponent);
+    fixture = TestBed.createComponent(BoxNuovaPartenzaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

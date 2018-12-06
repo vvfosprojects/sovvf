@@ -9,7 +9,7 @@ import { FilterbarService } from 'src/app/filterbar/filterbar-service/filterbar-
 export class PartenzaService {
   private richiestaNuovaPartenza$ = new Subject<SintesiRichiesta>();
   private compPartenzaMode = new Subject<any>();
-  compPartenzaModeIniziale = 'faster';
+  compPartenzaModeIniziale = 'slower';
 
   constructor(private viewService: FilterbarService) { }
 
