@@ -35,7 +35,7 @@
               [idPartenzaAttuale]="idPartenzaAttuale" (selezionato)="modificaPartenza($event)"></app-box-nuova-partenza>
           </div>
         </div>
-        <button *ngIf="partenze.length > 0" class="btn btn-block btn-success mt-2">Conferma</button>
+        <button class="btn btn-block btn-success mt-2" [disabled]="partenze.length <= 0">Conferma</button>
       </div>
     </div>
   </div>

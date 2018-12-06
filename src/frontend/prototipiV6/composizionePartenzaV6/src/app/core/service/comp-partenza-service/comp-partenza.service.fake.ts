@@ -343,7 +343,7 @@ export class CompPartenzaServiceFake {
         new Mezzo('5',
           'A5',
           'APS',
-          'inSede',
+          'inRientro',
           [
           ],
           0
@@ -357,7 +357,7 @@ export class CompPartenzaServiceFake {
         new Mezzo('6',
           'A6',
           'APS',
-          'inSede',
+          'inRientro',
           [
           ],
           0
@@ -371,7 +371,7 @@ export class CompPartenzaServiceFake {
         new Mezzo('7',
           'A7',
           'APS',
-          'inSede',
+          'sulPosto',
           [
           ],
           0

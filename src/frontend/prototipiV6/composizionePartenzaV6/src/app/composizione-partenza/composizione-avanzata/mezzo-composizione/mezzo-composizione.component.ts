@@ -85,4 +85,28 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     }
     return returnClass;
   }
+
+  iconaStatiClass(mezzoComp) {
+    let returnClass = '';
+
+    switch (mezzoComp.mezzo.stato) {
+      case 'inSede':
+        returnClass = 'text-secondary';
+        break;
+      case 'inViaggio':
+        returnClass = 'text-info';
+        break;
+      case 'inRientro':
+        returnClass = 'text-primary';
+        break;
+      case 'sulPosto':
+        returnClass = 'text-success';
+        break;
+
+      default:
+        break;
+    }
+
+    return returnClass;
+  }
 }
