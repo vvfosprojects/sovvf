@@ -5,6 +5,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
 const API_URL_PREACCOPPIATI = environment.apiUrl.rigaElencoRichieste.fake;
+const API_URL_SQUADRE = environment.apiUrl.rigaElencoRichieste.fake;
+const API_URL_MEZZI = environment.apiUrl.rigaElencoRichieste.fake;
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +20,28 @@ export class CompPartenzaService {
         map((data: any) => {
             const preAccoppiati = data.SintesiRichiesta;
             return preAccoppiati;
+        }),
+        retry(3),
+        catchError(this.handleError)
+    );
+}
+
+public getMezziComposizione(): Observable<any> {
+    return this.http.get(API_URL_MEZZI).pipe(
+        map((data: any) => {
+            const mezzi = data.Mezzi;
+            return mezzi;
+        }),
+        retry(3),
+        catchError(this.handleError)
+    );
+}
+
+public getSquadre(): Observable<any> {
+    return this.http.get(API_URL_SQUADRE).pipe(
+        map((data: any) => {
+            const squadre = data.Squadre;
+            return squadre;
         }),
         retry(3),
         catchError(this.handleError)

@@ -1,0 +1,22 @@
+<div class="border card-shadow bg-light rounded mt-1 mb-2">
+  <div class="row">
+    <div class="col-4 py-1 pl-4">
+      <ng-select [items]="generiMezzi" [multiple]="true" [maxSelectedItems]="3" [closeOnSelect]="false" [hideSelected]="true"
+        placeholder="Genere Mezzo">
+      </ng-select>
+    </div>
+    <div class="col-4 py-1">
+      <ng-select [items]="distaccamenti" [multiple]="true" [maxSelectedItems]="3" [closeOnSelect]="false" [hideSelected]="true"
+        placeholder="Distaccamento">
+      </ng-select>
+    </div>
+    <div class="col-4 py-1 pr-4">
+      <ng-select [items]="stati" [multiple]="true" [maxSelectedItems]="3" [closeOnSelect]="false" [hideSelected]="true"
+        placeholder="Stato">
+        <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+            <div><span class="fa fa-eercast mr-2"></span>{{item}}</div>
+        </ng-template>
+      </ng-select>
+    </div>
+  </div>
+</div>
