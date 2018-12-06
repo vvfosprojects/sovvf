@@ -10,6 +10,7 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 export class BoxNuovaPartenzaComponent implements OnInit {
   @Input() richiesta: SintesiRichiesta;
   @Input() partenza: BoxPartenza;
+  @Input() partenze: BoxPartenza[];
   @Input() preAccoppiatiSelezionati: BoxPartenza[];
   @Input() idPartenzaAttuale: number;
   @Output() selezionato: EventEmitter<BoxPartenza> = new EventEmitter();
@@ -69,9 +70,8 @@ export class BoxNuovaPartenzaComponent implements OnInit {
       });
     }
 
-    if (this.partenza[this.idPartenzaAttuale] === partenza) {
-      console.log('a');
-      returnClass = 'border-danger';
+    if (this.partenze[this.idPartenzaAttuale] === partenza) {
+      returnClass = returnClass + ' bg-grey';
     }
 
     return returnClass;

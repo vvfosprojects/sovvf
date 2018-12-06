@@ -1,4 +1,4 @@
-import { Mezzo } from "../../shared/model/mezzo.model";
+import { Mezzo } from '../../shared/model/mezzo.model';
 
 export class MezzoComposizione {
     constructor(

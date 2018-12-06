@@ -21,10 +21,10 @@ export class PreAccoppiatiService {
         console.log('trovato');
       }
     });
-    if(count === 0) {
+    if (count === 0) {
       this.preAccoppiatiSelezionatiArray.push(preAccoppiato);
       this.preAccoppiatiSelezionati.next(this.preAccoppiatiSelezionatiArray);
-    }else{
+    } else {
       this.sendPreAccoppiatoDeselezionato(preAccoppiato);
     }
   }

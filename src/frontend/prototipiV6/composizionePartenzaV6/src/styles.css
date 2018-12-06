@@ -118,7 +118,9 @@
 .guida {
     color: #bbbbbb;
 }
-
+.bg-grey{
+    background-color: #eeeeee !important;
+}
 .scroll-y{
     overflow-y: scroll;
 }

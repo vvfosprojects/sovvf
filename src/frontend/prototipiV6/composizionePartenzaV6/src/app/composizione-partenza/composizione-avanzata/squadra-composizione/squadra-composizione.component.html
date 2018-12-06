@@ -1,6 +1,6 @@
 <li class="list-group-item cursor-pointer border px-2" (click)="click(squadra)" (mouseover)="hoverIn()" (mouseout)="hoverOut()" [ngClass]="squadraCompClass(squadra)">
   <div class="row">
-    <div class="col-12 text-center">
+    <div class="col-12">
       <span class="badge badge-info mr-2 py-1" [ngbPopover]="componenti" triggers="mouseenter:mouseleave">
           <i class="fa fa-user mr-1"></i><span *ngIf="componenti">{{squadra.componenti.length}}</span>
       </span>

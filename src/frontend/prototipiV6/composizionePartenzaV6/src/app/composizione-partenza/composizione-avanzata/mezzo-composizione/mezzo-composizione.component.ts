@@ -21,6 +21,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
   @Output() nuovoMezzo: EventEmitter<any> = new EventEmitter();
 
   mezzoSelezionato: MezzoComposizione;
+  assegnato = false;
   hover = false;
 
   constructor(private compMezzoSquadra: CompMezzoSquadraService) {
@@ -34,8 +35,6 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.partenze.length > 0 && this.partenze[this.idPartenzaAttuale]) {
-      // console.log(this.partenze[this.idPartenzaAttuale].mezzoComposizione);
-      // this.compMezzoSquadra.clearMezzo();
       this.compMezzoSquadra.setMezzo(this.partenze[this.idPartenzaAttuale].mezzoComposizione);
     }
   }
@@ -70,11 +69,11 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
   mezzoCompClass(mezzoComp) {
     let returnClass = '';
     if (this.mezzoSelezionato && this.mezzoSelezionato === mezzoComp) {
-      returnClass = 'border-danger';
+      returnClass = 'border-primary bg-grey';
     }
 
     if (this.hover) {
-      returnClass = returnClass + ' bg-light';
+      returnClass = returnClass + ' bg-grey';
     }
 
     if (this.partenze.length > 0) {

@@ -7,10 +7,10 @@ import { CompMezzoSquadraService } from '../service/comp-mezzo-squadra/comp-mezz
 
 // Model
 import { BoxPartenza } from '../model/box-partenza.model';
-import { Mezzo } from '../../shared/model/mezzo.model';
 import { Squadra } from '../..//shared/model/squadra.model';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { MezzoComposizione } from '../model/mezzo-composizione.model';
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-slower',
@@ -28,7 +28,12 @@ export class SlowerComponent implements OnInit {
 
   constructor(private partenzaS: PartenzaService,
     private compPartenzaManager: CompPartenzaManagerService,
-    private compMezzoSquadra: CompMezzoSquadraService) {
+    private compMezzoSquadra: CompMezzoSquadraService,
+    popoverConfig: NgbPopoverConfig) {
+    // Popover options
+    popoverConfig.container = 'body';
+    popoverConfig.placement = 'top';
+
     // Prendo i mezzi da visualizzare nella lista
     this.compPartenzaManager.getMezziComposizione().subscribe((mezziComp: MezzoComposizione[]) => {
       this.mezziComposizione = mezziComp;
@@ -44,7 +49,7 @@ export class SlowerComponent implements OnInit {
 
       // Attendo che arrivi il mezzo per selezionare la prima squadra nella lista ....
       // (dovrà essere fatta la logica che restituisce la squadra migliore da selezionare).
-      // this.compMezzoSquadra.setSquadra(this.squadre[0]);
+      this.compMezzoSquadra.setSquadra(this.squadre[0]);
     });
     // Resto in ascolto per un eventuale squadra selezionata
     this.compMezzoSquadra.getSquadra().subscribe((squadre: Squadra[]) => {
