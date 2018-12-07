@@ -81,4 +81,13 @@ export class CompMezzoSquadraService {
   clearPartenze() {
     this.partenze$.next();
   }
+  clearSinglePartenza(partenza) {
+    this.partenze.forEach((p: BoxPartenza, index) => {
+      if (partenza === p) {
+        console.log(partenza, index);
+        this.partenze.splice(index, 1);
+      }
+    });
+    this.partenze$.next(this.partenze);
+  }
 }

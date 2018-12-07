@@ -13,16 +13,22 @@ export class BoxNuovaPartenzaComponent implements OnInit {
   @Input() partenze: BoxPartenza[];
   @Input() preAccoppiatiSelezionati: BoxPartenza[];
   @Input() idPartenzaAttuale: number;
+  @Input() elimina: boolean;
   @Output() selezionato: EventEmitter<BoxPartenza> = new EventEmitter();
+  @Output() eliminato: EventEmitter<BoxPartenza> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
-    // console.log(this.partenza);
+    console.log(this.partenza);
   }
 
   partenzaSelezionata(partenza: BoxPartenza) {
     this.selezionato.emit(partenza);
+  }
+
+  eliminaPartenza(partenza: BoxPartenza) {
+    this.eliminato.emit(partenza);
   }
 
   /* NgClass status */

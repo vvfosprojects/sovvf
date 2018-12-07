@@ -7,7 +7,7 @@
     white-space: nowrap;
 }
 .cursor-pointer {
-    cursor: pointer;
+    cursor: pointer !important;
 }
 
 .status_presidiato {
@@ -123,6 +123,7 @@
 }
 .scroll-y{
     overflow-y: scroll;
+    overflow-x: hidden
 }
 
 .border-dashed-3{

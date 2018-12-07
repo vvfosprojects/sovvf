@@ -1,4 +1,5 @@
 <div class="card cursor-pointer p-2 mb-2" (click)="partenzaSelezionata(partenza)" [ngClass]="cardClasses(partenza)">
+  <i *ngIf="elimina" id="close" ngbTooltip="Elimina" (click)="eliminaPartenza(partenza)" class="fa fa-fw  fa-window-close"></i>
   <div class="row">
     <div class="col">
       <div class="nowrap">
