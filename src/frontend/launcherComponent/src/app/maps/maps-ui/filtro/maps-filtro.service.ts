@@ -1,19 +1,35 @@
-import { Injectable } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, of, Subject, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { BoxClickService } from '../../../boxes/info-aggregate/box-service/box-click.service';
+import { BoxClickInterface } from '../../../boxes/info-aggregate/box-service/box-click-interface';
 
 @Injectable({
     providedIn: 'root'
 })
-export class MapsFiltroService {
-    constructor() {
+export class MapsFiltroService implements OnDestroy {
+
+    subscription = new Subscription();
+
+    constructor(private boxClickService: BoxClickService) {
+        this.boxClick = this.boxClickService.boxClickState;
+        this.subscription.add(this.boxClickService.getBoxClick().subscribe((boxClick: BoxClickInterface) => {
+                this.checkBoxClick(boxClick);
+            }
+        ));
     }
+
+    boxClick: BoxClickInterface;
 
     meteoSwitchDefault = false;
 
     filtroAttivo = ['richiesta'];
 
-    filtroMarker: Menu[] = [
+    filtroAttivoCopy: string[];
+
+    filtroCheckBox: string[] = [];
+
+    private filtroMarker: Menu[] = [
         {
             'id': 'richiesta',
             'index': 1,
@@ -40,6 +56,54 @@ export class MapsFiltroService {
     private subject = new Subject<Menu[]>();
 
     private meteoSwitch = new Subject<boolean>();
+
+    private static getCopy(value): any {
+        return (JSON.parse(JSON.stringify(value)));
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+    }
+
+    createCopyFiltro() {
+        if (!this.filtroAttivoCopy) {
+            this.filtroAttivoCopy = MapsFiltroService.getCopy(this.filtroAttivo);
+        }
+    }
+
+    deleteCopyFiltro() {
+        this.filtroAttivoCopy = undefined;
+    }
+
+    checkBoxClick(boxClick: BoxClickInterface) {
+        this.filtroCheckBox = [];
+        if (Object.values(boxClick.mezzi).indexOf(true) >= 0) {
+            pushFiltro('mezzo', this.filtroCheckBox);
+        }
+
+        if (Object.values(boxClick.richieste).indexOf(true) >= 0) {
+            pushFiltro('richiesta', this.filtroCheckBox);
+        }
+
+        function pushFiltro(string: string, array: any[]) {
+            if (!array.includes(string)) {
+                array.push(string);
+            }
+        }
+
+        if (this.filtroCheckBox.length !== 0) {
+            this.createCopyFiltro();
+            this.filtroAttivo = this.filtroCheckBox;
+        } else {
+            this.filtroAttivo = this.filtroAttivoCopy;
+            this.deleteCopyFiltro();
+        }
+
+        this.filtroMarker.forEach(r => {
+           this.filtroAttivo.includes(r.id) ? r.isActive = true : r.isActive = false;
+        });
+        this.subject.next(this.filtroMarker);
+    }
 
     sendMenu(menu: Menu[]) {
         let count = 0;
