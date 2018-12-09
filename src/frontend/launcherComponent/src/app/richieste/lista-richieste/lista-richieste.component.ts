@@ -97,9 +97,9 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
             result.forEach(c => {
                 string.push(c.id);
             });
-            this.markerS.opacizzaMarkers(true, string);
+            this.markerS.opacizzaMarkers(true, 'richieste', undefined, string);
         } else {
-            this.markerS.opacizzaMarkers(false);
+            this.markerS.opacizzaMarkers(false, 'richieste');
         }
     }
 
