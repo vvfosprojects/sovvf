@@ -38,4 +38,59 @@ export class MezziMarkerManagerService {
         return of(this.mezziMarker);
     }
 
+
+    /**
+     * metodo che opacizza i marker
+     * @param action
+     * @param filterState
+     * @param stringSearch
+     */
+    cambiaOpacitaMarker(action: boolean, filterState?: string[], stringSearch?: string[]) {
+        console.log(filterState);
+        if (action) {
+            /**
+             * annullo la precedente ricerca e ritorno null tutte le opacità
+             */
+            this.mezziMarker.forEach(r => {
+                r.opacita = null;
+            });
+            if (!filterState) {
+                /**
+                 * opacizzo i marker con id diverso a quelli della ricerca
+                 */
+                this.mezziMarker.forEach(r => {
+                    stringSearch.forEach(c => {
+                        if (r.mezzo.codice === c) {
+                            // console.log(r.id);
+                            r.opacita = false;
+                        } else if (r.opacita !== false) {
+                            r.opacita = true;
+                        }
+                    });
+                });
+            } else {
+                /**
+                 * opacizzo i marker con stato diverso da quello di filterState
+                 */
+                this.mezziMarker.forEach(r => {
+                    filterState.forEach(c => {
+                        if (r.mezzo.stato.toLowerCase().substring(0, 5) === c.toLowerCase().substring(0, 5)) {
+                            // console.log(r.id);
+                            r.opacita = false;
+                        } else if (r.opacita !== false) {
+                            r.opacita = true;
+                        }
+                    });
+                });
+            }
+        } else {
+            /**
+             * ritorno null a tutti i marker e tolgo l'opacità
+             */
+            this.mezziMarker.forEach(r => {
+                r.opacita = null;
+            });
+        }
+    }
+
 }

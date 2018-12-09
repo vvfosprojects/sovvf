@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, of, Subject, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { BoxClickService } from '../../../boxes/info-aggregate/box-service/box-click.service';
-import { BoxClickInterface } from '../../../boxes/info-aggregate/box-service/box-click-interface';
+import { BoxClickArrayInterface, BoxClickInterface } from '../../../boxes/info-aggregate/box-service/box-click-interface';
 
 @Injectable({
     providedIn: 'root'
@@ -15,6 +15,7 @@ export class MapsFiltroService implements OnDestroy {
         this.boxClick = this.boxClickService.boxClickState;
         this.subscription.add(this.boxClickService.getBoxClick().subscribe((boxClick: BoxClickInterface) => {
                 this.checkBoxClick(boxClick);
+                this.filtroBoxes.next(this.stateBoxClick(boxClick));
             }
         ));
     }
@@ -53,7 +54,9 @@ export class MapsFiltroService implements OnDestroy {
         }
     ];
 
-    private subject = new Subject<Menu[]>();
+    private vociMenu = new Subject<Menu[]>();
+
+    private filtroBoxes = new Subject<BoxClickArrayInterface>();
 
     private meteoSwitch = new Subject<boolean>();
 
@@ -100,9 +103,29 @@ export class MapsFiltroService implements OnDestroy {
         }
 
         this.filtroMarker.forEach(r => {
-           this.filtroAttivo.includes(r.id) ? r.isActive = true : r.isActive = false;
+            this.filtroAttivo.includes(r.id) ? r.isActive = true : r.isActive = false;
         });
-        this.subject.next(this.filtroMarker);
+        this.vociMenu.next(this.filtroMarker);
+    }
+
+    stateBoxClick(boxClick: BoxClickInterface): BoxClickArrayInterface {
+
+        const boxClickArray: BoxClickArrayInterface = {
+            richieste: [],
+            mezzi: []
+        };
+        const mezzi = Object.keys(boxClick.mezzi);
+        const richieste = Object.keys(boxClick.richieste);
+
+        boxClickArray.mezzi = mezzi.filter(key => {
+            return boxClick.mezzi[key];
+        });
+
+        boxClickArray.richieste = richieste.filter(key => {
+            return boxClick.richieste[key];
+        });
+
+        return boxClickArray;
     }
 
     sendMenu(menu: Menu[]) {
@@ -117,14 +140,18 @@ export class MapsFiltroService implements OnDestroy {
             menuIsNotActive.forEach(r => {
                 r.isActive = false;
             });
-            this.subject.next(menuIsNotActive);
+            this.vociMenu.next(menuIsNotActive);
         } else {
-            this.subject.next(menu);
+            this.vociMenu.next(menu);
         }
     }
 
     getMenu(): Observable<Menu[]> {
-        return this.subject.asObservable();
+        return this.vociMenu.asObservable();
+    }
+
+    getFiltroBoxes(): Observable<BoxClickArrayInterface> {
+        return this.filtroBoxes.asObservable();
     }
 
 
