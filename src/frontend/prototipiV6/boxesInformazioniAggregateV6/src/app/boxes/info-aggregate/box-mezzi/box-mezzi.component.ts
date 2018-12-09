@@ -34,14 +34,13 @@ export class BoxMezziComponent implements OnInit, OnDestroy {
     clickMezzi(tipo: string) {
         if (tipo !== 'tutti') {
             this.boxClick.mezzi[tipo] = !this.boxClick.mezzi[tipo];
-            this.boxClickService.sendBoxClick(this.boxClick);
         } else {
             const keysBoxClick = Object.keys(this.boxClick.mezzi);
-            // console.log(keysBoxClick);
             keysBoxClick.forEach( r => {
                 this.boxClick.mezzi[r] = false;
             });
         }
+        this.boxClickService.sendBoxClick(this.boxClick);
     }
 
 }
