@@ -32,7 +32,7 @@ export const environment = {
             backend: 'http://localhost:2661/api'
         },
         elencoTipologie: {
-            fake: 'https://api.myjson.com/bins/1b3l06',
+            fake: 'assets/json/tipologie.json',
         },
         eventiRichieste: {
             fake: 'https://api.myjson.com/bins/kz0w0',

@@ -41,8 +41,8 @@ export class AgmComponent implements OnInit, OnDestroy {
     map_loaded = false;
     subscription = new Subscription();
     map: any;
-    richiestaMarkerIconUrl = '../../../assets/img/icone-markers/chiamata-marker-rosso.png';
-    meteoMarkerIconUrl = '../../../assets/img/icone-markers/marker-meteo-32.png';
+    richiestaMarkerIconUrl = 'assets/img/icone-markers/chiamata-marker-rosso.png';
+    meteoMarkerIconUrl = 'assets/img/icone-markers/marker-meteo-32.png';
 
     zoomControlOptions: ZoomControlOptions = {
         position: ControlPosition.BOTTOM_RIGHT
