@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { DispatcherRichiesteMarkerService } from '../../../dispatcher/dispatcher-maps/richieste-marker/dispatcher-richieste-marker.service';
 import { RichiestaMarker } from '../../../../maps/maps-model/richiesta-marker.model';
 
@@ -8,7 +8,7 @@ import { RichiestaMarker } from '../../../../maps/maps-model/richiesta-marker.mo
     providedIn: 'root'
 })
 export class RichiesteMarkerManagerService {
-
+    private newRichiesteMarkersList$ = new Subject<RichiestaMarker[]>();
     richiesteMarker: RichiestaMarker[];
 
     private _count: number;
@@ -22,30 +22,19 @@ export class RichiesteMarkerManagerService {
     }
 
     constructor(private dispatcher: DispatcherRichiesteMarkerService) {
-
-        /**
-         * dispatcher marker richieste
-         */
-        this.dispatcher.onNewRichiesteMarkersList().subscribe((marker: RichiestaMarker[]) => {
-            this.richiesteMarker = marker;
-        });
-
-        this.dispatcher.onNewRichiestaMarker().subscribe((marker: RichiestaMarker) => {
-            this.richiesteMarker.push(marker);
-        });
-
-        this.dispatcher.onUpdateRichiestaMarker().subscribe((marker: RichiestaMarker) => {
-            this.richiesteMarker = this.richiesteMarker.map(r => r.id === marker.id ? marker : r);
-        });
-
-        this.dispatcher.onDeleteRichiestaMarker().subscribe((marker: RichiestaMarker) => {
-            this.richiesteMarker.splice(this.richiesteMarker.indexOf(marker), 1);
-        });
-
     }
 
-    getRichiesteMarker(): Observable<RichiestaMarker[]> {
-        return of(this.richiesteMarker);
+    getRichiesteMarker() {
+        this.newRichiesteMarkersList$.next();
+        this.dispatcher.onNewRichiesteMarkersList()
+            .subscribe({
+                next: data => {
+                    this.richiesteMarker = data;
+                    this.newRichiesteMarkersList$.next(this.richiesteMarker);
+                },
+                error: data => console.log(`Errore: + ${data}`)
+            });
+        return this.newRichiesteMarkersList$.asObservable();
     }
 
     getMarkerFromId(id) {

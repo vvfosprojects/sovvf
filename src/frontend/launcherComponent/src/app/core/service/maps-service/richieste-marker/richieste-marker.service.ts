@@ -1,30 +1,32 @@
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../../../environments/environment';
 
 const API_URL_RICHIESTE = environment.apiUrl.maps.markers.richieste;
+
+const headers = new HttpHeaders({
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json'
+});
+const httpOptions = { headers: headers };
 
 @Injectable({
     providedIn: 'root'
 })
 export class RichiesteMarkerService {
 
-
-    /**
-     * questo service si connetterà al back end e cambierà tutta la logica
-     */
     constructor(private http: HttpClient) {
     }
 
     public getRichiesteMarkers(): Observable<any> {
-        return this.http.get(API_URL_RICHIESTE).pipe(
+        return this.http.get(API_URL_RICHIESTE, httpOptions).pipe(
             map((data: any) => {
-                const richiesteMarker = data;
+                console.log('Service Richieste Marker: ', data.SintesiRichiestaMarker);
+                const richiesteMarker = data.SintesiRichiestaMarker;
                 return richiesteMarker;
             }),
-            retry(3),
             catchError(this.handleError)
         );
     }

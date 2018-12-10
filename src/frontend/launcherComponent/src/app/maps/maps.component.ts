@@ -40,10 +40,11 @@ export class MapsComponent implements OnInit, OnDestroy {
          */
         this.subscription.add(this.richiesteManager.getRichiesteMarker().subscribe((r: RichiestaMarker[]) => {
             this.richiesteMarkers = r;
+            console.log(this.richiesteMarkers);
             /**
              *  inizializzo un contatore nel servizio per tenere traccia del numero di richieste
              */
-            this.richiesteManager.count = this.richiesteMarkers.length;
+            // this.richiesteManager.count = this.richiesteMarkers.length;
         }));
 
         /**

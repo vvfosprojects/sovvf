@@ -29,8 +29,8 @@
                                     <span [ngbPopover]="popTipologie" popoverTitle="Tipologie" triggers="click"
                                         tabindex="0">
                                         <span class="position-relative">
-                                            <i class="fa-fw mr-1 {{ coloraIcona(richiesta.tipologie[0].icona) }}"
-                                                rgb(247, 247, 247) ngbTooltip="{{ richiesta.tipologie[0].descrizione }}"></i>
+                                            <i class="fa-fw mr-1 {{ methods.coloraIcona(richiesta.tipologie[0].icona) }}"
+                                                ngbTooltip="{{ richiesta.tipologie[0].descrizione }}"></i>
                                             <span class="badge badge-notify text-light">{{richiesta.tipologie.length}}</span>
                                         </span>
                                     </span>
@@ -38,7 +38,7 @@
                                 <!-- ngbPopover tipologie intervento -->
                                 <ng-template #popTipologie>
                                     <div class="h6" *ngFor="let t of richiesta.tipologie">
-                                        <i class="fa-fw mr-1 {{ coloraIcona(t.icona) }}"></i>&nbsp;{{ t.descrizione }}
+                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(t.icona) }}"></i>&nbsp;{{ t.descrizione }}
                                     </div>
                                 </ng-template>
                                 <span><a *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="h6 font-weight-bold descrizione-int"
@@ -146,19 +146,24 @@
                                     (click)="fissaClick(richiesta)">
                                     <i class="fa fa-fw fa-thumb-tack fa-rotate-45"></i>
                                 </button>
-                                <button *ngIf="espandibile" class="btn btn-light border py-0 mr-1" ngbTooltip="Espandi" (click)="toggleEspanso()">
+                                <button *ngIf="espandibile" class="btn btn-light border py-0 mr-1" ngbTooltip="Espandi"
+                                    (click)="toggleEspanso()">
                                     <i class="fa fa-fw fa-info text-secondary"></i>
                                 </button>
-                                <button *ngIf="listaEventi" class="btn btn-light border py-0 mr-1" ngbTooltip="Elenco eventi" (click)="visualizzaEventiRichiesta(richiesta.id)">
+                                <button *ngIf="listaEventi" class="btn btn-light border py-0 mr-1" ngbTooltip="Elenco eventi"
+                                    (click)="visualizzaEventiRichiesta(richiesta.id)">
                                     <i class="fa fa-fw fa-list text-secondary"></i>
                                 </button>
-                                <button *ngIf="!partenza" class="btn btn-light border py-0" ngbTooltip="Invio partenza" (click)="invioPartenza(richiesta)">
+                                <button *ngIf="!partenza" class="btn btn-light border py-0" ngbTooltip="Invio partenza"
+                                    (click)="invioPartenza(richiesta)">
                                     <i class="fa fa-fw fa-arrow-right text-secondary"></i>
                                 </button>
-                                <button *ngIf="partenza" class="btn btn-danger border py-0" ngbTooltip="Torna indietro" (click)="invioPartenza()">
+                                <button *ngIf="partenza" class="btn btn-danger border py-0" ngbTooltip="Torna indietro"
+                                    (click)="invioPartenza()">
                                     <i class="fa fa-fw fa-arrow-left"></i>
                                 </button>
-                                <button *ngIf="partenza" class="btn btn-success border py-0" ngbTooltip="Torna indietro" (click)="invioPartenza()">
+                                <button *ngIf="partenza" class="btn btn-success border py-0" ngbTooltip="Torna indietro"
+                                    (click)="invioPartenza()">
                                     <i class="fa fa-fw fa-check"></i>
                                 </button>
                             </div>
@@ -203,7 +208,7 @@
                                 <i class="guida fa fa-calendar-check-o fa-fw mr-1" ngbTooltip="Presa in carico"
                                     placement="right"></i>
                                 <a *ngIf="richiesta.istantePresaInCarico; else nonPresaInCarico" ngbTooltip="{{ richiesta.istantePresaInCarico | friendlyDateTooltip }}">
-                                    {{richiesta.istantePresaInCarico | friendlyDate }} 
+                                    {{richiesta.istantePresaInCarico | friendlyDate }}
                                     {{ richiesta.istantePresaInCarico | friendlyHour }}
                                 </a>
                                 <ng-template #nonPresaInCarico>
