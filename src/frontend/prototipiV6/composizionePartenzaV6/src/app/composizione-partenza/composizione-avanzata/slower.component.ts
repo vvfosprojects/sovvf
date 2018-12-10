@@ -68,7 +68,7 @@ export class SlowerComponent implements OnInit {
     // Resto in ascolto per ricevere le partenze create fino ad adesso
     this.compMezzoSquadra.getPartenze().subscribe((partenze: BoxPartenza[]) => {
       if (partenze) {
-        // console.log('Partenze:', this.partenze);
+        console.log('Partenze:', this.partenze);
         this.partenze = partenze;
       }
     });
@@ -100,13 +100,13 @@ export class SlowerComponent implements OnInit {
 
   eliminaPartenza(partenza: BoxPartenza) {
     console.log('Partenza da eliminare', partenza);
-    // se ci sono altre partenze seleziono l'ultima altrimenti idPartenzaAttuale = 0, comMezzoQuadra.clearMezzo()
-    if (this.partenze.length > 1) {
-      console.log('Partenza[PartenzeLength-1]:', this.partenze[this.partenze.length - 1]);
-      /* this.idPartenzaAttuale = this.partenze.length - 2; */
+    if (this.partenze[this.idPartenzaAttuale + 1]) {
+      this.idPartenzaAttuale = this.idPartenzaAttuale + 1;
+    } else if (this.partenze[this.idPartenzaAttuale - 1]) {
+      this.idPartenzaAttuale = this.idPartenzaAttuale - 1;
     } else {
-      this.idPartenzaAttuale = 1;
-      this.compMezzoSquadra.clearMezzo();
+      this.idPartenzaAttuale = 0;
+      /* this.compMezzoSquadra.clearMezzo(); */
     }
     this.compMezzoSquadra.clearSinglePartenza(partenza);
   }
@@ -125,6 +125,7 @@ export class SlowerComponent implements OnInit {
 
   nuovoMezzo() {
     this.idPartenzaAttuale = this.partenze.length;
+    console.log('Nuovo id', this.idPartenzaAttuale);
   }
 
   changeMode(newMode: string) {
