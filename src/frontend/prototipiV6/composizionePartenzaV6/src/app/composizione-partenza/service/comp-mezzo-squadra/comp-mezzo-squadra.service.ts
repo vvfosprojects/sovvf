@@ -50,7 +50,7 @@ export class CompMezzoSquadraService {
   clearSingleSquadra(squadra) {
     this.squadreSelezionate.forEach((ss: Squadra, index) => {
       if (squadra === ss) {
-        console.log(squadra, index);
+        /* console.log(squadra, index); */
         this.squadreSelezionate.splice(index, 1);
       }
     });

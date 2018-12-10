@@ -20,7 +20,7 @@ export class BoxNuovaPartenzaComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.partenza);
+    /* console.log(this.partenza); */
   }
 
   partenzaSelezionata(partenza: BoxPartenza) {

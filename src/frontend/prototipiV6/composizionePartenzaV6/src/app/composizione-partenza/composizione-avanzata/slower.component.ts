@@ -50,7 +50,7 @@ export class SlowerComponent implements OnInit {
     });
     // Resto in ascolto per un eventuale mezzo selezionato
     this.compMezzoSquadra.getMezzo().subscribe((mezzo: MezzoComposizione) => {
-      console.log('Mezzi:', mezzo);
+      /* console.log('Mezzi:', mezzo); */
       this.nuovaPartenza(this.idPartenzaAttuale);
       this.setMezzo(mezzo, this.idPartenzaAttuale);
     });
@@ -82,7 +82,6 @@ export class SlowerComponent implements OnInit {
     let partenzaDuplicata = false;
     this.partenze.forEach((p: BoxPartenza) => {
       if (p.id === id) {
-        console.log('partenza duplicata');
         partenzaDuplicata = true;
       }
     });
@@ -101,10 +100,12 @@ export class SlowerComponent implements OnInit {
 
   eliminaPartenza(partenza: BoxPartenza) {
     console.log('Partenza da eliminare', partenza);
-    if (this.partenze[this.idPartenzaAttuale - 1]) {
-      this.idPartenzaAttuale = this.idPartenzaAttuale - 1;
+    // se ci sono altre partenze seleziono l'ultima altrimenti idPartenzaAttuale = 0, comMezzoQuadra.clearMezzo()
+    if (this.partenze.length > 1) {
+      console.log('Partenza[PartenzeLength-1]:', this.partenze[this.partenze.length - 1]);
+      /* this.idPartenzaAttuale = this.partenze.length - 2; */
     } else {
-      this.idPartenzaAttuale = 0;
+      this.idPartenzaAttuale = 1;
       this.compMezzoSquadra.clearMezzo();
     }
     this.compMezzoSquadra.clearSinglePartenza(partenza);
@@ -116,6 +117,10 @@ export class SlowerComponent implements OnInit {
 
   setSquadra(squadra: Squadra, id: number) {
     this.partenze[id].squadra.push(squadra);
+  }
+
+  deselezionaSquadre() {
+    this.compMezzoSquadra.clearSquadra();
   }
 
   nuovoMezzo() {
