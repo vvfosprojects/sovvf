@@ -18,8 +18,6 @@ import { CenterService } from '../service/center-service/center-service.service'
 import { AgmService } from './agm-service.service';
 import { ControlPosition, FullscreenControlOptions, ZoomControlOptions } from '@agm/core/services/google-maps-types';
 import { MeteoMarker } from '../maps-model/meteo-marker.model';
-import { Localita } from '../../shared/model/localita.model';
-import { Coordinate } from '../../shared/model/coordinate.model';
 
 declare var google: any;
 
@@ -80,10 +78,18 @@ export class AgmComponent implements OnInit, OnDestroy {
         this.subscription.add(this.markerService.getMarkedColor().subscribe(colore => {
             this.coloreStato = colore;
         }));
+        /**
+         * marker di tipo meteo
+         * @type {Subscription}
+         */
         this.subscription.add(this.markerService.getMeteoMarker().subscribe( marker => {
             this.meteoMarkers = marker;
         }));
-        this.minMarkerCluster = 3;
+        /**
+         * marker minimi per creare un cluster
+         * @type {number}
+         */
+        this.minMarkerCluster = this.markerService.minMarkerCluster;
     }
 
     ngOnInit() {

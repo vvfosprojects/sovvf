@@ -17,3 +17,8 @@ export interface BoxClickInterface {
     richieste: BoxClickRichieste;
     mezzi: BoxClickMezzi;
 }
+
+export interface BoxClickArrayInterface {
+    richieste: string[];
+    mezzi: string[];
+}
