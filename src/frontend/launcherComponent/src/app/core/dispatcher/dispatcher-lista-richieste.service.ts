@@ -19,12 +19,16 @@ export class DispatcherService {
     }
 
     onNewRichiesteList() {
-        this.newRichiesteList$.next();
-        this.richiesteService.getRichieste()
-            .subscribe({
-                next: data => this.newRichiesteList$.next(data),
-                error: data => console.log(`Errore: + ${data}`)
+        this.richiesteService.getRichieste().subscribe(val => {
+            let newArr;
+            val.SintesiRichiesta.forEach(item => {
+                console.log(item);
+                newArr = this.richieste;
+                newArr.push(item);
             });
+            this.newRichiesteList$.next(newArr);
+        });
+
         return this.newRichiesteList$.asObservable();
     }
 
