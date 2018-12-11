@@ -17,8 +17,7 @@ export class SediMarkerService {
     getSediMarkers(): Observable<any> {
         return this.http.get(API_URL_SEDI).pipe(
             map((data: any) => {
-                const sediMarker = data;
-                return sediMarker;
+                return data;
             }),
             retry(3),
             catchError(this.handleError)

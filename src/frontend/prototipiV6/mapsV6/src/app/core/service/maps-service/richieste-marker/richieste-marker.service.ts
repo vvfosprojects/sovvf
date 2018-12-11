@@ -3,6 +3,7 @@ import {Observable, throwError} from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {environment} from '../../../../../environments/environment';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
 
 const API_URL_RICHIESTE = environment.apiUrl.maps.markers.richieste;
 
@@ -21,8 +22,7 @@ export class RichiesteMarkerService {
     public getRichiesteMarkers(): Observable<any> {
         return this.http.get(API_URL_RICHIESTE).pipe(
             map((data: any) => {
-                const richiesteMarker = data;
-                return richiesteMarker;
+                return data.SintesiRichiestaMarker;
             }),
             retry(3),
             catchError(this.handleError)
