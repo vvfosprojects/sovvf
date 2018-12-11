@@ -64,18 +64,18 @@ import {
         MapsComponent
     ],
     providers: [
-        {provide: RichiesteMarkerManagerService, useClass: RichiesteMarkerManagerServiceFake},
-        {provide: MezziMarkerManagerService, useClass: MezziMarkerManagerServiceFake},
-        {provide: SediMarkerManagerService, useClass: SediMarkerManagerServiceFake},
-        {provide: CentroMappaManagerService, useClass: CentroMappaManagerServiceFake},
-        {provide: DispatcherRichiesteMarkerService, useClass: DispatcherRichiesteMarkerServiceFake},
-        {provide: DispatcherMezziMarkerService, useClass: DispatcherMezziMarkerServiceFake},
-        {provide: DispatcherSediMarkerService, useClass: DispatcherSediMarkerServiceFake},
-        {provide: DispatcherCentroMappaService, useClass: DispatcherCentroMappaServiceFake},
         {provide: RichiesteMarkerService, useClass: RichiesteMarkerServiceFake},
+        {provide: RichiesteMarkerManagerService, useClass: RichiesteMarkerManagerServiceFake},
+        {provide: DispatcherRichiesteMarkerService, useClass: DispatcherRichiesteMarkerServiceFake},
         {provide: MezziMarkerService, useClass: MezziMarkerServiceFake},
+        {provide: MezziMarkerManagerService, useClass: MezziMarkerManagerServiceFake},
+        {provide: DispatcherMezziMarkerService, useClass: DispatcherMezziMarkerServiceFake},
         {provide: SediMarkerService, useClass: SediMarkerServiceFake},
+        {provide: SediMarkerManagerService, useClass: SediMarkerManagerServiceFake},
+        {provide: DispatcherSediMarkerService, useClass: DispatcherSediMarkerServiceFake},
         {provide: CentroMappaService, useClass: CentroMappaServiceFake},
+        {provide: CentroMappaManagerService, useClass: CentroMappaManagerServiceFake},
+        {provide: DispatcherCentroMappaService, useClass: DispatcherCentroMappaServiceFake},
     ]
 })
 export class MapsModule {

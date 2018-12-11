@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-7">
                 <i class="fa fa-users mb-2 mr-1"></i>
-                <span class="font-weight-bold">Personale: <a href="javascript:void(0)">{{personale.personaleTotale}}</a></span>
+                <span class="font-weight-bold">Personale in servizio: <a href="javascript:void(0)" (click)="openModalServizi()">{{personale.personaleTotale}}</a></span>
             </div>
             <div class="col-5 ml-auto text-right text-secondary">
                 <ng-template #funzionariGuardia>
@@ -74,7 +74,7 @@
                     <div class="col-7 pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
                             <li><span class="d-inline-block h6">Squadre in servizio</span></li>
-                            <li><span class="d-inline-block h6">di cui assegnate</span></li>
+                            <li><span class="d-inline-block h6">di cui impegnate</span></li>
                         </ul>
                     </div>
                     <div class="col-5 px-0  text-secondary text-center">

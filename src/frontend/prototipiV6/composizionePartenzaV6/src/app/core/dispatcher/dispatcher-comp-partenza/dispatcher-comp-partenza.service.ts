@@ -1,23 +1,51 @@
 import { Injectable } from '@angular/core';
-import { PreAccoppiato } from 'src/app/composizione-partenza/model/pre-accoppiato.model';
 import { Subject } from 'rxjs';
+
+// Model
+import { Squadra } from '../../../shared/model/squadra.model';
+import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
+import { MezzoComposizione } from 'src/app/composizione-partenza/model/mezzo-composizione.model';
+
+// Service
 import { CompPartenzaService } from '../../service/comp-partenza-service/comp-partenza.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class DispatcherCompPartenzaService {
-  private newPreaccoppiatiList$ = new Subject<PreAccoppiato[]>();
+    private newPreaccoppiatiList$ = new Subject<BoxPartenza[]>();
+    private newMezziComposizioneList$ = new Subject<MezzoComposizione[]>();
+    private newSquadreList$ = new Subject<Squadra[]>();
 
-  constructor(private preaccoppiatiService: CompPartenzaService) { }
+    constructor(private compPartenzaService: CompPartenzaService) { }
 
-  onNewPreAccoppiatiList() {
-      this.newPreaccoppiatiList$.next();
-      this.preaccoppiatiService.getPreAccoppiati()
-          .subscribe({
-              next: data => this.newPreaccoppiatiList$.next(data),
-              error: data => console.log(`Errore: + ${data}`)
-          });
-      return this.newPreaccoppiatiList$.asObservable();
-  }
+    onNewPreAccoppiatiList() {
+        this.newPreaccoppiatiList$.next();
+        this.compPartenzaService.getPreAccoppiati()
+            .subscribe({
+                next: data => this.newPreaccoppiatiList$.next(data),
+                error: data => console.log(`Errore: + ${data}`)
+            });
+        return this.newPreaccoppiatiList$.asObservable();
+    }
+    
+    onNewMezziComposizioneList() {
+        this.newMezziComposizioneList$.next();
+        this.compPartenzaService.getMezziComposizione()
+            .subscribe({
+                next: data => this.newMezziComposizioneList$.next(data),
+                error: data => console.log(`Errore: + ${data}`)
+            });
+        return this.newMezziComposizioneList$.asObservable();
+    }
+
+    onNewSquadreList() {
+        this.newSquadreList$.next();
+        this.compPartenzaService.getSquadre()
+            .subscribe({
+                next: data => this.newSquadreList$.next(data),
+                error: data => console.log(`Errore: + ${data}`)
+            });
+        return this.newSquadreList$.asObservable();
+    }
 }

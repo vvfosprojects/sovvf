@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MapsFiltroService } from '../../maps/maps-ui/filtro/maps-filtro.service';
 
 @Component({
     selector: 'app-marker-meteo-switch',
     templateUrl: './marker-meteo-switch.component.html',
+    encapsulation: ViewEncapsulation.None,
     styleUrls: ['./marker-meteo-switch.component.css']
 })
 export class MarkerMeteoSwitchComponent implements OnInit {

@@ -28,8 +28,8 @@ export const environment = {
             }
         },
         rigaElencoRichieste: {
-            fake: 'https://api.myjson.com/bins/x09t6',
-            backend: 'http://localhost:2661/api'
+            fake: 'https://api.myjson.com/bins/h267u',
+            backend: 'http://win10dev-pc/so115/api/SintesiRichiesteAssistenza'
         },
         elencoTipologie: {
             fake: '../assets/json/tipologie.json',

@@ -20,8 +20,7 @@ export class MezziMarkerService {
     public getMezziMarkers(): Observable<any> {
         return this.http.get(API_URL_MEZZI).pipe(
             map((data: any) => {
-                const mezziMarker = data;
-                return mezziMarker;
+                return data;
             }),
             retry(3),
             catchError(this.handleError)

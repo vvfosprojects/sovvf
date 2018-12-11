@@ -6,8 +6,6 @@ import { SedeMarker } from './maps-model/sede-marker.model';
 import { MezzoMarker } from './maps-model/mezzo-marker.model';
 import { ChiamataMarker } from './maps-model/chiamata-marker.model';
 import { Subscription } from 'rxjs';
-import { Localita } from '../shared/model/localita.model';
-import { Coordinate } from '../shared/model/coordinate.model';
 
 @Component({
     selector: 'app-maps',
@@ -17,7 +15,7 @@ import { Coordinate } from '../shared/model/coordinate.model';
 export class MapsComponent implements OnInit, OnDestroy {
 
     centroMappa: CentroMappa;
-    richiesteMarkers: RichiestaMarker[];
+    richiesteMarkers: RichiestaMarker[] = [];
     sediMarkers: SedeMarker[];
     mezziMarkers: MezzoMarker[];
     chiamataMarker: ChiamataMarker[];
@@ -43,7 +41,9 @@ export class MapsComponent implements OnInit, OnDestroy {
             /**
              *  inizializzo un contatore nel servizio per tenere traccia del numero di richieste
              */
-            this.richiesteManager.count = this.richiesteMarkers.length;
+            if (this.richiesteManager.count > 0) {
+                this.richiesteManager.count = this.richiesteMarkers.length;
+            }
         }));
 
         /**

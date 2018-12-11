@@ -2,13 +2,13 @@
     <div class="col-12">
         <div class="row">
             <div class="col">
-                <i class="fa fa-truck mb-2 mr-1"></i><span class="font-weight-bold">Mezzi in servizio:
+                <i class="fa fa-truck mb-2 mr-1"></i><span class="font-weight-bold cursor-pointer" (click)="clickMezzi('tutti')">Mezzi in servizio:
                     {{mezzi.inServizio}}</span>
             </div>
             <div class="col ml-auto text-secondary text-right">
-                <i class="fa fa-truck mb-2 mr-1"></i>
-                <span class="mr-1">Istituto:</span>
-                <span class="font-weight-bold">{{mezzi.istituto}}</span>
+                <i class="mb-2 mr-1"></i>
+                <span class="mr-2 font-weight-bold">Istituto</span>
+                <span class="badge badge-secondary h6 w-25 cursor-pointer mr-3" [ngClass]="{'border-click-checked': boxClick.mezzi.istituto}" (click)="clickMezzi('istituto')">{{mezzi.istituto}}</span>
             </div>
         </div>
         <hr class="m-0 mb-2">
@@ -26,8 +26,8 @@
                     </div>
                     <div class="col px-0  text-secondary text-center">
                         <ul class="list-unstyled m-0">
-                            <li><span class="badge badge-secondary h6 w-75">{{mezzi.inSede}}</span></li>
-                            <li><span class="badge badge-primary h6 w-75">{{mezzi.inRientro}}</span></li>
+                            <li><span class="badge badge-secondary h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick.mezzi.inSede}" (click)="clickMezzi('inSede')">{{mezzi.inSede}}</span></li>
+                            <li><span class="badge badge-primary h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick.mezzi.inRientro}" (click)="clickMezzi('inRientro')">{{mezzi.inRientro}}</span></li>
                         </ul>
                     </div>
                 </div>
@@ -47,8 +47,8 @@
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
-                            <li><span class="badge badge-info h6 w-75">{{mezzi.inViaggio}}</span></li>
-                            <li><span class="badge badge-success h6 w-75">{{mezzi.sulPosto}}</span></li>
+                            <li><span class="badge badge-info h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick.mezzi.inViaggio}" (click)="clickMezzi('inViaggio')">{{mezzi.inViaggio}}</span></li>
+                            <li><span class="badge badge-success h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick.mezzi.sulPosto}" (click)="clickMezzi('sulPosto')">{{mezzi.sulPosto}}</span></li>
                         </ul>
                     </div>
                 </div>

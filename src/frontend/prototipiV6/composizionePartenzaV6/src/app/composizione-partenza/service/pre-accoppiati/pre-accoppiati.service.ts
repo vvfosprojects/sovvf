@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
-import { PreAccoppiato } from '../../model/pre-accoppiato.model';
+import { BoxPartenza } from '../../model/box-partenza.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PreAccoppiatiService {
-  private preAccoppiatiSelezionati = new Subject<PreAccoppiato[]>();
-  preAccoppiatiSelezionatiArray: PreAccoppiato[] = [];
+  private preAccoppiatiSelezionati = new Subject<BoxPartenza[]>();
+  preAccoppiatiSelezionatiArray: BoxPartenza[] = [];
   newArrayPreAccoppiati = [];
 
   constructor() { }
 
   // PreAccoppiati selezionati
-  sendPreAccoppiatoSelezionato(preAccoppiato: PreAccoppiato) {
+  sendPreAccoppiatoSelezionato(preAccoppiato: BoxPartenza) {
     let count = 0;
     this.preAccoppiatiSelezionatiArray.forEach(preAcc => {
       if (preAccoppiato === preAcc) {
@@ -21,17 +21,17 @@ export class PreAccoppiatiService {
         console.log('trovato');
       }
     });
-    if(count === 0) {
+    if (count === 0) {
       this.preAccoppiatiSelezionatiArray.push(preAccoppiato);
       this.preAccoppiatiSelezionati.next(this.preAccoppiatiSelezionatiArray);
-    }else{
+    } else {
       this.sendPreAccoppiatoDeselezionato(preAccoppiato);
     }
   }
   clearPreAccoppiatiSelezionati() {
     this.preAccoppiatiSelezionati.next();
   }
-  sendPreAccoppiatoDeselezionato(preAccoppiato: PreAccoppiato) {
+  sendPreAccoppiatoDeselezionato(preAccoppiato: BoxPartenza) {
     this.newArrayPreAccoppiati = [];
     this.preAccoppiatiSelezionatiArray.forEach(preAcc => {
       if (preAccoppiato !== preAcc) {

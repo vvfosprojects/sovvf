@@ -1,12 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 @import '../node_modules/bootstrap/dist/css/bootstrap.css';
 @import '../node_modules/font-awesome/css/font-awesome.css';
+@import "~@ng-select/ng-select/themes/default.theme.css";
 
 .nowrap {
     white-space: nowrap;
 }
 .cursor-pointer {
-    cursor: pointer;
+    cursor: pointer !important;
 }
 
 .status_presidiato {
@@ -117,12 +118,20 @@
 .guida {
     color: #bbbbbb;
 }
-
+.bg-grey{
+    background-color: #eeeeee !important;
+}
 .scroll-y{
     overflow-y: scroll;
+    overflow-x: hidden
 }
 
 .border-dashed-3{
     border-width:3px;  
     border-style:dashed;
+}
+
+.disabled {
+    pointer-events:none;
+    opacity:0.6;
 }

@@ -9,13 +9,14 @@ import { TipoColori } from './_color';
 import { AgmService } from '../../agm/agm-service.service';
 import { UnitaAttualeService } from '../../../navbar/navbar-service/unita-attuale/unita-attuale.service';
 import { ListaRichiesteService } from '../../../richieste/lista-richieste-service/lista-richieste-service.service';
-import { RichiesteMarkerManagerService } from '../../../core/manager/maps-manager';
+import { MezziMarkerManagerService, RichiesteMarkerManagerService } from '../../../core/manager/maps-manager';
 import { Coordinate } from '../../../shared/model/coordinate.model';
 import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
 import { CentroMappa } from '../../maps-model/centro-mappa.model';
 import { MapsFiltroService } from '../../maps-ui/filtro/maps-filtro.service';
 import { MeteoMarker } from '../../maps-model/meteo-marker.model';
 import { Localita } from '../../../shared/model/localita.model';
+import { BoxClickArrayInterface } from '../../../boxes/info-aggregate/box-service/box-click-interface';
 
 @Injectable({
     providedIn: 'root'
@@ -29,6 +30,7 @@ export class MarkerService implements OnDestroy {
     tipo = new TipoMappe();
     colori = new TipoColori();
     coloreStato: string;
+    minMarkerCluster: number;
 
     markerColorato: boolean;
     markerSelezionato: any;
@@ -45,6 +47,7 @@ export class MarkerService implements OnDestroy {
                 private agmService: AgmService,
                 private richiesteService: ListaRichiesteService,
                 private markerRichiesteManager: RichiesteMarkerManagerService,
+                private markerMezziManager: MezziMarkerManagerService,
                 private unitaAttualeS: UnitaAttualeService,
                 private mapsFiltroService: MapsFiltroService) {
         this.subscription.add(this.markedService.getMarked().subscribe(marker => {
@@ -66,6 +69,14 @@ export class MarkerService implements OnDestroy {
                 this.subjectMeteoMarkers.next([]);
             }
         }));
+        this.subscription.add(this.mapsFiltroService.getFiltroBoxes().subscribe( (filtroBoxes: BoxClickArrayInterface) => {
+            this.filtroBoxes(filtroBoxes);
+        }));
+        /**
+         * marker minimi per creare un cluster
+         * @type {number}
+         */
+        this.minMarkerCluster = 99999;
     }
 
     ngOnDestroy() {
@@ -251,7 +262,6 @@ export class MarkerService implements OnDestroy {
         /**
          *  faccio una chiamata all'api del servizio meteo e aspetto i dati del marker selezionato
          */
-        // this.subjectMeteo.next();
         this.meteoService.getMeteoData(this.getCoordinate(marker))
             .subscribe({
                 next: data => this.subjectMeteo.next(data),
@@ -329,13 +339,39 @@ export class MarkerService implements OnDestroy {
     /**
      * metodo che chiama il manager e cambia la proprietà opacità al marker
      * @param action
+     * @param tipo
+     * @param filterState
      * @param stringSearch
      */
-    opacizzaMarkers(action: boolean, stringSearch?: string[]): void {
-        if (action) {
-            this.markerRichiesteManager.cambiaOpacitaMarker(true, stringSearch);
+    opacizzaMarkers(action: boolean, tipo: string, filterState?: string[], stringSearch?: string[]): void {
+        const className = 'marker' + capitalize(tipo) + 'Manager';
+        if (this[className]) {
+            if (action) {
+                this[className].cambiaOpacitaMarker(true, filterState, stringSearch);
+            } else {
+                this[className].cambiaOpacitaMarker(false);
+            }
         } else {
-            this.markerRichiesteManager.cambiaOpacitaMarker(false);
+            console.log('manager non esistente');
+        }
+
+        function capitalize(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+    }
+
+    filtroBoxes(obj: BoxClickArrayInterface) {
+        console.log(obj);
+        if (obj.richieste.length > 0) {
+            this.opacizzaMarkers(true, 'richieste', obj.richieste, undefined);
+        } else {
+            this.opacizzaMarkers(false, 'richieste');
+        }
+        if (obj.mezzi.length > 0) {
+            this.opacizzaMarkers(true, 'mezzi', obj.mezzi, undefined);
+        } else {
+            this.opacizzaMarkers(false, 'mezzi');
         }
     }
 

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry, map } from 'rxjs/operators';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
-const API_URL_RICHIESTE = environment.apiUrl.rigaElencoRichieste.fake;
+const API_URL_RICHIESTE = environment.apiUrl.rigaElencoRichieste.backend;
 
 @Injectable({
     providedIn: 'root'
@@ -15,14 +15,45 @@ export class SintesiRichiesteService {
     }
 
     public getRichieste(): Observable<any> {
-        return this.http.get(API_URL_RICHIESTE).pipe(
+        /* Genero le richieste nel backend */
+        return this.http.get('http://win10dev-pc/so115/api/GeneraSintesiRichiesteAssistenza').pipe(
+            catchError(this.handleError)
+        );
+
+        /* Ritorno le richieste "paginate" */
+        /* return this.http.get('http://win10dev-pc/so115/api/SintesiRichiesteAssistenza?SearchKey=\'R0\'&RichiestaSingola=true').pipe(
+            catchError(this.handleError)
+        ); */
+        /* const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/x-www-form-urlencoded',
+            })
+        };
+
+        let body = {
+            SearchKey: "R0",
+            RichiestaSingola: "true"
+        }
+
+        return this.http.post(API_URL_RICHIESTE, JSON.stringify(body), httpOptions).pipe(
             map((data: any) => {
-                const richieste = data.SintesiRichiesta;
+                console.log('Service: ' + data);
+                const richieste = data;
+                return richieste;
+            }),
+            // retry(3),
+            catchError(this.handleError)
+        ); */
+
+        /* return this.http.get(API_URL_RICHIESTE).pipe(
+            map((data: any) => {
+                console.log('Service: ' + data);
+                const richieste = data;
                 return richieste;
             }),
             retry(3),
             catchError(this.handleError)
-        );
+        ); */
     }
 
     private handleError(error: HttpErrorResponse) {

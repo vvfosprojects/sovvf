@@ -13,18 +13,22 @@ export class DispatcherService {
     private newRichiesta$ = new Subject<SintesiRichiesta>();
     private deleteRichiesta$ = new Subject<SintesiRichiesta>();
 
-    richieste: SintesiRichiesta[];
+    richieste: SintesiRichiesta[] = [];
 
     constructor(private richiesteService: SintesiRichiesteService) {
     }
 
     onNewRichiesteList() {
-        this.newRichiesteList$.next();
-        this.richiesteService.getRichieste()
-            .subscribe({
-                next: data => this.newRichiesteList$.next(data),
-                error: data => console.log(`Errore: + ${data}`)
+        this.richiesteService.getRichieste().subscribe(val => {
+            let newArr;
+            val.forEach(item => {
+                console.log(item);
+                newArr = this.richieste;
+                newArr.push(item);
             });
+            this.newRichiesteList$.next(newArr);
+        });
+
         return this.newRichiesteList$.asObservable();
     }
 

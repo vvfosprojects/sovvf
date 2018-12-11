@@ -1,12 +1,9 @@
 @import '../node_modules/bootstrap/dist/css/bootstrap.css';
 @import '../node_modules/font-awesome/css/font-awesome.css';
-@import '../node_modules/primeng/resources/themes/bootstrap/theme.css';
-@import '../node_modules/primeng/resources/primeng.min.css';
-@import '../node_modules/primeicons/primeicons.css';
 @import '../node_modules/snazzy-info-window/dist/snazzy-info-window.css';
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import '~ngx-ui-switch/ui-switch.component.scss';
-
+@import '~ngx-toastr/toastr.css';
 
 @font-face {
     font-family: 'icon-marker';
@@ -187,6 +184,15 @@ a:hover {
 }
 .scroll-y{
     overflow-y: scroll;
+}
+.border-dashed-3{
+    border-width:3px;  
+    border-style:dashed;
+}
+
+.disabled {
+    pointer-events:none;
+    opacity:0.6;
 }
 .sidebar{
     width:100%;

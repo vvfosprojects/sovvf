@@ -1,31 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 /*
-    Modules
+    Module
  */
 import { PipeModule } from '../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { TimeagoModule, TimeagoIntl, TimeagoFormatter, TimeagoCustomFormatter } from 'ngx-timeago';
 import { SintesiRichiestaModule } from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 /*
     Component
   */
 import { ComposizionePartenzaComponent } from './composizione-partenza.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { NavFasterComponent } from './composizione-veloce/nav-faster/nav.component';
 import { SlowerComponent } from './composizione-avanzata/slower.component';
 import { FasterComponent } from './composizione-veloce/faster.component';
-import { NavSlowerComponent } from './composizione-avanzata/nav-slower/nav.component';
+import { BoxNuovaPartenzaComponent } from './box-nuova-partenza/box-nuova-partenza.component';
+import { MezzoComposizioneComponent } from './composizione-avanzata/mezzo-composizione/mezzo-composizione.component';
+import { SquadraComposizioneComponent } from './composizione-avanzata/squadra-composizione/squadra-composizione.component';
+import { ComposizioneFilterbarComponent } from './composizione-filterbar/composizione-filterbar.component';
 /*
     Provider
  */
-import { DispatcherService } from '../core/dispatcher/dispatcher-lista-richieste.service';
-import { DispatcherFakeService } from '../core/dispatcher/dispatcher-lista-richieste-fake.service';
-import { ListaRichiesteManagerService } from '../core/manager/lista-richieste-manager/lista-richieste-manager.service';
-import { ListaRichiesteManagerServiceFake } from '../core/manager/lista-richieste-manager/lista-richieste-manager.service.fake';
-import { SintesiRichiesteService } from '../core/service/lista-richieste-service/lista-richieste.service';
-import { SintesiRichiesteServiceFake } from '../core/service/lista-richieste-service/lista-richieste.service.fake';
 import { DispatcherCompPartenzaService } from '../core/dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.service';
 import { DispatcherCompPartenzaFakeService } from '../core/dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.fake.service';
 import { CompPartenzaManagerService } from '../core/manager/comp-partenza-manager/comp-partenza-manager.service';
@@ -38,8 +35,10 @@ import { CompPartenzaServiceFake } from '../core/service/comp-partenza-service/c
     ComposizionePartenzaComponent,
     FasterComponent,
     SlowerComponent,
-    NavFasterComponent,
-    NavSlowerComponent
+    BoxNuovaPartenzaComponent,
+    MezzoComposizioneComponent,
+    SquadraComposizioneComponent,
+    ComposizioneFilterbarComponent
   ],
   imports: [
     BrowserModule,
@@ -51,16 +50,13 @@ import { CompPartenzaServiceFake } from '../core/service/comp-partenza-service/c
       intl: TimeagoIntl,
       formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
     }),
+    NgSelectModule,
     SintesiRichiestaModule
   ],
   exports: [
     ComposizionePartenzaComponent
   ],
   providers: [
-    { provide: DispatcherService, useClass: DispatcherFakeService },
-    { provide: ListaRichiesteManagerService, useClass: ListaRichiesteManagerServiceFake },
-    { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake },
-
     { provide: DispatcherCompPartenzaService, useClass: DispatcherCompPartenzaFakeService },
     { provide: CompPartenzaManagerService, useClass: CompPartenzaManagerServiceFake },
     { provide: CompPartenzaService, useClass: CompPartenzaServiceFake }

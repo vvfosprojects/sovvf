@@ -16,14 +16,13 @@ export class ListaRichiesteManagerService {
 
     getRichieste() {
         this.newRichiesteList$.next();
-        this.dispatcher.onNewRichiesteList()
-            .subscribe({
-                next: data => {
-                    this.richieste = data;
-                    this.newRichiesteList$.next(data);
-                },
-                error: data => console.log(`Errore: + ${data}`)
-            });
+        this.dispatcher.onNewRichiesteList().subscribe({
+            next: data => {
+                this.richieste = data;
+                this.newRichiesteList$.next(data);
+            },
+            error: data => console.log(`Errore: + ${data}`)
+        });
         return this.newRichiesteList$.asObservable();
     }
 

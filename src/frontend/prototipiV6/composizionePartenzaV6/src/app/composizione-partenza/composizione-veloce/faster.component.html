@@ -1,10 +1,13 @@
 <div class="row">
-  <div class="col-12 border-bottom border-top scroll-y pt-2 pb-1" style="max-height:440px;">
+  <div class="col-12 border-bottom border-top scroll-y pt-2 pb-1" style="max-height:405px">
     <div class="row">
-      <app-preaccoppiato class="col-3" *ngFor="let preAcc of preAccoppiati" [preAcc]="preAcc" [richiesta]="richiesta"
-        [preAccoppiatiSelezionati]="preAccoppiatiSelezionati" (selezionato)="preAccoppiatoSelezionato($event)"></app-preaccoppiato>
+      <app-box-nuova-partenza class="col-3" *ngFor="let preAcc of preAccoppiati" [partenza]="preAcc" [richiesta]="richiesta"
+        [preAccoppiatiSelezionati]="preAccoppiatiSelezionati" (selezionato)="preAccoppiatoSelezionato($event)"></app-box-nuova-partenza>
     </div>
   </div>
+  <div class="col-12 text-right">
+    <button class="btn btn-success mt-2 w-25" [disabled]="preAccoppiatiSelezionati.length <= 0">
+      Conferma - <span class="font-weight-bold">{{preAccoppiatiSelezionati.length}} partenze</span>
+    </button>
+  </div>
 </div>
-
-<!-- <span *ngIf="preAccoppiatiSelezionati">{{preAccoppiatiSelezionati | json}}</span> -->

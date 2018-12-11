@@ -1,162 +1,38 @@
 <div class="row">
-  <div class="col-12 mt-2">
+  <div class="col-12">
+    <app-composizione-filterbar></app-composizione-filterbar>
     <div class="row">
-      <div class="col-3"></div>
-      <div class="col-3">
-        <div class="card card-shadow">
+      <div class="col-5 pr-0">
+        <div class="card card-shadow mx-auto">
           <div class="card-header">
-            Mezzi
+            <i class="fa fa-truck mr-2"></i><span class="h6">Mezzi</span>
           </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-3 pr-0 text-center">
-                  <i class="fa fa-truck"></i>
-                </div>
-                <div class="col-5 pl-1">
-                  <span>A1</span>
-                </div>
-                <div class="col-3 pl-1 text-right">
-                  <i class="fa fa-group"></i>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-3 pr-0 text-center">
-                  <i class="fa fa-truck"></i>
-                </div>
-                <div class="col-5 pl-1">
-                  <span>A2</span>
-                </div>
-                <div class="col-3 pl-1 text-right">
-                  <i class="fa fa-group"></i>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-3 pr-0 text-center">
-                  <i class="fa fa-truck"></i>
-                </div>
-                <div class="col-5 pl-1">
-                  <span>A3</span>
-                </div>
-                <div class="col-3 pl-1 text-right">
-                  <i class="fa fa-group"></i>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-3 pr-0 text-center">
-                  <i class="fa fa-truck"></i>
-                </div>
-                <div class="col-5 pl-1">
-                  <span>A4</span>
-                </div>
-                <div class="col-3 pl-1 text-right">
-                  <i class="fa fa-group"></i>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-3 pr-0 text-center">
-                  <i class="fa fa-truck"></i>
-                </div>
-                <div class="col-5 pl-1">
-                  <span>A5</span>
-                </div>
-                <div class="col-3 pl-1 text-right">
-                  <i class="fa fa-group"></i>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-3 pr-0 text-center">
-                  <i class="fa fa-truck"></i>
-                </div>
-                <div class="col-5 pl-1">
-                  <span>A6</span>
-                </div>
-                <div class="col-3 pl-1 text-right">
-                  <i class="fa fa-group"></i>
-                </div>
-              </div>
-            </li>
+          <ul class="list-group list-group-flush border-bottom" style="max-height:345px; overflow-y:scroll; overflow-x: hidden">
+            <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC" [squadre]="squadre"
+              [partenze]="partenze" [idPartenzaAttuale]="idPartenzaAttuale" (nuovoMezzo)="nuovoMezzo()"></app-mezzo-composizione>
           </ul>
         </div>
       </div>
-      <div class="col-1"></div>
-      <div class="col-3">
-        <div class="card card-shadow">
+      <div class="col-3 pr-0">
+        <div class="card card-shadow mx-auto">
           <div class="card-header">
-            Squadre
+            <i class="fa fa-group mr-2"></i><span class="h6">Squadre</span>
           </div>
-          <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-3 pr-0 text-center">
-                    <i class="fa fa-group"></i>
-                  </div>
-                  <div class="col-5 pl-1">
-                    <span>Rossa</span>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-3 pr-0 text-center">
-                    <i class="fa fa-group"></i>
-                  </div>
-                  <div class="col-5 pl-1">
-                    <span>Gialla</span>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-3 pr-0 text-center">
-                    <i class="fa fa-group"></i>
-                  </div>
-                  <div class="col-5 pl-1">
-                    <span>Blu</span>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-3 pr-0 text-center">
-                    <i class="fa fa-group"></i>
-                  </div>
-                  <div class="col-5 pl-1 pr-0">
-                    <span>Marrone</span>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-3 pr-0 text-center">
-                    <i class="fa fa-group"></i>
-                  </div>
-                  <div class="col-5 pl-1">
-                    <span>Viola</span>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-3 pr-0 text-center">
-                    <i class="fa fa-group"></i>
-                  </div>
-                  <div class="col-5 pl-1">
-                    <span>Verde</span>
-                  </div>
-                </div>
-              </li>
+          <ul class="list-group list-group-flush border-bottom" style="max-height:345px; overflow-y:scroll; overflow-x: hidden">
+            <app-squadra-composizione *ngFor="let s of squadre" [squadra]="s" [partenze]="partenze" [idPartenzaAttuale]="idPartenzaAttuale"></app-squadra-composizione>
           </ul>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card border-dashed-3 w-100 py-3 px-2">
+          <div *ngIf="partenze.length === 0" class="py-5 text-center">
+            <h6>Nessuna partenza</h6>
+            <small>Seleziona un mezzo o una squadra per crearne una.</small>
+          </div>
+          <div *ngIf="partenze.length > 0">
+            <app-box-nuova-partenza *ngFor="let p of partenze" [partenza]="p" [richiesta]="richiesta" [idPartenzaAttuale]="idPartenzaAttuale" (selezionato)="modificaPartenza($event)"></app-box-nuova-partenza>
+            <button class="btn btn-block btn-success card-shadow">Conferma</button>
+          </div>
         </div>
       </div>
     </div>

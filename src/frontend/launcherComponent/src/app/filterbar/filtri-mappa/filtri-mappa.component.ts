@@ -21,7 +21,7 @@ export class FiltriMappaComponent implements OnInit {
 
     onSelected(selected) {
         const index = this.markerMenu.findIndex(obj => obj.id === selected);
-        this.markerMenu[index].isActive ? this.markerMenu[index].isActive = false : this.markerMenu[index].isActive = true;
+        this.markerMenu[index].isActive =  !this.markerMenu[index].isActive;
         this.mapsFiltroService.sendMenu(this.markerMenu);
     }
 

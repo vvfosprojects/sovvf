@@ -18,9 +18,9 @@ export const environment = {
         },
         maps: {
             markers: {
-                richieste: 'https://api.myjson.com/bins/xua22',
+                richieste: 'https://api.myjson.com/bins/1d36v8',
                 sedi: 'https://api.myjson.com/bins/18m83u',
-                mezzi: '',
+                mezzi: 'https://api.myjson.com/bins/jwy84',
                 centro: ''
             },
             agm: {

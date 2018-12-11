@@ -20,6 +20,6 @@ export class MarkerService {
         // console.log('No action');
     }
 
-    opacizzaMarkers(a, b?) {
+    opacizzaMarkers(a, b, c?, d?) {
     }
 }

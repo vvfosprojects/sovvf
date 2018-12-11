@@ -11,8 +11,7 @@ export class DispatcherRichiesteMarkerService {
     private updateRichiestaMarker$ = new Subject<RichiestaMarker>();
     private newRichiestaMarker$ = new Subject<RichiestaMarker>();
     private deleteRichiestaMarker$ = new Subject<RichiestaMarker>();
-
-    richiesteMarkers: RichiestaMarker[];
+    private subjectRichiestaMarkers$ = new Subject<RichiestaMarker[]>();
 
     constructor(private richiesteMarkersService: RichiesteMarkerService) {
     }
@@ -22,10 +21,13 @@ export class DispatcherRichiesteMarkerService {
      */
 
     onNewRichiesteMarkersList(): Observable<RichiestaMarker[]> {
-        this.richiesteMarkersService.getRichiesteMarkers().subscribe((richiesteMarker: RichiestaMarker[]) => {
-            this.richiesteMarkers = richiesteMarker;
-        });
-        return of(this.richiesteMarkers);
+        this.subjectRichiestaMarkers$.next();
+        this.richiesteMarkersService.getRichiesteMarkers()
+            .subscribe({
+                next: data => this.subjectRichiestaMarkers$.next(data),
+                error: data => console.log(`Errore: ${data}`)
+            });
+        return this.subjectRichiestaMarkers$.asObservable();
     }
 
     onNewRichiestaMarker(): Observable<RichiestaMarker> {

@@ -5,6 +5,8 @@ import { Sede } from '../../../shared/model/sede.model';
 import { UnitaOperativaService } from '../unita-operativa-service/unita-operativa.service';
 import { UnitaAttualeService } from '../unita-attuale/unita-attuale.service';
 import { GetSediSelezionateTreeView } from './_get-sedi-selezionate-treeview';
+import { AbbreviaSedi } from './_abbrevia-sedi';
+import { LivelliSedi } from './treeview.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -15,20 +17,25 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
     private unitaOperative: Sede[];
     private unitaAttuale: string[] = [];
     private treeViewSedi;
+    private _truncate: any;
     _get: any;
+
     /**
      * inserire qui la "configurazione" dei livelli del treeview di sedi
      */
     private livelli: LivelliSedi = {
-        primo: ['Direzione'],
-        secondo: ['Comando'],
-        terzo: ['Distaccamento']
+        primo: ['direzione'],
+        secondo: ['comando'],
+        terzo: ['distaccamento']
     };
 
     constructor(private unitaOperativaS: UnitaOperativaService,
                 private unitaAttualeS: UnitaAttualeService) {
+        this._truncate = new AbbreviaSedi();
+        this.unitaAttualeS.livelli = this.livelli;
         this.unitaOperativaS.getUnitaOperative().subscribe(unitaOperative => {
             this.unitaOperative = unitaOperative;
+            this.unitaAttualeS.unitaOC = unitaOperative;
             this._get = new GetSediSelezionateTreeView(unitaOperative, this.createSediTreeItem());
         });
         this.subscription.add(
@@ -48,7 +55,7 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
     }
 
     getSediAttualiString(): string {
-        return this._get.sediSelezionate(this.unitaAttuale).testo;
+        return this._truncate.sedeString(this._get.sediSelezionate(this.unitaAttuale).testo);
     }
 
     createSediTreeItem(): TreeItem {
@@ -60,10 +67,10 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
          */
         const attuale = this.unitaAttuale;
 
-      /**
-       * array di oggetti di tutte le sedi esistenti
-       * @type {Sede[]}
-       */
+        /**
+         * array di oggetti di tutte le sedi esistenti
+         * @type {Sede[]}
+         */
         const unitaOperative = this.unitaOperative;
 
 
@@ -72,7 +79,7 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
          */
         const direzioni: TreeItem[] = [];
         unitaOperative.forEach(r => {
-            if (!r.provincia && self.primo.includes(r.tipo)) {
+            if (!r.provincia && self.primo.includes(r.tipo.toLowerCase())) {
                 direzioni.push({
                     text: r.descrizione,
                     value: r.codice,
@@ -96,8 +103,9 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
         function getComandi(value: string): { comandi: TreeItem[]; collapsed: boolean; allChecked: boolean } {
             const comandi: TreeItem[] = [];
             let countC = 0;
+            let countCollapsed = 0;
             unitaOperative.forEach(c => {
-                if (self.secondo.includes(c.tipo) && c.regione === value) {
+                if (self.secondo.includes(c.tipo.toLowerCase()) && c.regione === value) {
                     comandi.push({
                         text: c.descrizione,
                         value: c.codice,
@@ -105,6 +113,7 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
                         checked: attuale.includes(c.codice),
                         children: getDistaccamenti(c.provincia).distaccamenti
                     });
+                    countCollapsed += !getDistaccamenti(c.provincia).collapsed ? 1 : 0;
                     if (getDistaccamenti(c.provincia).allChecked || !getDistaccamenti(c.provincia).collapsed) {
                         countC += 1;
                     } else {
@@ -113,23 +122,27 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
                 }
             });
             const allChecked = (comandi.length === countC);
+            let collapsed = (countC === 0 || countC > 0 && allChecked);
+            if (countCollapsed !== 0) {
+                collapsed = false;
+            }
             return {
                 comandi: comandi,
-                collapsed: (countC === 0 || countC > 0 && allChecked),
+                collapsed: collapsed,
                 allChecked: allChecked
             };
         }
 
-      /**
-       * funzione che ritorna i distaccamenti di una provincia, e ritorna true se c'è almeno un distaccamento presente
-       * @param {string} value
-       * @returns {{distaccamenti: TreeItem[]; checkedD: boolean}}
-       */
+        /**
+         * funzione che ritorna i distaccamenti di una provincia, e ritorna true se c'è almeno un distaccamento presente
+         * @param {string} value
+         * @returns {{distaccamenti: TreeItem[]; checkedD: boolean}}
+         */
         function getDistaccamenti(value: string): { distaccamenti: TreeItem[]; collapsed: boolean; allChecked: boolean } {
             const distaccamenti: TreeItem[] = [];
             let countD = 0;
             unitaOperative.forEach(d => {
-                if (self.terzo.includes(d.tipo) && d.provincia === value) {
+                if (self.terzo.includes(d.tipo.toLowerCase()) && d.provincia === value) {
                     distaccamenti.push({
                         text: d.descrizione,
                         value: d.codice,
@@ -145,12 +158,11 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
                 allChecked: allChecked
             };
         }
-
         /**
          * ritorno l'oggetto CON completo di tipo TreeItem
          * @type {TreeItem[]}
          */
-        return {text: 'CON', value: '0', collapsed: (countR === 0), children: direzioni};
+        return { text: 'CON', value: '0', collapsed: (countR === 0), children: direzioni };
     }
 
     /**
@@ -161,10 +173,4 @@ export class UnitaOperativaTreeviewService implements OnDestroy {
         return of([new TreeviewItem(this.treeViewSedi)]);
     }
 
-}
-
-export interface LivelliSedi {
-    primo: string[];
-    secondo: string[];
-    terzo: string[];
 }

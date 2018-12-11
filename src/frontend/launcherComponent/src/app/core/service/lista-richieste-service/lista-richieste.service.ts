@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry, map } from 'rxjs/operators';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
-const API_URL_RICHIESTE = environment.apiUrl.rigaElencoRichieste.fake;
+const API_URL_RICHIESTE = environment.apiUrl.rigaElencoRichieste.backend + '?SearchKey=R0&RichiestaSingola=false';
+
+const headers = new HttpHeaders({
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json'
+});
+const httpOptions = { headers: headers };
 
 @Injectable({
     providedIn: 'root'
@@ -15,12 +21,12 @@ export class SintesiRichiesteService {
     }
 
     public getRichieste(): Observable<any> {
-        return this.http.get(API_URL_RICHIESTE).pipe(
+        return this.http.get(API_URL_RICHIESTE, httpOptions).pipe(
             map((data: any) => {
+                console.log('Service Lista Richieste: ', data.SintesiRichiesta);
                 const richieste = data.SintesiRichiesta;
                 return richieste;
             }),
-            retry(3),
             catchError(this.handleError)
         );
     }

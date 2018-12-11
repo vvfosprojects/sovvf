@@ -1,5 +1,5 @@
 /**
- *  classe che ritorna l'url del marker da visualizzare sulla mappa
+ *  classe che ritorna il nome file del marker da visualizzare sulla mappa
  */
 export class IconMappe {
     /**
@@ -36,8 +36,11 @@ export class IconMappe {
         /**
          * creo delle mappe di oggetti per ricavare il path dell'immagine date le proprietà del marker
          */
-        this.pathUrl = '../../../../assets/img/icone-markers/';
+        this.pathUrl = 'assets/img/icone-markers/';
 
+        /**
+         * directory delle icone
+         */
         this.iconeModello = [
             ['richiesta', 'richieste/'],
             ['mezzo', 'mezzi/'],
@@ -46,6 +49,9 @@ export class IconMappe {
         ];
         this.mapIconeModelloPath = new Map(this.iconeModello);
 
+        /**
+         * nome file icona richieste da mostrare sulla mappa
+         */
         this.iconeStati = [
             ['chiam', 'danger.png'],
             ['asseg', 'info.png'],
@@ -64,6 +70,9 @@ export class IconMappe {
         ];
         this.mapIconeSize = new Map(this.iconeGrandezza);
 
+        /**
+         * nome file icona sedi da mostrare all'interno del info window di marker sede
+         */
         this.iconeTipoSedi = [
             ['aeroportuale', 'aeroportuale.gif'],
             ['afmp', 'afmp.jpg'],
@@ -90,6 +99,9 @@ export class IconMappe {
         ];
         this.mapIconeTipoSedi = new Map(this.iconeTipoSedi);
 
+        /**
+         * nome file icona mezzi da mostrare sulla mappa
+         */
         this.iconeMezzi = [
             ['insed', 'insede.png'],
             ['invia', 'inviaggio.png'],
@@ -97,19 +109,34 @@ export class IconMappe {
             ['sulpo', 'sulposto.png'],
             ['istit', 'istituto.png']
         ];
-        // this.iconeMezzi = [
-        //     ['insed', 'insede2.png'],
-        //     ['invia', 'inviaggio2.png'],
-        //     ['inrie', 'inrientro2.png'],
-        //     ['sulpo', 'sulposto2.png'],
-        //     ['istit', 'istituto2.png']
-        // ];
         this.mapIconeMezzi = new Map(this.iconeMezzi);
 
+        /**
+         * nome file icona sedi da mostrare sulla mappa
+         */
         this.iconeSedi = [
+            ['aeroportuale', 'sede5.png'],
+            ['afmp', 'sede5.png'],
+            ['centri_polifunzionali', 'sede5.png'],
+            ['cinofili', 'sede5.png'],
             ['comando', 'sede5.png'],
+            ['direzioni', 'sede5.png'],
+            ['elicotteristi', 'sede5.png'],
+            ['nbcr', 'sede5.png'],
+            ['nbcr_avanzato', 'sede5.png'],
+            ['nbcr_ordinari', 'sede5.png'],
+            ['poli_didattici', 'sede5.png'],
+            ['portuale', 'sede5.png'],
+            ['presidi_acquatici', 'sede5.png'],
+            ['saf', 'sede5.png'],
             ['distaccamento', 'sede5.png'],
-            ['direzioni', 'sede5.png']
+            ['sedi_varie', 'sede5.png'],
+            ['sommozzatori', 'sede5.png'],
+            ['telecomunicazioni', 'sede5.png'],
+            ['tlc', 'sede5.png'],
+            ['uas', 'sede5.png'],
+            ['volontari', 'sede5.png'],
+            ['volontari_stag', 'sede5.png']
         ];
         this.mapIconeSedi = new Map(this.iconeSedi);
     }

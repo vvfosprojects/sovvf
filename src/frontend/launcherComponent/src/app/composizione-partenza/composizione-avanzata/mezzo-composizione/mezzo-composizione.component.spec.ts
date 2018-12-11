@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PreaccoppiatoComponent } from './preaccoppiato.component';
+import { MezzoComposizioneComponent } from './mezzo-composizione.component';
 
-describe('PreaccoppiatoComponent', () => {
-  let component: PreaccoppiatoComponent;
-  let fixture: ComponentFixture<PreaccoppiatoComponent>;
+describe('MezzoComponent', () => {
+  let component: MezzoComposizioneComponent;
+  let fixture: ComponentFixture<MezzoComposizioneComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PreaccoppiatoComponent ]
+      declarations: [ MezzoComposizioneComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PreaccoppiatoComponent);
+    fixture = TestBed.createComponent(MezzoComposizioneComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

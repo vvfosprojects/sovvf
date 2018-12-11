@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {of, Observable, Subject} from 'rxjs';
-import {MezziMarkerService} from '../../../service/maps-service/mezzi-marker/mezzi-marker.service';
-import {MezzoMarker} from '../../../../maps/maps-model/mezzo-marker.model';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { MezziMarkerService } from '../../../service/maps-service/mezzi-marker/mezzi-marker.service';
+import { MezzoMarker } from '../../../../maps/maps-model/mezzo-marker.model';
 
 
 @Injectable({
@@ -12,8 +12,7 @@ export class DispatcherMezziMarkerService {
     private updateMezzoMarker$ = new Subject<MezzoMarker>();
     private newMezzoMarker$ = new Subject<MezzoMarker>();
     private deleteMezzoMarker$ = new Subject<MezzoMarker>();
-
-    mezziMarkers: MezzoMarker[];
+    private subjectMezzoMarkers$ = new Subject<MezzoMarker[]>();
 
     constructor(private mezziMarkersService: MezziMarkerService) {
     }
@@ -23,10 +22,13 @@ export class DispatcherMezziMarkerService {
      */
 
     onNewMezziMarkersList(): Observable<MezzoMarker[]> {
-        this.mezziMarkersService.getMezziMarkers().subscribe((mezzoMarker: MezzoMarker[]) => {
-            this.mezziMarkers = mezzoMarker;
-        });
-        return of(this.mezziMarkers);
+        this.subjectMezzoMarkers$.next();
+        this.mezziMarkersService.getMezziMarkers()
+            .subscribe({
+                next: data => this.subjectMezzoMarkers$.next(data),
+                error: data => console.log(`Errore: ${data}`)
+            });
+        return this.subjectMezzoMarkers$.asObservable();
     }
 
     onNewMezzoMarker(): Observable<MezzoMarker> {

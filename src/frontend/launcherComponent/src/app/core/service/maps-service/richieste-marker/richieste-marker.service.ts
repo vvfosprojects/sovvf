@@ -21,8 +21,7 @@ export class RichiesteMarkerService {
     public getRichiesteMarkers(): Observable<any> {
         return this.http.get(API_URL_RICHIESTE).pipe(
             map((data: any) => {
-                const richiesteMarker = data;
-                return richiesteMarker;
+                return data.SintesiRichiestaMarker;
             }),
             retry(3),
             catchError(this.handleError)
