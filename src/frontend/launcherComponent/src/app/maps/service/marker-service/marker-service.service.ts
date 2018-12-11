@@ -76,7 +76,7 @@ export class MarkerService implements OnDestroy {
          * marker minimi per creare un cluster
          * @type {number}
          */
-        this.minMarkerCluster = 3;
+        this.minMarkerCluster = 99999;
     }
 
     ngOnDestroy() {

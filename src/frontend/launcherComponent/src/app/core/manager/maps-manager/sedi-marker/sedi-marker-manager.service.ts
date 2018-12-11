@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { DispatcherSediMarkerService } from '../../../dispatcher/dispatcher-maps/sedi-marker/dispatcher-sedi-marker.service';
 import { SedeMarker } from '../../../../maps/maps-model/sede-marker.model';
 
@@ -32,7 +32,7 @@ export class SediMarkerManagerService {
 
     }
 
-    getSediMarker() {
+    getSediMarker(): Observable<SedeMarker[]> {
         this.subjectSediMarkers$.next();
         this.dispatcher.onNewSediMarkersList()
             .subscribe({

@@ -18,10 +18,9 @@ export const environment = {
         },
         maps: {
             markers: {
-                richieste: 'http://win10dev-pc/so115rest/api/SintesiRichiesteAssistenzaMarker',
-                /* richieste: 'https://api.myjson.com/bins/ztfpi', */
+                richieste: 'https://api.myjson.com/bins/1d36v8',
                 sedi: 'https://api.myjson.com/bins/18m83u',
-                mezzi: '',
+                mezzi: 'https://api.myjson.com/bins/jwy84',
                 centro: ''
             },
             agm: {

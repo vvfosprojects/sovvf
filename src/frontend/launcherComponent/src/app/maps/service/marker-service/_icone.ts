@@ -160,7 +160,6 @@ export class IconMappe {
                 case 'richiesta': {
                     this.iconaStatoCorrenteSize = this.mapIconeSize.get(marker.priorita);
                     const statoRichiesta = this.mapIconeUrl.get(marker.stato.substring(0, 5).toLowerCase());
-                    console.log(marker.stato.substring(0, 5).toLowerCase());
                     this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize + statoRichiesta;
                     if (!this.iconaStatoCorrenteSize || !statoRichiesta) {
                         return undefined;

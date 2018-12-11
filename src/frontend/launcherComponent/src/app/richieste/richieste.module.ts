@@ -54,9 +54,9 @@ import { SintesiRichiestaModule } from './lista-richieste/sintesi-richiesta/sint
         RichiesteComponent
     ],
     providers: [
-        /* { provide: DispatcherService, useClass: DispatcherFakeService },
+        { provide: DispatcherService, useClass: DispatcherFakeService },
         { provide: ListaRichiesteManagerService, useClass: ListaRichiesteManagerServiceFake },
-        { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake } */
+        { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }
     ]
 })
 export class RichiesteModule { }

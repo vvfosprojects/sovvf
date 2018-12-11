@@ -8,12 +8,10 @@ import {RichiestaMarker} from '../../../../maps/maps-model/richiesta-marker.mode
     providedIn: 'root'
 })
 export class DispatcherRichiesteMarkerService {
-    private newRichiesteMarkersList$ = new Subject<RichiestaMarker[]>();
     private updateRichiestaMarker$ = new Subject<RichiestaMarker>();
     private newRichiestaMarker$ = new Subject<RichiestaMarker>();
     private deleteRichiestaMarker$ = new Subject<RichiestaMarker>();
-
-    richiesteMarkers: RichiestaMarker[] = [];
+    private subjectRichiestaMarkers$ = new Subject<RichiestaMarker[]>();
 
     constructor(private richiesteMarkersService: RichiesteMarkerService) {
     }
@@ -23,17 +21,13 @@ export class DispatcherRichiesteMarkerService {
      */
 
     onNewRichiesteMarkersList(): Observable<RichiestaMarker[]> {
-        this.richiesteMarkersService.getRichiesteMarkers().subscribe(val => {
-            let newArr;
-            val.forEach(item => {
-                console.log(item);
-                newArr = this.richiesteMarkers;
-                newArr.push(item);
+        this.subjectRichiestaMarkers$.next();
+        this.richiesteMarkersService.getRichiesteMarkers()
+            .subscribe({
+                next: data => this.subjectRichiestaMarkers$.next(data),
+                error: data => console.log(`Errore: ${data}`)
             });
-            this.newRichiesteMarkersList$.next(newArr);
-        });
-
-        return this.newRichiesteMarkersList$.asObservable();
+        return this.subjectRichiestaMarkers$.asObservable();
     }
 
     onNewRichiestaMarker(): Observable<RichiestaMarker> {
