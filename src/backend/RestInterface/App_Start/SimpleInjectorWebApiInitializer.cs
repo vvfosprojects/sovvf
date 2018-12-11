@@ -3,6 +3,7 @@
 namespace RestInterface.App_Start
 {
     using System.Web.Http;
+    using CompositionRoot;
     using SimpleInjector;
     using SimpleInjector.Integration.WebApi;
     using SimpleInjector.Lifestyles;
@@ -15,7 +16,7 @@ namespace RestInterface.App_Start
             var container = new Container();
             container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
             
-            InitializeContainer(container);
+            Configurator.Configure(container);
 
             container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
        
@@ -25,11 +26,5 @@ namespace RestInterface.App_Start
                 new SimpleInjectorWebApiDependencyResolver(container);
         }
      
-        private static void InitializeContainer(Container container)
-        {
-            CompositionRoot.Configurator.Configure(container);
-            // For instance:
-            // container.Register<IUserRepository, SqlUserRepository>(Lifestyle.Scoped);
-        }
     }
 }

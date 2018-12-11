@@ -20,8 +20,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Servizi.CQRS.Queries;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
@@ -34,11 +36,13 @@ namespace RestInterface.Controllers.Soccorso
     /// <summary>
     ///   Controller per l'accesso alla sintesi sulle richieste di assistenza
     /// </summary>
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class GeneraSintesiRichiesteAssistenzaController : ApiController
     {
         /// <summary>
         ///   Handler del servizio
         /// </summary>
+        /// 
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler;
 
         /// <summary>
@@ -56,16 +60,17 @@ namespace RestInterface.Controllers.Soccorso
         /// </summary>
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
+        [HttpGet]        
         public SintesiRichiesteAssistenzaResult Get(FiltroRicercaRichiesteAssistenza filtro)
         {
-
+          
             var session = HttpContext.Current.Session;
             if (session != null)
             {
                 if (session["JSonRichieste"] == null)
                 {
                     //VIENE UTILIZZATO SOLO PER TEST E FAKE INSERT SU MONGO DB
-                    //CON QUESTI PARAMETRI INSERISCE 200 RICHIESTE
+                   
                     var gi = new GeneratoreRichieste(
                     "RM",
                     5,
@@ -81,13 +86,10 @@ namespace RestInterface.Controllers.Soccorso
                     var richieste = gi.Genera()
                         .OrderBy(r => (r.Eventi.First() as Evento).istante)
                         .ToList();
-
                    
-                    session.Add("JSonRichieste", richieste);
-
+                    session["JSonRichieste"] = richieste;
                 }
             }
-
 
             var query = new SintesiRichiesteAssistenzaQuery()
             {

@@ -63,7 +63,7 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
 
                 sintesi.id = elemento.Id;
                 sintesi.localita = elemento.Localita;
-                sintesi.tipologie = elemento.Tipologie;
+                sintesi.tipologia = elemento.Tipologie;
                 sintesi.label = elemento.Descrizione;
                 sintesi.priorita = elemento.PrioritaRichiesta;
                 sintesi.stato = statoRichiesta;
@@ -83,7 +83,7 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
             {
 
                 case "Modello.Classi.Soccorso.StatiRichiesta.InAttesa":
-                    return "InAttesa";
+                    return "Chiamata";
                 case "Modello.Classi.Soccorso.StatiRichiesta.Assegnata":
                     return "Assegnata";
                 case "Modello.Classi.Soccorso.StatiRichiesta.Chiusa":

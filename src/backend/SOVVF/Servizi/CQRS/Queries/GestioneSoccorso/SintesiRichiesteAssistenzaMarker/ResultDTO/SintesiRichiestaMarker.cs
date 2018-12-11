@@ -56,7 +56,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         /// <summary>
         ///   Tipologia della richiesta
         /// </summary>
-        public List<Tipologia> tipologie { get; set; }
+        public List<Tipologia> tipologia { get; set; }
 
         /// <summary>
         ///   Label della richiesta
@@ -89,7 +89,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaA
         /// <summary>
         ///   Opacità della richiesta, serve per opacizzare i Marker che non sono rilevanti ai fini della ricerca effettuata
         /// </summary>
-        public string opacita { get; set; }
+        //public string opacita { get; set; }
 
     }
 }

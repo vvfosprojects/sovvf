@@ -23,25 +23,48 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modello.IntegrationTest", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompositionRoot", "CompositionRoot\CompositionRoot.csproj", "{2634F074-B26E-43A5-82F1-394944B47611}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115RestInterface", "..\..\..\SO115RestInterface\SO115RestInterface.csproj", "{40CE7DA2-F983-4274-A025-E4E40CBB7C05}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "so115Rest", "http://localhost/so115Rest", "{2360889F-DFCD-4F3B-9F3F-D816EF4EE287}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "false"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
+		Debug.AspNetCompiler.VirtualPath = "/so115Rest"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\..\SO115RestInterface\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\so115Rest\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/so115Rest"
+		Release.AspNetCompiler.PhysicalPath = "..\..\..\SO115RestInterface\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\so115Rest\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "..\..\..\SO115RestInterface\"
+	EndProjectSection
+EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "so115", "http://localhost/so115", "{CD5D8F76-61D0-4A1C-B9BC-C786EDD37A93}"
 	ProjectSection(WebsiteProperties) = preProject
 		UseIISExpress = "false"
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
 		Debug.AspNetCompiler.VirtualPath = "/so115"
-		Debug.AspNetCompiler.PhysicalPath = "RestInterface\"
+		Debug.AspNetCompiler.PhysicalPath = "..\frontend\launcherComponent\dist\SO115\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\so115\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/so115"
-		Release.AspNetCompiler.PhysicalPath = "RestInterface\"
+		Release.AspNetCompiler.PhysicalPath = "..\frontend\launcherComponent\dist\SO115\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\so115\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "RestInterface\"
+		SlnRelativePath = "..\frontend\launcherComponent\dist\SO115\"
 	EndProjectSection
 EndProject
 Global
@@ -78,6 +101,14 @@ Global
 		{2634F074-B26E-43A5-82F1-394944B47611}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2634F074-B26E-43A5-82F1-394944B47611}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2634F074-B26E-43A5-82F1-394944B47611}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40CE7DA2-F983-4274-A025-E4E40CBB7C05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40CE7DA2-F983-4274-A025-E4E40CBB7C05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40CE7DA2-F983-4274-A025-E4E40CBB7C05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40CE7DA2-F983-4274-A025-E4E40CBB7C05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2360889F-DFCD-4F3B-9F3F-D816EF4EE287}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2360889F-DFCD-4F3B-9F3F-D816EF4EE287}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2360889F-DFCD-4F3B-9F3F-D816EF4EE287}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{2360889F-DFCD-4F3B-9F3F-D816EF4EE287}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{CD5D8F76-61D0-4A1C-B9BC-C786EDD37A93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CD5D8F76-61D0-4A1C-B9BC-C786EDD37A93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD5D8F76-61D0-4A1C-B9BC-C786EDD37A93}.Release|Any CPU.ActiveCfg = Debug|Any CPU

@@ -39,18 +39,5 @@ namespace Modello.Classi.Condivise
         /// </summary>
         public double longitudine { get; set; }
 
-
-        /// <summary>
-        /// Latitudine
-        /// </summary>
-        public double Latitudine { get; set; }
-
-        /// <summary>
-        /// Latitudine
-        /// </summary>
-        public double Longitudine { get; set; }
-
-
-
     }
 }

@@ -31,6 +31,7 @@ using Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using Modello.Classi.Soccorso;
 using System.Web;
 using System.Linq;
+using Modello.Classi.Soccorso.StatiRichiesta;
 
 namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
@@ -107,11 +108,11 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssisten
             if (query.Filtro != null)
             {
                 if (!query.Filtro.RichiestaSingola)
-                    listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).OrderBy(p => p.PrioritaRichiesta).Where(p => Convert.ToInt16(p.Id) >= Convert.ToInt16(query.Filtro.SearchKey.Substring(1)) + 1).Take(15).ToList();
+                    listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).OrderBy(p => p.PrioritaRichiesta).Where(p => Convert.ToInt16(p.Id) >= Convert.ToInt16(query.Filtro.SearchKey.Substring(1)) && !p.Chiusa ).Take(15).ToList();
                 else
-                    listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).Where(p => Convert.ToInt16(p.Id) == Convert.ToInt16(query.Filtro.SearchKey.Substring(1))).ToList();
+                    listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).Where(p => Convert.ToInt16(p.Id) == Convert.ToInt16(query.Filtro.SearchKey.Substring(1)) && !p.Chiusa).ToList();
             }else
-                listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).OrderBy(p => p.PrioritaRichiesta).Where(p => Convert.ToInt16(p.Id) >= 1).Take(15).ToList();
+                listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).OrderBy(p => p.PrioritaRichiesta).Where(p => Convert.ToInt16(p.Id) >= 1 && !p.Chiusa).Take(15).ToList();
 
             MapperListaRichieste mapper = new MapperListaRichieste();
 

@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -37,8 +38,9 @@ namespace RestInterface
     /// </summary>
     public class WebApiApplication : System.Web.HttpApplication
     {
+
         protected void Application_Start()
-        {
+        {           
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
 

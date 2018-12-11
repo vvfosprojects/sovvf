@@ -173,9 +173,8 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             Faker generaFaker = new Faker("it");
             string indirizzo = generaFaker.Address.StreetAddress();
             string NoteLocalita = generaFaker.Lorem.Sentence();
-            Coordinate coordinateLocalita = new Coordinate(generaFaker.Random.Double() + 41.895, generaFaker.Random.Double() + 12.495);
 
-
+            
 
             var zoneEmergenza = new[] { "Sisma Gotham City", "Alluvione Smallville", "Uragano Metropolis" }.ToList();
             var fakerRichiesteAssistenza = new Faker<RichiestaAssistenza>("it")
@@ -185,7 +184,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(ra => ra.CodiceUnitaOperativaCompetente, f => this.codiceUnitaOperativa)
                 .RuleFor(ra => ra.Operatore, f=> GeneraOperatore())
                 .RuleFor(ra => ra.CodiciUnitaOperativeAllertate, f => new HashSet<string> { this.codiceUnitaOperativa })
-                .RuleFor(ra => ra.Geolocalizzazione, f => coordinateLocalita)
+                .RuleFor(ra => ra.Geolocalizzazione, f => GeneraCoordinateLocalita())
                 .RuleFor(ra => ra.Tipologie, f => this.GeneraTipologie())
                 .RuleFor(ra => ra.IstanteChiusura, f => null)
                 .RuleFor(ra => ra.Indirizzo, f => indirizzo)
@@ -196,7 +195,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
                 .RuleFor(ra => ra.NumeroRichiedente, f => f.Phone.PhoneNumber())
                 .RuleFor(ra => ra.CodiciUOCompetenza, f => new[] { f.Address.StateAbbr(), f.Address.StateAbbr(), f.Address.StateAbbr() })
                 .RuleFor(ra => ra.ListaPartenze, f => GeneraListaPartenze())
-                .RuleFor(ra => ra.Localita, f => new Localita(coordinateLocalita, indirizzo, NoteLocalita))
+                .RuleFor(ra => ra.Localita, f => new Localita(GeneraCoordinateLocalita(), indirizzo, NoteLocalita))
                 .RuleFor(ra => ra.Competenze, f => GeneraCompetenze())
                 .Ignore(ra => ra.Tags);
 
@@ -279,6 +278,12 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         
 
             return richiesteConParametri.Select(r => r.Richiesta);
+        }
+
+        private Coordinate GeneraCoordinateLocalita()
+        {
+            Faker generaFaker = new Faker("it");
+            return new Coordinate(Math.Round(generaFaker.Random.Double(0.0, 1) * 0.03 + 41.895, 6), Math.Round(generaFaker.Random.Double(0.0, 1) * 0.05 + 12.495, 6));
         }
 
         public static Utente GeneraOperatore()
@@ -368,14 +373,14 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
             var tipologie =
                 new Tipologia[]
                 {
-                    new Tipologia("Soccorso a persona", "Soccorso a persona","fa fa-ambulance"),
-                    new Tipologia("Incendio generico", "Incendio generico","fa fa-fire"),
-                    new Tipologia("Incendio boschivo", "Incendio boschivo","fa fa-fire"),
-                    new Tipologia("Danni d'acqua", "Danni d'acqua",""),
-                    new Tipologia("Alluvione", "Alluvione",""),
-                    new Tipologia("Esplosione", "Esplosione",""),
-                    new Tipologia("Incidente stradale", "Incidente stradale","fa fa-car"),
-                    new Tipologia("Apertura porta", "Apertura porta",""),
+                    new Tipologia("1", "Soccorso a persona","fa fa-ambulance"),
+                    new Tipologia("2", "Incendio generico","fa fa-fire"),
+                    new Tipologia("3", "Incendio boschivo","fa fa-fire"),
+                    new Tipologia("4", "Danni d'acqua","fa fa-exclamation-trinagle"),
+                    new Tipologia("5", "Alluvione","fa fa-exclamation-trinagle"),
+                    new Tipologia("6", "Esplosione","fa fa-exclamation-trinagle"),
+                    new Tipologia("7", "Incidente stradale","fa fa-car"),
+                    new Tipologia("8", "Apertura porta","fa fa-exclamation-trinagle"),
                 };
 
             var f = new Faker();

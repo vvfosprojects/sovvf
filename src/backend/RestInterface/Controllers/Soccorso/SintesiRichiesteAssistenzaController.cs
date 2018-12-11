@@ -21,6 +21,7 @@ using System;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using Modello.Classi.Soccorso.Eventi;
 using Modello.Servizi.CQRS.Queries;
 using Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
@@ -33,6 +34,7 @@ namespace RestInterface.Controllers.Soccorso
     /// <summary>
     ///   Controller per l'accesso alla sintesi sulle richieste di assistenza
     /// </summary>
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SintesiRichiesteAssistenzaController : ApiController
     {
         /// <summary>
@@ -55,13 +57,47 @@ namespace RestInterface.Controllers.Soccorso
         /// </summary>
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
-        public SintesiRichiesteAssistenzaResult Get(FiltroRicercaRichiesteAssistenza filtro)
+        [HttpGet]       
+        public SintesiRichiesteAssistenzaResult Get(string searchkey,string richiestaSingola)
         {
+
+            var session = HttpContext.Current.Session;
+            if (session != null)
+            {
+                if (session["JSonRichieste"] == null)
+                {
+                    //VIENE UTILIZZATO SOLO PER TEST E FAKE INSERT SU MONGO DB
+
+                    var gi = new GeneratoreRichieste(
+                    "RM",
+                    2,
+                    DateTime.Now.AddHours(-12),
+                    DateTime.Now,
+                    25,
+                    30 * 60,
+                    15 * 60,
+                    45 * 60,
+                    15 * 60,
+                    new float[] { .85F, .7F, .4F, .3F, .1F });
+
+                    var richieste = gi.Genera()
+                        .OrderBy(r => (r.Eventi.First() as Evento).istante)
+                        .ToList();
+
+                    session["JSonRichieste"] = richieste;
+                }
+            }
+
+
+            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
+            filtro.SearchKey = searchkey;
+            filtro.RichiestaSingola = Convert.ToBoolean(richiestaSingola);
 
             var query = new SintesiRichiesteAssistenzaQuery()
             {
                 Filtro = filtro
             };
+
 
             return this.handler.Handle(query);
         }

@@ -29,38 +29,38 @@ namespace RestInterface.Controllers
     /// </summary>
     public class InfoAutenticazioneController : ApiController
     {
-        /// <summary>
-        ///   Istanza del servizio che restituisce la username dell'operatore autenticato
-        /// </summary>
-        private readonly IGetOperatoreAutenticato getOperatoreAutenticato;
+//        /// <summary>
+//        ///   Istanza del servizio che restituisce la username dell'operatore autenticato
+//        /// </summary>
+//        private readonly IGetOperatoreAutenticato getOperatoreAutenticato;
 
-        /// <summary>
-        ///   Costruttore della classe
-        /// </summary>
-        /// <param name="getOperatoreAutenticato">Istanza del servizio iniettato</param>
-        public InfoAutenticazioneController(
-            IGetOperatoreAutenticato getOperatoreAutenticato)
-        {
-            this.getOperatoreAutenticato = getOperatoreAutenticato;
-        }
+//        /// <summary>
+//        ///   Costruttore della classe
+//        /// </summary>
+//        /// <param name="getOperatoreAutenticato">Istanza del servizio iniettato</param>
+//        public InfoAutenticazioneController(
+//            IGetOperatoreAutenticato getOperatoreAutenticato)
+//        {
+//            this.getOperatoreAutenticato = getOperatoreAutenticato;
+//        }
 
-        /// <summary>
-        ///   Restituisce le informazioni sull'operatore autenticato
-        /// </summary>
-        /// <returns>Le informazioni sull'utente autenticato</returns>
-        public InfoUtenteAutenticato Get()
-        {
-            // preleva username dell'operatore autenticato
-            var username = this.getOperatoreAutenticato.Get();
+//        /// <summary>
+//        ///   Restituisce le informazioni sull'operatore autenticato
+//        /// </summary>
+//        /// <returns>Le informazioni sull'utente autenticato</returns>
+//        public InfoUtenteAutenticato Get()
+//        {
+//            // preleva username dell'operatore autenticato
+//            var username = this.getOperatoreAutenticato.Get();
 
-            // una volta avuta la username, usiamo altro servizio per recuperare i dati anagrafici
-            // per username: var nominativo = servizio2.Get(username);
-#warning Implementare servizio di risoluzione dell'operatore autenticato
-            return new InfoUtenteAutenticato()
-            {
-                Username = username,
-                IstanteAutenticazione = DateTime.Now.AddHours(-3)
-            };
-        }
+//            // una volta avuta la username, usiamo altro servizio per recuperare i dati anagrafici
+//            // per username: var nominativo = servizio2.Get(username);
+//#warning Implementare servizio di risoluzione dell'operatore autenticato
+//            return new InfoUtenteAutenticato()
+//            {
+//                Username = username,
+//                IstanteAutenticazione = DateTime.Now.AddHours(-3)
+//            };
+//        }
     }
 }

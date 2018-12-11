@@ -91,7 +91,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssisten
 
             return new SintesiRichiesteAssistenzaMarkerResult()
             {
-                SintesiRichiesta = sintesiRichiesta
+                SintesiRichiestaMarker = sintesiRichiesta
             };
         }
 
