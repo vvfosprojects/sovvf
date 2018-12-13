@@ -1,4 +1,4 @@
-<li class="list-group-item cursor-pointer border px-1" (click)="click(mezzoComp)" (mouseover)="hoverIn()" (mouseout)="hoverOut()" [ngClass]="mezzoCompClass(mezzoComp)">
+<li class="list-group-item cursor-pointer border" (click)="click(mezzoComp);mezzoDirection(mezzoComp)" (mouseover)="hoverIn()" (mouseout)="hoverOut()" [ngClass]="mezzoCompClass(mezzoComp)">
   <div class="row">
     <div class="col-9 text-center">
       <span class="fa fa-eercast mr-2" [ngClass]="iconaStatiClass(mezzoComp)" [ngbTooltip]="mezzoComp.mezzo.stato"></span>

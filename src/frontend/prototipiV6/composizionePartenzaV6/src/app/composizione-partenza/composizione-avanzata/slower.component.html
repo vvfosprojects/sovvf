@@ -9,7 +9,7 @@
           </div>
           <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
             <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC" [squadre]="squadre"
-              [partenze]="partenze" [idPartenzaAttuale]="idPartenzaAttuale" (nuovoMezzo)="nuovoMezzo()"></app-mezzo-composizione>
+              [partenze]="partenze" [idPartenzaAttuale]="idPartenzaAttuale" (nuovoMezzo)="nuovoMezzo()" (mezzoCoordinate)="mezzoCoordinate($event)"></app-mezzo-composizione>
           </ul>
         </div>
       </div>
