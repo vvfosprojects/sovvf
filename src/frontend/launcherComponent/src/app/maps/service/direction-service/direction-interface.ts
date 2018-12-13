@@ -3,7 +3,7 @@ export interface DirectionInterface {
         lat: number;
         lng: number;
     };
-    destinataion?: {
+    destination?: {
         lat: number;
         lng: number;
     };

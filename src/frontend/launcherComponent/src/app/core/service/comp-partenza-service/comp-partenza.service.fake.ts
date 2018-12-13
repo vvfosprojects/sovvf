@@ -7,6 +7,7 @@ import { Squadra } from '../../../shared/model/squadra.model';
 import { MezzoComposizione } from '../../../composizione-partenza/model/mezzo-composizione.model';
 import { Componente } from '../../../shared/model/componente.model';
 import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
+import { Coordinate } from '../../../shared/model/coordinate.model';
 
 
 
@@ -29,7 +30,8 @@ export class CompPartenzaServiceFake {
           new Mezzo('1', 'A1', 'APS', 'inSede', [], 0),
           '23.5 km',
           '35 min',
-          'Tuscolana II'
+          'Tuscolana II',
+            new Coordinate(41.8311007, 12.4686518)
         ),
         [
           new Squadra('Rossa', 'inSede', [
@@ -47,7 +49,8 @@ export class CompPartenzaServiceFake {
           new Mezzo('2', 'A2', 'APS', 'inSede', [], 0),
           '23.5 km',
           '35 min',
-          'Tuscolana II'
+          'Tuscolana II',
+            new Coordinate(41.82699, 12.4879854)
         ),
         [
           new Squadra('Rossa', 'inSede', [
@@ -65,7 +68,8 @@ export class CompPartenzaServiceFake {
           new Mezzo('3', 'A3', 'APS', 'inSede', [], 0),
           '23.5 km',
           '35 min',
-          'Tuscolana II'
+          'Tuscolana II',
+            new Coordinate(41.8531486, 12.5418702)
         ),
         [
           new Squadra('Rossa', 'inSede', [
@@ -83,7 +87,8 @@ export class CompPartenzaServiceFake {
           new Mezzo('4', 'A1', 'APS', 'inSede', [], 0),
           '23.5 km',
           '35 min',
-          'Tuscolana II'
+          'Tuscolana II',
+            new Coordinate(41.8935662, 12.5417044)
         ),
         [
           new Squadra('Rossa', 'inSede', [
@@ -294,7 +299,8 @@ export class CompPartenzaServiceFake {
         ),
         '20.2 km',
         '20 min',
-        'Tuscolana II'
+        'Tuscolana II',
+          new Coordinate(41.8311007, 12.4686518),
       ),
       new MezzoComposizione(
         '2',
@@ -308,7 +314,8 @@ export class CompPartenzaServiceFake {
         ),
         '34.6 km',
         '43 min',
-        'Tuscolana II'
+        'Tuscolana II',
+          new Coordinate(41.82699, 12.4879854),
       ),
       new MezzoComposizione(
         '3',
@@ -322,7 +329,8 @@ export class CompPartenzaServiceFake {
         ),
         '10.4 km',
         '16 min',
-        'Tuscolano II'
+        'Tuscolano II',
+          new Coordinate(41.8531486, 12.5418702),
       ),
       new MezzoComposizione(
         '4',
@@ -336,7 +344,8 @@ export class CompPartenzaServiceFake {
         ),
         '10.4 km',
         '16 min',
-        'Tuscolano II'
+        'Tuscolano II',
+          new Coordinate(41.8935662, 12.5417044),
       ),
       new MezzoComposizione(
         '5',

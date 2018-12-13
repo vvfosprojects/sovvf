@@ -7,34 +7,52 @@
           <div class="card-header">
             <i class="fa fa-truck mr-2"></i><span class="h6">Mezzi</span>
           </div>
-          <ul class="list-group list-group-flush border-bottom" style="max-height:345px; overflow-y:scroll; overflow-x: hidden">
+          <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
             <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC" [squadre]="squadre"
-              [partenze]="partenze" [idPartenzaAttuale]="idPartenzaAttuale" (nuovoMezzo)="nuovoMezzo()"></app-mezzo-composizione>
+              [partenze]="partenze" [idPartenzaAttuale]="idPartenzaAttuale" (nuovoMezzo)="nuovoMezzo()" (mezzoCoordinate)="mezzoCoordinate($event)"></app-mezzo-composizione>
           </ul>
         </div>
       </div>
       <div class="col-3 pr-0">
         <div class="card card-shadow mx-auto">
           <div class="card-header">
-            <i class="fa fa-group mr-2"></i><span class="h6">Squadre</span>
+            <div class="row">
+              <div class="col-7">
+                <i class="fa fa-group mr-2"></i><span class="h6">Squadre</span>
+              </div>
+              <div class="col-5 text-danger text-right">
+                <span *ngIf="partenze[idPartenzaAttuale] && partenze[idPartenzaAttuale].squadra.length > 0">
+                    <i class="fa fa-times cursor-pointer" ngbTooltip="Deseleziona squadre" (click)="deselezionaSquadre()"></i>
+                </span>
+              </div>
+            </div>
           </div>
-          <ul class="list-group list-group-flush border-bottom" style="max-height:345px; overflow-y:scroll; overflow-x: hidden">
-            <app-squadra-composizione *ngFor="let s of squadre" [squadra]="s" [partenze]="partenze" [idPartenzaAttuale]="idPartenzaAttuale"></app-squadra-composizione>
+          <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
+            <span *ngIf="partenze.length > 0">
+              <app-squadra-composizione *ngFor="let s of squadre" [squadra]="s" [partenze]="partenze"
+                [idPartenzaAttuale]="idPartenzaAttuale"></app-squadra-composizione>
+            </span>
+            <span *ngIf="partenze.length <= 0" class="text-center my-auto">
+              <small>Nessun mezzo selezionato</small>
+            </span>
           </ul>
         </div>
       </div>
       <div class="col-4">
-        <div class="card border-dashed-3 w-100 py-3 px-2">
-          <div *ngIf="partenze.length === 0" class="py-5 text-center">
-            <h6>Nessuna partenza</h6>
-            <small>Seleziona un mezzo o una squadra per crearne una.</small>
+        <div class="card border-dashed-3 w-100 py-2 px-2" [ngClass]="{'scroll-y': partenze.length > 3}" style="max-height:350px; min-height:350px">
+          <div *ngIf="partenze.length === 0" class="text-center my-auto">
+            <h5>Nessuna partenza</h5>
+            <span class="h6 font-weight-normal">Seleziona un mezzo per crearne una</span>
           </div>
           <div *ngIf="partenze.length > 0">
-            <app-box-nuova-partenza *ngFor="let p of partenze" [partenza]="p" [richiesta]="richiesta" [idPartenzaAttuale]="idPartenzaAttuale" (selezionato)="modificaPartenza($event)"></app-box-nuova-partenza>
-            <button class="btn btn-block btn-success card-shadow">Conferma</button>
+            <app-box-nuova-partenza *ngFor="let p of partenze" [partenza]="p" [partenze]="partenze" [richiesta]="richiesta"
+              [idPartenzaAttuale]="idPartenzaAttuale" [elimina]="true" (selezionato)="modificaPartenza($event)"
+              (eliminato)="eliminaPartenza($event)"></app-box-nuova-partenza>
           </div>
         </div>
+        <button class="btn btn-block btn-success mt-2" [disabled]="partenze.length <= 0">Conferma</button>
       </div>
     </div>
+    <h6 *ngIf="errore" class="alert alert-danger mt-2">Errore presente nella composizione della squadra</h6>
   </div>
 </div>
