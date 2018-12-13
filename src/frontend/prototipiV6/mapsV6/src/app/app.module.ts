@@ -6,6 +6,8 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {PipeModule} from './shared/pipes/pipe.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 /**
  *  Maps Module
  */
@@ -33,6 +35,7 @@ import {NavComponent} from './maps-test/nav/nav.component';
         MapsModule,
         SharedModule,
         PipeModule,
+        BrowserAnimationsModule
     ],
     bootstrap: [AppComponent]
 })

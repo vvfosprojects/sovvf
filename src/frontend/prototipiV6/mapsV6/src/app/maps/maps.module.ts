@@ -4,6 +4,8 @@ import { PipeModule } from '../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../environments/environment';
 import { SharedModule } from '../shared/shared.module';
+import { ToastrModule } from 'ngx-toastr';
+
 /**
  * AGM CORE
  */
@@ -49,7 +51,11 @@ import {
         }),
         AgmJsMarkerClustererModule,
         AgmSnazzyInfoWindowModule,
-        SharedModule.forRoot()
+        SharedModule.forRoot(),
+        ToastrModule.forRoot({
+            positionClass: 'toast-top-center',
+            preventDuplicates: true,
+        }),
     ],
     declarations: [
         MapsComponent,
