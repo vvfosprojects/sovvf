@@ -10,6 +10,8 @@ import { SharedModule } from '../shared/shared.module';
 import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { AgmDirectionModule } from 'agm-direction';
+
 /**
  * MAPS
  */
@@ -47,6 +49,7 @@ import {
         AgmCoreModule.forRoot({
             apiKey: environment.apiUrl.maps.agm.key
         }),
+        AgmDirectionModule,
         AgmJsMarkerClustererModule,
         AgmSnazzyInfoWindowModule,
         SharedModule.forRoot()
