@@ -43,7 +43,7 @@ export const environment = {
             backend: ''
         },
         sedi: {
-            fake: '',
+            fake: 'https://api.myjson.com/bins/10fsks',
             backend: ''
         }
     }
