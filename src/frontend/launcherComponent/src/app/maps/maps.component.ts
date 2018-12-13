@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import * as MapManager from '../core/manager/maps-manager';
 import { CentroMappa } from './maps-model/centro-mappa.model';
 import { RichiestaMarker } from './maps-model/richiesta-marker.model';
@@ -6,13 +6,14 @@ import { SedeMarker } from './maps-model/sede-marker.model';
 import { MezzoMarker } from './maps-model/mezzo-marker.model';
 import { ChiamataMarker } from './maps-model/chiamata-marker.model';
 import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-maps',
     templateUrl: './maps.component.html',
     styleUrls: ['./maps.component.css']
 })
-export class MapsComponent implements OnInit, OnDestroy {
+export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
     centroMappa: CentroMappa;
     richiesteMarkers: RichiestaMarker[] = [];
@@ -25,7 +26,8 @@ export class MapsComponent implements OnInit, OnDestroy {
                 private sediManager: MapManager.SediMarkerManagerService,
                 private mezziManager: MapManager.MezziMarkerManagerService,
                 private centroManager: MapManager.CentroMappaManagerService,
-                private chiamataManager: MapManager.ChiamataMarkerManagerService) {
+                private chiamataManager: MapManager.ChiamataMarkerManagerService,
+                private toastr: ToastrService) {
         /**
          *  mi iscrivo al map manager che mi ritorna il centro della mappa
          */
@@ -37,7 +39,11 @@ export class MapsComponent implements OnInit, OnDestroy {
          *  mi iscrivo al map manager che mi ritorna tutti i marker di tipo richiestaMarker
          */
         this.subscription.add(this.richiesteManager.getRichiesteMarker().subscribe((r: RichiestaMarker[]) => {
+            this.showAlert();
             this.richiesteMarkers = r;
+            if (r.length > 0) {
+                this.clearToast();
+            }
             /**
              *  inizializzo un contatore nel servizio per tenere traccia del numero di richieste
              */
@@ -69,11 +75,23 @@ export class MapsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-
     }
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+    }
+
+    ngOnChanges() {
+    }
+
+    showAlert() {
+        this.toastr.info('Caricamento in corso...', 'Attendere', {
+            disableTimeOut: true
+        });
+    }
+
+    clearToast() {
+        this.toastr.clear();
     }
 
 }
