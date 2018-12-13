@@ -20,6 +20,8 @@ import { ControlPosition, FullscreenControlOptions, ZoomControlOptions } from '@
 import { MeteoMarker } from '../maps-model/meteo-marker.model';
 import { debounceTime } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DirectionService } from '../service/direction-service/direction-service.service';
+import { DirectionInterface } from '../service/direction-service/direction-interface';
 
 declare var google: any;
 
@@ -57,11 +59,23 @@ export class AgmComponent implements OnInit, OnDestroy {
         position: ControlPosition.TOP_LEFT
     };
 
+    direction: DirectionInterface = {
+        isVisible: false
+    };
+
+    renderOptions: any = {
+        draggable: false,
+        suppressMarkers: true,
+        suppressInfoWindows: true
+    };
+
+
     @ViewChild('agmContainer') agmContainer: ElementRef;
 
     constructor(private markerService: MarkerService,
                 private centerService: CenterService,
-                private agmService: AgmService) {
+                private agmService: AgmService,
+                private directionService: DirectionService) {
         /**
          * dati del centro mappa attuale
          * @type {Subscription}
@@ -89,6 +103,13 @@ export class AgmComponent implements OnInit, OnDestroy {
          */
         this.subscription.add(this.markerService.getMeteoMarker().subscribe(marker => {
             this.meteoMarkers = marker;
+        }));
+        /**
+         * direzioni di tipo direction
+         * @type {Subscription}
+         */
+        this.subscription.add(this.directionService.getDirection().subscribe(direzioni => {
+            this.direction = direzioni;
         }));
         /**
          * marker minimi per creare un cluster

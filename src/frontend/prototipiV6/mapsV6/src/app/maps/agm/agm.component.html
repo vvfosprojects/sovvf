@@ -16,6 +16,10 @@
              (centerChange)="centroCambiato($event)"
              [usePanning]="true" (mapClick)="mappaCliccata();getCoordinateMarker($event)">
         <app-maps-filtro id="Settings"></app-maps-filtro>
+        <agm-direction [renderOptions]="renderOptions"
+                       [origin]="direction.origin"
+                       [destination]="direction.destinataion"
+                       [visible]="direction.isVisible"></agm-direction>
         <agm-marker-cluster
                 imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
                 [minimumClusterSize]="minMarkerCluster">
