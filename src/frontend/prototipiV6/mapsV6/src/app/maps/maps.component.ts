@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as MapManager from '../core/manager/maps-manager';
 import { CentroMappa } from './maps-model/centro-mappa.model';
 import { RichiestaMarker } from './maps-model/richiesta-marker.model';
@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
     templateUrl: './maps.component.html',
     styleUrls: ['./maps.component.css']
 })
-export class MapsComponent implements OnInit, OnDestroy, OnChanges {
+export class MapsComponent implements OnInit, OnDestroy {
 
     centroMappa: CentroMappa;
     richiesteMarkers: RichiestaMarker[] = [];
@@ -34,15 +34,14 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.subscription.add(this.centroManager.getCentro().subscribe((r: CentroMappa) => {
             this.centroMappa = r;
         }));
-
+        this.timeoutAlert('show');
         /**
          *  mi iscrivo al map manager che mi ritorna tutti i marker di tipo richiestaMarker
          */
         this.subscription.add(this.richiesteManager.getRichiesteMarker().subscribe((r: RichiestaMarker[]) => {
-            this.showAlert();
             this.richiesteMarkers = r;
             if (r.length > 0) {
-                this.clearToast();
+                this.timeoutAlert('clear');
             }
             /**
              *  inizializzo un contatore nel servizio per tenere traccia del numero di richieste
@@ -81,16 +80,17 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.subscription.unsubscribe();
     }
 
-    ngOnChanges() {
+    timeoutAlert(value: string) {
+        setTimeout(() => this[value](), 0);
     }
 
-    showAlert() {
+    show() {
         this.toastr.info('Caricamento in corso...', 'Attendere', {
             disableTimeOut: true
         });
     }
 
-    clearToast() {
+    clear() {
         this.toastr.clear();
     }
 
