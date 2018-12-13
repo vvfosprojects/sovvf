@@ -13,11 +13,12 @@ import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
 import { Meteo } from '../../shared/model/meteo.model';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { MarkerService } from '../service/marker-service/marker-service.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { CenterService } from '../service/center-service/center-service.service';
 import { AgmService } from './agm-service.service';
 import { ControlPosition, FullscreenControlOptions, ZoomControlOptions } from '@agm/core/services/google-maps-types';
 import { MeteoMarker } from '../maps-model/meteo-marker.model';
+import { debounceTime } from 'rxjs/operators';
 
 declare var google: any;
 
@@ -41,8 +42,11 @@ export class AgmComponent implements OnInit, OnDestroy {
     map_loaded = false;
     subscription = new Subscription();
     map: any;
+    delayMarkerTime = 250;
     richiestaMarkerIconUrl = 'assets/img/icone-markers/chiamata-marker-rosso.png';
     meteoMarkerIconUrl = 'assets/img/icone-markers/marker-meteo-32.png';
+
+    private delayHover = new Subject<HoverType>();
 
     zoomControlOptions: ZoomControlOptions = {
         position: ControlPosition.BOTTOM_RIGHT
@@ -82,7 +86,7 @@ export class AgmComponent implements OnInit, OnDestroy {
          * marker di tipo meteo
          * @type {Subscription}
          */
-        this.subscription.add(this.markerService.getMeteoMarker().subscribe( marker => {
+        this.subscription.add(this.markerService.getMeteoMarker().subscribe(marker => {
             this.meteoMarkers = marker;
         }));
         /**
@@ -90,6 +94,14 @@ export class AgmComponent implements OnInit, OnDestroy {
          * @type {number}
          */
         this.minMarkerCluster = this.markerService.minMarkerCluster;
+        /**
+         * creo un delay all'hover del mouse
+         * @type {Subscription}
+         */
+        this.subscription.add(this.delayHover.pipe(
+            debounceTime(this.delayMarkerTime)).subscribe(
+            evento => this.hoverMarkerDelayed(evento.markers, evento.hoverName)
+        ));
     }
 
     ngOnInit() {
@@ -132,6 +144,13 @@ export class AgmComponent implements OnInit, OnDestroy {
     }
 
     hoverMarker(marker: any, type): void {
+        /**
+         * richiamo il service marker e gli passo marker e tipo hover
+         */
+        this.delayHover.next({markers: marker, hoverName: type});
+    }
+
+    hoverMarkerDelayed(marker: any, type): void {
         /**
          * richiamo il service marker e gli passo marker e tipo hover
          */
@@ -181,4 +200,9 @@ export class AgmComponent implements OnInit, OnDestroy {
         this.markerService.action('', '');
     }
 
+}
+
+export interface HoverType {
+    markers: any;
+    hoverName: string;
 }

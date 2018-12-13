@@ -18,7 +18,7 @@ export const environment = {
         },
         maps: {
             markers: {
-                richieste: 'http://win10dev-pc/so115rest/api/SintesiRichiesteAssistenzaMarker',
+                richieste: 'http://so115-mike/so115rest/api/SintesiRichiesteAssistenzaMarker',
                 sedi: 'https://api.myjson.com/bins/18m83u',
                 mezzi: '',
                 centro: ''
@@ -28,7 +28,7 @@ export const environment = {
             }
         },
         rigaElencoRichieste: {
-            fake: 'https://api.myjson.com/bins/x09t6',
+            fake: 'http://so115-mike/so115rest/api/SintesiRichiesteAssistenza',
             backend: 'http://win10dev-pc/so115rest/api/SintesiRichiesteAssistenza'
         },
         elencoTipologie: {
