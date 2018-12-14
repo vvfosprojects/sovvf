@@ -69,7 +69,7 @@ export class MarkerService implements OnDestroy {
                 this.subjectMeteoMarkers.next([]);
             }
         }));
-        this.subscription.add(this.mapsFiltroService.getFiltroBoxes().subscribe( (filtroBoxes: BoxClickArrayInterface) => {
+        this.subscription.add(this.mapsFiltroService.getFiltroBoxes().subscribe((filtroBoxes: BoxClickArrayInterface) => {
             this.filtroBoxes(filtroBoxes);
         }));
         /**
@@ -105,6 +105,7 @@ export class MarkerService implements OnDestroy {
         /**
          * metodo che mi ritorna true, se il marker selezionato è lo stesso che è stato cliccato
          */
+        this.coloraMarker(marker);
         if (cross) {
             return true;
         } else {
@@ -142,6 +143,7 @@ export class MarkerService implements OnDestroy {
          *  imposto nel service marked lo stato del marker a selezionato
          */
         this.selezionato(marker);
+
         /**
          *  mi arrivano i dati del meteo
          */
@@ -151,7 +153,6 @@ export class MarkerService implements OnDestroy {
          */
         this.agmService.centraMappa(this.getCoordinate(marker));
         this.agmService.cambiaZoom(18);
-        this.coloraMarker(marker);
     }
 
     selezionato(marker: any): void {
@@ -235,6 +236,7 @@ export class MarkerService implements OnDestroy {
                 this.checkMarker = null;
                 this.markerZIndex = null;
                 this.markerColorato = null;
+                this.markedColor.next(null);
             }
                 break;
         }

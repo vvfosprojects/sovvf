@@ -25,7 +25,7 @@ export class TipoColori {
     markerColor(stato) {
         const statoMarker = stato.toLowerCase().substring(0, 5);
         const color = this.mapColorStato.get(statoMarker);
-        return color ? color : '343a40';
+        return color ? color : '#343a40';
     }
 
 }
