@@ -40,6 +40,44 @@ export class BoxClickService {
     getBoxClick(): Observable<BoxClickInterface> {
         return this.clickSubject.asObservable();
     }
+
+    allTrue() {
+        const allSelected: BoxClickInterface = {
+            richieste: {
+                chiamate: true,
+                sospesi: false,
+                assegnati: false,
+                presidiati: false
+            },
+            mezzi: {
+                inSede: true,
+                inRientro: true,
+                inViaggio: true,
+                sulPosto: true,
+                istituto: true
+            }
+        };
+        this.clickSubject.next(allSelected);
+    }
+
+    allFalse() {
+        const allSelected: BoxClickInterface = {
+            richieste: {
+                chiamate: false,
+                sospesi: false,
+                assegnati: false,
+                presidiati: false
+            },
+            mezzi: {
+                inSede: false,
+                inRientro: false,
+                inViaggio: false,
+                sulPosto: false,
+                istituto: false
+            }
+        };
+        this.clickSubject.next(allSelected);
+    }
 }
 
 

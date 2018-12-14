@@ -34,14 +34,14 @@ export class MapsComponent implements OnInit, OnDestroy {
         this.subscription.add(this.centroManager.getCentro().subscribe((r: CentroMappa) => {
             this.centroMappa = r;
         }));
-        this.timeoutAlert('show');
+        this.timeoutAlert('showToastr');
         /**
          *  mi iscrivo al map manager che mi ritorna tutti i marker di tipo richiestaMarker
          */
         this.subscription.add(this.richiesteManager.getRichiesteMarker().subscribe((r: RichiestaMarker[]) => {
             this.richiesteMarkers = r;
             if (r.length > 0) {
-                this.timeoutAlert('clear');
+                this.timeoutAlert('clearToastr');
             }
             /**
              *  inizializzo un contatore nel servizio per tenere traccia del numero di richieste
@@ -84,13 +84,13 @@ export class MapsComponent implements OnInit, OnDestroy {
         setTimeout(() => this[value](), 0);
     }
 
-    show() {
+    showToastr() {
         this.toastr.info('Caricamento in corso...', 'Attendere', {
             disableTimeOut: true
         });
     }
 
-    clear() {
+    clearToastr() {
         this.toastr.clear();
     }
 

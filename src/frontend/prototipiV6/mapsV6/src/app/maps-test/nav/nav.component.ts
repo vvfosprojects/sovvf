@@ -80,7 +80,7 @@ export class NavComponent implements OnDestroy {
                 lat: 41.8624992,
                 lng: 12.5532867
             },
-            destinataion: {
+            destination: {
                 lat: 41.9161894,
                 lng: 12.4554147
             },

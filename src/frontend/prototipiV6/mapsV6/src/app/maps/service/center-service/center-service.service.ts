@@ -10,11 +10,13 @@ export class CenterService {
     private subject = new Subject<CentroMappa>();
 
     centroMappaIniziale: CentroMappa;
+    currentZoom = 12;
 
     constructor() {
     }
 
     sendCentro(centro: CentroMappa) {
+        this.currentZoom = centro.zoom;
         this.subject.next(centro);
     }
 
@@ -24,6 +26,10 @@ export class CenterService {
 
     getCentro(): Observable<CentroMappa> {
         return this.subject.asObservable();
+    }
+
+    getCurrentZoom(): number {
+        return this.currentZoom;
     }
 
 }
