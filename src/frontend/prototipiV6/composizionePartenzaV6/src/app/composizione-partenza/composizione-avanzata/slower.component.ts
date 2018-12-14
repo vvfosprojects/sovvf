@@ -1,26 +1,30 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 
 // Service
 import { PartenzaService } from '../service/partenza/partenza.service';
 import { CompPartenzaManagerService } from '../../core/manager/comp-partenza-manager/comp-partenza-manager.service';
 import { CompMezzoSquadraService } from '../service/comp-mezzo-squadra/comp-mezzo-squadra.service';
+import { DirectionService } from '../../maps/service/direction-service/direction-service.service';
+import { CenterService } from '../../maps/service/center-service/center-service.service';
 
 // Model
 import { BoxPartenza } from '../model/box-partenza.model';
 import { Squadra } from '../../shared/model/squadra.model';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { MezzoComposizione } from '../model/mezzo-composizione.model';
-import { DirectionService } from '../../maps/service/direction-service/direction-service.service';
 import { Coordinate } from '../../shared/model/coordinate.model';
 import { DirectionInterface } from '../../maps/service/direction-service/direction-interface';
+import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
+import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-slower',
     templateUrl: './slower.component.html',
     styleUrls: ['./slower.component.css']
 })
-export class SlowerComponent implements OnInit {
+export class SlowerComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
 
     mezziComposizione: MezzoComposizione[];
@@ -31,10 +35,18 @@ export class SlowerComponent implements OnInit {
 
     errore: string;
 
+    centroMappa: CentroMappa;
+    subscription = new Subscription();
+    @Input() dismissEvents: Observable<boolean>;
+    @Output() centroMappaEmit: EventEmitter<CentroMappa> = new EventEmitter();
+
+
     constructor(private partenzaS: PartenzaService,
                 private compPartenzaManager: CompPartenzaManagerService,
                 private compMezzoSquadra: CompMezzoSquadraService,
                 private directionService: DirectionService,
+                private markerService: MarkerService,
+                private centerService: CenterService,
                 popoverConfig: NgbPopoverConfig,
                 tooltipConfig: NgbTooltipConfig) {
         // Popover options
@@ -79,6 +91,14 @@ export class SlowerComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.setInitCentroMappa();
+        this.subscription.add(this.dismissEvents.subscribe(
+            events => this.annullaPartenza(events)
+        ));
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
     nuovaPartenza(id: number) {
@@ -140,7 +160,7 @@ export class SlowerComponent implements OnInit {
         this.idPartenzaAttuale = partenza.id;
     }
 
-    mezzoCoordinate(event: Coordinate) {
+    mezzoCoordinate(event: Coordinate): void {
         if (event && this.richiesta.localita.coordinate) {
             const direction: DirectionInterface = {
                 origin: {
@@ -156,6 +176,24 @@ export class SlowerComponent implements OnInit {
             this.directionService.sendDirection(direction);
         } else {
             console.error('coordinate mezzo / coordinate richiesta non presenti');
+            this.directionService.clearDirection();
+            this.centraMappa(null, '', this.centroMappa);
+        }
+    }
+
+    setInitCentroMappa(): void {
+        const currentZoom = this.centerService.getCurrentZoom();
+        this.centroMappa = new CentroMappa(this.richiesta.localita.coordinate, currentZoom);
+        this.centroMappaEmit.emit(this.centroMappa);
+        this.centraMappa(this.richiesta, 'centra');
+    }
+
+    centraMappa(richiesta: SintesiRichiesta, action: string, centroMappa?: CentroMappa): void {
+        this.markerService.partenza(richiesta ? richiesta.id : null, action, centroMappa);
+    }
+
+    annullaPartenza(event: boolean): void {
+        if (event) {
             this.directionService.clearDirection();
         }
     }
