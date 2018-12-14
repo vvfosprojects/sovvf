@@ -42,7 +42,7 @@ export class AgmComponent implements OnInit, OnDestroy {
     meteoMarkers: MeteoMarker[] = [];
     minMarkerCluster: number;
     datiMeteo: Meteo;
-    coloreStato: string;
+    coloreStatoWindow: string;
     map_loaded = false;
     subscription = new Subscription();
     map: any;
@@ -96,7 +96,7 @@ export class AgmComponent implements OnInit, OnDestroy {
          * @type {Subscription}
          */
         this.subscription.add(this.markerService.getMarkedColor().subscribe(colore => {
-            this.coloreStato = colore;
+            this.coloreStatoWindow = colore;
         }));
         /**
          * marker di tipo meteo
@@ -160,10 +160,6 @@ export class AgmComponent implements OnInit, OnDestroy {
          *  ricevo il marker selezionato dal componente mappa (agm)
          */
         this.markerService.action(marker, 'click');
-        /**
-         * prendo il colore della richiesta dallo stato
-         */
-        this.coloreStato = this.markerService.coloreStato;
     }
 
     hoverMarker(marker: any, type): void {
@@ -200,7 +196,7 @@ export class AgmComponent implements OnInit, OnDestroy {
         /**
          * richiedo al service che gestisce i marker sulla mappa, di ritornarmi se il marker cliccato è quello selezionato
          */
-        return this.markerService.trueMarker(marker);
+        return this.markerService.trueMarker(marker, true);
     }
 
     isVisible(marker: any): boolean {
