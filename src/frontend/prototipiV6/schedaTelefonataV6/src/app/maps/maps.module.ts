@@ -44,9 +44,7 @@ import {
         CommonModule,
         NgbModule,
         PipeModule.forRoot(),
-        AgmCoreModule.forRoot({
-            apiKey: environment.apiUrl.maps.agm.key
-        }),
+        AgmCoreModule.forRoot(),
         AgmJsMarkerClustererModule,
         AgmSnazzyInfoWindowModule,
         SharedModule.forRoot()
