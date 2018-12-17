@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, map} from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 
-const API_URL = environment.apiUrl.elencoTipologie.fake;
+const API_URL = environment.apiUrl.elencoTipologie;
 
 @Injectable({
   providedIn: 'root'
