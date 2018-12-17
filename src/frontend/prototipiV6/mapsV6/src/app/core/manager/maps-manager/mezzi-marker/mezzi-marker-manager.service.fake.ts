@@ -71,7 +71,7 @@ export class MezziMarkerManagerServiceFake {
                  */
                 this.mezziMarker.forEach(r => {
                     filterState.forEach(c => {
-                        if (r.mezzo.stato.toLowerCase().substring(0, 5) === c.toLowerCase().substring(0, 5)) {
+                        if (r.mezzo.stato.substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
                             r.opacita = false;
                         } else if (r.opacita !== false) {
                             r.opacita = true;

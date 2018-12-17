@@ -5,7 +5,7 @@ import { catchError, map, retry } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { Sede } from '../../../shared/model/sede.model';
 
-const API_URL_UNITA = environment.apiUrl.sedi.fake;
+const API_URL_UNITA = environment.apiUrl.elencoSedi;
 
 
 @Injectable({

@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {Observable, throwError} from 'rxjs';
-import {catchError, retry} from 'rxjs/operators';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {EventoRichiesta} from '../../../eventi/eventi-model/evento-richiesta.model';
-import {environment} from '../../../../environments/environment';
+import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { EventoRichiesta } from '../../../eventi/eventi-model/evento-richiesta.model';
+import { environment } from '../../../../environments/environment';
 
-const API_URL = environment.apiUrl.eventiRichieste.fake;
+const API_URL = environment.apiUrl.eventiRichieste;
 
 @Injectable({
     providedIn: 'root'
