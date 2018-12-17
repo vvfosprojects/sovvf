@@ -85,7 +85,7 @@ export class RichiesteMarkerManagerServiceFake {
                  */
                 this.richiesteMarker.forEach(r => {
                     filterState.forEach(c => {
-                        if (r.stato.substring(0, 5) === c.substring(0, 5)) {
+                        if (r.stato.substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
                             r.opacita = false;
                         } else if (r.opacita !== false) {
                             r.opacita = true;
