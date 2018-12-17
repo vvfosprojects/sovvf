@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-const API_URL = environment.apiUrl.elencoTipologie.fake;
+const API_URL = environment.apiUrl.elencoTipologie;
 @Injectable({
   providedIn: 'root'
 })

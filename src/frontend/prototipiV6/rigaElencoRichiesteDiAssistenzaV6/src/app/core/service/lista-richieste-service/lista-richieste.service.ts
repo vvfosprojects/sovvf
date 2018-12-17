@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry, map } from 'rxjs/operators';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
-const API_URL_RICHIESTE = environment.apiUrl.rigaElencoRichieste.backend;
+const API_URL_RICHIESTE = environment.apiUrl.rigaElencoRichieste + '?SearchKey=R0&RichiestaSingola=false';
+
+const headers = new HttpHeaders({
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json'
+});
+const httpOptions = { headers: headers };
 
 @Injectable({
     providedIn: 'root'
@@ -15,45 +21,14 @@ export class SintesiRichiesteService {
     }
 
     public getRichieste(): Observable<any> {
-        /* Genero le richieste nel backend */
-        return this.http.get('http://win10dev-pc/so115/api/GeneraSintesiRichiesteAssistenza').pipe(
+        return this.http.get(API_URL_RICHIESTE, httpOptions).pipe(
+            map((data: any) => {
+                console.log('Service Lista Richieste: ', data.SintesiRichiesta);
+                const richieste = data.SintesiRichiesta;
+                return richieste;
+            }),
             catchError(this.handleError)
         );
-
-        /* Ritorno le richieste "paginate" */
-        /* return this.http.get('http://win10dev-pc/so115/api/SintesiRichiesteAssistenza?SearchKey=\'R0\'&RichiestaSingola=true').pipe(
-            catchError(this.handleError)
-        ); */
-        /* const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/x-www-form-urlencoded',
-            })
-        };
-
-        let body = {
-            SearchKey: "R0",
-            RichiestaSingola: "true"
-        }
-
-        return this.http.post(API_URL_RICHIESTE, JSON.stringify(body), httpOptions).pipe(
-            map((data: any) => {
-                console.log('Service: ' + data);
-                const richieste = data;
-                return richieste;
-            }),
-            // retry(3),
-            catchError(this.handleError)
-        ); */
-
-        /* return this.http.get(API_URL_RICHIESTE).pipe(
-            map((data: any) => {
-                console.log('Service: ' + data);
-                const richieste = data;
-                return richieste;
-            }),
-            retry(3),
-            catchError(this.handleError)
-        ); */
     }
 
     private handleError(error: HttpErrorResponse) {

@@ -7,8 +7,8 @@ import {map} from 'rxjs/internal/operators';
 import {Meteo} from '../model/meteo.model';
 import {Coordinate} from '../model/coordinate.model';
 
-const API_URL = environment.apiUrl.boxes.owm.url;
-const CFG = environment.apiUrl.boxes.owm.option;
+const API_URL = environment.apiUrl.boxes.meteo.url;
+const CFG = environment.apiUrl.boxes.meteo.option;
 
 
 @Injectable({
