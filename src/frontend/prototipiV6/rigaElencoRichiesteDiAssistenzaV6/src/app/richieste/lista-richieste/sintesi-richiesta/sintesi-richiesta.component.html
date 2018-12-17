@@ -38,7 +38,8 @@
                                 <!-- ngbPopover tipologie intervento -->
                                 <ng-template #popTipologie>
                                     <div class="h6" *ngFor="let t of richiesta.tipologie">
-                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(t.icona) }}"></i>&nbsp;{{ t.descrizione }}
+                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(t.icona) }}"></i>&nbsp;{{
+                                        t.descrizione }}
                                     </div>
                                 </ng-template>
                                 <span><a *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="h6 font-weight-bold descrizione-int"
@@ -161,10 +162,6 @@
                                 <button *ngIf="partenza" class="btn btn-danger border py-0 mr-1" ngbTooltip="Torna indietro"
                                     (click)="invioPartenza()">
                                     <i class="fa fa-fw fa-arrow-left"></i>
-                                </button>
-                                <button *ngIf="partenza" class="btn btn-success border py-0" ngbTooltip="Conferma partenza"
-                                    (click)="invioPartenza()">
-                                    <i class="fa fa-fw fa-check"></i>
                                 </button>
                             </div>
                         </div>
