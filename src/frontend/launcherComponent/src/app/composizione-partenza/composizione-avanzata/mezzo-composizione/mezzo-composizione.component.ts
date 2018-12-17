@@ -7,6 +7,7 @@ import { MezzoComposizione } from '../../model/mezzo-composizione.model';
 import { CompMezzoSquadraService } from '../../service/comp-mezzo-squadra/comp-mezzo-squadra.service';
 import { Squadra } from 'src/app/shared/model/squadra.model';
 import { BoxPartenza } from '../../model/box-partenza.model';
+import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -18,6 +19,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     @Input() squadre: Squadra[];
     @Input() partenze: BoxPartenza[];
     @Input() idPartenzaAttuale: number;
+    @Input() richiesta: SintesiRichiesta;
     @Output() nuovoMezzo: EventEmitter<any> = new EventEmitter();
     @Output() mezzoCoordinate: EventEmitter<any> = new EventEmitter();
 
@@ -40,7 +42,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         }
     }
 
-    click(mezzo) {
+    click(mezzo: any) {
         this.compMezzoSquadra.setMezzo(mezzo);
         /* if (!this.mezzoSelezionato) {
           this.compMezzoSquadra.setMezzo(mezzo);
@@ -67,7 +69,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     }
 
     // NgClass
-    mezzoCompClass(mezzoComp) {
+    mezzoCompClass(mezzoComp: any) {
         let returnClass = '';
         if (this.mezzoSelezionato && this.mezzoSelezionato === mezzoComp) {
             returnClass = 'border-primary bg-grey';
@@ -87,7 +89,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         return returnClass;
     }
 
-    iconaStatiClass(mezzoComp) {
+    iconaStatiClass(mezzoComp: any) {
         let returnClass = '';
 
         switch (mezzoComp.mezzo.stato) {
@@ -108,6 +110,36 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
                 break;
         }
 
+        return returnClass;
+    }
+
+    badgeDistaccamentoClass(mezzoComp: any) {
+        let returnClass = 'badge-secondary';
+        let count = 0;
+
+        this.richiesta.competenze.forEach(c => {
+            count += 1;
+            if (c.descrizione === mezzoComp.distaccamento) {
+                switch (count) {
+                    case 1:
+                        returnClass = 'badge-primary';
+                        break;
+                    case 2:
+                        returnClass = 'badge-info';
+                        break;
+                    case 3:
+                        returnClass = 'badge-secondary';
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        // TEST
+        // this.richiesta.competenze.forEach(c => {
+        //    console.log('Richiesta', c.descrizione);
+        // });
+        // console.log('Mezzo', mezzoComp.distaccamento);
         return returnClass;
     }
 

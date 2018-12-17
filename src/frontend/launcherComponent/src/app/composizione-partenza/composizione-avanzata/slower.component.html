@@ -2,14 +2,14 @@
   <div class="col-12">
     <app-composizione-filterbar></app-composizione-filterbar>
     <div class="row">
-      <div class="col-5 pr-0">
+      <div class="col-5 pl-1 pr-0">
         <div class="card card-shadow mx-auto">
           <div class="card-header">
             <i class="fa fa-truck mr-2"></i><span class="h6">Mezzi</span>
           </div>
           <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
             <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC" [squadre]="squadre"
-              [partenze]="partenze" [idPartenzaAttuale]="idPartenzaAttuale" (nuovoMezzo)="nuovoMezzo()" (mezzoCoordinate)="mezzoCoordinate($event)"></app-mezzo-composizione>
+              [partenze]="partenze" [idPartenzaAttuale]="idPartenzaAttuale" [richiesta]="richiesta" (nuovoMezzo)="nuovoMezzo()" (mezzoCoordinate)="mezzoCoordinate($event)"></app-mezzo-composizione>
           </ul>
         </div>
       </div>
