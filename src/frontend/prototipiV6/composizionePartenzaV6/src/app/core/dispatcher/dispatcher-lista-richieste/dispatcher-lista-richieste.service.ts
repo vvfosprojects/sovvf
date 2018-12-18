@@ -1,32 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
-import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { SintesiRichiesteService } from '../service/lista-richieste-service/lista-richieste.service';
+import { Observable, Subject } from 'rxjs';
+import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { SintesiRichiesteService } from '../../service/lista-richieste-service/lista-richieste.service';
 
 
 @Injectable({
     providedIn: 'root'
 })
 export class DispatcherService {
-    private newRichiesteList$: BehaviorSubject<SintesiRichiesta[]> = new BehaviorSubject<SintesiRichiesta[]>([]);
+    private newRichiesteList$ = new Subject<SintesiRichiesta[]>();
     private updateRichiesta$ = new Subject<SintesiRichiesta>();
     private newRichiesta$ = new Subject<SintesiRichiesta>();
     private deleteRichiesta$ = new Subject<SintesiRichiesta>();
-    richieste: SintesiRichiesta[] = [];
+
+    richieste: SintesiRichiesta[];
 
     constructor(private richiesteService: SintesiRichiesteService) {
     }
 
     onNewRichiesteList() {
-        this.richiesteService.getRichieste().subscribe(val => {
-            let newArr;
-            val.SintesiRichiesta.forEach(item => {
-                console.log(item);
-                newArr = this.richieste;
-                newArr.push(item);
+        this.newRichiesteList$.next();
+        this.richiesteService.getRichieste()
+            .subscribe({
+                next: data => this.newRichiesteList$.next(data),
+                error: data => console.log(`Errore: + ${data}`)
             });
-            this.newRichiesteList$.next(newArr);
-        });
         return this.newRichiesteList$.asObservable();
     }
 

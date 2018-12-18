@@ -24,8 +24,8 @@ import { SintesiRichiesteService } from '../core/service/lista-richieste-service
 import { SintesiRichiesteServiceFake } from '../core/service/lista-richieste-service/lista-richieste.service.fake';
 import { ListaRichiesteManagerService } from '../core/manager/lista-richieste-manager/lista-richieste-manager.service';
 import { ListaRichiesteManagerServiceFake } from '../core/manager/lista-richieste-manager/lista-richieste-manager.service.fake';
-import { DispatcherService } from '../core/dispatcher/dispatcher-lista-richieste.service';
-import { DispatcherFakeService } from '../core/dispatcher/dispatcher-lista-richieste-fake.service';
+import { DispatcherService } from '../core/dispatcher/dispatcher-lista-richieste/dispatcher-lista-richieste.service';
+import { DispatcherFakeService } from '../core/dispatcher/dispatcher-lista-richieste/dispatcher-lista-richieste-fake.service';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SintesiRichiestaModule } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.module';

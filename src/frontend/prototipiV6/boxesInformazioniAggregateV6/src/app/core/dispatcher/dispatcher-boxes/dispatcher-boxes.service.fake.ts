@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Observable, of, Subject} from 'rxjs';
-import {BoxInterventi} from '../../boxes/boxes-model/box-interventi.model';
-import {BoxMezzi} from '../../boxes/boxes-model/box-mezzi.model';
-import {BoxPersonale} from '../../boxes/boxes-model/box-personale.model';
-import {InfoAggregateService} from '../service/boxes-service/info-aggregate.service';
+import {BoxInterventi} from '../../../boxes/boxes-model/box-interventi.model';
+import {BoxMezzi} from '../../../boxes/boxes-model/box-mezzi.model';
+import {BoxPersonale} from '../../../boxes/boxes-model/box-personale.model';
+import {InfoAggregateService} from '../../service/boxes-service/info-aggregate.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class DispatcherInfoAggregateService {
+export class DispatcherInfoAggregateServiceFake {
     /**
      * dispatcher interventi
      */
@@ -19,7 +19,7 @@ export class DispatcherInfoAggregateService {
     private updateBoxMezzi$ = new Subject<BoxMezzi>();
 
     /**
-     * dispatcher personale
+     * dispatcher funzionari
      */
     private updateBoxPersonale$ = new Subject<BoxPersonale>();
 
@@ -63,7 +63,7 @@ export class DispatcherInfoAggregateService {
 
 
     /**
-     *  metodi per richiedere lo stato del personale
+     *  metodi per richiedere lo stato dei funzionari
      */
 
     onNewBoxPersonaleList(): Observable<BoxPersonale> {

@@ -3,7 +3,7 @@ import {Observable, of} from 'rxjs';
 import {BoxInterventi} from '../../../boxes/boxes-model/box-interventi.model';
 import {BoxMezzi} from '../../../boxes/boxes-model/box-mezzi.model';
 import {BoxPersonale} from '../../../boxes/boxes-model/box-personale.model';
-import {DispatcherInfoAggregateService} from '../../dispatcher/dispatcher-boxes.service';
+import {DispatcherInfoAggregateService} from '../../dispatcher/dispatcher-boxes/dispatcher-boxes.service';
 
 
 @Injectable({

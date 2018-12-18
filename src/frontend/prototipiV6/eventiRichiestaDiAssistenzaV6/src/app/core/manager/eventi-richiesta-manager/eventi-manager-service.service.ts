@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {EventoRichiesta} from '../../../eventi/eventi-model/evento-richiesta.model';
-import {DispatcherEventiRichiestaService} from '../../dispatcher/dispatcher-eventi-richiesta.service';
+import {DispatcherEventiRichiestaService} from '../../dispatcher/dispatcher-eventi/dispatcher-eventi-richiesta.service';
 import {Observable, of} from 'rxjs';
 
 @Injectable({

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { SintesiRichiesteService } from '../service/lista-richieste-service/lista-richieste.service';
+import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { SintesiRichiesteService } from '../../service/lista-richieste-service/lista-richieste.service';
 
 
 @Injectable({
@@ -22,7 +22,7 @@ export class DispatcherService {
         this.richiesteService.getRichieste().subscribe(val => {
             let newArr;
             val.forEach(item => {
-                console.log(item);
+                // console.log(item);
                 newArr = this.richieste;
                 newArr.push(item);
             });
