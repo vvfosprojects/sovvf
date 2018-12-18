@@ -7,7 +7,7 @@
       </div>
     </div>
     <div *ngIf="compPartenzaMode === 'faster'" class="col-12">
-      <app-faster [richiesta]="richiesta"></app-faster>
+      <app-faster [richiesta]="richiesta" (centroMappaEmit)="getCentroMappa($event)" [dismissEvents]="dismissPartenzaSubject.asObservable()"></app-faster>
     </div>
     <div *ngIf="compPartenzaMode === 'slower'" class="col-12">
       <app-slower [richiesta]="richiesta" (centroMappaEmit)="getCentroMappa($event)" [dismissEvents]="dismissPartenzaSubject.asObservable()"></app-slower>
