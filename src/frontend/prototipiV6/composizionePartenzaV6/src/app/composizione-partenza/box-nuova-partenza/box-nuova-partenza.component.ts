@@ -76,9 +76,9 @@ export class BoxNuovaPartenzaComponent implements OnInit {
       });
     }
 
-    if (this.partenze[this.idPartenzaAttuale] && this.partenze[this.idPartenzaAttuale] === partenza) {
-      returnClass = returnClass + ' bg-grey';
-    }
+    // if (this.partenze[this.idPartenzaAttuale] && this.partenze[this.idPartenzaAttuale] === partenza) {
+    //   returnClass = returnClass + ' bg-grey';
+    // }
 
     return returnClass;
   }
