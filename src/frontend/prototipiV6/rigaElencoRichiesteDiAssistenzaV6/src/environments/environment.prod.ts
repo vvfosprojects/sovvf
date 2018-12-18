@@ -21,7 +21,7 @@ export const environment = {
             }
         },
         rigaElencoRichieste: 'http://so115-mike/so115rest/api/SintesiRichiesteAssistenza',
-        elencoTipologie: 'assets/json/tipologie.json',
+        elencoTipologie: 'https://api.myjson.com/bins/10xluw',
         eventiRichieste: 'https://api.myjson.com/bins/kz0w0',
         turno: '',
         elencoSedi: 'https://api.myjson.com/bins/10fsks',
@@ -29,6 +29,8 @@ export const environment = {
             preaccoppiati: '',
             mezzi: '',
             squadre: ''
-        }
+        },
+        genera: 'http://so115-mike/so115rest/api/GeneraSintesiRichiesteAssistenza',
+        generaFake: false
     }
 };

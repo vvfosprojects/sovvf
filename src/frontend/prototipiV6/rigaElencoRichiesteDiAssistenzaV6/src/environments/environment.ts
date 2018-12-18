@@ -29,6 +29,8 @@ export const environment = {
             preaccoppiati: '',
             mezzi: '',
             squadre: ''
-        }
+        },
+        genera: 'http://so115-mike/so115rest/api/GeneraSintesiRichiesteAssistenza',
+        generaFake: true
     }
 };
