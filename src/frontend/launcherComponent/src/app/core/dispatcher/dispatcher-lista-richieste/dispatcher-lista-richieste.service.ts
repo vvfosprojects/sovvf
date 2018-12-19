@@ -18,14 +18,17 @@ export class DispatcherService {
     constructor(private richiesteService: SintesiRichiesteService) {
     }
 
-    onNewRichiesteList() {
-        this.richiesteService.getRichieste().subscribe(val => {
-            let newArr;
-            val.forEach(item => {
-                // console.log(item);
-                newArr = this.richieste;
-                newArr.push(item);
-            });
+    onNewRichiesteList(idUltimaRichiesta?: any) {
+        this.richiesteService.getRichieste(idUltimaRichiesta).subscribe((val: any) => {
+            let newArr: any;
+            if (val) {
+                val.forEach((item: any) => {
+                    newArr = this.richieste;
+                    newArr.push(item);
+                    // TEST
+                    // console.log(item);
+                });
+            }
             this.newRichiesteList$.next(newArr);
         });
 

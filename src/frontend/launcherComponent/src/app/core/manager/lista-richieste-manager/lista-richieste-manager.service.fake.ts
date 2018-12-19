@@ -20,7 +20,7 @@ export class ListaRichiesteManagerServiceFake {
         this.onDeleteRichiesta();
     }
 
-    onNewRichiesteList() {
+    onNewRichiesteList(idUltimaRichiesta?: any) {
         this.dispatcher.onNewRichiesteList().subscribe((richieste: SintesiRichiesta[]) => {
             const nPerPagina = 9;
             if (richieste[this.prossimaRichiesta]) {

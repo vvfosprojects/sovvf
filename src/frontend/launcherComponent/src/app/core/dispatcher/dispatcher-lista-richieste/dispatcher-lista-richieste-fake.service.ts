@@ -17,7 +17,7 @@ export class DispatcherFakeService {
     constructor(private richiesteService: SintesiRichiesteService) {
     }
 
-    onNewRichiesteList(): Observable<SintesiRichiesta[]> {
+    onNewRichiesteList(idUltimaRichiesta?: any): Observable<SintesiRichiesta[]> {
         this.richiesteService.getRichieste().subscribe((richieste: SintesiRichiesta[]) => {
             this.richieste = richieste;
         });
