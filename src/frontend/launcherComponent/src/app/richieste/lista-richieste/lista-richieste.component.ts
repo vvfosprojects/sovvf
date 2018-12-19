@@ -39,23 +39,23 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         private markerS: MarkerService,
         private filter: FilterPipe,
         private partenzaService: PartenzaService) {
-
-        // Restituisce le Richieste
-        this.subscription.add(
-            this.listaRichiesteManager.getRichieste().subscribe(richieste => {
-                // console.log('Sono listaRichieste, ho ricevuto le richieste');
-                // console.log(richieste);
-                this.richieste = richieste;
-                this.loaderRichieste = false;
-            })
-        );
-        this.subscription.add(
-            this.ricercaS.getRicerca().subscribe(stringa => {
-                this.opacizzaRichieste(stringa);
-            }));
     }
 
     ngOnInit() {
+        // Restituisce le Richieste
+        if(this.richieste.length <= 0) {
+            this.getRichieste('0');
+        } else {
+            this.getRichieste(this.richieste.length);
+            // TEST
+            // console.log(this.richieste[this.richieste.length+1].id);
+        }
+
+        this.subscription.add(
+            this.ricercaS.getRicerca().subscribe(stringa => {
+                this.opacizzaRichieste(stringa);
+            })
+        );
         // Restituisce la Richiesta Hover
         this.richiesteS.subjects.getRichiestaHover().subscribe(richiestaHover => {
             if (richiestaHover) {
@@ -90,11 +90,11 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    opacizzaRichieste(ricerca): void {
+    opacizzaRichieste(ricerca: any): void {
         const result = this.filter.transform(this.richieste, ricerca);
         if (!(this.richieste.length === result.length) && result.length > 0) {
             const string = [];
-            result.forEach(c => {
+            result.forEach((c: any) => {
                 string.push(c.id);
             });
             this.markerS.opacizzaMarkers(true, 'richieste', undefined, string);
@@ -103,21 +103,37 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
+    getRichieste(idUltimaRichiesta: any) {
+        this.subscription.add(
+            this.listaRichiesteManager.getRichieste(idUltimaRichiesta).subscribe((richieste: any) => {
+                if (richieste) {
+                    this.richieste = richieste;
+                    this.loaderRichieste = false;
+                    // TEST
+                    // console.log('Sono listaRichieste, ho ricevuto le richieste');
+                    // console.log(richieste);
+                }
+            })
+        );
+    }
+
     /* Permette di visualizzare il loader e caricare nuove richieste */
     nuoveRichieste(event: ScrollEvent) {
         if (event.isReachingBottom && event.isWindowEvent === false && this.contatoreNuoveRichieste === 0) {
             this.contatoreNuoveRichieste++;
             this.loaderNuoveRichieste = true;
             setTimeout(() => {
-                this.listaRichiesteManager.onNewRichiesteList();
+                this.getRichieste(this.richieste.length);
                 this.loaderNuoveRichieste = false;
                 this.contatoreNuoveRichieste = 0;
+                // TEST
+                // console.log(this.richieste[this.richieste.length - 1].id);
             }, 3000);
         }
     }
 
     /* Gestisce il singolo click sulla richiesta */
-    richiestaClick(richiesta) {
+    richiestaClick(richiesta: any) {
         if (richiesta) {
             this.richiesteS.selezionata(richiesta.id);
             this.markerS.actionById(richiesta.id, 'click');
@@ -125,15 +141,16 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /* Gestisce il double click sulla richiesta */
-    richiestaDoubleClick(richiesta) {
+    richiestaDoubleClick(richiesta: any) {
         if (richiesta) {
             this.richiesteS.selezionata(richiesta.id);
-            console.log('Doppio click su richiesta');
+            // TEST
+            // console.log('Doppio click su richiesta');
         }
     }
 
     /* Fissa in alto la richiesta */
-    fissaInAlto(richiesta) {
+    fissaInAlto(richiesta: any) {
         if (richiesta) {
             this.richiesteS.deselezionata();
             this.richiesteS.fissata(richiesta.id);
@@ -141,12 +158,12 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    nuovaPartenza(richiesta) {
+    nuovaPartenza(richiesta: any) {
         this.partenzaService.nuovaPartenza(richiesta);
     }
 
     /* Gestisce l'hover in */
-    richiestaHoverIn(richiesta) {
+    richiestaHoverIn(richiesta: any) {
         if (richiesta) {
             this.richiesteS.hoverIn(richiesta.id);
             this.markerS.actionById(richiesta.id, 'hover-in');
@@ -154,7 +171,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /* Gestisce l'hover out */
-    richiestaHoverOut(richiesta) {
+    richiestaHoverOut(richiesta: any) {
         if (richiesta) {
             this.richiesteS.hoverOut();
             this.markerS.actionById(richiesta.id, 'hover-out');
@@ -170,7 +187,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     } */
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
-    visualizzaEventiRichiesta(richiesta) {
+    visualizzaEventiRichiesta(richiesta: any) {
         this.modalService.open(EventiRichiestaComponent, { size: 'lg', centered: true });
     }
 
@@ -185,7 +202,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /* NgClass Template */
-    CardClasses(r) {
+    CardClasses(r: any) {
         if (r) {
             return {
                 // Hover (stato)
@@ -201,7 +218,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /* NgClass status */
-    CardSmClasses(r) {
+    CardSmClasses(r: any) {
         return {
             // Hover (stato)
             'card-shadow-info': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'assegnato'),

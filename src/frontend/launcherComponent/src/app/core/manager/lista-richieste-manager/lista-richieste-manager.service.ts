@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { DispatcherService } from '../../dispatcher/dispatcher-lista-richieste.service';
+import { DispatcherService } from '../../dispatcher/dispatcher-lista-richieste/dispatcher-lista-richieste.service';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
 
@@ -14,9 +14,9 @@ export class ListaRichiesteManagerService {
     constructor(private dispatcher: DispatcherService) {
     }
 
-    getRichieste() {
+    getRichieste(idUltimaRichiesta?: any) {
         this.newRichiesteList$.next();
-        this.dispatcher.onNewRichiesteList()
+        this.dispatcher.onNewRichiesteList(idUltimaRichiesta)
             .subscribe({
                 next: data => {
                     this.richieste = data;
@@ -27,8 +27,8 @@ export class ListaRichiesteManagerService {
         return this.newRichiesteList$.asObservable();
     }
 
-    getRichiestaFromId(id, fromMap?: boolean) {
-        let richiesta;
+    getRichiestaFromId(id: any, fromMap?: boolean) {
+        let richiesta: any;
         richiesta = this.richieste.find(x => x.id === id);
 
         if (!richiesta && fromMap) {
@@ -36,9 +36,5 @@ export class ListaRichiesteManagerService {
             console.log('Ho preso la richiesta dal service perchè non presente nella lista.');
         }
         return richiesta;
-    }
-
-    onNewRichiesteList() {
-        return;
     }
 }

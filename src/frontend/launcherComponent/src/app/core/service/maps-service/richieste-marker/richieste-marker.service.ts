@@ -1,11 +1,15 @@
-import {Injectable} from '@angular/core';
-import {Observable, throwError} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {environment} from '../../../../../environments/environment';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
 
 const API_URL_RICHIESTE = environment.apiUrl.maps.markers.richieste;
-
+const headers = new HttpHeaders({
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json'
+});
+const httpOptions = { headers: headers };
 @Injectable({
     providedIn: 'root'
 })
@@ -19,8 +23,9 @@ export class RichiesteMarkerService {
     }
 
     public getRichiesteMarkers(): Observable<any> {
-        return this.http.get(API_URL_RICHIESTE).pipe(
+        return this.http.get(API_URL_RICHIESTE, httpOptions).pipe(
             map((data: any) => {
+                console.log('Service Marker Richieste: ', data.SintesiRichiestaMarker);
                 return data.SintesiRichiestaMarker;
             }),
             retry(3),

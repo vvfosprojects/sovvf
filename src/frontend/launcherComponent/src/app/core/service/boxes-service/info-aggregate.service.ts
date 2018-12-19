@@ -7,7 +7,7 @@ import {BoxInterventi} from '../../../boxes/boxes-model/box-interventi.model';
 import {BoxMezzi} from '../../../boxes/boxes-model/box-mezzi.model';
 import {BoxPersonale} from '../../../boxes/boxes-model/box-personale.model';
 
-const API_URL = environment.apiUrl.boxes.infoAggregateFake.pieno;
+const API_URL = environment.apiUrl.boxes.infoAggregate;
 
 @Injectable()
 export class InfoAggregateService {

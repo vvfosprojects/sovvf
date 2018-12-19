@@ -4,6 +4,8 @@ import {Subscription} from 'rxjs';
 import {FakeMethodService} from '../fake-method/fake-method-service.service';
 import {CentroMappa} from '../../maps/maps-model/centro-mappa.model';
 import {Coordinate} from '../../shared/model/coordinate.model';
+import { DirectionService } from '../../maps/service/direction-service/direction-service.service';
+import { DirectionInterface } from '../../maps/service/direction-service/direction-interface';
 
 @Component({
     selector: 'app-nav',
@@ -18,7 +20,8 @@ export class NavComponent implements OnDestroy {
 
 
     constructor(private markedService: MarkedService,
-                private fakeManager: FakeMethodService) {
+                private fakeManager: FakeMethodService,
+                private directionService: DirectionService) {
         this.subscription = this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         });
@@ -69,6 +72,25 @@ export class NavComponent implements OnDestroy {
 
     calcolaCentro() {
         this.fakeManager.calcolaCentro();
+    }
+
+    startDirection() {
+        const direzioni: DirectionInterface = {
+            origin: {
+                lat: 41.8624992,
+                lng: 12.5532867
+            },
+            destination: {
+                lat: 41.9161894,
+                lng: 12.4554147
+            },
+            isVisible: true
+        };
+        this.directionService.sendDirection(direzioni);
+    }
+
+    stopDirection() {
+        this.directionService.clearDirection();
     }
 
     getMarker(id) {

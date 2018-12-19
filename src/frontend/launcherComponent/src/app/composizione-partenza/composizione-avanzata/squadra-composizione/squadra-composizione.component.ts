@@ -77,13 +77,13 @@ export class SquadraComposizioneComponent implements OnInit, OnChanges {
     if (this.squadreSelezionate) {
       this.squadreSelezionate.forEach(ss => {
         if (squadra === ss) {
-          returnClass = 'border-danger';
+          returnClass = 'border-primary bg-grey';
         }
       });
     }
 
     if (this.hover) {
-      returnClass = returnClass + ' bg-light';
+      returnClass = returnClass + ' bg-grey';
     }
     return returnClass;
   }

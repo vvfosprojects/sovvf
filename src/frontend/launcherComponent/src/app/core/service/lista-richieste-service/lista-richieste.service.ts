@@ -4,7 +4,7 @@ import { catchError, retry, map } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
-const API_URL_RICHIESTE = environment.apiUrl.rigaElencoRichieste.backend + '?SearchKey=R0&RichiestaSingola=false';
+const API_URL_RICHIESTE = environment.apiUrl.rigaElencoRichieste;
 
 const headers = new HttpHeaders({
     'Access-Control-Allow-Origin': '*',
@@ -20,13 +20,15 @@ export class SintesiRichiesteService {
     constructor(private http: HttpClient) {
     }
 
-    public getRichieste(): Observable<any> {
-        return this.http.get(API_URL_RICHIESTE, httpOptions).pipe(
+    public getRichieste(idUltimaRichiesta?: any): Observable<any> {
+        return this.http.get(API_URL_RICHIESTE + '?SearchKey=' + idUltimaRichiesta +'&RichiestaSingola=false', httpOptions).pipe(
             map((data: any) => {
-                console.log('Service Lista Richieste: ', data.SintesiRichiesta);
                 const richieste = data.SintesiRichiesta;
                 return richieste;
+                // TEST
+                // console.log('Service Lista Richieste: ', data.SintesiRichiesta);
             }),
+            retry(3),
             catchError(this.handleError)
         );
     }

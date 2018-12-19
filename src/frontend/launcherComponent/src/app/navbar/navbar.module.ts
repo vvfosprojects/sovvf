@@ -19,7 +19,6 @@ import { UnitaOperativaService } from './navbar-service/unita-operativa-service/
 import { UnitaOperativaServiceFake } from './navbar-service/unita-operativa-service/unita-operativa.service.fake';
 import { UnitaOperativaTreeviewComponent } from './unita-operativa-treeview/unita-operativa-treeview.component';
 import { DefaultTreeviewI18n } from './navbar-service/unita-operativa-treeview-service/default-treeview-i18n';
-import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -30,12 +29,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         SharedModule.forRoot(),
         TreeviewModule.forRoot(),
         BrowserAnimationsModule,
-        ToastrModule.forRoot({
-            timeOut: 2500,
-            // extendedTimeOut: 300,
-            positionClass: 'toast-top-center',
-            preventDuplicates: true,
-        }),
         FilterPipeModule,
         routing,
         FormsModule

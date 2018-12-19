@@ -50,7 +50,7 @@ export class CompMezzoSquadraService {
   clearSingleSquadra(squadra) {
     this.squadreSelezionate.forEach((ss: Squadra, index) => {
       if (squadra === ss) {
-        console.log(squadra, index);
+        /* console.log(squadra, index); */
         this.squadreSelezionate.splice(index, 1);
       }
     });
@@ -80,5 +80,14 @@ export class CompMezzoSquadraService {
   }
   clearPartenze() {
     this.partenze$.next();
+  }
+  clearSinglePartenza(partenza) {
+    this.partenze.forEach((p: BoxPartenza, index) => {
+      if (partenza === p) {
+        console.log(partenza, index);
+        this.partenze.splice(index, 1);
+      }
+    });
+    this.partenze$.next(this.partenze);
   }
 }

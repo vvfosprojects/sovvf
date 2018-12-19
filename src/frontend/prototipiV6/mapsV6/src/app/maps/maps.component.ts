@@ -6,6 +6,7 @@ import { SedeMarker } from './maps-model/sede-marker.model';
 import { MezzoMarker } from './maps-model/mezzo-marker.model';
 import { ChiamataMarker } from './maps-model/chiamata-marker.model';
 import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-maps',
@@ -25,19 +26,23 @@ export class MapsComponent implements OnInit, OnDestroy {
                 private sediManager: MapManager.SediMarkerManagerService,
                 private mezziManager: MapManager.MezziMarkerManagerService,
                 private centroManager: MapManager.CentroMappaManagerService,
-                private chiamataManager: MapManager.ChiamataMarkerManagerService) {
+                private chiamataManager: MapManager.ChiamataMarkerManagerService,
+                private toastr: ToastrService) {
         /**
          *  mi iscrivo al map manager che mi ritorna il centro della mappa
          */
         this.subscription.add(this.centroManager.getCentro().subscribe((r: CentroMappa) => {
             this.centroMappa = r;
         }));
-
+        this.timeoutAlert('showToastr');
         /**
          *  mi iscrivo al map manager che mi ritorna tutti i marker di tipo richiestaMarker
          */
         this.subscription.add(this.richiesteManager.getRichiesteMarker().subscribe((r: RichiestaMarker[]) => {
             this.richiesteMarkers = r;
+            if (r.length > 0) {
+                this.timeoutAlert('clearToastr');
+            }
             /**
              *  inizializzo un contatore nel servizio per tenere traccia del numero di richieste
              */
@@ -69,11 +74,24 @@ export class MapsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-
     }
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+    }
+
+    timeoutAlert(value: string) {
+        setTimeout(() => this[value](), 0);
+    }
+
+    showToastr() {
+        this.toastr.info('Caricamento in corso...', 'Attendere', {
+            disableTimeOut: true
+        });
+    }
+
+    clearToastr() {
+        this.toastr.clear();
     }
 
 }

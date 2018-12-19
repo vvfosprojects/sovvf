@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 
-const API_URL_TURNO = environment.apiUrl.turno.fake;
+const API_URL_TURNO = environment.apiUrl.turno;
 
 
 @Injectable({

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { DispatcherService } from '../../dispatcher/dispatcher-lista-richieste.service';
+import { DispatcherService } from '../../dispatcher/dispatcher-lista-richieste/dispatcher-lista-richieste.service';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
 

@@ -1,16 +1,18 @@
-<li class="list-group-item cursor-pointer border px-2" (click)="click(mezzoComp)" (mouseover)="hoverIn()" (mouseout)="hoverOut()" [ngClass]="mezzoCompClass(mezzoComp)">
+<li class="list-group-item cursor-pointer border" (click)="click(mezzoComp);mezzoDirection(mezzoComp)" (mouseover)="hoverIn()" (mouseout)="hoverOut()" [ngClass]="mezzoCompClass(mezzoComp)">
   <div class="row">
-    <div class="col-9 text-center">
+    <div class="col-9 pl-0 text-center">
+      <span class="fa fa-eercast mr-1" [ngClass]="iconaStatiClass(mezzoComp)" [ngbTooltip]="mezzoComp.mezzo.stato"></span>
       <span class="d-inline-block font-weight-bold mr-1">{{mezzoComp.mezzo.descrizione}}</span>
       <span class="d-inline-block mr-2">{{mezzoComp.mezzo.genere}}</span>
       <small>
-        <i class="fa fa-road guida mr-1"></i>
+        <i class="fa fa-road guida mr-1" ngbTooltip="Distanza dall'intervento"></i>
         <span class="d-inline-block mr-2">{{mezzoComp.km}}</span>
-        <i class="fa fa-clock-o guida mr-1"></i>
+        <i class="fa fa-clock-o guida mr-1" ngbTooltip="Tempo di percorrenza"></i>
         <span class="d-inline-block mr-2">{{mezzoComp.tempoPercorrenza}}</span>
       </small>
+      <span class="badge" [ngClass]="badgeDistaccamentoClass(mezzoComp)" [ngbTooltip]="mezzoComp.distaccamento">{{mezzoComp.distaccamento | slice:0:3}}</span>
     </div>
-    <div *ngIf="partenze.length > 0 && mezzoComp !== mezzoSelezionato" class="col-2 pr-0">
+    <div *ngIf="partenze.length > 0 && mezzoComp !== mezzoSelezionato && !assegnato" class="col-2 pr-0">
       <button class="btn btn-sm btn-block btn-primary py-0" (click)="clickNuovoMezzo()"><i class="fa fa-plus"></i></button>
     </div>
   </div>

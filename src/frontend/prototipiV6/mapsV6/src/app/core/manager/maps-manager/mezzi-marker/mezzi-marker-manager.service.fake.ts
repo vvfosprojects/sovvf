@@ -45,7 +45,6 @@ export class MezziMarkerManagerServiceFake {
      * @param stringSearch
      */
     cambiaOpacitaMarker(action: boolean, filterState?: string[], stringSearch?: string[]) {
-        console.log(filterState);
         if (action) {
             /**
              * annullo la precedente ricerca e ritorno null tutte le opacità
@@ -60,7 +59,6 @@ export class MezziMarkerManagerServiceFake {
                 this.mezziMarker.forEach(r => {
                     stringSearch.forEach(c => {
                         if (r.mezzo.codice === c) {
-                            // console.log(r.id);
                             r.opacita = false;
                         } else if (r.opacita !== false) {
                             r.opacita = true;
@@ -73,8 +71,7 @@ export class MezziMarkerManagerServiceFake {
                  */
                 this.mezziMarker.forEach(r => {
                     filterState.forEach(c => {
-                        if (r.mezzo.stato.toLowerCase().substring(0, 5) === c.toLowerCase().substring(0, 5)) {
-                            // console.log(r.id);
+                        if (r.mezzo.stato.substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
                             r.opacita = false;
                         } else if (r.opacita !== false) {
                             r.opacita = true;

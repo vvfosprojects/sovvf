@@ -32,6 +32,7 @@ import { ChiamataModule } from './chiamata/chiamata.module';
 import { FilterbarModule } from './filterbar/filterbar.module';
 import { I18n } from './i18n';
 import { ComposizionePartenzaModule } from './composizione-partenza/composizione-partenza.module';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -55,6 +56,10 @@ import { ComposizionePartenzaModule } from './composizione-partenza/composizione
         TimeagoModule.forRoot({
             intl: TimeagoIntl,
             formatter: {provide: TimeagoFormatter, useClass: TimeagoCustomFormatter},
+        }),
+        ToastrModule.forRoot({
+            positionClass: 'toast-top-center',
+            preventDuplicates: true,
         }),
         RichiesteModule,
         BoxesModule,

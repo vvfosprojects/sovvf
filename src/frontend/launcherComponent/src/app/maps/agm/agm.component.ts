@@ -13,11 +13,16 @@ import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
 import { Meteo } from '../../shared/model/meteo.model';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { MarkerService } from '../service/marker-service/marker-service.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { CenterService } from '../service/center-service/center-service.service';
 import { AgmService } from './agm-service.service';
 import { ControlPosition, FullscreenControlOptions, ZoomControlOptions } from '@agm/core/services/google-maps-types';
 import { MeteoMarker } from '../maps-model/meteo-marker.model';
+import { debounceTime } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DirectionService } from '../service/direction-service/direction-service.service';
+import { DirectionInterface } from '../service/direction-service/direction-interface';
+
 
 declare var google: any;
 
@@ -37,12 +42,15 @@ export class AgmComponent implements OnInit, OnDestroy {
     meteoMarkers: MeteoMarker[] = [];
     minMarkerCluster: number;
     datiMeteo: Meteo;
-    coloreStato: string;
+    coloreStatoWindow: string;
     map_loaded = false;
     subscription = new Subscription();
     map: any;
+    // delayMarkerTime = 1;
     richiestaMarkerIconUrl = 'assets/img/icone-markers/chiamata-marker-rosso.png';
     meteoMarkerIconUrl = 'assets/img/icone-markers/marker-meteo-32.png';
+
+    // private delayHover = new Subject<HoverType>();
 
     zoomControlOptions: ZoomControlOptions = {
         position: ControlPosition.BOTTOM_RIGHT
@@ -52,11 +60,23 @@ export class AgmComponent implements OnInit, OnDestroy {
         position: ControlPosition.TOP_LEFT
     };
 
+    direction: DirectionInterface = {
+        isVisible: false
+    };
+
+    renderOptions: any = {
+        draggable: false,
+        suppressMarkers: true,
+        suppressInfoWindows: true
+    };
+
+
     @ViewChild('agmContainer') agmContainer: ElementRef;
 
     constructor(private markerService: MarkerService,
                 private centerService: CenterService,
-                private agmService: AgmService) {
+                private agmService: AgmService,
+                private directionService: DirectionService) {
         /**
          * dati del centro mappa attuale
          * @type {Subscription}
@@ -76,20 +96,35 @@ export class AgmComponent implements OnInit, OnDestroy {
          * @type {Subscription}
          */
         this.subscription.add(this.markerService.getMarkedColor().subscribe(colore => {
-            this.coloreStato = colore;
+            this.coloreStatoWindow = colore;
         }));
         /**
          * marker di tipo meteo
          * @type {Subscription}
          */
-        this.subscription.add(this.markerService.getMeteoMarker().subscribe( marker => {
+        this.subscription.add(this.markerService.getMeteoMarker().subscribe(marker => {
             this.meteoMarkers = marker;
+        }));
+        /**
+         * direzioni di tipo direction
+         * @type {Subscription}
+         */
+        this.subscription.add(this.directionService.getDirection().subscribe(direzioni => {
+            this.direction = direzioni;
         }));
         /**
          * marker minimi per creare un cluster
          * @type {number}
          */
         this.minMarkerCluster = this.markerService.minMarkerCluster;
+        // /**
+        //  * creo un delay all'hover del mouse
+        //  * @type {Subscription}
+        //  */
+        // this.subscription.add(this.delayHover.pipe(
+        //     debounceTime(this.delayMarkerTime)).subscribe(
+        //     evento => this.hoverMarkerDelayed(evento.markers, evento.hoverName)
+        // ));
     }
 
     ngOnInit() {
@@ -125,18 +160,22 @@ export class AgmComponent implements OnInit, OnDestroy {
          *  ricevo il marker selezionato dal componente mappa (agm)
          */
         this.markerService.action(marker, 'click');
-        /**
-         * prendo il colore della richiesta dallo stato
-         */
-        this.coloreStato = this.markerService.coloreStato;
     }
 
     hoverMarker(marker: any, type): void {
         /**
          * richiamo il service marker e gli passo marker e tipo hover
          */
+        // this.delayHover.next({markers: marker, hoverName: type});
         this.markerService.action(marker, type);
     }
+
+    // hoverMarkerDelayed(marker: any, type): void {
+    //     /**
+    //      * richiamo il service marker e gli passo marker e tipo hover
+    //      */
+    //     this.markerService.action(marker, type);
+    // }
 
     urlIcona(marker: any, tipoSede?: boolean): string {
         /**
@@ -157,7 +196,7 @@ export class AgmComponent implements OnInit, OnDestroy {
         /**
          * richiedo al service che gestisce i marker sulla mappa, di ritornarmi se il marker cliccato è quello selezionato
          */
-        return this.markerService.trueMarker(marker);
+        return this.markerService.trueMarker(marker, true);
     }
 
     isVisible(marker: any): boolean {
@@ -181,4 +220,10 @@ export class AgmComponent implements OnInit, OnDestroy {
         this.markerService.action('', '');
     }
 
+
+}
+
+export interface HoverType {
+    markers: any;
+    hoverName: string;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { DispatcherService } from '../../dispatcher/dispatcher-lista-richieste.service';
+import { DispatcherService } from '../../dispatcher/dispatcher-lista-richieste/dispatcher-lista-richieste.service';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
 
@@ -20,7 +20,7 @@ export class ListaRichiesteManagerServiceFake {
         this.onDeleteRichiesta();
     }
 
-    onNewRichiesteList() {
+    onNewRichiesteList(idUltimaRichiesta?: any) {
         this.dispatcher.onNewRichiesteList().subscribe((richieste: SintesiRichiesta[]) => {
             const nPerPagina = 9;
             if (richieste[this.prossimaRichiesta]) {

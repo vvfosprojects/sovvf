@@ -8,8 +8,8 @@ import {PipeModule} from '../shared/pipes/pipe.module';
 import {SharedModule} from '../shared/shared.module';
 import {EventiManagerService} from '../core/manager/eventi-richiesta-manager/eventi-manager-service.service';
 import {EventiManagerServiceFake} from '../core/manager/eventi-richiesta-manager/eventi-manager-service.service.fake';
-import {DispatcherEventiRichiestaService} from '../core/dispatcher/dispatcher-eventi-richiesta.service';
-import {DispatcherEventiRichiestaServiceFake} from '../core/dispatcher/dispatcher-eventi-richiesta.service.fake';
+import {DispatcherEventiRichiestaService} from '../core/dispatcher/dispatcher-eventi/dispatcher-eventi-richiesta.service';
+import {DispatcherEventiRichiestaServiceFake} from '../core/dispatcher/dispatcher-eventi/dispatcher-eventi-richiesta.service.fake';
 import {EventiRichiestaService} from '../core/service/eventi-richiesta-service/eventi-richiesta.service';
 import {EventiRichiestaServiceFake} from '../core/service/eventi-richiesta-service/eventi-richiesta.service.fake';
 

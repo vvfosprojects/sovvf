@@ -177,7 +177,9 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
     }
 
     showAlert(title, message, type) {
-        this.toastr[type](message, title);
+        this.toastr[type](message, title, {
+            timeOut: 2500
+        });
     }
 
 }

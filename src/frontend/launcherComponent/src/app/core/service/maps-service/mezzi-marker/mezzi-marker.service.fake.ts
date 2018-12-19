@@ -237,7 +237,7 @@ export class MezziMarkerServiceFake {
                             ])
                     ], 5),
                 'R1', 'Mezzo in soccorso'
-            )                         
+            )
         ];
         return of(this.mezziMarkers);
     }

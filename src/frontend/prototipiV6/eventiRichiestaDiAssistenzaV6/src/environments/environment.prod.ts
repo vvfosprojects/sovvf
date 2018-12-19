@@ -1,41 +1,34 @@
 export const environment = {
-    production: true,
+    production: false,
     apiUrl: {
         boxes: {
-            infoAggregateFake: {
-                pieno: 'https://api.myjson.com/bins/16f4c4', /* 2 FUNZIONARI, BOX-RICHIESTE, BOX-MEZZI  */
-                vuoto: 'https://api.myjson.com/bins/e2ew0' /* 0 FUNZIONARI, NO BOX-RCHIESTE, NO BOX-MEZZI */
-            },
-            owm: {
+            infoAggregate: 'https://api.myjson.com/bins/16f4c4',
+            meteo: {
                 url: 'http://api.openweathermap.org/data/2.5/weather?',
                 option: {
                     lang: 'it',
                     key: 'a23cc450dabf63fdb6729696aa29b3a6',
                     unit: 'metric'
                 }
-
             }
         },
         maps: {
             markers: {
-                fake1: 'https://api.myjson.com/bins/6vlu4',
-                fake2: 'https://api.myjson.com/bins/1b6478'
-            },
-            agm: {
-                key: 'AIzaSyDYIMWNyVt1X_30PybcDMTZkFkcSsUytDk'
+                richieste: 'http://so115-mike/so115rest/api/SintesiRichiesteAssistenzaMarker',
+                sedi: 'https://api.myjson.com/bins/18m83u',
+                mezzi: 'https://api.myjson.com/bins/jwy84',
+                centro: ''
             }
         },
-        rigaElencoRichieste: {
-            fake: 'https://api.jsonbin.io/b/5b9663a7d6fe677c48d823c3',
-            fake2: 'https://api.myjson.com/bins/ze8v4', // Restituisce 3 richieste di assistenza
-            backend: 'http://localhost:2661/api'
-        },
-        elencoFiltri: {
-            fake: 'https://api.myjson.com/bins/yrkns'
-        },
-        eventiRichieste: {
-            fake: 'https://api.myjson.com/bins/kz0w0',
-            backend: 'http://localhost:2661/api'
+        rigaElencoRichieste: 'http://so115-mike/so115rest/api/SintesiRichiesteAssistenza',
+        elencoTipologie: 'assets/json/tipologie.json',
+        eventiRichieste: 'https://api.myjson.com/bins/kz0w0',
+        turno: '',
+        elencoSedi: 'https://api.myjson.com/bins/10fsks',
+        composizione: {
+            preaccoppiati: '',
+            mezzi: '',
+            squadre: ''
         }
     }
 };

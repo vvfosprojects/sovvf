@@ -29,7 +29,7 @@ export class SintesiRichiesteServiceFake {
     constructor() {
     }
 
-    public getRichieste(): Observable<SintesiRichiesta[]> {
+    public getRichieste(idUltimaRichiesta?: any): Observable<SintesiRichiesta[]> {
         this.richieste = [
             new SintesiRichiesta(
                 'RM-022',

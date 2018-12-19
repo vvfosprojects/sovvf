@@ -2,6 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Sede } from '../../../shared/model/sede.model';
 import { LivelliSedi } from '../unita-operativa-treeview-service/treeview.interface';
+import { GeneraTestService } from '../genera-service/genera-test.service';
+import { environment } from '../../../../environments/environment';
+
+const FLAG_FAKE = environment.apiUrl.generaFake;
+
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +22,7 @@ export class UnitaAttualeService {
     unitaSelezionata: Sede[] = [];
     unitaSelezionataString: string = null;
 
-    constructor() {
+    constructor(private richiesteStatus: GeneraTestService) {
         this.preLoader = true;
     }
 
@@ -96,7 +101,7 @@ export class UnitaAttualeService {
     }
 
     startPreloading(): void {
-        if (this.startCount > 0) {
+        if (this.startCount > -1) {
             this.preloading();
         }
     }
@@ -107,10 +112,20 @@ export class UnitaAttualeService {
          */
         this.preLoader = false;
         // console.log('inizio riavvio applicazione(fake)');
-        setTimeout(() => {
-            this.preLoader = true;
-            // console.log('fine riavvio applicazione(fake)');
-        }, 1000);
+        if (FLAG_FAKE) {
+            setTimeout(() => {
+                this.preLoader = true;
+                // console.log('fine riavvio applicazione(fake)');
+            }, 1000);
+        } else {
+            console.log('Chiamo il back end');
+            this.richiesteStatus.getRichiesteStatus().subscribe( data => {
+                if (data) {
+                    console.log('Back end: true');
+                    this.preLoader = true;
+                }
+            });
+        }
     }
 
 }

@@ -10,9 +10,12 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 export class BoxNuovaPartenzaComponent implements OnInit {
   @Input() richiesta: SintesiRichiesta;
   @Input() partenza: BoxPartenza;
+  @Input() partenze: BoxPartenza[];
   @Input() preAccoppiatiSelezionati: BoxPartenza[];
   @Input() idPartenzaAttuale: number;
+  @Input() elimina: boolean;
   @Output() selezionato: EventEmitter<BoxPartenza> = new EventEmitter();
+  @Output() eliminato: EventEmitter<BoxPartenza> = new EventEmitter();
 
   constructor() { }
 
@@ -22,6 +25,10 @@ export class BoxNuovaPartenzaComponent implements OnInit {
 
   partenzaSelezionata(partenza: BoxPartenza) {
     this.selezionato.emit(partenza);
+  }
+
+  eliminaPartenza(partenza: BoxPartenza) {
+    this.eliminato.emit(partenza);
   }
 
   /* NgClass status */
@@ -69,10 +76,9 @@ export class BoxNuovaPartenzaComponent implements OnInit {
       });
     }
 
-    if (this.partenza[this.idPartenzaAttuale] === partenza) {
-      console.log('a');
-      returnClass = 'border-danger';
-    }
+    // if (this.partenze[this.idPartenzaAttuale] && this.partenze[this.idPartenzaAttuale] === partenza) {
+    //   returnClass = returnClass + ' bg-grey';
+    // }
 
     return returnClass;
   }

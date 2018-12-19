@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { SintesiRichiesteService } from '../service/lista-richieste-service/lista-richieste.service';
+import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { SintesiRichiesteService } from '../../service/lista-richieste-service/lista-richieste.service';
 
 
 @Injectable({
@@ -18,14 +18,17 @@ export class DispatcherService {
     constructor(private richiesteService: SintesiRichiesteService) {
     }
 
-    onNewRichiesteList() {
-        this.richiesteService.getRichieste().subscribe(val => {
-            let newArr;
-            val.forEach(item => {
-                console.log(item);
-                newArr = this.richieste;
-                newArr.push(item);
-            });
+    onNewRichiesteList(idUltimaRichiesta?: any) {
+        this.richiesteService.getRichieste(idUltimaRichiesta).subscribe((val: any) => {
+            let newArr: any;
+            if (val) {
+                val.forEach((item: any) => {
+                    newArr = this.richieste;
+                    newArr.push(item);
+                    // TEST
+                    // console.log(item);
+                });
+            }
             this.newRichiesteList$.next(newArr);
         });
 

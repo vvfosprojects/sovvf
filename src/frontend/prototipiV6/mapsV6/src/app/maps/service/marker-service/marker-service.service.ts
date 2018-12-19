@@ -17,6 +17,7 @@ import { MapsFiltroService } from '../../maps-ui/filtro/maps-filtro.service';
 import { MeteoMarker } from '../../maps-model/meteo-marker.model';
 import { Localita } from '../../../shared/model/localita.model';
 import { BoxClickArrayInterface } from '../../../boxes/info-aggregate/box-service/box-click-interface';
+import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
 
 @Injectable({
     providedIn: 'root'
@@ -69,7 +70,7 @@ export class MarkerService implements OnDestroy {
                 this.subjectMeteoMarkers.next([]);
             }
         }));
-        this.subscription.add(this.mapsFiltroService.getFiltroBoxes().subscribe( (filtroBoxes: BoxClickArrayInterface) => {
+        this.subscription.add(this.mapsFiltroService.getFiltroBoxes().subscribe((filtroBoxes: BoxClickArrayInterface) => {
             this.filtroBoxes(filtroBoxes);
         }));
         /**
@@ -105,6 +106,7 @@ export class MarkerService implements OnDestroy {
         /**
          * metodo che mi ritorna true, se il marker selezionato è lo stesso che è stato cliccato
          */
+        this.coloraMarker(marker);
         if (cross) {
             return true;
         } else {
@@ -142,6 +144,7 @@ export class MarkerService implements OnDestroy {
          *  imposto nel service marked lo stato del marker a selezionato
          */
         this.selezionato(marker);
+
         /**
          *  mi arrivano i dati del meteo
          */
@@ -151,7 +154,6 @@ export class MarkerService implements OnDestroy {
          */
         this.agmService.centraMappa(this.getCoordinate(marker));
         this.agmService.cambiaZoom(18);
-        this.coloraMarker(marker);
     }
 
     selezionato(marker: any): void {
@@ -235,6 +237,7 @@ export class MarkerService implements OnDestroy {
                 this.checkMarker = null;
                 this.markerZIndex = null;
                 this.markerColorato = null;
+                this.markedColor.next(null);
             }
                 break;
         }
@@ -332,7 +335,11 @@ export class MarkerService implements OnDestroy {
         return coordinate;
     }
 
-    getMarkerFromId(id: string) {
+    /**
+     * metodo che ritorna un oggetto di tipo RichiestaMarker ricevendo un id
+     * @param id
+     */
+    getMarkerFromId(id: string): RichiestaMarker {
         return this.markerRichiesteManager.getMarkerFromId(id);
     }
 
@@ -361,8 +368,11 @@ export class MarkerService implements OnDestroy {
 
     }
 
+    /**
+     * opacizza i marker dal filtro attivato su Boxes
+     * @param obj
+     */
     filtroBoxes(obj: BoxClickArrayInterface) {
-        console.log(obj);
         if (obj.richieste.length > 0) {
             this.opacizzaMarkers(true, 'richieste', obj.richieste, undefined);
         } else {
@@ -375,7 +385,12 @@ export class MarkerService implements OnDestroy {
         }
     }
 
-
+    /**
+     * centra la mappa sul marker della chiamata
+     * @param marker
+     * @param action
+     * @param centroMappa
+     */
     chiamata(marker: ChiamataMarker, action: string, centroMappa?: CentroMappa) {
         switch (action) {
             case 'centra': {
@@ -394,6 +409,32 @@ export class MarkerService implements OnDestroy {
         }
     }
 
+    /**
+     * centra la mappa sul marker della partenza
+     * @param id
+     * @param action
+     * @param centroMappa
+     */
+    partenza(id: string, action: string, centroMappa?: CentroMappa) {
+        const marker = this.getMarkerFromId(id);
+        switch (action) {
+            case 'centra': {
+                this.agmService.centraMappa(this.getCoordinate(marker));
+                this.markerZIndex = marker;
+            }
+                break;
+            default: {
+                this.agmService.centraMappa(centroMappa.coordinate);
+                this.markerZIndex = null;
+            }
+                break;
+        }
+    }
+
+    /**
+     * crea a runtime un marker, se l'utente clicca in un punto della mappa
+     * @param event
+     */
     createMeteoMarker(event) {
         if (this.switchMeteo) {
             const x = event.coords.lat;

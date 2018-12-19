@@ -4,12 +4,16 @@ import { PipeModule } from '../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../environments/environment';
 import { SharedModule } from '../shared/shared.module';
+import { ToastrModule } from 'ngx-toastr';
+
 /**
  * AGM CORE
  */
 import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { AgmDirectionModule } from 'agm-direction';
+
 /**
  * MAPS
  */
@@ -44,12 +48,15 @@ import {
         CommonModule,
         NgbModule,
         PipeModule.forRoot(),
-        AgmCoreModule.forRoot({
-            apiKey: environment.apiUrl.maps.agm.key
-        }),
+        AgmCoreModule.forRoot(),
+        AgmDirectionModule,
         AgmJsMarkerClustererModule,
         AgmSnazzyInfoWindowModule,
-        SharedModule.forRoot()
+        SharedModule.forRoot(),
+        ToastrModule.forRoot({
+            positionClass: 'toast-top-center',
+            preventDuplicates: true,
+        }),
     ],
     declarations: [
         MapsComponent,

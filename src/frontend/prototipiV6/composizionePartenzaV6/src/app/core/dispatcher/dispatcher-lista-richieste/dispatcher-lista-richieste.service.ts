@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { of, Observable, Subject } from 'rxjs';
-import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { SintesiRichiesteService } from '../service/lista-richieste-service/lista-richieste.service';
+import { Observable, Subject } from 'rxjs';
+import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { SintesiRichiesteService } from '../../service/lista-richieste-service/lista-richieste.service';
 
 
 @Injectable({
     providedIn: 'root'
 })
-export class DispatcherFakeService {
+export class DispatcherService {
+    private newRichiesteList$ = new Subject<SintesiRichiesta[]>();
     private updateRichiesta$ = new Subject<SintesiRichiesta>();
     private newRichiesta$ = new Subject<SintesiRichiesta>();
     private deleteRichiesta$ = new Subject<SintesiRichiesta>();
@@ -17,11 +18,14 @@ export class DispatcherFakeService {
     constructor(private richiesteService: SintesiRichiesteService) {
     }
 
-    onNewRichiesteList(): Observable<SintesiRichiesta[]> {
-        this.richiesteService.getRichieste().subscribe((richieste: SintesiRichiesta[]) => {
-            this.richieste = richieste;
-        });
-        return of(this.richieste);
+    onNewRichiesteList() {
+        this.newRichiesteList$.next();
+        this.richiesteService.getRichieste()
+            .subscribe({
+                next: data => this.newRichiesteList$.next(data),
+                error: data => console.log(`Errore: + ${data}`)
+            });
+        return this.newRichiesteList$.asObservable();
     }
 
     onNewRichiesta(): Observable<SintesiRichiesta> {
