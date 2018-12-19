@@ -70,13 +70,13 @@ namespace RestInterface.Controllers.Soccorso
 
                     var gi = new GeneratoreRichieste(
                     "RM",
-                    2,
+                    4,
                     DateTime.Now.AddHours(-12),
                     DateTime.Now,
-                    25,
+                    70,
                     30 * 60,
                     15 * 60,
-                    45 * 60,
+                    30 * 60,
                     15 * 60,
                     new float[] { .85F, .7F, .4F, .3F, .1F });
 
@@ -87,7 +87,6 @@ namespace RestInterface.Controllers.Soccorso
                     session["JSonRichieste"] = richieste;
                 }
             }
-
 
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
             filtro.SearchKey = searchkey;

@@ -46,7 +46,6 @@ namespace RestInterface
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-
             var httpControllerRouteHandler = typeof(HttpControllerRouteHandler).GetField("_instance",
             System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
 

@@ -11,8 +11,8 @@ namespace RestInterface
     {
         public void Configuration(IAppBuilder app)
         {
-            //ConfigureAuth(app);
-            //app.MapSignalR();
+            // Any connection or hub wire up and configuration should go here
+            app.MapSignalR();
         }
     }
 }

@@ -61,9 +61,11 @@ namespace RestInterface.Controllers.Soccorso
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpGet]        
-        public SintesiRichiesteAssistenzaResult Get(FiltroRicercaRichiesteAssistenza filtro)
+        public Boolean Get(FiltroRicercaRichiesteAssistenza filtro)
         {
-          
+
+            Boolean stato = false;
+
             var session = HttpContext.Current.Session;
             if (session != null)
             {
@@ -73,13 +75,13 @@ namespace RestInterface.Controllers.Soccorso
                    
                     var gi = new GeneratoreRichieste(
                     "RM",
-                    5,
+                    4,
                     DateTime.Now.AddHours(-12),
                     DateTime.Now,
-                    25,
+                    70,
                     30 * 60,
                     15 * 60,
-                    45 * 60,
+                    60 * 60,
                     15 * 60,
                     new float[] { .85F, .7F, .4F, .3F, .1F });
 
@@ -88,7 +90,9 @@ namespace RestInterface.Controllers.Soccorso
                         .ToList();
                    
                     session["JSonRichieste"] = richieste;
+                    stato = true;
                 }
+                else { stato = true; }
             }
 
             var query = new SintesiRichiesteAssistenzaQuery()
@@ -96,7 +100,7 @@ namespace RestInterface.Controllers.Soccorso
                 Filtro = filtro
             };
 
-            return this.handler.Handle(query);
+            return stato;
         }
 
 

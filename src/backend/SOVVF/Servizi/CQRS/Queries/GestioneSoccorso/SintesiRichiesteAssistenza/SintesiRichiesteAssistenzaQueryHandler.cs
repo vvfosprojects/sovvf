@@ -104,19 +104,31 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssisten
 
             var session = HttpContext.Current.Session;
             List<RichiestaAssistenza> listaRichieste = new List<RichiestaAssistenza>();
+            MapperListaRichieste mapper = new MapperListaRichieste();
+            int CalcNumeroRecord = 0;
+            int NumeroRecord = 0;
+
+            listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).Where(p => !p.Chiusa).ToList();
+
+            CalcNumeroRecord = listaRichieste.Count - Convert.ToInt16(query.Filtro.SearchKey);
+
+            if(CalcNumeroRecord < 15) { NumeroRecord = CalcNumeroRecord; }
+            else { NumeroRecord = 15; }
+
 
             if (query.Filtro != null)
             {
                 if (!query.Filtro.RichiestaSingola)
-                    listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).OrderBy(p => p.PrioritaRichiesta).Where(p => Convert.ToInt16(p.Id) >= Convert.ToInt16(query.Filtro.SearchKey.Substring(1)) && !p.Chiusa ).Take(15).ToList();
+                {                    
+                    return mapper.MapRichiesteSuSintesi(listaRichieste).GetRange(Convert.ToInt16(query.Filtro.SearchKey), NumeroRecord).OrderBy(p => p.priorita).ToList();
+                }
                 else
-                    listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).Where(p => Convert.ToInt16(p.Id) == Convert.ToInt16(query.Filtro.SearchKey.Substring(1)) && !p.Chiusa).ToList();
-            }else
-                listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).OrderBy(p => p.PrioritaRichiesta).Where(p => Convert.ToInt16(p.Id) >= 1 && !p.Chiusa).Take(15).ToList();
-
-            MapperListaRichieste mapper = new MapperListaRichieste();
-
-            return mapper.MapRichiesteSuSintesi(listaRichieste);
+                {                   
+                    return mapper.MapRichiesteSuSintesi(listaRichieste).OrderBy(p => p.priorita).Where(p => Convert.ToInt16(p.id) == Convert.ToInt16(query.Filtro.SearchKey)).ToList();
+                }
+            }
+            else
+                return mapper.MapRichiesteSuSintesi(listaRichieste).GetRange(Convert.ToInt16(query.Filtro.SearchKey), NumeroRecord).OrderBy(p => p.priorita).ToList();
 
         }
        
