@@ -1,4 +1,5 @@
-import {Squadra} from './squadra.model';
+import { Squadra } from './squadra.model';
+import { Sede } from './sede.model';
 /**
  * Modella un mezzo impegnato su una richiesta di assistenza
  */
@@ -22,14 +23,14 @@ export class Mezzo {
          */
         public stato: string,
         /**
-         * Lista di squadre presenti a bordo del mezzo
-         */
-        public squadre: Squadra[],
-        /**
          * Codice dello stato di appartenenza del mezzo (0 = Proprio, 1 = Altra sede).
          * Utile a definire il colore della segnalazione sullo stato di appartenenza.
          */
         public appartenenza: number,
+        /**
+        * Distaccamento di appartenza
+        */
+        public distaccamento: Sede,
         /**
          * Testo della segnalazione sullo stato di appartenenza.
          */
