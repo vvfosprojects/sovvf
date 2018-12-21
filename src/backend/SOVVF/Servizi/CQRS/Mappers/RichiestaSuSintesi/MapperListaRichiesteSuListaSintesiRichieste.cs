@@ -15,8 +15,10 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
         public List<SintesiRichiesta> MapRichiesteSuSintesi(List<RichiestaAssistenza> ListaRichieste)
         {            
             List<SintesiRichiesta> ListaSintesi = new List<SintesiRichiesta>();
+            List<SintesiRichiesta> AppoListaSintesiChiamate = new List<SintesiRichiesta>();
+            List<SintesiRichiesta> AppoListaSintesiAltroStato = new List<SintesiRichiesta>();
 
-            foreach(RichiestaAssistenza elemento in ListaRichieste)
+            foreach (RichiestaAssistenza elemento in ListaRichieste)
             {
                 SintesiRichiesta sintesi = new SintesiRichiesta();
                 string statoRichiesta = DecodifcaStatoRichiesta(elemento.StatoRichiesta);
@@ -44,9 +46,26 @@ namespace Modello.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 sintesi.tipologie = elemento.Tipologie;
                 sintesi.zoneEmergenza = elemento.ZoneEmergenza;
 
-                ListaSintesi.Add(sintesi);
-
+                if (statoRichiesta.Equals("Chiamata"))
+                    AppoListaSintesiChiamate.Add(sintesi);
+                else
+                    AppoListaSintesiAltroStato.Add(sintesi);
             }
+
+            //INIZIO - TUTTA QUESTA PARTE VA CANCELLATA DOPO IL FAKE
+            foreach(SintesiRichiesta richiesta in AppoListaSintesiChiamate)
+            {
+                if(richiesta.partenze.Count > 0)
+                {
+                    richiesta.partenze.Clear();
+                }
+                
+            }
+
+            ListaSintesi.AddRange(AppoListaSintesiChiamate);
+            ListaSintesi.AddRange(AppoListaSintesiAltroStato);
+            //FINE
+
 
             return ListaSintesi;
 

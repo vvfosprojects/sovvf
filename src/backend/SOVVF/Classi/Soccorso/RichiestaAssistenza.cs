@@ -261,10 +261,8 @@ namespace Modello.Classi.Soccorso
         /// </summary>
         public IEnumerable<SquadraCoinvolta> SquadreCoinvolte
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            //set;
         }
 
         public List<Partenza> ListaPartenze{   get; set;  }

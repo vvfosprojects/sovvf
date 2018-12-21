@@ -283,7 +283,7 @@ namespace SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichiest
         private Coordinate GeneraCoordinateLocalita()
         {
             Faker generaFaker = new Faker("it");
-            return new Coordinate(Math.Round(generaFaker.Random.Double(0.0, 1) * 0.03 + 41.895, 6), Math.Round(generaFaker.Random.Double(0.0, 1) * 0.05 + 12.495, 6));
+            return new Coordinate(Math.Round(generaFaker.Random.Double(0.0, 1) * 0.03 + 41.850, 6), Math.Round(generaFaker.Random.Double(0.0, 1) * 0.12 + 12.450, 6));
         }
 
         public static Utente GeneraOperatore()

@@ -101,7 +101,7 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
                 NumeroMezziSoccorsoSulPosto = richiesteAssistenza.Sum(r => r.MezziCoinvolti.Values.Count(s => s is SulPosto)),
                 NumeroMezziSoccorsoInRientro = richiesteAssistenza.Sum(r => r.MezziCoinvolti.Values.Count(s => s is InRientro)),
                 NumeroMezziSoccorsoInViaggio = richiesteAssistenza.Sum(r => r.MezziCoinvolti.Values.Count(s => s is InViaggio)),
-                NumeroSquadreSoccorsoImpegnate = richiesteAssistenza.Sum(r => r.SquadreCoinvolte.Count(s => s.StatoDellaSquadra != SquadraCoinvolta.StatoSquadra.RientrataInSede))
+                NumeroSquadreSoccorsoImpegnate = 1 //richiesteAssistenza.Sum(r => r.ListaPartenze.Count(s => s.StatoDellaSquadra != SquadraCoinvolta.StatoSquadra.RientrataInSede))
             };
 
 #warning Va realizzata una classe SelettoreOrganigramma che consenta di individuare un sottoinsieme di nodi dell'organigramma

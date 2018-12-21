@@ -101,12 +101,11 @@ namespace Modello.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssisten
         {
 
             var session = HttpContext.Current.Session;
-
-            List<RichiestaAssistenza> listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).OrderBy(p => p.PrioritaRichiesta).Where(p => Convert.ToInt16(p.Id) >= 1).Take(99999).ToList();
-
             MapperListaRichieste mapper = new MapperListaRichieste();
 
-            return mapper.MapRichiesteSuMarkerSintesi(listaRichieste);
+            List<RichiestaAssistenza> listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).Where(p => !p.Chiusa).ToList();
+
+            return mapper.MapRichiesteSuMarkerSintesi(listaRichieste).OrderBy(p => p.priorita).Where(p => Convert.ToInt16(p.id) >= 1).Take(99999).ToList(); ;
 
         }
        
