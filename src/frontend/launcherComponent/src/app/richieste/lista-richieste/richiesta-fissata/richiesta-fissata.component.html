@@ -1,4 +1,4 @@
-<div #richiestaContainer class="" [ngClass]="{'my-1 pb-2': richiestaFissata, 'col-6': !_split, 'col-12': _split}">
+<div #richiestaContainer class="" [ngClass]="{'mt-2 pb-2': richiestaFissata, 'col-6': !_split, 'col-12': _split}">
     <div #richiesta class="w-100 rounded bg-light" [ngClass]="cardShadowClass(richiestaFissata)">
         <app-sintesi-richiesta *ngIf="richiestaFissata" [richiesta]="richiestaFissata" [fissata]="true" [fissabile]="true" [espandibile]="true" [listaEventi]="true" (fissaInAlto)="defissa($event)" (eventiRichiesta)="visualizzaEventiRichiesta($event)"></app-sintesi-richiesta>
     </div>
