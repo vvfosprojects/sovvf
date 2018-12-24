@@ -5,6 +5,7 @@
     <agm-map [disableDefaultUI]="true"
              [zoomControl]="true"
              [zoomControlOptions]="zoomControlOptions"
+             [minZoom]="5"
              [fullscreenControl]="true"
              [fullscreenControlOptions]="fullscreenControlOptions"
              [mapTypeControl]="true"
@@ -147,6 +148,12 @@
                     <app-info-window [meteoMarker]="mMarker" [datiMeteo]="datiMeteo"></app-info-window>
                 </ng-template>
             </agm-snazzy-info-window>
+        </agm-marker>
+        <agm-marker *ngFor="let cMarker of cachedMarkers;"
+                    [latitude]="cMarker.latitudine"
+                    [longitude]="cMarker.longitudine"
+                    [iconUrl]="cMarker.urlIcona"
+                    [opacity]="0">
         </agm-marker>
         <app-agm-content (mapLoad)='loadAPIWrapper($event)'></app-agm-content>
     </agm-map>

@@ -33,7 +33,9 @@ export class MarkerService implements OnDestroy {
     coloreStato: string;
     minMarkerCluster: number;
 
-    markerColorato: boolean;
+    iconeCached: string[];
+
+    markerColorato: any;
     markerSelezionato: any;
     markerZIndex: any;
     subscription = new Subscription();
@@ -78,6 +80,10 @@ export class MarkerService implements OnDestroy {
          * @type {number}
          */
         this.minMarkerCluster = 99999;
+        /**
+         * creo un array con i path di tutte le icone da mettere in cache
+         */
+        this.iconeCached = this.icone.urlIcone();
     }
 
     ngOnDestroy() {
@@ -93,6 +99,14 @@ export class MarkerService implements OnDestroy {
         } else {
             return this.icone.tipoIcona(marker, 'tipo-sede', this.iconaSelezionata(marker));
         }
+    }
+
+    /**
+     * ritorna l'url del path dell'icona "speciale" da utilizzare
+     * @param tipo
+     */
+    iconaSpeciale(tipo: string): string {
+        return this.icone.iconaSpeciale(tipo);
     }
 
     modelloMarker(marker): string {

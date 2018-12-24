@@ -13,15 +13,14 @@ import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
 import { Meteo } from '../../shared/model/meteo.model';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { MarkerService } from '../service/marker-service/marker-service.service';
-import { Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { CenterService } from '../service/center-service/center-service.service';
 import { AgmService } from './agm-service.service';
 import { ControlPosition, FullscreenControlOptions, ZoomControlOptions } from '@agm/core/services/google-maps-types';
 import { MeteoMarker } from '../maps-model/meteo-marker.model';
-import { debounceTime } from 'rxjs/operators';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DirectionService } from '../service/direction-service/direction-service.service';
 import { DirectionInterface } from '../service/direction-service/direction-interface';
+import { CachedMarker } from '../maps-model/cached-marker.model';
 
 declare var google: any;
 
@@ -38,6 +37,7 @@ export class AgmComponent implements OnInit, OnDestroy {
     @Input() mezziMarkers: MezzoMarker[];
     @Input() centroMappa: CentroMappa;
     @Input() chiamataMarker: ChiamataMarker[];
+    cachedMarkers: CachedMarker[] = [];
     meteoMarkers: MeteoMarker[] = [];
     minMarkerCluster: number;
     datiMeteo: Meteo;
@@ -45,11 +45,9 @@ export class AgmComponent implements OnInit, OnDestroy {
     map_loaded = false;
     subscription = new Subscription();
     map: any;
-    // delayMarkerTime = 1;
-    richiestaMarkerIconUrl = '../../../assets/img/icone-markers/chiamata-marker-rosso.png';
-    meteoMarkerIconUrl = '../../../assets/img/icone-markers/marker-meteo-32.png';
+    richiestaMarkerIconUrl: string;
+    meteoMarkerIconUrl: string;
 
-    // private delayHover = new Subject<HoverType>();
 
     zoomControlOptions: ZoomControlOptions = {
         position: ControlPosition.BOTTOM_RIGHT
@@ -76,6 +74,13 @@ export class AgmComponent implements OnInit, OnDestroy {
                 private centerService: CenterService,
                 private agmService: AgmService,
                 private directionService: DirectionService) {
+        /**
+         * creo un array di marker fittizi con tutte le icone che utilizzerà agm per metterle in cache
+         * ed evitare che si presenti il bug delle icone "selezionate"
+         */
+        this.markerService.iconeCached.forEach( iconeC => {
+            this.cachedMarkers.push(new CachedMarker(iconeC));
+        });
         /**
          * dati del centro mappa attuale
          * @type {Subscription}
@@ -116,14 +121,11 @@ export class AgmComponent implements OnInit, OnDestroy {
          * @type {number}
          */
         this.minMarkerCluster = this.markerService.minMarkerCluster;
-        // /**
-        //  * creo un delay all'hover del mouse
-        //  * @type {Subscription}
-        //  */
-        // this.subscription.add(this.delayHover.pipe(
-        //     debounceTime(this.delayMarkerTime)).subscribe(
-        //     evento => this.hoverMarkerDelayed(evento.markers, evento.hoverName)
-        // ));
+        /**
+         * imposto il path per le icone di MeteoMarker e ChiamataMarker
+         */
+        this.richiestaMarkerIconUrl = this.markerService.iconaSpeciale('chiamata');
+        this.meteoMarkerIconUrl = this.markerService.iconaSpeciale('meteo');
     }
 
     ngOnInit() {
@@ -165,16 +167,8 @@ export class AgmComponent implements OnInit, OnDestroy {
         /**
          * richiamo il service marker e gli passo marker e tipo hover
          */
-        // this.delayHover.next({markers: marker, hoverName: type});
         this.markerService.action(marker, type);
     }
-
-    // hoverMarkerDelayed(marker: any, type): void {
-    //     /**
-    //      * richiamo il service marker e gli passo marker e tipo hover
-    //      */
-    //     this.markerService.action(marker, type);
-    // }
 
     urlIcona(marker: any, tipoSede?: boolean): string {
         /**
@@ -220,9 +214,4 @@ export class AgmComponent implements OnInit, OnDestroy {
     }
 
 
-}
-
-export interface HoverType {
-    markers: any;
-    hoverName: string;
 }

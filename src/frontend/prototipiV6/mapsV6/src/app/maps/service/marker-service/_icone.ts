@@ -3,7 +3,7 @@
  */
 export class IconMappe {
     /**
-     * proprietà per definire lo status dell'oggetto marker della mappa
+     * proprietà per definire lo status dell'oggetto icona marker della mappa
      */
     private pathUrl: string;
     private iconeModello: [string, string][];
@@ -18,9 +18,11 @@ export class IconMappe {
     private mapIconeTipoSedi: Map<string, string>;
     private iconeMezzi: [string, string][];
     private mapIconeMezzi: Map<string, string>;
+    private iconeSpeciali: [string, string][];
+    private mapIconeSpeciali: Map<string, string>;
 
     /**
-     * proprietà per definire lo status dell'oggetto marker corrente nella mappa
+     * proprietà per definire lo status dell'oggetto icona marker corrente nella mappa
      */
     private iconaStatoCorrenteUrl: string;
     private iconaStatoCorrenteSize: string;
@@ -97,13 +99,7 @@ export class IconMappe {
             ['sulpo', 'sulposto.png'],
             ['istit', 'istituto.png']
         ];
-        // this.iconeMezzi = [
-        //     ['insed', 'insede2.png'],
-        //     ['invia', 'inviaggio2.png'],
-        //     ['inrie', 'inrientro2.png'],
-        //     ['sulpo', 'sulposto2.png'],
-        //     ['istit', 'istituto2.png']
-        // ];
+
         this.mapIconeMezzi = new Map(this.iconeMezzi);
 
         this.iconeSedi = [
@@ -112,6 +108,16 @@ export class IconMappe {
             ['direzioni', 'sede5.png']
         ];
         this.mapIconeSedi = new Map(this.iconeSedi);
+
+        this.iconeSpeciali = [
+            ['meteo', 'speciali/marker-meteo-32.png'],
+            ['chiamata', 'speciali/chiamata-marker-rosso.png']
+        ];
+        this.mapIconeSpeciali = new Map(this.iconeSpeciali);
+    }
+
+    iconaSpeciale(tipo: string): string {
+        return this.pathUrl + this.mapIconeSpeciali.get(tipo);
     }
 
     tipoIcona(marker: any, modello: string, markerS: boolean): string {
@@ -166,5 +172,54 @@ export class IconMappe {
             }
             return this.iconaStatoCorrenteUrl;
         }
+    }
+
+    /**
+     * metodo che ritorna un array di stringhe con tutti i path di tutte le icone
+     * l'array in oggetto sarà utilizzato per mettere in cache tutte le icone su agm
+     * (workaround del bug di agm/core)
+     */
+    urlIcone(): string[] {
+        const result: string[] = [];
+        /**
+         * tipi di icone da cachare
+         */
+        const cache = ['richiesta', 'mezzo', 'sede'];
+        const path = this.pathUrl;
+        const selezionato = ['ns/', 's/'];
+        cache.forEach(c => {
+            const pathComune = path + this.mapIconeModelloPath.get(c);
+            selezionato.forEach(tipo => {
+                switch (c) {
+                    case 'richiesta': {
+                        this.mapIconeSize.forEach(size => {
+                            this.mapIconeUrl.forEach(stati => {
+                                result.push(pathComune + tipo + size + stati);
+                            });
+                        });
+                        break;
+                    }
+                    case 'mezzo': {
+                        this.mapIconeMezzi.forEach(mezzi => {
+                            result.push(pathComune + tipo + mezzi);
+                        });
+                        break;
+                    }
+                    case 'sede': {
+                        this.mapIconeSedi.forEach(sedi => {
+                            result.push(pathComune + tipo + sedi);
+                        });
+                        break;
+                    }
+                }
+            });
+        });
+        /**
+         * metto in cache anche le icone "speciali"
+         */
+        this.mapIconeSpeciali.forEach(speciali => {
+            result.push(path + speciali);
+        });
+        return result;
     }
 }
