@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 // Model
 import { Squadra } from '../../../shared/model/squadra.model';
 import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
-import { MezzoComposizione } from 'src/app/composizione-partenza/model/mezzo-composizione.model';
+import { MezzoComposizione } from '../../../composizione-partenza/interface/composizione-partenza-interface';
 
 // Service
 import { CompPartenzaService } from '../../service/comp-partenza-service/comp-partenza.service';
@@ -28,7 +28,7 @@ export class DispatcherCompPartenzaService {
             });
         return this.newPreaccoppiatiList$.asObservable();
     }
-    
+
     onNewMezziComposizioneList() {
         this.newMezziComposizioneList$.next();
         this.compPartenzaService.getMezziComposizione()

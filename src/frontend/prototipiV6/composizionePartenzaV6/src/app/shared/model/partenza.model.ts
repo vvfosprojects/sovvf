@@ -1,7 +1,7 @@
-import { Mezzo } from './mezzo.model';
+import { BoxPartenza } from 'src/app/composizione-partenza/model/box-partenza.model';
 
 export class Partenza {
     constructor(
-        public mezzi: Mezzo[]
+        public partenza: BoxPartenza[]
     ) { }
 }

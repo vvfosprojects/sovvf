@@ -109,6 +109,8 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
                 if (richieste) {
                     this.richieste = richieste;
                     this.loaderRichieste = false;
+                    this.loaderNuoveRichieste = false;
+                    this.contatoreNuoveRichieste = 0;
                     // TEST
                     // console.log('Sono listaRichieste, ho ricevuto le richieste');
                     // console.log(richieste);
@@ -122,13 +124,11 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         if (event.isReachingBottom && event.isWindowEvent === false && this.contatoreNuoveRichieste === 0) {
             this.contatoreNuoveRichieste++;
             this.loaderNuoveRichieste = true;
-            setTimeout(() => {
-                this.getRichieste(this.richieste.length);
-                this.loaderNuoveRichieste = false;
-                this.contatoreNuoveRichieste = 0;
-                // TEST
-                // console.log(this.richieste[this.richieste.length - 1].id);
-            }, 3000);
+            this.getRichieste(this.richieste.length);
+            /* setTimeout(() => {
+            }, 3000); */
+            // TEST
+            // console.log(this.richieste[this.richieste.length - 1].id);
         }
     }
 

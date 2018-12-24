@@ -7,7 +7,7 @@ import { DispatcherCompPartenzaService } from '../../dispatcher/dispatcher-comp-
 // Model
 import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
 import { Squadra } from '../../../shared/model/squadra.model';
-import { MezzoComposizione } from '../../../composizione-partenza/model/mezzo-composizione.model';
+import { MezzoComposizione } from '../../../composizione-partenza/interface/composizione-partenza-interface';
 
 @Injectable({
   providedIn: 'root'
