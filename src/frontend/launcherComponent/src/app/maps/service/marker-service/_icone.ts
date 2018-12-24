@@ -127,13 +127,7 @@ export class IconMappe {
         const pathModello = this.mapIconeModelloPath.get(modello);
         const path = this.pathUrl + pathModello;
         const check = !(markerS);
-        let dir = check ? path + 'ns/' : path + 's/';
-        /**
-         * verifico se il marker è opaco, e cambio directory
-         */
-        if (modello !== 'tipo-sede' && marker.opacita) {
-            dir = path + 'o/';
-        }
+        const dir = check ? path + 'ns/' : path + 's/';
         if (marker) {
             switch (modello) {
                 case 'richiesta': {

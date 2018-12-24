@@ -32,6 +32,7 @@ export class MarkerService implements OnDestroy {
     colori = new TipoColori();
     coloreStato: string;
     minMarkerCluster: number;
+    livelloOpacita: number;
 
     iconeCached: string[];
 
@@ -80,6 +81,11 @@ export class MarkerService implements OnDestroy {
          * @type {number}
          */
         this.minMarkerCluster = 99999;
+        /**
+         * imposto il livello di opacità generico,
+         * si potrebbe implementare anche un metodo che imposta un opacità singolarmente
+         */
+        this.livelloOpacita = 0.3;
         /**
          * creo un array con i path di tutte le icone da mettere in cache
          */
@@ -273,6 +279,10 @@ export class MarkerService implements OnDestroy {
             return this.filtro.includes(this.modelloMarker(marker));
         }
         return true;
+    }
+
+    opaco(marker: any): number {
+        return marker.opacita ? this.livelloOpacita : 1;
     }
 
     getDatiMeteo(marker: any): void {
