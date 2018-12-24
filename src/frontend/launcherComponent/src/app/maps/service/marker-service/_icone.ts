@@ -1,9 +1,9 @@
 /**
- *  classe che ritorna il nome file del marker da visualizzare sulla mappa
+ *  classe che ritorna l'url del marker da visualizzare sulla mappa
  */
 export class IconMappe {
     /**
-     * proprietà per definire lo status dell'oggetto marker della mappa
+     * proprietà per definire lo status dell'oggetto icona marker della mappa
      */
     private pathUrl: string;
     private iconeModello: [string, string][];
@@ -18,9 +18,11 @@ export class IconMappe {
     private mapIconeTipoSedi: Map<string, string>;
     private iconeMezzi: [string, string][];
     private mapIconeMezzi: Map<string, string>;
+    private iconeSpeciali: [string, string][];
+    private mapIconeSpeciali: Map<string, string>;
 
     /**
-     * proprietà per definire lo status dell'oggetto marker corrente nella mappa
+     * proprietà per definire lo status dell'oggetto icona marker corrente nella mappa
      */
     private iconaStatoCorrenteUrl: string;
     private iconaStatoCorrenteSize: string;
@@ -36,11 +38,8 @@ export class IconMappe {
         /**
          * creo delle mappe di oggetti per ricavare il path dell'immagine date le proprietà del marker
          */
-        this.pathUrl = 'assets/img/icone-markers/';
+        this.pathUrl = '../../../../assets/img/icone-markers/';
 
-        /**
-         * directory delle icone
-         */
         this.iconeModello = [
             ['richiesta', 'richieste/'],
             ['mezzo', 'mezzi/'],
@@ -49,9 +48,6 @@ export class IconMappe {
         ];
         this.mapIconeModelloPath = new Map(this.iconeModello);
 
-        /**
-         * nome file icona richieste da mostrare sulla mappa
-         */
         this.iconeStati = [
             ['chiam', 'danger.png'],
             ['asseg', 'info.png'],
@@ -70,9 +66,6 @@ export class IconMappe {
         ];
         this.mapIconeSize = new Map(this.iconeGrandezza);
 
-        /**
-         * nome file icona sedi da mostrare all'interno del info window di marker sede
-         */
         this.iconeTipoSedi = [
             ['aeroportuale', 'aeroportuale.gif'],
             ['afmp', 'afmp.jpg'],
@@ -99,9 +92,6 @@ export class IconMappe {
         ];
         this.mapIconeTipoSedi = new Map(this.iconeTipoSedi);
 
-        /**
-         * nome file icona mezzi da mostrare sulla mappa
-         */
         this.iconeMezzi = [
             ['insed', 'insede.png'],
             ['invia', 'inviaggio.png'],
@@ -109,36 +99,25 @@ export class IconMappe {
             ['sulpo', 'sulposto.png'],
             ['istit', 'istituto.png']
         ];
+
         this.mapIconeMezzi = new Map(this.iconeMezzi);
 
-        /**
-         * nome file icona sedi da mostrare sulla mappa
-         */
         this.iconeSedi = [
-            ['aeroportuale', 'sede5.png'],
-            ['afmp', 'sede5.png'],
-            ['centri_polifunzionali', 'sede5.png'],
-            ['cinofili', 'sede5.png'],
             ['comando', 'sede5.png'],
-            ['direzioni', 'sede5.png'],
-            ['elicotteristi', 'sede5.png'],
-            ['nbcr', 'sede5.png'],
-            ['nbcr_avanzato', 'sede5.png'],
-            ['nbcr_ordinari', 'sede5.png'],
-            ['poli_didattici', 'sede5.png'],
-            ['portuale', 'sede5.png'],
-            ['presidi_acquatici', 'sede5.png'],
-            ['saf', 'sede5.png'],
             ['distaccamento', 'sede5.png'],
-            ['sedi_varie', 'sede5.png'],
-            ['sommozzatori', 'sede5.png'],
-            ['telecomunicazioni', 'sede5.png'],
-            ['tlc', 'sede5.png'],
-            ['uas', 'sede5.png'],
-            ['volontari', 'sede5.png'],
-            ['volontari_stag', 'sede5.png']
+            ['direzioni', 'sede5.png']
         ];
         this.mapIconeSedi = new Map(this.iconeSedi);
+
+        this.iconeSpeciali = [
+            ['meteo', 'speciali/marker-meteo-32.png'],
+            ['chiamata', 'speciali/chiamata-marker-rosso.png']
+        ];
+        this.mapIconeSpeciali = new Map(this.iconeSpeciali);
+    }
+
+    iconaSpeciale(tipo: string): string {
+        return this.pathUrl + this.mapIconeSpeciali.get(tipo);
     }
 
     tipoIcona(marker: any, modello: string, markerS: boolean): string {
@@ -193,5 +172,54 @@ export class IconMappe {
             }
             return this.iconaStatoCorrenteUrl;
         }
+    }
+
+    /**
+     * metodo che ritorna un array di stringhe con tutti i path di tutte le icone
+     * l'array in oggetto sarà utilizzato per mettere in cache tutte le icone su agm
+     * (workaround del bug di agm/core)
+     */
+    urlIcone(): string[] {
+        const result: string[] = [];
+        /**
+         * tipi di icone da cachare
+         */
+        const cache = ['richiesta', 'mezzo', 'sede'];
+        const path = this.pathUrl;
+        const selezionato = ['ns/', 's/'];
+        cache.forEach(c => {
+            const pathComune = path + this.mapIconeModelloPath.get(c);
+            selezionato.forEach(tipo => {
+                switch (c) {
+                    case 'richiesta': {
+                        this.mapIconeSize.forEach(size => {
+                            this.mapIconeUrl.forEach(stati => {
+                                result.push(pathComune + tipo + size + stati);
+                            });
+                        });
+                        break;
+                    }
+                    case 'mezzo': {
+                        this.mapIconeMezzi.forEach(mezzi => {
+                            result.push(pathComune + tipo + mezzi);
+                        });
+                        break;
+                    }
+                    case 'sede': {
+                        this.mapIconeSedi.forEach(sedi => {
+                            result.push(pathComune + tipo + sedi);
+                        });
+                        break;
+                    }
+                }
+            });
+        });
+        /**
+         * metto in cache anche le icone "speciali"
+         */
+        this.mapIconeSpeciali.forEach(speciali => {
+            result.push(path + speciali);
+        });
+        return result;
     }
 }
