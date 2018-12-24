@@ -38,7 +38,7 @@ export class IconMappe {
         /**
          * creo delle mappe di oggetti per ricavare il path dell'immagine date le proprietà del marker
          */
-        this.pathUrl = '../../../../assets/img/icone-markers/';
+        this.pathUrl = 'assets/img/icone-markers/';
 
         this.iconeModello = [
             ['richiesta', 'richieste/'],
