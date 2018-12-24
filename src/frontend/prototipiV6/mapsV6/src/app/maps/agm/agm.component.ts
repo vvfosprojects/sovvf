@@ -199,6 +199,13 @@ export class AgmComponent implements OnInit, OnDestroy {
         return this.markerService.visibile(marker);
     }
 
+    isOpaco(marker: any): number {
+        /**
+         * richiedo al service che gestisce i marker sulla mappa, di ritornarmi se il marker è opacizzato
+         */
+        return this.markerService.opaco(marker);
+    }
+
     centroCambiato(centro): void {
         /**
          * metodo che fa la next sulla subject di centro
