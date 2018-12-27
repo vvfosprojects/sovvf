@@ -15,12 +15,19 @@
              [zoom]="centroMappa.zoom"
              (mapReady)="mappaCaricata($event)"
              (centerChange)="centroCambiato($event)"
-             [usePanning]="true" (mapClick)="mappaCliccata();getCoordinateMarker($event)">
+             [usePanning]="true"
+             (mapClick)="mappaCliccata();getCoordinateMarker($event)">
         <app-maps-filtro id="Settings"></app-maps-filtro>
         <agm-direction [renderOptions]="renderOptions"
                        [origin]="direction.origin"
                        [destination]="direction.destination"
                        [visible]="direction.isVisible"></agm-direction>
+        <agm-marker *ngFor="let cMarker of cachedMarkers;"
+                    [latitude]="cMarker.latitudine"
+                    [longitude]="cMarker.longitudine"
+                    [iconUrl]="cMarker.urlIcona"
+                    [opacity]="0">
+        </agm-marker>
         <agm-marker-cluster
                 imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
                 [minimumClusterSize]="minMarkerCluster">
@@ -151,12 +158,6 @@
                     <app-info-window [meteoMarker]="mMarker" [datiMeteo]="datiMeteo"></app-info-window>
                 </ng-template>
             </agm-snazzy-info-window>
-        </agm-marker>
-        <agm-marker *ngFor="let cMarker of cachedMarkers;"
-                    [latitude]="cMarker.latitudine"
-                    [longitude]="cMarker.longitudine"
-                    [iconUrl]="cMarker.urlIcona"
-                    [opacity]="0">
         </agm-marker>
         <app-agm-content (mapLoad)='loadAPIWrapper($event)'></app-agm-content>
     </agm-map>
