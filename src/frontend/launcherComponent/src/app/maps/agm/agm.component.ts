@@ -4,7 +4,7 @@ import {
     Input,
     OnDestroy,
     ViewChild,
-    ElementRef
+    ElementRef, Output, EventEmitter
 } from '@angular/core';
 import { RichiestaMarker } from '../maps-model/richiesta-marker.model';
 import { SedeMarker } from '../maps-model/sede-marker.model';
@@ -37,6 +37,7 @@ export class AgmComponent implements OnInit, OnDestroy {
     @Input() mezziMarkers: MezzoMarker[];
     @Input() centroMappa: CentroMappa;
     @Input() chiamataMarker: ChiamataMarker[];
+    @Output() mapFullyLoaded = new EventEmitter<boolean>();
     cachedMarkers: CachedMarker[] = [];
     meteoMarkers: MeteoMarker[] = [];
     minMarkerCluster: number;
@@ -77,7 +78,7 @@ export class AgmComponent implements OnInit, OnDestroy {
          * creo un array di marker fittizi con tutte le icone che utilizzerà agm per metterle in cache
          * ed evitare che si presenti il bug delle icone "selezionate"
          */
-        this.markerService.iconeCached.forEach( iconeC => {
+        this.markerService.iconeCached.forEach(iconeC => {
             this.cachedMarkers.push(new CachedMarker(iconeC));
         });
         /**
@@ -139,9 +140,14 @@ export class AgmComponent implements OnInit, OnDestroy {
         /**
          *  imposto una proprietà a true quando la mappa è caricata e inserisco nell'oggetto map il menù
          */
+        const self = this;
         this.map_loaded = true;
         this.map = event;
         this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('Settings'));
+        google.maps.event.addListenerOnce(this.map, 'tilesloaded', function () {
+            self.cachedMarkers = [];
+            self.mapFullyLoaded.emit(true);
+        });
     }
 
     loadAPIWrapper(mapWrapper): void {

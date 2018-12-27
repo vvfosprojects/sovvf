@@ -21,6 +21,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     mezziMarkers: MezzoMarker[];
     chiamataMarker: ChiamataMarker[];
     subscription = new Subscription();
+    mapsFullyLoaded = false;
 
     constructor(private richiesteManager: MapManager.RichiesteMarkerManagerService,
                 private sediManager: MapManager.SediMarkerManagerService,
@@ -28,21 +29,18 @@ export class MapsComponent implements OnInit, OnDestroy {
                 private centroManager: MapManager.CentroMappaManagerService,
                 private chiamataManager: MapManager.ChiamataMarkerManagerService,
                 private toastr: ToastrService) {
+        this.timeoutAlert('showToastr');
         /**
          *  mi iscrivo al map manager che mi ritorna il centro della mappa
          */
         this.subscription.add(this.centroManager.getCentro().subscribe((r: CentroMappa) => {
             this.centroMappa = r;
         }));
-        this.timeoutAlert('showToastr');
         /**
          *  mi iscrivo al map manager che mi ritorna tutti i marker di tipo richiestaMarker
          */
         this.subscription.add(this.richiesteManager.getRichiesteMarker().subscribe((r: RichiestaMarker[]) => {
             this.richiesteMarkers = r;
-            if (r.length > 0) {
-                this.timeoutAlert('clearToastr');
-            }
             /**
              *  inizializzo un contatore nel servizio per tenere traccia del numero di richieste
              */
@@ -92,6 +90,15 @@ export class MapsComponent implements OnInit, OnDestroy {
 
     clearToastr() {
         this.toastr.clear();
+    }
+
+    mapIsLoaded(event) {
+        if (event) {
+            this.mapsFullyLoaded = true;
+            if (this.richiesteMarkers.length > 0 && this.mapsFullyLoaded) {
+                this.timeoutAlert('clearToastr');
+            }
+        }
     }
 
 }
