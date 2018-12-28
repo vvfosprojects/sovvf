@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UnitaAttualeService } from '../../navbar/navbar-service/unita-attuale/unita-attuale.service';
+import { UnitaAttualeService } from '../../../navbar/navbar-service/unita-attuale/unita-attuale.service';
 import { Subscription } from 'rxjs';
-import { FilterbarService } from '../../filterbar/filterbar-service/filterbar-service.service';
-import { ViewInterface } from '../../filterbar/view-mode/view.interface';
+import { FilterbarService } from '../../../filterbar/filterbar-service/filterbar-service.service';
+import { ViewInterface } from '../../../filterbar/view-mode/view.interface';
 import { PartenzaService } from 'src/app/composizione-partenza/service/partenza/partenza.service';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 

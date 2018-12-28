@@ -15,8 +15,12 @@ import { AppComponent } from './app.component';
  * Route & Page
  */
 import { routing } from './app.routing';
-import { HomeComponent } from './auth/home';
-import { LoginComponent } from './auth/login';
+import { HomeComponent } from './auth/features/home';
+import { LoginComponent } from './auth/features/login';
+import { AutorimessaComponent } from './auth/features/autorimessa';
+import { StatisticheComponent } from './auth/features/statistiche';
+import { ServiziComponent } from './auth/features/servizi';
+import { NotFoundComponent } from './auth/features/not-found';
 import { BasicAuthInterceptor, ErrorInterceptor } from './auth/_helpers';
 import { fakeBackendProvider } from './auth/_helpers';
 /**
@@ -34,12 +38,15 @@ import { I18n } from './i18n';
 import { ComposizionePartenzaModule } from './composizione-partenza/composizione-partenza.module';
 import { ToastrModule } from 'ngx-toastr';
 
-
 @NgModule({
     declarations: [
         AppComponent,
         HomeComponent,
-        LoginComponent
+        LoginComponent,
+        AutorimessaComponent,
+        StatisticheComponent,
+        ServiziComponent,
+        NotFoundComponent
     ],
     imports: [
         BrowserModule,
