@@ -1,4 +1,4 @@
-<div class="card row_text py-2 px-3 mb-1 transparent" [ngClass]="statusClass(richiesta)" (click)="richiestaClick(richiesta)"
+<div class="card row_text py-2 px-3 mb-1 transparent" (click)="richiestaClick(richiesta)"
     (dblclick)="richiestaDoubleClick(richiesta)">
     <div class="row align-items-center">
         <div class="col-12">
@@ -305,17 +305,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- TAGS-->
-                        <!-- <div *ngIf="richiesta.etichette" class="card-text col-md-12">
-                            <div class="card mt-3 border-secondary">
-                                <div class="col-md-12 h6 text-right my-1">
-                                    <i class="guida fa fa-tags fa-fw text-left m-1" title="Etichette"></i>
-                                    <span *ngFor="let etichetta of richiesta.etichette" class="badge badge-secondary text-right py-2 m-1"><i
-                                            class="fa fa-hashtag fa-fw text-left"></i>{{etichetta}}</span>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>

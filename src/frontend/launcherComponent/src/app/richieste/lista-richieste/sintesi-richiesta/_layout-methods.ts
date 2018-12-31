@@ -4,18 +4,18 @@ export class LayoutMethods {
     }
 
     /* Restituisce un Array con tanti elementi quanto è la priorità dell'intervento */
-    vettorePallini(richiesta) {
+    vettorePallini(richiesta: any) {
         return new Array(richiesta.priorita);
     }
 
     /* Restituisce un Array con tanti elementi quanti sono i buchini della priorità dell'intervento */
-    vettoreBuchini(richiesta) {
+    vettoreBuchini(richiesta: any) {
         const MAX_PRIORITA = 5;
         return new Array(MAX_PRIORITA - richiesta.priorita);
     }
 
     /* Restituisce i nomi delle squadre  */
-    nomiSquadre(richiesta): string[] {
+    nomiSquadre(richiesta: any): string[] {
         let nomiSquadre: string[];
         if (richiesta.partenze) {
             richiesta.partenze.forEach(partenza => {
@@ -28,7 +28,7 @@ export class LayoutMethods {
     }
 
     /* Restituisce il numero delle squadre */
-    numeroSquadre(richiesta): number {
+    numeroSquadre(richiesta: any): number {
         let numeroSquadre = 0;
         if (richiesta.partenze) {
             richiesta.partenze.forEach(partenza => {
@@ -41,7 +41,7 @@ export class LayoutMethods {
     }
 
     /* Restituisce i nomi dei mezzi  */
-    nomiMezzi(richiesta): string[] {
+    nomiMezzi(richiesta: any): string[] {
         let nomiMezzi = [];
         if (richiesta.partenze) {
             richiesta.partenze.forEach(partenza => {
@@ -52,7 +52,7 @@ export class LayoutMethods {
     }
 
     /* Restituisce il numero dei mezzi */
-    numeroMezzi(richiesta): number {
+    numeroMezzi(richiesta: any): number {
         let numeroMezzi = 0;
         if (richiesta.partenze) {
             richiesta.partenze.forEach(partenza => {
@@ -63,7 +63,7 @@ export class LayoutMethods {
     }
 
     /* Permette di colorare l'icona della tipologia */
-    coloraIcona(nome): any {
+    coloraIcona(nome: any): any {
         const colori = [
             {
                 icon: 'fa fa-fire',
@@ -99,7 +99,7 @@ export class LayoutMethods {
     }
 
     /* NgClass status */
-    statusClass(richiesta) {
+    /* statusClass(richiesta) {
         return {
             'status_chiamata': this.match(richiesta.stato, 'chiamata'),
             'status_presidiato': this.match(richiesta.stato, 'presidiato'),
@@ -107,9 +107,9 @@ export class LayoutMethods {
             'status_sospeso': this.match(richiesta.stato, 'sospeso'),
             'status_chiuso': this.match(richiesta.stato, 'chiuso')
         };
-    }
+    } */
 
-    complessitaClass(richiesta) {
+    complessitaClass(richiesta: any) {
         return {
             'badge-success': this.match(richiesta.complessita.descrizione, 'bassa'),
             'badge-warning': this.match(richiesta.complessita.descrizione, 'media'),

@@ -62,15 +62,15 @@ export class SintesiRichiestaComponent implements OnInit {
     }
 
     /* NgClass Methods */
-    statusClass(richiesta) {
+    /* statusClass(richiesta: any) {
         return this.methods.statusClass(richiesta);
-    }
-    complessitaClass(richiesta) {
+    } */
+    complessitaClass(richiesta: any) {
         return this.methods.complessitaClass(richiesta);
     }
 
     /* Eventi */
-    richiestaClick(richiesta) {
+    richiestaClick(richiesta: any) {
         if (richiesta) {
             this.isSingleClick = true;
             setTimeout(() => {
@@ -80,22 +80,22 @@ export class SintesiRichiestaComponent implements OnInit {
             }, 250);
         }
     }
-    richiestaDoubleClick(richiesta) {
+    richiestaDoubleClick(richiesta: any) {
         if (richiesta && this.espandibile) {
             this.isSingleClick = false;
             this.toggleEspanso();
             this.doubleClickRichiesta.emit(richiesta);
         }
     }
-    fissaClick(richiesta) {
+    fissaClick(richiesta: any) {
         if (richiesta) {
             this.fissaInAlto.emit(richiesta);
         }
     }
-    visualizzaEventiRichiesta(richiesta) {
+    visualizzaEventiRichiesta(richiesta: any) {
         this.eventiRichiesta.emit(richiesta);
     }
-    invioPartenza(richiesta) {
+    invioPartenza(richiesta: any) {
         if(this.partenza) {
             this.dismissNuovaPartenza.emit();
         } else {

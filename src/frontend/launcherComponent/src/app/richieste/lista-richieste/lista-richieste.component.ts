@@ -9,14 +9,14 @@ import { MarkerService } from '../../maps/service/marker-service/marker-service.
 import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
 import { Subscription } from 'rxjs';
 import { FilterPipe } from 'ngx-filter-pipe';
-import { PartenzaService } from 'src/app/composizione-partenza/service/partenza/partenza.service';
+import { PartenzaService } from '../../composizione-partenza/service/partenza/partenza.service';
 
 @Component({
     selector: 'app-lista-richieste',
     templateUrl: './lista-richieste.component.html',
     styleUrls: ['./lista-richieste.component.css']
 })
-export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
+export class ListaRichiesteComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
 
     richieste: SintesiRichiesta[] = [];
@@ -29,6 +29,8 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     preventSimpleClick: boolean;
     timer: any;
     contatoreNuoveRichieste = 0;
+
+    listHeightClass = 'm-h-750';
 
     @Input() _split: boolean;
 
@@ -43,7 +45,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit() {
         // Restituisce le Richieste
-        if(this.richieste.length <= 0) {
+        if (this.richieste.length <= 0) {
             this.getRichieste('0');
         } else {
             this.getRichieste(this.richieste.length);
@@ -76,14 +78,18 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         this.richiesteS.subjects.getRichiestaFissata().subscribe(richiestaFissata => {
             if (richiestaFissata) {
                 this.richiestaFissata = richiestaFissata;
+                this.listHeightClass = 'm-h-600 border-top';
+                console.log('fissata');
             } else {
                 this.richiestaFissata = null;
+
+                /* aspetto che l'animazione della richiesta fissata finisca 
+                per aumentare l'altezza della lista */
+                setTimeout(() => {
+                    this.listHeightClass = 'm-h-750';
+                }, 300);
             }
         });
-    }
-
-    ngOnChanges() {
-        // console.log('Change detected');
     }
 
     ngOnDestroy() {
@@ -112,8 +118,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
                     this.loaderNuoveRichieste = false;
                     this.contatoreNuoveRichieste = 0;
                     // TEST
-                    // console.log('Sono listaRichieste, ho ricevuto le richieste');
-                    // console.log(richieste);
+                    // console.log('[ListaRichieste]: ho ricevuto le richieste', richieste);
                 }
             })
         );
@@ -125,8 +130,6 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
             this.contatoreNuoveRichieste++;
             this.loaderNuoveRichieste = true;
             this.getRichieste(this.richieste.length);
-            /* setTimeout(() => {
-            }, 3000); */
             // TEST
             // console.log(this.richieste[this.richieste.length - 1].id);
         }
@@ -158,6 +161,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
+    /* Apre il componente per la creazione della partenza */
     nuovaPartenza(richiesta: any) {
         this.partenzaService.nuovaPartenza(richiesta);
     }
@@ -201,7 +205,12 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         return false;
     }
 
-    /* NgClass Template */
+    /* NgClass List Height */
+    HeightControl() {
+        return this.listHeightClass;
+    }
+
+    /* NgClass Card Status */
     CardClasses(r: any) {
         if (r) {
             return {
@@ -213,11 +222,18 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
                 'card-shadow-secondary': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiuso'),
                 'bg-light': (r === this.richiestaSelezionata || r === this.richiestaHover) && !this.match(r.stato, 'chiuso'),
                 'bg-pattern-chiuso': this.match(r.stato, 'chiuso'),
+
+                // Bordo sinistro (stato)
+                'status_chiamata': this.match(r.stato, 'chiamata'),
+                'status_presidiato': this.match(r.stato, 'presidiato'),
+                'status_assegnato': this.match(r.stato, 'assegnato'),
+                'status_sospeso': this.match(r.stato, 'sospeso'),
+                'status_chiuso': this.match(r.stato, 'chiuso')
             };
         }
     }
 
-    /* NgClass status */
+    /* NgClass CardSm Status */
     CardSmClasses(r: any) {
         return {
             // Hover (stato)
