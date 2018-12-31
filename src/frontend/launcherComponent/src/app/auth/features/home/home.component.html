@@ -1,56 +1,23 @@
-<ng-sidebar-container style="height:100vh;">
-    <ng-sidebar [(opened)]="_opened" [mode]="'over'" [dock]="false" [sidebarClass]="'sidebar bg-grey'" [animate]="true"
-                [closeOnClickOutside]="true">
-        <div class="container-fluid py-2">
-            <div class="row">
-                <div class="col-1"></div>
-                <div class="col-2 px-4">
-                    <button class="btn btn-block" routerLink="/" routerLinkActive="btn-dark ? btn-secondary"><i class="fa fa-home fa-lg"></i> Home</button>
-                </div>
-                <div class="col-2 px-4">
-                    <button class="btn btn-block" routerLink="/autorimessa" routerLinkActive="btn-dark ? btn-secondary"><i class="fa fa-truck fa-lg"></i> Autorimessa</button>
-                </div>
-                <div class="col-2 px-4">
-                    <button class="btn btn-block" routerLink="/servizi" routerLinkActive="btn-dark ? btn-secondary"><i class="fa fa-wrench fa-lg"></i> Servizi</button>
-                </div>
-                <div class="col-2 px-4">
-                    <button class="btn btn-block" routerLink="/statistiche" routerLinkActive="btn-dark ? btn-secondary"><i class="fa fa-bar-chart fa-lg"></i> Statistiche</button>
-                </div>
-                <div class="col-2 text-center px-4">
-                    <button class="btn btn-block btn-danger" (click)="_toggleOpened()"><i class="fa fa-times"></i> Chiudi</button>
-                </div>
-            </div>
-        </div>
-    </ng-sidebar>
-    <div ng-sidebar-content>
-        <!-- Navbar -->
-        <app-navbar (openedSidebar)="_toggleOpened()"></app-navbar>
-        <div *ngIf="!fakeCambioSede.preLoader">
-            <div class="w-75 mx-auto text-center my-3">
-                <img class="img-fluid" src="assets/img/wallpaper_on_loading.gif">
-            </div>
-        </div>
-        <div *ngIf="fakeCambioSede.preLoader" class="container-fluid">
-            <div class="row">
-                <div class="col-12 px-0">
-                    <app-info-aggregate></app-info-aggregate>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <app-filterbar></app-filterbar>
-                </div>
-            </div>
-            <div class="row">
-                <div class="" [ngClass]="viewState.columns[0]">
-                    <app-richieste></app-richieste>
-                    <app-chiamata *ngIf="viewState.chiamata"></app-chiamata>
-                    <app-composizione-partenza *ngIf="viewState.comp_partenza" [richiesta]="richiestaNuovaPartenza"></app-composizione-partenza>
-                </div>
-                <div *ngIf="viewState.mappa" class="mt-2" [ngClass]="viewState.columns[1]">
-                    <app-maps></app-maps>
-                </div>
-            </div>
+<div class="container-fluid ">
+    <div class="row">
+        <div class="col-12 px-0">
+            <app-info-aggregate></app-info-aggregate>
         </div>
     </div>
-</ng-sidebar-container>
+    <div class="row">
+        <div class="col-12">
+            <app-filterbar></app-filterbar>
+        </div>
+    </div>
+    <div class="row">
+        <div class="" [ngClass]="viewState.columns[0]">
+            <app-richieste></app-richieste>
+            <app-chiamata *ngIf="viewState.chiamata"></app-chiamata>
+            <app-composizione-partenza *ngIf="viewState.comp_partenza"
+                                       [richiesta]="richiestaNuovaPartenza"></app-composizione-partenza>
+        </div>
+        <div *ngIf="viewState.mappa" class="mt-2" [ngClass]="viewState.columns[1]">
+            <app-maps></app-maps>
+        </div>
+    </div>
+</div>

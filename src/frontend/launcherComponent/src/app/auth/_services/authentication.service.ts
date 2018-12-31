@@ -19,6 +19,12 @@ export class AuthenticationService {
             }));
     }
 
+    isLogged() {
+        if (localStorage.getItem('currentUser')) {
+            return true;
+        }
+    }
+
     logout() {
         localStorage.removeItem('currentUser');
     }
