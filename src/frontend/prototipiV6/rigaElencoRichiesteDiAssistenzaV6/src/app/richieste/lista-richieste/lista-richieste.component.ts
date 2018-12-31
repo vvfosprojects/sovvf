@@ -9,14 +9,14 @@ import { MarkerService } from '../../maps/service/marker-service/marker-service.
 import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
 import { Subscription } from 'rxjs';
 import { FilterPipe } from 'ngx-filter-pipe';
-import { PartenzaService } from 'src/app/composizione-partenza/service/partenza/partenza.service';
+import { PartenzaService } from '../../composizione-partenza/service/partenza/partenza.service';
 
 @Component({
     selector: 'app-lista-richieste',
     templateUrl: './lista-richieste.component.html',
     styleUrls: ['./lista-richieste.component.css']
 })
-export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
+export class ListaRichiesteComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
 
     richieste: SintesiRichiesta[] = [];
@@ -30,6 +30,8 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     timer: any;
     contatoreNuoveRichieste = 0;
 
+    listHeightClass = 'm-h-750';
+
     @Input() _split: boolean;
 
     constructor(private listaRichiesteManager: ListaRichiesteManagerService,
@@ -39,23 +41,23 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         private markerS: MarkerService,
         private filter: FilterPipe,
         private partenzaService: PartenzaService) {
-
-        // Restituisce le Richieste
-        this.subscription.add(
-            this.listaRichiesteManager.getRichieste().subscribe(richieste => {
-                // console.log('Sono listaRichieste, ho ricevuto le richieste');
-                // console.log(richieste);
-                this.richieste = richieste;
-                this.loaderRichieste = false;
-            })
-        );
-        this.subscription.add(
-            this.ricercaS.getRicerca().subscribe(stringa => {
-                this.opacizzaRichieste(stringa);
-            }));
     }
 
     ngOnInit() {
+        // Restituisce le Richieste
+        if (this.richieste.length <= 0) {
+            this.getRichieste('0');
+        } else {
+            this.getRichieste(this.richieste.length);
+            // TEST
+            // console.log(this.richieste[this.richieste.length+1].id);
+        }
+
+        this.subscription.add(
+            this.ricercaS.getRicerca().subscribe(stringa => {
+                this.opacizzaRichieste(stringa);
+            })
+        );
         // Restituisce la Richiesta Hover
         this.richiesteS.subjects.getRichiestaHover().subscribe(richiestaHover => {
             if (richiestaHover) {
@@ -76,25 +78,29 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         this.richiesteS.subjects.getRichiestaFissata().subscribe(richiestaFissata => {
             if (richiestaFissata) {
                 this.richiestaFissata = richiestaFissata;
+                this.listHeightClass = 'm-h-600 border-top';
+                console.log('fissata');
             } else {
                 this.richiestaFissata = null;
+
+                /* aspetto che l'animazione della richiesta fissata finisca 
+                per aumentare l'altezza della lista */
+                setTimeout(() => {
+                    this.listHeightClass = 'm-h-750';
+                }, 300);
             }
         });
-    }
-
-    ngOnChanges() {
-        // console.log('Change detected');
     }
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
     }
 
-    opacizzaRichieste(ricerca): void {
+    opacizzaRichieste(ricerca: any): void {
         const result = this.filter.transform(this.richieste, ricerca);
         if (!(this.richieste.length === result.length) && result.length > 0) {
             const string = [];
-            result.forEach(c => {
+            result.forEach((c: any) => {
                 string.push(c.id);
             });
             this.markerS.opacizzaMarkers(true, 'richieste', undefined, string);
@@ -103,21 +109,34 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
+    getRichieste(idUltimaRichiesta: any) {
+        this.subscription.add(
+            this.listaRichiesteManager.getRichieste(idUltimaRichiesta).subscribe((richieste: any) => {
+                if (richieste) {
+                    this.richieste = richieste;
+                    this.loaderRichieste = false;
+                    this.loaderNuoveRichieste = false;
+                    this.contatoreNuoveRichieste = 0;
+                    // TEST
+                    // console.log('[ListaRichieste]: ho ricevuto le richieste', richieste);
+                }
+            })
+        );
+    }
+
     /* Permette di visualizzare il loader e caricare nuove richieste */
     nuoveRichieste(event: ScrollEvent) {
         if (event.isReachingBottom && event.isWindowEvent === false && this.contatoreNuoveRichieste === 0) {
             this.contatoreNuoveRichieste++;
             this.loaderNuoveRichieste = true;
-            setTimeout(() => {
-                this.listaRichiesteManager.onNewRichiesteList();
-                this.loaderNuoveRichieste = false;
-                this.contatoreNuoveRichieste = 0;
-            }, 3000);
+            this.getRichieste(this.richieste.length);
+            // TEST
+            // console.log(this.richieste[this.richieste.length - 1].id);
         }
     }
 
     /* Gestisce il singolo click sulla richiesta */
-    richiestaClick(richiesta) {
+    richiestaClick(richiesta: any) {
         if (richiesta) {
             this.richiesteS.selezionata(richiesta.id);
             this.markerS.actionById(richiesta.id, 'click');
@@ -125,15 +144,16 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /* Gestisce il double click sulla richiesta */
-    richiestaDoubleClick(richiesta) {
+    richiestaDoubleClick(richiesta: any) {
         if (richiesta) {
             this.richiesteS.selezionata(richiesta.id);
-            console.log('Doppio click su richiesta');
+            // TEST
+            // console.log('Doppio click su richiesta');
         }
     }
 
     /* Fissa in alto la richiesta */
-    fissaInAlto(richiesta) {
+    fissaInAlto(richiesta: any) {
         if (richiesta) {
             this.richiesteS.deselezionata();
             this.richiesteS.fissata(richiesta.id);
@@ -141,12 +161,13 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    nuovaPartenza(richiesta) {
+    /* Apre il componente per la creazione della partenza */
+    nuovaPartenza(richiesta: any) {
         this.partenzaService.nuovaPartenza(richiesta);
     }
 
     /* Gestisce l'hover in */
-    richiestaHoverIn(richiesta) {
+    richiestaHoverIn(richiesta: any) {
         if (richiesta) {
             this.richiesteS.hoverIn(richiesta.id);
             this.markerS.actionById(richiesta.id, 'hover-in');
@@ -154,7 +175,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /* Gestisce l'hover out */
-    richiestaHoverOut(richiesta) {
+    richiestaHoverOut(richiesta: any) {
         if (richiesta) {
             this.richiesteS.hoverOut();
             this.markerS.actionById(richiesta.id, 'hover-out');
@@ -170,7 +191,7 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
     } */
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
-    visualizzaEventiRichiesta(richiesta) {
+    visualizzaEventiRichiesta(richiesta: any) {
         this.modalService.open(EventiRichiestaComponent, { size: 'lg', centered: true });
     }
 
@@ -184,8 +205,13 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
         return false;
     }
 
-    /* NgClass Template */
-    CardClasses(r) {
+    /* NgClass List Height */
+    HeightControl() {
+        return this.listHeightClass;
+    }
+
+    /* NgClass Card Status */
+    CardClasses(r: any) {
         if (r) {
             return {
                 // Hover (stato)
@@ -196,12 +222,19 @@ export class ListaRichiesteComponent implements OnInit, OnChanges, OnDestroy {
                 'card-shadow-secondary': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiuso'),
                 'bg-light': (r === this.richiestaSelezionata || r === this.richiestaHover) && !this.match(r.stato, 'chiuso'),
                 'bg-pattern-chiuso': this.match(r.stato, 'chiuso'),
+
+                // Bordo sinistro (stato)
+                'status_chiamata': this.match(r.stato, 'chiamata'),
+                'status_presidiato': this.match(r.stato, 'presidiato'),
+                'status_assegnato': this.match(r.stato, 'assegnato'),
+                'status_sospeso': this.match(r.stato, 'sospeso'),
+                'status_chiuso': this.match(r.stato, 'chiuso')
             };
         }
     }
 
-    /* NgClass status */
-    CardSmClasses(r) {
+    /* NgClass CardSm Status */
+    CardSmClasses(r: any) {
         return {
             // Hover (stato)
             'card-shadow-info': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'assegnato'),

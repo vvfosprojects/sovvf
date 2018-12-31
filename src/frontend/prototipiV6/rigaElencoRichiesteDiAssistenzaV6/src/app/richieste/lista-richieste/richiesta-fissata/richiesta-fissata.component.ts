@@ -107,7 +107,7 @@ export class RichiestaFissataComponent implements OnInit {
     }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
-    visualizzaEventiRichiesta(richiesta) {
+    visualizzaEventiRichiesta(richiesta: any) {
         this.modalService.open(EventiRichiestaComponent, {size: 'lg'});
     }
 
@@ -120,7 +120,7 @@ export class RichiestaFissataComponent implements OnInit {
     }
 
     /* NgClass Template */
-    cardShadowClass(r) {
+    cardShadowClass(r: any) {
         if (r) {
             return {
                 'card-shadow-info': this.match(r.stato, 'assegnato'),
@@ -129,6 +129,13 @@ export class RichiestaFissataComponent implements OnInit {
                 'card-shadow-warning': this.match(r.stato, 'sospeso'),
                 'card-shadow-secondary': this.match(r.stato, 'chiuso'),
                 'bg-pattern-chiuso': this.match(r.stato, 'chiuso'),
+                
+                // Bordo sinistro (stato)
+                'status_chiamata': this.match(r.stato, 'chiamata'),
+                'status_presidiato': this.match(r.stato, 'presidiato'),
+                'status_assegnato': this.match(r.stato, 'assegnato'),
+                'status_sospeso': this.match(r.stato, 'sospeso'),
+                'status_chiuso': this.match(r.stato, 'chiuso')
             };
         }
     }

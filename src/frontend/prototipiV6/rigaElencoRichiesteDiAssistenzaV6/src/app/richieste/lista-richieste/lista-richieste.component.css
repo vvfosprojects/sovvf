@@ -36,7 +36,8 @@
 	overflow-y: scroll;
 }
 
-.scroll-y::-webkit-scrollbar-track{
+/* Custom scroll bar */
+/* .scroll-y::-webkit-scrollbar-track{
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 	background-color: #F5F5F5;
 }
@@ -50,7 +51,7 @@
 	background-color: #000000;
 	border: 2px solid #555555;
 }
-
+ */
 @media (min-width: 2560px) {
 	.col-6big {
 		width: 50%;
