@@ -79,10 +79,9 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
             if (richiestaFissata) {
                 this.richiestaFissata = richiestaFissata;
                 this.listHeightClass = 'm-h-600 border-top';
-                console.log('fissata');
             } else {
                 this.richiestaFissata = null;
-
+                
                 /* aspetto che l'animazione della richiesta fissata finisca 
                 per aumentare l'altezza della lista */
                 setTimeout(() => {

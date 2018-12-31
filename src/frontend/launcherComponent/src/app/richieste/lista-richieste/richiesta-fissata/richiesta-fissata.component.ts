@@ -4,6 +4,7 @@ import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/anim
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EventiRichiestaComponent } from '../../../eventi/eventi-richiesta.component';
 import { ListaRichiesteService } from '../../lista-richieste-service/lista-richieste-service.service';
+import { PartenzaService } from 'src/app/composizione-partenza/service/partenza/partenza.service';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class RichiestaFissataComponent implements OnInit {
 
     constructor(public richiesteS: ListaRichiesteService,
                 private animationBuilder: AnimationBuilder,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private partenzaService: PartenzaService) {
     }
 
     ngOnInit() {
@@ -110,6 +112,11 @@ export class RichiestaFissataComponent implements OnInit {
     visualizzaEventiRichiesta(richiesta: any) {
         this.modalService.open(EventiRichiestaComponent, {size: 'lg'});
     }
+    
+    /* Apre il componente per la creazione della partenza */
+    nuovaPartenza(richiesta: any) {
+        this.partenzaService.nuovaPartenza(richiesta);
+    }
 
     match(word1: string, word2: string) {
         const word1San = word1.toLowerCase().substr(0, word1.length - 1);
@@ -120,7 +127,7 @@ export class RichiestaFissataComponent implements OnInit {
     }
 
     /* NgClass Template */
-    cardShadowClass(r: any) {
+    cardClasses(r: any) {
         if (r) {
             return {
                 'card-shadow-info': this.match(r.stato, 'assegnato'),

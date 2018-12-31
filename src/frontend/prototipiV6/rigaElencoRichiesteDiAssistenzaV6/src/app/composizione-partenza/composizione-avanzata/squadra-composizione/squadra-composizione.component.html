@@ -1,0 +1,15 @@
+<li class="list-group-item cursor-pointer border" (click)="click(squadra)" (mouseover)="hoverIn()" (mouseout)="hoverOut()" [ngClass]="squadraCompClass(squadra)">
+  <div class="row">
+    <div class="col-12">
+      <span class="badge badge-info mr-2 py-1" [ngbPopover]="componenti" triggers="mouseenter:mouseleave">
+          <i class="fa fa-user mr-1"></i><span *ngIf="componenti">{{squadra.componenti.length}}</span>
+      </span>
+      <ng-template #componenti>
+        <div *ngFor="let c of squadra.componenti">
+          <span class="d-inline-block mr-2">{{c.nominativo}}</span><span class="badge badge-secondary">{{c.descrizioneQualifica}}</span>
+        </div>
+      </ng-template>
+      <span>{{squadra.nome}}</span>
+    </div>
+  </div>
+</li>
