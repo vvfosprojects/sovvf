@@ -47,13 +47,13 @@ export class MarkerService implements OnDestroy {
     switchMeteo: boolean;
 
     constructor(private markedService: MarkedService,
-                private meteoService: MeteoService,
-                private agmService: AgmService,
-                private richiesteService: ListaRichiesteService,
-                private markerRichiesteManager: RichiesteMarkerManagerService,
-                private markerMezziManager: MezziMarkerManagerService,
-                private unitaAttualeS: UnitaAttualeService,
-                private mapsFiltroService: MapsFiltroService) {
+        private meteoService: MeteoService,
+        private agmService: AgmService,
+        private richiesteService: ListaRichiesteService,
+        private markerRichiesteManager: RichiesteMarkerManagerService,
+        private markerMezziManager: MezziMarkerManagerService,
+        private unitaAttualeS: UnitaAttualeService,
+        private mapsFiltroService: MapsFiltroService) {
         this.subscription.add(this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         }));
@@ -316,7 +316,7 @@ export class MarkerService implements OnDestroy {
         }
     }
 
-    actionById(id, mouse) {
+    actionById(id: any, mouse: any, unclick?: any) {
         let marker: any;
         marker = this.getMarkerFromId(id);
         switch (mouse) {
@@ -331,9 +331,11 @@ export class MarkerService implements OnDestroy {
             }
                 break;
             case 'click': {
-                if (this.checkMarker !== marker) {
+                if (this.checkMarker !== marker && !unclick) {
                     this.cliccato(marker);
                     this.checkMarker = marker.id;
+                } else {
+                    this.noAction();
                 }
             }
                 break;

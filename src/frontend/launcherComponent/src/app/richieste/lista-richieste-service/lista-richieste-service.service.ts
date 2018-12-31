@@ -11,21 +11,21 @@ export class ListaRichiesteService {
   constructor(private richiesteManager: ListaRichiesteManagerService) {
   }
 
-  hoverIn(id) {
+  hoverIn(id: any) {
     const richiesta = this.richiesteManager.getRichiestaFromId(id);
     this.subjects.sendRichiestaHover(richiesta);
   }
   hoverOut() {
     this.subjects.clearRichiestaHover();
   }
-  selezionata(id) {
+  selezionata(id: any) {
     const richiesta = this.richiesteManager.getRichiestaFromId(id);
     this.subjects.sendRichiestaSelezionata(richiesta);
   }
   deselezionata() {
     this.subjects.clearRichiestaSelezionata();
   }
-  fissata(id, fromMap?: boolean) {
+  fissata(id: any, fromMap?: boolean) {
     const richiesta = this.richiesteManager.getRichiestaFromId(id, fromMap);
     this.subjects.sendRichiestaFissata(richiesta);
   }

@@ -81,7 +81,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
                 this.listHeightClass = 'm-h-600 border-top';
             } else {
                 this.richiestaFissata = null;
-                
+
                 /* aspetto che l'animazione della richiesta fissata finisca 
                 per aumentare l'altezza della lista */
                 setTimeout(() => {
@@ -136,9 +136,14 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
 
     /* Gestisce il singolo click sulla richiesta */
     richiestaClick(richiesta: any) {
-        if (richiesta) {
+        if (richiesta !== this.richiestaSelezionata) {
             this.richiesteS.selezionata(richiesta.id);
-            this.markerS.actionById(richiesta.id, 'click');
+            this.markerS.actionById(richiesta.id, 'click', false);
+            // TEST
+            console.log('Click su', richiesta);
+        } else {
+            this.richiesteS.deselezionata();
+            this.markerS.actionById(richiesta.id, 'click', true);
         }
     }
 
@@ -147,7 +152,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
         if (richiesta) {
             this.richiesteS.selezionata(richiesta.id);
             // TEST
-            // console.log('Doppio click su richiesta');
+            // console.log('Doppio click su', richiesta);
         }
     }
 
@@ -182,12 +187,11 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     }
 
     /* Deseleziona e defissa la richiesta */
-    /* Decidere quando fare l'unclick della richiesta */
-    /* unClick() {
+    unClick() {
         this.richiesteS.deselezionata();
-        this.richiesteS.defissata();
-        this.markerS.action('a', 'unclick');
-    } */
+        // this.richiesteS.defissata();
+        this.markerS.actionById('a', 'unclick', true);
+    }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(richiesta: any) {
