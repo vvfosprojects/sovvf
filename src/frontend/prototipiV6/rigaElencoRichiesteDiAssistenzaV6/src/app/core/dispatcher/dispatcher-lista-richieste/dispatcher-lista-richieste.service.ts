@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { SintesiRichiesteService } from '../../service/lista-richieste-service/lista-richieste.service';
 
@@ -8,25 +8,30 @@ import { SintesiRichiesteService } from '../../service/lista-richieste-service/l
     providedIn: 'root'
 })
 export class DispatcherService {
-    private newRichiesteList$: BehaviorSubject<SintesiRichiesta[]> = new BehaviorSubject<SintesiRichiesta[]>([]);
+    private newRichiesteList$ = new Subject<SintesiRichiesta[]>();
     private updateRichiesta$ = new Subject<SintesiRichiesta>();
     private newRichiesta$ = new Subject<SintesiRichiesta>();
     private deleteRichiesta$ = new Subject<SintesiRichiesta>();
+
     richieste: SintesiRichiesta[] = [];
 
     constructor(private richiesteService: SintesiRichiesteService) {
     }
 
-    onNewRichiesteList() {
-        this.richiesteService.getRichieste().subscribe(val => {
-            let newArr;
-            val.SintesiRichiesta.forEach(item => {
-                // console.log(item);
-                newArr = this.richieste;
-                newArr.push(item);
-            });
+    onNewRichiesteList(idUltimaRichiesta?: any) {
+        this.richiesteService.getRichieste(idUltimaRichiesta).subscribe((val: any) => {
+            let newArr: any;
+            if (val) {
+                val.forEach((item: any) => {
+                    newArr = this.richieste;
+                    newArr.push(item);
+                    // TEST
+                    // console.log(item);
+                });
+            }
             this.newRichiesteList$.next(newArr);
         });
+
         return this.newRichiesteList$.asObservable();
     }
 

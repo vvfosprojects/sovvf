@@ -14,20 +14,21 @@ export class ListaRichiesteManagerService {
     constructor(private dispatcher: DispatcherService) {
     }
 
-    getRichieste() {
+    getRichieste(idUltimaRichiesta?: any) {
         this.newRichiesteList$.next();
-        this.dispatcher.onNewRichiesteList().subscribe({
-            next: data => {
-                this.richieste = data;
-                this.newRichiesteList$.next(data);
-            },
-            error: data => console.log(`Errore: + ${data}`)
-        });
+        this.dispatcher.onNewRichiesteList(idUltimaRichiesta)
+            .subscribe({
+                next: data => {
+                    this.richieste = data;
+                    this.newRichiesteList$.next(data);
+                },
+                error: data => console.log(`Errore: + ${data}`)
+            });
         return this.newRichiesteList$.asObservable();
     }
 
-    getRichiestaFromId(id, fromMap?: boolean) {
-        let richiesta;
+    getRichiestaFromId(id: any, fromMap?: boolean) {
+        let richiesta: any;
         richiesta = this.richieste.find(x => x.id === id);
 
         if (!richiesta && fromMap) {
@@ -35,9 +36,5 @@ export class ListaRichiesteManagerService {
             console.log('Ho preso la richiesta dal service perchè non presente nella lista.');
         }
         return richiesta;
-    }
-
-    onNewRichiesteList() {
-        return;
     }
 }
