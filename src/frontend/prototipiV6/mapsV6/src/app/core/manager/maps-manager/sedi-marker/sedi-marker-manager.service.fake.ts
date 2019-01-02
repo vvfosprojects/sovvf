@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {DispatcherSediMarkerService} from '../../../dispatcher/dispatcher-maps/sedi-marker/dispatcher-sedi-marker.service';
+import {DispatcherSediMarkerService} from '../../../dispatcher/dispatcher-maps';
 import {SedeMarker} from '../../../../maps/maps-model/sede-marker.model';
 
 
