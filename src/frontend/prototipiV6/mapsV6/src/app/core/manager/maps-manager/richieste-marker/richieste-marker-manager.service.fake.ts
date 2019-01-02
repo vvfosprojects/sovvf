@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {DispatcherRichiesteMarkerService} from '../../../dispatcher/dispatcher-maps/richieste-marker/dispatcher-richieste-marker.service';
+import {DispatcherRichiesteMarkerService} from '../../../dispatcher/dispatcher-maps';
 import {RichiestaMarker} from '../../../../maps/maps-model/richiesta-marker.model';
 
 

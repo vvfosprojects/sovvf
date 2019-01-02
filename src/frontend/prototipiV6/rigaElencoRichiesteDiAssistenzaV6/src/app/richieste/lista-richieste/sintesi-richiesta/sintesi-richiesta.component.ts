@@ -35,7 +35,7 @@ export class SintesiRichiestaComponent implements OnInit {
 
     methods = new HelperMethods;
     isSingleClick = true;
-    live: any;
+    live = true;
 
     constructor(popoverConfig: NgbPopoverConfig,
         tooltipConfig: NgbTooltipConfig,

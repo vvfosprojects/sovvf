@@ -132,7 +132,28 @@ export class RichiestaFissataComponent implements OnInit {
     }
 
     /* NgClass Template */
+<<<<<<< HEAD
     cardFissataClasses(r: any) {
         return this.methods.cardFissataClasses(r);
+=======
+    cardClasses(r: any) {
+        if (r) {
+            return {
+                'card-shadow-info': this.match(r.stato, 'assegnato'),
+                'card-shadow-success': this.match(r.stato, 'presidiato'),
+                'card-shadow-danger': this.match(r.stato, 'chiamata'),
+                'card-shadow-warning': this.match(r.stato, 'sospeso'),
+                'card-shadow-secondary': this.match(r.stato, 'chiuso'),
+                'bg-pattern-chiuso': this.match(r.stato, 'chiuso'),
+
+                // Bordo sinistro (stato)
+                'status_chiamata': this.match(r.stato, 'chiamata'),
+                'status_presidiato': this.match(r.stato, 'presidiato'),
+                'status_assegnato': this.match(r.stato, 'assegnato'),
+                'status_sospeso': this.match(r.stato, 'sospeso'),
+                'status_chiuso': this.match(r.stato, 'chiuso')
+            };
+        }
+>>>>>>> 18f5e644c480f2ac82ceed107e1f7b16d2905b88
     }
 }

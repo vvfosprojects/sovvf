@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {DispatcherCentroMappaService} from '../../../dispatcher/dispatcher-maps/centro-mappa/dispatcher-centro-mappa.service';
+import {DispatcherCentroMappaService} from '../../../dispatcher/dispatcher-maps';
 import {CenterService} from '../../../../maps/service/center-service/center-service.service';
 import {CentroMappa} from '../../../../maps/maps-model/centro-mappa.model';
 
