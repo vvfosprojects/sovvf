@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
+
+// Service
 import { ListaRichiesteManagerService } from '../../core/manager/lista-richieste-manager/lista-richieste-manager.service';
+
+// Subjects
 import { ListaRichiesteSubjects } from './_lista-richieste-subjects';
 
 @Injectable({

@@ -1,4 +1,6 @@
 import { Subject, Observable } from 'rxjs';
+
+// Model
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 export class ListaRichiesteSubjects {

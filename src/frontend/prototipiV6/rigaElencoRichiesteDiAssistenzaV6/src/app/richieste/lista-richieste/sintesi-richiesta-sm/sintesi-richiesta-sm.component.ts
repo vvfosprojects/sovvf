@@ -1,7 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LayoutMethods } from '../sintesi-richiesta/_layout-methods';
+
+// Model
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
+
+// Service
 import { ListaRichiesteService } from '../../lista-richieste-service/lista-richieste-service.service';
+
+// Helper methods
+import { HelperMethods } from '../../helper/_helper-methods';
 
 @Component({
   selector: 'app-sintesi-richiesta-sm',
@@ -11,7 +17,7 @@ import { ListaRichiesteService } from '../../lista-richieste-service/lista-richi
 export class SintesiRichiestaSmComponent implements OnInit {
   @Input() richiesta: SintesiRichiesta;
 
-  methods = new LayoutMethods;
+  methods = new HelperMethods;
 
   constructor(private richiesteS: ListaRichiesteService) { }
 

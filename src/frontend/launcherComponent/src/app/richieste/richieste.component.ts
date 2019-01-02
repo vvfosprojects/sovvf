@@ -1,6 +1,10 @@
 import {Component, OnDestroy } from '@angular/core';
 import {Subscription} from 'rxjs';
+
+// Interface
 import {ViewInterface} from '../filterbar/view-mode/view.interface';
+
+// Service
 import {FilterbarService} from '../filterbar/filterbar-service/filterbar-service.service';
 
 @Component({

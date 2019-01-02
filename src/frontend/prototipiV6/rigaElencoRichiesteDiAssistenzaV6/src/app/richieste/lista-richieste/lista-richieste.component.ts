@@ -1,15 +1,24 @@
 import { Component, OnInit, ElementRef, ViewChild, OnChanges, OnDestroy, Input } from '@angular/core';
-import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { ListaRichiesteManagerService } from '../../core/manager/lista-richieste-manager/lista-richieste-manager.service';
-import { ScrollEvent } from 'ngx-scroll-event';
-import { ListaRichiesteService } from '../lista-richieste-service/lista-richieste-service.service';
-import { RicercaRichiesteService } from '../../filterbar/ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
-import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
+import { ScrollEvent } from 'ngx-scroll-event';
 import { Subscription } from 'rxjs';
 import { FilterPipe } from 'ngx-filter-pipe';
+
+// Model
+import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
+
+// Component
+import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
+
+// Service
+import { ListaRichiesteManagerService } from '../../core/manager/lista-richieste-manager/lista-richieste-manager.service';
+import { ListaRichiesteService } from '../service/lista-richieste-service.service';
+import { RicercaRichiesteService } from '../../filterbar/ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
+import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { PartenzaService } from '../../composizione-partenza/service/partenza/partenza.service';
+
+// Helper methods
+import { HelperMethods } from '../helper/_helper-methods';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -32,6 +41,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
 
     listHeightClass = 'm-h-750';
 
+    methods = new HelperMethods;
     @Input() _split: boolean;
 
     constructor(private listaRichiesteManager: ListaRichiesteManagerService,
@@ -224,44 +234,6 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
 
     /* NgClass Card Status */
     CardClasses(r: any) {
-        if (r) {
-            return {
-                // Hover (stato)
-                'card-shadow-info': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'assegnato'),
-                'card-shadow-success': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'presidiato'),
-                'card-shadow-danger': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiamata'),
-                'card-shadow-warning': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'sospeso'),
-                'card-shadow-secondary': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiuso'),
-                'bg-light': (r === this.richiestaSelezionata || r === this.richiestaHover) && !this.match(r.stato, 'chiuso'),
-                'bg-pattern-chiuso': this.match(r.stato, 'chiuso'),
-
-                // Bordo sinistro (stato)
-                'status_chiamata': this.match(r.stato, 'chiamata'),
-                'status_presidiato': this.match(r.stato, 'presidiato'),
-                'status_assegnato': this.match(r.stato, 'assegnato'),
-                'status_sospeso': this.match(r.stato, 'sospeso'),
-                'status_chiuso': this.match(r.stato, 'chiuso')
-            };
-        }
-    }
-
-    /* NgClass CardSm Status */
-    CardSmClasses(r: any) {
-        return {
-            // Hover (stato)
-            'card-shadow-info': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'assegnato'),
-            'card-shadow-success': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'presidiato'),
-            'card-shadow-danger': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiamata'),
-            'card-shadow-warning': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'sospeso'),
-            'card-shadow-secondary': (r === this.richiestaHover || r === this.richiestaSelezionata) && this.match(r.stato, 'chiuso'),
-            'bg-light': r === this.richiestaSelezionata || r === this.richiestaHover,
-
-            // Bordo sinistro (stato)
-            'status_chiamata': this.match(r.stato, 'chiamata'),
-            'status_presidiato': this.match(r.stato, 'presidiato'),
-            'status_assegnato': this.match(r.stato, 'assegnato'),
-            'status_sospeso': this.match(r.stato, 'sospeso'),
-            'status_chiuso': this.match(r.stato, 'chiuso')
-        };
+        return this.methods.CardClasses(r, this.richiestaSelezionata, this.richiestaHover);
     }
 }

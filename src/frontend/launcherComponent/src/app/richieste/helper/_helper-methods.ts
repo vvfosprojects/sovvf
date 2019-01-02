@@ -1,4 +1,4 @@
-export class LayoutMethods {
+export class HelperMethods {
 
     constructor() {
     }
@@ -18,9 +18,9 @@ export class LayoutMethods {
     nomiSquadre(richiesta: any): string[] {
         let nomiSquadre: string[];
         if (richiesta.partenze) {
-            richiesta.partenze.forEach(partenza => {
-                partenza.mezzi.forEach(mezzo => {
-                    nomiSquadre = mezzo.squadre.map(s => s.nome);
+            richiesta.partenze.forEach((partenza: any) => {
+                partenza.mezzi.forEach((mezzo: any) => {
+                    nomiSquadre = mezzo.squadre.map((s: any) => s.nome);
                 });
             });
         }
@@ -31,8 +31,8 @@ export class LayoutMethods {
     numeroSquadre(richiesta: any): number {
         let numeroSquadre = 0;
         if (richiesta.partenze) {
-            richiesta.partenze.forEach(partenza => {
-                partenza.mezzi.forEach(mezzo => {
+            richiesta.partenze.forEach((partenza: any) => {
+                partenza.mezzi.forEach((mezzo: any) => {
                     numeroSquadre = numeroSquadre + mezzo.squadre.length;
                 });
             });
@@ -44,8 +44,8 @@ export class LayoutMethods {
     nomiMezzi(richiesta: any): string[] {
         let nomiMezzi = [];
         if (richiesta.partenze) {
-            richiesta.partenze.forEach(partenza => {
-                nomiMezzi = partenza.mezzi.map(s => s.descrizione);
+            richiesta.partenze.forEach((partenza: any) => {
+                nomiMezzi = partenza.mezzi.map((s: any) => s.descrizione);
             });
         }
         return nomiMezzi;
@@ -55,7 +55,7 @@ export class LayoutMethods {
     numeroMezzi(richiesta: any): number {
         let numeroMezzi = 0;
         if (richiesta.partenze) {
-            richiesta.partenze.forEach(partenza => {
+            richiesta.partenze.forEach((partenza: any) => {
                 numeroMezzi = numeroMezzi + partenza.mezzi.length;
             });
         }
@@ -98,22 +98,53 @@ export class LayoutMethods {
         }
     }
 
-    /* NgClass status */
-    /* statusClass(richiesta) {
-        return {
-            'status_chiamata': this.match(richiesta.stato, 'chiamata'),
-            'status_presidiato': this.match(richiesta.stato, 'presidiato'),
-            'status_assegnato': this.match(richiesta.stato, 'assegnato'),
-            'status_sospeso': this.match(richiesta.stato, 'sospeso'),
-            'status_chiuso': this.match(richiesta.stato, 'chiuso')
-        };
-    } */
-
     complessitaClass(richiesta: any) {
         return {
             'badge-success': this.match(richiesta.complessita.descrizione, 'bassa'),
             'badge-warning': this.match(richiesta.complessita.descrizione, 'media'),
             'badge-danger': this.match(richiesta.complessita.descrizione, 'alta')
         };
+    }
+
+    /* NgClass Card Status */
+    CardClasses(r: any, richiestaSelezionata: any, richiestaHover: any) {
+        return {
+            // Hover (stato)
+            'card-shadow-info': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'assegnato'),
+            'card-shadow-success': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'presidiato'),
+            'card-shadow-danger': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'chiamata'),
+            'card-shadow-warning': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'sospeso'),
+            'card-shadow-secondary': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'chiuso'),
+            'bg-light': (r === richiestaSelezionata || r === richiestaHover) && !this.match(r.stato, 'chiuso'),
+            'bg-pattern-chiuso': this.match(r.stato, 'chiuso'),
+
+            // Bordo sinistro (stato)
+            'status_chiamata': this.match(r.stato, 'chiamata'),
+            'status_presidiato': this.match(r.stato, 'presidiato'),
+            'status_assegnato': this.match(r.stato, 'assegnato'),
+            'status_sospeso': this.match(r.stato, 'sospeso'),
+            'status_chiuso': this.match(r.stato, 'chiuso')
+        };
+    }
+
+    /* NgClass Card Fissata Status */
+    cardFissataClasses(r: any) {
+        if (r) {
+            return {
+                'card-shadow-info': this.match(r.stato, 'assegnato'),
+                'card-shadow-success': this.match(r.stato, 'presidiato'),
+                'card-shadow-danger': this.match(r.stato, 'chiamata'),
+                'card-shadow-warning': this.match(r.stato, 'sospeso'),
+                'card-shadow-secondary': this.match(r.stato, 'chiuso'),
+                'bg-pattern-chiuso': this.match(r.stato, 'chiuso'),
+
+                // Bordo sinistro (stato)
+                'status_chiamata': this.match(r.stato, 'chiamata'),
+                'status_presidiato': this.match(r.stato, 'presidiato'),
+                'status_assegnato': this.match(r.stato, 'assegnato'),
+                'status_sospeso': this.match(r.stato, 'sospeso'),
+                'status_chiuso': this.match(r.stato, 'chiuso')
+            };
+        }
     }
 }
