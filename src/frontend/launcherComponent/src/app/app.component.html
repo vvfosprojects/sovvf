@@ -1,3 +1,4 @@
+<ng-progress [spinner]="false"></ng-progress>
 <ng-sidebar-container style="height:100vh;">
     <ng-sidebar [(opened)]="_opened" [mode]="'over'" [dock]="false" [sidebarClass]="'sidebar bg-grey'" [animate]="true"
                 [closeOnClickOutside]="true">
@@ -5,16 +6,16 @@
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-2 px-4">
-                    <button class="btn btn-block" routerLink="/home" routerLinkActive="btn-dark ? btn-secondary"><i class="fa fa-home fa-lg"></i> Home</button>
+                    <button class="btn btn-block" routerLink="/home" routerLinkActive="btn-dark ? btn-secondary" (click)="_toggleOpened()"><i class="fa fa-home fa-lg"></i> Home</button>
                 </div>
                 <div class="col-2 px-4">
-                    <button class="btn btn-block" routerLink="/autorimessa" routerLinkActive="btn-dark ? btn-secondary"><i class="fa fa-truck fa-lg"></i> Autorimessa</button>
+                    <button class="btn btn-block" routerLink="/autorimessa" routerLinkActive="btn-dark ? btn-secondary" (click)="_toggleOpened()"><i class="fa fa-truck fa-lg"></i> Autorimessa</button>
                 </div>
                 <div class="col-2 px-4">
-                    <button class="btn btn-block" routerLink="/servizi" routerLinkActive="btn-dark ? btn-secondary"><i class="fa fa-wrench fa-lg"></i> Servizi</button>
+                    <button class="btn btn-block" routerLink="/servizi" routerLinkActive="btn-dark ? btn-secondary" (click)="_toggleOpened()"><i class="fa fa-wrench fa-lg"></i> Servizi</button>
                 </div>
                 <div class="col-2 px-4">
-                    <button class="btn btn-block" routerLink="/statistiche" routerLinkActive="btn-dark ? btn-secondary"><i class="fa fa-bar-chart fa-lg"></i> Statistiche</button>
+                    <button class="btn btn-block" routerLink="/statistiche" routerLinkActive="btn-dark ? btn-secondary" (click)="_toggleOpened()"><i class="fa fa-bar-chart fa-lg"></i> Statistiche</button>
                 </div>
                 <div class="col-2 text-center px-4">
                     <button class="btn btn-block btn-danger" (click)="_toggleOpened()"><i class="fa fa-times"></i> Chiudi</button>

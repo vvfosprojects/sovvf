@@ -28,6 +28,8 @@
     "@angular/router": "^6.1.0",
     "@ng-bootstrap/ng-bootstrap": "^3.3.1",
     "@ng-select/ng-select": "^2.10.1",
+    "@ngx-progressbar/core": "^5.3.1",
+    "@ngx-progressbar/http": "^5.3.1",
     "agm-direction": "^0.7.5",
     "angular-popper": "^2.0.0",
     "bootstrap": "^4.1.3",

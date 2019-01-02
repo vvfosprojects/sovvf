@@ -10,6 +10,8 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import { ScrollEventModule } from 'ngx-scroll-event';
 import { TimeagoModule, TimeagoFormatter, TimeagoCustomFormatter, TimeagoIntl } from 'ngx-timeago';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgProgressModule } from '@ngx-progressbar/core';
+import { NgProgressHttpModule } from '@ngx-progressbar/http';
 import { AppComponent } from './app.component';
 /**
  * Route & Page
@@ -68,6 +70,8 @@ import { ToastrModule } from 'ngx-toastr';
             positionClass: 'toast-top-center',
             preventDuplicates: true,
         }),
+        NgProgressModule,
+        NgProgressHttpModule,
         RichiesteModule,
         BoxesModule,
         MapsModule,
