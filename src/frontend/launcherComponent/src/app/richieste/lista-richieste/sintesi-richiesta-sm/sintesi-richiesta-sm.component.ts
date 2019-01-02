@@ -4,7 +4,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Service
-import { ListaRichiesteService } from '../../lista-richieste-service/lista-richieste-service.service';
+import { ListaRichiesteService } from '../../service/lista-richieste-service.service';
 
 // Helper methods
 import { HelperMethods } from '../../helper/_helper-methods';

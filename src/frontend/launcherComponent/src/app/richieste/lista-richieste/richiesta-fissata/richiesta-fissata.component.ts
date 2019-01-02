@@ -1,8 +1,4 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input } from '@angular/core';
-<<<<<<< HEAD
-=======
-import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
->>>>>>> 18f5e644c480f2ac82ceed107e1f7b16d2905b88
 import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/animations';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
