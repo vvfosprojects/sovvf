@@ -36,7 +36,7 @@ export class SintesiRichiestaComponent implements OnInit {
 
     methods = new LayoutMethods;
     isSingleClick = true;
-    live: any;
+    live = true;
 
     constructor(popoverConfig: NgbPopoverConfig,
         tooltipConfig: NgbTooltipConfig,
@@ -96,7 +96,7 @@ export class SintesiRichiestaComponent implements OnInit {
         this.eventiRichiesta.emit(richiesta);
     }
     invioPartenza(richiesta: any) {
-        if(this.partenza) {
+        if (this.partenza) {
             this.dismissNuovaPartenza.emit();
         } else {
             this.nuovaPartenza.emit(richiesta);

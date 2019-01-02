@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/animations';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -59,14 +59,14 @@ export class RichiestaFissataComponent implements OnInit {
 
         const animationContainerRichiesta = this.animationBuilder
             .build([
-                style({width: '0'}),
-                animate(300, style({width: '100%'}))
+                style({ width: '0' }),
+                animate(300, style({ width: '100%' }))
             ]);
 
         const animationRichiesta = this.animationBuilder
             .build([
-                style({height: '0', opacity: '0'}),
-                animate(300, style({height: 'auto', opacity: '1'}))
+                style({ height: '0', opacity: '0' }),
+                animate(300, style({ height: 'auto', opacity: '1' }))
             ]);
 
         this.playerContainer = animationContainerRichiesta.create(this.richiestaContainer.nativeElement);
@@ -82,14 +82,14 @@ export class RichiestaFissataComponent implements OnInit {
 
         const animationContainerRichiesta = this.animationBuilder
             .build([
-                style({width: '100%'}),
-                animate(300, style({width: '0'}))
+                style({ width: '100%' }),
+                animate(300, style({ width: '0' }))
             ]);
 
         const animationRichiesta = this.animationBuilder
             .build([
-                style({height: 'auto', opacity: '1'}),
-                animate(300, style({height: '0', opacity: '0'}))
+                style({ height: 'auto', opacity: '1' }),
+                animate(300, style({ height: '0', opacity: '0' }))
             ]);
 
         this.playerContainer = animationContainerRichiesta.create(this.richiestaContainer.nativeElement);
@@ -110,9 +110,9 @@ export class RichiestaFissataComponent implements OnInit {
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(richiesta: any) {
-        this.modalService.open(EventiRichiestaComponent, {size: 'lg'});
+        this.modalService.open(EventiRichiestaComponent, { size: 'lg' });
     }
-    
+
     /* Apre il componente per la creazione della partenza */
     nuovaPartenza(richiesta: any) {
         this.partenzaService.nuovaPartenza(richiesta);
@@ -136,7 +136,7 @@ export class RichiestaFissataComponent implements OnInit {
                 'card-shadow-warning': this.match(r.stato, 'sospeso'),
                 'card-shadow-secondary': this.match(r.stato, 'chiuso'),
                 'bg-pattern-chiuso': this.match(r.stato, 'chiuso'),
-                
+
                 // Bordo sinistro (stato)
                 'status_chiamata': this.match(r.stato, 'chiamata'),
                 'status_presidiato': this.match(r.stato, 'presidiato'),
