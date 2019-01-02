@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { DispatcherService } from '../../dispatcher/dispatcher-lista-richieste/dispatcher-lista-richieste.service';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
@@ -8,36 +8,23 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
     providedIn: 'root'
 })
 export class ListaRichiesteManagerServiceFake {
+    private newRichiesteList$ = new Subject<SintesiRichiesta[]>();
+    richieste: SintesiRichiesta[];
 
-    richieste: SintesiRichiesta[] = [];
-
-    prossimaRichiesta = 0;
-    ultima = 0;
     constructor(private dispatcher: DispatcherService) {
-        this.onNewRichiesteList();
-        this.onNewRichiesta();
-        this.onUpdateRichiesta();
-        this.onDeleteRichiesta();
     }
 
-    onNewRichiesteList(idUltimaRichiesta?: any) {
-        this.dispatcher.onNewRichiesteList().subscribe((richieste: SintesiRichiesta[]) => {
-            const nPerPagina = 9;
-            if (richieste[this.prossimaRichiesta]) {
-                for (let i = this.prossimaRichiesta; i < (this.prossimaRichiesta + nPerPagina); i++) {
-                    if (richieste[i]) {
-                        this.richieste.push(richieste[i]);
-                        this.ultima = i;
-                    } else {
-                        this.prossimaRichiesta = this.ultima + 1;
-                        return;
-                    }
-                }
-                this.prossimaRichiesta = this.ultima + 1;
-            } else {
-                console.log('Richieste Terminate');
-            }
-        });
+    getRichieste(idUltimaRichiesta?: any) {
+        this.newRichiesteList$.next();
+        this.dispatcher.onNewRichiesteList(idUltimaRichiesta)
+            .subscribe({
+                next: data => {
+                    this.richieste = data;
+                    this.newRichiesteList$.next(data);
+                },
+                error: data => console.log(`Errore: + ${data}`)
+            });
+        return of(this.richieste);
     }
 
     onNewRichiesta() {
@@ -58,12 +45,8 @@ export class ListaRichiesteManagerServiceFake {
         });
     }
 
-    getRichieste(): Observable<SintesiRichiesta[]> {
-        return of(this.richieste);
-    }
-
-    getRichiestaFromId(id, fromMap?: boolean) {
-        let richiesta;
+    getRichiestaFromId(id: any, fromMap?: boolean) {
+        let richiesta: any;
         richiesta = this.richieste.find(x => x.id === id);
 
         if (!richiesta && fromMap) {

@@ -20,7 +20,9 @@ export class ListaRichiesteManagerService {
             .subscribe({
                 next: data => {
                     this.richieste = data;
-                    this.newRichiesteList$.next(data);
+                    this.newRichiesteList$.next(this.richieste);
+                    // TEST
+                    // console.log('[ListaRichiesteManager]: Sono la next di getRichieste');
                 },
                 error: data => console.log(`Errore: + ${data}`)
             });

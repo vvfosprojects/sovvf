@@ -53,42 +53,49 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
             // console.log(this.richieste[this.richieste.length+1].id);
         }
 
+        // Restituisce la stringa di ricerca
         this.subscription.add(
             this.ricercaS.getRicerca().subscribe(stringa => {
                 this.opacizzaRichieste(stringa);
             })
         );
         // Restituisce la Richiesta Hover
-        this.richiesteS.subjects.getRichiestaHover().subscribe(richiestaHover => {
-            if (richiestaHover) {
-                this.richiestaHover = richiestaHover;
-            } else {
-                this.richiestaHover = null;
-            }
-        });
+        this.subscription.add(
+            this.richiesteS.subjects.getRichiestaHover().subscribe(richiestaHover => {
+                if (richiestaHover) {
+                    this.richiestaHover = richiestaHover;
+                } else {
+                    this.richiestaHover = null;
+                }
+            })
+        );
         // Restituisce la Richiesta Selezionata
-        this.richiesteS.subjects.getRichiestaSelezionata().subscribe(richiestaSelezionata => {
-            if (richiestaSelezionata) {
-                this.richiestaSelezionata = richiestaSelezionata;
-            } else {
-                this.richiestaSelezionata = null;
-            }
-        });
+        this.subscription.add(
+            this.richiesteS.subjects.getRichiestaSelezionata().subscribe(richiestaSelezionata => {
+                if (richiestaSelezionata) {
+                    this.richiestaSelezionata = richiestaSelezionata;
+                } else {
+                    this.richiestaSelezionata = null;
+                }
+            })
+        );
         // Restituisce la Richiesta Fissata in alto
-        this.richiesteS.subjects.getRichiestaFissata().subscribe(richiestaFissata => {
-            if (richiestaFissata) {
-                this.richiestaFissata = richiestaFissata;
-                this.listHeightClass = 'm-h-600 border-top';
-            } else {
-                this.richiestaFissata = null;
+        this.subscription.add(
+            this.richiesteS.subjects.getRichiestaFissata().subscribe(richiestaFissata => {
+                if (richiestaFissata) {
+                    this.richiestaFissata = richiestaFissata;
+                    this.listHeightClass = 'm-h-600 border-top';
+                } else {
+                    this.richiestaFissata = null;
 
-                /* aspetto che l'animazione della richiesta fissata finisca 
-                per aumentare l'altezza della lista */
-                setTimeout(() => {
-                    this.listHeightClass = 'm-h-750';
-                }, 300);
-            }
-        });
+                    /* aspetto che l'animazione della richiesta fissata finisca 
+                    per aumentare l'altezza della lista */
+                    setTimeout(() => {
+                        this.listHeightClass = 'm-h-750';
+                    }, 300);
+                }
+            })
+        );
     }
 
     ngOnDestroy() {
@@ -121,6 +128,8 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
                 }
             })
         );
+        // TEST
+        console.log('[ListaRichieste]:', this.richieste);
     }
 
     /* Permette di visualizzare il loader e caricare nuove richieste */
@@ -140,7 +149,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
             this.richiesteS.selezionata(richiesta.id);
             this.markerS.actionById(richiesta.id, 'click', false);
             // TEST
-            console.log('Click su', richiesta);
+            // console.log('Click su', richiesta);
         } else {
             this.richiesteS.deselezionata();
             this.markerS.actionById(richiesta.id, 'click', true);

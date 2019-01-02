@@ -12,7 +12,7 @@ export class MarkerService {
         // console.log('Action: ' + marker + ' | ' + mouse);
     }
 
-    actionById(id, mouse) {
+    actionById(id, mouse, unclick?: any) {
         // console.log('Action: ' + id + ' | ' + mouse);
     }
 

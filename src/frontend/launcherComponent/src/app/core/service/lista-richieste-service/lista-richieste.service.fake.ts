@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
 // Models
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
@@ -24,13 +24,16 @@ import { Componente } from '../../../shared/model/componente.model';
 })
 export class SintesiRichiesteServiceFake {
 
+    private newRichiesteList$ = new Subject<SintesiRichiesta[]>();
     private richieste: SintesiRichiesta[] = [];
+    requestCount = 0;
 
     constructor() {
     }
 
-    public getRichieste(idUltimaRichiesta?: any): Observable<SintesiRichiesta[]> {
-        this.richieste = [
+    getRichieste(){
+        this.requestCount += 1;
+        const richieste = [
             new SintesiRichiesta(
                 'RM-022',
                 'RM-022',
@@ -693,7 +696,18 @@ export class SintesiRichiesteServiceFake {
             ),
         ];
 
+        if (this.requestCount === 1) {
+            richieste.forEach((r, index) => {
+                if (index <= 9) {
+                    this.richieste.push(r);
+                }
+            });
+        } else if (this.requestCount === 2) {
+            this.richieste = richieste;
+        } else if (this.requestCount >= 3) {
+            this.richieste = [];
+        }
+
         return of(this.richieste);
     }
-
 }

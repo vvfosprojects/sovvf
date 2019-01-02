@@ -53,42 +53,49 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
             // console.log(this.richieste[this.richieste.length+1].id);
         }
 
+        // Restituisce la stringa di ricerca
         this.subscription.add(
             this.ricercaS.getRicerca().subscribe(stringa => {
                 this.opacizzaRichieste(stringa);
             })
         );
         // Restituisce la Richiesta Hover
-        this.richiesteS.subjects.getRichiestaHover().subscribe(richiestaHover => {
-            if (richiestaHover) {
-                this.richiestaHover = richiestaHover;
-            } else {
-                this.richiestaHover = null;
-            }
-        });
+        this.subscription.add(
+            this.richiesteS.subjects.getRichiestaHover().subscribe(richiestaHover => {
+                if (richiestaHover) {
+                    this.richiestaHover = richiestaHover;
+                } else {
+                    this.richiestaHover = null;
+                }
+            })
+        );
         // Restituisce la Richiesta Selezionata
-        this.richiesteS.subjects.getRichiestaSelezionata().subscribe(richiestaSelezionata => {
-            if (richiestaSelezionata) {
-                this.richiestaSelezionata = richiestaSelezionata;
-            } else {
-                this.richiestaSelezionata = null;
-            }
-        });
+        this.subscription.add(
+            this.richiesteS.subjects.getRichiestaSelezionata().subscribe(richiestaSelezionata => {
+                if (richiestaSelezionata) {
+                    this.richiestaSelezionata = richiestaSelezionata;
+                } else {
+                    this.richiestaSelezionata = null;
+                }
+            })
+        );
         // Restituisce la Richiesta Fissata in alto
-        this.richiesteS.subjects.getRichiestaFissata().subscribe(richiestaFissata => {
-            if (richiestaFissata) {
-                this.richiestaFissata = richiestaFissata;
-                this.listHeightClass = 'm-h-600 border-top';
-            } else {
-                this.richiestaFissata = null;
-                
-                /* aspetto che l'animazione della richiesta fissata finisca 
-                per aumentare l'altezza della lista */
-                setTimeout(() => {
-                    this.listHeightClass = 'm-h-750';
-                }, 300);
-            }
-        });
+        this.subscription.add(
+            this.richiesteS.subjects.getRichiestaFissata().subscribe(richiestaFissata => {
+                if (richiestaFissata) {
+                    this.richiestaFissata = richiestaFissata;
+                    this.listHeightClass = 'm-h-600 border-top';
+                } else {
+                    this.richiestaFissata = null;
+
+                    /* aspetto che l'animazione della richiesta fissata finisca 
+                    per aumentare l'altezza della lista */
+                    setTimeout(() => {
+                        this.listHeightClass = 'm-h-750';
+                    }, 300);
+                }
+            })
+        );
     }
 
     ngOnDestroy() {
@@ -121,6 +128,8 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
                 }
             })
         );
+        // TEST
+        console.log('[ListaRichieste]:', this.richieste);
     }
 
     /* Permette di visualizzare il loader e caricare nuove richieste */
@@ -136,9 +145,14 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
 
     /* Gestisce il singolo click sulla richiesta */
     richiestaClick(richiesta: any) {
-        if (richiesta) {
+        if (richiesta !== this.richiestaSelezionata) {
             this.richiesteS.selezionata(richiesta.id);
-            this.markerS.actionById(richiesta.id, 'click');
+            this.markerS.actionById(richiesta.id, 'click', false);
+            // TEST
+            // console.log('Click su', richiesta);
+        } else {
+            this.richiesteS.deselezionata();
+            this.markerS.actionById(richiesta.id, 'click', true);
         }
     }
 
@@ -147,7 +161,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
         if (richiesta) {
             this.richiesteS.selezionata(richiesta.id);
             // TEST
-            // console.log('Doppio click su richiesta');
+            // console.log('Doppio click su', richiesta);
         }
     }
 
@@ -182,12 +196,11 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     }
 
     /* Deseleziona e defissa la richiesta */
-    /* Decidere quando fare l'unclick della richiesta */
-    /* unClick() {
+    unClick() {
         this.richiesteS.deselezionata();
-        this.richiesteS.defissata();
-        this.markerS.action('a', 'unclick');
-    } */
+        // this.richiesteS.defissata();
+        this.markerS.actionById('a', 'unclick', true);
+    }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(richiesta: any) {

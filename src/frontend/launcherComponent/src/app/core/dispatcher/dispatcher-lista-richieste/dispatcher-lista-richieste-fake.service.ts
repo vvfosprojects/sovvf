@@ -8,19 +8,32 @@ import { SintesiRichiesteService } from '../../service/lista-richieste-service/l
     providedIn: 'root'
 })
 export class DispatcherFakeService {
+    private newRichiesteList$ = new Subject<SintesiRichiesta[]>();
     private updateRichiesta$ = new Subject<SintesiRichiesta>();
     private newRichiesta$ = new Subject<SintesiRichiesta>();
     private deleteRichiesta$ = new Subject<SintesiRichiesta>();
 
-    richieste: SintesiRichiesta[];
+    richieste: SintesiRichiesta[] = [];
 
     constructor(private richiesteService: SintesiRichiesteService) {
     }
 
-    onNewRichiesteList(idUltimaRichiesta?: any): Observable<SintesiRichiesta[]> {
-        this.richiesteService.getRichieste().subscribe((richieste: SintesiRichiesta[]) => {
-            this.richieste = richieste;
+    onNewRichiesteList(idUltimaRichiesta?: any) {
+        this.richiesteService.getRichieste(idUltimaRichiesta).subscribe((val: any) => {
+            let newArr: any;
+            if (val) {
+                val.forEach((item: any) => {
+                    newArr = this.richieste;
+                    newArr.push(item);
+                    // TEST
+                    // console.log(item);
+                });
+                // TEST
+                // console.log(val);
+            }
+            this.newRichiesteList$.next(newArr);
         });
+
         return of(this.richieste);
     }
 
