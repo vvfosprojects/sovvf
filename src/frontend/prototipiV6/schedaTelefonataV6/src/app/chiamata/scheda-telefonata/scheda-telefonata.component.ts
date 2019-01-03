@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { TipologieService } from '../../shared/tipologie/tipologie.service';
-import { FilterbarService } from '../../filterbar/filterbar-service/filterbar-service.service';
+import { ViewService } from '../../filterbar/view-service/view-service.service';
 import { ClipboardService } from 'ngx-clipboard';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
@@ -34,11 +34,12 @@ export class SchedaTelefonataComponent implements OnInit {
     coords: Localita;
     tipologie: any;
     hideShowAnimator = false;
+    options: any;
 
     centroMappa: CentroMappa;
 
     constructor(private tipologieS: TipologieService,
-        private viewService: FilterbarService,
+        private viewService: ViewService,
         private _clipboardService: ClipboardService,
         private chiamataManager: MapManager.ChiamataMarkerManagerService,
         private markerService: MarkerService,
@@ -76,15 +77,15 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     onAddTipologia(tipologia) {
-        this.chiamataCorrente.tipo_interv.push(tipologia);
+        this.chiamataCorrente.tipoIntervento.push(tipologia);
     }
 
     onRemoveTipologia(tipologia) {
-        this.chiamataCorrente.tipo_interv.splice(this.chiamataCorrente.tipo_interv.indexOf(tipologia.value), 1);
+        this.chiamataCorrente.tipoIntervento.splice(this.chiamataCorrente.tipoIntervento.indexOf(tipologia.value), 1);
     }
 
     insertRagioneSociale(RS) {
-        this.chiamataCorrente.ragione_sociale = RS;
+        this.chiamataCorrente.ragioneSociale = RS;
     }
 
     handleAddressChange(result) {

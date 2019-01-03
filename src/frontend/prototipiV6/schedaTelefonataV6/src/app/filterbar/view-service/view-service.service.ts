@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
-export class FilterbarService {
+export class ViewService {
 
     sendView(view) {
         return;

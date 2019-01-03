@@ -20,8 +20,8 @@
               </div>
               <input type="text" formControlName="cognome" class="form-control" [(ngModel)]="chiamataCorrente.cognome"
                 [ngClass]="{ 'is-invalid': f.cognome.errors }" placeholder="Cognome">
-              <div *ngIf="submitted && f.cognome.errors" class="invalid-feedback">
-                <div *ngIf="f.cognome.errors.required">Il Cognome è obbligatorio</div>
+              <div *ngIf="submitted && f['cognome'].errors" class="invalid-feedback">
+                <div *ngIf="f['cognome'].errors.required">Il Cognome è obbligatorio</div>
               </div>
             </div>
           </div>
@@ -35,8 +35,8 @@
               </div>
               <input type="text" formControlName="nome" class="form-control" [(ngModel)]="chiamataCorrente.nome"
                 [ngClass]="{ 'is-invalid': f.nome.errors }" placeholder="Nome">
-              <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
-                <div *ngIf="f.nome.errors">Il Nome è obbligatorio</div>
+              <div *ngIf="submitted && f['nome'].errors" class="invalid-feedback">
+                <div *ngIf="f['nome'].errors">Il Nome è obbligatorio</div>
               </div>
             </div>
           </div>
@@ -47,10 +47,10 @@
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fa fa-industry"></i></span>
           </div>
-          <input type="text" formControlName="ragioneSociale" class="form-control" [(ngModel)]="chiamataCorrente.ragione_sociale"
+          <input type="text" formControlName="ragioneSociale" class="form-control" [(ngModel)]="chiamataCorrente.ragioneSociale"
             [ngClass]="{ 'is-invalid': f.ragioneSociale.errors }" placeholder="Ragione Sociale">
-          <div *ngIf="submitted && f.ragioneSociale.errors" class="invalid-feedback">
-            <div *ngIf="f.ragioneSociale.errors">La Ragione Sociale è obbligatoria</div>
+          <div *ngIf="submitted && f['ragioneSociale'].errors" class="invalid-feedback">
+            <div *ngIf="f['ragioneSociale'].errors">La Ragione Sociale è obbligatoria</div>
           </div>
         </div>
         <!-- Tasti veloci per ragione sociale -->
@@ -76,8 +76,8 @@
           </div>
           <input type="text" formControlName="telefono" class="form-control" [ngClass]="{ 'is-invalid': f.telefono.errors }"
             placeholder="Telefono" />
-          <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
-            <div *ngIf="f.telefono.errors">Il telefono è obbligatorio</div>
+          <div *ngIf="submitted && f['telefono'].errors" class="invalid-feedback">
+            <div *ngIf="f['telefono'].errors">Il telefono è obbligatorio</div>
           </div>
         </div>
       </div>
@@ -89,10 +89,9 @@
                 <span class="input-group-text"><i class="fa fa-map"></i></span>
               </div>
               <input ngx-google-places-autocomplete type="text" formControlName="indirizzo" class="form-control"
-                [ngClass]="{ 'is-invalid': f.indirizzo.errors }" placeholder="Ricerca indirizzo" [options]='options'
-                #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)" />
-                <div *ngIf="submitted && f.indirizzo.errors" class="invalid-feedback">
-                  <div *ngIf="f.indirizzo.errors">L' indirizzo è obbligatorio</div>
+                [ngClass]="{ 'is-invalid': f.indirizzo.errors }" placeholder="Ricerca indirizzo" [options]='options' (onAddressChange)="handleAddressChange($event)" />
+                <div *ngIf="submitted && f['indirizzo'].errors" class="invalid-feedback">
+                  <div *ngIf="f['indirizzo'].errors">L' indirizzo è obbligatorio</div>
                 </div>
             </div>
           </div>
