@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs';
 import {ViewInterface} from '../filterbar/view-mode/view.interface';
 
 // Service
-import {FilterbarService} from '../filterbar/filterbar-service/filterbar-service.service';
+import {ViewService} from '../filterbar/view-service/view-service.service';
 
 @Component({
     selector: 'app-richieste',
@@ -16,7 +16,7 @@ export class RichiesteComponent implements OnDestroy {
     subscription = new Subscription();
     viewState: ViewInterface;
 
-    constructor(private viewService: FilterbarService) {
+    constructor(private viewService: ViewService) {
         this.viewState = viewService.viewState;
         this.subscription.add(
             this.viewService.getView().subscribe((r: ViewInterface) => {

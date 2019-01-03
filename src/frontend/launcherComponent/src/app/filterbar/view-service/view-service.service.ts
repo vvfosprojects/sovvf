@@ -5,7 +5,7 @@ import { ViewInterface } from '../view-mode/view.interface';
 @Injectable({
     providedIn: 'root'
 })
-export class FilterbarService {
+export class ViewService {
 
     viewState: ViewInterface = {
         richieste: true,

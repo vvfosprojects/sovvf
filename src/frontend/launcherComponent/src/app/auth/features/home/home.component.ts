@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { FilterbarService } from '../../../filterbar/filterbar-service/filterbar-service.service';
+import { ViewService } from '../../../filterbar/view-service/view-service.service';
 import { ViewInterface } from '../../../filterbar/view-mode/view.interface';
 import { PartenzaService } from 'src/app/composizione-partenza/service/partenza/partenza.service';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     richiestaNuovaPartenza: SintesiRichiesta;
 
-    constructor(private viewService: FilterbarService,
+    constructor(private viewService: ViewService,
         private partenzaService: PartenzaService) {
         this.viewState = this.viewService.viewState;
         this.subscription.add(
