@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FilterbarService } from '../filterbar-service/filterbar-service.service';
+import { ViewService } from '../view-service/view-service.service';
 import { ViewInterface } from '../view-mode/view.interface';
 import { Subscription } from 'rxjs';
 
@@ -14,7 +14,7 @@ export class TastoChiamataComponent implements OnInit, OnDestroy {
     viewState: ViewInterface;
     colorButton = 'btn-outline-success';
 
-    constructor(private viewService: FilterbarService) {
+    constructor(private viewService: ViewService) {
         this.viewState = this.viewService.viewState;
         this.subscription.add(
             this.viewService.getView().subscribe((r: ViewInterface) => {
