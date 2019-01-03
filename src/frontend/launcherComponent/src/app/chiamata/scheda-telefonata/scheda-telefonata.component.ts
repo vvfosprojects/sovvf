@@ -13,17 +13,25 @@ import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
 import { FormChiamataModel } from './model/form-scheda-telefonata.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+const animationTime = 1500;
+
 @Component({
     selector: 'app-scheda-telefonata',
     templateUrl: './scheda-telefonata.component.html',
     styleUrls: ['./scheda-telefonata.component.css'],
     animations: [
         trigger('hideShowAnimator', [
-            state('true', style({ opacity: 1 })),
-            state('false', style({ opacity: 0 })),
-            transition('0 => 1', animate('.1s')),
-            transition('1 => 0', animate('.1s'))
+            state('opened', style({ opacity: 1 })),
+            state('closed', style({ opacity: 0 })),
+            state('left', style({ opacity: 0, transform: 'scale(0)' })),
+            transition('closed => opened', [
+                animate(animationTime + 'ms cubic-bezier(0.075, 0.82, 0.165, 1)')
+            ]),
+            transition('opened => left', [
+                animate(animationTime - 1000 + 'ms cubic-bezier(0.95, 0.05, 0.795, 0.035)')
+            ])
         ])
+
     ]
 })
 export class SchedaTelefonataComponent implements OnInit {
@@ -33,25 +41,26 @@ export class SchedaTelefonataComponent implements OnInit {
     chiamataCorrente = new FormChiamataModel();
     coords: Localita;
     tipologie: any;
-    hideShowAnimator = false;
+    hideShowAnimator = 'closed';
     options: any;
+    animationTime = animationTime;
 
     centroMappa: CentroMappa;
 
     constructor(private tipologieS: TipologieService,
-        private viewService: ViewService,
-        private _clipboardService: ClipboardService,
-        private chiamataManager: MapManager.ChiamataMarkerManagerService,
-        private markerService: MarkerService,
-        private centerService: CenterService,
-        private formBuilder: FormBuilder) {
+                private viewService: ViewService,
+                private _clipboardService: ClipboardService,
+                private chiamataManager: MapManager.ChiamataMarkerManagerService,
+                private markerService: MarkerService,
+                private centerService: CenterService,
+                private formBuilder: FormBuilder) {
     }
 
     ngOnInit() {
         this.tipologieS.getTipologie().subscribe(t => {
             this.tipologie = t;
             setTimeout(() => {
-                this.hideShowAnimator = true;
+                this.hideShowAnimator = 'opened';
             }, 1);
         });
 
@@ -103,7 +112,9 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     annullaChiamata() {
-        this.hideShowAnimator = false;
+        setTimeout(() => {
+            this.hideShowAnimator = 'left';
+        }, 1);
         setTimeout(() => {
             this.viewService.sendView({
                 richieste: true,
@@ -112,12 +123,16 @@ export class SchedaTelefonataComponent implements OnInit {
                 split: true,
                 chiamata: false,
             });
-        }, 100);
-        const chiamataVuota = new ChiamataMarker('RM-004', new Localita(new Coordinate(null, null)));
-        this.chiamataManager.chiamataMarker[0] = chiamataVuota;
-        this.markerService.chiamata(null, '', this.centroMappa);
+            const chiamataVuota = new ChiamataMarker('RM-004', new Localita(new Coordinate(null, null)));
+            this.chiamataManager.chiamataMarker[0] = chiamataVuota;
+            this.markerService.chiamata(null, '', this.centroMappa);
+        }, this.animationTime - 1200);
+
     }
-    get f() { return this.chiamataForm.controls; }
+
+    get f() {
+        return this.chiamataForm.controls;
+    }
 
     onSubmit() {
         this.submitted = true;
