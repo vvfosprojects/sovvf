@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { FilterbarService } from './filterbar-service.service';
+import { ViewService } from './view-service.service';
 
 describe('FilterbarService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [FilterbarService]
+      providers: [ViewService]
     });
   });
 
-  it('should be created', inject([FilterbarService], (service: FilterbarService) => {
+  it('should be created', inject([ViewService], (service: ViewService) => {
     expect(service).toBeTruthy();
   }));
 });

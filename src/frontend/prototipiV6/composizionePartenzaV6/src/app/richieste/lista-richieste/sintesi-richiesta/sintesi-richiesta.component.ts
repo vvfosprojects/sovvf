@@ -1,14 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
-
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
-
 import { LayoutMethods } from './_layout-methods';
-import { ViewInterface } from 'src/app/filterbar/view-mode/view.interface';
-import { FilterbarService } from 'src/app/filterbar/filterbar-service/filterbar-service.service';
-import { PartenzaService } from 'src/app/composizione-partenza/service/partenza/partenza.service';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -96,7 +91,7 @@ export class SintesiRichiestaComponent implements OnInit {
         this.eventiRichiesta.emit(richiesta);
     }
     invioPartenza(richiesta) {
-        if(this.partenza) {
+        if (this.partenza) {
             this.dismissNuovaPartenza.emit();
         } else {
             this.nuovaPartenza.emit(richiesta);

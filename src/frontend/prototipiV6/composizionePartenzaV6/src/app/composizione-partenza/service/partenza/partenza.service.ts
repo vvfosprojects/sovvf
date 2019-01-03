@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import { FilterbarService } from 'src/app/filterbar/filterbar-service/filterbar-service.service';
+import { ViewService } from 'src/app/filterbar/view-service/view-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class PartenzaService {
   private compPartenzaMode = new Subject<any>();
   compPartenzaModeIniziale = 'slower';
 
-  constructor(private viewService: FilterbarService) { }
+  constructor(private viewService: ViewService) { }
 
   nuovaPartenza(richiesta) {
     this.richiestaNuovaPartenza$.next(richiesta);
