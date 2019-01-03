@@ -34,6 +34,7 @@ export class SchedaTelefonataComponent implements OnInit {
     coords: Localita;
     tipologie: any;
     hideShowAnimator = false;
+    options: any;
 
     centroMappa: CentroMappa;
 
@@ -76,15 +77,15 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     onAddTipologia(tipologia) {
-        this.chiamataCorrente.tipo_interv.push(tipologia);
+        this.chiamataCorrente.tipoIntervento.push(tipologia);
     }
 
     onRemoveTipologia(tipologia) {
-        this.chiamataCorrente.tipo_interv.splice(this.chiamataCorrente.tipo_interv.indexOf(tipologia.value), 1);
+        this.chiamataCorrente.tipoIntervento.splice(this.chiamataCorrente.tipoIntervento.indexOf(tipologia.value), 1);
     }
 
     insertRagioneSociale(RS) {
-        this.chiamataCorrente.ragione_sociale = RS;
+        this.chiamataCorrente.ragioneSociale = RS;
     }
 
     handleAddressChange(result) {
