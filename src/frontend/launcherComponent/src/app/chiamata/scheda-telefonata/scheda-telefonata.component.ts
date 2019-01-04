@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { TipologieService } from '../../shared/tipologie/tipologie.service';
 import { ViewService } from '../../filterbar/view-service/view-service.service';
@@ -12,8 +12,9 @@ import { CenterService } from '../../maps/service/center-service/center-service.
 import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
 import { FormChiamataModel } from './model/form-scheda-telefonata.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
-const animationTime = 1500;
+const ANIMATION_TIME = 1500;
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -25,25 +26,26 @@ const animationTime = 1500;
             state('closed', style({ opacity: 0 })),
             state('left', style({ opacity: 0, transform: 'scale(0)' })),
             transition('closed => opened', [
-                animate(animationTime + 'ms cubic-bezier(0.075, 0.82, 0.165, 1)')
+                animate(ANIMATION_TIME + 'ms cubic-bezier(0.075, 0.82, 0.165, 1)')
             ]),
             transition('opened => left', [
-                animate(animationTime - 1000 + 'ms cubic-bezier(0.95, 0.05, 0.795, 0.035)')
+                animate(ANIMATION_TIME - 1000 + 'ms cubic-bezier(0.95, 0.05, 0.795, 0.035)')
             ])
         ])
 
     ]
 })
-export class SchedaTelefonataComponent implements OnInit {
+export class SchedaTelefonataComponent implements OnInit, OnDestroy {
     chiamataForm: FormGroup;
     submitted = false;
+    subscription = new Subscription();
 
     chiamataCorrente = new FormChiamataModel();
     coords: Localita;
     tipologie: any;
     hideShowAnimator = 'closed';
     options: any;
-    animationTime = animationTime;
+    animationTime = ANIMATION_TIME;
 
     centroMappa: CentroMappa;
 
@@ -57,12 +59,13 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.tipologieS.getTipologie().subscribe(t => {
-            this.tipologie = t;
-            setTimeout(() => {
-                this.hideShowAnimator = 'opened';
-            }, 1);
-        });
+        this.subscription.add(
+            this.tipologieS.getTipologie().subscribe(t => {
+                this.tipologie = t;
+                setTimeout(() => {
+                    this.hideShowAnimator = 'opened';
+                }, 1);
+            }));
 
         this.chiamataForm = this.formBuilder.group({
             dettaglioTipologia: ['', [Validators.required]],
@@ -74,15 +77,23 @@ export class SchedaTelefonataComponent implements OnInit {
         });
 
         this.centroMappa = this.centerService.centroMappaIniziale;
-        this.centerService.getCentro().subscribe(r => {
-            if (this.coords) {
-                const xyChiamata = [Math.floor(this.coords.coordinate.latitudine * 1000) / 1000, Math.floor(this.coords.coordinate.longitudine * 1000) / 1000];
-                const xyCentro = [Math.floor(r.coordinate.latitudine * 1000) / 1000, Math.floor(r.coordinate.longitudine * 1000) / 1000];
-                if (xyChiamata[0] !== xyCentro[0] && xyChiamata[1] !== xyCentro[1]) {
-                    this.centroMappa = r;
+        this.subscription.add(
+            this.centerService.getCentro().subscribe(r => {
+                if (this.coords) {
+                    const xyChiamata = [Math.floor(this.coords.coordinate.latitudine * 1000) / 1000, Math.floor(this.coords.coordinate.longitudine * 1000) / 1000];
+                    const xyCentro = [Math.floor(r.coordinate.latitudine * 1000) / 1000, Math.floor(r.coordinate.longitudine * 1000) / 1000];
+                    if (xyChiamata[0] !== xyCentro[0] && xyChiamata[1] !== xyCentro[1]) {
+                        this.centroMappa = r;
+                    }
                 }
-            }
-        });
+            })
+        );
+
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+        isDevMode() && console.log('Il componente chiamata è distrutto');
     }
 
     onAddTipologia(tipologia) {
@@ -108,7 +119,6 @@ export class SchedaTelefonataComponent implements OnInit {
     copy(lat: number, lng: number) {
         const copiedText = lat.toString() + ', ' + lng.toString();
         this._clipboardService.copyFromContent(copiedText);
-        // console.log(copiedText);
     }
 
     annullaChiamata() {
@@ -123,8 +133,7 @@ export class SchedaTelefonataComponent implements OnInit {
                 split: true,
                 chiamata: false,
             });
-            const chiamataVuota = new ChiamataMarker('RM-004', new Localita(new Coordinate(null, null)));
-            this.chiamataManager.chiamataMarker[0] = chiamataVuota;
+            this.chiamataManager.chiamataMarker[0] = new ChiamataMarker('RM-004', new Localita(new Coordinate(null, null)));
             this.markerService.chiamata(null, '', this.centroMappa);
         }, this.animationTime - 1200);
 
@@ -137,43 +146,11 @@ export class SchedaTelefonataComponent implements OnInit {
     onSubmit() {
         this.submitted = true;
 
-        // stop here if form is invalid
         if (this.chiamataForm.invalid) {
             return;
         }
 
-        alert('SUCCESS!! :-)' + JSON.stringify(this.chiamataCorrente));
+        console.log('Chiamata inserita: ' + JSON.stringify(this.chiamataCorrente));
     }
 
-    // Ng Class
-    /* tipologiaClass() {
-        if (this.chiamataCorrente.tipo_interv.length === 0) {
-            return 'border rounded border-danger';
-        }
-    }
-    cognomeClass() {
-        if (!this.chiamataCorrente.cognome && (!this.chiamataCorrente.ragione_sociale)) {
-            return 'is-invalid';
-        }
-    }
-    nomeClass() {
-        if (!this.chiamataCorrente.nome && (!this.chiamataCorrente.ragione_sociale)) {
-            return 'is-invalid';
-        }
-    }
-    ragioneSocialeClass() {
-        if (!this.chiamataCorrente.ragione_sociale && (!this.chiamataCorrente.nome || !this.chiamataCorrente.cognome)) {
-            return 'is-invalid';
-        }
-    }
-    telefonoClass() {
-        if (!this.chiamataCorrente.telefono) {
-            return 'is-invalid';
-        }
-    }
-    coordinateClass() {
-        if (!this.chiamataCorrente.coordinate) {
-            return 'is-invalid';
-        }
-    } */
 }
