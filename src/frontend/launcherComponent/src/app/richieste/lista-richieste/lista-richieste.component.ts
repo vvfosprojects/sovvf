@@ -46,14 +46,14 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     methods = new HelperMethods;
     @Input() _split: boolean;
 
-    constructor(public listaRichiesteManager: ListaRichiesteManagerService,
-        private richiesteS: ListaRichiesteService,
-        public ricercaS: RicercaRichiesteService,
-        private modalService: NgbModal,
-        private markerS: MarkerService,
-        private filter: FilterPipe,
-        private partenzaService: PartenzaService,
-        private toastr: ToastrService) {
+    constructor(private listaRichiesteManager: ListaRichiesteManagerService,
+                private richiesteS: ListaRichiesteService,
+                public ricercaS: RicercaRichiesteService,
+                private modalService: NgbModal,
+                private markerS: MarkerService,
+                private filter: FilterPipe,
+                private partenzaService: PartenzaService,
+                private toastr: ToastrService) {
     }
 
     ngOnInit() {
@@ -101,8 +101,11 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
                 } else {
                     this.richiestaFissata = null;
 
-                    /* aspetto che l'animazione della richiesta fissata finisca
-                    per aumentare l'altezza della lista */
+                    /***
+                     * aspetto che l'animazione della richiesta fissata finisca
+                     * per aumentare l'altezza della lista
+                     */
+
                     setTimeout(() => {
                         this.listHeightClass = 'm-h-750';
                     }, 300);
@@ -113,6 +116,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        console.log('Richieste distrutto');
     }
 
     opacizzaRichieste(ricerca: any): void {
@@ -200,6 +204,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     /* Apre il componente per la creazione della partenza */
     nuovaPartenza(richiesta: any) {
         this.partenzaService.nuovaPartenza(richiesta);
+        this.markerS.actionById(richiesta.id, 'click');
     }
 
     /* Gestisce l'hover in */
