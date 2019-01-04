@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FilterbarService } from '../filterbar-service/filterbar-service.service';
+import { ViewService } from '../view-service/view-service.service';
 import { ViewInterface } from './view.interface';
 import { Subscription } from 'rxjs';
 
@@ -15,7 +15,7 @@ export class ViewModeComponent implements OnInit, OnDestroy {
     colorButton: any;
     disableViewButtons = false;
 
-    constructor(private viewService: FilterbarService) {
+    constructor(private viewService: ViewService) {
         this.colorButton = this.viewService.colorButton;
         this.viewState = this.viewService.viewState;
         this.subscription.add(

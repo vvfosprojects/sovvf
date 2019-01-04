@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewInterface } from './view-mode/view.interface';
 import { Subscription } from 'rxjs';
-import { FilterbarService } from './filterbar-service/filterbar-service.service';
+import { ViewService } from './view-service/view-service.service';
 import { PartenzaService } from '../composizione-partenza/service/partenza/partenza.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class FilterbarComponent implements OnInit {
     disableFiltri = false;
     col = 'col-5';
 
-    constructor(private viewService: FilterbarService,
+    constructor(private viewService: ViewService,
         private partenzaS: PartenzaService) {
         this.viewState = this.viewService.viewState;
         this.subscription.add(

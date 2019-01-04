@@ -1,0 +1,28 @@
+<div class="row">
+  <!-- Loader (!richieste) -->
+  <div *ngIf="loaderRichieste" class="mx-auto my-5">
+    <img src="assets/img/pink_loader_resized.gif">
+  </div>
+
+  <!-- Singola Richiesta Fissata  -->
+  <div class="col-12 mt-1 pl-0 pr-4">
+    <app-richiesta-fissata (eventiRichiesta)="visualizzaEventiRichiesta($event)" [_split]="_split"></app-richiesta-fissata>
+  </div>
+  <!-- Lista di singole Richieste -->
+  <div class="col-12 pt-1 px-0 border-bottom scroll-y" detect-scroll (onScroll)="nuoveRichieste($event)" [bottomOffset]="1" [ngClass]="HeightControl()">
+    <div *ngFor="let r of richieste | filterBy: ricercaS.searchTerm" [ngClass]="{'col-double': !_split, 'col-12': _split}">
+      <div *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="CardClasses(r)">
+        <app-sintesi-richiesta [richiesta]="r" [fissata]="false" [fissabile]="true" [espanso]="false" [espandibile]="true"
+          [listaEventi]="true" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)" (fissaInAlto)="fissaInAlto($event)"
+          (clickRichiesta)="richiestaClick($event)" (doubleClickRichiesta)="richiestaDoubleClick($event)"
+          (nuovaPartenza)="nuovaPartenza($event)" (eventiRichiesta)="visualizzaEventiRichiesta($event)"></app-sintesi-richiesta>
+      </div>
+      <div *ngIf="r === richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="CardClasses(r)">
+        <app-sintesi-richiesta-sm [richiesta]="r" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)"></app-sintesi-richiesta-sm>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="loaderNuoveRichieste" class="col-12 text-center mt-1">
+    <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+  </div>
+</div>

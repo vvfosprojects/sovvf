@@ -1,0 +1,314 @@
+<div class="card row_text py-2 px-3 mb-1 transparent" (click)="richiestaClick(richiesta)"
+    (dblclick)="richiestaDoubleClick(richiesta)">
+    <div class="row align-items-center">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="h6 mb-1 nowrap">
+                                <i class="guida fa fa-hashtag fa-fw mr-1" ngbTooltip="Identificativo richiesta assistenza"
+                                    placement="right"></i>
+                                <a class="h6 cod-int" (click)="toggleEspanso()">{{ richiesta.codice
+                                    }}</a>
+                                <i *ngIf="richiesta.rilevanza" ngbTooltip="Rilevante dal: {{richiesta.rilevanza | date: 'dd/MM/yyyy - hh:mm:ss'}}"
+                                    class="fa fa-exclamation text-danger ml-2"></i>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <!-- descrizione intervento -->
+                            <div class="h6 mb-1 nowrap default-cursor">
+                                <div *ngIf="richiesta.tipologie.length === 1; then thenBlock else elseBlock"></div>
+                                <ng-template #thenBlock>
+                                    <span>
+                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(richiesta.tipologie[0].icona) }}"
+                                            ngbTooltip="{{ richiesta.tipologie[0].descrizione }}"></i>
+                                    </span>
+                                </ng-template>
+                                <ng-template #elseBlock>
+                                    <span [ngbPopover]="popTipologie" popoverTitle="Tipologie" triggers="click"
+                                        tabindex="0">
+                                        <span class="position-relative">
+                                            <i class="fa-fw mr-1 {{ methods.coloraIcona(richiesta.tipologie[0].icona) }}"
+                                                ngbTooltip="{{ richiesta.tipologie[0].descrizione }}"></i>
+                                            <span class="badge badge-notify text-light">{{richiesta.tipologie.length}}</span>
+                                        </span>
+                                    </span>
+                                </ng-template>
+                                <!-- ngbPopover tipologie intervento -->
+                                <ng-template #popTipologie>
+                                    <div class="h6" *ngFor="let t of richiesta.tipologie">
+                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(t.icona) }}"></i>&nbsp;{{ t.descrizione }}
+                                    </div>
+                                </ng-template>
+                                <span><a *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="h6 font-weight-bold descrizione-int"
+                                        ngbTooltip="{{ richiesta.descrizione }}" [disableTooltip]="richiesta.descrizione.length <= 45">{{
+                                        richiesta.descrizione | truncate:45 }}</a></span>
+                            </div>
+                        </div>
+                        <div class="col-3 pr-3 text-right">
+                            <div class="h6 mb-1">
+                                <!-- squadre -->
+                                <span class="nowrap default-cursor text-right">
+                                    <i class="guida fa fa-users fa-fw mr-1" ngbTooltip="Numero Squadre"></i>
+                                    <a class="big_numbers" [ngbPopover]="popSquadre" container="body" popoverTitle="Squadre"
+                                        triggers="click" tabindex="0" style="cursor:pointer">{{
+                                        methods.numeroSquadre(richiesta) }}</a>
+
+                                    <ng-template #popSquadre>
+                                        <div class="h6" *ngFor="let s of methods.nomiSquadre(richiesta)">
+                                            <span>{{ s }}</span>
+                                        </div>
+                                        <h6 class="mb-0" *ngIf="methods.numeroSquadre(richiesta) === 0">Nessuna squadra</h6>
+                                    </ng-template>
+                                </span>
+
+                                <!-- mezzi -->
+                                <span class="nowrap default-cursor text-right">
+                                    <i class="guida fa fa-truck fa-fw ml-1 mr-1" ngbTooltip="Numero Mezzi"></i>
+                                    <a class="big_numbers" [ngbPopover]="popMezzi" popoverTitle="Mezzi" triggers="click"
+                                        tabindex="0" style="cursor:pointer">{{ methods.numeroMezzi(richiesta) }}</a>
+
+                                    <ng-template #popMezzi>
+                                        <div class="h6 nowrap" *ngFor="let m of methods.nomiMezzi(richiesta)">
+                                            <span>{{ m }}</span>
+                                        </div>
+                                        <h6 class="mb-0" *ngIf="methods.numeroMezzi(richiesta) === 0">Nessun mezzo</h6>
+                                    </ng-template>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="h6 mt-1 mb-2 nowrap default-cursor">
+                                <i class="guida fa fa-clock-o fa-fw mr-1" ngbTooltip="Ricezione richiesta" placement="right"
+                                    container="body"></i>
+                                <a ngbTooltip="{{ richiesta.istanteRicezioneRichiesta | friendlyDateTooltip }}">
+                                    <span timeago [date]="richiesta.istanteRicezioneRichiesta" [live]="live"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <!-- richiedente -->
+                            <div class="h6 mt-1 mb-2 nowrap default-cursor">
+                                <i class="guida fa fa-address-book-o fa-fw mr-1" ngbTooltip="Richiedente" container="body"></i>
+                                <span><a ngbTooltip="{{ richiesta.richiedente.nominativo }}" placement="right"
+                                        [disableTooltip]="richiesta.richiedente.nominativo.length <= 20">{{
+                                        richiesta.richiedente.nominativo | truncate:20 }}</a></span>
+                                <span class="ml-1">(<i class="guida fa fa-phone fa-fw mr-1" ngbTooltip="Numero richiedente"></i><a>{{
+                                        richiesta.richiedente.telefono}}</a>)</span>
+                            </div>
+                        </div>
+                        <div class="col-3 pr-3 text-right">
+                            <div class="h6 mt-1 mb-2 nowrap default-cursor">
+                                <i class="guida fa fa-thermometer-half fa-fw" ngbTooltip="Priorità della richiesta"></i>
+                                <span class="h6" [ngClass]="{'text-success':richiesta.priorita <= 2, 'text-warning':richiesta.priorita > 2 && richiesta.priorita <= 4, 'text-danger': richiesta.priorita == 5}">
+                                    <i *ngFor="let n of methods.vettorePallini(richiesta)" class="fa fa-circle"></i><i
+                                        *ngFor="let n of methods.vettoreBuchini(richiesta)" class="fa fa-circle-o"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="h6 m-0 nowrap default-cursor">
+                                <i class="guida fa fa-bolt fa-fw mr-1" ngbTooltip="Prima assegnazione" placement="right"></i>
+                                <span *ngIf="richiesta.stato !== 'chiamata'">
+                                    <span *ngIf="richiesta.istantePrimaAssegnazione">{{richiesta.istantePrimaAssegnazione
+                                        | friendlyDateTooltip }}</span>
+                                </span>
+
+                                <!-- presidiato / non presidiato (1) -->
+                                <span *ngIf="richiesta.stato === 'chiamata' || !richiesta.istantePrimaAssegnazione">
+                                    <span class="badge badge-warning text-white">non presidiato</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <!-- indirizzo -->
+                            <div class="h6 m-0 nowrap default-cursor">
+                                <i class="guida fa fa-map-marker fa-fw mr-1" ngbTooltip="Località"></i>
+                                <span><a ngbTooltip="{{ richiesta.localita.indirizzo }}" [disableTooltip]="richiesta.localita.indirizzo.length <= 30">{{
+                                        richiesta.localita.indirizzo | truncate:30 }}</a></span>
+                                <span class="list-inline list-unstyled m-0 ml-2">
+                                    <app-competenza *ngFor="let c of richiesta.competenze; let i = index" [competenza]="c"
+                                        [i]="i"></app-competenza>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-4 pr-3 text-right" [ngClass]="{'mb-1': espanso}">
+                            <div class="h6 m-0 nowrap">
+                                <button *ngIf="!fissata && fissabile" class="btn btn-light border py-0 mr-1" ngbTooltip="Fissa in alto"
+                                    (click)="fissaClick(richiesta)">
+                                    <i class="fa fa-fw fa-thumb-tack text-secondary fa-rotate-45"></i>
+                                </button>
+                                <button *ngIf="fissata && fissabile" class="btn btn-danger py-0 mr-1" ngbTooltip="Inserisci nella lista"
+                                    (click)="fissaClick(richiesta)">
+                                    <i class="fa fa-fw fa-thumb-tack fa-rotate-45"></i>
+                                </button>
+                                <button *ngIf="espandibile" class="btn btn-light border py-0 mr-1" ngbTooltip="Espandi"
+                                    (click)="toggleEspanso()">
+                                    <i class="fa fa-fw fa-info text-secondary"></i>
+                                </button>
+                                <button *ngIf="listaEventi" class="btn btn-light border py-0 mr-1" ngbTooltip="Elenco eventi"
+                                    (click)="visualizzaEventiRichiesta(richiesta.id)">
+                                    <i class="fa fa-fw fa-list text-secondary"></i>
+                                </button>
+                                <button *ngIf="!partenza" class="btn btn-light border py-0" ngbTooltip="Invio partenza"
+                                    (click)="invioPartenza(richiesta)">
+                                    <i class="fa fa-fw fa-arrow-right text-secondary"></i>
+                                </button>
+                                <button *ngIf="partenza" class="btn btn-danger border py-0" ngbTooltip="Torna indietro"
+                                    (click)="invioPartenza()">
+                                    <i class="fa fa-fw fa-arrow-left"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- box note localita e zone emergenza -->
+                <div *ngIf="espanso" class="col-md-12 default-cursor">
+                    <div class="col-md-12">
+                        <div class="row card bt-0 note-localita">
+                            <div class="col-md-12 bg_diagonal_grey">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="h6 mb-0 pt-2 pb-1">
+                                            {{ richiesta.localita.note }}
+                                        </div>
+                                        <div class="h5 mb-0 pull-right">
+                                            <span *ngFor="let ze of richiesta.zoneEmergenza" class="badge badge-danger pull-right m-1">{{
+                                                ze }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-right">
+                                        <i class="guida fa fa-tags fa-fw text-left mr-1" title="Etichette"></i>
+                                        <span *ngFor="let etichetta of richiesta.etichette" class="badge badge-secondary text-right py-2 m-1"><i
+                                                class="fa fa-hashtag fa-fw text-left"></i>{{etichetta}}</span>
+                                        <span *ngIf="!richiesta.etichette">
+                                            Non ci sono tags
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- prima colonna II livello di dettaglio -->
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+
+                            <!-- presa in carico -->
+                            <div class="h6">
+                                <i class="guida fa fa-calendar-check-o fa-fw mr-1" ngbTooltip="Presa in carico"
+                                    placement="right"></i>
+                                <a *ngIf="richiesta.istantePresaInCarico; else nonPresaInCarico" ngbTooltip="{{ richiesta.istantePresaInCarico | friendlyDateTooltip }}">
+                                    {{richiesta.istantePresaInCarico | friendlyDate }}
+                                    {{ richiesta.istantePresaInCarico | friendlyHour }}
+                                </a>
+                                <ng-template #nonPresaInCarico>
+                                    <a class="badge badge-secondary text-light">Non presa in carico</a>
+                                </ng-template>
+                            </div>
+
+                            <!-- scheda nue -->
+                            <div class="h6">
+                                <i class="guida fa fa-id-card-o fa-fw mr-1" ngbTooltip="Codice scheda NUE" placement="right"></i>
+                                <a *ngIf="richiesta.codiceSchedaNue; else nessunCodiceNue">{{ richiesta.codiceSchedaNue
+                                    }}</a>
+                                <ng-template #nessunCodiceNue>
+                                    <span class="badge badge-secondary text-light">Non presente</span>
+                                </ng-template>
+                            </div>
+
+                            <!-- fonogramma -->
+                            <div class="h6">
+                                <i class="guida fa fa-paper-plane-o fa-fw mr-1" ngbTooltip="Stato Fonogramma" placement="right"></i>
+                                <span *ngIf="richiesta.fonogramma.descrizione" class="h6 badge m-0" [ngClass]="{'badge-success text-light':richiesta.fonogramma.codice === '2', 'badge-secondary text-light':richiesta.fonogramma.codice === '0', 'badge-warning text-light':richiesta.fonogramma.codice === '1'}">
+                                    {{ richiesta.fonogramma.descrizione }}
+                                </span>
+                                <span *ngIf="!richiesta.fonogramma.descrizione" class="badge badge-secondary text-white">Non
+                                    presente</span>
+                            </div>
+
+                            <!-- complessità -->
+                            <div class="h6">
+                                <i class="guida fa fa-gears fa-fw mr-1" ngbTooltip="Complessità" placement="right"></i>
+                                <a><b>{{ richiesta.complessita.indice }}</b></a>
+                                <span class="h6 badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">{{
+                                    richiesta.complessita.descrizione }}</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-9">
+                            <div class="card">
+                                <div class="row">
+                                    <div class="col-6 pr-0">
+                                        <div class="h6 text-center text-light bg-secondary py-2 m-0">
+                                            <i class="fa fa-person"></i>Squadre coinvolte
+                                        </div>
+                                        <div class="h6 mb-0">
+                                            <ul class="list-group list-group-flush">
+                                                <span *ngFor="let p of richiesta.partenze">
+                                                    <span *ngFor="let m of p.mezzi">
+                                                        <li *ngFor="let s of m.squadre" class="row mx-auto list-group-item border-bottom p-0 py-2">
+                                                            <span class="h6 mb-0 mr-2">
+                                                                <i class="guida fa fa-fire-extinguisher fa-fw" title="Squadra"></i>
+                                                                <span>{{ s.nome }}</span>
+                                                            </span>
+                                                            <span class="text-right">
+                                                                <a title="Componenti squadra" [ngbPopover]="popComponenti"
+                                                                    popoverTitle="Componenti" triggers="click" tabindex="0">
+                                                                    <i class="guida fa fa-address-book-o" title="Componenti squadra"></i>
+                                                                </a>
+
+                                                                <ng-template #popComponenti>
+                                                                    <div class="h6">
+                                                                        <div *ngFor="let c of s.componenti">
+                                                                            <app-componente [componente]="c"></app-componente>
+                                                                        </div>
+                                                                        <span *ngIf="!s.componenti">Nessun Componente</span>
+                                                                    </div>
+                                                                </ng-template>
+                                                            </span>
+                                                        </li>
+                                                        <span *ngIf="!m.squadre" class="p-2">
+                                                            Nessun squadra
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                                <span *ngIf="!richiesta.partenze" class="p-2">
+                                                    Nessuna squadra
+                                                </span>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 pl-0">
+                                        <div class="h6 text-center text-light bg-secondary py-2 m-0">
+                                            <i class="fa fa-team"></i>Mezzi coinvolti
+                                        </div>
+                                        <div class="h6 m-0">
+                                            <ul class="list-group list-group-flush border-left">
+                                                <span *ngFor="let p of richiesta.partenze">
+                                                    <app-mezzo *ngFor="let m of p.mezzi" [mezzo]="m"></app-mezzo>
+                                                    <span *ngIf="!p.mezzi" class="p-2">
+                                                        Nessun mezzo
+                                                    </span>
+                                                </span>
+                                                <span *ngIf="!richiesta.partenze" class="p-2">
+                                                    Nessun mezzo
+                                                </span>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
