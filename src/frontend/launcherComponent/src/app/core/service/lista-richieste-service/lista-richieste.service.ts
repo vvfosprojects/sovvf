@@ -21,14 +21,13 @@ export class SintesiRichiesteService {
     }
 
     public getRichieste(idUltimaRichiesta?: any): Observable<any> {
-        return this.http.get(API_URL_RICHIESTE + '?SearchKey=' + idUltimaRichiesta +'&RichiestaSingola=false', httpOptions).pipe(
+        return this.http.get(API_URL_RICHIESTE + '?SearchKey=' + idUltimaRichiesta + '&RichiestaSingola=false', httpOptions).pipe(
             map((data: any) => {
                 const richieste = data.SintesiRichiesta;
                 return richieste;
                 // TEST
                 // console.log('Service Lista Richieste: ', data.SintesiRichiesta);
             }),
-            retry(3),
             catchError(this.handleError)
         );
     }

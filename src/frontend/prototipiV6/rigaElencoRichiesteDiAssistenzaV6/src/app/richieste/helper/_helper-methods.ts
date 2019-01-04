@@ -90,9 +90,9 @@ export class HelperMethods {
     }
 
     /* Ritorna true se le parole matchano almeno in parte */
-    match(word1: string, word2: string) {
-        const word1San = word1.toLowerCase().substr(0, word1.length - 1);
-        const word2San = word2.toLowerCase().substr(0, word2.length - 1);
+    match(word1: string, word2: string, substr: number) {
+        const word1San = word1.toLowerCase().substr(0, word1.length - substr);
+        const word2San = word2.toLowerCase().substr(0, word2.length - substr);
         if (word1San === word2San) {
             return true;
         }
@@ -100,9 +100,9 @@ export class HelperMethods {
 
     complessitaClass(richiesta: any) {
         return {
-            'badge-success': this.match(richiesta.complessita.descrizione, 'bassa'),
-            'badge-warning': this.match(richiesta.complessita.descrizione, 'media'),
-            'badge-danger': this.match(richiesta.complessita.descrizione, 'alta')
+            'badge-success': this.match(richiesta.complessita.descrizione, 'bassa', 1),
+            'badge-warning': this.match(richiesta.complessita.descrizione, 'media', 1),
+            'badge-danger': this.match(richiesta.complessita.descrizione, 'alta', 1)
         };
     }
 
@@ -110,20 +110,20 @@ export class HelperMethods {
     CardClasses(r: any, richiestaSelezionata: any, richiestaHover: any) {
         return {
             // Hover (stato)
-            'card-shadow-info': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'assegnato'),
-            'card-shadow-success': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'presidiato'),
-            'card-shadow-danger': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'chiamata'),
-            'card-shadow-warning': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'sospeso'),
-            'card-shadow-secondary': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'chiuso'),
-            'bg-light': (r === richiestaSelezionata || r === richiestaHover) && !this.match(r.stato, 'chiuso'),
-            'bg-pattern-chiuso': this.match(r.stato, 'chiuso'),
+            'card-shadow-info': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'assegnato', 1),
+            'card-shadow-success': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'presidiato', 1),
+            'card-shadow-danger': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'chiamata', 1),
+            'card-shadow-warning': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'sospeso', 1),
+            'card-shadow-secondary': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'chiuso', 1),
+            'bg-light': (r === richiestaSelezionata || r === richiestaHover) && !this.match(r.stato, 'chiuso', 1),
+            'bg-pattern-chiuso': this.match(r.stato, 'chiuso', 1),
 
             // Bordo sinistro (stato)
-            'status_chiamata': this.match(r.stato, 'chiamata'),
-            'status_presidiato': this.match(r.stato, 'presidiato'),
-            'status_assegnato': this.match(r.stato, 'assegnato'),
-            'status_sospeso': this.match(r.stato, 'sospeso'),
-            'status_chiuso': this.match(r.stato, 'chiuso')
+            'status_chiamata': this.match(r.stato, 'chiamata', 1),
+            'status_presidiato': this.match(r.stato, 'presidiato', 1),
+            'status_assegnato': this.match(r.stato, 'assegnato', 1),
+            'status_sospeso': this.match(r.stato, 'sospeso', 1),
+            'status_chiuso': this.match(r.stato, 'chiuso', 1)
         };
     }
 
@@ -131,19 +131,19 @@ export class HelperMethods {
     cardFissataClasses(r: any) {
         if (r) {
             return {
-                'card-shadow-info': this.match(r.stato, 'assegnato'),
-                'card-shadow-success': this.match(r.stato, 'presidiato'),
-                'card-shadow-danger': this.match(r.stato, 'chiamata'),
-                'card-shadow-warning': this.match(r.stato, 'sospeso'),
-                'card-shadow-secondary': this.match(r.stato, 'chiuso'),
-                'bg-pattern-chiuso': this.match(r.stato, 'chiuso'),
+                'card-shadow-info': this.match(r.stato, 'assegnato', 1),
+                'card-shadow-success': this.match(r.stato, 'presidiato', 1),
+                'card-shadow-danger': this.match(r.stato, 'chiamata', 1),
+                'card-shadow-warning': this.match(r.stato, 'sospeso', 1),
+                'card-shadow-secondary': this.match(r.stato, 'chiuso', 1),
+                'bg-pattern-chiuso': this.match(r.stato, 'chiuso', 1),
 
                 // Bordo sinistro (stato)
-                'status_chiamata': this.match(r.stato, 'chiamata'),
-                'status_presidiato': this.match(r.stato, 'presidiato'),
-                'status_assegnato': this.match(r.stato, 'assegnato'),
-                'status_sospeso': this.match(r.stato, 'sospeso'),
-                'status_chiuso': this.match(r.stato, 'chiuso')
+                'status_chiamata': this.match(r.stato, 'chiamata', 1),
+                'status_presidiato': this.match(r.stato, 'presidiato', 1),
+                'status_assegnato': this.match(r.stato, 'assegnato', 1),
+                'status_sospeso': this.match(r.stato, 'sospeso', 1),
+                'status_chiuso': this.match(r.stato, 'chiuso', 1)
             };
         }
     }

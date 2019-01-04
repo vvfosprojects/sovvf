@@ -16,12 +16,13 @@ import { RichiesteModule } from './richieste/richieste.module';
 /*
     Shared Module
  */
-import {SharedModule} from './shared/shared.module';
+import { SharedModule } from './shared/shared.module';
 /*
     solo per il componente
  */
 import { NavTestComponent } from './lista-richieste-test/nav-test/nav-test.component';
-import {FilterbarModule} from './filterbar/filterbar.module';
+import { FilterbarModule } from './filterbar/filterbar.module';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -41,6 +42,10 @@ import {FilterbarModule} from './filterbar/filterbar.module';
         ScrollEventModule,
         SharedModule,
         NgbModule,
+        ToastrModule.forRoot({
+            positionClass: 'toast-top-center',
+            preventDuplicates: true,
+        }),
         PipeModule.forRoot(),
         TimeagoModule.forRoot({
             intl: TimeagoIntl,

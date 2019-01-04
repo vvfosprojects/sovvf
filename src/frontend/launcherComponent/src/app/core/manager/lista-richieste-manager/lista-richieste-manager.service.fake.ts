@@ -8,23 +8,42 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
     providedIn: 'root'
 })
 export class ListaRichiesteManagerServiceFake {
-    private newRichiesteList$ = new Subject<SintesiRichiesta[]>();
-    richieste: SintesiRichiesta[];
+    newRichiesteList: any;
+    richieste: SintesiRichiesta[] = [];
 
     constructor(private dispatcher: DispatcherService) {
     }
 
     getRichieste(idUltimaRichiesta?: any) {
-        this.newRichiesteList$.next();
+        let newArr = this.richieste;
+        let count = 0;
         this.dispatcher.onNewRichiesteList(idUltimaRichiesta)
             .subscribe({
-                next: data => {
-                    this.richieste = data;
-                    this.newRichiesteList$.next(data);
+                next: richieste => {
+                    if (richieste.length > 0 && count === 0) {
+                        newArr = this.richieste;
+                        /* pusho le nuove richieste nell'array (newArr) inizializzato
+                        precedentemente con le vecchie richieste */
+                        richieste.forEach((item: any) => {
+                            newArr.push(item);
+                        });
+                        this.richieste = newArr;
+                        this.newRichiesteList = newArr;
+                        count = 1;
+                        // TEST
+                        console.log('[Manager] Lista Richieste:', richieste.length);
+                    } else if (richieste.length === 0 && count === 0) {
+                        newArr = [];
+                        this.newRichiesteList = newArr;
+                        count = 1;
+                        // TEST
+                        // console.log('Le richieste sono terminate');
+                    }
                 },
                 error: data => console.log(`Errore: + ${data}`)
             });
-        return of(this.richieste);
+
+        return of(this.newRichiesteList);
     }
 
     onNewRichiesta() {

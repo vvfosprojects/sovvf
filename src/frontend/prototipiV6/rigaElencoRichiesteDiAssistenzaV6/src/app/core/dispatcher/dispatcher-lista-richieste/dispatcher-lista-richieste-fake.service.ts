@@ -13,25 +13,19 @@ export class DispatcherFakeService {
     private newRichiesta$ = new Subject<SintesiRichiesta>();
     private deleteRichiesta$ = new Subject<SintesiRichiesta>();
 
-    richieste: SintesiRichiesta[] = [];
+    richieste: SintesiRichiesta[];
 
     constructor(private richiesteService: SintesiRichiesteService) {
     }
 
     onNewRichiesteList(idUltimaRichiesta?: any) {
-        this.richiesteService.getRichieste(idUltimaRichiesta).subscribe((val: any) => {
-            let newArr: any;
-            if (val) {
-                val.forEach((item: any) => {
-                    newArr = this.richieste;
-                    newArr.push(item);
-                    // TEST
-                    // console.log(item);
-                });
+        this.richiesteService.getRichieste(idUltimaRichiesta).subscribe((richieste: any) => {
+            if (richieste) {
+                this.richieste = richieste;
+                this.newRichiesteList$.next(richieste);
                 // TEST
-                // console.log(val);
+                console.log('[Dispatcher] Lista Richieste:', richieste.length);
             }
-            this.newRichiesteList$.next(newArr);
         });
 
         return of(this.richieste);

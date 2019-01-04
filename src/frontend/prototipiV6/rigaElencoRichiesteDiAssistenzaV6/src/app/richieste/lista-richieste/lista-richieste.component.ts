@@ -19,6 +19,7 @@ import { PartenzaService } from '../../composizione-partenza/service/partenza/pa
 
 // Helper methods
 import { HelperMethods } from '../helper/_helper-methods';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -38,19 +39,21 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     preventSimpleClick: boolean;
     timer: any;
     contatoreNuoveRichieste = 0;
+    richiesteTerminate: boolean;
 
     listHeightClass = 'm-h-750';
 
     methods = new HelperMethods;
     @Input() _split: boolean;
 
-    constructor(private listaRichiesteManager: ListaRichiesteManagerService,
+    constructor(public listaRichiesteManager: ListaRichiesteManagerService,
         private richiesteS: ListaRichiesteService,
         public ricercaS: RicercaRichiesteService,
         private modalService: NgbModal,
         private markerS: MarkerService,
         private filter: FilterPipe,
-        private partenzaService: PartenzaService) {
+        private partenzaService: PartenzaService,
+        private toastr: ToastrService) {
     }
 
     ngOnInit() {
@@ -98,7 +101,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
                 } else {
                     this.richiestaFissata = null;
 
-                    /* aspetto che l'animazione della richiesta fissata finisca 
+                    /* aspetto che l'animazione della richiesta fissata finisca
                     per aumentare l'altezza della lista */
                     setTimeout(() => {
                         this.listHeightClass = 'm-h-750';
@@ -128,18 +131,27 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     getRichieste(idUltimaRichiesta: any) {
         this.subscription.add(
             this.listaRichiesteManager.getRichieste(idUltimaRichiesta).subscribe((richieste: any) => {
-                if (richieste) {
+                if (richieste.length > 0) {
                     this.richieste = richieste;
                     this.loaderRichieste = false;
                     this.loaderNuoveRichieste = false;
                     this.contatoreNuoveRichieste = 0;
                     // TEST
-                    // console.log('[ListaRichieste]: ho ricevuto le richieste', richieste);
+                    // console.log('[ListaRichieste] richieste.lenght', richieste.length);
+                    // console.log('[ListaRichieste] this.richieste.lenght', this.richieste.length);
+                } else if (richieste.length <= 0) {
+                    this.loaderNuoveRichieste = false;
+                    this.contatoreNuoveRichieste = 0;
+                    this.toastr.warning('Non ci sono altre richieste da visualizzare', 'Richieste terminate', {
+                        timeOut: 5000
+                    });
+                    // TEST
+                    // console.log('[ListaRichieste] richieste terminate');
                 }
             })
         );
         // TEST
-        console.log('[ListaRichieste]:', this.richieste);
+        // console.log('[ListaRichieste]:', this.richieste);
     }
 
     /* Permette di visualizzare il loader e caricare nuove richieste */
@@ -147,6 +159,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
         if (event.isReachingBottom && event.isWindowEvent === false && this.contatoreNuoveRichieste === 0) {
             this.contatoreNuoveRichieste++;
             this.loaderNuoveRichieste = true;
+            this.richiesteTerminate = false;
             this.getRichieste(this.richieste.length);
             // TEST
             // console.log(this.richieste[this.richieste.length - 1].id);

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
 
@@ -17,6 +17,7 @@ import { HelperMethods } from '../../helper/_helper-methods';
         NgbPopoverConfig,
         NgbTooltipConfig
     ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SintesiRichiestaComponent implements OnInit {
     @Output() clickRichiesta: EventEmitter<any> = new EventEmitter();

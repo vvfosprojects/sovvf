@@ -31,7 +31,7 @@ export class SintesiRichiesteServiceFake {
     constructor() {
     }
 
-    getRichieste(){
+    getRichieste() {
         this.requestCount += 1;
         const richieste = [
             new SintesiRichiesta(
