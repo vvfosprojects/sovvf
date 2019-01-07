@@ -1,5 +1,5 @@
 export const environment = {
-    production: false,
+    production: true,
     apiUrl: {
         boxes: {
             infoAggregate: 'https://api.myjson.com/bins/16f4c4',

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import * as MapManager from '../core/manager/maps-manager';
 import { CentroMappa } from './maps-model/centro-mappa.model';
 import { RichiestaMarker } from './maps-model/richiesta-marker.model';
@@ -76,6 +76,7 @@ export class MapsComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        isDevMode() && console.log('Componente Maps distrutto');
     }
 
     timeoutAlert(value: string) {

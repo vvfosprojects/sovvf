@@ -15,8 +15,10 @@
              [zoom]="centroMappa.zoom"
              (mapReady)="mappaCaricata($event)"
              (centerChange)="centroCambiato($event)"
+             [disableDoubleClickZoom]="true"
              [usePanning]="true"
-             (mapClick)="mappaCliccata();getCoordinateMarker($event)">
+             (mapClick)="getCoordinateMarker($event)"
+             (mapDblClick)="mappaCliccata()">
         <app-maps-filtro id="Settings"></app-maps-filtro>
         <agm-direction [renderOptions]="renderOptions"
                        [origin]="direction.origin"

@@ -103,8 +103,11 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
                 } else {
                     this.richiestaFissata = null;
 
-                    /* aspetto che l'animazione della richiesta fissata finisca
-                    per aumentare l'altezza della lista */
+                    /***
+                     * aspetto che l'animazione della richiesta fissata finisca
+                     * per aumentare l'altezza della lista
+                     */
+
                     setTimeout(() => {
                         this.listHeightClass = 'm-h-750';
                     }, 300);
@@ -204,6 +207,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     /* Apre il componente per la creazione della partenza */
     nuovaPartenza(richiesta: any) {
         this.partenzaService.nuovaPartenza(richiesta);
+        this.markerS.actionById(richiesta.id, 'click');
     }
 
     /* Gestisce l'hover in */
