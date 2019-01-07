@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 
 // Model
 import { Squadra } from '../../../shared/model/squadra.model';
-import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
+import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 
 // Service

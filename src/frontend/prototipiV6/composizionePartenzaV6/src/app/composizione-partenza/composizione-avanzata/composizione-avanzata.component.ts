@@ -33,6 +33,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     mezziComposizione: MezzoComposizione[];
     squadreComposizione: SquadraComposizione[];
     partenze: BoxPartenza[] = [];
+    partenza: BoxPartenza;
 
     subscription = new Subscription();
     centroMappa: CentroMappa;
@@ -86,23 +87,41 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     }
 
     mezzoSelezionato(mezzo: MezzoComposizione) {
+        // Se non esiste la partenza attuale la inizializzo
+        this.initPartenzaVuota();
+
+        // Imposto il mezzo per la partenza attuale
+        this.setMezzo(mezzo);
+
         // TEST
-        console.log('[CompA] Mezzo selezionato', mezzo);
+        // console.log('[CompA] Mezzo selezionato', mezzo);
     }
 
-    mezzoDeselezionato(mezzo: MezzoComposizione) {
+    mezzoDeselezionato() {
+        // Unsetto il mezzo per la partenza attuale
+        this.unsetMezzo();
+
         // TEST
-        console.log('[CompA] Mezzo deselezionato', mezzo);
+        // console.log('[CompA] Mezzo deselezionato', mezzo);
     }
 
     squadraSelezionata(squadra: SquadraComposizione) {
+        // Se non esiste la partenza attuale la inizializzo
+        this.initPartenzaVuota();
+
+        // Setto la squadra per la partenza attuale
+        this.setSquadra(squadra);
+
         // TEST
-        console.log('[CompA] Squadra selezionata', squadra);
+        // console.log('[CompA] Squadra selezionata', squadra);
     }
 
     squadraDeselezionata(squadra: SquadraComposizione) {
+        // Unsetto la squadra per la partenza attuale
+        this.unsetSquadra(squadra);
+
         // TEST
-        console.log('[CompA] Squadra deselezionata', squadra);
+        // console.log('[CompA] Squadra deselezionata', squadra);
     }
 
     boxPartenzaSelezionato(partenza: BoxPartenza) {
@@ -113,6 +132,53 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     boxPartenzaDeselezionato(partenza: BoxPartenza) {
         // TEST
         console.log('[CompA] BoxPartenza deselezionato', partenza);
+    }
+
+    initPartenzaVuota() {
+        if (!this.partenza) {
+            this.partenza = { id: this.generateUniqueId(), squadra: [], mezzo: null, selezionato: false, hover: false };
+        }
+    }
+
+    setMezzo(mezzo: MezzoComposizione) {
+        this.partenza.mezzo = mezzo;
+
+        // TEST
+        console.log('[CompA] Mezzo settato, partenza', this.partenza);
+    }
+
+    unsetMezzo() {
+        if (this.partenza) {
+            this.partenza.mezzo = null;
+        } else {
+            console.error('[CompA] Non posso eliminare il mezzo se non esiste la partenza');
+        }
+
+        // TEST
+        console.log('[CompA] Mezzo unsettato, partenza', this.partenza);
+    }
+
+    setSquadra(squadra: SquadraComposizione) {
+        this.partenza.squadra.push(squadra);
+
+        // TEST
+        console.log('[CompA] Squadra settata, partenza', this.partenza);
+    }
+
+    unsetSquadra(squadra: SquadraComposizione) {
+        if (this.partenza) {
+            this.partenza.squadra.forEach((s: SquadraComposizione, index) => {
+                s === squadra && this.partenza.squadra.splice(index, 1);
+            });
+        } else {
+            console.error('[CompA] Non posso eliminare la squadda se non esiste la partenza');
+        }
+        // TEST
+        console.log('[CompA] Squadra unsettata, partenza', this.partenza);
+    }
+
+    generateUniqueId(): string {
+        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     }
 
     /* mezzoCoordinate(event: Coordinate): void {

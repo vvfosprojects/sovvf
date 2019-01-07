@@ -122,7 +122,7 @@
     background-color: #eeeeee !important;
 }
 .scroll-y{
-    overflow-y: scroll;
+    overflow-y: overlay;
     overflow-x: hidden
 }
 

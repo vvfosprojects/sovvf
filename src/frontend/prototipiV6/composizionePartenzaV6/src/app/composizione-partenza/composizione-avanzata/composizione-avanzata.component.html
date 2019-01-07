@@ -30,13 +30,20 @@
       </div>
       <div class="col-4">
         <div class="card border-dashed-3 w-100 py-2 px-2 scroll-y" style="max-height:350px; min-height:350px">
-          <div *ngIf="partenze" class="text-center my-auto">
-            <h5>Nessuna partenza</h5>
-            <span class="h6 font-weight-normal">Seleziona un mezzo per crearne una</span>
+          <div *ngIf="partenze.length <= 0 && !partenza" class="text-center my-auto">
+            <h5>Nessuna partenza!</h5>
+            <span class="h6 font-weight-normal">Seleziona un mezzo o una squadra per crearne una.</span>
           </div>
-          <div *ngIf="partenze">
+          <div *ngIf="partenze.length > 0">
             <app-box-nuova-partenza *ngFor="let p of partenze" [partenza]="p" (selezionato)="boxPartenzaSelezionato($event)"
-            (deselezionato)="boxPartenzaDeselezionato($event)"></app-box-nuova-partenza>
+              (deselezionato)="boxPartenzaDeselezionato($event)"></app-box-nuova-partenza>
+          </div>
+          <div *ngIf="partenza">
+            <app-box-nuova-partenza [partenza]="partenza" (selezionato)="boxPartenzaSelezionato($event)"
+              (deselezionato)="boxPartenzaDeselezionato($event)"></app-box-nuova-partenza>
+          </div>
+          <div *ngIf="partenze.length > 0 || partenza" class="text-center mt-2">
+            <button class="btn btn-primary"><i class="fa fa-plus mr-1"></i>Nuova partenza</button>
           </div>
         </div>
         <button class="btn btn-block btn-success mt-2">Conferma</button>

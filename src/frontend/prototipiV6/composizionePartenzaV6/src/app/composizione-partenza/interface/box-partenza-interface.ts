@@ -1,10 +1,10 @@
 import { MezzoComposizione } from './mezzo-composizione-interface';
-import { Squadra } from 'src/app/shared/model/squadra.model';
+import { SquadraComposizione } from './squadra-composizione-interface';
 
 export interface BoxPartenza {
     id: string;
     mezzo?: MezzoComposizione;
-    squadra: Squadra[];
+    squadra: SquadraComposizione[];
     selezionato: boolean;
     hover: boolean;
 }

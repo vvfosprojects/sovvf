@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
+import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import { DispatcherCompPartenzaService } from '../../dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.service';
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { Squadra } from '../../../shared/model/squadra.model';

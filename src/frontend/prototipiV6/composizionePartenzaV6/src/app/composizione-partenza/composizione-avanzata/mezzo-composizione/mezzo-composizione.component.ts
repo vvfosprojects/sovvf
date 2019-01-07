@@ -46,6 +46,12 @@ export class MezzoComposizioneComponent implements OnInit {
         };
     }
 
+    statoMezzoClass() {
+        return {
+            'text-secondary': this.mezzoComp.mezzo.stato === 'inSede'
+        };
+    }
+
     /* mezzoDirection(mezzoComp: MezzoComposizione): void {
         this.mezzoCoordinate.emit(mezzoComp.coordinate);
     } */

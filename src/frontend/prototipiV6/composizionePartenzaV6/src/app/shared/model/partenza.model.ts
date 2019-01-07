@@ -1,4 +1,4 @@
-import { BoxPartenza } from 'src/app/composizione-partenza/model/box-partenza.model';
+import { BoxPartenza } from 'src/app/composizione-partenza/interface/box-partenza-interface';
 
 export class Partenza {
     constructor(

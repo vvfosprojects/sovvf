@@ -2,24 +2,25 @@
   [ngClass]="NgClass()">
   <i id="close" ngbTooltip="Elimina" class="fa fa-fw fa-window-close"></i>
   <div class="row">
-    <div class="col">
+    <div *ngIf="!partenza.mezzoComposizione" class="col text-danger">
+        <i class="fa fa-truck mr-1"></i><span>Nessuno</span>
+    </div>
+    <div *ngIf="partenza.mezzoComposizione" class="col">
       <div class="nowrap">
-        <small *ngIf="partenza.mezzoComposizione">
-          <i class="guida fa fa-truck mr-2"></i>
-          <span *ngIf="partenza.mezzoComposizione.mezzo" class="font-weight-bold mr-1">{{partenza.mezzoComposizione.mezzo.descrizione}}</span>
-          <span *ngIf="partenza.mezzoComposizione.mezzo" class="font-weight-normal">{{partenza.mezzoComposizione.mezzo.genere}}</span>
-        </small>
+        <i class="guida fa fa-truck mr-1"></i>
+        <span class="font-weight-bold mr-1">{{partenza.mezzoComposizione.mezzo.descrizione}}</span>
+        <span class="font-weight-normal">{{partenza.mezzoComposizione.mezzo.genere}}</span>
       </div>
     </div>
-    <div *ngIf="partenza.squadra.length === 0" class="col text-danger">
-      <i class="fa fa-group mr-1"></i><small>Nessuna</small>
+    <div *ngIf="partenza.squadra?.length === 0" class="col text-danger">
+      <i class="fa fa-group mr-1"></i><span>Nessuna</span>
     </div>
-    <div *ngIf="partenza.squadra.length === 1" class="col">
+    <div *ngIf="partenza.squadra?.length === 1" class="col">
       <div class="nowrap">
         <i class="guida fa fa-group mr-1"></i><small *ngIf="partenza.squadra">{{partenza.squadra[0].nome}}</small>
       </div>
     </div>
-    <div *ngIf="partenza.squadra.length > 1" class="col">
+    <div *ngIf="partenza.squadra?.length > 1" class="col">
       <span [ngbPopover]="piusquadre" popoverTitle="Squadre" triggers="mouseenter:mouseleave"><i class="guida fa fa-group mr-1"></i><small>{{partenza.squadra.length}}
           squadre</small></span>
       <ng-template #piusquadre>
@@ -31,15 +32,15 @@
   </div>
   <div class="row">
     <div class="col nowrap">
-      <i class="guida fa fa-road mr-1"></i><small *ngIf="partenza.mezzoComposizione.km">{{partenza.mezzoComposizione.km}}</small>
+      <i class="guida fa fa-road mr-1"></i><small *ngIf="partenza.mezzoComposizione?.km">{{partenza.mezzoComposizione.km}}</small>
     </div>
     <div class="col">
-      <i class="guida fa fa-clock-o mr-1"></i><small *ngIf="partenza.mezzoComposizione.tempoPercorrenza">{{partenza.mezzoComposizione.tempoPercorrenza}}</small>
+      <i class="guida fa fa-clock-o mr-1"></i><small *ngIf="partenza.mezzoComposizione?.tempoPercorrenza">{{partenza.mezzoComposizione.tempoPercorrenza}}</small>
     </div>
   </div>
   <div class="row">
     <div class="col-12">
-      <i class="guida fa fa-map-marker mr-1"></i><span *ngIf="partenza.mezzoComposizione.distaccamento" class="badge">{{partenza.mezzoComposizione.distaccamento}}</span>
+      <i class="guida fa fa-map-marker mr-1"></i><span *ngIf="partenza.mezzoComposizione?.distaccamento" class="badge">{{partenza.mezzoComposizione.distaccamento}}</span>
     </div>
   </div>
 </div>

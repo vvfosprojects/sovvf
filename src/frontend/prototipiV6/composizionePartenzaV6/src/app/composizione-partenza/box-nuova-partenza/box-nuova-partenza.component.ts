@@ -15,7 +15,7 @@ export class BoxNuovaPartenzaComponent implements OnInit {
 
   ngOnInit() {
     // TEST
-    console.log('[BoxPartenza] Partenza', this.partenza);
+    // console.log('[BoxPartenza] Partenza', this.partenza);
   }
 
   onHoverIn() {
