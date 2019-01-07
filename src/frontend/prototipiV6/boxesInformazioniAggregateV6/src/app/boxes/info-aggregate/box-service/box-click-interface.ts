@@ -3,6 +3,7 @@ export interface BoxClickRichieste {
     assegnati: boolean;
     sospesi: boolean;
     presidiati: boolean;
+    chiusi: boolean;
 }
 
 export interface BoxClickMezzi {
