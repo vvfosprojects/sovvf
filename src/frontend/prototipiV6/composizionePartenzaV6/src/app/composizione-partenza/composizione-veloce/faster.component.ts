@@ -12,7 +12,7 @@ import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
 import { Observable, Subscription } from 'rxjs';
 import { Coordinate } from '../../shared/model/coordinate.model';
 import { DirectionInterface } from '../../maps/service/direction-service/direction-interface';
-import { CompMezzoSquadraService } from '../service/comp-mezzo-squadra/comp-mezzo-squadra.service';
+import { ComposizioneAvanzataService } from '../service/composizione-avanzata/composizione-avanzata.service';
 import { DirectionService } from '../../maps/service/direction-service/direction-service.service';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { CenterService } from '../../maps/service/center-service/center-service.service';
@@ -69,7 +69,7 @@ export class FasterComponent implements OnInit, OnDestroy {
 
     preAccoppiatoSelezionato(preAcc: BoxPartenza) {
         this.preAccoppiatiS.sendPreAccoppiatoSelezionato(preAcc);
-        this.mezzoCoordinate(preAcc.mezzoComposizione.coordinate);
+        this.mezzoCoordinate(preAcc.mezzo.coordinate);
     }
 
     mezzoCoordinate(event: Coordinate): void {

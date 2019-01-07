@@ -8,7 +8,7 @@
             <i class="fa fa-truck mr-2"></i><span class="h6">Mezzi</span>
           </div>
           <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
-            <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC"></app-mezzo-composizione>
+            <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzo]="mC"></app-mezzo-composizione>
           </ul>
         </div>
       </div>
@@ -19,12 +19,6 @@
               <div class="col-7">
                 <i class="fa fa-group mr-2"></i><span class="h6">Squadre</span>
               </div>
-              <!-- Icona deseleziona tutte le squadre -->
-              <!-- <div class="col-5 text-danger text-right">
-                <span *ngIf="partenze && partenze[idPartenzaAttuale] && partenze[idPartenzaAttuale].squadra.length > 0">
-                  <i class="fa fa-times cursor-pointer" ngbTooltip="Deseleziona squadre" (click)="deselezionaSquadre()"></i>
-                </span>
-              </div> -->
             </div>
           </div>
           <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">

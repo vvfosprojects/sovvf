@@ -4,7 +4,8 @@ import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.m
 import { DispatcherCompPartenzaService } from '../../dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.service';
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { Squadra } from '../../../shared/model/squadra.model';
-import { MezzoComposizione } from '../../../composizione-partenza/interface/composizione-partenza-interface';
+import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
+import { SquadraComposizione } from 'src/app/composizione-partenza/interface/squadra-composizione-interface';
 
 
 @Injectable({
@@ -13,7 +14,7 @@ import { MezzoComposizione } from '../../../composizione-partenza/interface/comp
 export class CompPartenzaManagerServiceFake {
     preAccoppiati: BoxPartenza[];
     mezziComposizione: MezzoComposizione[];
-    squadre: Squadra[];
+    squadre: SquadraComposizione[];
 
     constructor(private compPartenzaDispatcher: DispatcherCompPartenzaService) {
         this.onNewPreAccoppiatiList();
@@ -34,7 +35,7 @@ export class CompPartenzaManagerServiceFake {
     }
 
     onNewSquadreList() {
-        this.compPartenzaDispatcher.onNewSquadreList().subscribe((squadre: Squadra[]) => {
+        this.compPartenzaDispatcher.onNewSquadreList().subscribe((squadre: SquadraComposizione[]) => {
             this.squadre = squadre;
         });
     }
@@ -47,7 +48,7 @@ export class CompPartenzaManagerServiceFake {
         return of(this.mezziComposizione);
     }
 
-    getSquadre(): Observable<Squadra[]> {
+    getSquadre(): Observable<SquadraComposizione[]> {
         return of(this.squadre);
     }
 

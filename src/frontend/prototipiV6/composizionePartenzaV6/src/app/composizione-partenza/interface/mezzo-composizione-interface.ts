@@ -5,8 +5,8 @@ export interface MezzoComposizione {
     id: string;
     mezzo: Mezzo;
     km: string;
-    tempoPercorrenza: string;
     coordinate?: Coordinate;
+    tempoPercorrenza: string;
     selezionato: boolean;
     hover: boolean;
 }

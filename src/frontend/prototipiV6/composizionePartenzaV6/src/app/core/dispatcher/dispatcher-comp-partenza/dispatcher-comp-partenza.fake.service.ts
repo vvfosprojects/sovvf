@@ -8,7 +8,7 @@ import { CompPartenzaService } from '../../service/comp-partenza-service/comp-pa
 import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { Squadra } from '../../../shared/model/squadra.model';
-import { MezzoComposizione } from '../../../composizione-partenza/interface/composizione-partenza-interface';
+import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 
 
 @Injectable({

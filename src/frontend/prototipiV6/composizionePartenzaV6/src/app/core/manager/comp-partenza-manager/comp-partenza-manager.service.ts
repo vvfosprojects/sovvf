@@ -7,7 +7,8 @@ import { DispatcherCompPartenzaService } from '../../dispatcher/dispatcher-comp-
 // Model
 import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
 import { Squadra } from '../../../shared/model/squadra.model';
-import { MezzoComposizione } from '../../../composizione-partenza/interface/composizione-partenza-interface';
+import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
+import { SquadraComposizione } from 'src/app/composizione-partenza/interface/squadra-composizione-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ import { MezzoComposizione } from '../../../composizione-partenza/interface/comp
 export class CompPartenzaManagerService {
   private newPreAccoppiatieList$ = new Subject<BoxPartenza[]>();
   private newMezziComposizioneList$ = new Subject<MezzoComposizione[]>();
-  private newSquadreList$ = new Subject<Squadra[]>();
+  private newSquadreList$ = new Subject<SquadraComposizione[]>();
 
   constructor(private compPartenzaDispatcher: DispatcherCompPartenzaService) { }
 

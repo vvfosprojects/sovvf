@@ -4,11 +4,12 @@ import { Observable, of } from 'rxjs';
 // Models
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { Squadra } from '../../../shared/model/squadra.model';
-import { MezzoComposizione } from '../../../composizione-partenza/interface/composizione-partenza-interface';
+import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 import { Componente } from '../../../shared/model/componente.model';
 import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
 import { Coordinate } from '../../../shared/model/coordinate.model';
 import { Sede } from 'src/app/shared/model/sede.model';
+import { SquadraComposizione } from 'src/app/composizione-partenza/interface/squadra-composizione-interface';
 
 
 
@@ -18,7 +19,7 @@ import { Sede } from 'src/app/shared/model/sede.model';
 export class CompPartenzaServiceFake {
   preAccoppiati: BoxPartenza[];
   mezzi: MezzoComposizione[];
-  squadre: Squadra[];
+  squadre: SquadraComposizione[];
 
   constructor() {
   }
@@ -64,25 +65,33 @@ export class CompPartenzaServiceFake {
     return of(this.mezzi);
   }
 
-  public getSquadre(): Observable<Squadra[]> {
+  public getSquadre(): Observable<SquadraComposizione[]> {
     this.squadre = [
-      new Squadra(
-        'Rossa',
-        'inSede',
-        [
-          new Componente('CP', 'Mario Verdi', '', true, false, false),
-          new Componente('AUT', 'Mario Rossi', '', false, true, false),
-          new Componente('AA', 'Francesco Cali', '', false, false, false),
-        ],
-        new Sede('1',
-          'Tuscolana II',
-          new Coordinate(1, 1),
-          'Via Prova, 1',
-          'Distaccamento',
-          'Lazio',
-          'Roma'
-        )
-      )
+      {
+        id: '1',
+        squadra: {
+          nome: 'Rossa',
+          stato: 'inSede',
+          componenti: [
+            // tslint:disable-next-line:max-line-length
+            { descrizioneQualifica: 'CP', nominativo: 'Mario Verdi', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
+            // tslint:disable-next-line:max-line-length
+            { descrizioneQualifica: 'CP', nominativo: 'Francesco Rossi', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
+            { descrizioneQualifica: 'CP', nominativo: 'Mario Verna', tooltip: '', capoPartenza: false, autista: false, rimpiazzo: true }
+          ],
+          distaccamento: {
+            codice: '1',
+            descrizione: 'Tuscolana II',
+            coordinate: { latitudine: 1, longitudine: 1 },
+            indirizzo: 'Via Prova, 1',
+            tipo: 'Distaccamento',
+            regione: 'Lazio',
+            provincia: 'Roma'
+          }
+        },
+        selezionato: false,
+        hover: false
+      }
     ];
 
     return of(this.squadre);

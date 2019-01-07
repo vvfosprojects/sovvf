@@ -1,11 +1,10 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 
 // Model
-import { Squadra } from '../../../shared/model/squadra.model';
-import { BoxPartenza } from '../../model/box-partenza.model';
+import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 
 // Service
-import { CompMezzoSquadraService } from '../../service/comp-mezzo-squadra/comp-mezzo-squadra.service';
+import { ComposizioneAvanzataService } from '../../service/composizione-avanzata/composizione-avanzata.service';
 
 @Component({
   selector: 'app-squadra-composizione',
@@ -13,17 +12,30 @@ import { CompMezzoSquadraService } from '../../service/comp-mezzo-squadra/comp-m
   styleUrls: ['./squadra-composizione.component.css']
 })
 export class SquadraComposizioneComponent implements OnInit {
-  @Input() squadra: Squadra;
+  @Input() squadra: SquadraComposizione;
 
-  constructor(private compMezzoSquadra: CompMezzoSquadraService) {
+  constructor(private composizioneService: ComposizioneAvanzataService) {
   }
 
   ngOnInit() {
   }
 
-  hoverIn() {
+  onHoverIn() {
+    this.squadra.hover = true;
   }
 
-  hoverOut() {
+  onHoverOut() {
+    this.squadra.hover = false;
+  }
+
+  onClick() {
+    this.squadra.selezionato = !this.squadra.selezionato;
+  }
+
+  liClass() {
+      return {
+          'border-warning bg-light': this.squadra.hover,
+          'border-danger bg-grey': this.squadra.selezionato
+      };
   }
 }

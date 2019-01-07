@@ -4,7 +4,7 @@ import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 // Service
 import { PartenzaService } from '../service/partenza/partenza.service';
 import { CompPartenzaManagerService } from '../../core/manager/comp-partenza-manager/comp-partenza-manager.service';
-import { CompMezzoSquadraService } from '../service/comp-mezzo-squadra/comp-mezzo-squadra.service';
+import { ComposizioneAvanzataService } from '../service/composizione-avanzata/composizione-avanzata.service';
 import { DirectionService } from '../../maps/service/direction-service/direction-service.service';
 import { CenterService } from '../../maps/service/center-service/center-service.service';
 
@@ -12,23 +12,24 @@ import { CenterService } from '../../maps/service/center-service/center-service.
 import { BoxPartenza } from '../model/box-partenza.model';
 import { Squadra } from '../../shared/model/squadra.model';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { MezzoComposizione } from '../interface/composizione-partenza-interface';
+import { MezzoComposizione } from '../interface/mezzo-composizione-interface';
 import { Coordinate } from '../../shared/model/coordinate.model';
 import { DirectionInterface } from '../../maps/service/direction-service/direction-interface';
 import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { Observable, Subscription } from 'rxjs';
+import { SquadraComposizione } from '../interface/squadra-composizione-interface';
 
 @Component({
-    selector: 'app-slower',
-    templateUrl: './slower.component.html',
-    styleUrls: ['./slower.component.css']
+    selector: 'app-composizione-avanzata',
+    templateUrl: './composizione-avanzata.component.html',
+    styleUrls: ['./composizione-avanzata.component.css']
 })
-export class SlowerComponent implements OnInit, OnDestroy {
+export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
 
     mezziComposizione: MezzoComposizione[];
-    squadre: Squadra[];
+    squadre: SquadraComposizione[];
     partenze: BoxPartenza[];
 
     subscription = new Subscription();
@@ -38,6 +39,7 @@ export class SlowerComponent implements OnInit, OnDestroy {
 
 
     constructor(private partenzaS: PartenzaService,
+        private composizioneService: ComposizioneAvanzataService,
         private compPartenzaManager: CompPartenzaManagerService,
         popoverConfig: NgbPopoverConfig,
         tooltipConfig: NgbTooltipConfig) {
@@ -57,10 +59,17 @@ export class SlowerComponent implements OnInit, OnDestroy {
 
         // Prendo le squadre da visualizzare nella lista
         this.subscription.add(
-            this.compPartenzaManager.getSquadre().subscribe((squadre: Squadra[]) => {
+            this.compPartenzaManager.getSquadre().subscribe((squadre: SquadraComposizione[]) => {
                 this.squadre = squadre;
             })
         );
+
+        // Prendo le partenze da visualizzare nella lista
+        /* this.subscription.add(
+            this.composizioneService.getPartenze().subscribe((partenze: BoxPartenza[]) => {
+                this.partenze = partenze;
+            })
+        ); */
     }
 
     ngOnInit() {

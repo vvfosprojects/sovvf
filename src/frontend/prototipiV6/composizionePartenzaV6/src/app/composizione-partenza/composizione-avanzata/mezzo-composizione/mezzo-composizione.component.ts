@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 // Model
-import { MezzoComposizione } from '../../interface/composizione-partenza-interface';
+import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
 
 // Service
-import { CompMezzoSquadraService } from '../../service/comp-mezzo-squadra/comp-mezzo-squadra.service';
+import { ComposizioneAvanzataService } from '../../service/composizione-avanzata/composizione-avanzata.service';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -12,20 +12,31 @@ import { CompMezzoSquadraService } from '../../service/comp-mezzo-squadra/comp-m
     styleUrls: ['./mezzo-composizione.component.css']
 })
 export class MezzoComposizioneComponent implements OnInit {
-    @Input() mezzoComp: MezzoComposizione;
+    @Input() mezzo: MezzoComposizione;
 
-    constructor(private compMezzoSquadra: CompMezzoSquadraService) {
+    constructor(private composizioneService: ComposizioneAvanzataService) {
     }
 
     ngOnInit() {
     }
 
-    hoverIn() {
-        // this.hover = true;
+    onHoverIn() {
+        this.mezzo.hover = true;
     }
 
-    hoverOut() {
-        // this.hover = false;
+    onHoverOut() {
+        this.mezzo.hover = false;
+    }
+
+    onClick() {
+      this.mezzo.selezionato = !this.mezzo.selezionato;
+    }
+
+    liClass() {
+        return {
+            'border-warning bg-light': this.mezzo.hover,
+            'border-danger bg-grey': this.mezzo.selezionato
+        };
     }
 
     /* mezzoDirection(mezzo: MezzoComposizione): void {
