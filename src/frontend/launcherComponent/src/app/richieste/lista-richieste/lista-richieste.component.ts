@@ -16,6 +16,7 @@ import { ListaRichiesteService } from '../service/lista-richieste-service.servic
 import { RicercaRichiesteService } from '../../filterbar/ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { PartenzaService } from '../../composizione-partenza/service/partenza/partenza.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 // Helper methods
 import { HelperMethods } from '../helper/_helper-methods';
@@ -53,7 +54,8 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
         private markerS: MarkerService,
         private filter: FilterPipe,
         private partenzaService: PartenzaService,
-        private toastr: ToastrService) {
+        private toastr: ToastrService,
+        private localSt: LocalStorageService) {
     }
 
     ngOnInit() {
@@ -113,6 +115,8 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        this.richieste = [];
+        this.localSt.store('ListaRichiesteRequest', 1);
     }
 
     opacizzaRichieste(ricerca: any): void {
@@ -137,8 +141,8 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
                     this.loaderNuoveRichieste = false;
                     this.contatoreNuoveRichieste = 0;
                     // TEST
-                    // console.log('[ListaRichieste] richieste.lenght', richieste.length);
-                    // console.log('[ListaRichieste] this.richieste.lenght', this.richieste.length);
+                    // console.log('[ListaRichieste] Richieste Ricevute dal Manager', richieste.length);
+                    // console.log('[ListaRichieste] Richieste in memoria:', this.richieste.length);
                 } else if (richieste.length <= 0) {
                     this.loaderNuoveRichieste = false;
                     this.contatoreNuoveRichieste = 0;
@@ -146,7 +150,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
                         timeOut: 5000
                     });
                     // TEST
-                    // console.log('[ListaRichieste] richieste terminate');
+                    // console.log('[ListaRichieste] Richieste Terminate');
                 }
             })
         );

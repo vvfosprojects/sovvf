@@ -17,6 +17,8 @@ export class ListaRichiesteManagerServiceFake {
     getRichieste(idUltimaRichiesta?: any) {
         let newArr = this.richieste;
         let count = 0;
+        // TEST
+        // console.log('[ListaRichiesteManager] Attualmente in memoria ne ho:', this.richieste.length);
         this.dispatcher.onNewRichiesteList(idUltimaRichiesta)
             .subscribe({
                 next: richieste => {
@@ -30,8 +32,6 @@ export class ListaRichiesteManagerServiceFake {
                         this.richieste = newArr;
                         this.newRichiesteList = newArr;
                         count = 1;
-                        // TEST
-                        console.log('[Manager] Lista Richieste:', richieste.length);
                     } else if (richieste.length === 0 && count === 0) {
                         newArr = [];
                         this.newRichiesteList = newArr;
@@ -39,6 +39,9 @@ export class ListaRichiesteManagerServiceFake {
                         // TEST
                         // console.log('Le richieste sono terminate');
                     }
+                    // TEST
+                    // console.log('[ListaRichiesteManager] Richieste ricevute dal dispatcher:', richieste.length);
+                    // console.log('[ListaRichiesteManager] Adesso in memoria ne ho:', this.richieste.length);
                 },
                 error: data => console.log(`Errore: + ${data}`)
             });
@@ -72,7 +75,8 @@ export class ListaRichiesteManagerServiceFake {
             this.dispatcher.onNewRichiesteList().subscribe((richieste: SintesiRichiesta[]) => {
                 richiesta = richieste.find(x => x.id === id);
             });
-            console.log('Ho preso la richiesta dal service perchè non presente nella lista.');
+            // TEST
+            // console.log('[ListaRichiesteManager] Ho preso la richiesta dal service perchè non presente nella lista.');
         }
         return richiesta;
     }

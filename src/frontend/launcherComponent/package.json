@@ -49,6 +49,7 @@
     "ngx-toastr": "^9.1.1",
     "ngx-treeview": "^6.0.2",
     "ngx-ui-switch": "^8.0.0-beta.0",
+    "ngx-webstorage": "^2.0.0",
     "node-sass": "^4.10.0",
     "popper.js": "^1.14.4",
     "rxjs": "^6.0.0",

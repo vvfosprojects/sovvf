@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { of, Subject } from 'rxjs';
 
-// Models
+// Model
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Operatore } from '../../../shared/model/operatore.model';
 import { Tipologia } from '../../../shared/model/tipologia.model';
@@ -14,9 +14,13 @@ import { Partenza } from '../../../shared/model/partenza.model';
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { Fonogramma } from '../../../shared/model/fonogramma.model';
 import { Squadra } from '../../../shared/model/squadra.model';
-
-import * as moment from 'moment';
 import { Componente } from '../../../shared/model/componente.model';
+
+// Module
+import * as moment from 'moment';
+
+// Service
+import { LocalStorageService } from 'ngx-webstorage';
 
 
 @Injectable({
@@ -24,15 +28,16 @@ import { Componente } from '../../../shared/model/componente.model';
 })
 export class SintesiRichiesteServiceFake {
 
-    private newRichiesteList$ = new Subject<SintesiRichiesta[]>();
     private richieste: SintesiRichiesta[] = [];
-    requestCount = 0;
+    requestCount = 1;
 
-    constructor() {
+    constructor(private localSt: LocalStorageService) {
+        this.localSt.store('ListaRichiesteRequest', this.requestCount);
     }
 
     getRichieste() {
-        this.requestCount += 1;
+        this.requestCount = this.localSt.retrieve('ListaRichiesteRequest');
+
         const richieste = [
             new SintesiRichiesta(
                 'RM-022',
@@ -707,6 +712,9 @@ export class SintesiRichiesteServiceFake {
         } else if (this.requestCount >= 3) {
             this.richieste = [];
         }
+
+        this.requestCount += 1;
+        this.localSt.store('ListaRichiesteRequest', this.requestCount);
 
         return of(this.richieste);
     }

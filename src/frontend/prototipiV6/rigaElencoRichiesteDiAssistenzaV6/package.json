@@ -35,6 +35,7 @@
     "ngx-scroll-event": "^1.0.8",
     "ngx-timeago": "^1.0.0",
     "ngx-toastr": "^9.1.1",
+    "ngx-webstorage": "^2.0.0",
     "popper.js": "^1.14.4",
     "primeicons": "^1.0.0-beta.10",
     "primeng": "^6.1.2",

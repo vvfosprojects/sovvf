@@ -24,7 +24,7 @@ export class DispatcherFakeService {
                 this.richieste = richieste;
                 this.newRichiesteList$.next(richieste);
                 // TEST
-                console.log('[Dispatcher] Lista Richieste:', richieste.length);
+                // console.log('[ListaRichiesteDispatcher] Richieste ricevute dal service:', richieste.length);
             }
         });
 

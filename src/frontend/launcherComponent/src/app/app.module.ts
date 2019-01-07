@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Ng2Webstorage } from 'ngx-webstorage';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PipeModule } from './shared/pipes/pipe.module';
@@ -53,6 +54,7 @@ import { ToastrModule } from 'ngx-toastr';
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        Ng2Webstorage.forRoot(),
         ReactiveFormsModule,
         HttpClientModule,
         routing,

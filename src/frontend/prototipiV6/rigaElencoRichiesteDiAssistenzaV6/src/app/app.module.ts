@@ -1,5 +1,6 @@
 import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
+import { Ng2Webstorage } from 'ngx-webstorage';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -34,6 +35,7 @@ import { ToastrModule } from 'ngx-toastr';
         RichiesteModule,
         FilterbarModule,
         BrowserModule,
+        Ng2Webstorage.forRoot(),
         BrowserAnimationsModule,
         HttpClientModule,
         FilterPipeModule,
