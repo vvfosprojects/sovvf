@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subscription } from 'rxjs';
 
 // Service
 import { PartenzaService } from '../service/partenza/partenza.service';
@@ -7,18 +8,19 @@ import { CompPartenzaManagerService } from '../../core/manager/comp-partenza-man
 import { ComposizioneAvanzataService } from '../service/composizione-avanzata/composizione-avanzata.service';
 import { DirectionService } from '../../maps/service/direction-service/direction-service.service';
 import { CenterService } from '../../maps/service/center-service/center-service.service';
+import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
+
+// Interface
+import { BoxPartenza } from '../interface/box-partenza-interface';
+import { MezzoComposizione } from '../interface/mezzo-composizione-interface';
+import { SquadraComposizione } from '../interface/squadra-composizione-interface';
+import { DirectionInterface } from '../../maps/service/direction-service/direction-interface';
 
 // Model
-import { BoxPartenza } from '../model/box-partenza.model';
-import { Squadra } from '../../shared/model/squadra.model';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { MezzoComposizione } from '../interface/mezzo-composizione-interface';
-import { Coordinate } from '../../shared/model/coordinate.model';
-import { DirectionInterface } from '../../maps/service/direction-service/direction-interface';
 import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
-import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
-import { Observable, Subscription } from 'rxjs';
-import { SquadraComposizione } from '../interface/squadra-composizione-interface';
+import { Squadra } from '../../shared/model/squadra.model';
+import { Coordinate } from '../../shared/model/coordinate.model';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -29,8 +31,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
 
     mezziComposizione: MezzoComposizione[];
-    squadre: SquadraComposizione[];
-    partenze: BoxPartenza[];
+    squadreComposizione: SquadraComposizione[];
+    partenze: BoxPartenza[] = [];
 
     subscription = new Subscription();
     centroMappa: CentroMappa;
@@ -59,17 +61,17 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
 
         // Prendo le squadre da visualizzare nella lista
         this.subscription.add(
-            this.compPartenzaManager.getSquadre().subscribe((squadre: SquadraComposizione[]) => {
-                this.squadre = squadre;
+            this.compPartenzaManager.getSquadre().subscribe((squadreComp: SquadraComposizione[]) => {
+                this.squadreComposizione = squadreComp;
             })
         );
 
         // Prendo le partenze da visualizzare nella lista
-        /* this.subscription.add(
+        this.subscription.add(
             this.composizioneService.getPartenze().subscribe((partenze: BoxPartenza[]) => {
                 this.partenze = partenze;
             })
-        ); */
+        );
     }
 
     ngOnInit() {
@@ -81,6 +83,36 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
+    }
+
+    mezzoSelezionato(mezzo: MezzoComposizione) {
+        // TEST
+        console.log('[CompA] Mezzo selezionato', mezzo);
+    }
+
+    mezzoDeselezionato(mezzo: MezzoComposizione) {
+        // TEST
+        console.log('[CompA] Mezzo deselezionato', mezzo);
+    }
+
+    squadraSelezionata(squadra: SquadraComposizione) {
+        // TEST
+        console.log('[CompA] Squadra selezionata', squadra);
+    }
+
+    squadraDeselezionata(squadra: SquadraComposizione) {
+        // TEST
+        console.log('[CompA] Squadra deselezionata', squadra);
+    }
+
+    boxPartenzaSelezionato(partenza: BoxPartenza) {
+        // TEST
+        console.log('[CompA] BoxPartenza selezionato', partenza);
+    }
+
+    boxPartenzaDeselezionato(partenza: BoxPartenza) {
+        // TEST
+        console.log('[CompA] BoxPartenza deselezionato', partenza);
     }
 
     /* mezzoCoordinate(event: Coordinate): void {

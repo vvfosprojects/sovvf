@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { BoxPartenza } from '../model/box-partenza.model';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { BoxPartenza } from '../interface/box-partenza-interface';
 
 @Component({
   selector: 'app-box-nuova-partenza',
@@ -8,10 +8,28 @@ import { BoxPartenza } from '../model/box-partenza.model';
 })
 export class BoxNuovaPartenzaComponent implements OnInit {
   @Input() partenza: BoxPartenza;
+  @Output() selezionato = new EventEmitter<BoxPartenza>();
+  @Output() deselezionato = new EventEmitter<BoxPartenza>();
 
   constructor() { }
 
   ngOnInit() {
-    // console.log(this.partenza);
+    // TEST
+    console.log('[BoxPartenza] Partenza', this.partenza);
+  }
+
+  onHoverIn() {
+  }
+
+  onHoverOut() {
+  }
+
+  onClick() {
+  }
+
+  NgClass() {
+    return {
+
+    };
   }
 }

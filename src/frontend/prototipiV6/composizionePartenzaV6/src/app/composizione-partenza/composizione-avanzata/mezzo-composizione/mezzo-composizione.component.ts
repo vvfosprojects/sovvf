@@ -1,10 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 // Model
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
 
 // Service
-import { ComposizioneAvanzataService } from '../../service/composizione-avanzata/composizione-avanzata.service';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -12,34 +11,42 @@ import { ComposizioneAvanzataService } from '../../service/composizione-avanzata
     styleUrls: ['./mezzo-composizione.component.css']
 })
 export class MezzoComposizioneComponent implements OnInit {
-    @Input() mezzo: MezzoComposizione;
+    @Input() mezzoComp: MezzoComposizione;
+    @Output() selezionato = new EventEmitter<MezzoComposizione>();
+    @Output() deselezionato = new EventEmitter<MezzoComposizione>();
 
-    constructor(private composizioneService: ComposizioneAvanzataService) {
+    constructor() {
     }
 
     ngOnInit() {
     }
 
     onHoverIn() {
-        this.mezzo.hover = true;
+        this.mezzoComp.hover = true;
     }
 
     onHoverOut() {
-        this.mezzo.hover = false;
+        this.mezzoComp.hover = false;
     }
 
     onClick() {
-      this.mezzo.selezionato = !this.mezzo.selezionato;
+        if (!this.mezzoComp.selezionato) {
+            this.mezzoComp.selezionato = true;
+            this.selezionato.emit(this.mezzoComp);
+        } else {
+            this.mezzoComp.selezionato = false;
+            this.deselezionato.emit(this.mezzoComp);
+        }
     }
 
     liClass() {
         return {
-            'border-warning bg-light': this.mezzo.hover,
-            'border-danger bg-grey': this.mezzo.selezionato
+            'border-warning bg-light': this.mezzoComp.hover,
+            'border-danger bg-grey': this.mezzoComp.selezionato
         };
     }
 
-    /* mezzoDirection(mezzo: MezzoComposizione): void {
-        this.mezzoCoordinate.emit(mezzo.coordinate);
+    /* mezzoDirection(mezzoComp: MezzoComposizione): void {
+        this.mezzoCoordinate.emit(mezzoComp.coordinate);
     } */
 }

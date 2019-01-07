@@ -8,7 +8,8 @@
             <i class="fa fa-truck mr-2"></i><span class="h6">Mezzi</span>
           </div>
           <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
-            <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzo]="mC"></app-mezzo-composizione>
+            <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC" (selezionato)="mezzoSelezionato($event)"
+              (deselezionato)="mezzoDeselezionato($event)"></app-mezzo-composizione>
           </ul>
         </div>
       </div>
@@ -22,7 +23,8 @@
             </div>
           </div>
           <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
-            <app-squadra-composizione *ngFor="let s of squadre" [squadra]="s"></app-squadra-composizione>
+            <app-squadra-composizione *ngFor="let sC of squadreComposizione" [squadraComp]="sC" (selezionata)="squadraSelezionata($event)"
+              (deselezionata)="squadraDeselezionata($event)"></app-squadra-composizione>
           </ul>
         </div>
       </div>
@@ -33,7 +35,8 @@
             <span class="h6 font-weight-normal">Seleziona un mezzo per crearne una</span>
           </div>
           <div *ngIf="partenze">
-            <app-box-nuova-partenza *ngFor="let p of partenze" [partenza]="p"></app-box-nuova-partenza>
+            <app-box-nuova-partenza *ngFor="let p of partenze" [partenza]="p" (selezionato)="boxPartenzaSelezionato($event)"
+            (deselezionato)="boxPartenzaDeselezionato($event)"></app-box-nuova-partenza>
           </div>
         </div>
         <button class="btn btn-block btn-success mt-2">Conferma</button>

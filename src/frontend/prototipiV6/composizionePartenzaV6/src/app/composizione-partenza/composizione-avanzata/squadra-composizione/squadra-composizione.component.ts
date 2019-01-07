@@ -1,10 +1,9 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 // Model
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 
 // Service
-import { ComposizioneAvanzataService } from '../../service/composizione-avanzata/composizione-avanzata.service';
 
 @Component({
   selector: 'app-squadra-composizione',
@@ -12,30 +11,38 @@ import { ComposizioneAvanzataService } from '../../service/composizione-avanzata
   styleUrls: ['./squadra-composizione.component.css']
 })
 export class SquadraComposizioneComponent implements OnInit {
-  @Input() squadra: SquadraComposizione;
+  @Input() squadraComp: SquadraComposizione;
+  @Output() selezionata = new EventEmitter<SquadraComposizione>();
+  @Output() deselezionata = new EventEmitter<SquadraComposizione>();
 
-  constructor(private composizioneService: ComposizioneAvanzataService) {
+  constructor() {
   }
 
   ngOnInit() {
   }
 
   onHoverIn() {
-    this.squadra.hover = true;
+    this.squadraComp.hover = true;
   }
 
   onHoverOut() {
-    this.squadra.hover = false;
+    this.squadraComp.hover = false;
   }
 
   onClick() {
-    this.squadra.selezionato = !this.squadra.selezionato;
+    if (!this.squadraComp.selezionato) {
+      this.squadraComp.selezionato = true;
+      this.selezionata.emit(this.squadraComp);
+    } else {
+      this.squadraComp.selezionato = false;
+      this.deselezionata.emit(this.squadraComp);
+    }
   }
 
   liClass() {
-      return {
-          'border-warning bg-light': this.squadra.hover,
-          'border-danger bg-grey': this.squadra.selezionato
-      };
+    return {
+      'border-warning bg-light': this.squadraComp.hover,
+      'border-danger bg-grey': this.squadraComp.selezionato
+    };
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
-import { BoxPartenza } from '../../model/box-partenza.model';
+import { BoxPartenza } from '../../interface/box-partenza-interface';
 
 @Injectable({
     providedIn: 'root'

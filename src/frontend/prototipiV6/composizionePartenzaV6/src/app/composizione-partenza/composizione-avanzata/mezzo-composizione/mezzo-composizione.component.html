@@ -2,16 +2,16 @@
   [ngClass]="liClass()">
   <div class="row">
     <div class="col-9 pl-0 text-center">
-      <span class="fa fa-eercast mr-1" [ngbTooltip]="mezzo.mezzo.stato"></span>
-      <span class="d-inline-block font-weight-bold mr-1">{{mezzo.mezzo.descrizione}}</span>
-      <span class="d-inline-block mr-2">{{mezzo.mezzo.genere}}</span>
+      <span class="fa fa-eercast mr-1" [ngbTooltip]="mezzoComp.mezzo.stato"></span>
+      <span class="d-inline-block font-weight-bold mr-1">{{mezzoComp.mezzo.descrizione}}</span>
+      <span class="d-inline-block mr-2">{{mezzoComp.mezzo.genere}}</span>
       <small>
         <i class="fa fa-road guida mr-1" ngbTooltip="Distanza dall'intervento"></i>
-        <span class="d-inline-block mr-2">{{mezzo.km}}</span>
+        <span class="d-inline-block mr-2">{{mezzoComp.km}}</span>
         <i class="fa fa-clock-o guida mr-1" ngbTooltip="Tempo di percorrenza"></i>
-        <span class="d-inline-block mr-2">{{mezzo.tempoPercorrenza}}</span>
+        <span class="d-inline-block mr-2">{{mezzoComp.tempoPercorrenza}}</span>
       </small>
-      <span class="badge" [ngbTooltip]="mezzo.distaccamento">{{mezzo.distaccamento | slice:0:3}}</span>
+      <span class="badge" [ngbTooltip]="mezzoComp.distaccamento">{{mezzoComp.distaccamento | slice:0:3}}</span>
     </div>
   </div>
 </li>

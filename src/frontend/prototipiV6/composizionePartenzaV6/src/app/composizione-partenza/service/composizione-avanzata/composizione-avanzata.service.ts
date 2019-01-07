@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
-import { BoxPartenza } from '../../model/box-partenza.model';
+import { BoxPartenza } from '../../interface/box-partenza-interface';
 
 // Model
 
@@ -8,10 +8,11 @@ import { BoxPartenza } from '../../model/box-partenza.model';
   providedIn: 'root'
 })
 export class ComposizioneAvanzataService {
-  private partenze$: Subject<BoxPartenza[]>;
+  private partenze$: Subject<BoxPartenza[]> = new Subject<BoxPartenza[]>();
   private partenze: BoxPartenza[] = [];
 
-  constructor() { }
+  constructor() {
+  }
 
   nuovaPartenza(partenza: BoxPartenza) {
     this.partenze.push(partenza);
