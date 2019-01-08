@@ -69,7 +69,7 @@ export class FasterComponent implements OnInit, OnDestroy {
 
     preAccoppiatoSelezionato(preAcc: BoxPartenza) {
         this.preAccoppiatiS.sendPreAccoppiatoSelezionato(preAcc);
-        this.mezzoCoordinate(preAcc.mezzo.coordinate);
+        this.mezzoCoordinate(preAcc.mezzoComposizione.coordinate);
     }
 
     mezzoCoordinate(event: Coordinate): void {

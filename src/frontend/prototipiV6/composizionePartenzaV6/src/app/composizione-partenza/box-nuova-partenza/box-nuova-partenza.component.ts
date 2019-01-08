@@ -29,7 +29,37 @@ export class BoxNuovaPartenzaComponent implements OnInit {
 
   NgClass() {
     return {
-
+      'card-shadow': !this.partenza.selezionato,
+      'bg-light border-danger card-shadow-danger': this.partenza.selezionato
     };
+  }
+
+  BoxValidationClass() {
+    let result = 'text-danger';
+    let tooltip = 'Errore sconosciuto';
+    const prefix = 'fa ';
+    let icon = 'fa-exclamation-triangle';
+    const squadra = this.partenza.squadraComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
+    const mezzo = this.partenza.mezzoComposizione ? 'mezzo-si' : 'mezzo-no';
+
+    switch (mezzo + '|' + squadra) {
+      case 'mezzo-si|squadra-no':
+        tooltip = 'È necessario selezionare una squadra';
+        break;
+      case 'mezzo-no|squadra-no':
+        tooltip = 'È necessario selezionare un mezzo o una squadra';
+        break;
+      case 'mezzo-si|squadra-si':
+        result = 'text-success';
+        tooltip = 'Tutto ok';
+        icon = 'fa-check';
+        break;
+      case 'mezzo-no|squadra-si':
+        result = 'text-warning';
+        tooltip = 'Stai inserendo una partenza senza mezzo';
+        break;
+    }
+
+    return { result: result + ' ' + prefix + icon, tooltip: tooltip };
   }
 }
