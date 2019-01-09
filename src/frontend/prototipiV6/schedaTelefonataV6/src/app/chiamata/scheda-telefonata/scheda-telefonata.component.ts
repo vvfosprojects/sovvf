@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { TipologieService } from '../../shared/tipologie/tipologie.service';
 import { ViewService } from '../../filterbar/view-service/view-service.service';
@@ -14,8 +14,6 @@ import { FormChiamataModel } from './model/form-scheda-telefonata.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-const ANIMATION_TIME = 1500;
-
 @Component({
     selector: 'app-scheda-telefonata',
     templateUrl: './scheda-telefonata.component.html',
@@ -26,10 +24,10 @@ const ANIMATION_TIME = 1500;
             state('closed', style({ opacity: 0 })),
             state('left', style({ opacity: 0, transform: 'scale(0)' })),
             transition('closed => opened', [
-                animate(ANIMATION_TIME + 'ms cubic-bezier(0.075, 0.82, 0.165, 1)')
+                animate(1500 + 'ms cubic-bezier(0.075, 0.82, 0.165, 1)')
             ]),
             transition('opened => left', [
-                animate(ANIMATION_TIME - 1000 + 'ms cubic-bezier(0.95, 0.05, 0.795, 0.035)')
+                animate(500 + 'ms cubic-bezier(0.95, 0.05, 0.795, 0.035)')
             ])
         ])
 
@@ -45,12 +43,12 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
     tipologie: any;
     hideShowAnimator = 'closed';
     options: any;
-    animationTime = ANIMATION_TIME;
 
     centroMappa: CentroMappa;
 
+    @Output() chiudiChiamata = new EventEmitter();
+
     constructor(private tipologieS: TipologieService,
-                private viewService: ViewService,
                 private _clipboardService: ClipboardService,
                 private chiamataManager: MapManager.ChiamataMarkerManagerService,
                 private markerService: MarkerService,
@@ -93,7 +91,6 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
-        isDevMode() && console.log('Il componente chiamata è distrutto');
     }
 
     onAddTipologia(tipologia) {
@@ -122,21 +119,10 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
     }
 
     annullaChiamata() {
-        setTimeout(() => {
-            this.hideShowAnimator = 'left';
-        }, 1);
-        setTimeout(() => {
-            this.viewService.sendView({
-                richieste: true,
-                mappa: true,
-                comp_partenza: false,
-                split: true,
-                chiamata: false,
-            });
-            this.chiamataManager.chiamataMarker[0] = new ChiamataMarker('RM-004', new Localita(new Coordinate(null, null)));
-            this.markerService.chiamata(null, '', this.centroMappa);
-        }, this.animationTime - 1200);
-
+        // this.hideShowAnimator = 'left';
+        this.chiudiChiamata.emit();
+        this.chiamataManager.chiamataMarker[0] = new ChiamataMarker('RM-004', new Localita(new Coordinate(null, null)));
+        // this.markerService.chiamata(null, '', this.centroMappa);
     }
 
     get f() {
@@ -152,5 +138,12 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
         console.log('Chiamata inserita: ' + JSON.stringify(this.chiamataCorrente));
     }
+
+    captureDoneEvent(event: AnimationEvent) {
+        if (event['toState'] === 'left') {
+            // this.chiudiChiamata();
+        }
+    }
+
 
 }
