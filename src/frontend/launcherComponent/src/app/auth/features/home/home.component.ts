@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ViewService } from '../../../filterbar/view-service/view-service.service';
 import { ViewInterface } from '../../../filterbar/view-mode/view.interface';
@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     richiestaNuovaPartenza: SintesiRichiesta;
 
     constructor(private viewService: ViewService,
-        private partenzaService: PartenzaService) {
+                private partenzaService: PartenzaService) {
         this.viewState = this.viewService.viewState;
         this.subscription.add(
             this.viewService.getView().subscribe((r: ViewInterface) => {
@@ -22,7 +22,6 @@ export class HomeComponent implements OnInit, OnDestroy {
             })
         );
         this.subscription.add(
-            // Restituisce la Richiesta
             this.partenzaService.getRichiestaPartenza().subscribe(richiesta => {
                 this.richiestaNuovaPartenza = richiesta;
             })
@@ -30,10 +29,28 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        isDevMode() && console.log('Componente Home creato');
     }
 
     ngOnDestroy() {
+        isDevMode() && console.log('Componente Home distrutto');
         this.subscription.unsubscribe();
+    }
+
+    switchCompPartenza(newMode: string) {
+        /**
+         * da finire
+         */
+        this.viewService.viewState.layout.composizione.modalita = newMode;
+        this.partenzaService.changeCompPartenzaMode(newMode);
+    }
+
+    switchView(event: string, chiamata?: boolean) {
+        this.viewService.switchView(event, chiamata);
+    }
+
+    statoPartenza(event) {
+        event ? this.switchView('comp_partenza') : this.switchView('normale');
     }
 
 }
