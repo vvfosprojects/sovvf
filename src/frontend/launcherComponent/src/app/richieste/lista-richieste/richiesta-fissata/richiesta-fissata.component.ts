@@ -25,6 +25,7 @@ export class RichiestaFissataComponent implements OnInit {
     @Input() _split: boolean;
 
     @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
+    @Output() statoPartenza = new EventEmitter<boolean>();
 
     @ViewChild('richiestaContainer') private richiestaContainer: ElementRef;
     @ViewChild('richiesta') private richiesta: ElementRef;
@@ -129,6 +130,7 @@ export class RichiestaFissataComponent implements OnInit {
     /* Apre il componente per la creazione della partenza */
     nuovaPartenza(richiesta: any) {
         this.partenzaService.nuovaPartenza(richiesta);
+        this.statoPartenza.emit(true);
     }
 
     /* NgClass Template */

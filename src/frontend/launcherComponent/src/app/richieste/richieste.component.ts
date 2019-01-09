@@ -1,31 +1,20 @@
-import {Component, OnDestroy } from '@angular/core';
-import {Subscription} from 'rxjs';
-
-// Interface
-import {ViewInterface} from '../filterbar/view-mode/view.interface';
-
-// Service
-import {ViewService} from '../filterbar/view-service/view-service.service';
+import { Component, EventEmitter, Input, isDevMode, OnDestroy, OnInit, Output } from '@angular/core';
 
 @Component({
     selector: 'app-richieste',
     templateUrl: './richieste.component.html',
     styleUrls: ['./richieste.component.css']
 })
-export class RichiesteComponent implements OnDestroy {
-    subscription = new Subscription();
-    viewState: ViewInterface;
+export class RichiesteComponent implements OnInit, OnDestroy {
 
-    constructor(private viewService: ViewService) {
-        this.viewState = viewService.viewState;
-        this.subscription.add(
-            this.viewService.getView().subscribe((r: ViewInterface) => {
-                this.viewState = r;
-            })
-        );
+    @Input() split: string;
+    @Output() statoPartenza = new EventEmitter<boolean>();
+
+    ngOnInit(): void {
+        isDevMode() && console.log('Componente Richieste creato');
     }
 
     ngOnDestroy() {
-        this.subscription.unsubscribe();
+        isDevMode() && console.log('Componente Richieste distrutto');
     }
 }
