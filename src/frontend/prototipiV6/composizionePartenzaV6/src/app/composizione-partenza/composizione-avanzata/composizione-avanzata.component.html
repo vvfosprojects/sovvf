@@ -16,11 +16,7 @@
       <div class="col-3 pr-0">
         <div class="card card-shadow mx-auto">
           <div class="card-header">
-            <div class="row">
-              <div class="col-7">
-                <i class="fa fa-group mr-2"></i><span class="h6">Squadre</span>
-              </div>
-            </div>
+            <i class="fa fa-group mr-2"></i><span class="h6">Squadre</span>
           </div>
           <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
             <app-squadra-composizione *ngFor="let sC of squadreComposizione" [squadraComp]="sC" (selezionata)="squadraSelezionata($event)"
@@ -33,20 +29,24 @@
           <!-- nessuna partenza -->
           <div *ngIf="partenze.length <= 0 && !partenza" class="text-center my-auto">
             <h5>Nessuna partenza!</h5>
-            <span class="h6 font-weight-normal">Seleziona un mezzo o una squadra per crearne una.</span>
+            <h6 class="font-weight-normal">Seleziona un mezzo o una squadra per crearne una.</h6>
+            <button class="btn btn-primary" (click)="nuovaPartenza(true)"><i class="fa fa-plus mr-2"></i>Aggiungi
+              partenza</button>
           </div>
           <!-- bottone nuova partenza -->
           <div *ngIf="partenze.length > 0 || partenza" class="text-center mb-2">
-            <button class="btn btn-primary" (click)="nuovaPartenza()"><i class="fa fa-plus mr-1"></i>Nuova partenza</button>
+            <button class="btn btn-primary" (click)="nuovaPartenza()"><i class="fa fa-plus mr-2"></i>Aggiungi partenza</button>
           </div>
           <!-- lista box partenze -->
           <div *ngIf="partenze.length > 0">
             <div *ngFor="let p of partenze.slice().reverse()">
-              <app-box-nuova-partenza [partenza]="p" (selezionato)="boxPartenzaSelezionato($event)"></app-box-nuova-partenza>
+              <app-box-nuova-partenza [partenza]="p" [elimina]="true" (selezionato)="boxPartenzaSelezionato($event)"
+                (eliminato)="eliminaBoxPartenza($event)"></app-box-nuova-partenza>
             </div>
           </div>
         </div>
-        <button class="btn btn-block card-shadow btn-success mt-2" [disabled]="!buttonConferma">Conferma</button>
+        <button class="btn btn-block card-shadow mt-2" [disabled]="!buttonConferma" [ngClass]="{'btn-danger': !buttonConferma, 'btn-success': buttonConferma}">Invia
+          Partenz<span *ngIf="partenze.length <= 1">a</span><span *ngIf="partenze.length > 1">e</span></button>
       </div>
     </div>
   </div>

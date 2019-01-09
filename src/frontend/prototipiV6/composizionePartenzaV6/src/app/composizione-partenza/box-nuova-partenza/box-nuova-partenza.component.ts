@@ -10,6 +10,7 @@ export class BoxNuovaPartenzaComponent implements OnInit {
   @Input() partenza: BoxPartenza;
   @Output() selezionato = new EventEmitter<BoxPartenza>();
   @Output() deselezionato = new EventEmitter<BoxPartenza>();
+  @Output() eliminato = new EventEmitter<BoxPartenza>();
 
   // Options
   @Input() elimina: boolean;
@@ -34,6 +35,10 @@ export class BoxNuovaPartenzaComponent implements OnInit {
     } else {
       this.deselezionato.emit(this.partenza);
     }
+  }
+
+  onElimina() {
+    this.eliminato.emit(this.partenza);
   }
 
   NgClass() {

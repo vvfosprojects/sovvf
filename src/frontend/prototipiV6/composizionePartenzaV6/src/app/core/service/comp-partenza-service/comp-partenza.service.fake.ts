@@ -59,7 +59,61 @@ export class CompPartenzaServiceFake {
         },
         selezionato: false,
         hover: false
-      }
+      },
+      {
+        id: '2',
+        mezzo: {
+          codice: '2',
+          descrizione: 'A2',
+          genere: 'APS',
+          stato: 'inSede',
+          appartenenza: 0,
+          distaccamento: {
+            codice: '1',
+            descrizione: 'Tuscolana II',
+            coordinate: { latitudine: 1, longitudine: 1 },
+            indirizzo: 'Via Prova, 2',
+            tipo: 'Distaccamento',
+            regione: 'Lazio',
+            provincia: 'Roma'
+          }
+        },
+        km: '25.6 km',
+        tempoPercorrenza: '26 min',
+        coordinate: {
+          latitudine: 41.8311007,
+          longitudine: 12.4686518
+        },
+        selezionato: false,
+        hover: false
+      },
+      {
+        id: '3',
+        mezzo: {
+          codice: '3',
+          descrizione: 'A3',
+          genere: 'APS',
+          stato: 'inSede',
+          appartenenza: 0,
+          distaccamento: {
+            codice: '1',
+            descrizione: 'Tuscolana II',
+            coordinate: { latitudine: 1, longitudine: 1 },
+            indirizzo: 'Via Prova, 2',
+            tipo: 'Distaccamento',
+            regione: 'Lazio',
+            provincia: 'Roma'
+          }
+        },
+        km: '27.4 km',
+        tempoPercorrenza: '28 min',
+        coordinate: {
+          latitudine: 41.8311007,
+          longitudine: 12.4686518
+        },
+        selezionato: false,
+        hover: false
+      },
     ];
 
     return of(this.mezzi);

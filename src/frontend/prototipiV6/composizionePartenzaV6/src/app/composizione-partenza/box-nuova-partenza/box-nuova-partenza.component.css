@@ -10,3 +10,7 @@
 #elimina:hover{
     color: rgb(224, 14, 14);
 }
+
+*{ 
+    transition: all 200ms linear;
+}

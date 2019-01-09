@@ -1,6 +1,6 @@
 <div class="card cursor-pointer p-2 mb-2" (mouseover)="onHoverIn()" (mouseout)="onHoverOut()" (click)="onClick()"
   [ngClass]="NgClass()">
-  <i *ngIf="elimina" id="elimina" ngbTooltip="Elimina" class="fa fa-fw fa-window-close"></i>
+  <i *ngIf="elimina" id="elimina" ngbTooltip="Elimina" class="fa fa-fw fa-window-close" (click)="onElimina()"></i>
   <div class="row">
     <div *ngIf="!partenza.mezzoComposizione" class="col text-danger">
       <i class="fa fa-truck mr-1"></i>

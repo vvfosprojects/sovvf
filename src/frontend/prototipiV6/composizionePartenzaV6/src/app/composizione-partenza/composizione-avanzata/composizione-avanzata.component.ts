@@ -68,15 +68,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                 this.squadreComposizione = squadreComp;
             })
         );
-
-        // Prendo le partenze da visualizzare nella lista
-        this.subscription.add(
-            this.composizioneService.getPartenze().subscribe((partenze: BoxPartenza[]) => {
-                this.partenze = partenze;
-                // TEST
-                console.log('[CompA] Partenze ricevute dalla subscribe', partenze);
-            })
-        );
     }
 
     ngOnInit() {
@@ -84,7 +75,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.subscription.add(this.dismissEvents.subscribe(
             events => this.annullaPartenza(events)
         )); */
-        this.initPartenzaVuota();
     }
 
     ngOnChanges() {
@@ -96,11 +86,13 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     setPartenzaAttuale(idPartenzaCorrente: string) {
-        this.partenze.forEach((p, index) => {
-            if (p.id === idPartenzaCorrente) {
-                this.indexPartenzaCorrente = index;
-            }
-        });
+        if (this.partenze.length > 0) {
+            this.partenze.forEach((p, index) => {
+                if (p.id === idPartenzaCorrente) {
+                    this.indexPartenzaCorrente = index;
+                }
+            });
+        }
     }
 
     mezzoSelezionato(mezzo: MezzoComposizione) {
@@ -127,8 +119,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.selezionaBoxPartenza(partenza);
         this.idPartenzaCorrente = partenza.id;
         this.setPartenzaAttuale(this.idPartenzaCorrente);
-        this.selezionaSquadrePartenza(this.partenze[this.indexPartenzaCorrente]);
-        this.selezionaMezzoPartenza(this.partenze[this.indexPartenzaCorrente]);
+        this.selezionaBoxPartenza(partenza);
     }
 
     initPartenzaVuota() {
@@ -144,7 +135,12 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     // MEZZO //
     setMezzo(mezzo: MezzoComposizione) {
-        this.partenze[this.indexPartenzaCorrente].mezzoComposizione = mezzo;
+        if (this.partenze[this.indexPartenzaCorrente]) {
+            this.partenze[this.indexPartenzaCorrente].mezzoComposizione = mezzo;
+        } else {
+            this.initPartenzaVuota();
+            this.setMezzo(mezzo);
+        }
         // TEST
         // console.log('[CompA] Mezzo settato, partenza', this.partenze[this.indexPartenzaCorrente]);
     }
@@ -174,7 +170,12 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     // SQUADRA //
     setSquadra(squadra: SquadraComposizione) {
-        this.partenze[this.indexPartenzaCorrente].squadraComposizione.push(squadra);
+        if (this.partenze[this.indexPartenzaCorrente]) {
+            this.partenze[this.indexPartenzaCorrente].squadraComposizione.push(squadra);
+        } else {
+            this.initPartenzaVuota();
+            this.setSquadra(squadra);
+        }
         // TEST
         // console.log('[CompA] Squadra settata, partenza', this.partenze[this.indexPartenzaCorrente]);
     }
@@ -205,13 +206,19 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     // BOX PARTENZA //
-    selezionaBoxPartenza(partenza: BoxPartenza) {
-        if (this.validaBoxPartenza(this.partenze[this.indexPartenzaCorrente])) {
-            this.deselezionaBoxPartenza(this.partenze[this.indexPartenzaCorrente]);
-        } else {
-            this.eliminaBoxPartenza(this.partenze[this.indexPartenzaCorrente]);
+    selezionaBoxPartenza(partenza: BoxPartenza, noValidate?: boolean) {
+        if (!noValidate) {
+            if (this.validaBoxPartenza(this.partenze[this.indexPartenzaCorrente])) {
+                this.deselezionaBoxPartenza(this.partenze[this.indexPartenzaCorrente]);
+            } else {
+                this.eliminaBoxPartenza(this.partenze[this.indexPartenzaCorrente]);
+            }
         }
-        partenza.selezionato = true;
+        if (this.partenze.length > 0) {
+            partenza.selezionato = true;
+            this.selezionaSquadrePartenza(this.partenze[this.indexPartenzaCorrente]);
+            this.selezionaMezzoPartenza(this.partenze[this.indexPartenzaCorrente]);
+        }
     }
 
     deselezionaBoxPartenza(partenza: BoxPartenza) {
@@ -220,14 +227,34 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         }
     }
 
-    nuovaPartenza() {
-        if (this.validaBoxPartenza(this.partenze[this.indexPartenzaCorrente])) {
+    eliminaBoxPartenza(partenza: BoxPartenza) {
+        if (this.partenze.length > 0) {
+            this.partenze.forEach((p, index) => {
+                if (partenza === p) {
+                    this.partenze.splice(index, 1);
+                }
+            });
             this.deselezionaMezziComposizione();
             this.deselezionaSquadreComposizione();
-            this.deselezionaBoxPartenza(this.partenze[this.indexPartenzaCorrente]);
-            this.initPartenzaVuota();
+            if (this.partenze[this.partenze.length - 1]) {
+                this.setPartenzaAttuale(this.partenze[this.partenze.length - 1].id);
+                this.selezionaBoxPartenza(this.partenze[this.partenze.length - 1], true);
+            }
+        }
+    }
+
+    nuovaPartenza(noValidate?: boolean) {
+        if (!noValidate) {
+            if (this.validaBoxPartenza(this.partenze[this.indexPartenzaCorrente])) {
+                this.deselezionaMezziComposizione();
+                this.deselezionaSquadreComposizione();
+                this.deselezionaBoxPartenza(this.partenze[this.indexPartenzaCorrente]);
+                this.initPartenzaVuota();
+            } else {
+                console.error('[CompA] BoxPartenza non valido');
+            }
         } else {
-            console.error('[CompA] BoxPartenza non valido');
+            this.initPartenzaVuota();
         }
     }
 
@@ -239,7 +266,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     validaBoxPartenze(): boolean {
         let result = false;
-        if (this.partenze) {
+        if (this.partenze.length > 0) {
             const partenzeLength = this.partenze.length;
             let partenzeValidate = 0;
 
@@ -254,16 +281,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             });
         }
         return result;
-    }
-
-    eliminaBoxPartenza(partenza: BoxPartenza) {
-        if (this.partenze) {
-            this.partenze.forEach((p, index) => {
-                if (partenza === p) {
-                    this.partenze.splice(index, 1);
-                }
-            });
-        }
     }
 
     generateUniqueId(): string {
