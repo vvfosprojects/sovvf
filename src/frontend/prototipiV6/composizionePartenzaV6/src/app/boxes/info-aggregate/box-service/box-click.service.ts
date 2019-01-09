@@ -39,10 +39,8 @@ export class BoxClickService {
     }
 
     allTrueByRichiesta(statoRichiesta: string) {
-        // const richieste = allFalse.richieste;
         const richieste: BoxClickRichieste = Object.assign({}, allFalse.richieste);
         const mezzi: BoxClickMezzi = Object.assign({}, allTrue.mezzi);
-        // const mezzi = allTrue.mezzi;
         richieste[wipeStatoRichiesta(statoRichiesta)] = true;
         const byRichiesta: BoxClickInterface = {
             richieste: richieste,

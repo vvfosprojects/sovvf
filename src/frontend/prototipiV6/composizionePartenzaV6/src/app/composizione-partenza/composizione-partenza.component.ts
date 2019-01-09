@@ -14,11 +14,12 @@ import { MarkerService } from '../maps/service/marker-service/marker-service.ser
 })
 export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
+    @Output() statoPartenza = new EventEmitter<boolean>();
     subscription = new Subscription();
     dismissPartenzaSubject: Subject<boolean> = new Subject<boolean>();
 
     centroMappa: CentroMappa;
-    compPartenzaMode = 'faster';
+    compPartenzaMode: string;
 
     constructor(public partenzaS: PartenzaService,
                 private centerService: CenterService,
@@ -33,19 +34,20 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.boxClickService.allTrueByRichiesta(this.richiesta.stato);
+        isDevMode() && console.log('Componente Composizione creato');
     }
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
-        this.markerS.noAction();
-        this.boxClickService.allFalse();
-        isDevMode() && console.log('Composizione partenza distrutto');
+        isDevMode() && console.log('Componente Composizione distrutto');
     }
 
     dismissPartenza(): void {
-        this.partenzaS.dismissPartenza();
         this.centerService.sendCentro(this.centroMappa);
         this.dismissPartenzaSubject.next(true);
+        this.markerS.noAction();
+        this.boxClickService.allFalse();
+        this.statoPartenza.emit(false);
     }
 
     cardClasses() {

@@ -16,8 +16,10 @@ export class CenterService {
     }
 
     sendCentro(centro: CentroMappa) {
+        /* tolto perchè non serve nel prototipo di composizione
         this.currentZoom = centro.zoom;
         this.subject.next(centro);
+        */
     }
 
     clearCentro() {
