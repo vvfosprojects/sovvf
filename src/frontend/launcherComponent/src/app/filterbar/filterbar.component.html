@@ -1,28 +1,28 @@
 <div class="row">
-    <div [ngClass]="col">
+    <div [ngClass]="compPartenzaState.column">
         <div class="row">
             <div class="col-2 text-left">
-                <app-tasto-chiamata></app-tasto-chiamata>
+                <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata" (startChiamata)="chiamata()"></app-tasto-chiamata>
             </div>
-            <div *ngIf="!disableFiltri" class="col-2 px-0 text-left">
+            <div *ngIf="!compPartenzaState.disable" class="col-2 px-0 text-left">
                 <app-filtri-richieste></app-filtri-richieste>
             </div>
-            <div *ngIf="!disableSearchBar" class="col-8">
+            <div *ngIf="!compPartenzaState.disable" class="col-8">
                 <app-ricerca-richieste></app-ricerca-richieste>
             </div>
-            <div *ngIf="disableSearchBar" class="col-4 ml-auto">
-                <app-tasto-comp-partenza (cambioModalita)="cambioModalita($event)"></app-tasto-comp-partenza>
+            <div *ngIf="compPartenzaState.disable" class="col-4 ml-auto">
+                <app-tasto-comp-partenza (cambioModalita)="compPartenzaSwitch($event)" [compPartenzaMode]="compPartenzaState.modalita"></app-tasto-comp-partenza>
             </div>
         </div>
     </div>
-    <div *ngIf="!disableViewButtons" class="col-2">
+    <div *ngIf="!compPartenzaState.disable" class="col-2">
         <div class="row">
             <div class="col-12">
-                <app-view-mode></app-view-mode>
+                <app-view-mode [colorButtonView]="colorButton.buttonView" (buttonView)="buttonView($event)"></app-view-mode>
             </div>
         </div>
     </div>
-    <div [ngClass]="col">
+    <div [ngClass]="compPartenzaState.column">
         <div class="row">
             <div class="col-3">
                 <!--spazio disponibile-->

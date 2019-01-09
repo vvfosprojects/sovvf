@@ -1,40 +1,41 @@
-import { Component, OnInit } from '@angular/core';
-import { ViewInterface } from './view-mode/view.interface';
-import { Subscription } from 'rxjs';
-import { ViewService } from './view-service/view-service.service';
-import { PartenzaService } from '../composizione-partenza/service/partenza/partenza.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ViewInterfaceButton, ViewInterfaceComposizione } from './view-mode/view.interface';
 
 @Component({
     selector: 'app-filterbar',
     templateUrl: './filterbar.component.html',
     styleUrls: ['./filterbar.component.css']
 })
-export class FilterbarComponent implements OnInit {
-    subscription = new Subscription();
-    viewState: ViewInterface;
-    disableViewButtons = false;
-    disableSearchBar = false;
-    disableFiltri = false;
-    col = 'col-5';
+export class FilterbarComponent {
 
-    constructor(private viewService: ViewService,
-        private partenzaS: PartenzaService) {
-        this.viewState = this.viewService.viewState;
-        this.subscription.add(
-            this.viewService.getView().subscribe((r: ViewInterface) => {
-                this.viewState = r;
-                this.disableViewButtons = r.comp_partenza ? true : false;
-                this.disableSearchBar = r.comp_partenza ? true : false;
-                this.disableFiltri = r.comp_partenza ? true : false;
-                this.col = r.comp_partenza ? 'col-6' : 'col-5';
-            })
-        );
+    // @Input() compPartenzaMode: string;
+    @Input() compPartenzaState: ViewInterfaceComposizione;
+    @Input() colorButton: ViewInterfaceButton;
+    @Output() buttonSwitchView = new EventEmitter<string>();
+    @Output() buttonCompPartenzaMode = new EventEmitter<string>();
+
+    compPartenzaSwitch(event: string) {
+        this.buttonCompPartenzaMode.emit(event);
     }
 
-    ngOnInit() {
+    chiamata() {
+        this.buttonSwitchView.emit('chiamata');
     }
 
-    cambioModalita(newMode: string) {
-        this.partenzaS.changeCompPartenzaMode(newMode);
+    buttonView(event: string) {
+        let method = '';
+        switch (event) {
+            case 'normale':
+                method = 'normale';
+                break;
+            case 'soloMappa':
+                method = 'soloMappa';
+                break;
+            case 'soloRichieste':
+                method = 'soloRichieste';
+                break;
+        }
+        this.buttonSwitchView.emit(method);
     }
+
 }
