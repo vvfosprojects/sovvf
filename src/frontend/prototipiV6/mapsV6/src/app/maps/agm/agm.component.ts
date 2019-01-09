@@ -21,6 +21,7 @@ import { MeteoMarker } from '../maps-model/meteo-marker.model';
 import { DirectionService } from '../service/direction-service/direction-service.service';
 import { DirectionInterface } from '../service/direction-service/direction-interface';
 import { CachedMarker } from '../maps-model/cached-marker.model';
+import { ViewInterfaceMaps } from '../../filterbar/view-mode/view.interface';
 
 declare var google: any;
 
@@ -37,6 +38,7 @@ export class AgmComponent implements OnInit, OnDestroy {
     @Input() mezziMarkers: MezzoMarker[];
     @Input() centroMappa: CentroMappa;
     @Input() chiamataMarker: ChiamataMarker[];
+    @Input() viewStateMappa: ViewInterfaceMaps;
     @Output() mapFullyLoaded = new EventEmitter<boolean>();
     cachedMarkers: CachedMarker[] = [];
     meteoMarkers: MeteoMarker[] = [];
