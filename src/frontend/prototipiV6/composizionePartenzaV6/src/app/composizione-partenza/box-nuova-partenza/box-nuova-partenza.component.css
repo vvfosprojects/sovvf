@@ -1,4 +1,4 @@
-#close{
+#elimina{
     position: absolute;
     color: rgba(224, 14, 14, 0.74);
     width:20px;
@@ -7,6 +7,6 @@
     right: 4px;
     z-index: 999;
 }
-#close:hover{
+#elimina:hover{
     color: rgb(224, 14, 14);
 }

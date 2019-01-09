@@ -22,4 +22,9 @@ export class ComposizioneAvanzataService {
   getPartenze(): Observable<BoxPartenza[]> {
     return this.partenze$.asObservable();
   }
+
+  aggiornaPartenze(partenze: BoxPartenza[]) {
+    this.partenze = partenze;
+    this.partenze$.next(this.partenze);
+  }
 }

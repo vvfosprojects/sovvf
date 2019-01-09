@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 
@@ -27,13 +27,16 @@ import { Coordinate } from '../../shared/model/coordinate.model';
     templateUrl: './composizione-avanzata.component.html',
     styleUrls: ['./composizione-avanzata.component.css']
 })
-export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
+export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
 
     mezziComposizione: MezzoComposizione[];
     squadreComposizione: SquadraComposizione[];
     partenze: BoxPartenza[] = [];
-    partenza: BoxPartenza;
+    idPartenzaCorrente: string;
+    indexPartenzaCorrente: number;
+
+    buttonConferma = false;
 
     subscription = new Subscription();
     centroMappa: CentroMappa;
@@ -81,89 +84,87 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         this.subscription.add(this.dismissEvents.subscribe(
             events => this.annullaPartenza(events)
         )); */
+        this.initPartenzaVuota();
+    }
+
+    ngOnChanges() {
+        this.buttonConferma = this.validaBoxPartenze();
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
 
-    mezzoSelezionato(mezzo: MezzoComposizione) {
-        // Se non esiste la partenza attuale la inizializzo
-        this.initPartenzaVuota();
+    setPartenzaAttuale(idPartenzaCorrente: string) {
+        this.partenze.forEach((p, index) => {
+            if (p.id === idPartenzaCorrente) {
+                this.indexPartenzaCorrente = index;
+            }
+        });
+    }
 
+    mezzoSelezionato(mezzo: MezzoComposizione) {
         // Imposto il mezzo per la partenza attuale
         this.setMezzo(mezzo);
-
-        // TEST
-        // console.log('[CompA] Mezzo selezionato', mezzo);
     }
 
     mezzoDeselezionato() {
         // Unsetto il mezzo per la partenza attuale
         this.unsetMezzo();
-
-        // TEST
-        // console.log('[CompA] Mezzo deselezionato', mezzo);
     }
 
     squadraSelezionata(squadra: SquadraComposizione) {
-        // Se non esiste la partenza attuale la inizializzo
-        this.initPartenzaVuota();
-
         // Setto la squadra per la partenza attuale
         this.setSquadra(squadra);
-
-        // TEST
-        // console.log('[CompA] Squadra selezionata', squadra);
     }
 
     squadraDeselezionata(squadra: SquadraComposizione) {
         // Unsetto la squadra per la partenza attuale
         this.unsetSquadra(squadra);
-
-        // TEST
-        // console.log('[CompA] Squadra deselezionata', squadra);
     }
 
     boxPartenzaSelezionato(partenza: BoxPartenza) {
-        // TEST
-        console.log('[CompA] BoxPartenza selezionato', partenza);
-    }
-
-    boxPartenzaDeselezionato(partenza: BoxPartenza) {
-        // TEST
-        console.log('[CompA] BoxPartenza deselezionato', partenza);
+        this.selezionaBoxPartenza(partenza);
+        this.idPartenzaCorrente = partenza.id;
+        this.setPartenzaAttuale(this.idPartenzaCorrente);
+        this.selezionaSquadrePartenza(this.partenze[this.indexPartenzaCorrente]);
+        this.selezionaMezzoPartenza(this.partenze[this.indexPartenzaCorrente]);
     }
 
     initPartenzaVuota() {
-        if (!this.partenza) {
-            this.partenza = { id: this.generateUniqueId(), squadraComposizione: [], mezzoComposizione: null, selezionato: true, hover: false };
-        }
+        this.partenze.push({ id: this.generateUniqueId(), squadraComposizione: [], mezzoComposizione: null, selezionato: true, hover: false });
+        const length = this.partenze.length;
+        this.idPartenzaCorrente = this.partenze[length - 1].id;
+        this.setPartenzaAttuale(this.idPartenzaCorrente);
+        // TEST
+        // console.log('Partenze', this.partenze);
+        // console.log('Id Partenza Corrente:', this.idPartenzaCorrente);
+        // console.log('Index Partenza Corrente:', this.indexPartenzaCorrente);
     }
 
+    // MEZZO //
     setMezzo(mezzo: MezzoComposizione) {
-        this.partenza.mezzoComposizione = mezzo;
-
+        this.partenze[this.indexPartenzaCorrente].mezzoComposizione = mezzo;
         // TEST
-        console.log('[CompA] Mezzo settato, partenza', this.partenza);
+        // console.log('[CompA] Mezzo settato, partenza', this.partenze[this.indexPartenzaCorrente]);
     }
 
     unsetMezzo() {
-        if (this.partenza) {
-            this.partenza.mezzoComposizione = null;
+        if (this.partenze[this.indexPartenzaCorrente]) {
+            this.partenze[this.indexPartenzaCorrente].mezzoComposizione = null;
         } else {
             console.error('[CompA] Non posso eliminare il mezzo se non esiste la partenza');
         }
-
         // TEST
-        console.log('[CompA] Mezzo unsettato, partenza', this.partenza);
+        // console.log('[CompA] Mezzo unsettato, partenza', this.partenze[this.indexPartenzaCorrente]);
     }
 
-    /* selezionaMezziComposizione() {
-        this.mezziComposizione.forEach(mC => {
-            mC.selezionato = true;
-        });
-    } */
+    selezionaMezzoPartenza(partenza: BoxPartenza) {
+        this.deselezionaMezziComposizione();
+        if (partenza.mezzoComposizione) {
+            partenza.mezzoComposizione.selezionato = true;
+        }
+    }
 
     deselezionaMezziComposizione() {
         this.mezziComposizione.forEach(mC => {
@@ -171,30 +172,31 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         });
     }
 
+    // SQUADRA //
     setSquadra(squadra: SquadraComposizione) {
-        this.partenza.squadraComposizione.push(squadra);
-
+        this.partenze[this.indexPartenzaCorrente].squadraComposizione.push(squadra);
         // TEST
-        console.log('[CompA] Squadra settata, partenza', this.partenza);
+        // console.log('[CompA] Squadra settata, partenza', this.partenze[this.indexPartenzaCorrente]);
     }
 
     unsetSquadra(squadra: SquadraComposizione) {
-        if (this.partenza) {
-            this.partenza.squadraComposizione.forEach((s: SquadraComposizione, index) => {
-                s === squadra && this.partenza.squadraComposizione.splice(index, 1);
+        if (this.partenze[this.indexPartenzaCorrente]) {
+            this.partenze[this.indexPartenzaCorrente].squadraComposizione.forEach((s: SquadraComposizione, index) => {
+                s === squadra && this.partenze[this.indexPartenzaCorrente].squadraComposizione.splice(index, 1);
             });
         } else {
             console.error('[CompA] Non posso eliminare la squadda se non esiste la partenza');
         }
         // TEST
-        console.log('[CompA] Squadra unsettata, partenza', this.partenza);
+        // console.log('[CompA] Squadra unsettata, partenza', this.partenze[this.indexPartenzaCorrente]);
     }
 
-    /* selezionaSquadreComposizione() {
-        this.squadreComposizione.forEach(sC => {
-            sC.selezionato = true;
+    selezionaSquadrePartenza(partenza: BoxPartenza) {
+        this.deselezionaSquadreComposizione();
+        partenza.squadraComposizione.forEach(s => {
+            s.selezionato = true;
         });
-    } */
+    }
 
     deselezionaSquadreComposizione() {
         this.squadreComposizione.forEach(sC => {
@@ -202,17 +204,27 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         });
     }
 
-    salvaPartenza() {
-        this.composizioneService.nuovaPartenza(this.partenza);
-        this.partenza = null;
+    // BOX PARTENZA //
+    selezionaBoxPartenza(partenza: BoxPartenza) {
+        if (this.validaBoxPartenza(this.partenze[this.indexPartenzaCorrente])) {
+            this.deselezionaBoxPartenza(this.partenze[this.indexPartenzaCorrente]);
+        } else {
+            this.eliminaBoxPartenza(this.partenze[this.indexPartenzaCorrente]);
+        }
+        partenza.selezionato = true;
+    }
+
+    deselezionaBoxPartenza(partenza: BoxPartenza) {
+        if (partenza) {
+            partenza.selezionato = false;
+        }
     }
 
     nuovaPartenza() {
-        if (this.validaBoxPartenza(this.partenza)) {
+        if (this.validaBoxPartenza(this.partenze[this.indexPartenzaCorrente])) {
             this.deselezionaMezziComposizione();
             this.deselezionaSquadreComposizione();
-            this.partenza.selezionato = false;
-            this.salvaPartenza();
+            this.deselezionaBoxPartenza(this.partenze[this.indexPartenzaCorrente]);
             this.initPartenzaVuota();
         } else {
             console.error('[CompA] BoxPartenza non valido');
@@ -220,8 +232,37 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     }
 
     validaBoxPartenza(partenza: BoxPartenza) {
-        if (partenza.mezzoComposizione || partenza.squadraComposizione.length > 0) {
+        if ((partenza.mezzoComposizione && partenza.squadraComposizione.length > 0) || (!partenza.mezzoComposizione && partenza.squadraComposizione.length > 0)) {
             return true;
+        }
+    }
+
+    validaBoxPartenze(): boolean {
+        let result = false;
+        if (this.partenze) {
+            const partenzeLength = this.partenze.length;
+            let partenzeValidate = 0;
+
+            this.partenze.forEach(p => {
+                if (this.validaBoxPartenza(p)) {
+                    partenzeValidate += 1;
+
+                    if (partenzeValidate === partenzeLength) {
+                        result = true;
+                    }
+                }
+            });
+        }
+        return result;
+    }
+
+    eliminaBoxPartenza(partenza: BoxPartenza) {
+        if (this.partenze) {
+            this.partenze.forEach((p, index) => {
+                if (partenza === p) {
+                    this.partenze.splice(index, 1);
+                }
+            });
         }
     }
 

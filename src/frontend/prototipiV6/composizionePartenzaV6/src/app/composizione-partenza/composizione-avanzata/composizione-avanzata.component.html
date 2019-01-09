@@ -39,18 +39,14 @@
           <div *ngIf="partenze.length > 0 || partenza" class="text-center mb-2">
             <button class="btn btn-primary" (click)="nuovaPartenza()"><i class="fa fa-plus mr-1"></i>Nuova partenza</button>
           </div>
-          <!-- partenza in composizione -->
-          <div *ngIf="partenza">
-            <app-box-nuova-partenza [partenza]="partenza" (selezionato)="boxPartenzaSelezionato($event)"
-              (deselezionato)="boxPartenzaDeselezionato($event)"></app-box-nuova-partenza>
-          </div>
           <!-- lista box partenze -->
           <div *ngIf="partenze.length > 0">
-            <app-box-nuova-partenza *ngFor="let p of partenze.slice().reverse()" [partenza]="p" (selezionato)="boxPartenzaSelezionato($event)"
-              (deselezionato)="boxPartenzaDeselezionato($event)"></app-box-nuova-partenza>
+            <div *ngFor="let p of partenze.slice().reverse()">
+              <app-box-nuova-partenza [partenza]="p" (selezionato)="boxPartenzaSelezionato($event)"></app-box-nuova-partenza>
+            </div>
           </div>
         </div>
-        <button class="btn btn-block card-shadow btn-success mt-2">Conferma</button>
+        <button class="btn btn-block card-shadow btn-success mt-2" [disabled]="!buttonConferma">Conferma</button>
       </div>
     </div>
   </div>
