@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import * as MapManager from '../core/manager/maps-manager';
 import { CentroMappa } from './maps-model/centro-mappa.model';
 import { RichiestaMarker } from './maps-model/richiesta-marker.model';
@@ -7,6 +7,7 @@ import { MezzoMarker } from './maps-model/mezzo-marker.model';
 import { ChiamataMarker } from './maps-model/chiamata-marker.model';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { ViewInterfaceMaps } from '../filterbar/view-mode/view.interface';
 
 @Component({
     selector: 'app-maps',
@@ -21,6 +22,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     mezziMarkers: MezzoMarker[];
     chiamataMarker: ChiamataMarker[];
     subscription = new Subscription();
+    @Input() viewStateMappa: ViewInterfaceMaps;
     mapsFullyLoaded = false;
 
     constructor(private richiesteManager: MapManager.RichiesteMarkerManagerService,
@@ -72,6 +74,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        isDevMode() && console.log('Componente Maps creato');
     }
 
     ngOnDestroy() {
