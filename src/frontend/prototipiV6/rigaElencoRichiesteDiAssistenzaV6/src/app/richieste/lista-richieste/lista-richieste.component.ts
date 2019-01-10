@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, OnChanges, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, OnChanges, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ScrollEvent } from 'ngx-scroll-event';
 import { Subscription } from 'rxjs';
@@ -46,6 +46,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
 
     methods = new HelperMethods;
     @Input() _split: boolean;
+    @Output() statoPartenza = new EventEmitter<boolean>();
 
     constructor(public listaRichiesteManager: ListaRichiesteManagerService,
         private richiesteS: ListaRichiesteService,
@@ -208,6 +209,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     nuovaPartenza(richiesta: any) {
         this.partenzaService.nuovaPartenza(richiesta);
         this.markerS.actionById(richiesta.id, 'click');
+        this.statoPartenza.emit(true);
     }
 
     /* Gestisce l'hover in */
