@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ViewInterfaceButton, ViewInterfaceComposizione } from './view-mode/view.interface';
+import { ViewInterfaceButton, ViewInterfaceComposizione } from '../shared/interface/view.interface';
 
 @Component({
     selector: 'app-filterbar',

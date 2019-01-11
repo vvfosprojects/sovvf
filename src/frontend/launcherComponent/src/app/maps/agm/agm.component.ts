@@ -21,7 +21,7 @@ import { MeteoMarker } from '../maps-model/meteo-marker.model';
 import { DirectionService } from '../service/direction-service/direction-service.service';
 import { DirectionInterface } from '../service/direction-service/direction-interface';
 import { CachedMarker } from '../maps-model/cached-marker.model';
-import { ViewInterfaceMaps } from '../../filterbar/view-mode/view.interface';
+import { ViewInterfaceMaps } from '../../shared/interface/view.interface';
 import { ComposizioneMarker } from '../maps-model/composizione-marker.model';
 
 declare var google: any;

@@ -8,7 +8,7 @@ import { ChiamataMarker } from './maps-model/chiamata-marker.model';
 import { ComposizioneMarker } from './maps-model/composizione-marker.model';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { ViewInterfaceMaps } from '../filterbar/view-mode/view.interface';
+import { ViewInterfaceMaps } from '../shared/interface/view.interface';
 
 @Component({
     selector: 'app-maps',

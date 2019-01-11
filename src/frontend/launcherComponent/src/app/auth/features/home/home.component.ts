@@ -1,8 +1,7 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ViewService } from '../../../filterbar/view-service/view-service.service';
-import { ViewInterface } from '../../../filterbar/view-mode/view.interface';
-import { PartenzaService } from 'src/app/composizione-partenza/service/partenza/partenza.service';
+import { ViewInterface } from '../../../shared/interface/view.interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 @Component({ templateUrl: 'home.component.html' })
@@ -13,8 +12,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     richiestaNuovaPartenza: SintesiRichiesta;
 
-    constructor(private viewService: ViewService,
-                private partenzaService: PartenzaService) {
+    constructor(private viewService: ViewService) {
         this.viewState = this.viewService.viewState;
         this.subscription.add(
             this.viewService.getView().subscribe((r: ViewInterface) => {

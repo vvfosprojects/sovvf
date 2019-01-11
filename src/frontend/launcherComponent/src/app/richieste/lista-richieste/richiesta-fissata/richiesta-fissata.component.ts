@@ -10,7 +10,6 @@ import { EventiRichiestaComponent } from '../../../eventi/eventi-richiesta.compo
 
 // Service
 import { ListaRichiesteService } from '../../service/lista-richieste-service.service';
-import { PartenzaService } from 'src/app/composizione-partenza/service/partenza/partenza.service';
 
 // Helper Methods
 import { HelperMethods } from '../../helper/_helper-methods';
@@ -39,8 +38,7 @@ export class RichiestaFissataComponent implements OnInit {
 
     constructor(public richiesteS: ListaRichiesteService,
         private animationBuilder: AnimationBuilder,
-        private modalService: NgbModal,
-        private partenzaService: PartenzaService) {
+        private modalService: NgbModal) {
     }
 
     ngOnInit() {
