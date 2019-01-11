@@ -20,8 +20,8 @@ import { Observable, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-slower',
-    templateUrl: './slower.component.html',
-    styleUrls: ['./slower.component.css']
+    templateUrl: './composizione-avanzata.component.html',
+    styleUrls: ['./composizione-avanzata.component.css']
 })
 export class SlowerComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
