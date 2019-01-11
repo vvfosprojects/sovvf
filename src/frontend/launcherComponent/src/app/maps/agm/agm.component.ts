@@ -22,6 +22,7 @@ import { DirectionService } from '../service/direction-service/direction-service
 import { DirectionInterface } from '../service/direction-service/direction-interface';
 import { CachedMarker } from '../maps-model/cached-marker.model';
 import { ViewInterfaceMaps } from '../../filterbar/view-mode/view.interface';
+import { ComposizioneMarker } from '../maps-model/composizione-marker.model';
 
 declare var google: any;
 
@@ -39,6 +40,7 @@ export class AgmComponent implements OnInit, OnDestroy {
     @Input() centroMappa: CentroMappa;
     @Input() chiamataMarker: ChiamataMarker[];
     @Input() viewStateMappa: ViewInterfaceMaps;
+    @Input() composizioneMarker: ComposizioneMarker[];
     @Output() mapFullyLoaded = new EventEmitter<boolean>();
     cachedMarkers: CachedMarker[] = [];
     meteoMarkers: MeteoMarker[] = [];
