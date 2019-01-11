@@ -2,7 +2,6 @@ import { Component, OnInit, Input, OnChanges, Output, EventEmitter, OnDestroy } 
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 
 // Service
-import { PartenzaService } from '../service/partenza/partenza.service';
 import { CompPartenzaManagerService } from '../../core/manager/comp-partenza-manager/comp-partenza-manager.service';
 import { CompMezzoSquadraService } from '../service/comp-mezzo-squadra/comp-mezzo-squadra.service';
 import { DirectionService } from '../../maps/service/direction-service/direction-service.service';
@@ -41,8 +40,7 @@ export class SlowerComponent implements OnInit, OnDestroy {
     @Output() centroMappaEmit: EventEmitter<CentroMappa> = new EventEmitter();
 
 
-    constructor(private partenzaS: PartenzaService,
-                private compPartenzaManager: CompPartenzaManagerService,
+    constructor(private compPartenzaManager: CompPartenzaManagerService,
                 private compMezzoSquadra: CompMezzoSquadraService,
                 private directionService: DirectionService,
                 private markerService: MarkerService,
@@ -150,10 +148,6 @@ export class SlowerComponent implements OnInit, OnDestroy {
     nuovoMezzo() {
         this.idPartenzaAttuale = this.partenze.length;
         console.log('Nuovo id', this.idPartenzaAttuale);
-    }
-
-    changeMode(newMode: string) {
-        this.partenzaS.changeCompPartenzaMode(newMode);
     }
 
     modificaPartenza(partenza) {

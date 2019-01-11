@@ -47,6 +47,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     methods = new HelperMethods;
     @Input() _split: boolean;
     @Output() statoPartenza = new EventEmitter<boolean>();
+    @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
 
     constructor(public listaRichiesteManager: ListaRichiesteManagerService,
         private richiesteS: ListaRichiesteService,
@@ -207,8 +208,9 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
 
     /* Apre il componente per la creazione della partenza */
     nuovaPartenza(richiesta: any) {
-        this.partenzaService.nuovaPartenza(richiesta);
+        // this.partenzaService.nuovaPartenza(richiesta);
         this.markerS.actionById(richiesta.id, 'click');
+        this.composizionePartenza.emit(richiesta);
         this.statoPartenza.emit(true);
     }
 

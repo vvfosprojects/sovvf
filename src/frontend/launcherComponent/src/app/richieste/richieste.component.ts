@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, isDevMode, OnDestroy, OnInit, Output } from '@angular/core';
+import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-richieste',
@@ -8,7 +9,8 @@ import { Component, EventEmitter, Input, isDevMode, OnDestroy, OnInit, Output } 
 export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Input() split: string;
-    @Output() statoPartenza = new EventEmitter<boolean>();
+    @Output() statoPartenza = new EventEmitter<string>();
+    @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
 
     ngOnInit(): void {
         isDevMode() && console.log('Componente Richieste creato');

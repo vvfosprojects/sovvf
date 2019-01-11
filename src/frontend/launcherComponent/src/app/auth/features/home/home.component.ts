@@ -21,11 +21,6 @@ export class HomeComponent implements OnInit, OnDestroy {
                 this.viewState = r;
             })
         );
-        this.subscription.add(
-            this.partenzaService.getRichiestaPartenza().subscribe(richiesta => {
-                this.richiestaNuovaPartenza = richiesta;
-            })
-        );
     }
 
     ngOnInit() {
@@ -42,15 +37,15 @@ export class HomeComponent implements OnInit, OnDestroy {
          * da finire
          */
         this.viewService.viewState.layout.composizione.modalita = newMode;
-        this.partenzaService.changeCompPartenzaMode(newMode);
+        // this.partenzaService.changeCompPartenzaMode(newMode);
+    }
+
+    nuovaPartenza(richiesta: SintesiRichiesta) {
+        this.richiestaNuovaPartenza = richiesta;
     }
 
     switchView(event: string, chiamata?: boolean) {
         this.viewService.switchView(event, chiamata);
-    }
-
-    statoPartenza(event) {
-        event ? this.switchView('comp_partenza') : this.switchView('normale');
     }
 
 }

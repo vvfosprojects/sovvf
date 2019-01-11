@@ -8,7 +8,6 @@ import { ViewInterfaceButton, ViewInterfaceComposizione } from './view-mode/view
 })
 export class FilterbarComponent {
 
-    // @Input() compPartenzaMode: string;
     @Input() compPartenzaState: ViewInterfaceComposizione;
     @Input() colorButton: ViewInterfaceButton;
     @Output() buttonSwitchView = new EventEmitter<string>();

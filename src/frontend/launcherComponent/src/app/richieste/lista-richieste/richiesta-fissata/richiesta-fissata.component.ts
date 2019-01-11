@@ -26,6 +26,7 @@ export class RichiestaFissataComponent implements OnInit {
 
     @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
     @Output() statoPartenza = new EventEmitter<boolean>();
+    @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
 
     @ViewChild('richiestaContainer') private richiestaContainer: ElementRef;
     @ViewChild('richiesta') private richiesta: ElementRef;
@@ -129,7 +130,8 @@ export class RichiestaFissataComponent implements OnInit {
 
     /* Apre il componente per la creazione della partenza */
     nuovaPartenza(richiesta: any) {
-        this.partenzaService.nuovaPartenza(richiesta);
+        // this.partenzaService.nuovaPartenza(richiesta);
+        this.composizionePartenza.emit(richiesta);
         this.statoPartenza.emit(true);
     }
 
