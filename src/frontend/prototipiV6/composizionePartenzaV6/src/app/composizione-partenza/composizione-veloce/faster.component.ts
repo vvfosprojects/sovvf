@@ -7,7 +7,6 @@ import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 // Service
 import { CompPartenzaManagerService } from 'src/app/core/manager/comp-partenza-manager/comp-partenza-manager.service';
 import { PreAccoppiatiService } from '../service/pre-accoppiati/pre-accoppiati.service';
-import { PartenzaService } from '../service/partenza/partenza.service';
 import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
 import { Observable, Subscription } from 'rxjs';
 import { Coordinate } from '../../shared/model/coordinate.model';
@@ -36,7 +35,6 @@ export class FasterComponent implements OnInit, OnDestroy {
 
     constructor(private compPartenzaManager: CompPartenzaManagerService,
                 private preAccoppiatiS: PreAccoppiatiService,
-                private partenzaS: PartenzaService,
                 private directionService: DirectionService,
                 private markerService: MarkerService,
                 private centerService: CenterService) {

@@ -14,7 +14,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
   */
 import { ComposizionePartenzaComponent } from './composizione-partenza.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { SlowerComponent } from './composizione-avanzata/slower.component';
+import { SlowerComponent } from './composizione-avanzata/composizione-avanzata.component';
 import { FasterComponent } from './composizione-veloce/faster.component';
 import { BoxNuovaPartenzaComponent } from './box-nuova-partenza/box-nuova-partenza.component';
 import { MezzoComposizioneComponent } from './composizione-avanzata/mezzo-composizione/mezzo-composizione.component';

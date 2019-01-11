@@ -15,7 +15,7 @@ export interface ViewInterfaceComponent {
     mappa?: boolean;
     richieste?: boolean;
     chiamata?: boolean;
-    comp_partenza?: boolean;
+    composizione?: boolean;
 }
 
 export interface ViewInterfaceMaps {

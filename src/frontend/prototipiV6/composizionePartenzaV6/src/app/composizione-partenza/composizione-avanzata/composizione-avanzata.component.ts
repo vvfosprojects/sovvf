@@ -3,7 +3,6 @@ import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 
 // Service
-import { PartenzaService } from '../service/partenza/partenza.service';
 import { CompPartenzaManagerService } from '../../core/manager/comp-partenza-manager/comp-partenza-manager.service';
 import { ComposizioneAvanzataService } from '../service/composizione-avanzata/composizione-avanzata.service';
 import { DirectionService } from '../../maps/service/direction-service/direction-service.service';

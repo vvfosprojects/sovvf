@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, isDevMode } from '@angular/core';
 import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
-import { PartenzaService } from './service/partenza/partenza.service';
 import { CenterService } from '../maps/service/center-service/center-service.service';
 import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
 import { BoxClickService } from '../boxes/info-aggregate/box-service/box-click.service';
@@ -14,22 +13,16 @@ import { MarkerService } from '../maps/service/marker-service/marker-service.ser
 })
 export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
-    @Output() statoPartenza = new EventEmitter<boolean>();
+    @Input() compPartenzaMode = 'slower';
+    @Output() statoPartenza = new EventEmitter<string>();
     subscription = new Subscription();
     dismissPartenzaSubject: Subject<boolean> = new Subject<boolean>();
 
     centroMappa: CentroMappa;
-    compPartenzaMode: string;
 
-    constructor(public partenzaS: PartenzaService,
-                private centerService: CenterService,
+    constructor(private centerService: CenterService,
                 private boxClickService: BoxClickService,
                 private markerS: MarkerService) {
-        this.compPartenzaMode = this.partenzaS.compPartenzaModeIniziale;
-        this.subscription.add(
-            this.partenzaS.getCompPartenzaMode().subscribe(viewMode => {
-                this.compPartenzaMode = viewMode;
-            }));
     }
 
     ngOnInit() {
@@ -47,7 +40,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.dismissPartenzaSubject.next(true);
         this.markerS.noAction();
         this.boxClickService.allFalse();
-        this.statoPartenza.emit(false);
+        this.statoPartenza.emit('normale');
     }
 
     match(word1: string, word2: string) {

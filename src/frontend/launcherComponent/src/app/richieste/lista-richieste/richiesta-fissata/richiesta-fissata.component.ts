@@ -10,7 +10,6 @@ import { EventiRichiestaComponent } from '../../../eventi/eventi-richiesta.compo
 
 // Service
 import { ListaRichiesteService } from '../../service/lista-richieste-service.service';
-import { PartenzaService } from 'src/app/composizione-partenza/service/partenza/partenza.service';
 
 // Helper Methods
 import { HelperMethods } from '../../helper/_helper-methods';
@@ -26,6 +25,7 @@ export class RichiestaFissataComponent implements OnInit {
 
     @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
     @Output() statoPartenza = new EventEmitter<boolean>();
+    @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
 
     @ViewChild('richiestaContainer') private richiestaContainer: ElementRef;
     @ViewChild('richiesta') private richiesta: ElementRef;
@@ -38,8 +38,7 @@ export class RichiestaFissataComponent implements OnInit {
 
     constructor(public richiesteS: ListaRichiesteService,
         private animationBuilder: AnimationBuilder,
-        private modalService: NgbModal,
-        private partenzaService: PartenzaService) {
+        private modalService: NgbModal) {
     }
 
     ngOnInit() {
@@ -129,7 +128,8 @@ export class RichiestaFissataComponent implements OnInit {
 
     /* Apre il componente per la creazione della partenza */
     nuovaPartenza(richiesta: any) {
-        this.partenzaService.nuovaPartenza(richiesta);
+        // this.partenzaService.nuovaPartenza(richiesta);
+        this.composizionePartenza.emit(richiesta);
         this.statoPartenza.emit(true);
     }
 

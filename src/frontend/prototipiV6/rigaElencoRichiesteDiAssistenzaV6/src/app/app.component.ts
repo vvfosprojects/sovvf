@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ViewService } from './filterbar/view-service/view-service.service';
-import { ViewInterface } from './filterbar/view-mode/view.interface';
+import { ViewInterface } from './shared/interface/view.interface';
 import { Subscription } from 'rxjs';
 
 @Component({
