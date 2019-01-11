@@ -18,6 +18,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     @Output() sbloccato = new EventEmitter<MezzoComposizione>();
 
     @Input() partenzaCorrente: BoxPartenza;
+    @Input() partenze: BoxPartenza[];
     lucchetto = false;
 
     constructor() {
@@ -42,29 +43,61 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     }
 
     validateOnClick() {
-        if (!this.partenzaCorrente) {
+        if (this.partenze.length > 0) {
+            if (this.isBloccato(this.mezzoComp)) {
+                console.error('Mezzo bloccato da un\'altra partenza');
+            } else if (this.isMezzoPartenzaBloccato(this.partenzaCorrente)) {
+                console.error('Mezzo bloccato da un\'altra partenza');
+            } else {
+                this.onClick();
+            }
+        } else {
             this.onClick();
-        } else if (this.partenzaCorrente && (!this.partenzaCorrente.mezzoComposizione || !this.partenzaCorrente.mezzoComposizione.bloccato)) {
-            this.onClick();
-        } else if (this.partenzaCorrente && this.partenzaCorrente.mezzoComposizione.bloccato) {
-            console.error('Evento di output non emesso, prima sblocca il mezzo');
-            console.log('PartenzaCorrente', this.partenzaCorrente);
         }
     }
 
-    onClick(sbloccato = false) {
-        if (!sbloccato) {
-            if (!this.mezzoComp.selezionato) {
-                this.mezzoComp.selezionato = true;
-                this.selezionato.emit(this.mezzoComp);
-            } else if (this.mezzoComp.selezionato) {
-                this.mezzoComp.selezionato = false;
-                this.deselezionato.emit(this.mezzoComp);
+    isBloccato(mezzo: MezzoComposizione): boolean {
+        let returnBool = false;
+
+        /* se almeno una partenza ha il mezzo === mezzoComposizione, ed è bloccato, ritorna true */
+        this.partenze.forEach(p => {
+            if (p.mezzoComposizione && p.mezzoComposizione.bloccato && mezzo === p.mezzoComposizione) {
+                returnBool = true;
             }
-        } else {
-            this.sbloccato.emit(this.mezzoComp);
-            // TOAST ("IL MEZZO è BLOCCATO, SBLOCCALO")
+        });
+
+        return returnBool;
+    }
+
+    isMezzoPartenzaBloccato(partenza: BoxPartenza): boolean {
+        let returnBool = false;
+
+        if (partenza.mezzoComposizione && partenza.mezzoComposizione.bloccato) {
+            returnBool = true;
         }
+
+        return returnBool;
+    }
+
+
+    onClick() {
+        // console.log('clicco uno sbloccato');
+        if (!this.mezzoComp.selezionato) {
+            // console.log('clicco un deselezionato (sbloccato)');
+            this.mezzoComp.selezionato = true;
+            this.selezionato.emit(this.mezzoComp);
+        } else if (this.mezzoComp.selezionato) {
+            // console.log('clicco un selezionato (sbloccato)');
+            this.mezzoComp.selezionato = false;
+            this.deselezionato.emit(this.mezzoComp);
+        }
+    }
+
+    onClickLucchetto() {
+        // console.log('clicco un bloccato');
+        this.mezzoComp.bloccato = false;
+        this.sbloccato.emit(this.mezzoComp);
+        // TOAST ("IL MEZZO è BLOCCATO, SBLOCCALO")
     }
 
     liClass() {

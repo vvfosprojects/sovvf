@@ -187,21 +187,34 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         });
     }
 
-    bloccaMezzoComposizione(mezzo: MezzoComposizione) {
-        mezzo.bloccato = true;
-        this.partenzaCorrente.mezzoComposizione.bloccato = true;
-    }
-
-    mezzoSbloccato(mezzo: MezzoComposizione) {
-        mezzo.bloccato = false;
-        this.partenzaCorrente.mezzoComposizione.bloccato = false;
-    }
-
-    selezionaMezzoPartenza(partenza: BoxPartenza) {
+    selezionaMezzoComposizione(partenza: BoxPartenza) {
         this.deselezionaMezziComposizione();
         if (partenza.mezzoComposizione) {
             partenza.mezzoComposizione.selezionato = true;
         }
+    }
+
+    bloccaMezzo(mezzo: MezzoComposizione) {
+        this.mezziComposizione.forEach(mC => {
+            if (mezzo === mC) {
+                mC.bloccato = true;
+            }
+        });
+        console.log('Mezzo bloccato', mezzo);
+    }
+
+    sbloccaMezzo(mezzo: MezzoComposizione) {
+        this.mezziComposizione.forEach(mC => {
+            if (mezzo === mC) {
+                mC = mezzo;
+            }
+        });
+        console.log('Mezzo sbloccato', mezzo);
+    }
+
+    sbloccaMezzoByBoxPartenza(boxPartenza: BoxPartenza) {
+        boxPartenza.mezzoComposizione.bloccato = false;
+        console.log('Box partenza eliminato, mezzo relativo alla partenza sbloccato', boxPartenza);
     }
 
     // SQUADRA //
@@ -246,17 +259,19 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         if (!noValidate && this.partenzaCorrente) {
             if (this.validaBoxPartenza(this.partenzaCorrente)) {
                 this.deselezionaBoxPartenza(this.partenzaCorrente);
-                this.bloccaMezzoComposizione(this.partenzaCorrente.mezzoComposizione);
+                this.bloccaMezzo(this.partenzaCorrente.mezzoComposizione);
             } else {
                 this.eliminaBoxPartenza(this.partenzaCorrente);
             }
         }
         if (this.partenze.length > 0) {
+            /* this.bloccaMezzo(this.partenzaCorrente.mezzoComposizione); */
             partenza.selezionato = true;
             this.idPartenzaCorrente = partenza.id;
             this.setPartenzaAttuale(this.idPartenzaCorrente);
             this.selezionaSquadrePartenza(this.partenzaCorrente);
-            this.selezionaMezzoPartenza(this.partenzaCorrente);
+            this.selezionaMezzoComposizione(this.partenzaCorrente);
+            // console.log('Partenza corrente', this.partenzaCorrente);
         }
     }
 
@@ -269,7 +284,13 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     eliminaBoxPartenza(partenza: BoxPartenza) {
+        if (this.partenzaCorrente) {
+            this.bloccaMezzo(this.partenzaCorrente.mezzoComposizione);
+        }
         if (this.partenze.length > 0) {
+            if (partenza.mezzoComposizione) {
+                this.sbloccaMezzoByBoxPartenza(partenza);
+            }
             this.partenze.forEach((p, index) => {
                 if (partenza === p) {
                     this.partenze.splice(index, 1);
@@ -277,18 +298,20 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             });
             this.deselezionaMezziComposizione();
             this.deselezionaSquadreComposizione();
-            if (partenza.mezzoComposizione && partenza.mezzoComposizione.bloccato) {
-                this.mezzoSbloccato(partenza.mezzoComposizione);
+            if (this.partenze[this.partenze.length - 1]) {
+                this.deselezionaBoxPartenza(this.partenzaCorrente);
+                this.selezionaBoxPartenza(this.partenze[this.partenze.length - 1], true);
+            } else {
+                this.partenzaCorrente = null;
             }
-            this.unsetPartenzaAttuale();
         }
     }
 
     nuovaPartenza(noValidate?: boolean) {
         if (!noValidate && this.partenzaCorrente) {
             if (this.validaBoxPartenza(this.partenzaCorrente)) {
+                this.bloccaMezzo(this.partenzaCorrente.mezzoComposizione);
                 this.deselezionaBoxPartenza(this.partenzaCorrente);
-                this.bloccaMezzoComposizione(this.partenzaCorrente.mezzoComposizione);
                 this.initPartenzaVuota();
             } else {
                 console.error('[CompA] BoxPartenza non valido');
