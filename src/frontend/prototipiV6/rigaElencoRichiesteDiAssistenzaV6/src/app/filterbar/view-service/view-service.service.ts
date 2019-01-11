@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { ViewInterface, ViewInterfaceButton, ViewInterfaceComposizione, ViewInterfaceLayout, ViewInterfaceMaps } from '../view-mode/view.interface';
+import { ViewInterface, ViewInterfaceButton, ViewInterfaceComposizione, ViewInterfaceLayout, ViewInterfaceMaps } from '../../shared/interface/view.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +15,7 @@ export class ViewService {
             richieste: true,
             mappa: true,
             chiamata: false,
-            comp_partenza: false,
+            composizione: false,
         },
         layout: {
             split: true,
@@ -63,13 +63,14 @@ export class ViewService {
             active: 'richieste'
         };
 
-        if (view.components.richieste) {
-            result.active = 'richieste';
-        } else if (view.components.chiamata) {
-            result.active = 'chiamata';
-        } else if (view.components.comp_partenza) {
-            result.active = 'composizione';
+        function getActive(object) {
+            const obj = Object.assign(object);
+            obj['mappa'] = false;
+            const res = Object.keys(obj).find(key => obj[key] === true);
+            return res ? res : result.active;
         }
+
+        result.active = getActive(view.components);
 
         return result;
     }
@@ -98,8 +99,8 @@ export class ViewService {
             modalita: 'slower'
         };
 
-        result.disable = !!view.components.comp_partenza;
-        result.column = view.components.comp_partenza ? 'col-6' : 'col-5';
+        result.disable = !!view.components.composizione;
+        result.column = view.components.composizione ? 'col-6' : 'col-5';
 
         return result;
     }
@@ -127,7 +128,7 @@ export class ViewService {
             components: {
                 richieste: event === 'normale' || event === 'soloRichieste' || chiamata === false,
                 mappa: event !== 'soloRichieste',
-                comp_partenza: event === 'comp_partenza',
+                composizione: event === 'composizione',
                 chiamata: event === 'chiamata' && chiamata === undefined
             },
             layout: {

@@ -15,7 +15,6 @@ import { ListaRichiesteManagerService } from '../../core/manager/lista-richieste
 import { ListaRichiesteService } from '../service/lista-richieste-service.service';
 import { RicercaRichiesteService } from '../../filterbar/ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
-import { PartenzaService } from '../../composizione-partenza/service/partenza/partenza.service';
 import { LocalStorageService } from 'ngx-webstorage';
 
 // Helper methods
@@ -47,6 +46,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     methods = new HelperMethods;
     @Input() _split: boolean;
     @Output() statoPartenza = new EventEmitter<boolean>();
+    @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
 
     constructor(public listaRichiesteManager: ListaRichiesteManagerService,
         private richiesteS: ListaRichiesteService,
@@ -54,7 +54,6 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
         private modalService: NgbModal,
         private markerS: MarkerService,
         private filter: FilterPipe,
-        private partenzaService: PartenzaService,
         private toastr: ToastrService,
         private localSt: LocalStorageService) {
     }
@@ -207,8 +206,9 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
 
     /* Apre il componente per la creazione della partenza */
     nuovaPartenza(richiesta: any) {
-        this.partenzaService.nuovaPartenza(richiesta);
+        // this.partenzaService.nuovaPartenza(richiesta);
         this.markerS.actionById(richiesta.id, 'click');
+        this.composizionePartenza.emit(richiesta);
         this.statoPartenza.emit(true);
     }
 
