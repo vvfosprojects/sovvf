@@ -5,9 +5,10 @@ import { RichiestaMarker } from './maps-model/richiesta-marker.model';
 import { SedeMarker } from './maps-model/sede-marker.model';
 import { MezzoMarker } from './maps-model/mezzo-marker.model';
 import { ChiamataMarker } from './maps-model/chiamata-marker.model';
+import { ComposizioneMarker } from './maps-model/composizione-marker.model';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { ViewInterfaceMaps } from '../filterbar/view-mode/view.interface';
+import { ViewInterfaceMaps } from '../shared/interface/view.interface';
 
 @Component({
     selector: 'app-maps',
@@ -23,6 +24,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     chiamataMarker: ChiamataMarker[];
     subscription = new Subscription();
     @Input() viewStateMappa: ViewInterfaceMaps;
+    @Input() composizioneMarker: ComposizioneMarker[];
     mapsFullyLoaded = false;
 
     constructor(private richiesteManager: MapManager.RichiesteMarkerManagerService,

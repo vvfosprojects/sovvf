@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UnitaAttualeService } from './navbar/navbar-service/unita-attuale/unita-attuale.service';
+import { ViewInterfaceMaps } from './shared/interface/view.interface';
 
 @Component({
     selector: 'app-root',
@@ -7,8 +7,14 @@ import { UnitaAttualeService } from './navbar/navbar-service/unita-attuale/unita
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    title = 'mapsV6';
+    /**
+     * parametri iniziali solo per componente Prototipo
+     */
+    viewStateMappa: ViewInterfaceMaps = {
+        active: 'normale'
+    };
+    fakeCambioSede = {
+        preLoader: true
+    };
 
-    constructor(public fakeCambioSede: UnitaAttualeService) {
-    }
 }
