@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
 // Model
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
+import { BoxPartenza } from '../../interface/box-partenza-interface';
 
 // Service
 
@@ -10,10 +11,14 @@ import { MezzoComposizione } from '../../interface/mezzo-composizione-interface'
     templateUrl: './mezzo-composizione.component.html',
     styleUrls: ['./mezzo-composizione.component.css']
 })
-export class MezzoComposizioneComponent implements OnInit {
+export class MezzoComposizioneComponent implements OnInit, OnChanges {
     @Input() mezzoComp: MezzoComposizione;
     @Output() selezionato = new EventEmitter<MezzoComposizione>();
     @Output() deselezionato = new EventEmitter<MezzoComposizione>();
+    @Output() sbloccato = new EventEmitter<MezzoComposizione>();
+
+    @Input() partenzaCorrente: BoxPartenza;
+    lucchetto = false;
 
     constructor() {
     }
@@ -21,28 +26,52 @@ export class MezzoComposizioneComponent implements OnInit {
     ngOnInit() {
     }
 
+    ngOnChanges() {
+    }
+
     onHoverIn() {
-        this.mezzoComp.hover = true;
+        if (!this.mezzoComp.bloccato) {
+            this.mezzoComp.hover = true;
+        }
     }
 
     onHoverOut() {
-        this.mezzoComp.hover = false;
+        if (!this.mezzoComp.bloccato) {
+            this.mezzoComp.hover = false;
+        }
     }
 
-    onClick() {
-        if (!this.mezzoComp.selezionato) {
-            this.mezzoComp.selezionato = true;
-            this.selezionato.emit(this.mezzoComp);
+    validateOnClick() {
+        if (!this.partenzaCorrente) {
+            this.onClick();
+        } else if (this.partenzaCorrente && (!this.partenzaCorrente.mezzoComposizione || !this.partenzaCorrente.mezzoComposizione.bloccato)) {
+            this.onClick();
+        } else if (this.partenzaCorrente && this.partenzaCorrente.mezzoComposizione.bloccato) {
+            console.error('Evento di output non emesso, prima sblocca il mezzo');
+            console.log('PartenzaCorrente', this.partenzaCorrente);
+        }
+    }
+
+    onClick(sbloccato = false) {
+        if (!sbloccato) {
+            if (!this.mezzoComp.selezionato) {
+                this.mezzoComp.selezionato = true;
+                this.selezionato.emit(this.mezzoComp);
+            } else if (this.mezzoComp.selezionato) {
+                this.mezzoComp.selezionato = false;
+                this.deselezionato.emit(this.mezzoComp);
+            }
         } else {
-            this.mezzoComp.selezionato = false;
-            this.deselezionato.emit(this.mezzoComp);
+            this.sbloccato.emit(this.mezzoComp);
+            // TOAST ("IL MEZZO è BLOCCATO, SBLOCCALO")
         }
     }
 
     liClass() {
         return {
             'border-warning bg-light': this.mezzoComp.hover,
-            'border-danger bg-grey': this.mezzoComp.selezionato
+            'border-danger bg-grey': this.mezzoComp.selezionato,
+            'diagonal-stripes bg-lightgrey': this.mezzoComp.bloccato
         };
     }
 

@@ -1,4 +1,4 @@
-<li class="list-group-item cursor-pointer border" (mouseover)="onHoverIn()" (mouseout)="onHoverOut()" (click)="onClick()"
+<li class="list-group-item cursor-pointer border" (mouseover)="onHoverIn()" (mouseout)="onHoverOut()" (click)="validateOnClick()"
   [ngClass]="liClass()">
   <div class="row">
     <div class="col-9 pl-0 text-center">
@@ -12,6 +12,9 @@
         <span class="d-inline-block mr-2">{{mezzoComp.tempoPercorrenza}}</span>
       </small>
       <span class="badge" [ngbTooltip]="mezzoComp.distaccamento">{{mezzoComp.distaccamento | slice:0:3}}</span>
+    </div>
+    <div class="col-3 text-right">
+      <i *ngIf="mezzoComp.bloccato === true && mezzoComp === partenzaCorrente?.mezzoComposizione" class="fa fa-lg fa-lock" (click)="onClick(true); $event.stopPropagation();"></i>
     </div>
   </div>
 </li>

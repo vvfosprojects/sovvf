@@ -33,8 +33,12 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     mezziComposizione: MezzoComposizione[];
     squadreComposizione: SquadraComposizione[];
     partenze: BoxPartenza[] = [];
+
+    partenzaCorrente: BoxPartenza;
     idPartenzaCorrente: string;
     indexPartenzaCorrente: number;
+
+    mezziBloccati: MezzoComposizione[] = [];
 
     buttonConferma = false;
 
@@ -92,6 +96,22 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                     this.indexPartenzaCorrente = index;
                 }
             });
+            this.partenzaCorrente = this.partenze[this.indexPartenzaCorrente];
+        }
+    }
+
+    unsetPartenzaAttuale() {
+        this.partenzaCorrente = null;
+    }
+
+    /* Metodo che valida il click */
+    validateMezzoSelezionato(mezzo: MezzoComposizione) {
+        if (!this.partenzaCorrente) {
+            this.mezzoSelezionato(mezzo);
+        } else if (this.partenzaCorrente && this.partenzaCorrente.mezzoComposizione !== null) {
+            this.deselezionaMezziComposizioneExceptOne(this.partenzaCorrente.mezzoComposizione);
+            // TEST
+            // console.error('Non puoi, devi prima sbloccare il mezzo');
         }
     }
 
@@ -100,9 +120,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.setMezzo(mezzo);
     }
 
-    mezzoDeselezionato() {
+    mezzoDeselezionato(mezzo: MezzoComposizione) {
         // Unsetto il mezzo per la partenza attuale
-        this.unsetMezzo();
+        this.unsetMezzo(mezzo);
     }
 
     squadraSelezionata(squadra: SquadraComposizione) {
@@ -116,9 +136,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     boxPartenzaSelezionato(partenza: BoxPartenza) {
-        this.selezionaBoxPartenza(partenza);
-        this.idPartenzaCorrente = partenza.id;
-        this.setPartenzaAttuale(this.idPartenzaCorrente);
         this.selezionaBoxPartenza(partenza);
     }
 
@@ -135,24 +152,49 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     // MEZZO //
     setMezzo(mezzo: MezzoComposizione) {
-        if (this.partenze[this.indexPartenzaCorrente]) {
-            this.partenze[this.indexPartenzaCorrente].mezzoComposizione = mezzo;
+        if (this.partenzaCorrente) {
+            this.deselezionaMezziComposizioneExceptOne(mezzo);
+            this.partenzaCorrente.mezzoComposizione = mezzo;
         } else {
             this.initPartenzaVuota();
             this.setMezzo(mezzo);
         }
         // TEST
-        // console.log('[CompA] Mezzo settato, partenza', this.partenze[this.indexPartenzaCorrente]);
+        // console.log('[CompA] Mezzo settato, partenza', this.partenzaCorrente);
     }
 
-    unsetMezzo() {
-        if (this.partenze[this.indexPartenzaCorrente]) {
-            this.partenze[this.indexPartenzaCorrente].mezzoComposizione = null;
+    unsetMezzo(mezzo: MezzoComposizione) {
+        if (this.partenzaCorrente) {
+            this.partenzaCorrente.mezzoComposizione = null;
         } else {
             console.error('[CompA] Non posso eliminare il mezzo se non esiste la partenza');
         }
         // TEST
-        // console.log('[CompA] Mezzo unsettato, partenza', this.partenze[this.indexPartenzaCorrente]);
+        // console.log('[CompA] Mezzo unsettato, partenza', this.partenzaCorrente);
+    }
+
+    deselezionaMezziComposizione() {
+        this.mezziComposizione.forEach(mC => {
+            mC.selezionato = false;
+        });
+    }
+
+    deselezionaMezziComposizioneExceptOne(mezzo: MezzoComposizione) {
+        this.mezziComposizione.forEach(mC => {
+            if (mezzo !== mC) {
+                mC.selezionato = false;
+            }
+        });
+    }
+
+    bloccaMezzoComposizione(mezzo: MezzoComposizione) {
+        mezzo.bloccato = true;
+        this.partenzaCorrente.mezzoComposizione.bloccato = true;
+    }
+
+    mezzoSbloccato(mezzo: MezzoComposizione) {
+        mezzo.bloccato = false;
+        this.partenzaCorrente.mezzoComposizione.bloccato = false;
     }
 
     selezionaMezzoPartenza(partenza: BoxPartenza) {
@@ -162,34 +204,28 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         }
     }
 
-    deselezionaMezziComposizione() {
-        this.mezziComposizione.forEach(mC => {
-            mC.selezionato = false;
-        });
-    }
-
     // SQUADRA //
     setSquadra(squadra: SquadraComposizione) {
-        if (this.partenze[this.indexPartenzaCorrente]) {
-            this.partenze[this.indexPartenzaCorrente].squadraComposizione.push(squadra);
+        if (this.partenzaCorrente) {
+            this.partenzaCorrente.squadraComposizione.push(squadra);
         } else {
             this.initPartenzaVuota();
             this.setSquadra(squadra);
         }
         // TEST
-        // console.log('[CompA] Squadra settata, partenza', this.partenze[this.indexPartenzaCorrente]);
+        // console.log('[CompA] Squadra settata, partenza', this.partenzaCorrente);
     }
 
     unsetSquadra(squadra: SquadraComposizione) {
-        if (this.partenze[this.indexPartenzaCorrente]) {
-            this.partenze[this.indexPartenzaCorrente].squadraComposizione.forEach((s: SquadraComposizione, index) => {
-                s === squadra && this.partenze[this.indexPartenzaCorrente].squadraComposizione.splice(index, 1);
+        if (this.partenzaCorrente) {
+            this.partenzaCorrente.squadraComposizione.forEach((s: SquadraComposizione, index) => {
+                s === squadra && this.partenzaCorrente.squadraComposizione.splice(index, 1);
             });
         } else {
             console.error('[CompA] Non posso eliminare la squadda se non esiste la partenza');
         }
         // TEST
-        // console.log('[CompA] Squadra unsettata, partenza', this.partenze[this.indexPartenzaCorrente]);
+        // console.log('[CompA] Squadra unsettata, partenza', this.partenzaCorrente);
     }
 
     selezionaSquadrePartenza(partenza: BoxPartenza) {
@@ -207,17 +243,20 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     // BOX PARTENZA //
     selezionaBoxPartenza(partenza: BoxPartenza, noValidate?: boolean) {
-        if (!noValidate) {
-            if (this.validaBoxPartenza(this.partenze[this.indexPartenzaCorrente])) {
-                this.deselezionaBoxPartenza(this.partenze[this.indexPartenzaCorrente]);
+        if (!noValidate && this.partenzaCorrente) {
+            if (this.validaBoxPartenza(this.partenzaCorrente)) {
+                this.deselezionaBoxPartenza(this.partenzaCorrente);
+                this.bloccaMezzoComposizione(this.partenzaCorrente.mezzoComposizione);
             } else {
-                this.eliminaBoxPartenza(this.partenze[this.indexPartenzaCorrente]);
+                this.eliminaBoxPartenza(this.partenzaCorrente);
             }
         }
         if (this.partenze.length > 0) {
             partenza.selezionato = true;
-            this.selezionaSquadrePartenza(this.partenze[this.indexPartenzaCorrente]);
-            this.selezionaMezzoPartenza(this.partenze[this.indexPartenzaCorrente]);
+            this.idPartenzaCorrente = partenza.id;
+            this.setPartenzaAttuale(this.idPartenzaCorrente);
+            this.selezionaSquadrePartenza(this.partenzaCorrente);
+            this.selezionaMezzoPartenza(this.partenzaCorrente);
         }
     }
 
@@ -225,6 +264,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         if (partenza) {
             partenza.selezionato = false;
         }
+        this.deselezionaMezziComposizione();
+        this.deselezionaSquadreComposizione();
     }
 
     eliminaBoxPartenza(partenza: BoxPartenza) {
@@ -236,19 +277,18 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             });
             this.deselezionaMezziComposizione();
             this.deselezionaSquadreComposizione();
-            if (this.partenze[this.partenze.length - 1]) {
-                this.setPartenzaAttuale(this.partenze[this.partenze.length - 1].id);
-                this.selezionaBoxPartenza(this.partenze[this.partenze.length - 1], true);
+            if (partenza.mezzoComposizione && partenza.mezzoComposizione.bloccato) {
+                this.mezzoSbloccato(partenza.mezzoComposizione);
             }
+            this.unsetPartenzaAttuale();
         }
     }
 
     nuovaPartenza(noValidate?: boolean) {
-        if (!noValidate) {
-            if (this.validaBoxPartenza(this.partenze[this.indexPartenzaCorrente])) {
-                this.deselezionaMezziComposizione();
-                this.deselezionaSquadreComposizione();
-                this.deselezionaBoxPartenza(this.partenze[this.indexPartenzaCorrente]);
+        if (!noValidate && this.partenzaCorrente) {
+            if (this.validaBoxPartenza(this.partenzaCorrente)) {
+                this.deselezionaBoxPartenza(this.partenzaCorrente);
+                this.bloccaMezzoComposizione(this.partenzaCorrente.mezzoComposizione);
                 this.initPartenzaVuota();
             } else {
                 console.error('[CompA] BoxPartenza non valido');

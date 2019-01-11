@@ -9,4 +9,5 @@ export interface MezzoComposizione {
     tempoPercorrenza: string;
     selezionato: boolean;
     hover: boolean;
+    bloccato?: boolean;
 }

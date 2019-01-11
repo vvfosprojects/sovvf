@@ -8,8 +8,8 @@
             <i class="fa fa-truck mr-2"></i><span class="h6">Mezzi</span>
           </div>
           <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
-            <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC" (selezionato)="mezzoSelezionato($event)"
-              (deselezionato)="mezzoDeselezionato($event)"></app-mezzo-composizione>
+            <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC" [partenzaCorrente]="partenzaCorrente" (selezionato)="mezzoSelezionato($event)"
+              (deselezionato)="mezzoDeselezionato($event)" (sbloccato)="mezzoSbloccato($event)"></app-mezzo-composizione>
           </ul>
         </div>
       </div>
@@ -45,8 +45,9 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-block card-shadow mt-2" [disabled]="!buttonConferma" [ngClass]="{'btn-danger': !buttonConferma, 'btn-success': buttonConferma}">Invia
-          Partenz<span *ngIf="partenze.length <= 1">a</span><span *ngIf="partenze.length > 1">e</span></button>
+        <button class="btn btn-block card-shadow mt-2" [disabled]="!buttonConferma" [ngClass]="{'btn-danger': !buttonConferma, 'btn-success': buttonConferma}">
+          Invia Partenz<span *ngIf="partenze.length <= 1">a</span><span *ngIf="partenze.length > 1">e</span>
+        </button>
       </div>
     </div>
   </div>

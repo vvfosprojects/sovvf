@@ -121,6 +121,11 @@
 .bg-grey{
     background-color: #eeeeee !important;
 }
+
+.bg-lightgrey {
+    background-color: #d3d3d3 !important;
+}
+
 .scroll-y{
     overflow-y: scroll;
     overflow-x: hidden
