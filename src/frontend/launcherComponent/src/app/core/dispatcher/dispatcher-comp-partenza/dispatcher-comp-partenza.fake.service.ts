@@ -5,10 +5,10 @@ import { of, Observable } from 'rxjs';
 import { CompPartenzaService } from '../../service/comp-partenza-service/comp-partenza.service';
 
 // Model
-import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
+import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { Squadra } from '../../../shared/model/squadra.model';
-import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
+import { MezzoComposizione } from '../../../composizione-partenza/model/mezzo-composizione.model';
 
 
 @Injectable({
@@ -28,7 +28,7 @@ export class DispatcherCompPartenzaFakeService {
         });
         return of(this.preAccoppiati);
     }
-
+    
     onNewMezziComposizioneList(): Observable<MezzoComposizione[]> {
         this.compPartenzaService.getMezziComposizione().subscribe((mezziComp: MezzoComposizione[]) => {
             this.mezziComposizione = mezziComp;

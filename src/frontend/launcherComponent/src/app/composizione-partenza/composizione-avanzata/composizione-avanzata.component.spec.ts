@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ComposizioneAvanzataComponent } from './composizione-avanzata.component';
+import { SlowerComponent } from './composizione-avanzata.component';
 
 describe('SlowerComponent', () => {
-  let component: ComposizioneAvanzataComponent;
-  let fixture: ComponentFixture<ComposizioneAvanzataComponent>;
+  let component: SlowerComponent;
+  let fixture: ComponentFixture<SlowerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ComposizioneAvanzataComponent ]
+      declarations: [ SlowerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ComposizioneAvanzataComponent);
+    fixture = TestBed.createComponent(SlowerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

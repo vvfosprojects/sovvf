@@ -27,7 +27,7 @@ export class ViewService {
             composizione: {
                 column: 'col-5',
                 disable: false,
-                modalita: 'faster'
+                modalita: 'slower'
             }
         },
         maps: {
@@ -100,7 +100,7 @@ export class ViewService {
         const result: ViewInterfaceComposizione = {
             column: 'col-5',
             disable: false,
-            modalita: 'faster'
+            modalita: 'slower'
         };
 
         result.disable = !!view.components.composizione;

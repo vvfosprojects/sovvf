@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class ComposizioneFilterbarComponent implements OnInit {
   generiMezzi = ['APS', 'ABP', 'AG', 'AS'];
   distaccamenti = ['Roma', 'Frosinone', 'Latina', 'Rieti'];
-  stati = ['In Sede', 'In Rientro', 'In Viaggio', 'Sul Posto'];
+  stati = ['In Sede', 'In Viaggio', 'In Rientro', 'Sul Posto'];
 
   constructor() { }
 

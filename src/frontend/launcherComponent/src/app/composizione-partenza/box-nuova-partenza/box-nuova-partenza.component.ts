@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { BoxPartenza } from '../interface/box-partenza-interface';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { BoxPartenza } from '../model/box-partenza.model';
+import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 
 @Component({
   selector: 'app-box-nuova-partenza',
@@ -7,73 +8,106 @@ import { BoxPartenza } from '../interface/box-partenza-interface';
   styleUrls: ['./box-nuova-partenza.component.css']
 })
 export class BoxNuovaPartenzaComponent implements OnInit {
+  @Input() richiesta: SintesiRichiesta;
   @Input() partenza: BoxPartenza;
-  @Output() selezionato = new EventEmitter<BoxPartenza>();
-  @Output() deselezionato = new EventEmitter<BoxPartenza>();
-  @Output() eliminato = new EventEmitter<BoxPartenza>();
-
-  // Options
+  @Input() partenze: BoxPartenza[];
+  @Input() preAccoppiatiSelezionati: BoxPartenza[];
+  @Input() idPartenzaAttuale: number;
   @Input() elimina: boolean;
+  @Output() selezionato: EventEmitter<BoxPartenza> = new EventEmitter();
+  @Output() eliminato: EventEmitter<BoxPartenza> = new EventEmitter();
 
-  constructor() {
-  }
+  constructor() { }
 
   ngOnInit() {
-    // TEST
-    // console.log('[BoxPartenza] Partenza', this.partenza);
+    // console.log(this.partenza);
   }
 
-  onHoverIn() {
+  partenzaSelezionata(partenza: BoxPartenza) {
+    this.selezionato.emit(partenza);
   }
 
-  onHoverOut() {
+  eliminaPartenza(partenza: BoxPartenza) {
+    this.eliminato.emit(partenza);
   }
 
-  onClick() {
-    if (!this.partenza.selezionato) {
-      this.selezionato.emit(this.partenza);
-    } else {
-      this.deselezionato.emit(this.partenza);
-    }
-  }
-
-  onElimina() {
-    this.eliminato.emit(this.partenza);
-  }
-
-  NgClass() {
-    return {
-      'card-shadow': !this.partenza.selezionato,
-      'bg-light border-danger card-shadow-danger': this.partenza.selezionato
-    };
-  }
-
-  BoxValidationClass() {
-    let result = 'text-danger';
-    let tooltip = 'Errore sconosciuto';
-    const prefix = 'fa ';
-    let icon = 'fa-exclamation-triangle';
-    const squadra = this.partenza.squadraComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
-    const mezzo = this.partenza.mezzoComposizione ? 'mezzo-si' : 'mezzo-no';
-
-    switch (mezzo + '|' + squadra) {
-      case 'mezzo-si|squadra-no':
-        tooltip = 'È necessario selezionare una squadra';
-        break;
-      case 'mezzo-no|squadra-no':
-        tooltip = 'È necessario selezionare un mezzo o una squadra';
-        break;
-      case 'mezzo-si|squadra-si':
-        result = 'text-success';
-        tooltip = 'Tutto ok';
-        icon = 'fa-check';
-        break;
-      case 'mezzo-no|squadra-si':
-        result = 'text-warning';
-        tooltip = 'Stai inserendo una partenza senza mezzo';
-        break;
+  /* NgClass status */
+  cardClasses(partenza: BoxPartenza) {
+    let returnClass = '';
+    if (partenza) {
+      switch (partenza.mezzoComposizione.mezzo.stato) {
+        case 'inSede':
+          returnClass = 'status_inSede card-shadow';
+          break;
+        case 'inRientro':
+          returnClass = 'status_inRientro card-shadow';
+          break;
+        case 'inViaggio':
+          returnClass = 'status_inViaggio card-shadow';
+          break;
+        case 'sulPosto':
+          returnClass = 'status_sulPosto card-shadow';
+          break;
+        default:
+          break;
+      }
     }
 
-    return { result: result + ' ' + prefix + icon, tooltip: tooltip };
+    if (this.preAccoppiatiSelezionati) {
+      this.preAccoppiatiSelezionati.forEach(preAcc => {
+        if (preAcc === partenza) {
+          switch (partenza.mezzoComposizione.mezzo.stato) {
+            case 'inSede':
+              returnClass = 'status_inSede bg-light card-shadow-secondary-soft';
+              break;
+            case 'inRientro':
+              returnClass = 'status_inRientro bg-light card-shadow-primary-soft';
+              break;
+            case 'inViaggio':
+              returnClass = 'status_inViaggio bg-light card-shadow-info-soft';
+              break;
+            case 'sulPosto':
+              returnClass = 'status_sulPosto bg-light card-shadow-success-soft';
+              break;
+            default:
+              break;
+          }
+        }
+      });
+    }
+
+    // if (this.partenze[this.idPartenzaAttuale] && this.partenze[this.idPartenzaAttuale] === partenza) {
+    //   returnClass = returnClass + ' bg-grey';
+    // }
+
+    return returnClass;
+  }
+
+  competenzaClasses(preAccoppiato: BoxPartenza) {
+    let returnClass = 'badge-secondary';
+    let count = 0;
+
+    if (preAccoppiato) {
+      this.richiesta.competenze.forEach(c => {
+        count += 1;
+        if (c.descrizione === preAccoppiato.mezzoComposizione.distaccamento) {
+          switch (count) {
+            case 1:
+              returnClass = 'badge-primary';
+              break;
+            case 2:
+              returnClass = 'badge-info';
+              break;
+            case 3:
+              returnClass = 'badge-secondary';
+              break;
+
+            default:
+              break;
+          }
+        }
+      });
+    }
+    return returnClass;
   }
 }

@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
+import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
 import { DispatcherCompPartenzaService } from '../../dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.service';
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { Squadra } from '../../../shared/model/squadra.model';
-import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
-import { SquadraComposizione } from 'src/app/composizione-partenza/interface/squadra-composizione-interface';
+import { MezzoComposizione } from '../../../composizione-partenza/model/mezzo-composizione.model';
 
 
 @Injectable({
@@ -14,7 +13,7 @@ import { SquadraComposizione } from 'src/app/composizione-partenza/interface/squ
 export class CompPartenzaManagerServiceFake {
     preAccoppiati: BoxPartenza[];
     mezziComposizione: MezzoComposizione[];
-    squadre: SquadraComposizione[];
+    squadre: Squadra[];
 
     constructor(private compPartenzaDispatcher: DispatcherCompPartenzaService) {
         this.onNewPreAccoppiatiList();
@@ -33,9 +32,9 @@ export class CompPartenzaManagerServiceFake {
             this.mezziComposizione = mezziComp;
         });
     }
-
+    
     onNewSquadreList() {
-        this.compPartenzaDispatcher.onNewSquadreList().subscribe((squadre: SquadraComposizione[]) => {
+        this.compPartenzaDispatcher.onNewSquadreList().subscribe((squadre: Squadra[]) => {
             this.squadre = squadre;
         });
     }
@@ -47,8 +46,8 @@ export class CompPartenzaManagerServiceFake {
     getMezziComposizione(): Observable<MezzoComposizione[]> {
         return of(this.mezziComposizione);
     }
-
-    getSquadre(): Observable<SquadraComposizione[]> {
+    
+    getSquadre(): Observable<Squadra[]> {
         return of(this.squadre);
     }
 

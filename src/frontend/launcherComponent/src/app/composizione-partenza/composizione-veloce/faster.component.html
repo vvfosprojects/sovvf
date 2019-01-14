@@ -1,8 +1,8 @@
 <div class="row">
   <div class="col-12 border-bottom border-top scroll-y pt-2 pb-1" style="max-height:405px">
     <div class="row">
-      <app-box-nuova-partenza class="col-4" *ngFor="let preAcc of preAccoppiati" [partenza]="preAcc"
-      (selezionato)="preAccoppiatoSelezionato($event)" (deselezionato)="preAccoppiatoDeselezionato($event)"></app-box-nuova-partenza>
+      <app-box-nuova-partenza class="col-3" *ngFor="let preAcc of preAccoppiati" [partenza]="preAcc" [richiesta]="richiesta"
+        [preAccoppiatiSelezionati]="preAccoppiatiSelezionati" (selezionato)="preAccoppiatoSelezionato($event)"></app-box-nuova-partenza>
     </div>
   </div>
   <div class="col-12 text-right">
