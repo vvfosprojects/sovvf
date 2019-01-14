@@ -1,13 +1,11 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
 // Model
-import { MezzoComposizione } from '../../model/mezzo-composizione.model';
+import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
+import { BoxPartenza } from '../../interface/box-partenza-interface';
+import { Coordinate } from 'src/app/shared/model/coordinate.model';
 
 // Service
-import { CompMezzoSquadraService } from '../../service/comp-mezzo-squadra/comp-mezzo-squadra.service';
-import { Squadra } from 'src/app/shared/model/squadra.model';
-import { BoxPartenza } from '../../model/box-partenza.model';
-import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -16,134 +14,116 @@ import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 })
 export class MezzoComposizioneComponent implements OnInit, OnChanges {
     @Input() mezzoComp: MezzoComposizione;
-    @Input() squadre: Squadra[];
+    @Output() selezionato = new EventEmitter<MezzoComposizione>();
+    @Output() deselezionato = new EventEmitter<MezzoComposizione>();
+    @Output() sbloccato = new EventEmitter<MezzoComposizione>();
+
+    @Input() partenzaCorrente: BoxPartenza;
     @Input() partenze: BoxPartenza[];
-    @Input() idPartenzaAttuale: number;
-    @Input() richiesta: SintesiRichiesta;
-    @Output() nuovoMezzo: EventEmitter<any> = new EventEmitter();
-    @Output() mezzoCoordinate: EventEmitter<any> = new EventEmitter();
 
-    mezzoSelezionato: MezzoComposizione;
-    assegnato = false;
-    hover = false;
+    // Mappa
+    @Output() mezzoCoordinate = new EventEmitter<Coordinate>();
 
-    constructor(private compMezzoSquadra: CompMezzoSquadraService) {
-        this.compMezzoSquadra.getMezzo().subscribe(mezzo => {
-            this.mezzoSelezionato = mezzo;
-        });
+    constructor() {
     }
 
     ngOnInit() {
     }
 
     ngOnChanges() {
-        if (this.partenze.length > 0 && this.partenze[this.idPartenzaAttuale]) {
-            this.compMezzoSquadra.setMezzo(this.partenze[this.idPartenzaAttuale].mezzoComposizione);
+    }
+
+    onHoverIn() {
+        if (!this.mezzoComp.bloccato) {
+            this.mezzoComp.hover = true;
         }
     }
 
-    click(mezzo: any) {
-        this.compMezzoSquadra.setMezzo(mezzo);
-        /* if (!this.mezzoSelezionato) {
-          this.compMezzoSquadra.setMezzo(mezzo);
-        } else if (this.mezzoSelezionato !== mezzo) {
-          this.compMezzoSquadra.clearMezzo();
-          this.compMezzoSquadra.setMezzo(mezzo);
-        } else if (this.mezzoSelezionato === mezzo) {
-          this.compMezzoSquadra.clearMezzo();
-          this.compMezzoSquadra.clearSquadra();
-        } */
-    }
-
-    hoverIn() {
-        this.hover = true;
-    }
-
-    hoverOut() {
-        this.hover = false;
-    }
-
-    clickNuovoMezzo() {
-        // console.log('Nuovo mezzo');
-        this.nuovoMezzo.emit();
-    }
-
-    // NgClass
-    mezzoCompClass(mezzoComp: any) {
-        let returnClass = '';
-        if (this.mezzoSelezionato && this.mezzoSelezionato === mezzoComp) {
-            returnClass = 'border-primary bg-grey';
+    onHoverOut() {
+        if (!this.mezzoComp.bloccato) {
+            this.mezzoComp.hover = false;
         }
+    }
 
-        if (this.hover) {
-            returnClass = returnClass + ' bg-grey';
-        }
-
+    validateOnClick() {
         if (this.partenze.length > 0) {
-            this.partenze.forEach((p: BoxPartenza) => {
-                if (mezzoComp === p.mezzoComposizione && p.id !== this.idPartenzaAttuale) {
-                    returnClass = 'disabled';
-                }
-            });
+            if (this.isBloccato(this.mezzoComp)) {
+                console.error('Mezzo bloccato da un\'altra partenza');
+            } else if (this.isMezzoPartenzaBloccato(this.partenzaCorrente)) {
+                console.error('Mezzo bloccato da un\'altra partenza');
+            } else {
+                this.onClick();
+            }
+        } else {
+            this.onClick();
         }
-        return returnClass;
     }
 
-    iconaStatiClass(mezzoComp: any) {
-        let returnClass = '';
+    isBloccato(mezzo: MezzoComposizione): boolean {
+        let returnBool = false;
 
-        switch (mezzoComp.mezzo.stato) {
-            case 'inSede':
-                returnClass = 'text-secondary';
-                break;
-            case 'inViaggio':
-                returnClass = 'text-info';
-                break;
-            case 'inRientro':
-                returnClass = 'text-primary';
-                break;
-            case 'sulPosto':
-                returnClass = 'text-success';
-                break;
-
-            default:
-                break;
-        }
-
-        return returnClass;
-    }
-
-    badgeDistaccamentoClass(mezzoComp: any) {
-        let returnClass = 'badge-secondary';
-        let count = 0;
-
-        this.richiesta.competenze.forEach(c => {
-            count += 1;
-            if (c.descrizione === mezzoComp.distaccamento) {
-                switch (count) {
-                    case 1:
-                        returnClass = 'badge-primary';
-                        break;
-                    case 2:
-                        returnClass = 'badge-info';
-                        break;
-                    case 3:
-                        returnClass = 'badge-secondary';
-                        break;
-                    default:
-                        break;
-                }
+        /* se almeno una partenza ha il mezzo === mezzoComposizione, ed è bloccato, ritorna true */
+        this.partenze.forEach(p => {
+            if (p.mezzoComposizione && p.mezzoComposizione.bloccato && mezzo === p.mezzoComposizione) {
+                returnBool = true;
             }
         });
-        // TEST
-        // this.richiesta.competenze.forEach(c => {
-        //    console.log('Richiesta', c.descrizione);
-        // });
-        // console.log('Mezzo', mezzoComp.distaccamento);
-        return returnClass;
+
+        return returnBool;
     }
 
-    mezzoDirection(mezzo: MezzoComposizione): void {
-        this.mezzoCoordinate.emit(mezzo.coordinate);
+    isMezzoPartenzaBloccato(partenza: BoxPartenza): boolean {
+        let returnBool = false;
+
+        if (partenza.mezzoComposizione && partenza.mezzoComposizione.bloccato) {
+            returnBool = true;
+        }
+
+        return returnBool;
+    }
+
+
+    onClick() {
+        // console.log('clicco uno sbloccato');
+        if (!this.mezzoComp.selezionato) {
+            // console.log('clicco un deselezionato (sbloccato)');
+            this.mezzoComp.selezionato = true;
+            this.selezionato.emit(this.mezzoComp);
+
+            // mappa
+            this.mezzoDirection(this.mezzoComp);
+        } else if (this.mezzoComp.selezionato) {
+            // console.log('clicco un selezionato (sbloccato)');
+            this.mezzoComp.selezionato = false;
+            this.deselezionato.emit(this.mezzoComp);
+        }
+    }
+
+    onClickLucchetto() {
+        // console.log('clicco un bloccato');
+        this.mezzoComp.bloccato = false;
+        this.sbloccato.emit(this.mezzoComp);
+        // TOAST ("IL MEZZO è BLOCCATO, SBLOCCALO")
+    }
+
+    liClass() {
+        return {
+            'border-warning bg-light': this.mezzoComp.hover && !this.mezzoComp.selezionato,
+            'border-danger bg-grey': this.mezzoComp.selezionato,
+            'diagonal-stripes bg-lightgrey': this.mezzoComp.bloccato
+        };
+    }
+
+    statoMezzoClass() {
+        return {
+            'text-secondary': this.mezzoComp.mezzo.stato === 'inSede',
+            'text-primary': this.mezzoComp.mezzo.stato === 'inRientro',
+            'text-info': this.mezzoComp.mezzo.stato === 'inViaggio',
+            'text-success': this.mezzoComp.mezzo.stato === 'sulPosto'
+        };
+    }
+
+    mezzoDirection(mezzoComp: MezzoComposizione): void {
+        this.mezzoCoordinate.emit(mezzoComp.coordinate);
     }
 }

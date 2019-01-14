@@ -3,11 +3,12 @@ import { Subject } from 'rxjs';
 
 // Model
 import { Squadra } from '../../../shared/model/squadra.model';
-import { BoxPartenza } from '../../../composizione-partenza/model/box-partenza.model';
-import { MezzoComposizione } from 'src/app/composizione-partenza/model/mezzo-composizione.model';
+import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
+import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 
 // Service
 import { CompPartenzaService } from '../../service/comp-partenza-service/comp-partenza.service';
+import { SquadraComposizione } from 'src/app/composizione-partenza/interface/squadra-composizione-interface';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,7 @@ import { CompPartenzaService } from '../../service/comp-partenza-service/comp-pa
 export class DispatcherCompPartenzaService {
     private newPreaccoppiatiList$ = new Subject<BoxPartenza[]>();
     private newMezziComposizioneList$ = new Subject<MezzoComposizione[]>();
-    private newSquadreList$ = new Subject<Squadra[]>();
+    private newSquadreList$ = new Subject<SquadraComposizione[]>();
 
     constructor(private compPartenzaService: CompPartenzaService) { }
 
@@ -28,7 +29,7 @@ export class DispatcherCompPartenzaService {
             });
         return this.newPreaccoppiatiList$.asObservable();
     }
-    
+
     onNewMezziComposizioneList() {
         this.newMezziComposizioneList$.next();
         this.compPartenzaService.getMezziComposizione()

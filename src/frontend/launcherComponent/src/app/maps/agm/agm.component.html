@@ -6,7 +6,7 @@
         <agm-map [disableDefaultUI]="true"
                  [zoomControl]="true"
                  [zoomControlOptions]="zoomControlOptions"
-                 [minZoom]="5"
+                 [minZoom]="6"
                  [fullscreenControl]="true"
                  [fullscreenControlOptions]="fullscreenControlOptions"
                  [mapTypeControl]="true"
@@ -259,7 +259,7 @@
             <app-agm-content (mapLoad)='loadAPIWrapper($event)'></app-agm-content>
         </agm-map>
     </div>
-    <ng-template [ngSwitchCase]="viewStateMappa.active !== ''">
+    <!-- <ng-template [ngSwitchCase]="viewStateMappa.active !== ''">
         {{ viewStateMappa | json }}
-    </ng-template>
+    </ng-template> -->
 </div>
