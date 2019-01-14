@@ -37,6 +37,10 @@ export class ViewService {
 
     private subject = new Subject<ViewInterface>();
 
+    private static getCopy(value): any {
+        return (JSON.parse(JSON.stringify(value)));
+    }
+
     static columns(view: ViewInterface): ViewInterfaceLayout {
         const result: ViewInterfaceLayout = {
             split: true,
@@ -64,7 +68,7 @@ export class ViewService {
         };
 
         function getActive(object) {
-            const obj = Object.assign(object);
+            const obj = ViewService.getCopy(object);
             obj['mappa'] = false;
             const res = Object.keys(obj).find(key => obj[key] === true);
             return res ? res : result.active;
@@ -114,7 +118,7 @@ export class ViewService {
 
     sendView(view: ViewInterface) {
         this.viewState = view;
-        this.action(view);
+        this.action(this.viewState);
         this.subject.next(this.viewState);
     }
 
