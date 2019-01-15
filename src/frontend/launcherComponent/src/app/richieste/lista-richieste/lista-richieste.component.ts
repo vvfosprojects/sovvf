@@ -228,13 +228,6 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
         }
     }
 
-    /* Deseleziona e defissa la richiesta */
-    unClick() {
-        this.richiesteS.deselezionata();
-        // this.richiesteS.defissata();
-        this.markerS.actionById('a', 'unclick', true);
-    }
-
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(richiesta: any) {
         this.modalService.open(EventiRichiestaComponent, { size: 'lg', centered: true });

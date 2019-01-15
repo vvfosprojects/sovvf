@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit, OnDestroy } from '@angular/core';
 
 // Model
-import { BoxPartenza } from '../model/box-partenza.model';
+import { BoxPartenza } from '../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Service
@@ -11,15 +11,14 @@ import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
 import { Observable, Subscription } from 'rxjs';
 import { Coordinate } from '../../shared/model/coordinate.model';
 import { DirectionInterface } from '../../maps/service/direction-service/direction-interface';
-import { CompMezzoSquadraService } from '../service/comp-mezzo-squadra/comp-mezzo-squadra.service';
 import { DirectionService } from '../../maps/service/direction-service/direction-service.service';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { CenterService } from '../../maps/service/center-service/center-service.service';
 
 @Component({
     selector: 'app-faster',
-    templateUrl: './faster.component.html',
-    styleUrls: ['./faster.component.css']
+    templateUrl: './composizione-veloce.component.html',
+    styleUrls: ['./composizione-veloce.component.css']
 })
 export class FasterComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
@@ -34,18 +33,14 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Output() centroMappaEmit: EventEmitter<CentroMappa> = new EventEmitter();
 
     constructor(private compPartenzaManager: CompPartenzaManagerService,
-                private preAccoppiatiS: PreAccoppiatiService,
-                private directionService: DirectionService,
-                private markerService: MarkerService,
-                private centerService: CenterService) {
+        private preAccoppiatiS: PreAccoppiatiService,
+        private directionService: DirectionService,
+        private markerService: MarkerService,
+        private centerService: CenterService) {
         // Restituisce i PreAccoppiati
         this.compPartenzaManager.getPreAccoppiati().subscribe((preAccoppiati: BoxPartenza[]) => {
             this.preAccoppiati = preAccoppiati;
             console.log(preAccoppiati);
-        });
-        // Restituisce i PreAccoppiati selezionati
-        this.preAccoppiatiS.getPreAccoppiatiSelezionati().subscribe((res: any) => {
-            this.preAccoppiatiSelezionati = res;
         });
     }
 
@@ -66,8 +61,30 @@ export class FasterComponent implements OnInit, OnDestroy {
     }
 
     preAccoppiatoSelezionato(preAcc: BoxPartenza) {
-        this.preAccoppiatiS.sendPreAccoppiatoSelezionato(preAcc);
-        this.mezzoCoordinate(preAcc.mezzoComposizione.coordinate);
+        this.selezionaPreaccoppiato(preAcc);
+        if (preAcc.mezzoComposizione && preAcc.mezzoComposizione.coordinate) {
+            this.mezzoCoordinate(preAcc.mezzoComposizione.coordinate);
+        }
+    }
+
+    preAccoppiatoDeselezionato(preAcc: BoxPartenza) {
+        this.deselezionaPreaccoppiato(preAcc);
+        this.annullaPartenza(true);
+        this.centraMappa(this.richiesta, 'centra');
+    }
+
+    selezionaPreaccoppiato(preAcc: BoxPartenza) {
+        preAcc.selezionato = true;
+        this.preAccoppiatiSelezionati.push(preAcc);
+    }
+
+    deselezionaPreaccoppiato(preAcc: BoxPartenza) {
+        this.preAccoppiatiSelezionati.forEach((pA, index) => {
+            if (preAcc === pA) {
+                preAcc.selezionato = false;
+                this.preAccoppiatiSelezionati.splice(index, 1);
+            }
+        });
     }
 
     mezzoCoordinate(event: Coordinate): void {

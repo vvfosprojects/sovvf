@@ -13,7 +13,7 @@ import { MarkerService } from '../maps/service/marker-service/marker-service.ser
 })
 export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
-    @Input() compPartenzaMode = 'slower';
+    @Input() compPartenzaMode: string;
     @Output() statoPartenza = new EventEmitter<string>();
     subscription = new Subscription();
     dismissPartenzaSubject: Subject<boolean> = new Subject<boolean>();
@@ -27,6 +27,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.boxClickService.allTrueByRichiesta(this.richiesta.stato);
+        isDevMode() && console.log(this.compPartenzaMode);
         isDevMode() && console.log('Componente Composizione creato');
     }
 

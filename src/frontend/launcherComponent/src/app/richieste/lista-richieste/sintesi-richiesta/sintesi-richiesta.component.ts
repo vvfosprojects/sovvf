@@ -54,17 +54,6 @@ export class SintesiRichiestaComponent implements OnInit {
     ngOnInit() {
     }
 
-    /* Layout Methods */
-    toggleEspanso(): void {
-        if (this.espandibile) {
-            this.espanso = !this.espanso;
-        }
-    }
-
-    complessitaClass(richiesta: any) {
-        return this.methods.complessitaClass(richiesta);
-    }
-
     /* Eventi */
     richiestaClick(richiesta: any) {
         if (richiesta) {
@@ -97,5 +86,16 @@ export class SintesiRichiestaComponent implements OnInit {
         } else {
             this.nuovaPartenza.emit(richiesta);
         }
+    }
+
+    /* Layout Methods */
+    toggleEspanso(): void {
+        if (this.espandibile) {
+            this.espanso = !this.espanso;
+        }
+    }
+
+    complessitaClass(richiesta: any) {
+        return this.methods.complessitaClass(richiesta);
     }
 }
