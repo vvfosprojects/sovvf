@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { BoxPartenza } from '../interface/box-partenza-interface';
+import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 @Component({
