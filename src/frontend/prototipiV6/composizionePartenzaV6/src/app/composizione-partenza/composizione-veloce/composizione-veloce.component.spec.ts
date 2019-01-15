@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FasterComponent } from './faster.component';
+import { FasterComponent } from './composizione-veloce.component';
 
 describe('FasterComponent', () => {
   let component: FasterComponent;

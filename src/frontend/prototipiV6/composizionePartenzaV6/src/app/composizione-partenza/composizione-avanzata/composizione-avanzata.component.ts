@@ -4,7 +4,6 @@ import { Observable, Subscription } from 'rxjs';
 
 // Service
 import { CompPartenzaManagerService } from '../../core/manager/comp-partenza-manager/comp-partenza-manager.service';
-import { ComposizioneAvanzataService } from '../service/composizione-avanzata/composizione-avanzata.service';
 import { DirectionService } from '../../maps/service/direction-service/direction-service.service';
 import { CenterService } from '../../maps/service/center-service/center-service.service';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
@@ -18,7 +17,6 @@ import { DirectionInterface } from '../../maps/service/direction-service/directi
 // Model
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
-import { Squadra } from '../../shared/model/squadra.model';
 import { Coordinate } from '../../shared/model/coordinate.model';
 
 @Component({
@@ -47,8 +45,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() centroMappaEmit: EventEmitter<CentroMappa> = new EventEmitter();
 
 
-    constructor(private composizioneService: ComposizioneAvanzataService,
-        private compPartenzaManager: CompPartenzaManagerService,
+    constructor(private compPartenzaManager: CompPartenzaManagerService,
+        private directionService: DirectionService,
+        private markerService: MarkerService,
+        private centerService: CenterService,
         private popoverConfig: NgbPopoverConfig,
         private tooltipConfig: NgbTooltipConfig) {
         // Popover options
@@ -74,10 +74,13 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     ngOnInit() {
-        /* this.setInitCentroMappa();
+        this.setInitCentroMappa();
         this.subscription.add(this.dismissEvents.subscribe(
             events => this.annullaPartenza(events)
-        )); */
+        ));
+
+        this.deselezionaMezziComposizione();
+        this.deselezionaSquadreComposizione();
     }
 
     ngOnChanges() {
@@ -304,6 +307,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                 this.partenzaCorrente = null;
             }
         }
+
+        // Mappa
+        this.annullaPartenza(true);
+        this.centraMappa(this.richiesta, 'centra');
     }
 
     nuovaPartenza(noValidate?: boolean) {
@@ -349,7 +356,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     }
 
-    /* mezzoCoordinate(event: Coordinate): void {
+    mezzoCoordinate(event: Coordinate): void {
         if (event && this.richiesta.localita.coordinate) {
             const direction: DirectionInterface = {
                 origin: {
@@ -385,5 +392,5 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         if (event) {
             this.directionService.clearDirection();
         }
-    } */
+    }
 }

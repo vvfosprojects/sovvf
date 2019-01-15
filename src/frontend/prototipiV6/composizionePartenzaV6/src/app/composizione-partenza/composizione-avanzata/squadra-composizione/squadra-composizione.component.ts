@@ -41,8 +41,8 @@ export class SquadraComposizioneComponent implements OnInit {
 
   liClass() {
     return {
-      'border-warning bg-light': this.squadraComp.hover,
-      'border-danger bg-grey': this.squadraComp.selezionato
+      'border-warning': this.squadraComp.hover && !this.squadraComp.selezionato,
+      'border-danger bg-light': this.squadraComp.selezionato
     };
   }
 }

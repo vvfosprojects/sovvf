@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
+
+// Interface
 import { BoxPartenza } from '../../interface/box-partenza-interface';
 
 @Injectable({
@@ -42,9 +44,7 @@ export class PreAccoppiatiService {
             if (preAccoppiato !== preAcc) {
                 this.newArrayPreAccoppiati.push(preAcc);
             } else {
-                /**
-                 * next lo stato di deselezionato alla subject per pulire la mappa dalla direzione del mezzo selezionato
-                 */
+                // next lo stato di deselezionato alla subject per pulire la mappa dalla direzione del mezzo selezionato
                 this.preAccoppiatiDeSelezionato.next(true);
                 console.log('Deselezionato PreAccoppiato: ' + preAccoppiato.id);
             }

@@ -1,4 +1,4 @@
-import { Squadra } from 'src/app/shared/model/squadra.model';
+import { Squadra} from 'src/app/shared/model/squadra.model';
 
 export interface SquadraComposizione {
     id: string;

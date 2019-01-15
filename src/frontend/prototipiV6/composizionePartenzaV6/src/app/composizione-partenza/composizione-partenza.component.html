@@ -1,13 +1,13 @@
 <div class="row mt-2">
   <div class="col-12 pt-1 px-0">
     <div *ngIf="richiesta" class="col-12 mb-2">
-      <div class="w-100 rounded card-shadow" [ngClass]="cardClasses()">
+      <div class="w-100 rounded card-shadow" [ngClass]="cardClasses(richiesta)">
         <app-sintesi-richiesta [richiesta]="richiesta" [fissata]="false" [espanso]="true" [partenza]="true" [listaEventi]="true"
           (dismissNuovaPartenza)="dismissPartenza()"></app-sintesi-richiesta>
       </div>
     </div>
     <div *ngIf="compPartenzaMode === 'faster'" class="col-12">
-      <!-- <app-faster [richiesta]="richiesta" (centroMappaEmit)="getCentroMappa($event)" [dismissEvents]="dismissPartenzaSubject.asObservable()"></app-faster> -->
+      <app-faster [richiesta]="richiesta" (centroMappaEmit)="getCentroMappa($event)" [dismissEvents]="dismissPartenzaSubject.asObservable()"></app-faster>
     </div>
     <div *ngIf="compPartenzaMode === 'slower'" class="col-12">
       <app-composizione-avanzata [richiesta]="richiesta" (centroMappaEmit)="getCentroMappa($event)" [dismissEvents]="dismissPartenzaSubject.asObservable()"></app-composizione-avanzata>

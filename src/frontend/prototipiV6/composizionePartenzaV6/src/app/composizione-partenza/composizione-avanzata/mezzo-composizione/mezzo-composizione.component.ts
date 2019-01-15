@@ -3,6 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angu
 // Model
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
 import { BoxPartenza } from '../../interface/box-partenza-interface';
+import { Coordinate } from 'src/app/shared/model/coordinate.model';
 
 // Service
 
@@ -19,7 +20,9 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
 
     @Input() partenzaCorrente: BoxPartenza;
     @Input() partenze: BoxPartenza[];
-    lucchetto = false;
+
+    // Mappa
+    @Output() mezzoCoordinate = new EventEmitter<Coordinate>();
 
     constructor() {
     }
@@ -86,6 +89,9 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
             // console.log('clicco un deselezionato (sbloccato)');
             this.mezzoComp.selezionato = true;
             this.selezionato.emit(this.mezzoComp);
+
+            // mappa
+            this.mezzoDirection(this.mezzoComp);
         } else if (this.mezzoComp.selezionato) {
             // console.log('clicco un selezionato (sbloccato)');
             this.mezzoComp.selezionato = false;
@@ -102,19 +108,22 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
 
     liClass() {
         return {
-            'border-warning bg-light': this.mezzoComp.hover,
-            'border-danger bg-grey': this.mezzoComp.selezionato,
+            'border-warning': this.mezzoComp.hover && !this.mezzoComp.selezionato,
+            'border-danger bg-light': this.mezzoComp.selezionato,
             'diagonal-stripes bg-lightgrey': this.mezzoComp.bloccato
         };
     }
 
     statoMezzoClass() {
         return {
-            'text-secondary': this.mezzoComp.mezzo.stato === 'inSede'
+            'text-secondary': this.mezzoComp.mezzo.stato === 'inSede',
+            'text-primary': this.mezzoComp.mezzo.stato === 'inRientro',
+            'text-info': this.mezzoComp.mezzo.stato === 'inViaggio',
+            'text-success': this.mezzoComp.mezzo.stato === 'sulPosto'
         };
     }
 
-    /* mezzoDirection(mezzoComp: MezzoComposizione): void {
+    mezzoDirection(mezzoComp: MezzoComposizione): void {
         this.mezzoCoordinate.emit(mezzoComp.coordinate);
-    } */
+    }
 }

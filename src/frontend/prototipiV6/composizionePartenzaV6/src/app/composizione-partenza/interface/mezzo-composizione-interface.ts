@@ -1,5 +1,5 @@
-import { Mezzo } from '../../shared/model/mezzo.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
+import { Mezzo } from 'src/app/shared/model/mezzo.model';
 
 export interface MezzoComposizione {
     id: string;
