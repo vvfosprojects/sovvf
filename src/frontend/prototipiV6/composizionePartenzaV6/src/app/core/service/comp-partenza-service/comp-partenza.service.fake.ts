@@ -95,7 +95,7 @@ export class CompPartenzaServiceFake {
             appartenenza: 0,
             distaccamento: {
               codice: '1',
-              descrizione: 'Tuscolana II',
+              descrizione: 'Tuscolano II',
               coordinate: { latitudine: 1, longitudine: 1 },
               indirizzo: 'Via Prova, 2',
               tipo: 'Distaccamento',
@@ -165,6 +165,33 @@ export class CompPartenzaServiceFake {
       },
       {
         id: '3',
+        mezzoComposizione: {
+          id: '3',
+          mezzo: {
+            codice: '3',
+            descrizione: 'A3',
+            genere: 'APS',
+            stato: 'inSede',
+            appartenenza: 0,
+            distaccamento: {
+              codice: '1',
+              descrizione: 'Ostiense',
+              coordinate: { latitudine: 1, longitudine: 1 },
+              indirizzo: 'Via Prova, 2',
+              tipo: 'Distaccamento',
+              regione: 'Lazio',
+              provincia: 'Roma'
+            }
+          },
+          km: '20.2 km',
+          tempoPercorrenza: '20 min',
+          coordinate: {
+            latitudine: 41.8311007,
+            longitudine: 12.4686518
+          },
+          selezionato: false,
+          hover: false
+        },
         squadraComposizione: [
           {
             id: '1',
@@ -228,7 +255,7 @@ export class CompPartenzaServiceFake {
             appartenenza: 0,
             distaccamento: {
               codice: '1',
-              descrizione: 'Tuscolano II',
+              descrizione: 'Tuscolana I',
               coordinate: { latitudine: 1, longitudine: 1 },
               indirizzo: 'Via Prova, 2',
               tipo: 'Distaccamento',
@@ -423,7 +450,7 @@ export class CompPartenzaServiceFake {
           appartenenza: 0,
           distaccamento: {
             codice: '1',
-            descrizione: 'Tuscolana II',
+            descrizione: 'Tuscolano II',
             coordinate: { latitudine: 1, longitudine: 1 },
             indirizzo: 'Via Prova, 2',
             tipo: 'Distaccamento',
@@ -450,7 +477,7 @@ export class CompPartenzaServiceFake {
           appartenenza: 0,
           distaccamento: {
             codice: '1',
-            descrizione: 'Tuscolana II',
+            descrizione: 'Tuscolano II',
             coordinate: { latitudine: 1, longitudine: 1 },
             indirizzo: 'Via Prova, 2',
             tipo: 'Distaccamento',
@@ -477,7 +504,7 @@ export class CompPartenzaServiceFake {
           appartenenza: 0,
           distaccamento: {
             codice: '1',
-            descrizione: 'Tuscolana II',
+            descrizione: 'Tuscolano II',
             coordinate: { latitudine: 1, longitudine: 1 },
             indirizzo: 'Via Prova, 2',
             tipo: 'Distaccamento',
@@ -504,7 +531,7 @@ export class CompPartenzaServiceFake {
           appartenenza: 0,
           distaccamento: {
             codice: '1',
-            descrizione: 'Tuscolana II',
+            descrizione: 'Tuscolano II',
             coordinate: { latitudine: 1, longitudine: 1 },
             indirizzo: 'Via Prova, 2',
             tipo: 'Distaccamento',
@@ -531,7 +558,7 @@ export class CompPartenzaServiceFake {
           appartenenza: 0,
           distaccamento: {
             codice: '1',
-            descrizione: 'Tuscolana II',
+            descrizione: 'Ostiense',
             coordinate: { latitudine: 1, longitudine: 1 },
             indirizzo: 'Via Prova, 2',
             tipo: 'Distaccamento',
@@ -558,7 +585,7 @@ export class CompPartenzaServiceFake {
           appartenenza: 0,
           distaccamento: {
             codice: '1',
-            descrizione: 'Tuscolana II',
+            descrizione: 'Ostiense',
             coordinate: { latitudine: 1, longitudine: 1 },
             indirizzo: 'Via Prova, 2',
             tipo: 'Distaccamento',
@@ -585,7 +612,7 @@ export class CompPartenzaServiceFake {
           appartenenza: 0,
           distaccamento: {
             codice: '1',
-            descrizione: 'Tuscolana II',
+            descrizione: 'Ostiense',
             coordinate: { latitudine: 1, longitudine: 1 },
             indirizzo: 'Via Prova, 2',
             tipo: 'Distaccamento',

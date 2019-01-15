@@ -16,7 +16,7 @@ import { MarkerService } from '../../maps/service/marker-service/marker-service.
 import { CenterService } from '../../maps/service/center-service/center-service.service';
 
 @Component({
-    selector: 'app-faster',
+    selector: 'app-composizione-veloce',
     templateUrl: './composizione-veloce.component.html',
     styleUrls: ['./composizione-veloce.component.css']
 })

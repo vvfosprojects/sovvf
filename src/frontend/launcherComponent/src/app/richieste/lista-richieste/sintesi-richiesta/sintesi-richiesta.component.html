@@ -1,5 +1,4 @@
-<div class="card row_text py-2 px-3 mb-1 transparent" (click)="richiestaClick(richiesta)"
-    (dblclick)="richiestaDoubleClick(richiesta)">
+<div class="card row_text py-2 px-3 mb-1 transparent" (click)="richiestaClick(richiesta)" (dblclick)="richiestaDoubleClick(richiesta)">
     <div class="row align-items-center">
         <div class="col-12">
             <div class="row">
@@ -38,7 +37,8 @@
                                 <!-- ngbPopover tipologie intervento -->
                                 <ng-template #popTipologie>
                                     <div class="h6" *ngFor="let t of richiesta.tipologie">
-                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(t.icona) }}"></i>&nbsp;{{ t.descrizione }}
+                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(t.icona) }}"></i>&nbsp;{{
+                                        t.descrizione }}
                                     </div>
                                 </ng-template>
                                 <span><a *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="h6 font-weight-bold descrizione-int"

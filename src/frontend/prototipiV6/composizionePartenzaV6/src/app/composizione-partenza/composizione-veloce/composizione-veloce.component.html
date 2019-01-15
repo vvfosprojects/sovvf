@@ -1,13 +1,14 @@
 <div class="row">
   <div class="col-12 border-bottom border-top scroll-y pt-2 pb-1" style="max-height:405px">
     <div class="row">
-      <app-box-nuova-partenza class="col-4" *ngFor="let preAcc of preAccoppiati" [partenza]="preAcc"
-      (selezionato)="preAccoppiatoSelezionato($event)" (deselezionato)="preAccoppiatoDeselezionato($event)"></app-box-nuova-partenza>
+      <app-box-nuova-partenza class="col-4" *ngFor="let preAcc of preAccoppiati" [partenza]="preAcc" [richiesta]="richiesta"
+        [compPartenzaMode]="'faster'" (selezionato)="preAccoppiatoSelezionato($event)" (deselezionato)="preAccoppiatoDeselezionato($event)"></app-box-nuova-partenza>
     </div>
   </div>
   <div class="col-12 text-right">
     <button class="btn btn-success mt-2 w-25" [disabled]="preAccoppiatiSelezionati.length <= 0">
-      Conferma - <span class="font-weight-bold">{{preAccoppiatiSelezionati.length}} partenze</span>
+      <span class="mr-1">Conferma partenze</span>
+      <span class="badge badge-light">{{preAccoppiatiSelezionati.length}}</span>
     </button>
   </div>
 </div>
