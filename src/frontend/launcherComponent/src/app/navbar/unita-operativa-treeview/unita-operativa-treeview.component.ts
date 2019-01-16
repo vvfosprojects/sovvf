@@ -6,7 +6,6 @@ import { UnitaAttualeService } from '../navbar-service/unita-attuale/unita-attua
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { Sede } from '../../shared/model/sede.model';
-import { Coordinate } from '../../shared/model/coordinate.model';
 import { ToastrService } from 'ngx-toastr';
 
 
@@ -81,7 +80,7 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    openDropDown(value) {
+    openDropDown(value: any) {
         if (value) {
             // console.log('dropdown aperto');
         } else if (this.selectedItem) {
@@ -92,7 +91,7 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
         }
     }
 
-    getValue(value) {
+    getValue(value: any) {
         if (!this.initItem || this.checkedCount === 0) {
             // console.log(`selezione iniziale: ${value}`);
             this.initItem = value;
@@ -128,7 +127,7 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
 
         this.showAlert(mAlertObj.title, mAlertObj.message, mAlertObj.type);
 
-        function mAlert(value) {
+        function mAlert(value: any) {
             const title = 'Attenzione';
             const type = 'warning';
             let message = '';
@@ -151,14 +150,14 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
         }
     }
 
-    changeUnitaAttuale(newUnita) {
+    changeUnitaAttuale(newUnita: any) {
         /**
          * richiama il metodo che apre la modale
          */
         this.openModal(newUnita);
     }
 
-    openModal(newUnita) {
+    openModal(newUnita: any) {
         /**
          * apre la modale e aggiorna il testo della sede per il messaggio di conferma
          * e le sedi sulle quali fare la next su sede attuale.
@@ -176,7 +175,7 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
         });
     }
 
-    showAlert(title, message, type) {
+    showAlert(title: string, message: string, type: any) {
         this.toastr[type](message, title, {
             timeOut: 2500
         });
