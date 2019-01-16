@@ -53,7 +53,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     }
 
     validateOnClick() {
-        if (this.partenze.length > 0) {
+        if (this.partenze.length > 0 && !this.lucchetto) {
             if (this.isBloccato(this.mezzoComp)) {
                 this.showAlert('Attenzione!', 'Il mezzo selezionato è stato già assegnato ad una partenza', 'warning', 5000);
                 // TEST
@@ -64,8 +64,10 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
             } else {
                 this.onClick();
             }
-        } else {
+        } else if (!this.lucchetto) {
             this.onClick();
+        } else if (this.lucchetto) {
+            this.showAlert('Attenzione!', 'Il mezzo selezionato è già assegnato ad un intervento', 'error', 5000);
         }
     }
 
