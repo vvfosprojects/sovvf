@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 
 // Modules
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComposizionePartenzaModule } from './composizione-partenza/composizione-partenza.module';
+import { ToastrModule } from 'ngx-toastr';
 
 // Service
 import { DispatcherService } from './core/dispatcher/dispatcher-lista-richieste/dispatcher-lista-richieste.service';
@@ -17,7 +20,13 @@ import { SintesiRichiesteServiceFake } from './core/service/lista-richieste-serv
     AppComponent
   ],
   imports: [
-    ComposizionePartenzaModule
+    BrowserModule,
+    BrowserAnimationsModule,
+    ComposizionePartenzaModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-center',
+      preventDuplicates: true,
+    })
   ],
   providers: [
     { provide: DispatcherService, useClass: DispatcherFakeService },

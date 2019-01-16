@@ -1,11 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
-// Model
+// Interface
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
 import { BoxPartenza } from '../../interface/box-partenza-interface';
+
+// Model
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 
 // Service
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -21,16 +24,20 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     @Input() partenzaCorrente: BoxPartenza;
     @Input() partenze: BoxPartenza[];
 
+    lucchetto: boolean;
+
     // Mappa
     @Output() mezzoCoordinate = new EventEmitter<Coordinate>();
 
-    constructor() {
+    constructor(private toastr: ToastrService) {
     }
 
     ngOnInit() {
+        this.setLucchetto();
     }
 
     ngOnChanges() {
+        this.setLucchetto();
     }
 
     onHoverIn() {
@@ -48,7 +55,9 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     validateOnClick() {
         if (this.partenze.length > 0) {
             if (this.isBloccato(this.mezzoComp)) {
-                console.error('Mezzo bloccato da un\'altra partenza');
+                this.showAlert('Attenzione!', 'Il mezzo selezionato è stato già assegnato ad una partenza', 'warning', 5000);
+                // TEST
+                // console.error('Mezzo bloccato da un\'altra partenza');
             } else if (this.isMezzoPartenzaBloccato(this.partenzaCorrente)) {
                 this.sbloccaMezzoPartenza();
                 this.onClick();
@@ -66,9 +75,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         /* se almeno una partenza ha il mezzo === mezzoComposizione, ed è bloccato, ritorna true */
         this.partenze.forEach(p => {
             if (p.mezzoComposizione && p.mezzoComposizione.bloccato && mezzo === p.mezzoComposizione) {
-                if (this.partenzaCorrente.mezzoComposizione && mezzo !== this.partenzaCorrente.mezzoComposizione) {
-                    returnBool = true;
-                }
+                returnBool = true;
             }
         });
 
@@ -95,6 +102,20 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         }
     }
 
+    setLucchetto() {
+        switch (this.mezzoComp.mezzo.stato) {
+            case 'sulPosto':
+                this.lucchetto = true;
+                break;
+            case 'inViaggio':
+                this.lucchetto = true;
+                break;
+            default:
+                this.lucchetto = false;
+                break;
+        }
+    }
+
     onClick() {
         // console.log('clicco uno sbloccato');
         if (!this.mezzoComp.selezionato) {
@@ -114,6 +135,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     onClickLucchetto() {
     }
 
+    // NgClass
     liClass() {
         let returnClass = '';
 
@@ -157,6 +179,14 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         };
     }
 
+    // Alert
+    showAlert(title: string, message: string, type: any, duration: number) {
+        this.toastr[type](message, title, {
+            timeOut: duration
+        });
+    }
+
+    // Mappa
     mezzoDirection(mezzoComp: MezzoComposizione): void {
         this.mezzoCoordinate.emit(mezzoComp.coordinate);
     }

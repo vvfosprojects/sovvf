@@ -13,8 +13,8 @@
       </small>
       <span class="badge" [ngbTooltip]="mezzoComp.distaccamento">{{mezzoComp.distaccamento | slice:0:3}}</span>
     </div>
-    <!-- <div class="col-2 text-right">
-      <i *ngIf="mezzoComp === partenzaCorrente?.mezzoComposizione && partenzaCorrente?.mezzoComposizione.bloccato === true" class="fa fa-lg fa-lock" (click)="onClickLucchetto(); $event.stopPropagation();"></i>
-    </div> -->
+    <div class="col-2 text-right">
+      <i *ngIf="lucchetto" class="fa fa-lg fa-lock" (click)="onClickLucchetto()"></i>
+    </div>
   </div>
 </li>

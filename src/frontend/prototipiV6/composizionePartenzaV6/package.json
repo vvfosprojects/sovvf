@@ -11,7 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~7.0.0",
+    "@angular/animations": "^7.0.4",
     "@angular/common": "~7.0.0",
     "@angular/compiler": "~7.0.0",
     "@angular/core": "~7.0.0",
@@ -27,6 +27,7 @@
     "font-awesome": "^4.7.0",
     "moment": "^2.22.2",
     "ngx-timeago": "^1.0.0",
+    "ngx-toastr": "^9.1.1",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.26"
   },
