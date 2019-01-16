@@ -40,9 +40,23 @@ export class SquadraComposizioneComponent implements OnInit {
   }
 
   liClass() {
-    return {
-      'border-warning': this.squadraComp.hover && !this.squadraComp.selezionato,
-      'border-danger bg-light': this.squadraComp.selezionato
-    };
+    let returnClass = '';
+
+    const hover = this.squadraComp.hover ? 'hover-si' : 'hover-no';
+    const selezionato = this.squadraComp.selezionato ? 'selezionato-si' : 'selezionato-no';
+
+    switch (hover + '|' + selezionato) {
+      case 'hover-si|selezionato-no':
+        returnClass += 'border-warning';
+        break;
+      case 'hover-no|selezionato-si':
+        returnClass += 'border-danger diagonal-stripes bg-lightgrey';
+        break;
+      case 'hover-si|selezionato-si':
+        returnClass += 'border-danger diagonal-stripes bg-lightgrey';
+        break;
+    }
+
+    return returnClass;
   }
 }

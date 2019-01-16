@@ -8,8 +8,9 @@
             <i class="fa fa-truck mr-2"></i><span class="h6">Mezzi</span>
           </div>
           <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
-            <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC" [partenze]="partenze" [partenzaCorrente]="partenzaCorrente" (selezionato)="mezzoSelezionato($event)"
-              (deselezionato)="mezzoDeselezionato($event)" (sbloccato)="sbloccaMezzo($event)" (mezzoCoordinate)="mezzoCoordinate($event)"></app-mezzo-composizione>
+            <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC" [partenze]="partenze"
+              [partenzaCorrente]="partenzaCorrente" (selezionato)="mezzoSelezionato($event)" (deselezionato)="mezzoDeselezionato($event)"
+              (sbloccato)="sbloccaMezzo($event)" (mezzoCoordinate)="mezzoCoordinate($event)"></app-mezzo-composizione>
           </ul>
         </div>
       </div>
@@ -40,13 +41,14 @@
           <!-- lista box partenze -->
           <div *ngIf="partenze.length > 0">
             <div *ngFor="let p of partenze.slice().reverse()">
-              <app-box-nuova-partenza [partenza]="p" [richiesta]="richiesta" [compPartenzaMode]="'slower'" [elimina]="true" [alert]="true" (selezionato)="boxPartenzaSelezionato($event)"
-                (eliminato)="eliminaBoxPartenza($event)"></app-box-nuova-partenza>
+              <app-box-nuova-partenza [partenza]="p" [richiesta]="richiesta" [compPartenzaMode]="'slower'" [elimina]="true"
+                [alert]="true" (selezionato)="boxPartenzaSelezionato($event)" (eliminato)="eliminaBoxPartenza($event)"></app-box-nuova-partenza>
             </div>
           </div>
         </div>
         <button class="btn btn-success btn-block card-shadow mt-2" [disabled]="!buttonConferma">
-          Invia Partenz<span *ngIf="partenze.length <= 1">a</span><span *ngIf="partenze.length > 1">e</span>
+          <span class="mr-1">Conferma partenze</span>
+          <span class="badge badge-light">{{partenze.length}}</span>
         </button>
       </div>
     </div>

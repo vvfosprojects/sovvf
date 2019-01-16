@@ -91,8 +91,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
             mezzo.bloccato = false;
             this.sbloccato.emit(mezzo);
             // TEST
-            // tslint:disable-next-line:no-console
-            console.info('Sblocco il mezzo dalla partenza perchè ne ho selezionato un altro');
+            // console.log('Sblocco il mezzo dalla partenza perchè ne ho selezionato un altro');
         }
     }
 
