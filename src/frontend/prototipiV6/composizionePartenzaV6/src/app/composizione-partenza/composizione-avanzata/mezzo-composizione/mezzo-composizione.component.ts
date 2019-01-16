@@ -50,7 +50,8 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
             if (this.isBloccato(this.mezzoComp)) {
                 console.error('Mezzo bloccato da un\'altra partenza');
             } else if (this.isMezzoPartenzaBloccato(this.partenzaCorrente)) {
-                console.error('Mezzo bloccato da un\'altra partenza');
+                this.sbloccaMezzoPartenza();
+                this.onClick();
             } else {
                 this.onClick();
             }
@@ -65,7 +66,9 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         /* se almeno una partenza ha il mezzo === mezzoComposizione, ed è bloccato, ritorna true */
         this.partenze.forEach(p => {
             if (p.mezzoComposizione && p.mezzoComposizione.bloccato && mezzo === p.mezzoComposizione) {
-                returnBool = true;
+                if (this.partenzaCorrente.mezzoComposizione && mezzo !== this.partenzaCorrente.mezzoComposizione) {
+                    returnBool = true;
+                }
             }
         });
 
@@ -82,6 +85,16 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         return returnBool;
     }
 
+    sbloccaMezzoPartenza() {
+        if (this.partenzaCorrente.mezzoComposizione) {
+            const mezzo = this.partenzaCorrente.mezzoComposizione;
+            mezzo.bloccato = false;
+            this.sbloccato.emit(mezzo);
+            // TEST
+            // tslint:disable-next-line:no-console
+            console.info('Sblocco il mezzo dalla partenza perchè ne ho selezionato un altro');
+        }
+    }
 
     onClick() {
         // console.log('clicco uno sbloccato');
@@ -100,18 +113,40 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     }
 
     onClickLucchetto() {
-        // console.log('clicco un bloccato');
-        this.mezzoComp.bloccato = false;
-        this.sbloccato.emit(this.mezzoComp);
-        // TOAST ("IL MEZZO è BLOCCATO, SBLOCCALO")
     }
 
     liClass() {
-        return {
-            'border-warning': this.mezzoComp.hover && !this.mezzoComp.selezionato,
-            'border-danger bg-light': this.mezzoComp.selezionato,
-            'diagonal-stripes bg-lightgrey': this.mezzoComp.bloccato
-        };
+        let returnClass = '';
+
+        const hover = this.mezzoComp.hover ? 'hover-si' : 'hover-no';
+        const selezionato = this.mezzoComp.selezionato ? 'selezionato-si' : 'selezionato-no';
+        const bloccato = this.mezzoComp.bloccato ? 'bloccato-si' : 'bloccato-no';
+
+        switch (hover + '|' + selezionato + '|' + bloccato) {
+            case 'hover-si|selezionato-no|bloccato-no':
+                returnClass += 'border-warning';
+                break;
+            case 'hover-no|selezionato-si|bloccato-no':
+                returnClass += 'border-danger diagonal-stripes bg-lightgrey';
+                break;
+            case 'hover-si|selezionato-si|bloccato-no':
+                returnClass += 'border-danger diagonal-stripes bg-lightgrey';
+                break;
+            case 'hover-no|selezionato-no|bloccato-si':
+                returnClass += 'diagonal-stripes bg-lightgrey';
+                break;
+            case 'hover-si|selezionato-no|bloccato-si':
+                returnClass += 'diagonal-stripes bg-lightgrey';
+                break;
+            case 'hover-no|selezionato-si|bloccato-si':
+                returnClass += 'border-danger diagonal-stripes bg-lightgrey';
+                break;
+            case 'hover-si|selezionato-si|bloccato-si':
+                returnClass += 'border-danger diagonal-stripes bg-lightgrey';
+                break;
+        }
+
+        return returnClass;
     }
 
     statoMezzoClass() {

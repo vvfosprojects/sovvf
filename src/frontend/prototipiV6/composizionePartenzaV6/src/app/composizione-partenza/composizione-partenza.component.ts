@@ -27,7 +27,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.boxClickService.allTrueByRichiesta(this.richiesta.stato);
-        isDevMode() && console.log(this.compPartenzaMode);
         isDevMode() && console.log('Componente Composizione creato');
     }
 
