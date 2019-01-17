@@ -133,7 +133,7 @@ export class ViewService {
                 richieste: event === 'normale' || event === 'soloRichieste' || chiamata === false,
                 mappa: event !== 'soloRichieste',
                 composizione: event === 'composizione',
-                chiamata: event === 'chiamata' && chiamata === undefined
+                chiamata: event === 'chiamata' && chiamata === true
             },
             layout: {
                 split: !(event === 'soloRichieste' || event === 'soloMappa')

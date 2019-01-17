@@ -10,15 +10,15 @@ export class FilterbarComponent {
 
     @Input() compPartenzaState: ViewInterfaceComposizione;
     @Input() colorButton: ViewInterfaceButton;
-    @Output() buttonSwitchView = new EventEmitter<string>();
+    @Output() buttonSwitchView = new EventEmitter<object>();
     @Output() buttonCompPartenzaMode = new EventEmitter<string>();
 
     compPartenzaSwitch(event: string) {
         this.buttonCompPartenzaMode.emit(event);
     }
 
-    chiamata() {
-        this.buttonSwitchView.emit('chiamata');
+    chiamata(value: boolean) {
+        this.buttonSwitchView.emit({event: 'chiamata', chiamata: value});
     }
 
     buttonView(event: string) {
@@ -34,7 +34,7 @@ export class FilterbarComponent {
                 method = 'soloRichieste';
                 break;
         }
-        this.buttonSwitchView.emit(method);
+        this.buttonSwitchView.emit({event: method});
     }
 
 }

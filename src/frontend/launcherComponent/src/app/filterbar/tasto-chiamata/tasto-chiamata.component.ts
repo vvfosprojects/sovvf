@@ -8,10 +8,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class TastoChiamataComponent {
 
     @Input() colorButtonChiamata = 'btn-outline-success';
-    @Output() startChiamata = new EventEmitter();
+    @Output() startChiamata = new EventEmitter<boolean>();
 
     chiamata() {
-        this.startChiamata.emit();
+        const bool = this.colorButtonChiamata === 'btn-outline-success';
+        this.startChiamata.emit(bool);
     }
 
 }
