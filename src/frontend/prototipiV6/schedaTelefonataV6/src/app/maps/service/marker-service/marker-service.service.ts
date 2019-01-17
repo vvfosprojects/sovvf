@@ -331,15 +331,15 @@ export class MarkerService implements OnDestroy {
     chiamata(marker: ChiamataMarker, action: string, centroMappa?: CentroMappa) {
         switch (action) {
             case 'centra': {
-                this.agmService.centraMappa(this.getCoordinate(marker));
-                this.agmService.cambiaZoom(18);
-                this.markerZIndex = marker;
+                // this.agmService.centraMappa(this.getCoordinate(marker));
+                // this.agmService.cambiaZoom(18);
+                // this.markerZIndex = marker;
             }
                 break;
             default: {
-                this.agmService.centraMappa(centroMappa.coordinate);
-                this.agmService.cambiaZoom(12);
-                this.markerZIndex = null;
+                // this.agmService.centraMappa(centroMappa.coordinate);
+                // this.agmService.cambiaZoom(12);
+                // this.markerZIndex = null;
             }
                 break;
         }
