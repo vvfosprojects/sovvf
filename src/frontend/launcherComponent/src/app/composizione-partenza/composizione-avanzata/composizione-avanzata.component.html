@@ -28,14 +28,14 @@
       <div class="col-4">
         <div class="card card-shadow w-100 py-2 px-1 scroll-y" style="max-height:350px; min-height:350px">
           <!-- nessuna partenza -->
-          <div *ngIf="partenze.length <= 0 && !partenza" class="text-center my-auto">
+          <div *ngIf="partenze.length <= 0" class="text-center my-auto">
             <h5>Nessuna partenza!</h5>
             <h6 class="font-weight-normal">Seleziona un mezzo o una squadra per crearne una.</h6>
             <button class="btn btn-primary" (click)="nuovaPartenza(true)"><i class="fa fa-plus mr-2"></i>Aggiungi
               partenza</button>
           </div>
           <!-- bottone nuova partenza -->
-          <div *ngIf="partenze.length > 0 || partenza" class="text-center mb-2">
+          <div *ngIf="partenze.length > 0" class="text-center mb-2">
             <button class="btn btn-primary" (click)="nuovaPartenza()"><i class="fa fa-plus mr-2"></i>Aggiungi partenza</button>
           </div>
           <!-- lista box partenze -->

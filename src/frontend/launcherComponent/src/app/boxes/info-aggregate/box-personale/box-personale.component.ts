@@ -71,7 +71,7 @@ export class BoxPersonaleComponent implements OnInit {
         };
     }
 
-    squadreAssegnate(): string {
+    /* squadreAssegnate(): string {
         const rapporto = (this.personale.squadreAssegnate / this.personale.squadreServizio) * 100;
         let prop = '';
         switch (true) {
@@ -86,7 +86,7 @@ export class BoxPersonaleComponent implements OnInit {
                 break;
         }
         return this.mapColorStato.get(prop);
-    }
+    } */
 
     getFunzPresente(): boolean {
         let presenteFunz = false;
