@@ -1,12 +1,12 @@
 <div *ngIf="!map_loaded" class="col-12 text-center my-5">
-    <img src="../../../assets/img/map_loading_resized.gif">
+    <img src="assets/img/map_loading_resized.gif">
 </div>
 <div [ngSwitch]="true">
     <div #agmContainer>
         <agm-map [disableDefaultUI]="true"
                  [zoomControl]="true"
                  [zoomControlOptions]="zoomControlOptions"
-                 [minZoom]="5"
+                 [minZoom]="6"
                  [fullscreenControl]="true"
                  [fullscreenControlOptions]="fullscreenControlOptions"
                  [mapTypeControl]="true"
@@ -213,9 +213,16 @@
                         </agm-snazzy-info-window>
                     </agm-marker>
                 </agm-marker-cluster>
+                <agm-marker *ngFor="let composizione of composizioneMarkers;"
+                            [latitude]="composizione.localita.coordinate.latitudine"
+                            [longitude]="composizione.localita.coordinate.longitudine"
+                            (markerClick)="selezioneMarker(composizione)"
+                            [iconUrl]="urlIcona(composizione)"
+                            [zIndex]="99999">
+                </agm-marker>
             </ng-template>
             <ng-template [ngSwitchCase]="viewStateMappa.active === 'chiamata'">
-                <agm-marker *ngFor="let chiamata of chiamataMarker;"
+                <agm-marker *ngFor="let chiamata of chiamataMarkers;"
                             [latitude]="chiamata.localita.coordinate.latitudine"
                             [longitude]="chiamata.localita.coordinate.longitudine"
                             [iconUrl]="richiestaMarkerIconUrl">
@@ -259,7 +266,4 @@
             <app-agm-content (mapLoad)='loadAPIWrapper($event)'></app-agm-content>
         </agm-map>
     </div>
-    <ng-template [ngSwitchCase]="viewStateMappa.active !== ''">
-        {{ viewStateMappa | json }}
-    </ng-template>
 </div>
