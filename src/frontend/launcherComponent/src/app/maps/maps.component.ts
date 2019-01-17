@@ -1,4 +1,4 @@
-import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, isDevMode, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import * as MapManager from '../core/manager/maps-manager';
 import { CentroMappa } from './maps-model/centro-mappa.model';
 import { RichiestaMarker } from './maps-model/richiesta-marker.model';
@@ -9,29 +9,31 @@ import { ComposizioneMarker } from './maps-model/composizione-marker.model';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { ViewInterfaceMaps } from '../shared/interface/view.interface';
+import { SintesiRichiesta } from '../shared/model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-maps',
     templateUrl: './maps.component.html',
     styleUrls: ['./maps.component.css']
 })
-export class MapsComponent implements OnInit, OnDestroy {
+export class MapsComponent implements OnInit, OnChanges, OnDestroy {
 
     centroMappa: CentroMappa;
     richiesteMarkers: RichiestaMarker[] = [];
     sediMarkers: SedeMarker[];
     mezziMarkers: MezzoMarker[];
-    chiamataMarker: ChiamataMarker[];
+    composizioneMarkers: ComposizioneMarker[] = [];
+    chiamataMarkers: ChiamataMarker[] = [];
     subscription = new Subscription();
     @Input() viewStateMappa: ViewInterfaceMaps;
-    @Input() composizioneMarker: ComposizioneMarker[];
+    @Input() richiestaPartenza: SintesiRichiesta;
+    @Input() chiamataMarker: ChiamataMarker;
     mapsFullyLoaded = false;
 
     constructor(private richiesteManager: MapManager.RichiesteMarkerManagerService,
                 private sediManager: MapManager.SediMarkerManagerService,
                 private mezziManager: MapManager.MezziMarkerManagerService,
                 private centroManager: MapManager.CentroMappaManagerService,
-                private chiamataManager: MapManager.ChiamataMarkerManagerService,
                 private toastr: ToastrService) {
         this.timeoutAlert('showToastr');
         /**
@@ -67,16 +69,35 @@ export class MapsComponent implements OnInit, OnDestroy {
             this.sediMarkers = r;
         }));
 
-        /**
-         * placeholder di una chiamata vuota
-         */
-        this.subscription.add(this.chiamataManager.getChiamataMarker().subscribe((r: ChiamataMarker[]) => {
-            this.chiamataMarker = r;
-        }));
+    }
+
+    static mapPartenzaMarker(richiesta: SintesiRichiesta): ComposizioneMarker {
+        let composizione: ComposizioneMarker;
+        composizione = new ComposizioneMarker(
+            richiesta.id, richiesta.localita, richiesta.tipologie, null,
+            richiesta.priorita, richiesta.stato, richiesta.rilevanza, false);
+        return composizione;
     }
 
     ngOnInit() {
         isDevMode() && console.log('Componente Maps creato');
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.richiestaPartenza) {
+            if (changes.richiestaPartenza.currentValue) {
+                this.composizioneMarkers[0] = MapsComponent.mapPartenzaMarker(changes.richiestaPartenza.currentValue);
+            }
+        } else {
+            this.composizioneMarkers = [];
+        }
+        if (changes.chiamataMarker) {
+            if (changes.chiamataMarker.currentValue) {
+                this.chiamataMarkers[0] = changes.chiamataMarker.currentValue;
+            }
+        } else {
+            this.chiamataMarkers = [];
+        }
     }
 
     ngOnDestroy() {

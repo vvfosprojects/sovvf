@@ -1,11 +1,9 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { TipologieService } from '../../shared/tipologie/tipologie.service';
-import { ViewService } from '../../filterbar/view-service/view-service.service';
 import { ClipboardService } from 'ngx-clipboard';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
-import * as MapManager from '../../core/manager/maps-manager';
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { CenterService } from '../../maps/service/center-service/center-service.service';
@@ -34,6 +32,7 @@ import { Subscription } from 'rxjs';
     ]
 })
 export class SchedaTelefonataComponent implements OnInit, OnDestroy {
+
     chiamataForm: FormGroup;
     submitted = false;
     subscription = new Subscription();
@@ -46,11 +45,11 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
     centroMappa: CentroMappa;
 
-    @Output() chiudiChiamata = new EventEmitter();
+    @Output() chiamataMarker = new EventEmitter<ChiamataMarker>();
+    @Output() annullaChiamata = new EventEmitter();
 
     constructor(private tipologieS: TipologieService,
                 private _clipboardService: ClipboardService,
-                private chiamataManager: MapManager.ChiamataMarkerManagerService,
                 private markerService: MarkerService,
                 private centerService: CenterService,
                 private formBuilder: FormBuilder) {
@@ -66,7 +65,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
             }));
 
         this.chiamataForm = this.formBuilder.group({
-            dettaglioTipologia: ['', [Validators.required]],
+            // dettaglioTipologia: ['', [Validators.required]],
             cognome: ['', [Validators.required]],
             nome: ['', [Validators.required]],
             ragioneSociale: ['', [Validators.required]],
@@ -86,7 +85,6 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
                 }
             })
         );
-
     }
 
     ngOnDestroy(): void {
@@ -109,7 +107,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         this.coords = new Localita(new Coordinate(result.geometry.location.lat(), result.geometry.location.lng()));
         this.chiamataCorrente.coordinate = this.coords;
         const markerChiamataCorrente = new ChiamataMarker('RM-004', this.coords);
-        this.chiamataManager.chiamataMarker[0] = markerChiamataCorrente;
+        this._chiamataMarker(markerChiamataCorrente);
         this.markerService.chiamata(markerChiamataCorrente, 'centra');
     }
 
@@ -118,11 +116,12 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         this._clipboardService.copyFromContent(copiedText);
     }
 
-    annullaChiamata() {
+    _annullaChiamata() {
         // this.hideShowAnimator = 'left';
-        this.chiudiChiamata.emit();
-        this.chiamataManager.chiamataMarker[0] = new ChiamataMarker('RM-004', new Localita(new Coordinate(null, null)));
-        // this.markerService.chiamata(null, '', this.centroMappa);
+        const chiamata = new ChiamataMarker('RM-004', new Localita(new Coordinate(null, null)));
+        this._chiamataMarker(chiamata);
+        this.markerService.chiamata(null, '', this.centroMappa);
+        this.annullaChiamata.emit();
     }
 
     get f() {
@@ -133,6 +132,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         this.submitted = true;
 
         if (this.chiamataForm.invalid) {
+            console.error('Il form non è valido');
             return;
         }
 
@@ -143,6 +143,10 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         if (event['toState'] === 'left') {
             // this.chiudiChiamata();
         }
+    }
+
+    _chiamataMarker(value: ChiamataMarker): void {
+        this.chiamataMarker.emit(value);
     }
 
 

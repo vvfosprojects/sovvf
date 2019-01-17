@@ -111,17 +111,15 @@ export class UnitaAttualeService {
          * preloader fake, simula il ricaricamento dell'applicazione
          */
         this.preLoader = false;
-        // console.log('inizio riavvio applicazione(fake)');
         if (FLAG_FAKE) {
             setTimeout(() => {
                 this.preLoader = true;
-                // console.log('fine riavvio applicazione(fake)');
             }, 1000);
         } else {
             console.log('Chiamo il back end');
             this.richiesteStatus.getRichiesteStatus().subscribe( data => {
+                console.log(`Il back end ha risposto: ${data}`);
                 if (data) {
-                    console.log('Back end: true');
                     this.preLoader = true;
                 }
             });

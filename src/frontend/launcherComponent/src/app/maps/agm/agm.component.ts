@@ -4,7 +4,7 @@ import {
     Input,
     OnDestroy,
     ViewChild,
-    ElementRef, Output, EventEmitter
+    ElementRef, Output, EventEmitter, OnChanges, SimpleChanges
 } from '@angular/core';
 import { RichiestaMarker } from '../maps-model/richiesta-marker.model';
 import { SedeMarker } from '../maps-model/sede-marker.model';
@@ -33,14 +33,14 @@ declare var google: any;
     styleUrls: ['./agm.component.css']
 })
 
-export class AgmComponent implements OnInit, OnDestroy {
+export class AgmComponent implements OnInit, OnDestroy, OnChanges {
     @Input() richiesteMarkers: RichiestaMarker[];
     @Input() sediMarkers: SedeMarker[];
     @Input() mezziMarkers: MezzoMarker[];
-    @Input() centroMappa: CentroMappa;
-    @Input() chiamataMarker: ChiamataMarker[];
+    @Input() centroMappa: CentroMappa; // check non cambia in input
+    @Input() chiamataMarkers: ChiamataMarker[];
     @Input() viewStateMappa: ViewInterfaceMaps;
-    @Input() composizioneMarker: ComposizioneMarker[];
+    @Input() composizioneMarkers: ComposizioneMarker[];
     @Output() mapFullyLoaded = new EventEmitter<boolean>();
     cachedMarkers: CachedMarker[] = [];
     meteoMarkers: MeteoMarker[] = [];
@@ -138,6 +138,10 @@ export class AgmComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        // console.log(changes);
     }
 
     mappaCaricata(event: any): void {

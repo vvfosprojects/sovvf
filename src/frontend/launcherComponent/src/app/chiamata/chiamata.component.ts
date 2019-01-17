@@ -7,11 +7,11 @@ import { Component, EventEmitter, isDevMode, OnDestroy, OnInit, Output } from '@
 })
 export class ChiamataComponent implements OnInit, OnDestroy {
 
-    @Output() chiudiChiamata = new EventEmitter();
+    @Output() annullaChiamata = new EventEmitter();
+    @Output() chiamataMarker = new EventEmitter();
 
     ngOnInit(): void {
         isDevMode() && console.log('Componente Chiamata creato');
-
     }
 
     ngOnDestroy(): void {
