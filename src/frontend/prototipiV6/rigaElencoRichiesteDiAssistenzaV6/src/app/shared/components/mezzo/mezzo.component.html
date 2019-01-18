@@ -1,61 +1,59 @@
-<li class="list-group-item p-0 border-bottom py-1">
-  <div class="row">
-    <span class="d-inline-block pl-4">
-      <i class="guida fa fa-tachometer fa-fw mr-1" style="font-size: 1.5em" aria-hidden="true" title="Mezzo"></i>
-      <span *ngIf="mezzo.descrizione"><b>{{ mezzo.descrizione }}</b></span>
-      <span *ngIf="mezzo.genere" class="badge badge-default m-0">{{ mezzo.genere }}</span>
-      <span *ngIf="mezzo.descrizioneStato" class="badge text-white m-0 ml-1" [ngClass]="{'badge-default':mezzo.stato == 'InSede' || mezzo.stato == 'Istituto', 'badge-warning':mezzo.stato == 'InViaggio', 'badge-success':mezzo.stato == 'SulPosto', 'badge-info':mezzo.stato == 'InRientro'}">
-        {{ mezzo.descrizioneStato }}
-      </span>
+<div class="row">
+  <span class="d-inline-block pl-4">
+    <i class="guida fa fa-truck fa-fw mr-1" aria-hidden="true" title="Mezzo"></i>
+    <span *ngIf="mezzo.descrizione"><b>{{ mezzo.descrizione }}</b></span>
+    <span *ngIf="mezzo.genere" class="badge badge-default m-0">{{ mezzo.genere }}</span>
+    <span *ngIf="mezzo.descrizioneStato" class="badge text-white m-0 ml-1" [ngClass]="{'badge-default':mezzo.stato == 'InSede' || mezzo.stato == 'Istituto', 'badge-warning':mezzo.stato == 'InViaggio', 'badge-success':mezzo.stato == 'SulPosto', 'badge-info':mezzo.stato == 'InRientro'}">
+      {{ mezzo.descrizioneStato }}
     </span>
+  </span>
 
-    <!-- indicatori -->
-    <span class="d-inline-block pl-2 py-1">
-      <a title="Indicatori mezzo" [ngbPopover]="indMez" placement="top" popoverTitle="Indicatori" triggers="click"
-        tabindex="0">
-        <i class="guida fa fa-briefcase fa-fw" style="color:cadetblue;" aria-hidden="true" title="Condizione del Mezzo"></i>
-      </a>
+  <!-- indicatori -->
+  <span class="d-inline-block pl-2">
+    <a title="Indicatori mezzo" [ngbPopover]="indMez" placement="top" popoverTitle="Indicatori" triggers="click"
+      tabindex="0">
+      <i class="guida fa fa-briefcase fa-fw" style="color:cadetblue;" aria-hidden="true" title="Condizione del Mezzo"></i>
+    </a>
 
-      <ng-template #indMez>
-        <div *ngIf="!nessunIndMezzo(mezzo)" class="h6 m-0 nowrap">
-          <div *ngIf="mezzo.descrizioneStatoEfficienza">
-            <i class='fa fa-cogs fa-fw' title='Stato di efficienza del mezzo'></i>
-            <span class='badge' [ngClass]="dettagliMezzo(mezzo.statoEfficienza, 'efficienza', 'badge')">
-              {{ mezzo.descrizioneStatoEfficienza }}</span>
-          </div>
-          <div *ngIf="mezzo.descrizioneLivelloCarburante"><i class='fa fa-tachometer fa-fw' title='Livello Carburante'></i>
-            <span class='badge' [ngClass]="dettagliMezzo(mezzo.livelloCarburante, 'carburante', 'badge')">
-              {{ mezzo.descrizioneLivelloCarburante }}</span>
-          </div>
-          <div *ngIf="mezzo.descrizioneLivelloEstinguente">
-            <i class='fa fa-tint fa-fw' title='Livello Estinguente'></i>
-            <span class='badge' [ngClass]="dettagliMezzo(mezzo.livelloEstinguente, 'estinguente', 'badge')">
-              {{ mezzo.descrizioneLivelloEstinguente }}</span>
-          </div>
-          <div *ngIf="mezzo.descrizioneAppartenenza">
-            <i class='fa fa-flag fa-fw' title='Appartenenza del mezzo'></i>
-            <span class='badge' [ngClass]="dettagliMezzo(mezzo.appartenenza, 'appartenenza', 'badge')">
-              {{ mezzo.descrizioneAppartenenza }}</span>
-          </div>
+    <ng-template #indMez>
+      <div *ngIf="!nessunIndMezzo(mezzo)" class="h6 m-0 nowrap">
+        <div *ngIf="mezzo.descrizioneStatoEfficienza">
+          <i class='fa fa-cogs fa-fw' title='Stato di efficienza del mezzo'></i>
+          <span class='badge' [ngClass]="dettagliMezzo(mezzo.statoEfficienza, 'efficienza', 'badge')">
+            {{ mezzo.descrizioneStatoEfficienza }}</span>
         </div>
-        <div *ngIf="nessunIndMezzo(mezzo)" class="h6 m-0 nowrap">
-          Nessun indicatore mezzo presente
+        <div *ngIf="mezzo.descrizioneLivelloCarburante"><i class='fa fa-tachometer fa-fw' title='Livello Carburante'></i>
+          <span class='badge' [ngClass]="dettagliMezzo(mezzo.livelloCarburante, 'carburante', 'badge')">
+            {{ mezzo.descrizioneLivelloCarburante }}</span>
         </div>
-      </ng-template>
-    </span>
-    <!-- notifiche mezzo -->
-    <span class="d-inline-block py-1">
-      <a [ngbPopover]="notMez" placement="top" triggers="click" popoverTitle="Notifiche mezzo" tabindex="0">
-        <i class="guida fa fa-bell fa-fw" style="color:cadetblue!important;"></i>
-      </a>
-      <ng-template #notMez>
-        <span *ngIf="mezzo.notifiche">
-          <span *ngFor="let n of mezzo.notifiche">
-            {{n}}
-          </span>
+        <div *ngIf="mezzo.descrizioneLivelloEstinguente">
+          <i class='fa fa-tint fa-fw' title='Livello Estinguente'></i>
+          <span class='badge' [ngClass]="dettagliMezzo(mezzo.livelloEstinguente, 'estinguente', 'badge')">
+            {{ mezzo.descrizioneLivelloEstinguente }}</span>
+        </div>
+        <div *ngIf="mezzo.descrizioneAppartenenza">
+          <i class='fa fa-flag fa-fw' title='Appartenenza del mezzo'></i>
+          <span class='badge' [ngClass]="dettagliMezzo(mezzo.appartenenza, 'appartenenza', 'badge')">
+            {{ mezzo.descrizioneAppartenenza }}</span>
+        </div>
+      </div>
+      <div *ngIf="nessunIndMezzo(mezzo)" class="h6 m-0 nowrap">
+        Nessun indicatore mezzo presente
+      </div>
+    </ng-template>
+  </span>
+  <!-- notifiche mezzo -->
+  <span class="d-inline-block">
+    <a [ngbPopover]="notMez" placement="top" triggers="click" popoverTitle="Notifiche mezzo" tabindex="0">
+      <i class="guida fa fa-bell fa-fw" style="color:cadetblue!important;"></i>
+    </a>
+    <ng-template #notMez>
+      <span *ngIf="mezzo.notifiche">
+        <span *ngFor="let n of mezzo.notifiche">
+          {{n}}
         </span>
-        <span *ngIf="!mezzo.notifiche" class="h6">Nessuna notifica</span>
-      </ng-template>
-    </span>
-  </div>
-</li>
+      </span>
+      <span *ngIf="!mezzo.notifiche" class="h6">Nessuna notifica</span>
+    </ng-template>
+  </span>
+</div>

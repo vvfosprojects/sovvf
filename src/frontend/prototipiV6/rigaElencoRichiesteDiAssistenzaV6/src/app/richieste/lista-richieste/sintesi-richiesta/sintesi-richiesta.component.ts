@@ -46,9 +46,9 @@ export class SintesiRichiestaComponent implements OnInit {
         intl.changes.next();
 
         popoverConfig.container = 'body';
-        popoverConfig.placement = 'bottom';
+        popoverConfig.placement = 'top';
         tooltipConfig.container = 'body';
-        tooltipConfig.placement = 'bottom';
+        tooltipConfig.placement = 'top';
     }
 
     ngOnInit() {

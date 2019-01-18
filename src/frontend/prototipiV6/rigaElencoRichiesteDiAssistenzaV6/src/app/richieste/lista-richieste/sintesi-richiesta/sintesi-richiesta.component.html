@@ -1,5 +1,4 @@
-<div class="card row_text py-2 px-3 mb-1 transparent" (click)="richiestaClick(richiesta)"
-    (dblclick)="richiestaDoubleClick(richiesta)">
+<div class="card row_text py-2 px-3 mb-1 transparent" (click)="richiestaClick(richiesta)" (dblclick)="richiestaDoubleClick(richiesta)">
     <div class="row align-items-center">
         <div class="col-12">
             <div class="row">
@@ -38,7 +37,8 @@
                                 <!-- ngbPopover tipologie intervento -->
                                 <ng-template #popTipologie>
                                     <div class="h6" *ngFor="let t of richiesta.tipologie">
-                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(t.icona) }}"></i>&nbsp;{{ t.descrizione }}
+                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(t.icona) }}"></i>&nbsp;{{
+                                        t.descrizione }}
                                     </div>
                                 </ng-template>
                                 <span><a *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="h6 font-weight-bold descrizione-int"
@@ -242,69 +242,51 @@
                             </div>
                         </div>
 
-                        <div class="col-md-9">
-                            <div class="card">
-                                <div class="row">
-                                    <div class="col-6 pr-0">
-                                        <div class="h6 text-center text-light bg-secondary py-2 m-0">
-                                            <i class="fa fa-person"></i>Squadre coinvolte
+                        <div class="col-md-9 bg-red">
+                            <h5>Partenze</h5>
+                            <h6 *ngIf="!richiesta.partenze">Non ci sono partenze su questa richiesta di intervento</h6>
+                            <ul *ngIf="richiesta.partenze" class="list-unstyled">
+                                <li *ngFor="let p of richiesta.partenze; index as i" class="border-bottom border-top">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <b class="ml-1">#{{i+1}}</b>
                                         </div>
-                                        <div class="h6 mb-0">
-                                            <ul class="list-group list-group-flush">
-                                                <span *ngFor="let p of richiesta.partenze">
-                                                    <span *ngFor="let m of p.mezzi">
-                                                        <li *ngFor="let s of m.squadre" class="row mx-auto list-group-item border-bottom p-0 py-2">
-                                                            <span class="h6 mb-0 mr-2">
-                                                                <i class="guida fa fa-fire-extinguisher fa-fw" title="Squadra"></i>
-                                                                <span>{{ s.nome }}</span>
-                                                            </span>
-                                                            <span class="text-right">
-                                                                <a title="Componenti squadra" [ngbPopover]="popComponenti"
-                                                                    popoverTitle="Componenti" triggers="click" tabindex="0">
-                                                                    <i class="guida fa fa-address-book-o" title="Componenti squadra"></i>
-                                                                </a>
+                                        <div class="col-4">
+                                            <app-mezzo *ngFor="let m of p.mezzi" [mezzo]="m"></app-mezzo>
+                                            <span *ngIf="!p.mezzi" class="p-2">
+                                                Nessun mezzo
+                                            </span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span *ngFor="let m of p.mezzi">
+                                                <span *ngFor="let s of m.squadre">
+                                                    <span class="mr-2">
+                                                        <i class="guida fa fa-fire-extinguisher fa-fw" title="Squadra"></i>
+                                                        <span><b>{{ s.nome }}</b></span>
+                                                    </span>
+                                                    <span class="text-right">
+                                                        <a title="Componenti squadra" [ngbPopover]="popComponenti" popoverTitle="Componenti" triggers="click" tabindex="0">
+                                                            <i class="guida fa fa-address-book-o pt-1" title="Componenti squadra"></i>
+                                                        </a>
 
-                                                                <ng-template #popComponenti>
-                                                                    <div class="h6">
-                                                                        <div *ngFor="let c of s.componenti">
-                                                                            <app-componente [componente]="c"></app-componente>
-                                                                        </div>
-                                                                        <span *ngIf="!s.componenti">Nessun Componente</span>
-                                                                    </div>
-                                                                </ng-template>
-                                                            </span>
-                                                        </li>
-                                                        <span *ngIf="!m.squadre" class="p-2">
-                                                            Nessun squadra
-                                                        </span>
+                                                        <ng-template #popComponenti>
+                                                            <div class="h6">
+                                                                <div *ngFor="let c of s.componenti">
+                                                                    <app-componente [componente]="c"></app-componente>
+                                                                </div>
+                                                                <span *ngIf="!s.componenti">Nessun Componente</span>
+                                                            </div>
+                                                        </ng-template>
                                                     </span>
                                                 </span>
-                                                <span *ngIf="!richiesta.partenze" class="p-2">
-                                                    Nessuna squadra
+                                                <span *ngIf="!m.squadre" class="p-2">
+                                                    Nessun squadra
                                                 </span>
-                                            </ul>
+                                            </span>
                                         </div>
                                     </div>
-                                    <div class="col-6 pl-0">
-                                        <div class="h6 text-center text-light bg-secondary py-2 m-0">
-                                            <i class="fa fa-team"></i>Mezzi coinvolti
-                                        </div>
-                                        <div class="h6 m-0">
-                                            <ul class="list-group list-group-flush border-left">
-                                                <span *ngFor="let p of richiesta.partenze">
-                                                    <app-mezzo *ngFor="let m of p.mezzi" [mezzo]="m"></app-mezzo>
-                                                    <span *ngIf="!p.mezzi" class="p-2">
-                                                        Nessun mezzo
-                                                    </span>
-                                                </span>
-                                                <span *ngIf="!richiesta.partenze" class="p-2">
-                                                    Nessun mezzo
-                                                </span>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
