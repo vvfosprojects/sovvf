@@ -26,7 +26,12 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.boxClickService.allTrueByRichiesta(this.richiesta.stato);
+        this.centroMappa = this.centerService.centroMappaIniziale;
+        if (this.richiesta) {
+            this.boxClickService.allTrueByRichiesta(this.richiesta.stato);
+        } else {
+            this.dismissPartenza();
+        }
         isDevMode() && console.log('Componente Composizione creato');
     }
 
@@ -65,6 +70,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     getCentroMappa(event: CentroMappa): void {
+        console.log(event);
         this.centroMappa = event;
     }
 
