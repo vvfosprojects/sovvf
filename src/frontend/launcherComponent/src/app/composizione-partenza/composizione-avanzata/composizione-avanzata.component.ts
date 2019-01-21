@@ -249,8 +249,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             this.sbloccaMezzoByPartenza(partenza);
             partenza.mezzoComposizione.selezionato = false;
             partenza.mezzoComposizione = null;
-        } else {
-            console.error('[CompA] Non posso eliminare il mezzo se non esiste la partenza');
         }
     }
 
@@ -271,8 +269,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             this.partenzaCorrente.squadraComposizione.forEach((s: SquadraComposizione, index) => {
                 s === squadra && this.partenzaCorrente.squadraComposizione.splice(index, 1);
             });
-        } else {
-            console.error('[CompA] Non posso eliminare la squadda se non esiste la partenza');
         }
         // TEST
         // console.log('[CompA] Squadra unsettata, partenza', this.partenzaCorrente);
@@ -327,6 +323,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         if (this.partenze.length > 0) {
             if (partenza.mezzoComposizione) {
                 this.sbloccaMezzoByPartenza(partenza);
+                this.stopTimeout(partenza.mezzoComposizione, false);
             }
             this.partenze.forEach((p, index) => {
                 if (partenza === p) {
@@ -393,9 +390,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     startTimeout(mezzo: MezzoComposizione) {
         this.stopTimeoutAllExceptOne(mezzo);
         if (mezzo.selezionato) {
-            mezzo.timeout = 100;
+            mezzo.timeout = 30;
             this.interval[mezzo.id] = setInterval(() => {
-                mezzo.timeout -= 10;
+                mezzo.timeout -= 1;
 
                 if (mezzo.timeout <= 0) {
                     this.stopTimeout(mezzo, true);

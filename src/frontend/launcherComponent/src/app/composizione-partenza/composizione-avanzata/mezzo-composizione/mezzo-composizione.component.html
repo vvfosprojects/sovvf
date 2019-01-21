@@ -1,6 +1,6 @@
-<li class="list-group-item cursor-pointer border" (mouseover)="onHoverIn()" (mouseout)="onHoverOut()" (click)="validateOnClick()"
+<li class="list-group-item cursor-pointer border px-0" (mouseover)="onHoverIn()" (mouseout)="onHoverOut()" (click)="validateOnClick()"
   [ngClass]="liClass()">
-  <div class="row">
+  <div class="row px-3">
     <div class="col-1 pr-0">
       <span class="fa fa-eercast mr-1" [ngbTooltip]="mezzoComp.mezzo.stato" [ngClass]="statoMezzoClass()"></span>
     </div>
@@ -21,9 +21,8 @@
     <div class="col-2 text-right">
       <i *ngIf="lucchetto" class="fa fa-lg fa-lock" (click)="onClickLucchetto()"></i>
     </div>
-    <div *ngIf="mezzoComp.timeout" class="col-12">
-      <ngb-progressbar type="warning" [value]="mezzoComp.timeout"></ngb-progressbar>
-    </div>
   </div>
-  <!-- <span *ngIf="mezzoComp.timeout">{{mezzoComp.timeout}}</span> -->
+  <div *ngIf="mezzoComp.timeout" class="px-0 pt-1" style="width:100%; margin-bottom: 1px">
+    <ngb-progressbar type="secondary" [max]="30" [value]="mezzoComp.timeout" height="10px">{{mezzoComp.timeout}}s</ngb-progressbar>
+  </div>
 </li>

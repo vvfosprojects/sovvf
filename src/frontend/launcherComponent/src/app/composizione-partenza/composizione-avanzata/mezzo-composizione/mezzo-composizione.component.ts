@@ -182,12 +182,12 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
                 break;
         }
 
-        const lucchetto = this.lucchetto ? true : false;
+        if (this.lucchetto) {
+            returnClass += '  diagonal-stripes bg-lightgrey';
+        }
 
-        switch (lucchetto) {
-            case true:
-                returnClass += '  diagonal-stripes bg-lightgrey';
-                break;
+        if (this.mezzoComp.timeout) {
+            returnClass += '  pb-0';
         }
 
         return returnClass;
