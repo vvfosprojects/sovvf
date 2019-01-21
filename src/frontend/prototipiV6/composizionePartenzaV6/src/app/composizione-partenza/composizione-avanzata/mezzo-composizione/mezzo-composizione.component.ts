@@ -51,15 +51,8 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
 
     // Mezzo
     onClick() {
-        // console.log('clicco uno sbloccato');
         if (!this.mezzoComp.selezionato) {
-            /* this.mezzoComp.selezionato = true; */
             this.selezionato.emit(this.mezzoComp);
-
-            // progress bar
-            /* this.setLockTimeout(100);
-            this.setProgressBar(true);
-            this.startLockTimeout(); */
 
             // progressbar new
             this.startTimeout.emit(this.mezzoComp);
@@ -67,12 +60,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
             // mappa
             this.mezzoDirection(this.mezzoComp);
         } else if (this.mezzoComp.selezionato) {
-            /* this.mezzoComp.selezionato = false; */
             this.deselezionato.emit(this.mezzoComp);
-
-            // progress bar
-            /* this.setProgressBar(false);
-            this.clearLockTimeout(this.lockInterval); */
 
             // progressbar new
             this.stopTimeout.emit(this.mezzoComp);
@@ -145,6 +133,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
 
     // Lucchetto
     onClickLucchetto() {
+        // prevedere sblocco mezzo
     }
 
     setLucchetto() {
@@ -159,29 +148,6 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
                 this.lucchetto = false;
                 break;
         }
-    }
-
-    // Progress Bar (DA SPOSTARE SU COMPOSIZIONE-AVANZATA.COMPONENT.TS)
-    startLockTimeout() {
-        this.lockInterval = setInterval(() => {
-            this.lockTimeout -= 3;
-
-            if (this.lockTimeout <= 0) {
-                this.onClick();
-            }
-        }, 1000);
-    }
-
-    clearLockTimeout(lockInterval: any) {
-        clearInterval(lockInterval);
-    }
-
-    setProgressBar(val: boolean) {
-        this.progressBar = val;
-    }
-
-    setLockTimeout(val: number) {
-        this.lockTimeout = val;
     }
 
     // NgClass
