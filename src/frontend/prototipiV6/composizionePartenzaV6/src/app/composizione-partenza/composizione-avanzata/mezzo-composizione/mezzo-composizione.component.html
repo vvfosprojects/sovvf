@@ -1,8 +1,10 @@
 <li class="list-group-item cursor-pointer border" (mouseover)="onHoverIn()" (mouseout)="onHoverOut()" (click)="validateOnClick()"
   [ngClass]="liClass()">
   <div class="row">
-    <div class="col-10 pl-0 text-center">
+    <div class="col-1 pr-0">
       <span class="fa fa-eercast mr-1" [ngbTooltip]="mezzoComp.mezzo.stato" [ngClass]="statoMezzoClass()"></span>
+    </div>
+    <div class="col-8 pr-0">
       <span class="d-inline-block font-weight-bold mr-1">{{mezzoComp.mezzo.descrizione}}</span>
       <span class="d-inline-block mr-2">{{mezzoComp.mezzo.genere}}</span>
       <small>
@@ -11,10 +13,17 @@
         <i class="fa fa-clock-o guida mr-1" ngbTooltip="Tempo di percorrenza"></i>
         <span class="d-inline-block mr-2">{{mezzoComp.tempoPercorrenza}}</span>
       </small>
-      <span class="badge badge-secondary" [ngbTooltip]="mezzoComp.mezzo.distaccamento.descrizione">{{mezzoComp.mezzo.distaccamento.descrizione | slice:0:3}}</span>
+    </div>
+    <div class="col-1 pl-0">
+      <span class="badge" [ngClass]="badgeDistaccamentoClass()" [ngbTooltip]="mezzoComp.mezzo.distaccamento.descrizione">{{mezzoComp.mezzo.distaccamento.descrizione
+        | slice:0:3}}</span>
     </div>
     <div class="col-2 text-right">
       <i *ngIf="lucchetto" class="fa fa-lg fa-lock" (click)="onClickLucchetto()"></i>
     </div>
+    <div *ngIf="mezzoComp.timeout" class="col-12">
+      <ngb-progressbar type="warning" [value]="mezzoComp.timeout"></ngb-progressbar>
+    </div>
   </div>
+  <!-- <span *ngIf="mezzoComp.timeout">{{mezzoComp.timeout}}</span> -->
 </li>
