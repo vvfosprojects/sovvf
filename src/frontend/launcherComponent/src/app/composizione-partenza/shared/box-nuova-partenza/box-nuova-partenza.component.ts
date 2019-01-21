@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
@@ -114,7 +114,7 @@ export class BoxNuovaPartenzaComponent implements OnInit {
         tooltip = 'È necessario selezionare una squadra';
         break;
       case 'mezzo-no|squadra-no':
-      tooltip = 'È necessario selezionare un mezzo o una squadra';
+        tooltip = 'È necessario selezionare un mezzo o una squadra';
         break;
       case 'mezzo-si|squadra-si':
         result = 'text-success';

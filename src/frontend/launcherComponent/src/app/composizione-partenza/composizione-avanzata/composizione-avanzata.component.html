@@ -9,8 +9,9 @@
           </div>
           <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
             <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC" [partenze]="partenze"
-              [partenzaCorrente]="partenzaCorrente" (selezionato)="mezzoSelezionato($event)" (deselezionato)="mezzoDeselezionato($event)"
-              (sbloccato)="sbloccaMezzo($event)" (mezzoCoordinate)="mezzoCoordinate($event)"></app-mezzo-composizione>
+              [partenzaCorrente]="partenzaCorrente" [richiesta]="richiesta" (selezionato)="mezzoSelezionato($event)"
+              (deselezionato)="mezzoDeselezionato($event)" (sbloccato)="sbloccaMezzo($event)" (startTimeout)="startTimeout($event)"
+              (stopTimeout)="stopTimeout($event)" (mezzoCoordinate)="mezzoCoordinate($event)"></app-mezzo-composizione>
           </ul>
         </div>
       </div>
@@ -42,7 +43,7 @@
           <div *ngIf="partenze.length > 0">
             <div *ngFor="let p of partenze.slice().reverse()">
               <app-box-nuova-partenza [partenza]="p" [richiesta]="richiesta" [compPartenzaMode]="'slower'" [elimina]="true"
-                [alert]="true" (selezionato)="boxPartenzaSelezionato($event)" (eliminato)="eliminaBoxPartenza($event)"></app-box-nuova-partenza>
+                [alert]="true" (selezionato)="boxPartenzaSelezionato($event)" (eliminato)="eliminaBoxPartenza($event)" (mezzoDeselezionato)="annullaPartenza(true); centraMappa(richiesta, 'centra');"></app-box-nuova-partenza>
             </div>
           </div>
         </div>
@@ -54,3 +55,6 @@
     </div>
   </div>
 </div>
+<!-- <span *ngIf="interval">
+  <a *ngFor="let i of interval">{{i}}</a>
+</span> -->
