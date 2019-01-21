@@ -5,6 +5,7 @@ import { MezzoComposizione } from '../../interface/mezzo-composizione-interface'
 import { BoxPartenza } from '../../interface/box-partenza-interface';
 
 // Model
+import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 
 // Service
@@ -21,10 +22,18 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     @Output() deselezionato = new EventEmitter<MezzoComposizione>();
     @Output() sbloccato = new EventEmitter<MezzoComposizione>();
 
+    @Input() richiesta: SintesiRichiesta;
     @Input() partenzaCorrente: BoxPartenza;
     @Input() partenze: BoxPartenza[];
 
     lucchetto: boolean;
+
+    // Progress Bar
+    @Output() startTimeout = new EventEmitter<MezzoComposizione>();
+    @Output() stopTimeout = new EventEmitter<MezzoComposizione>();
+    @Input() lockInterval: any;
+    @Input() progressBar: boolean;
+    @Input() lockTimeout: number;
 
     // Mappa
     @Output() mezzoCoordinate = new EventEmitter<Coordinate>();
@@ -38,6 +47,36 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
 
     ngOnChanges() {
         this.setLucchetto();
+    }
+
+    // Mezzo
+    onClick() {
+        // console.log('clicco uno sbloccato');
+        if (!this.mezzoComp.selezionato) {
+            /* this.mezzoComp.selezionato = true; */
+            this.selezionato.emit(this.mezzoComp);
+
+            // progress bar
+            /* this.setLockTimeout(100);
+            this.setProgressBar(true);
+            this.startLockTimeout(); */
+
+            // progressbar new
+            this.startTimeout.emit(this.mezzoComp);
+
+            // mappa
+            this.mezzoDirection(this.mezzoComp);
+        } else if (this.mezzoComp.selezionato) {
+            /* this.mezzoComp.selezionato = false; */
+            this.deselezionato.emit(this.mezzoComp);
+
+            // progress bar
+            /* this.setProgressBar(false);
+            this.clearLockTimeout(this.lockInterval); */
+
+            // progressbar new
+            this.stopTimeout.emit(this.mezzoComp);
+        }
     }
 
     onHoverIn() {
@@ -104,6 +143,10 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         }
     }
 
+    // Lucchetto
+    onClickLucchetto() {
+    }
+
     setLucchetto() {
         switch (this.mezzoComp.mezzo.stato) {
             case 'sulPosto':
@@ -118,23 +161,27 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         }
     }
 
-    onClick() {
-        // console.log('clicco uno sbloccato');
-        if (!this.mezzoComp.selezionato) {
-            // console.log('clicco un deselezionato (sbloccato)');
-            this.mezzoComp.selezionato = true;
-            this.selezionato.emit(this.mezzoComp);
+    // Progress Bar (DA SPOSTARE SU COMPOSIZIONE-AVANZATA.COMPONENT.TS)
+    startLockTimeout() {
+        this.lockInterval = setInterval(() => {
+            this.lockTimeout -= 3;
 
-            // mappa
-            this.mezzoDirection(this.mezzoComp);
-        } else if (this.mezzoComp.selezionato) {
-            // console.log('clicco un selezionato (sbloccato)');
-            this.mezzoComp.selezionato = false;
-            this.deselezionato.emit(this.mezzoComp);
-        }
+            if (this.lockTimeout <= 0) {
+                this.onClick();
+            }
+        }, 1000);
     }
 
-    onClickLucchetto() {
+    clearLockTimeout(lockInterval: any) {
+        clearInterval(lockInterval);
+    }
+
+    setProgressBar(val: boolean) {
+        this.progressBar = val;
+    }
+
+    setLockTimeout(val: number) {
+        this.lockTimeout = val;
     }
 
     // NgClass
@@ -169,6 +216,14 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
                 break;
         }
 
+        const lucchetto = this.lucchetto ? true : false;
+
+        switch (lucchetto) {
+            case true:
+                returnClass += '  diagonal-stripes bg-lightgrey';
+                break;
+        }
+
         return returnClass;
     }
 
@@ -179,6 +234,22 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
             'text-info': this.mezzoComp.mezzo.stato === 'inViaggio',
             'text-success': this.mezzoComp.mezzo.stato === 'sulPosto'
         };
+    }
+
+    badgeDistaccamentoClass() {
+        let result = 'badge-secondary';
+
+        if (this.richiesta && this.mezzoComp) {
+            const distaccamentoMezzo = this.mezzoComp.mezzo.distaccamento.descrizione;
+
+            if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
+                result = 'badge-primary';
+            } else if (this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
+                result = 'badge-info';
+            }
+        }
+
+        return result;
     }
 
     // Alert

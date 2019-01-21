@@ -10,4 +10,5 @@ export interface MezzoComposizione {
     selezionato: boolean;
     hover: boolean;
     bloccato?: boolean;
+    timeout?: number;
 }
