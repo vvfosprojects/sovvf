@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 // Model
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
+import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Service
 
@@ -12,6 +13,7 @@ import { SquadraComposizione } from '../../interface/squadra-composizione-interf
 })
 export class SquadraComposizioneComponent implements OnInit {
   @Input() squadraComp: SquadraComposizione;
+  @Input() richiesta: SintesiRichiesta;
   @Output() selezionata = new EventEmitter<SquadraComposizione>();
   @Output() deselezionata = new EventEmitter<SquadraComposizione>();
 
@@ -58,5 +60,21 @@ export class SquadraComposizioneComponent implements OnInit {
     }
 
     return returnClass;
+  }
+
+  badgeDistaccamentoClass() {
+    let result = 'badge-secondary';
+
+    if (this.richiesta && this.squadraComp) {
+      const distaccamentoMezzo = this.squadraComp.squadra.distaccamento.descrizione;
+
+      if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
+        result = 'badge-primary';
+      } else if (this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
+        result = 'badge-info';
+      }
+    }
+
+    return result;
   }
 }
