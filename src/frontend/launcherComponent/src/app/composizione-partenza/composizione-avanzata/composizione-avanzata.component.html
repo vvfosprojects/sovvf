@@ -21,8 +21,8 @@
             <i class="fa fa-group mr-2"></i><span class="h6">Squadre</span>
           </div>
           <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
-            <app-squadra-composizione *ngFor="let sC of squadreComposizione" [squadraComp]="sC" (selezionata)="squadraSelezionata($event)"
-              (deselezionata)="squadraDeselezionata($event)"></app-squadra-composizione>
+            <app-squadra-composizione *ngFor="let sC of squadreComposizione" [squadraComp]="sC" [richiesta]="richiesta"
+              (selezionata)="squadraSelezionata($event)" (deselezionata)="squadraDeselezionata($event)"></app-squadra-composizione>
           </ul>
         </div>
       </div>
@@ -43,7 +43,8 @@
           <div *ngIf="partenze.length > 0">
             <div *ngFor="let p of partenze.slice().reverse()">
               <app-box-nuova-partenza [partenza]="p" [richiesta]="richiesta" [compPartenzaMode]="'slower'" [elimina]="true"
-                [alert]="true" (selezionato)="boxPartenzaSelezionato($event)" (eliminato)="eliminaBoxPartenza($event)" (mezzoDeselezionato)="annullaPartenza(true); centraMappa(richiesta, 'centra');"></app-box-nuova-partenza>
+                [alert]="true" (selezionato)="boxPartenzaSelezionato($event)" (eliminato)="eliminaBoxPartenza($event)"
+                (mezzoDeselezionato)="annullaPartenza(true); centraMappa(richiesta, 'centra');"></app-box-nuova-partenza>
             </div>
           </div>
         </div>

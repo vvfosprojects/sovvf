@@ -1,7 +1,7 @@
 <li class="list-group-item cursor-pointer border" (mouseover)="onHoverIn()" (mouseout)="onHoverOut()" (click)="onClick()"
   [ngClass]="liClass()">
   <div class="row">
-    <div class="col-12">
+    <div class="col-10 pl-0">
       <span class="badge badge-info mr-2 py-1" [ngbPopover]="componenti" triggers="mouseenter:mouseleave">
         <i class="fa fa-user mr-1"></i><span *ngIf="componenti">{{squadraComp.squadra.componenti.length}}</span>
       </span>
@@ -11,6 +11,10 @@
         </div>
       </ng-template>
       <span>{{squadraComp.squadra.nome}}</span>
+    </div>
+    <div class="col-2 pl-0">
+      <span class="badge" [ngClass]="badgeDistaccamentoClass()" [ngbTooltip]="squadraComp.squadra.distaccamento.descrizione">{{squadraComp.squadra.distaccamento.descrizione
+        | slice:0:3}}</span>
     </div>
   </div>
 </li>
