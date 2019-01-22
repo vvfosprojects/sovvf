@@ -43,7 +43,7 @@
           <div *ngIf="partenze.length > 0">
             <div *ngFor="let p of partenze.slice().reverse()">
               <app-box-nuova-partenza [partenza]="p" [richiesta]="richiesta" [compPartenzaMode]="'slower'" [elimina]="true"
-                [alert]="true" (selezionato)="boxPartenzaSelezionato($event)" (eliminato)="eliminaBoxPartenza($event)"></app-box-nuova-partenza>
+                [alert]="true" (selezionato)="boxPartenzaSelezionato($event)" (eliminato)="eliminaBoxPartenza($event)" (mezzoDeselezionato)="annullaPartenza(true); centraMappa(richiesta, 'centra');"></app-box-nuova-partenza>
             </div>
           </div>
         </div>
@@ -55,6 +55,3 @@
     </div>
   </div>
 </div>
-<!-- <span *ngIf="interval">
-  <a *ngFor="let i of interval">{{i}}</a>
-</span> -->
