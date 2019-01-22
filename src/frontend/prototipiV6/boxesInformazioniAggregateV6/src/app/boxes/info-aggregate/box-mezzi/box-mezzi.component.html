@@ -1,14 +1,14 @@
 <div class="row p-2">
     <div class="col-12">
         <div class="row">
-            <div class="col">
+            <div class="col-7">
                 <i class="fa fa-truck mb-2 mr-1"></i><span class="font-weight-bold cursor-pointer" (click)="clickMezzi('tutti')">Mezzi in servizio:
                     {{mezzi.inServizio}}</span>
             </div>
-            <div class="col ml-auto text-secondary text-right">
+            <div class="col-5 ml-auto text-secondary text-right">
                 <i class="mb-2 mr-1"></i>
                 <span class="mr-2 font-weight-bold">Istituto</span>
-                <span class="badge badge-secondary h6 w-25 cursor-pointer mr-3" [ngClass]="{'border-click-checked': boxClick.mezzi.istituto}" (click)="clickMezzi('istituto')">{{mezzi.istituto}}</span>
+                <span class="badge badge-secondary h6 w-25 cursor-pointer mr-3 mb-0" [ngClass]="{'border-click-checked': boxClick.mezzi.istituto}" (click)="clickMezzi('istituto')">{{mezzi.istituto}}</span>
             </div>
         </div>
         <hr class="m-0 mb-2">
@@ -24,7 +24,7 @@
                             <li><span class="d-inline-block h6">In rientro</span></li>
                         </ul>
                     </div>
-                    <div class="col px-0  text-secondary text-center">
+                    <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
                             <li><span class="badge badge-secondary h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick.mezzi.inSede}" (click)="clickMezzi('inSede')">{{mezzi.inSede}}</span></li>
                             <li><span class="badge badge-primary h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick.mezzi.inRientro}" (click)="clickMezzi('inRientro')">{{mezzi.inRientro}}</span></li>
