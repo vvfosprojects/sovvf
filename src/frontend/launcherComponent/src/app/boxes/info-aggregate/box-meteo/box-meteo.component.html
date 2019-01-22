@@ -1,15 +1,11 @@
 <div *ngIf="datimeteo" class="row p-1">
     <div class="col-12 pt-0 pb-0">
-        <div class="row">
-            <div class="col">
-                <img class="iconameteo" src="http://openweathermap.org/img/w/{{datimeteo.icona}}.png"><span class=" font-weight-bold text-capitalize">{{datimeteo.descrizione}}</span>
-                <span class="badge badge-success h6 ml-2">{{datimeteo.temperatura}}°</span>
-            </div>
-        </div>
+        <img class="iconameteo" src="http://openweathermap.org/img/w/{{datimeteo.icona}}.png"><span class=" font-weight-bold text-capitalize">{{datimeteo.descrizione}}</span>
+        <span class="badge badge-success h6 ml-2">{{datimeteo.temperatura}}°</span>
         <hr class="m-0 mb-2">
     </div>
     <!-- sinistra -->
-    <div class="col-5 pr-0 text-secondary">
+    <div class="col-4 pr-0 text-secondary">
         <ul class="list-unstyled m-0">
             <li>
                 <div class="h6">Umidità</div>
@@ -19,7 +15,7 @@
         </ul>
     </div>
     <!-- centro -->
-    <div class="col-4 text-right text-secondary">
+    <div class="col-3 text-right text-secondary">
         <ul class="list-unstyled m-0">
             <li>
                 <div class="h6">&nbsp;</div>
@@ -27,14 +23,14 @@
             <li>
                 <div class="h6">
                     <i [ngStyle]="{'transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datimeteo.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datimeteo.direzione.gradi+'deg)'}"
-                       class="pl-2 fa fa-long-arrow-up"></i>
+                        class="pl-2 fa fa-long-arrow-up"></i>
                     <small class="text-black-50"> {{datimeteo.direzione.cardinali}}</small>
                 </div>
             </li>
         </ul>
     </div>
     <!-- destra -->
-    <div class="col-3 pl-2 text-right">
+    <div class="col-5 pl-2 text-right">
         <ul class="list-unstyled m-0">
             <li><span class="badge badge-secondary h6 mb-1">{{datimeteo.umidita}}%</span></li>
             <li><span class="badge badge-info h6 mb-1">{{datimeteo.vento}} km/h</span></li>
