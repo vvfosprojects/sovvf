@@ -183,7 +183,14 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         }
 
         if (this.lucchetto) {
-            returnClass += '  diagonal-stripes bg-lightgrey';
+            switch (this.mezzoComp.mezzo.stato) {
+                case 'inViaggio':
+                    returnClass += '  diagonal-stripes bg-lightinfo';
+                    break;
+                case 'sulPosto':
+                    returnClass += '  diagonal-stripes bg-lightsuccess';
+                    break;
+            }
         }
 
         if (this.mezzoComp.timeout) {

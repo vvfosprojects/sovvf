@@ -392,12 +392,12 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         if (mezzo.selezionato) {
             mezzo.timeout = 30;
             this.interval[mezzo.id] = setInterval(() => {
-                mezzo.timeout -= 1;
+                mezzo.timeout -= .3;
 
                 if (mezzo.timeout <= 0) {
                     this.stopTimeout(mezzo, true);
                 }
-            }, 1000);
+            }, 300);
         }
     }
 
