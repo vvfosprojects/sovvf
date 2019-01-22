@@ -1,9 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
+
+// Model
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
-import { LayoutMethods } from './_layout-methods';
+
+// Helper Methods
+import { HelperMethods } from '../../helper/_helper-methods';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -13,6 +17,7 @@ import { LayoutMethods } from './_layout-methods';
         NgbPopoverConfig,
         NgbTooltipConfig
     ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SintesiRichiestaComponent implements OnInit {
     @Output() clickRichiesta: EventEmitter<any> = new EventEmitter();
@@ -29,9 +34,9 @@ export class SintesiRichiestaComponent implements OnInit {
     @Input() listaEventi: boolean;
     @Input() partenza: boolean;
 
-    methods = new LayoutMethods;
+    methods = new HelperMethods;
     isSingleClick = true;
-    live: any;
+    live = true;
 
     constructor(popoverConfig: NgbPopoverConfig,
         tooltipConfig: NgbTooltipConfig,
@@ -41,9 +46,9 @@ export class SintesiRichiestaComponent implements OnInit {
         intl.changes.next();
 
         popoverConfig.container = 'body';
-        popoverConfig.placement = 'bottom';
+        popoverConfig.placement = 'top';
         tooltipConfig.container = 'body';
-        tooltipConfig.placement = 'bottom';
+        tooltipConfig.placement = 'top';
     }
 
     ngOnInit() {
@@ -56,16 +61,12 @@ export class SintesiRichiestaComponent implements OnInit {
         }
     }
 
-    /* NgClass Methods */
-    statusClass(richiesta) {
-        return this.methods.statusClass(richiesta);
-    }
-    complessitaClass(richiesta) {
+    complessitaClass(richiesta: any) {
         return this.methods.complessitaClass(richiesta);
     }
 
     /* Eventi */
-    richiestaClick(richiesta) {
+    richiestaClick(richiesta: any) {
         if (richiesta) {
             this.isSingleClick = true;
             setTimeout(() => {
@@ -75,22 +76,22 @@ export class SintesiRichiestaComponent implements OnInit {
             }, 250);
         }
     }
-    richiestaDoubleClick(richiesta) {
+    richiestaDoubleClick(richiesta: any) {
         if (richiesta && this.espandibile) {
             this.isSingleClick = false;
             this.toggleEspanso();
             this.doubleClickRichiesta.emit(richiesta);
         }
     }
-    fissaClick(richiesta) {
+    fissaClick(richiesta: any) {
         if (richiesta) {
             this.fissaInAlto.emit(richiesta);
         }
     }
-    visualizzaEventiRichiesta(richiesta) {
+    visualizzaEventiRichiesta(richiesta: any) {
         this.eventiRichiesta.emit(richiesta);
     }
-    invioPartenza(richiesta) {
+    invioPartenza(richiesta: any) {
         if (this.partenza) {
             this.dismissNuovaPartenza.emit();
         } else {
