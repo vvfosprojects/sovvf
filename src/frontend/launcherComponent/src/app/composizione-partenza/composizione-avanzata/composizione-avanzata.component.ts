@@ -390,7 +390,13 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     startTimeout(mezzo: MezzoComposizione) {
         this.stopTimeoutAllExceptOne(mezzo);
         if (mezzo.selezionato) {
-            mezzo.timeout = 30;
+            const maxProgressBar = 30;
+            const minutesToAdd = 1;
+            const now = new Date;
+            const dataScadenza = addMinutes(new Date, minutesToAdd);
+            mezzo.dataScadenzaTimeout = dataScadenza;
+            mezzo.timeout = (mezzo.dataScadenzaTimeout.getMinutes() - now.getMinutes()) * maxProgressBar;
+
             this.interval[mezzo.id] = setInterval(() => {
                 mezzo.timeout -= .3;
 
@@ -398,10 +404,18 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                     this.stopTimeout(mezzo, true);
                 }
             }, 300);
+            // TEST
+            // console.log('Data Scadenza', dataScadenza);
+            // console.log('Timeout', mezzo.timeout);
+        }
+
+        function addMinutes(date: any, minutes: any) {
+            return new Date(date.getTime() + minutes * 60000);
         }
     }
 
     stopTimeout(mezzo: MezzoComposizione, deseleziona: boolean) {
+        mezzo.dataScadenzaTimeout = null;
         mezzo.timeout = null;
         this.interval[mezzo.id] ? clearInterval(this.interval[mezzo.id]) : console.error('Interval[' + mezzo.id + '] non presente');
 
