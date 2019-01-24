@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 
 // Model
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
@@ -19,7 +20,11 @@ export class SintesiRichiestaSmComponent implements OnInit {
 
   methods = new HelperMethods;
 
-  constructor(private richiesteS: ListaRichiesteService) { }
+  constructor(private richiesteS: ListaRichiesteService,
+    tooltipConfig: NgbTooltipConfig) {
+    tooltipConfig.container = 'body';
+    tooltipConfig.placement = 'bottom';
+  }
 
   ngOnInit() {
   }

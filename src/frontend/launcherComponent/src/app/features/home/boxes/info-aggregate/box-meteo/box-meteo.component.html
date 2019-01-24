@@ -1,4 +1,4 @@
-<div *ngIf="datimeteo" class="row p-1">
+<div *ngIf="datimeteo" class="row" style="padding: 5px">
     <div class="col-12 pt-0 pb-0">
         <img class="iconameteo" src="http://openweathermap.org/img/w/{{datimeteo.icona}}.png"><span class=" font-weight-bold text-capitalize">{{datimeteo.descrizione}}</span>
         <span class="badge badge-success h6 ml-2">{{datimeteo.temperatura}}°</span>
@@ -37,7 +37,7 @@
         </ul>
     </div>
 </div>
-<div *ngIf="!datimeteo" class="w-100">
+<div *ngIf="!datimeteo" class="w-100" style="min-height: 115px">
     <div class="text-center">
         <i class="fa fa-spinner fa-pulse fa-3x fa-fw my-4"></i>
     </div>
