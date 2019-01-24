@@ -1,6 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild, OnChanges, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ScrollEvent } from 'ngx-scroll-event';
 import { Subscription } from 'rxjs';
 import { FilterPipe } from 'ngx-filter-pipe';
 
@@ -162,7 +161,8 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     }
 
     /* Permette di visualizzare il loader e caricare nuove richieste */
-    nuoveRichieste(event: ScrollEvent) {
+    nuoveRichieste(event) {
+        /* parte relativa a scrool event
         if (event.isReachingBottom && event.isWindowEvent === false && this.contatoreNuoveRichieste === 0) {
             this.contatoreNuoveRichieste++;
             this.loaderNuoveRichieste = true;
@@ -171,6 +171,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
             // TEST
             // console.log(this.richieste[this.richieste.length - 1].id);
         }
+        */
     }
 
     /* Gestisce il singolo click sulla richiesta */

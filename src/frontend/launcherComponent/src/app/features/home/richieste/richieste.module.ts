@@ -9,7 +9,6 @@ import { SharedModule } from '../../../shared/shared.module';
 import { PipeModule } from '../../../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipeModule } from 'ngx-filter-pipe';
-import { ScrollEventModule } from 'ngx-scroll-event';
 /*
     Components
  */
@@ -37,7 +36,6 @@ import { SintesiRichiestaModule } from './lista-richieste/sintesi-richiesta/sint
         FormsModule,
         NgxPaginationModule,
         BrowserAnimationsModule,
-        ScrollEventModule,
         FilterPipeModule,
         SintesiRichiestaModule,
         NgbModule,
