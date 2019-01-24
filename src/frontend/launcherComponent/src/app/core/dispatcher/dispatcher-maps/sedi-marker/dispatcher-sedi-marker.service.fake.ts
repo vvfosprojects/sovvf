@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {of, Observable, Subject} from 'rxjs';
 import {SediMarkerService} from '../../../service/maps-service/';
-import {SedeMarker} from '../../../../maps/maps-model/sede-marker.model';
+import {SedeMarker} from '../../../../features/home/maps/maps-model/sede-marker.model';
 
 
 @Injectable({

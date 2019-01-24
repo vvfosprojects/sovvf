@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { MezzoMarker } from '../../../../maps/maps-model/mezzo-marker.model';
+import { MezzoMarker } from '../../../../features/home/maps/maps-model/mezzo-marker.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Squadra } from '../../../../shared/model/squadra.model';
 import { Componente } from '../../../../shared/model/componente.model';

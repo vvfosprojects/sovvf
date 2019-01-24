@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {EventoRichiesta} from '../../../eventi/eventi-model/evento-richiesta.model';
+import {EventoRichiesta} from '../../../features/home/eventi/eventi-model/evento-richiesta.model';
 import {Observable, of, Subject} from 'rxjs';
 import {EventiRichiestaService} from '../../service/eventi-richiesta-service/eventi-richiesta.service';
 

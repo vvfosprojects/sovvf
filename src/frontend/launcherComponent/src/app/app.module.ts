@@ -18,27 +18,27 @@ import { AppComponent } from './app.component';
  * Route & Page
  */
 import { routing } from './app.routing';
-import { HomeComponent } from './auth/features/home';
-import { LoginComponent } from './auth/features/login';
-import { AutorimessaComponent } from './auth/features/autorimessa';
-import { StatisticheComponent } from './auth/features/statistiche';
-import { ServiziComponent } from './auth/features/servizi';
-import { NotFoundComponent } from './auth/features/not-found';
-import { BasicAuthInterceptor, ErrorInterceptor } from './auth/_helpers';
-import { fakeBackendProvider } from './auth/_helpers';
+import { HomeComponent } from './features/home';
+import { LoginComponent } from './features/login';
+import { AutorimessaComponent } from './features/autorimessa';
+import { StatisticheComponent } from './features/statistiche';
+import { ServiziComponent } from './features/servizi';
+import { NotFoundComponent } from './features/not-found';
+import { BasicAuthInterceptor, ErrorInterceptor } from './core/auth/_helpers';
+import { fakeBackendProvider } from './core/auth/_helpers';
 /**
  * Module Components
  */
-import { NavbarModule } from './navbar/navbar.module';
+import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
-import { RichiesteModule } from './richieste/richieste.module';
-import { BoxesModule } from './boxes/boxes.module';
-import { MapsModule } from './maps/maps.module';
-import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
-import { ChiamataModule } from './chiamata/chiamata.module';
-import { FilterbarModule } from './filterbar/filterbar.module';
+import { RichiesteModule } from './features/home/richieste/richieste.module';
+import { BoxesModule } from './features/home/boxes/boxes.module';
+import { MapsModule } from './features/home/maps/maps.module';
+import { EventiRichiestaModule } from './features/home/eventi/eventi-richiesta.module';
+import { ChiamataModule } from './features/home/chiamata/chiamata.module';
+import { FilterbarModule } from './features/home/filterbar/filterbar.module';
 import { I18n } from './i18n';
-import { ComposizionePartenzaModule } from './composizione-partenza/composizione-partenza.module';
+import { ComposizionePartenzaModule } from './features/home/composizione-partenza/composizione-partenza.module';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({

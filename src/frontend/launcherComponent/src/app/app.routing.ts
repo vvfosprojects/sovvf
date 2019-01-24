@@ -1,11 +1,11 @@
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from './auth/_guards';
-import { HomeComponent } from './auth/features/home';
-import { LoginComponent } from './auth/features/login';
-import { NotFoundComponent } from './auth/features/not-found/';
-import { ServiziComponent } from './auth/features/servizi/';
-import { AutorimessaComponent } from './auth/features/autorimessa/';
-import { StatisticheComponent } from './auth/features/statistiche/';
+import { AuthGuard } from './core/auth/_guards';
+import { HomeComponent } from './features/home';
+import { LoginComponent } from './features/login';
+import { NotFoundComponent } from './features/not-found/';
+import { ServiziComponent } from './features/servizi/';
+import { AutorimessaComponent } from './features/autorimessa/';
+import { StatisticheComponent } from './features/statistiche/';
 
 const appRoutes: Routes = [
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },

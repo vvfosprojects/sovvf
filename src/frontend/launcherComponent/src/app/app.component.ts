@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { UnitaAttualeService } from './navbar/navbar-service/unita-attuale/unita-attuale.service';
+import { UnitaAttualeService } from './features/navbar/navbar-service/unita-attuale/unita-attuale.service';
 import { NavigationEnd, Router } from '@angular/router';
-import { AuthenticationService } from './auth/_services';
+import { AuthenticationService } from './core/auth/_services';
 
 @Component({
     selector: 'app-root',

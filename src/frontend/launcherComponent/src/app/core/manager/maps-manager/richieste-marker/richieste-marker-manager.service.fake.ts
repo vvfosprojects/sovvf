@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { DispatcherRichiesteMarkerService } from '../../../dispatcher/dispatcher-maps';
-import { RichiestaMarker } from '../../../../maps/maps-model/richiesta-marker.model';
+import { RichiestaMarker } from '../../../../features/home/maps/maps-model/richiesta-marker.model';
 
 
 @Injectable({

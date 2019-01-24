@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {Coordinate} from '../../../../shared/model/coordinate.model';
-import {CentroMappa} from '../../../../maps/maps-model/centro-mappa.model';
+import {CentroMappa} from '../../../../features/home/maps/maps-model/centro-mappa.model';
 
 
 @Injectable({

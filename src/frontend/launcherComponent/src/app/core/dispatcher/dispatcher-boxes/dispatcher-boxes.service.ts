@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable, of, Subject} from 'rxjs';
-import {BoxInterventi} from '../../../boxes/boxes-model/box-interventi.model';
-import {BoxMezzi} from '../../../boxes/boxes-model/box-mezzi.model';
-import {BoxPersonale} from '../../../boxes/boxes-model/box-personale.model';
+import {BoxInterventi} from '../../../features/home/boxes/boxes-model/box-interventi.model';
+import {BoxMezzi} from '../../../features/home/boxes/boxes-model/box-mezzi.model';
+import {BoxPersonale} from '../../../features/home/boxes/boxes-model/box-personale.model';
 import {InfoAggregateService} from '../../service/boxes-service/info-aggregate.service';
 
 @Injectable({

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {of, Observable, Subject} from 'rxjs';
 import {MezziMarkerService} from '../../../service/maps-service/mezzi-marker/mezzi-marker.service';
-import {MezzoMarker} from '../../../../maps/maps-model/mezzo-marker.model';
+import {MezzoMarker} from '../../../../features/home/maps/maps-model/mezzo-marker.model';
 
 
 @Injectable({

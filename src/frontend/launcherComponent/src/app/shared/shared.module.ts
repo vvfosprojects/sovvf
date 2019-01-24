@@ -7,7 +7,7 @@ import * as Shared from './index';
 @NgModule({
     imports: [
         CommonModule,
-        NgbModule.forRoot(),
+        NgbModule,
         PipeModule
     ],
     declarations: [

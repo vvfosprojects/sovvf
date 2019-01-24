@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {EventoRichiesta} from '../../../eventi/eventi-model/evento-richiesta.model';
+import {EventoRichiesta} from '../../../features/home/eventi/eventi-model/evento-richiesta.model';
 import * as moment from 'moment';
 
 @Injectable()

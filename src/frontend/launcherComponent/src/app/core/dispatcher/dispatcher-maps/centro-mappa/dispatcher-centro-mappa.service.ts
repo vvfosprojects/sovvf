@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {of, Observable, Subject} from 'rxjs';
 import {CentroMappaService} from '../../../service/maps-service/centro-mappa/centro-mappa.service';
-import {CentroMappa} from '../../../../maps/maps-model/centro-mappa.model';
+import {CentroMappa} from '../../../../features/home/maps/maps-model/centro-mappa.model';
 
 @Injectable({
     providedIn: 'root'

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { SedeMarker } from '../../../../maps/maps-model/sede-marker.model';
+import { SedeMarker } from '../../../../features/home/maps/maps-model/sede-marker.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 
 
