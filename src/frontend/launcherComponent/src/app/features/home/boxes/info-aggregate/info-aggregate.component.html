@@ -5,7 +5,7 @@
         <!-- box interventi -->
         <div class="col-4 pr-0">
           <div class="card app-shadow">
-            <app-box-interventi [interventi]="interventi"></app-box-interventi>
+            <app-box-interventi [interventi]="interventi" [boxClick]="boxClick" (clickRichieste)="clickRichieste($event)"></app-box-interventi>
           </div>
         </div>
         <!-- box interventi -->
