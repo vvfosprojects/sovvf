@@ -18,7 +18,6 @@ export class TurnoService {
     getTurni(): Observable<any> {
         return this.http.get(API_URL_TURNO).pipe(
             map((data: any) => {
-                // const turni = data;
                 return data;
             }),
             retry(3),

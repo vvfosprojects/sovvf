@@ -1,37 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { TurnoService } from '../navbar-service/turno-service/turno.service';
+import { Component, Input } from '@angular/core';
 import { Turno } from './turno.model';
-import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-turno',
     templateUrl: './turno.component.html',
     styleUrls: ['./turno.component.css']
 })
-export class TurnoComponent implements OnInit, OnDestroy {
+export class TurnoComponent {
 
-    constructor(private turnoService: TurnoService) {
-        /**
-         *  mi iscrivo al service che mi ritorna i turni
-         */
-        this.subscription.add(this.turnoService.getTurni().subscribe((data: Turno) => {
-            this.precedente = data.turni[0];
-            this.corrente = data.turni[1];
-            this.successivo = data.turni[2];
-        }));
-
-    }
-
-    precedente: string;
-    corrente: string;
-    successivo: string;
-    subscription = new Subscription();
-
-    ngOnInit() {
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
+    @Input() turno: Turno;
 
 }

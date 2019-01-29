@@ -1,10 +1,12 @@
 export class Turno {
-    constructor(
-        /**
-         * stringa di turno: precedente, corrente, successivo
-         */
-        public turni: string[]
-    ) {
+    precedente: string;
+    corrente: string;
+    successivo: string;
+
+    constructor(_precedente: string, _corrente: string, _successivo: string) {
+        this.precedente = _precedente;
+        this.corrente = _corrente;
+        this.successivo = _successivo;
     }
 
 }

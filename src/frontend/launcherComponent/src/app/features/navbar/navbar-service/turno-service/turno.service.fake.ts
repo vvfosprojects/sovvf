@@ -14,7 +14,7 @@ export class TurnoServiceFake {
     }
 
     public getTurni(): Observable<Turno> {
-        this.turni = new Turno(['D', 'B', 'A']);
+        this.turni = new Turno('D', 'B', 'A');
         return of(this.turni);
     }
 
