@@ -1,3 +1,10 @@
+import { AppComponent } from './app.component';
+import { I18n } from './i18n';
+import { environment } from '../environments/environment';
+
+/**
+ * Module
+ */
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxWebstorageModule } from 'ngx-webstorage';
@@ -12,7 +19,18 @@ import { TimeagoModule, TimeagoFormatter, TimeagoCustomFormatter, TimeagoIntl } 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { NgProgressHttpModule } from '@ngx-progressbar/http';
-import { AppComponent } from './app.component';
+import { ToastrModule } from 'ngx-toastr';
+
+/**
+ * Ngxs
+ */
+import { NgxsModule } from '@ngxs/store';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+
+
 /**
  * Route & Page
  */
@@ -36,9 +54,9 @@ import { MapsModule } from './features/home/maps/maps.module';
 import { EventiRichiestaModule } from './features/home/eventi/eventi-richiesta.module';
 import { ChiamataModule } from './features/home/chiamata/chiamata.module';
 import { FilterbarModule } from './features/home/filterbar/filterbar.module';
-import { I18n } from './i18n';
 import { ComposizionePartenzaModule } from './features/home/composizione-partenza/composizione-partenza.module';
-import { ToastrModule } from 'ngx-toastr';
+import { BoxesStates } from './features/home/boxes/store';
+
 
 @NgModule({
     declarations: [
@@ -53,23 +71,12 @@ import { ToastrModule } from 'ngx-toastr';
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        NgxWebstorageModule.forRoot(),
         ReactiveFormsModule,
         HttpClientModule,
         routing,
         NgbModule,
-        PipeModule.forRoot(),
         FormsModule,
         FilterPipeModule,
-        SidebarModule.forRoot(),
-        TimeagoModule.forRoot({
-            intl: TimeagoIntl,
-            formatter: {provide: TimeagoFormatter, useClass: TimeagoCustomFormatter},
-        }),
-        ToastrModule.forRoot({
-            positionClass: 'toast-top-center',
-            preventDuplicates: true,
-        }),
         NgProgressModule,
         NgProgressHttpModule,
         RichiesteModule,
@@ -80,16 +87,40 @@ import { ToastrModule } from 'ngx-toastr';
         NavbarModule,
         ChiamataModule,
         FilterbarModule,
-        ComposizionePartenzaModule
+        ComposizionePartenzaModule,
+        NgxWebstorageModule.forRoot(),
+        PipeModule.forRoot(),
+        SidebarModule.forRoot(),
+        TimeagoModule.forRoot({
+            intl: TimeagoIntl,
+            formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter },
+        }),
+        ToastrModule.forRoot({
+            positionClass: 'toast-top-center',
+            preventDuplicates: true,
+        }),
+        NgxsModule.forRoot(BoxesStates, {
+            developmentMode: !environment.production,
+        }),
+        NgxsStoragePluginModule.forRoot({
+            key: []
+        }),
+        NgxsRouterPluginModule.forRoot(),
+        NgxsReduxDevtoolsPluginModule.forRoot({
+            name: 'Ngxs Boxes Store DevTools',
+        }),
+        NgxsLoggerPluginModule.forRoot({
+            disabled: environment.production,
+        }),
     ],
     providers: [
-        {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},
-        {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+        { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         I18n,
         /**
          * provider fake per la login
          */
-        fakeBackendProvider,
+        fakeBackendProvider
     ],
     bootstrap: [AppComponent]
 })

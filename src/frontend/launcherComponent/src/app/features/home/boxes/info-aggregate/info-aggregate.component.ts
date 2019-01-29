@@ -5,12 +5,14 @@ import { BoxMezzi } from '../boxes-model/box-mezzi.model';
 import { BoxPersonale } from '../boxes-model/box-personale.model';
 import { BoxClickService } from './box-service/box-click.service';
 import { BoxClickInterface } from './box-service/box-click-interface';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { ModalServiziComponent } from './modal-servizi/modal-servizi.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MeteoService } from '../../../../shared/meteo/meteo-service.service';
 import { Meteo } from '../../../../shared/model/meteo.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { Select, Store } from '@ngxs/store';
+import { BoxesState, FetchBoxPersonale, FetchBoxMezzi, FetchBoxInterventi } from '../store';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -18,38 +20,33 @@ import { Coordinate } from '../../../../shared/model/coordinate.model';
     styleUrls: ['./info-aggregate.component.css']
 })
 export class InfoAggregateComponent implements OnInit, OnDestroy {
-    interventi: BoxInterventi;
-    mezzi: BoxMezzi;
-    personale: BoxPersonale;
+    @Select(BoxesState.interventi) interventi$: Observable<BoxInterventi>;
+    @Select(BoxesState.mezzi) mezzi$: Observable<BoxMezzi>;
+    @Select(BoxesState.personale) personale$: Observable<BoxPersonale>;
+
     datimeteo: Meteo;
 
     boxClick: BoxClickInterface;
     subscription = new Subscription();
 
-    constructor(private boxManager: BoxManagerService,
-                private boxClickService: BoxClickService,
-                private modalService: NgbModal,
-                private meteoService: MeteoService) {
+    constructor(private store: Store,
+        private boxManager: BoxManagerService,
+        private boxClickService: BoxClickService,
+        private modalService: NgbModal,
+        private meteoService: MeteoService) {
         this.boxClick = this.boxClickService.boxClickState;
         this.subscription.add(this.boxClickService.getBoxClick().subscribe((boxClick: BoxClickInterface) => {
-                this.boxClick = boxClick;
-            }
+            this.boxClick = boxClick;
+        }
         ));
         this.startMeteo();
     }
 
     ngOnInit() {
-        this.boxManager.getBoxInterventi().subscribe((r: BoxInterventi) => {
-            this.interventi = r;
-        });
-        this.boxManager.getBoxMezzi().subscribe((r: BoxMezzi) => {
-            this.mezzi = r;
-        });
-        this.boxManager.getBoxPersonale().subscribe((r: BoxPersonale) => {
-            this.personale = r;
-        });
+        this.store.dispatch(new FetchBoxInterventi());
+        this.store.dispatch(new FetchBoxMezzi());
+        this.store.dispatch(new FetchBoxPersonale());
     }
-
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
