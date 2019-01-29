@@ -1,6 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { first } from 'rxjs/operators';
-import { UserService } from '../../../core/auth/_services';
+import { Component, Input } from '@angular/core';
 import { User } from '../../../core/auth/_models';
 
 @Component({
@@ -8,17 +6,8 @@ import { User } from '../../../core/auth/_models';
     templateUrl: './operatore.component.html',
     styleUrls: ['./operatore.component.css']
 })
-export class OperatoreComponent implements OnInit {
+export class OperatoreComponent {
 
-    user: User[] = [];
-
-    constructor(private userService: UserService) {
-    }
-
-    ngOnInit() {
-        this.userService.getAll().pipe(first()).subscribe(users => {
-            this.user = users;
-        });
-    }
+    @Input() user: User[];
 
 }
