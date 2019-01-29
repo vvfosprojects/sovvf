@@ -4,12 +4,12 @@
         <div class="row">
             <div class="col-7">
                 <i class="fa fa-users mb-2 mr-1"></i>
-                <span class="font-weight-bold">Personale in servizio: <a href="javascript:void(0)" (click)="openModalServizi()">{{personale.personaleTotale}}</a></span>
+                <span class="font-weight-bold">Personale in servizio: <a href="javascript:void(0)" (click)="clickServizi.emit('openModal')">{{personale.personaleTotale}}</a></span>
             </div>
             <div class="col-5 ml-auto text-right text-secondary">
                 <ng-template #funzionariGuardia>
                     <!-- Funzionario Guardia -->
-                    <div *ngIf="getFunzPresente()">
+                    <div *ngIf="presenze.funzGuardia">
                         <div class="h6">Funz. Guardia</div>
                         <div class="px-0 h6">
                             <span *ngFor="let f of personale.funzionari">
@@ -20,13 +20,13 @@
                             </span>
                         </div>
                     </div>
-                    <div *ngIf="!getFunzPresente()">
+                    <div *ngIf="!presenze.funzGuardia">
                         <span><b>Nessun Funzionario</b></span>
                     </div>
                     <hr class="m-0 mb-2">
 
                     <!-- Capo Turno -->
-                    <div *ngIf="getCapoTurnoPresente()">
+                    <div *ngIf="presenze.capoTurno">
                         <div class="h6">Capo Turno</div>
                         <div class="px-0 h6">
                             <span *ngFor="let f of personale.funzionari">
@@ -38,13 +38,13 @@
                             </span>
                         </div>
                     </div>
-                    <div *ngIf="!getCapoTurnoPresente()">
+                    <div *ngIf="!presenze.capoTurno">
                         <span><b>Nessun Capo Turno</b></span>
                     </div>
                 </ng-template>
                 <ng-template #tecniciGuardia>
                     <!-- Tecnico Guardia1 -->
-                    <div *ngIf="getTecnicoGuardia() > 0">
+                    <div *ngIf="presenze.totTecnici > 0">
                         <div class="px-0 h6">
                             <span *ngFor="let f of personale.funzionari">
                                 <div *ngIf="f.tecnicoGuardia1">
@@ -58,7 +58,7 @@
                             </span>
                         </div>
                     </div>
-                    <div *ngIf="getTecnicoGuardia() === 0">
+                    <div *ngIf="presenze.totTecnici === 0">
                         <span><b>Nessun Tecnico di Guardia</b></span>
                     </div>
                 </ng-template>
@@ -95,18 +95,18 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6">{{getTotalFunz().nome}}</span></li>
-                            <li><span class="d-inline-block h6">{{getTotalTecn().nome}}</span></li>
+                            <li><span class="d-inline-block h6">{{presenze.totFunzionari | personale:'funzionari'}}</span></li>
+                            <li><span class="d-inline-block h6">{{presenze.totTecnici | personale:'tecnici'}}</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
                             <li [ngbPopover]="funzionariGuardia" triggers="mouseenter:mouseleave" container="body"
                                 placement="bottom"><span
-                                    class="badge badge-dark cursor-pointer h6 w-75">{{getTotalFunz().numero}}</span></li>
+                                    class="badge badge-dark cursor-pointer h6 w-75">{{presenze.totFunzionari}}</span></li>
                             <li [ngbPopover]="tecniciGuardia" triggers="mouseenter:mouseleave" container="body"
                                 placement="bottom"><span
-                                    class="badge badge-secondary cursor-pointer h6 w-75">{{getTotalTecn().numero}}</span></li>
+                                    class="badge badge-secondary cursor-pointer h6 w-75">{{presenze.totTecnici}}</span></li>
                         </ul>
                     </div>
                 </div>
