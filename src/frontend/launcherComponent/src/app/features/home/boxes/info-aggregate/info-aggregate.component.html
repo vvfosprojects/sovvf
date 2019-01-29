@@ -11,7 +11,7 @@
         <!-- box interventi -->
         <div class="col-4 pr-0">
           <div class="card app-shadow">
-            <app-box-mezzi [mezzi]="mezzi"></app-box-mezzi>
+            <app-box-mezzi [mezzi]="mezzi" [boxClick]="boxClick" (clickMezzi)="clickMezzi($event)"></app-box-mezzi>
           </div>
         </div>
         <!-- box interventi -->
