@@ -8,13 +8,13 @@ import { BoxMezziComponent } from './info-aggregate/box-mezzi/box-mezzi.componen
 import { BoxMeteoComponent } from './info-aggregate/box-meteo/box-meteo.component';
 import { PipeModule } from '../../../shared/pipes/pipe.module';
 import { SharedModule } from '../../../shared/shared.module';
-import { BoxManagerService } from '../../../core/manager/boxes-manager/box-manager-service.service';
-import { BoxManagerServiceFake } from '../../../core/manager/boxes-manager/box-manager-service.service.fake';
-import { DispatcherInfoAggregateService } from '../../../core/dispatcher/dispatcher-boxes/dispatcher-boxes.service';
-import { DispatcherInfoAggregateServiceFake } from '../../../core/dispatcher/dispatcher-boxes/dispatcher-boxes.service.fake';
-import { InfoAggregateService } from '../../../core/service/boxes-service/info-aggregate.service';
-import { InfoAggregateServiceFake } from '../../../core/service/boxes-service/info-aggregate.service.fake';
 import { ModalServiziComponent } from './info-aggregate/modal-servizi/modal-servizi.component';
+import { BoxRichiesteService } from '../../../core/service/boxes-service/box-richieste.service';
+import { BoxMezziService } from '../../../core/service/boxes-service/box-mezzi.service';
+import { BoxPersonaleService } from '../../../core/service/boxes-service/box-personale.service';
+import { BoxRichiesteFakeService } from '../../../core/service/boxes-service/box-richieste-fake.service';
+import { BoxMezziFakeService } from '../../../core/service/boxes-service/box-mezzi-fake.service';
+import { BoxPesonaleFakeService } from '../../../core/service/boxes-service/box-pesonale-fake.service';
 
 
 @NgModule({
@@ -37,9 +37,9 @@ import { ModalServiziComponent } from './info-aggregate/modal-servizi/modal-serv
     ],
     entryComponents: [ModalServiziComponent],
     providers: [
-        { provide: BoxManagerService, useClass: BoxManagerServiceFake },
-        { provide: DispatcherInfoAggregateService, useClass: DispatcherInfoAggregateServiceFake },
-        { provide: InfoAggregateService, useClass: InfoAggregateServiceFake }
+        { provide: BoxRichiesteService, useClass: BoxRichiesteFakeService },
+        { provide: BoxMezziService, useClass: BoxMezziFakeService },
+        { provide: BoxPersonaleService, useClass: BoxPesonaleFakeService }
     ]
 })
 export class BoxesModule {

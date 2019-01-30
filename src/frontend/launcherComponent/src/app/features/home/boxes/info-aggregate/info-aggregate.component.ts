@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BoxManagerService } from '../../../../core/manager/boxes-manager/box-manager-service.service';
 import { BoxInterventi } from '../boxes-model/box-interventi.model';
 import { BoxMezzi } from '../boxes-model/box-mezzi.model';
 import { BoxPersonale } from '../boxes-model/box-personale.model';
@@ -33,6 +32,7 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
 
     constructor(private store: Store,
+        private boxClickService: BoxClickService,
         private modalService: NgbModal,
         private meteoService: MeteoService) {
 

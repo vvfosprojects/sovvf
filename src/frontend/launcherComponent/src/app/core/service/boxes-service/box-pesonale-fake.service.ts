@@ -1,32 +1,14 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {BoxInterventi} from '../../../features/home/boxes/boxes-model/box-interventi.model';
-import {BoxMezzi} from '../../../features/home/boxes/boxes-model/box-mezzi.model';
-import {BoxPersonale} from '../../../features/home/boxes/boxes-model/box-personale.model';
-import {BoxFunzionariSo} from '../../../features/home/boxes/boxes-model/box-funzionari-so.model';
+import { Injectable } from '@angular/core';
+import { BoxPersonale } from '../../../features/home/boxes/boxes-model/box-personale.model';
+import { Observable, of } from 'rxjs';
+import { BoxFunzionariSo } from '../../../features/home/boxes/boxes-model/box-funzionari-so.model';
 
+@Injectable()
+export class BoxPesonaleFakeService {
 
-@Injectable({
-    providedIn: 'root'
-})
-export class InfoAggregateServiceFake {
-
-    interventi: BoxInterventi;
-    mezzi: BoxMezzi;
     personale: BoxPersonale;
 
     constructor() {
-    }
-
-    public getInterventi(): Observable<BoxInterventi> {
-        this.interventi = new BoxInterventi(3, 3, 1, 2, 9, 20, 'B', 30, 'A', '2018', '12.842');
-        return of(this.interventi);
-
-    }
-
-    public getMezzi(): Observable<BoxMezzi> {
-        this.mezzi = new BoxMezzi(89, 2, 2, 1, 1, 94);
-        return of(this.mezzi);
     }
 
     public getPersonale(): Observable<BoxPersonale> {
@@ -71,4 +53,5 @@ export class InfoAggregateServiceFake {
         );
         return of(this.personale);
     }
+
 }
