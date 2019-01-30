@@ -27,8 +27,8 @@ export class BoxPersonaleComponent implements OnChanges {
                 this.presenze.totTecnici++;
             }
         });
-        this.presenze.capoTurno = !!this.personale.funzionari.find(key => key.capoTurno === true);
-        this.presenze.funzGuardia = !!this.personale.funzionari.find(key => key.funzGuardia === true);
+        this.presenze.capoTurno = this.personale.funzionari.some(key => key.capoTurno);
+        this.presenze.funzGuardia = this.personale.funzionari.some(key => key.funzGuardia);
     }
 
 }

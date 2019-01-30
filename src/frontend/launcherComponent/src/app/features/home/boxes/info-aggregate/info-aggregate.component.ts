@@ -52,25 +52,12 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    clickRichieste(tipo: string) {
+    clickBox(cat: string, tipo: string): void {
         if (tipo !== 'tutti') {
-            this.boxClick.richieste[tipo] = !this.boxClick.richieste[tipo];
+            this.boxClick[cat][tipo] = !this.boxClick[cat][tipo];
         } else {
-            const keysBoxClick = Object.keys(this.boxClick.richieste);
-            keysBoxClick.forEach(r => {
-                this.boxClick.richieste[r] = false;
-            });
-        }
-        this.boxClickService.sendBoxClick(this.boxClick);
-    }
-
-    clickMezzi(tipo: string) {
-        if (tipo !== 'tutti') {
-            this.boxClick.mezzi[tipo] = !this.boxClick.mezzi[tipo];
-        } else {
-            const keysBoxClick = Object.keys(this.boxClick.mezzi);
-            keysBoxClick.forEach(r => {
-                this.boxClick.mezzi[r] = false;
+            Object.keys(this.boxClick[cat]).map(r => {
+                this.boxClick[cat][r] = false;
             });
         }
         this.boxClickService.sendBoxClick(this.boxClick);
