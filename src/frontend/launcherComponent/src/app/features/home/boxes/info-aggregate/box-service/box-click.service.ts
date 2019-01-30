@@ -21,17 +21,8 @@ export class BoxClickService {
     constructor() {
     }
 
-    sendBoxClick(status: BoxClickInterface) {
-        this.boxClickState = status;
-        this.clickSubject.next(status);
-    }
-
     getBoxClick(): Observable<BoxClickInterface> {
         return this.clickSubject.asObservable();
-    }
-
-    allTrue() {
-        this.clickSubject.next(allTrue);
     }
 
     allFalse() {

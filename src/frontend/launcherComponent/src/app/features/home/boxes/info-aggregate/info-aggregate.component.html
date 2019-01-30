@@ -5,14 +5,14 @@
                 <!-- box interventi -->
                 <div class="col-4 pr-0">
                     <div class="card app-shadow">
-                        <app-box-interventi [interventi]="(interventi$ | async)" [boxClick]="boxClick"
+                        <app-box-interventi [interventi]="(interventi$ | async)" [boxClick]="(boxClick$ | async)"
                                             (clickRichieste)="clickBox('richieste', $event)"></app-box-interventi>
                     </div>
                 </div>
                 <!-- box interventi -->
                 <div class="col-4 pr-0">
                     <div class="card app-shadow">
-                        <app-box-mezzi [mezzi]="(mezzi$ | async)" [boxClick]="boxClick"
+                        <app-box-mezzi [mezzi]="(mezzi$ | async)" [boxClick]="(boxClick$ | async)"
                                        (clickMezzi)="clickBox('mezzi', $event)"></app-box-mezzi>
                     </div>
                 </div>

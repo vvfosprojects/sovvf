@@ -3,21 +3,25 @@ import { Observable, of, Subject, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { BoxClickService } from '../../../boxes/info-aggregate/box-service/box-click.service';
 import { BoxClickArrayInterface, BoxClickInterface } from '../../../boxes/info-aggregate/box-service/box-click-interface';
+import { Select } from '@ngxs/store';
+import { BoxClickState } from '../../../boxes/store/states/box-click.state';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MapsFiltroService implements OnDestroy {
 
+    @Select(BoxClickState.boxClick) boxClick$: Observable<BoxClickInterface>;
     subscription = new Subscription();
 
     constructor(private boxClickService: BoxClickService) {
         this.boxClick = this.boxClickService.boxClickState;
-        this.subscription.add(this.boxClickService.getBoxClick().subscribe((boxClick: BoxClickInterface) => {
+        this.subscription.add(
+            this.boxClick$.subscribe((boxClick: BoxClickInterface) => {
                 this.checkBoxClick(boxClick);
                 this.filtroBoxes.next(this.stateBoxClick(boxClick));
             }
-        ));
+            ));
     }
 
     boxClick: BoxClickInterface;

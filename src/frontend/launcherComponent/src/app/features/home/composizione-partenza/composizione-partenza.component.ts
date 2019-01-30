@@ -5,6 +5,9 @@ import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
 import { BoxClickService } from '../boxes/info-aggregate/box-service/box-click.service';
 import { Subject, Subscription } from 'rxjs';
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
+import { Store } from '@ngxs/store';
+import { BoxClickState } from '../boxes/store/states/box-click.state';
+import { ResetAllBoxes } from '../boxes/store/actions/box-click.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -21,14 +24,14 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     centroMappa: CentroMappa;
 
     constructor(private centerService: CenterService,
-                private boxClickService: BoxClickService,
+                private store: Store,
                 private markerS: MarkerService) {
     }
 
     ngOnInit() {
         this.centroMappa = this.centerService.centroMappaIniziale;
         if (this.richiesta) {
-            this.boxClickService.allTrueByRichiesta(this.richiesta.stato);
+            /* this.boxClickService.allTrueByRichiesta(this.richiesta.stato); */
         } else {
             this.dismissPartenza();
         }
@@ -44,7 +47,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.centerService.sendCentro(this.centroMappa);
         this.dismissPartenzaSubject.next(true);
         this.markerS.noAction();
-        this.boxClickService.allFalse();
+        this.store.dispatch(new ResetAllBoxes());
         this.statoPartenza.emit('normale');
     }
 

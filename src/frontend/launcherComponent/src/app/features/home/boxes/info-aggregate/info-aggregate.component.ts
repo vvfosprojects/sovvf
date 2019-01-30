@@ -13,6 +13,8 @@ import { Meteo } from '../../../../shared/model/meteo.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Select, Store } from '@ngxs/store';
 import { BoxesState, FetchBoxPersonale, FetchBoxMezzi, FetchBoxInterventi } from '../store';
+import { BoxClickState } from '../store/states/box-click.state';
+import { InitBoxFiltri, UpdateBoxRichieste, UpdateBoxMezzi, ResetBoxMezzi, ResetBoxRichieste, Reducer } from '../store/actions/box-click.actions';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -26,19 +28,14 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
 
     datimeteo: Meteo;
 
-    boxClick: BoxClickInterface;
+    @Select(BoxClickState.boxClick) boxClick$: Observable<BoxClickInterface>;
+
     subscription = new Subscription();
 
     constructor(private store: Store,
-        private boxManager: BoxManagerService,
-        private boxClickService: BoxClickService,
         private modalService: NgbModal,
         private meteoService: MeteoService) {
-        this.boxClick = this.boxClickService.boxClickState;
-        this.subscription.add(this.boxClickService.getBoxClick().subscribe((boxClick: BoxClickInterface) => {
-            this.boxClick = boxClick;
-        }
-        ));
+
         this.startMeteo();
     }
 
@@ -46,6 +43,7 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
         this.store.dispatch(new FetchBoxInterventi());
         this.store.dispatch(new FetchBoxMezzi());
         this.store.dispatch(new FetchBoxPersonale());
+        this.store.dispatch(new InitBoxFiltri());
     }
 
     ngOnDestroy() {
@@ -53,14 +51,7 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     }
 
     clickBox(cat: string, tipo: string): void {
-        if (tipo !== 'tutti') {
-            this.boxClick[cat][tipo] = !this.boxClick[cat][tipo];
-        } else {
-            Object.keys(this.boxClick[cat]).map(r => {
-                this.boxClick[cat][r] = false;
-            });
-        }
-        this.boxClickService.sendBoxClick(this.boxClick);
+        this.store.dispatch(new Reducer(cat, tipo));
     }
 
     clickServizi(tipo: string) {

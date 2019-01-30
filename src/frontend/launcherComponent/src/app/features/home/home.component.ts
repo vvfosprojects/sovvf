@@ -11,7 +11,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
     viewState: ViewInterface;
 
-
     richiestaNuovaPartenza: SintesiRichiesta;
     chiamataMarker: ChiamataMarker;
 

@@ -30,6 +30,7 @@ import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 
+import { BoxesState, BoxClickState } from './features/home/boxes/store';
 
 /**
  * Route & Page
@@ -55,7 +56,6 @@ import { EventiRichiestaModule } from './features/home/eventi/eventi-richiesta.m
 import { ChiamataModule } from './features/home/chiamata/chiamata.module';
 import { FilterbarModule } from './features/home/filterbar/filterbar.module';
 import { ComposizionePartenzaModule } from './features/home/composizione-partenza/composizione-partenza.module';
-import { BoxesStates } from './features/home/boxes/store';
 
 
 @NgModule({
@@ -99,9 +99,10 @@ import { BoxesStates } from './features/home/boxes/store';
             positionClass: 'toast-top-center',
             preventDuplicates: true,
         }),
-        NgxsModule.forRoot(BoxesStates, {
-            developmentMode: !environment.production,
-        }),
+        NgxsModule.forRoot(
+            [BoxesState, BoxClickState],
+            { developmentMode: !environment.production }
+        ),
         NgxsStoragePluginModule.forRoot({
             key: []
         }),
