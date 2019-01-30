@@ -103,7 +103,9 @@ export class MapsFiltroService implements OnDestroy {
         }
 
         this.filtroMarker.forEach(r => {
-            this.filtroAttivo.includes(r.id) ? r.isActive = true : r.isActive = false;
+            if (this.filtroAttivo) {
+                this.filtroAttivo.includes(r.id) ? r.isActive = true : r.isActive = false;
+            }
         });
         this.vociMenu.next(this.filtroMarker);
     }
