@@ -2,12 +2,10 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, isDevMode } 
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { CenterService } from '../maps/service/center-service/center-service.service';
 import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
-import { BoxClickService } from '../boxes/info-aggregate/box-service/box-click.service';
 import { Subject, Subscription } from 'rxjs';
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
 import { Store } from '@ngxs/store';
-import { BoxClickState } from '../boxes/store/states/box-click.state';
-import { ResetAllBoxes } from '../boxes/store/actions/box-click.actions';
+import { ResetAllBoxes, AllFalseBoxRichieste, AllTrueBoxMezzi, Reducer } from '../boxes/store/actions/box-click.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -18,20 +16,24 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
     @Input() compPartenzaMode: string;
     @Output() statoPartenza = new EventEmitter<string>();
-    subscription = new Subscription();
     dismissPartenzaSubject: Subject<boolean> = new Subject<boolean>();
 
     centroMappa: CentroMappa;
 
-    constructor(private centerService: CenterService,
-                private store: Store,
-                private markerS: MarkerService) {
+    statoPrecedente: any;
+
+    constructor(private store: Store,
+        private centerService: CenterService,
+        private markerS: MarkerService) {
     }
 
     ngOnInit() {
         this.centroMappa = this.centerService.centroMappaIniziale;
         if (this.richiesta) {
-            /* this.boxClickService.allTrueByRichiesta(this.richiesta.stato); */
+            this.statoPrecedente = this.store.snapshot();
+            this.store.dispatch(new AllFalseBoxRichieste());
+            this.store.dispatch(new AllTrueBoxMezzi());
+            this.store.dispatch(new Reducer('richieste', wipeStatoRichiesta(this.richiesta.stato)));
         } else {
             this.dismissPartenza();
         }
@@ -39,7 +41,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.subscription.unsubscribe();
         isDevMode() && console.log('Componente Composizione distrutto');
     }
 
@@ -48,6 +49,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.dismissPartenzaSubject.next(true);
         this.markerS.noAction();
         this.store.dispatch(new ResetAllBoxes());
+        this.store.reset(this.statoPrecedente);
         this.statoPartenza.emit('normale');
     }
 
@@ -76,4 +78,17 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.centroMappa = event;
     }
 
+}
+
+export function wipeStatoRichiesta(stato: string): string {
+    const stati: [string, string][] = [
+        ['chiam', 'chiamate'],
+        ['sospe', 'sospesi'],
+        ['asseg', 'assegnati'],
+        ['presi', 'presidiati'],
+        ['chius', 'chiusi']
+    ];
+    const mapTipoStato: Map<string, string> = new Map(stati);
+    const wipeStato = stato.toLowerCase().substr(0, 5);
+    return mapTipoStato.get(wipeStato);
 }

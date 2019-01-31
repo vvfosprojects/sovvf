@@ -1,11 +1,11 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 
 // Interface
-import { BoxClickInterface } from '../../info-aggregate/box-service/box-click-interface';
+import { BoxClickInterface } from '../../box-interface/box-click-interface';
 
 // Action
-import { InitBoxFiltri, UpdateBoxRichieste, ResetBoxRichieste, UpdateBoxMezzi, ResetBoxMezzi, Reducer, ResetAllBoxes } from '../actions/box-click.actions';
-import { BoxClickService } from '../../info-aggregate/box-service/box-click.service';
+import { InitBoxFiltri, UpdateBoxRichieste, AllFalseBoxRichieste, UpdateBoxMezzi, AllFalseBoxMezzi, Reducer, ResetAllBoxes, AllTrueBoxRichieste, AllTrueBoxMezzi } from '../actions/box-click.actions';
+
 
 export interface BoxClickStateModel {
   boxClick: BoxClickInterface;
@@ -38,24 +38,26 @@ export class BoxClickState {
 
   constructor() { }
 
+  // SELECTORS
   @Selector()
   static boxClick(state: BoxClickStateModel) {
     return state.boxClick;
   }
 
+  // REDUCER
   @Action(Reducer)
   reducer({ dispatch }: StateContext<BoxClickStateModel>, action: Reducer) {
     switch (action.cat) {
       case 'richieste':
         if (action.tipo === 'tutti') {
-          dispatch(new ResetBoxRichieste);
+          dispatch(new AllFalseBoxRichieste);
         } else {
           dispatch(new UpdateBoxRichieste(action.tipo));
         }
         break;
       case 'mezzi':
         if (action.tipo === 'tutti') {
-          dispatch(new ResetBoxMezzi);
+          dispatch(new AllFalseBoxMezzi);
         } else {
           dispatch(new UpdateBoxMezzi(action.tipo));
         }
@@ -63,6 +65,7 @@ export class BoxClickState {
     }
   }
 
+  // INIZIALIZZAZIONE
   @Action(InitBoxFiltri)
   initBoxClick({ getState, patchState }: StateContext<BoxClickStateModel>) {
     const state = getState();
@@ -88,6 +91,7 @@ export class BoxClickState {
     });
   }
 
+  // RICHIESTE
   @Action(UpdateBoxRichieste)
   updateBoxRichieste({ getState, patchState }: StateContext<BoxClickStateModel>, action: UpdateBoxRichieste) {
     const state = getState();
@@ -98,16 +102,27 @@ export class BoxClickState {
     });
   }
 
-  @Action(ResetBoxRichieste)
+  @Action(AllTrueBoxRichieste)
+  allTrueBoxRichieste({ getState, patchState }: StateContext<BoxClickStateModel>) {
+    const state = getState();
+
+    patchState({
+      ...state,
+      boxClick: allTrue(copyObj(state.boxClick), 'richieste')
+    });
+  }
+
+  @Action(AllFalseBoxRichieste)
   resetBoxRichieste({ getState, patchState }: StateContext<BoxClickStateModel>) {
     const state = getState();
 
     patchState({
       ...state,
-      boxClick: reset(copyObj(state.boxClick), 'richieste')
+      boxClick: allFalse(copyObj(state.boxClick), 'richieste')
     });
   }
 
+  // MEZZI
   @Action(UpdateBoxMezzi)
   updateBoxMezzi({ getState, patchState }: StateContext<BoxClickStateModel>, action: UpdateBoxMezzi) {
     const state = getState();
@@ -118,20 +133,31 @@ export class BoxClickState {
     });
   }
 
-  @Action(ResetBoxMezzi)
+  @Action(AllTrueBoxMezzi)
+  allTrueBoxMezzi({ getState, patchState }: StateContext<BoxClickStateModel>) {
+    const state = getState();
+
+    patchState({
+      ...state,
+      boxClick: allTrue(copyObj(state.boxClick), 'mezzi')
+    });
+  }
+
+  @Action(AllFalseBoxMezzi)
   resetBoxMezzi({ getState, patchState }: StateContext<BoxClickStateModel>) {
     const state = getState();
 
     patchState({
       ...state,
-      boxClick: reset(copyObj(state.boxClick), 'mezzi')
+      boxClick: allFalse(copyObj(state.boxClick), 'mezzi')
     });
   }
 
+  // TUTTI
   @Action(ResetAllBoxes)
   resetAllBoxes({ dispatch }: StateContext<BoxClickStateModel>) {
-    dispatch(new ResetBoxRichieste);
-    dispatch(new ResetBoxMezzi);
+    dispatch(new AllFalseBoxRichieste);
+    dispatch(new AllFalseBoxMezzi);
   }
 }
 
@@ -140,7 +166,14 @@ export function update(obj: BoxClickInterface, cat: string, tipo: string) {
   return obj;
 }
 
-export function reset(obj: BoxClickInterface, cat: string) {
+export function allTrue(obj: BoxClickInterface, cat: string) {
+  Object.keys(obj[cat]).map(r => {
+    obj[cat][r] = true;
+  });
+  return obj;
+}
+
+export function allFalse(obj: BoxClickInterface, cat: string) {
   Object.keys(obj[cat]).map(r => {
     obj[cat][r] = false;
   });

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BoxInterventi } from '../../boxes-model/box-interventi.model';
-import { BoxClickInterface } from '../box-service/box-click-interface';
+import { BoxClickInterface } from '../../box-interface/box-click-interface';
 
 @Component({
     selector: 'app-box-interventi',
