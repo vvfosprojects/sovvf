@@ -56,6 +56,7 @@ import { EventiRichiestaModule } from './features/home/eventi/eventi-richiesta.m
 import { ChiamataModule } from './features/home/chiamata/chiamata.module';
 import { FilterbarModule } from './features/home/filterbar/filterbar.module';
 import { ComposizionePartenzaModule } from './features/home/composizione-partenza/composizione-partenza.module';
+import { AppLoadModule } from './core/app-load/app-load.module';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { ComposizionePartenzaModule } from './features/home/composizione-partenz
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        AppLoadModule,
         ReactiveFormsModule,
         HttpClientModule,
         routing,
@@ -125,5 +127,6 @@ import { ComposizionePartenzaModule } from './features/home/composizione-partenz
     ],
     bootstrap: [AppComponent]
 })
+
 export class AppModule {
 }

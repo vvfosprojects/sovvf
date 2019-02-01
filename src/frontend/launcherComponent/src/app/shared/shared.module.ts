@@ -8,21 +8,23 @@ import * as Shared from './index';
     imports: [
         CommonModule,
         NgbModule,
-        PipeModule
+        PipeModule,
     ],
     declarations: [
         Shared.DebounceClickDirective,
         Shared.DebounceKeyUpDirective,
         Shared.ComponenteComponent,
         Shared.CompetenzaComponent,
-        Shared.MezzoComponent
+        Shared.MezzoComponent,
+        Shared.LoaderComponent
     ],
     exports: [
         Shared.DebounceClickDirective,
         Shared.DebounceKeyUpDirective,
         Shared.ComponenteComponent,
         Shared.CompetenzaComponent,
-        Shared.MezzoComponent
+        Shared.MezzoComponent,
+        Shared.LoaderComponent
     ]
 })
 export class SharedModule {
