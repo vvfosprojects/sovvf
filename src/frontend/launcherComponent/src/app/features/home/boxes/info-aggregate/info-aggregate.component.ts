@@ -2,8 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BoxInterventi } from '../boxes-model/box-interventi.model';
 import { BoxMezzi } from '../boxes-model/box-mezzi.model';
 import { BoxPersonale } from '../boxes-model/box-personale.model';
-import { BoxClickService } from './box-service/box-click.service';
-import { BoxClickInterface } from './box-service/box-click-interface';
+import { BoxClickInterface } from '../box-interface/box-click-interface';
 import { Subscription, Observable } from 'rxjs';
 import { ModalServiziComponent } from './modal-servizi/modal-servizi.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -13,7 +12,7 @@ import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Select, Store } from '@ngxs/store';
 import { BoxesState, FetchBoxPersonale, FetchBoxMezzi, FetchBoxInterventi } from '../store';
 import { BoxClickState } from '../store/states/box-click.state';
-import { InitBoxFiltri, UpdateBoxRichieste, UpdateBoxMezzi, ResetBoxMezzi, ResetBoxRichieste, Reducer } from '../store/actions/box-click.actions';
+import { InitBoxFiltri, Reducer } from '../store/actions/box-click.actions';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -32,7 +31,6 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
 
     constructor(private store: Store,
-        private boxClickService: BoxClickService,
         private modalService: NgbModal,
         private meteoService: MeteoService) {
 

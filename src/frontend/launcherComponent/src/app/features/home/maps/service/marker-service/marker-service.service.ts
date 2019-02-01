@@ -16,7 +16,7 @@ import { CentroMappa } from '../../maps-model/centro-mappa.model';
 import { MapsFiltroService } from '../../maps-ui/filtro/maps-filtro.service';
 import { MeteoMarker } from '../../maps-model/meteo-marker.model';
 import { Localita } from '../../../../../shared/model/localita.model';
-import { BoxClickArrayInterface } from '../../../boxes/info-aggregate/box-service/box-click-interface';
+import { BoxClickArrayInterface } from '../../../boxes/box-interface/box-click-interface';
 import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
 
 @Injectable({
