@@ -1,1 +1,2 @@
-<app-scheda-telefonata (annullaChiamata)="annullaChiamata.emit({event: 'chiamata', chiamata: false})" (chiamataMarker)="chiamataMarker.emit($event)"></app-scheda-telefonata>
+<app-scheda-telefonata [tipologie]="tipologie" [idChiamata]="idChiamata"
+                       (schedaTelefonata)="getSchedaTelefonata($event)"></app-scheda-telefonata>

@@ -250,6 +250,11 @@
             </tr>
             </thead>
             <tbody>
+            <tr *ngIf="chiamata.localita.indirizzo">
+                <th scope="row" class="py-1 s-info-window">
+                    {{chiamata.localita.indirizzo}}
+                </th>
+            </tr>
             <tr *ngIf="datiMeteo">
                 <th scope="row" class="py-1 s-info-window">
                     <div *ngIf="datiMeteo; then meteo"></div>

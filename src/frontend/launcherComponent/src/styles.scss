@@ -15,6 +15,9 @@
     font-weight: normal;
     font-style: normal;
 }
+body, html {
+    height: 100vh;
+}
 
 .app-shadow{
   -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);

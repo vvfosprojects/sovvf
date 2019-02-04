@@ -10,7 +10,7 @@ export class FormChiamataModel {
     cognome?: string;
     nome?: string;
     telefono?: string;
-    coordinate?: Localita;
+    localita?: Localita;
     indirizzo?: string;
     zonaEmergenza?: string;
     tags?: string[];
