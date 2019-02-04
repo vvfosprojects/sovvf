@@ -23,7 +23,7 @@ import { CenterService } from '../../maps/service/center-service/center-service.
 export class FasterComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
 
-    preAccoppiati: BoxPartenza[];
+    @Input() preAccoppiati: BoxPartenza[];
     preAccoppiatiSelezionati: BoxPartenza[] = [];
 
     centroMappa: CentroMappa;
@@ -32,16 +32,10 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Input() dismissEvents: Observable<boolean>;
     @Output() centroMappaEmit: EventEmitter<CentroMappa> = new EventEmitter();
 
-    constructor(private compPartenzaManager: CompPartenzaManagerService,
-        private preAccoppiatiS: PreAccoppiatiService,
+    constructor(private preAccoppiatiS: PreAccoppiatiService,
         private directionService: DirectionService,
         private markerService: MarkerService,
         private centerService: CenterService) {
-        // Restituisce i PreAccoppiati
-        this.compPartenzaManager.getPreAccoppiati().subscribe((preAccoppiati: BoxPartenza[]) => {
-            this.preAccoppiati = preAccoppiati;
-            console.log(preAccoppiati);
-        });
     }
 
     ngOnInit() {

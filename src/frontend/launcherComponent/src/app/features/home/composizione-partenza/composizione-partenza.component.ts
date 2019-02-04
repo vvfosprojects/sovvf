@@ -6,6 +6,10 @@ import { Subject, Subscription } from 'rxjs';
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
 import { Store } from '@ngxs/store';
 import { ResetAllBoxes, AllFalseBoxRichieste, AllTrueBoxMezzi, Reducer } from '../boxes/store/actions/box-click.actions';
+import { CompPartenzaManagerService } from 'src/app/core/manager/comp-partenza-manager/comp-partenza-manager.service';
+import { MezzoComposizione } from './interface/mezzo-composizione-interface';
+import { SquadraComposizione } from './interface/squadra-composizione-interface';
+import { BoxPartenza } from './interface/box-partenza-interface';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -18,13 +22,41 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Output() statoPartenza = new EventEmitter<string>();
     dismissPartenzaSubject: Subject<boolean> = new Subject<boolean>();
 
+    subscription = new Subscription();
+    mezziComposizione: MezzoComposizione[];
+    squadreComposizione: SquadraComposizione[];
+    preAccoppiati: BoxPartenza[];
+
     centroMappa: CentroMappa;
 
     statoPrecedente: any;
 
     constructor(private store: Store,
         private centerService: CenterService,
-        private markerS: MarkerService) {
+        private markerS: MarkerService,
+        private compPartenzaManager: CompPartenzaManagerService) {
+
+        // Prendo i mezzi da visualizzare nella lista
+        this.subscription.add(
+            this.compPartenzaManager.getMezziComposizione().subscribe((mezziComp: MezzoComposizione[]) => {
+                this.mezziComposizione = mezziComp;
+            })
+        );
+
+        // Prendo le squadre da visualizzare nella lista
+        this.subscription.add(
+            this.compPartenzaManager.getSquadre().subscribe((squadreComp: SquadraComposizione[]) => {
+                this.squadreComposizione = squadreComp;
+            })
+        );
+
+            // Restituisce i PreAccoppiati
+        this.subscription.add(
+            this.compPartenzaManager.getPreAccoppiati().subscribe((preAccoppiati: BoxPartenza[]) => {
+                this.preAccoppiati = preAccoppiati;
+                console.log(preAccoppiati);
+            })
+        );
     }
 
     ngOnInit() {

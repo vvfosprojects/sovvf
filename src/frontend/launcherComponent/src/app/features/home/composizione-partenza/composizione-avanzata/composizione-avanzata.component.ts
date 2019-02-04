@@ -29,8 +29,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Input() richiesta: SintesiRichiesta;
 
     subscription = new Subscription();
-    mezziComposizione: MezzoComposizione[];
-    squadreComposizione: SquadraComposizione[];
+    @Input() mezziComposizione: MezzoComposizione[];
+    @Input() squadreComposizione: SquadraComposizione[];
     partenze: BoxPartenza[] = [];
 
     // Partenza
@@ -46,8 +46,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     interval = [];
 
-    constructor(private compPartenzaManager: CompPartenzaManagerService,
-        private directionService: DirectionService,
+    constructor(private directionService: DirectionService,
         private markerService: MarkerService,
         private centerService: CenterService,
         private popoverConfig: NgbPopoverConfig,
@@ -58,20 +57,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         // Tooltip options
         this.tooltipConfig.container = 'body';
         this.tooltipConfig.placement = 'top';
-
-        // Prendo i mezzi da visualizzare nella lista
-        this.subscription.add(
-            this.compPartenzaManager.getMezziComposizione().subscribe((mezziComp: MezzoComposizione[]) => {
-                this.mezziComposizione = mezziComp;
-            })
-        );
-
-        // Prendo le squadre da visualizzare nella lista
-        this.subscription.add(
-            this.compPartenzaManager.getSquadre().subscribe((squadreComp: SquadraComposizione[]) => {
-                this.squadreComposizione = squadreComp;
-            })
-        );
     }
 
     ngOnInit() {
