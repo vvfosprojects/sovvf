@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { TurnoService } from './navbar-service/turno-service/turno.service';
 import { ClockService } from './navbar-service/clock-service/clock.service';
-import { UserService } from '../../core/auth/_services';
+import { AuthenticationService, UserService } from '../../core/auth/_services';
 import { Turno } from './turno/turno.model';
 import { User } from '../../core/auth/_models';
 
@@ -19,18 +19,23 @@ export class NavbarComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
     turno: Turno;
     time: Date;
-    user: User[] = [];
+    currentUser: User;
+    userFromApi: User;
+    // user: User[] = [];
 
     constructor(private _turno: TurnoService,
                 private _clock: ClockService,
-                private _user: UserService) {
+                private _user: UserService,
+                private authenticationService: AuthenticationService) {
+        this.currentUser = this.authenticationService.currentUserValue;
         this.subscription.add(this._turno.getTurni().subscribe(res => this.turno = res));
         this.subscription.add(this._clock.getClock().subscribe(time => this.time = time));
-        this.subscription.add(this._user.getAll().pipe(first()).subscribe(users => this.user = users));
+        // this.subscription.add(this._user.getAll().pipe(first()).subscribe(users => this.user = users));
     }
 
     ngOnInit() {
         isDevMode() && console.log('Componente Navbar creato');
+        this.subscription.add(this._user.getById(this.currentUser.id).pipe(first()).subscribe(user => this.userFromApi = user));
     }
 
     ngOnDestroy(): void {

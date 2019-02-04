@@ -1,13 +1,13 @@
 <button class="btn btn-light mr-2" ngbTooltip="Notifiche" [ngbPopover]="notifiche" placement="bottom"><i class="fa fa-bell"></i></button>
 <button class="btn btn-light mr-2" ngbTooltip="Impostazioni" [ngbPopover]="impostazioni" placement="bottom"><i class="fa fa-cogs"></i>
 </button>
-<div *ngIf="user[0]" class="btn-group" role="group">
+<div *ngIf="user" class="btn-group" role="group">
   <button class="btn btn-light mr-2">
     <i class="fa fa-user"></i>
-      {{user[0].firstName}} {{user[0].lastName}}
+      {{user.firstName}} {{user.lastName}}
   </button>
 </div>
-<button *ngIf="user[0]" class="btn btn-danger" ngbTooltip="Disconnettiti" placement="bottom" [routerLink]="['/login']"><i class="fa fa-sign-out"></i>
+<button *ngIf="user" class="btn btn-danger" ngbTooltip="Disconnettiti" placement="bottom" [routerLink]="['/login']"><i class="fa fa-sign-out"></i>
   Esci
 </button>
 <ng-template #notifiche>
