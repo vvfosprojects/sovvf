@@ -113,7 +113,7 @@ import { AppLoadModule } from './core/app-load/app-load.module';
             name: 'Ngxs Boxes Store DevTools',
         }),
         NgxsLoggerPluginModule.forRoot({
-            disabled: !environment.production,
+            disabled: environment.production,
         }),
     ],
     providers: [
