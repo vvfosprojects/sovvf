@@ -14,7 +14,7 @@ import { TipologieInterface } from '../../../../core/settings/tipologie';
 export class SchedaTelefonataComponent implements OnInit {
 
     options = {
-        componentRestrictions: { country: 'IT' }
+        componentRestrictions: { country: ['IT', 'FR', 'AT', 'CH', 'SI'] }
     };
     chiamataCorrente = new FormChiamataModel();
     chiamataForm: FormGroup;
