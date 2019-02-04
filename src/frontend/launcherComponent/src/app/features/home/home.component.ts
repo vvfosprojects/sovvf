@@ -43,5 +43,4 @@ export class HomeComponent implements OnInit, OnDestroy {
     _chiamataMarker(chiamata: ChiamataMarker) {
         this.chiamataMarker = chiamata;
     }
-
 }

@@ -111,7 +111,7 @@ import { ComposizionePartenzaModule } from './features/home/composizione-partenz
             name: 'Ngxs Boxes Store DevTools',
         }),
         NgxsLoggerPluginModule.forRoot({
-            disabled: environment.production,
+            disabled: !environment.production,
         }),
     ],
     providers: [
