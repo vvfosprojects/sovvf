@@ -8,6 +8,6 @@ import { User } from '../../../core/auth/_models';
 })
 export class OperatoreComponent {
 
-    @Input() user: User[];
+    @Input() user: User;
 
 }

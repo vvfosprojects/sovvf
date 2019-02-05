@@ -18,7 +18,7 @@ export class AppComponent {
                 private authService: AuthenticationService) {
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd) {
-                !this.deniedPath.includes(val.urlAfterRedirects) && authService.isLogged() ? this._toggle = true : this._toggle = false;
+                !this.deniedPath.includes(val.urlAfterRedirects) && authService._isLogged() ? this._toggle = true : this._toggle = false;
             }
         });
     }

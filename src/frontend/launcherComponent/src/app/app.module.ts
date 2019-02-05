@@ -43,7 +43,7 @@ import { AutorimessaComponent } from './features/autorimessa';
 import { StatisticheComponent } from './features/statistiche';
 import { ServiziComponent } from './features/servizi';
 import { NotFoundComponent } from './features/not-found';
-import { BasicAuthInterceptor, ErrorInterceptor } from './core/auth/_helpers';
+import { JwtInterceptor, ErrorInterceptor } from './core/auth/_helpers';
 import { fakeBackendProvider } from './core/auth/_helpers';
 /**
  * Module Components
@@ -118,7 +118,7 @@ import { AppLoadModule } from './core/app-load/app-load.module';
         }),
     ],
     providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         I18n,
         /**

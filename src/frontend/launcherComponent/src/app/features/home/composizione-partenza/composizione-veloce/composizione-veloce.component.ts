@@ -5,8 +5,6 @@ import { BoxPartenza } from '../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Service
-import { CompPartenzaManagerService } from 'src/app/core/manager/comp-partenza-manager/comp-partenza-manager.service';
-import { PreAccoppiatiService } from '../service/pre-accoppiati/pre-accoppiati.service';
 import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
 import { Observable, Subscription } from 'rxjs';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
@@ -32,8 +30,7 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Input() dismissEvents: Observable<boolean>;
     @Output() centroMappaEmit: EventEmitter<CentroMappa> = new EventEmitter();
 
-    constructor(private preAccoppiatiS: PreAccoppiatiService,
-        private directionService: DirectionService,
+    constructor(private directionService: DirectionService,
         private markerService: MarkerService,
         private centerService: CenterService) {
     }
@@ -42,11 +39,6 @@ export class FasterComponent implements OnInit, OnDestroy {
         this.setInitCentroMappa();
         this.subscription.add(this.dismissEvents.subscribe(
             events => this.annullaPartenza(events)
-        ));
-        this.subscription.add(this.preAccoppiatiS.isDeselezionato().subscribe(
-            status => {
-                this.isDeselezionato = status;
-            }
         ));
     }
 
@@ -82,7 +74,7 @@ export class FasterComponent implements OnInit, OnDestroy {
     }
 
     mezzoCoordinate(event: Coordinate): void {
-        if (event && this.richiesta.localita.coordinate && !this.isDeselezionato) {
+        if (event && this.richiesta.localita.coordinate) {
             const direction: DirectionInterface = {
                 origin: {
                     lat: event.latitudine,

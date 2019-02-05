@@ -10,9 +10,7 @@ import { MeteoService } from '../../../../shared/meteo/meteo-service.service';
 import { Meteo } from '../../../../shared/model/meteo.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Select, Store } from '@ngxs/store';
-import { BoxesState, FetchBoxPersonale, FetchBoxMezzi, FetchBoxInterventi } from '../store';
-import { BoxClickState } from '../store/states/box-click.state';
-import { InitBoxFiltri, Reducer } from '../store/actions/box-click.actions';
+import { BoxesState, FetchBoxPersonale, FetchBoxMezzi, FetchBoxInterventi, BoxClickState, InitBoxFiltri, Reducer } from '../store';
 
 @Component({
     selector: 'app-info-aggregate',
