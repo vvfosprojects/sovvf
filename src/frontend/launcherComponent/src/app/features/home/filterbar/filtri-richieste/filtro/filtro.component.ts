@@ -9,14 +9,19 @@ import { VoceFiltro } from '../../../../../shared/model/voce-filtro.model';
 export class FiltroComponent implements OnInit {
   @Input() filtro: VoceFiltro;
   @Output() filtroSelezionato: EventEmitter<any> = new EventEmitter();
+  @Output() filtroDeselezionato: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  selezione(filtro) {
-    this.filtroSelezionato.emit(filtro);
+  onSelezione(filtro: VoceFiltro) {
+    if (!filtro.selezionato) {
+      this.filtroSelezionato.emit(filtro);
+    } else {
+      this.filtroDeselezionato.emit(filtro);
+    }
   }
 
 }

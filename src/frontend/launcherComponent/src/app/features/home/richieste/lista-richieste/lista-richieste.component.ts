@@ -102,7 +102,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
                 } else {
                     this.richiestaFissata = null;
 
-                    /***
+                    /**
                      * aspetto che l'animazione della richiesta fissata finisca
                      * per aumentare l'altezza della lista
                      */
@@ -118,6 +118,9 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.subscription.unsubscribe();
         this.richieste = [];
+        /**
+         * serve per il fake delle richieste
+         */
         this.localSt.store('ListaRichiesteRequest', 1);
     }
 
