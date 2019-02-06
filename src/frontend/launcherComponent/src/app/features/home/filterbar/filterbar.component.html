@@ -4,10 +4,10 @@
             <div class="col-2 pr-0 text-left">
                 <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata" (startChiamata)="chiamata($event)"></app-tasto-chiamata>
             </div>
-            <div *ngIf="!compPartenzaState.disable" class="col-2 px-0 text-left">
+            <div *ngIf="!compPartenzaState.disable" class="col-3 px-0 text-left">
                 <app-filtri-richieste></app-filtri-richieste>
             </div>
-            <div *ngIf="!compPartenzaState.disable" class="col-8">
+            <div *ngIf="!compPartenzaState.disable" class="col-7 px-0">
                 <app-ricerca-richieste></app-ricerca-richieste>
             </div>
             <div *ngIf="compPartenzaState.disable" class="col-4 ml-auto">
