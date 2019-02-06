@@ -8,7 +8,6 @@ import { PipeModule } from '../../shared/pipes/pipe.module';
 import { SharedModule } from '../../shared/shared.module';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
-import { routing } from '../../app.routing';
 import { FormsModule } from '@angular/forms';
 import { CambioSedeModalNavComponent } from './cambio-sede-modal-nav/cambio-sede-modal-nav.component';
 import { OperatoreComponent } from './operatore/operatore.component';
@@ -20,6 +19,7 @@ import { UnitaOperativaServiceFake } from './navbar-service/unita-operativa-serv
 import { UnitaOperativaTreeviewComponent } from './unita-operativa-treeview/unita-operativa-treeview.component';
 import { DefaultTreeviewI18n } from './navbar-service/unita-operativa-treeview-service/default-treeview-i18n';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
     imports: [
@@ -30,8 +30,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         TreeviewModule.forRoot(),
         BrowserAnimationsModule,
         FilterPipeModule,
-        routing,
-        FormsModule
+        FormsModule,
+        RouterModule
     ],
     entryComponents: [CambioSedeModalNavComponent],
     declarations: [

@@ -34,15 +34,9 @@ import { BoxClickState, BoxRichiesteState, BoxPersonaleState, BoxMezziState } fr
 import { FiltriRichiesteState } from './features/home/filterbar/filtri-richieste/store';
 
 /**
- * Route & Page
+ * Route
  */
-import { routing } from './app.routing';
-import { HomeComponent } from './features/home';
-import { LoginComponent } from './features/login';
-import { AutorimessaComponent } from './features/autorimessa';
-import { StatisticheComponent } from './features/statistiche';
-import { ServiziComponent } from './features/servizi';
-import { NotFoundComponent } from './features/not-found';
+import { APP_ROUTING } from './app.routing';
 import { JwtInterceptor, ErrorInterceptor } from './core/auth/_helpers';
 import { fakeBackendProvider } from './core/auth/_helpers';
 /**
@@ -58,17 +52,13 @@ import { ChiamataModule } from './features/home/chiamata/chiamata.module';
 import { FilterbarModule } from './features/home/filterbar/filterbar.module';
 import { ComposizionePartenzaModule } from './features/home/composizione-partenza/composizione-partenza.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
+import { HomeComponent } from './features/home/home.component';
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        HomeComponent,
-        LoginComponent,
-        AutorimessaComponent,
-        StatisticheComponent,
-        ServiziComponent,
-        NotFoundComponent
+        HomeComponent
     ],
     imports: [
         BrowserModule,
@@ -76,7 +66,7 @@ import { AppLoadModule } from './core/app-load/app-load.module';
         AppLoadModule,
         ReactiveFormsModule,
         HttpClientModule,
-        routing,
+        APP_ROUTING,
         NgbModule,
         FormsModule,
         FilterPipeModule,

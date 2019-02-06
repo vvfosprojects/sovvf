@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 
-@Component({
-  selector: 'app-statistiche',
-  templateUrl: './statistiche.component.html',
-  styleUrls: ['./statistiche.component.css']
-})
-export class StatisticheComponent implements OnInit {
+@Component({ templateUrl: './statistiche.component.html' })
+export class StatisticheComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+    constructor() {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+        isDevMode() && console.log('Componente Statistiche creato');
+    }
+
+    ngOnDestroy(): void {
+        isDevMode() && console.log('Componente Statistiche distrutto');
+    }
 
 }

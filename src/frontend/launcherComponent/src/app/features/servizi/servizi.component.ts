@@ -1,10 +1,6 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 
-@Component({
-    selector: 'app-servizi',
-    templateUrl: './servizi.component.html',
-    styleUrls: ['./servizi.component.css']
-})
+@Component({ templateUrl: './servizi.component.html' })
 export class ServiziComponent implements OnInit, OnDestroy {
 
     constructor() {

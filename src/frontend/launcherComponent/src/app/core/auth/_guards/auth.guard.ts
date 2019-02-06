@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
                 /**
                  * utente loggato ma senza permesso
                  */
-                this.router.navigate(['/statistiche']);
+                this.router.navigate(['/logged']);
                 return false;
             }
 

@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
-@Component({
-  selector: 'app-autorimessa',
-  templateUrl: './autorimessa.component.html',
-  styleUrls: ['./autorimessa.component.css']
-})
+@Component({ templateUrl: './autorimessa.component.html' })
 export class AutorimessaComponent implements OnInit {
 
-  constructor() { }
+    constructor() {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
 }
