@@ -30,7 +30,7 @@ import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 
-import { BoxesState, BoxClickState} from './features/home/boxes/store';
+import { BoxClickState, BoxRichiesteState, BoxPersonaleState, BoxMezziState } from './features/home/boxes/store';
 import { FiltriRichiesteState } from './features/home/filterbar/filtri-richieste/store';
 
 /**
@@ -103,7 +103,7 @@ import { AppLoadModule } from './core/app-load/app-load.module';
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [BoxesState, BoxClickState, FiltriRichiesteState],
+            [BoxRichiesteState, BoxMezziState, BoxPersonaleState, BoxClickState, FiltriRichiesteState],
             { developmentMode: !environment.production }
         ),
         NgxsStoragePluginModule.forRoot({
@@ -111,7 +111,7 @@ import { AppLoadModule } from './core/app-load/app-load.module';
         }),
         NgxsRouterPluginModule.forRoot(),
         NgxsReduxDevtoolsPluginModule.forRoot({
-            name: 'Ngxs Boxes Store DevTools',
+            name: 'SO115 - NGXS',
         }),
         NgxsLoggerPluginModule.forRoot({
             disabled: environment.production,

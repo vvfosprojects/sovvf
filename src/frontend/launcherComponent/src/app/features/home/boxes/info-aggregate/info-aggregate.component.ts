@@ -10,7 +10,7 @@ import { MeteoService } from '../../../../shared/meteo/meteo-service.service';
 import { Meteo } from '../../../../shared/model/meteo.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Select, Store } from '@ngxs/store';
-import { BoxesState, FetchBoxPersonale, FetchBoxMezzi, FetchBoxInterventi, BoxClickState, InitBoxFiltri, Reducer } from '../store';
+import { BoxRichiesteState, BoxMezziState, BoxPersonaleState, BoxClickState, InitBoxFiltri, Reducer, FetchBoxRichieste, FetchBoxMezzi, FetchBoxPersonale } from '../store';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -18,9 +18,9 @@ import { BoxesState, FetchBoxPersonale, FetchBoxMezzi, FetchBoxInterventi, BoxCl
     styleUrls: ['./info-aggregate.component.css']
 })
 export class InfoAggregateComponent implements OnInit, OnDestroy {
-    @Select(BoxesState.interventi) interventi$: Observable<BoxInterventi>;
-    @Select(BoxesState.mezzi) mezzi$: Observable<BoxMezzi>;
-    @Select(BoxesState.personale) personale$: Observable<BoxPersonale>;
+    @Select(BoxRichiesteState.richieste) richieste$: Observable<BoxInterventi>;
+    @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
+    @Select(BoxPersonaleState.personale) personale$: Observable<BoxPersonale>;
 
     datimeteo: Meteo;
 
@@ -36,7 +36,7 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.store.dispatch(new FetchBoxInterventi());
+        this.store.dispatch(new FetchBoxRichieste());
         this.store.dispatch(new FetchBoxMezzi());
         this.store.dispatch(new FetchBoxPersonale());
         this.store.dispatch(new InitBoxFiltri());

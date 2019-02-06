@@ -5,7 +5,7 @@
                 <!-- box interventi -->
                 <div class="col-4 pr-0">
                     <div class="card app-shadow">
-                        <app-box-interventi [interventi]="(interventi$ | async)" [boxClick]="(boxClick$ | async)"
+                        <app-box-interventi [interventi]="(richieste$ | async)" [boxClick]="(boxClick$ | async)"
                                             (clickRichieste)="clickBox('richieste', $event)"></app-box-interventi>
                     </div>
                 </div>
