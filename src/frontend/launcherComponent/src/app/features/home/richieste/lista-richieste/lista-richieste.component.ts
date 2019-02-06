@@ -40,6 +40,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     contatoreNuoveRichieste = 0;
     richiesteTerminate: boolean;
 
+    itemSize = 95;
     listHeightClass = 'm-h-750';
 
     methods = new HelperMethods;
