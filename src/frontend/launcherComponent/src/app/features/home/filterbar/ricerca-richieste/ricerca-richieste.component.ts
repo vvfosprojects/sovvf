@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
-import { RicercaRichiesteService } from './ricerca-richieste-service/ricerca-richieste.service';
 import { Observable } from 'rxjs';
 import { FiltriRichiesteState } from '../filtri-richieste/store/states/filtri-richieste.state';
 import { Select, Store } from '@ngxs/store';
@@ -18,8 +17,7 @@ export class RicercaRichiesteComponent implements OnInit {
 
     ricerca = { descrizione: '' };
 
-    constructor(private store: Store,
-        public ricercaS: RicercaRichiesteService) {
+    constructor(private store: Store) {
     }
 
     ngOnInit() {

@@ -33,6 +33,7 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { BoxClickState, BoxRichiesteState, BoxPersonaleState, BoxMezziState } from './features/home/boxes/store';
 import { FiltriRichiesteState } from './features/home/filterbar/filtri-richieste/store';
 import { RicercaRichiesteState } from './features/home/filterbar/ricerca-richieste/store';
+import { MarkerMeteoState } from './features/home/filterbar/marker-meteo-switch/store';
 
 /**
  * Route
@@ -100,7 +101,8 @@ import { HomeComponent } from './features/home/home.component';
                 BoxPersonaleState,
                 BoxClickState,
                 FiltriRichiesteState,
-                RicercaRichiesteState
+                RicercaRichiesteState,
+                MarkerMeteoState
             ],
             { developmentMode: !environment.production }
         ),

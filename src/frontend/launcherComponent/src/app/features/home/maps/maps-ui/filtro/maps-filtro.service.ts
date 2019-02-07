@@ -24,8 +24,6 @@ export class MapsFiltroService implements OnDestroy {
 
     boxClick: BoxClickInterface;
 
-    meteoSwitchDefault = false;
-
     filtroAttivo = ['richiesta'];
 
     filtroAttivoCopy: string[];
@@ -59,8 +57,6 @@ export class MapsFiltroService implements OnDestroy {
     private vociMenu = new Subject<Menu[]>();
 
     private filtroBoxes = new Subject<BoxClickArrayInterface>();
-
-    private meteoSwitch = new Subject<boolean>();
 
     private static getCopy(value): any {
         return (JSON.parse(JSON.stringify(value)));
@@ -158,18 +154,8 @@ export class MapsFiltroService implements OnDestroy {
         return this.filtroBoxes.asObservable();
     }
 
-
     getVociMenu(): Observable<Menu[]> {
         return of(this.filtroMarker).pipe(delay(200));
-    }
-
-    sendMeteoSwitch(result: boolean) {
-        this.meteoSwitchDefault = result;
-        this.meteoSwitch.next(result);
-    }
-
-    getMeteoSwitch(): Observable<boolean> {
-        return this.meteoSwitch.asObservable();
     }
 }
 

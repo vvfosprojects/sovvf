@@ -18,6 +18,8 @@ import { MeteoMarker } from '../../maps-model/meteo-marker.model';
 import { Localita } from '../../../../../shared/model/localita.model';
 import { BoxClickArrayInterface } from '../../../boxes/box-interface/box-click-interface';
 import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
+import { Select } from '@ngxs/store';
+import { MarkerMeteoState } from '../../../filterbar/marker-meteo-switch/store/states/marker-meteo-switch.state';
 
 @Injectable({
     providedIn: 'root'
@@ -44,6 +46,8 @@ export class MarkerService implements OnDestroy {
     filtro: Array<any>;
 
     checkMarker: any;
+
+    @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
     switchMeteo: boolean;
 
     constructor(private markedService: MarkedService,
@@ -51,31 +55,36 @@ export class MarkerService implements OnDestroy {
         private agmService: AgmService,
         private richiesteService: ListaRichiesteService,
         private markerRichiesteManager: RichiesteMarkerManagerService,
-        private markerMezziManager: MezziMarkerManagerService,
         private unitaAttualeS: UnitaAttualeService,
         private mapsFiltroService: MapsFiltroService) {
         this.subscription.add(this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         }));
         this.filtro = this.mapsFiltroService.filtroAttivo;
-        this.subscription.add(this.mapsFiltroService.getMenu().subscribe(menu => {
-            this.filtro = [];
-            menu.forEach(r => {
-                if (r.isActive) {
-                    this.filtro.push(r.id);
+        this.subscription.add(
+            this.mapsFiltroService.getMenu().subscribe(menu => {
+                this.filtro = [];
+                menu.forEach(r => {
+                    if (r.isActive) {
+                        this.filtro.push(r.id);
+                    }
+                });
+                this.mapsFiltroService.filtroAttivo = this.filtro;
+            })
+        );
+        this.subscription.add(
+            this.stateSwitch$.subscribe((state: boolean) => {
+                this.switchMeteo = state;
+                if (!this.switchMeteo) {
+                    this.subjectMeteoMarkers.next([]);
                 }
-            });
-            this.mapsFiltroService.filtroAttivo = this.filtro;
-        }));
-        this.subscription.add(this.mapsFiltroService.getMeteoSwitch().subscribe(switchM => {
-            this.switchMeteo = switchM;
-            if (!this.switchMeteo) {
-                this.subjectMeteoMarkers.next([]);
-            }
-        }));
-        this.subscription.add(this.mapsFiltroService.getFiltroBoxes().subscribe((filtroBoxes: BoxClickArrayInterface) => {
-            this.filtroBoxes(filtroBoxes);
-        }));
+            })
+        );
+        this.subscription.add(
+            this.mapsFiltroService.getFiltroBoxes().subscribe((filtroBoxes: BoxClickArrayInterface) => {
+                this.filtroBoxes(filtroBoxes);
+            })
+        );
         /**
          * marker minimi per creare un cluster
          * @type {number}
@@ -115,7 +124,7 @@ export class MarkerService implements OnDestroy {
         return this.icone.iconaSpeciale(tipo);
     }
 
-    modelloMarker(marker): string {
+    modelloMarker(marker: any): string {
         /**
          * metodo che mi ritorna il modello del marker come stringa
          */
@@ -134,7 +143,7 @@ export class MarkerService implements OnDestroy {
         }
     }
 
-    iconaSelezionata(marker): boolean {
+    iconaSelezionata(marker: any): boolean {
         if (this.markerSelezionato === marker) {
             return true;
         } else if (this.markerColorato === marker) {
@@ -142,13 +151,13 @@ export class MarkerService implements OnDestroy {
         }
     }
 
-    zIndex(marker): number {
+    zIndex(marker: any): number {
         if (this.markerZIndex === marker) {
             return 99999;
         }
     }
 
-    coloraMarker(marker) {
+    coloraMarker(marker: any) {
         if (!!marker.id_richiesta && marker.mezzo.stato) {
             this.coloreStato = this.colori.markerColor(marker.mezzo.stato);
         } else if (marker.stato) {
@@ -190,7 +199,7 @@ export class MarkerService implements OnDestroy {
         this.markedService.clearMarked();
     }
 
-    action(marker, mouse) {
+    action(marker: any, mouse: any) {
         /**
          * controllo il tipo di marker e il suo mouse event
          */
@@ -300,7 +309,7 @@ export class MarkerService implements OnDestroy {
         return this.subjectMeteo.asObservable();
     }
 
-    cambioSede(sede) {
+    cambioSede(sede: any) {
         /**
          * evento che cambia la sede
          */
@@ -342,7 +351,7 @@ export class MarkerService implements OnDestroy {
         }
     }
 
-    getCoordinate(marker): Coordinate {
+    getCoordinate(marker: any): Coordinate {
         /**
          * fa il mapping dell'oggetto coordinate a seconda del modello di marker
          */
@@ -461,7 +470,7 @@ export class MarkerService implements OnDestroy {
      * crea a runtime un marker, se l'utente clicca in un punto della mappa
      * @param event
      */
-    createMeteoMarker(event) {
+    createMeteoMarker(event: any) {
         if (this.switchMeteo) {
             const x = event.coords.lat;
             const y = event.coords.lng;
