@@ -15,19 +15,9 @@ import { BoxNuovaPartenzaComponent } from './composizione-partenza/shared/box-nu
 import { MezzoComposizioneComponent } from './composizione-partenza/composizione-avanzata/mezzo-composizione/mezzo-composizione.component';
 import { SquadraComposizioneComponent } from './composizione-partenza/composizione-avanzata/squadra-composizione/squadra-composizione.component';
 import { ComposizioneFilterbarComponent } from './composizione-partenza/shared/filterbar/composizione-filterbar.component';
-import { MapsComponent } from './maps/maps.component';
-import { AgmComponent } from './maps/agm/agm.component';
-import { AgmContentComponent } from './maps/agm/agm-content.component';
-import { MapsFiltroComponent } from './maps/maps-ui/filtro/filtro.component';
-import { InfoWindowComponent } from './maps/maps-ui/info-window/info-window.component';
-import { CambioSedeModalComponent } from './maps/maps-ui/info-window/cambio-sede-modal/cambio-sede-modal.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { AgmCoreModule } from '@agm/core';
-import { AgmDirectionModule } from 'agm-direction';
-import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { SharedModule } from '../../shared/shared.module';
@@ -51,32 +41,6 @@ import { CompPartenzaManagerService } from '../../core/manager/comp-partenza-man
 import { CompPartenzaManagerServiceFake } from '../../core/manager/comp-partenza-manager/comp-partenza-manager.service.fake';
 import { CompPartenzaService } from '../../core/service/comp-partenza-service/comp-partenza.service';
 import { CompPartenzaServiceFake } from '../../core/service/comp-partenza-service/comp-partenza.service.fake';
-import {
-    CentroMappaService, CentroMappaServiceFake,
-    MezziMarkerService,
-    MezziMarkerServiceFake,
-    RichiesteMarkerService,
-    RichiesteMarkerServiceFake,
-    SediMarkerService,
-    SediMarkerServiceFake
-} from '../../core/service/maps-service';
-import {
-    CentroMappaManagerService, CentroMappaManagerServiceFake,
-    MezziMarkerManagerService,
-    MezziMarkerManagerServiceFake,
-    RichiesteMarkerManagerService,
-    RichiesteMarkerManagerServiceFake,
-    SediMarkerManagerService,
-    SediMarkerManagerServiceFake
-} from '../../core/manager/maps-manager';
-import {
-    DispatcherCentroMappaService, DispatcherCentroMappaServiceFake,
-    DispatcherMezziMarkerService,
-    DispatcherMezziMarkerServiceFake,
-    DispatcherRichiesteMarkerService,
-    DispatcherRichiesteMarkerServiceFake,
-    DispatcherSediMarkerService, DispatcherSediMarkerServiceFake
-} from '../../core/dispatcher/dispatcher-maps';
 import { MarkerService } from './maps/service/marker-service/marker-service.service';
 import { MarkedService } from './maps/service/marked-service/marked-service.service';
 import { DirectionService } from './maps/service/direction-service/direction-service.service';
@@ -89,6 +53,7 @@ import { BoxesModule } from './boxes/boxes.module';
 import { ChiamataModule } from './chiamata/chiamata.module';
 import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
 import { FilterbarModule } from './filterbar/filterbar.module';
+import { MapsModule } from './maps/maps.module';
 
 @NgModule({
     declarations: [
@@ -105,12 +70,6 @@ import { FilterbarModule } from './filterbar/filterbar.module';
         MezzoComposizioneComponent,
         SquadraComposizioneComponent,
         ComposizioneFilterbarComponent,
-        MapsComponent,
-        AgmComponent,
-        AgmContentComponent,
-        MapsFiltroComponent,
-        InfoWindowComponent,
-        CambioSedeModalComponent,
     ],
     imports: [
         CommonModule,
@@ -119,13 +78,10 @@ import { FilterbarModule } from './filterbar/filterbar.module';
         ChiamataModule,
         EventiRichiestaModule,
         FilterbarModule,
+        MapsModule,
         NgxPaginationModule,
         NgSelectModule,
         ScrollingModule,
-        AgmCoreModule.forRoot(),
-        AgmDirectionModule,
-        AgmJsMarkerClustererModule,
-        AgmSnazzyInfoWindowModule,
         NgxPaginationModule,
         FormsModule,
         ReactiveFormsModule,
@@ -149,9 +105,6 @@ import { FilterbarModule } from './filterbar/filterbar.module';
             ]
         ),
     ],
-    entryComponents: [
-        CambioSedeModalComponent,
-    ],
     providers: [
         { provide: DispatcherService, useClass: DispatcherFakeService },
         { provide: ListaRichiesteManagerService, useClass: ListaRichiesteManagerServiceFake },
@@ -159,18 +112,6 @@ import { FilterbarModule } from './filterbar/filterbar.module';
         { provide: DispatcherCompPartenzaService, useClass: DispatcherCompPartenzaFakeService },
         { provide: CompPartenzaManagerService, useClass: CompPartenzaManagerServiceFake },
         { provide: CompPartenzaService, useClass: CompPartenzaServiceFake },
-        { provide: RichiesteMarkerService, useClass: RichiesteMarkerServiceFake },
-        { provide: RichiesteMarkerManagerService, useClass: RichiesteMarkerManagerServiceFake },
-        { provide: DispatcherRichiesteMarkerService, useClass: DispatcherRichiesteMarkerServiceFake },
-        { provide: MezziMarkerService, useClass: MezziMarkerServiceFake },
-        { provide: MezziMarkerManagerService, useClass: MezziMarkerManagerServiceFake },
-        { provide: DispatcherMezziMarkerService, useClass: DispatcherMezziMarkerServiceFake },
-        { provide: SediMarkerService, useClass: SediMarkerServiceFake },
-        { provide: SediMarkerManagerService, useClass: SediMarkerManagerServiceFake },
-        { provide: DispatcherSediMarkerService, useClass: DispatcherSediMarkerServiceFake },
-        { provide: CentroMappaService, useClass: CentroMappaServiceFake },
-        { provide: CentroMappaManagerService, useClass: CentroMappaManagerServiceFake },
-        { provide: DispatcherCentroMappaService, useClass: DispatcherCentroMappaServiceFake },
         MarkerService, MarkedService, DirectionService, CenterService, MapsFiltroService, AgmService,
         ListaRichiesteService,
         ViewService
