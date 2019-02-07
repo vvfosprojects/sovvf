@@ -118,6 +118,7 @@ import { CenterService } from './maps/service/center-service/center-service.serv
 import { MapsFiltroService } from './maps/maps-ui/filtro/maps-filtro.service';
 import { AgmService } from './maps/agm/agm-service.service';
 import { ListaRichiesteService } from './richieste/service/lista-richieste-service.service';
+import { ViewService } from '../../core/service/view-service/view-service.service';
 
 @NgModule({
     declarations: [
@@ -222,7 +223,8 @@ import { ListaRichiesteService } from './richieste/service/lista-richieste-servi
         { provide: EventiManagerService, useClass: EventiManagerServiceFake },
         { provide: DispatcherEventiRichiestaService, useClass: DispatcherEventiRichiestaServiceFake },
         { provide: EventiRichiestaService, useClass: EventiRichiestaServiceFake },
-        MarkerService, MarkedService, DirectionService, CenterService, MapsFiltroService, AgmService, ListaRichiesteService
+        MarkerService, MarkedService, DirectionService, CenterService, MapsFiltroService, AgmService, ListaRichiesteService,
+        ViewService
     ]
 })
 export class HomeModule {
