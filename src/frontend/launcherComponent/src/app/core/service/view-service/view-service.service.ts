@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { ViewInterface, ViewInterfaceButton, ViewInterfaceComposizione, ViewInterfaceLayout, ViewInterfaceMaps } from '../../../shared/interface/view.interface';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class ViewService {
 
     /**

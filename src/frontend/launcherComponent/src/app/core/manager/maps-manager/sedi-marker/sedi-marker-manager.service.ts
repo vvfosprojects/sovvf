@@ -4,9 +4,7 @@ import { DispatcherSediMarkerService } from '../../../dispatcher/dispatcher-maps
 import { SedeMarker } from '../../../../features/home/maps/maps-model/sede-marker.model';
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class SediMarkerManagerService {
 
     sediMarker: SedeMarker[];

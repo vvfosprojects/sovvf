@@ -12,9 +12,7 @@ const headers = new HttpHeaders({
 });
 const httpOptions = { headers: headers };
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class SintesiRichiesteService {
 
     constructor(private http: HttpClient) {

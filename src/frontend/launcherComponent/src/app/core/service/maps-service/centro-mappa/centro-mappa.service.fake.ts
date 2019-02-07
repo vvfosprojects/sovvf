@@ -4,9 +4,7 @@ import {Coordinate} from '../../../../shared/model/coordinate.model';
 import {CentroMappa} from '../../../../features/home/maps/maps-model/centro-mappa.model';
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class CentroMappaServiceFake {
 
     private centroMappa: CentroMappa = null;

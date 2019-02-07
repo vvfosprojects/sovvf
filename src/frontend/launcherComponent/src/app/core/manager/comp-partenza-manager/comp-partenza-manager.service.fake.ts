@@ -8,9 +8,7 @@ import { MezzoComposizione } from '../../../features/home/composizione-partenza/
 import { SquadraComposizione } from 'src/app/features/home/composizione-partenza/interface/squadra-composizione-interface';
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class CompPartenzaManagerServiceFake {
     preAccoppiati: BoxPartenza[];
     mezziComposizione: MezzoComposizione[];

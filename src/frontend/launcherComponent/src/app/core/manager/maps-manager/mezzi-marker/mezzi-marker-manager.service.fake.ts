@@ -4,9 +4,7 @@ import { DispatcherMezziMarkerService } from '../../../dispatcher/dispatcher-map
 import { MezzoMarker } from '../../../../features/home/maps/maps-model/mezzo-marker.model';
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class MezziMarkerManagerServiceFake {
 
     mezziMarker: MezzoMarker[];

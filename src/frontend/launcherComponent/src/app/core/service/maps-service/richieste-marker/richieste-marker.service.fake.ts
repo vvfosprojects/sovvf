@@ -6,9 +6,7 @@ import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { RichiestaMarker } from '../../../../features/home/maps/maps-model/richiesta-marker.model';
 import * as moment from 'moment';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class RichiesteMarkerServiceFake {
 
     private richiesteMarkers: RichiestaMarker[] = [];

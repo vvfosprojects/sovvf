@@ -21,9 +21,7 @@ import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
 import { Select } from '@ngxs/store';
 import { MarkerMeteoState } from '../../../filterbar/marker-meteo-switch/store/states/marker-meteo-switch.state';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class MarkerService implements OnDestroy {
 
     private subjectMeteo = new Subject<Meteo>();

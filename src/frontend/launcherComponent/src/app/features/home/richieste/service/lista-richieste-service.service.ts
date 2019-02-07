@@ -6,9 +6,7 @@ import { ListaRichiesteManagerService } from '../../../../core/manager/lista-ric
 // Subjects
 import { ListaRichiesteSubjects } from './_lista-richieste-subjects';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ListaRichiesteService {
   subjects = new ListaRichiesteSubjects;
 

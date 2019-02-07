@@ -3,9 +3,7 @@ import {Observable, of, Subject} from 'rxjs';
 import {EventoRichiesta} from '../../../features/home/eventi/eventi-model/evento-richiesta.model';
 import {EventiRichiestaService} from '../../service/eventi-richiesta-service/eventi-richiesta.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class DispatcherEventiRichiestaServiceFake {
     /**
      * dispatcher Eventi

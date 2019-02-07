@@ -3,9 +3,7 @@ import {of, Observable, Subject} from 'rxjs';
 import {CentroMappaService} from '../../../service/maps-service/centro-mappa/centro-mappa.service';
 import {CentroMappa} from '../../../../features/home/maps/maps-model/centro-mappa.model';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class DispatcherCentroMappaServiceFake {
 
     private updateCentroMappa$ = new Subject<CentroMappa>();

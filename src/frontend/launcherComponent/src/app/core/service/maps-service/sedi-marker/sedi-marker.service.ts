@@ -6,9 +6,7 @@ import { environment } from '../../../../../environments/environment';
 
 const API_URL_SEDI = environment.apiUrl.maps.markers.sedi;
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class SediMarkerService {
 
     constructor(private http: HttpClient) {

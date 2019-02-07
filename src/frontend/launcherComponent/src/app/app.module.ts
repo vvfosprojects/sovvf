@@ -30,11 +30,6 @@ import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 
-import { BoxClickState, BoxRichiesteState, BoxPersonaleState, BoxMezziState } from './features/home/boxes/store';
-import { FiltriRichiesteState } from './features/home/filterbar/filtri-richieste/store';
-import { RicercaRichiesteState } from './features/home/filterbar/ricerca-richieste/store';
-import { MarkerMeteoState } from './features/home/filterbar/marker-meteo-switch/store';
-
 /**
  * Route
  */
@@ -46,21 +41,12 @@ import { fakeBackendProvider } from './core/auth/_helpers';
  */
 import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
-import { RichiesteModule } from './features/home/richieste/richieste.module';
-import { BoxesModule } from './features/home/boxes/boxes.module';
-import { MapsModule } from './features/home/maps/maps.module';
-import { EventiRichiestaModule } from './features/home/eventi/eventi-richiesta.module';
-import { ChiamataModule } from './features/home/chiamata/chiamata.module';
-import { FilterbarModule } from './features/home/filterbar/filterbar.module';
-import { ComposizionePartenzaModule } from './features/home/composizione-partenza/composizione-partenza.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
-import { HomeComponent } from './features/home/home.component';
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        HomeComponent
     ],
     imports: [
         BrowserModule,
@@ -74,15 +60,8 @@ import { HomeComponent } from './features/home/home.component';
         FilterPipeModule,
         NgProgressModule,
         NgProgressHttpModule,
-        RichiesteModule,
-        BoxesModule,
-        MapsModule,
         SharedModule,
-        EventiRichiestaModule,
         NavbarModule,
-        ChiamataModule,
-        FilterbarModule,
-        ComposizionePartenzaModule,
         NgxWebstorageModule.forRoot(),
         PipeModule.forRoot(),
         SidebarModule.forRoot(),
@@ -95,15 +74,7 @@ import { HomeComponent } from './features/home/home.component';
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [
-                BoxRichiesteState,
-                BoxMezziState,
-                BoxPersonaleState,
-                BoxClickState,
-                FiltriRichiesteState,
-                RicercaRichiesteState,
-                MarkerMeteoState
-            ],
+            [],
             { developmentMode: !environment.production }
         ),
         NgxsStoragePluginModule.forRoot({
@@ -124,7 +95,7 @@ import { HomeComponent } from './features/home/home.component';
         /**
          * provider fake per la login
          */
-        fakeBackendProvider
+        fakeBackendProvider,
     ],
     bootstrap: [AppComponent]
 })

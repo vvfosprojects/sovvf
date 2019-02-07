@@ -7,9 +7,7 @@ import { environment } from '../../../../environments/environment';
 
 const API_URL = environment.apiUrl.eventiRichieste;
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class EventiRichiestaService {
 
     constructor(private http: HttpClient) {

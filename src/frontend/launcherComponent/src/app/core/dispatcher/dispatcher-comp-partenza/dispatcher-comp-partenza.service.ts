@@ -10,9 +10,7 @@ import { MezzoComposizione } from '../../../features/home/composizione-partenza/
 import { CompPartenzaService } from '../../service/comp-partenza-service/comp-partenza.service';
 import { SquadraComposizione } from 'src/app/features/home/composizione-partenza/interface/squadra-composizione-interface';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class DispatcherCompPartenzaService {
     private newPreaccoppiatiList$ = new Subject<BoxPartenza[]>();
     private newMezziComposizioneList$ = new Subject<MezzoComposizione[]>();
