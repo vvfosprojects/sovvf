@@ -61,6 +61,7 @@ import { NgxsModule } from '@ngxs/store';
 import { BoxClickState, BoxMezziState, BoxPersonaleState, BoxRichiesteState } from './boxes/store';
 import { FiltriRichiesteState } from './filterbar/filtri-richieste/store';
 import { RicercaRichiesteState } from './filterbar/ricerca-richieste/store';
+import { MarkerMeteoState } from './filterbar/marker-meteo-switch/store';
 import { BoxRichiesteService } from '../../core/service/boxes-service/box-richieste.service';
 import { BoxRichiesteFakeService } from '../../core/service/boxes-service/box-richieste-fake.service';
 import { BoxMezziService } from '../../core/service/boxes-service/box-mezzi.service';
@@ -193,7 +194,8 @@ import { ViewService } from '../../core/service/view-service/view-service.servic
                 BoxPersonaleState,
                 BoxClickState,
                 FiltriRichiesteState,
-                RicercaRichiesteState
+                RicercaRichiesteState,
+                MarkerMeteoState
             ]
         ),
     ],
