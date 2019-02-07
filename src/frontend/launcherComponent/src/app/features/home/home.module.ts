@@ -3,11 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { HomeRouting } from './home.routing';
 import { HomeComponent } from './home.component';
-import { RichiesteComponent } from './richieste/richieste.component';
-import { ListaRichiesteComponent } from './richieste/lista-richieste/lista-richieste.component';
-import { RichiestaFissataComponent } from './richieste/lista-richieste/richiesta-fissata/richiesta-fissata.component';
-import { SintesiRichiestaSmComponent } from './richieste/lista-richieste/sintesi-richiesta-sm/sintesi-richiesta-sm.component';
-import { SintesiRichiestaComponent } from './richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
 import { ComposizionePartenzaComponent } from './composizione-partenza/composizione-partenza.component';
 import { FasterComponent } from './composizione-partenza/composizione-veloce/composizione-veloce.component';
 import { ComposizioneAvanzataComponent } from './composizione-partenza/composizione-avanzata/composizione-avanzata.component';
@@ -29,12 +24,6 @@ import { BoxClickState, BoxMezziState, BoxPersonaleState, BoxRichiesteState } fr
 import { FiltriRichiesteState } from './filterbar/filtri-richieste/store';
 import { RicercaRichiesteState } from './filterbar/ricerca-richieste/store';
 import { MarkerMeteoState } from './filterbar/marker-meteo-switch/store';
-import { DispatcherService } from '../../core/dispatcher/dispatcher-lista-richieste/dispatcher-lista-richieste.service';
-import { DispatcherFakeService } from '../../core/dispatcher/dispatcher-lista-richieste/dispatcher-lista-richieste-fake.service';
-import { ListaRichiesteManagerService } from '../../core/manager/lista-richieste-manager/lista-richieste-manager.service';
-import { ListaRichiesteManagerServiceFake } from '../../core/manager/lista-richieste-manager/lista-richieste-manager.service.fake';
-import { SintesiRichiesteService } from '../../core/service/lista-richieste-service/lista-richieste.service';
-import { SintesiRichiesteServiceFake } from '../../core/service/lista-richieste-service/lista-richieste.service.fake';
 import { DispatcherCompPartenzaService } from '../../core/dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.service';
 import { DispatcherCompPartenzaFakeService } from '../../core/dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.fake.service';
 import { CompPartenzaManagerService } from '../../core/manager/comp-partenza-manager/comp-partenza-manager.service';
@@ -54,15 +43,12 @@ import { ChiamataModule } from './chiamata/chiamata.module';
 import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
 import { FilterbarModule } from './filterbar/filterbar.module';
 import { MapsModule } from './maps/maps.module';
+import { RichiesteModule } from './richieste/richieste.module';
+// import { ComposizionePartenzaModule } from './composizione-partenza/composizione-partenza.module';
 
 @NgModule({
     declarations: [
         HomeComponent,
-        RichiesteComponent,
-        ListaRichiesteComponent,
-        RichiestaFissataComponent,
-        SintesiRichiestaSmComponent,
-        SintesiRichiestaComponent,
         ComposizionePartenzaComponent,
         FasterComponent,
         ComposizioneAvanzataComponent,
@@ -79,6 +65,8 @@ import { MapsModule } from './maps/maps.module';
         EventiRichiestaModule,
         FilterbarModule,
         MapsModule,
+        RichiesteModule,
+        // ComposizionePartenzaModule,
         NgxPaginationModule,
         NgSelectModule,
         ScrollingModule,
@@ -106,9 +94,6 @@ import { MapsModule } from './maps/maps.module';
         ),
     ],
     providers: [
-        { provide: DispatcherService, useClass: DispatcherFakeService },
-        { provide: ListaRichiesteManagerService, useClass: ListaRichiesteManagerServiceFake },
-        { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake },
         { provide: DispatcherCompPartenzaService, useClass: DispatcherCompPartenzaFakeService },
         { provide: CompPartenzaManagerService, useClass: CompPartenzaManagerServiceFake },
         { provide: CompPartenzaService, useClass: CompPartenzaServiceFake },
