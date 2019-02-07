@@ -3,7 +3,9 @@ import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
 import { RicercaRichiesteService } from './ricerca-richieste-service/ricerca-richieste.service';
 import { Observable } from 'rxjs';
 import { FiltriRichiesteState } from '../filtri-richieste/store/states/filtri-richieste.state';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
+import { SetRicerca } from './store/actions/ricerca-richieste.actions';
+import { RicercaRichiesteState } from './store/states/ricerca-richieste.state';
 
 @Component({
     selector: 'app-ricerca-richieste',
@@ -12,21 +14,23 @@ import { Select } from '@ngxs/store';
 })
 export class RicercaRichiesteComponent implements OnInit {
     @Select(FiltriRichiesteState.filtriTipologie) filtri$: Observable<VoceFiltro[]>;
-    filtri: VoceFiltro[];
+    @Select(RicercaRichiesteState.ricerca) ricerca$: Observable<any>;
 
-    searchText: string;
-    filtriSelezionatiBySearch: VoceFiltro[] = [];
+    ricerca = { descrizione: '' };
 
-    stringaRicerca = { descrizione: '' };
-
-    constructor(public ricercaS: RicercaRichiesteService) {
+    constructor(private store: Store,
+        public ricercaS: RicercaRichiesteService) {
     }
 
     ngOnInit() {
     }
 
-    search(stringa: string) {
-        this.stringaRicerca.descrizione = stringa;
-        this.ricercaS.sendRicerca(this.stringaRicerca);
+    search() {
+        this.store.dispatch(new SetRicerca(copyObj(this.ricerca)));
+
+        function copyObj(obj: any) {
+            return JSON.parse(JSON.stringify(obj));
+        }
     }
+
 }

@@ -32,6 +32,7 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 
 import { BoxClickState, BoxRichiesteState, BoxPersonaleState, BoxMezziState } from './features/home/boxes/store';
 import { FiltriRichiesteState } from './features/home/filterbar/filtri-richieste/store';
+import { RicercaRichiesteState } from './features/home/filterbar/ricerca-richieste/store';
 
 /**
  * Route & Page
@@ -103,7 +104,14 @@ import { AppLoadModule } from './core/app-load/app-load.module';
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [BoxRichiesteState, BoxMezziState, BoxPersonaleState, BoxClickState, FiltriRichiesteState],
+            [
+                BoxRichiesteState,
+                BoxMezziState,
+                BoxPersonaleState,
+                BoxClickState,
+                FiltriRichiesteState,
+                RicercaRichiesteState
+            ],
             { developmentMode: !environment.production }
         ),
         NgxsStoragePluginModule.forRoot({

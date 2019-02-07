@@ -10,10 +10,10 @@
       (composizionePartenza)="composizionePartenza.emit($event)" [_split]="_split"></app-richiesta-fissata>
   </div>
   <!-- Lista di singole Richieste -->
-  <div class="col-12 px-0 border-bottom">
-    <cdk-virtual-scroll-viewport [itemSize]="itemSize" [ngClass]="HeightControl()">
+  <div class="col-12 px-0 border-bottom" [ngClass]="HeightControl()">
+    <cdk-virtual-scroll-viewport [itemSize]="itemSize" style="height:100%">
       <div class="pt-1">
-        <div *cdkVirtualFor="let r of richieste | filterBy: ricercaS.searchTerm; templateCacheSize: 0" [ngClass]="{'col-double': !_split, 'col-12': _split}">
+        <div *cdkVirtualFor="let r of richieste | filterBy: ricerca; let last = last; templateCacheSize: 0" [ngClass]="{'col-double': !_split, 'col-12': _split}">
           <div *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="CardClasses(r)">
             <app-sintesi-richiesta [richiesta]="r" [fissata]="false" [fissabile]="true" [espanso]="false" [espandibile]="true"
               [listaEventi]="true" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)" (fissaInAlto)="fissaInAlto($event)"

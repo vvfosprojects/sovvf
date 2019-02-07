@@ -1,7 +1,11 @@
 import { Component, OnInit, ElementRef, ViewChild, OnChanges, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { FilterPipe } from 'ngx-filter-pipe';
+
+// Ngxs
+import { RicercaRichiesteState } from '../../filterbar/ricerca-richieste/store/states/ricerca-richieste.state';
+import { Select } from '@ngxs/store';
 
 // Model
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
@@ -15,10 +19,10 @@ import { ListaRichiesteService } from '../service/lista-richieste-service.servic
 import { RicercaRichiesteService } from '../../filterbar/ricerca-richieste/ricerca-richieste-service/ricerca-richieste.service';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import { ToastrService } from 'ngx-toastr';
 
 // Helper methods
 import { HelperMethods } from '../helper/_helper-methods';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -26,6 +30,9 @@ import { ToastrService } from 'ngx-toastr';
     styleUrls: ['./lista-richieste.component.css']
 })
 export class ListaRichiesteComponent implements OnInit, OnDestroy {
+    @Select(RicercaRichiesteState.ricerca) ricerca$: Observable<string>;
+    ricerca: { descrizione: '' };
+
     subscription = new Subscription();
 
     richieste: SintesiRichiesta[] = [];
@@ -67,11 +74,11 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
             // TEST
             // console.log(this.richieste[this.richieste.length+1].id);
         }
-
         // Restituisce la stringa di ricerca
         this.subscription.add(
-            this.ricercaS.getRicerca().subscribe(stringa => {
-                this.opacizzaRichieste(stringa);
+            this.ricerca$.subscribe((ricerca: any) => {
+                this.ricerca = ricerca;
+                this.opacizzaRichieste(ricerca);
             })
         );
         // Restituisce la Richiesta Hover
@@ -99,7 +106,7 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
             this.richiesteS.subjects.getRichiestaFissata().subscribe(richiestaFissata => {
                 if (richiestaFissata) {
                     this.richiestaFissata = richiestaFissata;
-                    this.listHeightClass = 'm-h-600 border-top';
+                    this.listHeightClass = 'm-h-600';
                 } else {
                     this.richiestaFissata = null;
 
@@ -107,7 +114,6 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
                      * aspetto che l'animazione della richiesta fissata finisca
                      * per aumentare l'altezza della lista
                      */
-
                     setTimeout(() => {
                         this.listHeightClass = 'm-h-750';
                     }, 300);
@@ -165,7 +171,8 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     }
 
     /* Permette di visualizzare il loader e caricare nuove richieste */
-    nuoveRichieste(event) {
+    nuoveRichieste() {
+        console.log('test');
         /* parte relativa a scrool event
         if (event.isReachingBottom && event.isWindowEvent === false && this.contatoreNuoveRichieste === 0) {
             this.contatoreNuoveRichieste++;

@@ -17,5 +17,4 @@ export class RicercaRichiesteService {
     getRicerca(): Observable<any> {
         return this.subject.asObservable();
     }
-
 }

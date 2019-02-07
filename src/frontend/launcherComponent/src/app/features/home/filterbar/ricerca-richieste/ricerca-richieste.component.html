@@ -1,6 +1,6 @@
 <div class="input-group app-shadow">
-  <input [(ngModel)]="ricercaS.searchTerm.descrizione" class="form-control" type="text" appDebounceKeyUp (debounceKeyUp)="search(ricercaS.searchTerm.descrizione)" [debounceTime]="600" placeholder="Cosa stai cercando?" name="ricercaRichieste" id="ricercaRichieste">
+  <input [(ngModel)]="ricerca.descrizione" class="form-control" type="text" appDebounceKeyUp (debounceKeyUp)="search()" [debounceTime]="600" placeholder="Cosa stai cercando?" name="ricercaRichieste" id="ricercaRichieste">
   <div class="input-group-append">
-      <button class="btn btn-primary" (click)="search(ricercaS.searchTerm.descrizione)"><i class="fa fa-search text-light"></i></button>
+      <button class="btn btn-primary" (click)="search()"><i class="fa fa-search text-light"></i></button>
   </div>
 </div>
