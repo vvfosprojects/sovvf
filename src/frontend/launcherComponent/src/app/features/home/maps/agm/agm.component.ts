@@ -13,7 +13,7 @@ import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
 import { Meteo } from '../../../../shared/model/meteo.model';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { MarkerService } from '../service/marker-service/marker-service.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { CenterService } from '../service/center-service/center-service.service';
 import { AgmService } from './agm-service.service';
 import { ControlPosition, FullscreenControlOptions, ZoomControlOptions } from '@agm/core/services/google-maps-types';
@@ -23,6 +23,8 @@ import { DirectionInterface } from '../service/direction-service/direction-inter
 import { CachedMarker } from '../maps-model/cached-marker.model';
 import { ViewInterfaceMaps } from '../../../../shared/interface/view.interface';
 import { ComposizioneMarker } from '../maps-model/composizione-marker.model';
+import { Select } from '@ngxs/store';
+import { MeteoMarkersState } from '../store/states/meteo-markers.state';
 
 declare var google: any;
 
@@ -43,7 +45,10 @@ export class AgmComponent implements OnInit, OnDestroy, OnChanges {
     @Input() composizioneMarkers: ComposizioneMarker[];
     @Output() mapFullyLoaded = new EventEmitter<boolean>();
     cachedMarkers: CachedMarker[] = [];
+
+    @Select(MeteoMarkersState.meteoMarkers) meteoMarkers$: Observable<MeteoMarker[]>;
     meteoMarkers: MeteoMarker[] = [];
+
     minMarkerCluster: number;
     datiMeteo: Meteo;
     coloreStatoWindow: string;
@@ -158,14 +163,14 @@ export class AgmComponent implements OnInit, OnDestroy, OnChanges {
         });
     }
 
-    loadAPIWrapper(mapWrapper): void {
+    loadAPIWrapper(mapWrapper: any): void {
         /**
          * importo il wrapper nell'oggetto map
          */
         this.agmService.map = mapWrapper;
     }
 
-    getCoordinateMarker(event) {
+    getCoordinateMarker(event: any) {
         this.markerService.createMeteoMarker(event);
     }
 
@@ -176,7 +181,7 @@ export class AgmComponent implements OnInit, OnDestroy, OnChanges {
         this.markerService.action(marker, 'click');
     }
 
-    hoverMarker(marker: any, type): void {
+    hoverMarker(marker: any, type: any): void {
         /**
          * richiamo il service marker e gli passo marker e tipo hover
          */
@@ -219,7 +224,7 @@ export class AgmComponent implements OnInit, OnDestroy, OnChanges {
         return this.markerService.opaco(marker);
     }
 
-    centroCambiato(centro): void {
+    centroCambiato(centro: any): void {
         /**
          * metodo che fa la next sulla subject di centro
          */

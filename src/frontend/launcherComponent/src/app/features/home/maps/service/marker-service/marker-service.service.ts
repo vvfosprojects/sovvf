@@ -9,7 +9,7 @@ import { TipoColori } from './_color';
 import { AgmService } from '../../agm/agm-service.service';
 import { UnitaAttualeService } from '../../../../navbar/navbar-service/unita-attuale/unita-attuale.service';
 import { ListaRichiesteService } from '../../../richieste/service/lista-richieste-service.service';
-import { MezziMarkerManagerService, RichiesteMarkerManagerService } from '../../../../../core/manager/maps-manager';
+import { RichiesteMarkerManagerService } from '../../../../../core/manager/maps-manager';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
 import { CentroMappa } from '../../maps-model/centro-mappa.model';
