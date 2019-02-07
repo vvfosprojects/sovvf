@@ -3,9 +3,7 @@ import {EventoRichiesta} from '../../../features/home/eventi/eventi-model/evento
 import {DispatcherEventiRichiestaService} from '../../dispatcher/dispatcher-eventi/dispatcher-eventi-richiesta.service';
 import {Observable, of} from 'rxjs';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class EventiManagerService {
 
 

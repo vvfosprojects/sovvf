@@ -4,9 +4,7 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
 import { SintesiRichiesteService } from '../../service/lista-richieste-service/lista-richieste.service';
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class DispatcherService {
     private newRichiesteList$ = new Subject<SintesiRichiesta[]>();
     private updateRichiesta$ = new Subject<SintesiRichiesta>();

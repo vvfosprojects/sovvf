@@ -10,9 +10,7 @@ import { Squadra } from '../../../shared/model/squadra.model';
 import { MezzoComposizione } from '../../../features/home/composizione-partenza/interface/mezzo-composizione-interface';
 import { SquadraComposizione } from 'src/app/features/home/composizione-partenza/interface/squadra-composizione-interface';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CompPartenzaManagerService {
   private newPreAccoppiatieList$ = new Subject<BoxPartenza[]>();
   private newMezziComposizioneList$ = new Subject<MezzoComposizione[]>();

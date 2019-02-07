@@ -4,9 +4,7 @@ import { SedeMarker } from '../../../../features/home/maps/maps-model/sede-marke
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class SediMarkerServiceFake {
 
     private sediMarkers: SedeMarker[] = [];

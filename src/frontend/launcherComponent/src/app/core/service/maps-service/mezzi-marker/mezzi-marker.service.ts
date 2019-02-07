@@ -6,9 +6,7 @@ import {environment} from '../../../../../environments/environment';
 
 const API_URL_MEZZI = environment.apiUrl.maps.markers.mezzi;
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class MezziMarkerService {
 
     /**

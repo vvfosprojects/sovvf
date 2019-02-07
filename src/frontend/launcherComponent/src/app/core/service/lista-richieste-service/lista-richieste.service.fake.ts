@@ -23,9 +23,7 @@ import * as moment from 'moment';
 import { LocalStorageService } from 'ngx-webstorage';
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class SintesiRichiesteServiceFake {
 
     private richieste: SintesiRichiesta[] = [];

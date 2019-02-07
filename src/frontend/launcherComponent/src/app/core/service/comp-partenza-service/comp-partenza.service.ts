@@ -8,9 +8,7 @@ const API_URL_PREACCOPPIATI = environment.apiUrl.composizione.preaccoppiati;
 const API_URL_SQUADRE = environment.apiUrl.composizione.squadre;
 const API_URL_MEZZI = environment.apiUrl.composizione.mezzi;
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class CompPartenzaService {
 
     constructor(private http: HttpClient) {

@@ -4,9 +4,7 @@ import { DispatcherRichiesteMarkerService } from '../../../dispatcher/dispatcher
 import { RichiestaMarker } from '../../../../features/home/maps/maps-model/richiesta-marker.model';
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class RichiesteMarkerManagerServiceFake {
 
     richiesteMarker: RichiestaMarker[];

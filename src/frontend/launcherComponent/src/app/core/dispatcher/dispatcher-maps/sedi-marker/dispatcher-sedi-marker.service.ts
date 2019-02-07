@@ -3,9 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import { SediMarkerService } from '../../../service/maps-service/';
 import { SedeMarker } from '../../../../features/home/maps/maps-model/sede-marker.model';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class DispatcherSediMarkerService {
 
     private updateSedeMarker$ = new Subject<SedeMarker>();

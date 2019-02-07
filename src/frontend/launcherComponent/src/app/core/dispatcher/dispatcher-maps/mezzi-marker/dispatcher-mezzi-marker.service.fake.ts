@@ -4,9 +4,7 @@ import {MezziMarkerService} from '../../../service/maps-service/mezzi-marker/mez
 import {MezzoMarker} from '../../../../features/home/maps/maps-model/mezzo-marker.model';
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class DispatcherMezziMarkerServiceFake {
 
     private updateMezzoMarker$ = new Subject<MezzoMarker>();

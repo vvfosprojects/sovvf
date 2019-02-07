@@ -5,9 +5,7 @@ import {CenterService} from '../../../../features/home/maps/service/center-servi
 import {CentroMappa} from '../../../../features/home/maps/maps-model/centro-mappa.model';
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class CentroMappaManagerService {
 
     centroMappa: CentroMappa;

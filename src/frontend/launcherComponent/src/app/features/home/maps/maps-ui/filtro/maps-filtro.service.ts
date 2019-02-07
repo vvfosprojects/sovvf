@@ -5,9 +5,7 @@ import { BoxClickArrayInterface, BoxClickInterface } from '../../../boxes/box-in
 import { Select } from '@ngxs/store';
 import { BoxClickState } from '../../../boxes/store/';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class MapsFiltroService implements OnDestroy {
 
     @Select(BoxClickState.boxClick) boxClick$: Observable<BoxClickInterface>;

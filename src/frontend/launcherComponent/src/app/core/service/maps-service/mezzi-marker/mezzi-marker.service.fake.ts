@@ -7,9 +7,7 @@ import { Componente } from '../../../../shared/model/componente.model';
 import { Mezzo } from '../../../../shared/model/mezzo.model';
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class MezziMarkerServiceFake {
 
     private mezziMarkers: MezzoMarker[] = [];

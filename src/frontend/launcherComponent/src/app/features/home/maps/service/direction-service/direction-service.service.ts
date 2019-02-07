@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { DirectionInterface } from './direction-interface';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class DirectionService {
 
     private directionSubject = new Subject<DirectionInterface>();

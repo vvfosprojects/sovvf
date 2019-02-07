@@ -7,9 +7,7 @@ import {Subject} from 'rxjs';
 
 declare var google: any;
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class AgmService {
 
     map: any;

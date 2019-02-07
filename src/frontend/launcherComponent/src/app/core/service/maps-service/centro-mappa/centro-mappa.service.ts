@@ -6,9 +6,7 @@ import {environment} from '../../../../../environments/environment';
 
 const API_URL_CENTRO = environment.apiUrl.maps.markers.centro;
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class CentroMappaService {
 
     constructor(private http: HttpClient) {

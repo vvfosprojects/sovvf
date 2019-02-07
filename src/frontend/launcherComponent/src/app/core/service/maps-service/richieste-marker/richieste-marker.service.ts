@@ -10,9 +10,7 @@ const headers = new HttpHeaders({
     'Content-Type': 'application/json'
 });
 const httpOptions = { headers: headers };
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class RichiesteMarkerService {
 
 

@@ -19,9 +19,7 @@ import { Localita } from '../../../../../shared/model/localita.model';
 import { BoxClickArrayInterface } from '../../../boxes/box-interface/box-click-interface';
 import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class MarkerService implements OnDestroy {
 
     private subjectMeteo = new Subject<Meteo>();
