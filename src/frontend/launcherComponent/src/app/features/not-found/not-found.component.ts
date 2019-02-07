@@ -2,11 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
 
-@Component({
-    selector: 'app-not-found',
-    templateUrl: './not-found.component.html',
-    styleUrls: ['./not-found.component.css']
-})
+@Component({ templateUrl: './not-found.component.html' })
 export class NotFoundComponent implements OnInit, OnDestroy {
 
     delayTime = 5000;

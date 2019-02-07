@@ -6,22 +6,22 @@
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-2 px-4">
-                    <button class="btn btn-block" routerLink="/home" routerLinkActive="btn-dark ? btn-secondary"
+                    <button class="btn btn-block btn-secondary" [routerLink]="['/home']" [routerLinkActive]="['btn-dark']"
                             (click)="_toggleOpened()"><i class="fa fa-home fa-lg"></i> Home
                     </button>
                 </div>
                 <div class="col-2 px-4">
-                    <button class="btn btn-block" routerLink="/autorimessa" routerLinkActive="btn-dark ? btn-secondary"
+                    <button class="btn btn-block btn-secondary" [routerLink]="['/autorimessa']" [routerLinkActive]="['btn-dark']"
                             (click)="_toggleOpened()"><i class="fa fa-truck fa-lg"></i> Autorimessa
                     </button>
                 </div>
                 <div class="col-2 px-4">
-                    <button class="btn btn-block" routerLink="/servizi" routerLinkActive="btn-dark ? btn-secondary"
+                    <button class="btn btn-block btn-secondary" [routerLink]="['/servizi']" [routerLinkActive]="['btn-dark']"
                             (click)="_toggleOpened()"><i class="fa fa-wrench fa-lg"></i> Servizi
                     </button>
                 </div>
                 <div class="col-2 px-4">
-                    <button class="btn btn-block" routerLink="/statistiche" routerLinkActive="btn-dark ? btn-secondary"
+                    <button class="btn btn-block btn-secondary" [routerLink]="['/statistiche']" [routerLinkActive]="['btn-dark']"
                             (click)="_toggleOpened()"><i class="fa fa-bar-chart fa-lg"></i> Statistiche
                     </button>
                 </div>
