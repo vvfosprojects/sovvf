@@ -3,7 +3,7 @@ import { Observable, of, Subject, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { BoxClickArrayInterface, BoxClickInterface } from '../../../boxes/box-interface/box-click-interface';
 import { Select } from '@ngxs/store';
-import { BoxClickState } from '../../../boxes/store/states/box-click.state';
+import { BoxClickState } from '../../../boxes/store/';
 
 @Injectable({
     providedIn: 'root'
