@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PipeModule } from '../../../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from '../../../../environments/environment';
 import { SharedModule } from '../../../shared/shared.module';
 /**
  * AGM CORE

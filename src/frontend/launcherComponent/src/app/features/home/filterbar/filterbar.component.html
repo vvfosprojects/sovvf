@@ -5,8 +5,8 @@
                 <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata" (startChiamata)="chiamata($event)"></app-tasto-chiamata>
             </div>
             <div *ngIf="!compPartenzaState.disable" class="col-3 px-0 text-left">
-                <app-filtri-richieste></app-filtri-richieste>
-            </div>
+            <app-filtri-richieste></app-filtri-richieste>
+        </div>
             <div *ngIf="!compPartenzaState.disable" class="col-7 px-0">
                 <app-ricerca-richieste></app-ricerca-richieste>
             </div>
