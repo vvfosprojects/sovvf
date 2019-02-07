@@ -8,21 +8,7 @@ export class GetFiltriRichieste {
 
 // SET FILTRO SELEZIONATO (SELEZIONATO, NON SELEZIONATO)
 export class SetFiltroSelezionato {
-    static readonly type = '[FiltriRichieste] Set filtro state (selezionato, non selezionato)';
-
-    constructor(public filtro: VoceFiltro) {}
-}
-
-// ADD FILTRO SELEZIONATO
-export class AddFiltroSelezionato {
-    static readonly type = '[FiltriRichieste] Filtro aggiunto ai selezionati';
-
-    constructor(public filtro: VoceFiltro) {}
-}
-
-// REMOVE FILTRO SELEZIONATO
-export class RemoveFiltroSelezionato {
-    static readonly type = '[FiltriRichieste] Filtro rimosso dai selezionati';
+    static readonly type = '[FiltriRichieste] Toggle filtro';
 
     constructor(public filtro: VoceFiltro) {}
 }

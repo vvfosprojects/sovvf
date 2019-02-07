@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FiltriRichiesteState } from './store/states/filtri-richieste.state';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { AddFiltroSelezionato, RemoveFiltroSelezionato, SetFiltroSelezionato, ResetFiltriSelezionati } from './store/actions/filtri-richieste.actions';
+import { SetFiltroSelezionato, ResetFiltriSelezionati } from './store/actions/filtri-richieste.actions';
 
 @Component({
   selector: 'app-filtri-richieste',
@@ -71,13 +71,11 @@ export class FiltriRichiesteComponent implements OnInit {
 
   onSelezioneFiltro(filtro: VoceFiltro) {
     this.store.dispatch(new SetFiltroSelezionato(filtro));
-    this.store.dispatch(new AddFiltroSelezionato(filtro));
     // console.log('Selezionato');
   }
 
   onDeselezioneFiltro(filtro: VoceFiltro) {
     this.store.dispatch(new SetFiltroSelezionato(filtro));
-    this.store.dispatch(new RemoveFiltroSelezionato(filtro));
     // console.log('Deselezionato');
   }
 

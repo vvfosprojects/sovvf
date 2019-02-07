@@ -4,7 +4,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { VoceFiltro } from '../../voce-filtro.model';
 
 // Action
-import { GetFiltriRichieste, AddFiltroSelezionato, RemoveFiltroSelezionato, SetFiltroSelezionato, ResetFiltriSelezionati } from '../actions/filtri-richieste.actions';
+import { GetFiltriRichieste, SetFiltroSelezionato, ResetFiltriSelezionati } from '../actions/filtri-richieste.actions';
 
 // Tipologie
 import { APP_TIPOLOGIE } from 'src/app/core/settings/tipologie';
@@ -12,12 +12,10 @@ import { APP_TIPOLOGIE } from 'src/app/core/settings/tipologie';
 
 export interface FiltriRichiesteStateModel {
   filtriRichieste: VoceFiltro[];
-  filtriSelezionati: VoceFiltro[];
 }
 
 export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
-  filtriRichieste: [],
-  filtriSelezionati: []
+  filtriRichieste: []
 };
 
 @State<FiltriRichiesteStateModel>({
@@ -36,7 +34,7 @@ export class FiltriRichiesteState {
 
   @Selector()
   static filtriSelezionati(state: FiltriRichiesteStateModel) {
-    return state.filtriSelezionati;
+    return state.filtriRichieste.filter(f => f.selezionato === true);
   }
 
   // GET
@@ -76,46 +74,16 @@ export class FiltriRichiesteState {
     });
   }
 
-  // ADD FILTRO SELEZIONATO
-  @Action(AddFiltroSelezionato)
-  addFiltroSelezionato({ getState, patchState }: StateContext<FiltriRichiesteStateModel>, action: AddFiltroSelezionato) {
-    const state = getState();
-
-    const filtriSelezionati = copyObj(state.filtriSelezionati);
-    const filtro = copyObj(action.filtro);
-
-    patchState({
-      ...state,
-      filtriSelezionati: addFiltroSelezionato(filtriSelezionati, filtro)
-    });
-  }
-
-  // REMOVE FILTRO SELEZIONATO
-  @Action(RemoveFiltroSelezionato)
-  removeFiltroSelezionato({ getState, patchState }: StateContext<FiltriRichiesteStateModel>, action: RemoveFiltroSelezionato) {
-    const state = getState();
-
-    const filtriSelezionati = copyObj(state.filtriSelezionati);
-    const filtro = copyObj(action.filtro);
-
-    patchState({
-      ...state,
-      filtriSelezionati: removeFiltroSelezionato(filtriSelezionati, filtro)
-    });
-  }
-
   // RESET FILTRI SELEZIONATI
   @Action(ResetFiltriSelezionati)
   resetFiltriSelezionati({ getState, patchState }: StateContext<FiltriRichiesteStateModel>) {
     const state = getState();
 
     const filtriRichieste = copyObj(state.filtriRichieste);
-    const filtriSelezionati = copyObj(state.filtriSelezionati);
 
     patchState({
       ...state,
-      filtriRichieste: resetFiltriSelezionati(filtriRichieste, filtriSelezionati).filtriRichieste,
-      filtriSelezionati: resetFiltriSelezionati(filtriRichieste, filtriSelezionati).filtriSelezionati
+      filtriRichieste: resetFiltriSelezionati(filtriRichieste)
     });
   }
 }
@@ -154,16 +122,13 @@ export function toggleFiltro(filtro: VoceFiltro) {
   return filtro;
 }
 
-export function resetFiltriSelezionati(filtriRichieste: VoceFiltro[], filtriSelezionati: VoceFiltro[]) {
+export function resetFiltriSelezionati(filtriRichieste: VoceFiltro[]) {
   filtriRichieste.forEach((fR: VoceFiltro) => {
     fR.selezionato = false;
   });
   const newFiltriRichieste = filtriRichieste;
 
-  filtriSelezionati = [];
-  const newFiltriSelezionati = filtriSelezionati;
-
-  return {'filtriRichieste': newFiltriRichieste, 'filtriSelezionati': newFiltriSelezionati};
+  return newFiltriRichieste;
 }
 
 export function copyObj(obj: any) {
