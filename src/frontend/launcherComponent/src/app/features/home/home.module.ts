@@ -3,13 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { HomeRouting } from './home.routing';
 import { HomeComponent } from './home.component';
-import { ComposizionePartenzaComponent } from './composizione-partenza/composizione-partenza.component';
-import { FasterComponent } from './composizione-partenza/composizione-veloce/composizione-veloce.component';
-import { ComposizioneAvanzataComponent } from './composizione-partenza/composizione-avanzata/composizione-avanzata.component';
-import { BoxNuovaPartenzaComponent } from './composizione-partenza/shared/box-nuova-partenza/box-nuova-partenza.component';
-import { MezzoComposizioneComponent } from './composizione-partenza/composizione-avanzata/mezzo-composizione/mezzo-composizione.component';
-import { SquadraComposizioneComponent } from './composizione-partenza/composizione-avanzata/squadra-composizione/squadra-composizione.component';
-import { ComposizioneFilterbarComponent } from './composizione-partenza/shared/filterbar/composizione-filterbar.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -24,12 +17,6 @@ import { BoxClickState, BoxMezziState, BoxPersonaleState, BoxRichiesteState } fr
 import { FiltriRichiesteState } from './filterbar/filtri-richieste/store';
 import { RicercaRichiesteState } from './filterbar/ricerca-richieste/store';
 import { MarkerMeteoState } from './filterbar/marker-meteo-switch/store';
-import { DispatcherCompPartenzaService } from '../../core/dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.service';
-import { DispatcherCompPartenzaFakeService } from '../../core/dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.fake.service';
-import { CompPartenzaManagerService } from '../../core/manager/comp-partenza-manager/comp-partenza-manager.service';
-import { CompPartenzaManagerServiceFake } from '../../core/manager/comp-partenza-manager/comp-partenza-manager.service.fake';
-import { CompPartenzaService } from '../../core/service/comp-partenza-service/comp-partenza.service';
-import { CompPartenzaServiceFake } from '../../core/service/comp-partenza-service/comp-partenza.service.fake';
 import { MarkerService } from './maps/service/marker-service/marker-service.service';
 import { MarkedService } from './maps/service/marked-service/marked-service.service';
 import { DirectionService } from './maps/service/direction-service/direction-service.service';
@@ -44,18 +31,11 @@ import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
 import { FilterbarModule } from './filterbar/filterbar.module';
 import { MapsModule } from './maps/maps.module';
 import { RichiesteModule } from './richieste/richieste.module';
-// import { ComposizionePartenzaModule } from './composizione-partenza/composizione-partenza.module';
+import { ComposizionePartenzaModule } from './composizione-partenza/composizione-partenza.module';
 
 @NgModule({
     declarations: [
         HomeComponent,
-        ComposizionePartenzaComponent,
-        FasterComponent,
-        ComposizioneAvanzataComponent,
-        BoxNuovaPartenzaComponent,
-        MezzoComposizioneComponent,
-        SquadraComposizioneComponent,
-        ComposizioneFilterbarComponent,
     ],
     imports: [
         CommonModule,
@@ -66,7 +46,7 @@ import { RichiesteModule } from './richieste/richieste.module';
         FilterbarModule,
         MapsModule,
         RichiesteModule,
-        // ComposizionePartenzaModule,
+        ComposizionePartenzaModule,
         NgxPaginationModule,
         NgSelectModule,
         ScrollingModule,
@@ -94,9 +74,6 @@ import { RichiesteModule } from './richieste/richieste.module';
         ),
     ],
     providers: [
-        { provide: DispatcherCompPartenzaService, useClass: DispatcherCompPartenzaFakeService },
-        { provide: CompPartenzaManagerService, useClass: CompPartenzaManagerServiceFake },
-        { provide: CompPartenzaService, useClass: CompPartenzaServiceFake },
         MarkerService, MarkedService, DirectionService, CenterService, MapsFiltroService, AgmService,
         ListaRichiesteService,
         ViewService

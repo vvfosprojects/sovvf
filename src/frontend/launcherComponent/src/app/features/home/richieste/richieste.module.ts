@@ -26,8 +26,8 @@ import { DispatcherFakeService } from '../../../core/dispatcher/dispatcher-lista
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { SintesiRichiestaComponent } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
 import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
+import { SintesiRichiestaModule } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 
 @NgModule({
     imports: [
@@ -39,6 +39,7 @@ import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } 
         PipeModule.forRoot(),
         SharedModule.forRoot(),
         ScrollingModule,
+        SintesiRichiestaModule,
         TimeagoModule.forRoot({
             intl: TimeagoIntl,
             formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
@@ -49,11 +50,9 @@ import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } 
         ListaRichiesteComponent,
         RichiestaFissataComponent,
         SintesiRichiestaSmComponent,
-        SintesiRichiestaComponent
     ],
     exports: [
         RichiesteComponent,
-        SintesiRichiestaComponent
     ],
     providers: [
         { provide: DispatcherService, useClass: DispatcherFakeService },
@@ -61,4 +60,5 @@ import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } 
         { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }
     ]
 })
-export class RichiesteModule { }
+export class RichiesteModule {
+}

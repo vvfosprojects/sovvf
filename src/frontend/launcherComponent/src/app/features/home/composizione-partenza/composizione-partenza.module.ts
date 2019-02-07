@@ -27,35 +27,38 @@ import { CompPartenzaManagerService } from '../../../core/manager/comp-partenza-
 import { CompPartenzaManagerServiceFake } from '../../../core/manager/comp-partenza-manager/comp-partenza-manager.service.fake';
 import { CompPartenzaService } from '../../../core/service/comp-partenza-service/comp-partenza.service';
 import { CompPartenzaServiceFake } from '../../../core/service/comp-partenza-service/comp-partenza.service.fake';
+import { SintesiRichiestaModule } from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 
 @NgModule({
-  declarations: [
-    ComposizionePartenzaComponent,
-    FasterComponent,
-    ComposizioneAvanzataComponent,
-    BoxNuovaPartenzaComponent,
-    MezzoComposizioneComponent,
-    SquadraComposizioneComponent,
-    ComposizioneFilterbarComponent
-  ],
-  imports: [
-    CommonModule,
-    NgbModule,
-    PipeModule.forRoot(),
-    SharedModule.forRoot(),
-    TimeagoModule.forRoot({
-      intl: TimeagoIntl,
-      formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
-    }),
-    NgSelectModule,
-  ],
-  exports: [
-    ComposizionePartenzaComponent
-  ],
-  providers: [
-    { provide: DispatcherCompPartenzaService, useClass: DispatcherCompPartenzaFakeService },
-    { provide: CompPartenzaManagerService, useClass: CompPartenzaManagerServiceFake },
-    { provide: CompPartenzaService, useClass: CompPartenzaServiceFake }
-  ]
+    declarations: [
+        ComposizionePartenzaComponent,
+        FasterComponent,
+        ComposizioneAvanzataComponent,
+        BoxNuovaPartenzaComponent,
+        MezzoComposizioneComponent,
+        SquadraComposizioneComponent,
+        ComposizioneFilterbarComponent
+    ],
+    imports: [
+        CommonModule,
+        NgbModule,
+        SintesiRichiestaModule,
+        PipeModule.forRoot(),
+        SharedModule.forRoot(),
+        TimeagoModule.forRoot({
+            intl: TimeagoIntl,
+            formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
+        }),
+        NgSelectModule,
+    ],
+    exports: [
+        ComposizionePartenzaComponent
+    ],
+    providers: [
+        { provide: DispatcherCompPartenzaService, useClass: DispatcherCompPartenzaFakeService },
+        { provide: CompPartenzaManagerService, useClass: CompPartenzaManagerServiceFake },
+        { provide: CompPartenzaService, useClass: CompPartenzaServiceFake }
+    ]
 })
-export class ComposizionePartenzaModule { }
+export class ComposizionePartenzaModule {
+}
