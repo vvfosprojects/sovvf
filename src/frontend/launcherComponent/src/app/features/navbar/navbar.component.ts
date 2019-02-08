@@ -6,6 +6,7 @@ import { ClockService } from './navbar-service/clock-service/clock.service';
 import { AuthenticationService, UserService } from '../../core/auth/_services';
 import { Turno } from './turno/turno.model';
 import { User } from '../../core/auth/_models';
+import { Store } from '@ngxs/store';
 
 
 @Component({
@@ -23,10 +24,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     userFromApi: User;
     // user: User[] = [];
 
-    constructor(private _turno: TurnoService,
-                private _clock: ClockService,
-                private _user: UserService,
-                private authenticationService: AuthenticationService) {
+    constructor(private store: Store,
+        private _turno: TurnoService,
+        private _clock: ClockService,
+        private _user: UserService,
+        private authenticationService: AuthenticationService) {
         this.currentUser = this.authenticationService.currentUserValue;
         this.subscription.add(this._turno.getTurni().subscribe(res => this.turno = res));
         this.subscription.add(this._clock.getClock().subscribe(time => this.time = time));

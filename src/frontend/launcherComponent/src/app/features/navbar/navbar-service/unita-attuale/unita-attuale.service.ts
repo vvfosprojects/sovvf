@@ -15,7 +15,7 @@ export class UnitaAttualeService {
 
     private unitaAttuale = new Subject<Sede[]>();
     private statoTreeView = new Subject<boolean>();
-    private unitaOperativeCopy: Sede [];
+    private unitaOperativeCopy: Sede[];
     private livelliSedi: LivelliSedi;
     startCount = 0;
     preLoader: boolean;

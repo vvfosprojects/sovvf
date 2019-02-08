@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Sede } from '../../../shared/model/sede.model';
 import { UnitaAttualeService } from '../navbar-service/unita-attuale/unita-attuale.service';
@@ -43,11 +43,11 @@ export class UnitaOperativaComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    changeUnitaAttuale(newUnita) {
+    changeUnitaAttuale(newUnita: any) {
         this.openModal(newUnita);
     }
 
-    openModal(newUnita) {
+    openModal(newUnita: any) {
         const sedi: Sede[] = [];
         sedi.push(newUnita);
         this.unitaAttualeS.unitaSelezionata = sedi;
