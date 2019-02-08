@@ -36,7 +36,8 @@ import { NgxsModule } from '@ngxs/store';
 /**
 * Ngxs State
 */
-import { UnitaOperativeState } from './unita-operativa-treeview/store/states/unita-operative.state';
+import { UnitaOperativeState } from './unita-operativa-treeview/store';
+import { TurnoState } from './turno/store';
 
 @NgModule({
     imports: [
@@ -51,7 +52,8 @@ import { UnitaOperativeState } from './unita-operativa-treeview/store/states/uni
         RouterModule,
         NgxsModule.forFeature(
             [
-                UnitaOperativeState
+                UnitaOperativeState,
+                TurnoState
             ]
         ),
     ],
