@@ -1,7 +1,14 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Store, Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
+
+// View
 import { ViewInterfaceButton, ViewInterfaceComposizione } from '../../../shared/interface/view.interface';
-import { Store } from '@ngxs/store';
-import { GetFiltriRichieste } from './filtri-richieste/store/actions/filtri-richieste.actions';
+
+// Filtri Richieste
+import { GetFiltriRichieste, SetFiltroSelezionato, ResetFiltriSelezionati } from './filtri-richieste/store/actions/filtri-richieste.actions';
+import { FiltriRichiesteState } from './filtri-richieste/store/states/filtri-richieste.state';
+import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
 
 @Component({
     selector: 'app-filterbar',
@@ -15,12 +22,35 @@ export class FilterbarComponent implements OnInit {
     @Output() buttonSwitchView = new EventEmitter<object>();
     @Output() buttonCompPartenzaMode = new EventEmitter<string>();
 
-    constructor(private store: Store) {
+    // Filtri Richieste
+    @Select(FiltriRichiesteState.filtriTipologie) filtri$: Observable<VoceFiltro[]>;
+    @Select(FiltriRichiesteState.filtriSelezionati) filtriSelezionati$: Observable<VoceFiltro[]>;
 
+    constructor(private store: Store) {
     }
 
     ngOnInit() {
         this.store.dispatch(new GetFiltriRichieste());
+    }
+
+    /**
+     * Filtri Richieste Events
+     */
+    onSelezioneFiltro(filtro: VoceFiltro) {
+        this.store.dispatch(new SetFiltroSelezionato(filtro));
+    }
+    onDeselezioneFiltro(filtro: VoceFiltro) {
+        this.store.dispatch(new SetFiltroSelezionato(filtro));
+    }
+    eliminaFiltriAttivi() {
+        this.store.dispatch(new ResetFiltriSelezionati());
+    }
+
+    /**
+     * Marker Meteo Switch Events
+     */
+    test() {
+        return;
     }
 
     compPartenzaSwitch(event: string) {

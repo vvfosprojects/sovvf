@@ -1,9 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { VoceFiltro } from './voce-filtro.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FiltriRichiesteState } from './store/states/filtri-richieste.state';
-import { Observable } from 'rxjs';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { SetFiltroSelezionato, ResetFiltriSelezionati } from './store/actions/filtri-richieste.actions';
 
 @Component({
@@ -12,38 +10,22 @@ import { SetFiltroSelezionato, ResetFiltriSelezionati } from './store/actions/fi
   styleUrls: ['./filtri-richieste.component.css']
 })
 export class FiltriRichiesteComponent implements OnInit {
-  @Select(FiltriRichiesteState.filtriTipologie) filtri$: Observable<VoceFiltro[]>;
-  @Select(FiltriRichiesteState.filtriSelezionati) filtriSelezionati$: Observable<VoceFiltro[]>;
-  filtri: VoceFiltro[];
-  filtriSelezionati: VoceFiltro[];
+  @Input() filtri: VoceFiltro[];
+  @Input() filtriSelezionati: VoceFiltro[];
+  @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
+  @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
+  @Output() filtriReset: EventEmitter<any> = new EventEmitter();
 
   categorie: Array<String> = [];
   categoriaSelezionata = 'Presidiato';
 
   filtersSearch = { descrizione: '' };
 
-  constructor(private store: Store,
-    private modalService: NgbModal) {
+  constructor(private modalService: NgbModal) {
   }
 
   ngOnInit() {
-    this.getFiltri();
-    this.getFiltriSelezionati();
-  }
-
-  getFiltri() {
-    this.filtri$.subscribe((filtri: VoceFiltro[]) => {
-      this.filtri = filtri;
-      this.setCategorie(this.filtri);
-      // console.log('Filtri', this.filtri);
-    });
-  }
-
-  getFiltriSelezionati() {
-    this.filtriSelezionati$.subscribe((fS: VoceFiltro[]) => {
-      this.filtriSelezionati = fS;
-      // console.log('Filtri Selezionati', this.filtriSelezionati);
-    });
+    this.setCategorie(this.filtri);
   }
 
   setCategorie(filtri: VoceFiltro[]) {
@@ -56,12 +38,10 @@ export class FiltriRichiesteComponent implements OnInit {
         this.categorie.push(filtro.categoria);
       }
     });
-    // console.log(this.categorie);
   }
 
   onSelezioneCategoria(categoria: any) {
     this.categoriaSelezionata = categoria;
-    // console.log(this.categoriaSelezionata);
   }
 
   openFiltersModal(content: any) {
@@ -70,17 +50,14 @@ export class FiltriRichiesteComponent implements OnInit {
   }
 
   onSelezioneFiltro(filtro: VoceFiltro) {
-    this.store.dispatch(new SetFiltroSelezionato(filtro));
-    // console.log('Selezionato');
+    this.filtroSelezionato.emit(filtro);
   }
 
   onDeselezioneFiltro(filtro: VoceFiltro) {
-    this.store.dispatch(new SetFiltroSelezionato(filtro));
-    // console.log('Deselezionato');
+    this.filtroDeselezionato.emit(filtro);
   }
 
   eliminaFiltriAttivi() {
-    this.store.dispatch(new ResetFiltriSelezionati());
-    // console.log('reset filtri');
+    this.filtriReset.emit();
   }
 }

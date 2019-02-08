@@ -15,7 +15,12 @@ export interface FiltriRichiesteStateModel {
 }
 
 export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
-  filtriRichieste: []
+  filtriRichieste: [
+    { codice: '1', categoria: 'Presidiato', descrizione: 'Presidiato', star: true, selezionato: false },
+    { codice: '2', categoria: 'Presidiato', descrizione: 'Non Presidiato', star: true, selezionato: false },
+    { codice: '3', categoria: 'Rilevante', descrizione: 'Rilevante', star: true, selezionato: false },
+    { codice: '4', categoria: 'Rilevante', descrizione: 'Non Rilevante', star: true, selezionato: false },
+  ]
 };
 
 @State<FiltriRichiesteStateModel>({
@@ -42,21 +47,11 @@ export class FiltriRichiesteState {
   getFiltriRichieste({ getState, patchState }: StateContext<FiltriRichiesteStateModel>) {
     const state = getState();
 
-    const filtriTipologie: VoceFiltro[] = [];
-    const filtriStatici: VoceFiltro[] = [
-      new VoceFiltro('1', 'Presidiato', 'Presidiato', true),
-      new VoceFiltro('2', 'Presidiato', 'Non Presidiato', true),
-      new VoceFiltro('3', 'Rilevante', 'Rilevante', true),
-      new VoceFiltro('4', 'Rilevante', 'Non Rilevante', true)
-    ];
-    filtriTipologie.push(...filtriStatici);
-    APP_TIPOLOGIE.forEach(tipologie => {
-      filtriTipologie.push(new VoceFiltro('' + tipologie.codice, tipologie.categoria, tipologie.descrizione, tipologie.star));
-    });
+    const filtriRichieste: VoceFiltro[] = copyObj(state.filtriRichieste);
 
     patchState({
       ...state,
-      filtriRichieste: filtriTipologie
+      filtriRichieste: addFiltriTipologie(filtriRichieste)
     });
   }
 
@@ -88,6 +83,14 @@ export class FiltriRichiesteState {
   }
 }
 
+export function addFiltriTipologie(filtriRichieste: VoceFiltro[]) {
+  APP_TIPOLOGIE.forEach(tipologie => {
+    filtriRichieste.push(new VoceFiltro('' + tipologie.codice, tipologie.categoria, tipologie.descrizione, tipologie.star));
+  });
+
+  return filtriRichieste;
+}
+
 export function setFiltroSelezionato(filtriRichieste: VoceFiltro[], filtro: VoceFiltro) {
   filtriRichieste.forEach((fR: VoceFiltro, index: any) => {
     if (fR.codice === filtro.codice) {
@@ -97,23 +100,6 @@ export function setFiltroSelezionato(filtriRichieste: VoceFiltro[], filtro: Voce
   });
 
   return filtriRichieste;
-}
-
-export function addFiltroSelezionato(filtriSelezionati: VoceFiltro[], filtro: VoceFiltro) {
-  toggleFiltro(filtro);
-  filtriSelezionati.push(filtro);
-
-  return filtriSelezionati;
-}
-
-export function removeFiltroSelezionato(filtriSelezionati: VoceFiltro[], filtro: VoceFiltro) {
-  filtriSelezionati.forEach((fS: VoceFiltro, index: any) => {
-    if (fS.codice === filtro.codice) {
-      filtriSelezionati.splice(index, 1);
-    }
-  });
-
-  return filtriSelezionati;
 }
 
 export function toggleFiltro(filtro: VoceFiltro) {
