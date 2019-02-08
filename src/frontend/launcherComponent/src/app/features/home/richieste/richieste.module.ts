@@ -1,8 +1,5 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 import { SharedModule } from '../../../shared/shared.module';
 /*
     Modules
@@ -28,30 +25,34 @@ import { DispatcherService } from '../../../core/dispatcher/dispatcher-lista-ric
 import { DispatcherFakeService } from '../../../core/dispatcher/dispatcher-lista-richieste/dispatcher-lista-richieste-fake.service';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { SintesiRichiestaModule } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 
 @NgModule({
     imports: [
-        BrowserModule,
         CommonModule,
         FormsModule,
         NgxPaginationModule,
-        BrowserAnimationsModule,
         FilterPipeModule,
-        SintesiRichiestaModule,
         NgbModule,
         PipeModule.forRoot(),
         SharedModule.forRoot(),
-        ScrollDispatchModule
+        ScrollingModule,
+        SintesiRichiestaModule,
+        TimeagoModule.forRoot({
+            intl: TimeagoIntl,
+            formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
+        })
     ],
     declarations: [
         RichiesteComponent,
         ListaRichiesteComponent,
         RichiestaFissataComponent,
-        SintesiRichiestaSmComponent
+        SintesiRichiestaSmComponent,
     ],
     exports: [
-        RichiesteComponent
+        RichiesteComponent,
     ],
     providers: [
         { provide: DispatcherService, useClass: DispatcherFakeService },
@@ -59,4 +60,5 @@ import { SintesiRichiestaModule } from './lista-richieste/sintesi-richiesta/sint
         { provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake }
     ]
 })
-export class RichiesteModule { }
+export class RichiesteModule {
+}

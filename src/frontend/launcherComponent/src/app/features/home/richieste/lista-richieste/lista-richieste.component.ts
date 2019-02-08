@@ -4,7 +4,7 @@ import { Subscription, Observable } from 'rxjs';
 import { FilterPipe } from 'ngx-filter-pipe';
 
 // Ngxs
-import { RicercaRichiesteState } from '../../filterbar/ricerca-richieste/store/states/ricerca-richieste.state';
+import { RicercaRichiesteState } from '../../filterbar/ricerca-richieste/store/';
 import { Select } from '@ngxs/store';
 
 // Model

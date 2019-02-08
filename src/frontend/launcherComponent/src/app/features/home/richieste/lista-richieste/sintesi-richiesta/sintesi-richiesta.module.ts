@@ -7,21 +7,22 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { PipeModule } from 'src/app/shared/pipes/pipe.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    NgbModule,
-    PipeModule.forRoot(),
-    SharedModule.forRoot(),
-    TimeagoModule.forRoot({
-      intl: TimeagoIntl,
-      formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
-    })
-  ],
-  declarations: [
-    SintesiRichiestaComponent
-  ],
-  exports: [
-    SintesiRichiestaComponent
-  ],
+    imports: [
+        CommonModule,
+        NgbModule,
+        PipeModule.forRoot(),
+        SharedModule.forRoot(),
+        TimeagoModule.forRoot({
+            intl: TimeagoIntl,
+            formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
+        })
+    ],
+    declarations: [
+        SintesiRichiestaComponent
+    ],
+    exports: [
+        SintesiRichiestaComponent
+    ],
 })
-export class SintesiRichiestaModule { }
+export class SintesiRichiestaModule {
+}

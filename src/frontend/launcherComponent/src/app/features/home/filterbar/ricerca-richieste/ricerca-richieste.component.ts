@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
 import { Observable } from 'rxjs';
-import { FiltriRichiesteState } from '../filtri-richieste/store/states/filtri-richieste.state';
+import { FiltriRichiesteState } from '../filtri-richieste/store/';
 import { Select, Store } from '@ngxs/store';
 import { SetRicerca } from './store/actions/ricerca-richieste.actions';
-import { RicercaRichiesteState } from './store/states/ricerca-richieste.state';
+import { RicercaRichiesteState } from './store/';
 
 @Component({
     selector: 'app-ricerca-richieste',

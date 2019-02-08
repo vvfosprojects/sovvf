@@ -392,7 +392,7 @@ export class MarkerService implements OnDestroy {
                 this[className].cambiaOpacitaMarker(false);
             }
         } else {
-            console.log('manager non esistente');
+            // console.log('manager non esistente');
         }
 
         function capitalize(string) {
