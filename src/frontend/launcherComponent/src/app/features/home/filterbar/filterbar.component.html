@@ -2,7 +2,8 @@
     <div [ngClass]="compPartenzaState.column">
         <div class="row">
             <div class="col-2 pr-0 text-left">
-                <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata" (startChiamata)="chiamata($event)"></app-tasto-chiamata>
+                <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata" (startChiamata)="chiamata($event)">
+                </app-tasto-chiamata>
             </div>
             <div *ngIf="!compPartenzaState.disable" class="col-3 px-0 text-left">
                 <app-filtri-richieste [filtri]="(filtri$ | async)" [filtriSelezionati]="(filtriSelezionati$ | async)"
@@ -14,14 +15,16 @@
                 <app-ricerca-richieste></app-ricerca-richieste>
             </div>
             <div *ngIf="compPartenzaState.disable" class="col-4 ml-auto">
-                <app-tasto-comp-partenza (cambioModalita)="compPartenzaSwitch($event)" [compPartenzaMode]="compPartenzaState.modalita"></app-tasto-comp-partenza>
+                <app-tasto-comp-partenza (cambioModalita)="compPartenzaSwitch($event)" [compPartenzaMode]="compPartenzaState.modalita">
+                </app-tasto-comp-partenza>
             </div>
         </div>
     </div>
     <div *ngIf="!compPartenzaState.disable" class="col-2">
         <div class="row">
             <div class="col-12">
-                <app-view-mode [colorButtonView]="colorButton.buttonView" (buttonView)="buttonView($event)"></app-view-mode>
+                <app-view-mode [colorButtonView]="colorButton.buttonView" (buttonView)="buttonView($event)">
+                </app-view-mode>
             </div>
         </div>
     </div>
@@ -31,7 +34,8 @@
                 <!--spazio disponibile-->
             </div>
             <div class="col-4 pr-0">
-                <app-marker-meteo-switch></app-marker-meteo-switch>
+                <app-marker-meteo-switch [stateSwitch]="(stateSwitch$ | async)" (change)="onChange($event)">
+                </app-marker-meteo-switch>
             </div>
             <div class="col-5">
                 <app-filtri-mappa></app-filtri-mappa>

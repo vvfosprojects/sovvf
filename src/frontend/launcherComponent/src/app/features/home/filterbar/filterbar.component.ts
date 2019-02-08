@@ -10,6 +10,10 @@ import { GetFiltriRichieste, SetFiltroSelezionato, ResetFiltriSelezionati } from
 import { FiltriRichiesteState } from './filtri-richieste/store/states/filtri-richieste.state';
 import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
 
+// Marker Meteo Switch
+import { MarkerMeteoState } from './marker-meteo-switch/store/states/marker-meteo-switch.state';
+import { SetMarkerMeteo } from './marker-meteo-switch/store/actions/marker-meteo-switch.actions';
+
 @Component({
     selector: 'app-filterbar',
     templateUrl: './filterbar.component.html',
@@ -25,6 +29,9 @@ export class FilterbarComponent implements OnInit {
     // Filtri Richieste
     @Select(FiltriRichiesteState.filtriTipologie) filtri$: Observable<VoceFiltro[]>;
     @Select(FiltriRichiesteState.filtriSelezionati) filtriSelezionati$: Observable<VoceFiltro[]>;
+
+    // Marker Meteo Switch
+    @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
 
     constructor(private store: Store) {
     }
@@ -49,8 +56,8 @@ export class FilterbarComponent implements OnInit {
     /**
      * Marker Meteo Switch Events
      */
-    test() {
-        return;
+    onChange(active: boolean) {
+        this.store.dispatch(new SetMarkerMeteo(active));
     }
 
     compPartenzaSwitch(event: string) {

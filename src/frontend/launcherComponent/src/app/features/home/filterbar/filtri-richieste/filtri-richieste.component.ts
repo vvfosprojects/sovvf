@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { VoceFiltro } from './voce-filtro.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngxs/store';
-import { SetFiltroSelezionato, ResetFiltriSelezionati } from './store/actions/filtri-richieste.actions';
 
 @Component({
   selector: 'app-filtri-richieste',
@@ -12,13 +10,14 @@ import { SetFiltroSelezionato, ResetFiltriSelezionati } from './store/actions/fi
 export class FiltriRichiesteComponent implements OnInit {
   @Input() filtri: VoceFiltro[];
   @Input() filtriSelezionati: VoceFiltro[];
+
+  // Events
   @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
   @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
   @Output() filtriReset: EventEmitter<any> = new EventEmitter();
 
   categorie: Array<String> = [];
   categoriaSelezionata = 'Presidiato';
-
   filtersSearch = { descrizione: '' };
 
   constructor(private modalService: NgbModal) {

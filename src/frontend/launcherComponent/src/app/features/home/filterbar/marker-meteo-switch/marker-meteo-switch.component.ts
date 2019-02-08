@@ -1,9 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { MapsFiltroService } from '../../maps/maps-ui/filtro/maps-filtro.service';
-import { Select, Store } from '@ngxs/store';
-import { MarkerMeteoState } from './store';
-import { Observable } from 'rxjs';
-import { SetMarkerMeteo } from './store/actions/marker-meteo-switch.actions';
+import { Component, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
     selector: 'app-marker-meteo-switch',
@@ -11,25 +6,17 @@ import { SetMarkerMeteo } from './store/actions/marker-meteo-switch.actions';
     styleUrls: ['./marker-meteo-switch.component.css'],
     encapsulation: ViewEncapsulation.None
 })
-export class MarkerMeteoSwitchComponent implements OnInit {
-    @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
-    stateSwitch: boolean;
+export class MarkerMeteoSwitchComponent {
+    @Input() stateSwitch: boolean;
 
-    constructor(private store: Store) {
-    }
+    // Events
+    @Output() change: EventEmitter<boolean> = new EventEmitter();
 
-    ngOnInit() {
-        this.getSwitchState();
-    }
-
-    getSwitchState() {
-        this.stateSwitch$.subscribe((state: boolean) => {
-            this.stateSwitch = state;
-        });
+    constructor() {
     }
 
     onChange(active: boolean) {
-        this.store.dispatch(new SetMarkerMeteo(active));
+        this.change.emit(active);
     }
 
     returnColor(): string {
@@ -45,5 +32,4 @@ export class MarkerMeteoSwitchComponent implements OnInit {
         }
         return returnClass;
     }
-
 }
