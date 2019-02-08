@@ -47,11 +47,21 @@ export class FiltriRichiesteState {
   getFiltriRichieste({ getState, patchState }: StateContext<FiltriRichiesteStateModel>) {
     const state = getState();
 
-    const filtriRichieste: VoceFiltro[] = copyObj(state.filtriRichieste);
+    const filtriRichieste: VoceFiltro[] = [];
+    const filtriStatici: VoceFiltro[] = [
+      new VoceFiltro('1', 'Presidiato', 'Presidiato', true),
+      new VoceFiltro('2', 'Presidiato', 'Non Presidiato', true),
+      new VoceFiltro('3', 'Rilevante', 'Rilevante', true),
+      new VoceFiltro('4', 'Rilevante', 'Non Rilevante', true)
+    ];
+    filtriRichieste.push(...filtriStatici);
+    APP_TIPOLOGIE.forEach(tipologie => {
+      filtriRichieste.push(new VoceFiltro('' + tipologie.codice, tipologie.categoria, tipologie.descrizione, tipologie.star));
+    });
 
     patchState({
       ...state,
-      filtriRichieste: addFiltriTipologie(filtriRichieste)
+      filtriRichieste: filtriRichieste
     });
   }
 
@@ -81,14 +91,6 @@ export class FiltriRichiesteState {
       filtriRichieste: resetFiltriSelezionati(filtriRichieste)
     });
   }
-}
-
-export function addFiltriTipologie(filtriRichieste: VoceFiltro[]) {
-  APP_TIPOLOGIE.forEach(tipologie => {
-    filtriRichieste.push(new VoceFiltro('' + tipologie.codice, tipologie.categoria, tipologie.descrizione, tipologie.star));
-  });
-
-  return filtriRichieste;
 }
 
 export function setFiltroSelezionato(filtriRichieste: VoceFiltro[], filtro: VoceFiltro) {
