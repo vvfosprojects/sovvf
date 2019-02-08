@@ -10,9 +10,13 @@ import { GetFiltriRichieste, SetFiltroSelezionato, ResetFiltriSelezionati } from
 import { FiltriRichiesteState } from './filtri-richieste/store/states/filtri-richieste.state';
 import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
 
+// Ricerca Richieste
+import { RicercaRichiesteState } from './ricerca-richieste/store/states/ricerca-richieste.state';
+
 // Marker Meteo Switch
 import { MarkerMeteoState } from './marker-meteo-switch/store/states/marker-meteo-switch.state';
 import { SetMarkerMeteo } from './marker-meteo-switch/store/actions/marker-meteo-switch.actions';
+import { SetRicerca } from './ricerca-richieste/store/actions/ricerca-richieste.actions';
 
 @Component({
     selector: 'app-filterbar',
@@ -29,6 +33,9 @@ export class FilterbarComponent implements OnInit {
     // Filtri Richieste
     @Select(FiltriRichiesteState.filtriTipologie) filtri$: Observable<VoceFiltro[]>;
     @Select(FiltriRichiesteState.filtriSelezionati) filtriSelezionati$: Observable<VoceFiltro[]>;
+
+    // Ricerca Richieste
+    @Select(RicercaRichiesteState.ricerca) ricerca$: Observable<any>;
 
     // Marker Meteo Switch
     @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
@@ -51,6 +58,13 @@ export class FilterbarComponent implements OnInit {
     }
     eliminaFiltriAttivi() {
         this.store.dispatch(new ResetFiltriSelezionati());
+    }
+
+    /**
+     * Ricerca Richieste Events
+     */
+    onSearch(ricerca: any) {
+        this.store.dispatch(new SetRicerca(ricerca));
     }
 
     /**

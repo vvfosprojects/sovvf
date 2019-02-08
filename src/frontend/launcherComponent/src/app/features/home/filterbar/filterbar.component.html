@@ -12,7 +12,8 @@
                 </app-filtri-richieste>
             </div>
             <div *ngIf="!compPartenzaState.disable" class="col-7 px-0">
-                <app-ricerca-richieste></app-ricerca-richieste>
+                <app-ricerca-richieste (search)="onSearch($event)">
+                </app-ricerca-richieste>
             </div>
             <div *ngIf="compPartenzaState.disable" class="col-4 ml-auto">
                 <app-tasto-comp-partenza (cambioModalita)="compPartenzaSwitch($event)" [compPartenzaMode]="compPartenzaState.modalita">
