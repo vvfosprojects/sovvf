@@ -1,0 +1,17 @@
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\bin\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.deps.json
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\bin\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.runtimeconfig.json
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\bin\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.runtimeconfig.dev.json
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\bin\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.dll
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\bin\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.pdb
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\bin\Debug\netcoreapp2.2\SO115App.API.Models.dll
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\bin\Debug\netcoreapp2.2\SO115App.API.Models.pdb
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\obj\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.csprojAssemblyReference.cache
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\obj\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.csproj.CoreCompileInputs.cache
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\obj\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.RazorAssemblyInfo.cache
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\obj\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.RazorAssemblyInfo.cs
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\obj\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.AssemblyInfoInputs.cache
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\obj\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.AssemblyInfo.cs
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\obj\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.RazorTargetAssemblyInfo.cache
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\obj\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.csproj.CopyComplete
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\obj\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.dll
+C:\Lavoro\SO115Core\SO115App.API.SOVVF.FakeImplementations\obj\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.pdb

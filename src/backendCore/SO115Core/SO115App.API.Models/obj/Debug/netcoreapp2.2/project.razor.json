@@ -1,0 +1,14 @@
+{
+  "ProjectFilePath": "c:\\Lavoro\\SO115Core\\SO115App.API.Models\\SO115App.API.Models.csproj",
+  "TargetFramework": "netcoreapp2.2",
+  "TagHelpers": [],
+  "Configuration": {
+    "ConfigurationName": "MVC-2.1",
+    "LanguageVersion": "2.1",
+    "Extensions": [
+      {
+        "ExtensionName": "MVC-2.1"
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App"/>
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All"/>
+    <PackageReference Include="SimpleInjector" Version="4.4.3"/>
+    <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc" Version="4.4.3"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SO115App.API.Models\SO115App.API.Models.csproj"/>
+    <ProjectReference Include="..\SO115App.API.SOVVF.FakeImplementations\SO115App.API.SOVVF.FakeImplementations.csproj"/>
+  </ItemGroup>
+</Project>
