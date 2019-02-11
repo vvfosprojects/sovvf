@@ -9,7 +9,7 @@ import { TipoColori } from './_color';
 import { AgmService } from '../../agm/agm-service.service';
 import { UnitaAttualeService } from '../../../../navbar/navbar-service/unita-attuale/unita-attuale.service';
 import { ListaRichiesteService } from '../../../richieste/service/lista-richieste-service.service';
-import { RichiesteMarkerManagerService } from '../../../../../core/manager/maps-manager';
+import { MezziMarkerManagerService, RichiesteMarkerManagerService } from '../../../../../core/manager/maps-manager';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
 import { CentroMappa } from '../../maps-model/centro-mappa.model';
@@ -19,7 +19,7 @@ import { Localita } from '../../../../../shared/model/localita.model';
 import { BoxClickArrayInterface } from '../../../boxes/box-interface/box-click-interface';
 import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
 import { Select } from '@ngxs/store';
-import { MarkerMeteoState } from '../../../filterbar/marker-meteo-switch/store/states/marker-meteo-switch.state';
+import { MarkerMeteoState } from '../../../filterbar/marker-meteo-switch/store/';
 
 @Injectable()
 export class MarkerService implements OnDestroy {
@@ -53,6 +53,7 @@ export class MarkerService implements OnDestroy {
         private agmService: AgmService,
         private richiesteService: ListaRichiesteService,
         private markerRichiesteManager: RichiesteMarkerManagerService,
+        private markerMezziManager: MezziMarkerManagerService,
         private unitaAttualeS: UnitaAttualeService,
         private mapsFiltroService: MapsFiltroService) {
         this.subscription.add(this.markedService.getMarked().subscribe(marker => {
