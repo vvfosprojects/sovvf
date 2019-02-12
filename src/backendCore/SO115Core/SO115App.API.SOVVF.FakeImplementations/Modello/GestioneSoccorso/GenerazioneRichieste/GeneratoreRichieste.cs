@@ -406,11 +406,11 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
 
             Sede distaccamento = new Sede("1", "Tuscolano I", "Via Tuscolana 2", new Coordinate(faker.Random.Double() + 41.895, faker.Random.Double() + 12.495), "Distaccamento", null, null, "Lazio", "Roma");
 
-            List<ComponenteSquadra> ListaComponentiSquadra = new List<ComponenteSquadra>()
+            List<Componente> ListaComponentiSquadra = new List<Componente>()
             {
-                new ComponenteSquadra("CS","Riccardo Trionfera", "RT", true,false,false),
-                new ComponenteSquadra("CS","Davide Cappa", "DC", false,true,false),
-                new ComponenteSquadra("CS","Michele Dragonetti", "MD", false,false,false),
+                new Componente("CS","Riccardo Trionfera", "RT", true,false,false),
+                new Componente("CS","Davide Cappa", "DC", false,true,false),
+                new Componente("CS","Michele Dragonetti", "MD", false,false,false),
             };
 
 
@@ -421,13 +421,10 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
             };
 
 
-            List<Mezzo> ListaMezzi = new List<Mezzo>()
-                {
-                    new Mezzo("0", "APS", "Auto pompa serbatoio", "In sede", 0,distaccamento)
-                };
+            Mezzo mezzo = new Mezzo("0", "APS", "Auto pompa serbatoio", "In sede", 0,distaccamento);
 
             Partenza partenza = new Partenza();
-            partenza.mezzi = ListaMezzi;
+            partenza.mezzo = mezzo;
             partenza.squadre = ListaSquadre;
             
             List<Partenza> NewPartenza = new List<Partenza>()

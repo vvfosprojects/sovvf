@@ -66,12 +66,12 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         /// Tipologia Sede
         /// </summary>
-        public string provincia { get; set; }
+        public string regione { get; set; }
 
         /// <summary>
         /// Tipologia Sede
         /// </summary>
-        public string regione { get; set; }
+        public string provincia { get; set; }
 
         /// <summary>
         /// Label

@@ -6,3 +6,11 @@
 /.idea/vcs.xml
 /.idea/workspace.xml
 src/frontend/batch.bat
+src/backendCore/SO115Core/SO115App.API/bin
+src/backendCore/SO115Core/SO115App.API/obj
+src/backendCore/SO115Core/SO115App.API.CompositionRoot/bin
+src/backendCore/SO115Core/SO115App.API.CompositionRoot/obj
+src/backendCore/SO115Core/SO115App.API.Models/bin
+src/backendCore/SO115Core/SO115App.API.Models/obj
+src/backendCore/SO115Core/SO115App.API.SOVVF.FakeImplementations/bin
+src/backendCore/SO115Core/SO115App.API.SOVVF.FakeImplementations/obj

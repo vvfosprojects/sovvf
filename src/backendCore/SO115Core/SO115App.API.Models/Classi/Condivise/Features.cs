@@ -1,5 +1,5 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="NonNecessario.cs" company="CNVVF">
+//-----------------------------------------------------------------------
+// <copyright file="Utente.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,35 +17,33 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Condivise
 {
-    public class Complessita
+    public class Features
     {
-
-        public Complessita(string Codice, string Descrizione, string Indice)
+        
+        public Features(AppFeatures NameFunction, List<Sede> Read, List<Sede> Write)
         {
-            //this.codice = Codice;
-            this.descrizione = Descrizione;
-            this.indice = Indice;
-
+            this.nameFunction = NameFunction;
+            this.read = Read;
+            this.write = Write;
         }
 
-        /// <summary>
-        /// Codice Comlessità
-        /// </summary>
-        //public string codice { get; set; }
+        public AppFeatures nameFunction { get; set; }
 
-        /// <summary>
-        /// Indice Complessità
-        /// </summary>
-        public string indice { get; set; }
+        public List<Sede> read { get; set; }
 
-        /// <summary>
-        /// Descrizione Comlessità
-        /// </summary>
-        public string descrizione { get; set; }
+        public List<Sede> write { get; set; }
 
-
+    }
+    public enum AppFeatures
+    {
+        Mappa,
+        Richieste,
+        Chiamata,
+        ComposizionePartenza,
+        Default
     }
 }

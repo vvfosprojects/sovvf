@@ -24,16 +24,16 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Partenza
     {
-
-        /// <summary>
-        ///  Lista dei mezzi coinvolti
-        /// </summary>
-        public List<Mezzo> mezzi { get; set; }
-
         /// <summary>
         ///  Lista delle squadre coinvolte
         /// </summary>
         public List<Squadra> squadre { get; set; }
+
+
+        /// <summary>
+        ///  Lista dei mezzi coinvolti
+        /// </summary>
+        public Mezzo mezzo { get; set; }
 
 
     }

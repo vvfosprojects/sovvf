@@ -20,10 +20,10 @@
 
 namespace SO115App.API.Models.Classi.Condivise
 {
-    public class ComponenteSquadra
+    public class Componente
     {
 
-        public ComponenteSquadra(string DescrizioneQualifica, string Nominativo, string Tooltip, bool CapoPartenza, bool Autista, bool Rimpiazzo)
+        public Componente(string DescrizioneQualifica, string Nominativo, string Tooltip, bool CapoPartenza, bool Autista, bool Rimpiazzo)
         {
             this.descrizioneQualifica = DescrizioneQualifica;
             this.nominativo = Nominativo;

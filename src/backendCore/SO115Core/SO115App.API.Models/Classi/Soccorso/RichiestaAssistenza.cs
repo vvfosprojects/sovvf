@@ -73,12 +73,12 @@ namespace SO115App.API.Models.Classi.Soccorso
             /// <summary>
             ///   Livello 1
             /// </summary>
-            Bassa,
+            Bassissima = 1,
 
             /// <summary>
             ///   Livello 2
             /// </summary>
-            Bassa2,
+            Bassa,
 
             /// <summary>
             ///   Livello 3 
@@ -88,12 +88,12 @@ namespace SO115App.API.Models.Classi.Soccorso
             /// <summary>
             ///   Livello 4 
             /// </summary>
-            Media2,
+            Alta,
 
             /// <summary>
             ///   Livello 5 
             /// </summary>
-            Alta
+            Altissima
         }
 
         /// <summary>

@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
 using System;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Autenticazione
 {
@@ -86,9 +87,9 @@ namespace SO115App.API.Models.Classi.Autenticazione
         }
 
         /// <summary>
-        ///   La username
+        ///   Id
         /// </summary>
-        public string username { get; set; }
+        public string id { get; set; }
 
         /// <summary>
         ///   Nome Operatore
@@ -99,6 +100,29 @@ namespace SO115App.API.Models.Classi.Autenticazione
         ///   Cognome Operatore
         /// </summary>
         public string cognome { get; set; }
+
+        /// <summary>
+        ///   La username
+        /// </summary>
+        public string username { get; set; }
+
+        /// <summary>
+        ///   Password dell'utente loggato
+        /// </summary>
+        public string password { get; set; }
+
+        /// <summary>
+        ///   Ruolo
+        /// </summary>
+        public Ruolo ruolo { get; set; }
+
+        /// <summary>
+        ///   Sede utente loggato
+        /// </summary>
+        public Sede sede { get; set; }
+        public List<Features> Privilegi { get; set; }
+
+        public string token { get; set; }
 
         /// <summary>
         ///   CodiceFiscale Operatore
@@ -121,20 +145,14 @@ namespace SO115App.API.Models.Classi.Autenticazione
         public bool attivo { get; set; }
 
         /// <summary>
-        ///   Password dell'utente loggato
+        ///   Qualifica utente loggato
         /// </summary>
-        public string password { get; set; }
-
-        /// <summary>
-        ///   Tipologia utente loggato
-        /// </summary>
-        public string tipo { get; set; }
-
-        /// <summary>
-        ///   Sede utente loggato
-        /// </summary>
-        public Sede sede { get; set; }
-
-
+        public string qualifica { get; set; }
+        
+    }
+    public enum Ruolo
+    {
+        Admin,
+        User
     }
 }

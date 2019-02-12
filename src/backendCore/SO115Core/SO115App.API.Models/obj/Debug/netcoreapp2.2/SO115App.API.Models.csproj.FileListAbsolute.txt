@@ -12,3 +12,17 @@ C:\Lavoro\SO115Core\SO115App.API.Models\obj\Debug\netcoreapp2.2\SO115App.API.Mod
 C:\Lavoro\SO115Core\SO115App.API.Models\obj\Debug\netcoreapp2.2\SO115App.API.Models.dll
 C:\Lavoro\SO115Core\SO115App.API.Models\obj\Debug\netcoreapp2.2\SO115App.API.Models.pdb
 C:\Lavoro\SO115Core\SO115App.API.Models\obj\Debug\netcoreapp2.2\SO115App.API.Models.csprojAssemblyReference.cache
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API.Models\bin\Debug\netcoreapp2.2\SO115App.API.Models.deps.json
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API.Models\bin\Debug\netcoreapp2.2\SO115App.API.Models.runtimeconfig.json
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API.Models\bin\Debug\netcoreapp2.2\SO115App.API.Models.runtimeconfig.dev.json
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API.Models\bin\Debug\netcoreapp2.2\SO115App.API.Models.dll
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API.Models\bin\Debug\netcoreapp2.2\SO115App.API.Models.pdb
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API.Models\obj\Debug\netcoreapp2.2\SO115App.API.Models.csprojAssemblyReference.cache
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API.Models\obj\Debug\netcoreapp2.2\SO115App.API.Models.csproj.CoreCompileInputs.cache
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API.Models\obj\Debug\netcoreapp2.2\SO115App.API.Models.RazorAssemblyInfo.cache
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API.Models\obj\Debug\netcoreapp2.2\SO115App.API.Models.RazorAssemblyInfo.cs
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API.Models\obj\Debug\netcoreapp2.2\SO115App.API.Models.AssemblyInfoInputs.cache
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API.Models\obj\Debug\netcoreapp2.2\SO115App.API.Models.AssemblyInfo.cs
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API.Models\obj\Debug\netcoreapp2.2\SO115App.API.Models.RazorTargetAssemblyInfo.cache
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API.Models\obj\Debug\netcoreapp2.2\SO115App.API.Models.dll
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API.Models\obj\Debug\netcoreapp2.2\SO115App.API.Models.pdb

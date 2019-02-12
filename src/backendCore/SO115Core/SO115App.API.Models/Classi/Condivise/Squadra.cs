@@ -46,9 +46,9 @@ namespace SO115App.API.Models.Classi.Condivise
             InRientro,
 
             /// <summary>
-            ///   Rientrata presso la sede di servizio
+            ///   Presso la sede di servizio
             /// </summary>
-            RientrataInSede,
+            InSede,
 
             /// <summary>
             ///   Fuori per ragioni di istituto
@@ -56,7 +56,7 @@ namespace SO115App.API.Models.Classi.Condivise
             Istituto
         }
 
-        public Squadra(string Nome, StatoSquadra Stato, List<ComponenteSquadra> Componenti, Sede Distaccamento)
+        public Squadra(string Nome, StatoSquadra Stato, List<Componente> Componenti, Sede Distaccamento)
         {
 
             this.nome = Nome;
@@ -81,7 +81,7 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         ///   Lista dei componenti della squadra
         /// </summary>
-        public List<ComponenteSquadra> componenti { get; set; }
+        public List<Componente> componenti { get; set; }
 
         /// <summary>
         ///   Indica il distaccamento della squadra
