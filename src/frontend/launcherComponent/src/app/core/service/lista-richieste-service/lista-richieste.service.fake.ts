@@ -33,10 +33,10 @@ export class SintesiRichiesteServiceFake {
         this.localSt.store('ListaRichiesteRequest', this.requestCount);
     }
 
-    getRichieste() {
-        this.requestCount = this.localSt.retrieve('ListaRichiesteRequest');
+    getRichieste(idUltimaRichiesta: string) {
+        // this.requestCount = this.localSt.retrieve('ListaRichiesteRequest');
 
-        const richieste = [
+        this.richieste = [
             new SintesiRichiesta(
                 'RM-022',
                 'RM-022',
@@ -699,7 +699,7 @@ export class SintesiRichiesteServiceFake {
             ),
         ];
 
-        if (this.requestCount === 1) {
+        /* if (this.requestCount === 1) {
             richieste.forEach((r, index) => {
                 if (index <= 9) {
                     this.richieste.push(r);
@@ -709,10 +709,10 @@ export class SintesiRichiesteServiceFake {
             this.richieste = richieste;
         } else if (this.requestCount >= 3) {
             this.richieste = [];
-        }
+        } */
 
-        this.requestCount += 1;
-        this.localSt.store('ListaRichiesteRequest', this.requestCount);
+        // this.requestCount += 1;
+        // this.localSt.store('ListaRichiesteRequest', this.requestCount);
 
         return of(this.richieste);
     }

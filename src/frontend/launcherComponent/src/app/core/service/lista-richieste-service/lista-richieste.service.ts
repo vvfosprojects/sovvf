@@ -18,7 +18,7 @@ export class SintesiRichiesteService {
     constructor(private http: HttpClient) {
     }
 
-    public getRichieste(idUltimaRichiesta?: any): Observable<any> {
+    public getRichieste(idUltimaRichiesta: string): Observable<any> {
         return this.http.get(API_URL_RICHIESTE + '?SearchKey=' + idUltimaRichiesta + '&RichiestaSingola=false', httpOptions).pipe(
             map((data: any) => {
                 const richieste = data.SintesiRichiesta;

@@ -4,11 +4,12 @@ import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 // Model
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
-// Service
-import { ListaRichiesteService } from '../../service/lista-richieste-service.service';
-
 // Helper methods
-import { HelperMethods } from '../../helper/_helper-methods';
+import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
+
+// Ngxs
+import { Store } from '@ngxs/store';
+import { ClearRichiestaFissata } from '../../store/actions/richiesta-fissata.actions';
 
 @Component({
   selector: 'app-sintesi-richiesta-sm',
@@ -18,9 +19,9 @@ import { HelperMethods } from '../../helper/_helper-methods';
 export class SintesiRichiestaSmComponent implements OnInit {
   @Input() richiesta: SintesiRichiesta;
 
-  methods = new HelperMethods;
+  methods = new HelperSintesiRichiesta;
 
-  constructor(private richiesteS: ListaRichiesteService,
+  constructor(private store: Store,
     tooltipConfig: NgbTooltipConfig) {
     tooltipConfig.container = 'body';
     tooltipConfig.placement = 'bottom';
@@ -30,8 +31,7 @@ export class SintesiRichiestaSmComponent implements OnInit {
   }
 
   // Ritorna la richiesta nella lista, defissandola
-  defissa() {
-    this.richiesteS.defissata();
-    this.richiesteS.deselezionata();
+  onDefissa() {
+    this.store.dispatch(new ClearRichiestaFissata());
   }
 }

@@ -1,18 +1,19 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, OnChanges } from '@angular/core';
 import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/animations';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 // Model
-import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
+import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 
 // Component
-import { EventiRichiestaComponent } from '../../../eventi/eventi-richiesta.component';
+import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
 
 // Service
-import { ListaRichiesteService } from '../../service/lista-richieste-service.service';
+import { ListaRichiesteService } from '../service/lista-richieste-service.service';
+import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 
 // Helper Methods
-import { HelperMethods } from '../../helper/_helper-methods';
+import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 
 
 @Component({
@@ -20,46 +21,42 @@ import { HelperMethods } from '../../helper/_helper-methods';
     templateUrl: './richiesta-fissata.component.html',
     styleUrls: ['./richiesta-fissata.component.css']
 })
-export class RichiestaFissataComponent implements OnInit {
+export class RichiestaFissataComponent implements OnInit, OnChanges {
     @Input() _split: boolean;
+    @Input() richiestaFissata: SintesiRichiesta;
 
     @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
+    @Output() defissa = new EventEmitter<any>();
 
     @ViewChild('richiestaContainer') private richiestaContainer: ElementRef;
     @ViewChild('richiesta') private richiesta: ElementRef;
 
-    methods = new HelperMethods;
-    richiestaFissata: SintesiRichiesta;
+    methods = new HelperSintesiRichiesta;
 
     private playerContainer: AnimationPlayer;
     private playerRichiesta: AnimationPlayer;
 
     constructor(public richiesteS: ListaRichiesteService,
         private animationBuilder: AnimationBuilder,
-        private modalService: NgbModal) {
+        private modalService: NgbModal,
+        private markerS: MarkerService) {
     }
 
     ngOnInit() {
-        // Restituisce la Richiesta Fissata
-        this.richiesteS.subjects.getRichiestaFissata().subscribe(richiestaFissata => {
-            if (richiestaFissata) {
-                this.richiestaFissata = richiestaFissata;
-                this.animazioneIn();
-            } else {
-                this.animazioneOut();
-                setTimeout(() => {
-                    this.richiestaFissata = null;
-                }, 300);
-            }
-        });
+        this.richiestaFissata ? this.animazioneIn() : console.log();
+    }
+
+    ngOnChanges() {
+        this.richiestaFissata ? this.animazioneIn() : console.log();
     }
 
     // Ritorna la richiesta nella lista, defissandola
-    defissa() {
-        this.richiesteS.defissata();
-        this.richiesteS.deselezionata();
+    onDefissa() {
+        this.animazioneOut();
+
+        this.defissa.emit();
     }
 
     // Animazioni
@@ -72,14 +69,14 @@ export class RichiestaFissataComponent implements OnInit {
 
         const animationContainerRichiesta = this.animationBuilder
             .build([
-                style({ width: '0' }),
-                animate(300, style({ width: '100%' }))
+                style({ height: '0', width: '0' }),
+                animate(450, style({  height: '100%', width: '100%' }))
             ]);
 
         const animationRichiesta = this.animationBuilder
             .build([
                 style({ height: '0', opacity: '0' }),
-                animate(300, style({ height: 'auto', opacity: '1' }))
+                animate(350, style({ height: 'auto', opacity: '1' }))
             ]);
 
         this.playerContainer = animationContainerRichiesta.create(this.richiestaContainer.nativeElement);
@@ -128,9 +125,11 @@ export class RichiestaFissataComponent implements OnInit {
 
     /* Apre il componente per la creazione della partenza */
     nuovaPartenza(richiesta: any) {
-        // this.partenzaService.nuovaPartenza(richiesta);
+        this.markerS.actionById(richiesta.id, 'click');
         this.composizionePartenza.emit(richiesta);
         this.statoPartenza.emit(true);
+
+        console.log(richiesta);
     }
 
     /* NgClass Template */

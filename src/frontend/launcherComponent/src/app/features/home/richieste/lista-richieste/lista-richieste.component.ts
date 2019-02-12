@@ -21,183 +21,68 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { ToastrService } from 'ngx-toastr';
 
 // Helper methods
-import { HelperMethods } from '../helper/_helper-methods';
+import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 
 @Component({
     selector: 'app-lista-richieste',
     templateUrl: './lista-richieste.component.html',
     styleUrls: ['./lista-richieste.component.css']
 })
-export class ListaRichiesteComponent implements OnInit, OnDestroy {
-    @Select(RicercaRichiesteState.ricerca) ricerca$: Observable<string>;
-    ricerca: { descrizione: '' };
-
-    subscription = new Subscription();
-
-    richieste: SintesiRichiesta[] = [];
-    richiestaHover: SintesiRichiesta;
-    richiestaSelezionata: SintesiRichiesta;
-    richiestaFissata: SintesiRichiesta;
-    loaderRichieste = true;
-    loaderNuoveRichieste = false;
-
-    preventSimpleClick: boolean;
-    timer: any;
-    contatoreNuoveRichieste = 0;
-    richiesteTerminate: boolean;
-
-    itemSize = 95;
-    listHeightClass = 'm-h-750';
-
-    methods = new HelperMethods;
+export class ListaRichiesteComponent implements OnInit {
+    @Input() ricerca: any;
     @Input() _split: boolean;
+    @Input() richieste: SintesiRichiesta[] = [];
+    @Input() richiestaHover: SintesiRichiesta;
+    @Input() richiestaSelezionata: SintesiRichiesta;
+    @Input() richiestaFissata: SintesiRichiesta;
+    @Input() loaderRichieste = true;
+    @Input() loaderNuoveRichieste = false;
+    @Input() contatoreNuoveRichieste = 0;
+    @Input() richiesteTerminate: boolean;
+    @Input() itemSize = 95;
+    @Input() listHeightClass: string;
+
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
+    @Output() nuoveRichieste = new EventEmitter<any>();
+    @Output() fissaInAlto = new EventEmitter<any>();
+    @Output() hoverIn = new EventEmitter<string>();
+    @Output() hoverOut = new EventEmitter<boolean>();
+    @Output() selezione = new EventEmitter<string>();
+    @Output() deselezione = new EventEmitter<boolean>();
+
+    preventSimpleClick: boolean;
+    methods = new HelperSintesiRichiesta;
 
     constructor(public listaRichiesteManager: ListaRichiesteManagerService,
         private richiesteS: ListaRichiesteService,
         private modalService: NgbModal,
-        private markerS: MarkerService,
-        private filter: FilterPipe,
-        private toastr: ToastrService,
-        private localSt: LocalStorageService) {
+        private markerS: MarkerService) {
     }
 
     ngOnInit() {
-        // Restituisce le Richieste
-        if (this.richieste.length <= 0) {
-            this.getRichieste('0');
-        } else {
-            this.getRichieste(this.richieste.length);
-            // TEST
-            // console.log(this.richieste[this.richieste.length+1].id);
-        }
-        // Restituisce la stringa di ricerca
-        this.subscription.add(
-            this.ricerca$.subscribe((ricerca: any) => {
-                this.ricerca = ricerca;
-                this.opacizzaRichieste(ricerca);
-            })
-        );
-        // Restituisce la Richiesta Hover
-        this.subscription.add(
-            this.richiesteS.subjects.getRichiestaHover().subscribe(richiestaHover => {
-                if (richiestaHover) {
-                    this.richiestaHover = richiestaHover;
-                } else {
-                    this.richiestaHover = null;
-                }
-            })
-        );
-        // Restituisce la Richiesta Selezionata
-        this.subscription.add(
-            this.richiesteS.subjects.getRichiestaSelezionata().subscribe(richiestaSelezionata => {
-                if (richiestaSelezionata) {
-                    this.richiestaSelezionata = richiestaSelezionata;
-                } else {
-                    this.richiestaSelezionata = null;
-                }
-            })
-        );
-        // Restituisce la Richiesta Fissata in alto
-        this.subscription.add(
-            this.richiesteS.subjects.getRichiestaFissata().subscribe(richiestaFissata => {
-                if (richiestaFissata) {
-                    this.richiestaFissata = richiestaFissata;
-                    this.listHeightClass = 'm-h-600';
-                } else {
-                    this.richiestaFissata = null;
-
-                    /**
-                     * aspetto che l'animazione della richiesta fissata finisca
-                     * per aumentare l'altezza della lista
-                     */
-                    setTimeout(() => {
-                        this.listHeightClass = 'm-h-750';
-                    }, 300);
-                }
-            })
-        );
     }
 
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.richieste = [];
-        /**
-         * serve per il fake delle richieste
-         */
-        this.localSt.store('ListaRichiesteRequest', 1);
-    }
-
-    opacizzaRichieste(ricerca: any): void {
-        const result = this.filter.transform(this.richieste, ricerca);
-        if (!(this.richieste.length === result.length) && result.length > 0) {
-            const string = [];
-            result.forEach((c: any) => {
-                string.push(c.id);
-            });
-            this.markerS.opacizzaMarkers(true, 'richieste', undefined, string);
-        } else {
-            this.markerS.opacizzaMarkers(false, 'richieste');
-        }
-    }
-
-    getRichieste(idUltimaRichiesta: any) {
-        this.subscription.add(
-            this.listaRichiesteManager.getRichieste(idUltimaRichiesta).subscribe((richieste: any) => {
-                if (richieste.length > 0) {
-                    this.richieste = richieste;
-                    this.loaderRichieste = false;
-                    this.loaderNuoveRichieste = false;
-                    this.contatoreNuoveRichieste = 0;
-                    // TEST
-                    // console.log('[ListaRichieste] Richieste Ricevute dal Manager', richieste.length);
-                    // console.log('[ListaRichieste] Richieste in memoria:', this.richieste.length);
-                } else if (richieste.length <= 0) {
-                    this.loaderNuoveRichieste = false;
-                    this.contatoreNuoveRichieste = 0;
-                    this.toastr.warning('Non ci sono altre richieste da visualizzare', 'Richieste terminate', {
-                        timeOut: 5000
-                    });
-                    // TEST
-                    // console.log('[ListaRichieste] Richieste Terminate');
-                }
-            })
-        );
-        // TEST
-        // console.log('[ListaRichieste]:', this.richieste);
-    }
-
-    /* Permette di visualizzare il loader e caricare nuove richieste */
-    nuoveRichieste() {
-        console.log('test');
-        /* parte relativa a scrool event
-        if (event.isReachingBottom && event.isWindowEvent === false && this.contatoreNuoveRichieste === 0) {
-            this.contatoreNuoveRichieste++;
-            this.loaderNuoveRichieste = true;
-            this.richiesteTerminate = false;
-            this.getRichieste(this.richieste.length);
-            // TEST
-            // console.log(this.richieste[this.richieste.length - 1].id);
-        }
-        */
+    /* Permette di caricare nuove richieste */
+    onNuoveRichieste() {
+        this.nuoveRichieste.emit();
     }
 
     /* Gestisce il singolo click sulla richiesta */
-    richiestaClick(richiesta: any) {
+    richiestaClick(richiesta: SintesiRichiesta) {
         if (richiesta !== this.richiestaSelezionata) {
-            this.richiesteS.selezionata(richiesta.id);
+            // this.richiesteS.selezionata(richiesta.id);
             this.markerS.actionById(richiesta.id, 'click', false);
-            // TEST
-            // console.log('Click su', richiesta);
+            this.selezione.emit(richiesta.codice);
         } else {
-            this.richiesteS.deselezionata();
+            // this.richiesteS.deselezionata();
             this.markerS.actionById(richiesta.id, 'click', true);
+            this.deselezione.emit(true);
         }
     }
 
     /* Gestisce il double click sulla richiesta */
-    richiestaDoubleClick(richiesta: any) {
+    richiestaDoubleClick(richiesta: SintesiRichiesta) {
         if (richiesta) {
             this.richiesteS.selezionata(richiesta.id);
             // TEST
@@ -206,40 +91,41 @@ export class ListaRichiesteComponent implements OnInit, OnDestroy {
     }
 
     /* Fissa in alto la richiesta */
-    fissaInAlto(richiesta: any) {
+    onFissaInAlto(richiesta: SintesiRichiesta) {
         if (richiesta) {
-            this.richiesteS.deselezionata();
-            this.richiesteS.fissata(richiesta.id);
             this.markerS.actionById(richiesta.id, 'click');
+
+            this.fissaInAlto.emit(richiesta.codice);
         }
     }
 
     /* Apre il componente per la creazione della partenza */
     nuovaPartenza(richiesta: any) {
-        // this.partenzaService.nuovaPartenza(richiesta);
         this.markerS.actionById(richiesta.id, 'click');
         this.composizionePartenza.emit(richiesta);
         this.statoPartenza.emit(true);
     }
 
     /* Gestisce l'hover in */
-    richiestaHoverIn(richiesta: any) {
+    richiestaHoverIn(richiesta: SintesiRichiesta) {
         if (richiesta) {
-            this.richiesteS.hoverIn(richiesta.id);
             this.markerS.actionById(richiesta.id, 'hover-in');
+
+            this.hoverIn.emit(richiesta.codice);
         }
     }
 
     /* Gestisce l'hover out */
-    richiestaHoverOut(richiesta: any) {
+    richiestaHoverOut(richiesta: SintesiRichiesta) {
         if (richiesta) {
-            this.richiesteS.hoverOut();
             this.markerS.actionById(richiesta.id, 'hover-out');
+
+            this.hoverOut.emit(true);
         }
     }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
-    visualizzaEventiRichiesta(richiesta: any) {
+    visualizzaEventiRichiesta(richiesta: SintesiRichiesta) {
         this.modalService.open(EventiRichiestaComponent, { size: 'lg', centered: true });
     }
 

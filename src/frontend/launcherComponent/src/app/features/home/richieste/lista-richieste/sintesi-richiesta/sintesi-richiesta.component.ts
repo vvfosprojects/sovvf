@@ -7,7 +7,7 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
 
 // Helper Methods
-import { HelperMethods } from '../../helper/_helper-methods';
+import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -34,7 +34,7 @@ export class SintesiRichiestaComponent implements OnInit {
     @Input() listaEventi: boolean;
     @Input() partenza: boolean;
 
-    methods = new HelperMethods;
+    methods = new HelperSintesiRichiesta;
     isSingleClick = true;
     live = true;
 

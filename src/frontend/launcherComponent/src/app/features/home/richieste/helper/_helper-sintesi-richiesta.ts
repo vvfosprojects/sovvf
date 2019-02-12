@@ -1,7 +1,4 @@
-export class HelperMethods {
-
-    constructor() {
-    }
+export class HelperSintesiRichiesta {
 
     /* Restituisce un Array con tanti elementi quanto è la priorità dell'intervento */
     vettorePallini(richiesta: any) {

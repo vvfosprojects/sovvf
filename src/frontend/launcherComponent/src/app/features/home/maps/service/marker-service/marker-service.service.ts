@@ -18,8 +18,9 @@ import { MeteoMarker } from '../../maps-model/meteo-marker.model';
 import { Localita } from '../../../../../shared/model/localita.model';
 import { BoxClickArrayInterface } from '../../../boxes/box-interface/box-click-interface';
 import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { MarkerMeteoState } from '../../../filterbar/marker-meteo-switch/store/states/marker-meteo-switch.state';
+import { SetRichiestaFissata, ClearRichiestaFissata } from '../../../richieste/store/actions/richiesta-fissata.actions';
 
 @Injectable()
 export class MarkerService implements OnDestroy {
@@ -54,7 +55,8 @@ export class MarkerService implements OnDestroy {
         private richiesteService: ListaRichiesteService,
         private markerRichiesteManager: RichiesteMarkerManagerService,
         private unitaAttualeS: UnitaAttualeService,
-        private mapsFiltroService: MapsFiltroService) {
+        private mapsFiltroService: MapsFiltroService,
+        private store: Store) {
         this.subscription.add(this.markedService.getMarked().subscribe(marker => {
             this.markerSelezionato = marker;
         }));
@@ -219,8 +221,9 @@ export class MarkerService implements OnDestroy {
                 if (this.checkMarker !== marker.id) {
                     this.cliccato(marker);
                     this.checkMarker = marker.id;
-                    this.richiesteService.fissata(marker.id, true);
-                    this.richiesteService.deselezionata();
+
+                    // Store implementation
+                    this.store.dispatch(new SetRichiestaFissata(marker.id));
                 }
             }
                 break;
@@ -259,12 +262,14 @@ export class MarkerService implements OnDestroy {
                 break;
             default: {
                 this.noAction();
-                this.richiesteService.defissata();
                 this.richiesteService.deselezionata();
                 this.checkMarker = null;
                 this.markerZIndex = null;
                 this.markerColorato = null;
                 this.markedColor.next(null);
+
+                // Store implementation
+                this.store.dispatch(new ClearRichiestaFissata());
             }
                 break;
         }

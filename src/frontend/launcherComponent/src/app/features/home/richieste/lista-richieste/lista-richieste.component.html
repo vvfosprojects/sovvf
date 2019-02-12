@@ -4,11 +4,6 @@
     <img src="assets/img/pink_loader_resized.gif">
   </div>
 
-  <!-- Singola Richiesta Fissata  -->
-  <div class="col-12 mt-1 pl-0 pr-4">
-    <app-richiesta-fissata (eventiRichiesta)="visualizzaEventiRichiesta($event)" (statoPartenza)="statoPartenza.emit($event)"
-      (composizionePartenza)="composizionePartenza.emit($event)" [_split]="_split"></app-richiesta-fissata>
-  </div>
   <!-- Lista di singole Richieste -->
   <div class="col-12 px-0 border-bottom" [ngClass]="HeightControl()">
     <cdk-virtual-scroll-viewport [itemSize]="itemSize" style="height:100%">
@@ -16,7 +11,7 @@
         <div *cdkVirtualFor="let r of richieste | filterBy: ricerca; let last = last; templateCacheSize: 0" [ngClass]="{'col-double': !_split, 'col-12': _split}">
           <div *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="CardClasses(r)">
             <app-sintesi-richiesta [richiesta]="r" [fissata]="false" [fissabile]="true" [espanso]="false" [espandibile]="true"
-              [listaEventi]="true" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)" (fissaInAlto)="fissaInAlto($event)"
+              [listaEventi]="true" (mouseover)="richiestaHoverIn(r)" (mouseout)="richiestaHoverOut(r)" (fissaInAlto)="onFissaInAlto($event)"
               (clickRichiesta)="richiestaClick($event)" (doubleClickRichiesta)="richiestaDoubleClick($event)"
               (nuovaPartenza)="nuovaPartenza($event)" (eventiRichiesta)="visualizzaEventiRichiesta($event)"></app-sintesi-richiesta>
           </div>

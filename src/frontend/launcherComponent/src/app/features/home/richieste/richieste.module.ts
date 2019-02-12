@@ -13,7 +13,7 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import { RichiesteComponent } from './richieste.component';
 import { ListaRichiesteComponent } from './lista-richieste/lista-richieste.component';
 import { SintesiRichiestaSmComponent } from './lista-richieste/sintesi-richiesta-sm/sintesi-richiesta-sm.component';
-import { RichiestaFissataComponent } from './lista-richieste/richiesta-fissata/richiesta-fissata.component';
+import { RichiestaFissataComponent } from './richiesta-fissata/richiesta-fissata.component';
 /*
     Provider
  */

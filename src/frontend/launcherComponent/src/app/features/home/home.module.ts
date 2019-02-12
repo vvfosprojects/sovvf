@@ -32,6 +32,10 @@ import { FilterbarModule } from './filterbar/filterbar.module';
 import { MapsModule } from './maps/maps.module';
 import { RichiesteModule } from './richieste/richieste.module';
 import { ComposizionePartenzaModule } from './composizione-partenza/composizione-partenza.module';
+import { RichiestaFissataState } from './richieste/store/states/richiesta-fissata.state';
+import { RichiesteState } from './richieste/store/states/richieste.state';
+import { RichiestaHoverState } from './richieste/store/states/richiesta-hover.state';
+import { RichiestaSelezionataState } from './richieste/store/states/richiesta-selezionata.state';
 
 @NgModule({
     declarations: [
@@ -69,7 +73,11 @@ import { ComposizionePartenzaModule } from './composizione-partenza/composizione
                 BoxClickState,
                 FiltriRichiesteState,
                 RicercaRichiesteState,
-                MarkerMeteoState
+                MarkerMeteoState,
+                RichiesteState,
+                RichiestaFissataState,
+                RichiestaHoverState,
+                RichiestaSelezionataState
             ]
         ),
     ],
