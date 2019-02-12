@@ -9,6 +9,8 @@ import { SchedaTelefonataInterface } from './scheda-telefonata/scheda-telefonata
 import { FormChiamataModel } from './scheda-telefonata/model/form-scheda-telefonata.model';
 import { ChiamataMarker } from '../maps/maps-model/chiamata-marker.model';
 import { Coordinate } from '../../../shared/model/coordinate.model';
+import { MapsEvent } from '../../../shared/enum/maps-event.enum';
+import { AppFeatures } from '../../../shared/enum/app-features.enum';
 
 
 @Component({
@@ -63,13 +65,13 @@ export class ChiamataComponent implements OnInit, OnDestroy {
                 break;
             case 'annullata':
                 this.markerService.chiamata(null, '', this.centroMappa);
-                this.annullaChiamata.emit({ event: 'chiamata', chiamata: false });
+                this.annullaChiamata.emit({ event: AppFeatures.Chiamata, chiamata: false });
                 break;
             case 'cerca':
                 const marker = new ChiamataMarker(this.idChiamata, $event.chiamata.localita);
                 this.coordinate = $event.chiamata.localita.coordinate;
                 this.chiamataMarker.emit(marker);
-                this.markerService.chiamata(marker, 'centra');
+                this.markerService.chiamata(marker, MapsEvent.Centra);
                 break;
             case 'inserita':
                 console.log(`Chiamata inserita: ${$event.chiamata}`);

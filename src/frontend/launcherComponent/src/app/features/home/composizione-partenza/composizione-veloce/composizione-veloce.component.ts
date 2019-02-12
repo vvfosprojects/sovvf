@@ -12,6 +12,8 @@ import { DirectionInterface } from '../../maps/service/direction-service/directi
 import { DirectionService } from '../../maps/service/direction-service/direction-service.service';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 import { CenterService } from '../../maps/service/center-service/center-service.service';
+import { MapsEvent } from '../../../../shared/enum/maps-event.enum';
+import { Composizione } from '../../../../shared/enum/composizione.enum';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -23,6 +25,7 @@ export class FasterComponent implements OnInit, OnDestroy {
 
     @Input() preAccoppiati: BoxPartenza[];
     preAccoppiatiSelezionati: BoxPartenza[] = [];
+    Composizione = Composizione;
 
     centroMappa: CentroMappa;
     subscription = new Subscription();
@@ -56,7 +59,7 @@ export class FasterComponent implements OnInit, OnDestroy {
     preAccoppiatoDeselezionato(preAcc: BoxPartenza) {
         this.deselezionaPreaccoppiato(preAcc);
         this.annullaPartenza(true);
-        this.centraMappa(this.richiesta, 'centra');
+        this.centraMappa(this.richiesta, MapsEvent.Centra);
     }
 
     selezionaPreaccoppiato(preAcc: BoxPartenza) {
@@ -98,7 +101,7 @@ export class FasterComponent implements OnInit, OnDestroy {
         const currentZoom = this.centerService.getCurrentZoom();
         this.centroMappa = new CentroMappa(this.richiesta.localita.coordinate, currentZoom);
         this.centroMappaEmit.emit(this.centroMappa);
-        this.centraMappa(this.richiesta, 'centra');
+        this.centraMappa(this.richiesta, MapsEvent.Centra);
     }
 
     centraMappa(richiesta: SintesiRichiesta, action: string, centroMappa?: CentroMappa): void {

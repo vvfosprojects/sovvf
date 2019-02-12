@@ -42,9 +42,9 @@
           <!-- lista box partenze -->
           <div *ngIf="partenze.length > 0">
             <div *ngFor="let p of partenze.slice().reverse()">
-              <app-box-nuova-partenza [partenza]="p" [richiesta]="richiesta" [compPartenzaMode]="'slower'" [elimina]="true"
+              <app-box-nuova-partenza [partenza]="p" [richiesta]="richiesta" [compPartenzaMode]="Composizione.Avanzata" [elimina]="true"
                 [alert]="true" (selezionato)="boxPartenzaSelezionato($event)" (eliminato)="eliminaBoxPartenza($event)"
-                (mezzoDeselezionato)="annullaPartenza(true); centraMappa(richiesta, 'centra');"></app-box-nuova-partenza>
+                (mezzoDeselezionato)="annullaPartenza(true); centraMappa(richiesta, MapsEvent.Centra);"></app-box-nuova-partenza>
             </div>
           </div>
         </div>

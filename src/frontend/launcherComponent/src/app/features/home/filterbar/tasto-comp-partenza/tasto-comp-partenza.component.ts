@@ -1,4 +1,5 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Composizione } from '../../../../shared/enum/composizione.enum';
 
 @Component({
     selector: 'app-tasto-comp-partenza',
@@ -9,14 +10,15 @@ export class TastoCompPartenzaComponent {
 
     @Input() compPartenzaMode: string;
     @Output() cambioModalita = new EventEmitter();
+    Composizione = Composizione;
 
     changeMode() {
         switch (this.compPartenzaMode) {
-            case 'faster':
-                this.compPartenzaMode = 'slower';
+            case Composizione.Veloce:
+                this.compPartenzaMode = Composizione.Avanzata;
                 break;
-            case 'slower':
-                this.compPartenzaMode = 'faster';
+            case Composizione.Avanzata:
+                this.compPartenzaMode = Composizione.Veloce;
                 break;
         }
         this.cambioModalita.emit(this.compPartenzaMode);

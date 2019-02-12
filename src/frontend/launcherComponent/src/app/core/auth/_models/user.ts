@@ -1,6 +1,6 @@
 import { Role } from './role';
 import { Sede } from '../../../shared/model/sede.model';
-import { Feature } from '../../../shared/model/feature.enum';
+import { AppFeatures } from '../../../shared/enum/app-features.enum';
 
 export class User {
     id: number;
@@ -15,7 +15,7 @@ export class User {
 }
 
 export interface Features {
-    nameFunction: Feature;
+    nameFunction: AppFeatures;
     read: Sede[];
     write: Sede[];
 }

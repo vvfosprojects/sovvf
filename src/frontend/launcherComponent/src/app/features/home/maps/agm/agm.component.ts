@@ -24,7 +24,9 @@ import { CachedMarker } from '../maps-model/cached-marker.model';
 import { ViewInterfaceMaps } from '../../../../shared/interface/view.interface';
 import { ComposizioneMarker } from '../maps-model/composizione-marker.model';
 import { Select } from '@ngxs/store';
-import { MeteoMarkersState } from '../store/states/meteo-markers.state';
+import { MeteoMarkersState } from '../store/';
+import { AppFeatures } from '../../../../shared/enum/app-features.enum';
+import { MouseE } from '../../../../shared/enum/mouse-e.enum';
 
 declare var google: any;
 
@@ -45,6 +47,8 @@ export class AgmComponent implements OnInit, OnDestroy, OnChanges {
     @Input() composizioneMarkers: ComposizioneMarker[];
     @Output() mapFullyLoaded = new EventEmitter<boolean>();
     cachedMarkers: CachedMarker[] = [];
+    AppFeatures = AppFeatures;
+    MouseE = MouseE;
 
     @Select(MeteoMarkersState.meteoMarkers) meteoMarkers$: Observable<MeteoMarker[]>;
     meteoMarkers: MeteoMarker[] = [];
@@ -178,7 +182,7 @@ export class AgmComponent implements OnInit, OnDestroy, OnChanges {
         /**
          *  ricevo il marker selezionato dal componente mappa (agm)
          */
-        this.markerService.action(marker, 'click');
+        this.markerService.action(marker, MouseE.Click);
     }
 
     hoverMarker(marker: any, type: any): void {
