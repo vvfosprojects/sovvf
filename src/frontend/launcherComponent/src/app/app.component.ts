@@ -12,6 +12,7 @@ import { RoutesPath } from './shared/enum/routes-path.enum';
 export class AppComponent {
     _opened = false;
     _toggle = false;
+    RoutesPath = RoutesPath;
     private deniedPath = [RoutesPath.NotFound.toString(), RoutesPath.Login.toString()];
 
     constructor(public fakeCambioSede: UnitaAttualeService,
