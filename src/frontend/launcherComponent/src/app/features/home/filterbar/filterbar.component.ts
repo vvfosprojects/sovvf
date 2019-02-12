@@ -1,22 +1,19 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { Store, Select } from '@ngxs/store';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-
 // View
 import { ViewInterfaceButton, ViewInterfaceComposizione } from '../../../shared/interface/view.interface';
-
 // Filtri Richieste
-import { GetFiltriRichieste, SetFiltroSelezionato, ResetFiltriSelezionati } from './filtri-richieste/store/actions/filtri-richieste.actions';
-import { FiltriRichiesteState } from './filtri-richieste/store/states/filtri-richieste.state';
+import { GetFiltriRichieste, ResetFiltriSelezionati, SetFiltroSelezionato } from './filtri-richieste/store/actions/filtri-richieste.actions';
+import { FiltriRichiesteState } from './filtri-richieste/store/';
 import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
-
 // Ricerca Richieste
-import { RicercaRichiesteState } from './ricerca-richieste/store/states/ricerca-richieste.state';
-
+import { RicercaRichiesteState } from './ricerca-richieste/store/';
 // Marker Meteo Switch
-import { MarkerMeteoState } from './marker-meteo-switch/store/states/marker-meteo-switch.state';
+import { MarkerMeteoState } from './marker-meteo-switch/store/';
 import { SetMarkerMeteo } from './marker-meteo-switch/store/actions/marker-meteo-switch.actions';
 import { SetRicerca } from './ricerca-richieste/store/actions/ricerca-richieste.actions';
+import { AppFeatures } from '../../../shared/enum/app-features.enum';
 
 @Component({
     selector: 'app-filterbar',
@@ -53,9 +50,11 @@ export class FilterbarComponent implements OnInit {
     onSelezioneFiltro(filtro: VoceFiltro) {
         this.store.dispatch(new SetFiltroSelezionato(filtro));
     }
+
     onDeselezioneFiltro(filtro: VoceFiltro) {
         this.store.dispatch(new SetFiltroSelezionato(filtro));
     }
+
     eliminaFiltriAttivi() {
         this.store.dispatch(new ResetFiltriSelezionati());
     }
@@ -79,20 +78,20 @@ export class FilterbarComponent implements OnInit {
     }
 
     chiamata(value: boolean) {
-        this.buttonSwitchView.emit({ event: 'chiamata', chiamata: value });
+        this.buttonSwitchView.emit({ event: AppFeatures.Chiamata, chiamata: value });
     }
 
-    buttonView(event: string) {
+    buttonView(event: AppFeatures) {
         let method = '';
         switch (event) {
-            case 'normale':
-                method = 'normale';
+            case AppFeatures.Default:
+                method = AppFeatures.Default;
                 break;
-            case 'soloMappa':
-                method = 'soloMappa';
+            case AppFeatures.Mappa:
+                method = AppFeatures.Mappa;
                 break;
-            case 'soloRichieste':
-                method = 'soloRichieste';
+            case AppFeatures.Richieste:
+                method = AppFeatures.Richieste;
                 break;
         }
         this.buttonSwitchView.emit({ event: method });

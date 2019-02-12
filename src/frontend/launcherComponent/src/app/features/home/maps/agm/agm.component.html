@@ -32,7 +32,7 @@
                         [iconUrl]="cMarker.urlIcona"
                         [opacity]="0">
             </agm-marker>
-            <ng-template [ngSwitchCase]="viewStateMappa.active !== 'composizione'">
+            <ng-template [ngSwitchCase]="viewStateMappa.active !== AppFeatures.Composizione">
                 <agm-marker-cluster
                         imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
                         [minimumClusterSize]="minMarkerCluster">
@@ -40,8 +40,8 @@
                                 [latitude]="richiestaMarker.localita.coordinate.latitudine"
                                 [longitude]="richiestaMarker.localita.coordinate.longitudine"
                                 (markerClick)="selezioneMarker(richiestaMarker)"
-                                (mouseOver)="hoverMarker(richiestaMarker, 'hover-in')"
-                                (mouseOut)="hoverMarker(richiestaMarker, 'hover-out')"
+                                (mouseOver)="hoverMarker(richiestaMarker, MouseE.HoverIn)"
+                                (mouseOut)="hoverMarker(richiestaMarker, MouseE.HoverOut)"
                                 [iconUrl]="urlIcona(richiestaMarker)"
                                 [opacity]="isOpaco(richiestaMarker)"
                                 [zIndex]="zIndex(richiestaMarker)"
@@ -71,8 +71,8 @@
                                 [latitude]="sedeMarker.coordinate.latitudine"
                                 [longitude]="sedeMarker.coordinate.longitudine"
                                 (markerClick)="selezioneMarker(sedeMarker)"
-                                (mouseOver)="hoverMarker(sedeMarker, 'hover-in')"
-                                (mouseOut)="hoverMarker(sedeMarker, 'hover-out')"
+                                (mouseOver)="hoverMarker(sedeMarker, MouseE.HoverIn)"
+                                (mouseOut)="hoverMarker(sedeMarker, MouseE.HoverOut)"
                                 [iconUrl]="urlIcona(sedeMarker)"
                                 [opacity]="isOpaco(sedeMarker)"
                                 [zIndex]="zIndex(sedeMarker)"
@@ -102,8 +102,8 @@
                                 [latitude]="mezzoMarker.coordinate.latitudine"
                                 [longitude]="mezzoMarker.coordinate.longitudine"
                                 (markerClick)="selezioneMarker(mezzoMarker)"
-                                (mouseOver)="hoverMarker(mezzoMarker, 'hover-in')"
-                                (mouseOut)="hoverMarker(mezzoMarker, 'hover-out')"
+                                (mouseOver)="hoverMarker(mezzoMarker, MouseE.HoverIn)"
+                                (mouseOut)="hoverMarker(mezzoMarker, MouseE.HoverOut)"
                                 [iconUrl]="urlIcona(mezzoMarker)"
                                 [opacity]="isOpaco(mezzoMarker)"
                                 [zIndex]="zIndex(mezzoMarker)"
@@ -126,7 +126,7 @@
                     </agm-marker>
                 </agm-marker-cluster>
             </ng-template>
-            <ng-template [ngSwitchCase]="viewStateMappa.active === 'composizione'">
+            <ng-template [ngSwitchCase]="viewStateMappa.active === AppFeatures.Composizione">
                 <agm-marker-cluster
                         imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
                         [minimumClusterSize]="minMarkerCluster">
@@ -221,7 +221,7 @@
                             [zIndex]="99999">
                 </agm-marker>
             </ng-template>
-            <ng-template [ngSwitchCase]="viewStateMappa.active === 'chiamata'">
+            <ng-template [ngSwitchCase]="viewStateMappa.active === AppFeatures.Chiamata">
                 <agm-marker *ngFor="let chiamata of chiamataMarkers;"
                             [latitude]="chiamata.localita.coordinate.latitudine"
                             [longitude]="chiamata.localita.coordinate.longitudine"

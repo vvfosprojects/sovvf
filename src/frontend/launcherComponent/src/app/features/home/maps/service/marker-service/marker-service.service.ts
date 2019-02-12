@@ -20,6 +20,9 @@ import { BoxClickArrayInterface } from '../../../boxes/box-interface/box-click-i
 import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
 import { Select } from '@ngxs/store';
 import { MarkerMeteoState } from '../../../filterbar/marker-meteo-switch/store/';
+import { Markers } from '../../../../../shared/enum/markers.enum';
+import { MouseE } from '../../../../../shared/enum/mouse-e.enum';
+import { MapsEvent } from '../../../../../shared/enum/maps-event.enum';
 
 @Injectable()
 export class MarkerService implements OnDestroy {
@@ -328,17 +331,17 @@ export class MarkerService implements OnDestroy {
         let marker: any;
         marker = this.getMarkerFromId(id);
         switch (mouse) {
-            case 'hover-in': {
+            case MouseE.HoverIn: {
                 this.markerColorato = marker;
                 this.markerZIndex = marker;
             }
                 break;
-            case 'hover-out': {
+            case MouseE.HoverOut: {
                 this.markerColorato = null;
                 this.markerZIndex = null;
             }
                 break;
-            case 'click': {
+            case MouseE.Click: {
                 if (this.checkMarker !== marker && !unclick) {
                     this.cliccato(marker);
                     this.checkMarker = marker.id;
@@ -408,14 +411,14 @@ export class MarkerService implements OnDestroy {
      */
     filtroBoxes(obj: BoxClickArrayInterface) {
         if (obj.richieste.length > 0) {
-            this.opacizzaMarkers(true, 'richieste', obj.richieste, undefined);
+            this.opacizzaMarkers(true, Markers.Richieste, obj.richieste, undefined);
         } else {
-            this.opacizzaMarkers(false, 'richieste');
+            this.opacizzaMarkers(false, Markers.Richieste);
         }
         if (obj.mezzi.length > 0) {
-            this.opacizzaMarkers(true, 'mezzi', obj.mezzi, undefined);
+            this.opacizzaMarkers(true, Markers.Mezzi, obj.mezzi, undefined);
         } else {
-            this.opacizzaMarkers(false, 'mezzi');
+            this.opacizzaMarkers(false, Markers.Mezzi);
         }
     }
 
@@ -427,7 +430,7 @@ export class MarkerService implements OnDestroy {
      */
     chiamata(marker: ChiamataMarker, action: string, centroMappa?: CentroMappa) {
         switch (action) {
-            case 'centra': {
+            case MapsEvent.Centra: {
                 this.agmService.centraMappa(this.getCoordinate(marker));
                 this.agmService.cambiaZoom(18);
                 this.markerZIndex = marker;
@@ -452,7 +455,7 @@ export class MarkerService implements OnDestroy {
     partenza(id: string, action: string, centroMappa?: CentroMappa) {
         const marker = this.getMarkerFromId(id);
         switch (action) {
-            case 'centra': {
+            case MapsEvent.Centra: {
                 this.agmService.centraMappa(this.getCoordinate(marker));
                 this.markerZIndex = marker;
             }

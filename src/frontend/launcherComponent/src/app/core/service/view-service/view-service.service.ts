@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { ViewInterface, ViewInterfaceButton, ViewInterfaceComposizione, ViewInterfaceLayout, ViewInterfaceMaps } from '../../../shared/interface/view.interface';
+import { AppFeatures } from '../../../shared/enum/app-features.enum';
+import { Composizione } from '../../../shared/enum/composizione.enum';
 
 @Injectable()
 export class ViewService {
@@ -25,11 +27,11 @@ export class ViewService {
             composizione: {
                 column: 'col-5',
                 disable: false,
-                modalita: 'slower'
+                modalita: Composizione.Avanzata
             }
         },
         maps: {
-            active: 'richieste'
+            active: AppFeatures.Richieste
         },
     };
 
@@ -62,12 +64,12 @@ export class ViewService {
 
     static viewMaps(view: ViewInterface): ViewInterfaceMaps {
         const result: ViewInterfaceMaps = {
-            active: 'richieste'
+            active: AppFeatures.Richieste
         };
 
         function getActive(object) {
             const obj = ViewService.getCopy(object);
-            obj['mappa'] = false;
+            obj[AppFeatures.Mappa] = false;
             const res = Object.keys(obj).find(key => obj[key] === true);
             return res ? res : result.active;
         }
@@ -98,7 +100,7 @@ export class ViewService {
         const result: ViewInterfaceComposizione = {
             column: 'col-5',
             disable: false,
-            modalita: 'slower'
+            modalita: Composizione.Avanzata
         };
 
         result.disable = !!view.components.composizione;
@@ -128,13 +130,13 @@ export class ViewService {
 
         const view: ViewInterface = {
             components: {
-                richieste: event === 'normale' || event === 'soloRichieste' || chiamata === false,
-                mappa: event !== 'soloRichieste',
-                composizione: event === 'composizione',
-                chiamata: event === 'chiamata' && chiamata === true
+                richieste: event === AppFeatures.Default || event === AppFeatures.Richieste || chiamata === false,
+                mappa: event !== AppFeatures.Richieste,
+                composizione: event === AppFeatures.Composizione,
+                chiamata: event === AppFeatures.Chiamata && chiamata === true
             },
             layout: {
-                split: !(event === 'soloRichieste' || event === 'soloMappa')
+                split: !(event === AppFeatures.Richieste || event === AppFeatures.Mappa)
             }
         };
 

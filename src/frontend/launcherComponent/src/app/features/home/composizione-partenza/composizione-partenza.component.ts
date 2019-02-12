@@ -10,6 +10,8 @@ import { CompPartenzaManagerService } from 'src/app/core/manager/comp-partenza-m
 import { MezzoComposizione } from './interface/mezzo-composizione-interface';
 import { SquadraComposizione } from './interface/squadra-composizione-interface';
 import { BoxPartenza } from './interface/box-partenza-interface';
+import { Composizione } from '../../../shared/enum/composizione.enum';
+import { AppFeatures } from '../../../shared/enum/app-features.enum';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -21,6 +23,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() compPartenzaMode: string;
     @Output() statoPartenza = new EventEmitter<string>();
     dismissPartenzaSubject: Subject<boolean> = new Subject<boolean>();
+    Composizione = Composizione;
 
     subscription = new Subscription();
     mezziComposizione: MezzoComposizione[];
@@ -82,7 +85,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.markerS.noAction();
         this.store.dispatch(new ResetAllBoxes());
         this.store.reset(this.statoPrecedente);
-        this.statoPartenza.emit('normale');
+        this.statoPartenza.emit(AppFeatures.Default);
     }
 
     match(word1: string, word2: string) {

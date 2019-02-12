@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
+import { MapsEvent } from '../../../../shared/enum/maps-event.enum';
 
 // Service
-import { CompPartenzaManagerService } from '../../../../core/manager/comp-partenza-manager/comp-partenza-manager.service';
 import { DirectionService } from '../../maps/service/direction-service/direction-service.service';
 import { CenterService } from '../../maps/service/center-service/center-service.service';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
@@ -18,7 +18,7 @@ import { DirectionInterface } from '../../maps/service/direction-service/directi
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
-import { mcall } from 'q';
+import { Composizione } from '../../../../shared/enum/composizione.enum';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -28,6 +28,8 @@ import { mcall } from 'q';
 export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
 
+    MapsEvent = MapsEvent;
+    Composizione = Composizione;
     subscription = new Subscription();
     @Input() mezziComposizione: MezzoComposizione[];
     @Input() squadreComposizione: SquadraComposizione[];
@@ -99,7 +101,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
         // Interazione con Mappa
         this.annullaPartenza(true);
-        this.centraMappa(this.richiesta, 'centra');
+        this.centraMappa(this.richiesta, MapsEvent.Centra);
     }
 
     squadraSelezionata(squadra: SquadraComposizione) {
@@ -327,7 +329,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
         // Interazione con Mappa
         this.annullaPartenza(true);
-        this.centraMappa(this.richiesta, 'centra');
+        this.centraMappa(this.richiesta, MapsEvent.Centra);
     }
 
 
@@ -375,7 +377,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     startTimeout(mezzo: MezzoComposizione) {
         this.stopTimeoutAllExceptOne(mezzo);
         if (mezzo.selezionato) {
-            const maxProgressBar = 30;
+            const maxProgressBar = 300;
             const minutesToAdd = 1;
             const now = new Date;
             const dataScadenza = addMinutes(new Date, minutesToAdd);
@@ -445,7 +447,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         const currentZoom = this.centerService.getCurrentZoom();
         this.centroMappa = new CentroMappa(this.richiesta.localita.coordinate, currentZoom);
         this.centroMappaEmit.emit(this.centroMappa);
-        this.centraMappa(this.richiesta, 'centra');
+        this.centraMappa(this.richiesta, MapsEvent.Centra);
     }
 
     centraMappa(richiesta: SintesiRichiesta, action: string, centroMappa?: CentroMappa): void {

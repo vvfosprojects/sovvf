@@ -1,8 +1,8 @@
 <div class="text-center" style="padding-right: 25px">
     <div class="btn-group" role="group">
-        <button type="button" class="btn" (click)="buttonViewMode('soloRichieste')" [ngClass]="colorButtonView[0]"><i class="fa fa-list-ul "></i></button>
-        <button type="button" class="btn" (click)="buttonViewMode('normale')" [ngClass]="colorButtonView[1]"><i class="fa fa-columns"></i></button>
-        <button type="button" class="btn" (click)="buttonViewMode('soloMappa')" [ngClass]="colorButtonView[2]"><i class="fa fa-globe"></i>
+        <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Richieste)" [ngClass]="colorButtonView[0]"><i class="fa fa-list-ul "></i></button>
+        <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Default)" [ngClass]="colorButtonView[1]"><i class="fa fa-columns"></i></button>
+        <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Mappa)" [ngClass]="colorButtonView[2]"><i class="fa fa-globe"></i>
         </button>
     </div>
 </div>

@@ -7,11 +7,11 @@
                                        (dismissNuovaPartenza)="dismissPartenza()"></app-sintesi-richiesta>
             </div>
         </div>
-        <div *ngIf="richiesta && compPartenzaMode === 'faster'" class="col-12">
+        <div *ngIf="richiesta && compPartenzaMode === Composizione.Veloce" class="col-12">
             <app-composizione-veloce [richiesta]="richiesta" [preAccoppiati]="preAccoppiati" (centroMappaEmit)="getCentroMappa($event)"
                                      [dismissEvents]="dismissPartenzaSubject.asObservable()"></app-composizione-veloce>
         </div>
-        <div *ngIf="richiesta && compPartenzaMode === 'slower'" class="col-12">
+        <div *ngIf="richiesta && compPartenzaMode === Composizione.Avanzata" class="col-12">
             <app-composizione-avanzata [richiesta]="richiesta" [mezziComposizione]="mezziComposizione" [squadreComposizione]="squadreComposizione" (centroMappaEmit)="getCentroMappa($event)"
                                        [dismissEvents]="dismissPartenzaSubject.asObservable()"></app-composizione-avanzata>
         </div>

@@ -1,5 +1,5 @@
 <button class="btn btn-block btn-outline-secondary" (click)="changeMode()">
     <span class="mr-2">Passa a:</span>
-    <span *ngIf="compPartenzaMode === 'faster'">Modalità Avanzata</span>
-    <span *ngIf="compPartenzaMode === 'slower'">Modalità Rapida</span>
+    <span *ngIf="compPartenzaMode === Composizione.Veloce">Modalità Avanzata</span>
+    <span *ngIf="compPartenzaMode === Composizione.Avanzata">Modalità Rapida</span>
 </button>
