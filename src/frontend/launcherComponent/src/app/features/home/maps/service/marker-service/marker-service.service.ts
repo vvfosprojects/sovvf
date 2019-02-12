@@ -19,7 +19,7 @@ import { Localita } from '../../../../../shared/model/localita.model';
 import { BoxClickArrayInterface } from '../../../boxes/box-interface/box-click-interface';
 import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
 import { Select, Store } from '@ngxs/store';
-import { MarkerMeteoState } from '../../../filterbar/marker-meteo-switch/store/states/marker-meteo-switch.state';
+import { MarkerMeteoState } from '../../../filterbar/marker-meteo-switch/store/';
 import { SetRichiestaFissata, ClearRichiestaFissata } from '../../../richieste/store/actions/richiesta-fissata.actions';
 import { Markers } from '../../../../../shared/enum/markers.enum';
 import { MouseE } from '../../../../../shared/enum/mouse-e.enum';

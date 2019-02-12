@@ -132,7 +132,7 @@ export class ViewService {
             components: {
                 richieste: event === AppFeatures.Default || event === AppFeatures.Richieste || chiamata === false,
                 mappa: event !== AppFeatures.Richieste,
-                composizione: event === AppFeatures.Composizione,
+                composizione: event === AppFeatures.ComposizionePartenza,
                 chiamata: event === AppFeatures.Chiamata && chiamata === true
             },
             layout: {

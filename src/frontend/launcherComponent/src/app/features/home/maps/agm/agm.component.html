@@ -32,7 +32,7 @@
                         [iconUrl]="cMarker.urlIcona"
                         [opacity]="0">
             </agm-marker>
-            <ng-template [ngSwitchCase]="viewStateMappa.active !== AppFeatures.Composizione">
+            <ng-template [ngSwitchCase]="viewStateMappa.active !== AppFeatures.ComposizionePartenza">
                 <agm-marker-cluster
                         imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
                         [minimumClusterSize]="minMarkerCluster">
@@ -126,7 +126,7 @@
                     </agm-marker>
                 </agm-marker-cluster>
             </ng-template>
-            <ng-template [ngSwitchCase]="viewStateMappa.active === AppFeatures.Composizione">
+            <ng-template [ngSwitchCase]="viewStateMappa.active === AppFeatures.ComposizionePartenza">
                 <agm-marker-cluster
                         imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
                         [minimumClusterSize]="minMarkerCluster">

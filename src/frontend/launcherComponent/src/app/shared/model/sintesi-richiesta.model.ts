@@ -39,7 +39,7 @@ export class SintesiRichiesta {
          * priorita della richiesta (da 0 a 4). 0 = Altissima, 1 = Alta, 2 = Media,
          * 3 = Bassa, 4 = Bassissima.
          */
-        public priorita: number,
+        public priorita: Priorita,
         /**
          * descrizione delle tipologie
          */
@@ -103,4 +103,12 @@ export class SintesiRichiesta {
         public eventi?: Evento[]
     ) {
     }
+}
+
+export enum Priorita {
+    Bassissima = 1,
+    Bassa,
+    Media,
+    Alta,
+    Altissima
 }
