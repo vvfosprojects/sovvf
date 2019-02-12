@@ -1,0 +1,26 @@
+<div class="container pt-4 pb-2">
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-8">
+          <h2>Gestione Utenti</h2>
+        </div>
+        <div class="col-4 text-right">
+          <div class="input-group app-shadow">
+            <input class="form-control" type="text" placeholder="Chi stai cercando?" name="ricercaRichieste"
+              id="ricercaRichieste">
+            <div class="input-group-append">
+              <button class="btn btn-primary"><i class="fa fa-search text-light"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <hr>
+    </div>
+    <div class="col-10 mx-auto">
+      <app-lista-utenti [utenti]="utenti"></app-lista-utenti>
+    </div>
+  </div>
+</div>
