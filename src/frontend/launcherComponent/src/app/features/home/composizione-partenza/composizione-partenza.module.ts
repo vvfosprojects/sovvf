@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../../shared/shared.module';
 import { TimeagoModule, TimeagoIntl, TimeagoFormatter, TimeagoCustomFormatter } from 'ngx-timeago';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { SintesiRichiestaModule } from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 /*
     Component
   */
@@ -21,13 +22,8 @@ import { ComposizioneFilterbarComponent } from './shared/filterbar/composizione-
 /*
     Provider
  */
-import { DispatcherCompPartenzaService } from '../../../core/dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.service';
-import { DispatcherCompPartenzaFakeService } from '../../../core/dispatcher/dispatcher-comp-partenza/dispatcher-comp-partenza.fake.service';
-import { CompPartenzaManagerService } from '../../../core/manager/comp-partenza-manager/comp-partenza-manager.service';
-import { CompPartenzaManagerServiceFake } from '../../../core/manager/comp-partenza-manager/comp-partenza-manager.service.fake';
 import { CompPartenzaService } from '../../../core/service/comp-partenza-service/comp-partenza.service';
 import { CompPartenzaServiceFake } from '../../../core/service/comp-partenza-service/comp-partenza.service.fake';
-import { SintesiRichiestaModule } from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 
 @NgModule({
     declarations: [
@@ -55,8 +51,6 @@ import { SintesiRichiestaModule } from '../richieste/lista-richieste/sintesi-ric
         ComposizionePartenzaComponent
     ],
     providers: [
-        { provide: DispatcherCompPartenzaService, useClass: DispatcherCompPartenzaFakeService },
-        { provide: CompPartenzaManagerService, useClass: CompPartenzaManagerServiceFake },
         { provide: CompPartenzaService, useClass: CompPartenzaServiceFake }
     ]
 })
