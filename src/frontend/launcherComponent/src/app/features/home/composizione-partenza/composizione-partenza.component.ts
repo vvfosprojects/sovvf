@@ -5,13 +5,13 @@ import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
 import { Subject, Subscription } from 'rxjs';
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
 import { Store } from '@ngxs/store';
-import { ResetAllBoxes, AllFalseBoxRichieste, AllTrueBoxMezzi, Reducer } from '../boxes/store/actions/box-click.actions';
-import { CompPartenzaManagerService } from 'src/app/core/manager/comp-partenza-manager/comp-partenza-manager.service';
+import { ResetAllBoxes, AllFalseBoxRichieste, AllTrueBoxMezzi, Reducer } from '../boxes/store';
 import { MezzoComposizione } from './interface/mezzo-composizione-interface';
 import { SquadraComposizione } from './interface/squadra-composizione-interface';
 import { BoxPartenza } from './interface/box-partenza-interface';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
+import { CompPartenzaService } from '../../../core/service/comp-partenza-service/comp-partenza.service';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -37,25 +37,25 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     constructor(private store: Store,
         private centerService: CenterService,
         private markerS: MarkerService,
-        private compPartenzaManager: CompPartenzaManagerService) {
+                private compPartenzaService: CompPartenzaService) {
 
         // Prendo i mezzi da visualizzare nella lista
         this.subscription.add(
-            this.compPartenzaManager.getMezziComposizione().subscribe((mezziComp: MezzoComposizione[]) => {
+            this.compPartenzaService.getMezziComposizione().subscribe((mezziComp: MezzoComposizione[]) => {
                 this.mezziComposizione = mezziComp;
             })
         );
 
         // Prendo le squadre da visualizzare nella lista
         this.subscription.add(
-            this.compPartenzaManager.getSquadre().subscribe((squadreComp: SquadraComposizione[]) => {
+            this.compPartenzaService.getSquadre().subscribe((squadreComp: SquadraComposizione[]) => {
                 this.squadreComposizione = squadreComp;
             })
         );
 
             // Restituisce i PreAccoppiati
         this.subscription.add(
-            this.compPartenzaManager.getPreAccoppiati().subscribe((preAccoppiati: BoxPartenza[]) => {
+            this.compPartenzaService.getPreAccoppiati().subscribe((preAccoppiati: BoxPartenza[]) => {
                 this.preAccoppiati = preAccoppiati;
                 console.log(preAccoppiati);
             })
