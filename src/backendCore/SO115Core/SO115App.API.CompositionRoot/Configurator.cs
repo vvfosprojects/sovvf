@@ -1,5 +1,6 @@
 ﻿using SO115App.API.Models.AOP.Validation;
 using SO115App.API.Models.Classi.Soccorso.Risorse;
+using SO115App.API.Models.Servizi;
 using SO115App.API.Models.Servizi.CQRS.Commands;
 using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaMezzo.CommandDTO;
 using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaSquadra.CommandDTO;
@@ -55,7 +56,11 @@ namespace SO115App.API.CompositionRoot
             
             c.Register<IGetUnitaOperativaPerCodice, GetUnitaOperativaPerCodice>();
 
-
+            //IActionGeneric è l'interfaccia che implementa tutte le funzioni comuni a tutte le Azioni che
+            // verranno utilizzate nell'applicazione
+            c.Register(
+                typeof(IActionGeneric<>), 
+                typeof(IActionGeneric<>).Assembly);
 
 
             //TEST AND FAKE

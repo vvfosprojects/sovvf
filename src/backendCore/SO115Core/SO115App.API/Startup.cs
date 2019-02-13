@@ -24,6 +24,7 @@ using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
+using SO115App.API.Models.Servizi;
 
 namespace SO115App.API
 {
@@ -91,11 +92,6 @@ namespace SO115App.API
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             /*  app.UseAuthentication();*/
 
-            //SIMPLE INJECTION INIZIALIZE COMPONENT
-            InitializeContainer(app);
-            container.Verify();
-
-
             app.UseSignalR( route => 
                 {
                     route.MapHub<NotificationHub>("/NotificationHub");
@@ -103,6 +99,12 @@ namespace SO115App.API
             );           
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            //SIMPLE INJECTION INIZIALIZE COMPONENT
+            InitializeContainer(app);
+            container.Verify();
+
+
         }
 
         private void InitializeContainer(IApplicationBuilder app)
