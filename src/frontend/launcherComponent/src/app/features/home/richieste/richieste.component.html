@@ -10,5 +10,5 @@
     [richiesteTerminate]="richiesteTerminate" [listHeightClass]="listHeightClass"
     (statoPartenza)="statoPartenza.emit('composizione')" (composizionePartenza)="composizionePartenza.emit($event)"
     (fissaInAlto)="onFissaInAlto($event)" (hoverIn)="onHoverIn($event)" (hoverOut)="onHoverOut()"
-    (selezione)="onSelezione($event)" (deselezione)="onDeselezione()">
+    (selezione)="onSelezione($event)" (deselezione)="onDeselezione()" (nuoveRichieste)="onNuoveRichieste()">
 </app-lista-richieste>

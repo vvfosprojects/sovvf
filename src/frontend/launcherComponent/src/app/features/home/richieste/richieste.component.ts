@@ -52,7 +52,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     loaderRichieste = true;
     loaderNuoveRichieste = false;
-    contatoreNuoveRichieste = 0;
+    contatoreNuoveRichieste = true;
     richiesteTerminate: boolean;
     listHeightClass = 'm-h-750';
 
@@ -64,14 +64,14 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         private markerService: MarkerService,
         private filter: FilterPipe,
         private store: Store) {
-        this.getRichieste('0');
+    }
+
+    ngOnInit(): void {
+        this.getRichieste();
         this.getRichiestaFissata();
         this.getRichiestaHover();
         this.getRichiestaSelezionata();
         this.getRicerca();
-    }
-
-    ngOnInit(): void {
         isDevMode() && console.log('Componente Richieste creato');
     }
 
@@ -80,21 +80,19 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         isDevMode() && console.log('Componente Richieste distrutto');
     }
 
-    getRichieste(idUltimaRichiesta: string) {
-        this.store.dispatch(new GetRichieste(idUltimaRichiesta));
+    getRichieste() {
         this.subscription.add(
             this.richieste$.subscribe((richieste: any) => {
                 if (richieste.length > 0) {
                     this.richieste = richieste;
-                    this.loaderRichieste = false;
                     this.loaderNuoveRichieste = false;
-                    this.contatoreNuoveRichieste = 0;
-                    // TEST
-                    // console.log('[ListaRichieste] Richieste Ricevute dal Manager', richieste.length);
-                    // console.log('[ListaRichieste] Richieste in memoria:', this.richieste.length);
+                    this.contatoreNuoveRichieste = false;
+                    setTimeout(() => {
+                        this.loaderRichieste = false;
+                    }, 500);
                 } else if (richieste.length <= 0) {
                     this.loaderNuoveRichieste = false;
-                    this.contatoreNuoveRichieste = 0;
+                    this.contatoreNuoveRichieste = false;
                     this.toastr.warning('Non ci sono altre richieste da visualizzare', 'Richieste terminate', {
                         timeOut: 5000
                     });
@@ -106,17 +104,16 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     // Carica nuove richieste attraverso lo scroll
-    nuoveRichieste() {
-        /*
-            if (event.isReachingBottom && event.isWindowEvent === false && this.contatoreNuoveRichieste === 0) {
-                this.contatoreNuoveRichieste++;
-                this.loaderNuoveRichieste = true;
-                this.richiesteTerminate = false;
-                this.getRichieste(idUltimaRichiesta);
-                // TEST
-                // console.log(this.richieste[this.richieste.length - 1].id);
-            }
-        */
+    onNuoveRichieste() {
+        if (this.contatoreNuoveRichieste === false && !this.loaderRichieste) {
+            this.contatoreNuoveRichieste = true;
+            this.loaderNuoveRichieste = true;
+            this.richiesteTerminate = false;
+            this.store.dispatch(new GetRichieste(this.richieste[this.richieste.length - 1].codice.substr(3)));
+            // TEST
+            // console.log('onNewRichieste');
+            // console.log(this.richieste[this.richieste.length - 1].id);
+        }
     }
 
     // Restituisce la Richiesta Fissata

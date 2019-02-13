@@ -1,11 +1,5 @@
-import { Component, OnInit, ElementRef, ViewChild, OnChanges, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription, Observable } from 'rxjs';
-import { FilterPipe } from 'ngx-filter-pipe';
-
-// Ngxs
-import { RicercaRichiesteState } from '../../filterbar/ricerca-richieste/store/';
-import { Select } from '@ngxs/store';
 
 // Model
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
@@ -17,11 +11,10 @@ import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.componen
 import { ListaRichiesteManagerService } from '../../../../core/manager/lista-richieste-manager/lista-richieste-manager.service';
 import { ListaRichiesteService } from '../service/lista-richieste-service.service';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
-import { LocalStorageService } from 'ngx-webstorage';
-import { ToastrService } from 'ngx-toastr';
 
 // Helper methods
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -44,7 +37,7 @@ export class ListaRichiesteComponent implements OnInit {
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
-    @Output() nuoveRichieste = new EventEmitter<any>();
+    @Output() nuoveRichieste = new EventEmitter();
     @Output() fissaInAlto = new EventEmitter<any>();
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter<boolean>();
@@ -54,6 +47,8 @@ export class ListaRichiesteComponent implements OnInit {
     preventSimpleClick: boolean;
     methods = new HelperSintesiRichiesta;
 
+    @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
+
     constructor(public listaRichiesteManager: ListaRichiesteManagerService,
         private richiesteS: ListaRichiesteService,
         private modalService: NgbModal,
@@ -61,7 +56,15 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.viewport.scrolledIndexChange.subscribe(() => {
+            const bottomOffset = this.viewport.measureScrollOffset('bottom');
+            if ( bottomOffset < 80) {
+                this.onNuoveRichieste();
+            }
+        });
     }
+
+
 
     /* Permette di caricare nuove richieste */
     onNuoveRichieste() {

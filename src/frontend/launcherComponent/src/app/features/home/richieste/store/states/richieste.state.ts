@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext, NgxsOnInit } from '@ngxs/store';
 
 // Model
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
@@ -24,9 +24,7 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
     name: 'richieste',
     defaults: RichiesteStateDefaults
 })
-export class RichiesteState {
-
-    constructor(private richiesteService: SintesiRichiesteService) { }
+export class RichiesteState implements NgxsOnInit {
 
     // SELECTORS
     @Selector()
@@ -34,19 +32,26 @@ export class RichiesteState {
         return state.richieste;
     }
 
+    constructor(private richiesteService: SintesiRichiesteService) { }
+
+    ngxsOnInit(ctx: StateContext<RichiesteState>) {
+        ctx.dispatch(new GetRichieste('0'));
+    }
+
     // SET
-    @Action(GetRichieste)
+    @Action(GetRichieste, { cancelUncompleted: true })
     getRichieste({ getState, patchState }: StateContext<RichiesteStateModel>, action: GetRichieste) {
         const state = getState();
         let newRichieste: SintesiRichiesta[];
 
         this.richiesteService.getRichieste(action.idUltimaRichiesta).subscribe((r: SintesiRichiesta[]) => {
             newRichieste = r;
+            // console.log('New Richieste', newRichieste);
         });
 
         patchState({
             ...state,
-            richieste: newRichieste
+            richieste: [...state.richieste, ...newRichieste]
         });
     }
 }
