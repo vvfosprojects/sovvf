@@ -4,10 +4,10 @@ import { first } from 'rxjs/operators';
 import { ClockService } from './navbar-service/clock-service/clock.service';
 import { AuthenticationService, UserService } from '../../core/auth/_services';
 import { Turno } from './turno/turno.model';
-import { User } from '../../core/auth/_models';
 import { Store, Select } from '@ngxs/store';
-import { TurnoState } from './turno/store/states/turno.state';
+import { TurnoState } from './turno/store/';
 import { GetTurno } from './turno/store/actions/turno.actions';
+import { Utente } from '../../shared/model/utente.model';
 
 @Component({
     selector: 'app-navbar',
@@ -17,9 +17,8 @@ import { GetTurno } from './turno/store/actions/turno.actions';
 export class NavbarComponent implements OnInit, OnDestroy {
 
     time: Date;
-    currentUser: User;
-    userFromApi: User;
-    // user: User[] = [];
+    currentUser: Utente;
+    userFromApi: Utente;
 
     subscription = new Subscription();
 

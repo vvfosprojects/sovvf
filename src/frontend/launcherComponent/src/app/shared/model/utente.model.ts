@@ -1,7 +1,7 @@
 import { Sede } from './sede.model';
-import { Features, Role } from '../../core/auth/_models';
+import { AppFeatures } from '../enum/app-features.enum';
 
-export class UtenteProvvisorio {
+export class Utente {
     constructor(
         /**
          * id dell'utente
@@ -61,4 +61,15 @@ export class UtenteProvvisorio {
         public qualifica?: string,
     ) {
     }
+}
+
+export interface Features {
+    nameFunction: AppFeatures;
+    read: Sede[];
+    write: Sede[];
+}
+
+export enum Role {
+    User = 'User',
+    Admin = 'Admin'
 }

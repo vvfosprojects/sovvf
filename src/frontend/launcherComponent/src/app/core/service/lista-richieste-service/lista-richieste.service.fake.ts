@@ -3,7 +3,6 @@ import { of, Subject } from 'rxjs';
 
 // Model
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { Operatore } from '../../../shared/model/operatore.model';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 import { Richiedente } from '../../../shared/model/richiedente.model';
 import { Localita } from '../../../shared/model/localita.model';
@@ -15,6 +14,7 @@ import { Mezzo } from '../../../shared/model/mezzo.model';
 import { Fonogramma } from '../../../shared/model/fonogramma.model';
 import { Squadra } from '../../../shared/model/squadra.model';
 import { Componente } from '../../../shared/model/componente.model';
+import { Utente } from '../../../shared/model/utente.model';
 
 // Module
 import * as moment from 'moment';
@@ -40,7 +40,7 @@ export class SintesiRichiesteServiceFake {
             new SintesiRichiesta(
                 'RM-022',
                 'RM-022',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(0, 'minutes').toDate(),
                 'chiamata',
                 5,
@@ -66,7 +66,7 @@ export class SintesiRichiesteServiceFake {
             new SintesiRichiesta(
                 'RM-021',
                 'RM-021',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(22, 'minutes').toDate(),
                 'chiamata',
                 1,
@@ -96,7 +96,7 @@ export class SintesiRichiesteServiceFake {
             new SintesiRichiesta(
                 'RM-020',
                 'RM-020',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(23, 'minutes').toDate(),
                 'chiamata',
                 1,
@@ -121,7 +121,7 @@ export class SintesiRichiesteServiceFake {
             new SintesiRichiesta(
                 'RM-12842',
                 'RM-12842',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(35, 'minutes').toDate(),
                 'assegnato',
                 4,
@@ -193,7 +193,7 @@ export class SintesiRichiesteServiceFake {
             new SintesiRichiesta(
                 'RM-12841',
                 'RM-12841',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(4, 'minutes').toDate(),
                 'assegnato',
                 3,
@@ -266,7 +266,7 @@ export class SintesiRichiesteServiceFake {
             new SintesiRichiesta(
                 'RM-12840',
                 'RM-12840',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(6, 'minutes').toDate(),
                 'assegnato',
                 3,
@@ -339,7 +339,7 @@ export class SintesiRichiesteServiceFake {
             new SintesiRichiesta(
                 'RM-12839',
                 'RM-12839',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(25, 'minutes').toDate(),
                 'presidiato',
                 2,
@@ -412,7 +412,7 @@ export class SintesiRichiesteServiceFake {
             new SintesiRichiesta(
                 'RM-12838',
                 'RM-12838',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(37, 'minutes').toDate(),
                 'sospeso',
                 2,
@@ -484,7 +484,7 @@ export class SintesiRichiesteServiceFake {
             new SintesiRichiesta(
                 'RM-12837',
                 'RM-12837',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(39, 'minutes').toDate(),
                 'sospeso',
                 2,
@@ -556,7 +556,7 @@ export class SintesiRichiesteServiceFake {
             new SintesiRichiesta(
                 'RM-12836',
                 'RM-12836',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(42, 'minutes').toDate(),
                 'chiusa',
                 4,
@@ -628,7 +628,7 @@ export class SintesiRichiesteServiceFake {
             new SintesiRichiesta(
                 'RM-12835',
                 'RM-12835',
-                new Operatore('mario.rossi.76', 'Mario', 'Rossi', 'RSSMRA67A01H501X'),
+                new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(45, 'minutes').toDate(),
                 'chiusa',
                 3,

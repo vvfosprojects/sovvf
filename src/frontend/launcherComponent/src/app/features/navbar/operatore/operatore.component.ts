@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { User } from '../../../core/auth/_models';
+import { Role, Utente } from '../../../shared/model/utente.model';
 
 @Component({
     selector: 'app-operatore',
@@ -8,6 +8,6 @@ import { User } from '../../../core/auth/_models';
 })
 export class OperatoreComponent {
 
-    @Input() user: User;
-
+    @Input() user: Utente;
+    Role = Role;
 }

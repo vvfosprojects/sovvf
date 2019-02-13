@@ -3,15 +3,21 @@ import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTT
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
-import { User, Role } from '../_models';
+import { Role, Utente } from '../../../shared/model/utente.model';
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const users: User[] = [
-            { id: 1, username: 'admin', password: 'admin', firstName: 'Admin', lastName: 'User', role: Role.Admin },
-            { id: 2, username: 'user', password: 'user', firstName: 'Normal', lastName: 'User', role: Role.User },
-            { id: 3, username: 'test', password: 'test', firstName: 'Mario', lastName: 'Rossi', role: Role.Admin }
+        // const users: User[] = [
+        //     { id: 1, username: 'admin', password: 'admin', firstName: 'Admin', lastName: 'User', role: Role.Admin },
+        //     { id: 2, username: 'user', password: 'user', firstName: 'Normal', lastName: 'User', role: Role.User },
+        //     { id: 3, username: 'test', password: 'test', firstName: 'Mario', lastName: 'Rossi', role: Role.Admin }
+        // ];
+
+        const users: Utente[] = [
+            { id: '1', nome: 'Luigi', cognome: 'Bianchi', username: 'admin', password: 'admin', ruolo: Role.Admin },
+            { id: '2', nome: 'Pinco', cognome: 'Pallino', username: 'user', password: 'user', ruolo: Role.User },
+            { id: '3', nome: 'Mario', cognome: 'Rossi', username: 'test', password: 'test', ruolo: Role.Admin }
         ];
 
         const authHeader = request.headers.get('Authorization');
@@ -29,10 +35,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 return ok({
                     id: user.id,
                     username: user.username,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    role: user.role,
-                    token: `fake-jwt-token.${user.role}`
+                    nome: user.nome,
+                    cognome: user.cognome,
+                    ruolo: user.ruolo,
+                    token: `fake-jwt-token.${user.ruolo}`
                 });
             }
 
@@ -44,12 +50,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 const urlParts = request.url.split('/');
                 const id = parseInt(urlParts[urlParts.length - 1], 0);
 
-                const currentUser = users.find(x => x.role === role);
-                if (id !== currentUser.id && role !== Role.Admin) {
+                const currentUser = users.find(x => x.ruolo === role);
+                if (id.toString() !== currentUser.id && role !== Role.Admin) {
                     return unauthorised();
                 }
 
-                const user = users.find(x => x.id === id);
+                const user = users.find(x => x.id === id.toString());
                 return ok(user);
             }
 

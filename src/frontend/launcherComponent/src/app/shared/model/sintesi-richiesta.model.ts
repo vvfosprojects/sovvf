@@ -1,12 +1,12 @@
-import {Tipologia} from './tipologia.model';
-import {Sede} from './sede.model';
-import {Localita} from './localita.model';
-import {Richiedente} from './richiedente.model';
-import {Fonogramma} from './fonogramma.model';
-import {Complessita} from './complessita.model';
+import { Tipologia } from './tipologia.model';
+import { Sede } from './sede.model';
+import { Localita } from './localita.model';
+import { Richiedente } from './richiedente.model';
+import { Fonogramma } from './fonogramma.model';
+import { Complessita } from './complessita.model';
 import { Partenza } from './partenza.model';
-import { Operatore } from './operatore.model';
-import {Evento} from './evento.model';
+import { Evento } from './evento.model';
+import { Utente } from './utente.model';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -26,7 +26,7 @@ export class SintesiRichiesta {
         /**
          * è l'operatore che inserisce la richiesta
          */
-        public operatore: Operatore,
+        public operatore: Utente,
         /**
          * ricezione della richiesta (via telefono, ecc.)
          */

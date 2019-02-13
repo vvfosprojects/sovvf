@@ -30,9 +30,9 @@ export class SquadraProvvisorio2 {
 }
 
 export enum statoSquadra {
-    InViaggio = '',
-    SulPosto = '',
-    InRientro = '',
-    InSede = '',
-    Istituto = ''
+    InViaggio,
+    SulPosto,
+    InRientro,
+    InSede,
+    Istituto
 }
