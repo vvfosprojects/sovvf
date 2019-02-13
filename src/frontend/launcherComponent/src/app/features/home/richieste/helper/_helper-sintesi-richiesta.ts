@@ -1,3 +1,6 @@
+import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
+import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
+
 export class HelperSintesiRichiesta {
 
     /* Restituisce un Array con tanti elementi quanto è la priorità dell'intervento */
@@ -107,40 +110,39 @@ export class HelperSintesiRichiesta {
     CardClasses(r: any, richiestaSelezionata: any, richiestaHover: any) {
         return {
             // Hover (stato)
-            'card-shadow-info': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'assegnato', 1),
-            'card-shadow-success': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'presidiato', 1),
-            'card-shadow-danger': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'chiamata', 1),
-            'card-shadow-warning': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'sospeso', 1),
-            'card-shadow-secondary': (r === richiestaHover || r === richiestaSelezionata) && this.match(r.stato, 'chiuso', 1),
-            'bg-light': (r === richiestaSelezionata || r === richiestaHover) && !this.match(r.stato, 'chiuso', 1),
-            'bg-pattern-chiuso': this.match(r.stato, 'chiuso', 1),
+            'card-shadow-info': (r === richiestaHover || r === richiestaSelezionata) && r.stato === StatoRichiesta.Assegnata,
+            'card-shadow-success': (r === richiestaHover || r === richiestaSelezionata) && r.stato === StatoRichiesta.Presidiata,
+            'card-shadow-danger': (r === richiestaHover || r === richiestaSelezionata) && r.stato === StatoRichiesta.Chiamata,
+            'card-shadow-warning': (r === richiestaHover || r === richiestaSelezionata) && r.stato === StatoRichiesta.Sospesa,
+            'card-shadow-secondary': (r === richiestaHover || r === richiestaSelezionata) && r.stato === StatoRichiesta.Chiusa,
+            'bg-light': (r === richiestaSelezionata || r === richiestaHover) && r.stato !== StatoRichiesta.Chiusa,
+            'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
 
             // Bordo sinistro (stato)
-            'status_chiamata': this.match(r.stato, 'chiamata', 1),
-            'status_presidiato': this.match(r.stato, 'presidiato', 1),
-            'status_assegnato': this.match(r.stato, 'assegnato', 1),
-            'status_sospeso': this.match(r.stato, 'sospeso', 1),
-            'status_chiuso': this.match(r.stato, 'chiuso', 1)
+            'status_chiamata': r.stato === StatoRichiesta.Chiamata,
+            'status_presidiato': r.stato === StatoRichiesta.Presidiata,
+            'status_assegnato': r.stato === StatoRichiesta.Assegnata,
+            'status_sospeso': r.stato === StatoRichiesta.Sospesa,
+            'status_chiuso': r.stato === StatoRichiesta.Chiusa,
         };
     }
 
     /* NgClass Card Fissata Status */
-    cardFissataClasses(r: any) {
+    cardFissataClasses(r: SintesiRichiesta) {
         if (r) {
             return {
-                'card-shadow-info': this.match(r.stato, 'assegnato', 1),
-                'card-shadow-success': this.match(r.stato, 'presidiato', 1),
-                'card-shadow-danger': this.match(r.stato, 'chiamata', 1),
-                'card-shadow-warning': this.match(r.stato, 'sospeso', 1),
-                'card-shadow-secondary': this.match(r.stato, 'chiuso', 1),
-                'bg-pattern-chiuso': this.match(r.stato, 'chiuso', 1),
-
+                'card-shadow-info': r.stato === StatoRichiesta.Assegnata,
+                'card-shadow-success': r.stato === StatoRichiesta.Presidiata,
+                'card-shadow-danger': r.stato === StatoRichiesta.Chiamata,
+                'card-shadow-warning': r.stato === StatoRichiesta.Sospesa,
+                'card-shadow-secondary': r.stato === StatoRichiesta.Chiusa,
+                'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
                 // Bordo sinistro (stato)
-                'status_chiamata': this.match(r.stato, 'chiamata', 1),
-                'status_presidiato': this.match(r.stato, 'presidiato', 1),
-                'status_assegnato': this.match(r.stato, 'assegnato', 1),
-                'status_sospeso': this.match(r.stato, 'sospeso', 1),
-                'status_chiuso': this.match(r.stato, 'chiuso', 1)
+                'status_chiamata': r.stato === StatoRichiesta.Chiamata,
+                'status_presidiato': r.stato === StatoRichiesta.Presidiata,
+                'status_assegnato': r.stato === StatoRichiesta.Assegnata,
+                'status_sospeso': r.stato === StatoRichiesta.Sospesa,
+                'status_chiuso': r.stato === StatoRichiesta.Chiusa,
             };
         }
     }
