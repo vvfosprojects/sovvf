@@ -24,6 +24,7 @@ import { SetRichiestaFissata, ClearRichiestaFissata } from '../../../richieste/s
 import { Markers } from '../../../../../shared/enum/markers.enum';
 import { MouseE } from '../../../../../shared/enum/mouse-e.enum';
 import { MapsEvent } from '../../../../../shared/enum/maps-event.enum';
+import { SetRichiestaHover, ClearRichiestaHover } from '../../../richieste/store/actions/richiesta-hover.actions';
 
 @Injectable()
 export class MarkerService implements OnDestroy {
@@ -212,13 +213,17 @@ export class MarkerService implements OnDestroy {
             case 'richiesta|hover-in': {
                 this.markerColorato = marker;
                 this.markerZIndex = marker;
-                this.richiesteService.hoverIn(marker.id);
+
+                // Store implementation
+                this.store.dispatch(new SetRichiestaHover(marker.id));
             }
                 break;
             case 'richiesta|hover-out': {
                 this.markerColorato = null;
                 this.markerZIndex = null;
-                this.richiesteService.hoverOut();
+
+                // Store implementation
+                this.store.dispatch(new ClearRichiestaHover());
             }
                 break;
             case 'richiesta|click': {
