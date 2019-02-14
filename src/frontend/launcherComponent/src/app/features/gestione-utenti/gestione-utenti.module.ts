@@ -4,11 +4,11 @@ import { CommonModule } from '@angular/common';
  * Component
  */
 import { GestioneUtentiComponent } from './gestione-utenti.component';
+import { ListaUtentiComponent } from './lista-utenti/lista-utenti.component';
 /**
  * Routing
  */
 import { GestioneUtentiRouting } from './gestione-utenti.routing';
-import { ListaUtentiComponent } from './lista-utenti/lista-utenti.component';
 /**
  * Module
  */

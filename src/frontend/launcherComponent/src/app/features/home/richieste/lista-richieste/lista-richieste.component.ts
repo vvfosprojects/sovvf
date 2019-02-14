@@ -29,7 +29,7 @@ export class ListaRichiesteComponent implements OnInit {
     @Input() richiestaSelezionata: SintesiRichiesta;
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() loaderRichieste = true;
-    @Input() loaderNuoveRichieste = false;
+    @Input() loaderNuoveRichieste: boolean;
     @Input() contatoreNuoveRichieste = 0;
     @Input() richiesteTerminate: boolean;
     @Input() itemSize = 95;
@@ -63,8 +63,6 @@ export class ListaRichiesteComponent implements OnInit {
             }
         });
     }
-
-
 
     /* Permette di caricare nuove richieste */
     onNuoveRichieste() {

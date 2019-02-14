@@ -20,7 +20,7 @@
       <hr>
     </div>
     <div class="col-10 mx-auto">
-      <app-lista-utenti [utenti]="utenti"></app-lista-utenti>
+      <app-lista-utenti [utenti]="(utenti$ | async)"></app-lista-utenti>
     </div>
   </div>
 </div>

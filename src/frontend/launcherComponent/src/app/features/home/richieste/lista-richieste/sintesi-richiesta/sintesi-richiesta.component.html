@@ -269,8 +269,8 @@
                                                     </span>
                                                     <span class="text-right">
                                                         <a title="Componenti squadra" [ngbPopover]="popComponenti"
-                                                            popoverTitle="Componenti" triggers="click" tabindex="0" (click)="$event.stopPropagation()">
-                                                            <i class="guida fa fa-address-book-o pt-1" title="Componenti squadra"></i>
+                                                            popoverTitle="Componenti" triggers="click" tabindex="0">
+                                                            <i class="guida fa fa-address-book-o pt-1" title="Componenti squadra" (click)="$event.stopPropagation()"></i>
                                                         </a>
 
                                                         <ng-template #popComponenti>
