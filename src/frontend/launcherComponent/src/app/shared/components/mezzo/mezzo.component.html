@@ -3,17 +3,18 @@
     <i class="guida fa fa-truck fa-fw mr-1" aria-hidden="true" title="Mezzo"></i>
     <span *ngIf="mezzo.descrizione"><b>{{ mezzo.descrizione }}</b></span>
     <span *ngIf="mezzo.genere" class="badge badge-default m-0">{{ mezzo.genere }}</span>
-    <span *ngIf="mezzo.descrizioneStato" class="badge text-white m-0 ml-1" [ngClass]="{'badge-default':mezzo.stato == 'InSede' || mezzo.stato == 'Istituto', 'badge-warning':mezzo.stato == 'InViaggio', 'badge-success':mezzo.stato == 'SulPosto', 'badge-info':mezzo.stato == 'InRientro'}">
+    <span *ngIf="mezzo.descrizioneStato" class="badge text-white m-0 ml-1"
+      [ngClass]="{'badge-default':mezzo.stato == 'InSede' || mezzo.stato == 'Istituto', 'badge-warning':mezzo.stato == 'InViaggio', 'badge-success':mezzo.stato == 'SulPosto', 'badge-info':mezzo.stato == 'InRientro'}">
       {{ mezzo.descrizioneStato }}
     </span>
   </span>
-
+  
   <!-- indicatori -->
-  <span class="d-inline-block pl-2">
-    <a title="Indicatori mezzo" [ngbPopover]="indMez" placement="top" popoverTitle="Indicatori" triggers="click"
-      tabindex="0" (click)="$event.stopPropagation()">
-      <i class="guida fa fa-briefcase fa-fw" style="color:cadetblue;" aria-hidden="true" title="Condizione del Mezzo"></i>
-    </a>
+  <span class="d-inline-block pl-2 mr-1">
+    <button class="btn btn-light border py-0" [ngbPopover]="indMez" title="Indicatori mezzo" placement="top" popoverTitle="Indicatori" triggers="click"
+    tabindex="0" (click)="$event.stopPropagation()">
+      <i class="fa fa-briefcase fa-fw text-secondary" title="Condizione del Mezzo"></i>
+    </button>
 
     <ng-template #indMez>
       <div *ngIf="!nessunIndMezzo(mezzo)" class="h6 m-0 nowrap">
@@ -22,7 +23,8 @@
           <span class='badge' [ngClass]="dettagliMezzo(mezzo.statoEfficienza, 'efficienza', 'badge')">
             {{ mezzo.descrizioneStatoEfficienza }}</span>
         </div>
-        <div *ngIf="mezzo.descrizioneLivelloCarburante"><i class='fa fa-tachometer fa-fw' title='Livello Carburante'></i>
+        <div *ngIf="mezzo.descrizioneLivelloCarburante"><i class='fa fa-tachometer fa-fw'
+            title='Livello Carburante'></i>
           <span class='badge' [ngClass]="dettagliMezzo(mezzo.livelloCarburante, 'carburante', 'badge')">
             {{ mezzo.descrizioneLivelloCarburante }}</span>
         </div>
@@ -42,11 +44,14 @@
       </div>
     </ng-template>
   </span>
+
   <!-- notifiche mezzo -->
   <span class="d-inline-block">
-    <a [ngbPopover]="notMez" placement="top" triggers="click" popoverTitle="Notifiche mezzo" tabindex="0" (click)="$event.stopPropagation()">
-      <i class="guida fa fa-bell fa-fw" style="color:cadetblue!important;"></i>
-    </a>
+    <button class="btn btn-light border py-0" [ngbPopover]="notMez" placement="top" triggers="click"
+      popoverTitle="Notifiche mezzo" tabindex="0" (click)="$event.stopPropagation()">
+      <i class="fa fa-bell fa-fw text-secondary"></i>
+    </button>
+
     <ng-template #notMez>
       <span *ngIf="mezzo.notifiche">
         <span *ngFor="let n of mezzo.notifiche">
