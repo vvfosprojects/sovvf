@@ -6,20 +6,16 @@ import { FilterPipe } from 'ngx-filter-pipe';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
 // Service
-import { ListaRichiesteService } from './service/lista-richieste-service.service';
-import { ListaRichiesteManagerService } from 'src/app/core/manager/lista-richieste-manager/lista-richieste-manager.service';
 import { ToastrService } from 'ngx-toastr';
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
 
 // Ngxs
 import { Select, Store } from '@ngxs/store';
-import { RicercaRichiesteState } from '../filterbar/ricerca-richieste/store/states/ricerca-richieste.state';
+import { RicercaRichiesteState } from '../filterbar/ricerca-richieste/store/';
 import { SetRichiestaFissata, ClearRichiestaFissata } from './store/actions/richiesta-fissata.actions';
-import { RichiestaFissataState } from './store/states/richiesta-fissata.state';
-import { RichiesteState } from './store/states/richieste.state';
+import { RichiestaFissataState, RichiesteState, RichiestaHoverState } from './store/';
 import { GetRichieste } from './store/actions/richieste.actions';
 import { SetRichiestaHover, ClearRichiestaHover } from './store/actions/richiesta-hover.actions';
-import { RichiestaHoverState } from './store/states/richiesta-hover.state';
 import { SetRichiestaSelezionata, ClearRichiestaSelezionata } from './store/actions/richiesta-selezionata.actions';
 import { RichiestaSelezionataState } from './store/states/richiesta-selezionata.state';
 
@@ -58,12 +54,10 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     subscription = new Subscription();
 
-    constructor(public listaRichiesteService: ListaRichiesteService,
-        public listaRichiesteManager: ListaRichiesteManagerService,
-        private toastr: ToastrService,
-        private markerService: MarkerService,
-        private filter: FilterPipe,
-        private store: Store) {
+    constructor(private toastr: ToastrService,
+                private markerService: MarkerService,
+                private filter: FilterPipe,
+                private store: Store) {
     }
 
     ngOnInit(): void {

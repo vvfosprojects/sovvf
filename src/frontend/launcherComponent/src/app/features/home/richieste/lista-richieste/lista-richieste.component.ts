@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges, HostListener } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 // Model
@@ -8,13 +8,14 @@ import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.mod
 import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
 
 // Service
-import { ListaRichiesteManagerService } from '../../../../core/manager/lista-richieste-manager/lista-richieste-manager.service';
 import { ListaRichiesteService } from '../service/lista-richieste-service.service';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 
 // Helper methods
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+
+export const scrolledItems = 11;
 
 @Component({
     selector: 'app-lista-richieste',
@@ -56,15 +57,10 @@ export class ListaRichiesteComponent implements OnInit {
     ngOnInit() {
         this.viewport.scrolledIndexChange.subscribe(() => {
             const bottomOffset = this.viewport.measureScrollOffset('bottom');
-            if (bottomOffset < 80) {
+            if (bottomOffset < 100 && this.viewport.getDataLength() >= scrolledItems) {
                 this.onNuoveRichieste();
             }
         });
-    }
-
-    @HostListener('window:scroll', [])
-    onWindowScroll() {
-        console.log('mike');
     }
 
     /* Permette di caricare nuove richieste */
