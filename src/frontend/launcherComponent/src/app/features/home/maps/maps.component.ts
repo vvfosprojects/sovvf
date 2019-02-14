@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { ViewInterfaceMaps } from '../../../shared/interface/view.interface';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { wipeStatoRichiesta } from '../composizione-partenza/composizione-partenza.component';
 
 @Component({
     selector: 'app-maps',
@@ -73,9 +74,13 @@ export class MapsComponent implements OnInit, OnChanges, OnDestroy {
 
     static mapPartenzaMarker(richiesta: SintesiRichiesta): ComposizioneMarker {
         let composizione: ComposizioneMarker;
+        /**
+         * provvisorio in attesa che enum stato sia anche nel model del marker di mappa
+         */
+        const statoProvvisorio = wipeStatoRichiesta(richiesta.stato);
         composizione = new ComposizioneMarker(
             richiesta.id, richiesta.localita, richiesta.tipologie, null,
-            richiesta.priorita, richiesta.stato, richiesta.rilevanza, false);
+            richiesta.priorita, statoProvvisorio, richiesta.rilevanza, false);
         return composizione;
     }
 

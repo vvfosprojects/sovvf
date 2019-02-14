@@ -7,7 +7,6 @@ import { environment } from '../environments/environment';
  */
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxWebstorageModule } from 'ngx-webstorage';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PipeModule } from './shared/pipes/pipe.module';
@@ -62,7 +61,6 @@ import { AppLoadModule } from './core/app-load/app-load.module';
         NgProgressHttpModule,
         SharedModule,
         NavbarModule,
-        NgxWebstorageModule.forRoot(),
         PipeModule.forRoot(),
         SidebarModule.forRoot(),
         TimeagoModule.forRoot({

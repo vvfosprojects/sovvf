@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { of, Subject } from 'rxjs';
-
+import { of } from 'rxjs';
 // Model
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Tipologia } from '../../../shared/model/tipologia.model';
@@ -15,26 +14,18 @@ import { Fonogramma } from '../../../shared/model/fonogramma.model';
 import { Squadra } from '../../../shared/model/squadra.model';
 import { Componente } from '../../../shared/model/componente.model';
 import { Utente } from '../../../shared/model/utente.model';
-
 // Module
 import * as moment from 'moment';
-
 // Service
-import { LocalStorageService } from 'ngx-webstorage';
+import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 
 
 @Injectable()
 export class SintesiRichiesteServiceFake {
 
     private richieste: SintesiRichiesta[] = [];
-    requestCount = 1;
-
-    constructor(private localSt: LocalStorageService) {
-        this.localSt.store('ListaRichiesteRequest', this.requestCount);
-    }
 
     getRichieste(idUltimaRichiesta: string) {
-        // this.requestCount = this.localSt.retrieve('ListaRichiesteRequest');
 
         this.richieste = [
             new SintesiRichiesta(
@@ -42,7 +33,7 @@ export class SintesiRichiesteServiceFake {
                 'RM-022',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(0, 'minutes').toDate(),
-                'chiamata',
+                StatoRichiesta.Chiamata,
                 5,
                 [new Tipologia('2', 'Incendio ed esplosione', 'fa fa-fire')],
                 'Esplosione nei pressi di un centro abitato',
@@ -68,7 +59,7 @@ export class SintesiRichiesteServiceFake {
                 'RM-021',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(22, 'minutes').toDate(),
-                'chiamata',
+                StatoRichiesta.Chiamata,
                 1,
                 [new Tipologia('360', 'Messa in sicurezza impianti tecnologici di servizio (acqua, energia elettrica, gas)', '')],
                 'Scintille da palo elettrico',
@@ -98,7 +89,7 @@ export class SintesiRichiesteServiceFake {
                 'RM-020',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(23, 'minutes').toDate(),
-                'chiamata',
+                StatoRichiesta.Chiamata,
                 1,
                 [new Tipologia('2', 'Incendio ed esplosione', 'fa fa-fire')],
                 'Incendio a bordo strada',
@@ -123,7 +114,7 @@ export class SintesiRichiesteServiceFake {
                 'RM-12842',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(35, 'minutes').toDate(),
-                'assegnato',
+                StatoRichiesta.Assegnata,
                 4,
                 [new Tipologia('360', 'Salvataggio persone', '')],
                 'Persona che minaccia di buttarsi da un tetto',
@@ -195,7 +186,7 @@ export class SintesiRichiesteServiceFake {
                 'RM-12841',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(4, 'minutes').toDate(),
-                'assegnato',
+                StatoRichiesta.Assegnata,
                 3,
                 [new Tipologia('1', 'Danni d\'acqua in genere', 'fa fa-tint')],
                 'Allagamento garage con personale da soccorrere',
@@ -268,7 +259,7 @@ export class SintesiRichiesteServiceFake {
                 'RM-12840',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(6, 'minutes').toDate(),
-                'assegnato',
+                StatoRichiesta.Assegnata,
                 3,
                 [new Tipologia('1', 'Incidente stradale generico', 'fa fa-car')],
                 'Incidente automobile ribaltata',
@@ -341,7 +332,7 @@ export class SintesiRichiesteServiceFake {
                 'RM-12839',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(25, 'minutes').toDate(),
-                'presidiato',
+                StatoRichiesta.Presidiata,
                 2,
                 [new Tipologia('360', 'Cedimento sede stradale', '')],
                 'Cedimento sede stradale con rimozione veicolo',
@@ -414,7 +405,7 @@ export class SintesiRichiesteServiceFake {
                 'RM-12838',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(37, 'minutes').toDate(),
-                'sospeso',
+                StatoRichiesta.Sospesa,
                 2,
                 [new Tipologia('360', 'Recupero merci e beni', '')],
                 'Recupero merci e beni da camion ribaltato',
@@ -486,7 +477,7 @@ export class SintesiRichiesteServiceFake {
                 'RM-12837',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(39, 'minutes').toDate(),
-                'sospeso',
+                StatoRichiesta.Sospesa,
                 2,
                 [new Tipologia('360', 'Terremoto', '')],
                 'Scossa di terremoto a Roma',
@@ -558,7 +549,7 @@ export class SintesiRichiesteServiceFake {
                 'RM-12836',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(42, 'minutes').toDate(),
-                'chiusa',
+                StatoRichiesta.Chiusa,
                 4,
                 [new Tipologia('360', 'Incendio', 'fa fa-fire')],
                 'Incendio in appartamento',
@@ -630,7 +621,7 @@ export class SintesiRichiesteServiceFake {
                 'RM-12835',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(45, 'minutes').toDate(),
-                'chiusa',
+                StatoRichiesta.Chiusa,
                 3,
                 [new Tipologia('360', 'Incidente', 'fa fa-car')],
                 'Incidente stradale',
@@ -698,21 +689,6 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
         ];
-
-        /* if (this.requestCount === 1) {
-            richieste.forEach((r, index) => {
-                if (index <= 9) {
-                    this.richieste.push(r);
-                }
-            });
-        } else if (this.requestCount === 2) {
-            this.richieste = richieste;
-        } else if (this.requestCount >= 3) {
-            this.richieste = [];
-        } */
-
-        // this.requestCount += 1;
-        // this.localSt.store('ListaRichiesteRequest', this.requestCount);
 
         return of(this.richieste);
     }

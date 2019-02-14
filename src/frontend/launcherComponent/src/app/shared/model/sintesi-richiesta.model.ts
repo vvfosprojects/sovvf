@@ -7,6 +7,7 @@ import { Complessita } from './complessita.model';
 import { Partenza } from './partenza.model';
 import { Evento } from './evento.model';
 import { Utente } from './utente.model';
+import { StatoRichiesta } from '../enum/stato-richiesta.enum';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -32,9 +33,9 @@ export class SintesiRichiesta {
          */
         public istanteRicezioneRichiesta: Date,
         /**
-         * Indica lo stato della richiesa di soccorso
+         * Indica lo stato della richiesta di soccorso
          */
-        public stato: string,
+        public stato: StatoRichiesta,
         /**
          * priorita della richiesta (da 0 a 4). 0 = Altissima, 1 = Alta, 2 = Media,
          * 3 = Bassa, 4 = Bassissima.

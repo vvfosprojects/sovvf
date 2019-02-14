@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { VoceFiltro } from '../../../../../shared/model/voce-filtro.model';
+import { VoceFiltro } from '../voce-filtro.model';
 
 @Component({
   selector: 'app-filtro',
