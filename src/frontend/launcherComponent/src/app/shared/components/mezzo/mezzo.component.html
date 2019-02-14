@@ -11,7 +11,7 @@
   <!-- indicatori -->
   <span class="d-inline-block pl-2">
     <a title="Indicatori mezzo" [ngbPopover]="indMez" placement="top" popoverTitle="Indicatori" triggers="click"
-      tabindex="0">
+      tabindex="0" (click)="$event.stopPropagation()">
       <i class="guida fa fa-briefcase fa-fw" style="color:cadetblue;" aria-hidden="true" title="Condizione del Mezzo"></i>
     </a>
 
@@ -44,7 +44,7 @@
   </span>
   <!-- notifiche mezzo -->
   <span class="d-inline-block">
-    <a [ngbPopover]="notMez" placement="top" triggers="click" popoverTitle="Notifiche mezzo" tabindex="0">
+    <a [ngbPopover]="notMez" placement="top" triggers="click" popoverTitle="Notifiche mezzo" tabindex="0" (click)="$event.stopPropagation()">
       <i class="guida fa fa-bell fa-fw" style="color:cadetblue!important;"></i>
     </a>
     <ng-template #notMez>
