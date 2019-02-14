@@ -117,64 +117,33 @@
             </tr>
             <tr>
                 <th scope="row" class="py-1 s-info-window">
-                    <span *ngIf="mezzoMarker.mezzo.squadre">
-                        <span class="mx-auto">
-                        <span class="mr-2" *ngIf="mezzoMarker.mezzo.squadre.length == 1">Squadra</span>
-                        <span class="mr-2" *ngIf="mezzoMarker.mezzo.squadre.length > 1">Squadre</span>
-                        <span *ngFor="let s of mezzoMarker.mezzo.squadre">
-                            <span class="mr-2">
-                                <a class="mr-1" href="javascript:void(0)" title="Componenti squadra"
-                                   [ngbPopover]="popComponenti"
-                                   popoverTitle="Componenti" triggers="click"
-                                   tabindex="0">
-                                <i class="guida fa fa-address-book-o" title="Componenti squadra"></i>
-                                </a>
-                                <span>{{ s.nome }}</span>
-                            </span>
-                            <span class="mr-2 text-right">
-                                <ng-template #popComponenti>
-                                    <div *ngFor="let c of s.componenti">
-                                        <app-componente [componente]="c"></app-componente>
-                                    </div>
-                                </ng-template>
-                            </span>
-                        </span>
-                        </span>
-                    </span>
-                    <span *ngIf="!mezzoMarker.mezzo.squadre">
-                        Nessuna squadra
-                    </span>
-                </th>
-            </tr>
-            <tr>
-                <th scope="row" class="py-1 s-info-window">
                     <div class="nowrap">
                         <span class="mr-2">Condizioni mezzo</span>
                         <a class="mr-1" href="javascript:void(0)" title="Stato di efficienza del mezzo"
+                           [autoClose]="false" triggers="manual" #efficienzaMezzo="ngbPopover" (click)="apriPopover(efficienzaMezzo)"
                            ngbPopover="{{mezzoMarker.mezzo.descrizioneStatoEfficienza}}"
-                           popoverTitle="Stato di efficienza del mezzo" triggers="click"
-                           tabindex="0">
+                           popoverTitle="Stato di efficienza del mezzo">
                             <i class='fa fa-cogs fa-fw'
                                [ngClass]="dettagliMezzo(mezzoMarker.mezzo.statoEfficienza, 'efficienza', 'text')"></i>
                         </a>
                         <a class="mr-1" href="javascript:void(0)" title="Livello Carburante"
                            ngbPopover="{{mezzoMarker.mezzo.descrizioneLivelloCarburante }}"
-                           popoverTitle="Livello Carburante" triggers="click"
-                           tabindex="0">
+                           [autoClose]="false" triggers="manual" #livelloCarburante="ngbPopover" (click)="apriPopover(livelloCarburante)"
+                           popoverTitle="Livello Carburante">
                             <i class='fa fa-tachometer fa-fw'
                                [ngClass]="dettagliMezzo(mezzoMarker.mezzo.livelloCarburante, 'carburante', 'text')"></i>
                         </a>
                         <a class="mr-1" href="javascript:void(0)" title="Livello Estinguente"
                            ngbPopover="{{mezzoMarker.mezzo.descrizioneLivelloEstinguente }}"
-                           popoverTitle="Livello Estinguente" triggers="click"
-                           tabindex="0">
+                           [autoClose]="false" triggers="manual" #livelloEstinguente="ngbPopover" (click)="apriPopover(livelloEstinguente)"
+                           popoverTitle="Livello Estinguente">
                             <i class='fa fa-tint fa-fw'
                                [ngClass]="dettagliMezzo(mezzoMarker.mezzo.livelloEstinguente, 'estinguente', 'text')"></i>
                         </a>
                         <a class="mr-1" href="javascript:void(0)" title="Appartenenza del mezzo"
                            ngbPopover="{{mezzoMarker.mezzo.descrizioneAppartenenza }}"
-                           popoverTitle="Appartenenza del mezzo" triggers="click"
-                           tabindex="0">
+                           [autoClose]="false" triggers="manual" #appartenenzaMezzo="ngbPopover" (click)="apriPopover(appartenenzaMezzo)"
+                           popoverTitle="Appartenenza del mezzo">
                             <i class='fa fa-flag fa-fw'
                                [ngClass]="dettagliMezzo(mezzoMarker.mezzo.appartenenza, 'appartenenza', 'text')"></i>
                         </a>

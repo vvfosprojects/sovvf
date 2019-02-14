@@ -1,5 +1,7 @@
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
+import { Partenza } from '../../../../shared/model/partenza.model';
+import { Squadra } from '../../../../shared/model/squadra.model';
 
 export class HelperSintesiRichiesta {
 
@@ -15,48 +17,46 @@ export class HelperSintesiRichiesta {
     }
 
     /* Restituisce i nomi delle squadre  */
-    nomiSquadre(richiesta: any): string[] {
-        let nomiSquadre: string[];
+    nomiSquadre(richiesta: SintesiRichiesta): string[] {
+        let nomiSquadre: string[] = [];
         if (richiesta.partenze) {
-            richiesta.partenze.forEach((partenza: any) => {
-                partenza.mezzi.forEach((mezzo: any) => {
-                    nomiSquadre = mezzo.squadre.map((s: any) => s.nome);
-                });
+            richiesta.partenze.forEach((partenza: Partenza) => {
+                    nomiSquadre = partenza.squadre.map((s: Squadra) => s.nome);
             });
         }
         return nomiSquadre;
     }
 
     /* Restituisce il numero delle squadre */
-    numeroSquadre(richiesta: any): number {
+    numeroSquadre(richiesta: SintesiRichiesta): number {
         let numeroSquadre = 0;
         if (richiesta.partenze) {
-            richiesta.partenze.forEach((partenza: any) => {
-                partenza.mezzi.forEach((mezzo: any) => {
-                    numeroSquadre = numeroSquadre + mezzo.squadre.length;
-                });
+            richiesta.partenze.forEach((partenza: Partenza) => {
+                numeroSquadre += partenza.squadre.length;
             });
         }
         return numeroSquadre;
     }
 
     /* Restituisce i nomi dei mezzi  */
-    nomiMezzi(richiesta: any): string[] {
-        let nomiMezzi = [];
+    nomiMezzi(richiesta: SintesiRichiesta): string[] {
+        const nomiMezzi = [];
         if (richiesta.partenze) {
-            richiesta.partenze.forEach((partenza: any) => {
-                nomiMezzi = partenza.mezzi.map((s: any) => s.descrizione);
+            richiesta.partenze.forEach((partenza: Partenza) => {
+                nomiMezzi.push(partenza.mezzo.codice);
             });
         }
         return nomiMezzi;
     }
 
     /* Restituisce il numero dei mezzi */
-    numeroMezzi(richiesta: any): number {
+    numeroMezzi(richiesta: SintesiRichiesta): number {
         let numeroMezzi = 0;
         if (richiesta.partenze) {
-            richiesta.partenze.forEach((partenza: any) => {
-                numeroMezzi = numeroMezzi + partenza.mezzi.length;
+            richiesta.partenze.forEach((partenza: Partenza) => {
+                if (partenza.mezzo) {
+                    numeroMezzi++;
+                }
             });
         }
         return numeroMezzi;

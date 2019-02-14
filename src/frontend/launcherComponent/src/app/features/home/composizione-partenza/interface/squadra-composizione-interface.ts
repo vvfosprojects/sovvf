@@ -1,8 +1,8 @@
-import { SquadraProvvisorio } from 'src/app/shared/model/squadra.provvisorio.model';
+import { Squadra } from 'src/app/shared/model/squadra.model';
 
 export interface SquadraComposizione {
     id: string;
-    squadra: SquadraProvvisorio;
+    squadra: Squadra;
     selezionato: boolean;
     hover: boolean;
 }

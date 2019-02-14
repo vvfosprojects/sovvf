@@ -2,14 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 // Models
-import { Mezzo } from '../../../shared/model/mezzo.model';
-import { Squadra } from '../../../shared/model/squadra.model';
 import { MezzoComposizione } from '../../../features/home/composizione-partenza/interface/mezzo-composizione-interface';
-import { Componente } from '../../../shared/model/componente.model';
 import { BoxPartenza } from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
-import { Coordinate } from '../../../shared/model/coordinate.model';
-import { Sede } from 'src/app/shared/model/sede.model';
 import { SquadraComposizione } from 'src/app/features/home/composizione-partenza/interface/squadra-composizione-interface';
+import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
 
 
 
@@ -58,7 +54,7 @@ export class CompPartenzaServiceFake {
             id: '1',
             squadra: {
               nome: 'Rossa',
-              stato: 'inSede',
+              stato: StatoSquadra.InSede,
               componenti: [
                 { descrizioneQualifica: 'CP', nominativo: 'Mario Verdi', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
                 { descrizioneQualifica: 'CP', nominativo: 'Francesco Rossi', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
@@ -115,7 +111,7 @@ export class CompPartenzaServiceFake {
             id: '1',
             squadra: {
               nome: 'Rossa',
-              stato: 'inSede',
+              stato: StatoSquadra.InSede,
               componenti: [
                 { descrizioneQualifica: 'CP', nominativo: 'Mario Verdi', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
                 { descrizioneQualifica: 'CP', nominativo: 'Francesco Rossi', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
@@ -138,7 +134,7 @@ export class CompPartenzaServiceFake {
             id: '2',
             squadra: {
               nome: 'Verde',
-              stato: 'inSede',
+              stato: StatoSquadra.InSede,
               componenti: [
                 { descrizioneQualifica: 'CP', nominativo: 'Paolo Marchio', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
                 { descrizioneQualifica: 'CP', nominativo: 'Francesca Ventura', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
@@ -195,7 +191,7 @@ export class CompPartenzaServiceFake {
             id: '1',
             squadra: {
               nome: 'Rossa',
-              stato: 'inSede',
+              stato: StatoSquadra.InSede,
               componenti: [
                 { descrizioneQualifica: 'CP', nominativo: 'Mario Verdi', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
                 { descrizioneQualifica: 'CP', nominativo: 'Francesco Rossi', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
@@ -218,7 +214,7 @@ export class CompPartenzaServiceFake {
             id: '2',
             squadra: {
               nome: 'Verde',
-              stato: 'inSede',
+              stato: StatoSquadra.InSede,
               componenti: [
                 { descrizioneQualifica: 'CP', nominativo: 'Paolo Marchio', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
                 { descrizioneQualifica: 'CP', nominativo: 'Francesca Ventura', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
@@ -275,7 +271,7 @@ export class CompPartenzaServiceFake {
             id: '1',
             squadra: {
               nome: 'Rossa',
-              stato: 'inSede',
+              stato: StatoSquadra.InSede,
               componenti: [
                 { descrizioneQualifica: 'CP', nominativo: 'Mario Verdi', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
                 { descrizioneQualifica: 'CP', nominativo: 'Francesco Rossi', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
@@ -332,7 +328,7 @@ export class CompPartenzaServiceFake {
             id: '1',
             squadra: {
               nome: 'Rossa',
-              stato: 'inSede',
+              stato: StatoSquadra.InSede,
               componenti: [
                 { descrizioneQualifica: 'CP', nominativo: 'Mario Verdi', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
                 { descrizioneQualifica: 'CP', nominativo: 'Francesco Rossi', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
@@ -355,7 +351,7 @@ export class CompPartenzaServiceFake {
             id: '2',
             squadra: {
               nome: 'Verde',
-              stato: 'inSede',
+              stato: StatoSquadra.InSede,
               componenti: [
                 { descrizioneQualifica: 'CP', nominativo: 'Paolo Marchio', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
                 { descrizioneQualifica: 'CP', nominativo: 'Francesca Ventura', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
@@ -385,7 +381,7 @@ export class CompPartenzaServiceFake {
             id: '1',
             squadra: {
               nome: 'Rossa',
-              stato: 'inSede',
+              stato: StatoSquadra.InSede,
               componenti: [
                 { descrizioneQualifica: 'CP', nominativo: 'Mario Verdi', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
                 { descrizioneQualifica: 'CP', nominativo: 'Francesco Rossi', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
@@ -408,7 +404,7 @@ export class CompPartenzaServiceFake {
             id: '2',
             squadra: {
               nome: 'Verde',
-              stato: 'inSede',
+              stato: StatoSquadra.InSede,
               componenti: [
                 { descrizioneQualifica: 'CP', nominativo: 'Paolo Marchio', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
                 { descrizioneQualifica: 'CP', nominativo: 'Francesca Ventura', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
@@ -638,7 +634,7 @@ export class CompPartenzaServiceFake {
         id: '1',
         squadra: {
           nome: 'Rossa',
-          stato: 'inSede',
+          stato: StatoSquadra.InSede,
           componenti: [
             { descrizioneQualifica: 'CP', nominativo: 'Mario Verdi', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
             { descrizioneQualifica: 'CP', nominativo: 'Francesco Rossi', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
@@ -661,7 +657,7 @@ export class CompPartenzaServiceFake {
         id: '2',
         squadra: {
           nome: 'Verde',
-          stato: 'inSede',
+          stato: StatoSquadra.InSede,
           componenti: [
             { descrizioneQualifica: 'CP', nominativo: 'Paolo Marchio', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
             { descrizioneQualifica: 'CP', nominativo: 'Francesca Ventura', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
@@ -684,7 +680,7 @@ export class CompPartenzaServiceFake {
         id: '3',
         squadra: {
           nome: 'Arancione',
-          stato: 'inSede',
+          stato: StatoSquadra.InSede,
           componenti: [
             { descrizioneQualifica: 'CP', nominativo: 'Paolo Marchio', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
             { descrizioneQualifica: 'CP', nominativo: 'Francesca Ventura', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },

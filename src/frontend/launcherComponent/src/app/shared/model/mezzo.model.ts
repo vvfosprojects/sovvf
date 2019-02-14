@@ -1,4 +1,5 @@
-import {Squadra} from './squadra.model';
+import { Sede } from './sede.model';
+import { StatoMezzo } from '../enum/stato-mezzo.enum';
 /**
  * Modella un mezzo impegnato su una richiesta di assistenza
  */
@@ -20,16 +21,16 @@ export class Mezzo {
          * Codice dello stato del mezzo (InSede, InViaggio, SulPosto,
          * InRientro, Istituto). Utile a definire il colore del segnale di stato.
          */
-        public stato: string,
-        /**
-         * Lista di squadre presenti a bordo del mezzo
-         */
-        public squadre: Squadra[],
+        public stato: string, // diventerà StatoMezzo
         /**
          * Codice dello stato di appartenenza del mezzo (0 = Proprio, 1 = Altra sede).
          * Utile a definire il colore della segnalazione sullo stato di appartenenza.
          */
         public appartenenza: number,
+        /**
+        * Distaccamento di appartenza
+        */
+        public distaccamento: Sede,
         /**
          * Testo della segnalazione sullo stato di appartenenza.
          */

@@ -1,9 +1,9 @@
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
-import { MezzoProvvisorio } from 'src/app/shared/model/mezzo.provvisorio.model';
+import { Mezzo } from 'src/app/shared/model/mezzo.model';
 
 export interface MezzoComposizione {
     id: string;
-    mezzo: MezzoProvvisorio;
+    mezzo: Mezzo;
     km: string;
     coordinate?: Coordinate;
     tempoPercorrenza: string;

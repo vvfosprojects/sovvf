@@ -1,7 +1,6 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
-import {Mezzo} from '../../model/mezzo.model';
-import {ColoriStatoMezzo} from '../../helper/_colori';
+import { Component, OnInit, Input } from '@angular/core';
+import { ColoriStatoMezzo } from '../../helper/_colori';
+import { Mezzo } from '../../model/mezzo.model';
 
 @Component({
     selector: 'app-mezzo',

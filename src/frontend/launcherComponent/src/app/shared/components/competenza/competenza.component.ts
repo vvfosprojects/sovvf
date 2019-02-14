@@ -18,7 +18,7 @@ export class CompetenzaComponent implements OnInit {
     }
 
     localizzazioneCompetenza(competenza): void {
-        console.log('Sono il componente. Voglio localizzare la competenza', competenza);
+        // console.log('Sono il componente. Voglio localizzare la competenza', competenza);
         this.LocalizzazioneCompetenza.emit(competenza.coordinate);
     }
 }

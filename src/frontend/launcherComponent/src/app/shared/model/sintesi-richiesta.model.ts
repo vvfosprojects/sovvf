@@ -4,10 +4,10 @@ import { Localita } from './localita.model';
 import { Richiedente } from './richiedente.model';
 import { Fonogramma } from './fonogramma.model';
 import { Complessita } from './complessita.model';
-import { Partenza } from './partenza.model';
 import { Evento } from './evento.model';
 import { Utente } from './utente.model';
 import { StatoRichiesta } from '../enum/stato-richiesta.enum';
+import { Partenza } from './partenza.model';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari

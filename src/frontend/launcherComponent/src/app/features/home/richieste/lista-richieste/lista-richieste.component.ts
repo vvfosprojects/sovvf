@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges, HostListener } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 // Model
@@ -44,24 +44,27 @@ export class ListaRichiesteComponent implements OnInit {
     @Output() selezione = new EventEmitter<string>();
     @Output() deselezione = new EventEmitter<boolean>();
 
-    preventSimpleClick: boolean;
     methods = new HelperSintesiRichiesta;
 
     @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
 
-    constructor(public listaRichiesteManager: ListaRichiesteManagerService,
-        private richiesteS: ListaRichiesteService,
-        private modalService: NgbModal,
-        private markerS: MarkerService) {
+    constructor(private richiesteS: ListaRichiesteService,
+                private modalService: NgbModal,
+                private markerS: MarkerService) {
     }
 
     ngOnInit() {
         this.viewport.scrolledIndexChange.subscribe(() => {
             const bottomOffset = this.viewport.measureScrollOffset('bottom');
-            if ( bottomOffset < 80) {
+            if (bottomOffset < 80) {
                 this.onNuoveRichieste();
             }
         });
+    }
+
+    @HostListener('window:scroll', [])
+    onWindowScroll() {
+        console.log('mike');
     }
 
     /* Permette di caricare nuove richieste */

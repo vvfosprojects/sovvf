@@ -283,14 +283,13 @@
                                             <b class="ml-1">#{{i+1}}</b>
                                         </div>
                                         <div class="col-4 my-1">
-                                            <app-mezzo *ngFor="let m of p.mezzi" [mezzo]="m"></app-mezzo>
-                                            <span *ngIf="!p.mezzi" class="p-2">
+                                            <app-mezzo [mezzo]="p.mezzo"></app-mezzo>
+                                            <span *ngIf="!p.mezzo" class="p-2">
                                                 Nessun mezzo
                                             </span>
                                         </div>
                                         <div class="col-6 my-1">
-                                            <span *ngFor="let m of p.mezzi">
-                                                <span *ngFor="let s of m.squadre">
+                                                <span *ngFor="let s of p.squadre">
                                                     <span class="mr-2">
                                                         <i class="guida fa fa-fire-extinguisher fa-fw"
                                                             title="Squadra"></i>
@@ -316,10 +315,9 @@
                                                         </ng-template>
                                                     </span>
                                                 </span>
-                                                <span *ngIf="!m.squadre" class="p-2">
+                                                <span *ngIf="!p.squadre" class="p-2">
                                                     Nessun squadra
                                                 </span>
-                                            </span>
                                         </div>
                                     </div>
                                 </li>
