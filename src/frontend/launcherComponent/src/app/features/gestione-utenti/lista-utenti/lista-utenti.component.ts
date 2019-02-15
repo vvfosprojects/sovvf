@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Utente } from 'src/app/shared/model/utente.model';
 
 @Component({
   selector: 'app-lista-utenti',
@@ -7,11 +8,12 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ListaUtentiComponent implements OnInit {
 
-  @Input() utenti: any[];
+  @Input() utenti: Utente[];
 
   constructor() { }
 
   ngOnInit() {
+    console.log('Utenti', this.utenti);
   }
 
 }
