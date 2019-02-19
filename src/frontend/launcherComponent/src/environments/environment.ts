@@ -30,6 +30,9 @@ export const environment = {
             mezzi: '',
             squadre: ''
         },
+        chiamata: {
+            currentId: '',
+        },
         users: '/users',
         genera: 'http://so115-mike/so115rest/api/GeneraSintesiRichiesteAssistenza',
         generaFake: true
