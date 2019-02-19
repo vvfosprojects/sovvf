@@ -5,7 +5,7 @@ import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
 import { Subject, Subscription } from 'rxjs';
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
 import { Store } from '@ngxs/store';
-import { AllFalseBoxRichieste, AllTrueBoxMezzi, Reducer, ResetAllBoxes } from '../boxes/store';
+import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick, ResetAllBoxes } from '../boxes/store';
 import { MezzoComposizione } from './interface/mezzo-composizione-interface';
 import { SquadraComposizione } from './interface/squadra-composizione-interface';
 import { BoxPartenza } from './interface/box-partenza-interface';
@@ -68,7 +68,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
             this.statoPrecedente = this.store.snapshot();
             this.store.dispatch(new AllFalseBoxRichieste());
             this.store.dispatch(new AllTrueBoxMezzi());
-            this.store.dispatch(new Reducer('richieste', wipeStatoRichiesta(this.richiesta.stato)));
+            this.store.dispatch(new ReducerBoxClick('richieste', wipeStatoRichiesta(this.richiesta.stato)));
         } else {
             this.dismissPartenza();
         }
@@ -83,7 +83,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.centerService.sendCentro(this.centroMappa);
         this.dismissPartenzaSubject.next(true);
         this.markerS.noAction();
-        this.store.dispatch(new ResetAllBoxes());
         this.store.reset(this.statoPrecedente);
         this.statoPartenza.emit(AppFeatures.Default);
     }

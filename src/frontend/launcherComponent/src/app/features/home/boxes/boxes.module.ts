@@ -15,6 +15,8 @@ import { BoxPersonaleService } from '../../../core/service/boxes-service/box-per
 import { BoxRichiesteFakeService } from '../../../core/service/boxes-service/box-richieste-fake.service';
 import { BoxMezziFakeService } from '../../../core/service/boxes-service/box-mezzi-fake.service';
 import { BoxPesonaleFakeService } from '../../../core/service/boxes-service/box-pesonale-fake.service';
+import { NgxsModule } from '@ngxs/store';
+import { BoxClickState, BoxMezziState, BoxPersonaleState, BoxRichiesteState } from './store';
 
 
 @NgModule({
@@ -22,7 +24,13 @@ import { BoxPesonaleFakeService } from '../../../core/service/boxes-service/box-
         CommonModule,
         NgbModule,
         PipeModule.forRoot(),
-        SharedModule.forRoot()
+        SharedModule.forRoot(),
+        NgxsModule.forFeature([
+            BoxRichiesteState,
+            BoxMezziState,
+            BoxPersonaleState,
+            BoxClickState,
+        ])
     ],
     declarations: [
         InfoAggregateComponent,
