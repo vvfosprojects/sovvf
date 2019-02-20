@@ -40,7 +40,7 @@ export class MeteoMarkersState {
 
     // REMOVE METEO MARKER
     @Action(RemoveMeteoMarker)
-    removeMeteoMarker({ getState, patchState }: StateContext<MeteoMarkersStateModel>, action: RemoveMeteoMarker) {
+    removeMeteoMarker({ getState, patchState }: StateContext<MeteoMarkersStateModel>) {
         const state = getState();
 
         patchState({

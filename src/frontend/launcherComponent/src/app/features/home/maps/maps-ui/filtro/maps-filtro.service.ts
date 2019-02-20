@@ -20,8 +20,6 @@ export class MapsFiltroService implements OnDestroy {
             ));
     }
 
-    boxClick: BoxClickInterface;
-
     filtroAttivo = ['richiesta'];
 
     filtroAttivoCopy: string[];

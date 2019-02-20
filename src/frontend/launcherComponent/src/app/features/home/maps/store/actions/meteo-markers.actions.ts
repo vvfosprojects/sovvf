@@ -14,6 +14,4 @@ export class AddMeteoMarker {
 
 export class RemoveMeteoMarker {
   static readonly type = '[MeteoMarkers] Remove Meteo Marker';
-
-  constructor() {}
 }
