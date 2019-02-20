@@ -2,9 +2,9 @@ import { Component, EventEmitter, Input, isDevMode, OnDestroy, OnInit, Output } 
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { CenterService } from '../maps/service/center-service/center-service.service';
 import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, Observable } from 'rxjs';
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
-import { Store } from '@ngxs/store';
+import { Store, Select } from '@ngxs/store';
 import { AllFalseBoxRichieste, AllTrueBoxMezzi, Reducer, ResetAllBoxes } from '../boxes/store';
 import { MezzoComposizione } from './interface/mezzo-composizione-interface';
 import { SquadraComposizione } from './interface/squadra-composizione-interface';
@@ -13,6 +13,12 @@ import { Composizione } from '../../../shared/enum/composizione.enum';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
 import { CompPartenzaService } from '../../../core/service/comp-partenza-service/comp-partenza.service';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
+import { GetMezziComposizione } from './store/actions/mezzi-composizione.actions';
+import { GetSquadreComposizione } from './store/actions/squadre-composizione.actions';
+import { MezziComposizioneState } from './store/states/mezzi-composizione.state';
+import { SquadreComposizioneState } from './store/states/squadre-composizione.state';
+import { PreAccoppiatiState } from './store/states/pre-accoppiati.state';
+import { GetPreAccoppiati } from './store/actions/pre-accoppiati.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -27,8 +33,14 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     Composizione = Composizione;
 
     subscription = new Subscription();
+
+    @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
     mezziComposizione: MezzoComposizione[];
+
+    @Select(SquadreComposizioneState.squadreComposizione) squadraComposizione$: Observable<SquadraComposizione[]>;
     squadreComposizione: SquadraComposizione[];
+
+    @Select(PreAccoppiatiState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     preAccoppiati: BoxPartenza[];
 
     centroMappa: CentroMappa;
@@ -36,28 +48,28 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     statoPrecedente: any;
 
     constructor(private store: Store,
-                private centerService: CenterService,
-                private markerS: MarkerService,
-                private compPartenzaService: CompPartenzaService) {
+        private centerService: CenterService,
+        private markerS: MarkerService,
+        private compPartenzaService: CompPartenzaService) {
 
         // Prendo i mezzi da visualizzare nella lista
         this.subscription.add(
-            this.compPartenzaService.getMezziComposizione().subscribe((mezziComp: MezzoComposizione[]) => {
-                this.mezziComposizione = mezziComp;
+            this.mezziComposizione$.subscribe((mezziComp: MezzoComposizione[]) => {
+                this.mezziComposizione = copyObj(mezziComp);
             })
         );
 
         // Prendo le squadre da visualizzare nella lista
         this.subscription.add(
-            this.compPartenzaService.getSquadre().subscribe((squadreComp: SquadraComposizione[]) => {
-                this.squadreComposizione = squadreComp;
+            this.squadraComposizione$.subscribe((squadreComp: SquadraComposizione[]) => {
+                this.squadreComposizione = copyObj(squadreComp);
             })
         );
 
         // Restituisce i PreAccoppiati
         this.subscription.add(
-            this.compPartenzaService.getPreAccoppiati().subscribe((preAccoppiati: BoxPartenza[]) => {
-                this.preAccoppiati = preAccoppiati;
+            this.preAccoppiati$.subscribe((preAccoppiati: BoxPartenza[]) => {
+                this.preAccoppiati = copyObj(preAccoppiati);
             })
         );
     }
@@ -66,6 +78,9 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.centroMappa = this.centerService.centroMappaIniziale;
         if (this.richiesta) {
             this.statoPrecedente = this.store.snapshot();
+            this.store.dispatch(new GetMezziComposizione());
+            this.store.dispatch(new GetSquadreComposizione());
+            this.store.dispatch(new GetPreAccoppiati());
             this.store.dispatch(new AllFalseBoxRichieste());
             this.store.dispatch(new AllTrueBoxMezzi());
             this.store.dispatch(new Reducer('richieste', wipeStatoRichiesta(this.richiesta.stato)));
@@ -83,7 +98,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.centerService.sendCentro(this.centroMappa);
         this.dismissPartenzaSubject.next(true);
         this.markerS.noAction();
-        this.store.dispatch(new ResetAllBoxes());
         this.store.reset(this.statoPrecedente);
         this.statoPartenza.emit(AppFeatures.Default);
     }
@@ -115,4 +129,8 @@ export function wipeStatoRichiesta(stato: StatoRichiesta): string {
     const mapTipoStato: Map<StatoRichiesta, string> = new Map(stati);
 
     return mapTipoStato.get(stato);
+}
+
+export function copyObj(obj: any) {
+    return JSON.parse(JSON.stringify(obj));
 }

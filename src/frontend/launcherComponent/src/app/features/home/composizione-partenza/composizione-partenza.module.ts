@@ -24,6 +24,13 @@ import { ComposizioneFilterbarComponent } from './shared/filterbar/composizione-
  */
 import { CompPartenzaService } from '../../../core/service/comp-partenza-service/comp-partenza.service';
 import { CompPartenzaServiceFake } from '../../../core/service/comp-partenza-service/comp-partenza.service.fake';
+/**
+ * Ngxs
+ */
+import { NgxsModule } from '@ngxs/store';
+import { MezziComposizioneState } from './store/states/mezzi-composizione.state';
+import { SquadreComposizioneState } from './store/states/squadre-composizione.state';
+import { PreAccoppiatiState } from './store/states/pre-accoppiati.state';
 
 @NgModule({
     declarations: [
@@ -46,6 +53,13 @@ import { CompPartenzaServiceFake } from '../../../core/service/comp-partenza-ser
             formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
         }),
         NgSelectModule,
+        NgxsModule.forFeature(
+            [
+                MezziComposizioneState,
+                SquadreComposizioneState,
+                PreAccoppiatiState
+            ]
+        ),
     ],
     exports: [
         ComposizionePartenzaComponent
