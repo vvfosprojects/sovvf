@@ -13,7 +13,6 @@ import { PipeModule } from '../../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { NgxsModule } from '@ngxs/store';
-import { BoxClickState, BoxMezziState, BoxPersonaleState, BoxRichiesteState } from './boxes/store';
 import { FiltriRichiesteState } from './filterbar/store/states/filtri-richieste.state';
 import { RicercaRichiesteState } from './filterbar/store/states/ricerca-richieste.state';
 import { MarkerMeteoState } from './filterbar/store/states/marker-meteo-switch.state';
@@ -32,9 +31,9 @@ import { FilterbarModule } from './filterbar/filterbar.module';
 import { MapsModule } from './maps/maps.module';
 import { RichiesteModule } from './richieste/richieste.module';
 import { ComposizionePartenzaModule } from './composizione-partenza/composizione-partenza.module';
-import { RichiestaFissataState } from './richieste/store/states/richiesta-fissata.state';
-import { RichiesteState } from './richieste/store/states/richieste.state';
-import { RichiestaHoverState } from './richieste/store/states/richiesta-hover.state';
+import { RichiestaFissataState } from './richieste/store/';
+import { RichiesteState } from './richieste/store/';
+import { RichiestaHoverState } from './richieste/store/';
 import { RichiestaSelezionataState } from './richieste/store/states/richiesta-selezionata.state';
 import { MezziComposizioneState } from './composizione-partenza/store/states/mezzi-composizione.state';
 
@@ -68,10 +67,6 @@ import { MezziComposizioneState } from './composizione-partenza/store/states/mez
         }),
         NgxsModule.forFeature(
             [
-                BoxRichiesteState,
-                BoxMezziState,
-                BoxPersonaleState,
-                BoxClickState,
                 FiltriRichiesteState,
                 RicercaRichiesteState,
                 MarkerMeteoState,

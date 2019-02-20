@@ -10,7 +10,7 @@ import { MeteoService } from '../../../../shared/meteo/meteo-service.service';
 import { Meteo } from '../../../../shared/model/meteo.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Select, Store } from '@ngxs/store';
-import { BoxRichiesteState, BoxMezziState, BoxPersonaleState, BoxClickState, InitBoxFiltri, Reducer, FetchBoxRichieste, FetchBoxMezzi, FetchBoxPersonale } from '../store';
+import { BoxRichiesteState, BoxMezziState, BoxPersonaleState, BoxClickState, InitBoxFiltri, ReducerBoxClick, FetchBoxRichieste, FetchBoxMezzi, FetchBoxPersonale } from '../store';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -47,7 +47,7 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     }
 
     clickBox(cat: string, tipo: string): void {
-        this.store.dispatch(new Reducer(cat, tipo));
+        this.store.dispatch(new ReducerBoxClick(cat, tipo));
     }
 
     clickServizi(tipo: string) {

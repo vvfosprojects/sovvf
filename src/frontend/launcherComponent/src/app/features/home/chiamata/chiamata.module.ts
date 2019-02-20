@@ -8,6 +8,10 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChiamataComponent } from './chiamata.component';
 import { SchedaTelefonataComponent } from './scheda-telefonata/scheda-telefonata.component';
+import { ChiamataService } from '../../../core/service/chiamata-service/chiamata.service';
+import { ChiamataServiceFake } from '../../../core/service/chiamata-service/chiamata.service.fake';
+import { NgxsModule } from '@ngxs/store';
+import { ChiamataState } from './store/states/chiamata.state';
 
 @NgModule({
     imports: [
@@ -17,7 +21,10 @@ import { SchedaTelefonataComponent } from './scheda-telefonata/scheda-telefonata
         GooglePlaceModule,
         NgbModule,
         ClipboardModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        NgxsModule.forFeature([
+            ChiamataState
+        ])
     ],
     declarations: [
         ChiamataComponent,
@@ -26,7 +33,9 @@ import { SchedaTelefonataComponent } from './scheda-telefonata/scheda-telefonata
     exports: [
         ChiamataComponent
     ],
-    providers: []
+    providers: [{
+        provide: ChiamataService, useClass: ChiamataServiceFake
+    }]
 })
 export class ChiamataModule {
 }

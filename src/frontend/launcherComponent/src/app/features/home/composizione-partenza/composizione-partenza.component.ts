@@ -5,13 +5,12 @@ import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
 import { Subject, Subscription, Observable } from 'rxjs';
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
 import { Store, Select } from '@ngxs/store';
-import { AllFalseBoxRichieste, AllTrueBoxMezzi, Reducer, ResetAllBoxes } from '../boxes/store';
+import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick, ResetAllBoxes } from '../boxes/store';
 import { MezzoComposizione } from './interface/mezzo-composizione-interface';
 import { SquadraComposizione } from './interface/squadra-composizione-interface';
 import { BoxPartenza } from './interface/box-partenza-interface';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
-import { CompPartenzaService } from '../../../core/service/comp-partenza-service/comp-partenza.service';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 import { GetMezziComposizione } from './store/actions/mezzi-composizione.actions';
 import { GetSquadreComposizione } from './store/actions/squadre-composizione.actions';
@@ -49,8 +48,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     constructor(private store: Store,
         private centerService: CenterService,
-        private markerS: MarkerService,
-        private compPartenzaService: CompPartenzaService) {
+        private markerS: MarkerService) {
 
         // Prendo i mezzi da visualizzare nella lista
         this.subscription.add(
@@ -83,7 +81,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
             this.store.dispatch(new GetPreAccoppiati());
             this.store.dispatch(new AllFalseBoxRichieste());
             this.store.dispatch(new AllTrueBoxMezzi());
-            this.store.dispatch(new Reducer('richieste', wipeStatoRichiesta(this.richiesta.stato)));
+            this.store.dispatch(new ReducerBoxClick('richieste', wipeStatoRichiesta(this.richiesta.stato)));
         } else {
             this.dismissPartenza();
         }

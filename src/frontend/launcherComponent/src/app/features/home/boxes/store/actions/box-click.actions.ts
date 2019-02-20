@@ -1,5 +1,5 @@
 // REDUCER
-export class Reducer {
+export class ReducerBoxClick {
     static readonly type = '[BoxClick] Reduce completato';
 
     constructor(public cat: string, public tipo: string) { }
