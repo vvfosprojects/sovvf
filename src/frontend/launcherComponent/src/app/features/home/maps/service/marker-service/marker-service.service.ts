@@ -1,30 +1,47 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { MarkedService } from '../marked-service/marked-service.service';
-import { Meteo } from '../../../../../shared/model/meteo.model';
-import { MeteoService } from '../../../../../shared/meteo/meteo-service.service';
-import { IconMappe } from './_icone';
-import { TipoMappe } from './_typeof';
-import { TipoColori } from './_color';
-import { AgmService } from '../../agm/agm-service.service';
-import { UnitaAttualeService } from '../../../../navbar/navbar-service/unita-attuale/unita-attuale.service';
-import { ListaRichiesteService } from '../../../richieste/service/lista-richieste-service.service';
-import { MezziMarkerManagerService, RichiesteMarkerManagerService } from '../../../../../core/manager/maps-manager';
+/**
+ * Model
+ */
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
 import { CentroMappa } from '../../maps-model/centro-mappa.model';
-import { MapsFiltroService } from '../../maps-ui/filtro/maps-filtro.service';
 import { MeteoMarker } from '../../maps-model/meteo-marker.model';
 import { Localita } from '../../../../../shared/model/localita.model';
-import { BoxClickArrayInterface } from '../../../boxes/box-interface/box-click-interface';
 import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
-import { Select, Store } from '@ngxs/store';
-import { MarkerMeteoState } from '../../../filterbar/store/states/marker-meteo-switch.state';
-import { SetRichiestaFissata, ClearRichiestaFissata } from '../../../richieste/store/actions/richiesta-fissata.actions';
+import { Meteo } from '../../../../../shared/model/meteo.model';
+/**
+ * Interface
+ */
+import { BoxClickArrayInterface } from '../../../boxes/box-interface/box-click-interface';
+/**
+ * Enum
+ */
 import { Markers } from '../../../../../shared/enum/markers.enum';
 import { MouseE } from '../../../../../shared/enum/mouse-e.enum';
 import { MapsEvent } from '../../../../../shared/enum/maps-event.enum';
+/**
+ * Service
+ */
+import { MarkedService } from '../marked-service/marked-service.service';
+import { MeteoService } from '../../../../../shared/meteo/meteo-service.service';
+import { AgmService } from '../../agm/agm-service.service';
+import { UnitaAttualeService } from '../../../../navbar/navbar-service/unita-attuale/unita-attuale.service';
+import { RichiesteMarkerManagerService } from '../../../../../core/manager/maps-manager';
+import { MapsFiltroService } from '../../maps-ui/filtro/maps-filtro.service';
+/**
+ * Ngxs
+ */
+import { Select, Store } from '@ngxs/store';
+import { MarkerMeteoState } from '../../../filterbar/store/states/marker-meteo-switch.state';
+import { SetRichiestaFissata, ClearRichiestaFissata } from '../../../richieste/store/actions/richiesta-fissata.actions';
 import { SetRichiestaHover, ClearRichiestaHover } from '../../../richieste/store/actions/richiesta-hover.actions';
+import { ClearRichiestaSelezionata } from '../../../richieste/store/actions/richiesta-selezionata.actions';
+
+import { IconMappe } from './_icone';
+import { TipoMappe } from './_typeof';
+import { TipoColori } from './_color';
+import { AddMeteoMarker, RemoveMeteoMarker } from '../../store';
 
 @Injectable()
 export class MarkerService implements OnDestroy {
@@ -56,9 +73,7 @@ export class MarkerService implements OnDestroy {
     constructor(private markedService: MarkedService,
         private meteoService: MeteoService,
         private agmService: AgmService,
-        private richiesteService: ListaRichiesteService,
         private markerRichiesteManager: RichiesteMarkerManagerService,
-        private markerMezziManager: MezziMarkerManagerService,
         private unitaAttualeS: UnitaAttualeService,
         private mapsFiltroService: MapsFiltroService,
         private store: Store) {
@@ -80,9 +95,6 @@ export class MarkerService implements OnDestroy {
         this.subscription.add(
             this.stateSwitch$.subscribe((state: boolean) => {
                 this.switchMeteo = state;
-                if (!this.switchMeteo) {
-                    this.subjectMeteoMarkers.next([]);
-                }
             })
         );
         this.subscription.add(
@@ -271,7 +283,6 @@ export class MarkerService implements OnDestroy {
                 break;
             default: {
                 this.noAction();
-                this.richiesteService.deselezionata();
                 this.checkMarker = null;
                 this.markerZIndex = null;
                 this.markerColorato = null;
@@ -279,6 +290,7 @@ export class MarkerService implements OnDestroy {
 
                 // Store implementation
                 this.store.dispatch(new ClearRichiestaFissata());
+                this.store.dispatch(new ClearRichiestaSelezionata());
             }
                 break;
         }
@@ -409,7 +421,7 @@ export class MarkerService implements OnDestroy {
             // console.log('manager non esistente');
         }
 
-        function capitalize(string) {
+        function capitalize(string: string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
 
@@ -491,10 +503,10 @@ export class MarkerService implements OnDestroy {
             const arrayM: MeteoMarker[] = [];
             arrayM.push(mMarker);
             this.getDatiMeteo(mMarker);
-            this.subjectMeteoMarkers.next(arrayM);
-        } else {
-            const arrayEmpty = [];
-            this.subjectMeteoMarkers.next(arrayEmpty);
+
+            // Store implementation
+            this.store.dispatch(new RemoveMeteoMarker());
+            this.store.dispatch(new AddMeteoMarker(arrayM));
         }
 
         function coord2String(number: number) {
@@ -503,9 +515,4 @@ export class MarkerService implements OnDestroy {
             return string.slice(0, ((countString - 5) * -1));
         }
     }
-
-    getMeteoMarker(): Observable<MeteoMarker[]> {
-        return this.subjectMeteoMarkers.asObservable();
-    }
-
 }

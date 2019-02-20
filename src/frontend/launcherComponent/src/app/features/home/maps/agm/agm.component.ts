@@ -119,7 +119,7 @@ export class AgmComponent implements OnInit, OnDestroy, OnChanges {
          * marker di tipo meteo
          * @type {Subscription}
          */
-        this.subscription.add(this.markerService.getMeteoMarker().subscribe(marker => {
+        this.subscription.add(this.meteoMarkers$.subscribe((marker: MeteoMarker[]) => {
             this.meteoMarkers = marker;
         }));
         /**

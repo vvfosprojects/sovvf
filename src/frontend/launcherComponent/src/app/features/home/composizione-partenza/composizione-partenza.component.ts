@@ -5,7 +5,7 @@ import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
 import { Subject, Subscription, Observable } from 'rxjs';
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
 import { Store, Select } from '@ngxs/store';
-import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick, ResetAllBoxes } from '../boxes/store';
+import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick } from '../boxes/store';
 import { MezzoComposizione } from './interface/mezzo-composizione-interface';
 import { SquadraComposizione } from './interface/squadra-composizione-interface';
 import { BoxPartenza } from './interface/box-partenza-interface';

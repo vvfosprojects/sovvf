@@ -243,7 +243,7 @@
                     </agm-snazzy-info-window>
                 </agm-marker>
             </ng-template>
-            <agm-marker *ngFor="let mMarker of meteoMarkers;"
+            <agm-marker *ngFor="let mMarker of (meteoMarkers$ | async);"
                         [latitude]="mMarker.localita.coordinate.latitudine"
                         [longitude]="mMarker.localita.coordinate.longitudine"
                         [iconUrl]="meteoMarkerIconUrl">

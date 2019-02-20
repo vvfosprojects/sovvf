@@ -39,6 +39,12 @@ import {
     CentroMappaService, MezziMarkerService, SediMarkerService, RichiesteMarkerService,
     CentroMappaServiceFake, MezziMarkerServiceFake, SediMarkerServiceFake, RichiesteMarkerServiceFake
 } from '../../../core/service/maps-service';
+/**
+ * Ngxs
+ */
+import { NgxsModule } from '@ngxs/store';
+import { MarkerMeteoState } from '../filterbar/store/states/marker-meteo-switch.state';
+import { MeteoMarkersState } from './store/states/meteo-markers.state';
 
 @NgModule({
     imports: [
@@ -49,7 +55,13 @@ import {
         AgmDirectionModule,
         AgmJsMarkerClustererModule,
         AgmSnazzyInfoWindowModule,
-        SharedModule.forRoot()
+        SharedModule.forRoot(),
+        NgxsModule.forFeature(
+            [
+                MarkerMeteoState,
+                MeteoMarkersState
+            ]
+        ),
     ],
     declarations: [
         MapsComponent,

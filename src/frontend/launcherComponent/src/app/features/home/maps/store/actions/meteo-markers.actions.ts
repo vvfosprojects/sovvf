@@ -9,11 +9,11 @@ export class GetMeteoMarkers {
 export class AddMeteoMarker {
   static readonly type = '[MeteoMarkers] Add Meteo Marker';
 
-  constructor(public marker: MeteoMarker) {}
+  constructor(public marker: MeteoMarker[]) {}
 }
 
 export class RemoveMeteoMarker {
   static readonly type = '[MeteoMarkers] Remove Meteo Marker';
 
-  constructor(public marker: MeteoMarker) {}
+  constructor() {}
 }

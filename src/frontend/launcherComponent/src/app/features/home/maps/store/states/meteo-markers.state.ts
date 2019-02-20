@@ -10,13 +10,13 @@ export interface MeteoMarkersStateModel {
     meteoMarkers: MeteoMarker[];
 }
 
-export const boxesStateDefaults: MeteoMarkersStateModel = {
+export const meteoMarkerStateDefaults: MeteoMarkersStateModel = {
     meteoMarkers: []
 };
 
 @State<MeteoMarkersStateModel>({
-    name: 'filterbar',
-    defaults: boxesStateDefaults
+    name: 'meteoMarker',
+    defaults: meteoMarkerStateDefaults
 })
 export class MeteoMarkersState {
 
@@ -29,14 +29,12 @@ export class MeteoMarkersState {
 
     // ADD METEO MARKER
     @Action(AddMeteoMarker)
-    addMeteoMarker({ getState, patchState }: StateContext<MeteoMarkersStateModel>, action: AddMeteoMarker) {
+    addMeteoMarker({ getState, patchState, dispatch }: StateContext<MeteoMarkersStateModel>, action: AddMeteoMarker) {
         const state = getState();
-
-        const meteoMarkers = copyObj(state.meteoMarkers);
 
         patchState({
             ...state,
-            meteoMarkers: addMeteoMarker(meteoMarkers, action.marker)
+            meteoMarkers: addMeteoMarker(action.marker[0])
         });
     }
 
@@ -45,22 +43,16 @@ export class MeteoMarkersState {
     removeMeteoMarker({ getState, patchState }: StateContext<MeteoMarkersStateModel>, action: RemoveMeteoMarker) {
         const state = getState();
 
-        const meteoMarkers = copyObj(state.meteoMarkers);
-
         patchState({
             ...state,
-            meteoMarkers: removeMeteoMarker(meteoMarkers, action.marker)
+            meteoMarkers: []
         });
     }
 }
 
-export function addMeteoMarker(markers: MeteoMarker[], marker: MeteoMarker) {
+export function addMeteoMarker(marker: MeteoMarker) {
+    const markers: MeteoMarker[] = [];
     markers.push(marker);
-    return markers;
-}
-
-export function removeMeteoMarker(markers: MeteoMarker[], marker: MeteoMarker) {
-    markers.pop();
     return markers;
 }
 
