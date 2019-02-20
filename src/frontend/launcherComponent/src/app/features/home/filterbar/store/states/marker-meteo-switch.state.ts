@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 
 // Action
-import { SetMarkerMeteo } from '../actions/marker-meteo-switch.actions';
+import { SetMarkerMeteoSwitch } from '../actions/marker-meteo-switch.actions';
 import { RemoveMeteoMarker } from '../../../maps/store';
 
 export interface MarkerMeteoStateModel {
@@ -27,8 +27,8 @@ export class MarkerMeteoState {
   }
 
   // SET MARKER METEO
-  @Action(SetMarkerMeteo)
-  setMarkerMeteo({ getState, patchState, dispatch }: StateContext<MarkerMeteoStateModel>, action: SetMarkerMeteo) {
+  @Action(SetMarkerMeteoSwitch)
+  setMarkerMeteoSwitch({ getState, patchState, dispatch }: StateContext<MarkerMeteoStateModel>, action: SetMarkerMeteoSwitch) {
     const state = getState();
 
     if (!action.active) {

@@ -1,7 +1,7 @@
 
 // SET MARKER METEO
-export class SetMarkerMeteo {
-    static readonly type = '[MarkerMeteoSwitch] Set Meteo Marker Visibility';
+export class SetMarkerMeteoSwitch {
+    static readonly type = '[MarkerMeteoSwitch] Set Meteo Marker Switch';
 
     constructor(public active: boolean) {}
 }

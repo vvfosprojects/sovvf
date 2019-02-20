@@ -11,7 +11,7 @@ import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
 import { RicercaRichiesteState } from './store/states/ricerca-richieste.state';
 // Marker Meteo Switch
 import { MarkerMeteoState } from './store/states/marker-meteo-switch.state';
-import { SetMarkerMeteo } from './store/actions/marker-meteo-switch.actions';
+import { SetMarkerMeteoSwitch } from './store/actions/marker-meteo-switch.actions';
 import { SetRicerca } from './store/actions/ricerca-richieste.actions';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
 
@@ -70,7 +70,7 @@ export class FilterbarComponent implements OnInit {
      * Marker Meteo Switch Events
      */
     onChange(active: boolean) {
-        this.store.dispatch(new SetMarkerMeteo(active));
+        this.store.dispatch(new SetMarkerMeteoSwitch(active));
     }
 
     compPartenzaSwitch(event: string) {
