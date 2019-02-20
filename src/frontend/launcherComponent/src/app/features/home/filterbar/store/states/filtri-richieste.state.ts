@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 
 // Model
-import { VoceFiltro } from '../../voce-filtro.model';
+import { VoceFiltro } from '../../filtri-richieste/voce-filtro.model';
 
 // Action
 import { GetFiltriRichieste, SetFiltroSelezionato, ResetFiltriSelezionati } from '../actions/filtri-richieste.actions';

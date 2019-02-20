@@ -83,10 +83,14 @@ export class ListaRichiesteComponent implements OnInit {
 
     /* Gestisce il double click sulla richiesta */
     richiestaDoubleClick(richiesta: SintesiRichiesta) {
-        if (richiesta) {
-            this.richiesteS.selezionata(richiesta.id);
+        if (richiesta !== this.richiestaSelezionata) {
+            this.markerS.actionById(richiesta.id, 'click', false);
+            this.selezione.emit(richiesta.codice);
             // TEST
             // console.log('Doppio click su', richiesta);
+        } else {
+            this.markerS.actionById(richiesta.id, 'click', true);
+            this.deselezione.emit(true);
         }
     }
 

@@ -14,9 +14,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { NgxsModule } from '@ngxs/store';
 import { BoxClickState, BoxMezziState, BoxPersonaleState, BoxRichiesteState } from './boxes/store';
-import { FiltriRichiesteState } from './filterbar/filtri-richieste/store';
-import { RicercaRichiesteState } from './filterbar/ricerca-richieste/store';
-import { MarkerMeteoState } from './filterbar/marker-meteo-switch/store';
+import { FiltriRichiesteState } from './filterbar/store/states/filtri-richieste.state';
+import { RicercaRichiesteState } from './filterbar/store/states/ricerca-richieste.state';
+import { MarkerMeteoState } from './filterbar/store/states/marker-meteo-switch.state';
 import { MarkerService } from './maps/service/marker-service/marker-service.service';
 import { MarkedService } from './maps/service/marked-service/marked-service.service';
 import { DirectionService } from './maps/service/direction-service/direction-service.service';
@@ -36,6 +36,7 @@ import { RichiestaFissataState } from './richieste/store/states/richiesta-fissat
 import { RichiesteState } from './richieste/store/states/richieste.state';
 import { RichiestaHoverState } from './richieste/store/states/richiesta-hover.state';
 import { RichiestaSelezionataState } from './richieste/store/states/richiesta-selezionata.state';
+import { MezziComposizioneState } from './composizione-partenza/store/states/mezzi-composizione.state';
 
 @NgModule({
     declarations: [

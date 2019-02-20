@@ -11,9 +11,9 @@ import { MarkerService } from '../maps/service/marker-service/marker-service.ser
 
 // Ngxs
 import { Select, Store } from '@ngxs/store';
-import { RicercaRichiesteState } from '../filterbar/ricerca-richieste/store/';
+import { RicercaRichiesteState } from '../filterbar/store/states/ricerca-richieste.state';
 import { SetRichiestaFissata, ClearRichiestaFissata } from './store/actions/richiesta-fissata.actions';
-import { RichiestaFissataState, RichiesteState, RichiestaHoverState } from './store/';
+import { RichiestaFissataState, RichiesteState, RichiestaHoverState } from './store';
 import { GetRichieste } from './store/actions/richieste.actions';
 import { SetRichiestaHover, ClearRichiestaHover } from './store/actions/richiesta-hover.actions';
 import { SetRichiestaSelezionata, ClearRichiestaSelezionata } from './store/actions/richiesta-selezionata.actions';
@@ -79,13 +79,17 @@ export class RichiesteComponent implements OnInit, OnDestroy {
             this.richieste$.subscribe((richieste: any) => {
                 if (richieste.length > 0) {
                     this.richieste = richieste;
-                    this.loaderNuoveRichieste = false;
+                    setTimeout(() => {
+                        this.loaderNuoveRichieste = false;
+                    }, 500);
                     this.contatoreNuoveRichieste = false;
                     setTimeout(() => {
                         this.loaderRichieste = false;
                     }, 100);
                 } else if (richieste.length <= 0) {
-                    this.loaderNuoveRichieste = false;
+                    setTimeout(() => {
+                        this.loaderNuoveRichieste = false;
+                    }, 500);
                     this.contatoreNuoveRichieste = false;
                     this.toastr.warning('Non ci sono altre richieste da visualizzare', 'Richieste terminate', {
                         timeOut: 5000

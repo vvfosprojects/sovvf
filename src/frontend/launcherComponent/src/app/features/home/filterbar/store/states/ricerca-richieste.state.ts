@@ -4,7 +4,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SetRicerca } from '../actions/ricerca-richieste.actions';
 
 // State
-import { FiltriRichiesteState } from '../../../filtri-richieste/store/states/filtri-richieste.state';
+import { FiltriRichiesteState } from './filtri-richieste.state';
 
 export interface RicercaRichiesteStateModel {
     ricerca: any;
