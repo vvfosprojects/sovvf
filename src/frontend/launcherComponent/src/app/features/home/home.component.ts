@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     viewState: ViewInterface;
 
     richiestaNuovaPartenza: SintesiRichiesta;
-    chiamataMarker: ChiamataMarker;
+    // chiamataMarker: ChiamataMarker;
 
     constructor(private viewService: ViewService) {
         this.viewState = this.viewService.viewState;
@@ -40,7 +40,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.viewService.switchView(event, chiamata);
     }
 
-    _chiamataMarker(chiamata: ChiamataMarker) {
-        this.chiamataMarker = chiamata;
-    }
+    // _chiamataMarker(chiamata: ChiamataMarker) {
+    //     this.chiamataMarker = chiamata;
+    // }
+
 }

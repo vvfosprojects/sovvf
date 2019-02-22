@@ -35,7 +35,6 @@ import { RichiestaFissataState } from './richieste/store/';
 import { RichiesteState } from './richieste/store/';
 import { RichiestaHoverState } from './richieste/store/';
 import { RichiestaSelezionataState } from './richieste/store/states/richiesta-selezionata.state';
-import { MezziComposizioneState } from './composizione-partenza/store/states/mezzi-composizione.state';
 
 @NgModule({
     declarations: [

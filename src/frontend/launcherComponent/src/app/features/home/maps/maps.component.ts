@@ -6,11 +6,13 @@ import { SedeMarker } from './maps-model/sede-marker.model';
 import { MezzoMarker } from './maps-model/mezzo-marker.model';
 import { ChiamataMarker } from './maps-model/chiamata-marker.model';
 import { ComposizioneMarker } from './maps-model/composizione-marker.model';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { ViewInterfaceMaps } from '../../../shared/interface/view.interface';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { wipeStatoRichiesta } from '../composizione-partenza/composizione-partenza.component';
+import { Select } from '@ngxs/store';
+import { SchedaTelefonataState } from '../chiamata/store/states/scheda-telefonata.state';
 
 @Component({
     selector: 'app-maps',
@@ -21,14 +23,15 @@ export class MapsComponent implements OnInit, OnChanges, OnDestroy {
 
     centroMappa: CentroMappa;
     richiesteMarkers: RichiestaMarker[] = [];
-    sediMarkers: SedeMarker[];
-    mezziMarkers: MezzoMarker[];
+    sediMarkers: SedeMarker[] = [];
+    mezziMarkers: MezzoMarker[] = [];
     composizioneMarkers: ComposizioneMarker[] = [];
     chiamataMarkers: ChiamataMarker[] = [];
     subscription = new Subscription();
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Input() richiestaPartenza: SintesiRichiesta;
-    @Input() chiamataMarker: ChiamataMarker;
+    // @Input() chiamataMarker: ChiamataMarker;
+    @Select(SchedaTelefonataState.inserisciMarkerChiamata) chiamataMarkers$: Observable<ChiamataMarker[]>;
     mapsFullyLoaded = false;
 
     constructor(private richiesteManager: MapManager.RichiesteMarkerManagerService,
@@ -70,6 +73,8 @@ export class MapsComponent implements OnInit, OnChanges, OnDestroy {
             this.sediMarkers = r;
         }));
 
+        this.subscription.add(this.chiamataMarkers$.subscribe((r: ChiamataMarker[]) => this.chiamataMarkers = r));
+
     }
 
     static mapPartenzaMarker(richiesta: SintesiRichiesta): ComposizioneMarker {
@@ -96,13 +101,13 @@ export class MapsComponent implements OnInit, OnChanges, OnDestroy {
         } else {
             this.composizioneMarkers = [];
         }
-        if (changes.chiamataMarker) {
-            if (changes.chiamataMarker.currentValue) {
-                this.chiamataMarkers[0] = changes.chiamataMarker.currentValue;
-            }
-        } else {
-            this.chiamataMarkers = [];
-        }
+        // if (changes.chiamataMarker) {
+        //     if (changes.chiamataMarker.currentValue) {
+        //         this.chiamataMarkers[0] = changes.chiamataMarker.currentValue;
+        //     }
+        // } else {
+        //     this.chiamataMarkers = [];
+        // }
     }
 
     ngOnDestroy() {
