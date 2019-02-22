@@ -10,7 +10,7 @@ const appRoutes: Routes = [
     { path: RoutesPath.Logged, loadChildren: './features/logged/logged.module#LoggedModule', },
     { path: RoutesPath.Servizi, loadChildren: './features/servizi/servizi.module#ServiziModule', canActivate: [AuthGuard], data: { roles: [Role.Admin] } },
     { path: RoutesPath.Statistiche, loadChildren: './features/statistiche/statistiche.module#StatisticheModule' },
-    { path: RoutesPath.GestioneUtenti, loadChildren: './features/gestione-utenti/gestione-utenti.module#GestioneUtentiModule' },
+    { path: RoutesPath.GestioneUtenti, loadChildren: './features/gestione-utenti/gestione-utenti.module#GestioneUtentiModule', canActivate: [AuthGuard], data: { roles: [Role.Admin] } },
     { path: RoutesPath.NotFound, loadChildren: './features/not-found/not-found.module#NotFoundModule' },
     { path: '', pathMatch: 'full', redirectTo: RoutesPath.Home },
     { path: '**', redirectTo: RoutesPath.NotFound }

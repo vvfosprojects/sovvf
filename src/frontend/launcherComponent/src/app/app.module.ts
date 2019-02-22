@@ -28,13 +28,13 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { UtentiState } from './shared/store';
 
 /**
  * Route
  */
 import { APP_ROUTING } from './app.routing';
-import { JwtInterceptor, ErrorInterceptor } from './core/auth/_helpers';
-import { fakeBackendProvider } from './core/auth/_helpers';
+import { JwtInterceptor, ErrorInterceptor, fakeBackendProvider } from './core/auth/_helpers';
 /**
  * Module Components
  */
@@ -72,7 +72,7 @@ import { AppLoadModule } from './core/app-load/app-load.module';
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [],
+            [UtentiState],
             { developmentMode: !environment.production }
         ),
         NgxsStoragePluginModule.forRoot({
@@ -93,7 +93,7 @@ import { AppLoadModule } from './core/app-load/app-load.module';
         /**
          * provider fake per la login
          */
-        fakeBackendProvider,
+        fakeBackendProvider
     ],
     bootstrap: [AppComponent]
 })

@@ -16,9 +16,10 @@ export class GestioneUtentiComponent implements OnInit {
 
   ricercaUtenti: string;
 
-  constructor() { }
+  constructor(private store: Store) { }
 
   ngOnInit() {
+      this.store.dispatch(new GetUtenti());
   }
 
 }
