@@ -13,7 +13,7 @@ export class EventiRichiestaService {
     constructor(private http: HttpClient) {
     }
 
-    getEventiRichiesta(): Observable<EventoRichiesta[]> {
+    getEventiRichiesta(idRichiesta: string): Observable<EventoRichiesta[]> {
         return this.http.get<EventoRichiesta[]>(API_URL).pipe(
             retry(3),
             catchError(this.handleError)

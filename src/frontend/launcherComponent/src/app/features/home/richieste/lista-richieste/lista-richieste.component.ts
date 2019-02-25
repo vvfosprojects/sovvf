@@ -14,6 +14,8 @@ import { MarkerService } from '../../maps/service/marker-service/marker-service.
 // Helper methods
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { SetIdRichiestaEventi } from '../../eventi/store/actions/eventi-richiesta.actions';
+import { Store } from '@ngxs/store';
 
 export const scrolledItems = 11;
 
@@ -49,7 +51,7 @@ export class ListaRichiesteComponent implements OnInit {
 
     @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
 
-    constructor(private richiesteS: ListaRichiesteService,
+    constructor(private store: Store,
                 private modalService: NgbModal,
                 private markerS: MarkerService) {
     }
@@ -71,11 +73,9 @@ export class ListaRichiesteComponent implements OnInit {
     /* Gestisce il singolo click sulla richiesta */
     richiestaClick(richiesta: SintesiRichiesta) {
         if (richiesta !== this.richiestaSelezionata) {
-            // this.richiesteS.selezionata(richiesta.id);
             this.markerS.actionById(richiesta.id, 'click', false);
             this.selezione.emit(richiesta.codice);
         } else {
-            // this.richiesteS.deselezionata();
             this.markerS.actionById(richiesta.id, 'click', true);
             this.deselezione.emit(true);
         }
@@ -129,7 +129,8 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
-    visualizzaEventiRichiesta(richiesta: SintesiRichiesta) {
+    visualizzaEventiRichiesta(idRichiesta: string) {
+        this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
         this.modalService.open(EventiRichiestaComponent, { size: 'lg', centered: true });
     }
 

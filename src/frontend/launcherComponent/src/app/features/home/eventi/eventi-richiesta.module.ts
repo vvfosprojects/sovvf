@@ -8,6 +8,8 @@ import {PipeModule} from '../../../shared/pipes/pipe.module';
 import {SharedModule} from '../../../shared/shared.module';
 import {EventiRichiestaService} from '../../../core/service/eventi-richiesta-service/eventi-richiesta.service';
 import {EventiRichiestaServiceFake} from '../../../core/service/eventi-richiesta-service/eventi-richiesta.service.fake';
+import { NgxsModule } from '@ngxs/store';
+import { EventiRichiestaState } from './store/states/eventi-richiesta.state';
 
 
 @NgModule({
@@ -15,7 +17,10 @@ import {EventiRichiestaServiceFake} from '../../../core/service/eventi-richiesta
         CommonModule,
         NgbModule,
         PipeModule.forRoot(),
-        SharedModule.forRoot()
+        SharedModule.forRoot(),
+        NgxsModule.forFeature([
+            EventiRichiestaState
+        ])
     ],
     declarations: [
         EventiRichiestaComponent,

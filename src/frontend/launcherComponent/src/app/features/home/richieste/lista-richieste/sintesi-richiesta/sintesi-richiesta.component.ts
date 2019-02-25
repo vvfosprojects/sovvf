@@ -23,7 +23,7 @@ export class SintesiRichiestaComponent implements OnInit {
     @Output() clickRichiesta: EventEmitter<any> = new EventEmitter();
     @Output() doubleClickRichiesta: EventEmitter<any> = new EventEmitter();
     @Output() fissaInAlto: EventEmitter<any> = new EventEmitter();
-    @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
+    @Output() eventiRichiesta: EventEmitter<string> = new EventEmitter();
     @Output() nuovaPartenza: EventEmitter<any> = new EventEmitter();
     @Output() dismissNuovaPartenza: EventEmitter<any> = new EventEmitter();
     @Input() richiesta: SintesiRichiesta;
@@ -77,8 +77,8 @@ export class SintesiRichiestaComponent implements OnInit {
             this.fissaInAlto.emit(richiesta);
         }
     }
-    visualizzaEventiRichiesta(richiesta: any) {
-        this.eventiRichiesta.emit(richiesta);
+    visualizzaEventiRichiesta(idRichiesta: string) {
+        this.eventiRichiesta.emit(idRichiesta);
     }
     invioPartenza(richiesta: any) {
         if (this.partenza) {

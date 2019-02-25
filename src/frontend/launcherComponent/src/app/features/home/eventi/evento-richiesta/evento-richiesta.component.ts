@@ -18,7 +18,7 @@ export class EventoRichiestaComponent implements OnInit {
 
     @Input() istanteEventoPrecedente: Date;
     @Input() istantePrimoEvento: Date;
-    @Input() nomeClasseEvento;
+    @Input() nomeClasseEvento: any;
 
 
     constructor() {
@@ -74,7 +74,7 @@ export class EventoRichiestaComponent implements OnInit {
         this.espanso = !this.espanso;
     }
 
-    private clickDettaglio(event): void {
+    private clickDettaglio(event: any): void {
         console.log('EventoRichiestaComponent.clickDettaglio(): ', event, this.eventoRichiesta.id);
         this.mostraDettaglio.emit(this.eventoRichiesta);
         // alert("cliccato");

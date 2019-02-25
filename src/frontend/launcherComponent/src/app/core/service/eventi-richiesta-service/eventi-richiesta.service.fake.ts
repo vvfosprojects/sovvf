@@ -9,15 +9,8 @@ export class EventiRichiestaServiceFake {
     constructor() {
     }
 
-    public getEventiRichiesta(): Observable<EventoRichiesta[]> {
+    public getEventiRichiesta(idRichiesta: string): Observable<EventoRichiesta[]> {
         const elencoEventiRichiesta: EventoRichiesta[] = [
-            // new EventoRichiesta(
-            //     '6',
-            //     'RiaperturaRichiesta',
-            //     new Date(moment().subtract(18, 'minutes').toDate()),
-            //     '',
-            //     'dall\'operatore UTENTE1',
-            //     'http://about:blank'),
             new EventoRichiesta(
                 '6',
                 'ChiusuraRichiesta',
@@ -39,41 +32,6 @@ export class EventiRichiestaServiceFake {
                 '45678',
                 'da Viale Europa, 184 - Roma',
                 'http://about:blank'),
-            // new EventoRichiesta(
-            //     '3',
-            //     'VaInFuoriServizio',
-            //     new Date(moment().subtract(22, 'minutes').toDate()),
-            //     '45678',
-            //     'movimento GAC',
-            //     'http://about:blank'),
-            // new EventoRichiesta(
-            //     '3',
-            //     'RevocaPerAltraMotivazione',
-            //     new Date(moment().subtract(23, 'minutes').toDate()),
-            //     '45678',
-            //     'rifornimento carburante',
-            //     'http://about:blank'),
-            // new EventoRichiesta(
-            //     '3',
-            //     'RevocaPerFuoriServizio',
-            //     new Date(moment().subtract(24, 'minutes').toDate()),
-            //     '45678',
-            //     'movimento GAC',
-            //     'http://about:blank'),
-            // new EventoRichiesta(
-            //     '3',
-            //     'RevocaPerInterventoNonPiuNecessario',
-            //     new Date(moment().subtract(25, 'minutes').toDate()),
-            //     '45678',
-            //     'dall\'operatore UTENTE2',
-            //     'http://about:blank'),
-            // new EventoRichiesta(
-            //     '3',
-            //     'RevocaPerRiassegnazione',
-            //     new Date(moment().subtract(26, 'minutes').toDate()),
-            //     '45678',
-            //     'assegnato alla richiesta 345.433.890',
-            //     'http://about:blank'),
             new EventoRichiesta(
                 '3',
                 'ArrivoSulPosto',
@@ -102,13 +60,6 @@ export class EventiRichiestaServiceFake {
                 '',
                 'dall\'operatore UTENTE3',
                 'http://about:blank'),
-            // new EventoRichiesta(
-            //     '0b',
-            //     'MarcaNonRilevante',
-            //     new Date(moment().subtract(31, 'minutes').toDate()),
-            //     '',
-            //     'dall\'operatore UTENTE1',
-            //     'http://about:blank'),
             new EventoRichiesta(
                 '0b',
                 'MarcaRilevante',

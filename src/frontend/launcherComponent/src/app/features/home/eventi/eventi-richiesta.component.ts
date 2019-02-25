@@ -1,6 +1,10 @@
 import {Component, OnInit} from '@angular/core';
+import { Select, Store } from '@ngxs/store';
+import { EventiRichiestaState } from './store/states/eventi-richiesta.state';
+import { Observable } from 'rxjs';
 import {EventoRichiesta} from './eventi-model/evento-richiesta.model';
-import { EventiRichiestaService } from '../../../core/service/eventi-richiesta-service/eventi-richiesta.service';
+import { GetEventiRichiesta } from './store/actions/eventi-richiesta.actions';
+/* import { EventiRichiestaService } from '../../../core/service/eventi-richiesta-service/eventi-richiesta.service'; */
 
 @Component({
     selector: 'app-eventi-richiesta',
@@ -9,20 +13,13 @@ import { EventiRichiestaService } from '../../../core/service/eventi-richiesta-s
 })
 export class EventiRichiestaComponent implements OnInit {
 
-    elencoEventiRichiesta: EventoRichiesta[] = [];
+    @Select(EventiRichiestaState.eventi) eventiRichiesta$: Observable<EventoRichiesta[]>;
 
-    constructor(private eventiRichiestaService: EventiRichiestaService) {
+    constructor(private store: Store) {
 
     }
 
     ngOnInit() {
-        this.getEventi();
-    }
-
-    getEventi() {
-        this.eventiRichiestaService.getEventiRichiesta()
-            .subscribe(eventiRichieste => {
-                this.elencoEventiRichiesta = eventiRichieste;
-            });
+        this.store.dispatch(new GetEventiRichiesta());
     }
 }
