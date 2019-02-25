@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
 
@@ -8,6 +8,7 @@ import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
 
 // Helper Methods
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
+import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -38,6 +39,9 @@ export class SintesiRichiestaComponent implements OnInit {
     methods = new HelperSintesiRichiesta;
     isSingleClick = true;
     live = true;
+
+    // Enum
+    StatoRichiesta = StatoRichiesta;
 
     constructor(popoverConfig: NgbPopoverConfig,
         tooltipConfig: NgbTooltipConfig,

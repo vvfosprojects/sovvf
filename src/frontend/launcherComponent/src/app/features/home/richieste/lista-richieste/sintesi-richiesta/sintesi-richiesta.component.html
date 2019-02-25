@@ -131,13 +131,13 @@
                             <div class="h6 m-0 nowrap default-cursor">
                                 <i class="guida fa fa-bolt fa-fw mr-1" ngbTooltip="Prima assegnazione"
                                     placement="right"></i>
-                                <span *ngIf="richiesta.stato !== 'chiamata'">
+                                <span *ngIf="richiesta.stato !== StatoRichiesta.Chiamata">
                                     <span *ngIf="richiesta.istantePrimaAssegnazione">{{richiesta.istantePrimaAssegnazione
                                         | friendlyDateTooltip }}</span>
                                 </span>
 
                                 <!-- presidiato / non presidiato (1) -->
-                                <span *ngIf="richiesta.stato === 'chiamata' || !richiesta.istantePrimaAssegnazione">
+                                <span *ngIf="richiesta.stato === StatoRichiesta.Chiamata || !richiesta.istantePrimaAssegnazione">
                                     <span class="badge badge-warning text-white">non presidiato</span>
                                 </span>
                             </div>
