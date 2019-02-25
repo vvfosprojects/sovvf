@@ -4,9 +4,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // Model
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 
-// Component
-import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
-
 // Service
 import { ListaRichiesteService } from '../service/lista-richieste-service.service';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
@@ -46,14 +43,13 @@ export class ListaRichiesteComponent implements OnInit {
     @Output() hoverOut = new EventEmitter<boolean>();
     @Output() selezione = new EventEmitter<string>();
     @Output() deselezione = new EventEmitter<boolean>();
+    @Output() eventiRichiesta: EventEmitter<string> = new EventEmitter();
 
     methods = new HelperSintesiRichiesta;
 
     @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
 
-    constructor(private store: Store,
-                private modalService: NgbModal,
-                private markerS: MarkerService) {
+    constructor(private markerS: MarkerService) {
     }
 
     ngOnInit() {
@@ -130,8 +126,9 @@ export class ListaRichiesteComponent implements OnInit {
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(idRichiesta: string) {
-        this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
-        this.modalService.open(EventiRichiestaComponent, { size: 'lg', centered: true });
+        this.eventiRichiesta.emit(idRichiesta);
+        /* this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
+        this.modalService.open(EventiRichiestaComponent, { size: 'lg', centered: true }); */
     }
 
     /* Ritorna true se le parole matchano almeno in parte */

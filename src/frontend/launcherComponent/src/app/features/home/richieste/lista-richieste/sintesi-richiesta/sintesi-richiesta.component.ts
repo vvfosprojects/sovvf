@@ -20,12 +20,6 @@ import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SintesiRichiestaComponent implements OnInit {
-    @Output() clickRichiesta: EventEmitter<any> = new EventEmitter();
-    @Output() doubleClickRichiesta: EventEmitter<any> = new EventEmitter();
-    @Output() fissaInAlto: EventEmitter<any> = new EventEmitter();
-    @Output() eventiRichiesta: EventEmitter<string> = new EventEmitter();
-    @Output() nuovaPartenza: EventEmitter<any> = new EventEmitter();
-    @Output() dismissNuovaPartenza: EventEmitter<any> = new EventEmitter();
     @Input() richiesta: SintesiRichiesta;
     @Input() fissata: boolean;
     @Input() fissabile: boolean;
@@ -33,6 +27,13 @@ export class SintesiRichiestaComponent implements OnInit {
     @Input() espandibile: boolean;
     @Input() listaEventi: boolean;
     @Input() partenza: boolean;
+
+    @Output() clickRichiesta: EventEmitter<any> = new EventEmitter();
+    @Output() doubleClickRichiesta: EventEmitter<any> = new EventEmitter();
+    @Output() fissaInAlto: EventEmitter<any> = new EventEmitter();
+    @Output() eventiRichiesta: EventEmitter<string> = new EventEmitter();
+    @Output() nuovaPartenza: EventEmitter<any> = new EventEmitter();
+    @Output() dismissNuovaPartenza: EventEmitter<any> = new EventEmitter();
 
     methods = new HelperSintesiRichiesta;
     isSingleClick = true;

@@ -1,9 +1,13 @@
 import { Component, EventEmitter, Input, isDevMode, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from 'ngx-filter-pipe';
 
 // Model
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+
+// Component
+import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 
 // Service
 import { ToastrService } from 'ngx-toastr';
@@ -18,6 +22,7 @@ import { GetRichieste } from './store/actions/richieste.actions';
 import { SetRichiestaHover, ClearRichiestaHover } from './store/actions/richiesta-hover.actions';
 import { SetRichiestaSelezionata, ClearRichiestaSelezionata } from './store/actions/richiesta-selezionata.actions';
 import { RichiestaSelezionataState } from './store/states/richiesta-selezionata.state';
+import { SetIdRichiestaEventi } from '../eventi/store/actions/eventi-richiesta.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -54,10 +59,11 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     subscription = new Subscription();
 
-    constructor(private toastr: ToastrService,
-                private markerService: MarkerService,
-                private filter: FilterPipe,
-                private store: Store) {
+    constructor(private modalService: NgbModal,
+        private toastr: ToastrService,
+        private markerService: MarkerService,
+        private filter: FilterPipe,
+        private store: Store) {
     }
 
     ngOnInit(): void {
@@ -205,5 +211,11 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onDefissa() {
         this.store.dispatch(new ClearRichiestaFissata());
+    }
+
+    /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
+    onVisualizzaEventiRichiesta(idRichiesta: string) {
+        this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
+        this.modalService.open(EventiRichiestaComponent, { size: 'lg', centered: true });
     }
 }
