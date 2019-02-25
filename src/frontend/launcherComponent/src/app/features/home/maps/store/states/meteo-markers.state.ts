@@ -2,9 +2,9 @@ import { Selector, State, Action, StateContext } from '@ngxs/store';
 
 // Model
 import { MeteoMarker } from '../../maps-model/meteo-marker.model';
-import { AddMeteoMarker, RemoveMeteoMarker } from '../actions/meteo-markers.actions';
 
 // Action
+import { AddMeteoMarker, RemoveMeteoMarker } from '../actions/meteo-markers.actions';
 
 export interface MeteoMarkersStateModel {
     meteoMarkers: MeteoMarker[];

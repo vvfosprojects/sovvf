@@ -1,6 +1,5 @@
-import { MeteoMarker } from '../../maps-model/meteo-marker.model';
-
 // Models
+import { MeteoMarker } from '../../maps-model/meteo-marker.model';
 
 export class GetMeteoMarkers {
   static readonly type = '[MeteoMarkers] Get Meteo Markers';

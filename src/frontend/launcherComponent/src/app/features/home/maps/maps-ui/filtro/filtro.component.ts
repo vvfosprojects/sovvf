@@ -18,12 +18,12 @@ export class MapsFiltroComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.mapsFiltroService.getVociMenu().subscribe((res) => {
+        this.mapsFiltroService.getVociMenu().subscribe((res: any) => {
             this.markerMenu = res;
         });
     }
 
-    onSelected(selected) {
+    onSelected(selected: any) {
         const index = this.markerMenu.findIndex((obj => obj.id === selected));
         this.markerMenu[index].isActive =  !this.markerMenu[index].isActive;
         this.mapsFiltroService.sendMenu(this.markerMenu);

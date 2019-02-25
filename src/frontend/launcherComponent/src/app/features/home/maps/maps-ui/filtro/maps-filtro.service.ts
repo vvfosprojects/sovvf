@@ -2,8 +2,9 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, of, Subject, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { BoxClickArrayInterface, BoxClickInterface } from '../../../boxes/box-interface/box-click-interface';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { BoxClickState } from '../../../boxes/store/';
+import { SetVociMenu } from '../../store/actions/maps-filtro.actions';
 
 @Injectable()
 export class MapsFiltroService implements OnDestroy {
@@ -11,7 +12,7 @@ export class MapsFiltroService implements OnDestroy {
     @Select(BoxClickState.boxClick) boxClick$: Observable<BoxClickInterface>;
     subscription = new Subscription();
 
-    constructor() {
+    constructor(private store: Store) {
         this.subscription.add(
             this.boxClick$.subscribe((boxClick: BoxClickInterface) => {
                 this.checkBoxClick(boxClick);
@@ -54,7 +55,7 @@ export class MapsFiltroService implements OnDestroy {
 
     private filtroBoxes = new Subject<BoxClickArrayInterface>();
 
-    private static getCopy(value): any {
+    private static getCopy(value: any): any {
         return (JSON.parse(JSON.stringify(value)));
     }
 
@@ -101,7 +102,11 @@ export class MapsFiltroService implements OnDestroy {
                 this.filtroAttivo.includes(r.id) ? r.isActive = true : r.isActive = false;
             }
         });
+
         this.vociMenu.next(this.filtroMarker);
+
+        /* store implementation */
+        this.store.dispatch(new SetVociMenu(this.filtroMarker));
     }
 
     stateBoxClick(boxClick: BoxClickInterface): BoxClickArrayInterface {
@@ -136,9 +141,16 @@ export class MapsFiltroService implements OnDestroy {
             menuIsNotActive.forEach(r => {
                 r.isActive = false;
             });
+
             this.vociMenu.next(menuIsNotActive);
+
+            /* store implementation */
+            this.store.dispatch(new SetVociMenu(menuIsNotActive));
         } else {
             this.vociMenu.next(menu);
+
+            /* store implementation */
+            this.store.dispatch(new SetVociMenu(menu));
         }
     }
 
