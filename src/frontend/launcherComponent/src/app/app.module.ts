@@ -28,7 +28,8 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
-import { UtentiState } from './shared/store';
+import { UtenteState } from './features/navbar/operatore/store/states/utente.state';
+import { UtentiState } from './shared/store/states/utenti.state';
 
 /**
  * Route
@@ -41,6 +42,7 @@ import { JwtInterceptor, ErrorInterceptor, fakeBackendProvider } from './core/au
 import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
+
 
 
 @NgModule({
@@ -72,7 +74,7 @@ import { AppLoadModule } from './core/app-load/app-load.module';
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [UtentiState],
+            [UtenteState, UtentiState],
             { developmentMode: !environment.production }
         ),
         NgxsStoragePluginModule.forRoot({

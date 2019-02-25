@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UtentiState } from 'src/app/shared/store/states/lista-utenti.state';
+import { UtentiState } from 'src/app/shared/store/states/utenti.state';
 import { Utente } from 'src/app/shared/model/utente.model';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { GetUtenti } from 'src/app/shared/store/actions/lista-utenti.actions';
+import { GetUtenti } from 'src/app/shared/store/actions/utenti.actions';
 
 @Component({
   selector: 'app-gestione-utenti',

@@ -4,11 +4,11 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Utente } from 'src/app/shared/model/utente.model';
 
 // Action
-import { GetUtenti } from '../actions/lista-utenti.actions';
+import { GetUtenti } from '../actions/utenti.actions';
 import { UserService } from 'src/app/core/auth/_services';
 
 export interface UtentiStateModel {
-    utenti: any[];
+    utenti: Utente[];
 }
 
 export const UtentiStateDefaults: UtentiStateModel = {
@@ -27,7 +27,8 @@ export class UtentiState {
         return state.utenti;
     }
 
-    constructor(private _users: UserService) { }
+    constructor(private _users: UserService) {
+    }
 
 
     // GET
