@@ -12,6 +12,8 @@ import { ChiamataService } from '../../../core/service/chiamata-service/chiamata
 import { ChiamataServiceFake } from '../../../core/service/chiamata-service/chiamata.service.fake';
 import { NgxsModule } from '@ngxs/store';
 import { ChiamataState } from './store/states/chiamata.state';
+import { SchedaTelefonataState } from './store/states/scheda-telefonata.state';
+import { ClipboardState } from './store/states/clipboard.state';
 
 @NgModule({
     imports: [
@@ -23,7 +25,9 @@ import { ChiamataState } from './store/states/chiamata.state';
         ClipboardModule,
         ReactiveFormsModule,
         NgxsModule.forFeature([
-            ChiamataState
+            ChiamataState,
+            SchedaTelefonataState,
+            ClipboardState
         ])
     ],
     declarations: [

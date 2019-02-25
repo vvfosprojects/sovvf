@@ -1,25 +1,25 @@
-import { Action, Selector, State, StateContext, NgxsOnInit } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 
 // Model
 import { Utente } from 'src/app/shared/model/utente.model';
 
 // Action
-import { GetUtenti } from '../actions/lista-utenti.actions';
+import { GetUtenti } from '../actions/utenti.actions';
 import { UserService } from 'src/app/core/auth/_services';
 
 export interface UtentiStateModel {
-    utenti: any[];
+    utenti: Utente[];
 }
 
 export const UtentiStateDefaults: UtentiStateModel = {
-    utenti: null
+    utenti: []
 };
 
 @State<UtentiStateModel>({
     name: 'utenti',
     defaults: UtentiStateDefaults
 })
-export class UtentiState implements NgxsOnInit {
+export class UtentiState {
 
     // SELECTORS
     @Selector()
@@ -27,11 +27,9 @@ export class UtentiState implements NgxsOnInit {
         return state.utenti;
     }
 
-    constructor(private _users: UserService) { }
-
-    ngxsOnInit(ctx: StateContext<UtentiState>) {
-        ctx.dispatch(new GetUtenti());
+    constructor(private _users: UserService) {
     }
+
 
     // GET
     @Action(GetUtenti)

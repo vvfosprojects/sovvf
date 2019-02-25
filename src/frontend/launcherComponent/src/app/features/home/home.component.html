@@ -17,12 +17,12 @@
             <app-richieste [ngClass]="{'d-none' : !viewState.components.richieste}"
                            [split]="viewState.layout.split" (statoPartenza)="switchView($event)" (composizionePartenza)="nuovaPartenza($event)"></app-richieste>
             <app-chiamata *ngIf="viewState.components.chiamata"
-                          (annullaChiamata)="switchView($event.event, $event.chiamata)" (chiamataMarker)="_chiamataMarker($event)"></app-chiamata>
+                          (annullaChiamata)="switchView($event.event, $event.chiamata)"></app-chiamata>
             <app-composizione-partenza *ngIf="viewState.components.composizione"
                                        [richiesta]="richiestaNuovaPartenza" (statoPartenza)="switchView($event)" [compPartenzaMode]="viewState.layout.composizione.modalita"></app-composizione-partenza>
         </div>
         <div class="mt-2" [ngClass]="viewState.layout.columns[1] || {'d-none' : !viewState.components.mappa}">
-            <app-maps [viewStateMappa]="viewState.maps" [richiestaPartenza]="richiestaNuovaPartenza" [chiamataMarker]="chiamataMarker"></app-maps>
+            <app-maps [viewStateMappa]="viewState.maps" [richiestaPartenza]="richiestaNuovaPartenza"></app-maps>
         </div>
     </div>
 </div>

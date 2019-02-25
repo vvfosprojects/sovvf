@@ -11,7 +11,7 @@ export class ClockService {
 
     constructor() {
         this.clock = interval(1000).pipe(
-            map(tick => new Date()));
+            map(() => new Date()));
     }
 
     getClock(): Observable<Date> {

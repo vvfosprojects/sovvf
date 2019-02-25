@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
-import { FormChiamataModel } from './model/form-scheda-telefonata.model';
+import { FormChiamataModel } from '../model/form-scheda-telefonata.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { TipologieInterface } from '../../../../core/settings/tipologie';
+import { SchedaTelefonataInterface } from '../model/scheda-telefonata.interface';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -91,9 +92,4 @@ export class SchedaTelefonataComponent implements OnInit {
         });
     }
 
-}
-
-export interface SchedaTelefonataInterface {
-    azione: string;
-    chiamata: FormChiamataModel;
 }

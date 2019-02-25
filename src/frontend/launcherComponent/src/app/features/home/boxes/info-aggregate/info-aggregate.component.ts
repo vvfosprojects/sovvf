@@ -61,14 +61,14 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
          * Dati coordinate fake in attesa di quelle passate dal servizio località utente
          */
         const coordinate = new Coordinate(41.899940, 12.491270);
-        this.getMeteoData(coordinate);
+        this._getMeteoData(coordinate);
         setInterval(() => {
             this.datimeteo = undefined;
-            this.getMeteoData(coordinate);
+            this._getMeteoData(coordinate);
         }, 300000);
     }
 
-    getMeteoData(coords: Coordinate) {
+    _getMeteoData(coords: Coordinate) {
         setTimeout(() => {
             this.meteoService.getMeteoData(coords)
                 .subscribe(data => {

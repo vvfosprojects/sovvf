@@ -1,13 +1,14 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ChiamataService } from '../../../../../core/service/chiamata-service/chiamata.service';
-import { FetchIdChiamata, SetIdChiamata } from '../actions/chiamata.actions';
+import { GetIdChiamata, SetIdChiamata } from '../actions/chiamata.actions';
 
 export interface ChiamataStateModel {
     idChiamata: string;
+
 }
 
 export const ChiamataStateDefaults: ChiamataStateModel = {
-    idChiamata: null
+    idChiamata: null,
 };
 
 @State<ChiamataStateModel>({
@@ -25,7 +26,7 @@ export class ChiamataState {
         return state.idChiamata;
     }
 
-    @Action(FetchIdChiamata)
+    @Action(GetIdChiamata)
     getIdChiamata({ dispatch }: StateContext<ChiamataStateModel>) {
         this.chiamataService.getIdChiamata().subscribe((id: string) => {
             dispatch(new SetIdChiamata(id));

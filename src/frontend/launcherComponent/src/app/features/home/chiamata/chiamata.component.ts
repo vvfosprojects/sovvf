@@ -3,17 +3,16 @@ import { MarkerService } from '../maps/service/marker-service/marker-service.ser
 import { CenterService } from '../maps/service/center-service/center-service.service';
 import { Observable, Subscription } from 'rxjs';
 import { APP_TIPOLOGIE, TipologieInterface } from '../../../core/settings/tipologie';
-import { ClipboardService } from 'ngx-clipboard';
 import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
-import { SchedaTelefonataInterface } from './scheda-telefonata/scheda-telefonata.component';
-import { FormChiamataModel } from './scheda-telefonata/model/form-scheda-telefonata.model';
 import { ChiamataMarker } from '../maps/maps-model/chiamata-marker.model';
 import { Coordinate } from '../../../shared/model/coordinate.model';
-import { MapsEvent } from '../../../shared/enum/maps-event.enum';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
 import { Select, Store } from '@ngxs/store';
-import { FetchIdChiamata } from './store/actions/chiamata.actions';
+import { GetIdChiamata } from './store/actions/chiamata.actions';
 import { ChiamataState } from './store/states/chiamata.state';
+import { SchedaTelefonataInterface } from './model/scheda-telefonata.interface';
+import { ReducerSchedaTelefonata } from './store/actions/scheda-telefonata.actions';
+import { SchedaTelefonataState } from './store/states/scheda-telefonata.state';
 
 
 @Component({
@@ -29,16 +28,25 @@ export class ChiamataComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
     tipologie: TipologieInterface[] = APP_TIPOLOGIE;
     centroMappa: CentroMappa;
-    coordinate: Coordinate;
+
     idChiamata: string;
+    coordinate: Coordinate;
     @Select(ChiamataState.idChiamata) idChiamata$: Observable<string>;
+    @Select(SchedaTelefonataState.coordinate) coordinate$: Observable<Coordinate>;
+    @Select(SchedaTelefonataState.annullaMarkerChiamata) annullaChiamata$: Observable<boolean>;
 
     constructor(private store: Store,
                 private markerService: MarkerService,
-                private centerService: CenterService,
-                private _clipboardService: ClipboardService) {
+                private centerService: CenterService) {
 
         this.centroMappa = this.centerService.centroMappaIniziale;
+        this.subscription.add(this.idChiamata$.subscribe(r => this.idChiamata = r));
+        this.subscription.add(this.coordinate$.subscribe(r => this.coordinate = r));
+        this.subscription.add(this.annullaChiamata$.subscribe( r => {
+            if (r) {
+                this.annullaChiamataMarker();
+            }
+        }));
         this.subscription.add(
             this.centerService.getCentro().subscribe(r => {
                 if (this.coordinate) {
@@ -50,12 +58,11 @@ export class ChiamataComponent implements OnInit, OnDestroy {
                 }
             })
         );
-        this.subscription.add(this.idChiamata$.subscribe( r => this.idChiamata = r));
     }
 
     ngOnInit(): void {
         isDevMode() && console.log('Componente Chiamata creato');
-        this.store.dispatch(new FetchIdChiamata());
+        this.store.dispatch(new GetIdChiamata());
     }
 
     ngOnDestroy(): void {
@@ -64,31 +71,12 @@ export class ChiamataComponent implements OnInit, OnDestroy {
     }
 
     getSchedaTelefonata($event: SchedaTelefonataInterface): void {
-        switch ($event.azione) {
-            case 'copiaIndirizzo':
-                this.toClipboard($event.chiamata);
-                break;
-            case 'annullata':
-                this.markerService.chiamata(null, '', this.centroMappa);
-                this.annullaChiamata.emit({ event: AppFeatures.Chiamata, chiamata: false });
-                break;
-            case 'cerca':
-                const marker = new ChiamataMarker(this.idChiamata, $event.chiamata.localita);
-                this.coordinate = $event.chiamata.localita.coordinate;
-                this.chiamataMarker.emit(marker);
-                this.markerService.chiamata(marker, MapsEvent.Centra);
-                break;
-            case 'inserita':
-                console.log(`Chiamata inserita: ${$event.chiamata}`);
-                break;
-            default:
-                return;
-        }
+        this.store.dispatch(new ReducerSchedaTelefonata($event));
     }
 
-    toClipboard(chiamata: FormChiamataModel) {
-        const copiedText = chiamata.localita.coordinate.latitudine.toString() + ', ' + chiamata.localita.coordinate.longitudine.toString();
-        this._clipboardService.copyFromContent(copiedText);
+    annullaChiamataMarker() {
+        this.markerService.chiamata(null, '', this.centroMappa);
+        this.annullaChiamata.emit({ event: AppFeatures.Chiamata, chiamata: false });
     }
 
 }

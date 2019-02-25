@@ -1,13 +1,14 @@
 import { Component, OnInit, EventEmitter, Output, isDevMode, OnDestroy } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { ClockService } from './navbar-service/clock-service/clock.service';
-import { AuthenticationService, UserService } from '../../core/auth/_services';
+import { AuthenticationService } from '../../core/auth/_services';
 import { Turno } from './turno/turno.model';
 import { Store, Select } from '@ngxs/store';
 import { TurnoState } from './turno/store/';
 import { GetTurno } from './turno/store/actions/turno.actions';
 import { Utente } from '../../shared/model/utente.model';
+import { UtenteState } from './operatore/store/states/utente.state';
+import { GetUtente } from './operatore/store/actions/utente.actions';
 
 @Component({
     selector: 'app-navbar',
@@ -16,33 +17,24 @@ import { Utente } from '../../shared/model/utente.model';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
 
-    time: Date;
-    currentUser: Utente;
-    userFromApi: Utente;
-
-    subscription = new Subscription();
+    time$: Observable<Date>;
 
     @Output() openedSidebar = new EventEmitter<any>();
     @Select(TurnoState.turno) turno$: Observable<Turno>;
+    @Select(UtenteState.utente) user$: Observable<Utente>;
 
     constructor(private store: Store,
-        private _clock: ClockService,
-        private _user: UserService,
-        private authenticationService: AuthenticationService) {
-        this.currentUser = this.authenticationService.currentUserValue;
-        this.subscription.add(this._clock.getClock().subscribe(time => this.time = time));
-        // this.subscription.add(this._user.getAll().pipe(first()).subscribe(users => this.user = users));
-
-        this.getTurno();
+                private _clock: ClockService,
+                private authService: AuthenticationService) {
+        this.time$ = this._clock.getClock();
+        this.dispatchStates();
     }
 
     ngOnInit() {
         isDevMode() && console.log('Componente Navbar creato');
-        this.subscription.add(this._user.getById(this.currentUser.id).pipe(first()).subscribe(user => this.userFromApi = user));
     }
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();
         isDevMode() && console.log('Componente Navbar distrutto');
     }
 
@@ -50,7 +42,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.openedSidebar.emit();
     }
 
-    getTurno() {
+    dispatchStates() {
+        this.store.dispatch(new GetUtente(this.authService.currentUserValue.id));
         this.store.dispatch(new GetTurno());
     }
+
 }
