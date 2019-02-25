@@ -7,7 +7,7 @@ import { BoxClickInterface } from '../../box-interface/box-click-interface';
 // Action
 import {
     InitBoxFiltri, UpdateBoxRichieste, AllFalseBoxRichieste, UpdateBoxMezzi,
-    AllFalseBoxMezzi, ReducerBoxClick, ResetAllBoxes, AllTrueBoxRichieste, AllTrueBoxMezzi
+    AllFalseBoxMezzi, ReducerBoxClick, ResetAllBoxes, AllTrueBoxRichieste, AllTrueBoxMezzi, UndoAllBoxes
 } from '../actions/box-click.actions';
 
 
@@ -159,6 +159,17 @@ export class BoxClickState {
     }
 
     // TUTTI
+
+    @Action(UndoAllBoxes)
+    undoAllBoxes({ getState, patchState }: StateContext<BoxClickStateModel>, action: UndoAllBoxes) {
+        const state = getState();
+
+        patchState({
+            ...state,
+            boxClick: action.prevState.boxClick
+        });
+    }
+
     @Action(ResetAllBoxes)
     resetAllBoxes({ dispatch }: StateContext<BoxClickStateModel>) {
         dispatch(new AllFalseBoxRichieste);

@@ -5,7 +5,7 @@ import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
 import { Subject, Subscription, Observable } from 'rxjs';
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
 import { Store, Select } from '@ngxs/store';
-import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick } from '../boxes/store';
+import { AllFalseBoxRichieste, AllTrueBoxMezzi, BoxClickState, BoxClickStateModel, ReducerBoxClick, UndoAllBoxes } from '../boxes/store';
 import { MezzoComposizione } from './interface/mezzo-composizione-interface';
 import { SquadraComposizione } from './interface/squadra-composizione-interface';
 import { BoxPartenza } from './interface/box-partenza-interface';
@@ -44,7 +44,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     centroMappa: CentroMappa;
 
-    statoPrecedente: any;
+    prevStateBoxClick: BoxClickStateModel;
 
     constructor(private store: Store,
         private centerService: CenterService,
@@ -73,9 +73,9 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState); // Todo: da spostare dentro ViewState
         this.centroMappa = this.centerService.centroMappaIniziale;
         if (this.richiesta) {
-            this.statoPrecedente = this.store.snapshot();
             this.store.dispatch(new GetMezziComposizione());
             this.store.dispatch(new GetSquadreComposizione());
             this.store.dispatch(new GetPreAccoppiati());
@@ -89,6 +89,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        this.store.dispatch(new UndoAllBoxes(this.prevStateBoxClick)); // Todo: da spostare dentro ViewState
         isDevMode() && console.log('Componente Composizione distrutto');
     }
 
@@ -96,7 +97,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.centerService.sendCentro(this.centroMappa);
         this.dismissPartenzaSubject.next(true);
         this.markerS.noAction();
-        this.store.reset(this.statoPrecedente);
         this.statoPartenza.emit(AppFeatures.Default);
     }
 
