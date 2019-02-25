@@ -9,7 +9,7 @@ import { AppFeatures } from '../../../../shared/enum/app-features.enum';
 export class ViewModeComponent {
 
     @Input() colorButtonView = ['btn-outline-secondary', 'btn-secondary', 'btn-outline-secondary'];
-    @Output() buttonView = new EventEmitter<string>();
+    @Output() buttonView = new EventEmitter<AppFeatures>();
     AppFeature = AppFeatures;
 
     buttonViewMode($event) {

@@ -81,20 +81,20 @@ export class FilterbarComponent implements OnInit {
         this.buttonSwitchView.emit({ event: AppFeatures.Chiamata, chiamata: value });
     }
 
-    buttonView(event: AppFeatures) {
-        let method = '';
-        switch (event) {
-            case AppFeatures.Default:
-                method = AppFeatures.Default;
-                break;
-            case AppFeatures.Mappa:
-                method = AppFeatures.Mappa;
-                break;
-            case AppFeatures.Richieste:
-                method = AppFeatures.Richieste;
-                break;
-        }
-        this.buttonSwitchView.emit({ event: method });
-    }
+    // buttonView(event: AppFeatures) {
+    //     let method: AppFeatures;
+    //     switch (event) {
+    //         case AppFeatures.Default:
+    //             method = AppFeatures.Default;
+    //             break;
+    //         case AppFeatures.Mappa:
+    //             method = AppFeatures.Mappa;
+    //             break;
+    //         case AppFeatures.Richieste:
+    //             method = AppFeatures.Richieste;
+    //             break;
+    //     }
+    //     this.buttonSwitchView.emit({ event: method });
+    // }
 
 }

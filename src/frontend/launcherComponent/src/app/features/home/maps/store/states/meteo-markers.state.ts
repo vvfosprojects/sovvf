@@ -56,6 +56,3 @@ export function addMeteoMarker(marker: MeteoMarker) {
     return markers;
 }
 
-export function copyObj(obj: any) {
-    return JSON.parse(JSON.stringify(obj));
-}

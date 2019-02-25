@@ -14,10 +14,10 @@ import { AppFeatures } from '../../../shared/enum/app-features.enum';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 import { GetMezziComposizione } from './store/actions/mezzi-composizione.actions';
 import { GetSquadreComposizione } from './store/actions/squadre-composizione.actions';
-import { MezziComposizioneState } from './store/states/mezzi-composizione.state';
-import { SquadreComposizioneState } from './store/states/squadre-composizione.state';
+import { MezziComposizioneState, SquadreComposizioneState } from './store';
 import { PreAccoppiatiState } from './store/states/pre-accoppiati.state';
 import { GetPreAccoppiati } from './store/actions/pre-accoppiati.actions';
+import { makeCopy } from '../../../shared/helper/function';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -27,7 +27,7 @@ import { GetPreAccoppiati } from './store/actions/pre-accoppiati.actions';
 export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
     @Input() compPartenzaMode: string;
-    @Output() statoPartenza = new EventEmitter<string>();
+    @Output() statoPartenza = new EventEmitter<AppFeatures>();
     dismissPartenzaSubject: Subject<boolean> = new Subject<boolean>();
     Composizione = Composizione;
 
@@ -53,21 +53,21 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         // Prendo i mezzi da visualizzare nella lista
         this.subscription.add(
             this.mezziComposizione$.subscribe((mezziComp: MezzoComposizione[]) => {
-                this.mezziComposizione = copyObj(mezziComp);
+                this.mezziComposizione = makeCopy(mezziComp);
             })
         );
 
         // Prendo le squadre da visualizzare nella lista
         this.subscription.add(
             this.squadraComposizione$.subscribe((squadreComp: SquadraComposizione[]) => {
-                this.squadreComposizione = copyObj(squadreComp);
+                this.squadreComposizione = makeCopy(squadreComp);
             })
         );
 
         // Restituisce i PreAccoppiati
         this.subscription.add(
             this.preAccoppiati$.subscribe((preAccoppiati: BoxPartenza[]) => {
-                this.preAccoppiati = copyObj(preAccoppiati);
+                this.preAccoppiati = makeCopy(preAccoppiati);
             })
         );
     }
@@ -127,8 +127,4 @@ export function wipeStatoRichiesta(stato: StatoRichiesta): string {
     const mapTipoStato: Map<StatoRichiesta, string> = new Map(stati);
 
     return mapTipoStato.get(stato);
-}
-
-export function copyObj(obj: any) {
-    return JSON.parse(JSON.stringify(obj));
 }

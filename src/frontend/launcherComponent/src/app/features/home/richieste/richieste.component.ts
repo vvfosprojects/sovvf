@@ -22,6 +22,7 @@ import { GetRichieste } from './store/actions/richieste.actions';
 import { SetRichiestaHover, ClearRichiestaHover } from './store/actions/richiesta-hover.actions';
 import { SetRichiestaSelezionata, ClearRichiestaSelezionata } from './store/actions/richiesta-selezionata.actions';
 import { RichiestaSelezionataState } from './store/states/richiesta-selezionata.state';
+import { AppFeatures } from '../../../shared/enum/app-features.enum';
 import { SetIdRichiestaEventi } from '../eventi/store/actions/eventi-richiesta.actions';
 
 @Component({
@@ -33,7 +34,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Input() split: string;
 
-    @Output() statoPartenza = new EventEmitter<string>();
+    @Output() statoPartenza = new EventEmitter<AppFeatures>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
 
     @Select(RicercaRichiesteState.ricerca) ricerca$: Observable<string>;
@@ -57,6 +58,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     richiesteTerminate: boolean;
     listHeightClass = 'm-h-750';
 
+    AppFeatures = AppFeatures;
     subscription = new Subscription();
 
     constructor(private modalService: NgbModal,
