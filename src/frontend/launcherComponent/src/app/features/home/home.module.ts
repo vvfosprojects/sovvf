@@ -17,7 +17,6 @@ import { FiltriRichiesteState } from './filterbar/store/states/filtri-richieste.
 import { RicercaRichiesteState } from './filterbar/store/states/ricerca-richieste.state';
 import { MarkerMeteoState } from './filterbar/store/states/marker-meteo-switch.state';
 import { MarkerService } from './maps/service/marker-service/marker-service.service';
-import { MarkedService } from './maps/service/marked-service/marked-service.service';
 import { CenterService } from './maps/service/center-service/center-service.service';
 import { MapsFiltroService } from './maps/maps-ui/filtro/maps-filtro.service';
 import { AgmService } from './maps/agm/agm-service.service';
@@ -76,7 +75,7 @@ import { RichiestaSelezionataState } from './richieste/store/states/richiesta-se
         ),
     ],
     providers: [
-        MarkerService, MarkedService, CenterService, MapsFiltroService, AgmService,
+        MarkerService, CenterService, MapsFiltroService, AgmService,
         ListaRichiesteService,
         ViewService
     ]

@@ -23,7 +23,6 @@ import { MapsEvent } from '../../../../../shared/enum/maps-event.enum';
 /**
  * Service
  */
-import { MarkedService } from '../marked-service/marked-service.service';
 import { MeteoService } from '../../../../../shared/meteo/meteo-service.service';
 import { AgmService } from '../../agm/agm-service.service';
 import { UnitaAttualeService } from '../../../../navbar/navbar-service/unita-attuale/unita-attuale.service';
@@ -37,17 +36,18 @@ import { MarkerMeteoState } from '../../../filterbar/store/states/marker-meteo-s
 import { SetRichiestaFissata, ClearRichiestaFissata } from '../../../richieste/store/actions/richiesta-fissata.actions';
 import { SetRichiestaHover, ClearRichiestaHover } from '../../../richieste/store/actions/richiesta-hover.actions';
 import { ClearRichiestaSelezionata } from '../../../richieste/store/actions/richiesta-selezionata.actions';
+import { AddMeteoMarker, RemoveMeteoMarker } from '../../store';
+import { MarkedMarkerState } from '../../store/states/marked-marker.state';
+import { SetMarkedMarker, ClearMarkedMarker } from '../../store/actions/marked-marker.actions';
 
 import { IconMappe } from './_icone';
 import { TipoMappe } from './_typeof';
 import { TipoColori } from './_color';
-import { AddMeteoMarker, RemoveMeteoMarker } from '../../store';
 
 @Injectable()
 export class MarkerService implements OnDestroy {
 
     private subjectMeteo = new Subject<Meteo>();
-    private subjectMeteoMarkers = new Subject<MeteoMarker[]>();
     private markedColor = new Subject<string>();
     icone = new IconMappe();
     tipo = new TipoMappe();
@@ -58,9 +58,12 @@ export class MarkerService implements OnDestroy {
 
     iconeCached: string[];
 
-    markerColorato: any;
+    @Select(MarkedMarkerState.markedMarker) markerSelezionato$: Observable<any>;
     markerSelezionato: any;
+
+    markerColorato: any;
     markerZIndex: any;
+
     subscription = new Subscription();
 
     filtro: Array<any>;
@@ -70,16 +73,17 @@ export class MarkerService implements OnDestroy {
     @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
     switchMeteo: boolean;
 
-    constructor(private markedService: MarkedService,
-        private meteoService: MeteoService,
+    constructor(private meteoService: MeteoService,
         private agmService: AgmService,
         private markerRichiesteManager: RichiesteMarkerManagerService,
         private unitaAttualeS: UnitaAttualeService,
         private mapsFiltroService: MapsFiltroService,
         private store: Store) {
-        this.subscription.add(this.markedService.getMarked().subscribe(marker => {
+
+        this.subscription.add(this.markerSelezionato$.subscribe(marker => {
             this.markerSelezionato = marker;
         }));
+
         this.filtro = this.mapsFiltroService.filtroAttivo;
         this.subscription.add(
             this.mapsFiltroService.getMenu().subscribe(menu => {
@@ -206,14 +210,14 @@ export class MarkerService implements OnDestroy {
         /**
          *  imposto nel service marked lo stato del marker a selezionato
          */
-        this.markedService.sendMarked(marker);
+        this.store.dispatch(new SetMarkedMarker(marker));
     }
 
     deseleziona(): void {
         /**
          * deseleziono il marker
          */
-        this.markedService.clearMarked();
+        this.store.dispatch(new ClearMarkedMarker());
     }
 
     action(marker: any, mouse: any) {
