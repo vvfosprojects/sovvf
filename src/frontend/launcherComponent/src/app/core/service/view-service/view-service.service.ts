@@ -3,6 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import { ViewInterface, ViewInterfaceButton, ViewInterfaceComposizione, ViewInterfaceLayout, ViewInterfaceMaps } from '../../../shared/interface/view.interface';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
 import { Composizione } from '../../../shared/enum/composizione.enum';
+import { makeCopy } from '../../../shared/helper/function';
 
 @Injectable()
 export class ViewService {
@@ -37,10 +38,6 @@ export class ViewService {
 
     private subject = new Subject<ViewInterface>();
 
-    private static getCopy(value): any {
-        return (JSON.parse(JSON.stringify(value)));
-    }
-
     static columns(view: ViewInterface): ViewInterfaceLayout {
         const result: ViewInterfaceLayout = {
             split: true,
@@ -67,14 +64,19 @@ export class ViewService {
             active: AppFeatures.Richieste
         };
 
+        // Todo: da sistemare perchè ritornava una stringa cercando tra il nome delle chiavi
+        //  ma adesso cè un enum e non una stringa
+
         function getActive(object) {
-            const obj = ViewService.getCopy(object);
+            const obj = makeCopy(object);
             obj[AppFeatures.Mappa] = false;
             const res = Object.keys(obj).find(key => obj[key] === true);
             return res ? res : result.active;
         }
 
-        result.active = getActive(view.components);
+        // result.active = getActive(view.components);
+
+        result.active = AppFeatures.Richieste;
 
         return result;
     }

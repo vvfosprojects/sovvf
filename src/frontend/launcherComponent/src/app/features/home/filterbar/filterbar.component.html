@@ -7,8 +7,9 @@
             </div>
             <div *ngIf="!compPartenzaState.disable" class="col-3 px-0 text-left">
                 <app-filtri-richieste [filtri]="(filtri$ | async)" [filtriSelezionati]="(filtriSelezionati$ | async)"
-                    (filtroSelezionato)="onSelezioneFiltro($event)" (filtroDeselezionato)="onDeselezioneFiltro($event)"
-                    (filtriReset)="eliminaFiltriAttivi()">
+                                      (filtroSelezionato)="onSelezioneFiltro($event)"
+                                      (filtroDeselezionato)="onDeselezioneFiltro($event)"
+                                      (filtriReset)="eliminaFiltriAttivi()">
                 </app-filtri-richieste>
             </div>
             <div *ngIf="!compPartenzaState.disable" class="col-7 px-0">
@@ -16,7 +17,8 @@
                 </app-ricerca-richieste>
             </div>
             <div *ngIf="compPartenzaState.disable" class="col-4 ml-auto">
-                <app-tasto-comp-partenza (cambioModalita)="compPartenzaSwitch($event)" [compPartenzaMode]="compPartenzaState.modalita">
+                <app-tasto-comp-partenza (cambioModalita)="compPartenzaSwitch($event)"
+                                         [compPartenzaMode]="compPartenzaState.modalita">
                 </app-tasto-comp-partenza>
             </div>
         </div>
@@ -24,7 +26,8 @@
     <div *ngIf="!compPartenzaState.disable" class="col-2">
         <div class="row">
             <div class="col-12">
-                <app-view-mode [colorButtonView]="colorButton.buttonView" (buttonView)="buttonView($event)">
+                <app-view-mode [colorButtonView]="colorButton.buttonView"
+                               (buttonView)="buttonSwitchView.emit({event: $event})">
                 </app-view-mode>
             </div>
         </div>

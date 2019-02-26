@@ -1,3 +1,5 @@
+import { AppFeatures } from '../enum/app-features.enum';
+
 export interface ViewInterface {
     layout?: ViewInterfaceLayout;
     components?: ViewInterfaceComponent;
@@ -19,7 +21,7 @@ export interface ViewInterfaceComponent {
 }
 
 export interface ViewInterfaceMaps {
-    active?: string;
+    active?: AppFeatures;
 }
 
 export interface ViewInterfaceButton {

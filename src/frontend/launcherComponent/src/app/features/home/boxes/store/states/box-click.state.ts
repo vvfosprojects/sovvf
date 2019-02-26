@@ -1,4 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { makeCopy } from '../../../../../shared/helper/function';
 
 // Interface
 import { BoxClickInterface } from '../../box-interface/box-click-interface';
@@ -6,7 +7,7 @@ import { BoxClickInterface } from '../../box-interface/box-click-interface';
 // Action
 import {
     InitBoxFiltri, UpdateBoxRichieste, AllFalseBoxRichieste, UpdateBoxMezzi,
-    AllFalseBoxMezzi, ReducerBoxClick, ResetAllBoxes, AllTrueBoxRichieste, AllTrueBoxMezzi
+    AllFalseBoxMezzi, ReducerBoxClick, ResetAllBoxes, AllTrueBoxRichieste, AllTrueBoxMezzi, UndoAllBoxes
 } from '../actions/box-click.actions';
 
 
@@ -102,7 +103,7 @@ export class BoxClickState {
 
         patchState({
             ...state,
-            boxClick: update(copyObj(state.boxClick), 'richieste', action.tipo)
+            boxClick: update(makeCopy(state.boxClick), 'richieste', action.tipo)
         });
     }
 
@@ -112,7 +113,7 @@ export class BoxClickState {
 
         patchState({
             ...state,
-            boxClick: allTrue(copyObj(state.boxClick), 'richieste')
+            boxClick: allTrue(makeCopy(state.boxClick), 'richieste')
         });
     }
 
@@ -122,7 +123,7 @@ export class BoxClickState {
 
         patchState({
             ...state,
-            boxClick: allFalse(copyObj(state.boxClick), 'richieste')
+            boxClick: allFalse(makeCopy(state.boxClick), 'richieste')
         });
     }
 
@@ -133,7 +134,7 @@ export class BoxClickState {
 
         patchState({
             ...state,
-            boxClick: update(copyObj(state.boxClick), 'mezzi', action.tipo)
+            boxClick: update(makeCopy(state.boxClick), 'mezzi', action.tipo)
         });
     }
 
@@ -143,7 +144,7 @@ export class BoxClickState {
 
         patchState({
             ...state,
-            boxClick: allTrue(copyObj(state.boxClick), 'mezzi')
+            boxClick: allTrue(makeCopy(state.boxClick), 'mezzi')
         });
     }
 
@@ -153,11 +154,22 @@ export class BoxClickState {
 
         patchState({
             ...state,
-            boxClick: allFalse(copyObj(state.boxClick), 'mezzi')
+            boxClick: allFalse(makeCopy(state.boxClick), 'mezzi')
         });
     }
 
     // TUTTI
+
+    @Action(UndoAllBoxes)
+    undoAllBoxes({ getState, patchState }: StateContext<BoxClickStateModel>, action: UndoAllBoxes) {
+        const state = getState();
+
+        patchState({
+            ...state,
+            boxClick: action.prevState.boxClick
+        });
+    }
+
     @Action(ResetAllBoxes)
     resetAllBoxes({ dispatch }: StateContext<BoxClickStateModel>) {
         dispatch(new AllFalseBoxRichieste);
@@ -182,8 +194,4 @@ export function allFalse(obj: BoxClickInterface, cat: string) {
         obj[cat][r] = false;
     });
     return obj;
-}
-
-export function copyObj(obj: any) {
-    return JSON.parse(JSON.stringify(obj));
 }

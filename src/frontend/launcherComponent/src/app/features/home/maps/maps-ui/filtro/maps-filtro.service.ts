@@ -5,6 +5,7 @@ import { BoxClickArrayInterface, BoxClickInterface } from '../../../boxes/box-in
 import { Select, Store } from '@ngxs/store';
 import { BoxClickState } from '../../../boxes/store/';
 import { SetVociMenu } from '../../store/actions/maps-filtro.actions';
+import { makeCopy } from '../../../../../shared/helper/function';
 
 @Injectable()
 export class MapsFiltroService implements OnDestroy {
@@ -56,17 +57,13 @@ export class MapsFiltroService implements OnDestroy {
 
     private filtroBoxes = new Subject<BoxClickArrayInterface>();
 
-    private static getCopy(value: any): any {
-        return (JSON.parse(JSON.stringify(value)));
-    }
-
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
 
     createCopyFiltro() {
         if (!this.filtroAttivoCopy) {
-            this.filtroAttivoCopy = MapsFiltroService.getCopy(this.filtroAttivo);
+            this.filtroAttivoCopy = makeCopy(this.filtroAttivo);
         }
     }
 

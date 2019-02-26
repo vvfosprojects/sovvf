@@ -1,4 +1,5 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
+import { makeCopy } from '../../../../shared/helper/function';
 
 @Component({
     selector: 'app-ricerca-richieste',
@@ -16,11 +17,7 @@ export class RicercaRichiesteComponent {
     }
 
     onSearch() {
-        this.search.emit(copyObj(this.ricerca));
-
-        function copyObj(obj: any) {
-            return JSON.parse(JSON.stringify(obj));
-        }
+        this.search.emit(makeCopy(this.ricerca));
     }
 
 }

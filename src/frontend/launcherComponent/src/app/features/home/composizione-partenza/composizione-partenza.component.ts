@@ -5,7 +5,7 @@ import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
 import { Subject, Subscription, Observable } from 'rxjs';
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
 import { Store, Select } from '@ngxs/store';
-import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick } from '../boxes/store';
+import { AllFalseBoxRichieste, AllTrueBoxMezzi, BoxClickState, BoxClickStateModel, ReducerBoxClick, UndoAllBoxes } from '../boxes/store';
 import { MezzoComposizione } from './interface/mezzo-composizione-interface';
 import { SquadraComposizione } from './interface/squadra-composizione-interface';
 import { BoxPartenza } from './interface/box-partenza-interface';
@@ -14,12 +14,12 @@ import { AppFeatures } from '../../../shared/enum/app-features.enum';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 import { GetMezziComposizione } from './store/actions/mezzi-composizione.actions';
 import { GetSquadreComposizione } from './store/actions/squadre-composizione.actions';
-import { MezziComposizioneState } from './store/states/mezzi-composizione.state';
-import { SquadreComposizioneState } from './store/states/squadre-composizione.state';
+import { MezziComposizioneState, SquadreComposizioneState } from './store';
 import { PreAccoppiatiState } from './store/states/pre-accoppiati.state';
 import { GetPreAccoppiati } from './store/actions/pre-accoppiati.actions';
 import { DirectionInterface } from '../maps/service/direction-service/direction-interface';
 import { SetDirection, ClearDirection } from '../maps/store/actions/maps-direction.actions';
+import { makeCopy } from '../../../shared/helper/function';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -29,7 +29,7 @@ import { SetDirection, ClearDirection } from '../maps/store/actions/maps-directi
 export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
     @Input() compPartenzaMode: string;
-    @Output() statoPartenza = new EventEmitter<string>();
+    @Output() statoPartenza = new EventEmitter<AppFeatures>();
     dismissPartenzaSubject: Subject<boolean> = new Subject<boolean>();
     Composizione = Composizione;
 
@@ -46,7 +46,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     centroMappa: CentroMappa;
 
-    statoPrecedente: any;
+    prevStateBoxClick: BoxClickStateModel;
 
     constructor(private store: Store,
         private centerService: CenterService,
@@ -55,29 +55,29 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         // Prendo i mezzi da visualizzare nella lista
         this.subscription.add(
             this.mezziComposizione$.subscribe((mezziComp: MezzoComposizione[]) => {
-                this.mezziComposizione = copyObj(mezziComp);
+                this.mezziComposizione = makeCopy(mezziComp);
             })
         );
 
         // Prendo le squadre da visualizzare nella lista
         this.subscription.add(
             this.squadraComposizione$.subscribe((squadreComp: SquadraComposizione[]) => {
-                this.squadreComposizione = copyObj(squadreComp);
+                this.squadreComposizione = makeCopy(squadreComp);
             })
         );
 
         // Restituisce i PreAccoppiati
         this.subscription.add(
             this.preAccoppiati$.subscribe((preAccoppiati: BoxPartenza[]) => {
-                this.preAccoppiati = copyObj(preAccoppiati);
+                this.preAccoppiati = makeCopy(preAccoppiati);
             })
         );
     }
 
     ngOnInit() {
+        this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState); // Todo: da spostare dentro ViewState
         this.centroMappa = this.centerService.centroMappaIniziale;
         if (this.richiesta) {
-            this.statoPrecedente = this.store.snapshot();
             this.store.dispatch(new GetMezziComposizione());
             this.store.dispatch(new GetSquadreComposizione());
             this.store.dispatch(new GetPreAccoppiati());
@@ -91,6 +91,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        this.store.dispatch(new UndoAllBoxes(this.prevStateBoxClick)); // Todo: da spostare dentro ViewState
         isDevMode() && console.log('Componente Composizione distrutto');
     }
 
@@ -98,7 +99,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.centerService.sendCentro(this.centroMappa);
         this.dismissPartenzaSubject.next(true);
         this.markerS.noAction();
-        this.store.reset(this.statoPrecedente);
         this.statoPartenza.emit(AppFeatures.Default);
     }
 
@@ -137,8 +137,4 @@ export function wipeStatoRichiesta(stato: StatoRichiesta): string {
     const mapTipoStato: Map<StatoRichiesta, string> = new Map(stati);
 
     return mapTipoStato.get(stato);
-}
-
-export function copyObj(obj: any) {
-    return JSON.parse(JSON.stringify(obj));
 }
