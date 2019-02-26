@@ -46,6 +46,7 @@ import { NgxsModule } from '@ngxs/store';
 import { MarkerMeteoState } from '../filterbar/store/states/marker-meteo-switch.state';
 import { MeteoMarkersState } from './store/states/meteo-markers.state';
 import { MapsFiltroState } from './store/states/maps-filtro.state';
+import { MapsDirectionState } from './store/states/maps-direction.state';
 
 @NgModule({
     imports: [
@@ -61,7 +62,8 @@ import { MapsFiltroState } from './store/states/maps-filtro.state';
             [
                 MarkerMeteoState,
                 MeteoMarkersState,
-                MapsFiltroState
+                MapsFiltroState,
+                MapsDirectionState
             ]
         ),
     ],

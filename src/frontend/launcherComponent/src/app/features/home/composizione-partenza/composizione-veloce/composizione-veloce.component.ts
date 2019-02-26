@@ -22,19 +22,23 @@ import { Composizione } from '../../../../shared/enum/composizione.enum';
 })
 export class FasterComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
-
     @Input() preAccoppiati: BoxPartenza[];
+    @Input() dismissEvents: Observable<boolean>;
+
     preAccoppiatiSelezionati: BoxPartenza[] = [];
+    centroMappa: CentroMappa;
+    isDeselezionato: boolean;
+
     Composizione = Composizione;
 
-    centroMappa: CentroMappa;
     subscription = new Subscription();
-    isDeselezionato: boolean;
-    @Input() dismissEvents: Observable<boolean>;
-    @Output() centroMappaEmit: EventEmitter<CentroMappa> = new EventEmitter();
 
-    constructor(private directionService: DirectionService,
-        private markerService: MarkerService,
+    @Output() centroMappaEmit: EventEmitter<CentroMappa> = new EventEmitter();
+    @Output() sendDirection: EventEmitter<DirectionInterface> = new EventEmitter();
+    @Output() clearDirection: EventEmitter<any> = new EventEmitter();
+
+
+    constructor(private markerService: MarkerService,
         private centerService: CenterService) {
     }
 
@@ -89,11 +93,13 @@ export class FasterComponent implements OnInit, OnDestroy {
                 },
                 isVisible: true
             };
-            this.directionService.sendDirection(direction);
+
+            this.sendDirection.emit(direction);
         } else {
             console.error('coordinate mezzo / coordinate richiesta non presenti');
-            this.directionService.clearDirection();
             this.centraMappa(null, '', this.centroMappa);
+
+            this.clearDirection.emit();
         }
     }
 
@@ -110,7 +116,7 @@ export class FasterComponent implements OnInit, OnDestroy {
 
     annullaPartenza(event: boolean): void {
         if (event) {
-            this.directionService.clearDirection();
+            this.clearDirection.emit();
         }
     }
 }

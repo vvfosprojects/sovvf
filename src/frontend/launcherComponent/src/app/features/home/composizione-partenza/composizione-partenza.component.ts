@@ -18,6 +18,8 @@ import { MezziComposizioneState } from './store/states/mezzi-composizione.state'
 import { SquadreComposizioneState } from './store/states/squadre-composizione.state';
 import { PreAccoppiatiState } from './store/states/pre-accoppiati.state';
 import { GetPreAccoppiati } from './store/actions/pre-accoppiati.actions';
+import { DirectionInterface } from '../maps/service/direction-service/direction-interface';
+import { SetDirection, ClearDirection } from '../maps/store/actions/maps-direction.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -112,6 +114,14 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     getCentroMappa(event: CentroMappa): void {
         this.centroMappa = event;
+    }
+
+    onSendDirection(direction: DirectionInterface) {
+        this.store.dispatch(new SetDirection(direction));
+    }
+
+    onClearDirection() {
+        this.store.dispatch(new ClearDirection());
     }
 
 }

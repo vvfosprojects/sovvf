@@ -27,6 +27,7 @@ import { Select } from '@ngxs/store';
 import { MeteoMarkersState } from '../store/';
 import { AppFeatures } from '../../../../shared/enum/app-features.enum';
 import { MouseE } from '../../../../shared/enum/mouse-e.enum';
+import { MapsDirectionState } from '../store/states/maps-direction.state';
 
 declare var google: any;
 
@@ -70,6 +71,7 @@ export class AgmComponent implements OnInit, OnDestroy, OnChanges {
         position: ControlPosition.TOP_LEFT
     };
 
+    @Select(MapsDirectionState.direction) direction$: Observable<DirectionInterface>;
     direction: DirectionInterface = {
         isVisible: false
     };
@@ -84,9 +86,9 @@ export class AgmComponent implements OnInit, OnDestroy, OnChanges {
     @ViewChild('agmContainer') agmContainer: ElementRef;
 
     constructor(private markerService: MarkerService,
-                private centerService: CenterService,
-                private agmService: AgmService,
-                private directionService: DirectionService) {
+        private centerService: CenterService,
+        private agmService: AgmService,
+        private directionService: DirectionService) {
         /**
          * creo un array di marker fittizi con tutte le icone che utilizzerà agm per metterle in cache
          * ed evitare che si presenti il bug delle icone "selezionate"
@@ -126,9 +128,14 @@ export class AgmComponent implements OnInit, OnDestroy, OnChanges {
          * direzioni di tipo direction
          * @type {Subscription}
          */
-        this.subscription.add(this.directionService.getDirection().subscribe(direzioni => {
-            this.direction = direzioni;
-        }));
+        this.subscription.add(
+            /* this.directionService.getDirection().subscribe(direzioni => {
+                this.direction = direzioni;
+            }) */
+            this.direction$.subscribe((direzioni: DirectionInterface) => {
+                this.direction = direzioni;
+            })
+        );
         /**
          * marker minimi per creare un cluster
          * @type {number}

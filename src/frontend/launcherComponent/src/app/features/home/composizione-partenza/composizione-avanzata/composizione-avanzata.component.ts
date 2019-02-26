@@ -27,29 +27,32 @@ import { Composizione } from '../../../../shared/enum/composizione.enum';
 })
 export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
-
-    MapsEvent = MapsEvent;
-    Composizione = Composizione;
-    subscription = new Subscription();
     @Input() mezziComposizione: MezzoComposizione[];
     @Input() squadreComposizione: SquadraComposizione[];
-    partenze: BoxPartenza[] = [];
+
+    interval = [];
+    subscription = new Subscription();
 
     // Partenza
     partenzaCorrente: BoxPartenza;
     idPartenzaCorrente: string;
     indexPartenzaCorrente: number;
     buttonConferma = false;
+    partenze: BoxPartenza[] = [];
 
     // Mappa
     centroMappa: CentroMappa;
+
+    // Enum
+    MapsEvent = MapsEvent;
+    Composizione = Composizione;
+
     @Input() dismissEvents: Observable<boolean>;
     @Output() centroMappaEmit: EventEmitter<CentroMappa> = new EventEmitter();
+    @Output() sendDirection: EventEmitter<DirectionInterface> = new EventEmitter();
+    @Output() clearDirection: EventEmitter<any> = new EventEmitter();
 
-    interval = [];
-
-    constructor(private directionService: DirectionService,
-        private markerService: MarkerService,
+    constructor(private markerService: MarkerService,
         private centerService: CenterService,
         private popoverConfig: NgbPopoverConfig,
         private tooltipConfig: NgbTooltipConfig) {
@@ -435,11 +438,13 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                 },
                 isVisible: true
             };
-            this.directionService.sendDirection(direction);
+
+            this.sendDirection.emit(direction);
         } else {
             console.error('coordinate mezzo / coordinate richiesta non presenti');
-            this.directionService.clearDirection();
             this.centraMappa(null, '', this.centroMappa);
+
+            this.clearDirection.emit();
         }
     }
 
@@ -456,7 +461,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     annullaPartenza(event: boolean): void {
         if (event) {
-            this.directionService.clearDirection();
+            this.clearDirection.emit();
         }
     }
 }
