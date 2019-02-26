@@ -17,7 +17,7 @@ import { GetSquadreComposizione } from './store/actions/squadre-composizione.act
 import { MezziComposizioneState, SquadreComposizioneState } from './store';
 import { PreAccoppiatiState } from './store/states/pre-accoppiati.state';
 import { GetPreAccoppiati } from './store/actions/pre-accoppiati.actions';
-import { DirectionInterface } from '../maps/service/direction-service/direction-interface';
+import { DirectionInterface } from '../maps/maps-interface/direction-interface';
 import { SetDirection, ClearDirection } from '../maps/store/actions/maps-direction.actions';
 import { makeCopy } from '../../../shared/helper/function';
 

@@ -1,7 +1,7 @@
 import { Selector, State, Action, StateContext } from '@ngxs/store';
 
 // Interface
-import { DirectionInterface } from '../../service/direction-service/direction-interface';
+import { DirectionInterface } from '../../maps-interface/direction-interface';
 
 // Action
 import { SetDirection, ClearDirection } from '../actions/maps-direction.actions';

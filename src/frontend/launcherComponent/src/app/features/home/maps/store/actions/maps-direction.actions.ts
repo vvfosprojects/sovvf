@@ -1,5 +1,5 @@
 // Interface
-import { DirectionInterface } from '../../service/direction-service/direction-interface';
+import { DirectionInterface } from '../../maps-interface/direction-interface';
 
 export class SetDirection {
     static readonly type = '[MapsDirection] Set Direction';

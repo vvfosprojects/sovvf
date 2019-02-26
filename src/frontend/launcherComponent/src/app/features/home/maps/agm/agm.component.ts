@@ -18,8 +18,7 @@ import { CenterService } from '../service/center-service/center-service.service'
 import { AgmService } from './agm-service.service';
 import { ControlPosition, FullscreenControlOptions, ZoomControlOptions } from '@agm/core/services/google-maps-types';
 import { MeteoMarker } from '../maps-model/meteo-marker.model';
-import { DirectionService } from '../service/direction-service/direction-service.service';
-import { DirectionInterface } from '../service/direction-service/direction-interface';
+import { DirectionInterface } from '../maps-interface/direction-interface';
 import { CachedMarker } from '../maps-model/cached-marker.model';
 import { ViewInterfaceMaps } from '../../../../shared/interface/view.interface';
 import { ComposizioneMarker } from '../maps-model/composizione-marker.model';
@@ -87,8 +86,7 @@ export class AgmComponent implements OnInit, OnDestroy, OnChanges {
 
     constructor(private markerService: MarkerService,
         private centerService: CenterService,
-        private agmService: AgmService,
-        private directionService: DirectionService) {
+        private agmService: AgmService) {
         /**
          * creo un array di marker fittizi con tutte le icone che utilizzerà agm per metterle in cache
          * ed evitare che si presenti il bug delle icone "selezionate"
@@ -129,9 +127,6 @@ export class AgmComponent implements OnInit, OnDestroy, OnChanges {
          * @type {Subscription}
          */
         this.subscription.add(
-            /* this.directionService.getDirection().subscribe(direzioni => {
-                this.direction = direzioni;
-            }) */
             this.direction$.subscribe((direzioni: DirectionInterface) => {
                 this.direction = direzioni;
             })

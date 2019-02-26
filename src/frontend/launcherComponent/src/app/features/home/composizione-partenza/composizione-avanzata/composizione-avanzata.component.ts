@@ -4,7 +4,6 @@ import { Observable, Subscription } from 'rxjs';
 import { MapsEvent } from '../../../../shared/enum/maps-event.enum';
 
 // Service
-import { DirectionService } from '../../maps/service/direction-service/direction-service.service';
 import { CenterService } from '../../maps/service/center-service/center-service.service';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 
@@ -12,7 +11,7 @@ import { MarkerService } from '../../maps/service/marker-service/marker-service.
 import { BoxPartenza } from '../interface/box-partenza-interface';
 import { MezzoComposizione } from '../interface/mezzo-composizione-interface';
 import { SquadraComposizione } from '../interface/squadra-composizione-interface';
-import { DirectionInterface } from '../../maps/service/direction-service/direction-interface';
+import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 
 // Model
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
