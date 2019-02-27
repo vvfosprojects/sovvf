@@ -35,7 +35,6 @@ export class SaveView {
     static readonly type = '[ChangeView] Stato visualizzazione salvata';
 
     constructor(public state: ViewComponentStateModel) {
-        console.log('stato salvato');
     }
 }
 

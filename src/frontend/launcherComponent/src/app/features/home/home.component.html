@@ -19,7 +19,7 @@
                                        [compPartenzaMode]="(composizioneMode$ | async)"></app-composizione-partenza>
         </div>
         <div class="mt-2" [ngClass]="columnState.sinistra || {'d-none' : !viewState.mappa.active}">
-            <app-maps [viewStateMappa]="viewState.mappa.options[0]" [richiestaPartenza]="richiestaNuovaPartenza"></app-maps>
+            <app-maps [viewStateMappa]="(viewStateMappa$ | async)" [richiestaPartenza]="richiestaNuovaPartenza"></app-maps>
         </div>
     </div>
 </div>

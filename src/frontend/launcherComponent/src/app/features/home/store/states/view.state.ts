@@ -5,8 +5,8 @@ import { Grid } from '../../../../shared/enum/layout.enum';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { ChangeView, SaveView, SwitchComposizione, ToggleChiamata, ToggleComposizione, TurnOffComposizione } from '../actions/view.actions';
 import { BackupViewComponentState } from './save-view.state';
-import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewLayouts } from '../../../../shared/interface/view.interface';
-import { activeChiamata, activeComposizione, colorButton, switchComposizione, turnOffComposizione, updateView } from '../helper/view-state-function';
+import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../../../shared/interface/view.interface';
+import { activeChiamata, activeComposizione, colorButton, switchComposizione, turnOffComposizione, updateView, viewStateMaps } from '../helper/view-state-function';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -74,6 +74,11 @@ export class ViewComponentState {
     @Selector()
     static colorButton(state: ViewComponentStateModel): ViewInterfaceButton {
         return colorButton(state);
+    }
+
+    @Selector()
+    static viewStateMaps(state: ViewComponentStateModel): ViewInterfaceMaps {
+        return viewStateMaps(state);
     }
 
     @Action(ChangeView)

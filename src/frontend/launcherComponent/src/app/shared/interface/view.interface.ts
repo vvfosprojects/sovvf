@@ -26,7 +26,7 @@ export interface ViewComponentStateModel {
 }
 
 export interface ViewInterfaceMaps {
-    active?: AppFeatures;
+    active: AppFeatures;
 }
 
 export interface ViewInterfaceButton {

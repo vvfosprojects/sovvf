@@ -1,4 +1,4 @@
-import { ViewComponentStateModel, ViewInterfaceButton } from '../../../../shared/interface/view.interface';
+import { ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps } from '../../../../shared/interface/view.interface';
 import { ChangeView } from '../actions/view.actions';
 import { AppFeatures } from '../../../../shared/enum/app-features.enum';
 import { Grid } from '../../../../shared/enum/layout.enum';
@@ -102,4 +102,14 @@ export function colorButton(state: ViewComponentStateModel): ViewInterfaceButton
             state.view.mappa.active && !state.view.mappa.split ? 'btn-secondary' : 'btn-outline-secondary'
         ]
     } as ViewInterfaceButton;
+}
+
+/**
+ * partendo dallo stato attuale, ritorna lo stato di visualizzazione attivo del componente maps
+ * @param state
+ */
+export function viewStateMaps(state: ViewComponentStateModel): ViewInterfaceMaps {
+    return {
+        active: state.view.mappa.options[0]
+    } as ViewInterfaceMaps;
 }

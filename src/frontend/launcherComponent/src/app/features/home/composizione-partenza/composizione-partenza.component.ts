@@ -125,7 +125,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     turnOffComposizione() {
-        console.log('torna a richieste');
         this.store.dispatch(new TurnOffComposizione());
     }
 
