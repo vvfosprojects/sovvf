@@ -34,6 +34,7 @@ import { RichiestaHoverState } from './richieste/store/';
 import { RichiestaSelezionataState } from './richieste/store/states/richiesta-selezionata.state';
 import { ViewComponentState } from './store/states/view.state';
 import { BackupViewComponentState } from './store/states/save-view.state';
+import { NuovaPartenzaState } from './composizione-partenza/store/states/nuova-partenza.state';
 
 @NgModule({
     declarations: [
@@ -73,7 +74,8 @@ import { BackupViewComponentState } from './store/states/save-view.state';
                 RichiesteState,
                 RichiestaFissataState,
                 RichiestaHoverState,
-                RichiestaSelezionataState
+                RichiestaSelezionataState,
+                NuovaPartenzaState
             ]
         ),
     ],

@@ -30,7 +30,6 @@ export class MapsComponent implements OnInit, OnChanges, OnDestroy {
     subscription = new Subscription();
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Input() richiestaPartenza: SintesiRichiesta;
-    // @Input() chiamataMarker: ChiamataMarker;
     @Select(SchedaTelefonataState.inserisciMarkerChiamata) chiamataMarkers$: Observable<ChiamataMarker[]>;
     mapsFullyLoaded = false;
 
@@ -79,9 +78,7 @@ export class MapsComponent implements OnInit, OnChanges, OnDestroy {
 
     static mapPartenzaMarker(richiesta: SintesiRichiesta): ComposizioneMarker {
         let composizione: ComposizioneMarker;
-        /**
-         * provvisorio in attesa che enum stato sia anche nel model del marker di mappa
-         */
+        // Todo: provvisorio in attesa che enum stato sia anche nel model del marker di mappa
         const statoProvvisorio = wipeStatoRichiesta(richiesta.stato);
         composizione = new ComposizioneMarker(
             richiesta.id, richiesta.localita, richiesta.tipologie, null,
@@ -101,13 +98,6 @@ export class MapsComponent implements OnInit, OnChanges, OnDestroy {
         } else {
             this.composizioneMarkers = [];
         }
-        // if (changes.chiamataMarker) {
-        //     if (changes.chiamataMarker.currentValue) {
-        //         this.chiamataMarkers[0] = changes.chiamataMarker.currentValue;
-        //     }
-        // } else {
-        //     this.chiamataMarkers = [];
-        // }
     }
 
     ngOnDestroy() {

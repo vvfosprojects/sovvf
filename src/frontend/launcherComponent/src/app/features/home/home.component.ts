@@ -5,6 +5,7 @@ import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Select } from '@ngxs/store';
 import { ViewComponentState } from './store/states/view.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
+import { NuovaPartenzaState } from './composizione-partenza/store/states/nuova-partenza.state';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -14,17 +15,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     viewState: ViewLayouts;
     columnState: Grids;
 
-    richiestaNuovaPartenza: SintesiRichiesta;
+    nuovaPartenza: SintesiRichiesta;
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
     @Select(ViewComponentState.columnGrid) columnState$: Observable<Grids>;
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.colorButton) colorButton$: Observable<ViewInterfaceButton>;
     @Select(ViewComponentState.viewStateMaps) viewStateMappa$: Observable<ViewInterfaceMaps>;
+    @Select(NuovaPartenzaState.getPartenza) nuovaPartenza$: Observable<SintesiRichiesta>;
 
     constructor() {
         this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
         this.subscription.add(this.columnState$.subscribe(r => this.columnState = r));
+        this.subscription.add(this.nuovaPartenza$.subscribe( r => this.nuovaPartenza = r));
     }
 
     ngOnInit() {
@@ -34,10 +37,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         isDevMode() && console.log('Componente Home distrutto');
         this.subscription.unsubscribe();
-    }
-
-    nuovaPartenza(richiesta: SintesiRichiesta) {
-        this.richiestaNuovaPartenza = richiesta;
     }
 
 }

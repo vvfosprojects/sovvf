@@ -22,6 +22,7 @@ import { AppFeatures } from '../../../shared/enum/app-features.enum';
 import { SetIdRichiestaEventi } from '../eventi/store/actions/eventi-richiesta.actions';
 import { ToggleComposizione } from '../store/actions/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
+import { NuovaPartenza } from '../composizione-partenza/store/actions/nuova-partenza.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -31,8 +32,6 @@ import { Composizione } from '../../../shared/enum/composizione.enum';
 export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Input() split: boolean;
-
-    @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
 
     @Select(RicercaRichiesteState.ricerca) ricerca$: Observable<string>;
     ricerca: { descrizione: '' };
@@ -220,5 +219,9 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     toggleComposizione() {
         this.store.dispatch(new ToggleComposizione(Composizione.Avanzata));
+    }
+
+    nuovaPartenza($event: SintesiRichiesta) {
+        this.store.dispatch(new NuovaPartenza($event));
     }
 }

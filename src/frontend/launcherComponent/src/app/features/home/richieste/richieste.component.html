@@ -1,6 +1,6 @@
 <!-- Singola Richiesta Fissata  -->
 <app-richiesta-fissata [_split]="split" [richiestaFissata]="richiestaFissata"
-    (statoPartenza)="toggleComposizione()" (composizionePartenza)="composizionePartenza.emit($event)"
+    (statoPartenza)="toggleComposizione()" (composizionePartenza)="nuovaPartenza($event)"
     (defissa)="onDefissa()">
 </app-richiesta-fissata>
 
@@ -8,7 +8,7 @@
     [richiestaSelezionata]="richiestaSelezionata" [richiestaHover]="richiestaHover" [loaderRichieste]="loaderRichieste"
     [loaderNuoveRichieste]="loaderNuoveRichieste" [contatoreNuoveRichieste]="contatoreNuoveRichieste"
     [richiesteTerminate]="richiesteTerminate" [listHeightClass]="listHeightClass"
-    (statoPartenza)="toggleComposizione()" (composizionePartenza)="composizionePartenza.emit($event)"
+    (statoPartenza)="toggleComposizione()" (composizionePartenza)="nuovaPartenza($event)"
     (fissaInAlto)="onFissaInAlto($event)" (hoverIn)="onHoverIn($event)" (hoverOut)="onHoverOut()"
     (selezione)="onSelezione($event)" (deselezione)="onDeselezione()" (nuoveRichieste)="onNuoveRichieste()">
 </app-lista-richieste>
