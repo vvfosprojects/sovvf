@@ -1,26 +1,35 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { ViewService } from '../../core/service/view-service/view-service.service';
-import { ViewInterface } from '../../shared/interface/view.interface';
+import { Observable, Subscription } from 'rxjs';
+import { Grids, ViewInterfaceButton, ViewLayouts } from '../../shared/interface/view.interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import { ChiamataMarker } from './maps/maps-model/chiamata-marker.model';
+import { Select } from '@ngxs/store';
+import { ViewComponentState } from './store/states/view.state';
+import { Composizione } from '../../shared/enum/composizione.enum';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
 
     subscription = new Subscription();
-    viewState: ViewInterface;
+
+    viewState: ViewLayouts;
+    columnState: Grids;
 
     richiestaNuovaPartenza: SintesiRichiesta;
-    // chiamataMarker: ChiamataMarker;
 
-    constructor(private viewService: ViewService) {
-        this.viewState = this.viewService.viewState;
-        this.subscription.add(
-            this.viewService.getView().subscribe((r: ViewInterface) => {
-                this.viewState = r;
-            })
-        );
+    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
+    @Select(ViewComponentState.columnGrid) columnState$: Observable<Grids>;
+    @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
+    @Select(ViewComponentState.colorButton) colorButton$: Observable<ViewInterfaceButton>;
+
+    constructor() {
+        this.subscription.add(this.viewState$.subscribe(r => {
+            console.log(r);
+            this.viewState = r;
+        }));
+        this.subscription.add(this.columnState$.subscribe(r => {
+            console.log(r);
+            this.columnState = r;
+        }));
     }
 
     ngOnInit() {
@@ -35,13 +44,5 @@ export class HomeComponent implements OnInit, OnDestroy {
     nuovaPartenza(richiesta: SintesiRichiesta) {
         this.richiestaNuovaPartenza = richiesta;
     }
-
-    switchView(event: string, chiamata?: boolean) {
-        this.viewService.switchView(event, chiamata);
-    }
-
-    // _chiamataMarker(chiamata: ChiamataMarker) {
-    //     this.chiamataMarker = chiamata;
-    // }
 
 }

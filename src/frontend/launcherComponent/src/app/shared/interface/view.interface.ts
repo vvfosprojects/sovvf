@@ -1,23 +1,28 @@
 import { AppFeatures } from '../enum/app-features.enum';
+import { Grid } from '../enum/layout.enum';
 
-export interface ViewInterface {
-    layout?: ViewInterfaceLayout;
-    components?: ViewInterfaceComponent;
-    maps?: ViewInterfaceMaps;
-}
-
-export interface ViewInterfaceLayout {
+export interface ViewLayout {
+    active: boolean;
     split?: boolean;
-    columns?: string[];
-    button?: ViewInterfaceButton;
-    composizione?: ViewInterfaceComposizione;
+    options?: any[];
 }
 
-export interface ViewInterfaceComponent {
-    mappa?: boolean;
-    richieste?: boolean;
-    chiamata?: boolean;
-    composizione?: boolean;
+export interface ViewLayouts {
+    richieste: ViewLayout;
+    mappa: ViewLayout;
+    chiamata: ViewLayout;
+    composizione: ViewLayout;
+    filterbar: ViewLayout;
+}
+
+export interface Grids {
+    destra: Grid;
+    sinistra: Grid;
+}
+
+export interface ViewComponentStateModel {
+    view: ViewLayouts;
+    column: Grids;
 }
 
 export interface ViewInterfaceMaps {
@@ -27,10 +32,4 @@ export interface ViewInterfaceMaps {
 export interface ViewInterfaceButton {
     chiamata?: string;
     buttonView?: string[];
-}
-
-export interface ViewInterfaceComposizione {
-    disable: boolean;
-    column: string;
-    modalita: string;
 }

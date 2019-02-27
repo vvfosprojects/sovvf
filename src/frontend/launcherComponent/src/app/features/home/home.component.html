@@ -6,23 +6,20 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <app-filterbar (buttonSwitchView)="switchView($event.event, $event.chiamata)"
-                           (buttonCompPartenzaMode)="viewState.layout.composizione.modalita = $event"
-                           [compPartenzaState]="viewState.layout.composizione"
-                           [colorButton]="viewState.layout.button"></app-filterbar>
+            <app-filterbar [colorButton]="(colorButton$ | async)"></app-filterbar>
         </div>
     </div>
     <div class="row">
-        <div class="" [ngClass]="viewState.layout.columns[0]">
-            <app-richieste [ngClass]="{'d-none' : !viewState.components.richieste}"
-                           [split]="viewState.layout.split" (statoPartenza)="switchView($event)" (composizionePartenza)="nuovaPartenza($event)"></app-richieste>
-            <app-chiamata *ngIf="viewState.components.chiamata"
-                          (annullaChiamata)="switchView($event.event, $event.chiamata)"></app-chiamata>
-            <app-composizione-partenza *ngIf="viewState.components.composizione"
-                                       [richiesta]="richiestaNuovaPartenza" (statoPartenza)="switchView($event)" [compPartenzaMode]="viewState.layout.composizione.modalita"></app-composizione-partenza>
+        <div class="" [ngClass]="columnState.destra">
+            <app-richieste [ngClass]="{'d-none' : !viewState.richieste.active}"
+                           [split]="viewState.richieste.split" (composizionePartenza)="nuovaPartenza($event)"></app-richieste>
+            <app-chiamata *ngIf="viewState.chiamata.active"></app-chiamata>
+            <app-composizione-partenza *ngIf="viewState.composizione.active"
+                                       [richiesta]="richiestaNuovaPartenza"
+                                       [compPartenzaMode]="(composizioneMode$ | async)"></app-composizione-partenza>
         </div>
-        <div class="mt-2" [ngClass]="viewState.layout.columns[1] || {'d-none' : !viewState.components.mappa}">
-            <app-maps [viewStateMappa]="viewState.maps" [richiestaPartenza]="richiestaNuovaPartenza"></app-maps>
+        <div class="mt-2" [ngClass]="columnState.sinistra || {'d-none' : !viewState.mappa.active}">
+            <app-maps [viewStateMappa]="viewState.mappa.options[0]" [richiestaPartenza]="richiestaNuovaPartenza"></app-maps>
         </div>
     </div>
 </div>

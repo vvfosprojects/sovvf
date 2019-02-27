@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 
 @Component({
@@ -8,20 +8,18 @@ import { Composizione } from '../../../../shared/enum/composizione.enum';
 })
 export class TastoCompPartenzaComponent {
 
-    @Input() compPartenzaMode: string;
-    @Output() cambioModalita = new EventEmitter();
+    @Input() compPartenzaMode: Composizione;
+    @Output() cambioModalita = new EventEmitter<Composizione>();
     Composizione = Composizione;
 
     changeMode() {
-        switch (this.compPartenzaMode) {
-            case Composizione.Veloce:
-                this.compPartenzaMode = Composizione.Avanzata;
-                break;
-            case Composizione.Avanzata:
-                this.compPartenzaMode = Composizione.Veloce;
-                break;
+
+        if (this.compPartenzaMode === Composizione.Avanzata) {
+            this.cambioModalita.emit(Composizione.Veloce);
+        } else {
+            this.cambioModalita.emit(Composizione.Avanzata);
         }
-        this.cambioModalita.emit(this.compPartenzaMode);
+
     }
 
 }

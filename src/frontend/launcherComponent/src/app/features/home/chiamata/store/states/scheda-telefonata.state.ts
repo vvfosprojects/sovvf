@@ -7,19 +7,20 @@ import { MarkerService } from '../../../maps/service/marker-service/marker-servi
 import { MapsEvent } from '../../../../../shared/enum/maps-event.enum';
 import { ChiamataState } from './chiamata.state';
 import { CopyToClipboard } from '../actions/clipboard.actions';
+import { ToggleChiamata } from '../../../store/actions/view.actions';
 
 export interface SchedaTelefonataStateModel {
     coordinate: Coordinate;
     chiamata: FormChiamataModel;
     chiamataMarker: ChiamataMarker[];
-    annulla: boolean; // Todo: togliere con ViewState
+    annulla: boolean; // Todo: togliere con MapsCenterState
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     coordinate: null,
     chiamata: null,
     chiamataMarker: [],
-    annulla: null // Todo: togliere con ViewState
+    annulla: null // Todo: togliere con MapsCenterState
 };
 
 @State<SchedaTelefonataStateModel>({
@@ -38,7 +39,7 @@ export class SchedaTelefonataState {
         return state.coordinate;
     }
 
-    // Todo: togliere con ViewState
+    // Todo: togliere con MapsCenterState
     @Selector()
     static annullaMarkerChiamata(state: SchedaTelefonataStateModel) {
         return state.annulla;
@@ -90,9 +91,9 @@ export class SchedaTelefonataState {
     }
 
     @Action(AnnullaChiamata)
-    annullaChiamata({ getState, patchState }: StateContext<SchedaTelefonataStateModel>) {
+    annullaChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
         const state = getState();
-
+        dispatch(new ToggleChiamata());
         patchState({
             ...state,
             annulla: true,

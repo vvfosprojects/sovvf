@@ -15,7 +15,7 @@ export class BoxNuovaPartenzaComponent {
     @Output() eliminato = new EventEmitter<BoxPartenza>();
 
     @Input() richiesta: SintesiRichiesta;
-    @Input() compPartenzaMode: string;
+    @Input() compPartenzaMode: Composizione;
 
     // Options
     @Input() elimina: boolean;

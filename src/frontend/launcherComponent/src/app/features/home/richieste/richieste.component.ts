@@ -1,29 +1,27 @@
 import { Component, EventEmitter, Input, isDevMode, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from 'ngx-filter-pipe';
-
 // Model
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-
 // Component
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
-
 // Service
 import { ToastrService } from 'ngx-toastr';
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
-
 // Ngxs
 import { Select, Store } from '@ngxs/store';
 import { RicercaRichiesteState } from '../filterbar/store/states/ricerca-richieste.state';
-import { SetRichiestaFissata, ClearRichiestaFissata } from './store/actions/richiesta-fissata.actions';
-import { RichiestaFissataState, RichiesteState, RichiestaHoverState } from './store';
+import { ClearRichiestaFissata, SetRichiestaFissata } from './store/actions/richiesta-fissata.actions';
+import { RichiestaFissataState, RichiestaHoverState, RichiesteState } from './store';
 import { GetRichieste } from './store/actions/richieste.actions';
-import { SetRichiestaHover, ClearRichiestaHover } from './store/actions/richiesta-hover.actions';
-import { SetRichiestaSelezionata, ClearRichiestaSelezionata } from './store/actions/richiesta-selezionata.actions';
+import { ClearRichiestaHover, SetRichiestaHover } from './store/actions/richiesta-hover.actions';
+import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from './store/actions/richiesta-selezionata.actions';
 import { RichiestaSelezionataState } from './store/states/richiesta-selezionata.state';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
 import { SetIdRichiestaEventi } from '../eventi/store/actions/eventi-richiesta.actions';
+import { ToggleComposizione } from '../store/actions/view.actions';
+import { Composizione } from '../../../shared/enum/composizione.enum';
 
 @Component({
     selector: 'app-richieste',
@@ -32,9 +30,8 @@ import { SetIdRichiestaEventi } from '../eventi/store/actions/eventi-richiesta.a
 })
 export class RichiesteComponent implements OnInit, OnDestroy {
 
-    @Input() split: string;
+    @Input() split: boolean;
 
-    @Output() statoPartenza = new EventEmitter<AppFeatures>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
 
     @Select(RicercaRichiesteState.ricerca) ricerca$: Observable<string>;
@@ -62,10 +59,10 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
 
     constructor(private modalService: NgbModal,
-        private toastr: ToastrService,
-        private markerService: MarkerService,
-        private filter: FilterPipe,
-        private store: Store) {
+                private toastr: ToastrService,
+                private markerService: MarkerService,
+                private filter: FilterPipe,
+                private store: Store) {
     }
 
     ngOnInit(): void {
@@ -219,5 +216,9 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     onVisualizzaEventiRichiesta(idRichiesta: string) {
         this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
         this.modalService.open(EventiRichiestaComponent, { size: 'lg', centered: true });
+    }
+
+    toggleComposizione() {
+        this.store.dispatch(new ToggleComposizione(Composizione.Avanzata));
     }
 }

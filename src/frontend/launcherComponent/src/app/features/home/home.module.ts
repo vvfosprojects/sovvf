@@ -21,7 +21,6 @@ import { CenterService } from './maps/service/center-service/center-service.serv
 import { MapsFiltroService } from './maps/maps-ui/filtro/maps-filtro.service';
 import { AgmService } from './maps/agm/agm-service.service';
 import { ListaRichiesteService } from './richieste/service/lista-richieste-service.service';
-import { ViewService } from '../../core/service/view-service/view-service.service';
 import { BoxesModule } from './boxes/boxes.module';
 import { ChiamataModule } from './chiamata/chiamata.module';
 import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
@@ -33,6 +32,8 @@ import { RichiestaFissataState } from './richieste/store/';
 import { RichiesteState } from './richieste/store/';
 import { RichiestaHoverState } from './richieste/store/';
 import { RichiestaSelezionataState } from './richieste/store/states/richiesta-selezionata.state';
+import { ViewComponentState } from './store/states/view.state';
+import { BackupViewComponentState } from './store/states/save-view.state';
 
 @NgModule({
     declarations: [
@@ -64,6 +65,8 @@ import { RichiestaSelezionataState } from './richieste/store/states/richiesta-se
         }),
         NgxsModule.forFeature(
             [
+                ViewComponentState,
+                BackupViewComponentState,
                 FiltriRichiesteState,
                 RicercaRichiesteState,
                 MarkerMeteoState,
@@ -76,8 +79,7 @@ import { RichiestaSelezionataState } from './richieste/store/states/richiesta-se
     ],
     providers: [
         MarkerService, CenterService, MapsFiltroService, AgmService,
-        ListaRichiesteService,
-        ViewService
+        ListaRichiesteService
     ]
 })
 export class HomeModule {

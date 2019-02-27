@@ -16,7 +16,7 @@ export class MapsFiltroService implements OnDestroy {
     constructor(private store: Store) {
         this.subscription.add(
             this.boxClick$.subscribe((boxClick: BoxClickInterface) => {
-                // Todo: bloccano l'app
+                // Todo: bloccano l'app!!! -> @NotMikeNot
                     // this.checkBoxClick(boxClick);
                     // this.filtroBoxes.next(this.stateBoxClick(boxClick));
                 }

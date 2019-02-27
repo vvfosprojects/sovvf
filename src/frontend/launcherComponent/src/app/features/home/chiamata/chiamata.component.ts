@@ -6,7 +6,6 @@ import { APP_TIPOLOGIE, TipologieInterface } from '../../../core/settings/tipolo
 import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
 import { ChiamataMarker } from '../maps/maps-model/chiamata-marker.model';
 import { Coordinate } from '../../../shared/model/coordinate.model';
-import { AppFeatures } from '../../../shared/enum/app-features.enum';
 import { Select, Store } from '@ngxs/store';
 import { GetIdChiamata } from './store/actions/chiamata.actions';
 import { ChiamataState } from './store/states/chiamata.state';
@@ -22,7 +21,6 @@ import { SchedaTelefonataState } from './store/states/scheda-telefonata.state';
 })
 export class ChiamataComponent implements OnInit, OnDestroy {
 
-    @Output() annullaChiamata = new EventEmitter(); // Todo: questo diventa toggleChiamata
     @Output() chiamataMarker = new EventEmitter<ChiamataMarker>();
 
     subscription = new Subscription();
@@ -42,7 +40,7 @@ export class ChiamataComponent implements OnInit, OnDestroy {
         this.centroMappa = this.centerService.centroMappaIniziale;
         this.subscription.add(this.idChiamata$.subscribe(r => this.idChiamata = r));
         this.subscription.add(this.coordinate$.subscribe(r => this.coordinate = r));
-        this.subscription.add(this.annullaChiamata$.subscribe( r => {
+        this.subscription.add(this.annullaChiamata$.subscribe(r => {
             if (r) {
                 this.annullaChiamataMarker();
             }
@@ -76,7 +74,7 @@ export class ChiamataComponent implements OnInit, OnDestroy {
 
     annullaChiamataMarker() {
         this.markerService.chiamata(null, '', this.centroMappa);
-        this.annullaChiamata.emit({ event: AppFeatures.Chiamata, chiamata: false });
+        // this.store.dispatch(new ToggleChiamata());
     }
 
 }

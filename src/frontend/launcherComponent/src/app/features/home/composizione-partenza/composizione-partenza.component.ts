@@ -10,7 +10,6 @@ import { MezzoComposizione } from './interface/mezzo-composizione-interface';
 import { SquadraComposizione } from './interface/squadra-composizione-interface';
 import { BoxPartenza } from './interface/box-partenza-interface';
 import { Composizione } from '../../../shared/enum/composizione.enum';
-import { AppFeatures } from '../../../shared/enum/app-features.enum';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 import { GetMezziComposizione } from './store/actions/mezzi-composizione.actions';
 import { GetSquadreComposizione } from './store/actions/squadre-composizione.actions';
@@ -20,6 +19,7 @@ import { GetPreAccoppiati } from './store/actions/pre-accoppiati.actions';
 import { DirectionInterface } from '../maps/maps-interface/direction-interface';
 import { SetDirection, ClearDirection } from '../maps/store/actions/maps-direction.actions';
 import { makeCopy } from '../../../shared/helper/function';
+import { TurnOffComposizione } from '../store/actions/view.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -29,7 +29,7 @@ import { makeCopy } from '../../../shared/helper/function';
 export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
     @Input() compPartenzaMode: string;
-    @Output() statoPartenza = new EventEmitter<AppFeatures>();
+
     dismissPartenzaSubject: Subject<boolean> = new Subject<boolean>();
     Composizione = Composizione;
 
@@ -49,8 +49,8 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     prevStateBoxClick: BoxClickStateModel;
 
     constructor(private store: Store,
-        private centerService: CenterService,
-        private markerS: MarkerService) {
+                private centerService: CenterService,
+                private markerS: MarkerService) {
 
         // Prendo i mezzi da visualizzare nella lista
         this.subscription.add(
@@ -99,7 +99,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.centerService.sendCentro(this.centroMappa);
         this.dismissPartenzaSubject.next(true);
         this.markerS.noAction();
-        this.statoPartenza.emit(AppFeatures.Default);
+        this.turnOffComposizione();
     }
 
     cardClasses(r: SintesiRichiesta) {
@@ -122,6 +122,11 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     onClearDirection() {
         this.store.dispatch(new ClearDirection());
+    }
+
+    turnOffComposizione() {
+        console.log('torna a richieste');
+        this.store.dispatch(new TurnOffComposizione());
     }
 
 }

@@ -26,7 +26,6 @@ export class FasterComponent implements OnInit, OnDestroy {
 
     preAccoppiatiSelezionati: BoxPartenza[] = [];
     centroMappa: CentroMappa;
-    isDeselezionato: boolean;
 
     Composizione = Composizione;
 
@@ -38,7 +37,7 @@ export class FasterComponent implements OnInit, OnDestroy {
 
 
     constructor(private markerService: MarkerService,
-        private centerService: CenterService) {
+                private centerService: CenterService) {
     }
 
     ngOnInit() {

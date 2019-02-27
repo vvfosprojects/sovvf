@@ -1,0 +1,15 @@
+export enum Grid {
+    No = '',
+    Col1 = 'col-1',
+    Col2 = 'col-2',
+    Col3 = 'col-3',
+    Col4 = 'col-4',
+    Col5 = 'col-5',
+    Col6 = 'col-6',
+    Col7 = 'col-7',
+    Col8 = 'col-8',
+    Col9 = 'col-9',
+    Col10 = 'col-10',
+    Col11 = 'col-11',
+    Col12 = 'col-12',
+}

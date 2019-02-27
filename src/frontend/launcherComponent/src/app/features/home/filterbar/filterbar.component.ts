@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 // View
-import { ViewInterfaceButton, ViewInterfaceComposizione } from '../../../shared/interface/view.interface';
+import { ViewInterfaceButton } from '../../../shared/interface/view.interface';
 // Filtri Richieste
 import { GetFiltriRichieste, ResetFiltriSelezionati, SetFiltroSelezionato } from './store/actions/filtri-richieste.actions';
 import { FiltriRichiesteState } from './store/states/filtri-richieste.state';
@@ -14,6 +14,10 @@ import { MarkerMeteoState } from './store/states/marker-meteo-switch.state';
 import { SetMarkerMeteoSwitch } from './store/actions/marker-meteo-switch.actions';
 import { SetRicerca } from './store/actions/ricerca-richieste.actions';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
+import { ChangeView, SwitchComposizione, ToggleChiamata } from '../store/actions/view.actions';
+import { ViewComponentState } from '../store/states/view.state';
+import { Composizione } from '../../../shared/enum/composizione.enum';
+import { Grid } from '../../../shared/enum/layout.enum';
 
 @Component({
     selector: 'app-filterbar',
@@ -22,10 +26,7 @@ import { AppFeatures } from '../../../shared/enum/app-features.enum';
 })
 export class FilterbarComponent implements OnInit {
 
-    @Input() compPartenzaState: ViewInterfaceComposizione;
     @Input() colorButton: ViewInterfaceButton;
-    @Output() buttonSwitchView = new EventEmitter<object>();
-    @Output() buttonCompPartenzaMode = new EventEmitter<string>();
 
     // Filtri Richieste
     @Select(FiltriRichiesteState.filtriTipologie) filtri$: Observable<VoceFiltro[]>;
@@ -36,6 +37,11 @@ export class FilterbarComponent implements OnInit {
 
     // Marker Meteo Switch
     @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
+
+    // View State
+    @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
+    @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
+    @Select(ViewComponentState.filterBarCol) filterBarCol$: Observable<Grid>;
 
     constructor(private store: Store) {
     }
@@ -73,28 +79,16 @@ export class FilterbarComponent implements OnInit {
         this.store.dispatch(new SetMarkerMeteoSwitch(active));
     }
 
-    compPartenzaSwitch(event: string) {
-        this.buttonCompPartenzaMode.emit(event);
+    compPartenzaSwitch(event: Composizione) {
+        this.store.dispatch(new SwitchComposizione(event));
     }
 
-    chiamata(value: boolean) {
-        this.buttonSwitchView.emit({ event: AppFeatures.Chiamata, chiamata: value });
+    toggleChiamata() {
+        this.store.dispatch(new ToggleChiamata());
     }
 
-    // buttonView(event: AppFeatures) {
-    //     let method: AppFeatures;
-    //     switch (event) {
-    //         case AppFeatures.Default:
-    //             method = AppFeatures.Default;
-    //             break;
-    //         case AppFeatures.Mappa:
-    //             method = AppFeatures.Mappa;
-    //             break;
-    //         case AppFeatures.Richieste:
-    //             method = AppFeatures.Richieste;
-    //             break;
-    //     }
-    //     this.buttonSwitchView.emit({ event: method });
-    // }
+    switchView(event: AppFeatures) {
+        this.store.dispatch(new ChangeView(event));
+    }
 
 }
