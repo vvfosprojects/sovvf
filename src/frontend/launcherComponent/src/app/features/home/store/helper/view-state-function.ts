@@ -1,4 +1,4 @@
-import { ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps } from '../../../../shared/interface/view.interface';
+import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps } from '../../../../shared/interface/view.interface';
 import { ChangeView } from '../actions/view.actions';
 import { AppFeatures } from '../../../../shared/enum/app-features.enum';
 import { Grid } from '../../../../shared/enum/layout.enum';
@@ -14,19 +14,16 @@ export function updateView(stateDefault: ViewComponentStateModel, action: Change
     if (action.modalita !== AppFeatures.Default) {
         stateDefault.view.richieste.split = false;
         stateDefault.view.mappa.split = false;
+        stateDefault.column = gridSolve(action.modalita);
     }
     switch (action.modalita) {
         case AppFeatures.Mappa:
             stateDefault.view.richieste.active = false;
-            stateDefault.column.destra = Grid.No;
-            stateDefault.column.sinistra = Grid.Col12;
             break;
         case AppFeatures.Richieste:
             stateDefault.view.mappa.active = false;
-            stateDefault.column.sinistra = Grid.No;
-            stateDefault.column.destra = Grid.Col12;
             break;
-        case AppFeatures.Default:
+        default:
             break;
     }
     return stateDefault;
@@ -34,7 +31,6 @@ export function updateView(stateDefault: ViewComponentStateModel, action: Change
 
 /**
  * partendo dallo stato di default, cambia lo stato di visualizzazione di chiamata
- * @private
  * @param stateDefault
  */
 export function activeChiamata(stateDefault: ViewComponentStateModel): ViewComponentStateModel {
@@ -46,7 +42,6 @@ export function activeChiamata(stateDefault: ViewComponentStateModel): ViewCompo
 
 /**
  * partendo dallo stato di default, cambia lo stato di visualizzazione di composizionePartenza
- * @private
  * @param stateDefault
  * @param modalita
  */
@@ -79,8 +74,7 @@ export function turnOffComposizione(state: ViewComponentStateModel, lastState: V
         state.view.mappa.active = false;
         state.view.richieste.split = false;
         state.view.mappa.split = false;
-        state.column.sinistra = Grid.No;
-        state.column.destra = Grid.Col12;
+        state.column = gridSolve(AppFeatures.Richieste);
     }
     state.view.richieste.active = true;
     state.view.composizione.active = false;
@@ -112,4 +106,25 @@ export function viewStateMaps(state: ViewComponentStateModel): ViewInterfaceMaps
     return {
         active: state.view.mappa.options[0]
     } as ViewInterfaceMaps;
+}
+
+/**
+ * funzione helper che assegna le corrette classi di bootstrap
+ * @param feature
+ */
+export function gridSolve(feature: AppFeatures): Grids {
+    const grids = {} as Grids;
+    switch (feature) {
+        case AppFeatures.Mappa:
+            grids.sinistra = Grid.No;
+            grids.destra = Grid.Col12;
+            break;
+        case AppFeatures.Richieste:
+            grids.destra = Grid.No;
+            grids.sinistra = Grid.Col12;
+            break;
+        default:
+            return;
+    }
+    return grids;
 }

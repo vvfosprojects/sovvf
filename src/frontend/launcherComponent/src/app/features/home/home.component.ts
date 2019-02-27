@@ -11,10 +11,8 @@ import { NuovaPartenzaState } from './composizione-partenza/store/states/nuova-p
 export class HomeComponent implements OnInit, OnDestroy {
 
     subscription = new Subscription();
-
     viewState: ViewLayouts;
     columnState: Grids;
-
     nuovaPartenza: SintesiRichiesta;
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;

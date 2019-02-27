@@ -31,8 +31,8 @@ export const ViewComponentStateDefault: ViewComponentStateModel = {
         }
     },
     column: {
-        destra: Grid.Col6,
-        sinistra: Grid.Col6
+        sinistra: Grid.Col6,
+        destra: Grid.Col6
     }
 };
 
@@ -129,25 +129,6 @@ export class ViewComponentState {
             view: newState.view,
             column: newState.column
         });
-        // /**
-        //  * se lo stato della composizione non è attivo creo uno snapshot, altrimenti ritorno allo stato precedente
-        //  */
-        // if (!state.view.composizione.active) {
-        //     dispatch(new SaveView(makeCopy(state)));
-        //     const newState = activeComposizione(stateDefault, action.modalita);
-        //     patchState({
-        //         ...state,
-        //         view: newState.view,
-        //         column: newState.column
-        //     });
-        // } else {
-        //     const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
-        //     patchState({
-        //         ...state,
-        //         view: lastState.view,
-        //         column: lastState.column
-        //     });
-        // }
     }
 
     @Action(TurnOffComposizione)

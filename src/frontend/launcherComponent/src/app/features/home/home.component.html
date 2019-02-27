@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="" [ngClass]="columnState.destra">
+        <div class="" [ngClass]="columnState.sinistra">
             <app-richieste [ngClass]="{'d-none' : !viewState.richieste.active}"
                            [split]="viewState.richieste.split"></app-richieste>
             <app-chiamata *ngIf="viewState.chiamata.active"></app-chiamata>
@@ -18,7 +18,7 @@
                                        [richiesta]="nuovaPartenza"
                                        [compPartenzaMode]="(composizioneMode$ | async)"></app-composizione-partenza>
         </div>
-        <div class="mt-2" [ngClass]="columnState.sinistra || {'d-none' : !viewState.mappa.active}">
+        <div class="mt-2" [ngClass]="columnState.destra || {'d-none' : !viewState.mappa.active}">
             <app-maps [viewStateMappa]="(viewStateMappa$ | async)" [richiestaPartenza]="nuovaPartenza"></app-maps>
         </div>
     </div>

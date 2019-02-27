@@ -16,8 +16,8 @@ export interface ViewLayouts {
 }
 
 export interface Grids {
-    destra: Grid;
     sinistra: Grid;
+    destra: Grid;
 }
 
 export interface ViewComponentStateModel {
