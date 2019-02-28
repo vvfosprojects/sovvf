@@ -15,11 +15,10 @@
                            [split]="viewState.richieste.split"></app-richieste>
             <app-chiamata *ngIf="viewState.chiamata.active"></app-chiamata>
             <app-composizione-partenza *ngIf="viewState.composizione.active"
-                                       [richiesta]="nuovaPartenza"
                                        [compPartenzaMode]="(composizioneMode$ | async)"></app-composizione-partenza>
         </div>
         <div class="mt-2" [ngClass]="columnState.destra || {'d-none' : !viewState.mappa.active}">
-            <app-maps [viewStateMappa]="(viewStateMappa$ | async)" [richiestaPartenza]="nuovaPartenza"></app-maps>
+            <app-maps [viewStateMappa]="(viewStateMappa$ | async)"></app-maps>
         </div>
     </div>
 </div>

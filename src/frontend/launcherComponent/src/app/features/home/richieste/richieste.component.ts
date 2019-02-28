@@ -22,7 +22,7 @@ import { AppFeatures } from '../../../shared/enum/app-features.enum';
 import { SetIdRichiestaEventi } from '../eventi/store/actions/eventi-richiesta.actions';
 import { ToggleComposizione } from '../store/actions/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
-import { NuovaPartenza } from '../composizione-partenza/store/actions/nuova-partenza.actions';
+import { RichiestaComposizione } from '../composizione-partenza/store/actions/richiesta-composizione.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -222,6 +222,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     nuovaPartenza($event: SintesiRichiesta) {
-        this.store.dispatch(new NuovaPartenza($event));
+        this.store.dispatch(new RichiestaComposizione($event));
     }
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, isDevMode, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Input, isDevMode, OnDestroy, OnInit, Output } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { CenterService } from '../maps/service/center-service/center-service.service';
 import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
@@ -20,6 +20,7 @@ import { DirectionInterface } from '../maps/maps-interface/direction-interface';
 import { SetDirection, ClearDirection } from '../maps/store/actions/maps-direction.actions';
 import { makeCopy, wipeStatoRichiesta } from '../../../shared/helper/function';
 import { TurnOffComposizione } from '../store/actions/view.actions';
+import { RichiestaComposizioneState } from './store/states/richiesta-composizione.state';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -27,7 +28,6 @@ import { TurnOffComposizione } from '../store/actions/view.actions';
     styleUrls: ['./composizione-partenza.component.css']
 })
 export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
-    @Input() richiesta: SintesiRichiesta;
     @Input() compPartenzaMode: string;
 
     dismissPartenzaSubject: Subject<boolean> = new Subject<boolean>();
@@ -44,6 +44,9 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Select(PreAccoppiatiState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     preAccoppiati: BoxPartenza[];
 
+    @Select(RichiestaComposizioneState.richiestaComposizione) nuovaPartenza$: Observable<SintesiRichiesta>;
+    richiesta: SintesiRichiesta;
+
     centroMappa: CentroMappa;
 
     prevStateBoxClick: BoxClickStateModel;
@@ -51,6 +54,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     constructor(private store: Store,
                 private centerService: CenterService,
                 private markerS: MarkerService) {
+        this.subscription.add(this.nuovaPartenza$.subscribe( r => this.richiesta = r));
 
         // Prendo i mezzi da visualizzare nella lista
         this.subscription.add(

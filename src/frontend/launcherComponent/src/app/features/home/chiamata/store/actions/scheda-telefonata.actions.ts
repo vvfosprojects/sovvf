@@ -21,8 +21,14 @@ export class InsertChiamata {
 
 }
 
-export class AnnullaChiamata {
-    static readonly type = '[Scheda Telefonata] Annulla chiamata';
+
+export class CestinaChiamata {
+    static readonly type = '[Scheda Telefonata] Cestina chiamata';
+
+}
+
+export class ResetChiamata {
+    static readonly type = '[Scheda Telefonata] Reset chiamata';
 
 }
 

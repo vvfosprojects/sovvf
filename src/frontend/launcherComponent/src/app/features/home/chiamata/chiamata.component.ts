@@ -26,19 +26,17 @@ export class ChiamataComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
     tipologie: TipologieInterface[] = APP_TIPOLOGIE;
     centroMappa: CentroMappa;
-
-    idChiamata: string;
     coordinate: Coordinate;
+
     @Select(ChiamataState.idChiamata) idChiamata$: Observable<string>;
     @Select(SchedaTelefonataState.coordinate) coordinate$: Observable<Coordinate>;
-    @Select(SchedaTelefonataState.annullaMarkerChiamata) annullaChiamata$: Observable<boolean>;
+    @Select(SchedaTelefonataState.annullaChiamataMarker) annullaChiamata$: Observable<boolean>;
 
     constructor(private store: Store,
                 private markerService: MarkerService,
                 private centerService: CenterService) {
 
         this.centroMappa = this.centerService.centroMappaIniziale;
-        this.subscription.add(this.idChiamata$.subscribe(r => this.idChiamata = r));
         this.subscription.add(this.coordinate$.subscribe(r => this.coordinate = r));
         this.subscription.add(this.annullaChiamata$.subscribe(r => {
             if (r) {
@@ -74,7 +72,6 @@ export class ChiamataComponent implements OnInit, OnDestroy {
 
     annullaChiamataMarker() {
         this.markerService.chiamata(null, '', this.centroMappa);
-        // this.store.dispatch(new ToggleChiamata());
     }
 
 }

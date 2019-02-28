@@ -5,8 +5,8 @@
                  [richiesteMarkers]="richiesteMarkers"
                  [sediMarkers]="sediMarkers"
                  [mezziMarkers]="mezziMarkers"
-                 [chiamataMarkers]="chiamataMarkers"
-                 [composizioneMarkers]="composizioneMarkers"
+                 [chiamataMarkers]="(chiamataMarkers$ | async)"
+                 [composizioneMarkers]="(composizioneMarkers$ | async)"
                  (mapFullyLoaded)="mapIsLoaded($event)"></app-agm>
     </div>
 </div>

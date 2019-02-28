@@ -1,4 +1,4 @@
-import { Component, Input, isDevMode, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import * as MapManager from '../../../core/manager/maps-manager';
 import { CentroMappa } from './maps-model/centro-mappa.model';
 import { RichiestaMarker } from './maps-model/richiesta-marker.model';
@@ -9,27 +9,25 @@ import { ComposizioneMarker } from './maps-model/composizione-marker.model';
 import { Observable, Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { ViewInterfaceMaps } from '../../../shared/interface/view.interface';
-import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Select } from '@ngxs/store';
 import { SchedaTelefonataState } from '../chiamata/store/states/scheda-telefonata.state';
+import { RichiestaComposizioneState } from '../composizione-partenza/store/states/richiesta-composizione.state';
 
 @Component({
     selector: 'app-maps',
     templateUrl: './maps.component.html',
     styleUrls: ['./maps.component.css']
 })
-export class MapsComponent implements OnInit, OnChanges, OnDestroy {
+export class MapsComponent implements OnInit, OnDestroy {
 
     centroMappa: CentroMappa;
     richiesteMarkers: RichiestaMarker[] = [];
     sediMarkers: SedeMarker[] = [];
     mezziMarkers: MezzoMarker[] = [];
-    composizioneMarkers: ComposizioneMarker[] = [];
-    chiamataMarkers: ChiamataMarker[] = [];
     subscription = new Subscription();
     @Input() viewStateMappa: ViewInterfaceMaps;
-    @Input() richiestaPartenza: SintesiRichiesta;
-    @Select(SchedaTelefonataState.inserisciMarkerChiamata) chiamataMarkers$: Observable<ChiamataMarker[]>;
+    @Select(SchedaTelefonataState.chiamataMarker) chiamataMarkers$: Observable<ChiamataMarker[]>;
+    @Select(RichiestaComposizioneState.richiestaComposizioneMarker) composizioneMarkers$: Observable<ComposizioneMarker[]>;
     mapsFullyLoaded = false;
 
     constructor(private richiesteManager: MapManager.RichiesteMarkerManagerService,
@@ -70,33 +68,10 @@ export class MapsComponent implements OnInit, OnChanges, OnDestroy {
         this.subscription.add(this.sediManager.getSediMarker().subscribe((r: SedeMarker[]) => {
             this.sediMarkers = r;
         }));
-
-        this.subscription.add(this.chiamataMarkers$.subscribe((r: ChiamataMarker[]) => this.chiamataMarkers = r));
-
-    }
-
-    static mapPartenzaMarker(richiesta: SintesiRichiesta): ComposizioneMarker {
-        let composizione: ComposizioneMarker;
-        // Todo: provvisorio in attesa che enum stato sia anche nel model del marker di mappa
-        // const statoProvvisorio = wipeStatoRichiesta(richiesta.stato);
-        composizione = new ComposizioneMarker(
-            richiesta.id, richiesta.localita, richiesta.tipologie, null,
-            richiesta.priorita, richiesta.stato, richiesta.rilevanza, false);
-        return composizione;
     }
 
     ngOnInit() {
         isDevMode() && console.log('Componente Maps creato');
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.richiestaPartenza) {
-            if (changes.richiestaPartenza.currentValue) {
-                this.composizioneMarkers[0] = MapsComponent.mapPartenzaMarker(changes.richiestaPartenza.currentValue);
-            }
-        } else {
-            this.composizioneMarkers = [];
-        }
     }
 
     ngOnDestroy() {
