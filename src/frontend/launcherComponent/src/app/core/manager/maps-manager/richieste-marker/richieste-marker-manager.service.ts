@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { DispatcherRichiesteMarkerService } from '../../../dispatcher/dispatcher-maps';
 import { RichiestaMarker } from '../../../../features/home/maps/maps-model/richiesta-marker.model';
+import { wipeStatoRichiesta } from '../../../../shared/helper/function';
 
 
 @Injectable()
@@ -89,8 +90,9 @@ export class RichiesteMarkerManagerService {
                  * opacizzo i marker con stato diverso da quello di filterState
                  */
                 this.richiesteMarker.forEach(r => {
+                    const _wipeStatoRichiesta = wipeStatoRichiesta(r.stato);
                     filterState.forEach(c => {
-                        if (r.stato.substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
+                        if (_wipeStatoRichiesta.substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
                             r.opacita = false;
                         } else if (r.opacita !== false) {
                             r.opacita = true;

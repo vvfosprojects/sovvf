@@ -18,7 +18,7 @@ import { PreAccoppiatiState } from './store/states/pre-accoppiati.state';
 import { GetPreAccoppiati } from './store/actions/pre-accoppiati.actions';
 import { DirectionInterface } from '../maps/maps-interface/direction-interface';
 import { SetDirection, ClearDirection } from '../maps/store/actions/maps-direction.actions';
-import { makeCopy } from '../../../shared/helper/function';
+import { makeCopy, wipeStatoRichiesta } from '../../../shared/helper/function';
 import { TurnOffComposizione } from '../store/actions/view.actions';
 
 @Component({
@@ -130,15 +130,3 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
 }
 
-export function wipeStatoRichiesta(stato: StatoRichiesta): string {
-    const stati: [StatoRichiesta, string][] = [
-        [StatoRichiesta.Chiamata, 'chiamate'],
-        [StatoRichiesta.Sospesa, 'sospesi'],
-        [StatoRichiesta.Assegnata, 'assegnati'],
-        [StatoRichiesta.Presidiata, 'presidiati'],
-        [StatoRichiesta.Chiusa, 'chiusi']
-    ];
-    const mapTipoStato: Map<StatoRichiesta, string> = new Map(stati);
-
-    return mapTipoStato.get(stato);
-}

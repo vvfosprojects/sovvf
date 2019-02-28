@@ -43,6 +43,7 @@ import { SetMarkedMarker, ClearMarkedMarker } from '../../store/actions/marked-m
 import { IconMappe } from './_icone';
 import { TipoMappe } from './_typeof';
 import { TipoColori } from './_color';
+import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
 
 @Injectable()
 export class MarkerService implements OnDestroy {
@@ -130,6 +131,7 @@ export class MarkerService implements OnDestroy {
         /**
          * metodo che mi ritorna il tipo di icona da utilizzare
          */
+        // console.log(marker);
         if (!tipoSede) {
             return this.icone.tipoIcona(marker, this.modelloMarker(marker), this.iconaSelezionata(marker));
         } else {
@@ -179,10 +181,11 @@ export class MarkerService implements OnDestroy {
     }
 
     coloraMarker(marker: any) {
+        const _wipeStatoRichiesta = wipeStatoRichiesta(marker.stato);
         if (!!marker.id_richiesta && marker.mezzo.stato) {
             this.coloreStato = this.colori.markerColor(marker.mezzo.stato);
-        } else if (marker.stato) {
-            this.coloreStato = this.colori.markerColor(marker.stato);
+        } else if (_wipeStatoRichiesta) {
+            this.coloreStato = this.colori.markerColor(_wipeStatoRichiesta);
         } else {
             this.coloreStato = '#343a40';
         }

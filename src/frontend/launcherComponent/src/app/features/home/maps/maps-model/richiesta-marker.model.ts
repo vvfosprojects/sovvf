@@ -1,5 +1,6 @@
 import {Localita} from '../../../../shared/model/localita.model';
 import {Tipologia} from '../../../../shared/model/tipologia.model';
+import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 
 export class RichiestaMarker {
     constructor(
@@ -27,7 +28,7 @@ export class RichiestaMarker {
         /**
          * Determina lo stato della richiesta
          */
-        public stato: string,
+        public stato: StatoRichiesta,
         /**
          * Determina la rilevanza del marcatore
          */

@@ -1,6 +1,8 @@
 /**
  *  classe che ritorna l'url del marker da visualizzare sulla mappa
  */
+import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
+
 export class IconMappe {
     /**
      * proprietà per definire lo status dell'oggetto icona marker della mappa
@@ -132,7 +134,8 @@ export class IconMappe {
             switch (modello) {
                 case 'richiesta': {
                     this.iconaStatoCorrenteSize = this.mapIconeSize.get(marker.priorita);
-                    const statoRichiesta = this.mapIconeUrl.get(marker.stato.substring(0, 5).toLowerCase());
+                    const _wipeStatoRichiesta = wipeStatoRichiesta(marker.stato);
+                    const statoRichiesta = this.mapIconeUrl.get(_wipeStatoRichiesta.substring(0, 5).toLowerCase());
                     this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize + statoRichiesta;
                     if (!this.iconaStatoCorrenteSize || !statoRichiesta) {
                         return undefined;

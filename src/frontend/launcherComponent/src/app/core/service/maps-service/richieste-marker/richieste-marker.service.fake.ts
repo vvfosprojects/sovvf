@@ -5,6 +5,7 @@ import { Localita } from '../../../../shared/model/localita.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { RichiestaMarker } from '../../../../features/home/maps/maps-model/richiesta-marker.model';
 import * as moment from 'moment';
+import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 
 @Injectable()
 export class RichiesteMarkerServiceFake {
@@ -27,7 +28,7 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Esplosione nei pressi di un centro abitato',
                 5,
-                'chiamata',
+                StatoRichiesta.Chiamata,
                 moment().subtract(0, 'minutes').toDate()
             ),
             new RichiestaMarker(
@@ -39,7 +40,7 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Scintille da palo elettrico',
                 1,
-                'chiamata'
+                StatoRichiesta.Chiamata
             ),
             new RichiestaMarker(
                 'RM-020',
@@ -49,7 +50,7 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Incendio a bordo strada',
                 1,
-                'chiamata'
+                StatoRichiesta.Chiamata
             ),
             new RichiestaMarker(
                 'RM-12842',
@@ -60,7 +61,7 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Persona che minaccia di buttarsi da un tetto',
                 4,
-                'assegnato',
+                StatoRichiesta.Assegnata,
                 moment().subtract(35, 'minutes').toDate()
             ),
             new RichiestaMarker(
@@ -72,7 +73,7 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Allagamento garage con personale da soccorrere',
                 3,
-                'assegnato'
+                StatoRichiesta.Assegnata
             ),
             new RichiestaMarker(
                 'RM-12840',
@@ -83,7 +84,7 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Incidente d\'auto persona anziana',
                 3,
-                'assegnato'
+                StatoRichiesta.Assegnata
             ),
 
             new RichiestaMarker(
@@ -95,7 +96,7 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Cedimento sede stradale con rimozione veicolo',
                 2,
-                'presidiato'
+                StatoRichiesta.Presidiata
             ),
             new RichiestaMarker(
                 'RM-12838',
@@ -106,7 +107,7 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Recupero merci e beni da camion ribaltato',
                 2,
-                'sospeso'
+                StatoRichiesta.Sospesa
             ),
             new RichiestaMarker(
                 'RM-12837',
@@ -117,7 +118,7 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Scossa di terremoto a Roma',
                 3,
-                'sospesa'
+                StatoRichiesta.Sospesa
             ),
             new RichiestaMarker(
                 'RM-12836',
@@ -128,7 +129,7 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Incendio in appartamento',
                 3,
-                'chiusa'
+                StatoRichiesta.Chiusa
             ),
             new RichiestaMarker(
                 'RM-12835',
@@ -139,7 +140,7 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Incidente stradale',
                 3,
-                'chiusa'
+                StatoRichiesta.Chiusa
             ),
         ];
 
