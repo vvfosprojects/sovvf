@@ -12,6 +12,8 @@ import { ChiamataState } from './store/states/chiamata.state';
 import { SchedaTelefonataInterface } from './model/scheda-telefonata.interface';
 import { ReducerSchedaTelefonata } from './store/actions/scheda-telefonata.actions';
 import { SchedaTelefonataState } from './store/states/scheda-telefonata.state';
+import { Utente } from '../../../shared/model/utente.model';
+import { UtenteState } from '../../navbar/operatore/store/states/utente.state';
 
 
 @Component({
@@ -31,6 +33,7 @@ export class ChiamataComponent implements OnInit, OnDestroy {
     @Select(ChiamataState.idChiamata) idChiamata$: Observable<string>;
     @Select(SchedaTelefonataState.coordinate) coordinate$: Observable<Coordinate>;
     @Select(SchedaTelefonataState.annullaChiamataMarker) annullaChiamata$: Observable<boolean>;
+    @Select(UtenteState.utente) utente$: Observable<Utente>;
 
     constructor(private store: Store,
                 private markerService: MarkerService,

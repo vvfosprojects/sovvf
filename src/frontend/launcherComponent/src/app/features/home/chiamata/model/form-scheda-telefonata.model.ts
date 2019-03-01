@@ -2,8 +2,8 @@ import { Localita } from 'src/app/shared/model/localita.model';
 
 export class FormChiamataModel {
     numeroChiamata?: string;
-    istanteChiamata?: number = Date.now();
-    operatore?: string;
+    istanteChiamata?: number;
+    idOperatore?: string;
     ragioneSociale?: string;
     schedaContatto?: string;
     tipoIntervento?: any[] = [];
@@ -19,6 +19,10 @@ export class FormChiamataModel {
     notePubbliche?: string;
     notePrivate?: string;
 
-    constructor() {
+    constructor(idChiamata: string, _idOperatore: string, _schedaContatto?: string) {
+        this.numeroChiamata = idChiamata;
+        this.idOperatore = _idOperatore;
+        this.schedaContatto = _schedaContatto;
+        this.istanteChiamata = Date.now();
     }
 }

@@ -3,7 +3,7 @@
     <div class="col-11 pt-3 mx-auto rounded status_chiamata card-shadow-danger" style="height: 740px">
         <div class="px-0 pl-1 text-danger">
             <h5>
-                <i class="fa fa-fw fa-hashtag mr-1"></i>{{chiamataCorrente.numeroChiamata}}
+                <i class="fa fa-fw fa-hashtag mr-1"></i>{{idChiamata}}
             </h5>
             <hr class="bg-danger mb-0" style="height: 3px">
         </div>
@@ -38,8 +38,8 @@
                                 <input type="text" formControlName="cognome" class="form-control"
                                        [ngClass]="{ 'is-invalid': f.cognome.errors }" placeholder="Cognome"
                                        autocomplete="new-password">
-                                <div *ngIf="submitted && f['cognome'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['cognome'].errors.required">Il Cognome è obbligatorio</div>
+                                <div *ngIf="f['cognome'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['cognome'].errors && f['cognome'].dirty">Il Cognome è obbligatorio</div>
                                 </div>
                             </div>
                         </div>
@@ -54,8 +54,8 @@
                                 <input type="text" formControlName="nome" class="form-control"
                                        [ngClass]="{ 'is-invalid': f.nome.errors }" placeholder="Nome"
                                        autocomplete="new-password">
-                                <div *ngIf="submitted && f['nome'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['nome'].errors">Il Nome è obbligatorio</div>
+                                <div *ngIf="f['nome'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['nome'].errors && f['nome'].dirty">Il Nome è obbligatorio</div>
                                 </div>
                             </div>
                         </div>
@@ -66,11 +66,11 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-industry"></i></span>
                         </div>
-                        <input type="text" formControlName="ragioneSociale" class="form-control"
+                        <input type="text" id="ragioneSociale" formControlName="ragioneSociale" class="form-control"
                                [ngClass]="{ 'is-invalid': f.ragioneSociale.errors }" placeholder="Ragione Sociale"
                                autocomplete="new-password">
-                        <div *ngIf="submitted && f['ragioneSociale'].errors" class="invalid-feedback">
-                            <div *ngIf="f['ragioneSociale'].errors">La Ragione Sociale è obbligatoria</div>
+                        <div *ngIf="f['ragioneSociale'].errors" class="invalid-feedback">
+                            <div *ngIf="f['ragioneSociale'].errors && f['ragioneSociale'].dirty">La Ragione Sociale è obbligatoria</div>
                         </div>
                     </div>
                     <!-- Tasti veloci per ragione sociale -->
@@ -108,8 +108,8 @@
                         <input type="text" formControlName="telefono" class="form-control"
                                [ngClass]="{ 'is-invalid': f.telefono.errors }"
                                placeholder="Telefono" autocomplete="new-password">
-                        <div *ngIf="submitted && f['telefono'].errors" class="invalid-feedback">
-                            <div *ngIf="f['telefono'].errors">Il telefono è obbligatorio</div>
+                        <div *ngIf="f['telefono'].errors" class="invalid-feedback">
+                            <div *ngIf="f['telefono'].errors && f['telefono'].dirty">Il telefono è obbligatorio</div>
                         </div>
                     </div>
                 </div>
@@ -125,8 +125,8 @@
                                        [ngClass]="{ 'is-invalid': f.indirizzo.errors }" placeholder="Ricerca indirizzo"
                                        [options]="options" (onAddressChange)="onCercaIndirizzo($event)"
                                        autocomplete="new-password">
-                                <div *ngIf="submitted && f['indirizzo'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['indirizzo'].errors">L' indirizzo è obbligatorio</div>
+                                <div *ngIf="f['indirizzo'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['indirizzo'].errors && f['indirizzo'].dirty">L' indirizzo è obbligatorio</div>
                                 </div>
                             </div>
                         </div>
@@ -134,11 +134,11 @@
                     <div class="col-1 pl-0 text-center">
                         <button class="btn btn-secondary" [ngbTooltip]="coordsTooltip" placement="bottom"
                                 (click)="onCopiaIndirizzo()"
-                                [disabled]="!chiamataCorrente.localita"><i class="fa fa-clipboard"></i></button>
+                                [disabled]="!coordinate"><i class="fa fa-clipboard"></i></button>
 
                         <ng-template #coordsTooltip>
-                            Copia: {{chiamataCorrente.localita.coordinate.latitudine}}
-                            - {{chiamataCorrente.localita.coordinate.longitudine}}
+                            Copia: {{coordinate.latitudine}}
+                            - {{coordinate.longitudine}}
                         </ng-template>
                     </div>
                 </div>
@@ -150,7 +150,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-map-pin"></i></span>
                                 </div>
-                                <input type="text" id="zonaEmergenza" class="form-control" placeholder="Zona Emergenza"
+                                <input type="text" id="zonaEmergenza" formControlName="zonaEmergenza" class="form-control" placeholder="Zona Emergenza"
                                        autocomplete="new-password">
                             </div>
                         </div>
@@ -159,7 +159,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-commenting"></i></span>
                                 </div>
-                                <textarea class="form-control no-resize" placeholder="Motivazione"
+                                <textarea class="form-control no-resize" id="motivazione" formControlName="motivazione" placeholder="Motivazione"
                                           autocomplete="new-password"></textarea>
                             </div>
                         </div>
@@ -168,7 +168,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-bullhorn"></i></span>
                                 </div>
-                                <textarea class="form-control no-resize" placeholder="Note pubbliche"
+                                <textarea class="form-control no-resize" id="notePubbliche" formControlName="notePubbliche" placeholder="Note pubbliche"
                                           autocomplete="new-password"></textarea>
                             </div>
                         </div>
@@ -181,7 +181,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-tag"></i></span>
                                 </div>
-                                <input type="text" id="tag" class="form-control" placeholder="Tag"
+                                <input type="text" id="tags" formControlName="tags" class="form-control" placeholder="Tag"
                                        autocomplete="new-password">
                             </div>
                         </div>
@@ -190,7 +190,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-comments"></i></span>
                                 </div>
-                                <textarea class="form-control no-resize" placeholder="Note indirizzo"
+                                <textarea class="form-control no-resize" id="noteIndirizzo" formControlName="noteIndirizzo"placeholder="Note indirizzo"
                                           autocomplete="new-password"></textarea>
                             </div>
                         </div>
@@ -199,7 +199,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-headphones"></i></span>
                                 </div>
-                                <textarea class="form-control no-resize" placeholder="Note private"
+                                <textarea class="form-control no-resize" id="notePrivate" formControlName="notePrivate" placeholder="Note private"
                                           autocomplete="new-password"></textarea>
                             </div>
                         </div>

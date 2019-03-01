@@ -1,11 +1,10 @@
-import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
-import { SetChiamata, InsertChiamata, SetCoordinate, ReducerSchedaTelefonata, ResetChiamata, CestinaChiamata } from '../actions/scheda-telefonata.actions';
+import { SetChiamata, InsertChiamata, ReducerSchedaTelefonata, ResetChiamata, CestinaChiamata, SetMarkerChiamata } from '../actions/scheda-telefonata.actions';
 import { FormChiamataModel } from '../../model/form-scheda-telefonata.model';
 import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
 import { MarkerService } from '../../../maps/service/marker-service/marker-service.service';
 import { MapsEvent } from '../../../../../shared/enum/maps-event.enum';
-import { ChiamataState } from './chiamata.state';
 import { CopyToClipboard } from '../actions/clipboard.actions';
 import { ToggleChiamata } from '../../../store/actions/view.actions';
 
@@ -30,8 +29,7 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
 
 export class SchedaTelefonataState {
 
-    constructor(private store: Store,
-                private markerService: MarkerService) {
+    constructor(private markerService: MarkerService) {
     }
 
     @Selector()
@@ -64,10 +62,10 @@ export class SchedaTelefonataState {
                 dispatch(new ResetChiamata());
                 break;
             case 'cerca':
-                dispatch(new SetCoordinate(action.schedaTelefonata.chiamata));
+                dispatch(new SetMarkerChiamata(action.schedaTelefonata.markerChiamata));
                 break;
             case 'inserita':
-                dispatch(new SetChiamata(action.schedaTelefonata.chiamata));
+                dispatch(new SetChiamata(action.schedaTelefonata.formChiamata));
                 break;
             default:
                 return;
@@ -112,23 +110,22 @@ export class SchedaTelefonataState {
         dispatch(new ToggleChiamata());
     }
 
-    @Action(SetCoordinate)
-    setCoordinate({ getState, patchState }: StateContext<SchedaTelefonataStateModel>, action: SetCoordinate) {
+    @Action(SetMarkerChiamata)
+    setMarkerChiamata({ getState, patchState }: StateContext<SchedaTelefonataStateModel>, action: SetMarkerChiamata) {
         const state = getState();
-
         const coordinate: Coordinate = {
-            latitudine: action.chiamata.localita.coordinate.latitudine,
-            longitudine: action.chiamata.localita.coordinate.longitudine
+            latitudine: action.marker.localita.coordinate.latitudine,
+            longitudine: action.marker.localita.coordinate.longitudine
         };
-        const idChiamata = this.store.selectSnapshot(ChiamataState.idChiamata);
-        const marker = new ChiamataMarker(idChiamata, action.chiamata.localita);
-        this.markerService.chiamata(marker, MapsEvent.Centra);
+        // Todo: togliere con MarkerState
+        this.markerService.chiamata(action.marker, MapsEvent.Centra);
 
         patchState({
             ...state,
             coordinate: coordinate,
-            chiamataMarker: [marker]
+            chiamataMarker: [action.marker]
         });
+
     }
 
 }
