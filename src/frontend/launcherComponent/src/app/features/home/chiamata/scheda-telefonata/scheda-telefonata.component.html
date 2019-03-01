@@ -1,15 +1,15 @@
 <div *ngIf="tipologie" class="row mt-3">
 
-    <div class="col-11 pt-3 mx-auto rounded status_chiamata card-shadow-danger" style="height: 740px">
+    <div class="col-11 pt-2 mx-auto rounded status_chiamata card-shadow-danger" style="height: 740px">
         <div class="px-0 pl-1 text-danger">
             <h5>
                 <i class="fa fa-fw fa-hashtag mr-1"></i>{{idChiamata}}
             </h5>
-            <hr class="bg-danger mb-0" style="height: 3px">
+            <hr class="bg-danger mb-0 mt-1" style="height: 3px">
         </div>
-        <div class="px-4 py-4">
+        <div class="px-4 py-2">
             <form [formGroup]="chiamataForm" (ngSubmit)="onSubmit()" autocomplete="off">
-                <div class="form-group mb-1">
+                <div class="form-group mb-2">
                     <label>Tipologia intervento</label>
                     <ng-select class="border"
                                bindLabel="descrizione"
