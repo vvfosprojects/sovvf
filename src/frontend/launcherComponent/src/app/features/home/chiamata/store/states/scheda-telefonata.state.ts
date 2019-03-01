@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
-import { SetChiamata, InsertChiamata, SetCoordinate, ReducerSchedaTelefonata, AnnullaChiamata } from '../actions/scheda-telefonata.actions';
+import { SetChiamata, InsertChiamata, SetCoordinate, ReducerSchedaTelefonata, ResetChiamata, CestinaChiamata } from '../actions/scheda-telefonata.actions';
 import { FormChiamataModel } from '../../model/form-scheda-telefonata.model';
 import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
 import { MarkerService } from '../../../maps/service/marker-service/marker-service.service';
@@ -41,13 +41,13 @@ export class SchedaTelefonataState {
 
     // Todo: togliere con MapsCenterState
     @Selector()
-    static annullaMarkerChiamata(state: SchedaTelefonataStateModel) {
+    static annullaChiamataMarker(state: SchedaTelefonataStateModel) {
         return state.annulla;
     }
 
     // Todo: togliere con MapsState
     @Selector()
-    static inserisciMarkerChiamata(state: SchedaTelefonataStateModel) {
+    static chiamataMarker(state: SchedaTelefonataStateModel) {
         return state.chiamataMarker;
     }
 
@@ -58,7 +58,10 @@ export class SchedaTelefonataState {
                 dispatch(new CopyToClipboard());
                 break;
             case 'annullata':
-                dispatch(new AnnullaChiamata());
+                dispatch(new CestinaChiamata());
+                break;
+            case 'reset':
+                dispatch(new ResetChiamata());
                 break;
             case 'cerca':
                 dispatch(new SetCoordinate(action.schedaTelefonata.chiamata));
@@ -74,12 +77,10 @@ export class SchedaTelefonataState {
     @Action(SetChiamata)
     setChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetChiamata) {
         const state = getState();
-
         patchState({
             ...state,
             chiamata: action.chiamata
         });
-
         dispatch(new InsertChiamata());
     }
 
@@ -87,18 +88,28 @@ export class SchedaTelefonataState {
     insertChiamata({ getState }: StateContext<SchedaTelefonataStateModel>) {
         const state = getState();
         // Todo: servizio Post/SignalR che inserisce la chiamata
-        console.log(`Chiamata inserita: ${state.chiamata}`);
+        console.log(`Chiamata inserita:`);
+        console.dir(state.chiamata);
     }
 
-    @Action(AnnullaChiamata)
-    annullaChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
+    @Action(ResetChiamata)
+    resetChiamata({ getState, patchState }: StateContext<SchedaTelefonataStateModel>) {
         const state = getState();
-        dispatch(new ToggleChiamata());
+        patchState({
+            ...state,
+            chiamataMarker: []
+        });
+    }
+
+    @Action(CestinaChiamata)
+    cestinaChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
+        const state = getState();
         patchState({
             ...state,
             annulla: true,
             chiamataMarker: []
         });
+        dispatch(new ToggleChiamata());
     }
 
     @Action(SetCoordinate)

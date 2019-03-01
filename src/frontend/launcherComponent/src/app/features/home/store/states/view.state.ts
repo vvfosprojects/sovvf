@@ -7,6 +7,7 @@ import { ChangeView, SaveView, SwitchComposizione, ToggleChiamata, ToggleComposi
 import { BackupViewComponentState } from './save-view.state';
 import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../../../shared/interface/view.interface';
 import { activeChiamata, activeComposizione, colorButton, switchComposizione, turnOffComposizione, updateView, viewStateMaps } from '../helper/view-state-function';
+import { TerminaComposizione } from '../../composizione-partenza/store/actions/richiesta-composizione.actions';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -132,7 +133,7 @@ export class ViewComponentState {
     }
 
     @Action(TurnOffComposizione)
-    turnOffComposizione({ getState, patchState }: StateContext<ViewComponentStateModel>) {
+    turnOffComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>) {
         const state = getState();
         const currentState = makeCopy(state);
         const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
@@ -142,6 +143,7 @@ export class ViewComponentState {
             view: newState.view,
             column: newState.column
         });
+        dispatch(new TerminaComposizione());
     }
 
     @Action(SwitchComposizione)

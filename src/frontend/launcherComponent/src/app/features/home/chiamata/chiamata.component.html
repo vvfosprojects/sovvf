@@ -1,2 +1,2 @@
-<app-scheda-telefonata [tipologie]="tipologie" [idChiamata]="idChiamata"
+<app-scheda-telefonata [tipologie]="tipologie" [idChiamata]="(idChiamata$ | async)"
                        (schedaTelefonata)="getSchedaTelefonata($event)"></app-scheda-telefonata>

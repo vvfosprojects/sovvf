@@ -7,6 +7,7 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { TipologieInterface } from '../../../../core/settings/tipologie';
 import { SchedaTelefonataInterface } from '../model/scheda-telefonata.interface';
 
+
 @Component({
     selector: 'app-scheda-telefonata',
     templateUrl: './scheda-telefonata.component.html',
@@ -33,9 +34,11 @@ export class SchedaTelefonataComponent implements OnInit {
         this.chiamataForm = this.createForm();
     }
 
+
     createForm(): FormGroup {
         return this.formBuilder.group({
             // dettaglioTipologia: ['', [Validators.required]],
+            tipoIntervento: [],
             cognome: ['', [Validators.required]],
             nome: ['', [Validators.required]],
             ragioneSociale: ['', [Validators.required]],
@@ -48,12 +51,12 @@ export class SchedaTelefonataComponent implements OnInit {
         return this.chiamataForm.controls;
     }
 
-    onAddTipologia(tipologia) {
-        this.chiamataCorrente.tipoIntervento.push(tipologia);
+    onAddTipologia(tipologia: TipologieInterface) {
+        this.chiamataCorrente.tipoIntervento.push(tipologia.codice);
     }
 
-    onRemoveTipologia(tipologia) {
-        this.chiamataCorrente.tipoIntervento.splice(this.chiamataCorrente.tipoIntervento.indexOf(tipologia.value), 1);
+    onRemoveTipologia(tipologia: TipologieInterface) {
+        this.chiamataCorrente.tipoIntervento.splice(this.chiamataCorrente.tipoIntervento.indexOf(tipologia.codice), 1);
     }
 
     insertRagioneSociale(RS) {
@@ -62,7 +65,15 @@ export class SchedaTelefonataComponent implements OnInit {
 
     onAnnullaChiamata(): void {
         this.chiamataCorrente = null;
+        this.chiamataForm.reset();
         this._statoChiamata('annullata');
+    }
+
+    onResetChiamata(): void {
+        this.chiamataForm.reset();
+        this.chiamataCorrente.tipoIntervento = [];
+        this.chiamataForm.get('tipoIntervento').patchValue([]);
+        this._statoChiamata('reset');
     }
 
     onCopiaIndirizzo(): void {
