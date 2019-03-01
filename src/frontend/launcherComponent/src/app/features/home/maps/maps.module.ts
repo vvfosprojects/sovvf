@@ -47,7 +47,7 @@ import { MarkerMeteoState } from '../store/states/filterbar/marker-meteo-switch.
 import { MeteoMarkersState } from '../store/states/maps/meteo-markers.state';
 import { MapsFiltroState } from '../store/states/maps/maps-filtro.state';
 import { MapsDirectionState } from '../store/states/maps/maps-direction.state';
-import { MarkedMarkerState } from '../store/states/maps/marked-marker.state';
+import { MarkerSelezionatoState } from '../store/states/maps/marker-selezionato.state';
 
 @NgModule({
     imports: [
@@ -65,7 +65,7 @@ import { MarkedMarkerState } from '../store/states/maps/marked-marker.state';
                 MeteoMarkersState,
                 MapsFiltroState,
                 MapsDirectionState,
-                MarkedMarkerState
+                MarkerSelezionatoState
             ]
         ),
     ],

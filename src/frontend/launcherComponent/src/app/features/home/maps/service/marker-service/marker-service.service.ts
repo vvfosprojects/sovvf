@@ -37,8 +37,8 @@ import { SetRichiestaFissata, ClearRichiestaFissata } from '../../../store/actio
 import { SetRichiestaHover, ClearRichiestaHover } from '../../../store/actions/richieste/richiesta-hover.actions';
 import { ClearRichiestaSelezionata } from '../../../store/actions/richieste/richiesta-selezionata.actions';
 import { AddMeteoMarker, RemoveMeteoMarker } from '../../../store/actions/maps/meteo-markers.actions';
-import { MarkedMarkerState } from '../../../store/states/maps/marked-marker.state';
-import { SetMarkedMarker, ClearMarkedMarker } from '../../../store/actions/maps/marked-marker.actions';
+import { MarkerSelezionatoState } from '../../../store/states/maps/marker-selezionato.state';
+import { SetMarkerSelezionato, ClearMarkerSelezionato } from '../../../store/actions/maps/marker-selezionato.actions';
 
 import { IconMappe } from './_icone';
 import { TipoMappe } from './_typeof';
@@ -59,7 +59,7 @@ export class MarkerService implements OnDestroy {
 
     iconeCached: string[];
 
-    @Select(MarkedMarkerState.markedMarker) markerSelezionato$: Observable<any>;
+    @Select(MarkerSelezionatoState.markerSelezionato) markerSelezionato$: Observable<any>;
     markerSelezionato: any;
 
     markerColorato: any;
@@ -213,14 +213,14 @@ export class MarkerService implements OnDestroy {
         /**
          *  imposto nel service marked lo stato del marker a selezionato
          */
-        this.store.dispatch(new SetMarkedMarker(marker));
+        this.store.dispatch(new SetMarkerSelezionato(marker));
     }
 
     deseleziona(): void {
         /**
          * deseleziono il marker
          */
-        this.store.dispatch(new ClearMarkedMarker());
+        this.store.dispatch(new ClearMarkerSelezionato());
     }
 
     action(marker: any, mouse: any) {
