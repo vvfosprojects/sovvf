@@ -9,9 +9,6 @@ import { GetRichieste } from '../actions/richieste.actions';
 // Service
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 
-// State
-import { RichiestaFissataState } from './richiesta-fissata.state';
-
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
 }
@@ -32,6 +29,11 @@ export class RichiesteState implements NgxsOnInit {
         return state.richieste;
     }
 
+    @Selector()
+    static richiesta(state: RichiesteStateModel) {
+        return state.richieste;
+    }
+
     constructor(private richiesteService: SintesiRichiesteService) { }
 
     ngxsOnInit(ctx: StateContext<RichiesteState>) {
@@ -42,7 +44,7 @@ export class RichiesteState implements NgxsOnInit {
     @Action(GetRichieste, { cancelUncompleted: true })
     getRichieste({ getState, patchState }: StateContext<RichiesteStateModel>, action: GetRichieste) {
         const state = getState();
-        let newRichieste: SintesiRichiesta[];
+        let newRichieste: SintesiRichiesta[] = null;
 
         this.richiesteService.getRichieste(action.idUltimaRichiesta).subscribe((r: SintesiRichiesta[]) => {
             newRichieste = r;

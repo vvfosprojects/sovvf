@@ -9,7 +9,6 @@ import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.mod
 import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
 
 // Service
-import { ListaRichiesteService } from '../service/lista-richieste-service.service';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 
 // Helper Methods
@@ -38,8 +37,7 @@ export class RichiestaFissataComponent implements OnInit, OnChanges {
     private playerContainer: AnimationPlayer;
     private playerRichiesta: AnimationPlayer;
 
-    constructor(public richiesteS: ListaRichiesteService,
-        private animationBuilder: AnimationBuilder,
+    constructor(private animationBuilder: AnimationBuilder,
         private modalService: NgbModal,
         private markerS: MarkerService) {
     }

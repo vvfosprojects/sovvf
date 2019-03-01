@@ -9,7 +9,7 @@ import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
 
 // Ngxs
 import { Store } from '@ngxs/store';
-import { ClearRichiestaFissata } from '../../store/actions/richiesta-fissata.actions';
+import { ClearRichiestaFissata } from '../../../store/actions/richiesta-fissata.actions';
 
 @Component({
   selector: 'app-sintesi-richiesta-sm',

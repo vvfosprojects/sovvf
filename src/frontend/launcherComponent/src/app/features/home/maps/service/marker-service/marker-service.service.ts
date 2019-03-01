@@ -33,9 +33,9 @@ import { MapsFiltroService } from '../../maps-ui/filtro/maps-filtro.service';
  */
 import { Select, Store } from '@ngxs/store';
 import { MarkerMeteoState } from '../../../filterbar/store/states/marker-meteo-switch.state';
-import { SetRichiestaFissata, ClearRichiestaFissata } from '../../../richieste/store/actions/richiesta-fissata.actions';
-import { SetRichiestaHover, ClearRichiestaHover } from '../../../richieste/store/actions/richiesta-hover.actions';
-import { ClearRichiestaSelezionata } from '../../../richieste/store/actions/richiesta-selezionata.actions';
+import { SetRichiestaFissata, ClearRichiestaFissata } from '../../../store/actions/richiesta-fissata.actions';
+import { SetRichiestaHover, ClearRichiestaHover } from '../../../store/actions/richiesta-hover.actions';
+import { ClearRichiestaSelezionata } from '../../../store/actions/richiesta-selezionata.actions';
 import { AddMeteoMarker, RemoveMeteoMarker } from '../../store';
 import { MarkedMarkerState } from '../../store/states/marked-marker.state';
 import { SetMarkedMarker, ClearMarkedMarker } from '../../store/actions/marked-marker.actions';

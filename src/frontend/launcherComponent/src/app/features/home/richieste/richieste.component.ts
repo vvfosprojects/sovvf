@@ -12,12 +12,14 @@ import { MarkerService } from '../maps/service/marker-service/marker-service.ser
 // Ngxs
 import { Select, Store } from '@ngxs/store';
 import { RicercaRichiesteState } from '../filterbar/store/states/ricerca-richieste.state';
-import { ClearRichiestaFissata, SetRichiestaFissata } from './store/actions/richiesta-fissata.actions';
-import { RichiestaFissataState, RichiestaHoverState, RichiesteState } from './store';
-import { GetRichieste } from './store/actions/richieste.actions';
-import { ClearRichiestaHover, SetRichiestaHover } from './store/actions/richiesta-hover.actions';
-import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from './store/actions/richiesta-selezionata.actions';
-import { RichiestaSelezionataState } from './store/states/richiesta-selezionata.state';
+import { ClearRichiestaFissata, SetRichiestaFissata } from '../store/actions/richiesta-fissata.actions';
+import { RichiestaFissataState } from '../store/states/richiesta-fissata.state';
+import { GetRichieste } from '../store/actions/richieste.actions';
+import { ClearRichiestaHover, SetRichiestaHover } from '../store/actions/richiesta-hover.actions';
+import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from '../store/actions/richiesta-selezionata.actions';
+import { RichiesteState } from '../store/states/richieste.state';
+import { RichiestaSelezionataState } from '../store/states/richiesta-selezionata.state';
+import { RichiestaHoverState } from '../store/states/richiesta-hover.state';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
 import { SetIdRichiestaEventi } from '../eventi/store/actions/eventi-richiesta.actions';
 import { ToggleComposizione } from '../store/actions/view.actions';

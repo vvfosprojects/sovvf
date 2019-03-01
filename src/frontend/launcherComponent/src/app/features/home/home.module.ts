@@ -20,7 +20,6 @@ import { MarkerService } from './maps/service/marker-service/marker-service.serv
 import { CenterService } from './maps/service/center-service/center-service.service';
 import { MapsFiltroService } from './maps/maps-ui/filtro/maps-filtro.service';
 import { AgmService } from './maps/agm/agm-service.service';
-import { ListaRichiesteService } from './richieste/service/lista-richieste-service.service';
 import { BoxesModule } from './boxes/boxes.module';
 import { ChiamataModule } from './chiamata/chiamata.module';
 import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
@@ -28,10 +27,10 @@ import { FilterbarModule } from './filterbar/filterbar.module';
 import { MapsModule } from './maps/maps.module';
 import { RichiesteModule } from './richieste/richieste.module';
 import { ComposizionePartenzaModule } from './composizione-partenza/composizione-partenza.module';
-import { RichiestaFissataState } from './richieste/store/';
-import { RichiesteState } from './richieste/store/';
-import { RichiestaHoverState } from './richieste/store/';
-import { RichiestaSelezionataState } from './richieste/store/states/richiesta-selezionata.state';
+import { RichiesteState } from './store/states/richieste.state';
+import { RichiestaHoverState } from './store/states/richiesta-hover.state';
+import { RichiestaFissataState } from './store/states/richiesta-fissata.state';
+import { RichiestaSelezionataState } from './store/states/richiesta-selezionata.state';
 import { ViewComponentState } from './store/states/view.state';
 import { BackupViewComponentState } from './store/states/save-view.state';
 import { RichiestaComposizioneState } from './composizione-partenza/store/states/richiesta-composizione.state';
@@ -80,8 +79,7 @@ import { RichiestaComposizioneState } from './composizione-partenza/store/states
         ),
     ],
     providers: [
-        MarkerService, CenterService, MapsFiltroService, AgmService,
-        ListaRichiesteService
+        MarkerService, CenterService, MapsFiltroService, AgmService
     ]
 })
 export class HomeModule {

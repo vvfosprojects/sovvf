@@ -5,7 +5,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 
 // Service
-import { ListaRichiesteService } from '../service/lista-richieste-service.service';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 
 // Helper methods
