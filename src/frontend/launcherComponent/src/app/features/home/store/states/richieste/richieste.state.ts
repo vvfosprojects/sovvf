@@ -29,11 +29,6 @@ export class RichiesteState implements NgxsOnInit {
         return state.richieste;
     }
 
-    @Selector()
-    static richiesta(state: RichiesteStateModel) {
-        return state.richieste;
-    }
-
     constructor(private richiesteService: SintesiRichiesteService) { }
 
     ngxsOnInit(ctx: StateContext<RichiesteState>) {
