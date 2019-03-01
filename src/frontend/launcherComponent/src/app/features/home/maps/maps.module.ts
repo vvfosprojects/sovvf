@@ -27,12 +27,12 @@ import { CambioSedeModalComponent } from './maps-ui/info-window/cambio-sede-moda
  * Provider
  */
 import {
-    CentroMappaManagerService, MezziMarkerManagerService, SediMarkerManagerService, RichiesteMarkerManagerService,
-    CentroMappaManagerServiceFake, MezziMarkerManagerServiceFake, SediMarkerManagerServiceFake, RichiesteMarkerManagerServiceFake
+    CentroMappaManagerService, SediMarkerManagerService, RichiesteMarkerManagerService,
+    CentroMappaManagerServiceFake, SediMarkerManagerServiceFake, RichiesteMarkerManagerServiceFake
 } from '../../../core/manager/maps-manager';
 import {
-    DispatcherCentroMappaService, DispatcherMezziMarkerService, DispatcherSediMarkerService, DispatcherRichiesteMarkerService,
-    DispatcherCentroMappaServiceFake, DispatcherMezziMarkerServiceFake,
+    DispatcherCentroMappaService, DispatcherSediMarkerService, DispatcherRichiesteMarkerService,
+    DispatcherCentroMappaServiceFake,
     DispatcherSediMarkerServiceFake, DispatcherRichiesteMarkerServiceFake
 } from '../../../core/dispatcher/dispatcher-maps';
 import {
@@ -48,6 +48,7 @@ import { MeteoMarkersState } from '../store/states/maps/meteo-markers.state';
 import { MapsFiltroState } from '../store/states/maps/maps-filtro.state';
 import { MapsDirectionState } from '../store/states/maps/maps-direction.state';
 import { MarkerSelezionatoState } from '../store/states/maps/marker-selezionato.state';
+import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 
 @NgModule({
     imports: [
@@ -65,7 +66,8 @@ import { MarkerSelezionatoState } from '../store/states/maps/marker-selezionato.
                 MeteoMarkersState,
                 MapsFiltroState,
                 MapsDirectionState,
-                MarkerSelezionatoState
+                MarkerSelezionatoState,
+                MezziMarkersState
             ]
         ),
     ],
@@ -86,8 +88,6 @@ import { MarkerSelezionatoState } from '../store/states/maps/marker-selezionato.
         {provide: RichiesteMarkerManagerService, useClass: RichiesteMarkerManagerServiceFake},
         {provide: DispatcherRichiesteMarkerService, useClass: DispatcherRichiesteMarkerServiceFake},
         {provide: MezziMarkerService, useClass: MezziMarkerServiceFake},
-        {provide: MezziMarkerManagerService, useClass: MezziMarkerManagerServiceFake},
-        {provide: DispatcherMezziMarkerService, useClass: DispatcherMezziMarkerServiceFake},
         {provide: SediMarkerService, useClass: SediMarkerServiceFake},
         {provide: SediMarkerManagerService, useClass: SediMarkerManagerServiceFake},
         {provide: DispatcherSediMarkerService, useClass: DispatcherSediMarkerServiceFake},

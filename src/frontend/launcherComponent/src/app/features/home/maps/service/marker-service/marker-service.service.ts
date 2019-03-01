@@ -417,20 +417,21 @@ export class MarkerService implements OnDestroy {
      * @param stringSearch
      */
     opacizzaMarkers(action: boolean, tipo: string, filterState?: string[], stringSearch?: string[]): void {
-        const className = 'marker' + capitalize(tipo) + 'Manager';
-        if (this[className]) {
-            if (action) {
-                this[className].cambiaOpacitaMarker(true, filterState, stringSearch);
-            } else {
-                this[className].cambiaOpacitaMarker(false);
-            }
-        } else {
-            // console.log('manager non esistente');
-        }
-
-        function capitalize(string: string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        }
+        // Todo: diventerà markerIdOpacizzatiState
+        // const className = 'marker' + capitalize(tipo) + 'Manager';
+        // if (this[className]) {
+        //     if (action) {
+        //         this[className].cambiaOpacitaMarker(true, filterState, stringSearch);
+        //     } else {
+        //         this[className].cambiaOpacitaMarker(false);
+        //     }
+        // } else {
+        //     // console.log('manager non esistente');
+        // }
+        //
+        // function capitalize(string: string) {
+        //     return string.charAt(0).toUpperCase() + string.slice(1);
+        // }
 
     }
 

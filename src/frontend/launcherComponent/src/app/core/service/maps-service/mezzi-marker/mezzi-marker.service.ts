@@ -3,6 +3,7 @@ import {Observable, throwError} from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {environment} from '../../../../../environments/environment';
+import { MezzoMarker } from '../../../../features/home/maps/maps-model/mezzo-marker.model';
 
 const API_URL_MEZZI = environment.apiUrl.maps.markers.mezzi;
 
@@ -15,9 +16,9 @@ export class MezziMarkerService {
     constructor(private http: HttpClient) {
     }
 
-    public getMezziMarkers(): Observable<any> {
-        return this.http.get(API_URL_MEZZI).pipe(
-            map((data: any) => {
+    public getMezziMarkers(): Observable<MezzoMarker[]> {
+        return this.http.get<MezzoMarker[]>(API_URL_MEZZI).pipe(
+            map((data: MezzoMarker[]) => {
                 return data;
             }),
             retry(3),

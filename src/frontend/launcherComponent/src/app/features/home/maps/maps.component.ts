@@ -12,6 +12,7 @@ import { ViewInterfaceMaps } from '../../../shared/interface/view.interface';
 import { Select } from '@ngxs/store';
 import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
 import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
+import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 
 @Component({
     selector: 'app-maps',
@@ -28,11 +29,11 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Select(SchedaTelefonataState.chiamataMarker) chiamataMarkers$: Observable<ChiamataMarker[]>;
     @Select(RichiestaComposizioneState.richiestaComposizioneMarker) composizioneMarkers$: Observable<ComposizioneMarker[]>;
+    @Select(MezziMarkersState.mezziMarkers) mezziMarkers$: Observable<MezzoMarker[]>;
     mapsFullyLoaded = false;
 
     constructor(private richiesteManager: MapManager.RichiesteMarkerManagerService,
                 private sediManager: MapManager.SediMarkerManagerService,
-                private mezziManager: MapManager.MezziMarkerManagerService,
                 private centroManager: MapManager.CentroMappaManagerService,
                 private toastr: ToastrService) {
         this.timeoutAlert('showToastr');
@@ -53,13 +54,6 @@ export class MapsComponent implements OnInit, OnDestroy {
             if (this.richiesteManager.count > 0) {
                 this.richiesteManager.count = this.richiesteMarkers.length;
             }
-        }));
-
-        /**
-         *  mi iscrivo al map manager che mi ritorna tutti i marker di tipo mezzoMarker
-         */
-        this.subscription.add(this.mezziManager.getMezziMarker().subscribe((r: MezzoMarker[]) => {
-            this.mezziMarkers = r;
         }));
 
         /**
