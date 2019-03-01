@@ -10,8 +10,8 @@ import { Observable, Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { ViewInterfaceMaps } from '../../../shared/interface/view.interface';
 import { Select } from '@ngxs/store';
-import { SchedaTelefonataState } from '../chiamata/store/states/scheda-telefonata.state';
-import { RichiestaComposizioneState } from '../composizione-partenza/store/states/richiesta-composizione.state';
+import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
+import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
 
 @Component({
     selector: 'app-maps',

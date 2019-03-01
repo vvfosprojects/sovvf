@@ -11,20 +11,20 @@ import { ToastrService } from 'ngx-toastr';
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
 // Ngxs
 import { Select, Store } from '@ngxs/store';
-import { RicercaRichiesteState } from '../filterbar/store/states/ricerca-richieste.state';
-import { ClearRichiestaFissata, SetRichiestaFissata } from '../store/actions/richiesta-fissata.actions';
-import { RichiestaFissataState } from '../store/states/richiesta-fissata.state';
-import { GetRichieste } from '../store/actions/richieste.actions';
-import { ClearRichiestaHover, SetRichiestaHover } from '../store/actions/richiesta-hover.actions';
-import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from '../store/actions/richiesta-selezionata.actions';
-import { RichiesteState } from '../store/states/richieste.state';
-import { RichiestaSelezionataState } from '../store/states/richiesta-selezionata.state';
-import { RichiestaHoverState } from '../store/states/richiesta-hover.state';
+import { RicercaRichiesteState } from '../store/states/filterbar/ricerca-richieste.state';
+import { ClearRichiestaFissata, SetRichiestaFissata } from '../store/actions/richieste/richiesta-fissata.actions';
+import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
+import { GetRichieste } from '../store/actions/richieste/richieste.actions';
+import { ClearRichiestaHover, SetRichiestaHover } from '../store/actions/richieste/richiesta-hover.actions';
+import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from '../store/actions/richieste/richiesta-selezionata.actions';
+import { RichiesteState } from '../store/states/richieste/richieste.state';
+import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
+import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
-import { SetIdRichiestaEventi } from '../eventi/store/actions/eventi-richiesta.actions';
-import { ToggleComposizione } from '../store/actions/view.actions';
+import { SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
+import { ToggleComposizione } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
-import { RichiestaComposizione } from '../composizione-partenza/store/actions/richiesta-composizione.actions';
+import { RichiestaComposizione } from '../store/actions/composizione-partenza/richiesta-composizione.actions';
 
 @Component({
     selector: 'app-richieste',

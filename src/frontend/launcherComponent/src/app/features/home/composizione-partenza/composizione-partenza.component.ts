@@ -1,26 +1,29 @@
-import { Component, Input, isDevMode, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { CenterService } from '../maps/service/center-service/center-service.service';
 import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
 import { Subject, Subscription, Observable } from 'rxjs';
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
 import { Store, Select } from '@ngxs/store';
-import { AllFalseBoxRichieste, AllTrueBoxMezzi, BoxClickState, BoxClickStateModel, ReducerBoxClick, UndoAllBoxes } from '../boxes/store';
+
+import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
+import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
 import { MezzoComposizione } from './interface/mezzo-composizione-interface';
 import { SquadraComposizione } from './interface/squadra-composizione-interface';
 import { BoxPartenza } from './interface/box-partenza-interface';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
-import { GetMezziComposizione } from './store/actions/mezzi-composizione.actions';
-import { GetSquadreComposizione } from './store/actions/squadre-composizione.actions';
-import { MezziComposizioneState, SquadreComposizioneState } from './store';
-import { PreAccoppiatiState } from './store/states/pre-accoppiati.state';
-import { GetPreAccoppiati } from './store/actions/pre-accoppiati.actions';
+import { GetMezziComposizione } from '../store/actions/composizione-partenza/mezzi-composizione.actions';
+import { GetSquadreComposizione } from '../store/actions/composizione-partenza/squadre-composizione.actions';
+import { MezziComposizioneState } from '../store/states/composizione-partenza/mezzi-composizione.state';
+import { PreAccoppiatiState } from '../store/states/composizione-partenza/pre-accoppiati.state';
+import { GetPreAccoppiati } from '../store/actions/composizione-partenza/pre-accoppiati.actions';
 import { DirectionInterface } from '../maps/maps-interface/direction-interface';
-import { SetDirection, ClearDirection } from '../maps/store/actions/maps-direction.actions';
+import { SetDirection, ClearDirection } from '../store/actions/maps/maps-direction.actions';
 import { makeCopy, wipeStatoRichiesta } from '../../../shared/helper/function';
-import { TurnOffComposizione } from '../store/actions/view.actions';
-import { RichiestaComposizioneState } from './store/states/richiesta-composizione.state';
+import { TurnOffComposizione } from '../store/actions/view/view.actions';
+import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
+import { SquadreComposizioneState } from '../store/states/composizione-partenza/squadre-composizione.state';
 
 @Component({
     selector: 'app-composizione-partenza',

@@ -16,7 +16,10 @@ import { BoxRichiesteFakeService } from '../../../core/service/boxes-service/box
 import { BoxMezziFakeService } from '../../../core/service/boxes-service/box-mezzi-fake.service';
 import { BoxPesonaleFakeService } from '../../../core/service/boxes-service/box-pesonale-fake.service';
 import { NgxsModule } from '@ngxs/store';
-import { BoxClickState, BoxMezziState, BoxPersonaleState, BoxRichiesteState } from './store';
+import { BoxClickState } from '../store/states/boxes/box-click.state';
+import { BoxMezziState } from '../store/states/boxes/box-mezzi.state';
+import { BoxPersonaleState } from '../store/states/boxes/box-personale.state';
+import { BoxRichiesteState } from '../store/states/boxes/box-richieste.state';
 
 
 @NgModule({

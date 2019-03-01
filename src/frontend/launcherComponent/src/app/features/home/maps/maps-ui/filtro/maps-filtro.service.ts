@@ -3,8 +3,8 @@ import { Observable, of, Subject, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { BoxClickArrayInterface, BoxClickInterface } from '../../../boxes/box-interface/box-click-interface';
 import { Select, Store } from '@ngxs/store';
-import { BoxClickState } from '../../../boxes/store/';
-import { SetVociMenu } from '../../store/actions/maps-filtro.actions';
+import { BoxClickState } from '../../../store/states/boxes/box-click.state';
+import { SetVociMenu } from '../../../store/actions/maps/maps-filtro.actions';
 import { makeCopy } from '../../../../../shared/helper/function';
 
 @Injectable()

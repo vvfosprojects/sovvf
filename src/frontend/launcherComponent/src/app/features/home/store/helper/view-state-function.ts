@@ -1,5 +1,5 @@
 import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps } from '../../../../shared/interface/view.interface';
-import { ChangeView } from '../actions/view.actions';
+import { ChangeView } from '../actions/view/view.actions';
 import { AppFeatures } from '../../../../shared/enum/app-features.enum';
 import { Grid } from '../../../../shared/enum/layout.enum';
 import { Composizione } from '../../../../shared/enum/composizione.enum';

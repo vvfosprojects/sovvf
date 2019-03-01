@@ -23,10 +23,10 @@ import { CachedMarker } from '../maps-model/cached-marker.model';
 import { ViewInterfaceMaps } from '../../../../shared/interface/view.interface';
 import { ComposizioneMarker } from '../maps-model/composizione-marker.model';
 import { Select } from '@ngxs/store';
-import { MeteoMarkersState } from '../store/';
+import { MeteoMarkersState } from '../../store/states/maps/meteo-markers.state';
 import { AppFeatures } from '../../../../shared/enum/app-features.enum';
 import { MouseE } from '../../../../shared/enum/mouse-e.enum';
-import { MapsDirectionState } from '../store/states/maps-direction.state';
+import { MapsDirectionState } from '../../store/states/maps/maps-direction.state';
 
 declare var google: any;
 

@@ -2,7 +2,7 @@ import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Grids, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../shared/interface/view.interface';
 import { Select } from '@ngxs/store';
-import { ViewComponentState } from './store/states/view.state';
+import { ViewComponentState } from './store/states/view/view.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
 
 @Component({ templateUrl: 'home.component.html' })

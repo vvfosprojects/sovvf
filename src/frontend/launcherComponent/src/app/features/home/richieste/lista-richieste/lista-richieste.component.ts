@@ -10,7 +10,7 @@ import { MarkerService } from '../../maps/service/marker-service/marker-service.
 // Helper methods
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { SetIdRichiestaEventi } from '../../eventi/store/actions/eventi-richiesta.actions';
+import { SetIdRichiestaEventi } from '../../store/actions/eventi/eventi-richiesta.actions';
 import { Store } from '@ngxs/store';
 
 export const scrolledItems = 11;

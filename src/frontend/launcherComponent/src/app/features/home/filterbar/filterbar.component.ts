@@ -4,18 +4,18 @@ import { Observable } from 'rxjs';
 // View
 import { ViewInterfaceButton } from '../../../shared/interface/view.interface';
 // Filtri Richieste
-import { GetFiltriRichieste, ResetFiltriSelezionati, SetFiltroSelezionato } from './store/actions/filtri-richieste.actions';
-import { FiltriRichiesteState } from './store/states/filtri-richieste.state';
+import { GetFiltriRichieste, ResetFiltriSelezionati, SetFiltroSelezionato } from '../store/actions/filterbar/filtri-richieste.actions';
+import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
 // Ricerca Richieste
-import { RicercaRichiesteState } from './store/states/ricerca-richieste.state';
+import { RicercaRichiesteState } from '../store/states/filterbar/ricerca-richieste.state';
 // Marker Meteo Switch
-import { MarkerMeteoState } from './store/states/marker-meteo-switch.state';
-import { SetMarkerMeteoSwitch } from './store/actions/marker-meteo-switch.actions';
-import { SetRicerca } from './store/actions/ricerca-richieste.actions';
+import { MarkerMeteoState } from '../store/states/filterbar/marker-meteo-switch.state';
+import { SetMarkerMeteoSwitch } from '../store/actions/filterbar/marker-meteo-switch.actions';
+import { SetRicerca } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
-import { ChangeView, SwitchComposizione, ToggleChiamata } from '../store/actions/view.actions';
-import { ViewComponentState } from '../store/states/view.state';
+import { ChangeView, SwitchComposizione, ToggleChiamata } from '../store/actions/view/view.actions';
+import { ViewComponentState } from '../store/states/view/view.state';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { Grid } from '../../../shared/enum/layout.enum';
 

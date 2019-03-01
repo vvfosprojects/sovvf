@@ -13,9 +13,9 @@ import { PipeModule } from '../../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { NgxsModule } from '@ngxs/store';
-import { FiltriRichiesteState } from './filterbar/store/states/filtri-richieste.state';
-import { RicercaRichiesteState } from './filterbar/store/states/ricerca-richieste.state';
-import { MarkerMeteoState } from './filterbar/store/states/marker-meteo-switch.state';
+import { FiltriRichiesteState } from './store/states/filterbar/filtri-richieste.state';
+import { RicercaRichiesteState } from './store/states/filterbar/ricerca-richieste.state';
+import { MarkerMeteoState } from './store/states/filterbar/marker-meteo-switch.state';
 import { MarkerService } from './maps/service/marker-service/marker-service.service';
 import { CenterService } from './maps/service/center-service/center-service.service';
 import { MapsFiltroService } from './maps/maps-ui/filtro/maps-filtro.service';
@@ -27,13 +27,13 @@ import { FilterbarModule } from './filterbar/filterbar.module';
 import { MapsModule } from './maps/maps.module';
 import { RichiesteModule } from './richieste/richieste.module';
 import { ComposizionePartenzaModule } from './composizione-partenza/composizione-partenza.module';
-import { RichiesteState } from './store/states/richieste.state';
-import { RichiestaHoverState } from './store/states/richiesta-hover.state';
-import { RichiestaFissataState } from './store/states/richiesta-fissata.state';
-import { RichiestaSelezionataState } from './store/states/richiesta-selezionata.state';
-import { ViewComponentState } from './store/states/view.state';
-import { BackupViewComponentState } from './store/states/save-view.state';
-import { RichiestaComposizioneState } from './composizione-partenza/store/states/richiesta-composizione.state';
+import { RichiesteState } from './store/states/richieste/richieste.state';
+import { RichiestaHoverState } from './store/states/richieste/richiesta-hover.state';
+import { RichiestaFissataState } from './store/states/richieste/richiesta-fissata.state';
+import { RichiestaSelezionataState } from './store/states/richieste/richiesta-selezionata.state';
+import { ViewComponentState } from './store/states/view/view.state';
+import { BackupViewComponentState } from './store/states/view/save-view.state';
+import { RichiestaComposizioneState } from './store/states/composizione-partenza/richiesta-composizione.state';
 
 @NgModule({
     declarations: [

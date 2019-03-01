@@ -9,7 +9,7 @@ import {SharedModule} from '../../../shared/shared.module';
 import {EventiRichiestaService} from '../../../core/service/eventi-richiesta-service/eventi-richiesta.service';
 import {EventiRichiestaServiceFake} from '../../../core/service/eventi-richiesta-service/eventi-richiesta.service.fake';
 import { NgxsModule } from '@ngxs/store';
-import { EventiRichiestaState } from './store/states/eventi-richiesta.state';
+import { EventiRichiestaState } from '../store/states/eventi/eventi-richiesta.state';
 
 
 @NgModule({

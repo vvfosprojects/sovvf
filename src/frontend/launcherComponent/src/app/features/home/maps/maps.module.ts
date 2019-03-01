@@ -43,11 +43,11 @@ import {
  * Ngxs
  */
 import { NgxsModule } from '@ngxs/store';
-import { MarkerMeteoState } from '../filterbar/store/states/marker-meteo-switch.state';
-import { MeteoMarkersState } from './store/states/meteo-markers.state';
-import { MapsFiltroState } from './store/states/maps-filtro.state';
-import { MapsDirectionState } from './store/states/maps-direction.state';
-import { MarkedMarkerState } from './store/states/marked-marker.state';
+import { MarkerMeteoState } from '../store/states/filterbar/marker-meteo-switch.state';
+import { MeteoMarkersState } from '../store/states/maps/meteo-markers.state';
+import { MapsFiltroState } from '../store/states/maps/maps-filtro.state';
+import { MapsDirectionState } from '../store/states/maps/maps-direction.state';
+import { MarkedMarkerState } from '../store/states/maps/marked-marker.state';
 
 @NgModule({
     imports: [

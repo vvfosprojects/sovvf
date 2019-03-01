@@ -28,9 +28,9 @@ import { CompPartenzaServiceFake } from '../../../core/service/comp-partenza-ser
  * Ngxs
  */
 import { NgxsModule } from '@ngxs/store';
-import { MezziComposizioneState } from './store/states/mezzi-composizione.state';
-import { SquadreComposizioneState } from './store/states/squadre-composizione.state';
-import { PreAccoppiatiState } from './store/states/pre-accoppiati.state';
+import { MezziComposizioneState } from '../store/states/composizione-partenza/mezzi-composizione.state';
+import { SquadreComposizioneState } from '../store/states/composizione-partenza/squadre-composizione.state';
+import { PreAccoppiatiState } from '../store/states/composizione-partenza/pre-accoppiati.state';
 
 @NgModule({
     declarations: [

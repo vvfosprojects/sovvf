@@ -7,11 +7,11 @@ import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
 import { ChiamataMarker } from '../maps/maps-model/chiamata-marker.model';
 import { Coordinate } from '../../../shared/model/coordinate.model';
 import { Select, Store } from '@ngxs/store';
-import { GetIdChiamata } from './store/actions/chiamata.actions';
-import { ChiamataState } from './store/states/chiamata.state';
+import { GetIdChiamata } from '../store/actions/chiamata/chiamata.actions';
+import { ChiamataState } from '../store/states/chiamata/chiamata.state';
 import { SchedaTelefonataInterface } from './model/scheda-telefonata.interface';
-import { ReducerSchedaTelefonata } from './store/actions/scheda-telefonata.actions';
-import { SchedaTelefonataState } from './store/states/scheda-telefonata.state';
+import { ReducerSchedaTelefonata } from '../store/actions/chiamata/scheda-telefonata.actions';
+import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
 import { Utente } from '../../../shared/model/utente.model';
 import { UtenteState } from '../../navbar/operatore/store/states/utente.state';
 

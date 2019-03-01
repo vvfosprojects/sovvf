@@ -32,13 +32,13 @@ import { MapsFiltroService } from '../../maps-ui/filtro/maps-filtro.service';
  * Ngxs
  */
 import { Select, Store } from '@ngxs/store';
-import { MarkerMeteoState } from '../../../filterbar/store/states/marker-meteo-switch.state';
-import { SetRichiestaFissata, ClearRichiestaFissata } from '../../../store/actions/richiesta-fissata.actions';
-import { SetRichiestaHover, ClearRichiestaHover } from '../../../store/actions/richiesta-hover.actions';
-import { ClearRichiestaSelezionata } from '../../../store/actions/richiesta-selezionata.actions';
-import { AddMeteoMarker, RemoveMeteoMarker } from '../../store';
-import { MarkedMarkerState } from '../../store/states/marked-marker.state';
-import { SetMarkedMarker, ClearMarkedMarker } from '../../store/actions/marked-marker.actions';
+import { MarkerMeteoState } from '../../../store/states/filterbar/marker-meteo-switch.state';
+import { SetRichiestaFissata, ClearRichiestaFissata } from '../../../store/actions/richieste/richiesta-fissata.actions';
+import { SetRichiestaHover, ClearRichiestaHover } from '../../../store/actions/richieste/richiesta-hover.actions';
+import { ClearRichiestaSelezionata } from '../../../store/actions/richieste/richiesta-selezionata.actions';
+import { AddMeteoMarker, RemoveMeteoMarker } from '../../../store/actions/maps/meteo-markers.actions';
+import { MarkedMarkerState } from '../../../store/states/maps/marked-marker.state';
+import { SetMarkedMarker, ClearMarkedMarker } from '../../../store/actions/maps/marked-marker.actions';
 
 import { IconMappe } from './_icone';
 import { TipoMappe } from './_typeof';

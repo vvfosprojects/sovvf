@@ -10,7 +10,14 @@ import { MeteoService } from '../../../../shared/meteo/meteo-service.service';
 import { Meteo } from '../../../../shared/model/meteo.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Select, Store } from '@ngxs/store';
-import { BoxRichiesteState, BoxMezziState, BoxPersonaleState, BoxClickState, InitBoxFiltri, ReducerBoxClick, FetchBoxRichieste, FetchBoxMezzi, FetchBoxPersonale } from '../store';
+import { BoxClickState } from '../../store/states/boxes/box-click.state';
+import { BoxRichiesteState } from '../../store/states/boxes/box-richieste.state';
+import { BoxMezziState } from '../../store/states/boxes/box-mezzi.state';
+import { BoxPersonaleState } from '../../store/states/boxes/box-personale.state';
+import { InitBoxFiltri, ReducerBoxClick } from '../../store/actions/boxes/box-click.actions';
+import { FetchBoxRichieste } from '../../store/actions/boxes/box-richieste.actions';
+import { FetchBoxMezzi } from '../../store/actions/boxes/box-mezzi.actions';
+import { FetchBoxPersonale } from '../../store/actions/boxes/box-personale.actions';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -29,8 +36,8 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
 
     constructor(private store: Store,
-        private modalService: NgbModal,
-        private meteoService: MeteoService) {
+                private modalService: NgbModal,
+                private meteoService: MeteoService) {
 
         this.startMeteo();
     }
