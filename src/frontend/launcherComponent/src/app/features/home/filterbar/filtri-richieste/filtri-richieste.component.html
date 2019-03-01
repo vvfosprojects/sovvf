@@ -35,7 +35,7 @@
                 <div class="row">
                   <span class="col-6 pr-1" *ngFor="let c of categorie">
                     <button class="btn btn-secondary w-100 mb-1" (click)="onSelezioneCategoria(c)" ngbTooltip="{{ c }}"
-                      placement="bottom" [disableTooltip]="c.length <= 20">{{ c | truncate: 20 }}</button>
+                      placement="bottom" [disableTooltip]="c.length <= 20">{{ c | truncate: 35 }}</button>
                   </span>
                 </div>
               </div>
@@ -55,7 +55,7 @@
                 </div>
                 <span class="w-25 mx-1 text-center" *ngFor="let f of filtriSelezionati | paginate: { id: 'filtri', itemsPerPage: 4, currentPage: p}">
                   <button class="btn btn-success" ngbTooltip="{{ f.descrizione }}" placement="bottom"
-                    [disableTooltip]="f.descrizione.length <= 20">{{ f.descrizione | truncate: 20 }}</button>
+                    [disableTooltip]="f.descrizione.length <= 20">{{ f.descrizione | truncate: 30 }}</button>
                 </span>
                 <button *ngIf="filtriSelezionati.length <= 0" class="btn btn-outline-secondary disabled">Seleziona un filtro per migliorare la ricerca!</button>
               </div>

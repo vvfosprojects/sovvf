@@ -1,2 +1,2 @@
 <button class="btn btn-block mb-1" [ngClass]="{'btn-outline-primary': !filtro.selezionato, 'btn-success': filtro.selezionato}"
-  appDebounceClick (debounceClick)="onSelezione(filtro)" [debounceTime]="700"><!-- {{ filtro.codice }} -->{{ filtro.descrizione | truncate:40 }}</button>
+  appDebounceClick (debounceClick)="onSelezione(filtro)" [debounceTime]="700">{{ filtro.descrizione | truncate:70 }}</button>

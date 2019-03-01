@@ -18,6 +18,11 @@
 body, html {
     height: 100vh;
 }
+.xlModal > .modal-dialog {
+    max-width: 1490px !important;
+    min-width: 971px !important;
+    width: 95% !important;
+}
 
 .app-shadow{
   -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
@@ -80,66 +85,66 @@ a:hover {
     box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
 }
 .card-shadow-primary{
-    -webkit-box-shadow: 2px 0px 2px .5px #007bff;
-    -moz-box-shadow: 2px 0px 2px .5px #007bff;
-    box-shadow: 2px 0px 2px .5px #007bff;
+    -webkit-box-shadow: 2px 0 2px .5px #007bff;
+    -moz-box-shadow: 2px 0 2px .5px #007bff;
+    box-shadow: 2px 0 2px .5px #007bff;
 }
 .card-shadow-info{
-    -webkit-box-shadow: 2px 0px 2px .5px #17a2b8;
-    -moz-box-shadow: 2px 0px 2px .5px #17a2b8;
-    box-shadow: 2px 0px 2px .5px #17a2b8;
+    -webkit-box-shadow: 2px 0 2px .5px #17a2b8;
+    -moz-box-shadow: 2px 0 2px .5px #17a2b8;
+    box-shadow: 2px 0 2px .5px #17a2b8;
 }
 .card-shadow-success{
-    -webkit-box-shadow: 2px 0px 2px .5px #28a745;
-    -moz-box-shadow: 2px 0px 2px .5px #28a745;
-    box-shadow: 2px 0px 2px .5px #28a745;
+    -webkit-box-shadow: 2px 0 2px .5px #28a745;
+    -moz-box-shadow: 2px 0 2px .5px #28a745;
+    box-shadow: 2px 0 2px .5px #28a745;
 }
 .card-shadow-danger{
-    -webkit-box-shadow: 2px 0px 2px .5px #dc3545;
-    -moz-box-shadow: 2px 0px 2px .5px #dc3545;
-    box-shadow: 2px 0px 2px .5px #dc3545;
+    -webkit-box-shadow: 2px 0 2px .5px #dc3545;
+    -moz-box-shadow: 2px 0 2px .5px #dc3545;
+    box-shadow: 2px 0 2px .5px #dc3545;
 }
 .card-shadow-warning{
-    -webkit-box-shadow: 2px 0px 2px .5px #ffc107;
-    -moz-box-shadow: 2px 0px 2px .5px #ffc107;
-    box-shadow: 2px 0px 2px .5px #ffc107;
+    -webkit-box-shadow: 2px 0 2px .5px #ffc107;
+    -moz-box-shadow: 2px 0 2px .5px #ffc107;
+    box-shadow: 2px 0 2px .5px #ffc107;
 }
 .card-shadow-secondary{
-    -webkit-box-shadow: 2px 0px 2px .5px #868e96;
-    -moz-box-shadow: 2px 0px 2px .5px #868e96;
-    box-shadow: 2px 0px 2px .5px #868e96;
+    -webkit-box-shadow: 2px 0 2px .5px #868e96;
+    -moz-box-shadow: 2px 0 2px .5px #868e96;
+    box-shadow: 2px 0 2px .5px #868e96;
 }
 
 /* Shadow soft */
 .card-shadow-primary-soft{
-    -webkit-box-shadow: 0px 0px 4px 2px #007bffa2;
-    -moz-box-shadow: 0px 0px 4px 2px #007bffa2;
-    box-shadow: 0px 0px 4px 2px #007bffa2;
+    -webkit-box-shadow: 0 0 4px 2px #007bffa2;
+    -moz-box-shadow: 0 0 4px 2px #007bffa2;
+    box-shadow: 0 0 4px 2px #007bffa2;
 }
 .card-shadow-info-soft{
-    -webkit-box-shadow: 0px 0px 4px 2px #17a2b8;
-    -moz-box-shadow: 0px 0px 4px 2px #17a2b8;
-    box-shadow: 0px 0px 4px 2px #17a2b8;
+    -webkit-box-shadow: 0 0 4px 2px #17a2b8;
+    -moz-box-shadow: 0 0 4px 2px #17a2b8;
+    box-shadow: 0 0 4px 2px #17a2b8;
 }
 .card-shadow-success-soft{
-    -webkit-box-shadow: 0px 0px 4px 2px #28a745;
-    -moz-box-shadow: 0px 0px 4px 2px #28a745;
-    box-shadow: 0px 0px 4px 2px #28a745;
+    -webkit-box-shadow: 0 0 4px 2px #28a745;
+    -moz-box-shadow: 0 0 4px 2px #28a745;
+    box-shadow: 0 0 4px 2px #28a745;
 }
 .card-shadow-danger-soft{
-    -webkit-box-shadow: 0px 0px 4px 2px #dc3545;
-    -moz-box-shadow: 0px 0px 4px 2px #dc3545;
-    box-shadow: 0px 0px 4px 2px #dc3545;
+    -webkit-box-shadow: 0 0 4px 2px #dc3545;
+    -moz-box-shadow: 0 0 4px 2px #dc3545;
+    box-shadow: 0 0 4px 2px #dc3545;
 }
 .card-shadow-warning-soft{
-    -webkit-box-shadow: 0px 0px 4px 2px #ffc107;
-    -moz-box-shadow: 0px 0px 4px 2px #ffc107;
-    box-shadow: 0px 0px 4px 2px #ffc107;
+    -webkit-box-shadow: 0 0 4px 2px #ffc107;
+    -moz-box-shadow: 0 0 4px 2px #ffc107;
+    box-shadow: 0 0 4px 2px #ffc107;
 }
 .card-shadow-secondary-soft{
-    -webkit-box-shadow: 0px 0px 4px 2px #868e96;
-    -moz-box-shadow: 0px 0px 4px 2px #868e96;
-    box-shadow: 0px 0px 4px 2px #868e96;
+    -webkit-box-shadow: 0 0 4px 2px #868e96;
+    -moz-box-shadow: 0 0 4px 2px #868e96;
+    box-shadow: 0 0 4px 2px #868e96;
 }
 
 /* Status richieste */

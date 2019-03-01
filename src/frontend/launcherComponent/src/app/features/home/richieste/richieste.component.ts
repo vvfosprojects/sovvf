@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, isDevMode, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from 'ngx-filter-pipe';
@@ -214,7 +214,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     onVisualizzaEventiRichiesta(idRichiesta: string) {
         this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
-        this.modalService.open(EventiRichiestaComponent, { size: 'lg', centered: true });
+        this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
     }
 
     toggleComposizione() {

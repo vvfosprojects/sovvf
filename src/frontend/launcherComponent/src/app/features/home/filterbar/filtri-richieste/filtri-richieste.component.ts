@@ -45,7 +45,7 @@ export class FiltriRichiesteComponent implements OnInit {
 
   openFiltersModal(content: any) {
     this.filtersSearch = { descrizione: '' };
-    this.modalService.open(content, { backdropClass: 'light-blue-backdrop', size: 'lg', centered: true });
+    this.modalService.open(content, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
   }
 
   onSelezioneFiltro(filtro: VoceFiltro) {
