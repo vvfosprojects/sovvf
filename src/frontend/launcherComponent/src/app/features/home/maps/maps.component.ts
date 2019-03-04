@@ -1,5 +1,4 @@
 import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
-import * as MapManager from '../../../core/manager/maps-manager';
 import { CentroMappa } from './maps-model/centro-mappa.model';
 import { RichiestaMarker } from './maps-model/richiesta-marker.model';
 import { MezzoMarker } from './maps-model/mezzo-marker.model';
@@ -15,6 +14,7 @@ import { RichiestaComposizioneState } from '../store/states/composizione-partenz
 import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
+import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
 
 @Component({
     selector: 'app-maps',
@@ -27,6 +27,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
     richiesteLenght: number;
     @Input() viewStateMappa: ViewInterfaceMaps;
+    @Select(CentroMappaState.centroMappa) centroMappa$: Observable<CentroMappa>;
     @Select(SchedaTelefonataState.chiamataMarker) chiamataMarkers$: Observable<ChiamataMarker[]>;
     @Select(RichiestaComposizioneState.richiestaComposizioneMarker) composizioneMarkers$: Observable<ComposizioneMarker[]>;
     @Select(RichiesteMarkersState.richiesteMarkers) richiesteMarkers$: Observable<RichiestaMarker[]>;
@@ -35,13 +36,9 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(SediMarkersState.sediMarkers) sediMarkers$: Observable<SedeMarker[]>;
     mapsFullyLoaded = false;
 
-    constructor(private centroManager: MapManager.CentroMappaManagerService,
-                private toastr: ToastrService) {
+    constructor(private toastr: ToastrService) {
         this.timeoutAlert('showToastr');
-        /**
-         *  mi iscrivo al map manager che mi ritorna il centro della mappa
-         */
-        this.subscription.add(this.centroManager.getCentro().subscribe((r: CentroMappa) => {
+        this.subscription.add(this.centroMappa$.subscribe((r: CentroMappa) => {
             this.centroMappa = r;
         }));
         this.subscription.add(this.richiesteLenghtMarkers$.subscribe( (l: number) => this.richiesteLenght = l));

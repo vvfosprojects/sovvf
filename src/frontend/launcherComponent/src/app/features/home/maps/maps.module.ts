@@ -27,14 +27,6 @@ import { CambioSedeModalComponent } from './maps-ui/info-window/cambio-sede-moda
  * Provider
  */
 import {
-    CentroMappaManagerService,
-    CentroMappaManagerServiceFake,
-} from '../../../core/manager/maps-manager';
-import {
-    DispatcherCentroMappaService,
-    DispatcherCentroMappaServiceFake,
-} from '../../../core/dispatcher/dispatcher-maps';
-import {
     CentroMappaService, MezziMarkerService, SediMarkerService, RichiesteMarkerService,
     CentroMappaServiceFake, MezziMarkerServiceFake, SediMarkerServiceFake, RichiesteMarkerServiceFake
 } from '../../../core/service/maps-service';
@@ -50,6 +42,7 @@ import { MarkerSelezionatoState } from '../store/states/maps/marker-selezionato.
 import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
+import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
 
 @NgModule({
     imports: [
@@ -67,6 +60,7 @@ import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.st
                 MeteoMarkersState,
                 MapsFiltroState,
                 MapsDirectionState,
+                CentroMappaState,
                 MarkerSelezionatoState,
                 RichiesteMarkersState,
                 MezziMarkersState,
@@ -91,8 +85,6 @@ import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.st
         {provide: MezziMarkerService, useClass: MezziMarkerServiceFake},
         {provide: SediMarkerService, useClass: SediMarkerServiceFake},
         {provide: CentroMappaService, useClass: CentroMappaServiceFake},
-        {provide: CentroMappaManagerService, useClass: CentroMappaManagerServiceFake},
-        {provide: DispatcherCentroMappaService, useClass: DispatcherCentroMappaServiceFake},
     ]
 })
 export class MapsModule {
