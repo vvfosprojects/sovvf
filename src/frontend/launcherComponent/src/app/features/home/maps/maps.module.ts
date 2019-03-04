@@ -27,13 +27,13 @@ import { CambioSedeModalComponent } from './maps-ui/info-window/cambio-sede-moda
  * Provider
  */
 import {
-    CentroMappaManagerService, SediMarkerManagerService, RichiesteMarkerManagerService,
-    CentroMappaManagerServiceFake, SediMarkerManagerServiceFake, RichiesteMarkerManagerServiceFake
+    CentroMappaManagerService, RichiesteMarkerManagerService,
+    CentroMappaManagerServiceFake, RichiesteMarkerManagerServiceFake
 } from '../../../core/manager/maps-manager';
 import {
-    DispatcherCentroMappaService, DispatcherSediMarkerService, DispatcherRichiesteMarkerService,
+    DispatcherCentroMappaService, DispatcherRichiesteMarkerService,
     DispatcherCentroMappaServiceFake,
-    DispatcherSediMarkerServiceFake, DispatcherRichiesteMarkerServiceFake
+    DispatcherRichiesteMarkerServiceFake
 } from '../../../core/dispatcher/dispatcher-maps';
 import {
     CentroMappaService, MezziMarkerService, SediMarkerService, RichiesteMarkerService,
@@ -49,6 +49,7 @@ import { MapsFiltroState } from '../store/states/maps/maps-filtro.state';
 import { MapsDirectionState } from '../store/states/maps/maps-direction.state';
 import { MarkerSelezionatoState } from '../store/states/maps/marker-selezionato.state';
 import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
+import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 
 @NgModule({
     imports: [
@@ -67,7 +68,8 @@ import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
                 MapsFiltroState,
                 MapsDirectionState,
                 MarkerSelezionatoState,
-                MezziMarkersState
+                MezziMarkersState,
+                SediMarkersState
             ]
         ),
     ],
@@ -89,8 +91,6 @@ import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
         {provide: DispatcherRichiesteMarkerService, useClass: DispatcherRichiesteMarkerServiceFake},
         {provide: MezziMarkerService, useClass: MezziMarkerServiceFake},
         {provide: SediMarkerService, useClass: SediMarkerServiceFake},
-        {provide: SediMarkerManagerService, useClass: SediMarkerManagerServiceFake},
-        {provide: DispatcherSediMarkerService, useClass: DispatcherSediMarkerServiceFake},
         {provide: CentroMappaService, useClass: CentroMappaServiceFake},
         {provide: CentroMappaManagerService, useClass: CentroMappaManagerServiceFake},
         {provide: DispatcherCentroMappaService, useClass: DispatcherCentroMappaServiceFake},

@@ -2,8 +2,8 @@ import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import * as MapManager from '../../../core/manager/maps-manager';
 import { CentroMappa } from './maps-model/centro-mappa.model';
 import { RichiestaMarker } from './maps-model/richiesta-marker.model';
-import { SedeMarker } from './maps-model/sede-marker.model';
 import { MezzoMarker } from './maps-model/mezzo-marker.model';
+import { SedeMarker } from './maps-model/sede-marker.model';
 import { ChiamataMarker } from './maps-model/chiamata-marker.model';
 import { ComposizioneMarker } from './maps-model/composizione-marker.model';
 import { Observable, Subscription } from 'rxjs';
@@ -13,6 +13,7 @@ import { Select } from '@ngxs/store';
 import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
 import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
 import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
+import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 
 @Component({
     selector: 'app-maps',
@@ -23,17 +24,15 @@ export class MapsComponent implements OnInit, OnDestroy {
 
     centroMappa: CentroMappa;
     richiesteMarkers: RichiestaMarker[] = [];
-    sediMarkers: SedeMarker[] = [];
-    mezziMarkers: MezzoMarker[] = [];
     subscription = new Subscription();
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Select(SchedaTelefonataState.chiamataMarker) chiamataMarkers$: Observable<ChiamataMarker[]>;
     @Select(RichiestaComposizioneState.richiestaComposizioneMarker) composizioneMarkers$: Observable<ComposizioneMarker[]>;
     @Select(MezziMarkersState.mezziMarkers) mezziMarkers$: Observable<MezzoMarker[]>;
+    @Select(SediMarkersState.sediMarkers) sediMarkers$: Observable<SedeMarker[]>;
     mapsFullyLoaded = false;
 
     constructor(private richiesteManager: MapManager.RichiesteMarkerManagerService,
-                private sediManager: MapManager.SediMarkerManagerService,
                 private centroManager: MapManager.CentroMappaManagerService,
                 private toastr: ToastrService) {
         this.timeoutAlert('showToastr');
@@ -54,13 +53,6 @@ export class MapsComponent implements OnInit, OnDestroy {
             if (this.richiesteManager.count > 0) {
                 this.richiesteManager.count = this.richiesteMarkers.length;
             }
-        }));
-
-        /**
-         *  mi iscrivo al map manager che mi ritorna tutti i marker di tipo richiestaMarker
-         */
-        this.subscription.add(this.sediManager.getSediMarker().subscribe((r: SedeMarker[]) => {
-            this.sediMarkers = r;
         }));
     }
 

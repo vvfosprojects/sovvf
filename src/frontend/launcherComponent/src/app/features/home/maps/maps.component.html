@@ -3,7 +3,7 @@
         <app-agm [viewStateMappa]="viewStateMappa"
                  [centroMappa]="centroMappa"
                  [richiesteMarkers]="richiesteMarkers"
-                 [sediMarkers]="sediMarkers"
+                 [sediMarkers]="(sediMarkers$ | async)"
                  [mezziMarkers]="(mezziMarkers$ | async)"
                  [chiamataMarkers]="(chiamataMarkers$ | async)"
                  [composizioneMarkers]="(composizioneMarkers$ | async)"
