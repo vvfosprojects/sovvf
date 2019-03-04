@@ -26,7 +26,6 @@ import { MapsEvent } from '../../../../../shared/enum/maps-event.enum';
 import { MeteoService } from '../../../../../shared/meteo/meteo-service.service';
 import { AgmService } from '../../agm/agm-service.service';
 import { UnitaAttualeService } from '../../../../navbar/navbar-service/unita-attuale/unita-attuale.service';
-import { RichiesteMarkerManagerService } from '../../../../../core/manager/maps-manager';
 import { MapsFiltroService } from '../../maps-ui/filtro/maps-filtro.service';
 /**
  * Ngxs
@@ -44,6 +43,8 @@ import { IconMappe } from './_icone';
 import { TipoMappe } from './_typeof';
 import { TipoColori } from './_color';
 import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
+import { RichiesteMarkersState } from '../../../store/states/maps/richieste-markers.state';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class MarkerService implements OnDestroy {
@@ -74,9 +75,10 @@ export class MarkerService implements OnDestroy {
     @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
     switchMeteo: boolean;
 
+    // @Select(RichiesteMarkersState.getRichiesteById) richiesteById$: Observable<RichiestaMarker>;
+
     constructor(private meteoService: MeteoService,
         private agmService: AgmService,
-        private markerRichiesteManager: RichiesteMarkerManagerService,
         private unitaAttualeS: UnitaAttualeService,
         private mapsFiltroService: MapsFiltroService,
         private store: Store) {
@@ -406,7 +408,13 @@ export class MarkerService implements OnDestroy {
      * @param id
      */
     getMarkerFromId(id: string): RichiestaMarker {
-        return this.markerRichiesteManager.getMarkerFromId(id);
+        let marker: RichiestaMarker = null;
+        let richiesteById$: Observable<RichiestaMarker>;
+        richiesteById$ = this.store.select(RichiesteMarkersState.getRichiesteById).pipe(map(fn => fn(id)));
+        richiesteById$.subscribe( m => {
+            marker = m;
+        });
+        return marker;
     }
 
     /**

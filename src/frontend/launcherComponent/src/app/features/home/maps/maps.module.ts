@@ -27,13 +27,12 @@ import { CambioSedeModalComponent } from './maps-ui/info-window/cambio-sede-moda
  * Provider
  */
 import {
-    CentroMappaManagerService, RichiesteMarkerManagerService,
-    CentroMappaManagerServiceFake, RichiesteMarkerManagerServiceFake
+    CentroMappaManagerService,
+    CentroMappaManagerServiceFake,
 } from '../../../core/manager/maps-manager';
 import {
-    DispatcherCentroMappaService, DispatcherRichiesteMarkerService,
+    DispatcherCentroMappaService,
     DispatcherCentroMappaServiceFake,
-    DispatcherRichiesteMarkerServiceFake
 } from '../../../core/dispatcher/dispatcher-maps';
 import {
     CentroMappaService, MezziMarkerService, SediMarkerService, RichiesteMarkerService,
@@ -50,6 +49,7 @@ import { MapsDirectionState } from '../store/states/maps/maps-direction.state';
 import { MarkerSelezionatoState } from '../store/states/maps/marker-selezionato.state';
 import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
+import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
 
 @NgModule({
     imports: [
@@ -68,6 +68,7 @@ import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
                 MapsFiltroState,
                 MapsDirectionState,
                 MarkerSelezionatoState,
+                RichiesteMarkersState,
                 MezziMarkersState,
                 SediMarkersState
             ]
@@ -87,8 +88,6 @@ import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
     ],
     providers: [
         {provide: RichiesteMarkerService, useClass: RichiesteMarkerServiceFake},
-        {provide: RichiesteMarkerManagerService, useClass: RichiesteMarkerManagerServiceFake},
-        {provide: DispatcherRichiesteMarkerService, useClass: DispatcherRichiesteMarkerServiceFake},
         {provide: MezziMarkerService, useClass: MezziMarkerServiceFake},
         {provide: SediMarkerService, useClass: SediMarkerServiceFake},
         {provide: CentroMappaService, useClass: CentroMappaServiceFake},

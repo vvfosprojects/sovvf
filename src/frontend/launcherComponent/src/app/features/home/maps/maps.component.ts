@@ -14,6 +14,7 @@ import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonat
 import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
 import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
+import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
 
 @Component({
     selector: 'app-maps',
@@ -23,17 +24,18 @@ import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 export class MapsComponent implements OnInit, OnDestroy {
 
     centroMappa: CentroMappa;
-    richiesteMarkers: RichiestaMarker[] = [];
     subscription = new Subscription();
+    richiesteLenght: number;
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Select(SchedaTelefonataState.chiamataMarker) chiamataMarkers$: Observable<ChiamataMarker[]>;
     @Select(RichiestaComposizioneState.richiestaComposizioneMarker) composizioneMarkers$: Observable<ComposizioneMarker[]>;
+    @Select(RichiesteMarkersState.richiesteMarkers) richiesteMarkers$: Observable<RichiestaMarker[]>;
+    @Select(RichiesteMarkersState.richiesteLenghtMarkers) richiesteLenghtMarkers$: Observable<number>;
     @Select(MezziMarkersState.mezziMarkers) mezziMarkers$: Observable<MezzoMarker[]>;
     @Select(SediMarkersState.sediMarkers) sediMarkers$: Observable<SedeMarker[]>;
     mapsFullyLoaded = false;
 
-    constructor(private richiesteManager: MapManager.RichiesteMarkerManagerService,
-                private centroManager: MapManager.CentroMappaManagerService,
+    constructor(private centroManager: MapManager.CentroMappaManagerService,
                 private toastr: ToastrService) {
         this.timeoutAlert('showToastr');
         /**
@@ -42,18 +44,7 @@ export class MapsComponent implements OnInit, OnDestroy {
         this.subscription.add(this.centroManager.getCentro().subscribe((r: CentroMappa) => {
             this.centroMappa = r;
         }));
-        /**
-         *  mi iscrivo al map manager che mi ritorna tutti i marker di tipo richiestaMarker
-         */
-        this.subscription.add(this.richiesteManager.getRichiesteMarker().subscribe((r: RichiestaMarker[]) => {
-            this.richiesteMarkers = r;
-            /**
-             *  inizializzo un contatore nel servizio per tenere traccia del numero di richieste
-             */
-            if (this.richiesteManager.count > 0) {
-                this.richiesteManager.count = this.richiesteMarkers.length;
-            }
-        }));
+        this.subscription.add(this.richiesteLenghtMarkers$.subscribe( (l: number) => this.richiesteLenght = l));
     }
 
     ngOnInit() {
@@ -82,7 +73,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     mapIsLoaded(event) {
         if (event) {
             this.mapsFullyLoaded = true;
-            if (this.richiesteMarkers.length > 0 && this.mapsFullyLoaded) {
+            if (this.richiesteLenght > 0 && this.mapsFullyLoaded) {
                 this.timeoutAlert('clearToastr');
             }
         }

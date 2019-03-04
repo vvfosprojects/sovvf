@@ -2,7 +2,7 @@
     <div *ngIf="centroMappa" class="col-12">
         <app-agm [viewStateMappa]="viewStateMappa"
                  [centroMappa]="centroMappa"
-                 [richiesteMarkers]="richiesteMarkers"
+                 [richiesteMarkers]="(richiesteMarkers$ | async)"
                  [sediMarkers]="(sediMarkers$ | async)"
                  [mezziMarkers]="(mezziMarkers$ | async)"
                  [chiamataMarkers]="(chiamataMarkers$ | async)"
