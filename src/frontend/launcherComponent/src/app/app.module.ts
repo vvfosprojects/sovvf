@@ -29,7 +29,7 @@ import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { UtenteState } from './features/navbar/operatore/store/states/utente.state';
-import { UtentiState } from './shared/store/states/utenti.state';
+import { UtentiState } from './features/home/store/states/utenti/utenti.state';
 
 /**
  * Route
