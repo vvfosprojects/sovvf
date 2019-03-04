@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {FilterPipeModule} from 'ngx-filter-pipe';
 /**
  * Component
  */
@@ -9,17 +12,15 @@ import { ListaUtentiComponent } from './lista-utenti/lista-utenti.component';
  * Routing
  */
 import { GestioneUtentiRouting } from './gestione-utenti.routing';
-/**
- * Module
- */
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [GestioneUtentiComponent, ListaUtentiComponent],
   imports: [
     CommonModule,
+    FormsModule,
     GestioneUtentiRouting,
-    NgbModule
+    NgbModule,
+    FilterPipeModule
   ]
 })
 export class GestioneUtentiModule { }

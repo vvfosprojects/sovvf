@@ -1,7 +1,11 @@
-<ngb-accordion *ngFor="let utente of utenti" [closeOthers]="true" #acc="ngbAccordion">
-  <ngb-panel [title]="utente.nome + ' ' + utente.cognome">
+<ngb-accordion #acc="ngbAccordion" (panelChange)="beforeChange($event)">
+  <ngb-panel *ngFor="let utente of utenti | filterBy: ricercaUtenti; let i = index" id="utente-{{i}}">
+    <ng-template ngbPanelTitle>
+      <div>
+        <span class="text-light"><b>{{utente.cognome}}</b> {{utente.nome}}</span>
+      </div>
+    </ng-template>
     <ng-template ngbPanelContent>
-
       <div class="row mb-3">
         <div class="col">
           <span class="h5 font-weight-normal mr-2"><b>Nome:</b> {{ utente.nome }} {{ utente.cognome }}</span>
@@ -10,7 +14,7 @@
           <span class="h5 font-weight-normal mr-2"><b>Qualifica:</b> {{ utente.qualifica }}</span>
         </div>
         <div class="col">
-          <span class="h6 font-weight-normal mr-2"><b>C.F.:</b>{{ utente.codiceFiscale }}</span>
+          <span class="h6 font-weight-normal mr-2"><b>C.F:</b> {{ utente.codiceFiscale }}</span>
         </div>
       </div>
 
