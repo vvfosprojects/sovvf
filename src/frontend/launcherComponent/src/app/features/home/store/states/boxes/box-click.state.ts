@@ -6,7 +6,7 @@ import { BoxClickInterface } from '../../../boxes/box-interface/box-click-interf
 
 // Action
 import {
-    InitBoxFiltri, UpdateBoxRichieste, AllFalseBoxRichieste, UpdateBoxMezzi,
+    UpdateBoxRichieste, AllFalseBoxRichieste, UpdateBoxMezzi,
     AllFalseBoxMezzi, ReducerBoxClick, ResetAllBoxes, AllTrueBoxRichieste, AllTrueBoxMezzi, UndoAllBoxes
 } from '../../actions/boxes/box-click.actions';
 
@@ -70,32 +70,6 @@ export class BoxClickState {
         }
     }
 
-    // INIZIALIZZAZIONE
-    @Action(InitBoxFiltri)
-    initBoxClick({ getState, patchState }: StateContext<BoxClickStateModel>) {
-        const state = getState();
-
-        patchState({
-            ...state,
-            boxClick: {
-                richieste: {
-                    chiamate: false,
-                    assegnati: false,
-                    sospesi: false,
-                    presidiati: false,
-                    chiusi: false
-                },
-                mezzi: {
-                    inSede: false,
-                    inRientro: false,
-                    inViaggio: false,
-                    sulPosto: false,
-                    istituto: false
-                }
-            }
-        });
-    }
-
     // RICHIESTE
     @Action(UpdateBoxRichieste)
     updateBoxRichieste({ getState, patchState }: StateContext<BoxClickStateModel>, action: UpdateBoxRichieste) {
@@ -103,7 +77,16 @@ export class BoxClickState {
 
         patchState({
             ...state,
-            boxClick: update(makeCopy(state.boxClick), 'richieste', action.tipo)
+            boxClick: {
+                richieste: {
+                    chiamate: action.tipo === 'chiamate' ? !state.boxClick.richieste.chiamate : state.boxClick.richieste.chiamate,
+                    assegnati: action.tipo === 'assegnati' ? !state.boxClick.richieste.assegnati : state.boxClick.richieste.assegnati,
+                    sospesi: action.tipo === 'sospesi' ? !state.boxClick.richieste.sospesi : state.boxClick.richieste.sospesi,
+                    presidiati: action.tipo === 'presidiati' ? !state.boxClick.richieste.presidiati : state.boxClick.richieste.presidiati,
+                    chiusi: action.tipo === 'chiusi' ? !state.boxClick.richieste.chiusi : state.boxClick.richieste.chiusi,
+                },
+                mezzi: state.boxClick.mezzi
+            }
         });
     }
 
@@ -113,7 +96,16 @@ export class BoxClickState {
 
         patchState({
             ...state,
-            boxClick: allTrue(makeCopy(state.boxClick), 'richieste')
+            boxClick: {
+                mezzi: state.boxClick.mezzi,
+                richieste: {
+                    chiamate: true,
+                    assegnati: true,
+                    sospesi: true,
+                    presidiati: true,
+                    chiusi: true
+                }
+            }
         });
     }
 
@@ -123,7 +115,10 @@ export class BoxClickState {
 
         patchState({
             ...state,
-            boxClick: allFalse(makeCopy(state.boxClick), 'richieste')
+            boxClick: {
+                richieste: boxClickStateDefaults.boxClick.richieste,
+                mezzi: state.boxClick.mezzi
+            }
         });
     }
 
@@ -134,7 +129,16 @@ export class BoxClickState {
 
         patchState({
             ...state,
-            boxClick: update(makeCopy(state.boxClick), 'mezzi', action.tipo)
+            boxClick: {
+                richieste: state.boxClick.richieste,
+                mezzi: {
+                    inSede: action.tipo === 'inSede' ? !state.boxClick.mezzi.inSede : state.boxClick.mezzi.inSede,
+                    inRientro: action.tipo === 'inRientro' ? !state.boxClick.mezzi.inRientro : state.boxClick.mezzi.inRientro,
+                    inViaggio: action.tipo === 'inViaggio' ? !state.boxClick.mezzi.inViaggio : state.boxClick.mezzi.inViaggio,
+                    sulPosto: action.tipo === 'sulPosto' ? !state.boxClick.mezzi.sulPosto : state.boxClick.mezzi.sulPosto,
+                    istituto: action.tipo === 'istituto' ? !state.boxClick.mezzi.istituto : state.boxClick.mezzi.istituto
+                }
+            }
         });
     }
 
@@ -144,7 +148,16 @@ export class BoxClickState {
 
         patchState({
             ...state,
-            boxClick: allTrue(makeCopy(state.boxClick), 'mezzi')
+            boxClick: {
+                richieste: state.boxClick.richieste,
+                mezzi: {
+                    inSede: true,
+                    inRientro: true,
+                    inViaggio: true,
+                    sulPosto: true,
+                    istituto: true
+                }
+            }
         });
     }
 
@@ -154,7 +167,10 @@ export class BoxClickState {
 
         patchState({
             ...state,
-            boxClick: allFalse(makeCopy(state.boxClick), 'mezzi')
+            boxClick: {
+                richieste: state.boxClick.richieste,
+                mezzi: boxClickStateDefaults.boxClick.mezzi
+            }
         });
     }
 
@@ -175,23 +191,4 @@ export class BoxClickState {
         dispatch(new AllFalseBoxRichieste);
         dispatch(new AllFalseBoxMezzi);
     }
-}
-
-export function update(obj: BoxClickInterface, cat: string, tipo: string) {
-    obj[cat][tipo] = !obj[cat][tipo];
-    return obj;
-}
-
-export function allTrue(obj: BoxClickInterface, cat: string) {
-    Object.keys(obj[cat]).map(r => {
-        obj[cat][r] = true;
-    });
-    return obj;
-}
-
-export function allFalse(obj: BoxClickInterface, cat: string) {
-    Object.keys(obj[cat]).map(r => {
-        obj[cat][r] = false;
-    });
-    return obj;
 }

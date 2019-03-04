@@ -8,11 +8,6 @@ export class ReducerBoxClick {
     }
 }
 
-// INIZIALIZZAZIONE
-export class InitBoxFiltri {
-    static readonly type = '[BoxClick] Inizializza tutti i filtri';
-}
-
 // RICHIESTE
 export class UpdateBoxRichieste {
     static readonly type = '[BoxClick] Modifica filtro richieste';

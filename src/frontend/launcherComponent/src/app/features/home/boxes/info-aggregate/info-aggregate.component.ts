@@ -14,7 +14,7 @@ import { BoxClickState } from '../../store/states/boxes/box-click.state';
 import { BoxRichiesteState } from '../../store/states/boxes/box-richieste.state';
 import { BoxMezziState } from '../../store/states/boxes/box-mezzi.state';
 import { BoxPersonaleState } from '../../store/states/boxes/box-personale.state';
-import { InitBoxFiltri, ReducerBoxClick } from '../../store/actions/boxes/box-click.actions';
+import { ReducerBoxClick } from '../../store/actions/boxes/box-click.actions';
 import { FetchBoxRichieste } from '../../store/actions/boxes/box-richieste.actions';
 import { FetchBoxMezzi } from '../../store/actions/boxes/box-mezzi.actions';
 import { FetchBoxPersonale } from '../../store/actions/boxes/box-personale.actions';
@@ -46,7 +46,6 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
         this.store.dispatch(new FetchBoxRichieste());
         this.store.dispatch(new FetchBoxMezzi());
         this.store.dispatch(new FetchBoxPersonale());
-        this.store.dispatch(new InitBoxFiltri());
     }
 
     ngOnDestroy() {
