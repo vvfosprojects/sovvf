@@ -4,7 +4,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Utente } from 'src/app/shared/model/utente.model';
 
 // Action
-import { GetUtenti, SetUtenti } from '../actions/utenti.actions';
+import { GetUtenti, SetUtenti } from '../../actions/utenti/utenti.actions';
 import { UserService } from 'src/app/core/auth/_services';
 
 export interface UtentiStateModel {
@@ -30,14 +30,11 @@ export class UtentiState {
     constructor(private _users: UserService) {
     }
 
-
     // GET
     @Action(GetUtenti)
     getUtenti({ dispatch }: StateContext<UtentiStateModel>) {
 
         this._users.getAll().subscribe((u: Utente[]) => {
-            console.log('Ngxs', u);
-
             dispatch(new SetUtenti(u));
         });
     }

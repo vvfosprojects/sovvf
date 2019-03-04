@@ -1,5 +1,5 @@
 // Model
-import { Utente } from '../../model/utente.model';
+import { Utente } from '../../../../../shared/model/utente.model';
 
 // GET
 export class GetUtenti {
