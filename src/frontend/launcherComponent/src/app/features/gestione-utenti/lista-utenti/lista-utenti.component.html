@@ -1,43 +1,45 @@
-<ngb-accordion #acc="ngbAccordion" (panelChange)="beforeChange($event)">
-  <ngb-panel *ngFor="let utente of utenti | filterBy: ricercaUtenti; let i = index" id="utente-{{i}}">
-    <ng-template ngbPanelTitle>
-      <div>
-        <span class="text-light"><b>{{utente.cognome}}</b> {{utente.nome}}</span>
-      </div>
-    </ng-template>
-    <ng-template ngbPanelContent>
-      <div class="row mb-3">
-        <div class="col">
-          <span class="h5 font-weight-normal mr-2"><b>Nome:</b> {{ utente.nome }} {{ utente.cognome }}</span>
-        </div>
-        <div class="col">
-          <span class="h5 font-weight-normal mr-2"><b>Qualifica:</b> {{ utente.qualifica }}</span>
-        </div>
-        <div class="col">
-          <span class="h6 font-weight-normal mr-2"><b>C.F:</b> {{ utente.codiceFiscale }}</span>
-        </div>
-      </div>
+<div class="app-shadow scroll-y">
+    <ngb-accordion #acc="ngbAccordion">
+        <ngb-panel *ngFor="let utente of utenti | filterBy: ricercaUtenti; let i = index" id="utente-{{i}}">
+            <ng-template ngbPanelTitle>
+                <div>
+                    <span class="text-light"><b>{{utente.cognome}}</b> {{utente.nome}}</span>
+                </div>
+            </ng-template>
+            <ng-template ngbPanelContent>
+                <div class="row mb-3">
+                    <div class="col">
+                        <span class="h6 font-weight-normal mr-2"><b>Nome:</b> {{ utente.nome }} {{ utente.cognome }}</span>
+                    </div>
+                    <div class="col">
+                        <span class="h6 font-weight-normal mr-2"><b>Qualifica:</b> {{ utente.qualifica }}</span>
+                    </div>
+                    <div class="col">
+                        <span class="h6 font-weight-normal mr-2"><b>C.F:</b> {{ utente.codiceFiscale }}</span>
+                    </div>
+                </div>
 
-      <ngb-tabset>
-        <ngb-tab title="Sedi">
-          <ng-template ngbTabContent>
-            <div class="pt-2 px-2">
-              <p>
-                Qui possono essere modificati i permessi di accesso alle sedi operative.
-              </p>
-            </div>
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab title="Permessi">
-          <ng-template ngbTabContent>
-            <div class="pt-2 px-2">
-              <p>
-                Qui possono essere modificati i permessi sulle azioni di SO115.
-              </p>
-            </div>
-          </ng-template>
-        </ngb-tab>
-      </ngb-tabset>
-    </ng-template>
-  </ngb-panel>
-</ngb-accordion>
+                <ngb-tabset>
+                    <ngb-tab title="Sedi">
+                        <ng-template ngbTabContent>
+                            <div class="pt-2 px-2">
+                                <p>
+                                    Qui possono essere modificati i permessi di accesso alle sedi operative.
+                                </p>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab title="Permessi">
+                        <ng-template ngbTabContent>
+                            <div class="pt-2 px-2">
+                                <p>
+                                    Qui possono essere modificati i permessi sulle azioni di SO115.
+                                </p>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                </ngb-tabset>
+            </ng-template>
+        </ngb-panel>
+    </ngb-accordion>
+</div>
