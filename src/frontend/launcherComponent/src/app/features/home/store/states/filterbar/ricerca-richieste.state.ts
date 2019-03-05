@@ -29,13 +29,13 @@ export class RicercaRichiesteState {
         return state.ricerca;
     }
 
-    @Selector([FiltriRichiesteState])
-    static ricercaConFiltri(state: RicercaRichiesteStateModel) {
-        const ricerca = state.ricerca;
-        const filtri = FiltriRichiesteState.filtriSelezionati;
-
-        return {ricerca: ricerca, filtri: filtri};
-    }
+    // @Selector([FiltriRichiesteState])
+    // static ricercaConFiltri(state: RicercaRichiesteStateModel) {
+    //     const ricerca = state.ricerca;
+    //     const filtri = FiltriRichiesteState.filtriSelezionati;
+    //
+    //     return {ricerca: ricerca, filtri: filtri};
+    // }
 
     // GET
     @Action(SetRicerca)
