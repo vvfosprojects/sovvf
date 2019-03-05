@@ -10,10 +10,21 @@ export class FakeBackendInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     const users: Utente[] = [
-      {id: '1', nome: 'Luigi', cognome: 'Bianchi', username: 'admin', password: 'admin', ruolo: Role.Admin, qualifica: 'Qualifica', codiceFiscale: 'VVVRCT81H56Z715N'},
-      {id: '2', nome: 'Pinco', cognome: 'Pallino', username: 'user', password: 'user', ruolo: Role.User, qualifica: 'Qualifica', codiceFiscale: 'VDPRHC53C14L424K'},
-      {id: '3', nome: 'Mario', cognome: 'Rossi', username: 'test', password: 'test', ruolo: Role.Admin, qualifica: 'Qualifica', codiceFiscale: 'YZSPMD89M07M185L'},
-      {id: '4', nome: 'Marco', cognome: 'Rossi', username: 'test2', password: 'test2', ruolo: Role.Admin, qualifica: 'Qualifica', codiceFiscale: 'PRZSPRA89M03M117O'},
+      {id: '1', nome: 'Luigi', cognome: 'Bianchi', username: 'admin', password: 'admin', ruolo: Role.Admin, qualifica: 'Operatore SO115', codiceFiscale: 'VVVRCT81H56Z715N'},
+      {id: '2', nome: 'Teresio', cognome: 'Mancini', username: 'user', password: 'user', ruolo: Role.User, qualifica: 'Operatore SO115', codiceFiscale: 'VDPRHC53C14L424K'},
+      {id: '3', nome: 'Mario', cognome: 'Rossi', username: 'test', password: 'test', ruolo: Role.Admin, qualifica: 'Operatore SO115', codiceFiscale: 'YZSPMD89M07M185L'},
+      {id: '4', nome: 'Gualtiero', cognome: 'Milano', username: 'gualtiero', password: 'milano', ruolo: Role.Admin, qualifica: 'Operatore SO115', codiceFiscale: 'PRZSPRA89M03M117O'},
+      {id: '5', nome: 'Marco', cognome: 'Rossi', username: 'marco', password: 'rossi', ruolo: Role.Admin, qualifica: 'Operatore SO115', codiceFiscale: 'DTNZMD81C49E783W'},
+      {id: '6', nome: 'Marco', cognome: 'Verdi', username: 'marco', password: 'verdi', ruolo: Role.Admin, qualifica: 'Operatore SO115', codiceFiscale: 'VNFLYH70E01A412P'},
+      {id: '7', nome: 'Isabella', cognome: 'Monaldo', username: 'isabella', password: 'monaldo', ruolo: Role.Admin, qualifica: 'Operatore SO115', codiceFiscale: 'LBRVRY36B08D553W'},
+      {id: '8', nome: 'Ivone', cognome: 'Sabbatini', username: 'ivone', password: 'sabbatini', ruolo: Role.Admin, qualifica: 'Operatore SO115', codiceFiscale: 'PQPDLS85P70I697B'},
+      {id: '9', nome: 'Flavio', cognome: 'Pinto', username: 'flavio', password: 'pinto', ruolo: Role.Admin, qualifica: 'Operatore SO115', codiceFiscale: 'HCLHND66C61A815O'},
+      {id: '10', nome: 'Sandro', cognome: 'Marcelo', username: 'sandro', password: 'marcelo', ruolo: Role.Admin, qualifica: 'Operatore SO115', codiceFiscale: 'HVHNHG30C12G396Q'},
+      {id: '11', nome: 'Isidora', cognome: 'Trentino', username: 'isidora', password: 'trentino', ruolo: Role.Admin, qualifica: 'Operatore SO115', codiceFiscale: 'FMJKMI48C50C869C'},
+      {id: '12', nome: 'Amina', cognome: 'Zetticci', username: 'amina', password: 'zettici', ruolo: Role.Admin, qualifica: 'Operatore SO115', codiceFiscale: 'VFRGXW29B17I633L'},
+      {id: '13', nome: 'Piera', cognome: 'Lori', username: 'piera', password: 'lori', ruolo: Role.Admin, qualifica: 'Operatore SO115', codiceFiscale: 'HMLXKD51L66G417D'},
+      {id: '14', nome: 'Romeo', cognome: 'Marchesi', username: 'romeo', password: 'marchesi', ruolo: Role.Admin, qualifica: 'Operatore SO115', codiceFiscale: 'KCCRTM54M61H945I'},
+      {id: '15', nome: 'Cora', cognome: 'Trentini', username: 'cora', password: 'trentini', ruolo: Role.Admin, qualifica: 'Operatore SO115', codiceFiscale: 'TFMSJR66P03H966R'}
     ];
 
     const authHeader = request.headers.get('Authorization');
