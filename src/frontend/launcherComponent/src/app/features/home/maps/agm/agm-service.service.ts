@@ -29,7 +29,6 @@ export class AgmService {
     cambiaZoom(zoom: number): void {
         /**
          * metodo che cambia lo zoom e si aspetta il number dello zoom,
-         * inoltre effettua una transazione tra i vari livelli di zoom creando un effetto animato -> da fare.
          */
         if (!this.map) {
             return;
