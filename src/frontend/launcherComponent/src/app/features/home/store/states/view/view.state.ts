@@ -8,6 +8,7 @@ import { BackupViewComponentState } from './save-view.state';
 import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../../../../shared/interface/view.interface';
 import { activeChiamata, activeComposizione, colorButton, switchComposizione, turnOffComposizione, updateView, viewStateMaps } from '../../helper/view-state-function';
 import { TerminaComposizione } from '../../actions/composizione-partenza/richiesta-composizione.actions';
+import { GetInitCentroMappa, SetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -116,6 +117,7 @@ export class ViewComponentState {
                 view: lastState.view,
                 column: lastState.column
             });
+            dispatch(new GetInitCentroMappa());
         }
     }
 

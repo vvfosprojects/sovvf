@@ -26,6 +26,7 @@ import { CambioSedeModalComponent } from './maps-ui/info-window/cambio-sede-moda
 /**
  * Provider
  */
+import { AgmService } from './agm/agm-service.service';
 import {
     CentroMappaService, MezziMarkerService, SediMarkerService, RichiesteMarkerService,
     CentroMappaServiceFake, MezziMarkerServiceFake, SediMarkerServiceFake, RichiesteMarkerServiceFake
@@ -81,6 +82,7 @@ import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
         MapsComponent
     ],
     providers: [
+        AgmService,
         {provide: RichiesteMarkerService, useClass: RichiesteMarkerServiceFake},
         {provide: MezziMarkerService, useClass: MezziMarkerServiceFake},
         {provide: SediMarkerService, useClass: SediMarkerServiceFake},

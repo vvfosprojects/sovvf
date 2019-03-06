@@ -1,11 +1,8 @@
 import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { CenterService } from '../maps/service/center-service/center-service.service';
-import { CentroMappa } from '../maps/maps-model/centro-mappa.model';
 import { Subject, Subscription, Observable } from 'rxjs';
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
 import { Store, Select } from '@ngxs/store';
-
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
 import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
 import { MezzoComposizione } from './interface/mezzo-composizione-interface';
@@ -24,6 +21,7 @@ import { makeCopy, wipeStatoRichiesta } from '../../../shared/helper/function';
 import { TurnOffComposizione } from '../store/actions/view/view.actions';
 import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
 import { SquadreComposizioneState } from '../store/states/composizione-partenza/squadre-composizione.state';
+import { GetInitCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -50,12 +48,10 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Select(RichiestaComposizioneState.richiestaComposizione) nuovaPartenza$: Observable<SintesiRichiesta>;
     richiesta: SintesiRichiesta;
 
-    centroMappa: CentroMappa;
-
     prevStateBoxClick: BoxClickStateModel;
 
     constructor(private store: Store,
-                private centerService: CenterService,
+                // private centerService: CenterService,
                 private markerS: MarkerService) {
         this.subscription.add(this.nuovaPartenza$.subscribe( r => this.richiesta = r));
 
@@ -82,8 +78,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState); // Todo: da spostare dentro ViewState
-        this.centroMappa = this.centerService.centroMappaIniziale;
+        this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState);
         if (this.richiesta) {
             this.store.dispatch(new GetMezziComposizione());
             this.store.dispatch(new GetSquadreComposizione());
@@ -98,12 +93,12 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.store.dispatch(new UndoAllBoxes(this.prevStateBoxClick)); // Todo: da spostare dentro ViewState
+        this.store.dispatch(new UndoAllBoxes(this.prevStateBoxClick));
         isDevMode() && console.log('Componente Composizione distrutto');
     }
 
     dismissPartenza(): void {
-        this.centerService.sendCentro(this.centroMappa);
+        this.store.dispatch(new GetInitCentroMappa());
         this.dismissPartenzaSubject.next(true);
         this.markerS.noAction();
         this.turnOffComposizione();
@@ -117,10 +112,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
             'status_sospeso': r.stato === StatoRichiesta.Sospesa,
             'status_chiuso': r.stato === StatoRichiesta.Chiusa,
         };
-    }
-
-    getCentroMappa(event: CentroMappa): void {
-        this.centroMappa = event;
     }
 
     onSendDirection(direction: DirectionInterface) {

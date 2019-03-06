@@ -17,9 +17,7 @@ import { FiltriRichiesteState } from './store/states/filterbar/filtri-richieste.
 import { RicercaRichiesteState } from './store/states/filterbar/ricerca-richieste.state';
 import { MarkerMeteoState } from './store/states/filterbar/marker-meteo-switch.state';
 import { MarkerService } from './maps/service/marker-service/marker-service.service';
-import { CenterService } from './maps/service/center-service/center-service.service';
 import { MapsFiltroService } from './maps/maps-ui/filtro/maps-filtro.service';
-import { AgmService } from './maps/agm/agm-service.service';
 import { BoxesModule } from './boxes/boxes.module';
 import { ChiamataModule } from './chiamata/chiamata.module';
 import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
@@ -79,7 +77,7 @@ import { RichiestaComposizioneState } from './store/states/composizione-partenza
         ),
     ],
     providers: [
-        MarkerService, CenterService, MapsFiltroService, AgmService
+        MarkerService, MapsFiltroService
     ]
 })
 export class HomeModule {

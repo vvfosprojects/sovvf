@@ -7,19 +7,18 @@ import { MarkerService } from '../../../maps/service/marker-service/marker-servi
 import { MapsEvent } from '../../../../../shared/enum/maps-event.enum';
 import { CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
 import { ToggleChiamata } from '../../actions/view/view.actions';
+import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 
 export interface SchedaTelefonataStateModel {
     coordinate: Coordinate;
     chiamata: FormChiamataModel;
     chiamataMarker: ChiamataMarker[];
-    annulla: boolean; // Todo: togliere con MapsCenterState
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     coordinate: null,
     chiamata: null,
-    chiamataMarker: [],
-    annulla: null // Todo: togliere con MapsCenterState
+    chiamataMarker: []
 };
 
 @State<SchedaTelefonataStateModel>({
@@ -37,13 +36,6 @@ export class SchedaTelefonataState {
         return state.coordinate;
     }
 
-    // Todo: togliere con MapsCenterState
-    @Selector()
-    static annullaChiamataMarker(state: SchedaTelefonataStateModel) {
-        return state.annulla;
-    }
-
-    // Todo: togliere con MapsState
     @Selector()
     static chiamataMarker(state: SchedaTelefonataStateModel) {
         return state.chiamataMarker;
@@ -97,12 +89,13 @@ export class SchedaTelefonataState {
     }
 
     @Action(ResetChiamata)
-    resetChiamata({ getState, patchState }: StateContext<SchedaTelefonataStateModel>) {
+    resetChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
         const state = getState();
         patchState({
             ...state,
             chiamataMarker: []
         });
+        dispatch(new GetInitCentroMappa());
     }
 
     @Action(CestinaChiamata)
@@ -110,7 +103,6 @@ export class SchedaTelefonataState {
         const state = getState();
         patchState({
             ...state,
-            annulla: true,
             chiamataMarker: []
         });
         dispatch(new ToggleChiamata());
@@ -123,7 +115,6 @@ export class SchedaTelefonataState {
             latitudine: action.marker.localita.coordinate.latitudine,
             longitudine: action.marker.localita.coordinate.longitudine
         };
-        // Todo: togliere con MarkerState
         this.markerService.chiamata(action.marker, MapsEvent.Centra);
 
         patchState({

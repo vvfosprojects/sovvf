@@ -45,6 +45,7 @@ import { TipoColori } from './_color';
 import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
 import { RichiesteMarkersState } from '../../../store/states/maps/richieste-markers.state';
 import { map } from 'rxjs/operators';
+import { SetCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../../store/actions/maps/centro-mappa.actions';
 
 @Injectable()
 export class MarkerService implements OnDestroy {
@@ -75,13 +76,11 @@ export class MarkerService implements OnDestroy {
     @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
     switchMeteo: boolean;
 
-    // @Select(RichiesteMarkersState.getRichiesteById) richiesteById$: Observable<RichiestaMarker>;
-
     constructor(private meteoService: MeteoService,
-        private agmService: AgmService,
-        private unitaAttualeS: UnitaAttualeService,
-        private mapsFiltroService: MapsFiltroService,
-        private store: Store) {
+                private agmService: AgmService,
+                private unitaAttualeS: UnitaAttualeService,
+                private mapsFiltroService: MapsFiltroService,
+                private store: Store) {
 
         this.subscription.add(this.markerSelezionato$.subscribe(marker => {
             this.markerSelezionato = marker;
@@ -207,8 +206,7 @@ export class MarkerService implements OnDestroy {
         /**
          * richiamo i metodi per modficare il centro e lo zoom del marker cliccato
          */
-        this.agmService.centraMappa(this.getCoordinate(marker));
-        this.agmService.cambiaZoom(18);
+        this.store.dispatch(new SetCentroMappa(new CentroMappa(this.getCoordinate(marker), 18)));
     }
 
     selezionato(marker: any): void {
@@ -353,7 +351,8 @@ export class MarkerService implements OnDestroy {
 
     noAction() {
         if (this.markerSelezionato) {
-            this.agmService.cambiaZoom(12);
+            // this.agmService.cambiaZoom(12);
+            this.store.dispatch(new SetZoomCentroMappa(12));
             this.deseleziona();
         }
     }
@@ -411,7 +410,7 @@ export class MarkerService implements OnDestroy {
         let marker: RichiestaMarker = null;
         let richiesteById$: Observable<RichiestaMarker>;
         richiesteById$ = this.store.select(RichiesteMarkersState.getRichiesteById).pipe(map(fn => fn(id)));
-        richiesteById$.subscribe( m => {
+        richiesteById$.subscribe(m => {
             marker = m;
         });
         return marker;
@@ -469,15 +468,13 @@ export class MarkerService implements OnDestroy {
     chiamata(marker: ChiamataMarker, action: string, centroMappa?: CentroMappa) {
         switch (action) {
             case MapsEvent.Centra: {
-                this.agmService.centraMappa(this.getCoordinate(marker));
-                this.agmService.cambiaZoom(18);
+                this.store.dispatch(new SetCoordCentroMappa(this.getCoordinate(marker)));
+                this.store.dispatch(new SetZoomCentroMappa(18));
                 this.markerZIndex = marker;
                 this.getDatiMeteo(marker);
             }
                 break;
             default: {
-                this.agmService.centraMappa(centroMappa.coordinate);
-                this.agmService.cambiaZoom(12);
                 this.markerZIndex = null;
             }
                 break;
@@ -494,12 +491,11 @@ export class MarkerService implements OnDestroy {
         const marker = this.getMarkerFromId(id);
         switch (action) {
             case MapsEvent.Centra: {
-                this.agmService.centraMappa(this.getCoordinate(marker));
+                this.store.dispatch(new SetCoordCentroMappa(this.getCoordinate(marker)));
                 this.markerZIndex = marker;
             }
                 break;
             default: {
-                this.agmService.centraMappa(centroMappa.coordinate);
                 this.markerZIndex = null;
             }
                 break;

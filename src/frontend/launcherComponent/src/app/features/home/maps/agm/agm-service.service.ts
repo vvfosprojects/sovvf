@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {debounceTime} from 'rxjs/operators';
-import {CentroMappa} from '../maps-model/centro-mappa.model';
-import {Coordinate} from '../../../../shared/model/coordinate.model';
-import {CenterService} from '../service/center-service/center-service.service';
-import {Subject} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { debounceTime } from 'rxjs/operators';
+import { CentroMappa } from '../maps-model/centro-mappa.model';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { Subject } from 'rxjs';
+import { Store } from '@ngxs/store';
+import { SetCentroMappa } from '../../store/actions/maps/centro-mappa.actions';
 
-declare var google: any;
 
 @Injectable()
 export class AgmService {
@@ -13,35 +13,18 @@ export class AgmService {
     map: any;
     centro$ = new Subject();
 
-    constructor(private centerService: CenterService) {
+    constructor(private store: Store) {
         /**
          * subscribe che tiene aggiornato il centro mappa, quando questo viene cambiato dall'utente
          */
         this.centro$.pipe(
             debounceTime(500)).subscribe(
-            coordinate => this.centerService.sendCentro(
-                new CentroMappa(
+            coordinate => {
+                const centroMappa = new CentroMappa(
                     new Coordinate(coordinate['lat'], coordinate['lng']),
-                    this.map.getZoom()))
+                    this.map.getZoom());
+                this.store.dispatch(new SetCentroMappa(centroMappa));
+            }
         );
     }
-
-    cambiaZoom(zoom: number): void {
-        /**
-         * metodo che cambia lo zoom e si aspetta il number dello zoom,
-         */
-        if (!this.map) {
-            return;
-        }
-        this.map.setZoom(zoom);
-    }
-
-    centraMappa(coordinate: Coordinate): void {
-        /**
-         * metodo che ricentra la mappa e si aspetta le coordinate del nuovo centro
-         */
-        const posizione = new google.maps.LatLng(coordinate.latitudine, coordinate.longitudine);
-        this.map.panTo(posizione);
-    }
-
 }

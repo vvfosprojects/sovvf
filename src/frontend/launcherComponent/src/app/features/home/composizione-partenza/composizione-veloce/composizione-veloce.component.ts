@@ -10,7 +10,6 @@ import { Observable, Subscription } from 'rxjs';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
-import { CenterService } from '../../maps/service/center-service/center-service.service';
 import { MapsEvent } from '../../../../shared/enum/maps-event.enum';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 
@@ -20,28 +19,25 @@ import { Composizione } from '../../../../shared/enum/composizione.enum';
     styleUrls: ['./composizione-veloce.component.css']
 })
 export class FasterComponent implements OnInit, OnDestroy {
+
     @Input() richiesta: SintesiRichiesta;
     @Input() preAccoppiati: BoxPartenza[];
     @Input() dismissEvents: Observable<boolean>;
 
     preAccoppiatiSelezionati: BoxPartenza[] = [];
-    centroMappa: CentroMappa;
 
     Composizione = Composizione;
 
     subscription = new Subscription();
 
-    @Output() centroMappaEmit: EventEmitter<CentroMappa> = new EventEmitter();
     @Output() sendDirection: EventEmitter<DirectionInterface> = new EventEmitter();
     @Output() clearDirection: EventEmitter<any> = new EventEmitter();
 
 
-    constructor(private markerService: MarkerService,
-                private centerService: CenterService) {
+    constructor(private markerService: MarkerService) {
     }
 
     ngOnInit() {
-        this.setInitCentroMappa();
         this.subscription.add(this.dismissEvents.subscribe(
             events => this.annullaPartenza(events)
         ));
@@ -95,17 +91,8 @@ export class FasterComponent implements OnInit, OnDestroy {
             this.sendDirection.emit(direction);
         } else {
             console.error('coordinate mezzo / coordinate richiesta non presenti');
-            this.centraMappa(null, '', this.centroMappa);
-
             this.clearDirection.emit();
         }
-    }
-
-    setInitCentroMappa(): void {
-        const currentZoom = this.centerService.getCurrentZoom();
-        this.centroMappa = new CentroMappa(this.richiesta.localita.coordinate, currentZoom);
-        this.centroMappaEmit.emit(this.centroMappa);
-        this.centraMappa(this.richiesta, MapsEvent.Centra);
     }
 
     centraMappa(richiesta: SintesiRichiesta, action: string, centroMappa?: CentroMappa): void {

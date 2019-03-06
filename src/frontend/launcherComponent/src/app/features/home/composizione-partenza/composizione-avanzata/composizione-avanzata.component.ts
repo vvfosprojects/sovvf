@@ -4,7 +4,6 @@ import { Observable, Subscription } from 'rxjs';
 import { MapsEvent } from '../../../../shared/enum/maps-event.enum';
 
 // Service
-import { CenterService } from '../../maps/service/center-service/center-service.service';
 import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
 
 // Interface
@@ -25,6 +24,7 @@ import { Composizione } from '../../../../shared/enum/composizione.enum';
     styleUrls: ['./composizione-avanzata.component.css']
 })
 export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestroy {
+
     @Input() richiesta: SintesiRichiesta;
     @Input() mezziComposizione: MezzoComposizione[];
     @Input() squadreComposizione: SquadraComposizione[];
@@ -39,9 +39,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     buttonConferma = false;
     partenze: BoxPartenza[] = [];
 
-    // Mappa
-    centroMappa: CentroMappa;
-
     // Enum
     MapsEvent = MapsEvent;
     Composizione = Composizione;
@@ -52,7 +49,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() clearDirection: EventEmitter<any> = new EventEmitter();
 
     constructor(private markerService: MarkerService,
-        private centerService: CenterService,
         private popoverConfig: NgbPopoverConfig,
         private tooltipConfig: NgbTooltipConfig) {
         // Popover options
@@ -64,11 +60,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     ngOnInit() {
-        this.setInitCentroMappa();
         this.subscription.add(this.dismissEvents.subscribe(
             events => this.annullaPartenza(events)
         ));
-
         this.deselezionaMezziComposizione();
         this.deselezionaSquadreComposizione();
     }
@@ -441,17 +435,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             this.sendDirection.emit(direction);
         } else {
             console.error('coordinate mezzo / coordinate richiesta non presenti');
-            this.centraMappa(null, '', this.centroMappa);
-
             this.clearDirection.emit();
         }
-    }
-
-    setInitCentroMappa(): void {
-        const currentZoom = this.centerService.getCurrentZoom();
-        this.centroMappa = new CentroMappa(this.richiesta.localita.coordinate, currentZoom);
-        this.centroMappaEmit.emit(this.centroMappa);
-        this.centraMappa(this.richiesta, MapsEvent.Centra);
     }
 
     centraMappa(richiesta: SintesiRichiesta, action: string, centroMappa?: CentroMappa): void {

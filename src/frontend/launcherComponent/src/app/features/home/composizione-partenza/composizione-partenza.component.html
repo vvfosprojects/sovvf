@@ -8,13 +8,13 @@
         </div>
         <div *ngIf="richiesta && compPartenzaMode === Composizione.Veloce" class="col-12">
             <app-composizione-veloce [richiesta]="richiesta" [preAccoppiati]="preAccoppiati"
-                (centroMappaEmit)="getCentroMappa($event)" [dismissEvents]="dismissPartenzaSubject.asObservable()"
+                [dismissEvents]="dismissPartenzaSubject.asObservable()"
                 (sendDirection)="onSendDirection($event)" (clearDirection)="onClearDirection()">
             </app-composizione-veloce>
         </div>
         <div *ngIf="richiesta && compPartenzaMode === Composizione.Avanzata" class="col-12">
             <app-composizione-avanzata [richiesta]="richiesta" [mezziComposizione]="mezziComposizione"
-                [squadreComposizione]="squadreComposizione" (centroMappaEmit)="getCentroMappa($event)"
+                [squadreComposizione]="squadreComposizione"
                 [dismissEvents]="dismissPartenzaSubject.asObservable()" (sendDirection)="onSendDirection($event)"
                 (clearDirection)="onClearDirection()"></app-composizione-avanzata>
         </div>

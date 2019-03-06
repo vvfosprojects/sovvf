@@ -1,10 +1,9 @@
 import {
     Component,
-    OnInit,
     Input,
     OnDestroy,
     ViewChild,
-    ElementRef, Output, EventEmitter, OnChanges, SimpleChanges
+    ElementRef, Output, EventEmitter
 } from '@angular/core';
 import { RichiestaMarker } from '../maps-model/richiesta-marker.model';
 import { SedeMarker } from '../maps-model/sede-marker.model';
@@ -14,7 +13,6 @@ import { Meteo } from '../../../../shared/model/meteo.model';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { MarkerService } from '../service/marker-service/marker-service.service';
 import { Subscription, Observable } from 'rxjs';
-import { CenterService } from '../service/center-service/center-service.service';
 import { AgmService } from './agm-service.service';
 import { ControlPosition, FullscreenControlOptions, ZoomControlOptions } from '@agm/core/services/google-maps-types';
 import { MeteoMarker } from '../maps-model/meteo-marker.model';
@@ -37,7 +35,7 @@ declare var google: any;
     styleUrls: ['./agm.component.css']
 })
 
-export class AgmComponent implements OnInit, OnDestroy, OnChanges {
+export class AgmComponent implements OnDestroy {
     @Input() richiesteMarkers: RichiestaMarker[];
     @Input() sediMarkers: SedeMarker[];
     @Input() mezziMarkers: MezzoMarker[];
@@ -85,8 +83,7 @@ export class AgmComponent implements OnInit, OnDestroy, OnChanges {
     @ViewChild('agmContainer') agmContainer: ElementRef;
 
     constructor(private markerService: MarkerService,
-        private centerService: CenterService,
-        private agmService: AgmService) {
+                private agmService: AgmService) {
         /**
          * creo un array di marker fittizi con tutte le icone che utilizzerà agm per metterle in cache
          * ed evitare che si presenti il bug delle icone "selezionate"
@@ -94,13 +91,6 @@ export class AgmComponent implements OnInit, OnDestroy, OnChanges {
         this.markerService.iconeCached.forEach(iconeC => {
             this.cachedMarkers.push(new CachedMarker(iconeC));
         });
-        /**
-         * dati del centro mappa attuale
-         * @type {Subscription}
-         */
-        this.subscription.add(this.centerService.getCentro().subscribe((centro: CentroMappa) => {
-            this.centroMappa = centro;
-        }));
         /**
          * dati meteo del marker cliccato/selezionato
          * @type {Subscription}
@@ -143,16 +133,8 @@ export class AgmComponent implements OnInit, OnDestroy, OnChanges {
         this.meteoMarkerIconUrl = this.markerService.iconaSpeciale('meteo');
     }
 
-    ngOnInit() {
-        this.centerService.centroMappaIniziale = this.centroMappa;
-    }
-
     ngOnDestroy() {
         this.subscription.unsubscribe();
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        // console.log(changes);
     }
 
     mappaCaricata(event: any): void {
