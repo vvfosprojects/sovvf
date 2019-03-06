@@ -1,0 +1,40 @@
+<table class="table table-striped app-shadow mt-2">
+    <thead>
+    <tr>
+        <th scope="col">Utente</th>
+        <th scope="col">Mappa</th>
+        <th scope="col">Richieste</th>
+        <th scope="col">Chiamata</th>
+        <th scope="col">Composizione Partenza</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let utente of utentiPaginati | filterBy: ricercaUtenti">
+        <td width="250px">
+            <ngb-highlight [result]="utente.nome + ' ' + utente.cognome"></ngb-highlight>
+        </td>
+        <td>
+            <ui-switch size="small" checked></ui-switch>
+        </td>
+        <td>
+            <ui-switch size="small" [checked]="false"></ui-switch>
+        </td>
+        <td>
+            <ui-switch size="small" checked></ui-switch>
+        </td>
+        <td>
+            <ui-switch size="small" [checked]="false"></ui-switch>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="d-flex justify-content-between p-2">
+    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize">
+    </ngb-pagination>
+
+    <select class="custom-select app-shadow" style="width: auto" [(ngModel)]="pageSize">
+        <option [ngValue]="10">10 utenti per pagina</option>
+        <option [ngValue]="20">20 utenti per pagina</option>
+        <option [ngValue]="30">30 utenti per pagina</option>
+    </select>
+</div>
