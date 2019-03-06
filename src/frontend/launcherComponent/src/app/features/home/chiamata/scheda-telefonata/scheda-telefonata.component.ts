@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormChiamataModel } from '../model/form-scheda-telefonata.model';
@@ -10,11 +10,11 @@ import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
 import { makeCopy } from '../../../../shared/helper/function';
 import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
 
-
 @Component({
     selector: 'app-scheda-telefonata',
     templateUrl: './scheda-telefonata.component.html',
-    styleUrls: ['./scheda-telefonata.component.css']
+    styleUrls: ['./scheda-telefonata.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class SchedaTelefonataComponent implements OnInit {
 
