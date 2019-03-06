@@ -51,11 +51,15 @@ export class SchedaTelefonataState {
 
     @Action(ReducerSchedaTelefonata)
     reducer({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata) {
-        switch (action.schedaTelefonata.azione) {
+        switch (action.schedaTelefonata.tipo) {
             case 'copiaIndirizzo':
                 dispatch(new CopyToClipboard());
                 break;
             case 'annullata':
+                /**
+                 * azione al momento non utilizzata, perchè tutte le chiamate devono essere registrate,
+                 * comprese quelle che non vanno a buon fine
+                 */
                 dispatch(new CestinaChiamata());
                 break;
             case 'reset':
@@ -66,6 +70,8 @@ export class SchedaTelefonataState {
                 break;
             case 'inserita':
                 dispatch(new SetChiamata(action.schedaTelefonata.formChiamata));
+                dispatch(new ToggleChiamata(true));
+                dispatch(new ResetChiamata());
                 break;
             default:
                 return;

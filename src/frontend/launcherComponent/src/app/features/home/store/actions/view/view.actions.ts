@@ -11,6 +11,9 @@ export class ChangeView {
 
 export class ToggleChiamata {
     static readonly type = '[Chiamata] Toggle chiamata';
+
+    constructor(public toggle?: boolean) {
+    }
 }
 
 export class ToggleComposizione {

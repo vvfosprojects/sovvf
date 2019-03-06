@@ -8,6 +8,7 @@ import { TipologieInterface } from '../../../../core/settings/tipologie';
 import { SchedaTelefonataInterface } from '../model/scheda-telefonata.interface';
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
 import { makeCopy } from '../../../../shared/helper/function';
+import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
 
 
 @Component({
@@ -25,6 +26,8 @@ export class SchedaTelefonataComponent implements OnInit {
     chiamataForm: FormGroup;
     coordinate: Coordinate;
     submitted = false;
+
+    AzioneChiamata = AzioneChiamataEnum;
 
     @Input() tipologie: TipologieInterface[];
     @Input() idChiamata: string;
@@ -49,8 +52,8 @@ export class SchedaTelefonataComponent implements OnInit {
             ragioneSociale: ['', [Validators.required]],
             telefono: ['', [Validators.required]],
             indirizzo: ['', [Validators.required]],
-            zonaEmergenza: [''],
-            tags: [''],
+            zonaEmergenza: [],
+            tags: [],
             motivazione: [''],
             noteIndirizzo: [''],
             notePubbliche: [''],
@@ -63,11 +66,11 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     onAddTipologia(tipologia: TipologieInterface) {
-        this.chiamataCorrente.tipoIntervento.push(tipologia.codice);
+        this.chiamataCorrente.idTipoIntervento.push(tipologia.codice);
     }
 
     onRemoveTipologia(tipologia: TipologieInterface) {
-        this.chiamataCorrente.tipoIntervento.splice(this.chiamataCorrente.tipoIntervento.indexOf(tipologia.codice), 1);
+        this.chiamataCorrente.idTipoIntervento.splice(this.chiamataCorrente.idTipoIntervento.indexOf(tipologia.codice), 1);
     }
 
     insertRagioneSociale(RS) {
@@ -83,7 +86,7 @@ export class SchedaTelefonataComponent implements OnInit {
     onResetChiamata(): void {
         this.submitted = false;
         this.chiamataForm.reset();
-        this.chiamataCorrente.tipoIntervento = [];
+        this.chiamataCorrente.idTipoIntervento = [];
         this.chiamataForm.get('tipoIntervento').patchValue([]);
         this._statoChiamata('reset');
     }
@@ -104,14 +107,22 @@ export class SchedaTelefonataComponent implements OnInit {
         this.chiamataCorrente.cognome = f.get('cognome').value;
         this.chiamataCorrente.nome = f.get('nome').value;
         this.chiamataCorrente.ragioneSociale = f.get('ragioneSociale').value;
-        this.chiamataCorrente.zonaEmergenza = f.get('zonaEmergenza').value;
-        this.chiamataCorrente.tags = f.get('tags').value;
+        if (f.get('zonaEmergenza').value) {
+            const zonaEmergenzaSplit = f.get('zonaEmergenza').value.toString().split(/\s*(?:;|$)\s*/);
+            this.chiamataCorrente.zonaEmergenza = zonaEmergenzaSplit;
+        }
+        if (f.get('tags').value) {
+            const tagsSplit = f.get('tags').value.toString().split(/\s*(?:;|$)\s*/);
+            this.chiamataCorrente.tags = tagsSplit;
+        }
         this.chiamataCorrente.nome = f.get('nome').value;
         this.chiamataCorrente.motivazione = f.get('motivazione').value;
-        const marker: ChiamataMarker = makeCopy(this.chiamataMarker);
-        if (marker.localita) {
-            marker.localita.note = f.get('noteIndirizzo').value;
-            this.chiamataCorrente.localita = marker.localita;
+        if (this.coordinate) {
+            const marker: ChiamataMarker = makeCopy(this.chiamataMarker);
+            if (marker.localita) {
+                marker.localita.note = f.get('noteIndirizzo').value;
+                this.chiamataCorrente.localita = marker.localita;
+            }
         }
         this.chiamataCorrente.noteIndirizzo = f.get('noteIndirizzo').value;
         this.chiamataCorrente.notePubbliche = f.get('notePubbliche').value;
@@ -120,19 +131,23 @@ export class SchedaTelefonataComponent implements OnInit {
 
     onSubmit() {
         this.submitted = true;
-        if (this.chiamataForm.invalid) {
+        if (this.chiamataForm.invalid || !this.coordinate) {
             console.error('Il form non è valido');
-            this.submitted = false;
+            console.log(this.submitted);
             return;
         }
         this.getChiamataForm(this.chiamataForm);
         this._statoChiamata('inserita');
     }
 
+    impostaAzioneChiamata($event) {
+        this.chiamataCorrente.azione = $event;
+    }
 
-    _statoChiamata(azione: string) {
+
+    _statoChiamata(tipo: string) {
         this.schedaTelefonata.emit({
-            azione: azione,
+            tipo: tipo,
             formChiamata: this.chiamataCorrente,
             markerChiamata: this.chiamataMarker
         });

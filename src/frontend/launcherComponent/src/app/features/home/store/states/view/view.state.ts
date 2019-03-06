@@ -95,13 +95,13 @@ export class ViewComponentState {
     }
 
     @Action(ToggleChiamata)
-    toggleChiamata({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>) {
+    toggleChiamata({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleChiamata) {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
         /**
          * se lo stato della chiamata non è attivo creo uno snapshot, altrimenti ritorno allo stato precedente
          */
-        if (!state.view.chiamata.active) {
+        if (!state.view.chiamata.active && !action.toggle) {
             dispatch(new SaveView(makeCopy(state)));
             const newState = activeChiamata(stateDefault);
             patchState({

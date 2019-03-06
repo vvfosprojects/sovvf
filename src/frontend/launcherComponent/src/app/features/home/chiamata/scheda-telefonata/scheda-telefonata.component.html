@@ -38,8 +38,8 @@
                                 <input type="text" formControlName="cognome" class="form-control"
                                        [ngClass]="{ 'is-invalid': f.cognome.errors }" placeholder="Cognome"
                                        autocomplete="new-password">
-                                <div *ngIf="f['cognome'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['cognome'].errors && f['cognome'].dirty">Il Cognome è obbligatorio</div>
+                                <div *ngIf="f['cognome'].errors && f['cognome'].dirty || submitted" class="invalid-feedback">
+                                    <div>Il Cognome è obbligatorio</div>
                                 </div>
                             </div>
                         </div>
@@ -54,8 +54,8 @@
                                 <input type="text" formControlName="nome" class="form-control"
                                        [ngClass]="{ 'is-invalid': f.nome.errors }" placeholder="Nome"
                                        autocomplete="new-password">
-                                <div *ngIf="f['nome'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['nome'].errors && f['nome'].dirty">Il Nome è obbligatorio</div>
+                                <div *ngIf="f['nome'].errors && f['nome'].dirty || submitted" class="invalid-feedback">
+                                    <div>Il Nome è obbligatorio</div>
                                 </div>
                             </div>
                         </div>
@@ -69,8 +69,8 @@
                         <input type="text" id="ragioneSociale" formControlName="ragioneSociale" class="form-control"
                                [ngClass]="{ 'is-invalid': f.ragioneSociale.errors }" placeholder="Ragione Sociale"
                                autocomplete="new-password">
-                        <div *ngIf="f['ragioneSociale'].errors" class="invalid-feedback">
-                            <div *ngIf="f['ragioneSociale'].errors && f['ragioneSociale'].dirty">La Ragione Sociale è obbligatoria</div>
+                        <div *ngIf="f['ragioneSociale'].errors && f['ragioneSociale'].dirty || submitted" class="invalid-feedback">
+                            <div>La Ragione Sociale è obbligatoria</div>
                         </div>
                     </div>
                     <!-- Tasti veloci per ragione sociale -->
@@ -108,8 +108,8 @@
                         <input type="text" formControlName="telefono" class="form-control"
                                [ngClass]="{ 'is-invalid': f.telefono.errors }"
                                placeholder="Telefono" autocomplete="new-password">
-                        <div *ngIf="f['telefono'].errors" class="invalid-feedback">
-                            <div *ngIf="f['telefono'].errors && f['telefono'].dirty">Il telefono è obbligatorio</div>
+                        <div *ngIf="f['telefono'].errors && f['telefono'].dirty || submitted" class="invalid-feedback">
+                            <div>Il telefono è obbligatorio</div>
                         </div>
                     </div>
                 </div>
@@ -125,8 +125,8 @@
                                        [ngClass]="{ 'is-invalid': f.indirizzo.errors }" placeholder="Ricerca indirizzo"
                                        [options]="options" (onAddressChange)="onCercaIndirizzo($event)"
                                        autocomplete="new-password">
-                                <div *ngIf="f['indirizzo'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['indirizzo'].errors && f['indirizzo'].dirty">L' indirizzo è obbligatorio</div>
+                                <div *ngIf="f['indirizzo'].errors && f['indirizzo'].dirty || submitted" class="invalid-feedback">
+                                    <div>L' indirizzo è obbligatorio</div>
                                 </div>
                             </div>
                         </div>
@@ -206,16 +206,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col">
-                        <button class="btn btn-danger mr-2" type="button" (click)="onAnnullaChiamata()"><i
-                                class="fa fa-arrow-circle-left mr-1"></i>Indietro
+                    <div class="col-7">
+                        <button class="btn btn-danger mr-2" type="submit" (click)="impostaAzioneChiamata(AzioneChiamata.FalsoAllarme)"><i
+                                class="fa fa-bell-slash mr-1"></i>Falso allarme
+                        </button>
+                        <button class="btn btn-warning mr-2" type="submit" (click)="impostaAzioneChiamata(AzioneChiamata.InternventoNonPiuNecessario)"><i
+                                class="fa fa-thumbs-down mr-1"></i>Non più necessario
                         </button>
                         <button class="btn btn-outline-primary mr-2" type="button" (click)="onResetChiamata()"><i
                                 class="fa fa-recycle mr-1"></i>Reset
                         </button>
                     </div>
-                    <div class="col text-right">
-                        <button class="btn btn-lg btn-secondary" type="submit"><i class="fa fa-check mr-1"></i>Conferma
+                    <div class="col-5 text-right">
+                        <button class="btn btn-lg btn-secondary" type="submit" (click)="impostaAzioneChiamata(AzioneChiamata.MettiInCoda)"><i class="fa fa-check mr-1"></i>Conferma
                         </button>
 
                     </div>

@@ -12,7 +12,9 @@ export class TastoChiamataComponent {
 
     chiamata() {
         const bool = this.colorButtonChiamata === 'btn-outline-success';
-        this.startChiamata.emit();
+        if (bool) {
+            this.startChiamata.emit();
+        }
     }
 
 }
