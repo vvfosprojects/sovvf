@@ -9,6 +9,7 @@ import { SchedaTelefonataInterface } from '../model/scheda-telefonata.interface'
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
 import { makeCopy } from '../../../../shared/helper/function';
 import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -34,7 +35,8 @@ export class SchedaTelefonataComponent implements OnInit {
     @Input() idOperatore: string;
     @Output() schedaTelefonata = new EventEmitter<SchedaTelefonataInterface>();
 
-    constructor(private formBuilder: FormBuilder) {
+    constructor(private formBuilder: FormBuilder,
+                private toastr: ToastrService) {
     }
 
     ngOnInit() {
@@ -108,12 +110,10 @@ export class SchedaTelefonataComponent implements OnInit {
         this.chiamataCorrente.nome = f.get('nome').value;
         this.chiamataCorrente.ragioneSociale = f.get('ragioneSociale').value;
         if (f.get('zonaEmergenza').value) {
-            const zonaEmergenzaSplit = f.get('zonaEmergenza').value.toString().split(/\s*(?:;|$)\s*/);
-            this.chiamataCorrente.zonaEmergenza = zonaEmergenzaSplit;
+            this.chiamataCorrente.zonaEmergenza = f.get('zonaEmergenza').value.toString().split(/\s*(?:;|$)\s*/);
         }
         if (f.get('tags').value) {
-            const tagsSplit = f.get('tags').value.toString().split(/\s*(?:;|$)\s*/);
-            this.chiamataCorrente.tags = tagsSplit;
+            this.chiamataCorrente.tags = f.get('tags').value.toString().split(/\s*(?:;|$)\s*/);
         }
         this.chiamataCorrente.nome = f.get('nome').value;
         this.chiamataCorrente.motivazione = f.get('motivazione').value;
@@ -131,13 +131,29 @@ export class SchedaTelefonataComponent implements OnInit {
 
     onSubmit() {
         this.submitted = true;
-        if (this.chiamataForm.invalid || !this.coordinate) {
+        if (this.formIsValid() || !this.coordinate) {
             console.error('Il form non è valido');
-            console.log(this.submitted);
+            this.submitted = false;
             return;
         }
         this.getChiamataForm(this.chiamataForm);
         this._statoChiamata('inserita');
+    }
+
+    formIsValid(): boolean {
+        let error = '';
+        error += this.chiamataForm.get('cognome').errors ? 'Cognome;' : '';
+        error += this.chiamataForm.get('nome').errors ? 'Nome;' : '';
+        error += this.chiamataForm.get('ragioneSociale').errors ? 'Ragione Sociale;' : '';
+        error += this.chiamataForm.get('telefono').errors ? 'Telefono;' : '';
+        error += this.chiamataForm.get('indirizzo').errors ? 'Telefono;' : '';
+        const messageArr: string[] = error.split(/\s*(?:;|$)\s*/);
+        const message = messageArr.join(', ');
+        const title = messageArr.length > 1 ? 'Campi obbligatori' : 'Campo obbligatorio';
+        this.toastr.error(message, title, {
+            timeOut: 5000,
+        });
+        return !!this.chiamataForm.invalid;
     }
 
     impostaAzioneChiamata($event) {
