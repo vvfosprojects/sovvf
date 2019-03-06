@@ -18,6 +18,7 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
 
     subscription = new Subscription();
     unitaAttuale: Sede[];
+    treeViewOpened: boolean;
 
     items: TreeviewItem[];
     initItem: any[];
@@ -68,8 +69,11 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
         this.unitaAttualeS.startCount++;
     }
 
+
     @HostListener('document:keydown.escape') onKeydownHandler() {
-        this.annullaCambioSede('esc');
+        if (this.treeViewOpened) {
+            this.annullaCambioSede('esc');
+        }
     }
 
     ngOnInit() {
@@ -81,6 +85,7 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
     }
 
     openDropDown(value: any) {
+        this.treeViewOpened = !!value;
         if (value) {
             // console.log('dropdown aperto');
         } else if (this.selectedItem) {
