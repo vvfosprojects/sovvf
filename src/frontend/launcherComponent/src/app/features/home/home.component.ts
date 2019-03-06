@@ -1,16 +1,18 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Grids, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../shared/interface/view.interface';
-import { Select } from '@ngxs/store';
-import { ViewComponentState } from './store/states/view/view.state';
-import { Composizione } from '../../shared/enum/composizione.enum';
+import {Component, isDevMode, OnDestroy, OnInit} from '@angular/core';
+import {Observable, Subscription} from 'rxjs';
+import {Grids, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts} from '../../shared/interface/view.interface';
+import {Select} from '@ngxs/store';
+import {ViewComponentState} from './store/states/view/view.state';
+import {Composizione} from '../../shared/enum/composizione.enum';
+import {RichiesteMarkersState} from './store/states/maps/richieste-markers.state';
 
-@Component({ templateUrl: 'home.component.html' })
+@Component({templateUrl: 'home.component.html'})
 export class HomeComponent implements OnInit, OnDestroy {
 
     subscription = new Subscription();
     viewState: ViewLayouts;
     columnState: Grids;
+    loading = true;
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
     @Select(ViewComponentState.columnGrid) columnState$: Observable<Grids>;
@@ -32,4 +34,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
+    onMapFullLoaded() {
+        this.loading = false;
+    }
 }
