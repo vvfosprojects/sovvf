@@ -146,7 +146,7 @@ export class SchedaTelefonataComponent implements OnInit {
         error += this.chiamataForm.get('nome').errors ? 'Nome;' : '';
         error += this.chiamataForm.get('ragioneSociale').errors ? 'Ragione Sociale;' : '';
         error += this.chiamataForm.get('telefono').errors ? 'Telefono;' : '';
-        error += this.chiamataForm.get('indirizzo').errors ? 'Telefono;' : '';
+        error += this.chiamataForm.get('indirizzo').errors ? 'Indirizzo;' : '';
         const messageArr: string[] = error.split(/\s*(?:;|$)\s*/);
         const message = messageArr.join(', ');
         const title = messageArr.length > 1 ? 'Campi obbligatori' : 'Campo obbligatorio';
