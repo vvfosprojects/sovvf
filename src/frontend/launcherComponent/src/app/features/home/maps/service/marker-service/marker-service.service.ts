@@ -68,11 +68,10 @@ export class MarkerService implements OnDestroy {
     private markerSelezionato: any;
     private markerColorato: any;
     private markerZIndex: any;
+    private checkMarker: any;
 
     @Select(MapsFiltroState.filtroMarkerAttivo) filtroMarkerAttivo$: Observable<string[]>;
     private filtroMarkerAttivo: string[];
-
-    checkMarker: any;
 
     @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
     switchMeteo: boolean;
@@ -81,34 +80,10 @@ export class MarkerService implements OnDestroy {
                 private agmService: AgmService,
                 private unitaAttualeS: UnitaAttualeService,
                 private store: Store) {
-
         this.subscription.add(this.markerSelezionato$.subscribe(marker => this.markerSelezionato = marker));
-
         this.subscription.add(this.filtroMarkerAttivo$.subscribe(filtroAttivo => this.filtroMarkerAttivo = filtroAttivo));
+        this.subscription.add(this.stateSwitch$.subscribe((state: boolean) => this.switchMeteo = state));
 
-
-        // this.filtro = this.mapsFiltroService.filtroAttivo;
-        // this.subscription.add(
-        //     this.mapsFiltroService.getMenu().subscribe(menu => {
-        //         this.filtro = [];
-        //         menu.forEach(r => {
-        //             if (r.isActive) {
-        //                 this.filtro.push(r.id);
-        //             }
-        //         });
-        //         this.mapsFiltroService.filtroAttivo = this.filtro;
-        //     })
-        // );
-        this.subscription.add(
-            this.stateSwitch$.subscribe((state: boolean) => {
-                this.switchMeteo = state;
-            })
-        );
-        // this.subscription.add(
-        //     this.mapsFiltroService.getFiltroBoxes().subscribe((filtroBoxes: BoxClickArrayInterface) => {
-        //         this.filtroBoxes(filtroBoxes);
-        //     })
-        // );
         /**
          * marker minimi per creare un cluster
          * @type {number}
@@ -433,6 +408,7 @@ export class MarkerService implements OnDestroy {
 
     }
 
+    // Todo: diventa opacizzaMarkerState
     /**
      * opacizza i marker dal filtro attivato su Boxes
      * @param obj

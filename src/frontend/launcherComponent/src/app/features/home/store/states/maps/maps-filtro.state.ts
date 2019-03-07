@@ -116,7 +116,6 @@ export class MapsFiltroState {
     @Action(CopiaFiltroAttivo)
     copiaFiltroAttivo({ getState, patchState }: StateContext<MapsFiltroStateModel>) {
         const state = getState();
-        console.log('filtro copiato');
         patchState({
             ...state,
             filtroMarkerAttivoCopy: state.filtroMarkerAttivo
@@ -125,7 +124,6 @@ export class MapsFiltroState {
 
     @Action(ClearCopiaFiltroAttivo)
     clearCopiaFiltroAttivo({ patchState }: StateContext<MapsFiltroStateModel>) {
-        console.log('clear filtro copiato');
         patchState({
             filtroMarkerAttivoCopy: MapsFiltroStateDefaults.filtroMarkerAttivoCopy
         });
