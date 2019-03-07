@@ -36,7 +36,7 @@ import { SetRichiestaHover, ClearRichiestaHover } from '../../../store/actions/r
 import { ClearRichiestaSelezionata } from '../../../store/actions/richieste/richiesta-selezionata.actions';
 import { AddMeteoMarker, RemoveMeteoMarker } from '../../../store/actions/maps/meteo-markers.actions';
 import { MarkerState } from '../../../store/states/maps/marker.state';
-import { SetMarkerSelezionato, ClearMarkerSelezionato } from '../../../store/actions/maps/marker-selezionato.actions';
+import { SetMarkerSelezionato, ClearMarkerSelezionato } from '../../../store/actions/maps/marker.actions';
 
 import { IconMappe } from './_icone';
 import { TipoMappe } from './_typeof';
@@ -63,8 +63,6 @@ export class MarkerService implements OnDestroy {
     iconeCached: string[];
 
     @Select(MarkerState.markerSelezionato) markerSelezionato$: Observable<any>;
-    // @Select(MarkerState.markerColorato) markerColorato$: Observable<any>;
-    // @Select(MarkerState.markerZIndex) markerZIndex$: Observable<any>;
     private markerSelezionato: any;
     private markerColorato: any;
     private markerZIndex: any;
@@ -84,8 +82,6 @@ export class MarkerService implements OnDestroy {
                 private store: Store) {
 
         this.subscription.add(this.markerSelezionato$.subscribe(marker => this.markerSelezionato = marker));
-        // this.subscription.add(this.markerColorato$.subscribe(marker => this.markerColorato = marker));
-        // this.subscription.add(this.markerZIndex$.subscribe(marker => this.markerZIndex = marker));
 
         this.subscription.add(this.filtroMarkerAttivo$.subscribe(filtroAttivo => this.filtroMarkerAttivo = filtroAttivo));
 
@@ -235,16 +231,12 @@ export class MarkerService implements OnDestroy {
             case 'richiesta|hover-in': {
                 this.markerColorato = marker;
                 this.markerZIndex = marker;
-                // this.store.dispatch(new SetMarkerColorato(marker));
-                // Store implementation
                 this.store.dispatch(new SetRichiestaHover(marker.id));
             }
                 break;
             case 'richiesta|hover-out': {
                 this.markerColorato = null;
                 this.markerZIndex = null;
-                // this.store.dispatch(new ClearMarkerColorato());
-                // Store implementation
                 this.store.dispatch(new ClearRichiestaHover());
             }
                 break;
@@ -252,20 +244,16 @@ export class MarkerService implements OnDestroy {
                 if (this.checkMarker !== marker.id) {
                     this.cliccato(marker);
                     this.checkMarker = marker.id;
-
-                    // Store implementation
                     this.store.dispatch(new SetRichiestaFissata(marker.id));
                 }
             }
                 break;
             case 'mezzo|hover-in': {
-                // this.store.dispatch(new SetMarkerColorato(marker));
                 this.markerColorato = marker;
                 this.markerZIndex = null;
             }
                 break;
             case 'mezzo|hover-out': {
-                // this.store.dispatch(new ClearMarkerColorato());
                 this.markerZIndex = null;
                 this.markerColorato = null;
             }
@@ -284,13 +272,11 @@ export class MarkerService implements OnDestroy {
             }
                 break;
             case 'sede|hover-in': {
-                // this.store.dispatch(new SetMarkerColorato(marker));
                 this.markerZIndex = marker;
                 this.markerColorato = marker;
             }
                 break;
             case 'sede|hover-out': {
-                // this.store.dispatch(new ClearMarkerColorato());
                 this.markerZIndex = null;
                 this.markerColorato = null;
             }
@@ -298,12 +284,9 @@ export class MarkerService implements OnDestroy {
             default: {
                 this.noAction();
                 this.checkMarker = null;
-                // this.store.dispatch(new ClearMarkerColorato());
                 this.markerZIndex = null;
                 this.markerColorato = null;
                 this.markedColor.next(null);
-
-                // Store implementation
                 this.store.dispatch(new ClearRichiestaFissata());
                 this.store.dispatch(new ClearRichiestaSelezionata());
             }
@@ -369,13 +352,11 @@ export class MarkerService implements OnDestroy {
         marker = this.getMarkerFromId(id);
         switch (mouse) {
             case MouseE.HoverIn: {
-                // this.store.dispatch(new SetMarkerColorato(marker));
                 this.markerColorato = marker;
                 this.markerZIndex = marker;
             }
                 break;
             case MouseE.HoverOut: {
-                // this.store.dispatch(new ClearMarkerColorato());
                 this.markerColorato = null;
                 this.markerZIndex = null;
             }
@@ -479,13 +460,11 @@ export class MarkerService implements OnDestroy {
             case MapsEvent.Centra: {
                 this.store.dispatch(new SetCoordCentroMappa(this.getCoordinate(marker)));
                 this.store.dispatch(new SetZoomCentroMappa(18));
-                // this.store.dispatch(new SetMarkerZIndex(marker));
                 this.markerZIndex = marker;
                 this.getDatiMeteo(marker);
             }
                 break;
             default: {
-                // this.store.dispatch(new ClearMarkerZIndex());
                 this.markerZIndex = null;
             }
                 break;
@@ -503,12 +482,10 @@ export class MarkerService implements OnDestroy {
         switch (action) {
             case MapsEvent.Centra: {
                 this.store.dispatch(new SetCoordCentroMappa(this.getCoordinate(marker)));
-                // this.store.dispatch(new SetMarkerZIndex(marker));
                 this.markerZIndex = marker;
             }
                 break;
             default: {
-                // this.store.dispatch(new ClearMarkerZIndex());
                 this.markerZIndex = null;
             }
                 break;
