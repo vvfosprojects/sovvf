@@ -1,15 +1,9 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { makeCopy } from '../../../../../shared/helper/function';
-
-// Interface
 import { BoxClickInterface } from '../../../boxes/box-interface/box-click-interface';
-
-// Action
 import {
     UpdateBoxRichieste, AllFalseBoxRichieste, UpdateBoxMezzi,
     AllFalseBoxMezzi, ReducerBoxClick, ResetAllBoxes, AllTrueBoxRichieste, AllTrueBoxMezzi, UndoAllBoxes
 } from '../../actions/boxes/box-click.actions';
-
 
 export interface BoxClickStateModel {
     boxClick: BoxClickInterface;

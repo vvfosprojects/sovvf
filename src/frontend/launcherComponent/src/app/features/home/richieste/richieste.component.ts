@@ -176,6 +176,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         );
     }
 
+    // Todo: da moficare con opacazziMarkerState
     opacizzaRichieste(ricerca: any): void {
         const result = this.filter.transform(this.richieste, ricerca);
         if (!(this.richieste.length === result.length) && result.length > 0) {

@@ -1,5 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 /**
  * Model
  */
@@ -25,7 +26,6 @@ import { MapsEvent } from '../../../../../shared/enum/maps-event.enum';
 import { MeteoService } from '../../../../../shared/meteo/meteo-service.service';
 import { AgmService } from '../../agm/agm-service.service';
 import { UnitaAttualeService } from '../../../../navbar/navbar-service/unita-attuale/unita-attuale.service';
-import { MapsFiltroService } from '../../maps-ui/filtro/maps-filtro.service';
 /**
  * Ngxs
  */
@@ -37,15 +37,17 @@ import { ClearRichiestaSelezionata } from '../../../store/actions/richieste/rich
 import { AddMeteoMarker, RemoveMeteoMarker } from '../../../store/actions/maps/meteo-markers.actions';
 import { MarkerState } from '../../../store/states/maps/marker.state';
 import { SetMarkerSelezionato, ClearMarkerSelezionato } from '../../../store/actions/maps/marker.actions';
-
+import { RichiesteMarkersState } from '../../../store/states/maps/richieste-markers.state';
+import { SetCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../../store/actions/maps/centro-mappa.actions';
+import { MapsFiltroState } from '../../../store/states/maps/maps-filtro.state';
+/**
+ * Helper Functions
+ */
 import { IconMappe } from './_icone';
 import { TipoMappe } from './_typeof';
 import { TipoColori } from './_color';
 import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
-import { RichiesteMarkersState } from '../../../store/states/maps/richieste-markers.state';
-import { map } from 'rxjs/operators';
-import { SetCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../../store/actions/maps/centro-mappa.actions';
-import { MapsFiltroState } from '../../../store/states/maps/maps-filtro.state';
+
 
 @Injectable()
 export class MarkerService implements OnDestroy {
@@ -78,7 +80,6 @@ export class MarkerService implements OnDestroy {
     constructor(private meteoService: MeteoService,
                 private agmService: AgmService,
                 private unitaAttualeS: UnitaAttualeService,
-                private mapsFiltroService: MapsFiltroService,
                 private store: Store) {
 
         this.subscription.add(this.markerSelezionato$.subscribe(marker => this.markerSelezionato = marker));
