@@ -36,8 +36,8 @@ import { SetRichiestaFissata, ClearRichiestaFissata } from '../../../store/actio
 import { SetRichiestaHover, ClearRichiestaHover } from '../../../store/actions/richieste/richiesta-hover.actions';
 import { ClearRichiestaSelezionata } from '../../../store/actions/richieste/richiesta-selezionata.actions';
 import { AddMeteoMarker, RemoveMeteoMarker } from '../../../store/actions/maps/meteo-markers.actions';
-import { MarkerSelezionatoState } from '../../../store/states/maps/marker-selezionato.state';
-import { SetMarkerSelezionato, ClearMarkerSelezionato } from '../../../store/actions/maps/marker-selezionato.actions';
+import { MarkerState } from '../../../store/states/maps/marker.state';
+import { SetMarkerSelezionato, ClearMarkerSelezionato, SetMarkerColorato, ClearMarkerColorato, SetMarkerZIndex, ClearMarkerZIndex } from '../../../store/actions/maps/marker-selezionato.actions';
 
 import { IconMappe } from './_icone';
 import { TipoMappe } from './_typeof';
@@ -52,6 +52,7 @@ export class MarkerService implements OnDestroy {
 
     private subjectMeteo = new Subject<Meteo>();
     private markedColor = new Subject<string>();
+    private subscription = new Subscription();
     icone = new IconMappe();
     tipo = new TipoMappe();
     colori = new TipoColori();
@@ -61,13 +62,12 @@ export class MarkerService implements OnDestroy {
 
     iconeCached: string[];
 
-    @Select(MarkerSelezionatoState.markerSelezionato) markerSelezionato$: Observable<any>;
-    markerSelezionato: any;
-
-    markerColorato: any;
-    markerZIndex: any;
-
-    subscription = new Subscription();
+    @Select(MarkerState.markerSelezionato) markerSelezionato$: Observable<any>;
+    @Select(MarkerState.markerColorato) markerColorato$: Observable<any>;
+    @Select(MarkerState.markerZIndex) markerZIndex$: Observable<any>;
+    private markerSelezionato: any;
+    private markerColorato: any;
+    private markerZIndex: any;
 
     filtro: Array<any>;
 
@@ -82,9 +82,9 @@ export class MarkerService implements OnDestroy {
                 private mapsFiltroService: MapsFiltroService,
                 private store: Store) {
 
-        this.subscription.add(this.markerSelezionato$.subscribe(marker => {
-            this.markerSelezionato = marker;
-        }));
+        this.subscription.add(this.markerSelezionato$.subscribe(marker => this.markerSelezionato = marker));
+        this.subscription.add(this.markerColorato$.subscribe(marker => this.markerColorato = marker));
+        this.subscription.add(this.markerZIndex$.subscribe(marker => this.markerZIndex = marker));
 
         this.filtro = this.mapsFiltroService.filtroAttivo;
         this.subscription.add(
@@ -132,7 +132,6 @@ export class MarkerService implements OnDestroy {
         /**
          * metodo che mi ritorna il tipo di icona da utilizzare
          */
-        // console.log(marker);
         if (!tipoSede) {
             return this.icone.tipoIcona(marker, this.modelloMarker(marker), this.iconaSelezionata(marker));
         } else {
@@ -230,17 +229,17 @@ export class MarkerService implements OnDestroy {
         const modello = this.modelloMarker(marker);
         switch (modello + '|' + mouse) {
             case 'richiesta|hover-in': {
-                this.markerColorato = marker;
-                this.markerZIndex = marker;
-
+                // this.markerColorato = marker;
+                // this.markerZIndex = marker;
+                this.store.dispatch(new SetMarkerColorato(marker));
                 // Store implementation
                 this.store.dispatch(new SetRichiestaHover(marker.id));
             }
                 break;
             case 'richiesta|hover-out': {
-                this.markerColorato = null;
-                this.markerZIndex = null;
-
+                // this.markerColorato = null;
+                // this.markerZIndex = null;
+                this.store.dispatch(new ClearMarkerColorato());
                 // Store implementation
                 this.store.dispatch(new ClearRichiestaHover());
             }
@@ -256,13 +255,15 @@ export class MarkerService implements OnDestroy {
             }
                 break;
             case 'mezzo|hover-in': {
-                this.markerZIndex = marker;
-                this.markerColorato = marker;
+                this.store.dispatch(new SetMarkerColorato(marker));
+                // this.markerColorato = marker;
+                // this.markerZIndex = null;
             }
                 break;
             case 'mezzo|hover-out': {
-                this.markerZIndex = null;
-                this.markerColorato = null;
+                this.store.dispatch(new ClearMarkerColorato());
+                // this.markerZIndex = null;
+                // this.markerColorato = null;
             }
                 break;
             case 'mezzo|click': {
@@ -279,20 +280,23 @@ export class MarkerService implements OnDestroy {
             }
                 break;
             case 'sede|hover-in': {
-                this.markerZIndex = marker;
-                this.markerColorato = marker;
+                this.store.dispatch(new SetMarkerColorato(marker));
+                // this.markerZIndex = marker;
+                // this.markerColorato = marker;
             }
                 break;
             case 'sede|hover-out': {
-                this.markerZIndex = null;
-                this.markerColorato = null;
+                this.store.dispatch(new ClearMarkerColorato());
+                // this.markerZIndex = null;
+                // this.markerColorato = null;
             }
                 break;
             default: {
                 this.noAction();
                 this.checkMarker = null;
-                this.markerZIndex = null;
-                this.markerColorato = null;
+                this.store.dispatch(new ClearMarkerColorato());
+                // this.markerZIndex = null;
+                // this.markerColorato = null;
                 this.markedColor.next(null);
 
                 // Store implementation
@@ -351,7 +355,6 @@ export class MarkerService implements OnDestroy {
 
     noAction() {
         if (this.markerSelezionato) {
-            // this.agmService.cambiaZoom(12);
             this.store.dispatch(new SetZoomCentroMappa(12));
             this.deseleziona();
         }
@@ -362,13 +365,15 @@ export class MarkerService implements OnDestroy {
         marker = this.getMarkerFromId(id);
         switch (mouse) {
             case MouseE.HoverIn: {
-                this.markerColorato = marker;
-                this.markerZIndex = marker;
+                this.store.dispatch(new SetMarkerColorato(marker));
+                // this.markerColorato = marker;
+                // this.markerZIndex = marker;
             }
                 break;
             case MouseE.HoverOut: {
-                this.markerColorato = null;
-                this.markerZIndex = null;
+                this.store.dispatch(new ClearMarkerColorato());
+                // this.markerColorato = null;
+                // this.markerZIndex = null;
             }
                 break;
             case MouseE.Click: {
@@ -447,16 +452,16 @@ export class MarkerService implements OnDestroy {
      * @param obj
      */
     filtroBoxes(obj: BoxClickArrayInterface) {
-        if (obj.richieste.length > 0) {
-            this.opacizzaMarkers(true, Markers.Richieste, obj.richieste, undefined);
-        } else {
-            this.opacizzaMarkers(false, Markers.Richieste);
-        }
-        if (obj.mezzi.length > 0) {
-            this.opacizzaMarkers(true, Markers.Mezzi, obj.mezzi, undefined);
-        } else {
-            this.opacizzaMarkers(false, Markers.Mezzi);
-        }
+        // if (obj.richieste.length > 0) {
+        //     this.opacizzaMarkers(true, Markers.Richieste, obj.richieste, undefined);
+        // } else {
+        //     this.opacizzaMarkers(false, Markers.Richieste);
+        // }
+        // if (obj.mezzi.length > 0) {
+        //     this.opacizzaMarkers(true, Markers.Mezzi, obj.mezzi, undefined);
+        // } else {
+        //     this.opacizzaMarkers(false, Markers.Mezzi);
+        // }
     }
 
     /**
@@ -470,12 +475,14 @@ export class MarkerService implements OnDestroy {
             case MapsEvent.Centra: {
                 this.store.dispatch(new SetCoordCentroMappa(this.getCoordinate(marker)));
                 this.store.dispatch(new SetZoomCentroMappa(18));
-                this.markerZIndex = marker;
+                this.store.dispatch(new SetMarkerZIndex(marker));
+                // this.markerZIndex = marker;
                 this.getDatiMeteo(marker);
             }
                 break;
             default: {
-                this.markerZIndex = null;
+                this.store.dispatch(new ClearMarkerZIndex());
+                // this.markerZIndex = null;
             }
                 break;
         }
@@ -492,11 +499,13 @@ export class MarkerService implements OnDestroy {
         switch (action) {
             case MapsEvent.Centra: {
                 this.store.dispatch(new SetCoordCentroMappa(this.getCoordinate(marker)));
-                this.markerZIndex = marker;
+                this.store.dispatch(new SetMarkerZIndex(marker));
+                // this.markerZIndex = marker;
             }
                 break;
             default: {
-                this.markerZIndex = null;
+                this.store.dispatch(new ClearMarkerZIndex());
+                // this.markerZIndex = null;
             }
                 break;
         }

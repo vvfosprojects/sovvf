@@ -14,6 +14,7 @@ import { Observable } from 'rxjs';
 export class CambioSedeModalComponent {
 
     @Select(MarkerState.markerSelezionato) markerSelezionato$: Observable<any>;
+    markerSelezionato: any;
     nomeSede: string;
 
     constructor(public modal: NgbActiveModal,
@@ -22,14 +23,13 @@ export class CambioSedeModalComponent {
         this.markerSelezionato$.subscribe(result => {
             if (result) {
                 this.nomeSede = result.descrizione;
-            } else {
-                this.nomeSede = null;
+                this.markerSelezionato = result;
             }
         });
     }
 
     cambioSede() {
-        this.markerService.cambioSede(this.markerService.markerSelezionato);
+        this.markerService.cambioSede(this.markerSelezionato);
         this.markerService.deseleziona();
     }
 

@@ -39,7 +39,7 @@ import { MarkerMeteoState } from '../store/states/filterbar/marker-meteo-switch.
 import { MeteoMarkersState } from '../store/states/maps/meteo-markers.state';
 import { MapsFiltroState } from '../store/states/maps/maps-filtro.state';
 import { MapsDirectionState } from '../store/states/maps/maps-direction.state';
-import { MarkerSelezionatoState } from '../store/states/maps/marker-selezionato.state';
+import { MarkerState } from '../store/states/maps/marker.state';
 import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
@@ -62,7 +62,7 @@ import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
                 MapsFiltroState,
                 MapsDirectionState,
                 CentroMappaState,
-                MarkerSelezionatoState,
+                MarkerState,
                 RichiesteMarkersState,
                 MezziMarkersState,
                 SediMarkersState
