@@ -1,6 +1,6 @@
 <div class="text-right pr-0">
     <div class="btn-group app-shadow " role="group">
-        <button *ngFor="let voce of markerMenu" class="btn w-75" [ngClass]="{'btn-primary': voce.isActive, 'btn-outline-primary': !voce.isActive}" appDebounceClick (debounceClick)="onSelected(voce.id)" [debounceTime]="300">
+        <button *ngFor="let voce of filtroMarker" class="btn w-75" [ngClass]="{'btn-primary': voce.isActive, 'btn-outline-primary': !voce.isActive}" appDebounceClick (debounceClick)="onSelected(voce.id)" [debounceTime]="300">
             <i class="{{voce.picture}} pr-1"></i>{{voce.name}}
         </button>
     </div>

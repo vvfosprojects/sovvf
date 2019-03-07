@@ -4,7 +4,6 @@ import { delay } from 'rxjs/operators';
 import { BoxClickArrayInterface, BoxClickInterface } from '../../../boxes/box-interface/box-click-interface';
 import { Select, Store } from '@ngxs/store';
 import { BoxClickState } from '../../../store/states/boxes/box-click.state';
-import { SetVociMenu } from '../../../store/actions/maps/maps-filtro.actions';
 import { makeCopy } from '../../../../../shared/helper/function';
 
 @Injectable()
@@ -16,6 +15,7 @@ export class MapsFiltroService implements OnDestroy {
     constructor(private store: Store) {
         this.subscription.add(
             this.boxClick$.subscribe((boxClick: BoxClickInterface) => {
+                console.log(boxClick);
                 // Todo: bloccano l'app!!! -> @NotMikeNot
                     // this.checkBoxClick(boxClick);
                     // this.filtroBoxes.next(this.stateBoxClick(boxClick));
@@ -104,7 +104,6 @@ export class MapsFiltroService implements OnDestroy {
         this.vociMenu.next(this.filtroMarker);
 
         /* store implementation */
-        this.store.dispatch(new SetVociMenu(this.filtroMarker));
     }
 
     stateBoxClick(boxClick: BoxClickInterface): BoxClickArrayInterface {
@@ -139,16 +138,10 @@ export class MapsFiltroService implements OnDestroy {
             menuIsNotActive.forEach(r => {
                 r.isActive = false;
             });
-
             this.vociMenu.next(menuIsNotActive);
 
-            /* store implementation */
-            this.store.dispatch(new SetVociMenu(menuIsNotActive));
         } else {
             this.vociMenu.next(menu);
-
-            /* store implementation */
-            this.store.dispatch(new SetVociMenu(menu));
         }
     }
 

@@ -1,24 +1,18 @@
 import { Selector, State, Action, StateContext } from '@ngxs/store';
 
-// Model
-import { BoxClickArrayInterface } from '../../../boxes/box-interface/box-click-interface';
-
 // Interface
 import { Menu } from '../../../maps/maps-ui/filtro/maps-filtro.service';
 
 // Action
-import { SetVociMenu } from '../../actions/maps/maps-filtro.actions';
+import { SetFiltroMarker } from '../../actions/maps/maps-filtro.actions';
+import { makeCopy } from '../../../../../shared/helper/function';
 
 export interface MapsFiltroStateModel {
-    vociMenu: Menu[];
-    filtroBoxes: BoxClickArrayInterface;
     filtroMarker: Menu[];
-    filtroAttivo: string[];
+    filtroMarkerAttivo: string[];
 }
 
 export const meteoMarkerStateDefaults: MapsFiltroStateModel = {
-    vociMenu: [],
-    filtroBoxes: null,
     filtroMarker: [
         {
             'id': 'richiesta',
@@ -42,7 +36,7 @@ export const meteoMarkerStateDefaults: MapsFiltroStateModel = {
             'name': 'Mezzi'
         }
     ],
-    filtroAttivo: ['richiesta']
+    filtroMarkerAttivo: ['richiesta']
 };
 
 @State<MapsFiltroStateModel>({
@@ -51,20 +45,40 @@ export const meteoMarkerStateDefaults: MapsFiltroStateModel = {
 })
 export class MapsFiltroState {
 
-    constructor() { }
-
-    @Selector()
-    static vociMenu(state: MapsFiltroStateModel) {
-        return state.vociMenu;
+    constructor() {
     }
 
-    @Action(SetVociMenu)
-    setVociMenu({ getState, patchState }: StateContext<MapsFiltroStateModel>, action: SetVociMenu) {
-        const state = getState();
+    @Selector()
+    static filtroMarker(state: MapsFiltroStateModel) {
+        return state.filtroMarker;
+    }
 
+    @Selector()
+    static filtroMarkerAttivo(state: MapsFiltroStateModel) {
+        return state.filtroMarkerAttivo;
+    }
+
+    @Action(SetFiltroMarker)
+    setFiltroMarker({ getState, patchState }: StateContext<MapsFiltroStateModel>, action: SetFiltroMarker) {
+        const state = getState();
+        const filtroMarkerCopy: Menu[] = makeCopy(state.filtroMarker);
+        const filtroAttivo: string[] = [];
+        const index = state.filtroMarker.findIndex(obj => obj.id === action.selected);
+        filtroMarkerCopy[index].isActive = !filtroMarkerCopy[index].isActive;
+        filtroMarkerCopy.forEach(r => {
+            if (r.isActive) {
+                filtroAttivo.push(r.id);
+            }
+        });
+        if (filtroAttivo.length === 3) {
+            filtroMarkerCopy.map(r => {
+                r.isActive = false;
+            });
+        }
         patchState({
             ...state,
-            vociMenu: action.vociMenu
+            filtroMarker: filtroMarkerCopy,
+            filtroMarkerAttivo: filtroAttivo
         });
     }
 }

@@ -1,8 +1,6 @@
-// Models
-import { Menu } from '../../../maps/maps-ui/filtro/maps-filtro.service';
+export class SetFiltroMarker {
+    static readonly type = '[MapsFiltro] Set Filtro Marker';
 
-export class SetVociMenu {
-  static readonly type = '[MapsFiltro] Set Voci Menu';
-
-  constructor(public vociMenu: Menu[]) {}
+    constructor(public selected: string) {
+    }
 }

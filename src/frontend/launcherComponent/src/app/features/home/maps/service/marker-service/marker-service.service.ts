@@ -46,6 +46,7 @@ import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
 import { RichiesteMarkersState } from '../../../store/states/maps/richieste-markers.state';
 import { map } from 'rxjs/operators';
 import { SetCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../../store/actions/maps/centro-mappa.actions';
+import { MapsFiltroState } from '../../../store/states/maps/maps-filtro.state';
 
 @Injectable()
 export class MarkerService implements OnDestroy {
@@ -69,7 +70,8 @@ export class MarkerService implements OnDestroy {
     private markerColorato: any;
     private markerZIndex: any;
 
-    filtro: Array<any>;
+    @Select(MapsFiltroState.filtroMarkerAttivo) filtroMarkerAttivo$: Observable<string[]>;
+    private filtroMarkerAttivo: string[];
 
     checkMarker: any;
 
@@ -86,28 +88,31 @@ export class MarkerService implements OnDestroy {
         this.subscription.add(this.markerColorato$.subscribe(marker => this.markerColorato = marker));
         this.subscription.add(this.markerZIndex$.subscribe(marker => this.markerZIndex = marker));
 
-        this.filtro = this.mapsFiltroService.filtroAttivo;
-        this.subscription.add(
-            this.mapsFiltroService.getMenu().subscribe(menu => {
-                this.filtro = [];
-                menu.forEach(r => {
-                    if (r.isActive) {
-                        this.filtro.push(r.id);
-                    }
-                });
-                this.mapsFiltroService.filtroAttivo = this.filtro;
-            })
-        );
+        this.subscription.add(this.filtroMarkerAttivo$.subscribe(filtroAttivo => this.filtroMarkerAttivo = filtroAttivo));
+
+
+        // this.filtro = this.mapsFiltroService.filtroAttivo;
+        // this.subscription.add(
+        //     this.mapsFiltroService.getMenu().subscribe(menu => {
+        //         this.filtro = [];
+        //         menu.forEach(r => {
+        //             if (r.isActive) {
+        //                 this.filtro.push(r.id);
+        //             }
+        //         });
+        //         this.mapsFiltroService.filtroAttivo = this.filtro;
+        //     })
+        // );
         this.subscription.add(
             this.stateSwitch$.subscribe((state: boolean) => {
                 this.switchMeteo = state;
             })
         );
-        this.subscription.add(
-            this.mapsFiltroService.getFiltroBoxes().subscribe((filtroBoxes: BoxClickArrayInterface) => {
-                this.filtroBoxes(filtroBoxes);
-            })
-        );
+        // this.subscription.add(
+        //     this.mapsFiltroService.getFiltroBoxes().subscribe((filtroBoxes: BoxClickArrayInterface) => {
+        //         this.filtroBoxes(filtroBoxes);
+        //     })
+        // );
         /**
          * marker minimi per creare un cluster
          * @type {number}
@@ -319,8 +324,8 @@ export class MarkerService implements OnDestroy {
         if (selected) {
             return (this.modelloMarker(marker).includes(selected));
         }
-        if (this.filtro && this.filtro.length > 0) {
-            return this.filtro.includes(this.modelloMarker(marker));
+        if (this.filtroMarkerAttivo && this.filtroMarkerAttivo.length > 0) {
+            return this.filtroMarkerAttivo.includes(this.modelloMarker(marker));
         }
         return true;
     }
