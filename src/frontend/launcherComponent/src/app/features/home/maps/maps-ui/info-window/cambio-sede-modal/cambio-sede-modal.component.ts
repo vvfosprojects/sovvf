@@ -1,23 +1,31 @@
-import {Component, OnInit} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {MarkerService} from '../../../service/marker-service/marker-service.service';
+import { Component } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { MarkerService } from '../../../service/marker-service/marker-service.service';
 import { ToastrService } from 'ngx-toastr';
+import { Select } from '@ngxs/store';
+import { MarkerState } from '../../../../store/states/maps/marker.state';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-cambio-sede-modal',
     templateUrl: '../../../../../../shared/modal/cambio-sede-modal.component.html',
     styleUrls: ['../../../../../../shared/modal/cambio-sede-modal.component.css']
 })
-export class CambioSedeModalComponent implements OnInit {
+export class CambioSedeModalComponent {
 
+    @Select(MarkerState.markerSelezionato) markerSelezionato$: Observable<any>;
     nomeSede: string;
 
-    constructor(public modal: NgbActiveModal, private markerService: MarkerService, private toastr: ToastrService) {
-
-    }
-
-    ngOnInit() {
-        this.nomeSede = this.markerService.markerSelezionato.descrizione;
+    constructor(public modal: NgbActiveModal,
+                private markerService: MarkerService,
+                private toastr: ToastrService) {
+        this.markerSelezionato$.subscribe(result => {
+            if (result) {
+                this.nomeSede = result.descrizione;
+            } else {
+                this.nomeSede = null;
+            }
+        });
     }
 
     cambioSede() {
