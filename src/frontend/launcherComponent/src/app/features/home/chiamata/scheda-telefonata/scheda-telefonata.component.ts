@@ -148,16 +148,20 @@ export class SchedaTelefonataComponent implements OnInit {
         error += this.chiamataForm.get('telefono').errors ? 'Telefono;' : '';
         error += this.chiamataForm.get('indirizzo').errors ? 'Indirizzo;' : '';
         const messageArr: string[] = error.split(/\s*(?:;|$)\s*/);
-        const message = messageArr.join(', ');
-        const title = messageArr.length > 1 ? 'Campi obbligatori' : 'Campo obbligatorio';
-        this.toastr.error(message, title, {
-            timeOut: 5000,
-        });
+        let message = messageArr.join(', ');
+        const title = messageArr.length > 1 ? 'Campi obbligatori:' : 'Campo obbligatorio:';
+        if (messageArr.length > 0) {
+            message = message.substring(0, message.length - 2);
+            this.toastr.error(message, title, {
+                timeOut: 5000,
+            });
+        }
         return !!this.chiamataForm.invalid;
     }
 
     impostaAzioneChiamata($event) {
         this.chiamataCorrente.azione = $event;
+        this.onSubmit();
     }
 
 
