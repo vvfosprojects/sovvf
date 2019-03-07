@@ -1,7 +1,8 @@
 import { MezzoMarker } from '../../../maps/maps-model/mezzo-marker.model';
 import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
 import { MezziMarkerService } from '../../../../../core/service/maps-service';
-import { GetMezziMarkers, SetMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
+import { GetMezziMarkers, OpacizzaMezziMarkers, SetMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
+import { makeCopy } from '../../../../../shared/helper/function';
 
 export interface MezziMarkersStateModel {
     mezziMarkers: MezzoMarker[];
@@ -44,6 +45,30 @@ export class MezziMarkersState implements NgxsOnInit {
         patchState({
             ...state,
             mezziMarkers: action.mezziMarkers
+        });
+    }
+
+    @Action(OpacizzaMezziMarkers)
+    opacizzaMezziMarkers({ getState, patchState }: StateContext<MezziMarkersStateModel>, action: OpacizzaMezziMarkers) {
+        const state = getState();
+        const mezziMarkers = makeCopy(state.mezziMarkers);
+        if (mezziMarkers) {
+            mezziMarkers.forEach(r => {
+                if (action.stato) {
+                    r.opacita = true;
+                    action.stato.forEach(c => {
+                        if (r.mezzo.stato.substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
+                            r.opacita = false;
+                        }
+                    });
+                } else {
+                    r.opacita = false;
+                }
+            });
+        }
+        patchState({
+            ...state,
+            mezziMarkers: mezziMarkers
         });
     }
 }

@@ -25,6 +25,7 @@ import { SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.a
 import { ToggleComposizione } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { RichiestaComposizione } from '../store/actions/composizione-partenza/richiesta-composizione.actions';
+import { OpacizzaRichiesteMarkersById } from '../store/actions/maps/richieste-markers.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -176,7 +177,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         );
     }
 
-    // Todo: da moficare con opacazziMarkerState
     opacizzaRichieste(ricerca: any): void {
         const result = this.filter.transform(this.richieste, ricerca);
         if (!(this.richieste.length === result.length) && result.length > 0) {
@@ -184,9 +184,9 @@ export class RichiesteComponent implements OnInit, OnDestroy {
             result.forEach((c: any) => {
                 string.push(c.id);
             });
-            this.markerService.opacizzaMarkers(true, 'richieste', undefined, string);
+            this.store.dispatch(new OpacizzaRichiesteMarkersById(string));
         } else {
-            this.markerService.opacizzaMarkers(false, 'richieste');
+            this.store.dispatch(new OpacizzaRichiesteMarkersById());
         }
     }
 

@@ -83,7 +83,6 @@ export class SchedaTelefonataState {
     @Action(InsertChiamata)
     insertChiamata({ getState }: StateContext<SchedaTelefonataStateModel>) {
         const state = getState();
-        // Todo: servizio Post/SignalR che inserisce la chiamata
         console.log(`Chiamata inserita:`);
         console.dir(state.chiamata);
     }

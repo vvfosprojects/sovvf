@@ -10,3 +10,10 @@ export class SetMezziMarkers {
     constructor(public mezziMarkers: MezzoMarker[]) {
     }
 }
+
+export class OpacizzaMezziMarkers {
+    static readonly type = '[Mezzi Marker] Opacizza Mezzi Marker';
+
+    constructor(public stato?: string[]) {
+    }
+}

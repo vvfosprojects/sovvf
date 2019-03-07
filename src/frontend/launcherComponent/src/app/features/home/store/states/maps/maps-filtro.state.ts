@@ -5,6 +5,8 @@ import { MarkerFiltro } from '../../../../../shared/interface/marker-filtro.inte
 import { BoxClickInterface } from '../../../boxes/box-interface/box-click-interface';
 import { Observable, Subscription } from 'rxjs';
 import { BoxClickState } from '../boxes/box-click.state';
+import { OpacizzaMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
+import { OpacizzaRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
 
 export interface MapsFiltroStateModel {
     filtroMarker: MarkerFiltro[];
@@ -135,10 +137,22 @@ export class MapsFiltroState {
             const filtroCheckBox = [];
             if (Object.values(boxClick.mezzi).indexOf(true) >= 0) {
                 pushFiltro('mezzo', filtroCheckBox);
+                const mezziState = Object.keys(boxClick.mezzi).filter(key => {
+                    return boxClick.mezzi[key];
+                });
+                this.store.dispatch(new OpacizzaMezziMarkers(mezziState));
+            } else {
+                this.store.dispatch(new OpacizzaMezziMarkers());
             }
 
             if (Object.values(boxClick.richieste).indexOf(true) >= 0) {
                 pushFiltro('richiesta', filtroCheckBox);
+                const richiesteState = Object.keys(boxClick.richieste).filter(key => {
+                    return boxClick.richieste[key];
+                });
+                this.store.dispatch(new OpacizzaRichiesteMarkers(richiesteState));
+            } else {
+                this.store.dispatch(new OpacizzaRichiesteMarkers());
             }
 
             if (filtroCheckBox.length !== 0) {

@@ -12,10 +12,6 @@ import { Localita } from '../../../../../shared/model/localita.model';
 import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
 import { Meteo } from '../../../../../shared/model/meteo.model';
 /**
- * Interface
- */
-import { BoxClickArrayInterface } from '../../../boxes/box-interface/box-click-interface';
-/**
  * Enum
  */
 import { MouseE } from '../../../../../shared/enum/mouse-e.enum';
@@ -380,50 +376,6 @@ export class MarkerService implements OnDestroy {
             marker = m;
         });
         return marker;
-    }
-
-    /**
-     * metodo che chiama il manager e cambia la proprietà opacità al marker
-     * @param action
-     * @param tipo
-     * @param filterState
-     * @param stringSearch
-     */
-    opacizzaMarkers(action: boolean, tipo: string, filterState?: string[], stringSearch?: string[]): void {
-        // Todo: diventerà markerIdOpacizzatiState
-        // const className = 'marker' + capitalize(tipo) + 'Manager';
-        // if (this[className]) {
-        //     if (action) {
-        //         this[className].cambiaOpacitaMarker(true, filterState, stringSearch);
-        //     } else {
-        //         this[className].cambiaOpacitaMarker(false);
-        //     }
-        // } else {
-        //     // console.log('manager non esistente');
-        // }
-        //
-        // function capitalize(string: string) {
-        //     return string.charAt(0).toUpperCase() + string.slice(1);
-        // }
-
-    }
-
-    // Todo: diventa opacizzaMarkerState
-    /**
-     * opacizza i marker dal filtro attivato su Boxes
-     * @param obj
-     */
-    filtroBoxes(obj: BoxClickArrayInterface) {
-        // if (obj.richieste.length > 0) {
-        //     this.opacizzaMarkers(true, Markers.Richieste, obj.richieste, undefined);
-        // } else {
-        //     this.opacizzaMarkers(false, Markers.Richieste);
-        // }
-        // if (obj.mezzi.length > 0) {
-        //     this.opacizzaMarkers(true, Markers.Mezzi, obj.mezzi, undefined);
-        // } else {
-        //     this.opacizzaMarkers(false, Markers.Mezzi);
-        // }
     }
 
     /**
