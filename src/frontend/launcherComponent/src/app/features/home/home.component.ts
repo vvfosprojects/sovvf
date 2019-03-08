@@ -1,10 +1,11 @@
 import {Component, isDevMode, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {Grids, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts} from '../../shared/interface/view.interface';
-import {Select} from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import {ViewComponentState} from './store/states/view/view.state';
 import {Composizione} from '../../shared/enum/composizione.enum';
 import {RichiesteMarkersState} from './store/states/maps/richieste-markers.state';
+import {GetUtenti} from './store/actions/utenti/utenti.actions';
 
 @Component({templateUrl: 'home.component.html'})
 export class HomeComponent implements OnInit, OnDestroy {
@@ -20,9 +21,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     @Select(ViewComponentState.colorButton) colorButton$: Observable<ViewInterfaceButton>;
     @Select(ViewComponentState.viewStateMaps) viewStateMappa$: Observable<ViewInterfaceMaps>;
 
-    constructor() {
+    constructor(private store: Store) {
         this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
         this.subscription.add(this.columnState$.subscribe(r => this.columnState = r));
+        this.store.dispatch(new GetUtenti());
     }
 
     ngOnInit() {
