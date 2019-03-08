@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListaUtentiComponent } from './lista-utenti.component';
+import { UtentiPerPaginaComponent } from './utenti-per-pagina.component';
 
-describe('ListaUtentiComponent', () => {
-  let component: ListaUtentiComponent;
-  let fixture: ComponentFixture<ListaUtentiComponent>;
+describe('UtentiPerPaginaComponent', () => {
+  let component: UtentiPerPaginaComponent;
+  let fixture: ComponentFixture<UtentiPerPaginaComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListaUtentiComponent ]
+      declarations: [ UtentiPerPaginaComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ListaUtentiComponent);
+    fixture = TestBed.createComponent(UtentiPerPaginaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -9,7 +9,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let utente of utentiPaginati | filterBy: ricercaUtenti">
+    <tr *ngFor="let utente of utentiPaginati">
         <td width="250px">
             <ngb-highlight [result]="utente.nome + ' ' + utente.cognome"></ngb-highlight>
         </td>
@@ -26,15 +26,28 @@
             <ui-switch size="small" [checked]="false"></ui-switch>
         </td>
     </tr>
+    <tr *ngIf="utentiPaginati.length <= 0">
+        <td>
+            Nessun Utente trovato
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
     </tbody>
 </table>
-<div class="d-flex justify-content-between p-2">
-    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize">
+<div *ngIf="!utentiPaginati.length <= 0" class="d-flex justify-content-between p-2">
+    <ngb-pagination [collectionSize]="utentiFiltrati.length" [(page)]="page" [pageSize]="pageSize"
+                    (pageChange)="setPage($event)">
     </ngb-pagination>
 
-    <select class="custom-select app-shadow" style="width: auto" [(ngModel)]="pageSize">
-        <option [ngValue]="10">10 utenti per pagina</option>
-        <option [ngValue]="20">20 utenti per pagina</option>
-        <option [ngValue]="30">30 utenti per pagina</option>
-    </select>
+    <app-risultati-paginazione [utentiFiltratiLength]="utentiFiltrati.length"
+                               [utentiPaginatiLength]="utentiPaginati.length"
+                               [pageSize]="pageSize"></app-risultati-paginazione>
+
+    <app-utenti-per-pagina [ricercaUtenti]="ricercaUtenti" [pageSize]="pageSize"
+                           [utentiFiltratiLength]="utentiFiltrati.length"
+                           (changePageSize)="setPageSize($event)"></app-utenti-per-pagina>
 </div>
+

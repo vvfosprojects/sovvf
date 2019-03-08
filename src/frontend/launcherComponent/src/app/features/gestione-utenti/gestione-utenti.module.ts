@@ -8,9 +8,10 @@ import {FilterPipeModule} from 'ngx-filter-pipe';
  * Component
  */
 import {GestioneUtentiComponent} from './gestione-utenti.component';
-import {ListaUtentiComponent} from './lista-utenti/lista-utenti.component';
 import { RicercaUtentiComponent } from './ricerca-utenti/ricerca-utenti.component';
 import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.component';
+import { UtentiPerPaginaComponent } from './tabella-utenti/utenti-per-pagina/utenti-per-pagina.component';
+import { RisultatiPaginazioneComponent } from './tabella-utenti/risultati-paginazione/risultati-paginazione.component';
 /**
  * Routing
  */
@@ -26,10 +27,11 @@ import {UiSwitchModule} from 'ngx-ui-switch';
  */
 import {NgxsModule} from '@ngxs/store';
 import {RicercaUtentiState} from './store/states/ricerca-utenti/ricerca-utenti.state';
+import {TabellaUtentiState} from './store/states/tabella-utenti/tabella-utenti.state';
 
 
 @NgModule({
-    declarations: [GestioneUtentiComponent, ListaUtentiComponent, RicercaUtentiComponent, TabellaUtentiComponent],
+    declarations: [GestioneUtentiComponent, RicercaUtentiComponent, TabellaUtentiComponent, UtentiPerPaginaComponent, RisultatiPaginazioneComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -43,7 +45,8 @@ import {RicercaUtentiState} from './store/states/ricerca-utenti/ricerca-utenti.s
         UiSwitchModule.forRoot(null),
         NgxsModule.forFeature(
             [
-                RicercaUtentiState
+                RicercaUtentiState,
+                TabellaUtentiState
             ]
         ),
     ]
