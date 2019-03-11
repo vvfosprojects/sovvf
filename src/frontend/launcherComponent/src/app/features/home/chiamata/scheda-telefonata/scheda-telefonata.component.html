@@ -144,6 +144,30 @@
                             - {{coordinate.longitudine}}
                         </ng-template>
                     </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-commenting"></i></span>
+                                </div>
+                                <textarea class="form-control no-resize" id="motivazionee"
+                                          formControlName="motivazione" placeholder="Motivazione"
+                                          autocomplete="new-password"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-headphones"></i></span>
+                                </div>
+                                <textarea class="form-control no-resize" id="notePrivate"
+                                          formControlName="notePrivate" placeholder="Note private"
+                                          autocomplete="new-password"></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- Divisione in due colonne: colonna sinistra -->
                 <ngb-accordion #acc="ngbAccordion">
@@ -159,16 +183,6 @@
                                             <input type="text" id="zonaEmergenza" formControlName="zonaEmergenza"
                                                    class="form-control" placeholder="Zona Emergenza"
                                                    autocomplete="new-password">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fa fa-commenting"></i></span>
-                                            </div>
-                                            <textarea class="form-control no-resize" id="motivazione"
-                                                      formControlName="motivazione" placeholder="Motivazione"
-                                                      autocomplete="new-password"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -202,16 +216,6 @@
                                             </div>
                                             <textarea class="form-control no-resize" id="noteIndirizzo"
                                                       formControlName="noteIndirizzo" placeholder="Note indirizzo"
-                                                      autocomplete="new-password"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fa fa-headphones"></i></span>
-                                            </div>
-                                            <textarea class="form-control no-resize" id="notePrivate"
-                                                      formControlName="notePrivate" placeholder="Note private"
                                                       autocomplete="new-password"></textarea>
                                         </div>
                                     </div>
