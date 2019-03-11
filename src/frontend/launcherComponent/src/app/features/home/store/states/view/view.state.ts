@@ -8,7 +8,8 @@ import { BackupViewComponentState } from './save-view.state';
 import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../../../../shared/interface/view.interface';
 import { activeChiamata, activeComposizione, colorButton, switchComposizione, turnOffComposizione, updateView, viewStateMaps } from '../../helper/view-state-function';
 import { TerminaComposizione } from '../../actions/composizione-partenza/richiesta-composizione.actions';
-import { GetInitCentroMappa, SetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
+import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
+import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -149,10 +150,11 @@ export class ViewComponentState {
     }
 
     @Action(SwitchComposizione)
-    switchComposizione({ getState, patchState }: StateContext<ViewComponentStateModel>, action: SwitchComposizione) {
+    switchComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: SwitchComposizione) {
         const state = getState();
         const currentState = makeCopy(state);
         const newState = switchComposizione(currentState, action.modalita);
+        dispatch(new ClearDirection());
         patchState({
             ...state,
             view: newState.view,
