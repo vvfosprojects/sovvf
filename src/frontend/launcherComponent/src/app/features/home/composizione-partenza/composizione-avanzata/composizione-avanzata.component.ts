@@ -1,22 +1,22 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges } from '@angular/core';
-import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subscription } from 'rxjs';
-import { MapsEvent } from '../../../../shared/enum/maps-event.enum';
+import {Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges} from '@angular/core';
+import {NgbPopoverConfig, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
+import {Observable, Subscription} from 'rxjs';
+import {MapsEvent} from '../../../../shared/enum/maps-event.enum';
 
 // Service
-import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
+import {MarkerService} from '../../maps/service/marker-service/marker-service.service';
 
 // Interface
-import { BoxPartenza } from '../interface/box-partenza-interface';
-import { MezzoComposizione } from '../interface/mezzo-composizione-interface';
-import { SquadraComposizione } from '../interface/squadra-composizione-interface';
-import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
+import {BoxPartenza} from '../interface/box-partenza-interface';
+import {MezzoComposizione} from '../interface/mezzo-composizione-interface';
+import {SquadraComposizione} from '../interface/squadra-composizione-interface';
+import {DirectionInterface} from '../../maps/maps-interface/direction-interface';
 
 // Model
-import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
-import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
-import { Coordinate } from '../../../../shared/model/coordinate.model';
-import { Composizione } from '../../../../shared/enum/composizione.enum';
+import {SintesiRichiesta} from '../../../../shared/model/sintesi-richiesta.model';
+import {CentroMappa} from '../../maps/maps-model/centro-mappa.model';
+import {Coordinate} from '../../../../shared/model/coordinate.model';
+import {Composizione} from '../../../../shared/enum/composizione.enum';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -49,8 +49,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() clearDirection: EventEmitter<any> = new EventEmitter();
 
     constructor(private markerService: MarkerService,
-        private popoverConfig: NgbPopoverConfig,
-        private tooltipConfig: NgbTooltipConfig) {
+                private popoverConfig: NgbPopoverConfig,
+                private tooltipConfig: NgbTooltipConfig) {
         // Popover options
         this.popoverConfig.container = 'body';
         this.popoverConfig.placement = 'top';
@@ -65,6 +65,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         ));
         this.deselezionaMezziComposizione();
         this.deselezionaSquadreComposizione();
+        this.stopTimeoutAll();
     }
 
     ngOnChanges() {
@@ -116,7 +117,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     // Partenza
     initPartenzaVuota() {
-        this.partenze.push({ id: this.generateUniqueId(), squadraComposizione: [], mezzoComposizione: null, selezionato: true, hover: false });
+        this.partenze.push({id: this.generateUniqueId(), squadraComposizione: [], mezzoComposizione: null, selezionato: true, hover: false});
         const length = this.partenze.length;
         this.idPartenzaCorrente = this.partenze[length - 1].id;
         this.setPartenzaAttuale(this.idPartenzaCorrente);
@@ -406,6 +407,12 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             const partenzaTrovata = this.searchPartenzaByMezzo(mezzo);
             this.deselezionaMezziByPartenza(partenzaTrovata);
         }
+    }
+
+    stopTimeoutAll() {
+        this.mezziComposizione.forEach(mC => {
+            this.stopTimeout(mC, true);
+        });
     }
 
     stopTimeoutAllExceptOne(mezzo: MezzoComposizione) {

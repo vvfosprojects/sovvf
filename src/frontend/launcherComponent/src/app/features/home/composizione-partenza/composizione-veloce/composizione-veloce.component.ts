@@ -1,17 +1,17 @@
-import { Component, Input, EventEmitter, Output, OnInit, OnDestroy } from '@angular/core';
+import {Component, Input, EventEmitter, Output, OnInit, OnDestroy} from '@angular/core';
 
 // Model
-import { BoxPartenza } from '../interface/box-partenza-interface';
-import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
+import {BoxPartenza} from '../interface/box-partenza-interface';
+import {SintesiRichiesta} from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Service
-import { CentroMappa } from '../../maps/maps-model/centro-mappa.model';
-import { Observable, Subscription } from 'rxjs';
-import { Coordinate } from '../../../../shared/model/coordinate.model';
-import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
-import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
-import { MapsEvent } from '../../../../shared/enum/maps-event.enum';
-import { Composizione } from '../../../../shared/enum/composizione.enum';
+import {CentroMappa} from '../../maps/maps-model/centro-mappa.model';
+import {Observable, Subscription} from 'rxjs';
+import {Coordinate} from '../../../../shared/model/coordinate.model';
+import {DirectionInterface} from '../../maps/maps-interface/direction-interface';
+import {MarkerService} from '../../maps/service/marker-service/marker-service.service';
+import {MapsEvent} from '../../../../shared/enum/maps-event.enum';
+import {Composizione} from '../../../../shared/enum/composizione.enum';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -41,6 +41,7 @@ export class FasterComponent implements OnInit, OnDestroy {
         this.subscription.add(this.dismissEvents.subscribe(
             events => this.annullaPartenza(events)
         ));
+        this.deselezionaPreaccoppiati();
     }
 
     ngOnDestroy(): void {
@@ -71,6 +72,12 @@ export class FasterComponent implements OnInit, OnDestroy {
                 preAcc.selezionato = false;
                 this.preAccoppiatiSelezionati.splice(index, 1);
             }
+        });
+    }
+
+    deselezionaPreaccoppiati() {
+        this.preAccoppiati.forEach(pA => {
+            pA.selezionato = false;
         });
     }
 
