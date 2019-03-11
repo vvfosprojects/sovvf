@@ -1,7 +1,6 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges} from '@angular/core';
 import {NgbPopoverConfig, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, Subscription} from 'rxjs';
-import {MapsEvent} from '../../../../shared/enum/maps-event.enum';
 
 // Service
 import {MarkerService} from '../../maps/service/marker-service/marker-service.service';
@@ -14,7 +13,6 @@ import {DirectionInterface} from '../../maps/maps-interface/direction-interface'
 
 // Model
 import {SintesiRichiesta} from '../../../../shared/model/sintesi-richiesta.model';
-import {CentroMappa} from '../../maps/maps-model/centro-mappa.model';
 import {Coordinate} from '../../../../shared/model/coordinate.model';
 import {Composizione} from '../../../../shared/enum/composizione.enum';
 
@@ -40,11 +38,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     partenze: BoxPartenza[] = [];
 
     // Enum
-    MapsEvent = MapsEvent;
     Composizione = Composizione;
 
     @Input() dismissEvents: Observable<boolean>;
-    @Output() centroMappaEmit: EventEmitter<CentroMappa> = new EventEmitter();
+    @Output() centraMappa = new EventEmitter();
     @Output() sendDirection: EventEmitter<DirectionInterface> = new EventEmitter();
     @Output() clearDirection: EventEmitter<any> = new EventEmitter();
 
@@ -98,7 +95,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
         // Interazione con Mappa
         this.annullaPartenza(true);
-        this.centraMappa(this.richiesta, MapsEvent.Centra);
+        this.centraMappa.emit();
     }
 
     squadraSelezionata(squadra: SquadraComposizione) {
@@ -326,7 +323,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
         // Interazione con Mappa
         this.annullaPartenza(true);
-        this.centraMappa(this.richiesta, MapsEvent.Centra);
+        this.centraMappa.emit();
     }
 
 
@@ -356,7 +353,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     searchPartenzaByMezzo(mezzo: MezzoComposizione) {
-        let partenza: BoxPartenza;
+        let partenza: BoxPartenza = null;
         this.partenze.forEach(p => {
             if (p.mezzoComposizione === mezzo) {
                 partenza = p;
@@ -377,8 +374,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             const maxProgressBar = 300;
             const minutesToAdd = 1;
             const now = new Date;
-            const dataScadenza = addMinutes(new Date, minutesToAdd);
-            mezzo.dataScadenzaTimeout = dataScadenza;
+            mezzo.dataScadenzaTimeout = addMinutes(new Date, minutesToAdd);
+            // mezzo.dataScadenzaTimeout = dataScadenza;
             mezzo.timeout = (mezzo.dataScadenzaTimeout.getMinutes() - now.getMinutes()) * maxProgressBar;
 
             this.interval[mezzo.id] = setInterval(() => {
@@ -444,10 +441,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             console.error('coordinate mezzo / coordinate richiesta non presenti');
             this.clearDirection.emit();
         }
-    }
-
-    centraMappa(richiesta: SintesiRichiesta, action: string, centroMappa?: CentroMappa): void {
-        this.markerService.partenza(richiesta ? richiesta.id : null, action, centroMappa);
     }
 
     annullaPartenza(event: boolean): void {

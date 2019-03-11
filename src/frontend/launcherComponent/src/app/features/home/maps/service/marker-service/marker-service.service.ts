@@ -148,7 +148,7 @@ export class MarkerService implements OnDestroy {
 
     zIndex(marker: any): number {
         if (this.markerZIndex === marker) {
-            return 99999;
+            return 33333;
         }
     }
 
@@ -391,27 +391,6 @@ export class MarkerService implements OnDestroy {
                 this.store.dispatch(new SetZoomCentroMappa(18));
                 this.markerZIndex = marker;
                 this.getDatiMeteo(marker);
-            }
-                break;
-            default: {
-                this.markerZIndex = null;
-            }
-                break;
-        }
-    }
-
-    /**
-     * centra la mappa sul marker della partenza
-     * @param id
-     * @param action
-     * @param centroMappa
-     */
-    partenza(id: string, action: string, centroMappa?: CentroMappa) {
-        const marker = this.getMarkerFromId(id);
-        switch (action) {
-            case MapsEvent.Centra: {
-                this.store.dispatch(new SetCoordCentroMappa(this.getCoordinate(marker)));
-                this.markerZIndex = marker;
             }
                 break;
             default: {

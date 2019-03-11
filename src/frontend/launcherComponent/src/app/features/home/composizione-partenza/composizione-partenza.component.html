@@ -3,20 +3,24 @@
         <div *ngIf="richiesta" class="col-12 mb-2">
             <div class="w-100 rounded card-shadow" [ngClass]="cardClasses(richiesta)">
                 <app-sintesi-richiesta [richiesta]="richiesta" [fissata]="false" [espanso]="true" [partenza]="true"
-                    [listaEventi]="true" (dismissNuovaPartenza)="dismissPartenza()"></app-sintesi-richiesta>
+                                       [listaEventi]="true"
+                                       (dismissNuovaPartenza)="dismissPartenza()"></app-sintesi-richiesta>
             </div>
         </div>
         <div *ngIf="richiesta && compPartenzaMode === Composizione.Veloce" class="col-12">
             <app-composizione-veloce [richiesta]="richiesta" [preAccoppiati]="preAccoppiati"
-                [dismissEvents]="dismissPartenzaSubject.asObservable()"
-                (sendDirection)="onSendDirection($event)" (clearDirection)="onClearDirection()">
+                                     [dismissEvents]="dismissPartenzaSubject.asObservable()"
+                                     (sendDirection)="onSendDirection($event)" (clearDirection)="onClearDirection()"
+                                     (centraMappa)="centraMappa()">
             </app-composizione-veloce>
         </div>
         <div *ngIf="richiesta && compPartenzaMode === Composizione.Avanzata" class="col-12">
             <app-composizione-avanzata [richiesta]="richiesta" [mezziComposizione]="mezziComposizione"
-                [squadreComposizione]="squadreComposizione"
-                [dismissEvents]="dismissPartenzaSubject.asObservable()" (sendDirection)="onSendDirection($event)"
-                (clearDirection)="onClearDirection()"></app-composizione-avanzata>
+                                       [squadreComposizione]="squadreComposizione"
+                                       [dismissEvents]="dismissPartenzaSubject.asObservable()"
+                                       (sendDirection)="onSendDirection($event)"
+                                       (clearDirection)="onClearDirection()"
+                                       (centraMappa)="centraMappa()"></app-composizione-avanzata>
         </div>
     </div>
 </div>

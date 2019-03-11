@@ -8,8 +8,9 @@ import { BackupViewComponentState } from './save-view.state';
 import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../../../../shared/interface/view.interface';
 import { activeChiamata, activeComposizione, colorButton, switchComposizione, turnOffComposizione, updateView, viewStateMaps } from '../../helper/view-state-function';
 import { TerminaComposizione } from '../../actions/composizione-partenza/richiesta-composizione.actions';
-import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
+import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
+import { RichiestaComposizioneState } from '../composizione-partenza/richiesta-composizione.state';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -155,6 +156,11 @@ export class ViewComponentState {
         const currentState = makeCopy(state);
         const newState = switchComposizione(currentState, action.modalita);
         dispatch(new ClearDirection());
+        this.store.select(RichiestaComposizioneState.richiestaComposizione).subscribe( richiesta => {
+            if (richiesta) {
+                dispatch(new SetCoordCentroMappa(richiesta.localita.coordinate));
+            }
+        });
         patchState({
             ...state,
             view: newState.view,

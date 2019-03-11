@@ -5,12 +5,9 @@ import {BoxPartenza} from '../interface/box-partenza-interface';
 import {SintesiRichiesta} from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Service
-import {CentroMappa} from '../../maps/maps-model/centro-mappa.model';
 import {Observable, Subscription} from 'rxjs';
 import {Coordinate} from '../../../../shared/model/coordinate.model';
 import {DirectionInterface} from '../../maps/maps-interface/direction-interface';
-import {MarkerService} from '../../maps/service/marker-service/marker-service.service';
-import {MapsEvent} from '../../../../shared/enum/maps-event.enum';
 import {Composizione} from '../../../../shared/enum/composizione.enum';
 
 @Component({
@@ -32,9 +29,10 @@ export class FasterComponent implements OnInit, OnDestroy {
 
     @Output() sendDirection: EventEmitter<DirectionInterface> = new EventEmitter();
     @Output() clearDirection: EventEmitter<any> = new EventEmitter();
+    @Output() centraMappa = new EventEmitter();
 
 
-    constructor(private markerService: MarkerService) {
+    constructor() {
     }
 
     ngOnInit() {
@@ -58,7 +56,7 @@ export class FasterComponent implements OnInit, OnDestroy {
     preAccoppiatoDeselezionato(preAcc: BoxPartenza) {
         this.deselezionaPreaccoppiato(preAcc);
         this.annullaPartenza(true);
-        this.centraMappa(this.richiesta, MapsEvent.Centra);
+        this.centraMappa.emit();
     }
 
     selezionaPreaccoppiato(preAcc: BoxPartenza) {
@@ -100,10 +98,6 @@ export class FasterComponent implements OnInit, OnDestroy {
             console.error('coordinate mezzo / coordinate richiesta non presenti');
             this.clearDirection.emit();
         }
-    }
-
-    centraMappa(richiesta: SintesiRichiesta, action: string, centroMappa?: CentroMappa): void {
-        this.markerService.partenza(richiesta ? richiesta.id : null, action, centroMappa);
     }
 
     annullaPartenza(event: boolean): void {

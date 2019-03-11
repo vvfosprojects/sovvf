@@ -1,7 +1,6 @@
 import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Subject, Subscription, Observable } from 'rxjs';
-import { MarkerService } from '../maps/service/marker-service/marker-service.service';
 import { Store, Select } from '@ngxs/store';
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
 import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
@@ -21,7 +20,8 @@ import { makeCopy, wipeStatoRichiesta } from '../../../shared/helper/function';
 import { TurnOffComposizione } from '../store/actions/view/view.actions';
 import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
 import { SquadreComposizioneState } from '../store/states/composizione-partenza/squadre-composizione.state';
-import { GetInitCentroMappa } from '../store/actions/maps/centro-mappa.actions';
+import { GetInitCentroMappa, SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
+import { ClearMarkerSelezionato } from '../store/actions/maps/marker.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -50,9 +50,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     prevStateBoxClick: BoxClickStateModel;
 
-    constructor(private store: Store,
-                // private centerService: CenterService,
-                private markerS: MarkerService) {
+    constructor(private store: Store) {
         this.subscription.add(this.nuovaPartenza$.subscribe( r => this.richiesta = r));
 
         // Prendo i mezzi da visualizzare nella lista
@@ -100,7 +98,8 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     dismissPartenza(): void {
         this.store.dispatch(new GetInitCentroMappa());
         this.dismissPartenzaSubject.next(true);
-        this.markerS.noAction();
+        this.store.dispatch(new ClearMarkerSelezionato());
+        this.centraMappa();
         this.turnOffComposizione();
     }
 
@@ -124,6 +123,10 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     turnOffComposizione() {
         this.store.dispatch(new TurnOffComposizione());
+    }
+
+    centraMappa() {
+        this.store.dispatch(new SetCoordCentroMappa(this.richiesta.localita.coordinate));
     }
 
 }
