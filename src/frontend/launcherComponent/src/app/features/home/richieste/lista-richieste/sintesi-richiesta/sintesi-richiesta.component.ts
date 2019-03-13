@@ -28,6 +28,7 @@ export class SintesiRichiestaComponent implements OnInit {
     @Input() espandibile: boolean;
     @Input() listaEventi: boolean;
     @Input() partenza: boolean;
+    @Input() composizionePartenza = true;
 
     @Output() clickRichiesta: EventEmitter<any> = new EventEmitter();
     @Output() doubleClickRichiesta: EventEmitter<any> = new EventEmitter();
