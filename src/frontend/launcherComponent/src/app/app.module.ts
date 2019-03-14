@@ -42,6 +42,7 @@ import { JwtInterceptor, ErrorInterceptor, fakeBackendProvider } from './core/au
 import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
+import { SignalRState } from './core/signalr/store/signalR.state';
 
 
 
@@ -74,7 +75,7 @@ import { AppLoadModule } from './core/app-load/app-load.module';
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [UtenteState, UtentiState],
+            [UtenteState, UtentiState, SignalRState],
             { developmentMode: !environment.production }
         ),
         NgxsStoragePluginModule.forRoot({

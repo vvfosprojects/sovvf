@@ -39,10 +39,10 @@
     </ng-sidebar>
     <div ng-sidebar-content>
         <app-navbar *ngIf="_toggle" (openedSidebar)="_toggleOpened()"></app-navbar>
-        <div *ngIf="!fakeCambioSede.preLoader">
+        <div *ngIf="!fakeCambioSede.preLoader || !_signalR">
             <app-loader></app-loader>
         </div>
-        <div *ngIf="fakeCambioSede.preLoader">
+        <div *ngIf="fakeCambioSede.preLoader && _signalR">
             <router-outlet></router-outlet>
         </div>
     </div>

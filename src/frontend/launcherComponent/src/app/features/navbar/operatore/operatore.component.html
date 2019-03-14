@@ -7,7 +7,7 @@
       {{user.nome}} {{user.cognome}}
   </button>
 </div>
-<button *ngIf="user" class="btn btn-danger" ngbTooltip="Disconnettiti" placement="bottom" [routerLink]="['/login']"><i class="fa fa-sign-out"></i>
+<button *ngIf="user" class="btn btn-danger" ngbTooltip="Disconnettiti" placement="bottom" (click)="logout()" [routerLink]="['/login']"><i class="fa fa-sign-out"></i>
   Esci
 </button>
 <ng-template #notifiche>

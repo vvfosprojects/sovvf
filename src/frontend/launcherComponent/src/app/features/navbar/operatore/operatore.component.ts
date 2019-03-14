@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Role, Utente } from '../../../shared/model/utente.model';
+import { SignalRService } from '../../../core/signalr/signalR.service';
 
 @Component({
     selector: 'app-operatore',
@@ -8,6 +9,14 @@ import { Role, Utente } from '../../../shared/model/utente.model';
 })
 export class OperatoreComponent {
 
+    constructor(private signalR: SignalRService) {
+
+    }
+
     @Input() user: Utente;
     Role = Role;
+
+    logout() {
+        this.signalR.removeToGroup(this.user.sede.codice);
+    }
 }

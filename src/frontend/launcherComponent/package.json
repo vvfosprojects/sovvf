@@ -8,7 +8,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "avvia": "ng serve --proxy-config proxy.conf.js --host 0.0.0.0 --disable-host-check",
+    "avvia2": "ng serve --proxy-config proxy.conf2.js --host 0.0.0.0 --disable-host-check"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +29,7 @@
     "@angular/platform-browser": "^7.2.7",
     "@angular/platform-browser-dynamic": "^7.2.7",
     "@angular/router": "^7.2.7",
+    "@aspnet/signalr": "^1.1.2",
     "@ng-bootstrap/ng-bootstrap": "^4.0.4",
     "@ng-select/ng-select": "^2.14.0",
     "@ngx-progressbar/core": "^5.3.1",

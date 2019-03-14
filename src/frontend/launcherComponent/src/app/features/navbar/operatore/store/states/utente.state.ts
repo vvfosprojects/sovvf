@@ -2,6 +2,7 @@ import { Utente } from '../../../../../shared/model/utente.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { UserService } from '../../../../../core/auth/_services';
 import { GetUtente } from '../actions/utente.actions';
+import { SignalRService } from '../../../../../core/signalr/signalR.service';
 
 export interface UtenteStateModel {
     utente: Utente;
@@ -22,16 +23,14 @@ export class UtenteState {
         return state.utente;
     }
 
-    constructor(private _users: UserService) {
+    constructor(private _users: UserService, private signalR: SignalRService) {
     }
 
     @Action(GetUtente)
-    getUtente({ getState, patchState }: StateContext<UtenteStateModel>, action: GetUtente) {
-        const state = getState();
-
+    getUtente({ patchState }: StateContext<UtenteStateModel>, action: GetUtente) {
         this._users.getById(action.id).subscribe((utente: Utente) => {
+            this.signalR.addToGroup(utente.sede.codice);
             patchState({
-                ...state,
                 utente: utente
             });
         });
