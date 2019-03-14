@@ -66,10 +66,10 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                 private markerService: MarkerService,
                 private filter: FilterPipe,
                 private store: Store) {
+        this.getRichieste();
     }
 
     ngOnInit(): void {
-        this.getRichieste();
         this.getRichiestaFissata();
         this.getRichiestaHover();
         this.getRichiestaSelezionata();
