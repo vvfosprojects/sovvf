@@ -1,7 +1,7 @@
 import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
 import { SedeMarker } from '../../../maps/maps-model/sede-marker.model';
 import { SediMarkerService } from '../../../../../core/service/maps-service';
-import { GetSediMarkers, SetSediMarkers } from '../../actions/maps/sedi-markers.actions';
+import { ClearSediMarkers, GetSediMarkers, SetSediMarkers } from '../../actions/maps/sedi-markers.actions';
 
 export interface SediMarkersStateModel {
     sediMarkers: SedeMarker[];
@@ -28,7 +28,7 @@ export class SediMarkersState implements NgxsOnInit {
     }
 
     ngxsOnInit(ctx: StateContext<SediMarkersState>) {
-        ctx.dispatch(new GetSediMarkers());
+        // ctx.dispatch(new GetSediMarkers());
     }
 
     @Action(GetSediMarkers)
@@ -39,11 +39,14 @@ export class SediMarkersState implements NgxsOnInit {
     }
 
     @Action(SetSediMarkers)
-    setSediMarkers({ getState, patchState }: StateContext<SediMarkersStateModel>, action: SetSediMarkers) {
-        const state = getState();
+    setSediMarkers({ patchState }: StateContext<SediMarkersStateModel>, action: SetSediMarkers) {
         patchState({
-            ...state,
             sediMarkers: action.sediMarkers
         });
+    }
+
+    @Action(ClearSediMarkers)
+    clearRichieste({ patchState }: StateContext<SediMarkersStateModel>) {
+        patchState(SediMarkersStateDefaults);
     }
 }

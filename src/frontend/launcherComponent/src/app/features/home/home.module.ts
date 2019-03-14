@@ -16,7 +16,6 @@ import { NgxsModule } from '@ngxs/store';
 import { FiltriRichiesteState } from './store/states/filterbar/filtri-richieste.state';
 import { RicercaRichiesteState } from './store/states/filterbar/ricerca-richieste.state';
 import { MarkerMeteoState } from './store/states/filterbar/marker-meteo-switch.state';
-import { MarkerService } from './maps/service/marker-service/marker-service.service';
 import { BoxesModule } from './boxes/boxes.module';
 import { ChiamataModule } from './chiamata/chiamata.module';
 import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
@@ -27,6 +26,7 @@ import { ComposizionePartenzaModule } from './composizione-partenza/composizione
 import { ViewComponentState } from './store/states/view/view.state';
 import { BackupViewComponentState } from './store/states/view/save-view.state';
 import { ToastrState } from '../../shared/store/states/toastr/toastr.state';
+import { HomeState } from './store/states/home.state';
 
 @NgModule({
     declarations: [
@@ -58,6 +58,7 @@ import { ToastrState } from '../../shared/store/states/toastr/toastr.state';
         }),
         NgxsModule.forFeature(
             [
+                HomeState,
                 ViewComponentState,
                 BackupViewComponentState,
                 FiltriRichiesteState,
@@ -66,9 +67,6 @@ import { ToastrState } from '../../shared/store/states/toastr/toastr.state';
                 ToastrState
             ]
         ),
-    ],
-    providers: [
-        MarkerService
     ]
 })
 export class HomeModule {

@@ -46,3 +46,7 @@ export class SetInitCentroMappa {
     }
 }
 
+export class ClearCentroMappa {
+    static readonly type = '[Centro Mappa] Clear Centro Mappa';
+}
+

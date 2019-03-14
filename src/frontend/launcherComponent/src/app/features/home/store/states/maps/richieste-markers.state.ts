@@ -1,7 +1,7 @@
-import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { RichiesteMarkerService } from '../../../../../core/service/maps-service';
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
-import { GetRichiesteMarkers, OpacizzaRichiesteMarkers, OpacizzaRichiesteMarkersById, SetRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
+import { ClearRichiesteMarkers, GetRichiesteMarkers, OpacizzaRichiesteMarkers, OpacizzaRichiesteMarkersById, SetRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
 import { makeCopy, wipeStatoRichiesta } from '../../../../../shared/helper/function';
 
 export interface RichiesteMarkersStateModel {
@@ -17,7 +17,7 @@ export const RichiesteMarkersStateDefaults: RichiesteMarkersStateModel = {
     defaults: RichiesteMarkersStateDefaults
 })
 
-export class RichiesteMarkersState implements NgxsOnInit {
+export class RichiesteMarkersState {
 
     @Selector()
     static richiesteMarkers(state: RichiesteMarkersStateModel) {
@@ -38,10 +38,6 @@ export class RichiesteMarkersState implements NgxsOnInit {
 
     }
 
-    ngxsOnInit(ctx: StateContext<RichiesteMarkersState>) {
-        ctx.dispatch(new GetRichiesteMarkers());
-    }
-
     @Action(GetRichiesteMarkers)
     getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>) {
         this._richieste.getRichiesteMarkers().subscribe((result: RichiestaMarker[]) => {
@@ -50,10 +46,8 @@ export class RichiesteMarkersState implements NgxsOnInit {
     }
 
     @Action(SetRichiesteMarkers)
-    setRichiesteMarkers({ getState, patchState }: StateContext<RichiesteMarkersStateModel>, action: SetRichiesteMarkers) {
-        const state = getState();
+    setRichiesteMarkers({ patchState }: StateContext<RichiesteMarkersStateModel>, action: SetRichiesteMarkers) {
         patchState({
-            ...state,
             richiesteMarkers: action.richiesteMarkers
         });
     }
@@ -104,6 +98,11 @@ export class RichiesteMarkersState implements NgxsOnInit {
             ...state,
             richiesteMarkers: richiesteMarkers
         });
+    }
+
+    @Action(ClearRichiesteMarkers)
+    clearRichiesteMarkers({ patchState }: StateContext<RichiesteMarkersStateModel>) {
+        patchState(RichiesteMarkersStateDefaults);
     }
 
 }
