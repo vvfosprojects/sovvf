@@ -24,13 +24,8 @@ import { FilterbarModule } from './filterbar/filterbar.module';
 import { MapsModule } from './maps/maps.module';
 import { RichiesteModule } from './richieste/richieste.module';
 import { ComposizionePartenzaModule } from './composizione-partenza/composizione-partenza.module';
-import { RichiesteState } from './store/states/richieste/richieste.state';
-import { RichiestaHoverState } from './store/states/richieste/richiesta-hover.state';
-import { RichiestaFissataState } from './store/states/richieste/richiesta-fissata.state';
-import { RichiestaSelezionataState } from './store/states/richieste/richiesta-selezionata.state';
 import { ViewComponentState } from './store/states/view/view.state';
 import { BackupViewComponentState } from './store/states/view/save-view.state';
-import { RichiestaComposizioneState } from './store/states/composizione-partenza/richiesta-composizione.state';
 import { ToastrState } from '../../shared/store/states/toastr/toastr.state';
 
 @NgModule({
@@ -68,11 +63,6 @@ import { ToastrState } from '../../shared/store/states/toastr/toastr.state';
                 FiltriRichiesteState,
                 RicercaRichiesteState,
                 MarkerMeteoState,
-                RichiesteState,
-                RichiestaFissataState,
-                RichiestaHoverState,
-                RichiestaSelezionataState,
-                RichiestaComposizioneState,
                 ToastrState
             ]
         ),

@@ -24,6 +24,12 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule} from 'ngx-timeago';
 import {SintesiRichiestaModule} from './lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
+import { NgxsModule } from '@ngxs/store';
+import { RichiesteState } from '../store/states/richieste/richieste.state';
+import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
+import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
+import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
+import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
 
 @NgModule({
   imports: [
@@ -39,7 +45,14 @@ import {SintesiRichiestaModule} from './lista-richieste/sintesi-richiesta/sintes
     TimeagoModule.forRoot({
       intl: TimeagoIntl,
       formatter: {provide: TimeagoFormatter, useClass: TimeagoCustomFormatter}
-    })
+    }),
+      NgxsModule.forFeature([
+        RichiesteState,
+        RichiestaFissataState,
+        RichiestaHoverState,
+        RichiestaSelezionataState,
+        RichiestaComposizioneState
+      ])
   ],
   declarations: [
     RichiesteComponent,
