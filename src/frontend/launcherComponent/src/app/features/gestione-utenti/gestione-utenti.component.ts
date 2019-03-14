@@ -23,6 +23,7 @@ export class GestioneUtentiComponent implements OnInit {
 
     constructor(public modal: NgbModal,
                 private store: Store) {
+        this.store.dispatch(new GetUtenti());
     }
 
     onRicercaUtenti(ricerca: any) {
