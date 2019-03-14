@@ -5,8 +5,8 @@ import { UnitaAttualeService } from '../navbar-service/unita-attuale/unita-attua
 
 @Component({
     selector: 'app-cambio-sede-nav-modal',
-    templateUrl: '../../../shared/modal/cambio-sede-modal.component.html',
-    styleUrls: ['../../../shared/modal/cambio-sede-modal.component.css']
+    templateUrl: '../../../shared/modal/cambio-sede/cambio-sede-modal.component.html',
+    styleUrls: ['../../../shared/modal/cambio-sede/cambio-sede-modal.component.css']
 })
 export class CambioSedeModalNavComponent implements OnInit {
 

@@ -9,9 +9,10 @@ import { SchedaTelefonataInterface } from '../model/scheda-telefonata.interface'
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
 import { makeCopy } from '../../../../shared/helper/function';
 import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
-import { ToastrService } from 'ngx-toastr';
 import { Store } from '@ngxs/store';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/confirm-modal.component';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -38,7 +39,8 @@ export class SchedaTelefonataComponent implements OnInit {
     @Output() schedaTelefonata = new EventEmitter<SchedaTelefonataInterface>();
 
     constructor(private formBuilder: FormBuilder,
-                private store: Store) {
+                private store: Store,
+                private modalService: NgbModal) {
     }
 
     ngOnInit() {
@@ -82,17 +84,63 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     onAnnullaChiamata(): void {
-        this.chiamataCorrente = null;
-        this.chiamataForm.reset();
-        this._statoChiamata('annullata');
+        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {backdropClass: 'light-blue-backdrop', centered: true});
+        modalConfermaAnnulla.componentInstance.icona = {descrizione: 'trash', colore: 'danger'};
+        modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
+        modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
+        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tornerai alla lista eliminando tutti i dati inseriti.';
+        modalConfermaAnnulla.componentInstance.bottoni = [
+            {type: 'ko', descrizione: 'Annulla', colore: 'danger'},
+            {type: 'ok', descrizione: 'Conferma', colore: 'dark'},
+        ];
+
+        modalConfermaAnnulla.result.then(
+            (val) => {
+                switch (val) {
+                    case 'ok':
+                        this.chiamataCorrente = null;
+                        this.chiamataForm.reset();
+                        this._statoChiamata('annullata');
+                        break;
+                    case 'ko':
+                        console.log('Azione annullata');
+                        break;
+                }
+                console.log('Modal chiusa con val ->', val);
+            },
+            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+        );
     }
 
     onResetChiamata(): void {
-        this.submitted = false;
-        this.chiamataForm.reset();
-        this.chiamataCorrente.idTipoIntervento = [];
-        this.chiamataForm.get('tipoIntervento').patchValue([]);
-        this._statoChiamata('reset');
+        const modalConfermaReset = this.modalService.open(ConfirmModalComponent, {backdropClass: 'light-blue-backdrop', centered: true});
+        modalConfermaReset.componentInstance.icona = {descrizione: 'exclamation-triangle', colore: 'danger'};
+        modalConfermaReset.componentInstance.titolo = 'Reset Chiamata';
+        modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler effettuare il reset della chiamata?';
+        modalConfermaReset.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti verranno eliminati.';
+        modalConfermaReset.componentInstance.bottoni = [
+            {type: 'ko', descrizione: 'Annulla', colore: 'danger'},
+            {type: 'ok', descrizione: 'Conferma', colore: 'dark'},
+        ];
+
+        modalConfermaReset.result.then(
+            (val) => {
+                switch (val) {
+                    case 'ok':
+                        this.submitted = false;
+                        this.chiamataForm.reset();
+                        this.chiamataCorrente.idTipoIntervento = [];
+                        this.chiamataForm.get('tipoIntervento').patchValue([]);
+                        this._statoChiamata('reset');
+                        break;
+                    case 'ko':
+                        console.log('Azione annullata');
+                        break;
+                }
+                console.log('Modal chiusa con val ->', val);
+            },
+            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+        );
     }
 
     onCopiaIndirizzo(): void {
@@ -179,5 +227,4 @@ export class SchedaTelefonataComponent implements OnInit {
             markerChiamata: this.chiamataMarker
         });
     }
-
 }
