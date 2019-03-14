@@ -26,6 +26,7 @@ import { ToggleComposizione } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { RichiestaComposizione } from '../store/actions/composizione-partenza/richiesta-composizione.actions';
 import { OpacizzaRichiesteMarkersById } from '../store/actions/maps/richieste-markers.actions';
+import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -98,11 +99,12 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                         this.loaderNuoveRichieste = false;
                     }, 500);
                     this.contatoreNuoveRichieste = false;
-                    this.toastr.warning('Non ci sono altre richieste da visualizzare', 'Richieste terminate', {
-                        timeOut: 5000
-                    });
-                    // TEST
-                    // console.log('[ListaRichieste] Richieste Terminate');
+
+                    const type = 'warning';
+                    const message = 'Non ci sono altre richieste da visualizzare';
+                    const title = 'Richieste terminate';
+
+                    this.store.dispatch(new ShowToastr(type, title, message));
                 }
             })
         );
@@ -217,7 +219,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     onVisualizzaEventiRichiesta(idRichiesta: string) {
         this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
-        this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+        this.modalService.open(EventiRichiestaComponent, {windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true});
     }
 
     toggleComposizione() {

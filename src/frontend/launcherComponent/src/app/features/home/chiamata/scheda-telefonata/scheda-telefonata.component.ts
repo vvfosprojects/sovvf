@@ -10,6 +10,8 @@ import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
 import { makeCopy } from '../../../../shared/helper/function';
 import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
 import { ToastrService } from 'ngx-toastr';
+import { Store } from '@ngxs/store';
+import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -20,7 +22,7 @@ import { ToastrService } from 'ngx-toastr';
 export class SchedaTelefonataComponent implements OnInit {
 
     options = {
-        componentRestrictions: { country: ['IT', 'FR', 'AT', 'CH', 'SI'] }
+        componentRestrictions: {country: ['IT', 'FR', 'AT', 'CH', 'SI']}
     };
     chiamataCorrente: FormChiamataModel;
     chiamataMarker: ChiamataMarker;
@@ -36,7 +38,7 @@ export class SchedaTelefonataComponent implements OnInit {
     @Output() schedaTelefonata = new EventEmitter<SchedaTelefonataInterface>();
 
     constructor(private formBuilder: FormBuilder,
-                private toastr: ToastrService) {
+                private store: Store) {
     }
 
     ngOnInit() {
@@ -152,9 +154,8 @@ export class SchedaTelefonataComponent implements OnInit {
         const title = messageArr.length > 1 ? 'Campi obbligatori:' : 'Campo obbligatorio:';
         if (messageArr.length > 0) {
             message = message.substring(0, message.length - 2);
-            this.toastr.error(message, title, {
-                timeOut: 5000,
-            });
+            const type = 'error';
+            this.store.dispatch(new ShowToastr(type, title, message, 5000));
         }
         return !!this.chiamataForm.invalid;
     }
