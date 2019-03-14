@@ -9,14 +9,15 @@ export class DebounceKeyUpDirective implements OnInit, OnDestroy {
     @Input() debounceTime = 500;
     @Output() debounceKeyUp = new EventEmitter();
     private keyUps = new Subject();
-    private subscription: Subscription;
+    private subscription = new Subscription();
 
-    constructor() { }
+    constructor() {
+    }
 
     ngOnInit() {
-        this.subscription = this.keyUps.pipe(
+        this.subscription.add(this.keyUps.pipe(
             debounceTime(this.debounceTime)
-        ).subscribe(e => this.debounceKeyUp.emit(e));
+        ).subscribe(e => this.debounceKeyUp.emit(e)));
     }
 
     ngOnDestroy() {
