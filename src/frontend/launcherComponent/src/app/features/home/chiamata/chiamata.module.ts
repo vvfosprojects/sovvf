@@ -14,6 +14,7 @@ import { NgxsModule } from '@ngxs/store';
 import { ChiamataState } from '../store/states/chiamata/chiamata.state';
 import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
 import { ClipboardState } from '../store/states/chiamata/clipboard.state';
+import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 
 @NgModule({
     imports: [
@@ -32,11 +33,13 @@ import { ClipboardState } from '../store/states/chiamata/clipboard.state';
     ],
     declarations: [
         ChiamataComponent,
-        SchedaTelefonataComponent
+        SchedaTelefonataComponent,
+        ConfirmModalComponent
     ],
     exports: [
         ChiamataComponent
     ],
+    entryComponents: [ConfirmModalComponent],
     providers: [{
         provide: ChiamataService, useClass: ChiamataServiceFake
     }]
