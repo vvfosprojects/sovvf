@@ -5,22 +5,28 @@
                 <!-- box interventi -->
                 <div class="col-4 pr-0">
                     <div class="card app-shadow">
-                        <app-box-interventi [interventi]="(richieste$ | async)" [boxClick]="(boxClick$ | async)"
-                                            (clickRichieste)="clickBox('richieste', $event)"></app-box-interventi>
+                        <ng-container *ngIf="richieste">
+                            <app-box-interventi [interventi]="richieste" [boxClick]="(boxClick$ | async)"
+                                                (clickRichieste)="clickBox('richieste', $event)"></app-box-interventi>
+                        </ng-container>
                     </div>
                 </div>
                 <!-- box interventi -->
                 <div class="col-4 pr-0">
                     <div class="card app-shadow">
-                        <app-box-mezzi [mezzi]="(mezzi$ | async)" [boxClick]="(boxClick$ | async)"
-                                       (clickMezzi)="clickBox('mezzi', $event)"></app-box-mezzi>
+                        <ng-container *ngIf="mezzi">
+                            <app-box-mezzi [mezzi]="mezzi" [boxClick]="(boxClick$ | async)"
+                                           (clickMezzi)="clickBox('mezzi', $event)"></app-box-mezzi>
+                        </ng-container>
                     </div>
                 </div>
                 <!-- box interventi -->
                 <div class="col-4 pr-0">
                     <div class="card app-shadow">
-                        <app-box-personale [personale]="(personale$ | async)"
-                                           (clickServizi)="clickServizi($event)"></app-box-personale>
+                        <ng-container *ngIf="personale">
+                            <app-box-personale [personale]="personale"
+                                               (clickServizi)="clickServizi($event)"></app-box-personale>
+                        </ng-container>
                     </div>
                 </div>
             </div>

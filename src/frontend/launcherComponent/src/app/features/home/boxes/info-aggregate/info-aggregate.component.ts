@@ -26,8 +26,11 @@ import { FetchBoxPersonale } from '../../store/actions/boxes/box-personale.actio
 })
 export class InfoAggregateComponent implements OnInit, OnDestroy {
     @Select(BoxRichiesteState.richieste) richieste$: Observable<BoxInterventi>;
+    richieste: BoxInterventi;
     @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
+    mezzi: BoxMezzi;
     @Select(BoxPersonaleState.personale) personale$: Observable<BoxPersonale>;
+    personale: BoxPersonale;
 
     datimeteo: Meteo;
 
@@ -40,6 +43,9 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
                 private meteoService: MeteoService) {
 
         this.startMeteo();
+        this.subscription.add(this.richieste$.subscribe( r => this.richieste = r));
+        this.subscription.add(this.mezzi$.subscribe( r => this.mezzi = r));
+        this.subscription.add(this.personale$.subscribe( r => this.personale = r));
     }
 
     ngOnInit() {
