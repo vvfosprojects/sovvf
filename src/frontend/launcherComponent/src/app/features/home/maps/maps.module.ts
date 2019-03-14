@@ -44,6 +44,9 @@ import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
 import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
+import { SintesiRichiestaModalComponent } from './maps-ui/info-window/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
+import {SintesiRichiestaComponent} from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
+import {SintesiRichiestaModule} from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 
 @NgModule({
     imports: [
@@ -54,6 +57,7 @@ import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
         AgmDirectionModule,
         AgmJsMarkerClustererModule,
         AgmSnazzyInfoWindowModule,
+        SintesiRichiestaModule,
         SharedModule.forRoot(),
         NgxsModule.forFeature(
             [
@@ -75,9 +79,10 @@ import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
         AgmContentComponent,
         MapsFiltroComponent,
         InfoWindowComponent,
-        CambioSedeModalComponent
+        CambioSedeModalComponent,
+        SintesiRichiestaModalComponent
     ],
-    entryComponents: [CambioSedeModalComponent],
+    entryComponents: [CambioSedeModalComponent, SintesiRichiestaModalComponent],
     exports: [
         MapsComponent
     ],

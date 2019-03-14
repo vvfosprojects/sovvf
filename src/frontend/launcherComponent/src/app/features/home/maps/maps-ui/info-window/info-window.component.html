@@ -91,13 +91,21 @@
             <thead class="thead-light">
             <tr>
                 <th scope="col" class="py-1 px-2">
-                    <span ngbTooltip="{{ mezzoMarker.mezzo.descrizione }}"
-                          [disableTooltip]="mezzoMarker.mezzo.descrizione.length <= 15">
-                        {{mezzoMarker.mezzo.descrizione | truncate:15 }}
-                    </span>
-                    <span ngbTooltip="{{ mezzoMarker.mezzo.genere }}"
-                          [disableTooltip]="mezzoMarker.mezzo.genere.length <= 15">
-                        &nbsp;({{mezzoMarker.mezzo.genere | truncate:15 }})
+                    <span class="mr-2 text-right" ngbTooltip="Stato del Mezzo">
+                        <span class="guida fa fa-truck fa-fw mr-1"></span>
+
+                        <span ngbTooltip="{{ mezzoMarker.mezzo.descrizione }}"
+                              [disableTooltip]="mezzoMarker.mezzo.descrizione.length <= 15">
+                            {{mezzoMarker.mezzo.descrizione | truncate:15 }}
+                        </span>
+                        <span ngbTooltip="{{ mezzoMarker.mezzo.genere }}"
+                              [disableTooltip]="mezzoMarker.mezzo.genere.length <= 15">
+                            &nbsp;({{mezzoMarker.mezzo.genere | truncate:15 }})
+                        </span>
+
+                        <span class="ml-1">
+                        {{mezzoMarker.mezzo.stato}}
+                        </span>
                     </span>
                 </th>
             </tr>
@@ -105,14 +113,14 @@
             <tbody>
             <tr>
                 <th scope="row" class="py-1 s-info-window">
-                    <span *ngIf="!!mezzoMarker.id_richiesta" ngbTooltip="ID Richiesta Soccorso">
-                        <span class="guida fa fa-hashtag fa-fw mr-1"></span>
-                        {{mezzoMarker.id_richiesta}}
+                    <span *ngIf="!!mezzoMarker.tipologie_richiesta[0]"
+                          ngbTooltip="Tipologia Richiesta {{mezzoMarker.id_richiesta}}">
+                        <i class="{{ methods.coloraIcona(mezzoMarker.tipologie_richiesta[0].icona) }} mr-1"
+                           ngbTooltip="{{ mezzoMarker.tipologie_richiesta[0].descrizione }}"></i>
+                        {{mezzoMarker.tipologie_richiesta[0].descrizione}}
                     </span>
-                    <span class="ml-5 mr-2 text-right" ngbTooltip="Stato del Mezzo">
-                        <span class="guida fa fa-truck fa-fw mr-1"></span>
-                        {{mezzoMarker.mezzo.stato}}
-                    </span>
+                    <i class="fa fa-eye text-primary ml-2"
+                       (click)="openModal('visualizzaRichiesta', mezzoMarker.id_richiesta)"></i>
                 </th>
             </tr>
             <tr>
@@ -120,7 +128,8 @@
                     <div class="nowrap">
                         <span class="mr-2">Condizioni mezzo</span>
                         <a class="mr-1" href="javascript:void(0)" title="Stato di efficienza del mezzo"
-                           [autoClose]="false" triggers="manual" #efficienzaMezzo="ngbPopover" (click)="apriPopover(efficienzaMezzo)"
+                           [autoClose]="false" triggers="manual" #efficienzaMezzo="ngbPopover"
+                           (click)="apriPopover(efficienzaMezzo)"
                            ngbPopover="{{mezzoMarker.mezzo.descrizioneStatoEfficienza}}"
                            popoverTitle="Stato di efficienza del mezzo">
                             <i class='fa fa-cogs fa-fw'
@@ -128,21 +137,24 @@
                         </a>
                         <a class="mr-1" href="javascript:void(0)" title="Livello Carburante"
                            ngbPopover="{{mezzoMarker.mezzo.descrizioneLivelloCarburante }}"
-                           [autoClose]="false" triggers="manual" #livelloCarburante="ngbPopover" (click)="apriPopover(livelloCarburante)"
+                           [autoClose]="false" triggers="manual" #livelloCarburante="ngbPopover"
+                           (click)="apriPopover(livelloCarburante)"
                            popoverTitle="Livello Carburante">
                             <i class='fa fa-tachometer fa-fw'
                                [ngClass]="dettagliMezzo(mezzoMarker.mezzo.livelloCarburante, 'carburante', 'text')"></i>
                         </a>
                         <a class="mr-1" href="javascript:void(0)" title="Livello Estinguente"
                            ngbPopover="{{mezzoMarker.mezzo.descrizioneLivelloEstinguente }}"
-                           [autoClose]="false" triggers="manual" #livelloEstinguente="ngbPopover" (click)="apriPopover(livelloEstinguente)"
+                           [autoClose]="false" triggers="manual" #livelloEstinguente="ngbPopover"
+                           (click)="apriPopover(livelloEstinguente)"
                            popoverTitle="Livello Estinguente">
                             <i class='fa fa-tint fa-fw'
                                [ngClass]="dettagliMezzo(mezzoMarker.mezzo.livelloEstinguente, 'estinguente', 'text')"></i>
                         </a>
                         <a class="mr-1" href="javascript:void(0)" title="Appartenenza del mezzo"
                            ngbPopover="{{mezzoMarker.mezzo.descrizioneAppartenenza }}"
-                           [autoClose]="false" triggers="manual" #appartenenzaMezzo="ngbPopover" (click)="apriPopover(appartenenzaMezzo)"
+                           [autoClose]="false" triggers="manual" #appartenenzaMezzo="ngbPopover"
+                           (click)="apriPopover(appartenenzaMezzo)"
                            popoverTitle="Appartenenza del mezzo">
                             <i class='fa fa-flag fa-fw'
                                [ngClass]="dettagliMezzo(mezzoMarker.mezzo.appartenenza, 'appartenenza', 'text')"></i>
@@ -189,7 +201,8 @@
             <tr *ngIf="sedeMarker.tipo">
                 <th scope="row" class="s-info-window row py-1 px-0 mx-0 w-100">
                     <div class="col">
-                        <button class="btn btn-outline-dark px-1 py-1 my-3" (click)="openModal()"> Portami lì
+                        <button class="btn btn-outline-dark px-1 py-1 my-3" (click)="openModal('cambioSede')"> Portami
+                            lì
                             <i class="fa fa-sign-out"></i>
                         </button>
                     </div>

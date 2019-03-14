@@ -1,17 +1,17 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 // Model
-import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
+import {SintesiRichiesta} from '../../../../shared/model/sintesi-richiesta.model';
 
 // Service
-import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
+import {MarkerService} from '../../maps/service/marker-service/marker-service.service';
 
 // Helper methods
-import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { SetIdRichiestaEventi } from '../../store/actions/eventi/eventi-richiesta.actions';
-import { Store } from '@ngxs/store';
+import {HelperSintesiRichiesta} from '../helper/_helper-sintesi-richiesta';
+import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
+import {SetIdRichiestaEventi} from '../../store/actions/eventi/eventi-richiesta.actions';
+import {Store} from '@ngxs/store';
 
 export const scrolledItems = 11;
 

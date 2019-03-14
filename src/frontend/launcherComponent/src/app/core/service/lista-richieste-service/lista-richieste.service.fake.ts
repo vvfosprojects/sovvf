@@ -1,24 +1,24 @@
-import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
 // Model
-import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { Tipologia } from '../../../shared/model/tipologia.model';
-import { Richiedente } from '../../../shared/model/richiedente.model';
-import { Localita } from '../../../shared/model/localita.model';
-import { Coordinate } from '../../../shared/model/coordinate.model';
-import { Sede } from '../../../shared/model/sede.model';
-import { Complessita } from '../../../shared/model/complessita.model';
-import { Fonogramma } from '../../../shared/model/fonogramma.model';
-import { Componente } from '../../../shared/model/componente.model';
-import { Utente } from '../../../shared/model/utente.model';
+import {SintesiRichiesta} from '../../../shared/model/sintesi-richiesta.model';
+import {Tipologia} from '../../../shared/model/tipologia.model';
+import {Richiedente} from '../../../shared/model/richiedente.model';
+import {Localita} from '../../../shared/model/localita.model';
+import {Coordinate} from '../../../shared/model/coordinate.model';
+import {Sede} from '../../../shared/model/sede.model';
+import {Complessita} from '../../../shared/model/complessita.model';
+import {Fonogramma} from '../../../shared/model/fonogramma.model';
+import {Componente} from '../../../shared/model/componente.model';
+import {Utente} from '../../../shared/model/utente.model';
 // Module
 import * as moment from 'moment';
 // Service
-import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
-import { Partenza } from '../../../shared/model/partenza.model';
-import { Squadra } from '../../../shared/model/squadra.model';
-import { Mezzo } from '../../../shared/model/mezzo.model';
-import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
+import {StatoRichiesta} from '../../../shared/enum/stato-richiesta.enum';
+import {Partenza} from '../../../shared/model/partenza.model';
+import {Squadra} from '../../../shared/model/squadra.model';
+import {Mezzo} from '../../../shared/model/mezzo.model';
+import {StatoSquadra} from '../../../shared/enum/stato-squadra.enum';
 
 
 @Injectable()
@@ -171,9 +171,9 @@ export class SintesiRichiesteServiceFake {
                                 new Sede(null, null, null, null, null, null, null),
                             )
                         ],
-                            new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 1,
-                                new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
-                                3, 'carburante', 2, 'estinguente')
+                        new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 1,
+                            new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
+                            3, 'carburante', 2, 'estinguente')
                     )
                 ],
                 null
@@ -660,5 +660,21 @@ export class SintesiRichiesteServiceFake {
         ];
 
         return of(this.richieste);
+    }
+
+    getRichiestaById(id_richiesta: string) {
+        let richiesta = null;
+
+        this.richieste.forEach((r: SintesiRichiesta, index) => {
+            if (r.id === id_richiesta) {
+                richiesta = r;
+            }
+
+            if (r.id === id_richiesta && index === this.richieste.length - 1) {
+                console.warn('Prendo la richiesta dal server perchè non è in memoria');
+            }
+        });
+
+        return of(richiesta);
     }
 }

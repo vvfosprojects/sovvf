@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry, map } from 'rxjs/operators';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { catchError, map } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
 const API_URL_RICHIESTE = environment.apiUrl.rigaElencoRichieste;
@@ -28,6 +28,10 @@ export class SintesiRichiesteService {
             }),
             catchError(this.handleError)
         );
+    }
+
+    public getRichiestaById(): Observable<any> {
+        return;
     }
 
     private handleError(error: HttpErrorResponse) {
