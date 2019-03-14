@@ -165,6 +165,12 @@ export class SchedaTelefonataComponent implements OnInit {
         this.onSubmit();
     }
 
+    inviaPartenza() {
+        this.chiamataCorrente.azione = AzioneChiamataEnum.MettiInCoda;
+        this.onSubmit();
+        console.log('Inizio composizione Partenza');
+    }
+
 
     _statoChiamata(tipo: string) {
         this.schedaTelefonata.emit({

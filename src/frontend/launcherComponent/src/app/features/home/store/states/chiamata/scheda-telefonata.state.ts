@@ -48,10 +48,6 @@ export class SchedaTelefonataState {
                 dispatch(new CopyToClipboard());
                 break;
             case 'annullata':
-                /**
-                 * azione al momento non utilizzata, perchè tutte le chiamate devono essere registrate,
-                 * comprese quelle che non vanno a buon fine
-                 */
                 dispatch(new CestinaChiamata());
                 break;
             case 'reset':
@@ -71,10 +67,8 @@ export class SchedaTelefonataState {
     }
 
     @Action(SetChiamata)
-    setChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetChiamata) {
-        const state = getState();
+    setChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetChiamata) {
         patchState({
-            ...state,
             chiamata: action.chiamata
         });
         dispatch(new InsertChiamata());
@@ -88,36 +82,30 @@ export class SchedaTelefonataState {
     }
 
     @Action(ResetChiamata)
-    resetChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
-        const state = getState();
+    resetChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
         patchState({
-            ...state,
             chiamataMarker: []
         });
         dispatch(new GetInitCentroMappa());
     }
 
     @Action(CestinaChiamata)
-    cestinaChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
-        const state = getState();
+    cestinaChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
         patchState({
-            ...state,
             chiamataMarker: []
         });
         dispatch(new ToggleChiamata());
     }
 
     @Action(SetMarkerChiamata)
-    setMarkerChiamata({ getState, patchState }: StateContext<SchedaTelefonataStateModel>, action: SetMarkerChiamata) {
-        const state = getState();
+    setMarkerChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetMarkerChiamata) {
         const coordinate: Coordinate = {
             latitudine: action.marker.localita.coordinate.latitudine,
             longitudine: action.marker.localita.coordinate.longitudine
         };
         this.markerService.chiamata(action.marker, MapsEvent.Centra);
-
+        // Todo: fare il dispatch dell'action di signalR - NotifyMarkerChiamata
         patchState({
-            ...state,
             coordinate: coordinate,
             chiamataMarker: [action.marker]
         });

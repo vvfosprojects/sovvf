@@ -15,3 +15,21 @@ ngb-accordion {
     padding-bottom: 0.75rem;
   }
 }
+
+.dropdownAnnulla {
+   border-color: #dc3545 !important;
+ }
+
+.dropdownAnnulla button:hover {
+  background-color: #dc3545 !important;
+  color: white;
+}
+
+.dropdownConferma {
+  border-color: #28a745 !important;
+}
+
+.dropdownConferma button:hover {
+  background-color: #28a745 !important;
+  color: white;
+}
