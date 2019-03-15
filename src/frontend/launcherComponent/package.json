@@ -53,7 +53,7 @@
     "ngx-google-places-autocomplete": "^2.0.3",
     "ngx-pagination": "^3.2.1",
     "ngx-timeago": "^1.0.0",
-    "ngx-toastr": "^9.1.2",
+    "ngx-toastr": "^10.0.2",
     "ngx-treeview": "^6.0.2",
     "ngx-ui-switch": "^8.0.0",
     "node-sass": "^4.11.0",
