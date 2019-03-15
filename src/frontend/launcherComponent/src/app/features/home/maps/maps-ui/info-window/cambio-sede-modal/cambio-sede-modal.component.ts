@@ -8,8 +8,8 @@ import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-cambio-sede-modal',
-    templateUrl: '../../../../../../shared/modal/cambio-sede/cambio-sede-modal.component.html',
-    styleUrls: ['../../../../../../shared/modal/cambio-sede/cambio-sede-modal.component.css']
+    templateUrl: './cambio-sede-modal.component.html',
+    styleUrls: ['./cambio-sede-modal.component.css']
 })
 export class CambioSedeModalComponent {
 

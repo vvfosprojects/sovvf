@@ -15,9 +15,7 @@ import { DefaultTreeviewI18n } from './navbar-service/unita-operativa-treeview-s
 /**
  * Component
  */
-import { CambioSedeModalNavComponent } from './cambio-sede-modal-nav/cambio-sede-modal-nav.component';
 import { OperatoreComponent } from './operatore/operatore.component';
-import { UnitaOperativaComponent } from './unita-operativa/unita-operativa.component';
 import { UnitaOperativaTreeviewComponent } from './unita-operativa-treeview/unita-operativa-treeview.component';
 import { ClockComponent } from './clock/clock.component';
 import { NavbarComponent } from './navbar.component';
@@ -57,20 +55,11 @@ import { TurnoState } from './turno/store';
             ]
         ),
     ],
-    entryComponents: [CambioSedeModalNavComponent],
     declarations: [
         NavbarComponent,
         TurnoComponent,
         ClockComponent,
-        CambioSedeModalNavComponent,
         OperatoreComponent,
-        /**
-         * unita operativa selezione singola
-         */
-        UnitaOperativaComponent,
-        /**
-         * unita operativa selezione multipla
-         */
         UnitaOperativaTreeviewComponent
     ],
     exports: [NavbarComponent],

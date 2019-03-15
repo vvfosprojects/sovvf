@@ -1,18 +1,19 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UnitaOperativaTreeviewService } from '../navbar-service/unita-operativa-treeview-service/unita-operativa-treeview.service';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
-import { CambioSedeModalNavComponent } from '../cambio-sede-modal-nav/cambio-sede-modal-nav.component';
 import { UnitaAttualeService } from '../navbar-service/unita-attuale/unita-attuale.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { Sede } from '../../../shared/model/sede.model';
-import { ToastrService } from 'ngx-toastr';
+import { Store } from '@ngxs/store';
+import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
 
 
 @Component({
     selector: 'app-unita-operativa-treeview',
     templateUrl: './unita-operativa-treeview.component.html',
-    styleUrls: ['./unita-operativa-treeview.component.css']
+    styleUrls: ['./unita-operativa-treeview.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
 
@@ -36,8 +37,9 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
 
     constructor(private treeviewService: UnitaOperativaTreeviewService,
                 private unitaAttualeS: UnitaAttualeService,
-                private _modalService: NgbModal,
-                private toastr: ToastrService) {
+                private store: Store,
+                config: NgbDropdownConfig) {
+        config.autoClose = false;
         this.unitaAttuale = this.unitaAttualeS.unitaSelezionata;
         this.subscription.add(
             this.unitaAttualeS.getUnitaOperativaAttuale().subscribe(unitaAttuale => {
@@ -45,13 +47,6 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
                 if (this.unitaAttuale.length > 0) {
                     this.sedeCorrenteString = this.treeviewService.getSediAttualiString();
                     this.clearInitItem();
-                }
-            })
-        );
-        this.subscription.add(
-            this.unitaAttualeS.getAnnullaTreeView().subscribe(statoTreeView => {
-                if (statoTreeView) {
-                    this.annullaCambioSede('annulla');
                 }
             })
         );
@@ -69,10 +64,13 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
         this.unitaAttualeS.startCount++;
     }
 
+    @ViewChild('treeviewSedi') treeviewSedi: NgbDropdown;
 
     @HostListener('document:keydown.escape') onKeydownHandler() {
         if (this.treeViewOpened) {
             this.annullaCambioSede('esc');
+            // console.log('premuto tasto esc');
+            this.treeviewSedi.close();
         }
     }
 
@@ -87,12 +85,7 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
     openDropDown(value: any) {
         this.treeViewOpened = !!value;
         if (value) {
-            // console.log('dropdown aperto');
-        } else if (this.selectedItem) {
-            // console.log('dropdown chiuso');
-            this.checkCambioSede();
-        } else {
-            // console.log('dropdown chiuso e nessuna modifica');
+            this.clearInitItem();
         }
     }
 
@@ -156,22 +149,12 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
     }
 
     changeUnitaAttuale(newUnita: any) {
-        /**
-         * richiama il metodo che apre la modale
-         */
-        this.openModal(newUnita);
-    }
-
-    openModal(newUnita: any) {
-        /**
-         * apre la modale e aggiorna il testo della sede per il messaggio di conferma
-         * e le sedi sulle quali fare la next su sede attuale.
-         * @type {string}
-         */
+        // console.log('change unita');
         this.unitaAttualeS.unitaSelezionataString = this.treeviewService._get.sediSelezionate(newUnita).testo;
         this.unitaAttualeS.unitaSelezionata = this.treeviewService._get.sediSelezionate(newUnita).sedi;
-        this._modalService.open(CambioSedeModalNavComponent);
+        this.unitaAttualeS.sendUnitaOperativaAttuale(this.unitaAttualeS.unitaSelezionata);
     }
+
 
     getTreeViewItems() {
         this.checkedCount = 0;
@@ -181,9 +164,17 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
     }
 
     showAlert(title: string, message: string, type: any) {
-        this.toastr[type](message, title, {
-            timeOut: 2500
-        });
+        this.store.dispatch(new ShowToastr(type, title, message, 3));
+    }
+
+    annulla() {
+        this.annullaCambioSede('annulla');
+    }
+
+    conferma() {
+        if (this.selectedItem) {
+            this.checkCambioSede();
+        }
     }
 
 }
