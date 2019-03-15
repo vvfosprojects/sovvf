@@ -17,3 +17,7 @@ export class OpacizzaMezziMarkers {
     constructor(public stato?: string[]) {
     }
 }
+
+export class ClearMezziMarkers {
+    static readonly type = '[Mezzi Marker] Clear Mezzi Marker';
+}

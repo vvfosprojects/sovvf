@@ -1,7 +1,7 @@
 import { MezzoMarker } from '../../../maps/maps-model/mezzo-marker.model';
-import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { MezziMarkerService } from '../../../../../core/service/maps-service';
-import { GetMezziMarkers, OpacizzaMezziMarkers, SetMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
+import { ClearMezziMarkers, GetMezziMarkers, OpacizzaMezziMarkers, SetMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
 import { makeCopy } from '../../../../../shared/helper/function';
 
 export interface MezziMarkersStateModel {
@@ -17,7 +17,7 @@ export const MezziMarkersStateDefaults: MezziMarkersStateModel = {
     defaults: MezziMarkersStateDefaults
 })
 
-export class MezziMarkersState implements NgxsOnInit {
+export class MezziMarkersState {
 
     @Selector()
     static mezziMarkers(state: MezziMarkersStateModel) {
@@ -28,10 +28,6 @@ export class MezziMarkersState implements NgxsOnInit {
 
     }
 
-    ngxsOnInit(ctx: StateContext<MezziMarkersState>) {
-        ctx.dispatch(new GetMezziMarkers());
-    }
-
     @Action(GetMezziMarkers)
     getMezziMarkers({ dispatch }: StateContext<MezziMarkersStateModel>) {
         this._mezzi.getMezziMarkers().subscribe((result: MezzoMarker[]) => {
@@ -40,10 +36,8 @@ export class MezziMarkersState implements NgxsOnInit {
     }
 
     @Action(SetMezziMarkers)
-    setMezziMarkers({ getState, patchState }: StateContext<MezziMarkersStateModel>, action: SetMezziMarkers) {
-        const state = getState();
+    setMezziMarkers({ patchState }: StateContext<MezziMarkersStateModel>, action: SetMezziMarkers) {
         patchState({
-            ...state,
             mezziMarkers: action.mezziMarkers
         });
     }
@@ -70,5 +64,10 @@ export class MezziMarkersState implements NgxsOnInit {
             ...state,
             mezziMarkers: mezziMarkers
         });
+    }
+
+    @Action(ClearMezziMarkers)
+    clearMezziMarkers({ patchState }: StateContext<MezziMarkersStateModel>) {
+        patchState(MezziMarkersStateDefaults);
     }
 }

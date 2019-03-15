@@ -7,7 +7,7 @@ import { BoxRichiesteService } from '../../../../../core/service/boxes-service/b
 import { BoxInterventi } from '../../../boxes/boxes-model/box-interventi.model';
 
 // Action
-import { FetchBoxRichieste, SetBoxRichieste } from '../../actions/boxes/box-richieste.actions';
+import { ClearBoxRichieste, GetBoxRichieste, SetBoxRichieste } from '../../actions/boxes/box-richieste.actions';
 
 export interface BoxRichiesteStateModel {
     richieste: BoxInterventi;
@@ -31,24 +31,24 @@ export class BoxRichiesteState {
         return state.richieste;
     }
 
-    @Action(FetchBoxRichieste)
-    getInterventi({ dispatch }: StateContext<BoxRichiesteStateModel>) {
-        let richieste: BoxInterventi;
+    @Action(GetBoxRichieste)
+    getBoxRichieste({ dispatch }: StateContext<BoxRichiesteStateModel>) {
 
         this._richieste.getInterventi().subscribe((i: BoxInterventi) => {
-            richieste = i;
-
-            dispatch(new SetBoxRichieste(richieste));
+            dispatch(new SetBoxRichieste(i));
         });
     }
 
     @Action(SetBoxRichieste)
-    setInterventi({ getState, patchState }: StateContext<BoxRichiesteStateModel>, action: SetBoxRichieste) {
-        const state = getState();
+    setBoxRichieste({ patchState }: StateContext<BoxRichiesteStateModel>, action: SetBoxRichieste) {
 
         patchState({
-            ...state,
             richieste: action.payload
         });
+    }
+
+    @Action(ClearBoxRichieste)
+    clearBoxRichieste({ patchState }: StateContext<BoxRichiesteStateModel>) {
+        patchState(boxRichiesteStateDefaults);
     }
 }

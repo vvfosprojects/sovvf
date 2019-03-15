@@ -7,7 +7,7 @@ import { BoxMezziService } from 'src/app/core/service/boxes-service/box-mezzi.se
 import { BoxMezzi } from '../../../boxes/boxes-model/box-mezzi.model';
 
 // Action
-import { SetBoxMezzi, FetchBoxMezzi } from '../../actions/boxes/box-mezzi.actions';
+import { SetBoxMezzi, GetBoxMezzi, ClearBoxMezzi } from '../../actions/boxes/box-mezzi.actions';
 
 export interface BoxMezziStateModel {
     mezzi: BoxMezzi;
@@ -31,24 +31,22 @@ export class BoxMezziState {
         return state.mezzi;
     }
 
-    @Action(FetchBoxMezzi)
-    getMezzi({ dispatch }: StateContext<BoxMezziStateModel>) {
-        let mezzi: BoxMezzi;
-
+    @Action(GetBoxMezzi)
+    getBoxMezzi({ dispatch }: StateContext<BoxMezziStateModel>) {
         this._mezzi.getMezzi().subscribe((m: BoxMezzi) => {
-            mezzi = m;
-
-            dispatch(new SetBoxMezzi(mezzi));
+            dispatch(new SetBoxMezzi(m));
         });
     }
 
     @Action(SetBoxMezzi)
-    setMezzi({ getState, patchState }: StateContext<BoxMezziStateModel>, action: SetBoxMezzi) {
-        const state = getState();
-
+    setBoxMezzi({ patchState }: StateContext<BoxMezziStateModel>, action: SetBoxMezzi) {
         patchState({
-            ...state,
             mezzi: action.payload
         });
+    }
+
+    @Action(ClearBoxMezzi)
+    clearBoxMezzi({ patchState }: StateContext<BoxMezziStateModel>) {
+        patchState(boxMezziStateDefaults);
     }
 }

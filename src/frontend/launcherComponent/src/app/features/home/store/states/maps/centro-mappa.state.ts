@@ -1,7 +1,8 @@
-import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { CentroMappa } from '../../../maps/maps-model/centro-mappa.model';
 import { CentroMappaService } from '../../../../../core/service/maps-service';
 import {
+    ClearCentroMappa,
     GetCentroMappa,
     GetInitCentroMappa, GetInitCoordCentroMappa, GetInitZoomCentroMappa,
     SetCentroMappa,
@@ -26,7 +27,7 @@ export const CentroMappaStateDefaults: CentroMappaStateModel = {
     defaults: CentroMappaStateDefaults
 })
 
-export class CentroMappaState implements NgxsOnInit {
+export class CentroMappaState {
 
     @Selector()
     static centroMappa(state: CentroMappaStateModel): CentroMappa {
@@ -45,10 +46,6 @@ export class CentroMappaState implements NgxsOnInit {
 
     constructor(private _centro: CentroMappaService) {
 
-    }
-
-    ngxsOnInit(ctx: StateContext<CentroMappaState>) {
-        ctx.dispatch(new GetCentroMappa());
     }
 
     /**
@@ -164,12 +161,15 @@ export class CentroMappaState implements NgxsOnInit {
      * @param action
      */
     @Action(SetInitCentroMappa)
-    setInitCentroMappa({ getState, patchState }: StateContext<CentroMappaStateModel>, action: SetInitCentroMappa) {
-        const state = getState();
+    setInitCentroMappa({ patchState }: StateContext<CentroMappaStateModel>, action: SetInitCentroMappa) {
         patchState({
-            ...state,
             initCentroMappa: action.centroMappa
         });
+    }
+
+    @Action(ClearCentroMappa)
+    clearCentroMappa({ patchState }: StateContext<CentroMappaStateModel>) {
+        patchState(CentroMappaStateDefaults);
     }
 
 }

@@ -7,7 +7,7 @@ import { BoxPersonaleService } from 'src/app/core/service/boxes-service/box-pers
 import { BoxPersonale } from '../../../boxes/boxes-model/box-personale.model';
 
 // Action
-import { FetchBoxPersonale, SetBoxPersonale } from '../../actions/boxes/box-personale.actions';
+import { ClearBoxPersonale, GetBoxPersonale, SetBoxPersonale } from '../../actions/boxes/box-personale.actions';
 
 export interface BoxPersonaleStateModel {
     personale: BoxPersonale;
@@ -31,24 +31,22 @@ export class BoxPersonaleState {
         return state.personale;
     }
 
-    @Action(FetchBoxPersonale)
-    getPersonale({ dispatch }: StateContext<BoxPersonaleStateModel>) {
-        let personale: BoxPersonale;
-
+    @Action(GetBoxPersonale)
+    getBoxPersonale({ dispatch }: StateContext<BoxPersonaleStateModel>) {
         this._personale.getPersonale().subscribe((p: BoxPersonale) => {
-            personale = p;
-
-            dispatch(new SetBoxPersonale(personale));
+            dispatch(new SetBoxPersonale(p));
         });
     }
 
     @Action(SetBoxPersonale)
-    setPersonale({ getState, patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonale) {
-        const state = getState();
-
+    setBoxPersonale({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonale) {
         patchState({
-            ...state,
             personale: action.payload
         });
+    }
+
+    @Action(ClearBoxPersonale)
+    clearBoxPersonale({ patchState }: StateContext<BoxPersonaleStateModel>) {
+        patchState(boxPersonaleStateDefaults);
     }
 }

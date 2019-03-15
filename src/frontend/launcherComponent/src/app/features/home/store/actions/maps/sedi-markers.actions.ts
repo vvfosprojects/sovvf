@@ -10,3 +10,7 @@ export class SetSediMarkers {
     constructor(public sediMarkers: SedeMarker[]) {
     }
 }
+
+export class ClearSediMarkers {
+    static readonly type = '[Sedi Marker] Clear Sedi Marker';
+}

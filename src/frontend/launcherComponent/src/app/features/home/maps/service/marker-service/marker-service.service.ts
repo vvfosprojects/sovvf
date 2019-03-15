@@ -97,6 +97,7 @@ export class MarkerService implements OnDestroy {
     }
 
     ngOnDestroy() {
+        console.log('destroy marker service');
         this.subscription.unsubscribe();
     }
 
@@ -369,6 +370,7 @@ export class MarkerService implements OnDestroy {
      * @param id
      */
     getMarkerFromId(id: string): RichiestaMarker {
+        // Todo: da fixare errore su logout (non bloccante)
         let marker: RichiestaMarker = null;
         let richiesteById$: Observable<RichiestaMarker>;
         richiesteById$ = this.store.select(RichiesteMarkersState.getRichiesteById).pipe(map(fn => fn(id)));

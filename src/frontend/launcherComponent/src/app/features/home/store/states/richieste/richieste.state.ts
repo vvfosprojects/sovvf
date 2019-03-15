@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext, NgxsOnInit } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 
 // Model
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
@@ -8,6 +8,7 @@ import { ClearRichieste, GetRichieste, SetRichieste } from '../../actions/richie
 
 // Service
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
+import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -21,7 +22,7 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
     name: 'richieste',
     defaults: RichiesteStateDefaults
 })
-export class RichiesteState implements NgxsOnInit {
+export class RichiesteState {
 
     // SELECTORS
     @Selector()
@@ -37,14 +38,12 @@ export class RichiesteState implements NgxsOnInit {
     constructor(private richiesteService: SintesiRichiesteService) {
     }
 
-    ngxsOnInit(ctx: StateContext<RichiesteState>) {
-        // ctx.dispatch(new GetRichieste('0'));
-    }
-
     @Action(GetRichieste, { cancelUncompleted: true })
     getRichieste({ dispatch }: StateContext<RichiesteStateModel>, action: GetRichieste) {
-        console.log('Get Richieste');
         this.richiesteService.getRichieste(action.idUltimaRichiesta).subscribe((r: SintesiRichiesta[]) => {
+            if (r.length === 0) {
+                dispatch(new ShowToastr('warning', 'Non ci sono altre richieste da visualizzare', 'Richieste terminate', 5000));
+            }
             dispatch(new SetRichieste(r));
         });
 

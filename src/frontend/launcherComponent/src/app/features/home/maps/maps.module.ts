@@ -47,6 +47,7 @@ import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
 import { SintesiRichiestaModalComponent } from './maps-ui/info-window/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
 import {SintesiRichiestaComponent} from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
 import {SintesiRichiestaModule} from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
+import { MarkerService } from './service/marker-service/marker-service.service';
 
 @NgModule({
     imports: [
@@ -88,6 +89,7 @@ import {SintesiRichiestaModule} from '../richieste/lista-richieste/sintesi-richi
     ],
     providers: [
         AgmService,
+        MarkerService,
         {provide: RichiesteMarkerService, useClass: RichiesteMarkerServiceFake},
         {provide: MezziMarkerService, useClass: MezziMarkerServiceFake},
         {provide: SediMarkerService, useClass: SediMarkerServiceFake},

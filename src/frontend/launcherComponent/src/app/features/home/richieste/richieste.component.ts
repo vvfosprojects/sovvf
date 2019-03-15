@@ -6,9 +6,6 @@ import { FilterPipe } from 'ngx-filter-pipe';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 // Component
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
-// Service
-import { ToastrService } from 'ngx-toastr';
-import { MarkerService } from '../maps/service/marker-service/marker-service.service';
 // Ngxs
 import { Select, Store } from '@ngxs/store';
 import { RicercaRichiesteState } from '../store/states/filterbar/ricerca-richieste.state';
@@ -62,8 +59,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
 
     constructor(private modalService: NgbModal,
-                private toastr: ToastrService,
-                private markerService: MarkerService,
                 private filter: FilterPipe,
                 private store: Store) {
         this.getRichieste();
@@ -99,12 +94,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                         this.loaderNuoveRichieste = false;
                     }, 500);
                     this.contatoreNuoveRichieste = false;
-
-                    const type = 'warning';
-                    const message = 'Non ci sono altre richieste da visualizzare';
-                    const title = 'Richieste terminate';
-
-                    this.store.dispatch(new ShowToastr(type, title, message));
                 }
             })
         );

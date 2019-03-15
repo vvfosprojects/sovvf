@@ -4,8 +4,8 @@ import { Grids, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../.
 import { Select, Store } from '@ngxs/store';
 import { ViewComponentState } from './store/states/view/view.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
-import { ClearRichieste, GetRichieste } from './store/actions/richieste/richieste.actions';
 import { GetUtenti } from './store/actions/utenti/utenti.actions';
+import { ClearDataHome, GetDataHome } from './store/actions/home.actions';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -25,8 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
         this.subscription.add(this.columnState$.subscribe(r => this.columnState = r));
         this.store.dispatch(new GetUtenti());
-        this.store.dispatch(new ClearRichieste());
-        this.store.dispatch(new GetRichieste('0'));
+        this.store.dispatch(new GetDataHome());
     }
 
     ngOnInit() {
@@ -36,9 +35,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         isDevMode() && console.log('Componente Home distrutto');
         this.subscription.unsubscribe();
+        this.store.dispatch(new ClearDataHome());
     }
 
     onMapFullLoaded() {
         this.loading = false;
     }
+
 }

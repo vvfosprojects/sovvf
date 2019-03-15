@@ -24,3 +24,7 @@ export class OpacizzaRichiesteMarkersById {
     constructor(public id?: string[]) {
     }
 }
+
+export class ClearRichiesteMarkers {
+    static readonly type = '[Richieste Marker] Clear Richieste Marker';
+}
