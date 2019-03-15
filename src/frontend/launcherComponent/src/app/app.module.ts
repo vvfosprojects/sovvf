@@ -43,6 +43,7 @@ import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
 import { SignalRState } from './core/signalr/store/signalR.state';
+import { ToastrState } from './shared/store/states/toastr/toastr.state';
 
 
 
@@ -71,11 +72,11 @@ import { SignalRState } from './core/signalr/store/signalR.state';
             formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter },
         }),
         ToastrModule.forRoot({
-            positionClass: 'toast-top-center',
+            positionClass: 'toast-bottom-center',
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [UtenteState, UtentiState, SignalRState],
+            [UtenteState, UtentiState, SignalRState, ToastrState],
             { developmentMode: !environment.production }
         ),
         NgxsStoragePluginModule.forRoot({

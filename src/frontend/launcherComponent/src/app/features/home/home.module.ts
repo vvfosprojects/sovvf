@@ -63,8 +63,7 @@ import { HomeState } from './store/states/home.state';
                 BackupViewComponentState,
                 FiltriRichiesteState,
                 RicercaRichiesteState,
-                MarkerMeteoState,
-                ToastrState
+                MarkerMeteoState
             ]
         ),
     ]

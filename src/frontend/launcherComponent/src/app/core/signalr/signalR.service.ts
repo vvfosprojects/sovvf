@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { SIGNALR_CONFIG } from './signalR.config';
 import { Store } from '@ngxs/store';
 import { SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
+import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
 
 @Injectable({
     providedIn: 'root'
@@ -47,7 +48,6 @@ export class SignalRService {
         }).catch(() => {
             console.log('Impossibile effettuare la connessione, riprovo...');
             this.connectionEstablished.next(false);
-            this.store.dispatch(new SignalRHubDisconnesso());
             setTimeout(() => this.startConnection(), 3000);
         });
     }
@@ -57,10 +57,12 @@ export class SignalRService {
             console.log(`Login: ${data}`);
         });
         this.hubConnection.on('NotifyLogIn', (data: any) => {
-            console.log(`Login: ${data}`);
+            // console.log(`Login: ${data}`);
+            this.store.dispatch(new ShowToastr('info', 'Utente collegato:', data, 3));
         });
         this.hubConnection.on('NotifyLogOut', (data: any) => {
-            console.log(`Logout: ${data}`);
+            // console.log(`Logout: ${data}`);
+            this.store.dispatch(new ShowToastr('info', 'Utente disconnesso:', data, 3));
         });
         this.hubConnection.onclose(() => {
             console.log('Hub Disconnesso');
