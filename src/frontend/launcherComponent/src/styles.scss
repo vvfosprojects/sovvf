@@ -3,253 +3,281 @@
 @import '../node_modules/snazzy-info-window/dist/snazzy-info-window.css';
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import '~ngx-ui-switch/ui-switch.component.scss';
-@import '~ngx-toastr/toastr.css';
+
+// if you'd like to use it without importing all of bootstrap it requires
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+@import '~ngx-toastr/toastr-bs4-alert';
 
 @font-face {
-    font-family: 'icon-marker';
-    src:  url('./assets/fonts/icon-marker.eot?lo2034');
-    src:  url('./assets/fonts/icon-marker.eot?lo2034#iefix') format('embedded-opentype'),
-    url('./assets/fonts/icon-marker.ttf?lo2034') format('truetype'),
-    url('./assets/fonts/icon-marker.woff?lo2034') format('woff'),
-    url('./assets/fonts/icon-marker.svg?lo2034#icon-marker') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-body, html {
-    height: 100vh;
-}
-.xlModal > .modal-dialog {
-    max-width: 1490px !important;
-    min-width: 650px !important;
-    width: 65% !important;
+  font-family: 'icon-marker';
+  src: url('./assets/fonts/icon-marker.eot?lo2034');
+  src: url('./assets/fonts/icon-marker.eot?lo2034#iefix') format('embedded-opentype'),
+  url('./assets/fonts/icon-marker.ttf?lo2034') format('truetype'),
+  url('./assets/fonts/icon-marker.woff?lo2034') format('woff'),
+  url('./assets/fonts/icon-marker.svg?lo2034#icon-marker') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
-.app-shadow{
-  -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
-  -moz-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
-  box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+body, html {
+  height: 100vh;
 }
-.app-shadow-danger{
-    -webkit-box-shadow: 1px 1px 2px 1px #dc3545;
-    -moz-box-shadow: 1px 1px 2px 1px #dc3545;
-    box-shadow: 1px 1px 2px 1px #dc3545;
+
+.xlModal > .modal-dialog {
+  max-width: 1490px !important;
+  min-width: 650px !important;
+  width: 65% !important;
 }
-.app-shadow-primary{
-    -webkit-box-shadow: 1px 1px 2px 1px #007bff;
-    -moz-box-shadow: 1px 1px 2px 1px #007bff;
-    box-shadow: 1px 1px 2px 1px #007bff;
+
+.app-shadow {
+  -webkit-box-shadow: 1px 1px 2px 1px rgba(224, 224, 224, 1);
+  -moz-box-shadow: 1px 1px 2px 1px rgba(224, 224, 224, 1);
+  box-shadow: 1px 1px 2px 1px rgba(224, 224, 224, 1);
+}
+
+.app-shadow-danger {
+  -webkit-box-shadow: 1px 1px 2px 1px #dc3545;
+  -moz-box-shadow: 1px 1px 2px 1px #dc3545;
+  box-shadow: 1px 1px 2px 1px #dc3545;
+}
+
+.app-shadow-primary {
+  -webkit-box-shadow: 1px 1px 2px 1px #007bff;
+  -moz-box-shadow: 1px 1px 2px 1px #007bff;
+  box-shadow: 1px 1px 2px 1px #007bff;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
+
 a:hover {
-    text-decoration: none !important;
-    /* font-weight: bold !important; */
+  text-decoration: none !important;
+  /* font-weight: bold !important; */
 }
 
 .cursor-pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
-.status_preaccoppiato_nonselezionato{
-    border-top: 5px solid #dc3545;
+.status_preaccoppiato_nonselezionato {
+  border-top: 5px solid #dc3545;
 }
-.status_preaccoppiato_selezionato{
-    border-top: 5px solid #007bff;
+
+.status_preaccoppiato_selezionato {
+  border-top: 5px solid #007bff;
 }
 
 /* icone di guida */
 .guida {
-    color: #bbbbbb;
+  color: #bbbbbb;
 }
 
 .cod-int {
-    color: rgb(99, 99, 99) !important;
-    font-weight: bold;
-    cursor: pointer;
+  color: rgb(99, 99, 99) !important;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .descrizione-int {
-    color: rgb(221, 132, 68) !important;
+  color: rgb(221, 132, 68) !important;
 }
 
 .nowrap {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 /* Shadow richieste */
-.card-shadow{
-    -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
-    box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+.card-shadow {
+  -webkit-box-shadow: 1px 1px 2px 1px rgba(224, 224, 224, 1);
+  -moz-box-shadow: 1px 1px 2px 1px rgba(224, 224, 224, 1);
+  box-shadow: 1px 1px 2px 1px rgba(224, 224, 224, 1);
 }
-.card-shadow-primary{
-    -webkit-box-shadow: 2px 0 2px .5px #007bff;
-    -moz-box-shadow: 2px 0 2px .5px #007bff;
-    box-shadow: 2px 0 2px .5px #007bff;
+
+.card-shadow-primary {
+  -webkit-box-shadow: 2px 0 2px .5px #007bff;
+  -moz-box-shadow: 2px 0 2px .5px #007bff;
+  box-shadow: 2px 0 2px .5px #007bff;
 }
-.card-shadow-info{
-    -webkit-box-shadow: 2px 0 2px .5px #17a2b8;
-    -moz-box-shadow: 2px 0 2px .5px #17a2b8;
-    box-shadow: 2px 0 2px .5px #17a2b8;
+
+.card-shadow-info {
+  -webkit-box-shadow: 2px 0 2px .5px #17a2b8;
+  -moz-box-shadow: 2px 0 2px .5px #17a2b8;
+  box-shadow: 2px 0 2px .5px #17a2b8;
 }
-.card-shadow-success{
-    -webkit-box-shadow: 2px 0 2px .5px #28a745;
-    -moz-box-shadow: 2px 0 2px .5px #28a745;
-    box-shadow: 2px 0 2px .5px #28a745;
+
+.card-shadow-success {
+  -webkit-box-shadow: 2px 0 2px .5px #28a745;
+  -moz-box-shadow: 2px 0 2px .5px #28a745;
+  box-shadow: 2px 0 2px .5px #28a745;
 }
-.card-shadow-danger{
-    -webkit-box-shadow: 2px 0 2px .5px #dc3545;
-    -moz-box-shadow: 2px 0 2px .5px #dc3545;
-    box-shadow: 2px 0 2px .5px #dc3545;
+
+.card-shadow-danger {
+  -webkit-box-shadow: 2px 0 2px .5px #dc3545;
+  -moz-box-shadow: 2px 0 2px .5px #dc3545;
+  box-shadow: 2px 0 2px .5px #dc3545;
 }
-.card-shadow-warning{
-    -webkit-box-shadow: 2px 0 2px .5px #ffc107;
-    -moz-box-shadow: 2px 0 2px .5px #ffc107;
-    box-shadow: 2px 0 2px .5px #ffc107;
+
+.card-shadow-warning {
+  -webkit-box-shadow: 2px 0 2px .5px #ffc107;
+  -moz-box-shadow: 2px 0 2px .5px #ffc107;
+  box-shadow: 2px 0 2px .5px #ffc107;
 }
-.card-shadow-secondary{
-    -webkit-box-shadow: 2px 0 2px .5px #868e96;
-    -moz-box-shadow: 2px 0 2px .5px #868e96;
-    box-shadow: 2px 0 2px .5px #868e96;
+
+.card-shadow-secondary {
+  -webkit-box-shadow: 2px 0 2px .5px #868e96;
+  -moz-box-shadow: 2px 0 2px .5px #868e96;
+  box-shadow: 2px 0 2px .5px #868e96;
 }
 
 /* Shadow soft */
-.card-shadow-primary-soft{
-    -webkit-box-shadow: 0 0 4px 2px #007bffa2;
-    -moz-box-shadow: 0 0 4px 2px #007bffa2;
-    box-shadow: 0 0 4px 2px #007bffa2;
+.card-shadow-primary-soft {
+  -webkit-box-shadow: 0 0 4px 2px #007bffa2;
+  -moz-box-shadow: 0 0 4px 2px #007bffa2;
+  box-shadow: 0 0 4px 2px #007bffa2;
 }
-.card-shadow-info-soft{
-    -webkit-box-shadow: 0 0 4px 2px #17a2b8;
-    -moz-box-shadow: 0 0 4px 2px #17a2b8;
-    box-shadow: 0 0 4px 2px #17a2b8;
+
+.card-shadow-info-soft {
+  -webkit-box-shadow: 0 0 4px 2px #17a2b8;
+  -moz-box-shadow: 0 0 4px 2px #17a2b8;
+  box-shadow: 0 0 4px 2px #17a2b8;
 }
-.card-shadow-success-soft{
-    -webkit-box-shadow: 0 0 4px 2px #28a745;
-    -moz-box-shadow: 0 0 4px 2px #28a745;
-    box-shadow: 0 0 4px 2px #28a745;
+
+.card-shadow-success-soft {
+  -webkit-box-shadow: 0 0 4px 2px #28a745;
+  -moz-box-shadow: 0 0 4px 2px #28a745;
+  box-shadow: 0 0 4px 2px #28a745;
 }
-.card-shadow-danger-soft{
-    -webkit-box-shadow: 0 0 4px 2px #dc3545;
-    -moz-box-shadow: 0 0 4px 2px #dc3545;
-    box-shadow: 0 0 4px 2px #dc3545;
+
+.card-shadow-danger-soft {
+  -webkit-box-shadow: 0 0 4px 2px #dc3545;
+  -moz-box-shadow: 0 0 4px 2px #dc3545;
+  box-shadow: 0 0 4px 2px #dc3545;
 }
-.card-shadow-warning-soft{
-    -webkit-box-shadow: 0 0 4px 2px #ffc107;
-    -moz-box-shadow: 0 0 4px 2px #ffc107;
-    box-shadow: 0 0 4px 2px #ffc107;
+
+.card-shadow-warning-soft {
+  -webkit-box-shadow: 0 0 4px 2px #ffc107;
+  -moz-box-shadow: 0 0 4px 2px #ffc107;
+  box-shadow: 0 0 4px 2px #ffc107;
 }
-.card-shadow-secondary-soft{
-    -webkit-box-shadow: 0 0 4px 2px #868e96;
-    -moz-box-shadow: 0 0 4px 2px #868e96;
-    box-shadow: 0 0 4px 2px #868e96;
+
+.card-shadow-secondary-soft {
+  -webkit-box-shadow: 0 0 4px 2px #868e96;
+  -moz-box-shadow: 0 0 4px 2px #868e96;
+  box-shadow: 0 0 4px 2px #868e96;
 }
 
 /* Status richieste */
 .status_presidiato {
-    border-left: 10px solid #28a745;
+  border-left: 10px solid #28a745;
 }
 
 .status_chiamata {
-    border-left: 10px solid #dc3545;
+  border-left: 10px solid #dc3545;
 }
 
 .status_sospeso {
-    border-left: 10px solid #ffc107;
+  border-left: 10px solid #ffc107;
 }
 
-.status_assegnato{
-    border-left: 10px solid #17a2b8;
+.status_assegnato {
+  border-left: 10px solid #17a2b8;
 }
 
-.status_chiuso{
-    border-left: 10px solid #868e96;
+.status_chiuso {
+  border-left: 10px solid #868e96;
 }
 
 /* Status Mezzo */
-.status_inSede{
-    border-top: 5px solid #868e96;
-}
-.status_inRientro{
-    border-top: 5px solid #007bff;
-}
-.status_inViaggio{
-    border-top: 5px solid #17a2b8;
-}
-.status_sulPosto{
-    border-top: 5px solid #28a745;
+.status_inSede {
+  border-top: 5px solid #868e96;
 }
 
-.bg-pattern-chiuso{
-    background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAKklEQVQYV2N8+/btfwYo+Pz5MwMjTADE4eXlhQjAOCCFjA8ePPgPkoEBAMNhF/YhgGY5AAAAAElFTkSuQmCC);
+.status_inRientro {
+  border-top: 5px solid #007bff;
+}
+
+.status_inViaggio {
+  border-top: 5px solid #17a2b8;
+}
+
+.status_sulPosto {
+  border-top: 5px solid #28a745;
+}
+
+.bg-pattern-chiuso {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAKklEQVQYV2N8+/btfwYo+Pz5MwMjTADE4eXlhQjAOCCFjA8ePPgPkoEBAMNhF/YhgGY5AAAAAElFTkSuQmCC);
 }
 
 .fa-rotate-45 {
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
-.scroll-y{
-    overflow-y: auto;
-    overflow-x: hidden;
+.scroll-y {
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-.sidebar{
-    width:100%;
-    height: 55px;
+.sidebar {
+  width: 100%;
+  height: 55px;
 }
 
 .diagonal-stripes {
-    background-color: gray;
-    background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);
+  background-color: gray;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255, 255, 255, .5) 35px, rgba(255, 255, 255, .5) 70px);
 }
-.bg-grey{
-    background-color:rgba(206, 206, 206, 1);
+
+.bg-grey {
+  background-color: rgba(206, 206, 206, 1);
 }
+
 .bg-lightgrey {
-    background-color: #d3d3d3 !important;
+  background-color: #d3d3d3 !important;
 }
+
 .bg-lightsuccess {
-    background-color: #b8dfc1 !important;
+  background-color: #b8dfc1 !important;
 }
+
 .bg-lightinfo {
-    background-color: #b8e0e7  !important;
+  background-color: #b8e0e7 !important;
 }
 
 .no-resize {
-    resize: none; 
+  resize: none;
 }
 
 [class^="icon-"], [class*=" icon-"] {
-    /* use !important to prevent issues with browser extensions that change fonts */
-    font-family: 'icon-marker' !important;
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icon-marker' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
 
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .icon-truck-fire-q:before {
-    content: "\e900";
-}
-.icon-fa-sedi:before {
-    content: "\e901";
-}
-.icon-fa-richieste:before {
-    content: "\e902";
-}
-.icon-truck-fire:before {
-    content: "\e903";
+  content: "\e900";
 }
 
-#toast-container > div {
-    opacity:1;
+.icon-fa-sedi:before {
+  content: "\e901";
+}
+
+.icon-fa-richieste:before {
+  content: "\e902";
+}
+
+.icon-truck-fire:before {
+  content: "\e903";
 }
