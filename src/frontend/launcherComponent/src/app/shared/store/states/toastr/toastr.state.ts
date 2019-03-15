@@ -8,8 +8,8 @@ import { SetToastr, ShowToastr } from '../../actions/toastr/toastr.actions';
 
 export interface ToastrStateModel {
     type: string;
-    title: string;
-    message: string;
+    title?: string;
+    message?: string;
     timeout?: number;
 }
 
@@ -17,7 +17,7 @@ export const toastrStateDefaults: ToastrStateModel = {
     type: null,
     title: null,
     message: null,
-    timeout: 5000
+    timeout: 5
 };
 
 @State<ToastrStateModel>({
@@ -31,20 +31,42 @@ export class ToastrState {
 
     @Action(ShowToastr)
     showToastr({getState, dispatch}: StateContext<ToastrStateModel>, action: ShowToastr) {
-        dispatch(new SetToastr(action.type, action.title, action.message, action.duration));
+        dispatch(new SetToastr(action.type, action.title, action.message, action.duration, action.tapToDismiss));
     }
 
     @Action(SetToastr)
     setToastr({getState, patchState}: StateContext<ToastrStateModel>, action: SetToastr) {
-        patchState({
-            type: action.type,
-            title: action.title,
-            message: action.message,
-            timeout: action.timeout
-        });
-
         const state = getState();
 
-        this._toastr[state.type](state.message, state.title, {timeOut: state.timeout});
+        switch (action.type) {
+            case 'clear':
+                this._toastr[action.type]();
+
+                patchState({
+                    type: action.type
+                });
+                break;
+
+            default:
+                const timeout = action.timeout || action.timeout === 0 ? action.timeout : toastrStateDefaults.timeout;
+                let tapToDismiss = true;
+                if (action.tapToDismiss === false) {
+                    tapToDismiss = false;
+                }
+                this._toastr[action.type](action.message, action.title, {
+                        timeOut: timeout * 1000,
+                        extendedTimeOut: 0,
+                        tapToDismiss: tapToDismiss
+                    }
+                );
+                patchState({
+                    type: action.type,
+                    title: action.title,
+                    message: action.message,
+                    timeout: timeout
+                });
+                break;
+        }
+
     }
 }
