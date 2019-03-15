@@ -50,12 +50,14 @@ export class ToastrState {
             default:
                 const timeout = action.timeout || action.timeout === 0 ? action.timeout : toastrStateDefaults.timeout;
                 let tapToDismiss = true;
+                let extendedTimeOut = 1000;
                 if (action.tapToDismiss === false) {
                     tapToDismiss = false;
+                    extendedTimeOut = 0;
                 }
                 this._toastr[action.type](action.message, action.title, {
                         timeOut: timeout * 1000,
-                        extendedTimeOut: 0,
+                        extendedTimeOut: extendedTimeOut,
                         tapToDismiss: tapToDismiss
                     }
                 );

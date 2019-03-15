@@ -203,7 +203,10 @@ export class SchedaTelefonataComponent implements OnInit {
         if (messageArr.length > 0) {
             message = message.substring(0, message.length - 2);
             const type = 'error';
+            this.store.dispatch(new ShowToastr('clear'));
             this.store.dispatch(new ShowToastr(type, title, message));
+        } else {
+            this.store.dispatch(new ShowToastr('clear'));
         }
         return !!this.chiamataForm.invalid;
     }
