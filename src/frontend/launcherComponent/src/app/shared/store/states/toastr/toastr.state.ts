@@ -45,16 +45,6 @@ export class ToastrState {
 
         const state = getState();
 
-        switch (state.type) {
-            case 'error':
-                this._toastr.error(state.message, state.title, {timeOut: state.timeout});
-                break;
-            case 'warning':
-                this._toastr.warning(state.message, state.title, {timeOut: state.timeout});
-                break;
-            case 'info':
-                this._toastr.info(state.message, state.title, {timeOut: state.timeout});
-                break;
-        }
+        this._toastr[state.type](state.message, state.title, {timeOut: state.timeout});
     }
 }
