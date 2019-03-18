@@ -34,7 +34,7 @@ import { AddMeteoMarker, RemoveMeteoMarker } from '../../../store/actions/maps/m
 import { MarkerState } from '../../../store/states/maps/marker.state';
 import { SetMarkerSelezionato, ClearMarkerSelezionato } from '../../../store/actions/maps/marker.actions';
 import { RichiesteMarkersState } from '../../../store/states/maps/richieste-markers.state';
-import { SetCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../../store/actions/maps/centro-mappa.actions';
+import { SetCentroMappa, SetZoomCentroMappa } from '../../../store/actions/maps/centro-mappa.actions';
 import { MapsFiltroState } from '../../../store/states/maps/maps-filtro.state';
 /**
  * Helper Functions

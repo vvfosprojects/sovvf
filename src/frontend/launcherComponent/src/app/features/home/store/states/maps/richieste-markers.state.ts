@@ -3,6 +3,7 @@ import { RichiesteMarkerService } from '../../../../../core/service/maps-service
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
 import { ClearRichiesteMarkers, GetRichiesteMarkers, OpacizzaRichiesteMarkers, OpacizzaRichiesteMarkersById, SetRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
 import { makeCopy, wipeStatoRichiesta } from '../../../../../shared/helper/function';
+import produce from 'immer';
 
 export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];
@@ -53,27 +54,26 @@ export class RichiesteMarkersState {
     }
 
     @Action(OpacizzaRichiesteMarkers)
-    opacizzaRichiesteMarkers({ getState, patchState }: StateContext<RichiesteMarkersStateModel>, action: OpacizzaRichiesteMarkers) {
+    opacizzaRichiesteMarkers({ getState, setState }: StateContext<RichiesteMarkersStateModel>, action: OpacizzaRichiesteMarkers) {
         const state = getState();
-        const richiesteMarkers: RichiestaMarker[] = makeCopy(state.richiesteMarkers);
-        if (richiesteMarkers) {
-            richiesteMarkers.forEach(r => {
-                if (action.stato) {
-                    r.opacita = true;
-                    action.stato.forEach(c => {
-                        if (wipeStatoRichiesta(r.stato).substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
+        setState(
+            produce(state, draft => {
+                if (state.richiesteMarkers) {
+                    draft.richiesteMarkers.map(r => {
+                        if (action.stato) {
+                            r.opacita = true;
+                            action.stato.forEach(c => {
+                                if (wipeStatoRichiesta(r.stato).substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
+                                    r.opacita = false;
+                                }
+                            });
+                        } else {
                             r.opacita = false;
                         }
                     });
-                } else {
-                    r.opacita = false;
                 }
-            });
-        }
-        patchState({
-            ...state,
-            richiesteMarkers: richiesteMarkers
-        });
+            }),
+        );
     }
 
     @Action(OpacizzaRichiesteMarkersById)
