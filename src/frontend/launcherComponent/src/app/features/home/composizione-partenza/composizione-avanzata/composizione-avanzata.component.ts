@@ -2,9 +2,6 @@ import {Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges} fr
 import {NgbPopoverConfig, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, Subscription} from 'rxjs';
 
-// Service
-import {MarkerService} from '../../maps/service/marker-service/marker-service.service';
-
 // Interface
 import {BoxPartenza} from '../interface/box-partenza-interface';
 import {MezzoComposizione} from '../interface/mezzo-composizione-interface';
@@ -45,8 +42,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() sendDirection: EventEmitter<DirectionInterface> = new EventEmitter();
     @Output() clearDirection: EventEmitter<any> = new EventEmitter();
 
-    constructor(private markerService: MarkerService,
-                private popoverConfig: NgbPopoverConfig,
+    constructor(private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig) {
         // Popover options
         this.popoverConfig.container = 'body';
