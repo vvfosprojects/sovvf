@@ -9,7 +9,7 @@ import { ChiamataState } from '../store/states/chiamata/chiamata.state';
 import { SchedaTelefonataInterface } from './model/scheda-telefonata.interface';
 import { ReducerSchedaTelefonata } from '../store/actions/chiamata/scheda-telefonata.actions';
 import { Utente } from '../../../shared/model/utente.model';
-import { UtenteState } from '../../navbar/operatore/store/states/utente.state';
+import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
 
 
 @Component({

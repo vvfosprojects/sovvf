@@ -1,7 +1,7 @@
 import { Utente } from '../../../../../shared/model/utente.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { UserService } from '../../../../../core/auth/_services';
-import { GetUtente } from '../actions/utente.actions';
+import { GetUtente } from '../../actions/operatore/utente.actions';
 import { SignalRService } from '../../../../../core/signalr/signalR.service';
 
 export interface UtenteStateModel {

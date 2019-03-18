@@ -6,7 +6,7 @@ import {GetUtenti} from 'src/app/features/home/store/actions/utenti/utenti.actio
 import {SetRicercaUtenti} from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import {makeCopy} from '../../shared/helper/function';
 import {Sede} from '../../shared/model/sede.model';
-import {UtenteState} from '../navbar/operatore/store/states/utente.state';
+import {UtenteState} from '../navbar/store/states/operatore/utente.state';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {UtentiState} from '../home/store/states/utenti/utenti.state';
 

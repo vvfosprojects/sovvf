@@ -1,10 +1,10 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 
 // Model
-import { Turno } from '../../turno.model';
+import { Turno } from '../../../turno/turno.model';
 
 // Action
-import { GetTurno } from '../actions/turno.actions';
+import { GetTurno } from '../../actions/turno/turno.actions';
 import { TurnoService } from '../../../navbar-service/turno-service/turno.service';
 
 export interface TurniStateModel {

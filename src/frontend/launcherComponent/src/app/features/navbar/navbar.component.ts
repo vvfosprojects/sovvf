@@ -4,11 +4,11 @@ import { ClockService } from './navbar-service/clock-service/clock.service';
 import { AuthenticationService } from '../../core/auth/_services';
 import { Turno } from './turno/turno.model';
 import { Store, Select } from '@ngxs/store';
-import { TurnoState } from './turno/store/';
-import { GetTurno } from './turno/store/actions/turno.actions';
+import { TurnoState } from './store/states/turno/turno.state';
+import { GetTurno } from './store/actions/turno/turno.actions';
 import { Utente } from '../../shared/model/utente.model';
-import { UtenteState } from './operatore/store/states/utente.state';
-import { GetUtente } from './operatore/store/actions/utente.actions';
+import { UtenteState } from './store/states/operatore/utente.state';
+import { GetUtente } from './store/actions/operatore/utente.actions';
 
 @Component({
     selector: 'app-navbar',

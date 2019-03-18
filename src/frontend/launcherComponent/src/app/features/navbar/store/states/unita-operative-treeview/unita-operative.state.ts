@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 
 // Model
 import { Sede } from 'src/app/shared/model/sede.model';
-import { GetUnitaOperative } from '../actions/unita-operative.actions';
+import { GetUnitaOperative } from '../../actions/unita-operative-treeview/unita-operative.actions';
 import { UnitaOperativaService } from '../../../navbar-service/unita-operativa-service/unita-operativa.service';
 
 // Action
