@@ -1,4 +1,4 @@
-import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SedeMarker } from '../../../maps/maps-model/sede-marker.model';
 import { SediMarkerService } from '../../../../../core/service/maps-service';
 import { ClearSediMarkers, GetSediMarkers, SetSediMarkers } from '../../actions/maps/sedi-markers.actions';
@@ -16,7 +16,7 @@ export const SediMarkersStateDefaults: SediMarkersStateModel = {
     defaults: SediMarkersStateDefaults
 })
 
-export class SediMarkersState implements NgxsOnInit {
+export class SediMarkersState {
 
     @Selector()
     static sediMarkers(state: SediMarkersStateModel) {
@@ -25,10 +25,6 @@ export class SediMarkersState implements NgxsOnInit {
 
     constructor(private _sedi: SediMarkerService) {
 
-    }
-
-    ngxsOnInit(ctx: StateContext<SediMarkersState>) {
-        // ctx.dispatch(new GetSediMarkers());
     }
 
     @Action(GetSediMarkers)

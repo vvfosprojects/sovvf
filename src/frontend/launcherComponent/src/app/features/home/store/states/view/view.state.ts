@@ -11,6 +11,7 @@ import { TerminaComposizione } from '../../actions/composizione-partenza/richies
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { RichiestaComposizioneState } from '../composizione-partenza/richiesta-composizione.state';
+import { ClearMarkerSelezionato } from '../../actions/maps/marker.actions';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -105,6 +106,9 @@ export class ViewComponentState {
          * se lo stato della chiamata non è attivo creo uno snapshot, altrimenti ritorno allo stato precedente
          */
         if (!state.view.chiamata.active && !action.toggle) {
+            dispatch(new ClearDirection());
+            dispatch(new ClearMarkerSelezionato());
+            dispatch(new GetInitCentroMappa());
             dispatch(new SaveView(makeCopy(state)));
             const newState = activeChiamata(stateDefault);
             patchState({

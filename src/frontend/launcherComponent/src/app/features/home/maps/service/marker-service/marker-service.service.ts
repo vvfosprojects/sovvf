@@ -377,21 +377,21 @@ export class MarkerService implements OnDestroy {
      * @param action
      * @param centroMappa
      */
-    chiamata(marker: ChiamataMarker, action: string, centroMappa?: CentroMappa) {
-        switch (action) {
-            case MapsEvent.Centra: {
-                this.store.dispatch(new SetCoordCentroMappa(this.getCoordinate(marker)));
-                this.store.dispatch(new SetZoomCentroMappa(18));
-                this.markerZIndex = marker;
-                this.getDatiMeteo(marker);
-            }
-                break;
-            default: {
-                this.markerZIndex = null;
-            }
-                break;
-        }
-    }
+    // chiamata(marker: ChiamataMarker, action: string, centroMappa?: CentroMappa) {
+    //     switch (action) {
+    //         case MapsEvent.Centra: {
+    //             this.store.dispatch(new SetCoordCentroMappa(this.getCoordinate(marker)));
+    //             this.store.dispatch(new SetZoomCentroMappa(18));
+    //             this.markerZIndex = marker;
+    //             this.getDatiMeteo(marker);
+    //         }
+    //             break;
+    //         default: {
+    //             this.markerZIndex = null;
+    //         }
+    //             break;
+    //     }
+    // }
 
     /**
      * crea a runtime un marker, se l'utente clicca in un punto della mappa

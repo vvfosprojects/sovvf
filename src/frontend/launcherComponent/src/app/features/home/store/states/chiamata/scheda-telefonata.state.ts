@@ -3,11 +3,9 @@ import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import { SetChiamata, InsertChiamata, ReducerSchedaTelefonata, ResetChiamata, CestinaChiamata, SetMarkerChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
 import { FormChiamataModel } from '../../../chiamata/model/form-scheda-telefonata.model';
 import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
-import { MarkerService } from '../../../maps/service/marker-service/marker-service.service';
-import { MapsEvent } from '../../../../../shared/enum/maps-event.enum';
 import { CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
 import { ToggleChiamata } from '../../actions/view/view.actions';
-import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
+import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 
 export interface SchedaTelefonataStateModel {
     coordinate: Coordinate;
@@ -28,7 +26,7 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
 
 export class SchedaTelefonataState {
 
-    constructor(private markerService: MarkerService) {
+    constructor() {
     }
 
     @Selector()
@@ -98,12 +96,14 @@ export class SchedaTelefonataState {
     }
 
     @Action(SetMarkerChiamata)
-    setMarkerChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetMarkerChiamata) {
+    setMarkerChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetMarkerChiamata) {
         const coordinate: Coordinate = {
             latitudine: action.marker.localita.coordinate.latitudine,
             longitudine: action.marker.localita.coordinate.longitudine
         };
-        this.markerService.chiamata(action.marker, MapsEvent.Centra);
+        // Todo: tolta DI markerServer, ma manca il meteo sulla chiamata.
+        dispatch(new SetCoordCentroMappa(coordinate));
+        dispatch(new SetZoomCentroMappa(18));
         // Todo: fare il dispatch dell'action di signalR - NotifyMarkerChiamata
         patchState({
             coordinate: coordinate,
