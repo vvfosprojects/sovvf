@@ -86,9 +86,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                         this.loaderNuoveRichieste = false;
                     }, 500);
                     this.contatoreNuoveRichieste = false;
-                    setTimeout(() => {
-                        this.loaderRichieste = false;
-                    }, 100);
+                    this.loaderRichieste = false;
                 } else if (richieste.length <= 0) {
                     setTimeout(() => {
                         this.loaderNuoveRichieste = false;
