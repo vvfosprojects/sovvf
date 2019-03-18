@@ -8,9 +8,6 @@ import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.mod
 // Component
 import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
 
-// Service
-import { MarkerService } from '../../maps/service/marker-service/marker-service.service';
-
 // Helper Methods
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 
@@ -38,8 +35,7 @@ export class RichiestaFissataComponent implements OnInit, OnChanges {
     private playerRichiesta: AnimationPlayer;
 
     constructor(private animationBuilder: AnimationBuilder,
-        private modalService: NgbModal,
-        private markerS: MarkerService) {
+                private modalService: NgbModal) {
     }
 
     ngOnInit() {
@@ -68,7 +64,7 @@ export class RichiestaFissataComponent implements OnInit, OnChanges {
         const animationContainerRichiesta = this.animationBuilder
             .build([
                 style({ height: '0', width: '0' }),
-                animate(450, style({  height: '100%', width: '100%' }))
+                animate(450, style({ height: '100%', width: '100%' }))
             ]);
 
         const animationRichiesta = this.animationBuilder
@@ -123,7 +119,6 @@ export class RichiestaFissataComponent implements OnInit, OnChanges {
 
     /* Apre il componente per la creazione della partenza */
     nuovaPartenza(richiesta: any) {
-        this.markerS.actionById(richiesta.id, 'click');
         this.composizionePartenza.emit(richiesta);
         this.statoPartenza.emit(true);
 

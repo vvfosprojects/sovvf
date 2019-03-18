@@ -363,9 +363,9 @@ export class MarkerService implements OnDestroy {
     getMarkerFromId(id: string): RichiestaMarker {
         // Todo: da fixare errore su logout (non bloccante)
         let marker: RichiestaMarker = null;
-        let richiesteById$: Observable<RichiestaMarker>;
-        richiesteById$ = this.store.select(RichiesteMarkersState.getRichiesteById).pipe(map(fn => fn(id)));
-        richiesteById$.subscribe(m => {
+        let richiesteMarkerById$: Observable<RichiestaMarker>;
+        richiesteMarkerById$ = this.store.select(RichiesteMarkersState.getRichiesteById).pipe(map(fn => fn(id)));
+        richiesteMarkerById$.subscribe(m => {
             marker = m;
         });
         return marker;

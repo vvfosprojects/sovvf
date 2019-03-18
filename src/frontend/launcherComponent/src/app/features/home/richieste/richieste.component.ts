@@ -24,6 +24,7 @@ import { Composizione } from '../../../shared/enum/composizione.enum';
 import { RichiestaComposizione } from '../store/actions/composizione-partenza/richiesta-composizione.actions';
 import { OpacizzaRichiesteMarkersById } from '../store/actions/maps/richieste-markers.actions';
 import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
+import { SetMarkerSelezionato } from '../store/actions/maps/marker.actions';
 
 @Component({
     selector: 'app-richieste',
