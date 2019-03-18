@@ -76,7 +76,9 @@ export class MarkerService implements OnDestroy {
                 private agmService: AgmService,
                 private unitaAttualeS: UnitaAttualeService,
                 private store: Store) {
-        this.subscription.add(this.markerSelezionato$.subscribe(marker => this.markerSelezionato = marker));
+        this.subscription.add(this.markerSelezionato$.subscribe(marker => {
+            this.markerSelezionato = marker;
+        }));
         this.subscription.add(this.filtroMarkerAttivo$.subscribe(filtroAttivo => this.filtroMarkerAttivo = filtroAttivo));
         this.subscription.add(this.stateSwitch$.subscribe((state: boolean) => this.switchMeteo = state));
 
@@ -170,7 +172,6 @@ export class MarkerService implements OnDestroy {
          *  imposto nel service marked lo stato del marker a selezionato
          */
         this.selezionato(marker);
-
         /**
          *  mi arrivano i dati del meteo
          */
@@ -335,6 +336,13 @@ export class MarkerService implements OnDestroy {
             }
                 break;
         }
+    }
+
+    // provvisorio
+
+    actionHoverOut() {
+        this.markerColorato = null;
+        this.markerZIndex = null;
     }
 
     getCoordinate(marker: any): Coordinate {

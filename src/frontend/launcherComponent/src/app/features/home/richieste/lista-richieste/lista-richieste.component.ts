@@ -4,9 +4,6 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 // Model
 import {SintesiRichiesta} from '../../../../shared/model/sintesi-richiesta.model';
 
-// Service
-import {MarkerService} from '../../maps/service/marker-service/marker-service.service';
-
 // Helper methods
 import {HelperSintesiRichiesta} from '../helper/_helper-sintesi-richiesta';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
@@ -48,7 +45,7 @@ export class ListaRichiesteComponent implements OnInit {
 
     @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
 
-    constructor(private markerS: MarkerService) {
+    constructor() {
     }
 
     ngOnInit() {
@@ -68,10 +65,8 @@ export class ListaRichiesteComponent implements OnInit {
     /* Gestisce il singolo click sulla richiesta */
     richiestaClick(richiesta: SintesiRichiesta) {
         if (richiesta !== this.richiestaSelezionata) {
-            this.markerS.actionById(richiesta.id, 'click', false);
             this.selezione.emit(richiesta.codice);
         } else {
-            this.markerS.actionById(richiesta.id, 'click', true);
             this.deselezione.emit(true);
         }
     }
@@ -79,12 +74,8 @@ export class ListaRichiesteComponent implements OnInit {
     /* Gestisce il double click sulla richiesta */
     richiestaDoubleClick(richiesta: SintesiRichiesta) {
         if (richiesta !== this.richiestaSelezionata) {
-            this.markerS.actionById(richiesta.id, 'click', false);
             this.selezione.emit(richiesta.codice);
-            // TEST
-            // console.log('Doppio click su', richiesta);
         } else {
-            this.markerS.actionById(richiesta.id, 'click', true);
             this.deselezione.emit(true);
         }
     }
@@ -92,15 +83,12 @@ export class ListaRichiesteComponent implements OnInit {
     /* Fissa in alto la richiesta */
     onFissaInAlto(richiesta: SintesiRichiesta) {
         if (richiesta) {
-            this.markerS.actionById(richiesta.id, 'click');
-
             this.fissaInAlto.emit(richiesta.codice);
         }
     }
 
     /* Apre il componente per la creazione della partenza */
     nuovaPartenza(richiesta: any) {
-        this.markerS.actionById(richiesta.id, 'click');
         this.composizionePartenza.emit(richiesta);
         this.statoPartenza.emit(true);
     }
@@ -108,8 +96,6 @@ export class ListaRichiesteComponent implements OnInit {
     /* Gestisce l'hover in */
     richiestaHoverIn(richiesta: SintesiRichiesta) {
         if (richiesta) {
-            this.markerS.actionById(richiesta.id, 'hover-in');
-
             this.hoverIn.emit(richiesta.codice);
         }
     }
@@ -117,8 +103,6 @@ export class ListaRichiesteComponent implements OnInit {
     /* Gestisce l'hover out */
     richiestaHoverOut(richiesta: SintesiRichiesta) {
         if (richiesta) {
-            this.markerS.actionById(richiesta.id, 'hover-out');
-
             this.hoverOut.emit(true);
         }
     }

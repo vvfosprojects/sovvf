@@ -23,8 +23,9 @@ import { ToggleComposizione } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { RichiestaComposizione } from '../store/actions/composizione-partenza/richiesta-composizione.actions';
 import { OpacizzaRichiesteMarkersById } from '../store/actions/maps/richieste-markers.actions';
-import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
-import { SetMarkerSelezionato } from '../store/actions/maps/marker.actions';
+import { MarkerService } from '../maps/service/marker-service/marker-service.service';
+import { ClearMarkerSelezionato } from '../store/actions/maps/marker.actions';
+import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -61,6 +62,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     constructor(private modalService: NgbModal,
                 private filter: FilterPipe,
+                private markerS: MarkerService,
                 private store: Store) {
         this.getRichieste();
     }
@@ -181,26 +183,34 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     onHoverIn(idRichiesta: string) {
+        this.markerS.actionById(idRichiesta, 'hover-in');
         this.store.dispatch(new SetRichiestaHover(idRichiesta));
     }
 
     onHoverOut() {
+        this.markerS.actionHoverOut();
         this.store.dispatch(new ClearRichiestaHover());
     }
 
     onSelezione(idRichiesta: string) {
+        this.markerS.actionById(idRichiesta, 'click', false);
         this.store.dispatch(new SetRichiestaSelezionata(idRichiesta));
     }
 
     onDeselezione() {
+        this.store.dispatch(new ClearMarkerSelezionato());
+        this.store.dispatch(new GetInitZoomCentroMappa());
         this.store.dispatch(new ClearRichiestaSelezionata());
     }
 
     onFissaInAlto(idRichiesta: string) {
+        this.markerS.actionById(idRichiesta, 'click', false);
         this.store.dispatch(new SetRichiestaFissata(idRichiesta));
     }
 
     onDefissa() {
+        this.store.dispatch(new ClearMarkerSelezionato());
+        this.store.dispatch(new GetInitZoomCentroMappa());
         this.store.dispatch(new ClearRichiestaFissata());
     }
 
@@ -215,6 +225,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     nuovaPartenza($event: SintesiRichiesta) {
+        this.markerS.actionById($event.id, 'click');
         this.store.dispatch(new RichiestaComposizione($event));
     }
 }
