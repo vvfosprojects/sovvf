@@ -18,7 +18,8 @@ import {CentroMappaState} from '../store/states/maps/centro-mappa.state';
 @Component({
     selector: 'app-maps',
     templateUrl: './maps.component.html',
-    styleUrls: ['./maps.component.css']
+    styleUrls: ['./maps.component.css'],
+    providers: []
 })
 export class MapsComponent implements OnInit, OnDestroy {
 

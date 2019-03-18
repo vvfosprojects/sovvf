@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { MarkerService } from '../../../service/marker-service/marker-service.service';
-import { ToastrService } from 'ngx-toastr';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { MarkerState } from '../../../../store/states/maps/marker.state';
 import { Observable } from 'rxjs';
+import { ClearMarkerSelezionato } from '../../../../store/actions/maps/marker.actions';
+import { ShowToastr } from '../../../../../../shared/store/actions/toastr/toastr.actions';
+import { UnitaAttualeService } from '../../../../../navbar/navbar-service/unita-attuale/unita-attuale.service';
 
 @Component({
     selector: 'app-cambio-sede-modal',
@@ -14,28 +15,25 @@ import { Observable } from 'rxjs';
 export class CambioSedeModalComponent {
 
     @Select(MarkerState.markerSelezionato) markerSelezionato$: Observable<any>;
-    markerSelezionato: any;
-    nomeSede: string;
+    sede: any;
 
     constructor(public modal: NgbActiveModal,
-                private markerService: MarkerService,
-                private toastr: ToastrService) {
+                private unitaAttualeS: UnitaAttualeService,
+                private store: Store) {
         this.markerSelezionato$.subscribe(result => {
             if (result) {
-                this.nomeSede = result.descrizione;
-                this.markerSelezionato = result;
+                this.sede = result;
             }
         });
     }
 
     cambioSede() {
-        this.markerService.cambioSede(this.markerSelezionato);
-        this.markerService.deseleziona();
+        this.unitaAttualeS.sendUnitaOperativaAttuale([this.sede]);
+        this.store.dispatch(new ClearMarkerSelezionato());
     }
 
     annullaCambioSede() {
-        this.toastr.warning('Azione annullata', 'Attenzione');
-        this.markerService.deseleziona();
+        this.store.dispatch(new ShowToastr('warning', 'Attenzione', 'Azione annullata'));
     }
 
 }

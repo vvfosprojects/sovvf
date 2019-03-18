@@ -304,15 +304,6 @@ export class MarkerService implements OnDestroy {
         return this.subjectMeteo.asObservable();
     }
 
-    cambioSede(sede: any) {
-        /**
-         * evento che cambia la sede
-         */
-        const sedeAttuale = [];
-        sedeAttuale.push(sede);
-        this.unitaAttualeS.sendUnitaOperativaAttuale(sedeAttuale);
-    }
-
     noAction() {
         if (this.markerSelezionato) {
             this.store.dispatch(new SetZoomCentroMappa(12));

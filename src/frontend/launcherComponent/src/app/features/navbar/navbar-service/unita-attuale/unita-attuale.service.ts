@@ -14,7 +14,7 @@ const FLAG_FAKE = environment.apiUrl.generaFake;
 export class UnitaAttualeService {
 
     private unitaAttuale = new Subject<Sede[]>();
-    private statoTreeView = new Subject<boolean>();
+    // private statoTreeView = new Subject<boolean>();
     private unitaOperativeCopy: Sede[];
     private livelliSedi: LivelliSedi;
     startCount = 0;
@@ -42,6 +42,47 @@ export class UnitaAttualeService {
         // console.log(sede);
         this.unitaAttuale.next(sede);
         this.startPreloading();
+    }
+
+
+    getUnitaOperativaAttuale(): Observable<Sede[]> {
+        return this.unitaAttuale.asObservable();
+    }
+
+
+    startPreloading(): void {
+        if (this.startCount > -1) {
+            this.preloading();
+        }
+    }
+
+    preloading(): void {
+        /**
+         * preloader fake, simula il ricaricamento dell'applicazione
+         */
+        this.preLoader = false;
+        if (FLAG_FAKE) {
+            setTimeout(() => {
+                this.preLoader = true;
+            }, 1000);
+        } else {
+            console.log('Chiamo il back end');
+            this.richiesteStatus.getRichiesteStatus().subscribe(data => {
+                console.log(`Il back end ha risposto: ${data}`);
+                if (data) {
+                    this.preLoader = true;
+                }
+            });
+        }
+    }
+
+    /*
+    annullaTreeView(): void {
+        this.statoTreeView.next(true);
+    }
+
+    getAnnullaTreeView(): Observable<boolean> {
+        return this.statoTreeView.asObservable();
     }
 
     sendUnitaOperativaAttualeMaps(sede: Sede): void {
@@ -87,43 +128,6 @@ export class UnitaAttualeService {
         this.unitaAttuale.next(sedeAttuale);
         this.startPreloading();
     }
-
-    annullaTreeView(): void {
-        this.statoTreeView.next(true);
-    }
-
-    getUnitaOperativaAttuale(): Observable<Sede[]> {
-        return this.unitaAttuale.asObservable();
-    }
-
-    getAnnullaTreeView(): Observable<boolean> {
-        return this.statoTreeView.asObservable();
-    }
-
-    startPreloading(): void {
-        if (this.startCount > -1) {
-            this.preloading();
-        }
-    }
-
-    preloading(): void {
-        /**
-         * preloader fake, simula il ricaricamento dell'applicazione
-         */
-        this.preLoader = false;
-        if (FLAG_FAKE) {
-            setTimeout(() => {
-                this.preLoader = true;
-            }, 1000);
-        } else {
-            console.log('Chiamo il back end');
-            this.richiesteStatus.getRichiesteStatus().subscribe( data => {
-                console.log(`Il back end ha risposto: ${data}`);
-                if (data) {
-                    this.preLoader = true;
-                }
-            });
-        }
-    }
+*/
 
 }
