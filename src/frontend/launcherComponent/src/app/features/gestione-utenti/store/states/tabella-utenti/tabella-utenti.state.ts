@@ -3,9 +3,10 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {Utente} from '../../../../../shared/model/utente.model';
 // Action
 import {SetPage, SetPageSize, SetUtentiFiltrati} from '../../actions/tabella-utenti/tabella-utenti.actons';
+import { GestioneUtente } from '../../../../../shared/model/gestione-utente.model';
 
 export interface TabellaUtentiStateModel {
-    utentiFiltrati: Utente[];
+    utentiFiltrati: GestioneUtente[];
     pageSize: number;
     page: number;
 }

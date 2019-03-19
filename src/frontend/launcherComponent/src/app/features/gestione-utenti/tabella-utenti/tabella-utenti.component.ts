@@ -1,14 +1,16 @@
-import {Component} from '@angular/core';
-import {DecimalPipe} from '@angular/common';
-import {Utente} from '../../../shared/model/utente.model';
-import {Observable, Subscription} from 'rxjs';
-import {Select, Store} from '@ngxs/store';
-import {UtentiState} from '../../home/store/states/utenti/utenti.state';
-import {RicercaUtentiState} from '../store/states/ricerca-utenti/ricerca-utenti.state';
-import {FilterPipe} from 'ngx-filter-pipe';
-import {makeCopy} from '../../../shared/helper/function';
-import {TabellaUtentiState} from '../store/states/tabella-utenti/tabella-utenti.state';
-import {SetPage, SetPageSize, SetUtentiFiltrati} from '../store/actions/tabella-utenti/tabella-utenti.actons';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
+import { Role } from '../../../shared/model/utente.model';
+import { Observable, Subscription } from 'rxjs';
+import { Select, Store } from '@ngxs/store';
+import { RicercaUtentiState } from '../store/states/ricerca-utenti/ricerca-utenti.state';
+import { FilterPipe } from 'ngx-filter-pipe';
+import { makeCopy } from '../../../shared/helper/function';
+import { TabellaUtentiState } from '../store/states/tabella-utenti/tabella-utenti.state';
+import { SetPage, SetPageSize, SetUtentiFiltrati } from '../store/actions/tabella-utenti/tabella-utenti.actons';
+import { Sede } from '../../../shared/model/sede.model';
+import { GestioneUtentiState } from '../store/states/gestione-utenti/gestione-utenti.state';
+import { GestioneUtente } from '../../../shared/model/gestione-utente.model';
 
 
 @Component({
@@ -20,11 +22,11 @@ export class TabellaUtentiComponent {
     @Select(RicercaUtentiState.ricerca) ricerca$: Observable<any>;
     ricercaUtenti: any;
 
-    @Select(UtentiState.utenti) utenti$: Observable<Utente[]>;
-    utenti: Utente[];
+    @Select(GestioneUtentiState.lista_gestione_utenti) lista_gestione_utenti$: Observable<GestioneUtente[]>;
+    lista_gestione_utenti: GestioneUtente[];
 
-    @Select(TabellaUtentiState.utentiFiltrati) utentiFiltrati$: Observable<Utente[]>;
-    utentiFiltrati: Utente[];
+    @Select(TabellaUtentiState.utentiFiltrati) utentiFiltrati$: Observable<GestioneUtente[]>;
+    utentiFiltrati: GestioneUtente[];
 
     @Select(TabellaUtentiState.pageSize) pageSize$: Observable<number>;
     pageSize: number;
@@ -32,9 +34,16 @@ export class TabellaUtentiComponent {
     @Select(TabellaUtentiState.page) page$: Observable<number>;
     page: number;
 
+    ruoli = [
+        Role.Admin,
+        Role.User
+    ];
+
+    @Output() setRuolo: EventEmitter<any> = new EventEmitter();
+
     subscription = new Subscription();
 
-    get utentiPaginati(): Utente[] {
+    get utentiPaginati(): GestioneUtente[] {
         return this.utentiFiltrati
             .map((utente, i) => ({id: i + 1, ...utente}))
             .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
@@ -43,9 +52,9 @@ export class TabellaUtentiComponent {
     constructor(private store: Store,
                 private filter: FilterPipe) {
         this.subscription.add(
-            this.utenti$.subscribe((utenti: Utente[]) => {
-                this.utenti = makeCopy(utenti);
-                this.utenti.map(r => {
+            this.lista_gestione_utenti$.subscribe((utenti: GestioneUtente[]) => {
+                this.lista_gestione_utenti = makeCopy(utenti);
+                this.lista_gestione_utenti.map(r => {
                     r.cognome = r.nome + ' ' + r.cognome;
                     r.nome = '';
                 });
@@ -69,18 +78,18 @@ export class TabellaUtentiComponent {
             })
         );
         this.subscription.add(
-            this.utentiFiltrati$.subscribe((utentiFiltrati: Utente[]) => {
+            this.utentiFiltrati$.subscribe((utentiFiltrati: GestioneUtente[]) => {
                 this.utentiFiltrati = utentiFiltrati;
             })
         );
     }
 
     filtraRichieste(ricerca: any): any {
-        const utentiFiltrati = this.filter.transform(this.utenti, ricerca);
+        const utentiFiltrati = this.filter.transform(this.lista_gestione_utenti, ricerca);
         this.setUtentiFiltrati(utentiFiltrati);
     }
 
-    setUtentiFiltrati(utentiFIltrati: Utente[]) {
+    setUtentiFiltrati(utentiFIltrati: GestioneUtente[]) {
         this.store.dispatch(new SetUtentiFiltrati(utentiFIltrati));
     }
 
@@ -93,5 +102,14 @@ export class TabellaUtentiComponent {
 
     setPage(newPage: number) {
         this.store.dispatch(new SetPage(newPage));
+    }
+
+    onSetRuolo(utente: GestioneUtente, ruolo: any, sede: Sede) {
+        const nuovoRuolo = {
+            utente: utente,
+            ruolo: ruolo,
+            sede: sede
+        };
+        this.setRuolo.emit(nuovoRuolo);
     }
 }

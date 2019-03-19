@@ -2,10 +2,8 @@
     <thead>
     <tr>
         <th scope="col">Utente</th>
-        <th scope="col">Mappa</th>
-        <th scope="col">Richieste</th>
-        <th scope="col">Chiamata</th>
-        <th scope="col">Composizione Partenza</th>
+        <th scope="col" width="200px" *ngFor="let ruolo of ruoli">{{ruolo}}</th>
+        <th scope="col">Sede</th>
     </tr>
     </thead>
     <tbody>
@@ -13,27 +11,21 @@
         <td width="250px">
             <ngb-highlight [result]="utente.nome + ' ' + utente.cognome"></ngb-highlight>
         </td>
-        <td>
-            <ui-switch size="small" checked></ui-switch>
+        <td width="200px" *ngFor="let ruolo of ruoli">
+            <ui-switch size="small" (click)="onSetRuolo(utente, ruolo, utente.ruolo.se)"
+                       [checked]="utente.ruolo === ruolo"></ui-switch>
         </td>
-        <td>
-            <ui-switch size="small" [checked]="false"></ui-switch>
-        </td>
-        <td>
-            <ui-switch size="small" checked></ui-switch>
-        </td>
-        <td>
-            <ui-switch size="small" [checked]="false"></ui-switch>
+        <td width="200px">
+            <h6>{{utente.sede.descrizione}}</h6>
         </td>
     </tr>
     <tr *ngIf="utentiPaginati.length <= 0">
         <td>
             Nessun Utente trovato
         </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td *ngFor="let ruolo of ruoli"></td>
+        <td>
+        </td>
     </tr>
     </tbody>
 </table>

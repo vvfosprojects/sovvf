@@ -1,11 +1,12 @@
 // Model
 import {Utente} from '../../../../../shared/model/utente.model';
+import { GestioneUtente } from '../../../../../shared/model/gestione-utente.model';
 
 // SET
 export class SetUtentiFiltrati {
     static readonly type = '[TebellaUtenti] Set Utenti Filtrati';
 
-    constructor(public utentiFiltrati: Utente[]) {}
+    constructor(public utentiFiltrati: GestioneUtente[]) {}
 }
 
 // SET
