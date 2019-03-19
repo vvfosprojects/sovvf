@@ -1,5 +1,5 @@
-<button *ngIf="user?.ruolo !== Role.User" class="btn btn-light mr-2" ngbTooltip="Notifiche" [ngbPopover]="notifiche" placement="bottom"><i class="fa fa-bell"></i></button>
-<button *ngIf="user?.ruolo !== Role.User" class="btn btn-light mr-2" ngbTooltip="Impostazioni" [ngbPopover]="impostazioni" placement="bottom"><i class="fa fa-cogs"></i>
+<button *ngIf="user?.ruolo.descrizione !== Role.User" class="btn btn-light mr-2" ngbTooltip="Notifiche" [ngbPopover]="notifiche" placement="bottom"><i class="fa fa-bell"></i></button>
+<button *ngIf="user?.ruolo.descrizione !== Role.User" class="btn btn-light mr-2" ngbTooltip="Impostazioni" [ngbPopover]="impostazioni" placement="bottom"><i class="fa fa-cogs"></i>
 </button>
 <div *ngIf="user" class="btn-group" role="group">
   <button class="btn btn-light mr-2" [ngbPopover]="ruolo" placement="bottom">
@@ -17,5 +17,5 @@
   <h6 class="mb-2">Impostazioni</h6>
 </ng-template>
 <ng-template #ruolo>
-  <h6 class="mb-2">{{user.ruolo}}</h6>
+  <h6 class="mb-2">{{user.ruolo[0].descrizione}}</h6>
 </ng-template>

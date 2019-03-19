@@ -1,5 +1,4 @@
 import { Sede } from './sede.model';
-import { AppFeatures } from '../enum/app-features.enum';
 
 export class Utente {
     constructor(
@@ -26,7 +25,7 @@ export class Utente {
         /**
          * ruolo utente
          */
-        public ruolo?: Role,
+        public ruolo?: Ruolo[],
         /**
          * la sede di appartenzenza dell'utente
          */
@@ -34,7 +33,7 @@ export class Utente {
         /**
          * funzionalità associate all'utente
          */
-        public privilegi?: Features[],
+        // public privilegi?: Features[],
         /**
          * json web token dell'utente
          */
@@ -63,10 +62,9 @@ export class Utente {
     }
 }
 
-export interface Features {
-    nameFunction: AppFeatures;
-    read: Sede[];
-    write: Sede[];
+export interface Ruolo {
+    descrizione: Role;
+    sede: Sede;
 }
 
 export enum Role {
