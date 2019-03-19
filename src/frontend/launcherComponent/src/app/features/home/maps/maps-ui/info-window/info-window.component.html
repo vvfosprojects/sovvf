@@ -1,4 +1,9 @@
 <div class="w-100 h-info-window">
+    <ng-template #meteospinner>
+        <div class="col-12 text-center mt-3 mb-3">
+            <i class="fa fa-spinner fa-spin fa-3x fa-fw" aria-hidden="true"></i>
+        </div>
+    </ng-template>
     <ng-template #meteo>
         <ng-template #vento>
             <div class="tooltip-richiesta">Vento {{datiMeteo.vento}} km/h - Direzione
@@ -9,8 +14,9 @@
         <table class="w-100" [ngbTooltip]="vento">
             <tr>
                 <td class="border-0 p-0" colspan="2">
-                    <div placement="bottom">
-                        <img class="iconameteo w-25" src="http://openweathermap.org/img/w/{{datiMeteo.icona}}.png">
+                    <div>
+                        <img class="iconameteo w-25" src="http://openweathermap.org/img/w/{{datiMeteo.icona}}.png"
+                             alt="icona meteo">
                         <span class="text-capitalize">{{datiMeteo.descrizione}}</span>
                     </div>
                 </td>
@@ -77,9 +83,10 @@
                           [disableTooltip]="richiestaMarker.localita.note.length <= 33">{{richiestaMarker.localita.note | truncate:33 }}</span>
                 </th>
             </tr>
-            <tr *ngIf="datiMeteo">
+            <tr>
                 <th scope="row" class="py-1 s-info-window">
-                    <div *ngIf="datiMeteo; then meteo"></div>
+                    <div *ngIf="datiMeteo; then meteo; else meteospinner">
+                    </div>
                 </th>
             </tr>
             </tbody>
@@ -162,9 +169,10 @@
                     </div>
                 </th>
             </tr>
-            <tr *ngIf="datiMeteo">
+            <tr>
                 <th scope="row" class="py-1 s-info-window">
-                    <div *ngIf="datiMeteo; then meteo"></div>
+                    <div *ngIf="datiMeteo; then meteo; else meteospinner">
+                    </div>
                 </th>
             </tr>
             </tbody>
@@ -207,13 +215,14 @@
                         </button>
                     </div>
                     <div class="col" ngbTooltip="{{ sedeMarker.tipo }}" placement="bottom">
-                        <img class="w-75" src="{{ tipoSedeIcona }}">
+                        <img class="w-75" [src]="tipoSedeIcona" alt="sede icona">
                     </div>
                 </th>
             </tr>
-            <tr *ngIf="datiMeteo">
+            <tr>
                 <th scope="row" class="py-1 s-info-window">
-                    <div *ngIf="datiMeteo; then meteo"></div>
+                    <div *ngIf="datiMeteo; then meteo; else meteospinner">
+                    </div>
                 </th>
             </tr>
             </tbody>
@@ -237,9 +246,10 @@
                     {{chiamata.localita.indirizzo}}
                 </th>
             </tr>
-            <tr *ngIf="datiMeteo">
+            <tr>
                 <th scope="row" class="py-1 s-info-window">
-                    <div *ngIf="datiMeteo; then meteo"></div>
+                    <div *ngIf="datiMeteo; then meteo; else meteospinner">
+                    </div>
                 </th>
             </tr>
             </tbody>
@@ -261,9 +271,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngIf="datiMeteo">
+            <tr>
                 <th scope="row" class="py-1 s-info-window">
-                    <div *ngIf="datiMeteo; then meteo"></div>
+                    <div *ngIf="datiMeteo; then meteo; else meteospinner">
+                    </div>
                 </th>
             </tr>
             </tbody>

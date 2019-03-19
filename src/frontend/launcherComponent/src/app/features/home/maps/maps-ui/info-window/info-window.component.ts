@@ -1,21 +1,20 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Meteo} from '../../../../../shared/model/meteo.model';
-import {RichiestaMarker} from '../../maps-model/richiesta-marker.model';
-import {SedeMarker} from '../../maps-model/sede-marker.model';
-import {MezzoMarker} from '../../maps-model/mezzo-marker.model';
-import {CambioSedeModalComponent} from './cambio-sede-modal/cambio-sede-modal.component';
-import {NgbModal, NgbPopover, NgbPopoverConfig, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
-import {ColoriStatoMezzo} from '../../../../../shared/helper/_colori';
-import {ChiamataMarker} from '../../maps-model/chiamata-marker.model';
-import {MeteoMarker} from '../../maps-model/meteo-marker.model';
-import {HelperSintesiRichiesta} from '../../../richieste/helper/_helper-sintesi-richiesta';
-import {SintesiRichiestaModalComponent} from './sintesi-richiesta-modal/sintesi-richiesta-modal.component';
-import {RichiesteMarkersState} from '../../../store/states/maps/richieste-markers.state';
-import {map} from 'rxjs/operators';
-import {Observable, Subscription} from 'rxjs';
-import {SintesiRichiesta} from '../../../../../shared/model/sintesi-richiesta.model';
-import {Store} from '@ngxs/store';
-import {RichiesteState} from '../../../store/states/richieste/richieste.state';
+import { Component, Input, OnInit } from '@angular/core';
+import { Meteo } from '../../../../../shared/model/meteo.model';
+import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
+import { SedeMarker } from '../../maps-model/sede-marker.model';
+import { MezzoMarker } from '../../maps-model/mezzo-marker.model';
+import { CambioSedeModalComponent } from './cambio-sede-modal/cambio-sede-modal.component';
+import { NgbModal, NgbPopover, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ColoriStatoMezzo } from '../../../../../shared/helper/_colori';
+import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
+import { MeteoMarker } from '../../maps-model/meteo-marker.model';
+import { HelperSintesiRichiesta } from '../../../richieste/helper/_helper-sintesi-richiesta';
+import { SintesiRichiestaModalComponent } from './sintesi-richiesta-modal/sintesi-richiesta-modal.component';
+import { map } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
+import { Store } from '@ngxs/store';
+import { RichiesteState } from '../../../store/states/richieste/richieste.state';
 
 @Component({
     selector: 'app-info-window',
@@ -62,7 +61,7 @@ export class InfoWindowComponent implements OnInit {
                         richiesta = r;
 
                         if (richiesta) {
-                            const modal = this._modalService.open(SintesiRichiestaModalComponent, {windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true});
+                            const modal = this._modalService.open(SintesiRichiestaModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
                             modal.componentInstance.richiesta = richiesta;
                             this.subscriptionRichiestaById.unsubscribe();
                         }
