@@ -25,7 +25,6 @@ import { RichiesteModule } from './richieste/richieste.module';
 import { ComposizionePartenzaModule } from './composizione-partenza/composizione-partenza.module';
 import { ViewComponentState } from './store/states/view/view.state';
 import { BackupViewComponentState } from './store/states/view/save-view.state';
-import { ToastrState } from '../../shared/store/states/toastr/toastr.state';
 import { HomeState } from './store/states/home.state';
 
 @NgModule({

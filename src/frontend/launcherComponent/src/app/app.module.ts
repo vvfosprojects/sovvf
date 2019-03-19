@@ -1,7 +1,6 @@
 import { AppComponent } from './app.component';
 import { I18n } from './i18n';
 import { environment } from '../environments/environment';
-
 /**
  * Module
  */
@@ -19,7 +18,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { NgProgressHttpModule } from '@ngx-progressbar/http';
 import { ToastrModule } from 'ngx-toastr';
-
 /**
  * Ngxs
  */
@@ -29,8 +27,6 @@ import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { UtenteState } from './features/navbar/store/states/operatore/utente.state';
-import { UtentiState } from './features/home/store/states/utenti/utenti.state';
-
 /**
  * Route
  */
@@ -76,7 +72,7 @@ import { ToastrState } from './shared/store/states/toastr/toastr.state';
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [UtenteState, UtentiState, SignalRState, ToastrState],
+            [UtenteState, SignalRState, ToastrState],
             { developmentMode: !environment.production }
         ),
         NgxsStoragePluginModule.forRoot({
