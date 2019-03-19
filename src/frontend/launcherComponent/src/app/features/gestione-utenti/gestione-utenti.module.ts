@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TreeviewModule } from 'ngx-treeview';
 import { FilterPipeModule } from 'ngx-filter-pipe';
+import { NgSelectModule } from '@ng-select/ng-select';
 /**
  * Component
  */
@@ -12,6 +13,7 @@ import { RicercaUtentiComponent } from './ricerca-utenti/ricerca-utenti.componen
 import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.component';
 import { UtentiPerPaginaComponent } from './tabella-utenti/utenti-per-pagina/utenti-per-pagina.component';
 import { RisultatiPaginazioneComponent } from './tabella-utenti/risultati-paginazione/risultati-paginazione.component';
+import { AggiungiUtenteModalComponent } from './aggiungi-utente-modal/aggiungi-utente-modal.component';
 /**
  * Routing
  */
@@ -23,24 +25,29 @@ import { PipeModule } from '../../shared/pipes/pipe.module';
 import { SharedModule } from '../../shared/shared.module';
 import { UiSwitchModule } from 'ngx-ui-switch';
 /**
+ * Service
+ */
+import { GestioneUtentiService } from '../../core/service/gestione-utenti-service/gestione-utenti.service';
+import { GestioneUtentiServiceFake } from '../../core/service/gestione-utenti-service/gestione-utenti.service.fake';
+/**
  * Ngxs
  */
 import { NgxsModule } from '@ngxs/store';
 import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti.state';
 import { TabellaUtentiState } from './store/states/tabella-utenti/tabella-utenti.state';
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
-import { GestioneUtentiService } from '../../core/service/gestione-utenti-service/gestione-utenti.service';
-import { GestioneUtentiServiceFake } from '../../core/service/gestione-utenti-service/gestione-utenti.service.fake';
+import { UtentiState } from '../home/store/states/utenti/utenti.state';
 
 
 @NgModule({
-    declarations: [GestioneUtentiComponent, RicercaUtentiComponent, TabellaUtentiComponent, UtentiPerPaginaComponent, RisultatiPaginazioneComponent],
+    declarations: [GestioneUtentiComponent, RicercaUtentiComponent, TabellaUtentiComponent, UtentiPerPaginaComponent, RisultatiPaginazioneComponent, AggiungiUtenteModalComponent],
     imports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         GestioneUtentiRouting,
         NgbModule,
+        NgSelectModule,
         FilterPipeModule,
         TreeviewModule.forRoot(),
         PipeModule.forRoot(),
@@ -50,10 +57,12 @@ import { GestioneUtentiServiceFake } from '../../core/service/gestione-utenti-se
             [
                 RicercaUtentiState,
                 TabellaUtentiState,
-                GestioneUtentiState
+                GestioneUtentiState,
+                UtentiState
             ]
         ),
     ],
+    entryComponents: [AggiungiUtenteModalComponent],
     providers: [
         {provide: GestioneUtentiService, useClass: GestioneUtentiServiceFake}
     ]

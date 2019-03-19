@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Utente } from 'src/app/shared/model/utente.model';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { GetUtenti } from 'src/app/features/home/store/actions/utenti/utenti.actions';
 import { SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { makeCopy } from '../../shared/helper/function';
 import { Sede } from '../../shared/model/sede.model';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GetGestioneUtenti } from './store/actions/gestione-utenti/gestione-utenti.actions';
+import { AggiungiUtenteModalComponent } from './aggiungi-utente-modal/aggiungi-utente-modal.component';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -36,7 +36,7 @@ export class GestioneUtentiComponent implements OnInit {
         });
     }
 
-    aggiungiUtente(AggiungiUtenteModalComponent: any) {
+    aggiungiUtente() {
         this.modal.open(AggiungiUtenteModalComponent, {backdropClass: 'light-blue-backdrop', centered: true, size: 'lg'});
     }
 

@@ -1,0 +1,33 @@
+<div class="modal-header">
+    <h4 class="modal-title">Aggiungi un utente</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col">
+            <ng-select *ngIf="loaded" [items]="utenti"
+                       bindLabel="cognome"
+                       placeholder="Seleziona un utente"
+                       [(ngModel)]="utente">
+            </ng-select>
+        </div>
+        <div class="col">
+            <ng-select [items]="['Admin', 'User']"
+                       placeholder="Seleziona ruolo"
+                       [(ngModel)]="ruolo">
+            </ng-select>
+        </div>
+        <div class="col">
+            <ng-select [items]="['Comando di Roma', 'Comando di Firenze', 'Comando di Ancona']"
+                       placeholder="Seleziona sede"
+                       [(ngModel)]="sede">
+            </ng-select>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger" (click)="modal.close('Close click')">Annulla</button>
+    <button type="button" class="btn btn-success">Conferma</button>
+</div>
