@@ -28,11 +28,15 @@ export class SignalRService {
     }
 
     addToGroup(notification: SignalRNotification) {
-        this.hubConnection.invoke('AddToGroup', notification);
+        if (!SIGNALR_CONFIG.signlaRByPass) {
+            this.hubConnection.invoke('AddToGroup', notification);
+        }
     }
 
     removeToGroup(notification: SignalRNotification) {
-        this.hubConnection.invoke('RemoveToGroup', notification);
+        if (!SIGNALR_CONFIG.signlaRByPass) {
+            this.hubConnection.invoke('RemoveToGroup', notification);
+        }
     }
 
     private createConnection() {
@@ -71,5 +75,10 @@ export class SignalRService {
             this.store.dispatch(new SignalRHubDisconnesso());
             this.startConnection();
         });
+    }
+
+    byPassSignalR(): void {
+        this.connectionEstablished.next(true);
+        this.store.dispatch(new SignalRHubConnesso());
     }
 }

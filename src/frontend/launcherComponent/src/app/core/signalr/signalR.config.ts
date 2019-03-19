@@ -1,3 +1,4 @@
 export let SIGNALR_CONFIG = {
-  baseUrls: '/SubscriptionHub'
+  baseUrls: '/SubscriptionHub',
+  signlaRByPass: false
 };

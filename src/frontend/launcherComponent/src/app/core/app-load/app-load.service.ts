@@ -4,6 +4,7 @@ import { APP_TIPOLOGIE, TipologieInterface } from '../settings/tipologie';
 import { environment } from '../../../environments/environment';
 import { SignalRService } from '../signalr/signalR.service';
 import { Subscription } from 'rxjs';
+import { SIGNALR_CONFIG } from '../signalr/signalR.config';
 
 const API_URL = environment.apiUrl.elencoTipologie;
 
@@ -12,16 +13,18 @@ export class AppLoadService {
 
     subscription = new Subscription;
     checkConnectionSignalR: boolean;
-    exitSignalRCheck = false;
+
 
     constructor(private http: HttpClient, private signalR: SignalRService) {
-        this.signalR.init();
-        this.subscription.add(this.signalR.checkConnection().subscribe(result => this.checkConnectionSignalR = result));
+        if (!SIGNALR_CONFIG.signlaRByPass) {
+            this.signalR.init();
+            this.subscription.add(this.signalR.checkConnection().subscribe(result => this.checkConnectionSignalR = result));
+        }
     }
 
     initializeApp(): Promise<any> {
         return new Promise((resolve) => {
-            if (!this.exitSignalRCheck) {
+            if (!SIGNALR_CONFIG.signlaRByPass) {
                 if (this.checkConnectionSignalR) {
                     resolve();
                 } else {
@@ -33,6 +36,7 @@ export class AppLoadService {
                     }, 3000);
                 }
             } else {
+                this.signalR.byPassSignalR();
                 resolve();
             }
         });
