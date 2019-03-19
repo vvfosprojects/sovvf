@@ -5,6 +5,7 @@ import { SIGNALR_CONFIG } from './signalR.config';
 import { Store } from '@ngxs/store';
 import { SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
+import { SignalRNotification } from './interface/signalr-notification.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -26,12 +27,12 @@ export class SignalRService {
         return this.connectionEstablished.asObservable();
     }
 
-    addToGroup(id: string) {
-        this.hubConnection.invoke('AddToGroup', id);
+    addToGroup(notification: SignalRNotification) {
+        this.hubConnection.invoke('AddToGroup', notification);
     }
 
-    removeToGroup(id: string) {
-        this.hubConnection.invoke('RemoveToGroup', id);
+    removeToGroup(notification: SignalRNotification) {
+        this.hubConnection.invoke('RemoveToGroup', notification);
     }
 
     private createConnection() {
