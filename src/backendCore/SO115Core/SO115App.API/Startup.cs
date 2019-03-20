@@ -112,8 +112,9 @@ namespace SO115App.API
 
             app.UseSignalR( route => 
                 {
-                    route.MapHub<NotificationHub>("/NotificationHub");
                     route.MapHub<SubscriptionHub>("/SubscriptionHub");
+                    route.MapHub<NotificationHub>("/NotificationHub");
+                    route.MapHub<NotificationHub>("/NotificationMarkerHub");                    
                 }
             );           
             app.UseHttpsRedirection();

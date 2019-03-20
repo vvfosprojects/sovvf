@@ -3,6 +3,7 @@ using SO115App.API.Models.Classi.Notifications;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.API.Models.Classi.Utenti;
 
 namespace SO115App.API.Hubs
 {
@@ -22,10 +23,14 @@ namespace SO115App.API.Hubs
             await base.OnConnectedAsync();
         }
 
-        public async Task SendMessage(Notification<Utente> utente)
+        public async Task SendMessage(Notification<String> messaggio)
         {     
-            await Clients.OthersInGroup(utente.CodiceSede).SendAsync("ReceiveMessage", "L'utente " + utente.NominativoUtente + "ha mandato un messaggio nella sede " + utente.CodiceSede);
+            await Clients.OthersInGroup(messaggio.CodiceSede).SendAsync("ReceiveMessage", messaggio.ActionObj);
         }
 
+        public async Task TurnoMessage(Notification<Turno> turno)
+        {     
+            await Clients.OthersInGroup(turno.CodiceSede).SendAsync("TurnoMessage", turno.ActionObj);
+        }
     }
 }
