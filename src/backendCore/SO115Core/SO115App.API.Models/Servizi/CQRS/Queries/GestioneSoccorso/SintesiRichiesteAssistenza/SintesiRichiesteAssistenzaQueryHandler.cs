@@ -35,6 +35,7 @@ using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 
 using Newtonsoft.Json;
 using SimpleInjector;
+using SO115App.API.Models.Servizi.Infrastruttura;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
@@ -70,12 +71,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// </summary>
         private readonly ICercaRichiesteAssistenza cercaRichiesteAssistenza;
  
+        private readonly ILogger logger;
+
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="cercaRichiesteAssistenza">L'istanza del servizio</param>
-        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza)
+        public SintesiRichiesteAssistenzaQueryHandler(ILogger logger,ICercaRichiesteAssistenza cercaRichiesteAssistenza)
         {
+            this.logger = logger;
             this.cercaRichiesteAssistenza = cercaRichiesteAssistenza;
         }
 
@@ -86,6 +90,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
         {
+            this.logger.Log(this.GetType().Name + " - Inizio Reperimento Richieste di Assistenza");
+
             var richieste = this.cercaRichiesteAssistenza.Get(query.Filtro);
           
             List<RichiestaAssistenza> listaRichieste = new List<RichiestaAssistenza>();
@@ -97,6 +103,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
             sintesiRichiesta = ElencoSintesiRichiesta(query);
 
            
+            this.logger.Log(this.GetType().Name + " - E' stata eseguita con successo");
+
             return new SintesiRichiesteAssistenzaResult()
             {
                 SintesiRichiesta = sintesiRichiesta
@@ -124,16 +132,21 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
             if (query.Filtro != null)
             {
                 if (!query.Filtro.RichiestaSingola)
-                {                    
+                {                          
+                    this.logger.Log(this.GetType().Name + " - Mapper delle richieste eseguito");             
                     return mapper.MapRichiesteSuSintesi(listaRichieste).GetRange(Convert.ToInt16(query.Filtro.SearchKey), NumeroRecord).OrderBy(p => p.priorita).ToList();
                 }
                 else
-                {                   
+                {         
+                    this.logger.Log(this.GetType().Name + " - Mapper delle richieste eseguito");             
                     return mapper.MapRichiesteSuSintesi(listaRichieste).OrderBy(p => p.priorita).Where(p => Convert.ToInt16(p.id) == Convert.ToInt16(query.Filtro.SearchKey)).ToList();
                 }
             }
             else
+            {
+                this.logger.Log(this.GetType().Name + " - Mapper delle richieste eseguito");             
                 return mapper.MapRichiesteSuSintesi(listaRichieste).GetRange(Convert.ToInt16(query.Filtro.SearchKey), NumeroRecord).OrderBy(p => p.priorita).ToList();
+            }
           
         }       
        

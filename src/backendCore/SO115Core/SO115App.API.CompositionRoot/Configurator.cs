@@ -83,22 +83,12 @@ namespace SO115App.API.CompositionRoot
             //    typeof(ValidatingQueryHandlerDecorator<,>));
             
             c.Register<IGetUnitaOperativaPerCodice, GetUnitaOperativaPerCodice>();
- 
 
-
-            //c.Register<ILogger, MailLogger>(Lifestyle.Singleton);
-
-            //IActionGeneric è l'interfaccia che implementa tutte le funzioni comuni a tutte le Azioni che
-            // verranno utilizzate nell'applicazione
-            c.Register(
-                typeof(IActionGeneric<>), 
-                typeof(IActionGeneric<>).Assembly);
 
             //TEST AND FAKE
             //************************************************************************************************************************                                
             //c.Register<IGeneratoreRichieste,GeneratoreRichieste>();
-            c.RegisterInstance<IGeneratoreRichieste>(new GeneratoreRichieste());
-      
+            c.RegisterInstance<IGeneratoreRichieste>(new GeneratoreRichieste());      
             c.Register<IGetOperatoreAutenticato, GetOperatoreAutenticato>();
             c.Register<IGetUnitaOperativaRadice, GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato>();
             c.Register<IGetUnitaOperativeVisibiliPerSoccorso, GetUnitaOperativeVisibiliPerSoccorso_OperatoreDirezioneRegionaleLazio>();

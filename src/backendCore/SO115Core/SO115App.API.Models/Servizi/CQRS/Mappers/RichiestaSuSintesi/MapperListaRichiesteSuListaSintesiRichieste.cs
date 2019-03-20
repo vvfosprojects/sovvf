@@ -11,9 +11,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
 {
     class MapperListaRichieste
     {
-
         public List<SintesiRichiesta> MapRichiesteSuSintesi(List<RichiestaAssistenza> ListaRichieste)
-        {            
+        {           
             List<SintesiRichiesta> ListaSintesi = new List<SintesiRichiesta>();
             List<SintesiRichiesta> AppoListaSintesiChiamate = new List<SintesiRichiesta>();
             List<SintesiRichiesta> AppoListaSintesiAltroStato = new List<SintesiRichiesta>();
@@ -65,7 +64,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
             ListaSintesi.AddRange(AppoListaSintesiChiamate);
             ListaSintesi.AddRange(AppoListaSintesiAltroStato);
             //FINE
-
 
             return ListaSintesi;
 

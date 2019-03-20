@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -30,6 +29,8 @@ using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Generazion
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using System.Diagnostics;
+using SO115App.API.Models.Servizi.Infrastruttura;
 
 namespace SO115App.API
 {
@@ -121,7 +122,7 @@ namespace SO115App.API
             //SIMPLE INJECTION INIZIALIZE COMPONENT
             InitializeContainer(app);
             container.RegisterSingleton<IPrincipal, HttpContextPrincipal>();
-            // container.RegisterInstance<ILogger>(new DebugLogger());
+            container.RegisterInstance<ILogger>(new DebugLogger());
 
             container.Verify();
              
@@ -152,10 +153,14 @@ namespace SO115App.API
             public bool IsInRole(string role) => this.Principal.IsInRole(role);
         }
 
-        // private sealed class DebugLogger : ILogger
-        // {
-        //     //IMPLEMENTARE LA PARTE DEL LOG
-        // }
+        private sealed class DebugLogger : ILogger
+        {
+            public void Log(string message)
+            {
+                //Trace.WriteLine(message);
+                Debug.WriteLine(message);
+            }
+        }
 
     }
 }

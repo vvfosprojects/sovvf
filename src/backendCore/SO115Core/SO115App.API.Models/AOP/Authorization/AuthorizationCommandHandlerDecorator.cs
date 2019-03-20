@@ -28,14 +28,17 @@ namespace SO115App.API.Models.AOP.Authorization
 
         private void Authorize()
         {
-            //DA MODIFICARE CON LA LOGICA DI AUTORIZZAZIONE
+            //ESEMPIO - DA MODIFICARE CON LA LOGICA DI AUTORIZZAZIONE
             if (typeof(TCommand).Namespace.Contains("Admin") && !this.currentUser.IsInRole("Admin"))
             {
+
+                // this.logger.Log(LogLevel.Information,"L'Utente " + this.currentUser.Identity.Name + " non è autorizzato ad utilizzare la funzionalità " +
+                //     typeof(TCommand).Name);
+
                 throw new SecurityException();
             }
 
-            // this.logger.Log(LogLevel.Information,"L'Utente " + this.currentUser.Identity.Name + " è autorizzato ad utilizzare la funzionalità " +
-            //     typeof(TCommand).Name);
+
 
         }
     }
