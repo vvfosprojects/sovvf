@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, OnChanges, OnDestroy, isDevMode } from '@angular/core';
 import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/animations';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -17,7 +17,7 @@ import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
     templateUrl: './richiesta-fissata.component.html',
     styleUrls: ['./richiesta-fissata.component.css']
 })
-export class RichiestaFissataComponent implements OnInit, OnChanges {
+export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Input() _split: boolean;
     @Input() richiestaFissata: SintesiRichiesta;
 
@@ -38,18 +38,24 @@ export class RichiestaFissataComponent implements OnInit, OnChanges {
                 private modalService: NgbModal) {
     }
 
-    ngOnInit() {
-        this.richiestaFissata ? this.animazioneIn() : console.log();
+    ngOnInit(): void {
+        if (this.richiestaFissata) {
+            this.animazioneIn();
+            if (isDevMode()) {
+                console.log('Componente RichiestaFissata creato');
+            }
+        }
     }
 
-    ngOnChanges() {
-        this.richiestaFissata ? this.animazioneIn() : console.log();
+    ngOnDestroy(): void {
+        if (isDevMode()) {
+            console.log('Componente RichiestaFissata distrutto');
+        }
     }
 
     // Ritorna la richiesta nella lista, defissandola
     onDefissa() {
         this.animazioneOut();
-
         this.defissa.emit();
     }
 
@@ -63,14 +69,14 @@ export class RichiestaFissataComponent implements OnInit, OnChanges {
 
         const animationContainerRichiesta = this.animationBuilder
             .build([
-                style({ height: '0', width: '0' }),
-                animate(450, style({ height: '100%', width: '100%' }))
+                style({height: '0', width: '0'}),
+                animate(450, style({height: '100%', width: '100%'}))
             ]);
 
         const animationRichiesta = this.animationBuilder
             .build([
-                style({ height: '0', opacity: '0' }),
-                animate(350, style({ height: 'auto', opacity: '1' }))
+                style({height: '0', opacity: '0'}),
+                animate(350, style({height: 'auto', opacity: '1'}))
             ]);
 
         this.playerContainer = animationContainerRichiesta.create(this.richiestaContainer.nativeElement);
@@ -86,14 +92,14 @@ export class RichiestaFissataComponent implements OnInit, OnChanges {
 
         const animationContainerRichiesta = this.animationBuilder
             .build([
-                style({ width: '100%' }),
-                animate(300, style({ width: '0' }))
+                style({width: '100%'}),
+                animate(300, style({width: '0'}))
             ]);
 
         const animationRichiesta = this.animationBuilder
             .build([
-                style({ height: 'auto', opacity: '1' }),
-                animate(300, style({ height: '0', opacity: '0' }))
+                style({height: 'auto', opacity: '1'}),
+                animate(300, style({height: '0', opacity: '0'}))
             ]);
 
         this.playerContainer = animationContainerRichiesta.create(this.richiestaContainer.nativeElement);
@@ -114,7 +120,7 @@ export class RichiestaFissataComponent implements OnInit, OnChanges {
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(richiesta: any) {
-        this.modalService.open(EventiRichiestaComponent, { size: 'lg' });
+        this.modalService.open(EventiRichiestaComponent, {size: 'lg'});
     }
 
     /* Apre il componente per la creazione della partenza */
