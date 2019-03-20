@@ -7,22 +7,22 @@
 <div class="modal-body">
     <div class="row">
         <div class="col">
-            <ng-select *ngIf="loaded" [items]="utenti"
+            <ng-select *ngIf="utenti"  [items]="utenti"
                        bindLabel="cognome"
                        placeholder="Seleziona un utente"
-                       [(ngModel)]="utente">
+                       [(ngModel)]="utenteSelezionato">
             </ng-select>
         </div>
         <div class="col">
-            <ng-select [items]="['Admin', 'User']"
+            <ng-select *ngIf="ruoli" [items]="ruoli"
                        placeholder="Seleziona ruolo"
-                       [(ngModel)]="ruolo">
+                       [(ngModel)]="ruoloSelezionato">
             </ng-select>
         </div>
         <div class="col">
             <ng-select [items]="['Comando di Roma', 'Comando di Firenze', 'Comando di Ancona']"
                        placeholder="Seleziona sede"
-                       [(ngModel)]="sede">
+                       [(ngModel)]="sedeSelezionata">
             </ng-select>
         </div>
     </div>

@@ -9,6 +9,8 @@ import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GetGestioneUtenti } from './store/actions/gestione-utenti/gestione-utenti.actions';
 import { AggiungiUtenteModalComponent } from './aggiungi-utente-modal/aggiungi-utente-modal.component';
+import { GetRuoli } from './store/actions/ruoli/ruoli.actions';
+import { RuoliState } from './store/states/ruoli/ruoli.state';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -18,12 +20,14 @@ import { AggiungiUtenteModalComponent } from './aggiungi-utente-modal/aggiungi-u
 export class GestioneUtentiComponent implements OnInit {
 
     @Select(UtenteState.utente) user$: Observable<Utente>;
+    @Select(RuoliState.ruoli) ruoli$: Observable<Array<any>>;
 
     unitaOperativaAttuale: Sede;
 
     constructor(public modal: NgbModal,
                 private store: Store) {
         this.store.dispatch(new GetGestioneUtenti());
+        this.store.dispatch(new GetRuoli());
     }
 
     onRicercaUtenti(ricerca: any) {

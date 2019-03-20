@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { Role } from '../../../shared/model/utente.model';
 import { Observable, Subscription } from 'rxjs';
@@ -18,7 +18,7 @@ import { GestioneUtente } from '../../../shared/model/gestione-utente.model';
     templateUrl: './tabella-utenti.component.html',
     providers: [DecimalPipe]
 })
-export class TabellaUtentiComponent {
+export class TabellaUtentiComponent implements OnInit {
     @Select(RicercaUtentiState.ricerca) ricerca$: Observable<any>;
     ricercaUtenti: any;
 
@@ -34,10 +34,7 @@ export class TabellaUtentiComponent {
     @Select(TabellaUtentiState.page) page$: Observable<number>;
     page: number;
 
-    ruoli = [
-        Role.Admin,
-        Role.User
-    ];
+    @Input() ruoli: Array<any>;
 
     @Output() setRuolo: EventEmitter<any> = new EventEmitter();
 
@@ -82,6 +79,10 @@ export class TabellaUtentiComponent {
                 this.utentiFiltrati = utentiFiltrati;
             })
         );
+    }
+
+    ngOnInit(): void {
+        console.log('Ruoli', this.ruoli);
     }
 
     filtraRichieste(ricerca: any): any {

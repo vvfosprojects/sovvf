@@ -7,6 +7,7 @@ import { UtentiState } from '../../home/store/states/utenti/utenti.state';
 import { Observable, Subscription } from 'rxjs';
 import { makeCopy } from '../../../shared/helper/function';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { RuoliState } from '../store/states/ruoli/ruoli.state';
 
 @Component({
     selector: 'app-aggiungi-utente-modal',
@@ -18,10 +19,12 @@ export class AggiungiUtenteModalComponent implements OnInit {
     @Select(UtentiState.utenti) utenti$: Observable<Utente[]>;
     utenti: Utente[];
 
-    utente: string;
-    ruolo: Role;
-    sede: Sede;
-    loaded = false;
+    @Select(RuoliState.ruoli) ruoli$: Observable<Array<any>>;
+    ruoli: Array<any>;
+
+    utenteSelezionato: string;
+    ruoloSelezionato: Role;
+    sedeSelezionata: Sede;
 
     subscription: Subscription = new Subscription();
 
@@ -35,8 +38,12 @@ export class AggiungiUtenteModalComponent implements OnInit {
                     i.cognome = i.nome + ' ' + i.cognome;
                     console.log(i.cognome);
                 });
-                this.loaded = true;
             })
+        );
+        this.subscription.add(
+          this.ruoli$.subscribe((ruoli: Array<any>) => {
+              this.ruoli = ruoli;
+          })
         );
     }
 

@@ -20,7 +20,7 @@
         <div class="col-12 mx-auto">
             <!--<app-lista-utenti [utenti]="(utenti$ | async)" [ricercaUtenti]="(ricerca$ | async)"></app-lista-utenti>-->
 
-            <app-tabella-utenti (setRuolo)="onSetRuolo($event)"></app-tabella-utenti>
+            <app-tabella-utenti [ruoli]="(ruoli$ | async)" (setRuolo)="onSetRuolo($event)"></app-tabella-utenti>
         </div>
     </div>
 </div>
