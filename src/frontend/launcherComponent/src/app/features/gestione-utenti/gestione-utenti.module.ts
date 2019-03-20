@@ -37,6 +37,9 @@ import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti
 import { TabellaUtentiState } from './store/states/tabella-utenti/tabella-utenti.state';
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
 import { UtentiState } from '../home/store/states/utenti/utenti.state';
+import { RuoliState } from './store/states/ruoli/ruoli.state';
+import { RuoliService } from '../../core/service/ruoli-service/ruoli-service.service';
+import { RuoliServiceFake } from '../../core/service/ruoli-service/ruoli.service.fake';
 
 
 @NgModule({
@@ -58,13 +61,15 @@ import { UtentiState } from '../home/store/states/utenti/utenti.state';
                 RicercaUtentiState,
                 TabellaUtentiState,
                 GestioneUtentiState,
-                UtentiState
+                UtentiState,
+                RuoliState
             ]
         ),
     ],
     entryComponents: [AggiungiUtenteModalComponent],
     providers: [
-        {provide: GestioneUtentiService, useClass: GestioneUtentiServiceFake}
+        {provide: GestioneUtentiService, useClass: GestioneUtentiServiceFake},
+        {provide: RuoliService, useClass: RuoliServiceFake}
     ]
 })
 export class GestioneUtentiModule {
