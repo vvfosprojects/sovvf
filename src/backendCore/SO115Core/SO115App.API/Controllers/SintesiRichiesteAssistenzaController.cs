@@ -40,9 +40,7 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class SintesiRichiesteAssistenzaController : ControllerBase
     {
-
-        private Container container = new Container();
-
+        private IGeneratoreRichieste _generatore;    
 
         /// <summary>
         ///   Handler del servizio
@@ -55,7 +53,7 @@ namespace SO115App.API.Controllers
         /// <param name="handler">L'handler iniettato del servizio</param>
         public SintesiRichiesteAssistenzaController(
             IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler)
-        {
+        {            
             this.handler = handler;
         }
 
@@ -67,26 +65,10 @@ namespace SO115App.API.Controllers
         [HttpGet]     
         public async Task<IActionResult> Get()
         {
-
-/*             var gr = new GeneratoreRichieste(
-            "RM",
-            4,
-            DateTime.Now.AddHours(-12),
-            DateTime.Now,
-            50,
-            30 * 60,
-            15 * 60,
-            30 * 60,
-            15 * 60,
-            new float[] { .85F, .7F, .4F, .3F, .1F });
- */
-/*             var richieste = GeneratoreRichieste(); */
-            /* gr.Genera()
-                .OrderBy(r => (r.Eventi.First() as Evento).istante)
-                .ToList(); */
-
-
-            //VIENE UTILIZZATO SOLO PER TEST E FAKE INSERT SU MONGO DB
+            GeneratoreRichieste gen = new GeneratoreRichieste();                  
+            _generatore = gen;    
+                     
+            //VIENE UTILIZZATO SOLO PER TEST E FAKE
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
             filtro.SearchKey = "0";
             filtro.RichiestaSingola = false;
@@ -94,9 +76,8 @@ namespace SO115App.API.Controllers
             var query = new SintesiRichiesteAssistenzaQuery()
             {
                 Filtro = filtro
-                /* ,ListaRichieste = richieste */
+                ,ListaRichieste = _generatore.ListaRichieste.ToList()
             };
-
 
             return Ok(this.handler.Handle(query));
         }
@@ -105,7 +86,8 @@ namespace SO115App.API.Controllers
         [HttpGet("{searchkey}/{richiestaSingola}")]
         public async Task<IActionResult> Get(string searchkey,string richiestaSingola)
         {
-
+            GeneratoreRichieste gen = new GeneratoreRichieste();                  
+            _generatore = gen;    
 
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
             filtro.SearchKey = searchkey;

@@ -83,7 +83,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTe
 
             
             List<Tipologia> ListaTipologie = new List<Tipologia>();
-            foreach (string codice in command.CodiciTipiIntervento)
+            foreach (string codice in command.idTipiIntervento)
             {
                 Tipologia tipologiaRichiesta = new Tipologia(getTipoInterventoByCodice.Get(codice).Codice, getTipoInterventoByCodice.Get(codice).Descrizione,"");
                 ListaTipologie.Add(tipologiaRichiesta);

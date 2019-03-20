@@ -10,6 +10,7 @@
     <PackageReference Include="SimpleInjector.Integration.AspNetCore" Version="4.4.3"/>
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc" Version="4.4.3"/>
     <PackageReference Include="System.IO" Version="4.3.0"/>
+    <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.0"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SO115App.API.Models\SO115App.API.Models.csproj"/>

@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 
 namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata.CommandDTO
@@ -40,17 +41,23 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTe
         /// <summary>
         ///   Il nome dell'operatore
         /// </summary>
-        public string Operatore { get; set; }
+        public string idOperatore { get; set; }
+
+        /// <summary>
+        ///   La ragione sociale del chiamante
+        /// </summary>
+        public string RagioneSociale { get; set; }
+
 
         /// <summary>
         ///   Il codice della scheda contatto
         /// </summary>
-        public string CodiceSchedaContatto { get; set; }
+        public string idSchedaContatto { get; set; }
 
         /// <summary>
         ///   La lista dei codici dei tipi di intervento
         /// </summary>
-        public string[] CodiciTipiIntervento { get; set; }
+        public string[] idTipiIntervento { get; set; }
 
         /// <summary>
         ///   Il cognome del chiamante
@@ -63,19 +70,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTe
         public string Nome { get; set; }
 
         /// <summary>
-        ///   La ragione sociale del chiamante
-        /// </summary>
-        public string RagioneSociale { get; set; }
-
-        /// <summary>
         ///   Il telefono del chiamante
         /// </summary>
         public string Telefono { get; set; }
 
         /// <summary>
-        ///   La geolocalizzazione del luogo del sinistro
+        ///   Localita dell'intervento
         /// </summary>
-        public Geolocalizzazione Geolocalizzazione { get; set; }
+        public Localita localita { get; set; }
 
         /// <summary>
         ///   L'indirizzo del luogo del sinistro

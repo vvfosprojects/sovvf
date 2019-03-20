@@ -26,6 +26,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Complessita;
 using System.Linq;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
@@ -33,7 +34,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
     ///   Contiene le informazioni di sintesi di una Richiesta di Assistenza, utile ad alimentare il
     ///   primo ed il secondo livello di dettaglio del componente richiesta di assistenza sul frontend.
     /// </summary>
-    public class SintesiRichiesta
+    public class SintesiRichiesta: IGetListaSintesiRichieste
     {
         /// <summary>
         ///   Costruttore della classe

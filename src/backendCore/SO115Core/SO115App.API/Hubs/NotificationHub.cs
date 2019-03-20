@@ -5,45 +5,45 @@ using SO115App.API.Models.Servizi;
 using System;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using Microsoft.AspNetCore.Http;
+using SO115App.API.Models.Servizi.CQRS.Commands;
+using SO115App.API.Models.Servizi.CQRS.Queries;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
+using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata.CommandDTO;
 
 namespace SO115App.API.Hubs
 {
-    public class NotificationHub : Hub, IActionGeneric<Notification<SintesiRichiesta>>
+    public class NotificationHub : Hub
     {
-        
-        SintesiRichiesta sintesiRichiesta = new SintesiRichiesta();
+        private readonly ICommandHandler<InserisciTelefonataCommand> _handler;
 
-        public Boolean GetAutorization(String message)
+        public NotificationHub(ICommandHandler<InserisciTelefonataCommand> handler)
         {
-
-            return false;
-            
+            this._handler = handler;
         }
+
+        InserisciTelefonataCommand sintesiRichiesta = new InserisciTelefonataCommand();
  
-        public string Action(Notification<SintesiRichiesta> message)
-        {
-            sintesiRichiesta = null;
-
-            return null;
-        }
-
-        public async Task SendNotification(Notification<SintesiRichiesta> _sintesi)
+        public async Task SaveAndNotifyChiamata(Notification<InserisciTelefonataCommand> NuovaChiamata)
 		{
-
-            Boolean auth = GetAutorization(_sintesi.userId);
-
-            if(auth)
+            try
             {
-                Action(_sintesi);
-                _sintesi.ActionObj = sintesiRichiesta;
+                NuovaChiamata.ActionObj = sintesiRichiesta;
+                this._handler.Handle(NuovaChiamata.ActionObj);
 
-                await Clients.Group("NomeSede").SendAsync("ReceiveMessage", _sintesi.ActionObj);
+                /// <summary>
+                ///  Propago il messaggio a tutti i client che appartengono al gruppo dell'utente che ha inserito la Chiamata
+                /// </summary>                
+                await Clients.Group(NuovaChiamata.CodiceSede).SendAsync("SaveAndNotifySuccessChiamata", NuovaChiamata.ActionObj);
 
-            }else
+            }
+            catch(Exception e)
             {
-                await Clients.Group("NomeSede").SendAsync("ReceiveMessage", "L'utente non è autorizzato ad eseguire l'operazione.");            
+                /// <summary>
+                ///  Ritorno l'errore solo al Client che ha provato a fare l'inserimento
+                /// </summary>                 
+                await Clients.Client(Context.ConnectionId).SendAsync("SaveAndNotifyErrorChiamata", "Si è verificato il seguente errore: " + e.Message);            
             }
 		}
-
     }
 }

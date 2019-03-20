@@ -26,6 +26,13 @@ using SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste;
+using System;
+using SO115App.API.Models.AOP.Authorization;
+using System.Security.Principal;
+using System.Collections.Generic;
+using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using Microsoft.Extensions.Logging;
 
 namespace SO115App.API.CompositionRoot
 {
@@ -34,27 +41,52 @@ namespace SO115App.API.CompositionRoot
         public static void Configure(Container c)
         {
             
+//COMMAND REGISTRATION
+
             c.Register(
                 typeof(ICommandHandler<>),
-                typeof(ICommandHandler<>).Assembly);
-
-            c.Register(
-                typeof(IQueryHandler<,>), 
-                typeof(IQueryHandler<,>).Assembly);
-
-            c.Collection.Register(
-                typeof(ICommandValidator<>),
-                typeof(SelezionaSquadraCommand).Assembly);
+                AppDomain.CurrentDomain.GetAssemblies());
 
             c.RegisterDecorator(
                 typeof(ICommandHandler<>),
                 typeof(ValidatingCommandHandlerDecorator<>));
 
+            c.RegisterDecorator(
+                typeof(ICommandHandler<>),
+                typeof(AuthorizationCommandHandlerDecorator<>));           
+
+//QUERY REGISTRATION
+
+            c.Register(
+                typeof(IQueryHandler<,>), 
+                AppDomain.CurrentDomain.GetAssemblies());
+
+            var assemblies = new[] { typeof(IQueryValidator<,>).Assembly };
+            c.Collection.Register(typeof(IQueryValidator<,>), assemblies);
+            
+            c.RegisterDecorator(
+                typeof(IQueryHandler<,>),
+                typeof(ValidatingQueryHandlerDecorator<,>));
+
+            c.RegisterDecorator(
+                typeof(IQueryHandler<,>),
+                typeof(AuthorizationQueryHandlerDecorator<,>));           
+
+            var assembliesP = new[] { typeof(IPrincipal).Assembly };
+            c.Collection.Register(typeof(IPrincipal), assembliesP);
+
+            c.Collection.Register(
+                typeof(ICommandValidator<>),
+                typeof(SelezionaSquadraCommand).Assembly);
             //c.RegisterDecorator(
             //    typeof(IQueryHandler<,>),
             //    typeof(ValidatingQueryHandlerDecorator<,>));
             
             c.Register<IGetUnitaOperativaPerCodice, GetUnitaOperativaPerCodice>();
+ 
+
+
+            //c.Register<ILogger, MailLogger>(Lifestyle.Singleton);
 
             //IActionGeneric è l'interfaccia che implementa tutte le funzioni comuni a tutte le Azioni che
             // verranno utilizzate nell'applicazione
@@ -62,9 +94,11 @@ namespace SO115App.API.CompositionRoot
                 typeof(IActionGeneric<>), 
                 typeof(IActionGeneric<>).Assembly);
 
-
             //TEST AND FAKE
-            //************************************************************************************************************************
+            //************************************************************************************************************************                                
+            //c.Register<IGeneratoreRichieste,GeneratoreRichieste>();
+            c.RegisterInstance<IGeneratoreRichieste>(new GeneratoreRichieste());
+      
             c.Register<IGetOperatoreAutenticato, GetOperatoreAutenticato>();
             c.Register<IGetUnitaOperativaRadice, GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato>();
             c.Register<IGetUnitaOperativeVisibiliPerSoccorso, GetUnitaOperativeVisibiliPerSoccorso_OperatoreDirezioneRegionaleLazio>();

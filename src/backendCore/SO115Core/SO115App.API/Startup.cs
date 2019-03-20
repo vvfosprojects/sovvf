@@ -25,6 +25,11 @@ using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using SO115App.API.Models.Servizi;
+using System.Security.Principal;
+using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 
 namespace SO115App.API
 {
@@ -44,7 +49,18 @@ namespace SO115App.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddCors();
+                    services.AddCors(options =>
+        {
+            options.AddPolicy("CorsSo115",
+            builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();                
+            });
+        });
 /*          services.AddScoped<IAuthRepository,AuthRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(option => {
@@ -74,6 +90,7 @@ namespace SO115App.API
 
             services.EnableSimpleInjectorCrossWiring(container);
             services.UseSimpleInjectorAspNetRequestScoping(container);
+  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -89,12 +106,13 @@ namespace SO115App.API
                 app.UseHsts();
             }
 
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors("CorsSo115");
             /*  app.UseAuthentication();*/
 
             app.UseSignalR( route => 
                 {
                     route.MapHub<NotificationHub>("/NotificationHub");
+                    route.MapHub<SubscriptionHub>("/SubscriptionHub");
                 }
             );           
             app.UseHttpsRedirection();
@@ -102,9 +120,11 @@ namespace SO115App.API
 
             //SIMPLE INJECTION INIZIALIZE COMPONENT
             InitializeContainer(app);
+            container.RegisterSingleton<IPrincipal, HttpContextPrincipal>();
+            // container.RegisterInstance<ILogger>(new DebugLogger());
+
             container.Verify();
-
-
+             
         }
 
         private void InitializeContainer(IApplicationBuilder app)
@@ -118,6 +138,24 @@ namespace SO115App.API
             // Allow Simple Injector to resolve services from ASP.NET Core.
             container.AutoCrossWireAspNetComponents(app);
         }
+
+        private sealed class HttpContextPrincipal : IPrincipal
+        {
+            private readonly IHttpContextAccessor httpContextAccessor;
+
+            public HttpContextPrincipal(IHttpContextAccessor httpContextAccessor)
+            {
+                this.httpContextAccessor = httpContextAccessor;
+            }
+            public IIdentity Identity => this.Principal.Identity;
+            private IPrincipal Principal => this.httpContextAccessor.HttpContext.User;
+            public bool IsInRole(string role) => this.Principal.IsInRole(role);
+        }
+
+        // private sealed class DebugLogger : ILogger
+        // {
+        //     //IMPLEMENTARE LA PARTE DEL LOG
+        // }
 
     }
 }

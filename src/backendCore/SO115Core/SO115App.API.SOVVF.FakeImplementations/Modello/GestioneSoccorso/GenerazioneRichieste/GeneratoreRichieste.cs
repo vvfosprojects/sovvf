@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
-// </copyright>
+// </copyright> 
 //-----------------------------------------------------------------------
 using System;
 using System.Collections;
@@ -32,12 +32,19 @@ using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Generazion
 
 namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
 {
+
+    public interface IGeneratoreRichieste
+    {
+        IEnumerable<RichiestaAssistenza> ListaRichieste{get;}
+
+    }
+
     /// <summary>
     ///   Classe deputata alla generazione di richieste pseudo-random. Le richieste generate
     ///   rispettano la fisica realizzabilità, rispetto ad un parco mezzi fornito in ingresso al
     ///   costruttore e dotato di uno specifico numero di mezzi.
     /// </summary>
-    public class GeneratoreRichieste
+    public class GeneratoreRichieste : IGeneratoreRichieste
     {
         /// <summary>
         ///   Il generatore random utilizzato dall'implementazione dei metodi
@@ -133,7 +140,8 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
         ///   0.20, 0.05] significa che al 75% un intervento ha un solo mezzo, al 20% ne ha due, al
         ///   5% ne ha tre).
         /// </param>
-        public GeneratoreRichieste(
+        public GeneratoreRichieste
+        (
 /*             string codiceUnitaOperativa,
             int numeroMezziDisponibili,
             DateTime dataMin,
@@ -159,9 +167,10 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
             this.mediaSecondiRientroInSede = 15 * 60;
             this.pesiNumeroMezziPartecipanti = new float[] { .85F, .7F, .4F, .3F, .1F };
 
-            Genera();
-
+            ListaRichieste = Genera();
         }
+
+        public IEnumerable<RichiestaAssistenza> ListaRichieste { get; private set; }
 
         /// <summary>
         ///   Genera le richieste secondo i parametri specificati nel costruttore della classe.
@@ -303,8 +312,6 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
             return new Utente(Nome + Cognome + faker.Random.Number(0, 99).ToString(), Nome, Cognome, faker.Random.AlphaNumeric(16));
 
         }
-
-
         private List<Sede> GeneraCompetenze()
         {
             Bogus.Faker faker = new Bogus.Faker();
@@ -397,7 +404,6 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
             return set.ToList();
         }
 
-
         private static List<Partenza> GeneraListaPartenze()
         {
             Bogus.Faker faker = new Bogus.Faker();
@@ -434,7 +440,6 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
 
             return NewPartenza;
         }
-
 
         /// <summary>
         ///   Restituisce l'elenco delle azioni iniziali da aggiungere ad una richiesta. L'azione si

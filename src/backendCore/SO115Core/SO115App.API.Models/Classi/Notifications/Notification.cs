@@ -5,15 +5,10 @@ namespace SO115App.API.Models.Classi.Notifications
 {
     public class Notification<T>
     {
-        public string userId { get; set; }
-
-		public string message { get; set; }
-
-        public string oraInvio { get; set; }
-
-        public int id { get; set; }
-
+        public string CodiceSede {get; set;}
+        public string NominativoUtente { get; set; }
         public T ActionObj { get; set; }
+        public int idUtente {get; set;}
 
     }
 }

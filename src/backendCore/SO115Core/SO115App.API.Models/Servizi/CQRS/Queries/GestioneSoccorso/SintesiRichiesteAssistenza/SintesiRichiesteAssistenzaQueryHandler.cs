@@ -34,6 +34,7 @@ using System.Linq;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 
 using Newtonsoft.Json;
+using SimpleInjector;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
@@ -68,7 +69,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         ///   Istanza del servizio
         /// </summary>
         private readonly ICercaRichiesteAssistenza cercaRichiesteAssistenza;
-
+ 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
@@ -86,14 +87,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
         {
             var richieste = this.cercaRichiesteAssistenza.Get(query.Filtro);
-
+          
             List<RichiestaAssistenza> listaRichieste = new List<RichiestaAssistenza>();
-            listaRichieste = richieste.ToList();
+            listaRichieste = query.ListaRichieste;
+
 
             #warning va realizzato il servizio di mapping delle richieste di assistenza sulla loro sintesi
             var sintesiRichiesta = new List<SintesiRichiesta>();
-
-                sintesiRichiesta = ElencoSintesiRichiesta(query);
+            sintesiRichiesta = ElencoSintesiRichiesta(query);
 
            
             return new SintesiRichiesteAssistenzaResult()
@@ -112,7 +113,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
             int CalcNumeroRecord = 0;
             int NumeroRecord = 0;
 
-            listaRichieste = this.cercaRichiesteAssistenza.Get(query.Filtro).ToList();
+            listaRichieste = query.ListaRichieste; //this.cercaRichiesteAssistenza.Get(query.Filtro).ToList();
 
             CalcNumeroRecord = listaRichieste.Count - Convert.ToInt16(query.Filtro.SearchKey);
 
