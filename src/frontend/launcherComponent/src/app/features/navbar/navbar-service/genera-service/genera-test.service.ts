@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
+import { handleError } from '../../../../shared/helper/handleError';
 
 const API_URL_RICHIESTE = environment.apiUrl.genera;
 const headers = new HttpHeaders({
@@ -26,19 +27,7 @@ export class GeneraTestService {
                 return data;
             }),
             retry(3),
-            catchError(this.handleError)
+            catchError(handleError)
         );
-    }
-
-    private handleError(error: HttpErrorResponse) {
-        if (error.error instanceof ErrorEvent) {
-            console.error('Si è verificato un errore:', error.message);
-        } else {
-            console.error(
-                `Errore response: ${error.status}, ` +
-                `Messaggio body: ${error.message}`);
-        }
-        return throwError(
-            'API Richieste Status: qualcosa è andato storto, per favore riprova più tardi.');
     }
 }

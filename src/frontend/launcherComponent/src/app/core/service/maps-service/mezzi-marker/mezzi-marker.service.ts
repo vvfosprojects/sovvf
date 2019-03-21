@@ -1,18 +1,16 @@
-import {Injectable} from '@angular/core';
-import {Observable, throwError} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {environment} from '../../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
 import { MezzoMarker } from '../../../../features/home/maps/maps-model/mezzo-marker.model';
+import { handleError } from '../../../../shared/helper/handleError';
 
 const API_URL_MEZZI = environment.apiUrl.maps.markers.mezzi;
 
 @Injectable()
 export class MezziMarkerService {
 
-    /**
-     * questo service si connetterà al back end e cambierà tutta la logica
-     */
     constructor(private http: HttpClient) {
     }
 
@@ -22,19 +20,8 @@ export class MezziMarkerService {
                 return data;
             }),
             retry(3),
-            catchError(this.handleError)
+            catchError(handleError)
         );
     }
 
-    private handleError(error: HttpErrorResponse) {
-        if (error.error instanceof ErrorEvent) {
-            console.error('Si è verificato un errore:', error.message);
-        } else {
-            console.error(
-                `Errore response: ${error.status}, ` +
-                `Messaggio body: ${error.message}`);
-        }
-        return throwError(
-            'API MezziMarker: qualcosa è andato storto, per favore riprova più tardi.');
-    }
 }

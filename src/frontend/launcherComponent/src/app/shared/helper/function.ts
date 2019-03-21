@@ -26,3 +26,17 @@ export function makeCentroMappa(coordinate: Coordinate, zoom: number): CentroMap
 export function makeCoordinate(lat: number, long: number): Coordinate {
     return new Coordinate(lat, long);
 }
+
+export function degToCompass(num: number) {
+    const val = Math.floor((num / 22.5) + 0.5);
+    const arr = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+    return arr[(val % 16)];
+}
+
+export function wipeCoordinate(coordinate: Coordinate) {
+    if (coordinate) {
+        return 'lat=' + Math.floor(coordinate.latitudine * 100) / 100 + '&lon=' + Math.floor(coordinate.longitudine * 100) / 100;
+    } else {
+        return console.error('Errore ricezione coordinate meteo: ', coordinate);
+    }
+}

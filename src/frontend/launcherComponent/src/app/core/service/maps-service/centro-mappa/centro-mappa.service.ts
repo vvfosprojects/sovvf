@@ -1,8 +1,9 @@
-import {Injectable} from '@angular/core';
-import {Observable, throwError} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {environment} from '../../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
+import { handleError } from '../../../../shared/helper/handleError';
 
 const API_URL_CENTRO = environment.apiUrl.maps.markers.centro;
 
@@ -15,23 +16,11 @@ export class CentroMappaService {
     public getCentroMappa(): Observable<any> {
         return this.http.get(API_URL_CENTRO).pipe(
             map((data: any) => {
-                const centroMappa = data;
-                return centroMappa;
+                return data;
             }),
             retry(3),
-            catchError(this.handleError)
+            catchError(handleError)
         );
     }
 
-    private handleError(error: HttpErrorResponse) {
-        if (error.error instanceof ErrorEvent) {
-            console.error('Si è verificato un errore:', error.message);
-        } else {
-            console.error(
-                `Errore response: ${error.status}, ` +
-                `Messaggio body: ${error.message}`);
-        }
-        return throwError(
-            'API CentroMappa: qualcosa è andato storto, per favore riprova più tardi.');
-    }
 }
