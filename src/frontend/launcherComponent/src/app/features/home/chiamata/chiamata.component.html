@@ -1,4 +1,4 @@
 <app-scheda-telefonata [tipologie]="tipologie"
                        [idChiamata]="(idChiamata$ | async)"
-                       [idOperatore]="(utente$ | async).id"
+                       [operatore]="(utente$ | async)"
                        (schedaTelefonata)="getSchedaTelefonata($event)"></app-scheda-telefonata>

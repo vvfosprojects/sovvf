@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Select, Selector, State, StateContext } from '@ngxs/store';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import { SetChiamata, InsertChiamata, ReducerSchedaTelefonata, ResetChiamata, CestinaChiamata, SetMarkerChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
 import { FormChiamataModel } from '../../../chiamata/model/form-scheda-telefonata.model';
@@ -6,6 +6,11 @@ import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
 import { CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
 import { ToggleChiamata } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
+import { SignalRService } from '../../../../../core/signalr/signalR.service';
+import { SignalRNotification } from '../../../../../core/signalr/interface/signalr-notification.interface';
+import { Observable } from 'rxjs';
+import { UtenteState } from '../../../../navbar/store/states/operatore/utente.state';
+import { Utente } from '../../../../../shared/model/utente.model';
 
 export interface SchedaTelefonataStateModel {
     coordinate: Coordinate;
@@ -26,8 +31,10 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
 
 export class SchedaTelefonataState {
 
-    constructor() {
+    constructor(private signalR: SignalRService) {
     }
+
+    @Select(UtenteState.utente) utente$: Observable<Utente>;
 
     @Selector()
     static coordinate(state: SchedaTelefonataStateModel) {
@@ -75,8 +82,20 @@ export class SchedaTelefonataState {
     @Action(InsertChiamata)
     insertChiamata({ getState }: StateContext<SchedaTelefonataStateModel>) {
         const state = getState();
-        console.log(`Chiamata inserita:`);
-        console.dir(state.chiamata);
+        this.utente$.subscribe((utente: Utente) => {
+            if (utente) {
+                const notification: SignalRNotification = {
+                    CodiceSede: state.chiamata.idSede,
+                    NominativoUtente: `${utente.cognome} ${utente.nome}`,
+                    ActionObj: state.chiamata,
+                    idUtente: +state.chiamata.idOperatore
+                };
+                this.signalR.insertChiamata(notification);
+                console.dir(state.chiamata);
+            } else {
+                console.error('Errore utente non connesso');
+            }
+        });
     }
 
     @Action(ResetChiamata)
@@ -104,7 +123,6 @@ export class SchedaTelefonataState {
         // Todo: tolta DI markerServer, ma manca il meteo sulla chiamata.
         dispatch(new SetCoordCentroMappa(coordinate));
         dispatch(new SetZoomCentroMappa(18));
-        // Todo: fare il dispatch dell'action di signalR - NotifyMarkerChiamata
         patchState({
             coordinate: coordinate,
             chiamataMarker: [action.marker]
