@@ -5,6 +5,7 @@ export class FormChiamataModel {
     numeroChiamata?: string;
     istanteChiamata?: Date;
     idOperatore?: string;
+    idSede?: string;
     ragioneSociale?: string;
     idSchedaContatto?: string;
     idTipoIntervento?: string[] = [];
@@ -21,9 +22,10 @@ export class FormChiamataModel {
     notePrivate?: string;
     azione?: AzioneChiamataEnum;
 
-    constructor(idChiamata: string, _idOperatore: string, _idSchedaContatto?: string) {
+    constructor(idChiamata: string, _idOperatore: string, _idSede: string, _idSchedaContatto?: string) {
         this.numeroChiamata = idChiamata;
         this.idOperatore = _idOperatore;
+        this.idSede = _idSede;
         this.idSchedaContatto = _idSchedaContatto;
         this.istanteChiamata = new Date();
     }

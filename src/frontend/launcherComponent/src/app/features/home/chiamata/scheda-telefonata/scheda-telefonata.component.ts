@@ -13,6 +13,7 @@ import { Store } from '@ngxs/store';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/confirm-modal.component';
+import { Utente } from '../../../../shared/model/utente.model';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -35,7 +36,7 @@ export class SchedaTelefonataComponent implements OnInit {
 
     @Input() tipologie: TipologieInterface[];
     @Input() idChiamata: string;
-    @Input() idOperatore: string;
+    @Input() operatore: Utente;
     @Output() schedaTelefonata = new EventEmitter<SchedaTelefonataInterface>();
 
     constructor(private formBuilder: FormBuilder,
@@ -45,7 +46,7 @@ export class SchedaTelefonataComponent implements OnInit {
 
     ngOnInit() {
         this.chiamataForm = this.createForm();
-        this.chiamataCorrente = new FormChiamataModel(this.idChiamata, this.idOperatore);
+        this.chiamataCorrente = new FormChiamataModel(this.idChiamata, this.operatore.id, this.operatore.sede.codice);
     }
 
 
