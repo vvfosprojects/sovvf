@@ -2,10 +2,11 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 // Model
 import { GestioneUtente } from '../../../../../shared/model/gestione-utente.model';
 // Action
-import { AddUtente, GetGestioneUtenti, RemoveUtente, SetGestioneUtenti } from '../../actions/gestione-utenti/gestione-utenti.actions';
+import { AddUtente, AddUtenteSuccess, GetGestioneUtenti, RemoveUtente, RemoveUtenteSuccess, SetGestioneUtenti } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
 // Immer
 import produce from 'immer';
+import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 
 export interface GestioneUtentiStateModel {
     lista_gestione_utenti: GestioneUtente[];
@@ -47,19 +48,28 @@ export class GestioneUtentiState {
     }
 
     @Action(AddUtente)
-    addUtente({getState, patchState, dispatch}: StateContext<GestioneUtentiStateModel>, action: AddUtente) {
-        const state = getState();
-        const nuovoArray = [
-            action.nuovoUtente
-        ];
-        patchState({
-            ...state,
-            lista_gestione_utenti: [...state.lista_gestione_utenti, ...nuovoArray]
-        });
+    addUtente({dispatch}: StateContext<GestioneUtentiStateModel>, action: AddUtente) {
+        dispatch(new AddUtenteSuccess(action.nuovoUtente));
+    }
+
+    @Action(AddUtenteSuccess)
+    addUtenteSuccess({getState, setState, dispatch}: StateContext<GestioneUtentiStateModel>, action: AddUtenteSuccess) {
+        dispatch(new ShowToastr('info', 'Utente Aggiunto', 'Utente aggiunto con successo.', 3));
+        setState(
+            produce(getState(), draft => {
+                draft.lista_gestione_utenti.push(action.nuovoUtente);
+            })
+        );
     }
 
     @Action(RemoveUtente)
-    removeUtente({getState, setState}: StateContext<GestioneUtentiStateModel>, action: RemoveUtente) {
+    removeUtente({dispatch}: StateContext<GestioneUtentiStateModel>, action: RemoveUtente) {
+        dispatch(new RemoveUtenteSuccess(action.id_utente, action.codice_sede));
+    }
+
+    @Action(RemoveUtenteSuccess)
+    removeUtenteSuccess({getState, setState, dispatch}: StateContext<GestioneUtentiStateModel>, action: RemoveUtenteSuccess) {
+        dispatch(new ShowToastr('info', 'Utente Rimosso', 'Utente rimosso con successo.', 3));
         setState(
             produce(getState(), draft => {
                 draft.lista_gestione_utenti.forEach((gestioneUtente: GestioneUtente, index) => {
