@@ -17,7 +17,10 @@ export class AppLoadService {
 
     constructor(private http: HttpClient, private signalR: SignalRService) {
         if (!SIGNALR_CONFIG.signlaRByPass) {
-            this.signalR.init();
+            this.signalR.initSubscription();
+            // Todo: al momento le connessioni di signalR vengono stabilite tutte insieme
+            this.signalR.initNotify();
+            this.signalR.initNotifyMarker();
             this.subscription.add(this.signalR.checkConnection().subscribe(result => this.checkConnectionSignalR = result));
         }
     }
