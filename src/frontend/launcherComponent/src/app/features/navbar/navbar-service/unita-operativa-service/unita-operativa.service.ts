@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, throwError } from 'rxjs';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { catchError, map, retry } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
 import { Sede } from '../../../../shared/model/sede.model';
+import { handleError } from '../../../../shared/helper/handleError';
 
 const API_URL_UNITA = environment.apiUrl.elencoSedi;
 
@@ -37,20 +38,8 @@ export class UnitaOperativaService {
                 });
             }),
             retry(3),
-            catchError(this.handleError)
+            catchError(handleError)
         );
-    }
-
-    private handleError(error: HttpErrorResponse) {
-        if (error.error instanceof ErrorEvent) {
-            console.error('Si è verificato un errore:', error.message);
-        } else {
-            console.error(
-                `Errore response: ${error.status}, ` +
-                `Messaggio body: ${error.message}`);
-        }
-        return throwError(
-            'API UnitaOperative: qualcosa è andato storto, per favore riprova più tardi.');
     }
 
     getUnitaOperative(): Observable<Sede[]> {

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError, retry, map } from 'rxjs/operators';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { handleError } from '../../../shared/helper/handleError';
 
 const API_URL_PREACCOPPIATI = environment.apiUrl.composizione.preaccoppiati;
 const API_URL_SQUADRE = environment.apiUrl.composizione.squadre;
@@ -17,45 +18,31 @@ export class CompPartenzaService {
     public getPreAccoppiati(): Observable<any> {
         return this.http.get(API_URL_PREACCOPPIATI).pipe(
             map((data: any) => {
-                const preAccoppiati = data.SintesiRichiesta;
-                return preAccoppiati;
+                return data.SintesiRichiesta;
             }),
             retry(3),
-            catchError(this.handleError)
+            catchError(handleError)
         );
     }
 
     public getMezziComposizione(): Observable<any> {
         return this.http.get(API_URL_MEZZI).pipe(
             map((data: any) => {
-                const mezzi = data.Mezzi;
-                return mezzi;
+                return data.Mezzi;
             }),
             retry(3),
-            catchError(this.handleError)
+            catchError(handleError)
         );
     }
 
     public getSquadre(): Observable<any> {
         return this.http.get(API_URL_SQUADRE).pipe(
             map((data: any) => {
-                const squadre = data.Squadre;
-                return squadre;
+                return data.Squadre;
             }),
             retry(3),
-            catchError(this.handleError)
+            catchError(handleError)
         );
     }
 
-    private handleError(error: HttpErrorResponse) {
-        if (error.error instanceof ErrorEvent) {
-            console.error('Si è verificato un errore:', error.message);
-        } else {
-            console.error(
-                `Errore response: ${error.status}, ` +
-                `Messaggio body: ${error.message}`);
-        }
-        return throwError(
-            'API Richieste: Qualcosa è andato storto, per favore riprova più tardi.');
-    }
 }

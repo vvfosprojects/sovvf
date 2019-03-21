@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { handleError } from '../../../shared/helper/handleError';
 
 const API_URL_RICHIESTE = environment.apiUrl.rigaElencoRichieste;
 
@@ -26,7 +27,7 @@ export class SintesiRichiesteService {
                 // TEST
                 // console.log('Service Lista Richieste: ', data.SintesiRichiesta);
             }),
-            catchError(this.handleError)
+            catchError(handleError)
         );
     }
 
@@ -34,15 +35,4 @@ export class SintesiRichiesteService {
         return;
     }
 
-    private handleError(error: HttpErrorResponse) {
-        if (error.error instanceof ErrorEvent) {
-            console.error('Si è verificato un errore:', error.message);
-        } else {
-            console.error(
-                `Errore response: ${error.status}, ` +
-                `Messaggio body: ${error.message}`);
-        }
-        return throwError(
-            'API Richieste: Qualcosa è andato storto, per favore riprova più tardi.');
-    }
 }
