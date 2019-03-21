@@ -17,3 +17,9 @@ export class AddUtente {
 
     constructor(public nuovoUtente: GestioneUtente) {}
 }
+
+export class RemoveUtente {
+    static readonly type = '[GestioneUtenti] Remove utente';
+
+    constructor(public id_utente: string, public codice_sede: string) {}
+}

@@ -7,7 +7,7 @@ import { makeCopy } from '../../shared/helper/function';
 import { Sede } from '../../shared/model/sede.model';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AddUtente, GetGestioneUtenti } from './store/actions/gestione-utenti/gestione-utenti.actions';
+import { AddUtente, GetGestioneUtenti, RemoveUtente } from './store/actions/gestione-utenti/gestione-utenti.actions';
 import { AggiungiUtenteModalComponent } from './aggiungi-utente-modal/aggiungi-utente-modal.component';
 import { GetRuoli } from './store/actions/ruoli/ruoli.actions';
 import { RuoliState } from './store/states/ruoli/ruoli.state';
@@ -53,11 +53,11 @@ export class GestioneUtentiComponent implements OnInit {
         const aggiungiUtenteModal = this.modal.open(AggiungiUtenteModalComponent, {backdropClass: 'light-blue-backdrop', centered: true, size: 'lg'});
         aggiungiUtenteModal.componentInstance.ruoli = this.ruoli;
         aggiungiUtenteModal.result.then(
-            (val) => {
-                switch (val[0]) {
+            (risultatoModal) => {
+                switch (risultatoModal[0]) {
                     case 'ok':
                         this.store.dispatch(new AddUtente(
-                            val[1]
+                            risultatoModal[1]
                         ));
                         break;
                 }
@@ -74,7 +74,8 @@ export class GestioneUtentiComponent implements OnInit {
         console.log(utente.nome + ' ' + utente.cognome + ' è diventato ' + ruolo + ' nel ' + sede.descrizione);
     }
 
-    onEliminaGestioneUtente(event: Object) {
-        console.log(event);
+    onEliminaGestioneUtente(event: any) {
+        // console.log('[GestioneUtenti] utente da eliminare', event);
+        this.store.dispatch(new RemoveUtente(event.id_utente, event.codice_sede));
     }
 }
