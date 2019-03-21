@@ -13,4 +13,8 @@ export class GestioneUtentiService {
     getGestioneUtenti(): Observable<GestioneUtente[]> {
         return;
     }
+
+    addUtente(nuovoUtente: GestioneUtente) {
+        return nuovoUtente;
+    }
 }

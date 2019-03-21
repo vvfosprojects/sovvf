@@ -7,10 +7,11 @@
 <div class="modal-body">
     <div class="row">
         <div class="col">
-            <ng-select *ngIf="utenti"  [items]="utenti"
+            <ng-select *ngIf="utenti" [items]="utenti"
                        bindLabel="cognome"
+                       bindValue="id"
                        placeholder="Seleziona un utente"
-                       [(ngModel)]="utenteSelezionato">
+                       [(ngModel)]="idUtenteSelezionato">
             </ng-select>
         </div>
         <div class="col">
@@ -20,14 +21,16 @@
             </ng-select>
         </div>
         <div class="col">
-            <ng-select [items]="['Comando di Roma', 'Comando di Firenze', 'Comando di Ancona']"
+            <ng-select [items]="sedi"
+                       bindLabel="descrizione"
+                       bindValue="codice"
                        placeholder="Seleziona sede"
-                       [(ngModel)]="sedeSelezionata">
+                       [(ngModel)]="codiceSedeSelezionata">
             </ng-select>
         </div>
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-outline-danger" (click)="modal.close('Close click')">Annulla</button>
-    <button type="button" class="btn btn-success">Conferma</button>
+    <button type="button" class="btn btn-outline-danger" (click)="modal.close('ko')">Annulla</button>
+    <button type="button" class="btn btn-success" (click)="onConferma()">Conferma</button>
 </div>

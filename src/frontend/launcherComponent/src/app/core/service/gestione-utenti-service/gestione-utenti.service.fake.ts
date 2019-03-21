@@ -52,4 +52,8 @@ export class GestioneUtentiServiceFake {
 
         return of(this.gestioneUtenti);
     }
+
+    addUtente(nuovoUtente: GestioneUtente) {
+        this.gestioneUtenti.unshift(nuovoUtente);
+    }
 }

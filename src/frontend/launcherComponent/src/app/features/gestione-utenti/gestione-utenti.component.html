@@ -8,7 +8,7 @@
         <div class="col-12">
             <div class="row">
                 <div class="col">
-                    <button class="btn btn-primary ml-2 mb-2" (click)="aggiungiUtente(AggiungiUtenteModalComponent)"><i
+                    <button class="btn btn-primary ml-2 mb-2" (click)="onAggiungiUtente()"><i
                             class="fa fa-plus mr-1"></i>Aggiungi Utente
                     </button>
                 </div>
@@ -20,7 +20,7 @@
         <div class="col-12 mx-auto">
             <!--<app-lista-utenti [utenti]="(utenti$ | async)" [ricercaUtenti]="(ricerca$ | async)"></app-lista-utenti>-->
 
-            <app-tabella-utenti [ruoli]="(ruoli$ | async)" (setRuolo)="onSetRuolo($event)"></app-tabella-utenti>
+            <app-tabella-utenti [ruoli]="ruoli" (setRuolo)="onSetRuolo($event)" (eliminaGestioneUtente)="onEliminaGestioneUtente($event)"></app-tabella-utenti>
         </div>
     </div>
 </div>

@@ -11,3 +11,9 @@ export class SetGestioneUtenti {
 
     constructor(public gestioneUtenti: GestioneUtente[]) {}
 }
+
+export class AddUtente {
+    static readonly type = '[GestioneUtenti] Add utente';
+
+    constructor(public nuovoUtente: GestioneUtente) {}
+}

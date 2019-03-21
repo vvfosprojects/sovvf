@@ -4,6 +4,7 @@
         <th scope="col">Utente</th>
         <th scope="col" width="200px" *ngFor="let ruolo of ruoli">{{ruolo}}</th>
         <th scope="col">Sede</th>
+        <th scope="col" width="30px">Azioni</th>
     </tr>
     </thead>
     <tbody>
@@ -18,14 +19,19 @@
         <td width="200px">
             <h6>{{utente.sede.descrizione}}</h6>
         </td>
+        <td class="pt-2 pb-0">
+            <button class="btn btn-sm btn-block btn-danger" (click)="onEliminaGestioneUtente(utente.id_utente, utente.sede.codice)">
+                <i class="fa fa-trash"></i>
+            </button>
+        </td>
     </tr>
     <tr *ngIf="utentiPaginati.length <= 0">
         <td>
             Nessun Utente trovato
         </td>
         <td *ngFor="let ruolo of ruoli"></td>
-        <td>
-        </td>
+        <td></td>
+        <td></td>
     </tr>
     </tbody>
 </table>

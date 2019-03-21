@@ -18,7 +18,7 @@ import { GestioneUtente } from '../../../shared/model/gestione-utente.model';
     templateUrl: './tabella-utenti.component.html',
     providers: [DecimalPipe]
 })
-export class TabellaUtentiComponent implements OnInit {
+export class TabellaUtentiComponent {
     @Select(RicercaUtentiState.ricerca) ricerca$: Observable<any>;
     ricercaUtenti: any;
 
@@ -37,6 +37,7 @@ export class TabellaUtentiComponent implements OnInit {
     @Input() ruoli: Array<any>;
 
     @Output() setRuolo: EventEmitter<any> = new EventEmitter();
+    @Output() eliminaGestioneUtente: EventEmitter<any> = new EventEmitter();
 
     subscription = new Subscription();
 
@@ -55,6 +56,7 @@ export class TabellaUtentiComponent implements OnInit {
                     r.cognome = r.nome + ' ' + r.cognome;
                     r.nome = '';
                 });
+                this.utentiFiltrati = this.filtraRichieste(this.ricercaUtenti);
             })
         );
         this.subscription.add(
@@ -79,10 +81,6 @@ export class TabellaUtentiComponent implements OnInit {
                 this.utentiFiltrati = utentiFiltrati;
             })
         );
-    }
-
-    ngOnInit(): void {
-        console.log('Ruoli', this.ruoli);
     }
 
     filtraRichieste(ricerca: any): any {
@@ -112,5 +110,9 @@ export class TabellaUtentiComponent implements OnInit {
             sede: sede
         };
         this.setRuolo.emit(nuovoRuolo);
+    }
+
+    onEliminaGestioneUtente(id_utente: string, codice_sede: string) {
+        this.eliminaGestioneUtente.emit({id_utente: id_utente, codice_sede: codice_sede});
     }
 }
