@@ -1,14 +1,14 @@
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 // Model
-import {SintesiRichiesta} from '../../../../shared/model/sintesi-richiesta.model';
+import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 
 // Helper methods
-import {HelperSintesiRichiesta} from '../helper/_helper-sintesi-richiesta';
-import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
-import {SetIdRichiestaEventi} from '../../store/actions/eventi/eventi-richiesta.actions';
-import {Store} from '@ngxs/store';
+import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { SetIdRichiestaEventi } from '../../store/actions/eventi/eventi-richiesta.actions';
+import { Store } from '@ngxs/store';
 
 export const scrolledItems = 11;
 
@@ -40,6 +40,7 @@ export class ListaRichiesteComponent implements OnInit {
     @Output() selezione = new EventEmitter<string>();
     @Output() deselezione = new EventEmitter<boolean>();
     @Output() eventiRichiesta: EventEmitter<string> = new EventEmitter();
+    @Output() modificaRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
 
     methods = new HelperSintesiRichiesta;
 
@@ -110,8 +111,10 @@ export class ListaRichiesteComponent implements OnInit {
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(idRichiesta: string) {
         this.eventiRichiesta.emit(idRichiesta);
-        /* this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
-        this.modalService.open(EventiRichiestaComponent, { size: 'lg', centered: true }); */
+    }
+
+    onModificaRichiesta(richiesta: SintesiRichiesta) {
+        this.modificaRichiesta.emit(richiesta);
     }
 
     /* Ritorna true se le parole matchano almeno in parte */

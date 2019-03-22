@@ -31,6 +31,12 @@ body, html {
   width: 65% !important;
 }
 
+.modalModificaRichiesta > .modal-dialog {
+  max-width: 1490px !important;
+  min-width: 650px !important;
+  width: 50% !important;
+}
+
 .app-shadow {
   -webkit-box-shadow: 1px 1px 2px 1px rgba(224, 224, 224, 1);
   -moz-box-shadow: 1px 1px 2px 1px rgba(224, 224, 224, 1);

@@ -26,6 +26,7 @@ import { OpacizzaRichiesteMarkersById } from '../store/actions/maps/richieste-ma
 import { MarkerService } from '../maps/service/marker-service/marker-service.service';
 import { ClearMarkerSelezionato } from '../store/actions/maps/marker.actions';
 import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
+import { ModificaRichiestaComponent } from './modifica-richiesta/modifica-richiesta.component';
 
 @Component({
     selector: 'app-richieste',
@@ -218,6 +219,10 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     onVisualizzaEventiRichiesta(idRichiesta: string) {
         this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
         this.modalService.open(EventiRichiestaComponent, {windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true});
+    }
+
+    onModificaRichiesta(richiesta: SintesiRichiesta) {
+        this.modalService.open(ModificaRichiestaComponent, {windowClass: 'modalModificaRichiesta', backdropClass: 'light-blue-backdrop', centered: true});
     }
 
     toggleComposizione() {

@@ -29,6 +29,7 @@ export class SintesiRichiestaComponent implements OnInit {
     @Input() listaEventi: boolean;
     @Input() partenza: boolean;
     @Input() composizionePartenza = true;
+    @Input() modificabile = true;
 
     @Output() clickRichiesta: EventEmitter<any> = new EventEmitter();
     @Output() doubleClickRichiesta: EventEmitter<any> = new EventEmitter();
@@ -36,6 +37,7 @@ export class SintesiRichiestaComponent implements OnInit {
     @Output() eventiRichiesta: EventEmitter<string> = new EventEmitter();
     @Output() nuovaPartenza: EventEmitter<any> = new EventEmitter();
     @Output() dismissNuovaPartenza: EventEmitter<any> = new EventEmitter();
+    @Output() modificaRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
 
     methods = new HelperSintesiRichiesta;
     isSingleClick = true;
@@ -45,8 +47,8 @@ export class SintesiRichiestaComponent implements OnInit {
     StatoRichiesta = StatoRichiesta;
 
     constructor(popoverConfig: NgbPopoverConfig,
-        tooltipConfig: NgbTooltipConfig,
-        intl: TimeagoIntl) {
+                tooltipConfig: NgbTooltipConfig,
+                intl: TimeagoIntl) {
 
         intl.strings = italianStrings;
         intl.changes.next();
@@ -71,6 +73,7 @@ export class SintesiRichiestaComponent implements OnInit {
             }, 250);
         }
     }
+
     richiestaDoubleClick(richiesta: any) {
         if (richiesta && this.espandibile) {
             this.isSingleClick = false;
@@ -78,14 +81,17 @@ export class SintesiRichiestaComponent implements OnInit {
             this.doubleClickRichiesta.emit(richiesta);
         }
     }
+
     fissaClick(richiesta: any) {
         if (richiesta) {
             this.fissaInAlto.emit(richiesta);
         }
     }
+
     visualizzaEventiRichiesta(idRichiesta: string) {
         this.eventiRichiesta.emit(idRichiesta);
     }
+
     invioPartenza(richiesta: any) {
         if (this.partenza) {
             this.dismissNuovaPartenza.emit();
@@ -103,5 +109,9 @@ export class SintesiRichiestaComponent implements OnInit {
 
     complessitaClass(richiesta: any) {
         return this.methods.complessitaClass(richiesta);
+    }
+
+    onModificaRichiesta() {
+        this.modificaRichiesta.emit(this.richiesta);
     }
 }

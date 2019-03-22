@@ -21,7 +21,7 @@ export class HelperSintesiRichiesta {
         let nomiSquadre: string[] = [];
         if (richiesta.partenze) {
             richiesta.partenze.forEach((partenza: Partenza) => {
-                    nomiSquadre = partenza.squadre.map((s: Squadra) => s.nome);
+                nomiSquadre = partenza.squadre.map((s: Squadra) => s.nome);
             });
         }
         return nomiSquadre;
@@ -96,6 +96,18 @@ export class HelperSintesiRichiesta {
         if (word1San === word2San) {
             return true;
         }
+    }
+
+    toggleEspansoClass(espanso: boolean) {
+        let returnClass = '';
+
+        if (!espanso) {
+            returnClass = 'fa-long-arrow-down';
+        } else {
+            returnClass = 'fa-long-arrow-up';
+        }
+
+        return returnClass;
     }
 
     complessitaClass(richiesta: any) {

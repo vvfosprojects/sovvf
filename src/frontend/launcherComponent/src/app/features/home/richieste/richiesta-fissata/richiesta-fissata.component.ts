@@ -22,9 +22,10 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Input() richiestaFissata: SintesiRichiesta;
 
     @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
-    @Output() statoPartenza = new EventEmitter<boolean>();
-    @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
-    @Output() defissa = new EventEmitter<any>();
+    @Output() statoPartenza: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() composizionePartenza: EventEmitter<SintesiRichiesta> = new EventEmitter<SintesiRichiesta>();
+    @Output() defissa: EventEmitter<any> = new EventEmitter<any>();
+    @Output() modificaRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter<SintesiRichiesta>();
 
     @ViewChild('richiestaContainer') private richiestaContainer: ElementRef;
     @ViewChild('richiesta') private richiesta: ElementRef;
@@ -129,6 +130,10 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
         this.statoPartenza.emit(true);
 
         console.log(richiesta);
+    }
+
+    onModificaRichiesta(richiesta: SintesiRichiesta) {
+        this.modificaRichiesta.emit(richiesta);
     }
 
     /* NgClass Template */

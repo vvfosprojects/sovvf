@@ -1,14 +1,17 @@
 <!-- Singola Richiesta Fissata  -->
 <app-richiesta-fissata *ngIf="richiestaFissata" [_split]="split" [richiestaFissata]="richiestaFissata"
-    (statoPartenza)="toggleComposizione()" (composizionePartenza)="nuovaPartenza($event)"
-    (defissa)="onDefissa()">
+                       (statoPartenza)="toggleComposizione()" (composizionePartenza)="nuovaPartenza($event)"
+                       (defissa)="onDefissa()" (modificaRichiesta)="onModificaRichiesta($event)">
 </app-richiesta-fissata>
 
 <app-lista-richieste [_split]="split" [richieste]="richieste" [ricerca]="ricerca" [richiestaFissata]="richiestaFissata"
-    [richiestaSelezionata]="richiestaSelezionata" [richiestaHover]="richiestaHover" [loaderRichieste]="loaderRichieste"
-    [loaderNuoveRichieste]="loaderNuoveRichieste" [contatoreNuoveRichieste]="contatoreNuoveRichieste"
-    [richiesteTerminate]="richiesteTerminate" [listHeightClass]="listHeightClass"
-    (statoPartenza)="toggleComposizione()" (composizionePartenza)="nuovaPartenza($event)"
-    (fissaInAlto)="onFissaInAlto($event)" (eventiRichiesta)="onVisualizzaEventiRichiesta($event)" (hoverIn)="onHoverIn($event)" (hoverOut)="onHoverOut()"
-    (selezione)="onSelezione($event)" (deselezione)="onDeselezione()" (nuoveRichieste)="onNuoveRichieste()">
+                     [richiestaSelezionata]="richiestaSelezionata" [richiestaHover]="richiestaHover"
+                     [loaderRichieste]="loaderRichieste"
+                     [loaderNuoveRichieste]="loaderNuoveRichieste" [contatoreNuoveRichieste]="contatoreNuoveRichieste"
+                     [richiesteTerminate]="richiesteTerminate" [listHeightClass]="listHeightClass"
+                     (statoPartenza)="toggleComposizione()" (composizionePartenza)="nuovaPartenza($event)"
+                     (fissaInAlto)="onFissaInAlto($event)" (eventiRichiesta)="onVisualizzaEventiRichiesta($event)"
+                     (hoverIn)="onHoverIn($event)" (hoverOut)="onHoverOut()"
+                     (selezione)="onSelezione($event)" (deselezione)="onDeselezione()"
+                     (nuoveRichieste)="onNuoveRichieste()" (modificaRichiesta)="onModificaRichiesta($event)">
 </app-lista-richieste>

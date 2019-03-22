@@ -1,71 +1,76 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {SharedModule} from '../../../shared/shared.module';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../../shared/shared.module';
 /*
     Modules
  */
-import {PipeModule} from '../../../shared/pipes/pipe.module';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {FilterPipeModule} from 'ngx-filter-pipe';
+import { PipeModule } from '../../../shared/pipes/pipe.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FilterPipeModule } from 'ngx-filter-pipe';
 /*
     Components
  */
-import {RichiesteComponent} from './richieste.component';
-import {ListaRichiesteComponent} from './lista-richieste/lista-richieste.component';
-import {SintesiRichiestaSmComponent} from './lista-richieste/sintesi-richiesta-sm/sintesi-richiesta-sm.component';
-import {RichiestaFissataComponent} from './richiesta-fissata/richiesta-fissata.component';
+import { RichiesteComponent } from './richieste.component';
+import { ListaRichiesteComponent } from './lista-richieste/lista-richieste.component';
+import { SintesiRichiestaSmComponent } from './lista-richieste/sintesi-richiesta-sm/sintesi-richiesta-sm.component';
+import { RichiestaFissataComponent } from './richiesta-fissata/richiesta-fissata.component';
 /*
     Provider
  */
-import {SintesiRichiesteService} from '../../../core/service/lista-richieste-service/lista-richieste.service';
-import {SintesiRichiesteServiceFake} from '../../../core/service/lista-richieste-service/lista-richieste.service.fake';
-import {FormsModule} from '@angular/forms';
-import {NgxPaginationModule} from 'ngx-pagination';
-import {ScrollingModule} from '@angular/cdk/scrolling';
-import {TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule} from 'ngx-timeago';
-import {SintesiRichiestaModule} from './lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
+import { SintesiRichiesteService } from '../../../core/service/lista-richieste-service/lista-richieste.service';
+import { SintesiRichiesteServiceFake } from '../../../core/service/lista-richieste-service/lista-richieste.service.fake';
+import { FormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
+import { SintesiRichiestaModule } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 import { NgxsModule } from '@ngxs/store';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
+import { ModificaRichiestaComponent } from './modifica-richiesta/modifica-richiesta.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    NgxPaginationModule,
-    FilterPipeModule,
-    NgbModule,
-    PipeModule.forRoot(),
-    SharedModule.forRoot(),
-    ScrollingModule,
-    SintesiRichiestaModule,
-    TimeagoModule.forRoot({
-      intl: TimeagoIntl,
-      formatter: {provide: TimeagoFormatter, useClass: TimeagoCustomFormatter}
-    }),
-      NgxsModule.forFeature([
-        RichiesteState,
-        RichiestaFissataState,
-        RichiestaHoverState,
-        RichiestaSelezionataState,
-        RichiestaComposizioneState
-      ])
-  ],
-  declarations: [
-    RichiesteComponent,
-    ListaRichiesteComponent,
-    RichiestaFissataComponent,
-    SintesiRichiestaSmComponent,
-  ],
-  exports: [
-    RichiesteComponent,
-  ],
-  providers: [
-    {provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake}
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        NgxPaginationModule,
+        FilterPipeModule,
+        NgbModule,
+        PipeModule.forRoot(),
+        SharedModule.forRoot(),
+        ScrollingModule,
+        SintesiRichiestaModule,
+        TimeagoModule.forRoot({
+            intl: TimeagoIntl,
+            formatter: {provide: TimeagoFormatter, useClass: TimeagoCustomFormatter}
+        }),
+        NgxsModule.forFeature([
+            RichiesteState,
+            RichiestaFissataState,
+            RichiestaHoverState,
+            RichiestaSelezionataState,
+            RichiestaComposizioneState
+        ])
+    ],
+    declarations: [
+        RichiesteComponent,
+        ListaRichiesteComponent,
+        RichiestaFissataComponent,
+        SintesiRichiestaSmComponent,
+        ModificaRichiestaComponent,
+    ],
+    exports: [
+        RichiesteComponent,
+    ],
+    entryComponents: [
+        ModificaRichiestaComponent
+    ],
+    providers: [
+        {provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake}
+    ]
 })
 export class RichiesteModule {
 }
