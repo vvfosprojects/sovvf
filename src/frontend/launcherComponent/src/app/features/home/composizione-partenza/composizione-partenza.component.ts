@@ -20,8 +20,8 @@ import { makeCopy, wipeStatoRichiesta } from '../../../shared/helper/function';
 import { TurnOffComposizione } from '../store/actions/view/view.actions';
 import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
 import { SquadreComposizioneState } from '../store/states/composizione-partenza/squadre-composizione.state';
-import { GetInitCentroMappa, SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
-import { ClearMarkerSelezionato } from '../store/actions/maps/marker.actions';
+import { SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
+import { ClearMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -96,9 +96,8 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     dismissPartenza(): void {
-        this.store.dispatch(new GetInitCentroMappa());
         this.dismissPartenzaSubject.next(true);
-        this.store.dispatch(new ClearMarkerSelezionato());
+        this.store.dispatch(new ClearMarkerRichiestaSelezionato());
         this.centraMappa();
         this.turnOffComposizione();
     }

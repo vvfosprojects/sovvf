@@ -11,6 +11,13 @@ export class SetSediMarkers {
     }
 }
 
+export class SetSedeMarkerById {
+    static readonly type = '[Sedi Marker] Set Sede Marker by ID';
+
+    constructor(public id?: string) {
+    }
+}
+
 export class ClearSediMarkers {
     static readonly type = '[Sedi Marker] Clear Sedi Marker';
 }

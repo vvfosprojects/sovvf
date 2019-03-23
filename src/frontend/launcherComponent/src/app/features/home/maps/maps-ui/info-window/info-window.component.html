@@ -184,13 +184,13 @@
             <thead class="thead-light">
             <tr>
                 <th scope="col" class="py-1 px-0 mx-0 row w-100">
-                    <div class="col" ngbTooltip="Tipologia Sede" placement="bottom">
-                        {{sedeMarker.tipo}}
+                    <div class="col" ngbTooltip="{{ sedeMarker.descrizione }}" placement="bottom"
+                         [disableTooltip]="sedeMarker.descrizione.length <= 40">
+                        {{sedeMarker.descrizione | truncate:40 }}
                     </div>
-                    <div class="col text-right ml-2" ngbTooltip="{{ sedeMarker.descrizione }}" placement="bottom"
-                         [disableTooltip]="sedeMarker.descrizione.length <= 30">
-                        {{sedeMarker.descrizione | truncate:30 }}
-                    </div>
+                    <!--<div class="col text-right ml-2" ngbTooltip="Tipologia Sede" placement="bottom">-->
+                        <!--{{sedeMarker.tipo}}-->
+                    <!--</div>-->
                 </th>
             </tr>
             </thead>
@@ -215,7 +215,7 @@
                         </button>
                     </div>
                     <div class="col" ngbTooltip="{{ sedeMarker.tipo }}" placement="bottom">
-                        <img class="w-75" [src]="tipoSedeIcona" alt="sede icona">
+                        <img class="w-50" [src]="tipoSedeIcona" alt="sede icona">
                     </div>
                 </th>
             </tr>
@@ -265,7 +265,7 @@
                             <i class="fa fa-sun-o"></i>
                     Meteo
                 </span>
-                        {{meteoMarker.id}}
+                        {{meteoMarker.localita.indirizzo}}
                     </div>
                 </th>
             </tr>

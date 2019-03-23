@@ -11,17 +11,17 @@ export class SetRichiesteMarkers {
     }
 }
 
+export class SetRichiestaMarkerById {
+    static readonly type = '[Richieste Marker] Set Richiesta Marker by ID';
+
+    constructor(public id?: string) {
+    }
+}
+
 export class OpacizzaRichiesteMarkers {
     static readonly type = '[Richieste Marker] Opacizza Richieste Marker';
 
     constructor(public stato?: string[]) {
-    }
-}
-
-export class OpacizzaRichiesteMarkersById {
-    static readonly type = '[Richieste Marker] Opacizza Richieste Marker By Id';
-
-    constructor(public id?: string[]) {
     }
 }
 

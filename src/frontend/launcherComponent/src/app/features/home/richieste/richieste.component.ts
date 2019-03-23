@@ -22,11 +22,10 @@ import { SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.a
 import { ToggleComposizione } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { RichiestaComposizione } from '../store/actions/composizione-partenza/richiesta-composizione.actions';
-import { OpacizzaRichiesteMarkersById } from '../store/actions/maps/richieste-markers.actions';
-import { MarkerService } from '../maps/service/marker-service/marker-service.service';
-import { ClearMarkerSelezionato } from '../store/actions/maps/marker.actions';
+import { ClearMarkerRichiestaHover, ClearMarkerRichiestaSelezionato, SetMarkerRichiestaHover, SetMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
 import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ModificaRichiestaComponent } from './modifica-richiesta/modifica-richiesta.component';
+import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -63,7 +62,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     constructor(private modalService: NgbModal,
                 private filter: FilterPipe,
-                private markerS: MarkerService,
                 private store: Store) {
         this.getRichieste();
     }
@@ -177,40 +175,40 @@ export class RichiesteComponent implements OnInit, OnDestroy {
             result.forEach((c: any) => {
                 string.push(c.id);
             });
-            this.store.dispatch(new OpacizzaRichiesteMarkersById(string));
+            this.store.dispatch(new SetMarkerOpachiRichieste(string));
         } else {
-            this.store.dispatch(new OpacizzaRichiesteMarkersById());
+            this.store.dispatch(new ClearMarkerOpachiRichieste());
         }
     }
 
     onHoverIn(idRichiesta: string) {
-        this.markerS.actionById(idRichiesta, 'hover-in');
+        this.store.dispatch(new SetMarkerRichiestaHover(idRichiesta));
         this.store.dispatch(new SetRichiestaHover(idRichiesta));
     }
 
     onHoverOut() {
-        this.markerS.actionHoverOut();
+        this.store.dispatch(new ClearMarkerRichiestaHover());
         this.store.dispatch(new ClearRichiestaHover());
     }
 
     onSelezione(idRichiesta: string) {
-        this.markerS.actionById(idRichiesta, 'click', false);
+        this.store.dispatch(new SetMarkerRichiestaSelezionato(idRichiesta));
         this.store.dispatch(new SetRichiestaSelezionata(idRichiesta));
     }
 
     onDeselezione() {
-        this.store.dispatch(new ClearMarkerSelezionato());
+        this.store.dispatch(new ClearMarkerRichiestaSelezionato());
         this.store.dispatch(new GetInitZoomCentroMappa());
         this.store.dispatch(new ClearRichiestaSelezionata());
     }
 
     onFissaInAlto(idRichiesta: string) {
-        this.markerS.actionById(idRichiesta, 'click', false);
+        this.store.dispatch(new SetMarkerRichiestaSelezionato(idRichiesta));
         this.store.dispatch(new SetRichiestaFissata(idRichiesta));
     }
 
     onDefissa() {
-        this.store.dispatch(new ClearMarkerSelezionato());
+        this.store.dispatch(new ClearMarkerRichiestaSelezionato());
         this.store.dispatch(new GetInitZoomCentroMappa());
         this.store.dispatch(new ClearRichiestaFissata());
     }
@@ -230,7 +228,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     nuovaPartenza($event: SintesiRichiesta) {
-        this.markerS.actionById($event.id, 'click');
+        this.store.dispatch(new SetMarkerRichiestaSelezionato($event.id));
         this.store.dispatch(new RichiestaComposizione($event));
     }
 }

@@ -40,3 +40,20 @@ export function wipeCoordinate(coordinate: Coordinate) {
         return console.error('Errore ricezione coordinate meteo: ', coordinate);
     }
 }
+
+export function coord2String(number: number) {
+    const string = number.toString();
+    const countString = string.length;
+    return string.slice(0, ((countString - 5) * -1));
+}
+
+export function makeID(lengthString?: number): string {
+    let text = '';
+    const _lengthString = lengthString ? lengthString : 24;
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i = 0; i < _lengthString; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+}

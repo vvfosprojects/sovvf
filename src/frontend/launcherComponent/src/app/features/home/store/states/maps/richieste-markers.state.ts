@@ -1,16 +1,24 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { RichiesteMarkerService } from '../../../../../core/service/maps-service';
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
-import { ClearRichiesteMarkers, GetRichiesteMarkers, OpacizzaRichiesteMarkers, OpacizzaRichiesteMarkersById, SetRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
-import { makeCopy, wipeStatoRichiesta } from '../../../../../shared/helper/function';
-import produce from 'immer';
+import {
+    ClearRichiesteMarkers,
+    GetRichiesteMarkers,
+    OpacizzaRichiesteMarkers,
+    SetRichiestaMarkerById,
+    SetRichiesteMarkers
+} from '../../actions/maps/richieste-markers.actions';
+import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
+import { SetMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
 
 export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];
+    richiestaMarkerById: RichiestaMarker;
 }
 
 export const RichiesteMarkersStateDefaults: RichiesteMarkersStateModel = {
-    richiesteMarkers: null
+    richiesteMarkers: null,
+    richiestaMarkerById: null
 };
 
 @State<RichiesteMarkersStateModel>({
@@ -31,8 +39,8 @@ export class RichiesteMarkersState {
     }
 
     @Selector()
-    static getRichiesteById(state: RichiesteMarkersStateModel) {
-        return (id: string) => state.richiesteMarkers.find(x => x.id === id);
+    static getRichiestaById(state: RichiesteMarkersStateModel) {
+        return state.richiestaMarkerById;
     }
 
     constructor(private _richieste: RichiesteMarkerService) {
@@ -53,51 +61,36 @@ export class RichiesteMarkersState {
         });
     }
 
-    @Action(OpacizzaRichiesteMarkers)
-    opacizzaRichiesteMarkers({ getState, setState }: StateContext<RichiesteMarkersStateModel>, action: OpacizzaRichiesteMarkers) {
+    @Action(SetRichiestaMarkerById)
+    setRichiestaMarkerById({ getState, patchState }: StateContext<RichiesteMarkersStateModel>, action: SetRichiestaMarkerById) {
         const state = getState();
-        setState(
-            produce(state, draft => {
-                if (state.richiesteMarkers) {
-                    draft.richiesteMarkers.map(r => {
-                        if (action.stato) {
-                            r.opacita = true;
-                            action.stato.forEach(c => {
-                                if (wipeStatoRichiesta(r.stato).substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
-                                    r.opacita = false;
-                                }
-                            });
-                        } else {
-                            r.opacita = false;
-                        }
-                    });
-                }
-            }),
-        );
-    }
-
-    @Action(OpacizzaRichiesteMarkersById)
-    opacizzaRichiesteMarkersById({ getState, patchState }: StateContext<RichiesteMarkersStateModel>, action: OpacizzaRichiesteMarkersById) {
-        const state = getState();
-        const richiesteMarkers: RichiestaMarker[] = makeCopy(state.richiesteMarkers);
-        if (richiesteMarkers) {
-            richiesteMarkers.forEach(r => {
-                if (action.id) {
-                    r.opacita = true;
-                    action.id.forEach(c => {
-                        if (r.id === c) {
-                            r.opacita = false;
-                        }
-                    });
-                } else {
-                    r.opacita = false;
-                }
+        if (action.id) {
+            patchState({
+                richiestaMarkerById: state.richiesteMarkers.filter(richieste => richieste.id === action.id)[0]
+            });
+        } else {
+            patchState({
+                richiestaMarkerById: null
             });
         }
-        patchState({
-            ...state,
-            richiesteMarkers: richiesteMarkers
-        });
+    }
+
+    @Action(OpacizzaRichiesteMarkers)
+    opacizzaRichiesteMarkers({ getState, dispatch }: StateContext<RichiesteMarkersStateModel>, action: OpacizzaRichiesteMarkers) {
+        const state = getState();
+        const filteredId: string[] = [];
+        if (action.stato) {
+            state.richiesteMarkers.forEach(r => {
+                action.stato.forEach(c => {
+                    if (wipeStatoRichiesta(r.stato).substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
+                        filteredId.push(r.id);
+                    }
+                });
+            });
+        }
+        if (filteredId.length > 0) {
+            dispatch(new SetMarkerOpachiRichieste(filteredId));
+        }
     }
 
     @Action(ClearRichiesteMarkers)

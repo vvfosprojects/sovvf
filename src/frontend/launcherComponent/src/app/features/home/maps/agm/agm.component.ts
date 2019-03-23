@@ -1,10 +1,4 @@
-import {
-    Component,
-    Input,
-    OnDestroy,
-    ViewChild,
-    ElementRef, Output, EventEmitter
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { RichiestaMarker } from '../maps-model/richiesta-marker.model';
 import { SedeMarker } from '../maps-model/sede-marker.model';
 import { MezzoMarker } from '../maps-model/mezzo-marker.model';
@@ -12,7 +6,7 @@ import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
 import { Meteo } from '../../../../shared/model/meteo.model';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { MarkerService } from '../service/marker-service/marker-service.service';
-import { Subscription, Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AgmService } from './agm-service.service';
 import { ControlPosition, FullscreenControlOptions, ZoomControlOptions } from '@agm/core/services/google-maps-types';
 import { MeteoMarker } from '../maps-model/meteo-marker.model';
@@ -25,6 +19,9 @@ import { MeteoMarkersState } from '../../store/states/maps/meteo-markers.state';
 import { AppFeatures } from '../../../../shared/enum/app-features.enum';
 import { MouseE } from '../../../../shared/enum/mouse-e.enum';
 import { MapsDirectionState } from '../../store/states/maps/maps-direction.state';
+import { markerColor } from '../../../../shared/helper/function-colori';
+import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
+import { wipeStatoRichiesta } from '../../../../shared/helper/function';
 
 declare var google: any;
 
@@ -39,7 +36,7 @@ export class AgmComponent implements OnDestroy {
     @Input() richiesteMarkers: RichiestaMarker[];
     @Input() sediMarkers: SedeMarker[];
     @Input() mezziMarkers: MezzoMarker[];
-    @Input() centroMappa: CentroMappa; // check non cambia in input
+    @Input() centroMappa: CentroMappa;
     @Input() chiamataMarkers: ChiamataMarker[];
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Input() composizioneMarkers: ComposizioneMarker[];
@@ -52,8 +49,6 @@ export class AgmComponent implements OnDestroy {
     meteoMarkers: MeteoMarker[] = [];
 
     minMarkerCluster: number;
-    datiMeteo: Meteo;
-    coloreStatoWindow: string;
     map_loaded = false;
     subscription = new Subscription();
     map: any;
@@ -91,20 +86,6 @@ export class AgmComponent implements OnDestroy {
         this.markerService.iconeCached.forEach(iconeC => {
             this.cachedMarkers.push(new CachedMarker(iconeC));
         });
-        /**
-         * dati meteo del marker cliccato/selezionato
-         * @type {Subscription}
-         */
-        this.subscription.add(this.markerService.getMeteo().subscribe((meteo: Meteo) => {
-            this.datiMeteo = meteo;
-        }));
-        /**
-         * colore del marker cliccato
-         * @type {Subscription}
-         */
-        this.subscription.add(this.markerService.getMarkedColor().subscribe(colore => {
-            this.coloreStatoWindow = colore;
-        }));
         /**
          * marker di tipo meteo
          * @type {Subscription}
@@ -162,54 +143,23 @@ export class AgmComponent implements OnDestroy {
         this.markerService.createMeteoMarker(event);
     }
 
-    selezioneMarker(marker: any): void {
-        /**
-         *  ricevo il marker selezionato dal componente mappa (agm)
-         */
-        this.markerService.action(marker, MouseE.Click);
+    zIndex(id: string, tipoMarker: string): number {
+        return this.markerService.zIndex(id, tipoMarker);
     }
 
-    hoverMarker(marker: any, type: any): void {
-        /**
-         * richiamo il service marker e gli passo marker e tipo hover
-         */
-        this.markerService.action(marker, type);
+    trueMarker(id: string, tipoMarker: string): boolean {
+        return this.markerService.trueMarker(id, tipoMarker);
     }
 
-    urlIcona(marker: any, tipoSede?: boolean): string {
-        /**
-         * richiedo al service che gestisce i marker sulla mappa, di ritornarmi l'url dell'icona da utilizzare
-         */
-        if (!tipoSede) {
-            return this.markerService.tipoIcona(marker, false);
-        } else {
-            return this.markerService.tipoIcona(marker, true);
-        }
+    isVisible(tipoMarker: string): boolean {
+        return this.markerService.isVisible(tipoMarker);
     }
 
-    zIndex(marker: any): number {
-        return this.markerService.zIndex(marker);
-    }
-
-    trueMarker(marker: any): boolean {
-        /**
-         * richiedo al service che gestisce i marker sulla mappa, di ritornarmi se il marker cliccato è quello selezionato
-         */
-        return this.markerService.trueMarker(marker, true);
-    }
-
-    isVisible(marker: any): boolean {
-        /**
-         * richiedo al service che gestisce i marker sulla mappa, di ritornarmi se il marker è visibile
-         */
-        return this.markerService.visibile(marker);
-    }
-
-    isOpaco(marker: any): number {
+    isOpaque(id: string, tipoMarker: string): number {
         /**
          * richiedo al service che gestisce i marker sulla mappa, di ritornarmi se il marker è opacizzato
          */
-        return this.markerService.opaco(marker);
+        return this.markerService.isOpaque(id, tipoMarker);
     }
 
     centroCambiato(centro: any): void {
@@ -223,8 +173,71 @@ export class AgmComponent implements OnDestroy {
         /**
          * metodo che ritorna allo zoom iniziale e deseleziona un marker se clicco sulla mappa
          */
-        this.markerService.action('', '');
+        this.markerService.newNoAction();
     }
 
+    iconaRichiestaMarker(richiestaMarker: RichiestaMarker): string {
+        /**
+         * ritorno l'url dell'icona del marker selezionato
+         */
+        return this.markerService.iconaRichiestaMarker(richiestaMarker.id, richiestaMarker.stato, richiestaMarker.priorita);
+    }
+
+    iconaMezzoMarker(mezzoMarker: MezzoMarker): string {
+        /**
+         * ritorno l'url dell'icona del marker selezionato
+         */
+        return this.markerService.iconaMezzoMarker(mezzoMarker.mezzo.codice, mezzoMarker.mezzo.stato);
+    }
+
+    iconaSedeMarker(sedeMarker: SedeMarker): string {
+        /**
+         * ritorno l'url dell'icona del marker selezionato
+         */
+        return this.markerService.iconaSedeMarker(sedeMarker.codice, sedeMarker.tipo);
+    }
+
+    iconaSedeTipoWindow(tipo: string): string {
+        /**
+         * ritorno l'url dell'icona del marker selezionato
+         */
+        return this.markerService.iconaSedeTipoWindow(tipo);
+    }
+
+    actionRichiestaMarker(id: string, event: MouseE): void {
+        /**
+         * scateno l'azione relativa all'evento del mouse ricevuto
+         */
+        this.markerService.actionRichiestaMarker(id, event);
+    }
+
+    actionMezzoMarker(id: string, event: MouseE): void {
+        /**
+         * scateno l'azione relativa all'evento del mouse ricevuto
+         */
+        this.markerService.actionMezzoMarker(id, event);
+    }
+
+    actionSedeMarker(id: string, event: MouseE): void {
+        /**
+         * scateno l'azione relativa all'evento del mouse ricevuto
+         */
+        this.markerService.actionSedeMarker(id, event);
+    }
+
+    findDatiMeteo(_id: string): Meteo {
+        /**
+         * ritorno i dati meteo del marker selezionato
+         */
+        return this.markerService.findDatiMeteo(_id);
+    }
+
+    colorWindow(stato: string): string {
+        return markerColor(stato);
+    }
+
+    wipeStatoRichiesta(statoEnum: StatoRichiesta): string {
+        return wipeStatoRichiesta(statoEnum);
+    }
 
 }

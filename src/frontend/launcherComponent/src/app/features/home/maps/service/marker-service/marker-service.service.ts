@@ -1,25 +1,19 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 /**
  * Model
  */
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
-import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
-import { CentroMappa } from '../../maps-model/centro-mappa.model';
 import { MeteoMarker } from '../../maps-model/meteo-marker.model';
 import { Localita } from '../../../../../shared/model/localita.model';
-import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
 import { Meteo } from '../../../../../shared/model/meteo.model';
 /**
  * Enum
  */
 import { MouseE } from '../../../../../shared/enum/mouse-e.enum';
-import { MapsEvent } from '../../../../../shared/enum/maps-event.enum';
 /**
  * Service
  */
-import { MeteoService } from '../../../../../shared/meteo/meteo-service.service';
 import { AgmService } from '../../agm/agm-service.service';
 import { UnitaAttualeService } from '../../../../navbar/navbar-service/unita-attuale/unita-attuale.service';
 /**
@@ -27,61 +21,84 @@ import { UnitaAttualeService } from '../../../../navbar/navbar-service/unita-att
  */
 import { Select, Store } from '@ngxs/store';
 import { MarkerMeteoState } from '../../../store/states/filterbar/marker-meteo-switch.state';
-import { SetRichiestaFissata, ClearRichiestaFissata } from '../../../store/actions/richieste/richiesta-fissata.actions';
-import { SetRichiestaHover, ClearRichiestaHover } from '../../../store/actions/richieste/richiesta-hover.actions';
+import { ClearRichiestaFissata, SetRichiestaFissata } from '../../../store/actions/richieste/richiesta-fissata.actions';
+import { ClearRichiestaHover, SetRichiestaHover } from '../../../store/actions/richieste/richiesta-hover.actions';
 import { ClearRichiestaSelezionata } from '../../../store/actions/richieste/richiesta-selezionata.actions';
 import { AddMeteoMarker, RemoveMeteoMarker } from '../../../store/actions/maps/meteo-markers.actions';
 import { MarkerState } from '../../../store/states/maps/marker.state';
-import { SetMarkerSelezionato, ClearMarkerSelezionato } from '../../../store/actions/maps/marker.actions';
-import { RichiesteMarkersState } from '../../../store/states/maps/richieste-markers.state';
-import { SetCentroMappa, SetZoomCentroMappa } from '../../../store/actions/maps/centro-mappa.actions';
+import {
+    ClearMarkerMezzoHover, ClearMarkerMezzoSelezionato,
+    ClearMarkerRichiestaHover, ClearMarkerRichiestaSelezionato, ClearMarkerSedeHover, ClearMarkerSedeSelezionato,
+    SetMarkerMezzoHover, SetMarkerMezzoSelezionato,
+    SetMarkerRichiestaHover,
+    SetMarkerRichiestaSelezionato, SetMarkerSedeHover, SetMarkerSedeSelezionato,
+} from '../../../store/actions/maps/marker.actions';
+import { GetInitCentroMappa } from '../../../store/actions/maps/centro-mappa.actions';
 import { MapsFiltroState } from '../../../store/states/maps/maps-filtro.state';
 /**
  * Helper Functions
  */
 import { IconMappe } from './_icone';
-import { TipoMappe } from './_typeof';
-import { TipoColori } from './_color';
-import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
+import { coord2String, makeID } from '../../../../../shared/helper/function';
+import { GetMarkerDatiMeteo } from '../../../store/actions/maps/marker-info-window.actions';
+import { MarkerInfoWindowState } from '../../../store/states/maps/marker-info-window.state';
+import { MarkerDatiMeteo } from '../../maps-model/marker-dati-meteo.interface';
+import { MarkerOpachiState, MarkerOpachiStateModel } from '../../../store/states/maps/marker-opachi.state';
 
 
 @Injectable()
 export class MarkerService implements OnDestroy {
 
-    private subjectMeteo = new Subject<Meteo>();
-    private markedColor = new Subject<string>();
     private subscription = new Subscription();
-    icone = new IconMappe();
-    tipo = new TipoMappe();
-    colori = new TipoColori();
-    coloreStato: string;
-    minMarkerCluster: number;
-    livelloOpacita: number;
+    private icone = new IconMappe();
+    private livelloOpacita: number;
 
+    minMarkerCluster: number;
     iconeCached: string[];
 
-    @Select(MarkerState.markerSelezionato) markerSelezionato$: Observable<any>;
-    private markerSelezionato: any;
-    private markerColorato: any;
-    private markerZIndex: any;
-    private checkMarker: any;
+    @Select(MarkerState.markerRichiestaSelezionato) markerRichiestaSelezionato$: Observable<string>;
+    private markerRichiestaSelezionato: string;
+
+    @Select(MarkerState.markerRichiestaHover) markerRichiestaHover$: Observable<string>;
+    private markerRichiestaHover: string;
+
+    @Select(MarkerState.markerMezzoSelezionato) markerMezzoSelezionato$: Observable<string>;
+    private markerMezzoSelezionato: string;
+
+    @Select(MarkerState.markerMezzoHover) markerMezzoHover$: Observable<string>;
+    private markerMezzoHover: string;
+
+    @Select(MarkerState.markerSedeSelezionato) markerSedeSelezionato$: Observable<string>;
+    private markerSedeSelezionato: string;
+
+    @Select(MarkerState.markerSedeHover) markerSedeHover$: Observable<string>;
+    private markerSedeHover: string;
 
     @Select(MapsFiltroState.filtroMarkerAttivo) filtroMarkerAttivo$: Observable<string[]>;
     private filtroMarkerAttivo: string[];
 
+    @Select(MarkerInfoWindowState.markerDatiMeteo) datiMeteo$: Observable<MarkerDatiMeteo[]>;
+    private datiMeteo: MarkerDatiMeteo[];
+
+    @Select(MarkerOpachiState.markerOpachi) markerOpachi$: Observable<MarkerOpachiStateModel>;
+    private markerOpachi: MarkerOpachiStateModel;
+
     @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
     switchMeteo: boolean;
 
-    constructor(private meteoService: MeteoService,
-                private agmService: AgmService,
+    constructor(private agmService: AgmService,
                 private unitaAttualeS: UnitaAttualeService,
                 private store: Store) {
-        this.subscription.add(this.markerSelezionato$.subscribe(marker => {
-            this.markerSelezionato = marker;
-        }));
         this.subscription.add(this.filtroMarkerAttivo$.subscribe(filtroAttivo => this.filtroMarkerAttivo = filtroAttivo));
         this.subscription.add(this.stateSwitch$.subscribe((state: boolean) => this.switchMeteo = state));
-
+        this.subscription.add(this.markerOpachi$.subscribe((state: MarkerOpachiStateModel) => this.markerOpachi = state));
+        this.subscription.add(this.markerRichiestaSelezionato$.subscribe((id: string) => this.markerRichiestaSelezionato = id));
+        this.subscription.add(this.markerRichiestaHover$.subscribe((id: string) => this.markerRichiestaHover = id));
+        this.subscription.add(this.markerMezzoSelezionato$.subscribe((id: string) => this.markerMezzoSelezionato = id));
+        this.subscription.add(this.markerMezzoHover$.subscribe((id: string) => this.markerMezzoHover = id));
+        this.subscription.add(this.markerSedeSelezionato$.subscribe((id: string) => this.markerSedeSelezionato = id));
+        this.subscription.add(this.markerSedeHover$.subscribe((id: string) => this.markerSedeHover = id));
+        this.subscription.add(this.datiMeteo$.subscribe((meteo: MarkerDatiMeteo[]) => this.datiMeteo = meteo));
         /**
          * marker minimi per creare un cluster
          * @type {number}
@@ -99,19 +116,7 @@ export class MarkerService implements OnDestroy {
     }
 
     ngOnDestroy() {
-        console.log('destroy marker service');
         this.subscription.unsubscribe();
-    }
-
-    tipoIcona(marker: any, tipoSede: boolean): string {
-        /**
-         * metodo che mi ritorna il tipo di icona da utilizzare
-         */
-        if (!tipoSede) {
-            return this.icone.tipoIcona(marker, this.modelloMarker(marker), this.iconaSelezionata(marker));
-        } else {
-            return this.icone.tipoIcona(marker, 'tipo-sede', this.iconaSelezionata(marker));
-        }
     }
 
     /**
@@ -122,284 +127,96 @@ export class MarkerService implements OnDestroy {
         return this.icone.iconaSpeciale(tipo);
     }
 
-    modelloMarker(marker: any): string {
-        /**
-         * metodo che mi ritorna il modello del marker come stringa
-         */
-        return this.tipo.markerType(marker);
-    }
-
-    trueMarker(marker?: any, cross?: boolean): boolean {
-        /**
-         * metodo che mi ritorna true, se il marker selezionato è lo stesso che è stato cliccato
-         */
-        this.coloraMarker(marker);
-        if (cross) {
-            return true;
-        } else {
-            return this.markerSelezionato === marker;
-        }
-    }
-
-    iconaSelezionata(marker: any): boolean {
-        if (this.markerSelezionato === marker) {
-            return true;
-        } else if (this.markerColorato === marker) {
-            return true;
-        }
-    }
-
-    zIndex(marker: any): number {
-        if (this.markerZIndex === marker) {
-            return 33333;
-        }
-    }
-
-    coloraMarker(marker: any) {
-        const _wipeStatoRichiesta = wipeStatoRichiesta(marker.stato);
-        if (!!marker.id_richiesta && marker.mezzo.stato) {
-            this.coloreStato = this.colori.markerColor(marker.mezzo.stato);
-        } else if (_wipeStatoRichiesta) {
-            this.coloreStato = this.colori.markerColor(_wipeStatoRichiesta);
-        } else {
-            this.coloreStato = '#343a40';
-        }
-        this.markedColor.next(this.coloreStato);
-    }
-
-    cliccato(marker: any): void {
-        /**
-         *  imposto nel service marked lo stato del marker a selezionato
-         */
-        this.selezionato(marker);
-        /**
-         *  mi arrivano i dati del meteo
-         */
-        this.getDatiMeteo(marker);
-        /**
-         * richiamo i metodi per modficare il centro e lo zoom del marker cliccato
-         */
-        this.store.dispatch(new SetCentroMappa(new CentroMappa(this.getCoordinate(marker), 18)));
-    }
-
-    selezionato(marker: any): void {
-        /**
-         *  imposto nel service marked lo stato del marker a selezionato
-         */
-        this.store.dispatch(new SetMarkerSelezionato(marker));
-    }
-
-    deseleziona(): void {
-        /**
-         * deseleziono il marker
-         */
-        this.store.dispatch(new ClearMarkerSelezionato());
-    }
-
-    action(marker: any, mouse: any) {
-        /**
-         * controllo il tipo di marker e il suo mouse event
-         */
-        const modello = this.modelloMarker(marker);
-        switch (modello + '|' + mouse) {
-            case 'richiesta|hover-in': {
-                this.markerColorato = marker;
-                this.markerZIndex = marker;
-                this.store.dispatch(new SetRichiestaHover(marker.id));
-            }
-                break;
-            case 'richiesta|hover-out': {
-                this.markerColorato = null;
-                this.markerZIndex = null;
-                this.store.dispatch(new ClearRichiestaHover());
-            }
-                break;
-            case 'richiesta|click': {
-                if (this.checkMarker !== marker.id) {
-                    this.cliccato(marker);
-                    this.checkMarker = marker.id;
-                    this.store.dispatch(new SetRichiestaFissata(marker.id));
+    trueMarker(id: string, tipoMarker: string): boolean {
+        let trueMarkerValue = false;
+        switch (tipoMarker) {
+            case 'richiesta':
+                if (this.markerRichiestaSelezionato === id || this.markerRichiestaHover === id) {
+                    trueMarkerValue = true;
                 }
-            }
                 break;
-            case 'mezzo|hover-in': {
-                this.markerColorato = marker;
-                this.markerZIndex = null;
-            }
-                break;
-            case 'mezzo|hover-out': {
-                this.markerZIndex = null;
-                this.markerColorato = null;
-            }
-                break;
-            case 'mezzo|click': {
-                this.cliccato(marker);
-                if (!!marker.id_richiesta) {
-                    /**
-                     * lanciare azione solo quando il mezzo è in soccorso
-                     */
+            case 'mezzo':
+                if (this.markerMezzoSelezionato === id || this.markerMezzoHover === id) {
+                    trueMarkerValue = true;
                 }
-            }
                 break;
-            case 'sede|click': {
-                this.cliccato(marker);
-            }
-                break;
-            case 'sede|hover-in': {
-                this.markerZIndex = marker;
-                this.markerColorato = marker;
-            }
-                break;
-            case 'sede|hover-out': {
-                this.markerZIndex = null;
-                this.markerColorato = null;
-            }
-                break;
-            default: {
-                this.noAction();
-                this.checkMarker = null;
-                this.markerZIndex = null;
-                this.markerColorato = null;
-                this.markedColor.next(null);
-                this.store.dispatch(new ClearRichiestaFissata());
-                this.store.dispatch(new ClearRichiestaSelezionata());
-            }
+            case 'sede':
+                if (this.markerSedeSelezionato === id || this.markerSedeHover === id) {
+                    trueMarkerValue = true;
+                }
                 break;
         }
+        return trueMarkerValue;
     }
 
-    getMarkedColor(): Observable<any> {
-        return this.markedColor.asObservable();
-    }
-
-
-    visibile(marker: any, selected?: any): boolean {
-        /**
-         * metodo che nasconde o mostra i marker sulla mappa
-         */
-        if (selected) {
-            return (this.modelloMarker(marker).includes(selected));
+    zIndex(id: string, tipoMarker: string): number {
+        let zIndexValue = 333;
+        switch (tipoMarker) {
+            case 'richiesta':
+                if (this.markerRichiestaSelezionato === id || this.markerRichiestaHover === id) {
+                    zIndexValue += 1000;
+                }
+                break;
+            case 'mezzo':
+                if (this.markerMezzoSelezionato === id || this.markerMezzoHover === id) {
+                    zIndexValue += 1000;
+                }
+                break;
+            case 'sede':
+                if (this.markerSedeSelezionato === id || this.markerSedeHover === id) {
+                    zIndexValue += 1000;
+                }
+                break;
         }
+        return zIndexValue;
+    }
+
+    isVisible(tipoMarker: string): boolean {
         if (this.filtroMarkerAttivo && this.filtroMarkerAttivo.length > 0) {
-            return this.filtroMarkerAttivo.includes(this.modelloMarker(marker));
+            let isVisible = false;
+            switch (tipoMarker) {
+                case 'richiesta':
+                        isVisible = this.filtroMarkerAttivo.includes(tipoMarker);
+                    break;
+                case 'mezzo':
+                        isVisible = this.filtroMarkerAttivo.includes(tipoMarker);
+                    break;
+                case 'sede':
+                        isVisible = this.filtroMarkerAttivo.includes(tipoMarker);
+                    break;
+            }
+            return isVisible;
         }
         return true;
     }
 
-    opaco(marker: any): number {
-        return marker.opacita ? this.livelloOpacita : 1;
-    }
-
-    getDatiMeteo(marker: any): void {
-        /**
-         *  faccio una chiamata all'api del servizio meteo e aspetto i dati del marker selezionato
-         */
-        this.meteoService.getMeteoData(this.getCoordinate(marker))
-            .subscribe({
-                next: data => this.subjectMeteo.next(data),
-                error: data => console.log(`Errore: ${data}`)
-            });
-    }
-
-    getMeteo(): Observable<Meteo> {
-        return this.subjectMeteo.asObservable();
-    }
-
-    noAction() {
-        if (this.markerSelezionato) {
-            this.store.dispatch(new SetZoomCentroMappa(12));
-            this.deseleziona();
-        }
-    }
-
-    actionById(id: any, mouse: any, unclick?: any) {
-        let marker: any;
-        marker = this.getMarkerFromId(id);
-        switch (mouse) {
-            case MouseE.HoverIn: {
-                this.markerColorato = marker;
-                this.markerZIndex = marker;
-            }
-                break;
-            case MouseE.HoverOut: {
-                this.markerColorato = null;
-                this.markerZIndex = null;
-            }
-                break;
-            case MouseE.Click: {
-                if (this.checkMarker !== marker && !unclick) {
-                    this.cliccato(marker);
-                    this.checkMarker = marker.id;
-                } else {
-                    this.noAction();
+    isOpaque(id: string, tipoMarker: string): number {
+        let isOpaque = 1;
+        switch (tipoMarker) {
+            case 'richiesta':
+                if (this.markerOpachi.stato.richieste) {
+                    if (!this.markerOpachi.markerOpachiId.richiesteId.includes(id)) {
+                        isOpaque = this.livelloOpacita;
+                    }
                 }
-            }
+                break;
+            case 'mezzo':
+                if (this.markerOpachi.stato.mezzi) {
+                    if (!this.markerOpachi.markerOpachiId.mezziId.includes(id)) {
+                        isOpaque = this.livelloOpacita;
+                    }
+                }
+                break;
+            case 'sede':
+                if (this.markerOpachi.stato.sedi) {
+                    if (!this.markerOpachi.markerOpachiId.sediId.includes(id)) {
+                        isOpaque = this.livelloOpacita;
+                    }
+                }
                 break;
         }
+        return isOpaque;
     }
-
-    // provvisorio
-
-    actionHoverOut() {
-        this.markerColorato = null;
-        this.markerZIndex = null;
-    }
-
-    getCoordinate(marker: any): Coordinate {
-        /**
-         * fa il mapping dell'oggetto coordinate a seconda del modello di marker
-         */
-        const modello = this.modelloMarker(marker);
-        let coordinate: Coordinate = null;
-        switch (modello) {
-            case 'richiesta': {
-                coordinate = marker.localita.coordinate;
-            }
-                break;
-            default: {
-                coordinate = marker.coordinate;
-            }
-                break;
-        }
-        return coordinate;
-    }
-
-    /**
-     * metodo che ritorna un oggetto di tipo RichiestaMarker ricevendo un id
-     * @param id
-     */
-    getMarkerFromId(id: string): RichiestaMarker {
-        // Todo: da fixare errore su logout (non bloccante)
-        let marker: RichiestaMarker = null;
-        let richiesteMarkerById$: Observable<RichiestaMarker>;
-        richiesteMarkerById$ = this.store.select(RichiesteMarkersState.getRichiesteById).pipe(map(fn => fn(id)));
-        richiesteMarkerById$.subscribe(m => {
-            marker = m;
-        });
-        return marker;
-    }
-
-    /**
-     * centra la mappa sul marker della chiamata
-     * @param marker
-     * @param action
-     * @param centroMappa
-     */
-    // chiamata(marker: ChiamataMarker, action: string, centroMappa?: CentroMappa) {
-    //     switch (action) {
-    //         case MapsEvent.Centra: {
-    //             this.store.dispatch(new SetCoordCentroMappa(this.getCoordinate(marker)));
-    //             this.store.dispatch(new SetZoomCentroMappa(18));
-    //             this.markerZIndex = marker;
-    //             this.getDatiMeteo(marker);
-    //         }
-    //             break;
-    //         default: {
-    //             this.markerZIndex = null;
-    //         }
-    //             break;
-    //     }
-    // }
 
     /**
      * crea a runtime un marker, se l'utente clicca in un punto della mappa
@@ -407,23 +224,129 @@ export class MarkerService implements OnDestroy {
      */
     createMeteoMarker(event: any) {
         if (this.switchMeteo) {
-            const x = event.coords.lat;
-            const y = event.coords.lng;
-            const id = `(lat: ${coord2String(x)} - lng: ${coord2String(y)})`;
-            const mMarker: MeteoMarker = new MeteoMarker(id, new Localita(new Coordinate(x, y)));
+            const coordinate = new Coordinate(event.coords.lat, event.coords.lng);
+            const etichetta = `(lat: ${coord2String(event.coords.lat)} - lng: ${coord2String(event.coords.lng)})`;
+            const id = makeID(10);
+            const mMarker: MeteoMarker = new MeteoMarker(id, new Localita(coordinate, etichetta));
             const arrayM: MeteoMarker[] = [];
             arrayM.push(mMarker);
-            this.getDatiMeteo(mMarker);
-
-            // Store implementation
+            this.store.dispatch(new GetMarkerDatiMeteo('meteo-' + id, coordinate));
             this.store.dispatch(new RemoveMeteoMarker());
             this.store.dispatch(new AddMeteoMarker(arrayM));
         }
+    }
 
-        function coord2String(number: number) {
-            const string = number.toString();
-            const countString = string.length;
-            return string.slice(0, ((countString - 5) * -1));
+    iconaRichiestaMarker(id, stato, priorita): string {
+        let selezionato = false;
+        if (this.markerRichiestaSelezionato === id || this.markerRichiestaHover === id) {
+            selezionato = true;
         }
+        return this.icone.iconaRichiesta(stato, priorita, selezionato);
+    }
+
+    iconaMezzoMarker(id, stato): string {
+        let selezionato = false;
+        if (this.markerMezzoSelezionato === id || this.markerMezzoHover === id) {
+            selezionato = true;
+        }
+        return this.icone.iconaMezzo(stato, selezionato);
+    }
+
+    iconaSedeMarker(id, tipo): string {
+        let selezionato = false;
+        if (this.markerSedeSelezionato === id || this.markerSedeHover === id) {
+            selezionato = true;
+        }
+        return this.icone.iconaSede(tipo, selezionato);
+    }
+
+    iconaSedeTipoWindow(tipo): string {
+        return this.icone.iconaSedeTipoWindow(tipo);
+    }
+
+    actionRichiestaMarker(id: string, mouse: MouseE) {
+        switch (mouse) {
+            case MouseE.HoverIn: {
+                this.store.dispatch(new SetMarkerRichiestaHover(id));
+                if (this.markerRichiestaSelezionato !== id) {
+                    this.store.dispatch(new SetRichiestaHover(id));
+                }
+            }
+                break;
+            case MouseE.HoverOut: {
+                this.store.dispatch(new ClearMarkerRichiestaHover());
+                if (this.markerRichiestaSelezionato !== id) {
+                    this.store.dispatch(new ClearRichiestaHover());
+                }
+            }
+                break;
+            case MouseE.Click: {
+                if (this.markerRichiestaSelezionato !== id) {
+                    this.store.dispatch(new SetMarkerRichiestaSelezionato(id));
+                    this.store.dispatch(new SetRichiestaFissata(id));
+                }
+            }
+                break;
+        }
+    }
+
+    actionMezzoMarker(id: string, mouse: MouseE) {
+        switch (mouse) {
+            case MouseE.HoverIn: {
+                if (this.markerMezzoSelezionato !== id) {
+                    this.store.dispatch(new SetMarkerMezzoHover(id));
+                }
+            }
+                break;
+            case MouseE.HoverOut: {
+                if (this.markerMezzoSelezionato !== id) {
+                    this.store.dispatch(new ClearMarkerMezzoHover());
+                }
+            }
+                break;
+            case MouseE.Click: {
+                this.store.dispatch(new SetMarkerMezzoSelezionato(id));
+            }
+                break;
+        }
+    }
+
+    actionSedeMarker(id: string, mouse: MouseE) {
+        switch (mouse) {
+            case MouseE.HoverIn: {
+                if (this.markerSedeSelezionato) {
+                    this.store.dispatch(new SetMarkerSedeHover(id));
+                }
+            }
+                break;
+            case MouseE.HoverOut: {
+                if (this.markerSedeSelezionato) {
+                    this.store.dispatch(new ClearMarkerSedeHover());
+                }
+            }
+                break;
+            case MouseE.Click: {
+                this.store.dispatch(new SetMarkerSedeSelezionato(id));
+            }
+                break;
+        }
+    }
+
+    newNoAction() {
+        this.store.dispatch(new ClearMarkerRichiestaSelezionato());
+        this.store.dispatch(new ClearMarkerSedeSelezionato());
+        this.store.dispatch(new ClearMarkerMezzoSelezionato());
+        this.store.dispatch(new GetInitCentroMappa());
+        this.store.dispatch(new ClearRichiestaFissata());
+        this.store.dispatch(new ClearRichiestaSelezionata());
+    }
+
+    findDatiMeteo(_id: string): Meteo {
+        let meteoData: Meteo = null;
+        const filterData = this.datiMeteo.filter(datiMeteo => datiMeteo.id === _id)[0];
+        if (filterData && filterData.id !== undefined) {
+            meteoData = filterData.datiMeteo;
+        }
+        return meteoData;
     }
 }

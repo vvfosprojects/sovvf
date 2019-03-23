@@ -11,6 +11,7 @@ import { SignalRNotification } from '../../../../../core/signalr/interface/signa
 import { Observable } from 'rxjs';
 import { UtenteState } from '../../../../navbar/store/states/operatore/utente.state';
 import { Utente } from '../../../../../shared/model/utente.model';
+import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
 
 export interface SchedaTelefonataStateModel {
     coordinate: Coordinate;
@@ -120,7 +121,7 @@ export class SchedaTelefonataState {
             latitudine: action.marker.localita.coordinate.latitudine,
             longitudine: action.marker.localita.coordinate.longitudine
         };
-        // Todo: tolta DI markerServer, ma manca il meteo sulla chiamata.
+        dispatch(new GetMarkerDatiMeteo('chiamata-' + action.marker.id, coordinate));
         dispatch(new SetCoordCentroMappa(coordinate));
         dispatch(new SetZoomCentroMappa(18));
         patchState({

@@ -219,4 +219,68 @@ export class IconMappe {
         });
         return result;
     }
+
+    iconaRichiesta(stato: any, priorita: any, selezionato: boolean): string {
+        /**
+         * metodo che mi ritorna l'url del' icona richiestaMarker da utilizzare
+         */
+        const pathModello = this.mapIconeModelloPath.get('richiesta');
+        const path = this.pathUrl + pathModello;
+        const check = !(selezionato);
+        const dir = check ? path + 'ns/' : path + 's/';
+        this.iconaStatoCorrenteSize = this.mapIconeSize.get(priorita);
+        const _wipeStatoRichiesta = wipeStatoRichiesta(stato);
+        const statoRichiesta = this.mapIconeUrl.get(_wipeStatoRichiesta.substring(0, 5).toLowerCase());
+        this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize + statoRichiesta;
+        if (!this.iconaStatoCorrenteSize || !statoRichiesta) {
+            return undefined;
+        }
+        return this.iconaStatoCorrenteUrl;
+    }
+
+    iconaMezzo(stato: any, selezionato: boolean): string {
+        /**
+         * metodo che mi ritorna l'url del' icona mezzoMarker da utilizzare
+         */
+        const pathModello = this.mapIconeModelloPath.get('mezzo');
+        const path = this.pathUrl + pathModello;
+        const check = !(selezionato);
+        const dir = check ? path + 'ns/' : path + 's/';
+        const tipoMezzo = this.mapIconeMezzi.get(stato.substring(0, 5).toLowerCase());
+        this.iconaStatoCorrenteUrl = dir + tipoMezzo;
+        if (!this.iconaStatoCorrenteUrl || !tipoMezzo) {
+            return undefined;
+        }
+        return this.iconaStatoCorrenteUrl;
+    }
+
+    iconaSede(tipo: any, selezionato: boolean): string {
+        /**
+         * metodo che mi ritorna l'url del' icona sedeMarker da utilizzare
+         */
+        const pathModello = this.mapIconeModelloPath.get('sede');
+        const path = this.pathUrl + pathModello;
+        const check = !(selezionato);
+        const dir = check ? path + 'ns/' : path + 's/';
+        const sede = this.mapIconeSedi.get(tipo.toLowerCase());
+        this.iconaStatoCorrenteUrl = dir + sede;
+        if (!this.iconaStatoCorrenteUrl || !sede) {
+            return undefined;
+        }
+        return this.iconaStatoCorrenteUrl;
+    }
+
+    iconaSedeTipoWindow(tipo: any): string {
+        /**
+         * metodo che mi ritorna l'url del' icona da utilizzare nell'info window di sede
+         */
+        const pathModello = this.mapIconeModelloPath.get('tipo-sede');
+        const path = this.pathUrl + pathModello;
+        const tipoSede = this.mapIconeTipoSedi.get(tipo.toLowerCase());
+        this.iconaStatoCorrenteUrl = path + tipoSede;
+        if (!this.iconaStatoCorrenteUrl || !tipoSede) {
+            return undefined;
+        }
+        return this.iconaStatoCorrenteUrl;
+    }
 }

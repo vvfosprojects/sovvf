@@ -1,25 +1,27 @@
-import {Component, EventEmitter, Input, isDevMode, OnDestroy, OnInit, Output} from '@angular/core';
-import {CentroMappa} from './maps-model/centro-mappa.model';
-import {RichiestaMarker} from './maps-model/richiesta-marker.model';
-import {MezzoMarker} from './maps-model/mezzo-marker.model';
-import {SedeMarker} from './maps-model/sede-marker.model';
-import {ChiamataMarker} from './maps-model/chiamata-marker.model';
-import {ComposizioneMarker} from './maps-model/composizione-marker.model';
-import {Observable, Subscription} from 'rxjs';
-import {ViewInterfaceMaps} from '../../../shared/interface/view.interface';
-import {Select} from '@ngxs/store';
-import {SchedaTelefonataState} from '../store/states/chiamata/scheda-telefonata.state';
-import {RichiestaComposizioneState} from '../store/states/composizione-partenza/richiesta-composizione.state';
-import {MezziMarkersState} from '../store/states/maps/mezzi-markers.state';
-import {SediMarkersState} from '../store/states/maps/sedi-markers.state';
-import {RichiesteMarkersState} from '../store/states/maps/richieste-markers.state';
-import {CentroMappaState} from '../store/states/maps/centro-mappa.state';
+import { Component, EventEmitter, Input, isDevMode, OnDestroy, OnInit, Output } from '@angular/core';
+import { CentroMappa } from './maps-model/centro-mappa.model';
+import { RichiestaMarker } from './maps-model/richiesta-marker.model';
+import { MezzoMarker } from './maps-model/mezzo-marker.model';
+import { SedeMarker } from './maps-model/sede-marker.model';
+import { ChiamataMarker } from './maps-model/chiamata-marker.model';
+import { ComposizioneMarker } from './maps-model/composizione-marker.model';
+import { Observable, Subscription } from 'rxjs';
+import { ViewInterfaceMaps } from '../../../shared/interface/view.interface';
+import { Select } from '@ngxs/store';
+import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
+import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
+import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
+import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
+import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
+import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
+import { AgmService } from './agm/agm-service.service';
+import { MarkerService } from './service/marker-service/marker-service.service';
 
 @Component({
     selector: 'app-maps',
     templateUrl: './maps.component.html',
     styleUrls: ['./maps.component.css'],
-    providers: []
+    providers: [AgmService, MarkerService]
 })
 export class MapsComponent implements OnInit, OnDestroy {
 

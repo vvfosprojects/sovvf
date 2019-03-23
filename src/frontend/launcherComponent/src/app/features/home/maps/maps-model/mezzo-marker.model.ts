@@ -23,11 +23,7 @@ export class MezzoMarker {
         /**
          * Contiene la descrizione della label da mostrare
          */
-        public label?: string,
-        /**
-         * Determina se il marcatore è opaco o meno
-         */
-        public opacita?: boolean
+        public label?: string
     ) {
     }
 

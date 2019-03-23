@@ -32,11 +32,7 @@ export class RichiestaMarker {
         /**
          * Determina la rilevanza del marcatore
          */
-        public rilevanza?: Date,
-        /**
-         * Determina se il marcatore è opaco o meno
-         */
-        public opacita?: boolean
+        public rilevanza?: Date
     ) {
     }
 

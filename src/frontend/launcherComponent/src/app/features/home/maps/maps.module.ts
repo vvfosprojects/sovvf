@@ -26,7 +26,6 @@ import { CambioSedeModalComponent } from './maps-ui/info-window/cambio-sede-moda
 /**
  * Provider
  */
-import { AgmService } from './agm/agm-service.service';
 import {
     CentroMappaService, MezziMarkerService, SediMarkerService, RichiesteMarkerService,
     CentroMappaServiceFake, MezziMarkerServiceFake, SediMarkerServiceFake, RichiesteMarkerServiceFake
@@ -45,9 +44,9 @@ import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
 import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
 import { SintesiRichiestaModalComponent } from './maps-ui/info-window/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
-import {SintesiRichiestaComponent} from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.component';
-import {SintesiRichiestaModule} from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
-import { MarkerService } from './service/marker-service/marker-service.service';
+import { SintesiRichiestaModule } from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
+import { MarkerInfoWindowState } from '../store/states/maps/marker-info-window.state';
+import { MarkerOpachiState } from '../store/states/maps/marker-opachi.state';
 
 @NgModule({
     imports: [
@@ -70,7 +69,9 @@ import { MarkerService } from './service/marker-service/marker-service.service';
                 MarkerState,
                 RichiesteMarkersState,
                 MezziMarkersState,
-                SediMarkersState
+                SediMarkersState,
+                MarkerInfoWindowState,
+                MarkerOpachiState
             ]
         ),
     ],
@@ -88,12 +89,10 @@ import { MarkerService } from './service/marker-service/marker-service.service';
         MapsComponent
     ],
     providers: [
-        AgmService,
-        MarkerService,
-        {provide: RichiesteMarkerService, useClass: RichiesteMarkerServiceFake},
-        {provide: MezziMarkerService, useClass: MezziMarkerServiceFake},
-        {provide: SediMarkerService, useClass: SediMarkerServiceFake},
-        {provide: CentroMappaService, useClass: CentroMappaServiceFake},
+        { provide: RichiesteMarkerService, useClass: RichiesteMarkerServiceFake },
+        { provide: MezziMarkerService, useClass: MezziMarkerServiceFake },
+        { provide: SediMarkerService, useClass: SediMarkerServiceFake },
+        { provide: CentroMappaService, useClass: CentroMappaServiceFake },
     ]
 })
 export class MapsModule {

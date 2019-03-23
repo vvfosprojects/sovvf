@@ -7,6 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { BoxClickState } from '../boxes/box-click.state';
 import { OpacizzaMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
 import { OpacizzaRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
+import { ClearMarkerOpachiMezzi, ClearMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
 
 export interface MapsFiltroStateModel {
     filtroMarker: MarkerFiltro[];
@@ -143,6 +144,7 @@ export class MapsFiltroState {
                 this.store.dispatch(new OpacizzaMezziMarkers(mezziState));
             } else {
                 this.store.dispatch(new OpacizzaMezziMarkers());
+                this.store.dispatch(new ClearMarkerOpachiMezzi());
             }
 
             if (Object.values(boxClick.richieste).indexOf(true) >= 0) {
@@ -152,6 +154,7 @@ export class MapsFiltroState {
                 });
                 this.store.dispatch(new OpacizzaRichiesteMarkers(richiesteState));
             } else {
+                this.store.dispatch(new ClearMarkerOpachiRichieste());
                 this.store.dispatch(new OpacizzaRichiesteMarkers());
             }
 

@@ -32,25 +32,26 @@
                         [iconUrl]="cMarker.urlIcona"
                         [opacity]="0">
             </agm-marker>
-            <ng-template [ngSwitchCase]="viewStateMappa.active !== AppFeatures.ComposizionePartenza">
+            <!--<ng-template [ngSwitchCase]="viewStateMappa.active !== AppFeatures.ComposizionePartenza">-->
+            <ng-container>
                 <agm-marker-cluster
                         imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
                         [minimumClusterSize]="minMarkerCluster">
                     <agm-marker *ngFor="let richiestaMarker of richiesteMarkers;"
                                 [latitude]="richiestaMarker.localita.coordinate.latitudine"
                                 [longitude]="richiestaMarker.localita.coordinate.longitudine"
-                                (markerClick)="selezioneMarker(richiestaMarker)"
-                                (mouseOver)="hoverMarker(richiestaMarker, MouseE.HoverIn)"
-                                (mouseOut)="hoverMarker(richiestaMarker, MouseE.HoverOut)"
-                                [iconUrl]="urlIcona(richiestaMarker)"
-                                [opacity]="isOpaco(richiestaMarker)"
-                                [zIndex]="zIndex(richiestaMarker)"
-                                [visible]="isVisible(richiestaMarker)">
-                        <agm-snazzy-info-window *ngIf="trueMarker(richiestaMarker) && coloreStatoWindow"
-                                                [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: coloreStatoWindow}"
+                                (markerClick)="actionRichiestaMarker(richiestaMarker.id, MouseE.Click)"
+                                (mouseOver)="actionRichiestaMarker(richiestaMarker.id, MouseE.HoverIn)"
+                                (mouseOut)="actionRichiestaMarker(richiestaMarker.id, MouseE.HoverOut)"
+                                [iconUrl]="iconaRichiestaMarker(richiestaMarker)"
+                                [opacity]="isOpaque(richiestaMarker.id, 'richiesta')"
+                                [zIndex]="zIndex(richiestaMarker.id, 'richiesta')"
+                                [visible]="isVisible('richiesta')">
+                        <agm-snazzy-info-window *ngIf="trueMarker(richiestaMarker.id, 'richiesta')"
+                                                [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(wipeStatoRichiesta(richiestaMarker.stato))}"
                                                 [pointer]="'10px'"
                                                 [backgroundColor]="'#f5f5f0'"
-                                                [border]="{width: '2px', color: coloreStatoWindow}"
+                                                [border]="{width: '2px', color: colorWindow(wipeStatoRichiesta(richiestaMarker.stato))}"
                                                 [borderRadius]="'10px 10px'"
                                                 [maxHeight]="1000"
                                                 [maxWidth]="1000"
@@ -59,7 +60,7 @@
                                                 [showCloseButton]="false">
                             <ng-template>
                                 <app-info-window [richiestaMarker]="richiestaMarker"
-                                                 [datiMeteo]="datiMeteo"></app-info-window>
+                                                 [datiMeteo]="findDatiMeteo('richiesta-'+richiestaMarker.id)"></app-info-window>
                             </ng-template>
                         </agm-snazzy-info-window>
                     </agm-marker>
@@ -70,18 +71,18 @@
                     <agm-marker *ngFor="let sedeMarker of sediMarkers;"
                                 [latitude]="sedeMarker.coordinate.latitudine"
                                 [longitude]="sedeMarker.coordinate.longitudine"
-                                (markerClick)="selezioneMarker(sedeMarker)"
-                                (mouseOver)="hoverMarker(sedeMarker, MouseE.HoverIn)"
-                                (mouseOut)="hoverMarker(sedeMarker, MouseE.HoverOut)"
-                                [iconUrl]="urlIcona(sedeMarker)"
-                                [opacity]="isOpaco(sedeMarker)"
-                                [zIndex]="zIndex(sedeMarker)"
-                                [visible]="isVisible(sedeMarker)">
-                        <agm-snazzy-info-window *ngIf="trueMarker(sedeMarker)"
-                                                [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: coloreStatoWindow}"
+                                (markerClick)="actionSedeMarker(sedeMarker.codice, MouseE.Click)"
+                                (mouseOver)="actionSedeMarker(sedeMarker.codice, MouseE.HoverIn)"
+                                (mouseOut)="actionSedeMarker(sedeMarker.codice, MouseE.HoverOut)"
+                                [iconUrl]="iconaSedeMarker(sedeMarker)"
+                                [opacity]="isOpaque(sedeMarker.codice, 'sede')"
+                                [zIndex]="zIndex(sedeMarker.codice, 'sede')"
+                                [visible]="isVisible('sede')">
+                        <agm-snazzy-info-window *ngIf="trueMarker(sedeMarker.codice, 'sede')"
+                                                [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow('sede')}"
                                                 [pointer]="'10px'"
                                                 [backgroundColor]="'#f5f5f0'"
-                                                [border]="{width: '2px', color: coloreStatoWindow}"
+                                                [border]="{width: '2px', color: colorWindow('sede')}"
                                                 [borderRadius]="'10px 10px'"
                                                 [maxHeight]="1000"
                                                 [maxWidth]="1000"
@@ -89,8 +90,8 @@
                                                 [isOpen]="false"
                                                 [showCloseButton]="false">
                             <ng-template>
-                                <app-info-window [sedeMarker]="sedeMarker" [tipoSedeIcona]="urlIcona(sedeMarker, true)"
-                                                 [datiMeteo]="datiMeteo"></app-info-window>
+                                <app-info-window [sedeMarker]="sedeMarker" [tipoSedeIcona]="iconaSedeTipoWindow(sedeMarker.tipo)"
+                                                 [datiMeteo]="findDatiMeteo('sede-'+sedeMarker.codice)"></app-info-window>
                             </ng-template>
                         </agm-snazzy-info-window>
                     </agm-marker>
@@ -101,18 +102,18 @@
                     <agm-marker *ngFor="let mezzoMarker of mezziMarkers;"
                                 [latitude]="mezzoMarker.coordinate.latitudine"
                                 [longitude]="mezzoMarker.coordinate.longitudine"
-                                (markerClick)="selezioneMarker(mezzoMarker)"
-                                (mouseOver)="hoverMarker(mezzoMarker, MouseE.HoverIn)"
-                                (mouseOut)="hoverMarker(mezzoMarker, MouseE.HoverOut)"
-                                [iconUrl]="urlIcona(mezzoMarker)"
-                                [opacity]="isOpaco(mezzoMarker)"
-                                [zIndex]="zIndex(mezzoMarker)"
-                                [visible]="isVisible(mezzoMarker)">
-                        <agm-snazzy-info-window *ngIf="trueMarker(mezzoMarker)"
-                                                [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: coloreStatoWindow}"
+                                (markerClick)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.Click)"
+                                (mouseOver)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.HoverIn)"
+                                (mouseOut)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.HoverOut)"
+                                [iconUrl]="iconaMezzoMarker(mezzoMarker)"
+                                [opacity]="isOpaque(mezzoMarker.mezzo.codice, 'mezzo')"
+                                [zIndex]="zIndex(mezzoMarker.mezzo.codice, 'mezzo')"
+                                [visible]="isVisible('mezzo')">
+                        <agm-snazzy-info-window *ngIf="trueMarker(mezzoMarker.mezzo.codice, 'mezzo')"
+                                                [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(mezzoMarker.mezzo.codice)}"
                                                 [pointer]="'10px'"
                                                 [backgroundColor]="'#f5f5f0'"
-                                                [border]="{width: '2px', color: coloreStatoWindow}"
+                                                [border]="{width: '2px', color: colorWindow(mezzoMarker.mezzo.codice)}"
                                                 [borderRadius]="'10px 10px'"
                                                 [maxHeight]="1000"
                                                 [maxWidth]="1000"
@@ -120,108 +121,113 @@
                                                 [isOpen]="false"
                                                 [showCloseButton]="false">
                             <ng-template>
-                                <app-info-window [mezzoMarker]="mezzoMarker" [datiMeteo]="datiMeteo"></app-info-window>
+                                <app-info-window [mezzoMarker]="mezzoMarker"
+                                                 [datiMeteo]="findDatiMeteo('mezzo-'+mezzoMarker.mezzo.codice)"></app-info-window>
                             </ng-template>
                         </agm-snazzy-info-window>
                     </agm-marker>
                 </agm-marker-cluster>
-            </ng-template>
-            <ng-template [ngSwitchCase]="viewStateMappa.active === AppFeatures.ComposizionePartenza">
-                <agm-marker-cluster
-                        imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
-                        [minimumClusterSize]="minMarkerCluster">
-                    <agm-marker *ngFor="let richiestaMarker of richiesteMarkers;"
-                                [latitude]="richiestaMarker.localita.coordinate.latitudine"
-                                [longitude]="richiestaMarker.localita.coordinate.longitudine"
-                                (markerClick)="selezioneMarker(richiestaMarker)"
-                                [iconUrl]="urlIcona(richiestaMarker)"
-                                [opacity]="isOpaco(richiestaMarker)"
-                                [zIndex]="zIndex(richiestaMarker)"
-                                [visible]="isVisible(richiestaMarker)">
-                        <agm-snazzy-info-window *ngIf="trueMarker(richiestaMarker) && coloreStatoWindow"
-                                                [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: coloreStatoWindow}"
-                                                [pointer]="'10px'"
-                                                [backgroundColor]="'#f5f5f0'"
-                                                [border]="{width: '2px', color: coloreStatoWindow}"
-                                                [borderRadius]="'10px 10px'"
-                                                [maxHeight]="1000"
-                                                [maxWidth]="1000"
-                                                [padding]="'10px'"
-                                                [isOpen]="false"
-                                                [showCloseButton]="false">
-                            <ng-template>
-                                <app-info-window [richiestaMarker]="richiestaMarker"
-                                                 [datiMeteo]="datiMeteo"></app-info-window>
-                            </ng-template>
-                        </agm-snazzy-info-window>
-                    </agm-marker>
-                </agm-marker-cluster>
-                <agm-marker-cluster
-                        imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
-                        [minimumClusterSize]="minMarkerCluster">
-                    <agm-marker *ngFor="let sedeMarker of sediMarkers;"
-                                [latitude]="sedeMarker.coordinate.latitudine"
-                                [longitude]="sedeMarker.coordinate.longitudine"
-                                (markerClick)="selezioneMarker(sedeMarker)"
-                                [iconUrl]="urlIcona(sedeMarker)"
-                                [opacity]="isOpaco(sedeMarker)"
-                                [zIndex]="zIndex(sedeMarker)"
-                                [visible]="isVisible(sedeMarker)">
-                        <agm-snazzy-info-window *ngIf="trueMarker(sedeMarker)"
-                                                [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: coloreStatoWindow}"
-                                                [pointer]="'10px'"
-                                                [backgroundColor]="'#f5f5f0'"
-                                                [border]="{width: '2px', color: coloreStatoWindow}"
-                                                [borderRadius]="'10px 10px'"
-                                                [maxHeight]="1000"
-                                                [maxWidth]="1000"
-                                                [padding]="'10px'"
-                                                [isOpen]="false"
-                                                [showCloseButton]="false">
-                            <ng-template>
-                                <app-info-window [sedeMarker]="sedeMarker" [tipoSedeIcona]="urlIcona(sedeMarker, true)"
-                                                 [datiMeteo]="datiMeteo"></app-info-window>
-                            </ng-template>
-                        </agm-snazzy-info-window>
-                    </agm-marker>
-                </agm-marker-cluster>
-                <agm-marker-cluster
-                        imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
-                        [minimumClusterSize]="minMarkerCluster">
-                    <agm-marker *ngFor="let mezzoMarker of mezziMarkers;"
-                                [latitude]="mezzoMarker.coordinate.latitudine"
-                                [longitude]="mezzoMarker.coordinate.longitudine"
-                                (markerClick)="selezioneMarker(mezzoMarker)"
-                                [iconUrl]="urlIcona(mezzoMarker)"
-                                [opacity]="isOpaco(mezzoMarker)"
-                                [zIndex]="zIndex(mezzoMarker)"
-                                [visible]="isVisible(mezzoMarker)">
-                        <agm-snazzy-info-window *ngIf="trueMarker(mezzoMarker)"
-                                                [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: coloreStatoWindow}"
-                                                [pointer]="'10px'"
-                                                [backgroundColor]="'#f5f5f0'"
-                                                [border]="{width: '2px', color: coloreStatoWindow}"
-                                                [borderRadius]="'10px 10px'"
-                                                [maxHeight]="1000"
-                                                [maxWidth]="1000"
-                                                [padding]="'10px'"
-                                                [isOpen]="false"
-                                                [showCloseButton]="false">
-                            <ng-template>
-                                <app-info-window [mezzoMarker]="mezzoMarker" [datiMeteo]="datiMeteo"></app-info-window>
-                            </ng-template>
-                        </agm-snazzy-info-window>
-                    </agm-marker>
-                </agm-marker-cluster>
-                <agm-marker *ngFor="let composizione of composizioneMarkers;"
-                            [latitude]="composizione.localita.coordinate.latitudine"
-                            [longitude]="composizione.localita.coordinate.longitudine"
-                            (markerClick)="selezioneMarker(composizione)"
-                            [iconUrl]="urlIcona(composizione)"
-                            [zIndex]="99999">
-                </agm-marker>
-            </ng-template>
-            <ng-template [ngSwitchCase]="viewStateMappa.active === AppFeatures.Chiamata">
+            <!--</ng-template>-->
+            </ng-container>
+            <ng-container>
+                <!--<ng-template [ngSwitchCase]="viewStateMappa.active === AppFeatures.ComposizionePartenza">-->
+                <!--<agm-marker-cluster-->
+                <!--imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"-->
+                <!--[minimumClusterSize]="minMarkerCluster">-->
+                <!--<agm-marker *ngFor="let richiestaMarker of richiesteMarkers;"-->
+                <!--[latitude]="richiestaMarker.localita.coordinate.latitudine"-->
+                <!--[longitude]="richiestaMarker.localita.coordinate.longitudine"-->
+                <!--(markerClick)="selezioneMarker(richiestaMarker)"-->
+                <!--[iconUrl]="urlIcona(richiestaMarker)"-->
+                <!--[opacity]="isOpaco(richiestaMarker)"-->
+                <!--[zIndex]="zIndex(richiestaMarker)"-->
+                <!--[visible]="isVisible(richiestaMarker)">-->
+                <!--<agm-snazzy-info-window *ngIf="trueMarker(richiestaMarker) && coloreStatoWindow"-->
+                <!--[shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: coloreStatoWindow}"-->
+                <!--[pointer]="'10px'"-->
+                <!--[backgroundColor]="'#f5f5f0'"-->
+                <!--[border]="{width: '2px', color: coloreStatoWindow}"-->
+                <!--[borderRadius]="'10px 10px'"-->
+                <!--[maxHeight]="1000"-->
+                <!--[maxWidth]="1000"-->
+                <!--[padding]="'10px'"-->
+                <!--[isOpen]="false"-->
+                <!--[showCloseButton]="false">-->
+                <!--<ng-template>-->
+                <!--<app-info-window [richiestaMarker]="richiestaMarker"-->
+                <!--[datiMeteo]="datiMeteo"></app-info-window>-->
+                <!--</ng-template>-->
+                <!--</agm-snazzy-info-window>-->
+                <!--</agm-marker>-->
+                <!--</agm-marker-cluster>-->
+                <!--<agm-marker-cluster-->
+                <!--imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"-->
+                <!--[minimumClusterSize]="minMarkerCluster">-->
+                <!--<agm-marker *ngFor="let sedeMarker of sediMarkers;"-->
+                <!--[latitude]="sedeMarker.coordinate.latitudine"-->
+                <!--[longitude]="sedeMarker.coordinate.longitudine"-->
+                <!--(markerClick)="selezioneMarker(sedeMarker)"-->
+                <!--[iconUrl]="urlIcona(sedeMarker)"-->
+                <!--[opacity]="isOpaco(sedeMarker)"-->
+                <!--[zIndex]="zIndex(sedeMarker)"-->
+                <!--[visible]="isVisible(sedeMarker)">-->
+                <!--<agm-snazzy-info-window *ngIf="trueMarker(sedeMarker)"-->
+                <!--[shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: coloreStatoWindow}"-->
+                <!--[pointer]="'10px'"-->
+                <!--[backgroundColor]="'#f5f5f0'"-->
+                <!--[border]="{width: '2px', color: coloreStatoWindow}"-->
+                <!--[borderRadius]="'10px 10px'"-->
+                <!--[maxHeight]="1000"-->
+                <!--[maxWidth]="1000"-->
+                <!--[padding]="'10px'"-->
+                <!--[isOpen]="false"-->
+                <!--[showCloseButton]="false">-->
+                <!--<ng-template>-->
+                <!--<app-info-window [sedeMarker]="sedeMarker" [tipoSedeIcona]="urlIcona(sedeMarker, true)"-->
+                <!--[datiMeteo]="datiMeteo"></app-info-window>-->
+                <!--</ng-template>-->
+                <!--</agm-snazzy-info-window>-->
+                <!--</agm-marker>-->
+                <!--</agm-marker-cluster>-->
+                <!--<agm-marker-cluster-->
+                <!--imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"-->
+                <!--[minimumClusterSize]="minMarkerCluster">-->
+                <!--<agm-marker *ngFor="let mezzoMarker of mezziMarkers;"-->
+                <!--[latitude]="mezzoMarker.coordinate.latitudine"-->
+                <!--[longitude]="mezzoMarker.coordinate.longitudine"-->
+                <!--(markerClick)="selezioneMarker(mezzoMarker)"-->
+                <!--[iconUrl]="urlIcona(mezzoMarker)"-->
+                <!--[opacity]="isOpaco(mezzoMarker)"-->
+                <!--[zIndex]="zIndex(mezzoMarker)"-->
+                <!--[visible]="isVisible(mezzoMarker)">-->
+                <!--<agm-snazzy-info-window *ngIf="trueMarker(mezzoMarker)"-->
+                <!--[shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: coloreStatoWindow}"-->
+                <!--[pointer]="'10px'"-->
+                <!--[backgroundColor]="'#f5f5f0'"-->
+                <!--[border]="{width: '2px', color: coloreStatoWindow}"-->
+                <!--[borderRadius]="'10px 10px'"-->
+                <!--[maxHeight]="1000"-->
+                <!--[maxWidth]="1000"-->
+                <!--[padding]="'10px'"-->
+                <!--[isOpen]="false"-->
+                <!--[showCloseButton]="false">-->
+                <!--<ng-template>-->
+                <!--<app-info-window [mezzoMarker]="mezzoMarker" [datiMeteo]="datiMeteo"></app-info-window>-->
+                <!--</ng-template>-->
+                <!--</agm-snazzy-info-window>-->
+                <!--</agm-marker>-->
+                <!--</agm-marker-cluster>-->
+                <!--<agm-marker *ngFor="let composizione of composizioneMarkers;"-->
+                <!--[latitude]="composizione.localita.coordinate.latitudine"-->
+                <!--[longitude]="composizione.localita.coordinate.longitudine"-->
+                <!--(markerClick)="selezioneMarker(composizione)"-->
+                <!--[iconUrl]="urlIcona(composizione)"-->
+                <!--[zIndex]="99999">-->
+                <!--</agm-marker>-->
+                <!--</ng-template>-->
+            </ng-container>
+            <!--<ng-template [ngSwitchCase]="viewStateMappa.active === AppFeatures.Chiamata">-->
+            <ng-container>
                 <agm-marker *ngFor="let chiamata of chiamataMarkers;"
                             [latitude]="chiamata.localita.coordinate.latitudine"
                             [longitude]="chiamata.localita.coordinate.longitudine"
@@ -238,31 +244,36 @@
                             [isOpen]="true"
                             [showCloseButton]="false">
                         <ng-template>
-                            <app-info-window [chiamata]="chiamata" [datiMeteo]="datiMeteo"></app-info-window>
+                            <app-info-window [chiamata]="chiamata"
+                                             [datiMeteo]="findDatiMeteo('chiamata-'+chiamata.id)"></app-info-window>
                         </ng-template>
                     </agm-snazzy-info-window>
                 </agm-marker>
-            </ng-template>
-            <agm-marker *ngFor="let mMarker of (meteoMarkers$ | async);"
-                        [latitude]="mMarker.localita.coordinate.latitudine"
-                        [longitude]="mMarker.localita.coordinate.longitudine"
-                        [iconUrl]="meteoMarkerIconUrl">
-                <agm-snazzy-info-window
-                        [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: '#6c757d'}"
-                        [pointer]="'5px'"
-                        [backgroundColor]="'#f5f5f0'"
-                        [border]="{width: '2px', color: '#6c757d'}"
-                        [borderRadius]="'10px 10px'"
-                        [maxHeight]="1000"
-                        [maxWidth]="1000"
-                        [padding]="'10px'"
-                        [isOpen]="true"
-                        [showCloseButton]="false">
-                    <ng-template>
-                        <app-info-window [meteoMarker]="mMarker" [datiMeteo]="datiMeteo"></app-info-window>
-                    </ng-template>
-                </agm-snazzy-info-window>
-            </agm-marker>
+            </ng-container>
+            <!--</ng-template>-->
+            <ng-container>
+                <agm-marker *ngFor="let mMarker of (meteoMarkers$ | async);"
+                            [latitude]="mMarker.localita.coordinate.latitudine"
+                            [longitude]="mMarker.localita.coordinate.longitudine"
+                            [iconUrl]="meteoMarkerIconUrl">
+                    <agm-snazzy-info-window
+                            [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: '#6c757d'}"
+                            [pointer]="'5px'"
+                            [backgroundColor]="'#f5f5f0'"
+                            [border]="{width: '2px', color: '#6c757d'}"
+                            [borderRadius]="'10px 10px'"
+                            [maxHeight]="1000"
+                            [maxWidth]="1000"
+                            [padding]="'10px'"
+                            [isOpen]="true"
+                            [showCloseButton]="false">
+                        <ng-template>
+                            <app-info-window [meteoMarker]="mMarker"
+                                             [datiMeteo]="findDatiMeteo('meteo-'+mMarker.id)"></app-info-window>
+                        </ng-template>
+                    </agm-snazzy-info-window>
+                </agm-marker>
+            </ng-container>
             <app-agm-content (mapLoad)='loadAPIWrapper($event)'></app-agm-content>
         </agm-map>
     </div>

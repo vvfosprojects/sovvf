@@ -1,14 +1,16 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SedeMarker } from '../../../maps/maps-model/sede-marker.model';
 import { SediMarkerService } from '../../../../../core/service/maps-service';
-import { ClearSediMarkers, GetSediMarkers, SetSediMarkers } from '../../actions/maps/sedi-markers.actions';
+import { ClearSediMarkers, GetSediMarkers, SetSedeMarkerById, SetSediMarkers } from '../../actions/maps/sedi-markers.actions';
 
 export interface SediMarkersStateModel {
     sediMarkers: SedeMarker[];
+    sedeMarkerById: SedeMarker;
 }
 
 export const SediMarkersStateDefaults: SediMarkersStateModel = {
-    sediMarkers: null
+    sediMarkers: null,
+    sedeMarkerById: null
 };
 
 @State<SediMarkersStateModel>({
@@ -21,6 +23,11 @@ export class SediMarkersState {
     @Selector()
     static sediMarkers(state: SediMarkersStateModel) {
         return state.sediMarkers;
+    }
+
+    @Selector()
+    static getSedeById(state: SediMarkersStateModel) {
+        return state.sedeMarkerById;
     }
 
     constructor(private _sedi: SediMarkerService) {
@@ -39,6 +46,20 @@ export class SediMarkersState {
         patchState({
             sediMarkers: action.sediMarkers
         });
+    }
+
+    @Action(SetSedeMarkerById)
+    setSedeMarkerById({ getState, patchState }: StateContext<SediMarkersStateModel>, action: SetSedeMarkerById) {
+        const state = getState();
+        if (action.id) {
+            patchState({
+                sedeMarkerById: state.sediMarkers.filter(sedi => sedi.codice === action.id)[0]
+            });
+        } else {
+            patchState({
+                sedeMarkerById: null
+            });
+        }
     }
 
     @Action(ClearSediMarkers)
