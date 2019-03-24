@@ -51,7 +51,7 @@ export class MarkerService implements OnDestroy {
 
     private subscription = new Subscription();
     private icone = new IconMappe();
-    private livelloOpacita: number;
+    readonly livelloOpacita: number;
 
     minMarkerCluster: number;
     iconeCached: string[];
@@ -84,7 +84,7 @@ export class MarkerService implements OnDestroy {
     private markerOpachi: MarkerOpachiStateModel;
 
     @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
-    switchMeteo: boolean;
+    private switchMeteo: boolean;
 
     constructor(private agmService: AgmService,
                 private unitaAttualeS: UnitaAttualeService,
@@ -127,21 +127,43 @@ export class MarkerService implements OnDestroy {
         return this.icone.iconaSpeciale(tipo);
     }
 
-    trueMarker(id: string, tipoMarker: string): boolean {
+    isClicked(id: string, tipoMarker: string): boolean {
         let trueMarkerValue = false;
         switch (tipoMarker) {
             case 'richiesta':
-                if (this.markerRichiestaSelezionato === id || this.markerRichiestaHover === id) {
+                if (this.markerRichiestaSelezionato === id) {
                     trueMarkerValue = true;
                 }
                 break;
             case 'mezzo':
-                if (this.markerMezzoSelezionato === id || this.markerMezzoHover === id) {
+                if (this.markerMezzoSelezionato === id) {
                     trueMarkerValue = true;
                 }
                 break;
             case 'sede':
-                if (this.markerSedeSelezionato === id || this.markerSedeHover === id) {
+                if (this.markerSedeSelezionato === id) {
+                    trueMarkerValue = true;
+                }
+                break;
+        }
+        return trueMarkerValue;
+    }
+
+    isHovered(id: string, tipoMarker: string): boolean {
+        let trueMarkerValue = false;
+        switch (tipoMarker) {
+            case 'richiesta':
+                if (this.markerRichiestaHover === id) {
+                    trueMarkerValue = true;
+                }
+                break;
+            case 'mezzo':
+                if (this.markerMezzoHover === id) {
+                    trueMarkerValue = true;
+                }
+                break;
+            case 'sede':
+                if (this.markerSedeHover === id) {
                     trueMarkerValue = true;
                 }
                 break;
@@ -176,13 +198,13 @@ export class MarkerService implements OnDestroy {
             let isVisible = false;
             switch (tipoMarker) {
                 case 'richiesta':
-                        isVisible = this.filtroMarkerAttivo.includes(tipoMarker);
+                    isVisible = this.filtroMarkerAttivo.includes(tipoMarker);
                     break;
                 case 'mezzo':
-                        isVisible = this.filtroMarkerAttivo.includes(tipoMarker);
+                    isVisible = this.filtroMarkerAttivo.includes(tipoMarker);
                     break;
                 case 'sede':
-                        isVisible = this.filtroMarkerAttivo.includes(tipoMarker);
+                    isVisible = this.filtroMarkerAttivo.includes(tipoMarker);
                     break;
             }
             return isVisible;
@@ -268,16 +290,12 @@ export class MarkerService implements OnDestroy {
         switch (mouse) {
             case MouseE.HoverIn: {
                 this.store.dispatch(new SetMarkerRichiestaHover(id));
-                if (this.markerRichiestaSelezionato !== id) {
-                    this.store.dispatch(new SetRichiestaHover(id));
-                }
+                this.store.dispatch(new SetRichiestaHover(id));
             }
                 break;
             case MouseE.HoverOut: {
                 this.store.dispatch(new ClearMarkerRichiestaHover());
-                if (this.markerRichiestaSelezionato !== id) {
-                    this.store.dispatch(new ClearRichiestaHover());
-                }
+                this.store.dispatch(new ClearRichiestaHover());
             }
                 break;
             case MouseE.Click: {
@@ -293,19 +311,17 @@ export class MarkerService implements OnDestroy {
     actionMezzoMarker(id: string, mouse: MouseE) {
         switch (mouse) {
             case MouseE.HoverIn: {
-                if (this.markerMezzoSelezionato !== id) {
-                    this.store.dispatch(new SetMarkerMezzoHover(id));
-                }
+                this.store.dispatch(new SetMarkerMezzoHover(id));
             }
                 break;
             case MouseE.HoverOut: {
-                if (this.markerMezzoSelezionato !== id) {
-                    this.store.dispatch(new ClearMarkerMezzoHover());
-                }
+                this.store.dispatch(new ClearMarkerMezzoHover());
             }
                 break;
             case MouseE.Click: {
-                this.store.dispatch(new SetMarkerMezzoSelezionato(id));
+                if (this.markerMezzoSelezionato !== id) {
+                    this.store.dispatch(new SetMarkerMezzoSelezionato(id));
+                }
             }
                 break;
         }
@@ -314,31 +330,29 @@ export class MarkerService implements OnDestroy {
     actionSedeMarker(id: string, mouse: MouseE) {
         switch (mouse) {
             case MouseE.HoverIn: {
-                if (this.markerSedeSelezionato) {
                     this.store.dispatch(new SetMarkerSedeHover(id));
-                }
             }
                 break;
             case MouseE.HoverOut: {
-                if (this.markerSedeSelezionato) {
                     this.store.dispatch(new ClearMarkerSedeHover());
-                }
             }
                 break;
             case MouseE.Click: {
-                this.store.dispatch(new SetMarkerSedeSelezionato(id));
+                if (this.markerSedeSelezionato !== id) {
+                    this.store.dispatch(new SetMarkerSedeSelezionato(id));
+                }
             }
                 break;
         }
     }
 
-    newNoAction() {
+    noAction() {
+        this.store.dispatch(new ClearRichiestaFissata());
+        this.store.dispatch(new ClearRichiestaSelezionata());
         this.store.dispatch(new ClearMarkerRichiestaSelezionato());
         this.store.dispatch(new ClearMarkerSedeSelezionato());
         this.store.dispatch(new ClearMarkerMezzoSelezionato());
         this.store.dispatch(new GetInitCentroMappa());
-        this.store.dispatch(new ClearRichiestaFissata());
-        this.store.dispatch(new ClearRichiestaSelezionata());
     }
 
     findDatiMeteo(_id: string): Meteo {

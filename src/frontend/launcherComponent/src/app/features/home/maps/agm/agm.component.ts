@@ -147,8 +147,12 @@ export class AgmComponent implements OnDestroy {
         return this.markerService.zIndex(id, tipoMarker);
     }
 
-    trueMarker(id: string, tipoMarker: string): boolean {
-        return this.markerService.trueMarker(id, tipoMarker);
+    isClicked(id: string, tipoMarker: string): boolean {
+        return this.markerService.isClicked(id, tipoMarker);
+    }
+
+    isHovered(id: string, tipoMarker: string): boolean {
+        return this.markerService.isHovered(id, tipoMarker);
     }
 
     isVisible(tipoMarker: string): boolean {
@@ -173,7 +177,7 @@ export class AgmComponent implements OnDestroy {
         /**
          * metodo che ritorna allo zoom iniziale e deseleziona un marker se clicco sulla mappa
          */
-        this.markerService.newNoAction();
+        this.markerService.noAction();
     }
 
     iconaRichiestaMarker(richiestaMarker: RichiestaMarker): string {

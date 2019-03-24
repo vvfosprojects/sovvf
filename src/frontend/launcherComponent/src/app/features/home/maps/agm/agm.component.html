@@ -47,7 +47,7 @@
                                 [opacity]="isOpaque(richiestaMarker.id, 'richiesta')"
                                 [zIndex]="zIndex(richiestaMarker.id, 'richiesta')"
                                 [visible]="isVisible('richiesta')">
-                        <agm-snazzy-info-window *ngIf="trueMarker(richiestaMarker.id, 'richiesta')"
+                        <agm-snazzy-info-window *ngIf="isClicked(richiestaMarker.id, 'richiesta')"
                                                 [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(wipeStatoRichiesta(richiestaMarker.stato))}"
                                                 [pointer]="'10px'"
                                                 [backgroundColor]="'#f5f5f0'"
@@ -78,7 +78,7 @@
                                 [opacity]="isOpaque(sedeMarker.codice, 'sede')"
                                 [zIndex]="zIndex(sedeMarker.codice, 'sede')"
                                 [visible]="isVisible('sede')">
-                        <agm-snazzy-info-window *ngIf="trueMarker(sedeMarker.codice, 'sede')"
+                        <agm-snazzy-info-window *ngIf="isClicked(sedeMarker.codice, 'sede')"
                                                 [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow('sede')}"
                                                 [pointer]="'10px'"
                                                 [backgroundColor]="'#f5f5f0'"
@@ -109,7 +109,7 @@
                                 [opacity]="isOpaque(mezzoMarker.mezzo.codice, 'mezzo')"
                                 [zIndex]="zIndex(mezzoMarker.mezzo.codice, 'mezzo')"
                                 [visible]="isVisible('mezzo')">
-                        <agm-snazzy-info-window *ngIf="trueMarker(mezzoMarker.mezzo.codice, 'mezzo')"
+                        <agm-snazzy-info-window *ngIf="isClicked(mezzoMarker.mezzo.codice, 'mezzo')"
                                                 [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(mezzoMarker.mezzo.codice)}"
                                                 [pointer]="'10px'"
                                                 [backgroundColor]="'#f5f5f0'"
