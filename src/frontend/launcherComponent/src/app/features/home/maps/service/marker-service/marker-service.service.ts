@@ -227,15 +227,30 @@ export class MarkerService implements OnDestroy {
                 if (this.markerRichiestaSelezionato === id || this.markerRichiestaHover === id) {
                     zIndexValue += 1000;
                 }
+                if (this.markerOpachi.stato.richieste) {
+                    if (this.markerOpachi.markerOpachiId.richiesteId.includes(id)) {
+                        zIndexValue += 1000;
+                    }
+                }
                 break;
             case 'mezzo':
                 if (this.markerMezzoSelezionato === id || this.markerMezzoHover === id) {
                     zIndexValue += 1000;
                 }
+                if (this.markerOpachi.stato.mezzi) {
+                    if (this.markerOpachi.markerOpachiId.mezziId.includes(id)) {
+                        zIndexValue += 1000;
+                    }
+                }
                 break;
             case 'sede':
                 if (this.markerSedeSelezionato === id || this.markerSedeHover === id) {
                     zIndexValue += 1000;
+                }
+                if (this.markerOpachi.stato.sedi) {
+                    if (this.markerOpachi.markerOpachiId.sediId.includes(id)) {
+                        zIndexValue += 1000;
+                    }
                 }
                 break;
         }
