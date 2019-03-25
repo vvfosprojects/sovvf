@@ -69,21 +69,21 @@
                     </span>
                 </th>
             </tr>
-            <tr *ngIf="richiestaMarker.localita.indirizzo">
+            <tr *ngIf="richiestaMarker.localita.indirizzo && !compact">
                 <th scope="row" class="py-1 s-info-window">
                     <span class="guida fa fa-map-marker fa-fw mr-1" ngbTooltip="Località"></span>
                     <span ngbTooltip="{{ richiestaMarker.localita.indirizzo }}"
                           [disableTooltip]="richiestaMarker.localita.indirizzo.length <= 33">{{richiestaMarker.localita.indirizzo | truncate:33 }}</span>
                 </th>
             </tr>
-            <tr *ngIf="richiestaMarker.localita.note">
+            <tr *ngIf="richiestaMarker.localita.note && !compact">
                 <th scope="row" class="py-1 s-info-window">
                     <span class="guida fa fa-sticky-note-o fa-fw mr-1" ngbTooltip="Località"></span>
                     <span ngbTooltip="{{ richiestaMarker.localita.note }}"
                           [disableTooltip]="richiestaMarker.localita.note.length <= 33">{{richiestaMarker.localita.note | truncate:33 }}</span>
                 </th>
             </tr>
-            <tr>
+            <tr *ngIf="!compact">
                 <th scope="row" class="py-1 s-info-window">
                     <div *ngIf="datiMeteo; then meteo; else meteospinner">
                     </div>
@@ -118,7 +118,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr *ngIf="!compact">
                 <th scope="row" class="py-1 s-info-window">
                     <span *ngIf="!!mezzoMarker.tipologie_richiesta[0]"
                           ngbTooltip="Tipologia Richiesta {{mezzoMarker.id_richiesta}}">
@@ -130,7 +130,7 @@
                        (click)="openModal('visualizzaRichiesta', mezzoMarker.id_richiesta)"></i>
                 </th>
             </tr>
-            <tr>
+            <tr *ngIf="!compact">
                 <th scope="row" class="py-1 s-info-window">
                     <div class="nowrap">
                         <span class="mr-2">Condizioni mezzo</span>
@@ -169,7 +169,7 @@
                     </div>
                 </th>
             </tr>
-            <tr>
+            <tr *ngIf="!compact">
                 <th scope="row" class="py-1 s-info-window">
                     <div *ngIf="datiMeteo; then meteo; else meteospinner">
                     </div>
@@ -206,7 +206,7 @@
                         </span>{{sedeMarker.label}}
                 </th>
             </tr>
-            <tr *ngIf="sedeMarker.tipo">
+            <tr *ngIf="sedeMarker.tipo && !compact">
                 <th scope="row" class="s-info-window row py-1 px-0 mx-0 w-100">
                     <div class="col">
                         <button class="btn btn-outline-dark px-1 py-1 my-3" (click)="openModal('cambioSede')"> Portami
@@ -219,7 +219,7 @@
                     </div>
                 </th>
             </tr>
-            <tr>
+            <tr *ngIf="!compact">
                 <th scope="row" class="py-1 s-info-window">
                     <div *ngIf="datiMeteo; then meteo; else meteospinner">
                     </div>

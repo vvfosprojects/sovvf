@@ -24,6 +24,7 @@ import { RichiesteState } from '../../../store/states/richieste/richieste.state'
 export class InfoWindowComponent implements OnInit {
 
     @Input() datiMeteo: Meteo;
+    @Input() compact = false;
     @Input() richiestaMarker: RichiestaMarker;
     @Input() sedeMarker: SedeMarker;
     @Input() chiamata: ChiamataMarker;
