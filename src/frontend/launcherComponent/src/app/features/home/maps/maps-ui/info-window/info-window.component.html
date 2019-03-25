@@ -38,8 +38,8 @@
                 <th scope="col" class="py-1 px-0 mx-0 row w-100">
                     <div class="col pr-0">
                         <span class="fa fa-hashtag guida"></span>
-                        {{richiestaMarker.id}}
-                        <i *ngIf="richiestaMarker.rilevanza"
+                        <span *ngIf="richiestaMarker.codiceRichiesta">{{ richiestaMarker.codiceRichiesta }}&nbsp;</span>
+                        <span *ngIf="!richiestaMarker.codiceRichiesta">{{ richiestaMarker.codice }}&nbsp;</span>                        <i *ngIf="richiestaMarker.rilevanza"
                            ngbTooltip="Rilevante il: {{richiestaMarker.rilevanza | date: 'dd/MM/yyyy'}}"
                            class="fa fa-exclamation text-danger m-0"></i>
                     </div>

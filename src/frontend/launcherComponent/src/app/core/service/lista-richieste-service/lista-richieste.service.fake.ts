@@ -1,24 +1,24 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
 // Model
-import {SintesiRichiesta} from '../../../shared/model/sintesi-richiesta.model';
-import {Tipologia} from '../../../shared/model/tipologia.model';
-import {Richiedente} from '../../../shared/model/richiedente.model';
-import {Localita} from '../../../shared/model/localita.model';
-import {Coordinate} from '../../../shared/model/coordinate.model';
-import {Sede} from '../../../shared/model/sede.model';
-import {Complessita} from '../../../shared/model/complessita.model';
-import {Fonogramma} from '../../../shared/model/fonogramma.model';
-import {Componente} from '../../../shared/model/componente.model';
-import {Utente} from '../../../shared/model/utente.model';
+import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { Tipologia } from '../../../shared/model/tipologia.model';
+import { Richiedente } from '../../../shared/model/richiedente.model';
+import { Localita } from '../../../shared/model/localita.model';
+import { Coordinate } from '../../../shared/model/coordinate.model';
+import { Sede } from '../../../shared/model/sede.model';
+import { Complessita } from '../../../shared/model/complessita.model';
+import { Fonogramma } from '../../../shared/model/fonogramma.model';
+import { Componente } from '../../../shared/model/componente.model';
+import { Utente } from '../../../shared/model/utente.model';
 // Module
 import * as moment from 'moment';
 // Service
-import {StatoRichiesta} from '../../../shared/enum/stato-richiesta.enum';
-import {Partenza} from '../../../shared/model/partenza.model';
-import {Squadra} from '../../../shared/model/squadra.model';
-import {Mezzo} from '../../../shared/model/mezzo.model';
-import {StatoSquadra} from '../../../shared/enum/stato-squadra.enum';
+import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
+import { Partenza } from '../../../shared/model/partenza.model';
+import { Squadra } from '../../../shared/model/squadra.model';
+import { Mezzo } from '../../../shared/model/mezzo.model';
+import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
 
 
 @Injectable()
@@ -30,8 +30,9 @@ export class SintesiRichiesteServiceFake {
 
         this.richieste = [
             new SintesiRichiesta(
+                '1',
                 'RM-022',
-                'RM-022',
+                null,
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(0, 'minutes').toDate(),
                 StatoRichiesta.Chiamata,
@@ -56,8 +57,9 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
+                '2',
                 'RM-021',
-                'RM-021',
+                null,
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(22, 'minutes').toDate(),
                 StatoRichiesta.Chiamata,
@@ -86,8 +88,9 @@ export class SintesiRichiesteServiceFake {
                 ]
             ),
             new SintesiRichiesta(
+                '3',
                 'RM-020',
-                'RM-020',
+                null,
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(23, 'minutes').toDate(),
                 StatoRichiesta.Chiamata,
@@ -111,7 +114,8 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'RM-12842',
+                '4',
+                'RM-019',
                 'RM-12842',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(35, 'minutes').toDate(),
@@ -179,7 +183,8 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'RM-12841',
+                '5',
+                'RM-018',
                 'RM-12841',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(4, 'minutes').toDate(),
@@ -248,7 +253,8 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'RM-12840',
+                '6',
+                'RM-017',
                 'RM-12840',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(6, 'minutes').toDate(),
@@ -317,7 +323,8 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'RM-12839',
+                '7',
+                'RM-016',
                 'RM-12839',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(25, 'minutes').toDate(),
@@ -386,7 +393,8 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'RM-12838',
+                '8',
+                'RM-015',
                 'RM-12838',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(37, 'minutes').toDate(),
@@ -454,7 +462,8 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'RM-12837',
+                '9',
+                'RM-014',
                 'RM-12837',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(39, 'minutes').toDate(),
@@ -522,7 +531,8 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'RM-12836',
+                '10',
+                'RM-012',
                 'RM-12836',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(42, 'minutes').toDate(),
@@ -590,7 +600,8 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
             new SintesiRichiesta(
-                'RM-12835',
+                '11',
+                'RM-010',
                 'RM-12835',
                 new Utente('10', 'Mario', 'Rossi'),
                 moment().subtract(45, 'minutes').toDate(),

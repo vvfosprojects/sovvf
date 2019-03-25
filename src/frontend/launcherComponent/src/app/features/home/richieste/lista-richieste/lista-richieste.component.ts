@@ -66,7 +66,7 @@ export class ListaRichiesteComponent implements OnInit {
     /* Gestisce il singolo click sulla richiesta */
     richiestaClick(richiesta: SintesiRichiesta) {
         if (richiesta !== this.richiestaSelezionata) {
-            this.selezione.emit(richiesta.codice);
+            this.selezione.emit(richiesta.id);
         } else {
             this.deselezione.emit(true);
         }
@@ -75,7 +75,7 @@ export class ListaRichiesteComponent implements OnInit {
     /* Gestisce il double click sulla richiesta */
     richiestaDoubleClick(richiesta: SintesiRichiesta) {
         if (richiesta !== this.richiestaSelezionata) {
-            this.selezione.emit(richiesta.codice);
+            this.selezione.emit(richiesta.id);
         } else {
             this.deselezione.emit(true);
         }
@@ -84,7 +84,7 @@ export class ListaRichiesteComponent implements OnInit {
     /* Fissa in alto la richiesta */
     onFissaInAlto(richiesta: SintesiRichiesta) {
         if (richiesta) {
-            this.fissaInAlto.emit(richiesta.codice);
+            this.fissaInAlto.emit(richiesta.id);
         }
     }
 
@@ -97,7 +97,7 @@ export class ListaRichiesteComponent implements OnInit {
     /* Gestisce l'hover in */
     richiestaHoverIn(richiesta: SintesiRichiesta) {
         if (richiesta) {
-            this.hoverIn.emit(richiesta.codice);
+            this.hoverIn.emit(richiesta.id);
         }
     }
 

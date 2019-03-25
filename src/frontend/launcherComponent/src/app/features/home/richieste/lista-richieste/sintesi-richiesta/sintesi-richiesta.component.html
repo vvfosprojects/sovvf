@@ -9,8 +9,10 @@
                             <div class="h6 mb-1 nowrap">
                                 <i class="guida fa fa-hashtag fa-fw mr-1"
                                    ngbTooltip="Identificativo richiesta assistenza" placement="right"></i>
-                                <a class="h6 cod-int" (click)="toggleEspanso()">{{ richiesta.codice
-                                    }}</a>
+                                <a class="h6 cod-int" (click)="toggleEspanso()">
+                                    <span *ngIf="richiesta.codiceRichiesta">{{ richiesta.codiceRichiesta }} </span>
+                                    <span *ngIf="!richiesta.codiceRichiesta">{{ richiesta.codice }} </span>
+                                </a>
                                 <i *ngIf="richiesta.rilevanza"
                                    ngbTooltip="Rilevante dal: {{richiesta.rilevanza | date: 'dd/MM/yyyy - hh:mm:ss'}}"
                                    class="fa fa-exclamation text-danger ml-2"></i>

@@ -9,6 +9,14 @@ export class RichiestaMarker {
          */
         public id: string,
         /**
+         * E' il codice della chiamata
+         */
+        public codice: string,
+        /**
+         * E' il codice della richiesta
+         */
+        public codiceRichiesta: string,
+        /**
          * La stringa dell'indirizzo e le relative coordinate
          */
         public localita: Localita,

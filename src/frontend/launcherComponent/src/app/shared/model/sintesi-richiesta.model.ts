@@ -15,15 +15,20 @@ import { Partenza } from './partenza.model';
  * degli eventi della richiesta.
  */
 export class SintesiRichiesta {
+
     constructor(
         /**
          * id
          */
         public id: string,
         /**
-         * E' il codice della Richiesta di Assistenza
+         * E' il codice della chiamata
          */
         public codice: string,
+        /**
+         * E' il codice della richiesta
+         */
+        public codiceRichiesta: string,
         /**
          * è l'operatore che inserisce la richiesta
          */

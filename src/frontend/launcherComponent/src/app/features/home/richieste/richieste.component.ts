@@ -106,10 +106,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
             this.contatoreNuoveRichieste = true;
             this.loaderNuoveRichieste = true;
             this.richiesteTerminate = false;
-            this.store.dispatch(new GetRichieste(this.richieste[this.richieste.length - 1].codice.substr(3)));
-            // TEST
-            // console.log('onNewRichieste');
-            // console.log(this.richieste[this.richieste.length - 1].id);
+            this.store.dispatch(new GetRichieste(this.richieste[this.richieste.length - 1].id));
         }
     }
 
@@ -118,7 +115,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.idRichiestaFissata$.subscribe((idRichiestaFissata: string) => {
                 if (idRichiestaFissata) {
-                    const richiestaFissataArray = this.richieste.filter(r => r.codice === idRichiestaFissata);
+                    const richiestaFissataArray = this.richieste.filter(r => r.id === idRichiestaFissata);
                     this.richiestaFissata = richiestaFissataArray[0];
                     this.listHeightClass = 'm-h-600';
                 } else {
@@ -136,7 +133,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.idRichiestaHover$.subscribe((idRichiestaHover: string) => {
                 if (idRichiestaHover) {
-                    const richiestaHoverArray = this.richieste.filter(r => r.codice === idRichiestaHover);
+                    const richiestaHoverArray = this.richieste.filter(r => r.id === idRichiestaHover);
                     this.richiestaHover = richiestaHoverArray[0];
                 } else {
                     this.richiestaHover = null;
@@ -150,7 +147,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.idRichiestaSelezionata$.subscribe((idRichiestaSelezionata: string) => {
                 if (idRichiestaSelezionata) {
-                    const richiestaSelezionataArray = this.richieste.filter(r => r.codice === idRichiestaSelezionata);
+                    const richiestaSelezionataArray = this.richieste.filter(r => r.id === idRichiestaSelezionata);
                     this.richiestaSelezionata = richiestaSelezionataArray[0];
                 } else {
                     this.richiestaSelezionata = null;
