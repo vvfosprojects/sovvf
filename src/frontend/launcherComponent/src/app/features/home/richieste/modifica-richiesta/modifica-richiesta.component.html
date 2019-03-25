@@ -1,5 +1,149 @@
-<div class="row">
+<div class="row p-4">
     <div class="col-12">
-        <h4>Modifica Richiesta</h4>
+        <h3>Modifica Richiesta</h3>
+        <hr>
+        <form [formGroup]="modificaRichiestaForm">
+            <div class="form-group mb-2">
+                <label>Tipologia intervento</label>
+                <ng-select class="border"
+                           bindLabel="descrizione"
+                           [items]="tipologie"
+                           [multiple]="true"
+                           [closeOnSelect]="true"
+                           [hideSelected]="true"
+                           (add)="onAddTipologia($event)"
+                           (remove)="onRemoveTipologia($event)"
+                           formControlName="tipoIntervento"
+                           placeholder="Seleziona Tipologia Intervento">
+                </ng-select>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Nominativo</label>
+                        <input type="text" placeholder="nominativo" formControlName="nominativo" class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }"/>
+                        <div *ngIf="submitted && f.nominativo.errors" class="invalid-feedback">
+                            <div *ngIf="f.nominativo.errors.required">Il Nominativo è richiesto</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Telefono</label>
+                        <input type="text" placeholder="telefono" formControlName="telefono" class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }"/>
+                        <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
+                            <div *ngIf="f.telefono.errors.required">Il Telefono è richiesto</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="form-group">
+                        <label>Indirizzo</label>
+                        <input type="text" placeholder="indirizzo" formControlName="indirizzo" class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && f.indirizzo.errors }"/>
+                        <div *ngIf="submitted && f.indirizzo.errors" class="invalid-feedback">
+                            <div *ngIf="f.indirizzo.errors.required">L'indirizzo è richiesto</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label>Latitudine</label>
+                        <input type="text" placeholder="Latitudine" formControlName="latitudine" class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && f.latitudine.errors }"/>
+                        <div *ngIf="submitted && f.latitudine.errors" class="invalid-feedback">
+                            <div *ngIf="f.latitudine.errors.required">La latitudine è richiesta</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label>Longitudine</label>
+                        <input type="text" placeholder="Longitudine" formControlName="longitudine" class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && f.longitudine.errors }"/>
+                        <div *ngIf="submitted && f.longitudine.errors" class="invalid-feedback">
+                            <div *ngIf="f.longitudine.errors.required">La longitudine è richiesta</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="form-group">
+                        <label>Etichette</label>
+                        <input type="text" placeholder="etichette" formControlName="etichette" class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && f.etichette.errors }"/>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label>Priorità</label>
+                        <input type="number" max="5" min="1" placeholder="priorità" formControlName="priorita"
+                               class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && f.priorita.errors }"/>
+                        <div *ngIf="submitted && f.priorita.errors" class="invalid-feedback">
+                            <div *ngIf="f.priorita.errors.required">La priorità è richiesta</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1">
+                    <div class="form-group">
+                        <label>Rilevanza</label>
+                        <ui-switch [checked]="richiestaModifica.rilevanza !== null"
+                                   (change)="setRilevanza()"></ui-switch>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Note Pubbliche</label>
+                        <textarea type="text" placeholder="Inserire nel modello" class="form-control"
+                                  [ngClass]="{ 'is-invalid': submitted && f.note.errors }" disabled></textarea>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Note Private</label>
+                        <textarea type="text" placeholder="Inserire nel modello" class="form-control"
+                                  [ngClass]="{ 'is-invalid': submitted && f.note.errors }" disabled></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Motivazione</label>
+                        <textarea type="text" placeholder="Motivazione" formControlName="motivazione"
+                                  class="form-control"
+                                  [ngClass]="{ 'is-invalid': submitted && f.motivazione.errors }"></textarea>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Note Indirizzo</label>
+                        <textarea type="text" placeholder="Note" formControlName="noteIndirizzo" class="form-control"
+                                  [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors }"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Zone emergenza</label>
+                <input type="text" placeholder="Zona Emergenza" formControlName="zoneEmergenza" class="form-control"
+                       [ngClass]="{ 'is-invalid': submitted && f.zoneEmergenza.errors }"/>
+            </div>
+            <hr>
+            <div class="form-group">
+                <button class="btn btn-primary float-right" [disabled]="modificaRichiestaForm.invalid"
+                        (click)="onConfermaModifica()">Conferma
+                    Modifica
+                </button>
+                <button class="btn btn-danger float-right mr-2" (click)="onAnnullaModifica()">Annulla</button>
+            </div>
+        </form>
     </div>
 </div>

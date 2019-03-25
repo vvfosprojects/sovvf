@@ -26,6 +26,7 @@ import { ComposizionePartenzaModule } from './composizione-partenza/composizione
 import { ViewComponentState } from './store/states/view/view.state';
 import { BackupViewComponentState } from './store/states/view/save-view.state';
 import { HomeState } from './store/states/home.state';
+import { RichiestaModificaState } from './store/states/richieste/richiesta-modifica.state';
 
 @NgModule({
     declarations: [
@@ -62,7 +63,8 @@ import { HomeState } from './store/states/home.state';
                 BackupViewComponentState,
                 FiltriRichiesteState,
                 RicercaRichiesteState,
-                MarkerMeteoState
+                MarkerMeteoState,
+                RichiestaModificaState
             ]
         ),
     ]

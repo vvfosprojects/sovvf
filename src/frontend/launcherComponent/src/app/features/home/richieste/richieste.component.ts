@@ -26,6 +26,7 @@ import { ClearMarkerRichiestaHover, ClearMarkerRichiestaSelezionato, SetMarkerRi
 import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ModificaRichiestaComponent } from './modifica-richiesta/modifica-richiesta.component';
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
+import { SetRichiestaModifica } from '../store/actions/richieste/richiesta-modifica.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -220,7 +221,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     onModificaRichiesta(richiesta: SintesiRichiesta) {
-        this.modalService.open(ModificaRichiestaComponent, {windowClass: 'modalModificaRichiesta', backdropClass: 'light-blue-backdrop', centered: true});
+        this.store.dispatch(new SetRichiestaModifica(richiesta));
+        this.modalService.open(ModificaRichiestaComponent, {windowClass: 'modalModificaRichiesta', backdrop: 'static', backdropClass: 'light-blue-backdrop', centered: true});
     }
 
     toggleComposizione() {
