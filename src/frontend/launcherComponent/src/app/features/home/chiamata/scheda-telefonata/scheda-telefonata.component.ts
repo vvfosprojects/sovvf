@@ -7,7 +7,7 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { TipologieInterface } from '../../../../core/settings/tipologie';
 import { SchedaTelefonataInterface } from '../model/scheda-telefonata.interface';
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
-import { makeCopy } from '../../../../shared/helper/function';
+import { makeCopy, makeID } from '../../../../shared/helper/function';
 import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
 import { Store } from '@ngxs/store';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
@@ -31,11 +31,11 @@ export class SchedaTelefonataComponent implements OnInit {
     chiamataForm: FormGroup;
     coordinate: Coordinate;
     submitted = false;
+    idChiamata: string;
 
     AzioneChiamata = AzioneChiamataEnum;
 
     @Input() tipologie: TipologieInterface[];
-    @Input() idChiamata: string;
     @Input() operatore: Utente;
     @Output() schedaTelefonata = new EventEmitter<SchedaTelefonataInterface>();
 
@@ -45,6 +45,7 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.idChiamata = `${this.operatore.sede.codice}-${this.operatore.id}-${makeID(8)}`;
         this.chiamataForm = this.createForm();
         this.chiamataCorrente = new FormChiamataModel(this.idChiamata, this.operatore.id, this.operatore.sede.codice);
     }

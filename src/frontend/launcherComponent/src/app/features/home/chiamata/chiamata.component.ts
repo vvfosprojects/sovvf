@@ -4,8 +4,6 @@ import { APP_TIPOLOGIE, TipologieInterface } from '../../../core/settings/tipolo
 import { ChiamataMarker } from '../maps/maps-model/chiamata-marker.model';
 import { Coordinate } from '../../../shared/model/coordinate.model';
 import { Select, Store } from '@ngxs/store';
-import { GetIdChiamata } from '../store/actions/chiamata/chiamata.actions';
-import { ChiamataState } from '../store/states/chiamata/chiamata.state';
 import { SchedaTelefonataInterface } from './model/scheda-telefonata.interface';
 import { ReducerSchedaTelefonata } from '../store/actions/chiamata/scheda-telefonata.actions';
 import { Utente } from '../../../shared/model/utente.model';
@@ -25,7 +23,6 @@ export class ChiamataComponent implements OnInit, OnDestroy {
     tipologie: TipologieInterface[] = APP_TIPOLOGIE;
     coordinate: Coordinate;
 
-    @Select(ChiamataState.idChiamata) idChiamata$: Observable<string>;
     @Select(UtenteState.utente) utente$: Observable<Utente>;
 
     constructor(private store: Store) {
@@ -33,7 +30,6 @@ export class ChiamataComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         isDevMode() && console.log('Componente Chiamata creato');
-        this.store.dispatch(new GetIdChiamata());
     }
 
     ngOnDestroy(): void {
