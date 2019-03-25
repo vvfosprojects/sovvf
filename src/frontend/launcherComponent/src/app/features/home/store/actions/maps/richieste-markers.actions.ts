@@ -1,13 +1,41 @@
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
 
 export class GetRichiesteMarkers {
-    static readonly type = '[Richieste Marker] Get Richieste Marker';
+    static readonly type = '[Richieste Marker] Get Richieste Markers';
 }
 
 export class SetRichiesteMarkers {
-    static readonly type = '[Richieste Marker] Set Richieste Marker';
+    static readonly type = '[Richieste Marker] Set Richieste Markers';
 
     constructor(public richiesteMarkers: RichiestaMarker[]) {
+    }
+}
+
+export class AddRichiesteMarkers {
+    static readonly type = '[Richieste Marker] Add Richieste Markers';
+
+    constructor(public payload: RichiestaMarker[]) {
+    }
+}
+
+export class InsertRichiestaMarker {
+    static readonly type = '[Richieste Marker] Insert Richiesta Marker';
+
+    constructor(public payload: RichiestaMarker, public before?: number) {
+    }
+}
+
+export class UpdateRichiestaMarker {
+    static readonly type = '[Richieste Marker] Update Richiesta Marker';
+
+    constructor(public payload: RichiestaMarker) {
+    }
+}
+
+export class RemoveRichiestaMarker {
+    static readonly type = '[Richieste Marker] Remove Richiesta Marker';
+
+    constructor(public payload: string) {
     }
 }
 

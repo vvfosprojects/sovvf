@@ -1,15 +1,19 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Select, Selector, State, StateContext } from '@ngxs/store';
 import { RichiesteMarkerService } from '../../../../../core/service/maps-service';
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
 import {
+    AddRichiesteMarkers,
     ClearRichiesteMarkers,
-    GetRichiesteMarkers,
-    OpacizzaRichiesteMarkers,
+    GetRichiesteMarkers, InsertRichiestaMarker,
+    OpacizzaRichiesteMarkers, RemoveRichiestaMarker,
     SetRichiestaMarkerById,
-    SetRichiesteMarkers
+    SetRichiesteMarkers, UpdateRichiestaMarker
 } from '../../actions/maps/richieste-markers.actions';
 import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
 import { SetMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
+import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { Observable } from 'rxjs';
+import { HomeState } from '../home.state';
 
 export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];
@@ -28,6 +32,8 @@ export const RichiesteMarkersStateDefaults: RichiesteMarkersStateModel = {
 
 export class RichiesteMarkersState {
 
+    @Select(HomeState.mapIsLoaded) mapIsLoaded$: Observable<boolean>;
+
     @Selector()
     static richiesteMarkers(state: RichiesteMarkersStateModel) {
         return state.richiesteMarkers;
@@ -44,7 +50,6 @@ export class RichiesteMarkersState {
     }
 
     constructor(private _richieste: RichiesteMarkerService) {
-
     }
 
     @Action(GetRichiesteMarkers)
@@ -55,10 +60,51 @@ export class RichiesteMarkersState {
     }
 
     @Action(SetRichiesteMarkers)
-    setRichiesteMarkers({ patchState }: StateContext<RichiesteMarkersStateModel>, action: SetRichiesteMarkers) {
-        patchState({
-            richiesteMarkers: action.richiesteMarkers
+    setRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: SetRichiesteMarkers) {
+        const richiesteRilevanti = action.richiesteMarkers.filter(richieste => !!richieste.rilevanza === true);
+        const richiesteFiltrate = action.richiesteMarkers.filter(richieste => !!richieste.rilevanza === false);
+        dispatch(new AddRichiesteMarkers(richiesteFiltrate));
+        this.mapIsLoaded$.subscribe(isLoaded => {
+            if (isLoaded) {
+                dispatch(new AddRichiesteMarkers(richiesteRilevanti));
+            }
         });
+    }
+
+    @Action(AddRichiesteMarkers)
+    addRichiesteMarkers({ setState }: StateContext<RichiesteMarkersStateModel>, { payload }: AddRichiesteMarkers) {
+        setState(
+            patch({
+                richiesteMarkers: append(payload)
+            })
+        );
+    }
+
+    @Action(InsertRichiestaMarker)
+    insertRichiestaMarker({ setState }: StateContext<RichiesteMarkersStateModel>, { payload, before }: InsertRichiestaMarker) {
+        setState(
+            patch({
+                richiesteMarkers: insertItem(payload, before)
+            })
+        );
+    }
+
+    @Action(UpdateRichiestaMarker)
+    updateRichiestaMarker({ setState }: StateContext<RichiesteMarkersStateModel>, { payload }: UpdateRichiestaMarker) {
+        setState(
+            patch({
+                richiesteMarkers: updateItem<RichiestaMarker>(richiesta => richiesta.id === payload.id, payload)
+            })
+        );
+    }
+
+    @Action(RemoveRichiestaMarker)
+    removeRichiestaMarker({ setState }: StateContext<RichiesteMarkersStateModel>, { payload }: RemoveRichiestaMarker) {
+        setState(
+            patch({
+                richiesteMarkers: removeItem<RichiestaMarker>(richiesta => richiesta.id === payload)
+            })
+        );
     }
 
     @Action(SetRichiestaMarkerById)

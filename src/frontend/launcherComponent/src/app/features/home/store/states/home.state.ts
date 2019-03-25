@@ -1,5 +1,5 @@
-import { Action, State, StateContext } from '@ngxs/store';
-import { ClearDataHome, GetDataHome } from '../actions/home.actions';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { ClearDataHome, GetDataHome, SetMapLoaded } from '../actions/home.actions';
 import { ClearRichieste, GetRichieste } from '../actions/richieste/richieste.actions';
 import { ClearSediMarkers, GetSediMarkers } from '../actions/maps/sedi-markers.actions';
 import { ClearCentroMappa, GetCentroMappa } from '../actions/maps/centro-mappa.actions';
@@ -11,10 +11,12 @@ import { ClearBoxPersonale, GetBoxPersonale } from '../actions/boxes/box-persona
 
 export interface HomeStateModel {
     loaded: boolean;
+    mapIsLoaded: boolean;
 }
 
 export const HomeStateDefaults: HomeStateModel = {
     loaded: false,
+    mapIsLoaded: false
 };
 
 @State<HomeStateModel>({
@@ -22,6 +24,12 @@ export const HomeStateDefaults: HomeStateModel = {
     defaults: HomeStateDefaults
 })
 export class HomeState {
+
+    @Selector()
+    static mapIsLoaded(state: HomeStateModel) {
+        return state.mapIsLoaded;
+    }
+
     @Action(ClearDataHome)
     clearDataHome({ patchState, dispatch }: StateContext<HomeStateModel>) {
         dispatch(new ClearCentroMappa());
@@ -47,6 +55,13 @@ export class HomeState {
         dispatch(new GetBoxPersonale());
         patchState({
             loaded: true
+        });
+    }
+
+    @Action(SetMapLoaded)
+    setMapLoaded({ patchState }: StateContext<HomeStateModel>) {
+        patchState({
+            mapIsLoaded: true
         });
     }
 }

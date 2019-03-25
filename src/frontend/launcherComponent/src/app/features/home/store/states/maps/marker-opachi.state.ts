@@ -6,12 +6,12 @@ export interface MarkerOpachiStateModel {
         richiesteId: string[];
         mezziId: string[];
         sediId: string[];
-    }
+    };
     stato: {
         richieste: boolean;
         mezzi: boolean;
         sedi: boolean;
-    }
+    };
 }
 
 export const MarkerOpachiStateDefaults: MarkerOpachiStateModel = {
