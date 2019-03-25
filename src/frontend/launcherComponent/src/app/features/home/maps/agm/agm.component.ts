@@ -139,10 +139,6 @@ export class AgmComponent implements OnDestroy {
         this.agmService.map = mapWrapper;
     }
 
-    getCoordinateMarker(event: any) {
-        this.markerService.createMeteoMarker(event);
-    }
-
     zIndex(id: string, tipoMarker: string): number {
         return this.markerService.zIndex(id, tipoMarker);
     }
@@ -153,6 +149,21 @@ export class AgmComponent implements OnDestroy {
 
     isHovered(id: string, tipoMarker: string): boolean {
         return this.markerService.isHovered(id, tipoMarker);
+    }
+
+    isRilevante(id: string, rilevante: Date): string {
+        if (!!rilevante) {
+            return 'BOUNCE';
+        }
+        return null;
+    }
+
+    isSelfHovered(id: string, tipoMarker: string): boolean {
+        return this.markerService.isSelfHovered(id, tipoMarker);
+    }
+
+    isSelfClicked(id: string, tipoMarker: string): boolean {
+        return this.markerService.isSelfClicked(id, tipoMarker);
     }
 
     isVisible(tipoMarker: string): boolean {
@@ -167,16 +178,15 @@ export class AgmComponent implements OnDestroy {
     }
 
     centroCambiato(centro: any): void {
-        /**
-         * metodo che fa la next sulla subject di centro
-         */
         this.agmService.centro$.next(centro);
     }
 
-    mappaCliccata(): void {
-        /**
-         * metodo che ritorna allo zoom iniziale e deseleziona un marker se clicco sulla mappa
-         */
+    mapClick(event: any) {
+        this.markerService.createMeteoMarker(event);
+        this.markerService.clearSelfClick();
+    }
+
+    mapDblClick(): void {
         this.markerService.noAction();
     }
 

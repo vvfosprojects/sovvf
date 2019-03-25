@@ -53,6 +53,9 @@ export class MarkerService implements OnDestroy {
     private icone = new IconMappe();
     readonly livelloOpacita: number;
 
+    private selfHoveredMarker: string;
+    private selfClickedMarker: string;
+
     minMarkerCluster: number;
     iconeCached: string[];
 
@@ -167,6 +170,52 @@ export class MarkerService implements OnDestroy {
                     trueMarkerValue = true;
                 }
                 break;
+        }
+        return trueMarkerValue;
+    }
+
+    isSelfHovered(id: string, tipoMarker: string): boolean {
+        let trueMarkerValue = false;
+        switch (tipoMarker) {
+            case 'richiesta':
+                if (this.selfHoveredMarker === `richiesta-${id}` && !this.isClicked(id, tipoMarker)) {
+                    trueMarkerValue = true;
+                }
+                break;
+            case 'mezzo':
+                if (this.selfHoveredMarker === `mezzo-${id}` && !this.isClicked(id, tipoMarker)) {
+                    trueMarkerValue = true;
+                }
+                break;
+            case 'sede':
+                if (this.selfHoveredMarker === `sede-${id}` && !this.isClicked(id, tipoMarker)) {
+                    trueMarkerValue = true;
+                }
+                break;
+        }
+        return trueMarkerValue;
+    }
+
+    isSelfClicked(id: string, tipoMarker: string): boolean {
+        let trueMarkerValue = false;
+        if (this.isVisible(tipoMarker)) {
+            switch (tipoMarker) {
+                case 'richiesta':
+                    if (this.selfClickedMarker === `richiesta-${id}` || (this.selfHoveredMarker === `richiesta-${id}` && this.isClicked(id, tipoMarker))) {
+                        trueMarkerValue = true;
+                    }
+                    break;
+                case 'mezzo':
+                    if (this.selfClickedMarker === `mezzo-${id}` || (this.selfHoveredMarker === `mezzo-${id}` && this.isClicked(id, tipoMarker))) {
+                        trueMarkerValue = true;
+                    }
+                    break;
+                case 'sede':
+                    if (this.selfClickedMarker === `sede-${id}` || (this.selfHoveredMarker === `sede-${id}` && this.isClicked(id, tipoMarker))) {
+                        trueMarkerValue = true;
+                    }
+                    break;
+            }
         }
         return trueMarkerValue;
     }
@@ -291,11 +340,13 @@ export class MarkerService implements OnDestroy {
             case MouseE.HoverIn: {
                 this.store.dispatch(new SetMarkerRichiestaHover(id));
                 this.store.dispatch(new SetRichiestaHover(id));
+                this.selfHoveredMarker = `richiesta-${id}`;
             }
                 break;
             case MouseE.HoverOut: {
                 this.store.dispatch(new ClearMarkerRichiestaHover());
                 this.store.dispatch(new ClearRichiestaHover());
+                this.selfHoveredMarker = ``;
             }
                 break;
             case MouseE.Click: {
@@ -303,6 +354,7 @@ export class MarkerService implements OnDestroy {
                     this.store.dispatch(new SetMarkerRichiestaSelezionato(id));
                     this.store.dispatch(new SetRichiestaFissata(id));
                 }
+                this.selfClickedMarker = `richiesta-${id}`;
             }
                 break;
         }
@@ -312,16 +364,19 @@ export class MarkerService implements OnDestroy {
         switch (mouse) {
             case MouseE.HoverIn: {
                 this.store.dispatch(new SetMarkerMezzoHover(id));
+                this.selfHoveredMarker = `mezzo-${id}`;
             }
                 break;
             case MouseE.HoverOut: {
                 this.store.dispatch(new ClearMarkerMezzoHover());
+                this.selfHoveredMarker = ``;
             }
                 break;
             case MouseE.Click: {
                 if (this.markerMezzoSelezionato !== id) {
                     this.store.dispatch(new SetMarkerMezzoSelezionato(id));
                 }
+                this.selfClickedMarker = `mezzo-${id}`;
             }
                 break;
         }
@@ -330,20 +385,27 @@ export class MarkerService implements OnDestroy {
     actionSedeMarker(id: string, mouse: MouseE) {
         switch (mouse) {
             case MouseE.HoverIn: {
-                    this.store.dispatch(new SetMarkerSedeHover(id));
+                this.store.dispatch(new SetMarkerSedeHover(id));
+                this.selfHoveredMarker = `sede-${id}`;
             }
                 break;
             case MouseE.HoverOut: {
-                    this.store.dispatch(new ClearMarkerSedeHover());
+                this.store.dispatch(new ClearMarkerSedeHover());
+                this.selfHoveredMarker = ``;
             }
                 break;
             case MouseE.Click: {
                 if (this.markerSedeSelezionato !== id) {
                     this.store.dispatch(new SetMarkerSedeSelezionato(id));
                 }
+                this.selfClickedMarker = `sede-${id}`;
             }
                 break;
         }
+    }
+
+    clearSelfClick() {
+        this.selfClickedMarker = ``;
     }
 
     noAction() {
