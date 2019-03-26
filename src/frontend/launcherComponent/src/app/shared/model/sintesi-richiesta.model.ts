@@ -104,6 +104,14 @@ export class SintesiRichiesta {
          */
         public etichette?: string[],
         /**
+         * note pubbliche
+         */
+        public notePubbliche?: string,
+        /**
+         * note private
+         */
+        public notePrivate?: string,
+        /**
          * eventi della richiesta, serve al back-end per determinare il valore della complessità
          */
         public eventi?: Evento[]

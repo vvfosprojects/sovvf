@@ -39,7 +39,7 @@ export class SintesiRichiesteServiceFake {
                 5,
                 [new Tipologia('2', 'Incendio ed esplosione', 'fa fa-fire')],
                 'Esplosione nei pressi di un centro abitato',
-                new Richiedente('Alessandro Palletta', '3202676253'),
+                new Richiedente('3202676253', 'Alessandro', 'Palletta'),
                 new Localita(new Coordinate(41.8624992, 12.5532867), 'Via Scribonio Curione, 22', 'nei pressi dell\'uscita della metro'),
                 [
                     new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
@@ -54,6 +54,9 @@ export class SintesiRichiesteServiceFake {
                 null,
                 new Fonogramma('0', 'Non necessario'),
                 null,
+                null,
+                null,
+                null,
                 null
             ),
             new SintesiRichiesta(
@@ -66,7 +69,7 @@ export class SintesiRichiesteServiceFake {
                 1,
                 [new Tipologia('360', 'Messa in sicurezza impianti tecnologici di servizio (acqua, energia elettrica, gas)', '')],
                 'Scintille da palo elettrico',
-                new Richiedente('Rosalba Di Tonno', '062815692'),
+                new Richiedente('062815692', 'Rosalba', 'Di Tonno'),
                 new Localita(
                     new Coordinate(41.8607234, 12.555459), 'Viale Giuseppe Mazzini, 159', 'nelle vicinanze di un ristorante'),
                 [
@@ -85,7 +88,10 @@ export class SintesiRichiesteServiceFake {
                     'Scintille',
                     'Mazzini',
                     'Di Tonno'
-                ]
+                ],
+                null,
+                null,
+                null
             ),
             new SintesiRichiesta(
                 '3',
@@ -97,7 +103,7 @@ export class SintesiRichiesteServiceFake {
                 1,
                 [new Tipologia('2', 'Incendio ed esplosione', 'fa fa-fire')],
                 'Incendio a bordo strada',
-                new Richiedente('Marco Liguori', '3245898977'),
+                new Richiedente('3245898977', 'Marco', 'Liguori'),
                 new Localita(new Coordinate(41.8654843, 12.5805044), 'Viale dei Romanisti, 40', 'vicino ai secchi dell\'immondizia'),
                 [
                     new Sede('2', 'Tuscolano II', new Coordinate(41.8638843, 12.5522048), 'Via Ignorasi', 'Distaccamento', 'Lazio', 'Roma'),
@@ -111,6 +117,9 @@ export class SintesiRichiesteServiceFake {
                 null,
                 new Fonogramma('0', 'Non necessario'),
                 null,
+                null,
+                null,
+                null,
                 null
             ),
             new SintesiRichiesta(
@@ -123,7 +132,7 @@ export class SintesiRichiesteServiceFake {
                 4,
                 [new Tipologia('360', 'Salvataggio persone', '')],
                 'Persona che minaccia di buttarsi da un tetto',
-                new Richiedente('Carabinieri', '112'),
+                new Richiedente('112', null, null, 'Carabinieri'),
                 new Localita(
                     new Coordinate(41.8311007, 12.4683518), 'Viale Europa, 184', 'dal palazzo delle Poste Italiane'),
                 [
@@ -180,6 +189,9 @@ export class SintesiRichiesteServiceFake {
                             3, 'carburante', 2, 'estinguente')
                     )
                 ],
+                null,
+                null,
+                null,
                 null
             ),
             new SintesiRichiesta(
@@ -192,7 +204,7 @@ export class SintesiRichiesteServiceFake {
                 3,
                 [new Tipologia('1', 'Danni d\'acqua in genere', 'fa fa-tint')],
                 'Allagamento garage con personale da soccorrere',
-                new Richiedente('Polizia', '113'),
+                new Richiedente('113', null, null, 'Polizia'),
                 new Localita(
                     new Coordinate(41.82699, 12.4874854), 'Via Simone Martini, 125', 'persone all\'interno del garage'),
                 [
@@ -250,6 +262,9 @@ export class SintesiRichiesteServiceFake {
                             3, 'carburante', 2, 'estinguente')
                     )
                 ],
+                null,
+                null,
+                null,
                 null
             ),
             new SintesiRichiesta(
@@ -262,7 +277,7 @@ export class SintesiRichiesteServiceFake {
                 3,
                 [new Tipologia('1', 'Incidente stradale generico', 'fa fa-car')],
                 'Incidente automobile ribaltata',
-                new Richiedente('Polizia', '113'),
+                new Richiedente('113', null, null, 'Polizia'),
                 new Localita(
                     new Coordinate(41.8531486, 12.5411702), 'Via Tuscolana, 1500', 'automobile ribaltata, persona anziana'),
                 [
@@ -320,6 +335,9 @@ export class SintesiRichiesteServiceFake {
                             3, 'carburante', 2, 'estinguente')
                     )
                 ],
+                null,
+                null,
+                null,
                 null
             ),
             new SintesiRichiesta(
@@ -332,7 +350,7 @@ export class SintesiRichiesteServiceFake {
                 2,
                 [new Tipologia('360', 'Cedimento sede stradale', '')],
                 'Cedimento sede stradale con rimozione veicolo',
-                new Richiedente('Carabinieri', '112'),
+                new Richiedente('112', null, null, 'Carabinieri'),
                 new Localita(
                     new Coordinate(41.8932662, 12.5417044), 'Via di Portonaccio', 'incrocio con Via Prenestina'),
                 [
@@ -390,6 +408,9 @@ export class SintesiRichiesteServiceFake {
                             3, 'carburante', 2, 'estinguente')
                     )
                 ],
+                null,
+                null,
+                null,
                 null
             ),
             new SintesiRichiesta(
@@ -402,7 +423,7 @@ export class SintesiRichiesteServiceFake {
                 2,
                 [new Tipologia('360', 'Recupero merci e beni', '')],
                 'Recupero merci e beni da camion ribaltato',
-                new Richiedente('Polizia', '113'),
+                new Richiedente('113', null, null, 'Polizia'),
                 new Localita(
                     new Coordinate(41.9125723, 12.4952921), 'Via Isonzo, 21', 'beni alimentari di vario tipo'),
                 [
@@ -459,6 +480,9 @@ export class SintesiRichiesteServiceFake {
                             3, 'carburante', 2, 'estinguente')
                     )
                 ],
+                null,
+                null,
+                null,
                 null
             ),
             new SintesiRichiesta(
@@ -471,7 +495,7 @@ export class SintesiRichiesteServiceFake {
                 2,
                 [new Tipologia('360', 'Terremoto', '')],
                 'Scossa di terremoto a Roma',
-                new Richiedente('Polizia', '113'),
+                new Richiedente('113', null, null, 'Polizia'),
                 new Localita(
                     new Coordinate(41.856683, 12.471484), 'Viale Guglielmo Marconi, 21', 'Presidio e aiuto alla popolazione'),
                 [
@@ -528,6 +552,9 @@ export class SintesiRichiesteServiceFake {
                             3, 'carburante', 2, 'estinguente')
                     )
                 ],
+                null,
+                null,
+                null,
                 null
             ),
             new SintesiRichiesta(
@@ -540,7 +567,7 @@ export class SintesiRichiesteServiceFake {
                 4,
                 [new Tipologia('360', 'Incendio', 'fa fa-fire')],
                 'Incendio in appartamento',
-                new Richiedente('Polizia', '113'),
+                new Richiedente('113', null, null, 'Polizia'),
                 new Localita(
                     new Coordinate(41.9113629, 12.4652858), 'Viale Giulio Cesare, 21', 'Intervento per spegnimento incendio e salvataggio inquilini'),
                 [
@@ -597,6 +624,9 @@ export class SintesiRichiesteServiceFake {
                             3, 'carburante', 2, 'estinguente')
                     )
                 ],
+                null,
+                null,
+                null,
                 null
             ),
             new SintesiRichiesta(
@@ -609,7 +639,7 @@ export class SintesiRichiesteServiceFake {
                 3,
                 [new Tipologia('360', 'Incidente', 'fa fa-car')],
                 'Incidente stradale',
-                new Richiedente('Polizia', '113'),
+                new Richiedente('113', null, null, 'Polizia'),
                 new Localita(
                     new Coordinate(41.870025, 12.4647536), 'Piazzale della radio, 21', 'Intervento per estrarre persone dalle lamiere di una automobile'),
                 [
@@ -666,6 +696,9 @@ export class SintesiRichiesteServiceFake {
                             3, 'carburante', 2, 'estinguente')
                     )
                 ],
+                null,
+                null,
+                null,
                 null
             ),
         ];
