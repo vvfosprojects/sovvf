@@ -14,6 +14,7 @@ import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actio
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/confirm-modal.component';
 import { Utente } from '../../../../shared/model/utente.model';
+import { ClearClipboard } from '../../store/actions/chiamata/clipboard.actions';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -132,6 +133,8 @@ export class SchedaTelefonataComponent implements OnInit {
                         this.submitted = false;
                         this.chiamataForm.reset();
                         this.chiamataCorrente.idTipoIntervento = [];
+                        this.coordinate = null;
+                        this.store.dispatch(new ClearClipboard());
                         this.chiamataForm.get('tipoIntervento').patchValue([]);
                         this._statoChiamata('reset');
                         break;

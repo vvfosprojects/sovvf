@@ -49,7 +49,7 @@
     "js-marker-clusterer": "^1.0.0",
     "moment": "^2.24.0",
     "ng-sidebar": "^8.0.0",
-    "ngx-clipboard": "^11.1.9",
+    "ngx-clipboard": "^12.0.0",
     "ngx-filter-pipe": "^2.1.2",
     "ngx-google-places-autocomplete": "^2.0.3",
     "ngx-pagination": "^3.2.1",

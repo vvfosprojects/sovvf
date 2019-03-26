@@ -1,6 +1,6 @@
 import { Action, State, Store } from '@ngxs/store';
 import { ClipboardService } from 'ngx-clipboard';
-import { CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
+import { ClearClipboard, CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import { SchedaTelefonataState } from './scheda-telefonata.state';
 
@@ -28,6 +28,11 @@ export class ClipboardState {
     copyToClipboard() {
         const coordinate = this.store.selectSnapshot(SchedaTelefonataState.coordinate);
         this.toClipboard(coordinate);
+    }
+
+    @Action(ClearClipboard)
+    clearClipboard() {
+        this._clipboardService.copyFromContent(' ');
     }
 
     toClipboard(coordinate: Coordinate) {
