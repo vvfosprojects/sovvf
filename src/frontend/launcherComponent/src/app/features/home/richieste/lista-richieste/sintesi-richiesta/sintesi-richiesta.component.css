@@ -51,3 +51,12 @@
 .transparent {
     background-color: transparent !important;
 }
+
+.cirlce {
+     font-size: 1rem;
+     color: #e2e2e2;
+ }
+
+.filled {
+    color: #9b9b9b;
+}

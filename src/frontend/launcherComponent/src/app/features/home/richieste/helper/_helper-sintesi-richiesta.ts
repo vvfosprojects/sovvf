@@ -5,17 +5,6 @@ import { Squadra } from '../../../../shared/model/squadra.model';
 
 export class HelperSintesiRichiesta {
 
-    /* Restituisce un Array con tanti elementi quanto è la priorità dell'intervento */
-    vettorePallini(richiesta: any) {
-        return new Array(richiesta.priorita);
-    }
-
-    /* Restituisce un Array con tanti elementi quanti sono i buchini della priorità dell'intervento */
-    vettoreBuchini(richiesta: any) {
-        const MAX_PRIORITA = 5;
-        return new Array(MAX_PRIORITA - richiesta.priorita);
-    }
-
     /* Restituisce i nomi delle squadre  */
     nomiSquadre(richiesta: SintesiRichiesta): string[] {
         let nomiSquadre: string[] = [];

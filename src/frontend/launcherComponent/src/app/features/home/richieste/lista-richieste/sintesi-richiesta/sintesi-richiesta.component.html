@@ -56,11 +56,13 @@
                         <div class="col-3 pr-3 text-right">
                             <div class="h6 mb-1 nowrap default-cursor">
                                 <i class="guida fa fa-thermometer-half fa-fw" ngbTooltip="Priorità della richiesta"></i>
-                                <span class="h6"
-                                      [ngClass]="{'text-success':richiesta.priorita <= 2, 'text-warning':richiesta.priorita > 2 && richiesta.priorita <= 4, 'text-danger': richiesta.priorita == 5}">
-                                    <i *ngFor="let n of methods.vettorePallini(richiesta)" class="fa fa-circle"></i><i
-                                        *ngFor="let n of methods.vettoreBuchini(richiesta)" class="fa fa-circle-o"></i>
-                                </span>
+                                <ngb-rating [(rate)]="richiesta.priorita" [max]="5" [readonly]="true">
+                                    <ng-template let-fill="fill" let-index="index">
+                                    <span class="cirlce" [class.filled]="fill === 100">
+                                        <i class="fa fa-circle mr-1"></i>
+                                    </span>
+                                    </ng-template>
+                                </ngb-rating>
                             </div>
                         </div>
                     </div>
