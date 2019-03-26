@@ -35,7 +35,7 @@ export class ModificaRichiestaComponent implements OnInit {
     ngOnInit() {
         this.modificaRichiestaForm = this.formBuilder.group({
             tipoIntervento: [this.richiestaModifica.tipologie, Validators.required],
-            nominativo: [this.richiestaModifica.richiedente.nominativo, Validators.required],
+            nominativo: [this.richiestaModifica.richiedente.nome, Validators.required],
             telefono: [this.richiestaModifica.richiedente.telefono, Validators.required],
             indirizzo: [this.richiestaModifica.localita.indirizzo, Validators.required],
             etichette: [this.richiestaModifica.etichette],

@@ -1,6 +1,4 @@
 export let SIGNALR_CONFIG = {
-  subscription: '/SubscriptionHub',
-  notify: '/NotificationHub',
-  notifyMarkers: '/NotificationMarkerHub',
+  notification: '/NotificationHub',
   signlaRByPass: false
 };

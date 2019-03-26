@@ -106,7 +106,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
             this.contatoreNuoveRichieste = true;
             this.loaderNuoveRichieste = true;
             this.richiesteTerminate = false;
-            this.store.dispatch(new GetRichieste(this.richieste[this.richieste.length - 1].id));
+            // Todo: in caso di signalR - richieste, non serve
+            // this.store.dispatch(new GetRichieste(this.richieste[this.richieste.length - 1].id));
         }
     }
 
@@ -214,12 +215,12 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     onVisualizzaEventiRichiesta(idRichiesta: string) {
         this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
-        this.modalService.open(EventiRichiestaComponent, {windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true});
+        this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
     }
 
     onModificaRichiesta(richiesta: SintesiRichiesta) {
         this.store.dispatch(new SetRichiestaModifica(richiesta));
-        this.modalService.open(ModificaRichiestaComponent, {windowClass: 'modalModificaRichiesta', backdrop: 'static', backdropClass: 'light-blue-backdrop', centered: true});
+        this.modalService.open(ModificaRichiestaComponent, { windowClass: 'modalModificaRichiesta', backdrop: 'static', backdropClass: 'light-blue-backdrop', centered: true });
     }
 
     toggleComposizione() {

@@ -19,13 +19,20 @@ export class SintesiRichiesteService {
     constructor(private http: HttpClient) {
     }
 
-    public getRichieste(idUltimaRichiesta: string): Observable<any> {
-        return this.http.get(API_URL_RICHIESTE + '?SearchKey=' + idUltimaRichiesta + '&RichiestaSingola=false', httpOptions).pipe(
+    // public getRichieste(idUltimaRichiesta: string): Observable<any> {
+    //     return this.http.get(API_URL_RICHIESTE + '?SearchKey=' + idUltimaRichiesta + '&RichiestaSingola=false', httpOptions).pipe(
+    //         map((data: any) => {
+    //             return data.SintesiRichiesta;
+    //         }),
+    //         catchError(handleError)
+    //     );
+    // }
+
+    public getRichieste(signalRConnectionId: string): Observable<any> {
+        return this.http.get(API_URL_RICHIESTE).pipe(
             map((data: any) => {
-                const richieste = data.SintesiRichiesta;
-                return richieste;
-                // TEST
-                // console.log('Service Lista Richieste: ', data.SintesiRichiesta);
+                console.log(data.sintesiRichiesta);
+                return data.sintesiRichiesta;
             }),
             catchError(handleError)
         );

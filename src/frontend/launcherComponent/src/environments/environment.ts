@@ -20,7 +20,7 @@ export const environment = {
                 centro: ''
             }
         },
-        rigaElencoRichieste: 'https://api.myjson.com/bins/x09t6',
+        rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
         elencoTipologie: 'assets/json/tipologie.json',
         eventiRichieste: 'https://api.myjson.com/bins/kz0w0',
         turno: '',

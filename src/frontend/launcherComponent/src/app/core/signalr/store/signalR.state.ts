@@ -1,17 +1,19 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { SignalRHubConnesso, SignalRHubDisconnesso } from './signalR.actions';
+import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './signalR.actions';
 import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
 
 export interface SignalRStateModel {
     connected: boolean;
     reconnected: boolean;
     disconnected: boolean;
+    connectionId: string;
 }
 
 export const SignalRStateDefaults: SignalRStateModel = {
     connected: false,
     reconnected: null,
-    disconnected: null
+    disconnected: null,
+    connectionId: null
 };
 
 @State<SignalRStateModel>({
@@ -24,6 +26,11 @@ export class SignalRState {
     @Selector()
     static statusSignalR(state: SignalRStateModel): boolean {
         return state.connected;
+    }
+
+    @Selector()
+    static connectionIdSignalR(state: SignalRStateModel): string {
+        return state.connectionId;
     }
 
     @Action(SignalRHubConnesso)
@@ -52,6 +59,14 @@ export class SignalRState {
             connected: SignalRStateDefaults.connected,
             reconnected: SignalRStateDefaults.reconnected,
             disconnected: disconnected
+        });
+    }
+
+    @Action(SetConnectionId)
+    setConnectionId({ patchState }: StateContext<SignalRStateModel>, action: SetConnectionId) {
+
+        patchState({
+            connectionId: action.connectionId
         });
     }
 
