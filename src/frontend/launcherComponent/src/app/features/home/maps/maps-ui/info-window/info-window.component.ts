@@ -56,7 +56,6 @@ export class InfoWindowComponent implements OnInit {
                 let richiesta: SintesiRichiesta = null;
                 let richiestaById$: Observable<SintesiRichiesta>;
                 richiestaById$ = this.store.select(RichiesteState.getRichiestaById).pipe(map(fn => fn(id_richiesta)));
-                console.log('ID Richiesta', id_richiesta);
                 this.subscriptionRichiestaById.add(
                     richiestaById$.subscribe(r => {
                         richiesta = r;

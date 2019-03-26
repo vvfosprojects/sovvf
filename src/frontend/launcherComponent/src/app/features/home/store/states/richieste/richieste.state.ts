@@ -32,7 +32,7 @@ export class RichiesteState {
 
     @Selector()
     static getRichiestaById(state: RichiesteStateModel) {
-        return (id: string) => state.richieste.find(x => x.id === id);
+        return (id: string) => state.richieste.find(x => x.codiceRichiesta === id);
     }
 
     constructor(private richiesteService: SintesiRichiesteService) {
@@ -46,13 +46,11 @@ export class RichiesteState {
             }
             dispatch(new SetRichieste(r));
         });
-
     }
 
     @Action(SetRichieste)
     setRichieste({ getState, patchState }: StateContext<RichiesteStateModel>, action: SetRichieste) {
         const state = getState();
-
         patchState({
             ...state,
             richieste: [...state.richieste, ...action.richieste]
