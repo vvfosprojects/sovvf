@@ -109,7 +109,7 @@ namespace SO115App.API
             }
 
             app.UseCors("CorsSo115");
-            /*  app.UseAuthentication();*/
+            app.UseAuthentication();
 
             app.UseSignalR( route => 
                 {
