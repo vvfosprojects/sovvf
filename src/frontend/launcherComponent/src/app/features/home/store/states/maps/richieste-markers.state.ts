@@ -61,14 +61,16 @@ export class RichiesteMarkersState {
 
     @Action(SetRichiesteMarkers)
     setRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: SetRichiesteMarkers) {
-        const richiesteRilevanti = action.richiesteMarkers.filter(richieste => !!richieste.rilevanza === true);
-        const richiesteFiltrate = action.richiesteMarkers.filter(richieste => !!richieste.rilevanza === false);
-        dispatch(new AddRichiesteMarkers(richiesteFiltrate));
-        this.mapIsLoaded$.subscribe(isLoaded => {
-            if (isLoaded) {
-                dispatch(new AddRichiesteMarkers(richiesteRilevanti));
-            }
-        });
+        if (action.richiesteMarkers) {
+            const richiesteRilevanti = action.richiesteMarkers.filter(richieste => !!richieste.rilevanza === true);
+            const richiesteFiltrate = action.richiesteMarkers.filter(richieste => !!richieste.rilevanza === false);
+            dispatch(new AddRichiesteMarkers(richiesteFiltrate));
+            this.mapIsLoaded$.subscribe(isLoaded => {
+                if (isLoaded) {
+                    dispatch(new AddRichiesteMarkers(richiesteRilevanti));
+                }
+            });
+        }
     }
 
     @Action(AddRichiesteMarkers)
