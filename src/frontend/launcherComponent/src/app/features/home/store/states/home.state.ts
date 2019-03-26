@@ -8,8 +8,6 @@ import { ClearRichiesteMarkers, GetRichiesteMarkers } from '../actions/maps/rich
 import { ClearBoxRichieste, GetBoxRichieste } from '../actions/boxes/box-richieste.actions';
 import { ClearBoxMezzi, GetBoxMezzi } from '../actions/boxes/box-mezzi.actions';
 import { ClearBoxPersonale, GetBoxPersonale } from '../actions/boxes/box-personale.actions';
-import { SignalRService } from '../../../../core/signalr/signalR.service';
-import { SignalRNotification } from '../../../../core/signalr/interface/signalr-notification.interface';
 import { SignalRState } from '../../../../core/signalr/store/signalR.state';
 
 export interface HomeStateModel {
@@ -52,13 +50,6 @@ export class HomeState {
 
     @Action(GetDataHome)
     getDataHome({ patchState, dispatch }: StateContext<HomeStateModel>) {
-        // Todo: test effettuato con signalr
-        // const notification: SignalRNotification = {
-        //     CodiceSede: null,
-        //     NominativoUtente: null,
-        //     idUtente: null
-        // };
-        // this.signalR.getChiamate();
         const connectionID = this.store.selectSnapshot(SignalRState.connectionIdSignalR);
         dispatch(new GetRichieste(connectionID));
         dispatch(new GetCentroMappa());

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Role, Utente } from '../../../shared/model/utente.model';
 import { SignalRService } from '../../../core/signalr/signalR.service';
-import { SignalRNotification } from '../../../core/signalr/interface/signalr-notification.interface';
+import { SignalRNotification } from '../../../core/signalr/model/signalr-notification.model';
 
 @Component({
     selector: 'app-operatore',
@@ -18,11 +18,12 @@ export class OperatoreComponent {
     Role = Role;
 
     logout() {
-        const notification: SignalRNotification = {
-            CodiceSede: this.user.sede.codice,
-            NominativoUtente: `${this.user.nome} ${this.user.cognome}`,
-            idUtente: +this.user.id
-        };
-        this.signalR.removeToGroup(notification);
+
+        this.signalR.removeToGroup(new SignalRNotification(
+            this.user.sede.codice,
+            this.user.id,
+            `${this.user.nome} ${this.user.cognome}`
+            )
+        );
     }
 }

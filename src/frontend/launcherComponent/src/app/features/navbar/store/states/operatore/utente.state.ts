@@ -3,7 +3,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { UserService } from '../../../../../core/auth/_services';
 import { GetUtente } from '../../actions/operatore/utente.actions';
 import { SignalRService } from '../../../../../core/signalr/signalR.service';
-import { SignalRNotification } from '../../../../../core/signalr/interface/signalr-notification.interface';
+import { SignalRNotification } from '../../../../../core/signalr/model/signalr-notification.model';
 
 export interface UtenteStateModel {
     utente: Utente;
@@ -30,12 +30,11 @@ export class UtenteState {
     @Action(GetUtente)
     getUtente({ patchState }: StateContext<UtenteStateModel>, action: GetUtente) {
         this._users.getById(action.id).subscribe((utente: Utente) => {
-            const notification: SignalRNotification = {
-                CodiceSede: utente.sede.codice,
-                NominativoUtente: `${utente.nome} ${utente.cognome}`,
-                idUtente: +utente.id
-            };
-            this.signalR.addToGroup(notification);
+            this.signalR.addToGroup(new SignalRNotification(
+                utente.sede.codice,
+                utente.id,
+                `${utente.nome} ${utente.cognome}`
+                ));
             patchState({
                 utente: utente
             });

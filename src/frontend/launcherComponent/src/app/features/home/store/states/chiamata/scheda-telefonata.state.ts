@@ -7,11 +7,11 @@ import { CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
 import { ToggleChiamata } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { SignalRService } from '../../../../../core/signalr/signalR.service';
-import { SignalRNotification } from '../../../../../core/signalr/interface/signalr-notification.interface';
 import { Observable } from 'rxjs';
 import { UtenteState } from '../../../../navbar/store/states/operatore/utente.state';
 import { Utente } from '../../../../../shared/model/utente.model';
 import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
+import { SignalRNotification } from '../../../../../core/signalr/model/signalr-notification.model';
 
 export interface SchedaTelefonataStateModel {
     coordinate: Coordinate;
@@ -85,13 +85,12 @@ export class SchedaTelefonataState {
         const state = getState();
         this.utente$.subscribe((utente: Utente) => {
             if (utente) {
-                const notification: SignalRNotification = {
-                    CodiceSede: state.chiamata.idSede,
-                    NominativoUtente: `${utente.cognome} ${utente.nome}`,
-                    ActionObj: state.chiamata,
-                    idUtente: +state.chiamata.idOperatore
-                };
-                this.signalR.insertChiamata(notification);
+                this.signalR.insertChiamata(new SignalRNotification(
+                    state.chiamata.idSede,
+                    state.chiamata.idOperatore,
+                    `${utente.cognome} ${utente.nome}`,
+                    state.chiamata
+                ));
                 console.dir(state.chiamata);
             } else {
                 console.error('Errore utente non connesso');

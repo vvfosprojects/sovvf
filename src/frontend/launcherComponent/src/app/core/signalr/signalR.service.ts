@@ -5,10 +5,10 @@ import { SIGNALR_CONFIG } from './signalR.config';
 import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
-import { SignalRNotification } from './interface/signalr-notification.interface';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
 import { SetRichieste } from '../../features/home/store/actions/richieste/richieste.actions';
+import { SignalRNotification } from './model/signalr-notification.model';
 
 @Injectable({
     providedIn: 'root'
