@@ -24,16 +24,6 @@
 	overflow-y: scroll;
 }
 
-.m-h-750{
-	height: 754px;
-	max-height: 754px;
-}
-
-.m-h-600{
-	height: 637px;
-	max-height: 637px;
-}
-
 .scroll-y{
 	overflow-y: scroll;
 }

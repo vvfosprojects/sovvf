@@ -129,7 +129,11 @@ export class ListaRichiesteComponent implements OnInit {
 
     /* NgClass List Height */
     HeightControl() {
-        return this.listHeightClass;
+        if (this.richieste.length > 0) {
+            return this.listHeightClass;
+        } else {
+            return 'd-none';
+        }
     }
 
     /* NgClass Card Status */

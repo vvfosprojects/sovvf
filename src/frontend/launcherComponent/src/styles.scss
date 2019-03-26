@@ -3,7 +3,6 @@
 @import '../node_modules/snazzy-info-window/dist/snazzy-info-window.css';
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import '~ngx-ui-switch/ui-switch.component.scss';
-
 // if you'd like to use it without importing all of bootstrap it requires
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
@@ -93,6 +92,16 @@ a:hover {
 
 .nowrap {
   white-space: nowrap;
+}
+
+.m-h-750{
+  height: 754px;
+  max-height: 754px;
+}
+
+.m-h-600{
+  height: 637px;
+  max-height: 637px;
 }
 
 /* Shadow richieste */
@@ -286,4 +295,17 @@ a:hover {
 
 .icon-truck-fire:before {
   content: "\e903";
+}
+
+.loader-centrato {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -125px;
+  margin-top: -70px;
+}
+
+.loader-centrato img {
+  width: 250px;
+  height: 140px;
 }
