@@ -23,14 +23,18 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using SimpleInjector;
+using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.CQRS.Queries;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
+using SO115App.API.Models.Servizi.Infrastruttura;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste;
 
@@ -40,6 +44,7 @@ namespace SO115App.API.Controllers
     ///   Controller per l'accesso alla sintesi sulle richieste di assistenza
     /// </summary>
 
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SintesiRichiesteAssistenzaController : ControllerBase
@@ -48,50 +53,61 @@ namespace SO115App.API.Controllers
         ///   Handler del servizio
         /// </summary>
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler;
+        private readonly ILogger _logger;
+        private readonly IHubContext<NotificationHub> _NotificationHub;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public SintesiRichiesteAssistenzaController(
+        public SintesiRichiesteAssistenzaController(ILogger logger,IHubContext<NotificationHub> NotificationHubContext,
             IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler)
         {            
             this.handler = handler;
+            _NotificationHub = NotificationHubContext;
+            _logger = logger;
         }
 
         /// <summary>
         ///   Metodo di accesso alle richieste di assistenza
         /// </summary>
         /// <param name="filtro">Il filtro per le richieste</param>
-        /// <returns>Le sintesi delle richieste di assistenza</returns>
-        [HttpGet]     
+        /// <returns>Le sintesi delle richieste di assistenza</returns>    
         public async Task<IActionResult> Get()
-        {                     
+        {
+
+            this._logger.Log(this.GetType().Name + " - L'utente ha richiesto la lista Sintesi");
+
             //VIENE UTILIZZATO SOLO PER TEST E FAKE
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
             filtro.SearchKey = "0";
-            filtro.RichiestaSingola = false;
 
             var query = new SintesiRichiesteAssistenzaQuery()
             {
                 Filtro = filtro
             };
+
+            this._logger.Log(this.GetType().Name + " - Richiamo l'Handler per la ricerca della Sintesi");
 
             return Ok(this.handler.Handle(query));
         }
 
 
-        [HttpGet("{searchkey}/{richiestaSingola}")]
-        public async Task<IActionResult> Get(string searchkey,string richiestaSingola)
+        [HttpGet("{searchkey}")]
+        public async Task<IActionResult> Get(string searchkey)
         {
+
+            this._logger.Log(this.GetType().Name + " - L'utente ha richiesto la Sintesi con id " + searchkey);
+
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
             filtro.SearchKey = searchkey;
-            filtro.RichiestaSingola = Convert.ToBoolean(richiestaSingola);
 
             var query = new SintesiRichiesteAssistenzaQuery()
             {
                 Filtro = filtro
             };
+
+            this._logger.Log(this.GetType().Name + " - Richiamo l'Handler per la ricerca della Sintesi");
 
             return Ok(this.handler.Handle(query));
         }
@@ -108,7 +124,6 @@ namespace SO115App.API.Controllers
 
             return this.handler.Handle(query);
         }
-
 
     }
 }

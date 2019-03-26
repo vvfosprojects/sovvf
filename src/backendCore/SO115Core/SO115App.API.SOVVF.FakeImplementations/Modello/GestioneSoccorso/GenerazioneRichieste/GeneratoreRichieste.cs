@@ -206,7 +206,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
                 .RuleFor(ra => ra.NoteLocalita, f => NoteLocalita)
                 .RuleFor(ra => ra.ZoneEmergenza, f => f.Random.Float() < 0.001 ? new[] { f.Random.ListItem(zoneEmergenza) } : new string[0])
                 .RuleFor(ra => ra.Descrizione, f => f.Lorem.Sentence())
-                .RuleFor(ra => ra.Richiedente, f => new Richiedente ( f.Name.FirstName() + " " + f.Name.LastName(), f.Phone.Locale ))
+                .RuleFor(ra => ra.Richiedente, f => new Richiedente ( f.Name.FirstName(), f.Name.LastName(),f.Company.CompanyName(), f.Phone.Locale ))
                 .RuleFor(ra => ra.NumeroRichiedente, f => f.Phone.PhoneNumber())
                 .RuleFor(ra => ra.CodiciUOCompetenza, f => new[] { f.Address.StateAbbr(), f.Address.StateAbbr(), f.Address.StateAbbr() })
                 .RuleFor(ra => ra.ListaPartenze, f => GeneraListaPartenze())
@@ -369,7 +369,9 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
 
             var fakerRichiedente = new Faker<Richiedente>()
                 .StrictMode(true)                
-                .RuleFor(t => t.nominativo, f => f.Name.FirstName() + " " + f.Name.LastName())
+                .RuleFor(t => t.nome, f => f.Name.FirstName())
+                .RuleFor(t => t.cognome, f => f.Name.LastName())
+                .RuleFor(t => t.ragioneSociale, f => f.Company.CompanyName())
                 .RuleFor(t => t.telefono, f => f.Phone.PhoneNumber());
 
             return fakerRichiedente;

@@ -36,6 +36,7 @@ using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using Newtonsoft.Json;
 using SimpleInjector;
 using SO115App.API.Models.Servizi.Infrastruttura;
+using System.IO;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
@@ -77,6 +78,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         ///   Costruttore della classe
         /// </summary>
         /// <param name="cercaRichiesteAssistenza">L'istanza del servizio</param>
+        
         public SintesiRichiesteAssistenzaQueryHandler(ILogger logger,ICercaRichiesteAssistenza cercaRichiesteAssistenza)
         {
             this.logger = logger;
@@ -94,9 +96,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
 
             var richieste = this.cercaRichiesteAssistenza.Get(query.Filtro);
           
-            List<RichiestaAssistenza> listaRichieste = new List<RichiestaAssistenza>();
-            listaRichieste = query.ListaRichieste;
-
             #warning va realizzato il servizio di mapping delle richieste di assistenza sulla loro sintesi
             var sintesiRichiesta = new List<SintesiRichiesta>();
             sintesiRichiesta = ElencoSintesiRichiesta(query);
@@ -114,18 +113,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         public List<SintesiRichiesta> ElencoSintesiRichiesta(SintesiRichiesteAssistenzaQuery query)
         {
          
-            List<RichiestaAssistenza> listaRichieste = new List<RichiestaAssistenza>();
+            List<SintesiRichiesta> ListaSintesi = CercaRichieste(query);
+                      
+            return ListaSintesi;
+
+            //TODO DA SCOMMENTARE QUANDO SI ANDRA' SU DB A PRENDERE LE RICHIESTE E SI DOVRANNO MAPPARE ALLE SINTESI
+
+/*             List<RichiestaAssistenza> listaRichieste = new List<RichiestaAssistenza>();
             MapperListaRichieste mapper = new MapperListaRichieste();
-            int CalcNumeroRecord = 0;
-            int NumeroRecord = 0;
-
             listaRichieste = query.ListaRichieste; //this.cercaRichiesteAssistenza.Get(query.Filtro).ToList();
-
-            CalcNumeroRecord = listaRichieste.Count - Convert.ToInt16(query.Filtro.SearchKey);
-
-            if(CalcNumeroRecord < 15) { NumeroRecord = CalcNumeroRecord; }
-            else { NumeroRecord = 15; }
-
 
             if (query.Filtro != null)
             {
@@ -144,17 +140,26 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
             {
                 this.logger.Log(this.GetType().Name + " - Mapper delle richieste eseguito");             
                 return mapper.MapRichiesteSuSintesi(listaRichieste).GetRange(Convert.ToInt16(query.Filtro.SearchKey), NumeroRecord).OrderBy(p => p.priorita).ToList();
-            }
+            } */
           
         }       
-       
-
-        private static List<RichiestaAssistenza> CercaRichieste(SintesiRichiesteAssistenzaQuery query)
+        private static List<SintesiRichiesta> CercaRichieste(SintesiRichiesteAssistenzaQuery query)
         {
 
             //TODO PARTE CHIAMATA DB
- 
-            return  query.ListaRichieste; 
+
+             //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI           
+            //DATI FAKE - ORA LI LEGGO DA FILE
+            string filepath = "fake.json";
+            string json;
+            using (StreamReader r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();              
+            }
+
+            List<SintesiRichiesta> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichiesta>>(json);
+
+            return  ListaRichieste; 
 
         }
 

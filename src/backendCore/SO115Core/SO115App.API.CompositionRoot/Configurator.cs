@@ -34,6 +34,7 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.SignalR;
+using SO115App.API.Models.Classi.Utenti.Autenticazione;
 
 namespace SO115App.API.CompositionRoot
 {
@@ -73,16 +74,18 @@ namespace SO115App.API.CompositionRoot
                 typeof(IQueryHandler<,>),
                 typeof(AuthorizationQueryHandlerDecorator<,>));           
 
+
+            c.Register(typeof(IAuthOperatore),typeof(AuthOperatore));
+
             var assembliesP = new[] { typeof(IPrincipal).Assembly };
             c.Collection.Register(typeof(IPrincipal), assembliesP);
 
             c.Collection.Register(
                 typeof(ICommandValidator<>),
                 typeof(SelezionaSquadraCommand).Assembly);
-            //c.RegisterDecorator(
-            //    typeof(IQueryHandler<,>),
-            //    typeof(ValidatingQueryHandlerDecorator<,>));
             
+
+
             c.Register<IGetUnitaOperativaPerCodice, GetUnitaOperativaPerCodice>();
 
 

@@ -41,7 +41,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 sintesi.priorita = elemento.PrioritaRichiesta;
                 sintesi.richiedente = elemento.Richiedente;
                 sintesi.rilevanza = DateTime.Now;
-                sintesi.stato = statoRichiesta;
+                sintesi.stato = Convert.ToInt16(statoRichiesta);
                 sintesi.tipologie = elemento.Tipologie;
                 sintesi.zoneEmergenza = elemento.ZoneEmergenza;
 

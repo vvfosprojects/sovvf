@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace SO115App.API.Models.Classi.Autenticazione
         /// </summary>
         /// <param name="id">id all'utente</param>
         /// <remarks>L'utenza viene create per default con il flag attivo impostato a true</remarks>
+        [JsonConstructor]
         public Utente(string id, string nome, string cognome)
         {
             this.id = id;

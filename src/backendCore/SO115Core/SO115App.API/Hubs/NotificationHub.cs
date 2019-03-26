@@ -12,6 +12,8 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichieste
 using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata.CommandDTO;
 using System.IO;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.API.Models.Classi.Utenti;
 
 namespace SO115App.API.Hubs
 {
@@ -19,22 +21,32 @@ namespace SO115App.API.Hubs
     {
         SintesiRichiesta sintesiRichiesta = new SintesiRichiesta();
 
-        public async Task GetAndNotifyListaSintesi()
+        public async Task AddToGroup(Notification<Utente> utente)
         {
             try{
+                await Groups.AddToGroupAsync(Context.ConnectionId, utente.CodiceSede);
+            
+                //Notifico a tutti i client che l'utente si è appena loggato
+                await Clients.OthersInGroup(utente.CodiceSede).SendAsync("NotifyLogIn", "L'utente " + utente.NominativoUtente + " è stato inserito nella sede " + utente.CodiceSede);
                 
-                //Notifico all'utente la lista di tutte le Richieste presenti
-                string ListaSintesiRichieste;
-                ListaSintesiRichieste = GetListaSintesi();
-
-                await Clients.Caller.SendAsync("NotifyGetListaRichieste", ListaSintesiRichieste);
-
             }
             catch(Exception ex)
             {
-                await Clients.Caller.SendAsync("NotifyGetListaRichieste", ex.Message);
+                await Clients.Caller.SendAsync("NotifyLogIn", ex.Message);
             }
             await base.OnConnectedAsync();
+        }
+
+        public async Task RemoveToGroup(Notification<Utente> utente)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, utente.CodiceSede);
+            await Clients.OthersInGroup(utente.CodiceSede).SendAsync("NotifyLogOut", "L'utente " + utente.NominativoUtente + " è uscito dalla sede " + utente.CodiceSede);
+            await base.OnConnectedAsync();
+        }
+
+        public async Task TurnoMessage(Notification<Turno> turno)
+        {     
+            await Clients.OthersInGroup(turno.CodiceSede).SendAsync("TurnoMessage", turno.ActionObj);
         }
 
         /// <summary>
@@ -93,18 +105,10 @@ namespace SO115App.API.Hubs
             }
 		}
 
-        private string GetListaSintesi ()
+        public string GetConnectionId()
         {
-            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI           
-            //DATI FAKE - ORA LI LEGGO DA FILE
-            string filepath = "fake.json";
-            string json;
-            using (StreamReader r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();              
-            }
+                return Context.ConnectionId;
 
-            return json;
         }
 
     }

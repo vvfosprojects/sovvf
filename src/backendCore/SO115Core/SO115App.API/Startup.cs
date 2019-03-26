@@ -93,10 +93,6 @@ namespace SO115App.API
             services.EnableSimpleInjectorCrossWiring(container);
             services.UseSimpleInjectorAspNetRequestScoping(container);
   
-            //SimpleInjection con SignalR
-            services.AddSingleton(typeof(IHubActivator<>), typeof(SimpleInjectorHubActivator<>));
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -135,7 +131,7 @@ namespace SO115App.API
             //FARLO FUNZIONARE CON SIMPLE INJECTION
             //SE SI AGGIUNGONO NUOVI HUB VA AGGIUNTO ANCHE IL CICLO CHE LO REGISTRI IN TUTTE LE SUE ISTANZE
             //******************************************************************************************************/
-            foreach (Type type in container.GetTypesToRegister(typeof(Hub), typeof(NotificationHub).Assembly))
+/*             foreach (Type type in container.GetTypesToRegister(typeof(Hub), typeof(NotificationHub).Assembly))
             {
                 container.Register(type, type, Lifestyle.Scoped);
             }
@@ -148,7 +144,7 @@ namespace SO115App.API
             foreach (Type type in container.GetTypesToRegister(typeof(Hub), typeof(NotificationMarkerHub).Assembly))
             {
                 container.Register(type, type, Lifestyle.Scoped);
-            }
+            } */
             //******************************************************************************************************/
 
             container.Verify();

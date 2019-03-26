@@ -75,14 +75,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Stato della richiesta
         /// </summary>
-        public string stato { get; set; }
-
+        public int stato { get; set; }
 
         /// <summary>
         ///   Priorita della richiesta
         /// </summary>
         public RichiestaAssistenza.Priorita priorita { get; set; }
-
 
         public List<Tipologia> tipologie { get; set; }
 
@@ -113,17 +111,27 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
 
             get
             {
-                if (this.eventi.Count <= 20)
+
+                int CountEventi;
+                if(this.eventi == null)
                 {
-                    return new Complessita("0","Basso", this.eventi.Count.ToString());
+                    CountEventi = 0;
+                }else
+                {
+                    CountEventi = this.eventi.Count;
                 }
 
-                if (this.eventi.Count <= 60)
+                if (CountEventi <= 20)
                 {
-                    return new Complessita("1", "Media", this.eventi.Count.ToString());
+                    return new Complessita("0","Basso", CountEventi.ToString());
                 }
 
-                return new Complessita("2", "Alta", this.eventi.Count.ToString());
+                if (CountEventi <= 60)
+                {
+                    return new Complessita("1", "Media", CountEventi.ToString());
+                }
+
+                return new Complessita("2", "Alta", CountEventi.ToString());
             }
       
         }
@@ -168,18 +176,21 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                var ultimoEventoFonogramma = this.eventi
-                    .Where(e => e is Classi.Soccorso.Eventi.Fonogramma.IFonogramma)
-                    .LastOrDefault();
-
-                if (ultimoEventoFonogramma is Classi.Soccorso.Eventi.Fonogramma.FonogrammaInviato)
+                if(this.eventi != null)
                 {
-                    return new Classi.Soccorso.Fonogramma.Inviato();
-                }
+                    var ultimoEventoFonogramma = this.eventi
+                        .Where(e => e is Classi.Soccorso.Eventi.Fonogramma.IFonogramma)
+                        .LastOrDefault();
 
-                if (ultimoEventoFonogramma is Classi.Soccorso.Eventi.Fonogramma.InviareFonogramma)
-                {
-                    return new Classi.Soccorso.Fonogramma.DaInviare();
+                    if (ultimoEventoFonogramma is Classi.Soccorso.Eventi.Fonogramma.FonogrammaInviato)
+                    {
+                        return new Classi.Soccorso.Fonogramma.Inviato();
+                    }
+
+                    if (ultimoEventoFonogramma is Classi.Soccorso.Eventi.Fonogramma.InviareFonogramma)
+                    {
+                        return new Classi.Soccorso.Fonogramma.DaInviare();
+                    }
                 }
 
                 return new Classi.Soccorso.Fonogramma.NonNecessario();
@@ -194,6 +205,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   Etichette associate all'intervento (per es. aPagamento, imp, ecc.)
         /// </summary>
         public string[] etichette { get; set; }
+
+        public string NotePubbliche { get; set; }
+
+        public string NotePrivate { get; set; }
 
         /// <summary>
         ///  Lista eventi associato alla richiesta
