@@ -79,22 +79,30 @@
                                [ngClass]="{ 'is-invalid': submitted && f.etichette.errors }"/>
                     </div>
                 </div>
-                <div class="col-2">
-                    <div class="form-group">
-                        <label>Priorità</label>
-                        <input type="number" max="5" min="1" placeholder="priorità" formControlName="priorita"
-                               class="form-control"
-                               [ngClass]="{ 'is-invalid': submitted && f.priorita.errors }"/>
-                        <div *ngIf="submitted && f.priorita.errors" class="invalid-feedback">
-                            <div *ngIf="f.priorita.errors.required">La priorità è richiesta</div>
-                        </div>
-                    </div>
-                </div>
+                <!--<div class="col-2">-->
+                <!--<div class="form-group">-->
+                <!--<label>Priorità</label>-->
+                <!--<input type="number" max="5" min="1" placeholder="priorità" formControlName="priorita"-->
+                <!--class="form-control"-->
+                <!--[ngClass]="{ 'is-invalid': submitted && f.priorita.errors }"/>-->
+                <!--<div *ngIf="submitted && f.priorita.errors" class="invalid-feedback">-->
+                <!--<div *ngIf="f.priorita.errors.required">La priorità è richiesta</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
                 <div class="col-1">
                     <div class="form-group">
                         <label>Rilevanza</label>
-                        <ui-switch [checked]="richiestaModifica.rilevanza !== null"
-                                   (change)="setRilevanza()"></ui-switch>
+                        <div>
+                            <ui-switch [checked]="richiestaModifica.rilevanza !== null"
+                                       (change)="setRilevanza()"></ui-switch>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="pl-2">
+                        <label>Rilevante dal</label>
+                        <span *ngIf="f.rilevanza.value">{{f.rilevanza.value.toLocaleString()}}</span>
                     </div>
                 </div>
             </div>

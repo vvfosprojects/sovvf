@@ -4,11 +4,12 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Action
-import { ClearRichieste, GetRichieste, SetRichieste } from '../../actions/richieste/richieste.actions';
+import { ClearRichieste, GetRichieste, SetRichieste, UpdateRichiesta } from '../../actions/richieste/richieste.actions';
 
 // Service
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { patch, updateItem } from '@ngxs/store/operators';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -60,5 +61,14 @@ export class RichiesteState {
     @Action(ClearRichieste)
     clearRichieste({ patchState}: StateContext<RichiesteStateModel>) {
         patchState(RichiesteStateDefaults);
+    }
+
+    @Action(UpdateRichiesta)
+    updateRichiesta({ setState }: StateContext<RichiesteStateModel>, { richiesta }: UpdateRichiesta) {
+        setState(
+            patch({
+                richieste: updateItem<SintesiRichiesta>(r => r.id === richiesta.id, richiesta)
+            })
+        );
     }
 }

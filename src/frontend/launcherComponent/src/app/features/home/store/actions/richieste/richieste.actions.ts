@@ -17,3 +17,10 @@ export class SetRichieste {
 export class ClearRichieste {
     static readonly type = '[Richieste] Clear Lista Richieste';
 }
+
+export class UpdateRichiesta {
+    static readonly type = '[Richieste] Modifica Richiesta';
+
+    constructor(public richiesta: SintesiRichiesta) {
+    }
+}
