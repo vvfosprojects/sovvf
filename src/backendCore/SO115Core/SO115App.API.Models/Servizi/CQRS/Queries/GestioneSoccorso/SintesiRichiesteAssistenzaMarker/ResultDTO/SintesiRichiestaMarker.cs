@@ -49,6 +49,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         public string id { get; set; }
 
         /// <summary>
+        ///   Identifica il codice della Chiamata
+        /// </summary>
+        public string codice { get; set; }
+
+        /// <summary>
+        ///   E' il codice della Richiesta di Assistenza
+        /// </summary>
+        public string codiceRichiesta { get; set; }
+
+        /// <summary>
         ///   Localita della richiesta
         /// </summary>
         public Localita localita { get; set; }

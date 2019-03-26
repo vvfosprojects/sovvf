@@ -18,13 +18,17 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SimpleInjector;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.CQRS.Queries;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
@@ -65,6 +69,7 @@ namespace SO115App.API.Controllers
         [HttpGet]     
         public async Task<IActionResult> Get()
         {
+
             GeneratoreRichieste gen = new GeneratoreRichieste();                  
             _generatore = gen;    
                      
@@ -86,6 +91,20 @@ namespace SO115App.API.Controllers
         [HttpGet("{searchkey}/{richiestaSingola}")]
         public async Task<IActionResult> Get(string searchkey,string richiestaSingola)
         {
+
+            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
+            List<SintesiRichiesta> ListaSintesiRichieste = new  List<SintesiRichiesta>();
+            
+            //DATI FAKE - ORA LI LEGGO DA FILE
+            string filepath = "fake.json";
+            using (StreamReader r = new StreamReader(filepath))
+            {
+                string json = r.ReadToEnd();
+                ListaSintesiRichieste = JsonConvert.DeserializeObject<List<SintesiRichiesta>>(json);
+            }
+
+
+
             GeneratoreRichieste gen = new GeneratoreRichieste();                  
             _generatore = gen;    
 

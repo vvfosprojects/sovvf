@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.SignalR;
 using System;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Utenti;
+using System.Collections.Generic;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace SO115App.API.Hubs
 {
@@ -11,8 +15,17 @@ namespace SO115App.API.Hubs
     {
         public async Task AddToGroup(Notification<Utente> utente)
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, utente.CodiceSede);
-            await Clients.OthersInGroup(utente.CodiceSede).SendAsync("NotifyLogIn", "L'utente " + utente.NominativoUtente + " è stato inserito nella sede " + utente.CodiceSede);
+            try{
+                await Groups.AddToGroupAsync(Context.ConnectionId, utente.CodiceSede);
+            
+                //Notifico a tutti i client che l'utente si è appena loggato
+                await Clients.OthersInGroup(utente.CodiceSede).SendAsync("NotifyLogIn", "L'utente " + utente.NominativoUtente + " è stato inserito nella sede " + utente.CodiceSede);
+                
+            }
+            catch(Exception ex)
+            {
+                await Clients.Caller.SendAsync("NotifyLogIn", ex.Message);
+            }
             await base.OnConnectedAsync();
         }
 
@@ -32,5 +45,6 @@ namespace SO115App.API.Hubs
         {     
             await Clients.OthersInGroup(turno.CodiceSede).SendAsync("TurnoMessage", turno.ActionObj);
         }
+
     }
 }

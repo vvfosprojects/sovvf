@@ -97,11 +97,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
             List<RichiestaAssistenza> listaRichieste = new List<RichiestaAssistenza>();
             listaRichieste = query.ListaRichieste;
 
-
             #warning va realizzato il servizio di mapping delle richieste di assistenza sulla loro sintesi
             var sintesiRichiesta = new List<SintesiRichiesta>();
             sintesiRichiesta = ElencoSintesiRichiesta(query);
-
            
             this.logger.Log(this.GetType().Name + " - E' stata eseguita con successo");
 

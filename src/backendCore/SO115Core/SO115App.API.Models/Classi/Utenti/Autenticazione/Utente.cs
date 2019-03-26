@@ -28,6 +28,20 @@ namespace SO115App.API.Models.Classi.Autenticazione
     /// </summary>
     public class Utente
     {
+
+        /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="id">id all'utente</param>
+        /// <remarks>L'utenza viene create per default con il flag attivo impostato a true</remarks>
+        public Utente(string id, string nome, string cognome)
+        {
+            this.id = id;
+            this.nome = nome;
+            this.cognome = cognome;
+            this.attivo = true;
+        }
+
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
@@ -114,14 +128,14 @@ namespace SO115App.API.Models.Classi.Autenticazione
         /// <summary>
         ///   Ruolo
         /// </summary>
-        public Ruolo ruolo { get; set; }
+        public List<Ruolo> ruolo { get; set; }
 
         /// <summary>
         ///   Sede utente loggato
         /// </summary>
         public Sede sede { get; set; }
-        public List<Features> Privilegi { get; set; }
-
+/*         public List<Features> Privilegi { get; set; }
+ */
         public string token { get; set; }
 
         /// <summary>
