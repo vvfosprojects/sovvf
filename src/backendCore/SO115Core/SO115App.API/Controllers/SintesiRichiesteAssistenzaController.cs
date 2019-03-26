@@ -44,8 +44,6 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class SintesiRichiesteAssistenzaController : ControllerBase
     {
-        private IGeneratoreRichieste _generatore;    
-
         /// <summary>
         ///   Handler del servizio
         /// </summary>
@@ -68,11 +66,7 @@ namespace SO115App.API.Controllers
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpGet]     
         public async Task<IActionResult> Get()
-        {
-
-            GeneratoreRichieste gen = new GeneratoreRichieste();                  
-            _generatore = gen;    
-                     
+        {                     
             //VIENE UTILIZZATO SOLO PER TEST E FAKE
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
             filtro.SearchKey = "0";
@@ -81,7 +75,6 @@ namespace SO115App.API.Controllers
             var query = new SintesiRichiesteAssistenzaQuery()
             {
                 Filtro = filtro
-                ,ListaRichieste = _generatore.ListaRichieste.ToList()
             };
 
             return Ok(this.handler.Handle(query));
@@ -91,23 +84,6 @@ namespace SO115App.API.Controllers
         [HttpGet("{searchkey}/{richiestaSingola}")]
         public async Task<IActionResult> Get(string searchkey,string richiestaSingola)
         {
-
-            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
-            List<SintesiRichiesta> ListaSintesiRichieste = new  List<SintesiRichiesta>();
-            
-            //DATI FAKE - ORA LI LEGGO DA FILE
-            string filepath = "fake.json";
-            using (StreamReader r = new StreamReader(filepath))
-            {
-                string json = r.ReadToEnd();
-                ListaSintesiRichieste = JsonConvert.DeserializeObject<List<SintesiRichiesta>>(json);
-            }
-
-
-
-            GeneratoreRichieste gen = new GeneratoreRichieste();                  
-            _generatore = gen;    
-
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
             filtro.SearchKey = searchkey;
             filtro.RichiestaSingola = Convert.ToBoolean(richiestaSingola);
@@ -116,7 +92,6 @@ namespace SO115App.API.Controllers
             {
                 Filtro = filtro
             };
-
 
             return Ok(this.handler.Handle(query));
         }
