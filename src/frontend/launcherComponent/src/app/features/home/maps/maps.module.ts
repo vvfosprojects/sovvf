@@ -28,7 +28,7 @@ import { CambioSedeModalComponent } from './maps-ui/info-window/cambio-sede-moda
  */
 import {
     CentroMappaService, MezziMarkerService, SediMarkerService, RichiesteMarkerService,
-    CentroMappaServiceFake, MezziMarkerServiceFake, SediMarkerServiceFake, RichiesteMarkerServiceFake
+    CentroMappaServiceFake, MezziMarkerServiceFake, SediMarkerServiceFake, RichiesteMarkerServiceFake, ChiamateMarkerService, ChiamateMarkerServiceFake
 } from '../../../core/service/maps-service';
 /**
  * Ngxs
@@ -47,6 +47,7 @@ import { SintesiRichiestaModalComponent } from './maps-ui/info-window/sintesi-ri
 import { SintesiRichiestaModule } from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 import { MarkerInfoWindowState } from '../store/states/maps/marker-info-window.state';
 import { MarkerOpachiState } from '../store/states/maps/marker-opachi.state';
+import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
 
 @NgModule({
     imports: [
@@ -71,7 +72,8 @@ import { MarkerOpachiState } from '../store/states/maps/marker-opachi.state';
                 MezziMarkersState,
                 SediMarkersState,
                 MarkerInfoWindowState,
-                MarkerOpachiState
+                MarkerOpachiState,
+                ChiamateMarkersState
             ]
         ),
     ],
@@ -93,6 +95,7 @@ import { MarkerOpachiState } from '../store/states/maps/marker-opachi.state';
         { provide: MezziMarkerService, useClass: MezziMarkerServiceFake },
         { provide: SediMarkerService, useClass: SediMarkerServiceFake },
         { provide: CentroMappaService, useClass: CentroMappaServiceFake },
+        { provide: ChiamateMarkerService, useClass: ChiamateMarkerServiceFake}
     ]
 })
 export class MapsModule {

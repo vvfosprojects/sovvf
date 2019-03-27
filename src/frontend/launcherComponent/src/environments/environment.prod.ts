@@ -17,7 +17,8 @@ export const environment = {
                 richieste: 'http://so115-mike/so115rest/api/SintesiRichiesteAssistenzaMarker',
                 sedi: 'https://api.myjson.com/bins/18m83u',
                 mezzi: 'https://api.myjson.com/bins/jwy84',
-                centro: ''
+                centro: '',
+                chiamate: ''
             }
         },
         rigaElencoRichieste: 'http://so115-mike/so115rest/api/SintesiRichiesteAssistenza',

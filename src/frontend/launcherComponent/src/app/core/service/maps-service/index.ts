@@ -10,3 +10,6 @@ export * from './mezzi-marker/mezzi-marker.service.fake';
 export * from './sedi-marker/sedi-marker.service';
 export * from './sedi-marker/sedi-marker.service.fake';
 
+export * from './chiamate-marker/chiamate-marker.service';
+export * from './chiamate-marker/chiamate-marker.service.fake';
+

@@ -17,7 +17,8 @@ export const environment = {
                 richieste: 'https://api.myjson.com/bins/17xt98',
                 sedi: 'https://api.myjson.com/bins/18m83u',
                 mezzi: 'https://api.myjson.com/bins/jwy84',
-                centro: ''
+                centro: '',
+                chiamate: ''
             }
         },
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
