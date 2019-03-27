@@ -28,7 +28,7 @@ export class ListaRichiesteComponent implements OnInit {
     @Input() loaderNuoveRichieste: boolean;
     @Input() contatoreNuoveRichieste = 0;
     @Input() richiesteTerminate: boolean;
-    @Input() itemSize = 95;
+    @Input() itemSize = 10;
     @Input() listHeightClass: string;
 
     @Output() statoPartenza = new EventEmitter<boolean>();

@@ -31,7 +31,6 @@ export class SintesiRichiesteService {
     public getRichieste(signalRConnectionId: string): Observable<any> {
         return this.http.get(API_URL_RICHIESTE).pipe(
             map((data: any) => {
-                console.log(data.sintesiRichiesta);
                 return data.sintesiRichiesta;
             }),
             catchError(handleError)
