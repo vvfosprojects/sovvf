@@ -221,35 +221,36 @@ export class MarkerService implements OnDestroy {
     }
 
     zIndex(id: string, tipoMarker: string): number {
-        let zIndexValue = 333;
+        let zIndexValue = 33;
+        const zIndexUp = 10;
         switch (tipoMarker) {
             case 'richiesta':
                 if (this.markerRichiestaSelezionato === id || this.markerRichiestaHover === id) {
-                    zIndexValue += 1000;
+                    zIndexValue += zIndexUp;
                 }
                 if (this.markerOpachi.stato.richieste) {
                     if (this.markerOpachi.markerOpachiId.richiesteId.includes(id)) {
-                        zIndexValue += 1000;
+                        zIndexValue += zIndexUp;
                     }
                 }
                 break;
             case 'mezzo':
                 if (this.markerMezzoSelezionato === id || this.markerMezzoHover === id) {
-                    zIndexValue += 1000;
+                    zIndexValue += zIndexUp;
                 }
                 if (this.markerOpachi.stato.mezzi) {
                     if (this.markerOpachi.markerOpachiId.mezziId.includes(id)) {
-                        zIndexValue += 1000;
+                        zIndexValue += zIndexUp;
                     }
                 }
                 break;
             case 'sede':
                 if (this.markerSedeSelezionato === id || this.markerSedeHover === id) {
-                    zIndexValue += 1000;
+                    zIndexValue += zIndexUp;
                 }
                 if (this.markerOpachi.stato.sedi) {
                     if (this.markerOpachi.markerOpachiId.sediId.includes(id)) {
-                        zIndexValue += 1000;
+                        zIndexValue += zIndexUp;
                     }
                 }
                 break;
