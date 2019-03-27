@@ -56,8 +56,10 @@ namespace SO115App.API.Controllers
 
             var token = tokenHandler.CreateToken(TokenDescriptor);
 
+            _user.token = tokenHandler.WriteToken(token);
+
             return Ok( new {
-                token = tokenHandler.WriteToken(token)
+                _user                
             });
             
         }

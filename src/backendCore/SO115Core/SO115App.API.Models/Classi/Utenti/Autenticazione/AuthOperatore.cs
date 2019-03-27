@@ -39,8 +39,12 @@ namespace SO115App.API.Models.Classi.Utenti.Autenticazione
                         user.nome = "Luigi";
                         user.cognome = "Bianchi";
                         user.sede = new Sede("RM","Comando di Roma","Via Cavour 5",null,null,null,null,"RM","Lazio");
-                        user.ruolo = new List<Ruolo>(){
-                            Ruolo.Admin
+                        user.ruolo = new List<Role>(){
+                            new Role 
+                            (
+                                Ruolo.Admin, 
+                                new Sede("RM","Comando di Roma","Via Cavour 5",null,null,null,null,"RM","Lazio")
+                            )
                         };   
 
                         return user;
@@ -57,8 +61,12 @@ namespace SO115App.API.Models.Classi.Utenti.Autenticazione
                         user.nome = "Mario";
                         user.cognome = "Rossi";
                         user.sede = new Sede("RM","Comando di Roma","Via Cavour 5",null,null,null,null,"RM","Lazio");
-                        user.ruolo = new List<Ruolo>(){
-                            Ruolo.Admin
+                        user.ruolo = new List<Role>(){
+                            new Role 
+                            (
+                                Ruolo.Admin, 
+                                new Sede("RM","Comando di Roma","Via Cavour 5",null,null,null,null,"RM","Lazio")
+                            )
                         };
 
                         return user;
@@ -75,8 +83,12 @@ namespace SO115App.API.Models.Classi.Utenti.Autenticazione
                         user.nome = "Teresio";
                         user.cognome = "Mancini";
                         user.sede = new Sede("RM","Comando di Roma","Via Cavour 5",null,null,null,null,"RM","Lazio");
-                        user.ruolo = new List<Ruolo>(){
-                            Ruolo.User
+                        user.ruolo = new List<Role>(){
+                            new Role 
+                            (
+                                Ruolo.User, 
+                                new Sede("RM","Comando di Roma","Via Cavour 5",null,null,null,null,"RM","Lazio")
+                            )
                         };
                         return user;
                     }

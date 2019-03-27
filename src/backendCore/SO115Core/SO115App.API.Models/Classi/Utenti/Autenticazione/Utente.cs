@@ -130,7 +130,7 @@ namespace SO115App.API.Models.Classi.Autenticazione
         /// <summary>
         ///   Ruolo
         /// </summary>
-        public List<Ruolo> ruolo { get; set; }
+        public List<Role> ruolo { get; set; }
 
         /// <summary>
         ///   Sede utente loggato
@@ -166,9 +166,22 @@ namespace SO115App.API.Models.Classi.Autenticazione
         public string qualifica { get; set; }
         
     }
-    public enum Ruolo
+
+    public class Role
     {
-        Admin,
-        User
+
+        public Role(Ruolo _descrizione, Sede _sede)
+        {
+            this.sede = _sede;
+            this.descrizione = _descrizione;
+        }
+        public Ruolo descrizione { get; set; }
+        public Sede  sede {get; set;}
+    }
+
+    public enum Ruolo
+    {      
+        User,
+        Admin
     }
 }
