@@ -1,6 +1,6 @@
 import { Action, Select, Selector, State, StateContext } from '@ngxs/store';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
-import { SetChiamata, InsertChiamata, ReducerSchedaTelefonata, ResetChiamata, CestinaChiamata, SetMarkerChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
+import { SetChiamata, InsertChiamata, ReducerSchedaTelefonata, ResetChiamata, CestinaChiamata, SetMarkerChiamata, ClearChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
 import { FormChiamataModel } from '../../../chiamata/model/form-scheda-telefonata.model';
 import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
 import { CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
@@ -64,8 +64,6 @@ export class SchedaTelefonataState {
                 break;
             case 'inserita':
                 dispatch(new SetChiamata(action.schedaTelefonata.formChiamata));
-                dispatch(new ToggleChiamata(true));
-                dispatch(new ResetChiamata());
                 break;
             default:
                 return;
@@ -99,18 +97,13 @@ export class SchedaTelefonataState {
     }
 
     @Action(ResetChiamata)
-    resetChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
-        patchState({
-            chiamataMarker: []
-        });
+    resetChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>) {
+        dispatch(new ClearChiamata());
         dispatch(new GetInitCentroMappa());
     }
 
     @Action(CestinaChiamata)
-    cestinaChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
-        patchState({
-            chiamataMarker: []
-        });
+    cestinaChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>) {
         dispatch(new ToggleChiamata());
     }
 
@@ -127,7 +120,11 @@ export class SchedaTelefonataState {
             coordinate: coordinate,
             chiamataMarker: [action.marker]
         });
+    }
 
+    @Action(ClearChiamata)
+    clearChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>) {
+        patchState(SchedaTelefonataStateDefaults);
     }
 
 }

@@ -12,6 +12,7 @@ import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/cent
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { RichiestaComposizioneState } from '../composizione-partenza/richiesta-composizione.state';
 import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
+import { ResetChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -123,7 +124,7 @@ export class ViewComponentState {
                 view: lastState.view,
                 column: lastState.column
             });
-            dispatch(new GetInitCentroMappa());
+            dispatch(new ResetChiamata());
         }
     }
 

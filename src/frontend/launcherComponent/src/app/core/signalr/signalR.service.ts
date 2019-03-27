@@ -9,6 +9,7 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
 import { SetRichieste } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
+import { ToggleChiamata } from '../../features/home/store/actions/view/view.actions';
 
 @Injectable({
     providedIn: 'root'
@@ -138,6 +139,7 @@ export class SignalRService {
             this.hubNotification.invoke('SaveAndNotifyChiamata', notification).then(
                 (data: SintesiRichiesta) => {
                     // Todo Provvisorio: diventerà inserisci richiesta/inserisci marker/aggiorna contatori boxes con un id di tipo RM-001
+                    this.store.dispatch(new ToggleChiamata());
                     this.store.dispatch(new ShowToastr('success', 'Inserimento della chiamata effettuato', null, 5));
                     console.log(data.descrizione);
                 }

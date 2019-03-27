@@ -184,17 +184,6 @@ export class SchedaTelefonataComponent implements OnInit {
         this.chiamataCorrente.notePrivate = f.get('notePrivate').value;
     }
 
-    onSubmit() {
-        this.submitted = true;
-        if (this.formIsValid() || !this.coordinate) {
-            console.error('Il form non è valido');
-            this.submitted = false;
-            return;
-        }
-        this.getChiamataForm(this.chiamataForm);
-        this._statoChiamata('inserita');
-    }
-
     formIsValid(): boolean {
         let error = '';
         error += this.chiamataForm.get('cognome').errors ? 'Cognome;' : '';
@@ -227,6 +216,16 @@ export class SchedaTelefonataComponent implements OnInit {
         console.log('Inizio composizione Partenza');
     }
 
+    onSubmit() {
+        this.submitted = true;
+        if (this.formIsValid() || !this.coordinate) {
+            console.error('Il form non è valido');
+            this.submitted = false;
+            return;
+        }
+        this.getChiamataForm(this.chiamataForm);
+        this._statoChiamata('inserita');
+    }
 
     _statoChiamata(tipo: string) {
         this.schedaTelefonata.emit({
