@@ -4,7 +4,6 @@ import { Grids, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../.
 import { Select, Store } from '@ngxs/store';
 import { ViewComponentState } from './store/states/view/view.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
-import { GetUtenti } from './store/actions/utenti/utenti.actions';
 import { ClearDataHome, GetDataHome, SetMapLoaded } from './store/actions/home.actions';
 
 @Component({ templateUrl: 'home.component.html' })
@@ -31,7 +30,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         /**
          * importante: non mettere nel costruttore
          */
-        this.store.dispatch(new GetUtenti());
         this.store.dispatch(new GetDataHome());
     }
 

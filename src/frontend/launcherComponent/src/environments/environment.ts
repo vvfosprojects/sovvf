@@ -33,7 +33,8 @@ export const environment = {
         chiamata: {
             currentId: '',
         },
-        users: '/users',
+        login: '/api/auth/Login',
+        users: '/api/users',
         genera: 'http://so115-mike/so115rest/api/GeneraSintesiRichiesteAssistenza',
         generaFake: true
     }

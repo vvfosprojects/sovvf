@@ -43,7 +43,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
 
     dispatchStates() {
-        this.store.dispatch(new GetUtente(this.authService.currentUserValue.id));
+        this.store.dispatch(new GetUtente(this.authService.currentUserValue));
         this.store.dispatch(new GetTurno());
     }
 

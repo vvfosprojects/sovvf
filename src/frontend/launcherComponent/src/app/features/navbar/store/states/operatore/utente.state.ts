@@ -1,7 +1,6 @@
 import { Utente } from '../../../../../shared/model/utente.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { UserService } from '../../../../../core/auth/_services';
-import { GetUtente } from '../../actions/operatore/utente.actions';
+import { GetUtente, SetUtente } from '../../actions/operatore/utente.actions';
 import { SignalRService } from '../../../../../core/signalr/signalR.service';
 import { SignalRNotification } from '../../../../../core/signalr/model/signalr-notification.model';
 
@@ -24,21 +23,23 @@ export class UtenteState {
         return state.utente;
     }
 
-    constructor(private _users: UserService, private signalR: SignalRService) {
+    constructor(private signalR: SignalRService) {
     }
 
     @Action(GetUtente)
-    getUtente({ patchState }: StateContext<UtenteStateModel>, action: GetUtente) {
-        this._users.getById(action.id).subscribe((utente: Utente) => {
-            this.signalR.addToGroup(new SignalRNotification(
-                utente.sede.codice,
-                utente.id,
-                `${utente.nome} ${utente.cognome}`
-                ));
-            patchState({
-                utente: utente
-            });
-        });
+    getUtente({ dispatch }: StateContext<UtenteStateModel>, action: GetUtente) {
+        this.signalR.addToGroup(new SignalRNotification(
+            action.utente.sede.codice,
+            action.utente.id,
+            `${action.utente.nome} ${action.utente.cognome}`
+        ));
+        dispatch(new SetUtente(action.utente));
+    }
 
+    @Action(SetUtente)
+    setUtente({ patchState }: StateContext<UtenteStateModel>, action: SetUtente) {
+        patchState({
+            utente: action.utente
+        });
     }
 }
