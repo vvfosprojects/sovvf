@@ -24,7 +24,7 @@ export class BoxFunzionariSo {
          * Indica se la persona ha il ruolo di 2° tecnico di guardia (UTS2)
          */
         public tecnicoGuardia2: boolean,
-        /**
+         /**
          * Indica se la persona ha il ruolo di Capo Turno
          */
         public capoTurno: boolean

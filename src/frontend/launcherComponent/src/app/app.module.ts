@@ -83,7 +83,7 @@ import { ToastrState } from './shared/store/states/toastr/toastr.state';
             name: 'SO115 - NGXS',
         }),
         NgxsLoggerPluginModule.forRoot({
-            disabled: environment.production,
+            disabled: !environment.production,
         }),
     ],
     providers: [

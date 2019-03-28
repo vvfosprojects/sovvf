@@ -21,7 +21,7 @@ export class BoxMezzi {
          */
         public istituto: number,
         /**
-         * Mezzi inServizio (il totale dei mezzi tranne quelli istituto
+         * Mezzi inServizio (il totale dei mezzi tranne quelli istituto)
          */
         public inServizio: number
     ) {

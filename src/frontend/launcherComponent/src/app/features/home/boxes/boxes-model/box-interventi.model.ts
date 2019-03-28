@@ -39,11 +39,11 @@ export class BoxInterventi {
         /**
          * descrizione anno corrente
          */
-        public annoCorrente: string,
+        public annoCorrente: number,
         /**
          * Interventi totali dell'anno corrente
          */
-        public totAnnoCorrente: string
+        public totAnnoCorrente: number
     ) {
     }
 
