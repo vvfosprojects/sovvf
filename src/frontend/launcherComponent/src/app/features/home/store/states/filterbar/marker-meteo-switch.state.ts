@@ -13,7 +13,7 @@ export const markerMeteoStateDefaults: MarkerMeteoStateModel = {
 };
 
 @State<MarkerMeteoStateModel>({
-  name: 'markerMeteo',
+  name: 'markerMeteoSwitch',
   defaults: markerMeteoStateDefaults
 })
 export class MarkerMeteoState {

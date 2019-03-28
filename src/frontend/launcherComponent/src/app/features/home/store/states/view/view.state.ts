@@ -44,7 +44,8 @@ export const ViewComponentStateDefault: ViewComponentStateModel = {
 
 @State<ViewComponentStateModel>({
     name: 'viewComponent',
-    defaults: ViewComponentStateDefault
+    defaults: ViewComponentStateDefault,
+    children: [BackupViewComponentState]
 })
 
 export class ViewComponentState {

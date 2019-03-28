@@ -21,6 +21,7 @@ import { Utente } from '../../../../../shared/model/utente.model';
 import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
 import { SignalRNotification } from '../../../../../core/signalr/model/signalr-notification.model';
 import { InsertChiamataMarker, RemoveChiamataMarker } from '../../actions/maps/chiamate-markers.actions';
+import { ClipboardState } from './clipboard.state';
 
 export interface SchedaTelefonataStateModel {
     coordinate: Coordinate;
@@ -36,7 +37,8 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
 
 @State<SchedaTelefonataStateModel>({
     name: 'schedaTelefonata',
-    defaults: SchedaTelefonataStateDefaults
+    defaults: SchedaTelefonataStateDefaults,
+    children: [ClipboardState]
 })
 
 export class SchedaTelefonataState {

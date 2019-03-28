@@ -10,6 +10,10 @@ import { ClearRichieste, GetRichieste, SetRichieste, UpdateRichiesta } from '../
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { patch, updateItem } from '@ngxs/store/operators';
+import { RichiestaFissataState } from './richiesta-fissata.state';
+import { RichiestaHoverState } from './richiesta-hover.state';
+import { RichiestaSelezionataState } from './richiesta-selezionata.state';
+import { RichiestaModificaState } from './richiesta-modifica.state';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -21,7 +25,8 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
 
 @State<RichiesteStateModel>({
     name: 'richieste',
-    defaults: RichiesteStateDefaults
+    defaults: RichiesteStateDefaults,
+    children: [RichiestaFissataState, RichiestaHoverState, RichiestaSelezionataState, RichiestaModificaState]
 })
 export class RichiesteState {
 

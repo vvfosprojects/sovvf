@@ -394,7 +394,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     stopTimeout(mezzo: MezzoComposizione, deseleziona: boolean) {
         mezzo.dataScadenzaTimeout = null;
         mezzo.timeout = null;
-        this.interval[mezzo.id] ? clearInterval(this.interval[mezzo.id]) : console.error('Interval[' + mezzo.id + '] non presente');
+        this.interval[mezzo.id] ? clearInterval(this.interval[mezzo.id]) : console.log('Interval[' + mezzo.id + '] non presente');
 
         if (deseleziona) {
             const partenzaTrovata = this.searchPartenzaByMezzo(mezzo);

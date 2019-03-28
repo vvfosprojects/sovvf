@@ -63,18 +63,18 @@ import { MapsButtonComponent } from './maps-ui/buttons/maps-button.component';
         SharedModule.forRoot(),
         NgxsModule.forFeature(
             [
-                MarkerMeteoState,
-                MeteoMarkersState,
                 MapsFiltroState,
                 MapsDirectionState,
                 CentroMappaState,
+                MarkerMeteoState,
                 MarkerState,
                 RichiesteMarkersState,
                 MezziMarkersState,
                 SediMarkersState,
                 MarkerInfoWindowState,
                 MarkerOpachiState,
-                ChiamateMarkersState
+                ChiamateMarkersState,
+                MeteoMarkersState
             ]
         ),
     ],

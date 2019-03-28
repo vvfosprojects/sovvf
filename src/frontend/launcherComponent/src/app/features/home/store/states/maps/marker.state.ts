@@ -25,6 +25,10 @@ import { SediMarkersState } from './sedi-markers.state';
 import { SetSedeMarkerById } from '../../actions/maps/sedi-markers.actions';
 import { SetMezzoMarkerById } from '../../actions/maps/mezzi-markers.actions';
 import { SetRichiestaMarkerById } from '../../actions/maps/richieste-markers.actions';
+import { MarkerOpachiState } from './marker-opachi.state';
+import { MarkerInfoWindowState } from './marker-info-window.state';
+import { MeteoMarkersState } from './meteo-markers.state';
+import { ChiamateMarkersState } from './chiamate-markers.state';
 
 export interface MarkerStateModel {
     markerRichiestaSelezionato: string;
@@ -46,7 +50,16 @@ export const markerStateDefaults: MarkerStateModel = {
 
 @State<MarkerStateModel>({
     name: 'marker',
-    defaults: markerStateDefaults
+    defaults: markerStateDefaults,
+    children: [
+        RichiesteMarkersState,
+        MezziMarkersState,
+        SediMarkersState,
+        MarkerOpachiState,
+        MarkerInfoWindowState,
+        MeteoMarkersState,
+        ChiamateMarkersState
+    ]
 })
 export class MarkerState {
 

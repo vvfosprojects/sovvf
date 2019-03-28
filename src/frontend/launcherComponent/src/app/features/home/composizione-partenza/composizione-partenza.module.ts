@@ -31,6 +31,7 @@ import { NgxsModule } from '@ngxs/store';
 import { MezziComposizioneState } from '../store/states/composizione-partenza/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../store/states/composizione-partenza/squadre-composizione.state';
 import { PreAccoppiatiState } from '../store/states/composizione-partenza/pre-accoppiati.state';
+import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
 
 @NgModule({
     declarations: [
@@ -55,6 +56,7 @@ import { PreAccoppiatiState } from '../store/states/composizione-partenza/pre-ac
         NgSelectModule,
         NgxsModule.forFeature(
             [
+                RichiestaComposizioneState,
                 MezziComposizioneState,
                 SquadreComposizioneState,
                 PreAccoppiatiState

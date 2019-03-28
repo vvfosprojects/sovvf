@@ -2,6 +2,9 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { RichiestaComposizione, TerminaComposizione } from '../../actions/composizione-partenza/richiesta-composizione.actions';
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
+import { MezziComposizioneState } from './mezzi-composizione.state';
+import { SquadreComposizioneState } from './squadre-composizione.state';
+import { PreAccoppiatiState } from './pre-accoppiati.state';
 
 export interface RichiestaComposizioneStateModel {
     richiesta: SintesiRichiesta;
@@ -13,7 +16,10 @@ export const RichiestaComposizioneStateDefaults: RichiestaComposizioneStateModel
 
 @State<RichiestaComposizioneStateModel>({
     name: 'richiestaComposizione',
-    defaults: RichiestaComposizioneStateDefaults
+    defaults: RichiestaComposizioneStateDefaults,
+    children: [MezziComposizioneState,
+        SquadreComposizioneState,
+        PreAccoppiatiState]
 })
 
 export class RichiestaComposizioneState {
