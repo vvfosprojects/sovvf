@@ -1,4 +1,4 @@
-.centro-button {
+.buttons-control {
     background-color: white !important;
     color: gray !important;
     border-radius: 1px !important;
@@ -6,10 +6,10 @@
     margin-right: 1.8px;
 }
 
-.centro-button:focus {
+.buttons-control:focus {
     box-shadow: none !important;
 }
 
-.centro-button:hover {
+.buttons-control:hover {
     color: black !important;
 }

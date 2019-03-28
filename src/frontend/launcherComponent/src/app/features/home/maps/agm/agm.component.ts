@@ -55,6 +55,8 @@ export class AgmComponent implements OnDestroy {
     richiestaMarkerIconUrl: string;
     meteoMarkerIconUrl: string;
 
+    toggleAnimation = false;
+
     zoomControlOptions: ZoomControlOptions = {
         position: ControlPosition.BOTTOM_RIGHT
     };
@@ -126,7 +128,7 @@ export class AgmComponent implements OnDestroy {
         this.map_loaded = true;
         this.map = event;
         this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('Settings'));
-        this.map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('CentroButton'));
+        this.map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('CustomButtons'));
         google.maps.event.addListenerOnce(this.map, 'tilesloaded', function () {
             self.cachedMarkers = [];
             self.mapFullyLoaded.emit(true);
@@ -152,8 +154,8 @@ export class AgmComponent implements OnDestroy {
         return this.markerService.isHovered(id, tipoMarker);
     }
 
-    isRilevante(id: string, rilevante: Date): string {
-        if (!!rilevante) {
+    isRilevante(rilevante: Date): string {
+        if (!!rilevante && !this.toggleAnimation) {
             return 'BOUNCE';
         }
         return null;
@@ -260,6 +262,10 @@ export class AgmComponent implements OnDestroy {
 
     wipeStatoRichiesta(statoEnum: StatoRichiesta): string {
         return wipeStatoRichiesta(statoEnum);
+    }
+
+    onToggleAnimation() {
+        this.toggleAnimation = !this.toggleAnimation;
     }
 
 }

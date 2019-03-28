@@ -25,7 +25,7 @@
                      (mapClick)="mapClick($event)"
                      (mapDblClick)="mapDblClick()">
                 <app-maps-filtro id="Settings"></app-maps-filtro>
-                <app-centro-button id="CentroButton"></app-centro-button>
+                <app-maps-button id="CustomButtons" [toggleStatus]="toggleAnimation" (toggleAnimation)="onToggleAnimation()"></app-maps-button>
                 <agm-direction [renderOptions]="renderOptions"
                                [origin]="direction.origin"
                                [destination]="direction.destination"
@@ -45,7 +45,7 @@
                                 (mouseOver)="actionRichiestaMarker(richiestaMarker.id, MouseE.HoverIn)"
                                 (mouseOut)="actionRichiestaMarker(richiestaMarker.id, MouseE.HoverOut)"
                                 [iconUrl]="iconaRichiestaMarker(richiestaMarker)"
-                                [animation]="isRilevante(richiestaMarker.id, richiestaMarker?.rilevanza)"
+                                [animation]="isRilevante(richiestaMarker?.rilevanza)"
                                 [opacity]="isOpaque(richiestaMarker.id, 'richiesta')"
                                 [zIndex]="zIndex(richiestaMarker.id, 'richiesta')"
                                 [visible]="isVisible('richiesta')">

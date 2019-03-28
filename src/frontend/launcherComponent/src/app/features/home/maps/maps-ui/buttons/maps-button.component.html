@@ -1,0 +1,8 @@
+<div class="mb-3 ml-2">
+    <button class="btn buttons-control" (click)="toggleAnimation.emit()">
+        <i class="fa" [ngClass]="{'fa-stop-circle':!toggleStatus,'fa-play-circle':toggleStatus}"></i>
+    </button>
+</div>
+<div class="mb-2 ml-2">
+    <button class="btn buttons-control" (click)="centra()"><i class="fa fa-crosshairs"></i></button>
+</div>
