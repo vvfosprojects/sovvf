@@ -48,6 +48,7 @@ import { SintesiRichiestaModule } from '../richieste/lista-richieste/sintesi-ric
 import { MarkerInfoWindowState } from '../store/states/maps/marker-info-window.state';
 import { MarkerOpachiState } from '../store/states/maps/marker-opachi.state';
 import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
+import { CentroButtonComponent } from './maps-ui/centro-button/centro-button.component';
 
 @NgModule({
     imports: [
@@ -84,7 +85,8 @@ import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.stat
         MapsFiltroComponent,
         InfoWindowComponent,
         CambioSedeModalComponent,
-        SintesiRichiestaModalComponent
+        SintesiRichiestaModalComponent,
+        CentroButtonComponent
     ],
     entryComponents: [CambioSedeModalComponent, SintesiRichiestaModalComponent],
     exports: [

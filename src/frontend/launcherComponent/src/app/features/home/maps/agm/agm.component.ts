@@ -126,6 +126,7 @@ export class AgmComponent implements OnDestroy {
         this.map_loaded = true;
         this.map = event;
         this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('Settings'));
+        this.map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('CentroButton'));
         google.maps.event.addListenerOnce(this.map, 'tilesloaded', function () {
             self.cachedMarkers = [];
             self.mapFullyLoaded.emit(true);

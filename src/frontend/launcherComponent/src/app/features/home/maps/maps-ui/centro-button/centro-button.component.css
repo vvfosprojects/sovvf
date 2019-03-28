@@ -1,0 +1,15 @@
+.centro-button {
+    background-color: white !important;
+    color: gray !important;
+    border-radius: 1px !important;
+    padding: 7px 11px;
+    margin-right: 1.8px;
+}
+
+.centro-button:focus {
+    box-shadow: none !important;
+}
+
+.centro-button:hover {
+    color: black !important;
+}
