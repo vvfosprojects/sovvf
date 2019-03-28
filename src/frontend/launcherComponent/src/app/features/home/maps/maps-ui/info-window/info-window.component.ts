@@ -27,7 +27,7 @@ export class InfoWindowComponent implements OnInit {
     @Input() compact = false;
     @Input() richiestaMarker: RichiestaMarker;
     @Input() sedeMarker: SedeMarker;
-    @Input() chiamata: ChiamataMarker;
+    @Input() chiamataMarker: ChiamataMarker;
     @Input() mezzoMarker: MezzoMarker;
     @Input() meteoMarker: MeteoMarker;
     @Input() tipoSedeIcona: string;

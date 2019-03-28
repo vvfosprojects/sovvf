@@ -16,6 +16,7 @@ import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.st
 import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
 import { AgmService } from './agm/agm-service.service';
 import { MarkerService } from './service/marker-service/marker-service.service';
+import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
 
 @Component({
     selector: 'app-maps',
@@ -29,7 +30,8 @@ export class MapsComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Select(CentroMappaState.centroMappa) centroMappa$: Observable<CentroMappa>;
-    @Select(SchedaTelefonataState.chiamataMarker) chiamataMarkers$: Observable<ChiamataMarker[]>;
+    // @Select(SchedaTelefonataState.chiamataMarker) chiamataMarkers$: Observable<ChiamataMarker[]>;
+    @Select(ChiamateMarkersState.chiamateMarkers) chiamataMarkers$: Observable<ChiamataMarker[]>;
     @Select(RichiestaComposizioneState.richiestaComposizioneMarker) composizioneMarkers$: Observable<ComposizioneMarker[]>;
     @Select(RichiesteMarkersState.richiesteMarkers) richiesteMarkers$: Observable<RichiestaMarker[]>;
     @Select(MezziMarkersState.mezziMarkers) mezziMarkers$: Observable<MezzoMarker[]>;

@@ -37,7 +37,7 @@ export class AgmComponent implements OnDestroy {
     @Input() sediMarkers: SedeMarker[];
     @Input() mezziMarkers: MezzoMarker[];
     @Input() centroMappa: CentroMappa;
-    @Input() chiamataMarkers: ChiamataMarker[];
+    @Input() chiamateMarkers: ChiamataMarker[];
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Input() composizioneMarkers: ComposizioneMarker[];
     @Output() mapFullyLoaded = new EventEmitter<boolean>();
@@ -154,6 +154,13 @@ export class AgmComponent implements OnDestroy {
     isRilevante(id: string, rilevante: Date): string {
         if (!!rilevante) {
             return 'BOUNCE';
+        }
+        return null;
+    }
+
+    animation(mySelf: boolean): string {
+        if (mySelf) {
+            return 'DROP';
         }
         return null;
     }

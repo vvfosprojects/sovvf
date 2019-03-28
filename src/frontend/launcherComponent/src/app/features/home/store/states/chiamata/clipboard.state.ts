@@ -1,8 +1,7 @@
-import { Action, State, Store } from '@ngxs/store';
+import { Action, State, StateContext } from '@ngxs/store';
 import { ClipboardService } from 'ngx-clipboard';
 import { ClearClipboard, CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
-import { SchedaTelefonataState } from './scheda-telefonata.state';
 
 export interface ClipboardStateModel {
     clipboard: string;
@@ -19,25 +18,26 @@ export const ClipboardStateDefaults: ClipboardStateModel = {
 
 export class ClipboardState {
 
-    constructor(private store: Store,
-                private _clipboardService: ClipboardService) {
+    constructor(private _clipboardService: ClipboardService) {
     }
 
 
     @Action(CopyToClipboard)
-    copyToClipboard() {
-        const coordinate = this.store.selectSnapshot(SchedaTelefonataState.coordinate);
-        this.toClipboard(coordinate);
+    copyToClipboard({ patchState }: StateContext<ClipboardStateModel>, action: CopyToClipboard) {
+        patchState({
+            clipboard: this.toClipboard(action.coordinate)
+        });
     }
 
     @Action(ClearClipboard)
-    clearClipboard() {
-        this._clipboardService.copyFromContent(' ');
+    clearClipboard({ patchState }: StateContext<ClipboardStateModel>) {
+        patchState(ClipboardStateDefaults);
     }
 
-    toClipboard(coordinate: Coordinate) {
+    toClipboard(coordinate: Coordinate): string {
         const copiedText = coordinate.latitudine.toString() + ', ' + coordinate.longitudine.toString();
         this._clipboardService.copyFromContent(copiedText);
+        return copiedText;
     }
 
 }

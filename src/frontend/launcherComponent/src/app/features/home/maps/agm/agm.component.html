@@ -186,7 +186,8 @@
                                     [showCloseButton]="false">
                                 <ng-template>
                                     <app-info-window [mezzoMarker]="mezzoMarker"
-                                                     [datiMeteo]="findDatiMeteo('mezzo-'+mezzoMarker.mezzo.codice)"></app-info-window>
+                                                     [datiMeteo]="findDatiMeteo('mezzo-'+mezzoMarker.mezzo.codice)">
+                                    </app-info-window>
                                 </ng-template>
                             </agm-snazzy-info-window>
                         </agm-marker>
@@ -290,32 +291,33 @@
                     <!--</agm-marker>-->
                     <!--</ng-template>-->
                 </ng-container>
-                <!--<ng-template [ngSwitchCase]="viewStateMappa.active === AppFeatures.Chiamata">-->
                 <ng-container>
-                    <agm-marker *ngFor="let chiamata of chiamataMarkers;"
-                                [latitude]="chiamata.localita.coordinate.latitudine"
-                                [longitude]="chiamata.localita.coordinate.longitudine"
+                    <agm-marker *ngFor="let chiamataMarker of chiamateMarkers;"
+                                [latitude]="chiamataMarker.localita.coordinate.latitudine"
+                                [longitude]="chiamataMarker.localita.coordinate.longitudine"
                                 [iconUrl]="richiestaMarkerIconUrl"
-                                [animation]="'DROP'">
+                                [animation]="animation(chiamataMarker.mySelf)">
                         <agm-snazzy-info-window
                                 [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: '#dc3545'}"
-                                [pointer]="'0px'"
+                                [pointer]="'10px'"
                                 [backgroundColor]="'#f5f5f0'"
                                 [border]="{width: '2px', color: '#dc3545'}"
                                 [borderRadius]="'10px 10px'"
                                 [maxHeight]="1000"
                                 [maxWidth]="1000"
                                 [padding]="'10px'"
-                                [isOpen]="true"
+                                [closeOnMapClick]="!chiamataMarker.mySelf"
+                                [closeWhenOthersOpen]="!chiamataMarker.mySelf"
+                                [isOpen]="chiamataMarker.mySelf"
                                 [showCloseButton]="false">
                             <ng-template>
-                                <app-info-window [chiamata]="chiamata"
-                                                 [datiMeteo]="findDatiMeteo('chiamata-'+chiamata.id)"></app-info-window>
+                                <app-info-window [chiamataMarker]="chiamataMarker" [compact]="!chiamataMarker.mySelf"
+                                                 [datiMeteo]="findDatiMeteo('chiamata-'+chiamataMarker.id)">
+                                </app-info-window>
                             </ng-template>
                         </agm-snazzy-info-window>
                     </agm-marker>
                 </ng-container>
-                <!--</ng-template>-->
                 <ng-container>
                     <agm-marker *ngFor="let mMarker of (meteoMarkers$ | async);"
                                 [latitude]="mMarker.localita.coordinate.latitudine"

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormChiamataModel } from '../model/form-scheda-telefonata.model';
@@ -15,6 +15,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/confirm-modal.component';
 import { Utente } from '../../../../shared/model/utente.model';
 import { ClearClipboard } from '../../store/actions/chiamata/clipboard.actions';
+import { ReducerSchedaTelefonata } from '../../store/actions/chiamata/scheda-telefonata.actions';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -25,7 +26,7 @@ import { ClearClipboard } from '../../store/actions/chiamata/clipboard.actions';
 export class SchedaTelefonataComponent implements OnInit {
 
     options = {
-        componentRestrictions: {country: ['IT', 'FR', 'AT', 'CH', 'SI']}
+        componentRestrictions: { country: ['IT', 'FR', 'AT', 'CH', 'SI'] }
     };
     chiamataCorrente: FormChiamataModel;
     chiamataMarker: ChiamataMarker;
@@ -38,7 +39,6 @@ export class SchedaTelefonataComponent implements OnInit {
 
     @Input() tipologie: TipologieInterface[];
     @Input() operatore: Utente;
-    @Output() schedaTelefonata = new EventEmitter<SchedaTelefonataInterface>();
 
     constructor(private formBuilder: FormBuilder,
                 private store: Store,
@@ -87,14 +87,14 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     onAnnullaChiamata(): void {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {backdropClass: 'light-blue-backdrop', centered: true});
-        modalConfermaAnnulla.componentInstance.icona = {descrizione: 'trash', colore: 'danger'};
+        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
         modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tornerai alla lista eliminando tutti i dati inseriti.';
         modalConfermaAnnulla.componentInstance.bottoni = [
-            {type: 'ko', descrizione: 'Annulla', colore: 'danger'},
-            {type: 'ok', descrizione: 'Conferma', colore: 'dark'},
+            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
         ];
 
         modalConfermaAnnulla.result.then(
@@ -116,14 +116,14 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     onResetChiamata(): void {
-        const modalConfermaReset = this.modalService.open(ConfirmModalComponent, {backdropClass: 'light-blue-backdrop', centered: true});
-        modalConfermaReset.componentInstance.icona = {descrizione: 'exclamation-triangle', colore: 'danger'};
+        const modalConfermaReset = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        modalConfermaReset.componentInstance.icona = { descrizione: 'exclamation-triangle', colore: 'danger' };
         modalConfermaReset.componentInstance.titolo = 'Reset Chiamata';
         modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler effettuare il reset della chiamata?';
         modalConfermaReset.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti verranno eliminati.';
         modalConfermaReset.componentInstance.bottoni = [
-            {type: 'ko', descrizione: 'Annulla', colore: 'danger'},
-            {type: 'ok', descrizione: 'Conferma', colore: 'dark'},
+            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
         ];
 
         modalConfermaReset.result.then(
@@ -154,8 +154,8 @@ export class SchedaTelefonataComponent implements OnInit {
 
     onCercaIndirizzo(result: Address): void {
         this.coordinate = new Coordinate(result.geometry.location.lat(), result.geometry.location.lng());
-        this.chiamataMarker = new ChiamataMarker(this.idChiamata,
-            new Localita(this.coordinate, result.formatted_address)
+        this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`,
+            new Localita(this.coordinate, result.formatted_address), null, true
         );
         this._statoChiamata('cerca');
     }
@@ -228,10 +228,11 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     _statoChiamata(tipo: string) {
-        this.schedaTelefonata.emit({
+        const schedaTelefonata: SchedaTelefonataInterface = {
             tipo: tipo,
             formChiamata: this.chiamataCorrente,
             markerChiamata: this.chiamataMarker
-        });
+        };
+        this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata));
     }
 }

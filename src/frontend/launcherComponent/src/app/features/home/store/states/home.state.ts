@@ -9,6 +9,7 @@ import { ClearBoxRichieste, GetBoxRichieste } from '../actions/boxes/box-richies
 import { ClearBoxMezzi, GetBoxMezzi } from '../actions/boxes/box-mezzi.actions';
 import { ClearBoxPersonale, GetBoxPersonale } from '../actions/boxes/box-personale.actions';
 import { SignalRState } from '../../../../core/signalr/store/signalR.state';
+import { ClearChiamateMarkers, GetChiamateMarkers } from '../actions/maps/chiamate-markers.actions';
 
 export interface HomeStateModel {
     loaded: boolean;
@@ -41,6 +42,7 @@ export class HomeState {
         dispatch(new ClearSediMarkers());
         dispatch(new ClearMezziMarkers());
         dispatch(new ClearRichiesteMarkers());
+        dispatch(new ClearChiamateMarkers());
         dispatch(new ClearBoxRichieste());
         dispatch(new ClearBoxMezzi());
         dispatch(new ClearBoxPersonale());
@@ -56,6 +58,7 @@ export class HomeState {
         dispatch(new GetSediMarkers());
         dispatch(new GetMezziMarkers());
         dispatch(new GetRichiesteMarkers());
+        dispatch(new GetChiamateMarkers());
         dispatch(new GetBoxRichieste());
         dispatch(new GetBoxMezzi());
         dispatch(new GetBoxPersonale());

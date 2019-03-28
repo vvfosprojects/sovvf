@@ -21,7 +21,7 @@ export class AddChiamateMarkers {
 export class InsertChiamataMarker {
     static readonly type = '[Chiamate Marker] Insert Chiamata Marker';
 
-    constructor(public payload: ChiamataMarker, public before?: number) {
+    constructor(public payload: ChiamataMarker, public mySelf?: boolean) {
     }
 }
 

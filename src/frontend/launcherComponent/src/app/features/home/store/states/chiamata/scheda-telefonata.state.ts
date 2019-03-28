@@ -1,8 +1,16 @@
-import { Action, Select, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Select, State, StateContext } from '@ngxs/store';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
-import { SetChiamata, InsertChiamata, ReducerSchedaTelefonata, ResetChiamata, CestinaChiamata, SetMarkerChiamata, ClearChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
+import {
+    SetChiamata,
+    InsertChiamata,
+    ReducerSchedaTelefonata,
+    ResetChiamata,
+    CestinaChiamata,
+    SetMarkerChiamata,
+    ClearChiamata,
+    ClearMarkerChiamata
+} from '../../actions/chiamata/scheda-telefonata.actions';
 import { FormChiamataModel } from '../../../chiamata/model/form-scheda-telefonata.model';
-import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
 import { CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
 import { ToggleChiamata } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
@@ -12,17 +20,18 @@ import { UtenteState } from '../../../../navbar/store/states/operatore/utente.st
 import { Utente } from '../../../../../shared/model/utente.model';
 import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
 import { SignalRNotification } from '../../../../../core/signalr/model/signalr-notification.model';
+import { InsertChiamataMarker, RemoveChiamataMarker } from '../../actions/maps/chiamate-markers.actions';
 
 export interface SchedaTelefonataStateModel {
     coordinate: Coordinate;
     chiamata: FormChiamataModel;
-    chiamataMarker: ChiamataMarker[];
+    idChiamataMarker: string;
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     coordinate: null,
     chiamata: null,
-    chiamataMarker: []
+    idChiamataMarker: null
 };
 
 @State<SchedaTelefonataStateModel>({
@@ -37,21 +46,11 @@ export class SchedaTelefonataState {
 
     @Select(UtenteState.utente) utente$: Observable<Utente>;
 
-    @Selector()
-    static coordinate(state: SchedaTelefonataStateModel) {
-        return state.coordinate;
-    }
-
-    @Selector()
-    static chiamataMarker(state: SchedaTelefonataStateModel) {
-        return state.chiamataMarker;
-    }
-
     @Action(ReducerSchedaTelefonata)
-    reducer({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata) {
+    reducer({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata) {
         switch (action.schedaTelefonata.tipo) {
             case 'copiaIndirizzo':
-                dispatch(new CopyToClipboard());
+                dispatch(new CopyToClipboard(getState().coordinate));
                 break;
             case 'annullata':
                 dispatch(new CestinaChiamata());
@@ -116,10 +115,16 @@ export class SchedaTelefonataState {
         dispatch(new GetMarkerDatiMeteo('chiamata-' + action.marker.id, coordinate));
         dispatch(new SetCoordCentroMappa(coordinate));
         dispatch(new SetZoomCentroMappa(18));
+        dispatch(new InsertChiamataMarker(action.marker, true));
         patchState({
             coordinate: coordinate,
-            chiamataMarker: [action.marker]
+            idChiamataMarker: action.marker.id
         });
+    }
+
+    @Action(ClearMarkerChiamata)
+    clearMarkerChiamata({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
+        dispatch(new RemoveChiamataMarker(getState().idChiamataMarker));
     }
 
     @Action(ClearChiamata)

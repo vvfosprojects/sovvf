@@ -1,11 +1,7 @@
-import { Component, EventEmitter, isDevMode, OnDestroy, OnInit, Output } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { APP_TIPOLOGIE, TipologieInterface } from '../../../core/settings/tipologie';
-import { ChiamataMarker } from '../maps/maps-model/chiamata-marker.model';
-import { Coordinate } from '../../../shared/model/coordinate.model';
-import { Select, Store } from '@ngxs/store';
-import { SchedaTelefonataInterface } from './model/scheda-telefonata.interface';
-import { ReducerSchedaTelefonata } from '../store/actions/chiamata/scheda-telefonata.actions';
+import { Select } from '@ngxs/store';
 import { Utente } from '../../../shared/model/utente.model';
 import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
 
@@ -17,15 +13,11 @@ import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
 })
 export class ChiamataComponent implements OnInit, OnDestroy {
 
-    @Output() chiamataMarker = new EventEmitter<ChiamataMarker>();
-
-    subscription = new Subscription();
     tipologie: TipologieInterface[] = APP_TIPOLOGIE;
-    coordinate: Coordinate;
 
     @Select(UtenteState.utente) utente$: Observable<Utente>;
 
-    constructor(private store: Store) {
+    constructor() {
     }
 
     ngOnInit(): void {
@@ -34,11 +26,6 @@ export class ChiamataComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         isDevMode() && console.log('Componente Chiamata distrutto');
-        this.subscription.unsubscribe();
-    }
-
-    getSchedaTelefonata($event: SchedaTelefonataInterface): void {
-        this.store.dispatch(new ReducerSchedaTelefonata($event));
     }
 
 }

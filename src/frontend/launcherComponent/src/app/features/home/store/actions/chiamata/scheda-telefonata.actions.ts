@@ -24,6 +24,10 @@ export class SetMarkerChiamata {
     }
 }
 
+export class ClearMarkerChiamata {
+    static readonly type = '[Scheda Telefonata] Clear chiamata Marker';
+}
+
 export class ClearChiamata {
     static readonly type = '[Scheda Telefonata] Clear chiamata Marker';
 }

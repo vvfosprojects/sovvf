@@ -64,10 +64,15 @@ export class ChiamateMarkersState {
     }
 
     @Action(InsertChiamataMarker)
-    insertChiamataMarker({ setState }: StateContext<ChiamateMarkersStateModel>, { payload, before }: InsertChiamataMarker) {
+    insertChiamataMarker({ setState }: StateContext<ChiamateMarkersStateModel>, { payload, mySelf }: InsertChiamataMarker) {
+        let chiamataMarker: ChiamataMarker;
+        chiamataMarker = payload;
+        if (mySelf) {
+            chiamataMarker.mySelf = true;
+        }
         setState(
             patch({
-                chiamateMarkers: insertItem(payload, before)
+                chiamateMarkers: insertItem(chiamataMarker)
             })
         );
     }
