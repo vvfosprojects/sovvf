@@ -62,17 +62,17 @@ export class MapsFiltroState {
     }
 
     @Selector()
-    static filtroMarker(state: MapsFiltroStateModel) {
+    static filtroMarker(state: MapsFiltroStateModel): MarkerFiltro[] {
         return state.filtroMarker;
     }
 
     @Selector()
-    static filtroMarkerAttivo(state: MapsFiltroStateModel) {
+    static filtroMarkerAttivo(state: MapsFiltroStateModel): string[] {
         return state.filtroMarkerAttivo;
     }
 
     @Selector()
-    static filtroMarkerAttivoCopy(state: MapsFiltroStateModel) {
+    static filtroMarkerAttivoCopy(state: MapsFiltroStateModel): string[] {
         return state.filtroMarkerAttivoCopy;
     }
 

@@ -52,7 +52,7 @@ import { MarkerInfoWindowState } from '../../../store/states/maps/marker-info-wi
 import { MarkerDatiMeteo } from '../../maps-model/marker-dati-meteo.interface';
 import { MarkerOpachiState, MarkerOpachiStateModel } from '../../../store/states/maps/marker-opachi.state';
 import { CustomButtonsMaps } from '../../maps-interface/maps-custom-buttons';
-import { CentraMappaButton, ToggleAnimationButton } from '../../../store/actions/maps/maps-buttons.actions';
+import { CentraMappaButton, ToggleAnimation, ToggleAnimationButton } from '../../../store/actions/maps/maps-buttons.actions';
 
 
 @Injectable()
@@ -101,7 +101,10 @@ export class MarkerService implements OnDestroy {
     constructor(private agmService: AgmService,
                 private unitaAttualeS: UnitaAttualeService,
                 private store: Store) {
-        this.subscription.add(this.filtroMarkerAttivo$.subscribe(filtroAttivo => this.filtroMarkerAttivo = filtroAttivo));
+        this.subscription.add(this.filtroMarkerAttivo$.subscribe((filtroAttivo: string[]) => {
+            this.filtroMarkerAttivo = filtroAttivo;
+            this.store.dispatch(new ToggleAnimationButton(true));
+        }));
         this.subscription.add(this.stateSwitch$.subscribe((state: boolean) => this.switchMeteo = state));
         this.subscription.add(this.markerOpachi$.subscribe((state: MarkerOpachiStateModel) => this.markerOpachi = state));
         this.subscription.add(this.markerRichiestaSelezionato$.subscribe((id: string) => this.markerRichiestaSelezionato = id));
@@ -125,6 +128,12 @@ export class MarkerService implements OnDestroy {
          * creo un array con i path di tutte le icone da mettere in cache
          */
         this.iconeCached = this.icone.urlIcone();
+        /**
+         * intervallo animazione dei marker rilevanti 30 sec.
+         */
+        setInterval(() => {
+            this.store.dispatch(new ToggleAnimation());
+        }, 30000);
     }
 
     ngOnDestroy() {
@@ -229,13 +238,16 @@ export class MarkerService implements OnDestroy {
         return trueMarkerValue;
     }
 
-    zIndex(id: string, tipoMarker: string): number {
-        let zIndexValue = 33;
+    zIndex(id: string, tipoMarker: string, rilevante?: Date): number {
+        let zIndexValue = 30;
         const zIndexUp = 10;
         switch (tipoMarker) {
             case 'richiesta':
                 if (this.markerRichiestaSelezionato === id || this.markerRichiestaHover === id) {
                     zIndexValue += zIndexUp;
+                }
+                if (!!rilevante) {
+                    zIndexValue += zIndexUp / 2;
                 }
                 if (this.markerOpachi.stato.richieste) {
                     if (this.markerOpachi.markerOpachiId.richiesteId.includes(id)) {
@@ -470,4 +482,5 @@ export class MarkerService implements OnDestroy {
                 break;
         }
     }
+
 }

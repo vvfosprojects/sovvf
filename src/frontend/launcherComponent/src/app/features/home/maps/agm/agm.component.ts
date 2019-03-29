@@ -73,6 +73,9 @@ export class AgmComponent implements OnDestroy {
     @Select(MapsButtonsState.controlAnimation) controlAnimation$: Observable<ButtonControlAnimation>;
     controlAnimation: ButtonControlAnimation;
 
+    @Select(MapsButtonsState.bounceAnimationStatus) bounceAnimationStatus$: Observable<boolean>;
+    bounceAnimationStatus: boolean;
+
     renderOptions: any = {
         draggable: false,
         suppressMarkers: true,
@@ -123,6 +126,12 @@ export class AgmComponent implements OnDestroy {
         this.subscription.add(
             this.controlAnimation$.subscribe((control: ButtonControlAnimation) => this.controlAnimation = control)
         );
+        /**
+         * bounce animation status
+         */
+        this.subscription.add(
+            this.bounceAnimationStatus$.subscribe((status: boolean) => this.bounceAnimationStatus = status)
+        );
     }
 
     ngOnDestroy() {
@@ -151,8 +160,8 @@ export class AgmComponent implements OnDestroy {
         this.agmService.map = mapWrapper;
     }
 
-    zIndex(id: string, tipoMarker: string): number {
-        return this.markerService.zIndex(id, tipoMarker);
+    zIndex(id: string, tipoMarker: string, rilevante?: Date): number {
+        return this.markerService.zIndex(id, tipoMarker, rilevante);
     }
 
     isClicked(id: string, tipoMarker: string): boolean {
@@ -164,7 +173,7 @@ export class AgmComponent implements OnDestroy {
     }
 
     isRilevante(rilevante: Date): string {
-        if (!!rilevante && !this.controlAnimation.toggleStatus) {
+        if (!!rilevante && !this.controlAnimation.toggleStatus && this.bounceAnimationStatus) {
             return 'BOUNCE';
         }
         return null;

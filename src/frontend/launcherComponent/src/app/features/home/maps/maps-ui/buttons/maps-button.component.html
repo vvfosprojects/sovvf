@@ -1,6 +1,8 @@
 <div class="mb-3 ml-2">
     <button class="btn buttons-control" [ngbTooltip]="controlAnimation.toggleMsg" placement="right"
-            (click)="buttonClick.emit(CustomButton.ToggleAnimation)">
+            (click)="buttonClick.emit(CustomButton.ToggleAnimation)" [ngClass]=""
+            [disableTooltip]="controlAnimation.disabled"
+            [disabled]="controlAnimation.disabled">
         <i class="fa {{controlAnimation.faIcon}}"></i>
     </button>
 </div>

@@ -14,6 +14,7 @@ import { SetMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actio
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { Observable } from 'rxjs';
 import { HomeState } from '../home.state';
+import { ToggleAnimation } from '../../actions/maps/maps-buttons.actions';
 
 export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];
@@ -68,6 +69,7 @@ export class RichiesteMarkersState {
             this.mapIsLoaded$.subscribe(isLoaded => {
                 if (isLoaded) {
                     dispatch(new AddRichiesteMarkers(richiesteRilevanti));
+                    dispatch(new ToggleAnimation());
                 }
             });
         }

@@ -47,7 +47,7 @@
                                 [iconUrl]="iconaRichiestaMarker(richiestaMarker)"
                                 [animation]="isRilevante(richiestaMarker?.rilevanza)"
                                 [opacity]="isOpaque(richiestaMarker.id, 'richiesta')"
-                                [zIndex]="zIndex(richiestaMarker.id, 'richiesta')"
+                                [zIndex]="zIndex(richiestaMarker.id, 'richiesta', richiestaMarker?.rilevanza)"
                                 [visible]="isVisible('richiesta')">
                         <agm-snazzy-info-window
                                 [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(wipeStatoRichiesta(richiestaMarker.stato))}"
