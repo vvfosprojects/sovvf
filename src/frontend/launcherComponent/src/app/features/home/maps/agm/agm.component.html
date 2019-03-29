@@ -25,7 +25,7 @@
                      (mapClick)="mapClick($event)"
                      (mapDblClick)="mapDblClick()">
                 <app-maps-filtro id="Settings"></app-maps-filtro>
-                <app-maps-button id="CustomButtons" [toggleStatus]="toggleAnimation" (toggleAnimation)="onToggleAnimation()"></app-maps-button>
+                <app-maps-button id="CustomButtons" [controlAnimation]="controlAnimation" (buttonClick)="onCustomButtonClick($event)"></app-maps-button>
                 <agm-direction [renderOptions]="renderOptions"
                                [origin]="direction.origin"
                                [destination]="direction.destination"

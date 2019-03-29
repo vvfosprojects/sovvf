@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Store } from '@ngxs/store';
-import { GetInitCentroMappa } from '../../../store/actions/maps/centro-mappa.actions';
+import { ButtonControlAnimation, CustomButtonsMaps } from '../../maps-interface/maps-custom-buttons';
 
 @Component({
     selector: 'app-maps-button',
@@ -9,14 +8,8 @@ import { GetInitCentroMappa } from '../../../store/actions/maps/centro-mappa.act
 })
 export class MapsButtonComponent {
 
-    @Input() toggleStatus = false;
-    @Output() toggleAnimation = new EventEmitter();
-
-    constructor(private store: Store) {
-    }
-
-    centra() {
-        this.store.dispatch(new GetInitCentroMappa());
-    }
+    @Input() controlAnimation: ButtonControlAnimation;
+    @Output() buttonClick = new EventEmitter<CustomButtonsMaps>();
+    CustomButton = CustomButtonsMaps;
 
 }

@@ -29,6 +29,7 @@ import { MarkerOpachiState } from './marker-opachi.state';
 import { MarkerInfoWindowState } from './marker-info-window.state';
 import { MeteoMarkersState } from './meteo-markers.state';
 import { ChiamateMarkersState } from './chiamate-markers.state';
+import { MapsButtonsState } from './maps-buttons.state';
 
 export interface MarkerStateModel {
     markerRichiestaSelezionato: string;
@@ -58,7 +59,8 @@ export const markerStateDefaults: MarkerStateModel = {
         MarkerOpachiState,
         MarkerInfoWindowState,
         MeteoMarkersState,
-        ChiamateMarkersState
+        ChiamateMarkersState,
+        MapsButtonsState
     ]
 })
 export class MarkerState {

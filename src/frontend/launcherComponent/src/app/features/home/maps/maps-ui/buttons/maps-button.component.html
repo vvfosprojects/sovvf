@@ -1,8 +1,12 @@
 <div class="mb-3 ml-2">
-    <button class="btn buttons-control" (click)="toggleAnimation.emit()">
-        <i class="fa" [ngClass]="{'fa-stop-circle':!toggleStatus,'fa-play-circle':toggleStatus}"></i>
+    <button class="btn buttons-control" [ngbTooltip]="controlAnimation.toggleMsg" placement="right"
+            (click)="buttonClick.emit(CustomButton.ToggleAnimation)">
+        <i class="fa {{controlAnimation.faIcon}}"></i>
     </button>
 </div>
-<div class="mb-2 ml-2">
-    <button class="btn buttons-control" (click)="centra()"><i class="fa fa-crosshairs"></i></button>
+<div class="mb-1 ml-2">
+    <button class="btn buttons-control" ngbTooltip="Centra mappa" placement="right"
+            (click)="buttonClick.emit(CustomButton.Centra)">
+        <i class="fa fa-crosshairs"></i>
+    </button>
 </div>

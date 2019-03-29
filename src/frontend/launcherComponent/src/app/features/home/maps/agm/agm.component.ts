@@ -22,6 +22,8 @@ import { MapsDirectionState } from '../../store/states/maps/maps-direction.state
 import { markerColor } from '../../../../shared/helper/function-colori';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { wipeStatoRichiesta } from '../../../../shared/helper/function';
+import { MapsButtonsState } from '../../store/states/maps/maps-buttons.state';
+import { ButtonControlAnimation, CustomButtonsMaps } from '../maps-interface/maps-custom-buttons';
 
 declare var google: any;
 
@@ -55,8 +57,6 @@ export class AgmComponent implements OnDestroy {
     richiestaMarkerIconUrl: string;
     meteoMarkerIconUrl: string;
 
-    toggleAnimation = false;
-
     zoomControlOptions: ZoomControlOptions = {
         position: ControlPosition.BOTTOM_RIGHT
     };
@@ -69,6 +69,9 @@ export class AgmComponent implements OnDestroy {
     direction: DirectionInterface = {
         isVisible: false
     };
+
+    @Select(MapsButtonsState.controlAnimation) controlAnimation$: Observable<ButtonControlAnimation>;
+    controlAnimation: ButtonControlAnimation;
 
     renderOptions: any = {
         draggable: false,
@@ -114,6 +117,12 @@ export class AgmComponent implements OnDestroy {
          */
         this.richiestaMarkerIconUrl = this.markerService.iconaSpeciale('chiamata');
         this.meteoMarkerIconUrl = this.markerService.iconaSpeciale('meteo');
+        /**
+         * stato dei custom button
+         */
+        this.subscription.add(
+            this.controlAnimation$.subscribe((control: ButtonControlAnimation) => this.controlAnimation = control)
+        );
     }
 
     ngOnDestroy() {
@@ -155,7 +164,7 @@ export class AgmComponent implements OnDestroy {
     }
 
     isRilevante(rilevante: Date): string {
-        if (!!rilevante && !this.toggleAnimation) {
+        if (!!rilevante && !this.controlAnimation.toggleStatus) {
             return 'BOUNCE';
         }
         return null;
@@ -264,8 +273,8 @@ export class AgmComponent implements OnDestroy {
         return wipeStatoRichiesta(statoEnum);
     }
 
-    onToggleAnimation() {
-        this.toggleAnimation = !this.toggleAnimation;
+    onCustomButtonClick($event: CustomButtonsMaps): void {
+        this.markerService.onCustomButtonClick($event);
     }
 
 }

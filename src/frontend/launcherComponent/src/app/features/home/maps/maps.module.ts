@@ -49,6 +49,7 @@ import { MarkerInfoWindowState } from '../store/states/maps/marker-info-window.s
 import { MarkerOpachiState } from '../store/states/maps/marker-opachi.state';
 import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
 import { MapsButtonComponent } from './maps-ui/buttons/maps-button.component';
+import { MapsButtonsState } from '../store/states/maps/maps-buttons.state';
 
 @NgModule({
     imports: [
@@ -74,7 +75,8 @@ import { MapsButtonComponent } from './maps-ui/buttons/maps-button.component';
                 MarkerInfoWindowState,
                 MarkerOpachiState,
                 ChiamateMarkersState,
-                MeteoMarkersState
+                MeteoMarkersState,
+                MapsButtonsState
             ]
         ),
     ],

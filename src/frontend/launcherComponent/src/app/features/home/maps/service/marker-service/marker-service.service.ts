@@ -27,11 +27,18 @@ import { ClearRichiestaSelezionata } from '../../../store/actions/richieste/rich
 import { AddMeteoMarker, RemoveMeteoMarker } from '../../../store/actions/maps/meteo-markers.actions';
 import { MarkerState } from '../../../store/states/maps/marker.state';
 import {
-    ClearMarkerMezzoHover, ClearMarkerMezzoSelezionato,
-    ClearMarkerRichiestaHover, ClearMarkerRichiestaSelezionato, ClearMarkerSedeHover, ClearMarkerSedeSelezionato,
-    SetMarkerMezzoHover, SetMarkerMezzoSelezionato,
+    ClearMarkerMezzoHover,
+    ClearMarkerMezzoSelezionato,
+    ClearMarkerRichiestaHover,
+    ClearMarkerRichiestaSelezionato,
+    ClearMarkerSedeHover,
+    ClearMarkerSedeSelezionato,
+    SetMarkerMezzoHover,
+    SetMarkerMezzoSelezionato,
     SetMarkerRichiestaHover,
-    SetMarkerRichiestaSelezionato, SetMarkerSedeHover, SetMarkerSedeSelezionato,
+    SetMarkerRichiestaSelezionato,
+    SetMarkerSedeHover,
+    SetMarkerSedeSelezionato,
 } from '../../../store/actions/maps/marker.actions';
 import { GetInitCentroMappa } from '../../../store/actions/maps/centro-mappa.actions';
 import { MapsFiltroState } from '../../../store/states/maps/maps-filtro.state';
@@ -44,6 +51,8 @@ import { GetMarkerDatiMeteo } from '../../../store/actions/maps/marker-info-wind
 import { MarkerInfoWindowState } from '../../../store/states/maps/marker-info-window.state';
 import { MarkerDatiMeteo } from '../../maps-model/marker-dati-meteo.interface';
 import { MarkerOpachiState, MarkerOpachiStateModel } from '../../../store/states/maps/marker-opachi.state';
+import { CustomButtonsMaps } from '../../maps-interface/maps-custom-buttons';
+import { CentraMappaButton, ToggleAnimationButton } from '../../../store/actions/maps/maps-buttons.actions';
 
 
 @Injectable()
@@ -277,6 +286,15 @@ export class MarkerService implements OnDestroy {
         return true;
     }
 
+    isRichiesteVisibile() {
+        if (this.filtroMarkerAttivo && this.filtroMarkerAttivo.length > 0) {
+            if (!this.filtroMarkerAttivo.includes('richiesta')) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     isOpaque(id: string, tipoMarker: string): number {
         let isOpaque = 1;
         switch (tipoMarker) {
@@ -440,5 +458,16 @@ export class MarkerService implements OnDestroy {
             meteoData = filterData.datiMeteo;
         }
         return meteoData;
+    }
+
+    onCustomButtonClick($event: CustomButtonsMaps): void {
+        switch ($event) {
+            case CustomButtonsMaps.Centra:
+                this.store.dispatch(new CentraMappaButton());
+                break;
+            case CustomButtonsMaps.ToggleAnimation:
+                this.store.dispatch(new ToggleAnimationButton());
+                break;
+        }
     }
 }
