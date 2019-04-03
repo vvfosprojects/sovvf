@@ -26,9 +26,7 @@ C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\bin\Debug\netcoreapp2.2\S
 C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\bin\Debug\netcoreapp2.2\SO115App.API.pdb
 C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\bin\Debug\netcoreapp2.2\SO115App.API.CompositionRoot.dll
 C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\bin\Debug\netcoreapp2.2\SO115App.API.Models.dll
-C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\bin\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.dll
 C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\bin\Debug\netcoreapp2.2\SO115App.API.Models.pdb
-C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\bin\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.pdb
 C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\bin\Debug\netcoreapp2.2\SO115App.API.CompositionRoot.pdb
 C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\obj\Debug\netcoreapp2.2\SO115App.API.csprojAssemblyReference.cache
 C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\obj\Debug\netcoreapp2.2\SO115App.API.csproj.CoreCompileInputs.cache
@@ -40,3 +38,5 @@ C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\obj\Debug\netcoreapp2.2\S
 C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\obj\Debug\netcoreapp2.2\SO115App.API.csproj.CopyComplete
 C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\obj\Debug\netcoreapp2.2\SO115App.API.dll
 C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\obj\Debug\netcoreapp2.2\SO115App.API.pdb
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\bin\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.dll
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.API\bin\Debug\netcoreapp2.2\SO115App.API.SOVVF.FakeImplementations.pdb

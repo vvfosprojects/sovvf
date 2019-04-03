@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiRichiesteAssistenzaQuery.cs" company="CNVVF">
+// <copyright file="SintesiRichiesteAssistenzaResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,22 +18,21 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
-using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.API.Models.Classi.Boxes;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes.ResultDTO
 {
     /// <summary>
-    ///   DTO di input
+    ///   DTO di output
     /// </summary>
-    public class SintesiRichiesteAssistenzaQuery : ISintesiRichiestaQuery<SintesiRichiesteAssistenzaResult>
+    public class BoxesResult
     {
         /// <summary>
-        ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
+        ///   La sintesi delle richieste di assistenza
         /// </summary>
-        public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
+        public IEnumerable<BoxAggregati> SintesiRichiesta
+        { get; set; }
 
-        public List<RichiestaAssistenza> ListaRichieste {get; set;}
+
     }
 }

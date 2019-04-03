@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiRichiesteAssistenzaQuery.cs" company="CNVVF">
+// <copyright file="DisponibilitaMezziQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,23 +17,21 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes.ResultDTO;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
 {
     /// <summary>
-    ///   DTO di input
+    ///   DTO che alimenta tutti i box presenti in Home Page
     /// </summary>
-    public class SintesiRichiesteAssistenzaQuery : ISintesiRichiestaQuery<SintesiRichiesteAssistenzaResult>
+    public class BoxesQuery : IQuery<BoxesResult>
     {
         /// <summary>
-        ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
+        ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
         /// </summary>
-        public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
-
-        public List<RichiestaAssistenza> ListaRichieste {get; set;}
+        /// <remarks>
+        ///   Eventualmente si può filtrare per cercare solo i dati di un singolo Box
+        /// </remarks>
+        public string FiltroBox { get; set; }
     }
 }

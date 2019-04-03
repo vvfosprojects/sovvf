@@ -206,9 +206,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// </summary>
         public string[] etichette { get; set; }
 
-        public string NotePubbliche { get; set; }
+        public string notePubbliche { get; set; }
 
-        public string NotePrivate { get; set; }
+        public string notePrivate { get; set; }
 
         /// <summary>
         ///  Lista eventi associato alla richiesta

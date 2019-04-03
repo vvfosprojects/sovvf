@@ -5,13 +5,13 @@ namespace SO115App.API.Models.AOP.Authorization
     using SO115App.API.Models.Servizi.CQRS.Queries;
     using SO115App.API.Models.Servizi.Infrastruttura;
 
-    public class AuthorizationQueryHandlerDecorator<TQuery, TResult> : IQueryHandler<TQuery, TResult> 
-        where TQuery : IQuery<TResult>
+    public class SintesiRichiesteAssistenzaAuthorizationQueryHandlerDecorator<TQuery, TResult> : ISintesiRichiestaAssistenzaQueryHandler<TQuery, TResult> 
+        where TQuery : ISintesiRichiestaQuery<TResult>
     {
-        private readonly IQueryHandler<TQuery, TResult> decoratedHandler;
+        private readonly ISintesiRichiestaAssistenzaQueryHandler<TQuery, TResult> decoratedHandler;
         private readonly IPrincipal currentUser;
 
-        public AuthorizationQueryHandlerDecorator(IQueryHandler<TQuery, TResult> decoratedHandler,
+        public SintesiRichiesteAssistenzaAuthorizationQueryHandlerDecorator(ISintesiRichiestaAssistenzaQueryHandler<TQuery, TResult> decoratedHandler,
             IPrincipal currentUser)
         { 
             this.decoratedHandler = decoratedHandler;
@@ -38,7 +38,7 @@ namespace SO115App.API.Models.AOP.Authorization
             }else
             {
 
-                    
+       
             }
         }
     }

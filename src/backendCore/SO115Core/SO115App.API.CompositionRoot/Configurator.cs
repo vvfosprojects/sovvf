@@ -22,10 +22,11 @@ using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse;
 using SO115App.API.SOVVF.FakeImplementations.Modello.Infrastruttura.Anagrafiche;
 using SO115App.API.SOVVF.FakeImplementations.Modello.Infrastruttura.CompetenzeTerritoriali;
 using SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma;
+using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste;
 
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
-using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste;
+
 using System;
 using SO115App.API.Models.AOP.Authorization;
 using System.Security.Principal;
@@ -35,6 +36,9 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRi
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Utenti.Autenticazione;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
 
 namespace SO115App.API.CompositionRoot
 {
@@ -57,22 +61,33 @@ namespace SO115App.API.CompositionRoot
                 typeof(ICommandHandler<>),
                 typeof(AuthorizationCommandHandlerDecorator<>));           
 
-//QUERY REGISTRATION
 
             c.Register(
                 typeof(IQueryHandler<,>), 
                 AppDomain.CurrentDomain.GetAssemblies());
 
-            var assemblies = new[] { typeof(IQueryValidator<,>).Assembly };
-            c.Collection.Register(typeof(IQueryValidator<,>), assemblies);
-            
-            c.RegisterDecorator(
-                typeof(IQueryHandler<,>),
-                typeof(ValidatingQueryHandlerDecorator<,>));
+
+           c.Register(
+                typeof(IQueryValidator<,>), 
+                AppDomain.CurrentDomain.GetAssemblies());
+
+
+//QUERY REGISTRATION
+
+//Registrazione componenti "Sintesi Richiesta"
+            c.Register(
+                typeof(ISintesiRichiestaAssistenzaQueryHandler<,>), 
+                AppDomain.CurrentDomain.GetAssemblies());
 
             c.RegisterDecorator(
-                typeof(IQueryHandler<,>),
-                typeof(AuthorizationQueryHandlerDecorator<,>));           
+                typeof(ISintesiRichiestaAssistenzaQueryHandler<,>),
+                typeof(SintesiRichiesteAssistenzaAuthorizationQueryHandlerDecorator<,>));           
+
+            c.RegisterDecorator(
+                typeof(ISintesiRichiestaAssistenzaQueryHandler<,>),
+                typeof(SintesiRichiesteAssitenzaValidatingQueryHandlerDecorator<,>));           
+
+
 
 
             c.Register(typeof(IAuthOperatore),typeof(AuthOperatore));
@@ -84,7 +99,6 @@ namespace SO115App.API.CompositionRoot
                 typeof(ICommandValidator<>),
                 typeof(SelezionaSquadraCommand).Assembly);
             
-
 
             c.Register<IGetUnitaOperativaPerCodice, GetUnitaOperativaPerCodice>();
 

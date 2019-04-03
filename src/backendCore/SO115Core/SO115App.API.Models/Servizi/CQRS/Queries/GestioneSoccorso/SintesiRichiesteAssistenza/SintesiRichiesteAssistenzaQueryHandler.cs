@@ -37,6 +37,7 @@ using Newtonsoft.Json;
 using SimpleInjector;
 using SO115App.API.Models.Servizi.Infrastruttura;
 using System.IO;
+using SO115App.API.Models.AOP.Validation;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
@@ -65,23 +66,21 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
     ///       richieste negli stati specificati.
     ///   </para>
     /// </summary>
-    public class SintesiRichiesteAssistenzaQueryHandler : IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult>
+    public class SintesiRichiesteAssistenzaQueryHandler : ISintesiRichiestaAssistenzaQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult>
     {
+ 
         /// <summary>
         ///   Istanza del servizio
         /// </summary>
         private readonly ICercaRichiesteAssistenza cercaRichiesteAssistenza;
- 
-        private readonly ILogger logger;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="cercaRichiesteAssistenza">L'istanza del servizio</param>
         
-        public SintesiRichiesteAssistenzaQueryHandler(ILogger logger,ICercaRichiesteAssistenza cercaRichiesteAssistenza)
+        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza)
         {
-            this.logger = logger;
             this.cercaRichiesteAssistenza = cercaRichiesteAssistenza;
         }
 
@@ -92,16 +91,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
         {
-            this.logger.Log(this.GetType().Name + " - Inizio Reperimento Richieste di Assistenza");
-
-            var richieste = this.cercaRichiesteAssistenza.Get(query.Filtro);
-          
-            #warning va realizzato il servizio di mapping delle richieste di assistenza sulla loro sintesi
+                                 
             var sintesiRichiesta = new List<SintesiRichiesta>();
             sintesiRichiesta = ElencoSintesiRichiesta(query);
            
-            this.logger.Log(this.GetType().Name + " - E' stata eseguita con successo");
-
             return new SintesiRichiesteAssistenzaResult()
             {
                 SintesiRichiesta = sintesiRichiesta

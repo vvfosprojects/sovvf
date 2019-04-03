@@ -25,13 +25,15 @@ using SimpleInjector.Lifestyles;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using SO115App.API.Models.Servizi;
 using System.Security.Principal;
-using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using System.Diagnostics;
 using SO115App.API.Models.Servizi.Infrastruttura;
 using Microsoft.AspNetCore.SignalR;
+
+/* using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste; */
+
 
 namespace SO115App.API
 {

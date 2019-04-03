@@ -31,6 +31,8 @@ using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Classi.Soccorso;
 using System.Web;
 using System.Linq;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
@@ -69,7 +71,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        /// <param name="cercaRichiesteAssistenza">L'istanza del servizio</param>
+        /// <param name="cercaRichiesteAssistenzaMarker">L'istanza del servizio</param>
         public SintesiRichiesteAssistenzaMarkerQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza)
         {
             this.cercaRichiesteAssistenza = cercaRichiesteAssistenza;
@@ -82,32 +84,37 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaMarkerResult Handle(SintesiRichiesteAssistenzaMarkerQuery query)
         {
-            //var richieste = this.cercaRichiesteAssistenza.Get(query.Filtro);
 
-#warning va realizzato il servizio di mapping delle richieste di assistenza sulla loro sintesi
-            var sintesiRichiesta = new List<SintesiRichiestaMarker>();
+           var sintesiRichiestaMarker = new List<SintesiRichiestaMarker>();
 
-            sintesiRichiesta = ElencoSintesiRichiestaMarker();
+            sintesiRichiestaMarker = CercaMarkerRichieste(query);
 
             return new SintesiRichiesteAssistenzaMarkerResult()
             {
-                SintesiRichiestaMarker = sintesiRichiesta
+                SintesiRichiestaMarker = sintesiRichiestaMarker
             };
         }
 
         #region Interrogazione Fake da Session + Mapper della Richiesta sul Marker
 
-        public static List<SintesiRichiestaMarker> ElencoSintesiRichiestaMarker()
+        private static List<SintesiRichiestaMarker> CercaMarkerRichieste(SintesiRichiesteAssistenzaMarkerQuery query)
         {
 
-            return null;
-/*             var session = HttpContext.Current.Session;
-            MapperListaRichieste mapper = new MapperListaRichieste();
+            //TODO PARTE CHIAMATA DB
+            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI           
+            
+            //DATI FAKE - ORA LI LEGGO DA FILE
+            string filepath = "fakeMarkerRichiesta.json";
+            string json;
+            using (StreamReader r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();              
+            }
 
-            List<RichiestaAssistenza> listaRichieste = ((List<RichiestaAssistenza>)session["JSonRichieste"]).Where(p => !p.Chiusa).ToList();
+            List<SintesiRichiestaMarker> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichiestaMarker>>(json);
 
-            return mapper.MapRichiesteSuMarkerSintesi(listaRichieste).OrderBy(p => p.priorita).Where(p => Convert.ToInt16(p.id) >= 1).Take(99999).ToList(); ;
- */
+            return  ListaRichieste; 
+
         }
        
         #endregion

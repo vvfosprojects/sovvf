@@ -29,6 +29,7 @@ using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using SimpleInjector;
 using SO115App.API.Hubs;
+using SO115App.API.Models.AOP.Validation;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.CQRS.Queries;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
@@ -36,7 +37,8 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichieste
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
 using SO115App.API.Models.Servizi.Infrastruttura;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste;
+
+/* using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste; */
 
 namespace SO115App.API.Controllers
 {
@@ -52,20 +54,19 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler;
-        private readonly ILogger _logger;
+        private readonly ISintesiRichiestaAssistenzaQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler;
         private readonly IHubContext<NotificationHub> _NotificationHub;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public SintesiRichiesteAssistenzaController(ILogger logger,IHubContext<NotificationHub> NotificationHubContext,
-            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler)
+        public SintesiRichiesteAssistenzaController(IHubContext<NotificationHub> NotificationHubContext,            
+            ISintesiRichiestaAssistenzaQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler)
         {            
             this.handler = handler;
             _NotificationHub = NotificationHubContext;
-            _logger = logger;
+
         }
 
         /// <summary>
@@ -73,12 +74,10 @@ namespace SO115App.API.Controllers
         /// </summary>
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>    
+        [HttpGet]
         public async Task<IActionResult> Get()
         {
-
-            this._logger.Log(this.GetType().Name + " - L'utente ha richiesto la lista Sintesi");
-
-            //VIENE UTILIZZATO SOLO PER TEST E FAKE
+           
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
             filtro.SearchKey = "0";
 
@@ -87,17 +86,13 @@ namespace SO115App.API.Controllers
                 Filtro = filtro
             };
 
-            this._logger.Log(this.GetType().Name + " - Richiamo l'Handler per la ricerca della Sintesi");
-
             return Ok(this.handler.Handle(query));
         }
 
 
         [HttpGet("{searchkey}")]
-        public async Task<IActionResult> Get(string searchkey)
+        public async Task<IActionResult> GetSintesiFromId(string searchkey)
         {
-
-            this._logger.Log(this.GetType().Name + " - L'utente ha richiesto la Sintesi con id " + searchkey);
 
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
             filtro.SearchKey = searchkey;
@@ -107,22 +102,7 @@ namespace SO115App.API.Controllers
                 Filtro = filtro
             };
 
-            this._logger.Log(this.GetType().Name + " - Richiamo l'Handler per la ricerca della Sintesi");
-
             return Ok(this.handler.Handle(query));
-        }
-
-
-        [HttpPost]
-        public SintesiRichiesteAssistenzaResult Post(FiltroRicercaRichiesteAssistenza filtro)
-        {
-            
-            var query = new SintesiRichiesteAssistenzaQuery()
-            {
-                Filtro = filtro
-            };
-
-            return this.handler.Handle(query);
         }
 
     }
