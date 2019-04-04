@@ -25,7 +25,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 qualifica: 'Operatore SO115',
                 codiceFiscale: 'VVVRCT81H56Z715N',
                 sede: {
-                    codice: 'RM',
+                    codice: 'RM.1000',
                     provincia: 'ROMA',
                     regione: 'Lazio',
                     tipo: 'Comando',
@@ -52,7 +52,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 qualifica: 'Operatore SO115',
                 codiceFiscale: 'VDPRHC53C14L424K',
                 sede: {
-                    codice: 'RM',
+                    codice: 'RM.1000',
                     provincia: 'ROMA',
                     regione: 'Lazio',
                     tipo: 'Comando',
@@ -80,7 +80,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 qualifica: 'Operatore SO115',
                 codiceFiscale: 'YZSPMD89M07M185L',
                 sede: {
-                    codice: 'RM',
+                    codice: 'RM.1000',
                     provincia: 'ROMA',
                     regione: 'Lazio',
                     tipo: 'Comando',
@@ -107,7 +107,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 qualifica: 'Operatore SO115',
                 codiceFiscale: 'PRZSPRA89M03M117O',
                 sede: {
-                    codice: 'RM',
+                    codice: 'RM.1000',
                     provincia: 'ROMA',
                     regione: 'Lazio',
                     tipo: 'Comando',
@@ -134,7 +134,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 qualifica: 'Operatore SO115',
                 codiceFiscale: 'DTNZMD81C49E783W',
                 sede: {
-                    codice: 'RM',
+                    codice: 'RM.1000',
                     provincia: 'ROMA',
                     regione: 'Lazio',
                     tipo: 'Comando',
@@ -161,7 +161,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 qualifica: 'Operatore SO115',
                 codiceFiscale: 'VNFLYH70E01A412P',
                 sede: {
-                    codice: 'RM',
+                    codice: 'RM.1000',
                     provincia: 'ROMA',
                     regione: 'Lazio',
                     tipo: 'Comando',
@@ -188,7 +188,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 qualifica: 'Operatore SO115',
                 codiceFiscale: 'LBRVRY36B08D553W',
                 sede: {
-                    codice: 'RM',
+                    codice: 'RM.1000',
                     provincia: 'ROMA',
                     regione: 'Lazio',
                     tipo: 'Comando',
@@ -215,7 +215,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 qualifica: 'Operatore SO115',
                 codiceFiscale: 'PQPDLS85P70I697B',
                 sede: {
-                    codice: 'RM',
+                    codice: 'RM.1000',
                     provincia: 'ROMA',
                     regione: 'Lazio',
                     tipo: 'Comando',
@@ -242,7 +242,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 qualifica: 'Operatore SO115',
                 codiceFiscale: 'HCLHND66C61A815O',
                 sede: {
-                    codice: 'RM',
+                    codice: 'RM.1000',
                     provincia: 'ROMA',
                     regione: 'Lazio',
                     tipo: 'Comando',
@@ -269,7 +269,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 qualifica: 'Operatore SO115',
                 codiceFiscale: 'HVHNHG30C12G396Q',
                 sede: {
-                    codice: 'RM',
+                    codice: 'RM.1000',
                     provincia: 'ROMA',
                     regione: 'Lazio',
                     tipo: 'Comando',
@@ -296,7 +296,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 qualifica: 'Operatore SO115',
                 codiceFiscale: 'FMJKMI48C50C869C',
                 sede: {
-                    codice: 'RM',
+                    codice: 'RM.1000',
                     provincia: 'ROMA',
                     regione: 'Lazio',
                     tipo: 'Comando',
@@ -323,7 +323,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 qualifica: 'Operatore SO115',
                 codiceFiscale: 'VFRGXW29B17I633L',
                 sede: {
-                    codice: 'RM',
+                    codice: 'RM.1000',
                     provincia: 'ROMA',
                     regione: 'Lazio',
                     tipo: 'Comando',
@@ -350,7 +350,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 qualifica: 'Operatore SO115',
                 codiceFiscale: 'HMLXKD51L66G417D',
                 sede: {
-                    codice: 'RM',
+                    codice: 'RM.1000',
                     provincia: 'ROMA',
                     regione: 'Lazio',
                     tipo: 'Comando',
@@ -377,7 +377,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 qualifica: 'Operatore SO115',
                 codiceFiscale: 'KCCRTM54M61H945I',
                 sede: {
-                    codice: 'RM',
+                    codice: 'RM.1000',
                     provincia: 'ROMA',
                     regione: 'Lazio',
                     tipo: 'Comando',
@@ -404,7 +404,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 qualifica: 'Operatore SO115',
                 codiceFiscale: 'TFMSJR66P03H966R',
                 sede: {
-                    codice: 'RM',
+                    codice: 'RM.1000',
                     provincia: 'ROMA',
                     regione: 'Lazio',
                     tipo: 'Comando',
@@ -425,18 +425,21 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         return of(null).pipe(mergeMap(() => {
 
-            if (request.url.endsWith('/users/authenticate') && request.method === 'POST') {
+            if (request.url.endsWith('/api/auth/Login') && request.method === 'POST') {
                 const user = users.find(x => x.username === request.body.username && x.password === request.body.password);
                 if (!user) {
                     return error('Username o password errati');
                 }
                 return ok({
-                    id: user.id,
-                    username: user.username,
-                    nome: user.nome,
-                    cognome: user.cognome,
-                    ruolo: user.ruolo,
-                    token: `fake-so115-jwt-token.${user.ruolo[0].descrizione}`
+                    _user: {
+                        id: user.id,
+                        username: user.username,
+                        nome: user.nome,
+                        cognome: user.cognome,
+                        ruolo: user.ruolo,
+                        sede: user.sede,
+                        token: `fake-so115-jwt-token.${user.ruolo[0].descrizione}`
+                    }
                 });
             }
 
