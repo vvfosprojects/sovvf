@@ -17,6 +17,7 @@ import { UpdateRichiesta } from '../../store/actions/richieste/richieste.actions
 export class ModificaRichiestaComponent implements OnInit {
 
     tipologie: TipologieInterface[] = APP_TIPOLOGIE;
+    tipologiaRichiedente: string;
 
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
     richiestaModifica: SintesiRichiesta;
@@ -33,22 +34,37 @@ export class ModificaRichiestaComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (this.richiestaModifica.richiedente.ragioneSociale) {
+            this.tipologiaRichiedente = 'RagioneSociale';
+        } else {
+            this.tipologiaRichiedente = 'Nome-Cognome';
+        }
+
         this.modificaRichiestaForm = this.formBuilder.group({
             tipoIntervento: [this.richiestaModifica.tipologie, Validators.required],
-            nominativo: [this.richiestaModifica.richiedente.nome, Validators.required],
+            nome: [this.richiestaModifica.richiedente.nome],
+            cognome: [this.richiestaModifica.richiedente.cognome],
+            ragioneSociale: [this.richiestaModifica.richiedente.ragioneSociale],
             telefono: [this.richiestaModifica.richiedente.telefono, Validators.required],
             indirizzo: [this.richiestaModifica.localita.indirizzo, Validators.required],
             etichette: [this.richiestaModifica.etichette],
             noteIndirizzo: [this.richiestaModifica.localita.note],
-            // priorita: [this.richiestaModifica.priorita, Validators.required],
-            rilevanza: [this.richiestaModifica.rilevanza ? this.richiestaModifica.rilevanza.toISOString().split('T')[0] : null],
+            rilevanza: [this.richiestaModifica.rilevanza ? this.richiestaModifica.rilevanza.toString().split('T')[0] : null],
             latitudine: [this.richiestaModifica.localita.coordinate.latitudine, Validators.required],
             longitudine: [this.richiestaModifica.localita.coordinate.longitudine, Validators.required],
-            // notePrivate: [this.richiestaModifica.localita.note],
-            // notePubbliche: [this.richiestaModifica.localita.note],
+            notePrivate: [this.richiestaModifica.notePrivate],
+            notePubbliche: [this.richiestaModifica.notePubbliche],
             motivazione: [this.richiestaModifica.descrizione],
             zoneEmergenza: [this.richiestaModifica.zoneEmergenza],
         });
+    }
+
+    get f() {
+        return this.modificaRichiestaForm.controls;
+    }
+
+    cambiaTipologiaRichiedente(tipologia: string) {
+        this.tipologiaRichiedente = tipologia;
     }
 
     setRilevanza() {
@@ -60,28 +76,32 @@ export class ModificaRichiestaComponent implements OnInit {
         }
     }
 
-    get f() {
-        return this.modificaRichiestaForm.controls;
-    }
-
     getNuovaRichiesta() {
         const nuovaRichiesta = makeCopy(this.richiestaModifica);
 
         // Set form data
         const f = this.f;
         nuovaRichiesta.tipologie = f.tipoIntervento.value;
-        nuovaRichiesta.richiedente.nominativo = f.nominativo.value;
+        if (this.tipologiaRichiedente === 'Nome-Cognome') {
+            nuovaRichiesta.richiedente.nome = f.nome.value;
+            nuovaRichiesta.richiedente.cognome = f.cognome.value;
+            nuovaRichiesta.richiedente.ragioneSociale = '';
+        } else if (this.tipologiaRichiedente === 'RagioneSociale') {
+            nuovaRichiesta.richiedente.ragioneSociale = f.ragioneSociale.value;
+            nuovaRichiesta.richiedente.nome = '';
+            nuovaRichiesta.richiedente.cognome = '';
+        }
         nuovaRichiesta.richiedente.telefono = f.telefono.value;
         nuovaRichiesta.localita.indirizzo = f.indirizzo.value;
         nuovaRichiesta.etichette = f.etichette.value;
         nuovaRichiesta.localita.note = f.noteIndirizzo.value;
-        // nuovaRichiesta.priorita = f.priorita.value;
         nuovaRichiesta.rilevanza = f.rilevanza.value;
         nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
         nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
         nuovaRichiesta.descrizione = f.motivazione.value;
         nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value;
 
+        console.log(nuovaRichiesta);
         return nuovaRichiesta;
     }
 
@@ -90,7 +110,11 @@ export class ModificaRichiestaComponent implements OnInit {
     }
 
     onConfermaModifica() {
-        // console.log(this.modificaRichiestaForm.value);
+        this.submitted = true;
+        if (this.modificaRichiestaForm.invalid) {
+            return;
+        }
+
         this.modal.close(this.modificaRichiestaForm.value);
 
         const nuovaRichiesta = this.getNuovaRichiesta();

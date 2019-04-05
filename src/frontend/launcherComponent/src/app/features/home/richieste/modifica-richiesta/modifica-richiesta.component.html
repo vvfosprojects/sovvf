@@ -2,7 +2,7 @@
     <div class="col-12">
         <h3>Modifica Richiesta</h3>
         <hr>
-        <form [formGroup]="modificaRichiestaForm">
+        <form [formGroup]="modificaRichiestaForm" (ngSubmit)="onConfermaModifica()">
             <div class="form-group mb-2">
                 <label>Tipologia intervento</label>
                 <ng-select class="border"
@@ -11,20 +11,70 @@
                            [multiple]="true"
                            [closeOnSelect]="true"
                            [hideSelected]="true"
-                           (add)="onAddTipologia($event)"
-                           (remove)="onRemoveTipologia($event)"
                            formControlName="tipoIntervento"
                            placeholder="Seleziona Tipologia Intervento">
                 </ng-select>
             </div>
             <div class="row">
                 <div class="col">
+                    <div class="form-group mb-2">
+                        <label>Tipologia Richiedente</label>
+                        <div ngbDropdown class="d-block" autoClose="outside" placement="bottom-left">
+                            <button type="button" class="btn btn-block btn-outline-primary" id="dropdownBasic1"
+                                    ngbDropdownToggle>
+                                <span *ngIf="tipologiaRichiedente === 'Nome-Cognome'">Nome - Cognome</span>
+                                <span *ngIf="tipologiaRichiedente === 'RagioneSociale'">Ragione Sociale</span>
+                            </button>
+                            <div ngbDropdownMenu class="bg-light">
+                                <div class="row">
+                                    <div class="col-11 mx-auto my-2">
+                                        <button type="button" class="btn btn-block"
+                                                [ngClass]="{ 'btn-primary text-light': tipologiaRichiedente === 'Nome-Cognome', 'btn-outline-primary': tipologiaRichiedente !== 'Nome-Cognome'}"
+                                                (click)="cambiaTipologiaRichiedente('Nome-Cognome')" ngbDropdownItem>
+                                            Nome - Cognome
+                                        </button>
+                                        <button type="button" class="btn btn-block"
+                                                [ngClass]="{'btn-primary text-light': tipologiaRichiedente === 'RagioneSociale', 'btn-outline-primary': tipologiaRichiedente !== 'RagioneSociale'}"
+                                                (click)="cambiaTipologiaRichiedente('RagioneSociale')" ngbDropdownItem>
+                                            Ragione Sociale
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="tipologiaRichiedente === 'Nome-Cognome'" class="col">
                     <div class="form-group">
-                        <label>Nominativo</label>
-                        <input type="text" placeholder="nominativo" formControlName="nominativo" class="form-control"
-                               [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }"/>
-                        <div *ngIf="submitted && f.nominativo.errors" class="invalid-feedback">
-                            <div *ngIf="f.nominativo.errors.required">Il Nominativo è richiesto</div>
+                        <label>Nome</label>
+                        <input type="text" placeholder="nome" formControlName="nome" class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && f.nome.errors }"/>
+                        <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
+                            <div *ngIf="f.nome.errors.required">Il Nome è richiesto</div>
+                            <div *ngIf="f.nome.errors.troppiDati">La ragione sociale deve essere vuota</div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="tipologiaRichiedente === 'Nome-Cognome'" class="col">
+                    <div class="form-group">
+                        <label>Cognome</label>
+                        <input type="text" placeholder="cognome" formControlName="cognome" class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && f.cognome.errors }"/>
+                        <div *ngIf="submitted && f.cognome.errors" class="invalid-feedback">
+                            <div *ngIf="f.cognome.errors.required">Il Cognome è richiesto</div>
+                            <div *ngIf="f.cognome.errors.troppiDati">La ragione sociale deve essere vuota</div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="tipologiaRichiedente === 'RagioneSociale'" class="col-6">
+                    <div class="form-group">
+                        <label>Ragione Sociale</label>
+                        <input type="text" placeholder="ragione sociale" formControlName="ragioneSociale"
+                               class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && f.ragioneSociale.errors }"/>
+                        <div *ngIf="submitted && f.ragioneSociale.errors" class="invalid-feedback">
+                            <div *ngIf="f.ragioneSociale.errors.required">La ragione sociale è richiesta</div>
+                            <div *ngIf="f.ragioneSociale.errors.troppiDati">Nome e Cognome devono essere vuoti</div>
                         </div>
                     </div>
                 </div>
@@ -100,7 +150,7 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    <div class="pl-2">
+                    <div *ngIf="richiestaModifica.rilevanza || f.rilevanza.value" class="pl-2">
                         <label>Rilevante dal</label>
                         <span *ngIf="f.rilevanza.value">{{f.rilevanza.value.toLocaleString()}}</span>
                     </div>
@@ -110,15 +160,17 @@
                 <div class="col">
                     <div class="form-group">
                         <label>Note Pubbliche</label>
-                        <textarea type="text" placeholder="Inserire nel modello" class="form-control"
-                                  [ngClass]="{ 'is-invalid': submitted && f.note.errors }" disabled></textarea>
+                        <textarea type="text" placeholder="Note Pubbliche" formControlName="notePubbliche"
+                                  class="form-control"
+                                  [ngClass]="{ 'is-invalid': submitted && f.notePubbliche.errors }"></textarea>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label>Note Private</label>
-                        <textarea type="text" placeholder="Inserire nel modello" class="form-control"
-                                  [ngClass]="{ 'is-invalid': submitted && f.note.errors }" disabled></textarea>
+                        <textarea type="text" placeholder="Note Private" formControlName="notePrivate"
+                                  class="form-control"
+                                  [ngClass]="{ 'is-invalid': submitted && f.notePrivate.errors }"></textarea>
                     </div>
                 </div>
             </div>
@@ -134,7 +186,8 @@
                 <div class="col">
                     <div class="form-group">
                         <label>Note Indirizzo</label>
-                        <textarea type="text" placeholder="Note" formControlName="noteIndirizzo" class="form-control"
+                        <textarea type="text" placeholder="Note" formControlName="noteIndirizzo"
+                                  class="form-control"
                                   [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors }"></textarea>
                     </div>
                 </div>
@@ -146,8 +199,7 @@
             </div>
             <hr>
             <div class="form-group">
-                <button class="btn btn-primary float-right" [disabled]="modificaRichiestaForm.invalid"
-                        (click)="onConfermaModifica()">Conferma
+                <button class="btn btn-primary float-right">Conferma
                     Modifica
                 </button>
                 <button class="btn btn-danger float-right mr-2" (click)="onAnnullaModifica()">Annulla</button>
