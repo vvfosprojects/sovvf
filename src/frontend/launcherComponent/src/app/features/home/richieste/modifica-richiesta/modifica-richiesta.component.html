@@ -152,7 +152,7 @@
                 <div class="col-2">
                     <div *ngIf="richiestaModifica.rilevanza || f.rilevanza.value" class="pl-2">
                         <label>Rilevante dal</label>
-                        <span *ngIf="f.rilevanza.value">{{f.rilevanza.value.toLocaleString()}}</span>
+                        <span *ngIf="f.rilevanza.value">{{f.rilevanza.value | date: 'dd/MM/yyyy - HH:mm:ss'}}</span>
                     </div>
                 </div>
             </div>

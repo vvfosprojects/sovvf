@@ -81,7 +81,7 @@ export class SintesiRichiesta {
         /**
          * Indica se la richiesta è rilevante
          */
-        public rilevanza?: Date,
+        public rilevanza?: string,
         /**
          * codice della scheda NUE
          */
