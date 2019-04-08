@@ -10,6 +10,7 @@ import { makeCopy } from '../../../../shared/helper/function';
 import { UpdateRichiesta } from '../../store/actions/richieste/richieste.actions';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { CopyToClipboard } from '../../store/actions/chiamata/clipboard.actions';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -85,6 +86,10 @@ export class ModificaRichiestaComponent implements OnInit {
         this.f.latitudine.patchValue(coordinate.latitudine);
         this.f.longitudine.patchValue(coordinate.longitudine);
         this.f.indirizzo.patchValue(result.formatted_address);
+    }
+
+    onCopiaIndirizzo() {
+        this.store.dispatch(new CopyToClipboard(new Coordinate(this.f.latitudine.value, this.f.longitudine.value)));
     }
 
     getNuovaRichiesta() {
