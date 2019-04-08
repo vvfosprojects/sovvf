@@ -1,11 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
-import { UnitaAttualeService } from './features/navbar/navbar-service/unita-attuale/unita-attuale.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthenticationService } from './core/auth/_services';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { SignalRState } from './core/signalr/store/signalR.state';
+import { AppState } from './shared/store/states/app/app.state';
 
 
 @Component({
@@ -17,16 +17,18 @@ export class AppComponent implements OnDestroy {
 
     subscription = new Subscription();
 
-    _signalR = false;
     @Select(SignalRState.statusSignalR) _signalR$: Observable<boolean>;
+    _signalR = false;
+
+    @Select(AppState.appIsLoaded) _isLoaded$: Observable<boolean>;
+    _isLoaded: boolean;
 
     _opened = false;
     _toggle = false;
     RoutesPath = RoutesPath;
     private deniedPath = [RoutesPath.NotFound.toString(), RoutesPath.Login.toString()];
 
-    constructor(public fakeCambioSede: UnitaAttualeService,
-                private router: Router,
+    constructor(private router: Router,
                 private authService: AuthenticationService) {
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd) {
@@ -34,6 +36,7 @@ export class AppComponent implements OnDestroy {
             }
         });
         this.subscription.add(this._signalR$.subscribe((r: boolean) => this._signalR = r));
+        this.subscription.add(this._isLoaded$.subscribe((r: boolean) => this._isLoaded = r));
     }
 
     _toggleOpened() {

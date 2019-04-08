@@ -1,0 +1,35 @@
+import { TreeItem } from 'ngx-treeview';
+import { Ricorsivo } from '../../states/sedi-treeview/sedi-treeview.helper';
+
+export class GetListaSediTreeview {
+    static readonly type = '[Sedi Treeview] Get lista sedi';
+}
+
+export class SetListaSediTreeview {
+    static readonly type = '[Sedi Treeview] Set lista sedi';
+
+    constructor(public listaSedi: TreeItem) {
+    }
+}
+
+export class PatchListaSediNavbar {
+    static readonly type = '[Sedi Treeview Navbar] Patch selezionati';
+
+    constructor(public selected?: string[]) {
+    }
+}
+
+export class PatchSediNavbarSelezionate {
+    static readonly type = '[Sedi Treeview Navbar] Patch Sedi selezionate';
+
+    constructor(public selected: string[], public options?: Ricorsivo) {
+    }
+}
+
+export class ClearSediNavbarSelezionate {
+    static readonly type = '[Sedi Treeview Navbar] Clear Sedi selezionate';
+}
+
+export class SetSediNavbarSelezionate {
+    static readonly type = '[Sedi Treeview Navbar] Set Sedi selezionate';
+}

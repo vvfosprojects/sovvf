@@ -57,3 +57,18 @@ export function makeID(lengthString?: number): string {
     }
     return text;
 }
+
+export function arraysEqual(a1: any[], a2: any[]) {
+    return JSON.stringify(a1) === JSON.stringify(a2);
+}
+
+export function arrayUnique(arr: any[]) {
+    return arr.filter((item, index) => {
+        return arr.indexOf(item) >= index;
+    });
+}
+
+export function arrayDiff(a1, a2) {
+    return a1.filter(item => a2.indexOf(item) < 0);
+}
+

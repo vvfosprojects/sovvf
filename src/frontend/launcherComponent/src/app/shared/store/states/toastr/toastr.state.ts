@@ -35,8 +35,7 @@ export class ToastrState {
     }
 
     @Action(SetToastr)
-    setToastr({getState, patchState}: StateContext<ToastrStateModel>, action: SetToastr) {
-        const state = getState();
+    setToastr({ patchState }: StateContext<ToastrStateModel>, action: SetToastr) {
 
         switch (action.type) {
             case 'clear':

@@ -5,7 +5,6 @@ import { MarkerState } from '../../../../store/states/maps/marker.state';
 import { Observable, Subscription } from 'rxjs';
 import { ClearMarkerSedeSelezionato } from '../../../../store/actions/maps/marker.actions';
 import { ShowToastr } from '../../../../../../shared/store/actions/toastr/toastr.actions';
-import { UnitaAttualeService } from '../../../../../navbar/navbar-service/unita-attuale/unita-attuale.service';
 import { SedeMarker } from '../../../maps-model/sede-marker.model';
 import { SediMarkersState } from '../../../../store/states/maps/sedi-markers.state';
 
@@ -22,7 +21,6 @@ export class CambioSedeModalComponent implements OnDestroy {
     subscription = new Subscription();
 
     constructor(public modal: NgbActiveModal,
-                private unitaAttualeS: UnitaAttualeService,
                 private store: Store) {
         this.subscription.add(this.sedeMarkerById$.subscribe(s => this.sede = s));
     }
@@ -32,7 +30,7 @@ export class CambioSedeModalComponent implements OnDestroy {
     }
 
     cambioSede() {
-        this.unitaAttualeS.sendUnitaOperativaAttuale([this.sede]);
+        // this.unitaAttualeS.sendUnitaOperativaAttuale([this.sede]);
         this.store.dispatch(new ClearMarkerSedeSelezionato());
     }
 

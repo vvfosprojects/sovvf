@@ -15,7 +15,6 @@ import { MouseE } from '../../../../../shared/enum/mouse-e.enum';
  * Service
  */
 import { AgmService } from '../../agm/agm-service.service';
-import { UnitaAttualeService } from '../../../../navbar/navbar-service/unita-attuale/unita-attuale.service';
 /**
  * Ngxs
  */
@@ -99,7 +98,6 @@ export class MarkerService implements OnDestroy {
     private switchMeteo: boolean;
 
     constructor(private agmService: AgmService,
-                private unitaAttualeS: UnitaAttualeService,
                 private store: Store) {
         this.subscription.add(this.filtroMarkerAttivo$.subscribe((filtroAttivo: string[]) => {
             this.filtroMarkerAttivo = filtroAttivo;

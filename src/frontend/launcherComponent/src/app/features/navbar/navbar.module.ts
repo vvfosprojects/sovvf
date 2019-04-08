@@ -7,11 +7,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 /**
  * Service
  */
-import { UnitaOperativaService } from './navbar-service/unita-operativa-service/unita-operativa.service';
-import { UnitaOperativaServiceFake } from './navbar-service/unita-operativa-service/unita-operativa.service.fake';
 import { TurnoService } from './navbar-service/turno-service/turno.service';
 import { TurnoServiceFake } from './navbar-service/turno-service/turno.service.fake';
-import { DefaultTreeviewI18n } from './navbar-service/unita-operativa-treeview-service/default-treeview-i18n';
+import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treeview-i18n';
 /**
  * Component
  */
@@ -63,7 +61,6 @@ import { TurnoState } from './store/states/turno/turno.state';
     exports: [NavbarComponent],
     providers: [
         { provide: TurnoService, useClass: TurnoServiceFake },
-        { provide: UnitaOperativaService, useClass: UnitaOperativaServiceFake },
         { provide: TreeviewI18n, useClass: DefaultTreeviewI18n },
     ]
 })

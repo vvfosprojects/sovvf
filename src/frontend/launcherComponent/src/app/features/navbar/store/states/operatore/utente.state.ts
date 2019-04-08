@@ -3,6 +3,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { GetUtente, SetUtente } from '../../actions/operatore/utente.actions';
 import { SignalRService } from '../../../../../core/signalr/signalR.service';
 import { SignalRNotification } from '../../../../../core/signalr/model/signalr-notification.model';
+import { PatchListaSediNavbar } from '../../actions/sedi-treeview/sedi-treeview.actions';
 
 export interface UtenteStateModel {
     utente: Utente;
@@ -37,9 +38,10 @@ export class UtenteState {
     }
 
     @Action(SetUtente)
-    setUtente({ patchState }: StateContext<UtenteStateModel>, action: SetUtente) {
+    setUtente({ patchState, dispatch }: StateContext<UtenteStateModel>, action: SetUtente) {
         patchState({
             utente: action.utente
         });
+        dispatch(new PatchListaSediNavbar([action.utente.sede.codice]));
     }
 }

@@ -3,14 +3,21 @@
         <img src="assets/img/comando-avatar.svg">
     </div>
     <div class="col-10" ngbDropdown #treeviewSedi="ngbDropdown" (openChange)="openDropDown($event)">
-        <button class="btn btn-block btn-dark ml-2" ngbDropdownToggle>{{sedeCorrenteString}}</button>
+        <button class="btn btn-block btn-dark ml-2" ngbDropdownToggle>{{sedeSelezionata}}</button>
         <div ngbDropdownMenu class="px-2" (click)="$event.stopPropagation()">
-            <ngx-treeview [config]="config" [items]="items" (selectedChange)="getValue($event)">
+            <ngx-treeview [config]="config" [items]="items" (selectedChange)="onSelectedChange($event)">
             </ngx-treeview>
             <hr class="mb-0">
             <div class="px-4 pb-2 pt-3">
-                <button class="btn btn-sm btn-danger px-3" (click)="$event.stopPropagation(); treeviewSedi.close(); annulla()"><i class="fa fa-times pr-2"></i>Annulla</button>
-                <button class="btn btn-sm btn-success px-2 float-right" (click)="$event.stopPropagation(); treeviewSedi.close(); conferma()"><i class="fa fa-check-square-o pr-2"></i>Conferma</button>
+                <button class="btn btn-sm btn-danger px-3"
+                        (click)="$event.stopPropagation(); treeviewSedi.close(); annulla()">
+                    <i class="fa fa-times pr-2"></i>Annulla
+                </button>
+                <button class="btn btn-sm btn-success px-2 float-right"
+                        (click)="$event.stopPropagation(); treeviewSedi.close(); conferma()"
+                        [disabled]="(tastoConferma$ | async)">
+                    <i class="fa fa-check-square-o pr-2"></i>Conferma
+                </button>
             </div>
         </div>
     </div>

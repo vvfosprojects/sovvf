@@ -1,31 +1,28 @@
 import { Component, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UnitaOperativaTreeviewService } from '../navbar-service/unita-operativa-treeview-service/unita-operativa-treeview.service';
-import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
-import { UnitaAttualeService } from '../navbar-service/unita-attuale/unita-attuale.service';
+import { DownlineTreeviewItem, OrderDownlineTreeviewEventParser, TreeItem, TreeviewConfig, TreeviewEventParser, TreeviewItem } from 'ngx-treeview';
 import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
-import { Sede } from '../../../shared/model/sede.model';
-import { Store } from '@ngxs/store';
-import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
+import { Observable, Subscription } from 'rxjs';
+import { Select, Store } from '@ngxs/store';
+import { SediTreeviewState } from '../store/states/sedi-treeview/sedi-treeview.state';
+import { ClearSediNavbarSelezionate, PatchSediNavbarSelezionate, SetSediNavbarSelezionate } from '../store/actions/sedi-treeview/sedi-treeview.actions';
+import { isNil, reverse } from 'lodash';
+import { arrayUnique } from '../../../shared/helper/function';
+import { Ricorsivo } from '../store/states/sedi-treeview/sedi-treeview.helper';
 
 
 @Component({
     selector: 'app-unita-operativa-treeview',
     templateUrl: './unita-operativa-treeview.component.html',
     styleUrls: ['./unita-operativa-treeview.component.css'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    providers: [
+        { provide: TreeviewEventParser, useClass: OrderDownlineTreeviewEventParser },
+    ]
 })
 export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
 
     subscription = new Subscription();
-    unitaAttuale: Sede[];
     treeViewOpened: boolean;
-
-    items: TreeviewItem[];
-    initItem: any[];
-    selectedItem: any[];
-    checkedCount = 0;
-    sedeCorrenteString: string;
 
     config = TreeviewConfig.create({
         hasAllCheckBox: false,
@@ -35,47 +32,41 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
         maxHeight: 400
     });
 
-    constructor(private treeviewService: UnitaOperativaTreeviewService,
-                private unitaAttualeS: UnitaAttualeService,
-                private store: Store,
-                config: NgbDropdownConfig) {
+    @Select(SediTreeviewState.listeSediNavbar) listeSedi$: Observable<TreeItem>;
+    items: TreeviewItem[];
+
+    @Select(SediTreeviewState.sediNavbarTesto) sedeSelezionata$: Observable<string>;
+    sedeSelezionata: string;
+
+    @Select(SediTreeviewState.sediNavbarTastoConferma) tastoConferma$: Observable<boolean>;
+
+    constructor(private store: Store, config: NgbDropdownConfig) {
         config.autoClose = false;
-        this.unitaAttuale = this.unitaAttualeS.unitaSelezionata;
+
         this.subscription.add(
-            this.unitaAttualeS.getUnitaOperativaAttuale().subscribe(unitaAttuale => {
-                this.unitaAttuale = unitaAttuale;
-                if (this.unitaAttuale.length > 0) {
-                    this.sedeCorrenteString = this.treeviewService.getSediAttualiString();
-                    this.clearInitItem();
-                }
+            this.listeSedi$.subscribe((listaSedi: TreeItem) => {
+                this.items = [];
+                this.items[0] = new TreeviewItem(listaSedi);
             })
         );
 
-        const sedeAttuale = [
-            // new Sede('1', 'Comando di Roma', new Coordinate(41.899940, 12.491270), 'Via Genova, 1, 00184 Roma RM', 'Comando', 'Lazio', 'Roma'),
-            new Sede('6', 'Distaccamento Cittadino Eur', null, 'Piazza F. Vivona, 4 00144 Roma', 'Distaccamento', 'Lazio', 'Roma'),
-            new Sede('7', 'Distaccamento Cittadino Fluviale', null, 'Lungotevere Arnaldo da Brescia 00100 Roma', 'Distaccamento', 'Lazio', 'Roma'),
-            new Sede('8', 'Distaccamento Cittadino La Rustica', null, 'Via Achille Vertunni, 98 00155 Roma', 'Distaccamento', 'Lazio', 'Roma'),
-            // new Sede('9', 'Distaccamento Fondi', null, 'xxx indirizzo Fondi', 'Distaccamento', 'Lazio', 'Latina'),
-
-        ];
-        this.unitaAttualeS.unitaSelezionata = sedeAttuale;
-        this.unitaAttualeS.sendUnitaOperativaAttuale(sedeAttuale);
-        this.unitaAttualeS.startCount++;
+        this.subscription.add(this.sedeSelezionata$.subscribe(
+            (sedeSelezionata: string) => {
+                this.sedeSelezionata = sedeSelezionata;
+            })
+        );
     }
 
     @ViewChild('treeviewSedi') treeviewSedi: NgbDropdown;
 
     @HostListener('document:keydown.escape') onKeydownHandler() {
         if (this.treeViewOpened) {
-            this.annullaCambioSede('esc');
-            // console.log('premuto tasto esc');
+            this.store.dispatch(new ClearSediNavbarSelezionate());
             this.treeviewSedi.close();
         }
     }
 
     ngOnInit() {
-        this.getTreeViewItems();
     }
 
     ngOnDestroy() {
@@ -84,97 +75,97 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
 
     openDropDown(value: any) {
         this.treeViewOpened = !!value;
-        if (value) {
-            this.clearInitItem();
-        }
     }
 
-    getValue(value: any) {
-        if (!this.initItem || this.checkedCount === 0) {
-            // console.log(`selezione iniziale: ${value}`);
-            this.initItem = value;
-        } else {
-            // console.log(`selezione corrente: ${value}`);
-            this.selectedItem = value;
-        }
-        this.checkedCount++;
-    }
-
-    checkCambioSede() {
-        if (this.initItem.toString() !== this.selectedItem.toString()) {
-            if (!this.treeviewService._get.sediSelezionate(this.selectedItem).error) {
-                // console.log('La sede selezionata è cambiata!');
-                this.changeUnitaAttuale(this.selectedItem);
-            } else {
-                this.annullaCambioSede('nessuna');
+    onSelectedChange(downlineItems: DownlineTreeviewItem[]) {
+        const leaves = [];
+        let parents = [];
+        const firstParent = [];
+        /**
+         * controllo se ho selezionato tutta la lista
+         */
+        downlineItems.forEach(downlineItem => {
+            let _parent = downlineItem.parent;
+            while (!isNil(_parent)) {
+                if (_parent.item['internalChecked']) {
+                    if (!_parent.parent) {
+                        if (!firstParent.includes(_parent.item.value)) {
+                            firstParent.push(_parent.item.value);
+                        }
+                    }
+                }
+                _parent = _parent.parent;
             }
-        } else {
-            // console.log('la sede selezionata non è cambiata');
-        }
-    }
-
-    clearInitItem() {
-        this.getTreeViewItems();
-    }
-
-    annullaCambioSede(tipo: string) {
-        // console.log('cambio sede è annullato');
-        this.getTreeViewItems();
-        this.selectedItem = this.initItem;
-        const mAlertObj = mAlert(tipo);
-
-        this.showAlert(mAlertObj.title, mAlertObj.message, mAlertObj.type);
-
-        function mAlert(value: any) {
-            const title = 'Attenzione';
-            const type = 'warning';
-            let message = '';
-            switch (value) {
-                case 'esc':
-                    message = 'Azione annullata';
-                    break;
-                case 'annulla':
-                    message = 'Cambio sede annullato';
-                    break;
-                case 'nessuna':
-                    message = 'Nessuna sede selezionata';
-                    break;
-            }
-            return {
-                title: title,
-                message: message,
-                type: type
-            };
-        }
-    }
-
-    changeUnitaAttuale(newUnita: any) {
-        // console.log('change unita');
-        this.unitaAttualeS.unitaSelezionataString = this.treeviewService._get.sediSelezionate(newUnita).testo;
-        this.unitaAttualeS.unitaSelezionata = this.treeviewService._get.sediSelezionate(newUnita).sedi;
-        this.unitaAttualeS.sendUnitaOperativaAttuale(this.unitaAttualeS.unitaSelezionata);
-    }
-
-
-    getTreeViewItems() {
-        this.checkedCount = 0;
-        this.treeviewService.getSedi().subscribe(r => {
-            this.items = r;
         });
+        /**
+         * vedo quali padri e foglie sono selezionate
+         */
+        if (firstParent.length === 0) {
+            downlineItems.forEach(downlineItem => {
+                const item = downlineItem.item;
+                const value = item.value;
+                const texts = [item.text];
+                let parentNode = downlineItem.parent;
+                /**
+                 * ciclo tutti i nodi controllando che il padre sia selezionato
+                 */
+                while (!isNil(parentNode.item['internalChecked'])) {
+                    texts.push(`${parentNode.item.text}::${parentNode.item.value}`);
+                    parentNode = parentNode.parent;
+                }
+                const reverseTexts = reverse(texts);
+                const row = `${reverseTexts.join('->')}::${value}`;
+                /**
+                 * creo delle stringhe con il formato padre::id_padre->figlio::id_figlio->etc...
+                 */
+                if (row.indexOf('->') < 0) {
+                    /**
+                     * se non trovo '->' sono foglie senza padre selezionato
+                     */
+                    leaves.push(row.split('::')[1]);
+                } else {
+                    /**
+                     * sono i padri che mi interessano
+                     */
+                    parents.push(row.substring(0, row.indexOf('->')).split('::')[1]);
+                }
+            });
+        } else {
+            /**
+             * se è selezionato il primo padre (nodo principale) lo assegno ai parents direttamente
+             */
+            parents = firstParent;
+        }
+        /**
+         * cancello tutti i genitori duplicati
+         */
+        const parent = arrayUnique(parents);
+        /**
+         * verifico che non ci siano più padri (con genitori diversi) o più foglie
+         */
+        const unique = [];
+        if ((leaves.length > 0 && parent.length > 0) || leaves.length > 1 || parent.length > 1) {
+            console.log(`più sedi selezionate: ${[...parent, ...leaves]}`);
+            this.store.dispatch(new PatchSediNavbarSelezionate([...parent, ...leaves], Ricorsivo.NonRicorsivo));
+        } else {
+            unique[0] = parent.length === 1 ? parent[0] : leaves[0];
+            if (unique) {
+                console.log(`una sede selezionata: ${unique[0]}`);
+                this.store.dispatch(new PatchSediNavbarSelezionate([...unique], Ricorsivo.Ricorsivo));
+            } else {
+                console.log(`nessuna sede selezionata`);
+                this.store.dispatch(new PatchSediNavbarSelezionate([]));
+            }
+        }
     }
 
-    showAlert(title: string, message: string, type: any) {
-        this.store.dispatch(new ShowToastr(type, title, message, 3));
-    }
 
     annulla() {
-        this.annullaCambioSede('annulla');
+        this.store.dispatch(new ClearSediNavbarSelezionate());
     }
 
     conferma() {
-        if (this.selectedItem) {
-            this.checkCambioSede();
-        }
+        this.store.dispatch(new SetSediNavbarSelezionate());
     }
 
 }
