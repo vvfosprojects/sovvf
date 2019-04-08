@@ -35,7 +35,7 @@ export class RichiestaComposizioneState {
         if (state.richiesta !== RichiestaComposizioneStateDefaults.richiesta) {
             const composizioneMarker = new ComposizioneMarker(
                 state.richiesta.id, state.richiesta.localita, state.richiesta.tipologie, null,
-                state.richiesta.priorita, state.richiesta.stato, state.richiesta.rilevanza, false);
+                state.richiesta.priorita, state.richiesta.stato, new Date(state.richiesta.rilevanza), false);
             composizioneMarkers.push(composizioneMarker);
         } else {
             composizioneMarkers = [];
