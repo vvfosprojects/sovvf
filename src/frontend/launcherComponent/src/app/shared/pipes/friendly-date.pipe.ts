@@ -20,7 +20,6 @@ export class FriendlyDatePipe implements PipeTransform {
 
         const theFormat = (navigator.language.substr(0, 2) === 'it') ? 'DD/MM' : 'MM/DD';
 
-
         let diffTrue = false;
         let diff = moment(date).diff(new Date(), 'minutes');
 

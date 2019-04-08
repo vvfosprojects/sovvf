@@ -201,7 +201,7 @@
                                 </button>
                                 <button *ngIf="partenza && composizionePartenza"
                                         class="btn btn-primary border py-0 px-2" ngbTooltip="Torna alla lista"
-                                        (click)="invioPartenza(); $event.stopPropagation()">
+                                        (click)="invioPartenza(richiesta); $event.stopPropagation()">
                                     <i class="fa fa-fw fa-arrow-left"></i>
                                 </button>
                             </div>
@@ -249,8 +249,8 @@
                                    placement="right"></i>
                                 <a *ngIf="richiesta.istantePresaInCarico; else nonPresaInCarico"
                                    ngbTooltip="{{ richiesta.istantePresaInCarico | friendlyDateTooltip }}">
-                                    {{richiesta.istantePresaInCarico | friendlyDate }}
-                                    {{ richiesta.istantePresaInCarico | friendlyHour }}
+                                    {{ richiesta.istantePresaInCarico | friendlyDate }}
+                                    {{ richiesta.istantePresaInCarico | friendlyHour: true }}
                                 </a>
                                 <ng-template #nonPresaInCarico>
                                     <a class="badge badge-secondary text-light">Non presa in carico</a>
@@ -302,13 +302,13 @@
                                         <div class="col-2 my-1">
                                             <b class="ml-1">#{{i + 1}}</b>
                                         </div>
-                                        <div class="col-4 my-1">
+                                        <div class="col-7 my-1">
                                             <app-mezzo [mezzo]="p.mezzo"></app-mezzo>
                                             <span *ngIf="!p.mezzo" class="p-2">
                                                 Nessun mezzo
                                             </span>
                                         </div>
-                                        <div class="col-6 my-1">
+                                        <div class="col-3 my-1">
                                                 <span *ngFor="let s of p.squadre">
                                                     <span class="mr-2">
                                                         <i class="guida fa fa-fire-extinguisher fa-fw"
@@ -316,8 +316,9 @@
                                                         <span><b>{{ s.nome }}</b></span>
                                                     </span>
                                                     <span class="text-right">
-                                                        <button class="btn btn-light border py-0"
+                                                        <button class="btn btn-light border py-0 px-1"
                                                                 title="Componenti squadra" [ngbPopover]="popComponenti"
+                                                                placement="top"
                                                                 popoverTitle="Componenti" triggers="click" tabindex="0"
                                                                 (click)="$event.stopPropagation()">
                                                             <i class="fa fa-address-book text-secondary"

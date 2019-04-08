@@ -11,7 +11,7 @@
   
   <!-- indicatori -->
   <span class="d-inline-block pl-2 mr-1">
-    <button class="btn btn-light border py-0" [ngbPopover]="indMez" title="Indicatori mezzo" placement="top" popoverTitle="Indicatori" triggers="click"
+    <button class="btn btn-light border py-0 px-0" [ngbPopover]="indMez" title="Indicatori mezzo" placement="top" popoverTitle="Indicatori" triggers="click"
     tabindex="0" (click)="$event.stopPropagation()">
       <i class="fa fa-briefcase fa-fw text-secondary" title="Condizione del Mezzo"></i>
     </button>
@@ -47,7 +47,7 @@
 
   <!-- notifiche mezzo -->
   <span class="d-inline-block">
-    <button class="btn btn-light border py-0" [ngbPopover]="notMez" placement="top" triggers="click"
+    <button class="btn btn-light border py-0 px-0" [ngbPopover]="notMez" placement="top" triggers="click"
       popoverTitle="Notifiche mezzo" tabindex="0" (click)="$event.stopPropagation()">
       <i class="fa fa-bell fa-fw text-secondary"></i>
     </button>

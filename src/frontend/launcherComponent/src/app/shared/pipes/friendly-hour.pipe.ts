@@ -7,14 +7,11 @@ import * as moment from 'moment';
 export class FriendlyHourPipe implements PipeTransform {
 
     transform(date: Date, stampaSecondi: boolean): string {
-
         if (!date) {
             return '';
         }
 
         const diff = moment(date).diff(new Date(), 'minutes') * -1;
-
-        // console.log(diff);
 
         if ((diff <= 30) && (diff > 0)) {
             return diff + ' minuti fa';
@@ -24,12 +21,10 @@ export class FriendlyHourPipe implements PipeTransform {
             return 'Adesso';
         }
 
-
         if (stampaSecondi) {
             return moment(date).format('HH:mm:ss');
         } else {
             return moment(date).format('HH:mm');
         }
-
     }
 }
