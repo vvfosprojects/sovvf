@@ -25,7 +25,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
     /// <summary>
     ///   DTO di input
     /// </summary>
-    public class SintesiRichiesteAssistenzaMarkerQuery : IQuery<SintesiRichiesteAssistenzaMarkerResult>
+    public class SintesiRichiesteAssistenzaMarkerQuery : ISintesiRichiestaMarkerQuery<SintesiRichiesteAssistenzaMarkerResult>
     {
         /// <summary>
         ///   Il filtro utilizzato per la ricerca delle richieste di assistenza

@@ -87,6 +87,62 @@ namespace SO115App.API.CompositionRoot
                 typeof(ISintesiRichiestaAssistenzaQueryHandler<,>),
                 typeof(SintesiRichiesteAssitenzaValidatingQueryHandlerDecorator<,>));           
 
+//Registrazione componenti "Sintesi Richieste Marker"
+            c.Register(
+                typeof(ISintesiRichiestaAssistenzaMarkerQueryHandler<,>), 
+                AppDomain.CurrentDomain.GetAssemblies());
+
+            c.RegisterDecorator(
+                typeof(ISintesiRichiestaAssistenzaMarkerQueryHandler<,>),
+                typeof(SintesiRichiesteAssistenzaMarkerAuthorizationQueryHandlerDecorator<,>));           
+
+            c.RegisterDecorator(
+                typeof(ISintesiRichiestaAssistenzaMarkerQueryHandler<,>),
+                typeof(SintesiRichiesteAssitenzaMarkerValidatingQueryHandlerDecorator<,>));           
+
+//Registrazione componenti "Box Richieste"
+            c.Register(
+                typeof(IBoxRichiesteQueryHandler<,>), 
+                AppDomain.CurrentDomain.GetAssemblies());
+
+            c.RegisterDecorator(
+                typeof(IBoxRichiesteQueryHandler<,>),
+                typeof(BoxRichiesteAuthorizationQueryHandlerDecorator<,>));           
+
+            c.RegisterDecorator(
+                typeof(IBoxRichiesteQueryHandler<,>),
+                typeof(BoxRichiesteValidatingQueryHandlerDecorator<,>));           
+
+//Registrazione componenti "Box Mezzi"
+            c.Register(
+                typeof(IBoxMezziQueryHandler<,>), 
+                AppDomain.CurrentDomain.GetAssemblies());
+
+            c.RegisterDecorator(
+                typeof(IBoxMezziQueryHandler<,>),
+                typeof(BoxMezziAuthorizationQueryHandlerDecorator<,>));           
+
+            c.RegisterDecorator(
+                typeof(IBoxMezziQueryHandler<,>),
+                typeof(BoxMezziValidatingQueryHandlerDecorator<,>));           
+
+//Registrazione componenti "Box Personale"
+            c.Register(
+                typeof(IBoxPersonaleQueryHandler<,>), 
+                AppDomain.CurrentDomain.GetAssemblies());
+
+            c.RegisterDecorator(
+                typeof(IBoxPersonaleQueryHandler<,>),
+                typeof(BoxPersonaleAuthorizationQueryHandlerDecorator<,>));           
+
+            c.RegisterDecorator(
+                typeof(IBoxPersonaleQueryHandler<,>),
+                typeof(BoxPersonaleValidatingQueryHandlerDecorator<,>));           
+
+
+
+
+
 
 
 

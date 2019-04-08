@@ -46,7 +46,7 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> handler;
+        private readonly ISintesiRichiestaAssistenzaMarkerQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> handler;
         private readonly ILogger _logger;
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace SO115App.API.Controllers
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
         public SintesiRichiesteAssistenzaMarkerController(ILogger logger,
-            IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> handler)
+            ISintesiRichiestaAssistenzaMarkerQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> handler)
         {
             _logger = logger;
             this.handler = handler;
@@ -72,8 +72,6 @@ namespace SO115App.API.Controllers
             this._logger.Log(this.GetType().Name + " - L'utente ha richiesto la lista dei Marker delle Sintesi");
 
             var query = new SintesiRichiesteAssistenzaMarkerQuery();
-
-            this._logger.Log(this.GetType().Name + " - Richiamo l'Handler per la ricerca della Sintesi");
 
             return this.handler.Handle(query);
         }

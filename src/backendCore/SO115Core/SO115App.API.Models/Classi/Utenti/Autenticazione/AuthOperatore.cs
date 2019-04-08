@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.Infrastruttura.Autenticazione;
@@ -29,79 +31,22 @@ namespace SO115App.API.Models.Classi.Utenti.Autenticazione
         {
             Utente user = new Utente(username);
 
-            if(username.Equals("admin") || username.Equals("test") || username.Equals("user"))
+            string filepath = "user.json";
+            string json;
+            using (StreamReader r = new StreamReader(filepath))
             {
-                if(username.Equals("admin"))
-                {
-                    if(password.Equals("admin"))
-                    {
-                        user.id = "1";
-                        user.nome = "Luigi";
-                        user.cognome = "Bianchi";
-                        user.sede = new Sede("RM","Comando di Roma","Via Cavour 5",null,null,null,null,"RM","Lazio");
-                        user.ruolo = new List<Role>(){
-                            new Role 
-                            (
-                                Ruolo.Admin, 
-                                new Sede("RM","Comando di Roma","Via Cavour 5",null,null,null,null,"RM","Lazio")
-                            )
-                        };   
-
-                        return user;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }else if(username.Equals("test"))
-                {
-                    if(password.Equals("test"))
-                    {
-                        user.id = "2";
-                        user.nome = "Mario";
-                        user.cognome = "Rossi";
-                        user.sede = new Sede("RM","Comando di Roma","Via Cavour 5",null,null,null,null,"RM","Lazio");
-                        user.ruolo = new List<Role>(){
-                            new Role 
-                            (
-                                Ruolo.Admin, 
-                                new Sede("RM","Comando di Roma","Via Cavour 5",null,null,null,null,"RM","Lazio")
-                            )
-                        };
-
-                        return user;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }else if(username.Equals("user"))
-                {
-                    if(password.Equals("user"))
-                    {
-                        user.id = "3";
-                        user.nome = "Teresio";
-                        user.cognome = "Mancini";
-                        user.sede = new Sede("RM","Comando di Roma","Via Cavour 5",null,null,null,null,"RM","Lazio");
-                        user.ruolo = new List<Role>(){
-                            new Role 
-                            (
-                                Ruolo.User, 
-                                new Sede("RM","Comando di Roma","Via Cavour 5",null,null,null,null,"RM","Lazio")
-                            )
-                        };
-                        return user;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                else
-                    return null;                
+                json = r.ReadToEnd();              
             }
+
+            List<Utente> ListaUtenti = JsonConvert.DeserializeObject<List<Utente>>(json);
+
+            user = ListaUtenti.Find(x => x.password.Equals(password) && x.username.Equals(username));
+
+            if(user != null)
+                return user;
             else
-                return null;          
+                return null; 
+                        
         }
     }
 }

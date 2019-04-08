@@ -24,7 +24,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
     /// <summary>
     ///   DTO che alimenta tutti i box presenti in Home Page
     /// </summary>
-    public class BoxesQuery : IQuery<BoxesResult>
+    public class BoxMezziQuery : IBoxMezziQuery<BoxMezziResult>
     {
         /// <summary>
         ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.

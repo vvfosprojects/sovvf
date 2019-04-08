@@ -25,12 +25,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes.Result
     /// <summary>
     ///   DTO di output
     /// </summary>
-    public class BoxesResult
+    public class BoxMezziResult
     {
         /// <summary>
-        ///   La sintesi delle richieste di assistenza
+        ///   Json Box Richieste
         /// </summary>
-        public IEnumerable<BoxAggregati> SintesiRichiesta
+        public BoxMezzi BoxMezzi
         { get; set; }
 
 

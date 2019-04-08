@@ -1,0 +1,51 @@
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using SO115App.API.Hubs;
+using SO115App.API.Models.Servizi.CQRS.Queries;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes.ResultDTO;
+
+namespace SO115App.API.Controllers
+{
+    [Authorize]  
+    [Route("api/[controller]")]
+    [ApiController]
+    public class BoxPersonaleController: ControllerBase
+    {
+
+        private readonly  IBoxPersonaleQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> handler;
+        private readonly IHubContext<NotificationHub> _NotificationHub;
+
+        /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        /// <param name="handler">L'handler iniettato del servizio</param>
+        public BoxPersonaleController(IHubContext<NotificationHub> NotificationHubContext,            
+            IBoxPersonaleQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> handler)
+        {            
+            this.handler = handler;
+            _NotificationHub = NotificationHubContext;
+
+        }
+        
+          /// <summary>
+        ///   Metodo di accesso alle richieste di assistenza
+        /// </summary>
+        /// <param name="filtro">Il filtro per le richieste</param>
+        /// <returns>Le sintesi delle richieste di assistenza</returns>    
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+           
+            var query = new BoxPersonaleQuery()
+            {
+                FiltroBox = ""
+            };
+
+            return Ok(this.handler.Handle(query));
+        }
+
+    }
+}

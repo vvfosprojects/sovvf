@@ -61,7 +61,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
     ///       richieste negli stati specificati.
     ///   </para>
     /// </summary>
-    public class SintesiRichiesteAssistenzaMarkerQueryHandler : IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult>
+    public class SintesiRichiesteAssistenzaMarkerQueryHandler : ISintesiRichiestaAssistenzaMarkerQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult>
     {
         /// <summary>
         ///   Istanza del servizio
@@ -104,7 +104,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
             //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI           
             
             //DATI FAKE - ORA LI LEGGO DA FILE
-            string filepath = "fakeMarkerRichiesta.json";
+            string filepath = "Fake/fakeMarkerRichiesta.json";
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
