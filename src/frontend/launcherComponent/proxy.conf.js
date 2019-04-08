@@ -3,7 +3,8 @@ const PROXY_CONFIG = [
         context: [
             "/NotificationHub",
             "/api/SintesiRichiesteAssistenza",
-            "/api/auth/Login"
+            "/api/auth/Login",
+            "/api/BoxRichieste"
         ],
         target: "http://so115.api.it/",
         secure: false,

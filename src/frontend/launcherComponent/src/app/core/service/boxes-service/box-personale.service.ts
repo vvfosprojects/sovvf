@@ -6,7 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { handleError } from '../../../shared/helper/handleError';
 
-const API_URL = environment.apiUrl.boxes.infoAggregate;
+const API_URL = environment.apiUrl.boxes.personale;
 
 @Injectable()
 export class BoxPersonaleService {

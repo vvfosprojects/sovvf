@@ -2,7 +2,9 @@ export const environment = {
     production: true,
     apiUrl: {
         boxes: {
-            infoAggregate: 'https://api.myjson.com/bins/16f4c4',
+            personale: '',
+            mezzi: '',
+            richieste: '/api/BoxRichieste',
             meteo: {
                 url: 'http://api.openweathermap.org/data/2.5/weather?',
                 option: {

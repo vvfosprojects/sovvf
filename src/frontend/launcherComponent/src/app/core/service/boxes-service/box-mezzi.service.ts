@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { handleError } from '../../../shared/helper/handleError';
 
-const API_URL = environment.apiUrl.boxes.infoAggregate;
+const API_URL = environment.apiUrl.boxes.mezzi;
 
 @Injectable()
 export class BoxMezziService {
