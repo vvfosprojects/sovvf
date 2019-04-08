@@ -14,6 +14,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { SintesiRichiestaModule } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 import { UiSwitchModule } from 'ngx-ui-switch';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 /*
     Components
  */
@@ -50,6 +51,7 @@ import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-s
         SharedModule.forRoot(),
         ScrollingModule,
         SintesiRichiestaModule,
+        GooglePlaceModule,
         TimeagoModule.forRoot({
             intl: TimeagoIntl,
             formatter: {provide: TimeagoFormatter, useClass: TimeagoCustomFormatter}

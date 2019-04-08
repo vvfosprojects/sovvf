@@ -8,6 +8,8 @@ import { Select, Store } from '@ngxs/store';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { makeCopy } from '../../../../shared/helper/function';
 import { UpdateRichiesta } from '../../store/actions/richieste/richieste.actions';
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -15,7 +17,9 @@ import { UpdateRichiesta } from '../../store/actions/richieste/richieste.actions
     styleUrls: ['./modifica-richiesta.component.css']
 })
 export class ModificaRichiestaComponent implements OnInit {
-
+    options = {
+        componentRestrictions: {country: ['IT', 'FR', 'AT', 'CH', 'SI']}
+    };
     tipologie: TipologieInterface[] = APP_TIPOLOGIE;
     tipologiaRichiedente: string;
 
@@ -71,9 +75,16 @@ export class ModificaRichiestaComponent implements OnInit {
         if (this.f.rilevanza.value !== null) {
             this.f.rilevanza.setValue(null);
         } else {
-            const date = new Date();
+            const date = new Date().toDateString() + ' ' + new Date().toTimeString().split(' ')[0];
             this.f.rilevanza.setValue(date);
         }
+    }
+
+    onCercaIndirizzo(result: Address): void {
+        const coordinate = new Coordinate(result.geometry.location.lat(), result.geometry.location.lng());
+        this.f.latitudine.patchValue(coordinate.latitudine);
+        this.f.longitudine.patchValue(coordinate.longitudine);
+        this.f.indirizzo.patchValue(result.formatted_address);
     }
 
     getNuovaRichiesta() {
@@ -101,7 +112,7 @@ export class ModificaRichiestaComponent implements OnInit {
         nuovaRichiesta.descrizione = f.motivazione.value;
         nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value;
 
-        console.log(nuovaRichiesta);
+        console.log('Richiesta Modificata', nuovaRichiesta);
         return nuovaRichiesta;
     }
 

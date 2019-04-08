@@ -24,6 +24,12 @@ body, html {
   height: 100vh;
 }
 
+// Dropdown Google Places
+.pac-container {
+  z-index: 99999 !important;
+}
+// End Dropdown Google Places
+
 .xlModal > .modal-dialog {
   max-width: 1490px !important;
   min-width: 650px !important;
@@ -94,12 +100,12 @@ a:hover {
   white-space: nowrap;
 }
 
-.m-h-750{
+.m-h-750 {
   height: 754px;
   max-height: 754px;
 }
 
-.m-h-600{
+.m-h-600 {
   height: 637px;
   max-height: 637px;
 }
