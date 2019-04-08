@@ -5,18 +5,22 @@
                 <div class="col-7">
                     <h3 class="mb-0">Modifica #{{richiestaModifica.codice}}</h3>
                 </div>
-                <div class="col-1 pr-0 text-right">
-                    <span class="d-inline-block mt-1" ngbTooltip="Rilevanza" placement="bottom"
-                          [ngClass]="{'text-danger': f.rilevanza.value}">
-                        <i class="fa fa-exclamation-triangle"></i>
-                    </span>
-                </div>
-                <div class="col-1">
-                    <div class="form-group m-0">
-                        <span class="d-inline-block mr-2">
-                            <ui-switch [checked]="richiestaModifica.rilevanza !== null"
-                                       (change)="setRilevanza()"></ui-switch>
-                        </span>
+                <div class="col-2 pr-0">
+                    <div class="row">
+                        <div class="col pr-0 text-right">
+                            <span class="d-inline-block mt-1 mr-1" ngbTooltip="Rilevanza" placement="bottom"
+                                  [ngClass]="{'text-danger': f.rilevanza.value}">
+                                <i class="fa fa-exclamation-triangle"></i>
+                            </span>
+                        </div>
+                        <div class="col pl-0">
+                            <div class="form-group m-0 float-right">
+                                <span class="d-inline-block mt-1 mr-2">
+                                    <ui-switch size="small" color="#dc3545" [checked]="richiestaModifica.rilevanza !== null"
+                                               (change)="setRilevanza()"></ui-switch>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-3">
