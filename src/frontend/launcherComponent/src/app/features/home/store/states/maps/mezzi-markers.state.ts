@@ -75,8 +75,6 @@ export class MezziMarkersState {
                     }
                 });
             });
-        }
-        if (filteredId.length > 0) {
             dispatch(new SetMarkerOpachiMezzi(filteredId));
         }
     }
