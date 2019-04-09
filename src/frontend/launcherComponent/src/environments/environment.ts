@@ -2,8 +2,8 @@ export const environment = {
     production: false,
     apiUrl: {
         boxes: {
-            personale: '',
-            mezzi: '',
+            personale: '/api/BoxPersonale',
+            mezzi: '/api/BoxMezzi',
             richieste: '/api/BoxRichieste',
             meteo: {
                 url: 'http://api.openweathermap.org/data/2.5/weather?',

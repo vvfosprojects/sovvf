@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BoxPersonale } from '../../../features/home/boxes/boxes-model/box-personale.model';
 import { Observable } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, map, retry } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { handleError } from '../../../shared/helper/handleError';
@@ -15,7 +15,8 @@ export class BoxPersonaleService {
     }
 
     public getPersonale(): Observable<BoxPersonale> {
-        return this.http.get<BoxPersonale>(API_URL).pipe(
+        return this.http.get<any>(API_URL).pipe(
+            map((data: BoxPersonale) => data['boxPersonale']),
             retry(3),
             catchError(handleError)
         );
