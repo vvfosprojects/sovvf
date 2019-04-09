@@ -57,11 +57,6 @@ namespace SO115App.API.CompositionRoot
                 typeof(ICommandHandler<>),
                 typeof(ValidatingCommandHandlerDecorator<>));
 
-            c.RegisterDecorator(
-                typeof(ICommandHandler<>),
-                typeof(AuthorizationCommandHandlerDecorator<>));           
-
-
             c.Register(
                 typeof(IQueryHandler<,>), 
                 AppDomain.CurrentDomain.GetAssemblies());

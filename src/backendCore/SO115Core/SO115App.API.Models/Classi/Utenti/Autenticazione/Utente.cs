@@ -21,6 +21,8 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 
 namespace SO115App.API.Models.Classi.Autenticazione
 {
@@ -164,6 +166,30 @@ namespace SO115App.API.Models.Classi.Autenticazione
         ///   Qualifica utente loggato
         /// </summary>
         public string qualifica { get; set; }
+
+
+        public static Utente FindUserByUsername(string username)
+        {
+
+            Utente userFind = new Utente(username);
+
+            string filepath = "Fake/user.json";
+            string json;
+            using (StreamReader r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();              
+            }
+
+            List<Utente> ListaUtenti = JsonConvert.DeserializeObject<List<Utente>>(json);
+
+            userFind = ListaUtenti.Find(x => x.username.Equals(username));
+
+            if(userFind != null)
+                return userFind;
+            else
+                return null;  
+
+        }        
         
     }
 
@@ -184,4 +210,5 @@ namespace SO115App.API.Models.Classi.Autenticazione
         User,
         Admin
     }
+
 }

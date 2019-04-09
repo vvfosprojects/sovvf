@@ -2,6 +2,7 @@ namespace SO115App.API.Models.AOP.Authorization
 {
     using System.Security;
     using System.Security.Principal;
+    using SO115App.API.Models.Classi.Autenticazione;
     using SO115App.API.Models.Servizi.CQRS.Queries;
     using SO115App.API.Models.Servizi.Infrastruttura;
 
@@ -27,19 +28,18 @@ namespace SO115App.API.Models.AOP.Authorization
 
         private void Authorize()
         {
-            //ESEMPIO - DA MODIFICARE CON LA LOGICA DI AUTORIZZAZIONE
-            if (typeof(TQuery).Namespace.Contains("Admin") && !this.currentUser.IsInRole("Admin"))
+            string username = this.currentUser.Identity.Name;
+            
+            if(this.currentUser.Identity.IsAuthenticated)
             {
-
-                //TODO AGGIUNGERE METODO PER VERIFICA AUTORIZZAZIONI SU DB
-
-                throw new SecurityException();
+                
+                Utente user = Utente.FindUserByUsername(username);            
+                if (user == null)
+                    throw new SecurityException();
 
             }else
-            {
+                throw new SecurityException();
 
-       
-            }
         }
     }
 }

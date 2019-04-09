@@ -66,7 +66,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
 
              //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI           
             //DATI FAKE - ORA LI LEGGO DA FILE
-            string filepath = "Fake/ListaMezzi.json";
+            string filepath = "Fake/BoxMezzi.json";
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {

@@ -31,7 +31,7 @@ namespace SO115App.API.Models.Classi.Utenti.Autenticazione
         {
             Utente user = new Utente(username);
 
-            string filepath = "user.json";
+            string filepath = "Fake/user.json";
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
