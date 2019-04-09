@@ -68,6 +68,6 @@ export interface Ruolo {
 }
 
 export enum Role {
-    User = 'User',
-    Admin = 'Admin'
+    User,
+    Admin
 }

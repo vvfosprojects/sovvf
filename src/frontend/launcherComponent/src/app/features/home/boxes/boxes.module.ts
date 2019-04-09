@@ -48,6 +48,9 @@ import { BoxRichiesteState } from '../store/states/boxes/box-richieste.state';
     ],
     entryComponents: [ModalServiziComponent],
     providers: [
+        // BoxRichiesteService,
+        // BoxMezziService,
+        // BoxPersonaleService,
         { provide: BoxRichiesteService, useClass: BoxRichiesteFakeService },
         { provide: BoxMezziService, useClass: BoxMezziFakeService },
         { provide: BoxPersonaleService, useClass: BoxPesonaleFakeService }

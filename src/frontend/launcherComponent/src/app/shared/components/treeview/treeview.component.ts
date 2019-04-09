@@ -1,27 +1,23 @@
-import { Component, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { DownlineTreeviewItem, OrderDownlineTreeviewEventParser, TreeItem, TreeviewConfig, TreeviewEventParser, TreeviewItem } from 'ngx-treeview';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { DownlineTreeviewItem, OrderDownlineTreeviewEventParser, TreeviewConfig, TreeviewEventParser, TreeviewItem } from 'ngx-treeview';
 import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subscription } from 'rxjs';
-import { Select, Store } from '@ngxs/store';
-import { SediTreeviewState } from '../store/states/sedi-treeview/sedi-treeview.state';
-import { ClearSediNavbarSelezionate, PatchSediNavbarSelezionate, SetSediNavbarSelezionate } from '../store/actions/sedi-treeview/sedi-treeview.actions';
+import { arrayUnique } from '../../helper/function';
+import { Ricorsivo } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 import { isNil, reverse } from 'lodash';
-import { arrayUnique } from '../../../shared/helper/function';
-import { Ricorsivo } from '../store/states/sedi-treeview/sedi-treeview.helper';
+import { TreeviewEmitterInterface } from './treeview-emitter.interface';
+import { Observable } from 'rxjs';
 
 
 @Component({
-    selector: 'app-unita-operativa-treeview',
-    templateUrl: './unita-operativa-treeview.component.html',
-    styleUrls: ['./unita-operativa-treeview.component.css'],
+    selector: 'app-shared-treeview',
+    templateUrl: './treeview.component.html',
+    styleUrls: ['./treeview.component.css'],
     encapsulation: ViewEncapsulation.None,
     providers: [
         { provide: TreeviewEventParser, useClass: OrderDownlineTreeviewEventParser },
     ]
 })
-export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
-
-    subscription = new Subscription();
+export class TreeviewComponent implements OnInit {
     treeViewOpened: boolean;
 
     config = TreeviewConfig.create({
@@ -32,45 +28,27 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
         maxHeight: 400
     });
 
-    @Select(SediTreeviewState.listeSediNavbar) listeSedi$: Observable<TreeItem>;
-    items: TreeviewItem[];
+    @Input() items: TreeviewItem[];
+    @Input() sedeSelezionata: Observable<string>;
+    @Input() tastoConferma: boolean;
+    @Output() clearSelezione = new EventEmitter<any>();
+    @Output() confermaSelezione = new EventEmitter<any>();
+    @Output() patchSelezione = new EventEmitter<any>();
 
-    @Select(SediTreeviewState.sediNavbarTesto) sedeSelezionata$: Observable<string>;
-    sedeSelezionata: string;
-
-    @Select(SediTreeviewState.sediNavbarTastoConferma) tastoConferma$: Observable<boolean>;
-
-    constructor(private store: Store, config: NgbDropdownConfig) {
+    constructor(config: NgbDropdownConfig) {
         config.autoClose = false;
-
-        this.subscription.add(
-            this.listeSedi$.subscribe((listaSedi: TreeItem) => {
-                this.items = [];
-                this.items[0] = new TreeviewItem(listaSedi);
-            })
-        );
-
-        this.subscription.add(this.sedeSelezionata$.subscribe(
-            (sedeSelezionata: string) => {
-                this.sedeSelezionata = sedeSelezionata;
-            })
-        );
     }
 
     @ViewChild('treeviewSedi') treeviewSedi: NgbDropdown;
 
     @HostListener('document:keydown.escape') onKeydownHandler() {
         if (this.treeViewOpened) {
-            this.store.dispatch(new ClearSediNavbarSelezionate());
+            this.clearSelezione.emit();
             this.treeviewSedi.close();
         }
     }
 
     ngOnInit() {
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
     }
 
     openDropDown(value: any) {
@@ -146,26 +124,33 @@ export class UnitaOperativaTreeviewComponent implements OnInit, OnDestroy {
         const unique = [];
         if ((leaves.length > 0 && parent.length > 0) || leaves.length > 1 || parent.length > 1) {
             console.log(`più sedi selezionate: ${[...parent, ...leaves]}`);
-            this.store.dispatch(new PatchSediNavbarSelezionate([...parent, ...leaves], Ricorsivo.NonRicorsivo));
+            this.patch([...parent, ...leaves], Ricorsivo.NonRicorsivo);
         } else {
             unique[0] = parent.length === 1 ? parent[0] : leaves[0];
             if (unique) {
                 console.log(`una sede selezionata: ${unique[0]}`);
-                this.store.dispatch(new PatchSediNavbarSelezionate([...unique], Ricorsivo.Ricorsivo));
+                this.patch([...unique], Ricorsivo.Ricorsivo);
             } else {
                 console.log(`nessuna sede selezionata`);
-                this.store.dispatch(new PatchSediNavbarSelezionate([]));
+                this.patch([]);
             }
         }
     }
 
-
     annulla() {
-        this.store.dispatch(new ClearSediNavbarSelezionate());
+        this.clearSelezione.emit();
     }
 
     conferma() {
-        this.store.dispatch(new SetSediNavbarSelezionate());
+        this.confermaSelezione.emit();
+    }
+
+    patch(idS: string[], ricorsivo?: Ricorsivo) {
+        const eventEmitter: TreeviewEmitterInterface = {
+            idSelezionati: idS,
+            ricorsivo: ricorsivo
+        };
+        this.patchSelezione.emit(eventEmitter);
     }
 
 }

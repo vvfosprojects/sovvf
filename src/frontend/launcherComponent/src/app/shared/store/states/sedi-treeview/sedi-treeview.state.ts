@@ -8,11 +8,11 @@ import {
     SetListaSediTreeview,
     SetSediNavbarSelezionate
 } from '../../actions/sedi-treeview/sedi-treeview.actions';
-import { ListaSediService } from '../../../../../core/service/lista-sedi-service/lista-sedi.service';
-import { arraysEqual, makeCopy } from '../../../../../shared/helper/function';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ListaSediService } from '../../../../core/service/lista-sedi-service/lista-sedi.service';
+import { arraysEqual, makeCopy } from '../../../helper/function';
+import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { allFalseTreeItem, checkTreeItem, findItem, Ricorsivo, sedeString } from './sedi-treeview.helper';
-import { SetAppLoaded } from '../../../../../shared/store/actions/app/app.actions';
+import { SetAppLoaded } from '../../actions/app/app.actions';
 
 export interface SediTreeviewStateModel {
     listeSedi: TreeItem;
@@ -95,12 +95,16 @@ export class SediTreeviewState implements NgxsOnInit {
     patchSediNavbarSelezionate({ getState, patchState }: StateContext<SediTreeviewStateModel>, action: PatchSediNavbarSelezionate) {
         const state = getState();
         let item = '';
-        if (action.options === Ricorsivo.Ricorsivo) {
-            item = findItem(state.listaSediNavbar, action.selected[0]).text;
+        if (action.selected[0]) {
+            if (action.options === Ricorsivo.Ricorsivo) {
+                item = findItem(state.listaSediNavbar, action.selected[0]).text;
+            } else {
+                item = 'più sedi selezionate';
+            }
         } else {
-            item = 'più sedi selezionate';
+            item = 'nessuna sede selezionata';
+            action.selected = [];
         }
-        console.log(item);
         if (!state.sediNavbarSelezionate.iniziali) {
             patchState({
                 sediNavbarSelezionate: {
@@ -120,7 +124,7 @@ export class SediTreeviewState implements NgxsOnInit {
                     iniziale: state.sediNavbarTesto.iniziale,
                     corrente: item,
                 },
-                sediNavbarDisableConfirm: !!(arraysEqual(state.sediNavbarSelezionate.iniziali, action.selected) || action.selected.length === 0)
+                sediNavbarDisableConfirm: (!!arraysEqual(state.sediNavbarSelezionate.iniziali, action.selected) || action.selected.length === 0)
             });
         }
     }

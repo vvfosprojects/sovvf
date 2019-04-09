@@ -4,7 +4,9 @@ const PROXY_CONFIG = [
             "/NotificationHub",
             "/api/SintesiRichiesteAssistenza",
             "/api/auth/Login",
-            "/api/BoxRichieste"
+            "/api/BoxRichieste",
+            "/api/BoxMezzi",
+            "/api/BoxPersonale"
         ],
         target: "http://so115.api.it/",
         secure: false,

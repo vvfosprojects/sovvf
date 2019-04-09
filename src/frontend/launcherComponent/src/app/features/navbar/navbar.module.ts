@@ -9,29 +9,27 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
  */
 import { TurnoService } from './navbar-service/turno-service/turno.service';
 import { TurnoServiceFake } from './navbar-service/turno-service/turno.service.fake';
-import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treeview-i18n';
 /**
  * Component
  */
 import { OperatoreComponent } from './operatore/operatore.component';
-import { UnitaOperativaTreeviewComponent } from './unita-operativa-treeview/unita-operativa-treeview.component';
+import { UnitaOperativaComponent } from './unita-operativa/unita-operativa.component';
 import { ClockComponent } from './clock/clock.component';
 import { NavbarComponent } from './navbar.component';
 import { TurnoComponent } from './turno/turno.component';
 /**
-* Module
-*/
+ * Module
+ */
 import { PipeModule } from '../../shared/pipes/pipe.module';
 import { SharedModule } from '../../shared/shared.module';
 import { FilterPipeModule } from 'ngx-filter-pipe';
-import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
 /**
-* Ngxs
-*/
+ * Ngxs
+ */
 import { NgxsModule } from '@ngxs/store';
 /**
-* Ngxs State
-*/
+ * Ngxs State
+ */
 import { TurnoState } from './store/states/turno/turno.state';
 
 @NgModule({
@@ -40,7 +38,6 @@ import { TurnoState } from './store/states/turno/turno.state';
         NgbModule,
         PipeModule.forRoot(),
         SharedModule.forRoot(),
-        TreeviewModule.forRoot(),
         BrowserAnimationsModule,
         FilterPipeModule,
         FormsModule,
@@ -56,12 +53,11 @@ import { TurnoState } from './store/states/turno/turno.state';
         TurnoComponent,
         ClockComponent,
         OperatoreComponent,
-        UnitaOperativaTreeviewComponent
+        UnitaOperativaComponent
     ],
     exports: [NavbarComponent],
     providers: [
         { provide: TurnoService, useClass: TurnoServiceFake },
-        { provide: TreeviewI18n, useClass: DefaultTreeviewI18n },
     ]
 })
 export class NavbarModule {
