@@ -10,7 +10,6 @@ import {
     ClearChiamata,
     ClearMarkerChiamata
 } from '../../actions/chiamata/scheda-telefonata.actions';
-import { FormChiamataModel } from '../../../chiamata/model/form-scheda-telefonata.model';
 import { CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
 import { ToggleChiamata } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
@@ -22,16 +21,17 @@ import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.action
 import { SignalRNotification } from '../../../../../core/signalr/model/signalr-notification.model';
 import { InsertChiamataMarker, RemoveChiamataMarker } from '../../actions/maps/chiamate-markers.actions';
 import { ClipboardState } from './clipboard.state';
+import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 
 export interface SchedaTelefonataStateModel {
     coordinate: Coordinate;
-    chiamata: FormChiamataModel;
+    nuovaRichiesta: SintesiRichiesta;
     idChiamataMarker: string;
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     coordinate: null,
-    chiamata: null,
+    nuovaRichiesta: null,
     idChiamataMarker: null
 };
 
@@ -49,7 +49,7 @@ export class SchedaTelefonataState {
     @Select(UtenteState.utente) utente$: Observable<Utente>;
 
     @Action(ReducerSchedaTelefonata)
-    reducer({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata) {
+    reducer({getState, dispatch}: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata) {
         switch (action.schedaTelefonata.tipo) {
             case 'copiaIndirizzo':
                 dispatch(new CopyToClipboard(getState().coordinate));
@@ -64,7 +64,7 @@ export class SchedaTelefonataState {
                 dispatch(new SetMarkerChiamata(action.schedaTelefonata.markerChiamata));
                 break;
             case 'inserita':
-                dispatch(new SetChiamata(action.schedaTelefonata.formChiamata));
+                dispatch(new SetChiamata(action.schedaTelefonata.nuovaRichiesta));
                 break;
             default:
                 return;
@@ -72,25 +72,25 @@ export class SchedaTelefonataState {
     }
 
     @Action(SetChiamata)
-    setChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetChiamata) {
+    setChiamata({patchState, dispatch}: StateContext<SchedaTelefonataStateModel>, action: SetChiamata) {
         patchState({
-            chiamata: action.chiamata
+            nuovaRichiesta: action.nuovaRichiesta
         });
         dispatch(new InsertChiamata());
     }
 
     @Action(InsertChiamata)
-    insertChiamata({ getState }: StateContext<SchedaTelefonataStateModel>) {
+    insertChiamata({getState}: StateContext<SchedaTelefonataStateModel>) {
         const state = getState();
         this.utente$.subscribe((utente: Utente) => {
             if (utente) {
                 this.signalR.insertChiamata(new SignalRNotification(
-                    state.chiamata.idSede,
-                    state.chiamata.idOperatore,
+                    state.nuovaRichiesta.operatore.sede.codice,
+                    state.nuovaRichiesta.operatore.id,
                     `${utente.cognome} ${utente.nome}`,
-                    state.chiamata
+                    state.nuovaRichiesta
                 ));
-                console.dir(state.chiamata);
+                console.dir(state.nuovaRichiesta);
             } else {
                 console.error('Errore utente non connesso');
             }
@@ -98,18 +98,18 @@ export class SchedaTelefonataState {
     }
 
     @Action(ResetChiamata)
-    resetChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>) {
+    resetChiamata({dispatch}: StateContext<SchedaTelefonataStateModel>) {
         dispatch(new ClearChiamata());
         dispatch(new GetInitCentroMappa());
     }
 
     @Action(CestinaChiamata)
-    cestinaChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>) {
+    cestinaChiamata({dispatch}: StateContext<SchedaTelefonataStateModel>) {
         dispatch(new ToggleChiamata());
     }
 
     @Action(SetMarkerChiamata)
-    setMarkerChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetMarkerChiamata) {
+    setMarkerChiamata({patchState, dispatch}: StateContext<SchedaTelefonataStateModel>, action: SetMarkerChiamata) {
         const coordinate: Coordinate = {
             latitudine: action.marker.localita.coordinate.latitudine,
             longitudine: action.marker.localita.coordinate.longitudine
@@ -125,12 +125,12 @@ export class SchedaTelefonataState {
     }
 
     @Action(ClearMarkerChiamata)
-    clearMarkerChiamata({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
+    clearMarkerChiamata({getState, dispatch}: StateContext<SchedaTelefonataStateModel>) {
         dispatch(new RemoveChiamataMarker(getState().idChiamataMarker));
     }
 
     @Action(ClearChiamata)
-    clearChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>) {
+    clearChiamata({patchState}: StateContext<SchedaTelefonataStateModel>) {
         patchState(SchedaTelefonataStateDefaults);
     }
 

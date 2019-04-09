@@ -1,8 +1,8 @@
-import { FormChiamataModel } from './form-scheda-telefonata.model';
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
+import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 
 export interface SchedaTelefonataInterface {
     tipo: string;
-    formChiamata: FormChiamataModel;
+    nuovaRichiesta: SintesiRichiesta;
     markerChiamata: ChiamataMarker;
 }

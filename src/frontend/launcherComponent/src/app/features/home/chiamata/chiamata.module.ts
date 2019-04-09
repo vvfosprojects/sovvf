@@ -15,6 +15,7 @@ import { ChiamataState } from '../store/states/chiamata/chiamata.state';
 import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
 import { ClipboardState } from '../store/states/chiamata/clipboard.state';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
+import { UiSwitchModule } from 'ngx-ui-switch';
 
 @NgModule({
     imports: [
@@ -23,6 +24,7 @@ import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confi
         FormsModule,
         GooglePlaceModule,
         NgbModule,
+        UiSwitchModule.forRoot(null),
         ClipboardModule,
         ReactiveFormsModule,
         NgxsModule.forFeature([

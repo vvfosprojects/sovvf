@@ -1,6 +1,6 @@
 import { SchedaTelefonataInterface } from '../../../chiamata/model/scheda-telefonata.interface';
-import { FormChiamataModel } from '../../../chiamata/model/form-scheda-telefonata.model';
 import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
+import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 
 export class ReducerSchedaTelefonata {
     static readonly type = '[Scheda Telefonata] Reduce completato';
@@ -12,7 +12,7 @@ export class ReducerSchedaTelefonata {
 export class SetChiamata {
     static readonly type = '[Scheda Telefonata] Set chiamata';
 
-    constructor(public chiamata: FormChiamataModel) {
+    constructor(public nuovaRichiesta: SintesiRichiesta) {
     }
 
 }
