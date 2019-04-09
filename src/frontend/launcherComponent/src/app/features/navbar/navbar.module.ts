@@ -9,7 +9,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
  */
 import { TurnoService } from './navbar-service/turno-service/turno.service';
 import { TurnoServiceFake } from './navbar-service/turno-service/turno.service.fake';
-import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treeview-i18n';
 /**
  * Component
  */
@@ -24,7 +23,6 @@ import { TurnoComponent } from './turno/turno.component';
 import { PipeModule } from '../../shared/pipes/pipe.module';
 import { SharedModule } from '../../shared/shared.module';
 import { FilterPipeModule } from 'ngx-filter-pipe';
-import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
 /**
 * Ngxs
 */
@@ -40,7 +38,6 @@ import { TurnoState } from './store/states/turno/turno.state';
         NgbModule,
         PipeModule.forRoot(),
         SharedModule.forRoot(),
-        TreeviewModule.forRoot(),
         BrowserAnimationsModule,
         FilterPipeModule,
         FormsModule,
@@ -61,7 +58,6 @@ import { TurnoState } from './store/states/turno/turno.state';
     exports: [NavbarComponent],
     providers: [
         { provide: TurnoService, useClass: TurnoServiceFake },
-        { provide: TreeviewI18n, useClass: DefaultTreeviewI18n },
     ]
 })
 export class NavbarModule {

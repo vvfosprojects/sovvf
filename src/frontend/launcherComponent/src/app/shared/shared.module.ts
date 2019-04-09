@@ -1,14 +1,17 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {PipeModule} from './pipes/pipe.module';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PipeModule } from './pipes/pipe.module';
 import * as Shared from './index';
+import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
+import { DefaultTreeviewI18n } from '../features/navbar/store/states/sedi-treeview/default-treeview-i18n';
 
 @NgModule({
     imports: [
         CommonModule,
         NgbModule,
-        PipeModule
+        PipeModule,
+        TreeviewModule.forRoot(),
     ],
     declarations: [
         Shared.DebounceClickDirective,
@@ -16,7 +19,8 @@ import * as Shared from './index';
         Shared.ComponenteComponent,
         Shared.CompetenzaComponent,
         Shared.MezzoComponent,
-        Shared.LoaderComponent
+        Shared.LoaderComponent,
+        Shared.TreeviewComponent
     ],
     exports: [
         Shared.DebounceClickDirective,
@@ -24,7 +28,8 @@ import * as Shared from './index';
         Shared.ComponenteComponent,
         Shared.CompetenzaComponent,
         Shared.MezzoComponent,
-        Shared.LoaderComponent
+        Shared.LoaderComponent,
+        Shared.TreeviewComponent
     ]
 })
 export class SharedModule {
@@ -32,7 +37,9 @@ export class SharedModule {
     static forRoot() {
         return {
             ngModule: SharedModule,
-            providers: [],
+            providers: [
+                { provide: TreeviewI18n, useClass: DefaultTreeviewI18n },
+            ],
         };
     }
 }
