@@ -8,11 +8,11 @@ import { TreeviewEmitterInterface } from '../../../shared/components/treeview/tr
 
 
 @Component({
-    selector: 'app-unita-operativa-treeview',
-    templateUrl: './unita-operativa-treeview.component.html',
-    styleUrls: ['./unita-operativa-treeview.component.css'],
+    selector: 'app-unita-operativa',
+    templateUrl: './unita-operativa.component.html',
+    styleUrls: ['./unita-operativa.component.css'],
 })
-export class UnitaOperativaTreeviewComponent implements OnDestroy {
+export class UnitaOperativaComponent implements OnDestroy {
 
     subscription = new Subscription();
 
