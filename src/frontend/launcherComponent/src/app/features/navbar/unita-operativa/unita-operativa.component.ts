@@ -2,8 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { SediTreeviewState } from '../store/states/sedi-treeview/sedi-treeview.state';
-import { ClearSediNavbarSelezionate, PatchSediNavbarSelezionate, SetSediNavbarSelezionate } from '../store/actions/sedi-treeview/sedi-treeview.actions';
+import { SediTreeviewState } from '../../../shared/store/states/sedi-treeview/sedi-treeview.state';
+import { ClearSediNavbarSelezionate, PatchSediNavbarSelezionate, SetSediNavbarSelezionate } from '../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { TreeviewEmitterInterface } from '../../../shared/components/treeview/treeview-emitter.interface';
 
 

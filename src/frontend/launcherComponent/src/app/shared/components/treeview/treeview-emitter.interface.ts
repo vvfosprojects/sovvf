@@ -1,4 +1,4 @@
-import { Ricorsivo } from '../../../features/navbar/store/states/sedi-treeview/sedi-treeview.helper';
+import { Ricorsivo } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 
 export interface TreeviewEmitterInterface {
     idSelezionati: string[];

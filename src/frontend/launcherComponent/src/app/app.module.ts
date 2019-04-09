@@ -40,7 +40,7 @@ import { SharedModule } from './shared/shared.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
 import { SignalRState } from './core/signalr/store/signalR.state';
 import { ToastrState } from './shared/store/states/toastr/toastr.state';
-import { SediTreeviewState } from './features/navbar/store/states/sedi-treeview/sedi-treeview.state';
+import { SediTreeviewState } from './shared/store/states/sedi-treeview/sedi-treeview.state';
 import { ListaSediService } from './core/service/lista-sedi-service/lista-sedi.service';
 import { ListaSediServiceFake } from './core/service/lista-sedi-service/lista-sedi.service.fake';
 import { AppState } from './shared/store/states/app/app.state';

@@ -4,7 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PipeModule } from './pipes/pipe.module';
 import * as Shared from './index';
 import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
-import { DefaultTreeviewI18n } from '../features/navbar/store/states/sedi-treeview/default-treeview-i18n';
+import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treeview-i18n';
 
 @NgModule({
     imports: [

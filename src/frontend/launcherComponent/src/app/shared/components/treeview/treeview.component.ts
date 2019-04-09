@@ -2,7 +2,7 @@ import { Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild
 import { DownlineTreeviewItem, OrderDownlineTreeviewEventParser, TreeviewConfig, TreeviewEventParser, TreeviewItem } from 'ngx-treeview';
 import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { arrayUnique } from '../../helper/function';
-import { Ricorsivo } from '../../../features/navbar/store/states/sedi-treeview/sedi-treeview.helper';
+import { Ricorsivo } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 import { isNil, reverse } from 'lodash';
 import { TreeviewEmitterInterface } from './treeview-emitter.interface';
 import { Observable } from 'rxjs';

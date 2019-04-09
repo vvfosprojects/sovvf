@@ -3,7 +3,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { GetUtente, SetUtente } from '../../actions/operatore/utente.actions';
 import { SignalRService } from '../../../../../core/signalr/signalR.service';
 import { SignalRNotification } from '../../../../../core/signalr/model/signalr-notification.model';
-import { PatchListaSediNavbar } from '../../actions/sedi-treeview/sedi-treeview.actions';
+import { PatchListaSediNavbar } from '../../../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 
 export interface UtenteStateModel {
     utente: Utente;
