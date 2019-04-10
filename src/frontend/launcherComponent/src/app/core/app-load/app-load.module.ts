@@ -1,8 +1,6 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { AppLoadService } from './app-load.service';
-import { SignalRService } from '../signalr/signalR.service';
-
 
 export function init_app(appLoadService: AppLoadService) {
     return () => appLoadService.initializeApp();

@@ -1,22 +1,20 @@
-import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
-import { TreeItem } from 'ngx-treeview';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { ListaSedi } from '../../../../core/settings/lista-sedi';
 import {
     ClearSediNavbarSelezionate,
-    GetListaSediTreeview,
     PatchListaSediNavbar,
     PatchSediNavbarSelezionate,
     SetListaSediTreeview,
     SetSediNavbarSelezionate
 } from '../../actions/sedi-treeview/sedi-treeview.actions';
-import { ListaSediService } from '../../../../core/service/lista-sedi-service/lista-sedi.service';
 import { arraysEqual, makeCopy } from '../../../helper/function';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { allFalseTreeItem, checkTreeItem, findItem, Ricorsivo, sedeString } from './sedi-treeview.helper';
 import { SetAppLoaded } from '../../actions/app/app.actions';
 
 export interface SediTreeviewStateModel {
-    listeSedi: TreeItem;
-    listaSediNavbar: TreeItem;
+    listeSedi: ListaSedi;
+    listaSediNavbar: ListaSedi;
     sediNavbarTesto: TreeViewStateSelezione;
     sediNavbarSelezionate: TreeViewStateSelezioneArr;
     sediNavbarDisableConfirm: boolean;
@@ -38,7 +36,7 @@ export const SediTreeviewStateDefaults: SediTreeviewStateModel = {
     name: 'listaSediTreeview',
     defaults: SediTreeviewStateDefaults
 })
-export class SediTreeviewState implements NgxsOnInit {
+export class SediTreeviewState {
 
     @Selector()
     static listeSedi(state: SediTreeviewStateModel) {
@@ -60,23 +58,9 @@ export class SediTreeviewState implements NgxsOnInit {
         return state.sediNavbarDisableConfirm;
     }
 
-    ngxsOnInit(ctx: StateContext<SediTreeviewStateModel>) {
-        ctx.dispatch(new GetListaSediTreeview());
-    }
-
-    constructor(private _listaSedi: ListaSediService) {
-    }
-
-    @Action(GetListaSediTreeview)
-    getListaSediTreeview({ dispatch }: StateContext<SediTreeviewStateModel>) {
-        this._listaSedi.getListaSedi().subscribe((result: TreeItem) => {
-            allFalseTreeItem(result);
-            dispatch(new SetListaSediTreeview(result));
-        });
-    }
-
     @Action(SetListaSediTreeview)
     setListaSediTreeview({ patchState }: StateContext<SediTreeviewStateModel>, action: SetListaSediTreeview) {
+        allFalseTreeItem(action.listaSedi);
         patchState({
             listeSedi: action.listaSedi
         });

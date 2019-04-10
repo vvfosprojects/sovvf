@@ -1,6 +1,6 @@
-import { TreeItem } from 'ngx-treeview';
+import { ListaSedi } from '../../../../core/settings/lista-sedi';
 
-export function allFalseTreeItem(lista: TreeItem) {
+export function allFalseTreeItem(lista: ListaSedi) {
     const key = 'children';
     Object.assign(lista, { checked: false, collapsed: true });
     if (key in lista) {
@@ -10,7 +10,7 @@ export function allFalseTreeItem(lista: TreeItem) {
     }
 }
 
-export function findItem(element: TreeItem, value: string): TreeItem {
+export function findItem(element: ListaSedi, value: string): ListaSedi {
     if (element.value === value) {
         return element;
     } else if (element.children != null) {
@@ -24,7 +24,7 @@ export function findItem(element: TreeItem, value: string): TreeItem {
     return null;
 }
 
-export function checkTreeItem(lista: TreeItem, checkIds: string[], ricorsivo?: Ricorsivo): number {
+export function checkTreeItem(lista: ListaSedi, checkIds: string[], ricorsivo?: Ricorsivo): number {
     const key = 'children';
     if (ricorsivo === Ricorsivo.Ricorsivo) {
         /**

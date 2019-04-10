@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { APP_TIPOLOGIE, TipologieInterface } from '../settings/tipologie';
+import { APP_TIPOLOGIE } from '../settings/tipologie';
 import { environment } from '../../../environments/environment';
 import { SignalRService } from '../signalr/signalR.service';
 import { Subscription } from 'rxjs';
 import { SIGNALR_CONFIG } from '../signalr/signalR.config';
+import { AppSettingsI } from '../settings/app-settings.interface';
+import { Store } from '@ngxs/store';
+import { SetListaSediTreeview } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 
-const API_URL = environment.apiUrl.elencoTipologie;
+const API_URL = environment.apiUrl.appSettings;
 
 @Injectable()
 export class AppLoadService {
@@ -15,7 +18,7 @@ export class AppLoadService {
     checkConnectionSignalR: boolean;
 
 
-    constructor(private http: HttpClient, private signalR: SignalRService) {
+    constructor(private http: HttpClient, private signalR: SignalRService, private store: Store) {
         if (!SIGNALR_CONFIG.signlaRByPass) {
             this.signalR.initSubscription();
             this.subscription.add(this.signalR.checkConnection().subscribe(result => {
@@ -48,11 +51,11 @@ export class AppLoadService {
     }
 
     getSettings(): Promise<any> {
-        return this.http.get<TipologieInterface[]>(API_URL)
+        return this.http.get<AppSettingsI>(API_URL)
             .toPromise()
             .then(settings => {
-                APP_TIPOLOGIE.push(...settings);
-                return settings;
+                APP_TIPOLOGIE.push(...settings.tipologie);
+                this.store.dispatch(new SetListaSediTreeview(settings.listaSedi));
             }).catch();
     }
 }

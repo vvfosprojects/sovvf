@@ -1,6 +1,7 @@
 export const environment = {
     production: false,
     apiUrl: {
+        appSettings: 'assets/json/app-settings.json',
         boxes: {
             personale: '/api/BoxPersonale',
             mezzi: '/api/BoxMezzi',
@@ -24,10 +25,8 @@ export const environment = {
             }
         },
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
-        elencoTipologie: 'assets/json/tipologie.json',
         eventiRichieste: 'https://api.myjson.com/bins/kz0w0',
         turno: '',
-        elencoSedi: 'https://api.myjson.com/bins/10fsks',
         composizione: {
             preaccoppiati: '',
             mezzi: '',

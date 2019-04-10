@@ -1,14 +1,10 @@
-import { TreeItem } from 'ngx-treeview';
 import { Ricorsivo } from '../../states/sedi-treeview/sedi-treeview.helper';
-
-export class GetListaSediTreeview {
-    static readonly type = '[Sedi Treeview] Get lista sedi';
-}
+import { ListaSedi } from '../../../../core/settings/lista-sedi';
 
 export class SetListaSediTreeview {
     static readonly type = '[Sedi Treeview] Set lista sedi';
 
-    constructor(public listaSedi: TreeItem) {
+    constructor(public listaSedi: ListaSedi) {
     }
 }
 
