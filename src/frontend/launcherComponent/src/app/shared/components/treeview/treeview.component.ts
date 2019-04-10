@@ -36,7 +36,7 @@ export class TreeviewComponent implements OnInit {
     @Output() patchSelezione = new EventEmitter<any>();
 
     constructor(config: NgbDropdownConfig) {
-        config.autoClose = false;
+        config.autoClose = 'outside';
     }
 
     @ViewChild('treeviewSedi') treeviewSedi: NgbDropdown;
