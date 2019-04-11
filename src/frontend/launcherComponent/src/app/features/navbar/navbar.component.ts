@@ -8,7 +8,7 @@ import { TurnoState } from './store/states/turno/turno.state';
 import { GetTurno } from './store/actions/turno/turno.actions';
 import { Utente } from '../../shared/model/utente.model';
 import { UtenteState } from './store/states/operatore/utente.state';
-import { GetUtente } from './store/actions/operatore/utente.actions';
+import { SetUtente } from './store/actions/operatore/utente.actions';
 
 @Component({
     selector: 'app-navbar',
@@ -43,7 +43,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
 
     dispatchStates() {
-        this.store.dispatch(new GetUtente(this.authService.currentUserValue));
+        this.store.dispatch(new SetUtente(this.authService.currentUserValue));
         this.store.dispatch(new GetTurno());
     }
 

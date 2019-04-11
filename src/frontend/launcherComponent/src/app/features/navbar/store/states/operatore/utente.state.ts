@@ -1,6 +1,6 @@
 import { Utente } from '../../../../../shared/model/utente.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { GetUtente, SetUtente } from '../../actions/operatore/utente.actions';
+import { SetUtente } from '../../actions/operatore/utente.actions';
 import { SignalRService } from '../../../../../core/signalr/signalR.service';
 import { SignalRNotification } from '../../../../../core/signalr/model/signalr-notification.model';
 import { PatchListaSediNavbar } from '../../../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
@@ -27,18 +27,16 @@ export class UtenteState {
     constructor(private signalR: SignalRService) {
     }
 
-    @Action(GetUtente)
-    getUtente({ dispatch }: StateContext<UtenteStateModel>, action: GetUtente) {
+    @Action(SetUtente)
+    setUtente({ patchState, dispatch }: StateContext<UtenteStateModel>, action: SetUtente) {
+        /**
+         * da spostare su signalRState
+         */
         this.signalR.addToGroup(new SignalRNotification(
             action.utente.sede.codice,
             action.utente.id,
             `${action.utente.nome} ${action.utente.cognome}`
         ));
-        dispatch(new SetUtente(action.utente));
-    }
-
-    @Action(SetUtente)
-    setUtente({ patchState, dispatch }: StateContext<UtenteStateModel>, action: SetUtente) {
         patchState({
             utente: action.utente
         });
