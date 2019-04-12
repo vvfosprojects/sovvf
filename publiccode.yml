@@ -2,7 +2,7 @@ publiccodeYmlVersion: '0.2'
 name: Sala Operativa VVF
 releaseDate: '2018-05-17'
 url: 'https://github.com/vvfosprojects/sovvf'
-developmentStatus: stable
+developmentStatus: development 
 softwareType: standalone/web
 platforms:
   - web
@@ -16,8 +16,8 @@ categories:
 maintenance:
   type: internal
   contacts:
-    - name: ??? 
-      email: ??? 
+    - name: Marcello Esposito
+      email: "marcello.esposito@vigilfuoco.it"
       affiliation: Corpo Nazionale dei Vigili del Fuoco
 legal:
   license: AGPL-3.0-or-later
@@ -43,28 +43,28 @@ it:
   riuso:
     codiceIPA: m_it
 description:
-  en:
+  it:
     localisedName: Sala Operativa VVF
     genericName: sovvf
     shortDescription: Sala Operativa VVF
     longDescription: >
-      VVFGeoFleet is a system allowing to track a fleet, where vehicles are
-      equipped with GPS enabled devices periodically sending their position. The
-      system is composed of two main modules: (i) a backend module, based on a
-      RESTful server; (ii) a frontend module, based on an Angular GUI. The
-      backend is written in C# Asp.Net WebApi, using Visual Studio 2017
-      Community Edition, with a persistence layer based on MongoDB document
-      database. It collects position messages coming from GPS enabled devices
-      installed on board the vehicles; publishes REST actions to efficiently
-      query the collected data. Queries allow, for instance, to: (i) getting the
-      current fleet position (also by vehicle class); (ii) getting a vehicle
-      position; (iii) getting a vehicle tracked path, within a given time
-      interval; (iv) getting vehicles near to a given point (also by vehicle
-      class); (v) getting vehicles within a given rectangle; (vi
+      SOVVF è il progetto di reingegnerizzazione del software applicativo per
+      le sale operative del Corpo Nazionale dei Vigili del Fuoco. Il software
+      consente l'acquisizione delle chiamate di soccorso, la gestione delle
+      code, il dispiegamento delle risorse per il contrasto all'emergenza, la
+      pianificazione anticipata del dispositivo di soccorso. Il sistema
+      è costituito da un moduilo di backend sviluppato in tecnologia .NET Core
+      WebApi e un frontend sviluppato in tecnologia Angular7, oltre ad altri
+      moduli a corredo per la gestione di processi collaterali. Il software
+      è al momento in piena fase di sviluppo e non è acquisibile per scenari di
+      esercizio.
     documentation: 'https://github.com/vvfosprojects/sovvf/tree/master/doc'
     features:
-      - Web based frontend for public applicants.
-      - RESTful backend
+       - Web based frontend for operators.
+       - RESTful backend.
+       - Call management.
+       - Emergency Teams dispatch.
+       - GIS based emergency management.
     screenshots:
       - doc/Cattura1.png
 inputTypes:
