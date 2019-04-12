@@ -8,3 +8,10 @@ export class SetAppSede {
     constructor(public idSede: string[]) {
     }
 }
+
+export class SetTimeSync {
+    static readonly type = '[App] Set Time Sync';
+
+    constructor(public time: string) {
+    }
+}

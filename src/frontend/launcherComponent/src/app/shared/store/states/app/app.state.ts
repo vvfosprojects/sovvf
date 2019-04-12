@@ -1,14 +1,16 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { SetAppLoaded, SetAppSede } from '../../actions/app/app.actions';
+import { SetAppLoaded, SetAppSede, SetTimeSync } from '../../actions/app/app.actions';
 
 export interface AppStateModel {
     appIsLoaded: boolean;
     sedeAttuale: string[];
+    timeSync: string;
 }
 
 export const appStateDefaults: AppStateModel = {
     appIsLoaded: true,
-    sedeAttuale: []
+    sedeAttuale: [],
+    timeSync: null
 };
 
 @State<AppStateModel>({
@@ -20,6 +22,11 @@ export class AppState {
     @Selector()
     static appIsLoaded(state: AppStateModel) {
         return state.appIsLoaded;
+    }
+
+    @Selector()
+    static timeSync(state: AppStateModel) {
+        return state.timeSync;
     }
 
     constructor() {
@@ -53,6 +60,13 @@ export class AppState {
     setAppSede({ patchState }: StateContext<AppStateModel>, action: SetAppSede) {
         patchState({
             sedeAttuale: action.idSede
+        });
+    }
+
+    @Action(SetTimeSync)
+    setTimeSync({ patchState }: StateContext<AppStateModel>, action: SetTimeSync) {
+        patchState({
+            timeSync: action.time
         });
     }
 }

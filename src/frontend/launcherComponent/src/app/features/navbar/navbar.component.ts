@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, isDevMode, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { ClockService } from './navbar-service/clock-service/clock.service';
+import { ClockService } from './clock/clock-service/clock.service';
 import { AuthenticationService } from '../../core/auth/_services';
 import { Turno } from './turno/turno.model';
 import { Store, Select } from '@ngxs/store';
