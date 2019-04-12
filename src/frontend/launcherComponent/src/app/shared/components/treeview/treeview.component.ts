@@ -133,7 +133,7 @@ export class TreeviewComponent {
             this.patch([...parents, ...leaves], true);
         } else {
             unique[0] = parents.length === 1 ? parents[0] : leaves[0];
-            if (unique) {
+            if (unique[0]) {
                 console.log(`una sede selezionata: ${unique[0]}`);
                 this.patch([...unique]);
             } else {
