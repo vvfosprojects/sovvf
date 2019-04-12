@@ -4,7 +4,7 @@
     </div>
     <div class="col-10">
         <app-shared-treeview [items]="items" [sedeSelezionata]="sedeSelezionata$" [tastoConferma]="tastoConferma"
-                             (clearSelezione)="onAnnulla()" (confermaSelezione)="onConferma()"
+                             (annullaSelezione)="onAnnulla()" (confermaSelezione)="onConferma()"
                              (patchSelezione)="onPatch($event)" [colorButton]="colorButton">
 
         </app-shared-treeview>

@@ -9,7 +9,7 @@ import {
 } from '../../actions/sedi-treeview/sedi-treeview.actions';
 import { arraysEqual, makeCopy } from '../../../helper/function';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
-import { allFalseTreeItem, checkTreeItem, findItem, Ricorsivo, sedeString } from './sedi-treeview.helper';
+import { allFalseTreeItem, checkTreeItem, findItem, sedeString } from './sedi-treeview.helper';
 import { SetAppLoaded } from '../../actions/app/app.actions';
 import { SetTurno } from '../../../../features/navbar/store/actions/turno/turno.actions';
 
@@ -81,7 +81,7 @@ export class SediTreeviewState {
         const state = getState();
         let item = '';
         if (action.selected[0]) {
-            if (action.options === Ricorsivo.Ricorsivo) {
+            if (!action.multi) {
                 item = findItem(state.listaSediNavbar, action.selected[0]).text;
             } else {
                 item = 'più sedi selezionate';

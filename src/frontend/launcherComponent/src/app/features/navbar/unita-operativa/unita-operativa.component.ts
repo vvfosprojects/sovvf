@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { SediTreeviewState } from '../../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { ClearSediNavbarSelezionate, PatchSediNavbarSelezionate, SetSediNavbarSelezionate } from '../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
-import { TreeviewEmitterInterface } from '../../../shared/components/treeview/treeview-emitter.interface';
+import { TreeviewEmitterInterface } from '../../../shared/interface/treeview.interface';
 
 
 @Component({
@@ -47,7 +47,7 @@ export class UnitaOperativaComponent implements OnDestroy {
     }
 
     onPatch($event: TreeviewEmitterInterface) {
-        this.store.dispatch(new PatchSediNavbarSelezionate($event.idSelezionati, $event.ricorsivo));
+        this.store.dispatch(new PatchSediNavbarSelezionate($event.idSelezionati, $event.multi));
     }
 
     onAnnulla() {

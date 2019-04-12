@@ -1,4 +1,3 @@
-import { Ricorsivo } from '../../states/sedi-treeview/sedi-treeview.helper';
 import { ListaSedi } from '../../../../core/settings/lista-sedi';
 
 export class SetListaSediTreeview {
@@ -18,7 +17,7 @@ export class PatchListaSediNavbar {
 export class PatchSediNavbarSelezionate {
     static readonly type = '[Sedi Treeview Navbar] Patch Sedi selezionate';
 
-    constructor(public selected: string[], public options?: Ricorsivo) {
+    constructor(public selected: string[], public multi?: boolean) {
     }
 }
 

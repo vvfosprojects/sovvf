@@ -1,11 +1,11 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { DownlineTreeviewItem, OrderDownlineTreeviewEventParser, TreeviewConfig, TreeviewEventParser, TreeviewItem } from 'ngx-treeview';
 import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { arrayUnique } from '../../helper/function';
-import { Ricorsivo } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 import { isNil, reverse } from 'lodash';
-import { TreeviewEmitterInterface } from './treeview-emitter.interface';
 import { Observable } from 'rxjs';
+import { Ricorsivo, TreeviewEmitterInterface } from '../../interface/treeview.interface';
+import { TreeviewSelezione } from '../../model/treeview-selezione.model';
 
 
 @Component({
@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
         { provide: TreeviewEventParser, useClass: OrderDownlineTreeviewEventParser },
     ]
 })
-export class TreeviewComponent implements OnInit {
+export class TreeviewComponent {
     treeViewOpened: boolean;
 
     config = TreeviewConfig.create({
@@ -28,13 +28,15 @@ export class TreeviewComponent implements OnInit {
         maxHeight: 400
     });
 
+    treeViewSelection: TreeviewSelezione[];
+
     @Input() colorButton = 'btn-default';
     @Input() items: TreeviewItem[];
     @Input() sedeSelezionata: Observable<string>;
     @Input() tastoConferma: boolean;
-    @Output() clearSelezione = new EventEmitter<any>();
-    @Output() confermaSelezione = new EventEmitter<any>();
-    @Output() patchSelezione = new EventEmitter<any>();
+    @Output() annullaSelezione = new EventEmitter();
+    @Output() confermaSelezione = new EventEmitter<TreeviewSelezione[]>();
+    @Output() patchSelezione = new EventEmitter<TreeviewEmitterInterface>();
 
     constructor(config: NgbDropdownConfig) {
         config.autoClose = 'outside';
@@ -44,21 +46,19 @@ export class TreeviewComponent implements OnInit {
 
     @HostListener('document:keydown.escape') onKeydownHandler() {
         if (this.treeViewOpened) {
-            this.clearSelezione.emit();
+            this.annullaSelezione.emit();
             this.treeviewSedi.close();
         }
     }
 
-    ngOnInit() {
-    }
-
-    openDropDown(value: any) {
+    openDropDown(value: any): void {
         this.treeViewOpened = !!value;
     }
 
-    onSelectedChange(downlineItems: DownlineTreeviewItem[]) {
+    onSelectedChange(downlineItems: DownlineTreeviewItem[]): void {
+        this.treeViewSelection = [];
         const leaves = [];
-        let parents = [];
+        let duplicateParents = [];
         const firstParent = [];
         /**
          * controllo se ho selezionato tutta la lista
@@ -101,55 +101,61 @@ export class TreeviewComponent implements OnInit {
                     /**
                      * se non trovo '->' sono foglie senza padre selezionato
                      */
-                    leaves.push(row.split('::')[1]);
+                    const leav = row.split('::')[1];
+                    leaves.push(leav);
+                    this.treeViewSelection.push(new TreeviewSelezione(leav, Ricorsivo.NonRicorsivo));
                 } else {
                     /**
                      * sono i padri che mi interessano
                      */
-                    parents.push(row.substring(0, row.indexOf('->')).split('::')[1]);
+                    duplicateParents.push(row.substring(0, row.indexOf('->')).split('::')[1]);
                 }
             });
         } else {
             /**
-             * se è selezionato il primo padre (nodo principale) lo assegno ai parents direttamente
+             * se è selezionato il primo padre (nodo principale) lo assegno ai duplicateParents direttamente
              */
-            parents = firstParent;
+            duplicateParents = firstParent;
         }
         /**
          * cancello tutti i genitori duplicati
          */
-        const parent = arrayUnique(parents);
+        const parents = arrayUnique(duplicateParents);
+        parents.forEach(parent => {
+            this.treeViewSelection.push(new TreeviewSelezione(parent, Ricorsivo.Ricorsivo));
+        });
         /**
          * verifico che non ci siano più padri (con genitori diversi) o più foglie
          */
         const unique = [];
-        if ((leaves.length > 0 && parent.length > 0) || leaves.length > 1 || parent.length > 1) {
-            console.log(`più sedi selezionate: ${[...parent, ...leaves]}`);
-            this.patch([...parent, ...leaves], Ricorsivo.NonRicorsivo);
+        if ((leaves.length > 0 && parents.length > 0) || leaves.length > 1 || parents.length > 1) {
+            console.log(`più sedi selezionate: ${[...parents, ...leaves]}`);
+            this.patch([...parents, ...leaves], true);
         } else {
-            unique[0] = parent.length === 1 ? parent[0] : leaves[0];
+            unique[0] = parents.length === 1 ? parents[0] : leaves[0];
             if (unique) {
                 console.log(`una sede selezionata: ${unique[0]}`);
-                this.patch([...unique], Ricorsivo.Ricorsivo);
+                this.patch([...unique]);
             } else {
                 console.log(`nessuna sede selezionata`);
                 this.patch([]);
             }
         }
+        console.log(this.treeViewSelection);
     }
 
-    annulla() {
-        this.clearSelezione.emit();
+    annulla(): void {
+        this.annullaSelezione.emit();
     }
 
-    conferma() {
-        this.confermaSelezione.emit();
+    conferma(): void {
+        this.confermaSelezione.emit(this.treeViewSelection);
     }
 
-    patch(idS: string[], ricorsivo?: Ricorsivo) {
+    patch(idS: string[], multi?: boolean): void {
         const eventEmitter: TreeviewEmitterInterface = {
             idSelezionati: idS,
-            ricorsivo: ricorsivo
+            multi: multi
         };
         this.patchSelezione.emit(eventEmitter);
     }

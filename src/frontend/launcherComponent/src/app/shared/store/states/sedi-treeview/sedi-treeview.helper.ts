@@ -1,4 +1,5 @@
 import { ListaSedi } from '../../../../core/settings/lista-sedi';
+import { Ricorsivo } from '../../../interface/treeview.interface';
 
 export function allFalseTreeItem(lista: ListaSedi) {
     const key = 'children';
@@ -130,14 +131,4 @@ export function sedeString(value: string): string {
     }
 
     return lengthString(value, maxLength) ? truncateWord(value) : value;
-}
-
-export interface SedeSelezionata {
-    codiceSede: string;
-    ricorsivo: Ricorsivo;
-}
-
-export enum Ricorsivo {
-    NonRicorsivo,
-    Ricorsivo
 }
