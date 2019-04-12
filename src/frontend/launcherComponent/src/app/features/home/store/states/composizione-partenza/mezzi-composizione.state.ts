@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext, NgxsOnInit } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 
 // Interface
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';

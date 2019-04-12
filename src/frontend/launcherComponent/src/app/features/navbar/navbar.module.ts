@@ -7,8 +7,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 /**
  * Service
  */
-import { TurnoService } from './navbar-service/turno-service/turno.service';
-import { TurnoServiceFake } from './navbar-service/turno-service/turno.service.fake';
+import { TurnoExtraService } from '../../core/service/turno-service/turno-extra.service';
+import { TurnoExtraServiceFake } from '../../core/service/turno-service/turno-extra-service.fake.service';
 /**
  * Component
  */
@@ -57,7 +57,7 @@ import { TurnoState } from './store/states/turno/turno.state';
     ],
     exports: [NavbarComponent],
     providers: [
-        { provide: TurnoService, useClass: TurnoServiceFake },
+        { provide: TurnoExtraService, useClass: TurnoExtraServiceFake },
     ]
 })
 export class NavbarModule {

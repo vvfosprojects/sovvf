@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Turno } from './turno.model';
+import { TurnoExtra } from './turno-extra.model';
 
 @Component({
     selector: 'app-turno',
@@ -9,5 +10,6 @@ import { Turno } from './turno.model';
 export class TurnoComponent {
 
     @Input() turno: Turno;
+    @Input() turnoExtra: TurnoExtra;
 
 }

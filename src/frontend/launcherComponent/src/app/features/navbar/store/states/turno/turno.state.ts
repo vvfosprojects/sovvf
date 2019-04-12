@@ -1,46 +1,66 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-
-// Model
 import { Turno } from '../../../turno/turno.model';
-
-// Action
-import { GetTurno } from '../../actions/turno/turno.actions';
-import { TurnoService } from '../../../navbar-service/turno-service/turno.service';
+import { ClearTurnoExtra, GetTurnoExtra, SetTurno, SetTurnoExtra } from '../../actions/turno/turno.actions';
+import { TurnoExtraService } from '../../../../../core/service/turno-service/turno-extra.service';
+import { TurnoExtra } from '../../../turno/turno-extra.model';
+import { calcolaTurno } from '../../../../../shared/helper/calcola-turno';
 
 export interface TurniStateModel {
     turno: Turno;
+    turnoExtra: TurnoExtra;
 }
 
-export const UnitaOperativeStateDefaults: TurniStateModel = {
-    turno: null
+export const TurniStateDefaults: TurniStateModel = {
+    turno: null,
+    turnoExtra: null
 };
 
 @State<TurniStateModel>({
-    name: 'turno',
-    defaults: UnitaOperativeStateDefaults
+    name: 'turni',
+    defaults: TurniStateDefaults
 })
 export class TurnoState {
 
-    constructor(private _turni: TurnoService) { }
+    constructor(private _turniExtra: TurnoExtraService) {
+    }
 
-    // SELECTORS
     @Selector()
     static turno(state: TurniStateModel) {
         return state.turno;
     }
 
-    // GET
-    @Action(GetTurno)
-    getTurno({ getState, patchState }: StateContext<TurniStateModel>) {
-        const state = getState();
-        let turno = state.turno;
+    @Selector()
+    static turnoExtra(state: TurniStateModel) {
+        return state.turnoExtra;
+    }
 
-        this._turni.getTurni().subscribe((t: Turno) => {
-            turno = t;
+    @Action(GetTurnoExtra)
+    getTurnoExtra({ dispatch }: StateContext<TurniStateModel>) {
+        this._turniExtra.getTurni().subscribe((turno: TurnoExtra) => {
+            dispatch(new SetTurnoExtra(turno));
         });
+    }
 
+
+    @Action(SetTurnoExtra)
+    setTurnoExtra({ patchState }: StateContext<TurniStateModel>, action: SetTurnoExtra) {
         patchState({
-            ...state,
+            turnoExtra: action.turnoExtra
+        });
+    }
+
+    @Action(ClearTurnoExtra)
+    clearTurnoExtra({ patchState }: StateContext<TurniStateModel>) {
+        patchState({
+            turnoExtra: TurniStateDefaults.turnoExtra
+        });
+    }
+
+    @Action(SetTurno)
+    setTurno({ patchState, dispatch }: StateContext<TurniStateModel>) {
+        dispatch(new GetTurnoExtra());
+        const turno = calcolaTurno();
+        patchState({
             turno: turno
         });
     }

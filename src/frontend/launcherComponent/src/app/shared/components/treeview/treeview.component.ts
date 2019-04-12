@@ -28,6 +28,7 @@ export class TreeviewComponent implements OnInit {
         maxHeight: 400
     });
 
+    @Input() colorButton = 'btn-default';
     @Input() items: TreeviewItem[];
     @Input() sedeSelezionata: Observable<string>;
     @Input() tastoConferma: boolean;

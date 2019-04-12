@@ -7,10 +7,12 @@ import { map } from 'rxjs/operators';
 })
 export class ClockService {
 
-    private clock: Observable<Date>;
+    readonly clock: Observable<Date>;
+
+    private refreshRate = 1000;
 
     constructor() {
-        this.clock = interval(1000).pipe(
+        this.clock = interval(this.refreshRate).pipe(
             map(() => new Date()));
     }
 

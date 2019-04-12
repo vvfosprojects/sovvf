@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
@@ -15,6 +15,8 @@ import { TreeviewEmitterInterface } from '../../../shared/components/treeview/tr
 export class UnitaOperativaComponent implements OnDestroy {
 
     subscription = new Subscription();
+
+    @Input() colorButton: string;
 
     @Select(SediTreeviewState.listeSediNavbar) listeSedi$: Observable<TreeItem>;
     items: TreeviewItem[];
