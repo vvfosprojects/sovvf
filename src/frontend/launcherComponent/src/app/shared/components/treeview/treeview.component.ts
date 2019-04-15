@@ -34,6 +34,7 @@ export class TreeviewComponent {
     @Input() items: TreeviewItem[];
     @Input() sedeSelezionata: Observable<string>;
     @Input() tastoConferma: boolean;
+    @Input() placement: string;
     @Output() annullaSelezione = new EventEmitter();
     @Output() confermaSelezione = new EventEmitter<TreeviewSelezione[]>();
     @Output() patchSelezione = new EventEmitter<TreeviewEmitterInterface>();
