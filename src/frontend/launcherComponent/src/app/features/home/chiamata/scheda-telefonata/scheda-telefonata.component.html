@@ -181,10 +181,15 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"
-                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" [hidden]="!isCollapsed">
-                Inserisci Informazioni Aggiuntive
-            </button>
+            <div class="row">
+                <div class="col-4 mx-auto">
+                    <button type="button" class="btn btn-block btn-outline-primary" (click)="isCollapsed = !isCollapsed"
+                            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" [hidden]="!isCollapsed">
+                        <i class="fa fa-info mr-1"></i>
+                        Informazioni Aggiuntive
+                    </button>
+                </div>
+            </div>
             <div id="collapseExample" [ngbCollapse]="isCollapsed">
                 <div class="row">
                     <div class="col">

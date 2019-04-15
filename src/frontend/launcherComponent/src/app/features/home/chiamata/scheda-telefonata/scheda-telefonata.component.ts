@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormChiamataModel } from '../model/form-scheda-telefonata.model';
@@ -48,6 +48,7 @@ export class SchedaTelefonataComponent implements OnInit {
     isCollapsed = true;
 
     constructor(private formBuilder: FormBuilder,
+                private cdRef: ChangeDetectorRef,
                 private store: Store,
                 private modalService: NgbModal) {
     }
@@ -123,6 +124,7 @@ export class SchedaTelefonataComponent implements OnInit {
             this.f.nome.reset();
             this.f.cognome.reset();
         }
+        this.cdRef.detectChanges();
         console.log(this.f);
     }
 
@@ -191,7 +193,6 @@ export class SchedaTelefonataComponent implements OnInit {
                         this.chiamataCorrente = null;
                         this.chiamataForm.reset();
                         this.nuovaRichiesta.tipologie = [];
-                        this.isCollapsed = true;
                         this._statoChiamata('annullata');
                         break;
                     case 'ko':
@@ -223,6 +224,8 @@ export class SchedaTelefonataComponent implements OnInit {
                         this.chiamataForm.reset();
                         this.nuovaRichiesta.tipologie = [];
                         this.coordinate = null;
+                        this.isCollapsed = true;
+                        console.log(this.isCollapsed);
                         this.store.dispatch(new ClearClipboard());
                         this._statoChiamata('reset');
                         break;
