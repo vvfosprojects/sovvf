@@ -6,7 +6,7 @@
         <app-shared-treeview [items]="items" [sedeSelezionata]="sedeSelezionata$" [tastoConferma]="tastoConferma"
                              [placement]="'bottom-left'"
                              (annullaSelezione)="onAnnulla()" (confermaSelezione)="onConferma()"
-                             (patchSelezione)="onPatch($event)" [colorButton]="colorButton">
+                             (patchSelezione)="onPatch($event)" [colorButton]="colorButton" [visualizzaTasti]="true">
         </app-shared-treeview>
     </div>
 </div>
