@@ -10,6 +10,7 @@ import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-mar
 import { SetRichieste } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { ToggleChiamata } from '../../features/home/store/actions/view/view.actions';
+import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 
 @Injectable({
     providedIn: 'root'
@@ -110,6 +111,16 @@ export class SignalRService {
             this.hubNotification.invoke('GetConnectionId').then(connectionId => {
                 this.store.dispatch(new SetConnectionId(connectionId));
             });
+        }
+    }
+
+    startGetTime() {
+        if (!SIGNALR_CONFIG.signlaRByPass) {
+            this.hubNotification.invoke('GetDateTime')
+                .then((data: any) => {
+                        this.store.dispatch(new SetTimeSync(data));
+                })
+                .catch(() => console.log('GetTime Error'));
         }
     }
 

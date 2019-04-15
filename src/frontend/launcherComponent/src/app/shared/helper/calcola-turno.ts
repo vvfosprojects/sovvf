@@ -1,10 +1,10 @@
 import { Turno } from '../../features/navbar/turno/turno.model';
-import { REF_SHIFT_MAP, REF_TIME } from '../../core/settings/referral-shift';
+import { OFFSET_SYNC_TIME, REF_SHIFT_MAP, REF_TIME } from '../../core/settings/referral-time';
 import * as moment from 'moment';
 
 export function calcolaTurno(): Turno {
     const initTime = moment(REF_TIME);
-    const nowUnix = moment.now();
+    const nowUnix = moment.now() + OFFSET_SYNC_TIME[0];
     // console.log(nowUnix);
     // const nowTest = 1554451200000;
     const now = moment(nowUnix);

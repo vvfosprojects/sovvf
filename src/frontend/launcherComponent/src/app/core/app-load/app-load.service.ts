@@ -25,6 +25,7 @@ export class AppLoadService {
                 this.checkConnectionSignalR = result;
                 if (result) {
                     this.signalR.getContextId();
+                    this.signalR.startGetTime();
                 }
             }));
         }

@@ -6,6 +6,7 @@ import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { SignalRState } from './core/signalr/store/signalR.state';
 import { AppState } from './shared/store/states/app/app.state';
+import { OFFSET_SYNC_TIME } from './core/settings/referral-time';
 
 
 @Component({
@@ -23,6 +24,8 @@ export class AppComponent implements OnDestroy {
     @Select(AppState.appIsLoaded) _isLoaded$: Observable<boolean>;
     _isLoaded: boolean;
 
+    @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
+
     _opened = false;
     _toggle = false;
     RoutesPath = RoutesPath;
@@ -37,6 +40,7 @@ export class AppComponent implements OnDestroy {
         });
         this.subscription.add(this._signalR$.subscribe((r: boolean) => this._signalR = r));
         this.subscription.add(this._isLoaded$.subscribe((r: boolean) => this._isLoaded = r));
+        this.subscription.add(this.offsetTime$.subscribe((serverTime: number) => OFFSET_SYNC_TIME.unshift(serverTime)));
     }
 
     _toggleOpened() {

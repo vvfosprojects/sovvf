@@ -12,6 +12,6 @@ export class SetAppSede {
 export class SetTimeSync {
     static readonly type = '[App] Set Time Sync';
 
-    constructor(public time: string) {
+    constructor(public time: number) {
     }
 }

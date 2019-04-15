@@ -12,3 +12,5 @@ export let REF_SHIFT_MAP = new Map([
     [6, 'B'],
     [7, 'A']
 ]);
+
+export let OFFSET_SYNC_TIME = [];

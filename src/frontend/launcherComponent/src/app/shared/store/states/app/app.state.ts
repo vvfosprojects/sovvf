@@ -4,13 +4,13 @@ import { SetAppLoaded, SetAppSede, SetTimeSync } from '../../actions/app/app.act
 export interface AppStateModel {
     appIsLoaded: boolean;
     sedeAttuale: string[];
-    timeSync: string;
+    offsetTimeSync: number;
 }
 
 export const appStateDefaults: AppStateModel = {
     appIsLoaded: true,
     sedeAttuale: [],
-    timeSync: null
+    offsetTimeSync: 0
 };
 
 @State<AppStateModel>({
@@ -25,8 +25,8 @@ export class AppState {
     }
 
     @Selector()
-    static timeSync(state: AppStateModel) {
-        return state.timeSync;
+    static offsetTimeSync(state: AppStateModel) {
+        return state.offsetTimeSync;
     }
 
     constructor() {
@@ -66,7 +66,7 @@ export class AppState {
     @Action(SetTimeSync)
     setTimeSync({ patchState }: StateContext<AppStateModel>, action: SetTimeSync) {
         patchState({
-            timeSync: action.time
+            offsetTimeSync: new Date(action.time).getTime() - new Date().getTime()
         });
     }
 }
