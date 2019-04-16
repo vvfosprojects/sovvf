@@ -7,7 +7,7 @@ ngb-accordion {
   .card-header {
     padding-top: 0px;
     padding-bottom: 0px;
-    background-color: #F0F0F0;
+    background-color: #f0f0f0;
   }
 
   .card-body {
@@ -17,8 +17,8 @@ ngb-accordion {
 }
 
 .dropdownAnnulla {
-   border-color: #dc3545 !important;
- }
+  border-color: #dc3545 !important;
+}
 
 .dropdownAnnulla button:hover {
   background-color: #dc3545 !important;
@@ -32,4 +32,17 @@ ngb-accordion {
 .dropdownConferma button:hover {
   background-color: #28a745 !important;
   color: white;
+}
+
+.dropdownTipologiaRichiedente {
+  border-color: #007bff !important;
+}
+
+.dropdownTipologiaRichiedente button:hover {
+  background-color: #007bff !important;
+  color: white;
+}
+
+.dropdown-menu {
+  min-width: 200px !important;
 }

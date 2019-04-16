@@ -224,8 +224,6 @@ export class SchedaTelefonataComponent implements OnInit {
                         this.chiamataForm.reset();
                         this.nuovaRichiesta.tipologie = [];
                         this.coordinate = null;
-                        this.isCollapsed = true;
-                        console.log(this.isCollapsed);
                         this.store.dispatch(new ClearClipboard());
                         this._statoChiamata('reset');
                         break;

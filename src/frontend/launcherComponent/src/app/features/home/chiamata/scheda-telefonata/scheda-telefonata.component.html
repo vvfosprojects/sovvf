@@ -10,44 +10,35 @@
                 <div class="col-2 pr-0">
                     <div class="row">
                         <div class="col pr-0 text-right">
-                                            <span class="d-inline-block mt-1 mr-1" ngbTooltip="Rilevanza"
-                                                  placement="bottom"
-                                                  [ngClass]="{'text-danger': f.rilevanza.value}">
-                                                <i class="fa fa-exclamation-triangle"></i>
-                                            </span>
+                            <span class="d-inline-block mt-1 mr-1" ngbTooltip="Rilevanza" placement="bottom"
+                                [ngClass]="{'text-danger': f.rilevanza.value}">
+                                <i class="fa fa-exclamation-triangle"></i>
+                            </span>
                         </div>
                         <div class="col pl-0">
                             <div class="form-group m-0 float-right">
-                                                <span class="d-inline-block mt-1 mr-2">
-                                                    <ui-switch size="small" color="#dc3545"
-                                                               (change)="setRilevanza()"></ui-switch>
-                                                </span>
+                                <span class="d-inline-block mt-1 mr-2">
+                                    <ui-switch size="small" color="#dc3545" (change)="setRilevanza()"></ui-switch>
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-3">
-                                        <span *ngIf="!f.rilevanza.value" class="d-inline-block mt-1">
-                                            Intervento non rilevante
-                                        </span>
+                    <span *ngIf="!f.rilevanza.value" class="d-inline-block mt-1">
+                        Intervento non rilevante
+                    </span>
                     <span *ngIf="f.rilevanza.value" class="d-inline-block mt-1">
-                                            {{f.rilevanza.value | date: 'dd/MM/yyyy - HH:mm:ss'}}
-                                        </span>
+                        {{f.rilevanza.value | date: 'dd/MM/yyyy - HH:mm:ss'}}
+                    </span>
                 </div>
             </div>
             <hr class="mt-1 mb-2">
             <div class="form-group mb-2">
                 <label>Tipologia intervento</label>
-                <ng-select class="border"
-                           bindLabel="descrizione"
-                           bindValue="codice"
-                           [items]="tipologie"
-                           [multiple]="true"
-                           [closeOnSelect]="true"
-                           [hideSelected]="true"
-                           (add)="onAddTipologia($event)"
-                           (remove)="onRemoveTipologia($event)"
-                           placeholder="Seleziona Tipologia Intervento">
+                <ng-select class="border" bindLabel="descrizione" bindValue="codice" [items]="tipologie"
+                    [multiple]="true" [closeOnSelect]="true" [hideSelected]="true" (add)="onAddTipologia($event)"
+                    (remove)="onRemoveTipologia($event)" placeholder="Seleziona Tipologia Intervento">
                 </ng-select>
             </div>
             <div class="row">
@@ -56,27 +47,21 @@
                         <label>Tipologia Richiedente</label>
                         <div ngbDropdown class="d-block" autoClose="true" placement="bottom-left">
                             <button type="button" class="btn btn-block btn-outline-primary" id="dropdownBasic1"
-                                    ngbDropdownToggle>
+                                ngbDropdownToggle>
                                 <span *ngIf="tipologiaRichiedente === 'Nome-Cognome'">Nome - Cognome</span>
                                 <span *ngIf="tipologiaRichiedente === 'RagioneSociale'">Ragione Sociale</span>
                             </button>
-                            <div ngbDropdownMenu class="bg-light">
-                                <div class="row">
-                                    <div class="col-11 mx-auto my-2">
-                                        <button type="button" class="btn btn-block"
-                                                [ngClass]="{ 'btn-primary text-light': tipologiaRichiedente === 'Nome-Cognome', 'btn-outline-primary': tipologiaRichiedente !== 'Nome-Cognome'}"
-                                                (click)="cambiaTipologiaRichiedente('Nome-Cognome')"
-                                                ngbDropdownItem>
-                                            Nome - Cognome
-                                        </button>
-                                        <button type="button" class="btn btn-block"
-                                                [ngClass]="{'btn-primary text-light': tipologiaRichiedente === 'RagioneSociale', 'btn-outline-primary': tipologiaRichiedente !== 'RagioneSociale'}"
-                                                (click)="cambiaTipologiaRichiedente('RagioneSociale')"
-                                                ngbDropdownItem>
-                                            Ragione Sociale
-                                        </button>
-                                    </div>
-                                </div>
+                            <div class="dropdown-menu dropdownTipologiaRichiedente" ngbDropdownMenu>
+                                <button type="button" class="dropdown-item"
+                                    [ngClass]="{'bg-primary text-light': tipologiaRichiedente === 'Nome-Cognome'}"
+                                    (click)="cambiaTipologiaRichiedente('Nome-Cognome')" ngbDropdownItem>
+                                    Nome - Cognome
+                                </button>
+                                <button type="button" class="dropdown-item"
+                                    [ngClass]="{'bg-primary text-light': tipologiaRichiedente === 'RagioneSociale'}"
+                                    (click)="cambiaTipologiaRichiedente('RagioneSociale')" ngbDropdownItem>
+                                    Ragione Sociale
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -85,8 +70,7 @@
                     <div class="form-group">
                         <label for="nome">Nome</label>
                         <input id="nome" type="text" placeholder="Inserisci il Nome" formControlName="nome"
-                               class="form-control"
-                               [ngClass]="{ 'is-invalid': submitted && f.nome.errors }"/>
+                            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nome.errors }" />
                         <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
                             <div *ngIf="f.nome.errors.required">Il Nome è richiesto</div>
                             <div *ngIf="f.nome.errors.troppiDati">La ragione sociale deve essere vuota</div>
@@ -97,8 +81,7 @@
                     <div class="form-group">
                         <label for="cognome">Cognome</label>
                         <input id="cognome" type="text" placeholder="Inserisci il Cognome" formControlName="cognome"
-                               class="form-control"
-                               [ngClass]="{ 'is-invalid': submitted && f.cognome.errors }"/>
+                            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.cognome.errors }" />
                         <div *ngIf="submitted && f.cognome.errors" class="invalid-feedback">
                             <div *ngIf="f.cognome.errors.required">Il Cognome è richiesto</div>
                             <div *ngIf="f.cognome.errors.troppiDati">La ragione sociale deve essere vuota</div>
@@ -109,9 +92,8 @@
                     <div class="form-group">
                         <label for="ragioneSociale">Ragione Sociale</label>
                         <input id="ragioneSociale" type="text" placeholder="Inserisci la Ragione Sociale"
-                               formControlName="ragioneSociale"
-                               class="form-control"
-                               [ngClass]="{ 'is-invalid': submitted && f.ragioneSociale.errors }"/>
+                            formControlName="ragioneSociale" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f.ragioneSociale.errors }" />
                         <div *ngIf="submitted && f.ragioneSociale.errors" class="invalid-feedback">
                             <div *ngIf="f.ragioneSociale.errors.required">La ragione sociale è richiesta</div>
                             <div *ngIf="f.ragioneSociale.errors.troppiDati">Nome e Cognome devono essere vuoti</div>
@@ -122,8 +104,7 @@
                     <div class="form-group">
                         <label for="telefono">Telefono</label>
                         <input id="telefono" type="text" placeholder="Inserisci il Telefono" formControlName="telefono"
-                               class="form-control"
-                               [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }"/>
+                            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }" />
                         <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
                             <div *ngIf="f.telefono.errors.required">Il Telefono è richiesto</div>
                         </div>
@@ -135,11 +116,9 @@
                     <div class="form-group">
                         <label for="indirizzo">Indirizzo</label>
                         <input id="indirizzo" ngx-google-places-autocomplete type="text" formControlName="indirizzo"
-                               class="form-control"
-                               [ngClass]="{ 'is-invalid': submitted && f.indirizzo.errors }"
-                               placeholder="Ricerca indirizzo"
-                               [options]="options" (onAddressChange)="onCercaIndirizzo($event)"
-                               autocomplete="new-password">
+                            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.indirizzo.errors }"
+                            placeholder="Ricerca indirizzo" [options]="options"
+                            (onAddressChange)="onCercaIndirizzo($event)" autocomplete="new-password">
                         <div *ngIf="submitted && f.indirizzo.errors" class="invalid-feedback">
                             <div *ngIf="f.indirizzo.errors.required">L'indirizzo è richiesto</div>
                         </div>
@@ -148,8 +127,7 @@
                 <div class="col-2 text-center">
                     <label>Coordinate</label>
                     <button type="button" class="btn btn-block btn-secondary" [ngbTooltip]="coordsTooltip"
-                            placement="bottom"
-                            (click)="onCopiaIndirizzo()" [disabled]="!coordinate">
+                        placement="bottom" (click)="onCopiaIndirizzo()" [disabled]="!coordinate">
                         <i class="fa fa-clipboard"></i> Copia
                     </button>
 
@@ -164,8 +142,8 @@
                     <div class="form-group">
                         <label for="motivazione">Motivazione</label>
                         <textarea id="motivazione" placeholder="Inserisci la Motivazione" formControlName="motivazione"
-                                  class="form-control"
-                                  [ngClass]="{ 'is-invalid': submitted && f.motivazione.errors }"></textarea>
+                            class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f.motivazione.errors }"></textarea>
                         <div *ngIf="submitted && f.motivazione.errors" class="invalid-feedback">
                             <div *ngIf="f.motivazione.errors.required">La Motivazione è richiesta</div>
                         </div>
@@ -175,19 +153,9 @@
                     <div class="form-group">
                         <label for="noteIndirizzo">Note Indirizzo</label>
                         <textarea id="noteIndirizzo" placeholder="Inserisci le Note (opzionale)"
-                                  formControlName="noteIndirizzo"
-                                  class="form-control"
-                                  [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors }"></textarea>
+                            formControlName="noteIndirizzo" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors }"></textarea>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4 mx-auto">
-                    <button type="button" class="btn btn-block btn-outline-primary" (click)="isCollapsed = !isCollapsed"
-                            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" [hidden]="!isCollapsed">
-                        <i class="fa fa-info mr-1"></i>
-                        Informazioni Aggiuntive
-                    </button>
                 </div>
             </div>
             <div id="collapseExample" [ngbCollapse]="isCollapsed">
@@ -196,18 +164,16 @@
                         <div class="form-group mb-1">
                             <label for="notePubbliche">Note Pubbliche</label>
                             <textarea id="notePubbliche" placeholder="Inserisci le Note Pubbliche (opzionale)"
-                                      formControlName="notePubbliche"
-                                      class="form-control"
-                                      [ngClass]="{ 'is-invalid': submitted && f.notePubbliche.errors }"></textarea>
+                                formControlName="notePubbliche" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.notePubbliche.errors }"></textarea>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group mb-1">
                             <label for="notePrivate">Note Private</label>
                             <textarea id="notePrivate" type="text" placeholder="Inserisci le Note Private (opzionale)"
-                                      formControlName="notePrivate"
-                                      class="form-control"
-                                      [ngClass]="{ 'is-invalid': submitted && f.notePrivate.errors }"></textarea>
+                                formControlName="notePrivate" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.notePrivate.errors }"></textarea>
                         </div>
                     </div>
                 </div>
@@ -216,42 +182,46 @@
                         <div class="form-group mb-1">
                             <label for="etichette">Etichette</label>
                             <input id="etichette" type="text" placeholder="Inserisci le Etichette (opzionale)"
-                                   formControlName="etichette"
-                                   class="form-control"
-                                   [ngClass]="{ 'is-invalid': submitted && f.etichette.errors }"/>
+                                formControlName="etichette" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.etichette.errors }" />
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group mb-1">
                             <label for="zoneEmergenza">Zone emergenza</label>
                             <input id="zoneEmergenza" type="text" placeholder="Inserisci la Zona Emergenza (opzionale)"
-                                   formControlName="zoneEmergenza"
-                                   class="form-control"
-                                   [ngClass]="{ 'is-invalid': submitted && f.zoneEmergenza.errors }"/>
+                                formControlName="zoneEmergenza" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.zoneEmergenza.errors }" />
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row mt-2">
+            <div class="row mt-3">
                 <div class="col-7">
-                    <div class="btn-group mr-2">
+                    <div class="btn-group">
                         <button type="button" class="btn btn-outline-danger" (click)="onAnnullaChiamata()">Annulla
                         </button>
                         <div class="btn-group" ngbDropdown autoClose="outside" placement="top" role="group">
                             <button class="btn btn-outline-danger dropdown-toggle-split" ngbDropdownToggle></button>
                             <div class="dropdown-menu dropdownAnnulla" ngbDropdownMenu>
                                 <button class="dropdown-item"
-                                        (click)="impostaAzioneChiamata(AzioneChiamata.FalsoAllarme)">Falso allarme
+                                    (click)="impostaAzioneChiamata(AzioneChiamata.FalsoAllarme)">Falso allarme
                                 </button>
                                 <button class="dropdown-item"
-                                        (click)="impostaAzioneChiamata(AzioneChiamata.InternventoNonPiuNecessario)">
+                                    (click)="impostaAzioneChiamata(AzioneChiamata.InternventoNonPiuNecessario)">
                                     Non più necessario
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-outline-primary ml-2" type="button" (click)="onResetChiamata()"><i
-                            class="fa fa-recycle mr-1"></i>Reset
+                    <button class="btn btn-outline-secondary ml-2" type="button" (click)="onResetChiamata()">
+                        <i class="fa fa-recycle mr-1"></i>Reset
+                    </button>
+                    <button type="button" class="btn btn-outline-primary ml-2" (click)="isCollapsed = !isCollapsed"
+                        [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+                        Informazioni Aggiuntive
+                        <i *ngIf="isCollapsed" class="fa fa-arrow-down ml-1"></i>
+                        <i *ngIf="!isCollapsed" class="fa fa-arrow-up ml-1"></i>
                     </button>
                 </div>
                 <div class="col-5 text-right">
@@ -260,10 +230,9 @@
                         </button>
                         <div class="dropdown-menu dropdownConferma" ngbDropdownMenu>
                             <button class="dropdown-item"
-                                    (click)="impostaAzioneChiamata(AzioneChiamata.MettiInCoda)">Metti in coda
+                                (click)="impostaAzioneChiamata(AzioneChiamata.MettiInCoda)">Metti in coda
                             </button>
-                            <button class="dropdown-item"
-                                    (click)="inviaPartenza()">Invia partenza
+                            <button class="dropdown-item" (click)="inviaPartenza()">Invia partenza
                             </button>
                         </div>
                     </div>
