@@ -21,6 +21,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Authorization;
@@ -30,6 +32,8 @@ using Newtonsoft.Json;
 using SimpleInjector;
 using SO115App.API.Hubs;
 using SO115App.API.Models.AOP.Validation;
+using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.API.Models.Classi.Notifications;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.CQRS.Queries;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
@@ -56,28 +60,31 @@ namespace SO115App.API.Controllers
         /// </summary>
         private readonly ISintesiRichiestaAssistenzaQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler;
         private readonly IHubContext<NotificationHub> _NotificationHub;
+        private readonly IPrincipal _currentUser;
+
+        private readonly NotificationHub notifyHub = new NotificationHub();
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public SintesiRichiesteAssistenzaController(IHubContext<NotificationHub> NotificationHubContext,            
+        public SintesiRichiesteAssistenzaController(IPrincipal currentUser,IHubContext<NotificationHub> NotificationHubContext,            
             ISintesiRichiestaAssistenzaQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler)
         {            
             this.handler = handler;
             _NotificationHub = NotificationHubContext;
-
+            _currentUser = currentUser;
         }
 
         /// <summary>
         ///   Metodo di accesso alle richieste di assistenza
         /// </summary>
         /// <param name="filtro">Il filtro per le richieste</param>
-        /// <returns>Le sintesi delle richieste di assistenza</returns>    
+        /// <returns>Le sintesi delle richieste di assistenza</returns> 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(string connectionId)
         {
-           
+
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
             filtro.SearchKey = "0";
 
@@ -86,7 +93,19 @@ namespace SO115App.API.Controllers
                 Filtro = filtro
             };
 
-            return Ok(this.handler.Handle(query));
+           try{
+                List<SintesiRichiesta> listaSintesi = new List<SintesiRichiesta>();
+                listaSintesi = (List<SintesiRichiesta>)this.handler.Handle(query).SintesiRichiesta;
+
+                await _NotificationHub.Clients.User(connectionId).SendAsync("NotifyGetListaRichieste", listaSintesi);  
+
+                return Ok();
+
+           }catch
+           {
+               return Ok(HttpStatusCode.BadRequest);
+           }
+            
         }
 
 

@@ -77,7 +77,7 @@ namespace SO115App.API
                     };
                 }); 
             services.AddSignalR();
-
+            services.AddProgressiveWebApp();
             IntegrateSimpleInjector(services);
         }
 
@@ -115,9 +115,9 @@ namespace SO115App.API
 
             app.UseSignalR( route => 
                 {
-                    route.MapHub<SubscriptionHub>("/SubscriptionHub");
+                    //route.MapHub<SubscriptionHub>("/SubscriptionHub");
                     route.MapHub<NotificationHub>("/NotificationHub");
-                    route.MapHub<NotificationHub>("/NotificationMarkerHub");                    
+                    //route.MapHub<NotificationHub>("/NotificationMarkerHub");                    
                 }
             );  
 

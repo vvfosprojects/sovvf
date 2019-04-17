@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "35948f9fddf7e0e06b32cf79f200c2a3e7a12ab2"
+    "signature": "b699ec64646ec0e54e1b987afedf512cbd636abe"
   },
   "compilationOptions": {
     "defines": [
@@ -33,7 +33,8 @@
           "SimpleInjector": "4.4.3",
           "SimpleInjector.Integration.AspNetCore": "4.4.3",
           "SimpleInjector.Integration.AspNetCore.Mvc": "4.4.3",
-          "System.IO": "4.3.0"
+          "System.IO": "4.3.0",
+          "WebEssentials.AspNetCore.PWA": "1.0.49"
         },
         "runtime": {
           "SO115App.API.dll": {}
@@ -225,6 +226,50 @@
           "Microsoft.NETCore.Platforms": "2.2.0"
         }
       },
+      "NWebsec.AspNetCore.Core/2.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Abstractions": "2.2.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/NWebsec.AspNetCore.Core.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/NWebsec.AspNetCore.Core.dll": {}
+        }
+      },
+      "NWebsec.AspNetCore.Mvc/2.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Mvc.ViewFeatures": "2.2.0",
+          "NWebsec.AspNetCore.Core": "2.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/NWebsec.AspNetCore.Mvc.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/NWebsec.AspNetCore.Mvc.dll": {}
+        }
+      },
+      "NWebsec.AspNetCore.Mvc.TagHelpers/2.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Razor.Runtime": "2.2.0",
+          "NWebsec.AspNetCore.Mvc": "2.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/NWebsec.AspNetCore.Mvc.TagHelpers.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/NWebsec.AspNetCore.Mvc.TagHelpers.dll": {}
+        }
+      },
       "SimpleInjector/4.4.3": {
         "dependencies": {
           "System.ComponentModel": "4.0.1"
@@ -289,6 +334,27 @@
       "System.ComponentModel/4.0.1": {
         "dependencies": {
           "System.Runtime": "4.3.0"
+        }
+      },
+      "WebEssentials.AspNetCore.PWA/1.0.49": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Hosting.Abstractions": "2.2.0",
+          "Microsoft.AspNetCore.Mvc": "2.2.0",
+          "Microsoft.AspNetCore.Mvc.Abstractions": "2.2.0",
+          "Microsoft.AspNetCore.Mvc.TagHelpers": "2.2.0",
+          "Microsoft.AspNetCore.Razor.Runtime": "2.2.0",
+          "Microsoft.Extensions.Configuration": "2.2.0",
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "2.2.0",
+          "NWebsec.AspNetCore.Mvc.TagHelpers": "2.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/WebEssentials.AspNetCore.Pwa.dll": {
+            "assemblyVersion": "1.0.49.0",
+            "fileVersion": "1.0.49.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/WebEssentials.AspNetCore.Pwa.dll": {}
         }
       },
       "SO115App.API.CompositionRoot/1.0.0": {
@@ -3408,6 +3474,27 @@
       "path": "netstandard.library/2.0.3",
       "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
     },
+    "NWebsec.AspNetCore.Core/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3uajiUcZ37VI2SRmdYq9Lb7y+eHPZsdSn0+zzbm1xRy/bmD92+FTrLsEm6pEF/J9rnBFl7oQ9CKvA4EoFd9CWA==",
+      "path": "nwebsec.aspnetcore.core/2.0.0",
+      "hashPath": "nwebsec.aspnetcore.core.2.0.0.nupkg.sha512"
+    },
+    "NWebsec.AspNetCore.Mvc/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-iO1J83AfLyXBGYGnpHIzj6ZKHSA9TdgqymfK9J5NOj3UQ9TN5RFEF17qKzWsV+f96xeatPnsjJitKO/nm6Jerg==",
+      "path": "nwebsec.aspnetcore.mvc/2.0.0",
+      "hashPath": "nwebsec.aspnetcore.mvc.2.0.0.nupkg.sha512"
+    },
+    "NWebsec.AspNetCore.Mvc.TagHelpers/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-P6pPb5NrNiNRXjX0Z1py4nx5oo09+qcg/bJvLa8or+xTss/h5JTNBAgldI6pOQ+fm6L5ffODgaUR99EdPK2WiQ==",
+      "path": "nwebsec.aspnetcore.mvc.taghelpers/2.0.0",
+      "hashPath": "nwebsec.aspnetcore.mvc.taghelpers.2.0.0.nupkg.sha512"
+    },
     "SimpleInjector/4.4.3": {
       "type": "package",
       "serviceable": true,
@@ -3442,6 +3529,13 @@
       "sha512": "sha512-tN5DPMYg6yFO5lF5L5hF6TIZDcRQ/+f1YcXGP8y2Yy4971XoxPOLH4lkkL20v6zb4aAVsp+xrkRwzMFeR5ZHqw==",
       "path": "system.componentmodel/4.0.1",
       "hashPath": "system.componentmodel.4.0.1.nupkg.sha512"
+    },
+    "WebEssentials.AspNetCore.PWA/1.0.49": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-SfVoNchxf3sW47o7p3T9YVXwtkxt/2uk6qCdh4bPdq3c9i9jj9DNCWHwutA2DgLRPsNmbo0fE6QGxyLU32a6uQ==",
+      "path": "webessentials.aspnetcore.pwa/1.0.49",
+      "hashPath": "webessentials.aspnetcore.pwa.1.0.49.nupkg.sha512"
     },
     "SO115App.API.CompositionRoot/1.0.0": {
       "type": "project",

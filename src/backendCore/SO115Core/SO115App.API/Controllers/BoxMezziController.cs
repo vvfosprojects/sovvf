@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Hubs;
+using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes.ResultDTO;
@@ -36,7 +39,7 @@ namespace SO115App.API.Controllers
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>    
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(string connectionId)
         {
            
             var query = new BoxMezziQuery()
@@ -44,7 +47,18 @@ namespace SO115App.API.Controllers
                 FiltroBox = ""
             };
 
-            return Ok(this.handler.Handle(query));
+            try{
+                BoxMezzi boxMezzi = new BoxMezzi();
+                boxMezzi = (BoxMezzi)this.handler.Handle(query).BoxMezzi;
+
+                await _NotificationHub.Clients.User(connectionId).SendAsync("NotifyGetBoxMezzi", boxMezzi);             
+
+                return Ok();
+                
+            }catch
+            {
+                return Ok(HttpStatusCode.BadRequest);
+            }
         }
 
     }

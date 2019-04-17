@@ -18,13 +18,19 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.CQRS.Queries;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
 using SO115App.API.Models.Servizi.Infrastruttura;
@@ -47,17 +53,17 @@ namespace SO115App.API.Controllers
         ///   Handler del servizio
         /// </summary>
         private readonly ISintesiRichiestaAssistenzaMarkerQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> handler;
-        private readonly ILogger _logger;
+        private readonly IHubContext<NotificationHub> _NotificationHub;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public SintesiRichiesteAssistenzaMarkerController(ILogger logger,
+        public SintesiRichiesteAssistenzaMarkerController(IHubContext<NotificationHub> NotificationHubContext,
             ISintesiRichiestaAssistenzaMarkerQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> handler)
         {
-            _logger = logger;
             this.handler = handler;
+            _NotificationHub = NotificationHubContext;
         }
 
         /// <summary>
@@ -66,14 +72,29 @@ namespace SO115App.API.Controllers
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpGet] 
-        public SintesiRichiesteAssistenzaMarkerResult Get()
+        public async Task<IActionResult> Get(string connectionId)
         {
 
-            this._logger.Log(this.GetType().Name + " - L'utente ha richiesto la lista dei Marker delle Sintesi");
+            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
+            filtro.SearchKey = "0";
 
-            var query = new SintesiRichiesteAssistenzaMarkerQuery();
+            var query = new SintesiRichiesteAssistenzaMarkerQuery()
+            {
+                Filtro = filtro
+            };
 
-            return this.handler.Handle(query);
+           try{
+                List<SintesiRichiestaMarker> listaSintesi = new List<SintesiRichiestaMarker>();
+                listaSintesi = (List<SintesiRichiestaMarker>)this.handler.Handle(query).SintesiRichiestaMarker;
+
+                await _NotificationHub.Clients.User(connectionId).SendAsync("NotifyGetListaRichiesteMarker", listaSintesi);  
+
+                return Ok();
+
+           }catch
+           {
+               return Ok(HttpStatusCode.BadRequest);
+           }
         }
 
 

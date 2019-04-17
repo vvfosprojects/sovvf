@@ -14,13 +14,14 @@ using System.IO;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Utenti;
+using System.Collections.Generic;
 
 namespace SO115App.API.Hubs
 {
     public class NotificationHub : Hub
-    {
-        SintesiRichiesta sintesiRichiesta = new SintesiRichiesta();
+    {        
 
+        SintesiRichiesta sintesiRichiesta = new SintesiRichiesta();
         public async Task AddToGroup(Notification<Utente> utente)
         {
             try{
@@ -42,11 +43,6 @@ namespace SO115App.API.Hubs
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, utente.CodiceSede);
             await Clients.OthersInGroup(utente.CodiceSede).SendAsync("NotifyLogOut", "L'utente " + utente.NominativoUtente + " è uscito dalla sede " + utente.CodiceSede);
             await base.OnConnectedAsync();
-        }
-
-        public async Task TurnoMessage(Notification<Turno> turno)
-        {     
-            await Clients.OthersInGroup(turno.CodiceSede).SendAsync("TurnoMessage", turno.ActionObj);
         }
 
         /// <summary>
@@ -78,7 +74,7 @@ namespace SO115App.API.Hubs
 		}
  
         /// <summary>
-        ///  Metodo di Modifica e Propagazione di una richiesta
+        ///  Metodo di Modifica e Propagazione di una richiesta 
         /// </summary>
         public async Task ModifyAndNotify(Notification<SintesiRichiesta> Richiesta)
 		{
@@ -108,8 +104,18 @@ namespace SO115App.API.Hubs
         public string GetConnectionId()
         {
                 return Context.ConnectionId;
-
         }
 
+        public long GetDateTime()
+        {                       
+            return DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        }
+
+        public List<SintesiRichiesta> GetListaSintesiRichieste()
+        {
+            
+            return null;
+
+        } 
     }
 }
