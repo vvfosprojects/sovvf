@@ -1,11 +1,22 @@
-import { Component, EventEmitter, HostListener, Input, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    HostListener,
+    Input,
+    OnChanges, OnDestroy, OnInit,
+    Output,
+    SimpleChanges,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import { DownlineTreeviewItem, OrderDownlineTreeviewEventParser, TreeviewConfig, TreeviewEventParser, TreeviewItem } from 'ngx-treeview';
 import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { arrayUnique } from '../../helper/function';
 import { isNil, reverse } from 'lodash';
-import { Observable } from 'rxjs';
 import { Ricorsivo, TreeviewEmitterInterface } from '../../interface/treeview.interface';
 import { TreeviewSelezione } from '../../model/treeview-selezione.model';
+import { sedeString } from '../../store/states/sedi-treeview/sedi-treeview.helper';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -17,7 +28,7 @@ import { TreeviewSelezione } from '../../model/treeview-selezione.model';
         { provide: TreeviewEventParser, useClass: OrderDownlineTreeviewEventParser },
     ]
 })
-export class TreeviewComponent {
+export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
     treeViewOpened: boolean;
 
     config = TreeviewConfig.create({
@@ -29,11 +40,13 @@ export class TreeviewComponent {
     });
 
     treeViewSelection: TreeviewSelezione[];
+    tastoConferma: boolean;
 
     @Input() colorButton = 'btn-default';
     @Input() items: TreeviewItem[];
-    @Input() sedeSelezionata: Observable<string>;
-    @Input() tastoConferma: boolean;
+    @Input() testoSedeSelezionata$: Observable<string>;
+    @Input() tastoConferma$: Observable<boolean>;
+    @Input() testoSedeSelezionata: string;
     @Input() visualizzaTasti = false;
     @Input() placement: string;
     @Output() annullaSelezione = new EventEmitter();
@@ -53,6 +66,28 @@ export class TreeviewComponent {
         }
     }
 
+    ngOnInit(): void {
+        console.log(`Componente Shared Treeview creato`);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        const testoSedeSelezionata$ = changes.testoSedeSelezionata$;
+        const testoSedeSelezionata = changes.testoSedeSelezionata;
+        const tastoConferma$ = changes.tastoConferma$;
+        if (testoSedeSelezionata$) {
+            testoSedeSelezionata$.currentValue.subscribe( result => this.testoSedeSelezionata = sedeString(result));
+        } else if (testoSedeSelezionata) {
+            this.testoSedeSelezionata = sedeString(testoSedeSelezionata.currentValue);
+        }
+        if (tastoConferma$) {
+            tastoConferma$.currentValue.subscribe( result => this.tastoConferma = result);
+        }
+    }
+
+    ngOnDestroy(): void {
+        console.log(`Componente Shared Treeview distrutto`);
+    }
+
     openDropDown(value: any): void {
         this.treeViewOpened = !!value;
     }
@@ -62,6 +97,7 @@ export class TreeviewComponent {
         const leaves = [];
         let duplicateParents = [];
         const firstParent = [];
+        let eventEmitter: TreeviewEmitterInterface;
         /**
          * controllo se ho selezionato tutta la lista
          */
@@ -131,17 +167,32 @@ export class TreeviewComponent {
          */
         const unique = [];
         if ((leaves.length > 0 && parents.length > 0) || leaves.length > 1 || parents.length > 1) {
-            console.log(`più sedi selezionate: ${[...parents, ...leaves]}`);
-            this.patch([...parents, ...leaves], true);
+            eventEmitter = {
+                idSelezionati: [...parents, ...leaves],
+                multi: true,
+                log: `più sedi selezionate: ${[...parents, ...leaves]}`
+            };
         } else {
             unique[0] = parents.length === 1 ? parents[0] : leaves[0];
             if (unique[0]) {
-                console.log(`una sede selezionata: ${unique[0]}`);
-                this.patch([...unique]);
+                eventEmitter = {
+                    idSelezionati: [...unique],
+                    multi: false,
+                    log: `una sede selezionata: ${unique[0]}`
+                };
             } else {
-                console.log(`nessuna sede selezionata`);
-                this.patch([]);
+                eventEmitter = {
+                    idSelezionati: [],
+                    multi: false,
+                    log: `nessuna sede selezionata`
+                };
             }
+        }
+        if (this.visualizzaTasti) {
+            console.log(eventEmitter);
+            this.patch(eventEmitter);
+        } else {
+            this.conferma();
         }
         console.log(this.treeViewSelection);
     }
@@ -154,11 +205,7 @@ export class TreeviewComponent {
         this.confermaSelezione.emit(this.treeViewSelection);
     }
 
-    patch(idS: string[], multi?: boolean): void {
-        const eventEmitter: TreeviewEmitterInterface = {
-            idSelezionati: idS,
-            multi: multi
-        };
+    patch(eventEmitter: TreeviewEmitterInterface): void {
         this.patchSelezione.emit(eventEmitter);
     }
 

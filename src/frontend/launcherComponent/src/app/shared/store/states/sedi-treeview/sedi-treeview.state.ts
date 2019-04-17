@@ -9,7 +9,7 @@ import {
 } from '../../actions/sedi-treeview/sedi-treeview.actions';
 import { arraysEqual, makeCopy } from '../../../helper/function';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
-import { allFalseTreeItem, checkTreeItem, findItem, sedeString } from './sedi-treeview.helper';
+import { allFalseTreeItem, checkTreeItem, findItem } from './sedi-treeview.helper';
 import { SetAppLoaded } from '../../actions/app/app.actions';
 import { SetTurno } from '../../../../features/navbar/store/actions/turno/turno.actions';
 
@@ -141,7 +141,7 @@ export class SediTreeviewState {
                 correnti: SediTreeviewStateDefaults.sediNavbarSelezionate.correnti
             },
             sediNavbarTesto: {
-                iniziale: sedeString(state.sediNavbarTesto.corrente),
+                iniziale: state.sediNavbarTesto.corrente,
                 corrente: SediTreeviewStateDefaults.sediNavbarTesto.corrente
             },
             sediNavbarDisableConfirm: SediTreeviewStateDefaults.sediNavbarDisableConfirm

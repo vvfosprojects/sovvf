@@ -21,10 +21,9 @@ export class UnitaOperativaComponent implements OnDestroy {
     @Select(SediTreeviewState.listeSediNavbar) listeSedi$: Observable<TreeItem>;
     items: TreeviewItem[];
 
-    @Select(SediTreeviewState.sediNavbarTesto) sedeSelezionata$: Observable<string>;
+    @Select(SediTreeviewState.sediNavbarTesto) testoSedeSelezionata$: Observable<string>;
 
     @Select(SediTreeviewState.sediNavbarTastoConferma) tastoConferma$: Observable<boolean>;
-    tastoConferma: boolean;
 
     constructor(private store: Store) {
 
@@ -32,12 +31,6 @@ export class UnitaOperativaComponent implements OnDestroy {
             this.listeSedi$.subscribe((listaSedi: TreeItem) => {
                 this.items = [];
                 this.items[0] = new TreeviewItem(listaSedi);
-            })
-        );
-
-        this.subscription.add(this.tastoConferma$.subscribe(
-            (tasto: boolean) => {
-                this.tastoConferma = tasto;
             })
         );
     }

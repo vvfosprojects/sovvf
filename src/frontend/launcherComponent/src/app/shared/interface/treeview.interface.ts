@@ -6,4 +6,5 @@ export enum Ricorsivo {
 export interface TreeviewEmitterInterface {
     idSelezionati: string[];
     multi?: boolean;
+    log?: string;
 }
