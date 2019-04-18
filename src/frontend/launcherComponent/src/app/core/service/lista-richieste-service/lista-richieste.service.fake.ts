@@ -19,6 +19,8 @@ import { Partenza } from '../../../shared/model/partenza.model';
 import { Squadra } from '../../../shared/model/squadra.model';
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
+import { Store } from '@ngxs/store';
+import { SetRichieste } from '../../../features/home/store/actions/richieste/richieste.actions';
 
 
 @Injectable()
@@ -26,7 +28,11 @@ export class SintesiRichiesteServiceFake {
 
     private richieste: SintesiRichiesta[] = [];
 
-    getRichieste(idUltimaRichiesta: string) {
+    constructor(private store: Store) {
+
+    }
+
+    getRichieste(signalRConnectionId: string, idUltimaRichiesta?: string) {
 
         this.richieste = [
             new SintesiRichiesta(
@@ -703,7 +709,9 @@ export class SintesiRichiesteServiceFake {
             ),
         ];
 
-        return of(this.richieste);
+        this.store.dispatch(new SetRichieste(this.richieste));
+
+        return of();
     }
 
     getRichiestaById(id_richiesta: string) {

@@ -8,7 +8,7 @@ const PROXY_CONFIG = [
             "/api/BoxMezzi",
             "/api/BoxPersonale"
         ],
-        target: "http://so115.api.it/",
+        target: "http://DESKTOP-RC0RAUA:5000/",
         secure: false,
         "changeOrigin": true,
         ws: true

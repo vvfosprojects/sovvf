@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { handleError } from '../../../shared/helper/handleError';
@@ -28,13 +28,10 @@ export class SintesiRichiesteService {
     //     );
     // }
 
-    public getRichieste(signalRConnectionId: string): Observable<any> {
-        return this.http.get(API_URL_RICHIESTE).pipe(
-            map((data: any) => {
-                return data.sintesiRichiesta;
-            }),
-            catchError(handleError)
-        );
+    public getRichieste(signalRConnectionId: string, idUltimaRichiesta?: string): Observable<any> {
+        return this.http.get(API_URL_RICHIESTE + `?id=${signalRConnectionId}`).pipe(
+            retry(3),
+            catchError(handleError));
     }
 
     public getRichiestaById(): Observable<any> {

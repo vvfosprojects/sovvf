@@ -15,9 +15,9 @@ export class BoxRichiesteService {
     constructor(private http: HttpClient) {
     }
 
-    public getInterventi(): Observable<BoxInterventi> {
-        return this.http.get<any>(API_URL).pipe(
-            map((data: BoxInterventi[]) => data['boxRichieste']),
+    public getInterventi(signalRConnectionId: string): Observable<BoxInterventi> {
+        return this.http.get<any>(API_URL + `?id=${signalRConnectionId}`).pipe(
+            // map((data: BoxInterventi[]) => data['boxRichieste']),
             retry(3),
             catchError(handleError)
         );

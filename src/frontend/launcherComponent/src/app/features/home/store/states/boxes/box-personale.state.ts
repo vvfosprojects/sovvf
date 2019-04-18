@@ -8,6 +8,7 @@ import { BoxPersonale } from '../../../boxes/boxes-model/box-personale.model';
 
 // Action
 import { ClearBoxPersonale, GetBoxPersonale, SetBoxPersonale } from '../../actions/boxes/box-personale.actions';
+import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 
 export interface BoxPersonaleStateModel {
     personale: BoxPersonale;
@@ -32,10 +33,10 @@ export class BoxPersonaleState {
     }
 
     @Action(GetBoxPersonale)
-    getBoxPersonale({ dispatch }: StateContext<BoxPersonaleStateModel>) {
-        this._personale.getPersonale().subscribe((p: BoxPersonale) => {
-            dispatch(new SetBoxPersonale(p));
-        });
+    getBoxPersonale({ dispatch }: StateContext<BoxPersonaleStateModel>, action: GetBoxPersonale) {
+        this._personale.getPersonale(action.connectionId).subscribe((p: BoxPersonale) => {
+            // dispatch(new SetBoxPersonale(p));
+        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5000)));
     }
 
     @Action(SetBoxPersonale)

@@ -1,5 +1,6 @@
 export const environment = {
     production: true,
+    fakeProvider: false,
     apiUrl: {
         appSettings: 'https://api.myjson.com/bins/1gwhxs',
         boxes: {

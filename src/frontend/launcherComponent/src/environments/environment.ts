@@ -1,5 +1,8 @@
 export const environment = {
     production: false,
+    fakeProvider: true,
+    signalRHub: '/NotificationHub',
+    signalR: false,
     apiUrl: {
         appSettings: 'assets/json/app-settings.json',
         boxes: {

@@ -34,7 +34,7 @@ import { UtenteState } from './features/navbar/store/states/operatore/utente.sta
  * Route
  */
 import { APP_ROUTING } from './app.routing';
-import { JwtInterceptor, ErrorInterceptor, fakeBackendProvider } from './core/auth/_helpers';
+import { JwtInterceptor, ErrorInterceptor, FakeBackendInterceptor } from './core/auth/_helpers';
 /**
  * Module Components
  */
@@ -101,7 +101,7 @@ import { AppState } from './shared/store/states/app/app.state';
         /**
          * provider fake per la login
          */
-        fakeBackendProvider
+        environment.fakeProvider ? { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true } : []
     ],
     bootstrap: [AppComponent]
 })

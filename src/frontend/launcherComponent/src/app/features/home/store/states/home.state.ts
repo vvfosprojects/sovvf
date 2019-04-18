@@ -59,9 +59,9 @@ export class HomeState {
         dispatch(new GetMezziMarkers());
         dispatch(new GetRichiesteMarkers());
         dispatch(new GetChiamateMarkers());
-        dispatch(new GetBoxRichieste());
-        dispatch(new GetBoxMezzi());
-        dispatch(new GetBoxPersonale());
+        dispatch(new GetBoxRichieste(connectionID));
+        dispatch(new GetBoxMezzi(connectionID));
+        dispatch(new GetBoxPersonale(connectionID));
         patchState({
             loaded: true
         });

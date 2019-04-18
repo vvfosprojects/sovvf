@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
-/*
-    Modules
+import { environment } from '../../../../environments/environment';
+/**
+ Modules
  */
 import { PipeModule } from '../../../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -15,16 +16,16 @@ import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } 
 import { SintesiRichiestaModule } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
-/*
-    Components
+/**
+ Components
  */
 import { RichiesteComponent } from './richieste.component';
 import { ListaRichiesteComponent } from './lista-richieste/lista-richieste.component';
 import { SintesiRichiestaSmComponent } from './lista-richieste/sintesi-richiesta-sm/sintesi-richiesta-sm.component';
 import { RichiestaFissataComponent } from './richiesta-fissata/richiesta-fissata.component';
 import { ModificaRichiestaComponent } from './modifica-richiesta/modifica-richiesta.component';
-/*
-    Provider
+/**
+ Service Provider
  */
 import { SintesiRichiesteService } from '../../../core/service/lista-richieste-service/lista-richieste.service';
 import { SintesiRichiesteServiceFake } from '../../../core/service/lista-richieste-service/lista-richieste.service.fake';
@@ -54,7 +55,7 @@ import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-s
         GooglePlaceModule,
         TimeagoModule.forRoot({
             intl: TimeagoIntl,
-            formatter: {provide: TimeagoFormatter, useClass: TimeagoCustomFormatter}
+            formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
         }),
         NgxsModule.forFeature([
             RichiesteState,
@@ -77,7 +78,7 @@ import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-s
         ModificaRichiestaComponent
     ],
     providers: [
-        {provide: SintesiRichiesteService, useClass: SintesiRichiesteServiceFake}
+        { provide: SintesiRichiesteService, useClass: environment.fakeProvider ? SintesiRichiesteServiceFake : SintesiRichiesteService}
     ]
 })
 export class RichiesteModule {

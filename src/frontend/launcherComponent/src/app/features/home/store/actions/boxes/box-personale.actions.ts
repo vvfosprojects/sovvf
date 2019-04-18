@@ -3,6 +3,8 @@ import { BoxPersonale } from '../../../boxes/boxes-model/box-personale.model';
 
 export class GetBoxPersonale {
     static readonly type = '[BoxPersonale] Get data';
+    constructor(public connectionId: string) {
+    }
 }
 
 export class SetBoxPersonale {

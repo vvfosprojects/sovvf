@@ -4,12 +4,12 @@ import { APP_TIPOLOGIE } from '../settings/tipologie';
 import { environment } from '../../../environments/environment';
 import { SignalRService } from '../signalr/signalR.service';
 import { Subscription } from 'rxjs';
-import { SIGNALR_CONFIG } from '../signalr/signalR.config';
 import { AppSettingsI } from '../settings/app-settings.interface';
 import { Store } from '@ngxs/store';
 import { SetListaSediTreeview } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 
 const API_URL = environment.apiUrl.appSettings;
+const SIGNALR_BYPASS = !environment.signalR;
 
 @Injectable()
 export class AppLoadService {
@@ -19,7 +19,7 @@ export class AppLoadService {
 
 
     constructor(private http: HttpClient, private signalR: SignalRService, private store: Store) {
-        if (!SIGNALR_CONFIG.signlaRByPass) {
+        if (!SIGNALR_BYPASS) {
             this.signalR.initSubscription();
             this.subscription.add(this.signalR.checkConnection().subscribe(result => {
                 this.checkConnectionSignalR = result;
@@ -33,7 +33,7 @@ export class AppLoadService {
 
     initializeApp(): Promise<any> {
         return new Promise((resolve) => {
-            if (!SIGNALR_CONFIG.signlaRByPass) {
+            if (!SIGNALR_BYPASS) {
                 if (this.checkConnectionSignalR) {
                     resolve();
                 } else {

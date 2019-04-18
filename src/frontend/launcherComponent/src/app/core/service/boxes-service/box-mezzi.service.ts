@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BoxMezzi } from '../../../features/home/boxes/boxes-model/box-mezzi.model';
-import { catchError, map, retry } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { handleError } from '../../../shared/helper/handleError';
@@ -15,9 +14,8 @@ export class BoxMezziService {
     }
 
 
-    public getMezzi(): Observable<BoxMezzi> {
-        return this.http.get<any>(API_URL).pipe(
-            map((data: BoxMezzi) => data['boxMezzi']),
+    public getMezzi(signalRConnectionId: string): Observable<any> {
+        return this.http.get(API_URL + `?id=${signalRConnectionId}`).pipe(
             retry(3),
             catchError(handleError)
         );

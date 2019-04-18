@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { Subject } from 'rxjs';
-import { SIGNALR_CONFIG } from './signalR.config';
 import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
@@ -11,6 +10,13 @@ import { SetRichieste } from '../../features/home/store/actions/richieste/richie
 import { SignalRNotification } from './model/signalr-notification.model';
 import { ToggleChiamata } from '../../features/home/store/actions/view/view.actions';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
+import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
+import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.actions';
+import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
+import { environment } from '../../../environments/environment';
+
+const HUB_URL = environment.signalRHub;
+const SIGNALR_BYPASS = !environment.signalR;
 
 @Injectable({
     providedIn: 'root'
@@ -34,7 +40,7 @@ export class SignalRService {
 
     private createSubscriptionConnection() {
         this.hubNotification = new HubConnectionBuilder()
-            .withUrl(SIGNALR_CONFIG.notification)
+            .withUrl(HUB_URL)
             .build();
     }
 
@@ -78,11 +84,32 @@ export class SignalRService {
             // Todo Provvisorio: diventerà modifica richiesta/modifica marker/aggiorna contatori boxes
             this.store.dispatch(new ShowToastr('info', 'Modifica Sintesi Richiesta', null, 3));
         });
-        // this.hubNotification.on('NotifyGetListaRichieste', (data: any) => {
-        //     this.store.dispatch(new SetRichieste(JSON.parse(data)));
-        //     this.store.dispatch(new ShowToastr('success', 'Richieste ricevute da signalR', null, 5));
-        // });
-
+        /**
+         * inizio nuova implementazione
+         */
+        this.hubNotification.on('NotifyGetListaRichieste', (data: any) => {
+            console.log(data);
+            this.store.dispatch(new SetRichieste(data));
+            this.store.dispatch(new ShowToastr('success', 'Richieste ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetBoxPersonale', (data: any) => {
+            console.log(data);
+            this.store.dispatch(new SetBoxPersonale(data));
+            this.store.dispatch(new ShowToastr('success', 'Box Personale ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetBoxMezzi', (data: any) => {
+            console.log(data);
+            this.store.dispatch(new SetBoxMezzi(data));
+            this.store.dispatch(new ShowToastr('success', 'Box Mezzi ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetBoxInterventi', (data: any) => {
+            console.log(data);
+            this.store.dispatch(new SetBoxRichieste(data));
+            this.store.dispatch(new ShowToastr('success', 'Box Richieste ricevute da signalR', null, 5));
+        });
+        /**
+         * fine nuova implementazione
+         */
         this.hubNotification.on('NotifyChiamataInCorsoMarkerSuccess', (data: ChiamataMarker) => {
             console.log(`Login: ${data}`);
             // Todo Provvisorio: SetChiamataMarker
@@ -107,7 +134,7 @@ export class SignalRService {
     }
 
     getContextId() {
-        if (!SIGNALR_CONFIG.signlaRByPass) {
+        if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('GetConnectionId').then(connectionId => {
                 this.store.dispatch(new SetConnectionId(connectionId));
             });
@@ -115,7 +142,7 @@ export class SignalRService {
     }
 
     startGetTime() {
-        if (!SIGNALR_CONFIG.signlaRByPass) {
+        if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('GetDateTime')
                 .then((data: any) => {
                         this.store.dispatch(new SetTimeSync(data));
@@ -126,7 +153,7 @@ export class SignalRService {
 
 
     addToGroup(notification: SignalRNotification) {
-        if (!SIGNALR_CONFIG.signlaRByPass) {
+        if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('AddToGroup', notification).then(
                 () => this.store.dispatch(new ShowToastr('info', 'Connessione al gruppo effettuata con successo', null, 3))
             ).catch(
@@ -136,7 +163,7 @@ export class SignalRService {
     }
 
     removeToGroup(notification: SignalRNotification) {
-        if (!SIGNALR_CONFIG.signlaRByPass) {
+        if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('RemoveToGroup', notification).then(
                 () => this.store.dispatch(new ShowToastr('info', 'Disconnessione al gruppo effettuata con successo', null, 3))
             ).catch(
@@ -146,7 +173,7 @@ export class SignalRService {
     }
 
     insertChiamata(notification: SignalRNotification) {
-        if (!SIGNALR_CONFIG.signlaRByPass) {
+        if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('SaveAndNotifyChiamata', notification).then(
                 (data: SintesiRichiesta) => {
                     // Todo Provvisorio: diventerà inserisci richiesta/inserisci marker/aggiorna contatori boxes con un id di tipo RM-001
@@ -165,7 +192,7 @@ export class SignalRService {
     }
 
     getChiamate(notification?: SignalRNotification) {
-        if (!SIGNALR_CONFIG.signlaRByPass) {
+        if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('GetAndNotifyListaSintesi').catch(
                 (data: string) => {
                     console.log(data);
@@ -176,14 +203,14 @@ export class SignalRService {
     }
 
     insertMarkerChiamata(notification: SignalRNotification) {
-        if (!SIGNALR_CONFIG.signlaRByPass) {
+        if (!SIGNALR_BYPASS) {
             // Invio a signalR il marker della chiamata che sto effettuando
             this.hubNotification.invoke('NotifyChiamataInCorsoMarker', notification);
         }
     }
 
     deleteMarkerChiamata(notification: SignalRNotification) {
-        if (!SIGNALR_CONFIG.signlaRByPass) {
+        if (!SIGNALR_BYPASS) {
             // Avviso signalR che il marker della chiamata in corso è da cancellare
             this.hubNotification.invoke('NotifyChiamataInCorsoMarkerDelete', notification);
         }
@@ -191,7 +218,7 @@ export class SignalRService {
 
 
     modifySintesiRichiesta(notification: SignalRNotification) {
-        if (!SIGNALR_CONFIG.signlaRByPass) {
+        if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('ModifyAndNotify', notification).then(
                 (data: SintesiRichiesta) => {
                     // Todo Provvisorio: diventerà modifica richiesta/modifica marker/aggiorna contatori boxes

@@ -14,9 +14,9 @@ export class BoxPersonaleService {
     constructor(private http: HttpClient) {
     }
 
-    public getPersonale(): Observable<BoxPersonale> {
-        return this.http.get<any>(API_URL).pipe(
-            map((data: BoxPersonale) => data['boxPersonale']),
+    public getPersonale(signalRConnectionId: string): Observable<any> {
+        return this.http.get(API_URL + `?id=${signalRConnectionId}`).pipe(
+            // map((data: BoxPersonale) => data['boxPersonale']),
             retry(3),
             catchError(handleError)
         );

@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { BoxPersonale } from '../../../features/home/boxes/boxes-model/box-personale.model';
 import { Observable, of } from 'rxjs';
 import { BoxFunzionariSo } from '../../../features/home/boxes/boxes-model/box-funzionari-so.model';
+import { Store } from '@ngxs/store';
+import { SetBoxPersonale } from '../../../features/home/store/actions/boxes/box-personale.actions';
 
 @Injectable()
 export class BoxPesonaleFakeService {
 
     personale: BoxPersonale;
 
-    constructor() {
+    constructor(private store: Store) {
     }
 
     public getPersonale(): Observable<BoxPersonale> {
@@ -51,7 +53,8 @@ export class BoxPesonaleFakeService {
             59,
             8
         );
-        return of(this.personale);
+        this.store.dispatch(new SetBoxPersonale(this.personale));
+        return of();
     }
 
 }
