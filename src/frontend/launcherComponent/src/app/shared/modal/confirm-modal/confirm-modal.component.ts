@@ -8,11 +8,11 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ConfirmModalComponent implements OnInit {
 
-    @Input() icona;
-    @Input() titolo;
-    @Input() messaggio;
-    @Input() messaggioAttenzione;
-    @Input() bottoni;
+    @Input() icona: any;
+    @Input() titolo: string;
+    @Input() messaggio: string;
+    @Input() messaggioAttenzione: string;
+    @Input() bottoni: any[];
 
     constructor(public modal: NgbActiveModal) {
     }
