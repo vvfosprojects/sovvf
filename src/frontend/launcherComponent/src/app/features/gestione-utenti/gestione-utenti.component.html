@@ -18,8 +18,6 @@
             </div>
         </div>
         <div class="col-12 mx-auto">
-            <!--<app-lista-utenti [utenti]="(utenti$ | async)" [ricercaUtenti]="(ricerca$ | async)"></app-lista-utenti>-->
-
             <app-tabella-utenti [ruoli]="ruoli" (setRuolo)="onSetRuolo($event)" (eliminaGestioneUtente)="onEliminaGestioneUtente($event)"></app-tabella-utenti>
         </div>
     </div>

@@ -7,10 +7,11 @@ import { makeCopy } from '../../shared/helper/function';
 import { Sede } from '../../shared/model/sede.model';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AddUtente, GetGestioneUtenti, RemoveUtente } from './store/actions/gestione-utenti/gestione-utenti.actions';
+import { AddUtente, GetGestioneUtenti, RemoveUtente, ChangeRoleUtente } from './store/actions/gestione-utenti/gestione-utenti.actions';
 import { AggiungiUtenteModalComponent } from './aggiungi-utente-modal/aggiungi-utente-modal.component';
 import { GetRuoli } from './store/actions/ruoli/ruoli.actions';
 import { RuoliState } from './store/states/ruoli/ruoli.state';
+import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confirm-modal.component';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -27,8 +28,9 @@ export class GestioneUtentiComponent implements OnInit {
     unitaOperativaAttuale: Sede;
     subscription: Subscription = new Subscription();
 
-    constructor(public modal: NgbModal,
-                private store: Store) {
+    constructor(public modalService: NgbModal,
+        private store: Store) {
+
         this.store.dispatch(new GetGestioneUtenti());
         this.store.dispatch(new GetRuoli());
 
@@ -50,7 +52,7 @@ export class GestioneUtentiComponent implements OnInit {
     }
 
     onAggiungiUtente() {
-        const aggiungiUtenteModal = this.modal.open(AggiungiUtenteModalComponent, {backdropClass: 'light-blue-backdrop', centered: true, size: 'lg'});
+        const aggiungiUtenteModal = this.modalService.open(AggiungiUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
         aggiungiUtenteModal.componentInstance.ruoli = this.ruoli;
         aggiungiUtenteModal.result.then(
             (risultatoModal) => {
@@ -68,14 +70,36 @@ export class GestioneUtentiComponent implements OnInit {
     }
 
     onSetRuolo(event: any) {
-        const utente = event.utente;
+        const utente = event.utente.nome + ' ' + event.utente.cognome;
         const ruolo = event.ruolo;
-        const sede = event.sede;
-        console.log(utente.nome + ' ' + utente.cognome + ' è diventato ' + ruolo + ' nel ' + sede.descrizione);
+        const sede = event.sede.descrizione;
+        console.warn(utente + ' è diventato ' + ruolo + ' nel ' + sede);
+        this.store.dispatch(new ChangeRoleUtente(event.utente.id_utente, event.ruolo));
     }
 
     onEliminaGestioneUtente(event: any) {
-        // console.log('[GestioneUtenti] utente da eliminare', event);
-        this.store.dispatch(new RemoveUtente(event.id_utente, event.codice_sede));
+        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        modalConfermaAnnulla.componentInstance.titolo = 'Elimina permesso utente';
+        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler eliminare questo utente dai permessi?';
+        modalConfermaAnnulla.componentInstance.bottoni = [
+            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+        ];
+
+        modalConfermaAnnulla.result.then(
+            (val) => {
+                switch (val) {
+                    case 'ok':
+                        this.store.dispatch(new RemoveUtente(event.id_utente, event.codice_sede));
+                        break;
+                    case 'ko':
+                        // console.log('Azione annullata');
+                        break;
+                }
+                // console.log('Modal chiusa con val ->', val);
+            },
+            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+        );
     }
 }

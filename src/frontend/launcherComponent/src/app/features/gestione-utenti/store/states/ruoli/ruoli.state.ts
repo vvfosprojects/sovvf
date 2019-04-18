@@ -5,13 +5,12 @@ import { GetRuoli, SetRuoli } from '../../actions/ruoli/ruoli.actions';
 import { RuoliService } from '../../../../../core/service/ruoli-service/ruoli-service.service';
 
 export interface RuoliStateModel {
-    ruoli: Array<any>;
+    ruoli: Array<string>;
 }
 
 export const RuoliStateDefaults: RuoliStateModel = {
-        ruoli: []
-    }
-;
+    ruoli: []
+};
 
 @State<RuoliStateModel>({
     name: 'ruoli',
@@ -28,18 +27,17 @@ export class RuoliState {
         return state.ruoli;
     }
 
-
     // GET
     @Action(GetRuoli)
-    getRuoli({dispatch}: StateContext<RuoliStateModel>) {
-        this._ruoli.getRuoli().subscribe((ruoli: Array<any>) => {
+    getRuoli({ dispatch }: StateContext<RuoliStateModel>) {
+        this._ruoli.getRuoli().subscribe((ruoli: Array<string>) => {
             dispatch(new SetRuoli(ruoli));
         });
     }
 
     // SET
     @Action(SetRuoli)
-    setRuoli({getState, patchState}: StateContext<RuoliStateModel>, action: SetRuoli) {
+    setRuoli({ getState, patchState }: StateContext<RuoliStateModel>, action: SetRuoli) {
         const state = getState();
 
         patchState({

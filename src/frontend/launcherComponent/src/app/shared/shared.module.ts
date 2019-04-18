@@ -5,6 +5,7 @@ import { PipeModule } from './pipes/pipe.module';
 import * as Shared from './index';
 import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
 import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treeview-i18n';
+import { ConfirmModalComponent } from './modal/confirm-modal/confirm-modal.component';
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treevi
         Shared.CompetenzaComponent,
         Shared.MezzoComponent,
         Shared.LoaderComponent,
-        Shared.TreeviewComponent
+        Shared.TreeviewComponent,
+        ConfirmModalComponent
     ],
     exports: [
         Shared.DebounceClickDirective,

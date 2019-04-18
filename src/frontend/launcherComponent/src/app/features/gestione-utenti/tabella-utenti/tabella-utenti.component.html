@@ -1,51 +1,49 @@
 <table class="table table-striped app-shadow mt-2">
     <thead>
-    <tr>
-        <th scope="col">Utente</th>
-        <th scope="col" width="200px" *ngFor="let ruolo of ruoli">{{ruolo}}</th>
-        <th scope="col">Sede</th>
-        <th scope="col" width="30px">Azioni</th>
-    </tr>
+        <tr>
+            <th scope="col">Utente</th>
+            <th scope="col" width="200px" *ngFor="let ruolo of ruoli">{{ruolo}}</th>
+            <th scope="col">Sede</th>
+            <th scope="col" width="30px">Azioni</th>
+        </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let utente of utentiPaginati">
-        <td width="250px">
-            <ngb-highlight [result]="utente.nome + ' ' + utente.cognome"></ngb-highlight>
-        </td>
-        <td width="200px" *ngFor="let ruolo of ruoli">
-            <ui-switch size="small" (click)="onSetRuolo(utente, ruolo, utente.ruolo.se)"
-                       [checked]="utente.ruolo === ruolo"></ui-switch>
-        </td>
-        <td width="200px">
-            <h6>{{utente.sede.descrizione}}</h6>
-        </td>
-        <td class="pt-2 pb-0">
-            <button class="btn btn-sm btn-block btn-danger" (click)="onEliminaGestioneUtente(utente.id_utente, utente.sede.codice)">
-                <i class="fa fa-trash"></i>
-            </button>
-        </td>
-    </tr>
-    <tr *ngIf="utentiPaginati.length <= 0">
-        <td>
-            Nessun Utente trovato
-        </td>
-        <td *ngFor="let ruolo of ruoli"></td>
-        <td></td>
-        <td></td>
-    </tr>
+        <tr *ngFor="let utente of utentiPaginati">
+            <td width="250px">
+                <ngb-highlight [result]="utente.nome + ' ' + utente.cognome"></ngb-highlight>
+            </td>
+            <td width="200px" *ngFor="let ruolo of ruoli">
+                <ui-switch size="small" (click)="onSetRuolo(utente, ruolo, utente.sede)"
+                    [checked]="utente.ruolo === ruolo"></ui-switch>
+            </td>
+            <td width="200px">
+                <h6>{{utente.sede.descrizione}}</h6>
+            </td>
+            <td class="pt-2 pb-0">
+                <button class="btn btn-sm btn-block btn-danger"
+                    (click)="onEliminaGestioneUtente(utente.id_utente, utente.sede.codice)">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+        <tr *ngIf="utentiPaginati.length <= 0">
+            <td>
+                Nessun Utente trovato
+            </td>
+            <td *ngFor="let ruolo of ruoli"></td>
+            <td></td>
+            <td></td>
+        </tr>
     </tbody>
 </table>
-<div *ngIf="!utentiPaginati.length <= 0" class="d-flex justify-content-between p-2">
+<div *ngIf="utentiPaginati.length > 0" class="d-flex justify-content-between p-2">
     <ngb-pagination [collectionSize]="utentiFiltrati.length" [(page)]="page" [pageSize]="pageSize"
-                    (pageChange)="setPage($event)">
+        (pageChange)="setPage($event)">
     </ngb-pagination>
 
     <app-risultati-paginazione [utentiFiltratiLength]="utentiFiltrati.length"
-                               [utentiPaginatiLength]="utentiPaginati.length"
-                               [pageSize]="pageSize"></app-risultati-paginazione>
+        [utentiPaginatiLength]="utentiPaginati.length" [pageSize]="pageSize"></app-risultati-paginazione>
 
     <app-utenti-per-pagina [ricercaUtenti]="ricercaUtenti" [pageSize]="pageSize"
-                           [utentiFiltratiLength]="utentiFiltrati.length"
-                           (changePageSize)="setPageSize($event)"></app-utenti-per-pagina>
+        [utentiFiltratiLength]="utentiFiltrati.length" (changePageSize)="setPageSize($event)"></app-utenti-per-pagina>
 </div>
-

@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { Role } from '../../../shared/model/utente.model';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { RicercaUtentiState } from '../store/states/ricerca-utenti/ricerca-utenti.state';
@@ -43,12 +42,12 @@ export class TabellaUtentiComponent {
 
     get utentiPaginati(): GestioneUtente[] {
         return this.utentiFiltrati
-            .map((utente, i) => ({id: i + 1, ...utente}))
+            .map((utente, i) => ({ id: i + 1, ...utente }))
             .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
     }
 
     constructor(private store: Store,
-                private filter: FilterPipe) {
+        private filter: FilterPipe) {
         this.subscription.add(
             this.lista_gestione_utenti$.subscribe((utenti: GestioneUtente[]) => {
                 this.lista_gestione_utenti = makeCopy(utenti);
@@ -62,7 +61,6 @@ export class TabellaUtentiComponent {
         this.subscription.add(
             this.ricerca$.subscribe((ricerca: any) => {
                 this.ricercaUtenti = ricerca;
-
                 this.utentiFiltrati = this.filtraRichieste(ricerca);
             })
         );
@@ -103,16 +101,25 @@ export class TabellaUtentiComponent {
         this.store.dispatch(new SetPage(newPage));
     }
 
-    onSetRuolo(utente: GestioneUtente, ruolo: any, sede: Sede) {
-        const nuovoRuolo = {
-            utente: utente,
-            ruolo: ruolo,
-            sede: sede
-        };
-        this.setRuolo.emit(nuovoRuolo);
+    onSetRuolo(utente: GestioneUtente, nuovoRuolo: any, sede: Sede) {
+        if (utente.ruolo === nuovoRuolo) {
+            const nuovoUtente = {
+                utente: utente,
+                ruolo: null,
+                sede: sede
+            };
+            this.setRuolo.emit(nuovoUtente);
+        } else {
+            const nuovoUtente = {
+                utente: utente,
+                ruolo: nuovoRuolo,
+                sede: sede
+            };
+            this.setRuolo.emit(nuovoUtente);
+        }
     }
 
     onEliminaGestioneUtente(id_utente: string, codice_sede: string) {
-        this.eliminaGestioneUtente.emit({id_utente: id_utente, codice_sede: codice_sede});
+        this.eliminaGestioneUtente.emit({ id_utente: id_utente, codice_sede: codice_sede });
     }
 }

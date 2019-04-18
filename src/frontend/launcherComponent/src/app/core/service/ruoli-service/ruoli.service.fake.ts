@@ -7,15 +7,15 @@ import { Role } from '../../../shared/model/utente.model';
 })
 export class RuoliServiceFake {
 
-    ruoli: Array<any>;
+    ruoli: Array<string>;
 
     constructor() {
     }
 
-    getRuoli(): Observable<any> {
+    getRuoli(): Observable<string[]> {
         this.ruoli = [
-            Role.Admin,
-            Role.User
+            Role.CallTracker,
+            Role.GestoreRichieste
         ];
         return of(this.ruoli);
     }

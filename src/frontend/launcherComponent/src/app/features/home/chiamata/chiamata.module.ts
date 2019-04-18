@@ -16,6 +16,7 @@ import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonat
 import { ClipboardState } from '../store/states/chiamata/clipboard.state';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 import { UiSwitchModule } from 'ngx-ui-switch';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
     imports: [
@@ -24,9 +25,10 @@ import { UiSwitchModule } from 'ngx-ui-switch';
         FormsModule,
         GooglePlaceModule,
         NgbModule,
-        UiSwitchModule.forRoot(null),
         ClipboardModule,
         ReactiveFormsModule,
+        SharedModule,
+        UiSwitchModule.forRoot(null),
         NgxsModule.forFeature([
             ChiamataState,
             SchedaTelefonataState,
@@ -35,8 +37,7 @@ import { UiSwitchModule } from 'ngx-ui-switch';
     ],
     declarations: [
         ChiamataComponent,
-        SchedaTelefonataComponent,
-        ConfirmModalComponent
+        SchedaTelefonataComponent
     ],
     exports: [
         ChiamataComponent

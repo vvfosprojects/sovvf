@@ -1,6 +1,9 @@
-import { AppComponent } from './app.component';
 import { I18n } from './i18n';
 import { environment } from '../environments/environment';
+/**
+ * Component
+ */
+import { AppComponent } from './app.component';
 /**
  * Module
  */
@@ -49,7 +52,7 @@ import { AppState } from './shared/store/states/app/app.state';
 
 @NgModule({
     declarations: [
-        AppComponent,
+        AppComponent
     ],
     imports: [
         BrowserModule,

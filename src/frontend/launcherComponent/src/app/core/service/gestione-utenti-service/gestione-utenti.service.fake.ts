@@ -16,7 +16,7 @@ export class GestioneUtentiServiceFake {
                 id_utente: '1',
                 nome: 'Mario',
                 cognome: 'Rossi',
-                ruolo: Role.Admin,
+                ruolo: Role.CallTracker,
                 sede: {
                     codice: '1',
                     descrizione: 'Comando di Roma',
@@ -34,7 +34,7 @@ export class GestioneUtentiServiceFake {
                 id_utente: '2',
                 nome: 'Teresio',
                 cognome: 'Mancini',
-                ruolo: Role.User,
+                ruolo: Role.GestoreRichieste,
                 sede: {
                     codice: '1',
                     descrizione: 'Comando di Roma',
