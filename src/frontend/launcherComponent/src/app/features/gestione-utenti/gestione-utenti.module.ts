@@ -14,6 +14,7 @@ import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.componen
 import { UtentiPerPaginaComponent } from './tabella-utenti/utenti-per-pagina/utenti-per-pagina.component';
 import { RisultatiPaginazioneComponent } from './tabella-utenti/risultati-paginazione/risultati-paginazione.component';
 import { AggiungiUtenteModalComponent } from './aggiungi-utente-modal/aggiungi-utente-modal.component';
+import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confirm-modal.component';
 /**
  * Routing
  */
@@ -29,6 +30,8 @@ import { UiSwitchModule } from 'ngx-ui-switch';
  */
 import { GestioneUtentiService } from '../../core/service/gestione-utenti-service/gestione-utenti.service';
 import { GestioneUtentiServiceFake } from '../../core/service/gestione-utenti-service/gestione-utenti.service.fake';
+import { RuoliService } from '../../core/service/ruoli-service/ruoli-service.service';
+import { RuoliServiceFake } from '../../core/service/ruoli-service/ruoli.service.fake';
 /**
  * Ngxs
  */
@@ -38,8 +41,6 @@ import { TabellaUtentiState } from './store/states/tabella-utenti/tabella-utenti
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
 import { UtentiState } from '../home/store/states/utenti/utenti.state';
 import { RuoliState } from './store/states/ruoli/ruoli.state';
-import { RuoliService } from '../../core/service/ruoli-service/ruoli-service.service';
-import { RuoliServiceFake } from '../../core/service/ruoli-service/ruoli.service.fake';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { RuoliServiceFake } from '../../core/service/ruoli-service/ruoli.service
         NgbModule,
         NgSelectModule,
         FilterPipeModule,
+        SharedModule,
         TreeviewModule.forRoot(),
         PipeModule.forRoot(),
         SharedModule.forRoot(),
@@ -66,7 +68,7 @@ import { RuoliServiceFake } from '../../core/service/ruoli-service/ruoli.service
             ]
         ),
     ],
-    entryComponents: [AggiungiUtenteModalComponent],
+    entryComponents: [AggiungiUtenteModalComponent, ConfirmModalComponent],
     providers: [
         {provide: GestioneUtentiService, useClass: GestioneUtentiServiceFake},
         {provide: RuoliService, useClass: RuoliServiceFake}

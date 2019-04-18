@@ -7,7 +7,7 @@
     </div>
     <div class="modal-body pr-0">
         <h5>{{messaggio}}</h5>
-        <label *ngIf="messaggioAttenzione" class="text-danger font-weight-bold">Attenzione! {{messaggioAttenzione}}</label>
+        <label *ngIf="messaggioAttenzione" class="text-danger font-weight-bold"><!-- Attenzione!  -->{{messaggioAttenzione}}</label>
     </div>
     <div class="modal-footer">
         <button *ngFor="let bottone of bottoni" type="button" class="btn btn-outline-{{bottone.colore}}" (click)="modal.close(bottone.type)">{{bottone.descrizione}}</button>

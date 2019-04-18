@@ -18,7 +18,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 password: 'admin',
                 ruolo: [
                     {
-                        descrizione: Role.Admin,
+                        descrizione: Role.CallTracker,
                         sede: null
                     }
                 ],
@@ -45,7 +45,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 password: 'user',
                 ruolo: [
                     {
-                        descrizione: Role.User,
+                        descrizione: Role.CallTracker,
                         sede: null
                     }
                 ],
@@ -73,7 +73,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
                 ruolo: [
                     {
-                        descrizione: Role.Admin,
+                        descrizione: Role.GestoreRichieste,
                         sede: null
                     }
                 ],
@@ -100,7 +100,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 password: 'milano',
                 ruolo: [
                     {
-                        descrizione: Role.Admin,
+                        descrizione: Role.GestoreRichieste,
                         sede: null
                     }
                 ],
@@ -127,7 +127,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 password: 'rossi',
                 ruolo: [
                     {
-                        descrizione: Role.Admin,
+                        descrizione: Role.GestoreRichieste,
                         sede: null
                     }
                 ],
@@ -154,7 +154,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 password: 'verdi',
                 ruolo: [
                     {
-                        descrizione: Role.Admin,
+                        descrizione: Role.GestoreRichieste,
                         sede: null
                     }
                 ],
@@ -181,7 +181,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 password: 'monaldo',
                 ruolo: [
                     {
-                        descrizione: Role.Admin,
+                        descrizione: Role.CallTracker,
                         sede: null
                     }
                 ],
@@ -208,7 +208,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 password: 'sabbatini',
                 ruolo: [
                     {
-                        descrizione: Role.Admin,
+                        descrizione: Role.GestoreRichieste,
                         sede: null
                     }
                 ],
@@ -235,7 +235,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 password: 'pinto',
                 ruolo: [
                     {
-                        descrizione: Role.Admin,
+                        descrizione: Role.CallTracker,
                         sede: null
                     }
                 ],
@@ -262,7 +262,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 password: 'marcelo',
                 ruolo: [
                     {
-                        descrizione: Role.Admin,
+                        descrizione: Role.CallTracker,
                         sede: null
                     }
                 ],
@@ -289,7 +289,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 password: 'trentino',
                 ruolo: [
                     {
-                        descrizione: Role.Admin,
+                        descrizione: Role.GestoreRichieste,
                         sede: null
                     }
                 ],
@@ -316,7 +316,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 password: 'zettici',
                 ruolo: [
                     {
-                        descrizione: Role.Admin,
+                        descrizione: Role.GestoreRichieste,
                         sede: null
                     }
                 ],
@@ -343,7 +343,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 password: 'lori',
                 ruolo: [
                     {
-                        descrizione: Role.Admin,
+                        descrizione: Role.GestoreRichieste,
                         sede: null
                     }
                 ],
@@ -370,7 +370,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 password: 'marchesi',
                 ruolo: [
                     {
-                        descrizione: Role.Admin,
+                        descrizione: Role.CallTracker,
                         sede: null
                     }
                 ],
@@ -397,7 +397,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 password: 'trentini',
                 ruolo: [
                     {
-                        descrizione: Role.Admin,
+                        descrizione: Role.GestoreRichieste,
                         sede: null
                     }
                 ],
@@ -452,7 +452,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 const id = parseInt(urlParts[urlParts.length - 1], 0);
 
                 const currentUser = users.find(x => x.ruolo[0].descrizione === role);
-                if (id.toString() !== currentUser.id && role !== Role.Admin) {
+                if (id.toString() !== currentUser.id && (role !== Role.GestoreRichieste || role !== Role.CallTracker)) {
                     return unauthorised();
                 }
 
@@ -461,7 +461,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             }
 
             if (request.url.endsWith('/users') && request.method === 'GET') {
-                if (role !== Role.Admin) {
+                if (role !== Role.GestoreRichieste && role !== Role.CallTracker) {
                     return unauthorised();
                 }
                 return ok(users);
@@ -474,15 +474,15 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             .pipe(dematerialize());
 
         function ok(body) {
-            return of(new HttpResponse({status: 200, body}));
+            return of(new HttpResponse({ status: 200, body }));
         }
 
         function unauthorised() {
-            return throwError({status: 401, error: {message: 'Unauthorised'}});
+            return throwError({ status: 401, error: { message: 'Unauthorised' } });
         }
 
         function error(message) {
-            return throwError({status: 400, error: {message}});
+            return throwError({ status: 400, error: { message } });
         }
     }
 }

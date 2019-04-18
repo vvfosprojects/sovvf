@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 // Model
 import { GestioneUtente } from '../../../../../shared/model/gestione-utente.model';
 // Action
-import { AddUtente, AddUtenteSuccess, GetGestioneUtenti, RemoveUtente, RemoveUtenteSuccess, SetGestioneUtenti } from '../../actions/gestione-utenti/gestione-utenti.actions';
+import { AddUtente, AddUtenteSuccess, GetGestioneUtenti, RemoveUtente, RemoveUtenteSuccess, SetGestioneUtenti, ChangeRoleUtente, ChangeRoleUtenteSuccess } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
 // Immer
 import produce from 'immer';
@@ -31,14 +31,14 @@ export class GestioneUtentiState {
     }
 
     @Action(GetGestioneUtenti)
-    getGestioneUtenti({dispatch}: StateContext<GestioneUtentiStateModel>) {
+    getGestioneUtenti({ dispatch }: StateContext<GestioneUtentiStateModel>) {
         this._gestioneUtenti.getGestioneUtenti().subscribe((gestioneUtenti: GestioneUtente[]) => {
             dispatch(new SetGestioneUtenti(gestioneUtenti));
         });
     }
 
     @Action(SetGestioneUtenti)
-    setGestioneUtenti({getState, patchState}: StateContext<GestioneUtentiStateModel>, action: SetGestioneUtenti) {
+    setGestioneUtenti({ getState, patchState }: StateContext<GestioneUtentiStateModel>, action: SetGestioneUtenti) {
         const state = getState();
 
         patchState({
@@ -47,13 +47,32 @@ export class GestioneUtentiState {
         });
     }
 
+    @Action(ChangeRoleUtente)
+    changeRoleUtente({ dispatch }: StateContext<GestioneUtentiStateModel>, action: ChangeRoleUtente) {
+        dispatch(new ChangeRoleUtenteSuccess(action.idUtente, action.ruolo));
+    }
+
+    @Action(ChangeRoleUtenteSuccess)
+    changeRoleUtenteSuccess({ getState, setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: ChangeRoleUtenteSuccess) {
+        dispatch(new ShowToastr('info', 'Ruolo Utente Aggiornato', 'Ruolo utente aggiornato con successo.', 2));
+        setState(
+            produce(getState(), draft => {
+                draft.lista_gestione_utenti.forEach((utente: GestioneUtente) => {
+                    if (utente.id_utente === action.idUtente) {
+                        utente.ruolo = action.ruolo;
+                    }
+                });
+            })
+        );
+    }
+
     @Action(AddUtente)
-    addUtente({dispatch}: StateContext<GestioneUtentiStateModel>, action: AddUtente) {
+    addUtente({ dispatch }: StateContext<GestioneUtentiStateModel>, action: AddUtente) {
         dispatch(new AddUtenteSuccess(action.nuovoUtente));
     }
 
     @Action(AddUtenteSuccess)
-    addUtenteSuccess({getState, setState, dispatch}: StateContext<GestioneUtentiStateModel>, action: AddUtenteSuccess) {
+    addUtenteSuccess({ getState, setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: AddUtenteSuccess) {
         dispatch(new ShowToastr('info', 'Utente Aggiunto', 'Utente aggiunto con successo.', 3));
         setState(
             produce(getState(), draft => {
@@ -63,12 +82,12 @@ export class GestioneUtentiState {
     }
 
     @Action(RemoveUtente)
-    removeUtente({dispatch}: StateContext<GestioneUtentiStateModel>, action: RemoveUtente) {
+    removeUtente({ dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveUtente) {
         dispatch(new RemoveUtenteSuccess(action.id_utente, action.codice_sede));
     }
 
     @Action(RemoveUtenteSuccess)
-    removeUtenteSuccess({getState, setState, dispatch}: StateContext<GestioneUtentiStateModel>, action: RemoveUtenteSuccess) {
+    removeUtenteSuccess({ getState, setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveUtenteSuccess) {
         dispatch(new ShowToastr('info', 'Utente Rimosso', 'Utente rimosso con successo.', 3));
         setState(
             produce(getState(), draft => {
