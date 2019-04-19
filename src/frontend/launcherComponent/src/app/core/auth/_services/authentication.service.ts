@@ -8,9 +8,10 @@ import { Utente } from '../../../shared/model/utente.model';
 export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<Utente>;
     private isLogged: boolean;
+    private localName = 'userSO115';
 
     constructor(private http: HttpClient) {
-        this.currentUserSubject = new BehaviorSubject<Utente>(JSON.parse(localStorage.getItem('currentUser')));
+        this.currentUserSubject = new BehaviorSubject<Utente>(JSON.parse(localStorage.getItem(this.localName)));
     }
 
     public get currentUserValue(): Utente {
@@ -21,7 +22,7 @@ export class AuthenticationService {
         return this.http.post<any>(`/api/auth/Login`, { 'username': username, 'password': password })
             .pipe(map(response => {
                 if (response._user && response._user.token) {
-                    localStorage.setItem('currentUser', JSON.stringify(response._user));
+                    localStorage.setItem(this.localName, JSON.stringify(response._user));
                     this.currentUserSubject.next(response._user);
                 }
                 return response._user;
@@ -29,11 +30,11 @@ export class AuthenticationService {
     }
 
     _isLogged() {
-        return this.isLogged = !!localStorage.getItem('currentUser');
+        return this.isLogged = !!localStorage.getItem(this.localName);
     }
 
     logout() {
-        localStorage.removeItem('currentUser');
+        localStorage.removeItem(this.localName);
         this.currentUserSubject.next(null);
     }
 }
