@@ -70,7 +70,6 @@ export class SediTreeviewState {
 
     @Action(PatchListaSediNavbar)
     patchListaSediNavbar({ getState, patchState }: StateContext<SediTreeviewStateModel>, action: PatchListaSediNavbar) {
-        console.log('test');
         const listeChecked = makeCopy(getState().listeSedi);
         checkTreeItem(listeChecked, action.selected);
         patchState({

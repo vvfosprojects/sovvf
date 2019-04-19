@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Role, Utente } from '../../../shared/model/utente.model';
-import { SignalRService } from '../../../core/signalr/signalR.service';
-import { SignalRNotification } from '../../../core/signalr/model/signalr-notification.model';
+import { Utente } from '../../../shared/model/utente.model';
 
 @Component({
     selector: 'app-operatore',
@@ -10,19 +8,7 @@ import { SignalRNotification } from '../../../core/signalr/model/signalr-notific
 })
 export class OperatoreComponent {
 
-    constructor(private signalR: SignalRService) {
-
-    }
-
     @Input() user: Utente;
     @Output() _logout = new EventEmitter();
 
-    logout() {
-        this.signalR.removeToGroup(new SignalRNotification(
-            this.user.sede.codice,
-            this.user.id,
-            `${this.user.nome} ${this.user.cognome}`
-            )
-        );
-    }
 }

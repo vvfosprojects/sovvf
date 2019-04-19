@@ -6,3 +6,7 @@ export class SetUtente {
     constructor(public utente: Utente) {
     }
 }
+
+export class ClearUtente {
+    static readonly type = '[Utente] Clear utente';
+}
