@@ -14,6 +14,10 @@ export class PatchListaSediNavbar {
     }
 }
 
+export class ClearListaSediNavbar {
+    static readonly type = '[Sedi Treeview Navbar] Clear selezionati';
+}
+
 export class PatchSediNavbarSelezionate {
     static readonly type = '[Sedi Treeview Navbar] Patch Sedi selezionate';
 

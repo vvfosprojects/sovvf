@@ -11,6 +11,8 @@ import { UtenteState } from './store/states/operatore/utente.state';
 import { SetUtente } from './store/actions/operatore/utente.actions';
 import { calcolaTurno } from '../../shared/helper/calcola-turno';
 import { TurnoExtra } from './turno/turno-extra.model';
+import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
+import { ClearListaSediNavbar } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 
 @Component({
     selector: 'app-navbar',
@@ -81,6 +83,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     setTurno() {
         this.store.dispatch(new SetTurno());
+    }
+
+    logout() {
+        this.store.dispatch(new ClearListaSediNavbar());
     }
 
 }

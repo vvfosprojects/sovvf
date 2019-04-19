@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Role, Utente } from '../../../shared/model/utente.model';
 import { SignalRService } from '../../../core/signalr/signalR.service';
 import { SignalRNotification } from '../../../core/signalr/model/signalr-notification.model';
@@ -15,10 +15,9 @@ export class OperatoreComponent {
     }
 
     @Input() user: Utente;
-    Role = Role;
+    @Output() _logout = new EventEmitter();
 
     logout() {
-
         this.signalR.removeToGroup(new SignalRNotification(
             this.user.sede.codice,
             this.user.id,

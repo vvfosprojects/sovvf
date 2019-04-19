@@ -1,6 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ListaSedi } from '../../../../core/settings/lista-sedi';
 import {
+    ClearListaSediNavbar,
     ClearSediNavbarSelezionate,
     PatchListaSediNavbar,
     PatchSediNavbarSelezionate,
@@ -69,10 +70,20 @@ export class SediTreeviewState {
 
     @Action(PatchListaSediNavbar)
     patchListaSediNavbar({ getState, patchState }: StateContext<SediTreeviewStateModel>, action: PatchListaSediNavbar) {
+        console.log('test');
         const listeChecked = makeCopy(getState().listeSedi);
         checkTreeItem(listeChecked, action.selected);
         patchState({
             listaSediNavbar: listeChecked
+        });
+    }
+
+    @Action(ClearListaSediNavbar)
+    clearListaSediNavbar({ patchState }: StateContext<SediTreeviewStateModel>) {
+        patchState({
+            sediNavbarTesto: SediTreeviewStateDefaults.sediNavbarTesto,
+            sediNavbarSelezionate: SediTreeviewStateDefaults.sediNavbarSelezionate,
+            sediNavbarDisableConfirm: SediTreeviewStateDefaults.sediNavbarDisableConfirm,
         });
     }
 
@@ -149,6 +160,7 @@ export class SediTreeviewState {
         dispatch(new SetTurno());
         dispatch(new SetAppLoaded());
     }
+
 }
 
 export interface TreeViewStateSelezione {

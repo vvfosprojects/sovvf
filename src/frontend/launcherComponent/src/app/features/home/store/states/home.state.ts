@@ -38,30 +38,34 @@ export class HomeState {
 
     @Action(ClearDataHome)
     clearDataHome({ patchState, dispatch }: StateContext<HomeStateModel>) {
-        dispatch(new ClearCentroMappa());
-        dispatch(new ClearSediMarkers());
-        dispatch(new ClearMezziMarkers());
-        dispatch(new ClearRichiesteMarkers());
-        dispatch(new ClearChiamateMarkers());
-        dispatch(new ClearBoxRichieste());
-        dispatch(new ClearBoxMezzi());
-        dispatch(new ClearBoxPersonale());
-        dispatch(new ClearRichieste());
+        dispatch([
+            new ClearCentroMappa(),
+            new ClearSediMarkers(),
+            new ClearMezziMarkers(),
+            new ClearRichiesteMarkers(),
+            new ClearChiamateMarkers(),
+            new ClearBoxRichieste(),
+            new ClearBoxMezzi(),
+            new ClearBoxPersonale(),
+            new ClearRichieste()
+        ]);
         patchState(HomeStateDefaults);
     }
 
     @Action(GetDataHome)
     getDataHome({ patchState, dispatch }: StateContext<HomeStateModel>) {
         const connectionID = this.store.selectSnapshot(SignalRState.connectionIdSignalR);
-        dispatch(new GetRichieste(connectionID));
-        dispatch(new GetCentroMappa());
-        dispatch(new GetSediMarkers());
-        dispatch(new GetMezziMarkers());
-        dispatch(new GetRichiesteMarkers());
-        dispatch(new GetChiamateMarkers());
-        dispatch(new GetBoxRichieste(connectionID));
-        dispatch(new GetBoxMezzi(connectionID));
-        dispatch(new GetBoxPersonale(connectionID));
+        dispatch([
+            new GetRichieste(connectionID),
+            new GetCentroMappa(),
+            new GetSediMarkers(),
+            new GetMezziMarkers(),
+            new GetRichiesteMarkers(),
+            new GetChiamateMarkers(),
+            new GetBoxRichieste(connectionID),
+            new GetBoxMezzi(connectionID),
+            new GetBoxPersonale(connectionID)
+        ]);
         patchState({
             loaded: true
         });
