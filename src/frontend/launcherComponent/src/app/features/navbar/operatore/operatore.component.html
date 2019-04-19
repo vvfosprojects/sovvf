@@ -1,21 +1,24 @@
-<button class="btn btn-light mr-2" ngbTooltip="Notifiche" [ngbPopover]="notifiche" placement="bottom"><i class="fa fa-bell"></i></button>
-<button class="btn btn-light mr-2" ngbTooltip="Impostazioni" [ngbPopover]="impostazioni" placement="bottom"><i class="fa fa-cogs"></i>
+<button class="btn btn-light mr-2" ngbTooltip="Notifiche" [ngbPopover]="notifiche" placement="bottom"><i
+        class="fa fa-bell"></i></button>
+<button class="btn btn-light mr-2" ngbTooltip="Impostazioni" [ngbPopover]="impostazioni" placement="bottom"><i
+        class="fa fa-cogs"></i>
 </button>
 <div *ngIf="user" class="btn-group" role="group">
-  <button class="btn btn-light mr-2" [ngbPopover]="ruolo" placement="bottom">
-    <i class="fa fa-user"></i>
-      {{user.nome}} {{user.cognome}}
-  </button>
+    <button class="btn btn-light mr-2" [ngbPopover]="ruolo" placement="bottom">
+        <i class="fa fa-user"></i>
+        {{user.nome}} {{user.cognome}}
+    </button>
 </div>
-<button *ngIf="user" class="btn btn-danger" ngbTooltip="Disconnettiti" placement="bottom" (click)="logout(); _logout.emit()" [routerLink]="['/login']"><i class="fa fa-sign-out"></i>
-  Esci
+<button *ngIf="user" class="btn btn-danger" ngbTooltip="Disconnettiti" placement="bottom" (click)="_logout.emit()"
+        [routerLink]="['/login']"><i class="fa fa-sign-out"></i>
+    Esci
 </button>
 <ng-template #notifiche>
-  <h6 class="mb-2">Notifiche</h6>
+    <h6 class="mb-2">Notifiche</h6>
 </ng-template>
 <ng-template #impostazioni>
-  <h6 class="mb-2">Impostazioni</h6>
+    <h6 class="mb-2">Impostazioni</h6>
 </ng-template>
 <ng-template #ruolo>
-  <h6 *ngFor="let ruolo of user.ruolo" class="mb-2">{{ruolo.descrizione}}</h6>
+    <h6 *ngFor="let ruolo of user.ruolo" class="mb-2">{{ruolo.descrizione}}</h6>
 </ng-template>

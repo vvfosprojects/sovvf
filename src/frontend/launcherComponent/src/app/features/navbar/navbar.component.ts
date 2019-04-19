@@ -8,11 +8,9 @@ import { TurnoState } from './store/states/turno/turno.state';
 import { SetTurno } from './store/actions/turno/turno.actions';
 import { Utente } from '../../shared/model/utente.model';
 import { UtenteState } from './store/states/operatore/utente.state';
-import { SetUtente } from './store/actions/operatore/utente.actions';
+import { ClearUtente, SetUtente } from './store/actions/operatore/utente.actions';
 import { calcolaTurno } from '../../shared/helper/calcola-turno';
 import { TurnoExtra } from './turno/turno-extra.model';
-import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
-import { ClearListaSediNavbar } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 
 @Component({
     selector: 'app-navbar',
@@ -86,7 +84,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
 
     logout() {
-        this.store.dispatch(new ClearListaSediNavbar());
+        this.store.dispatch(new ClearUtente());
     }
 
 }
