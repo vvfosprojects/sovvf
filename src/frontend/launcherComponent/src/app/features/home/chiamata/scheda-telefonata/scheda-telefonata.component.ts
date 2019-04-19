@@ -58,6 +58,7 @@ export class SchedaTelefonataComponent implements OnInit {
         this.chiamataForm = this.createForm();
         this.initNuovaRichiesta();
         this.cambiaTipologiaRichiedente('Nome-Cognome');
+        this.nuovaRichiesta.istanteRicezioneRichiesta = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
     }
 
     createForm(): FormGroup {
@@ -132,7 +133,7 @@ export class SchedaTelefonataComponent implements OnInit {
         if (this.f.rilevanza.value !== null) {
             this.f.rilevanza.setValue(null);
         } else {
-            const date = new Date().toDateString() + ' ' + new Date().toTimeString().split(' ')[0];
+            const date = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).toDateString() + ' ' + new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).toTimeString().split(' ')[0];
             this.f.rilevanza.setValue(date);
         }
     }
@@ -153,6 +154,7 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value;
         this.nuovaRichiesta.notePrivate = f.notePrivate.value;
         this.nuovaRichiesta.notePubbliche = f.notePubbliche.value;
+        this.nuovaRichiesta.istantePresaInCarico = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
 
         if (this.coordinate) {
             const marker: ChiamataMarker = makeCopy(this.chiamataMarker);
