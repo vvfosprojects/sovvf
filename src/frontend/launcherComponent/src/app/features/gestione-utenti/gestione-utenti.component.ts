@@ -29,7 +29,7 @@ export class GestioneUtentiComponent implements OnInit {
     subscription: Subscription = new Subscription();
 
     constructor(public modalService: NgbModal,
-        private store: Store) {
+                private store: Store) {
 
         this.store.dispatch(new GetGestioneUtenti());
         this.store.dispatch(new GetRuoli());
@@ -56,12 +56,10 @@ export class GestioneUtentiComponent implements OnInit {
         aggiungiUtenteModal.componentInstance.ruoli = this.ruoli;
         aggiungiUtenteModal.result.then(
             (risultatoModal) => {
-                switch (risultatoModal[0]) {
-                    case 'ok':
-                        this.store.dispatch(new AddUtente(
-                            risultatoModal[1]
-                        ));
-                        break;
+                if (risultatoModal[0] === 'ok') {
+                    this.store.dispatch(new AddUtente(
+                        risultatoModal[1]
+                    ));
                 }
                 // console.log('Modal chiusa con val ->', val);
             },
@@ -71,10 +69,10 @@ export class GestioneUtentiComponent implements OnInit {
 
     onSetRuolo(event: any) {
         const utente = event.utente.nome + ' ' + event.utente.cognome;
-        const ruolo = event.ruolo;
+        const ruolo = event.ruoli;
         const sede = event.sede.descrizione;
         console.warn(utente + ' è diventato ' + ruolo + ' nel ' + sede);
-        this.store.dispatch(new ChangeRoleUtente(event.utente.id_utente, event.ruolo));
+        this.store.dispatch(new ChangeRoleUtente(event.utente.id_utente, event.ruoli));
     }
 
     onEliminaGestioneUtente(event: any) {
