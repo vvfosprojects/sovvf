@@ -14,3 +14,7 @@ src/backendCore/SO115Core/SO115App.API.Models/bin
 src/backendCore/SO115Core/SO115App.API.Models/obj
 src/backendCore/SO115Core/SO115App.API.SOVVF.FakeImplementations/bin
 src/backendCore/SO115Core/SO115App.API.SOVVF.FakeImplementations/obj
+/src/backendCore/SO115Core/.vs/SO115App.API/v16/Server/sqlite3/db.lock
+/src/backendCore/SO115Core/.vs/SO115App.API/v16/Server/sqlite3/storage.ide
+/src/backendCore/SO115Core/.vs/SO115App.API/v16/Server/sqlite3/storage.ide-shm
+/src/backendCore/SO115Core/.vs/SO115App.API/v16/Server/sqlite3/storage.ide-wal

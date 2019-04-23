@@ -4,12 +4,12 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App"/>
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All"/>
-    <PackageReference Include="Bogus" Version="25.0.4"/>
-    <PackageReference Include="SimpleInjector" Version="4.4.3"/>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Bogus" Version="26.0.2" />
+    <PackageReference Include="SimpleInjector" Version="4.5.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SO115App.API.Models\SO115App.API.Models.csproj"/>
+    <ProjectReference Include="..\SO115App.API.Models\SO115App.API.Models.csproj" />
   </ItemGroup>
 </Project>

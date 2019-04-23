@@ -26,7 +26,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso
     /// <summary>
     ///   Servizio fake di salvataggio di una richiesta di assistenza
     /// </summary>
-    internal class SaveRichiestaDiAssistenza_Fake : ISaveRichiestaAssistenza
+    public class SaveRichiestaDiAssistenza_Fake : ISaveRichiestaAssistenza
     {
         /// <summary>
         ///   Assegna un codice e un'unità operativa competente se il codice non è presente

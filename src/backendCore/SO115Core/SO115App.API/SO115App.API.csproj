@@ -4,18 +4,17 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App"/>
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All"/>
-    <PackageReference Include="SimpleInjector" Version="4.4.3"/>
-    <PackageReference Include="SimpleInjector.Integration.AspNetCore" Version="4.4.3"/>
-    <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc" Version="4.4.3"/>
-    <PackageReference Include="System.IO" Version="4.3.0"/>
-    <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.0"/>
-    <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.49"/>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="SimpleInjector" Version="4.5.1" />
+    <PackageReference Include="SimpleInjector.Integration.AspNetCore" Version="4.5.1" />
+    <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc" Version="4.5.1" />
+    <PackageReference Include="System.IO" Version="4.3.0" />
+    <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.1" />
+    <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.49" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SO115App.API.Models\SO115App.API.Models.csproj"/>
-    <ProjectReference Include="..\SO115App.API.SOVVF.FakeImplementations\SO115App.API.SOVVF.FakeImplementations.csproj"/>
-    <ProjectReference Include="..\SO115App.API.CompositionRoot\SO115App.API.CompositionRoot.csproj"/>
+    <ProjectReference Include="..\SO115App.API.Models\SO115App.API.Models.csproj" />
+    <ProjectReference Include="..\SO115App.API.CompositionRoot\SO115App.API.CompositionRoot.csproj" />
   </ItemGroup>
 </Project>

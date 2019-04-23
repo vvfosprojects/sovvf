@@ -1,4 +1,5 @@
-﻿using SO115App.API.Models.Classi.Soccorso;
+﻿using SO115App.API.Models.Classi.Marker;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using System;

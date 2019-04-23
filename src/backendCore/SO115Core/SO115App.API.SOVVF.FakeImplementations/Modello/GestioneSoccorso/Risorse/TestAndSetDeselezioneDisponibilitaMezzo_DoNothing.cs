@@ -24,7 +24,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risors
     /// <summary>
     ///   Servizio fake di deselezione sulla <see cref="DisponibilitaMezzo" />.
     /// </summary>
-    internal class TestAndSetDeselezioneDisponibilitaMezzo_DoNothing : ITestAndSetDeselezioneDisponibilitaMezzo
+    public class TestAndSetDeselezioneDisponibilitaMezzo_DoNothing : ITestAndSetDeselezioneDisponibilitaMezzo
     {
         /// <summary>
         ///   Metodo vuoto

@@ -132,7 +132,7 @@ namespace SO115App.API.Models.Classi.Autenticazione
         /// <summary>
         ///   Ruolo
         /// </summary>
-        public List<Role> ruolo { get; set; }
+        public List<Role> ruoli { get; set; }
 
         /// <summary>
         ///   Sede utente loggato
@@ -189,26 +189,29 @@ namespace SO115App.API.Models.Classi.Autenticazione
             else
                 return null;  
 
-        }        
+        }              
         
     }
 
     public class Role
     {
 
-        public Role(Ruolo _descrizione, Sede _sede)
+        public Role(string _descrizione, Sede _sede)
         {
             this.sede = _sede;
             this.descrizione = _descrizione;
         }
-        public Ruolo descrizione { get; set; }
+        public string descrizione { get; set; }
         public Sede  sede {get; set;}
-    }
 
+    }
+/* 
     public enum Ruolo
     {      
-        User,
-        Admin
+        [Description("CallTracker")]
+        CallTracker,
+        [Description("GestoreRichieste")]
+        GestoreRichieste
     }
-
+ */
 }

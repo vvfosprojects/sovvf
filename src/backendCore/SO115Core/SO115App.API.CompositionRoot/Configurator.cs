@@ -14,15 +14,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.Organigramma;
 using SO115App.API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni;
-using SO115App.API.SOVVF.FakeImplementations;
-using SO115App.API.SOVVF.FakeImplementations.Modello.Autenticazione;
-using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso;
-using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi;
-using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse;
-using SO115App.API.SOVVF.FakeImplementations.Modello.Infrastruttura.Anagrafiche;
-using SO115App.API.SOVVF.FakeImplementations.Modello.Infrastruttura.CompetenzeTerritoriali;
-using SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma;
-using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste;
+
 
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
@@ -39,6 +31,16 @@ using SO115App.API.Models.Classi.Utenti.Autenticazione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
+
+
+using SO115App.API.SOVVF.FakeImplementations;
+using SO115App.API.SOVVF.FakeImplementations.Modello.Autenticazione;
+using SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma;
+using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi;
+using SO115App.API.SOVVF.FakeImplementations.Modello.Infrastruttura.Anagrafiche;
+using SO115App.API.SOVVF.FakeImplementations.Modello.Infrastruttura.CompetenzeTerritoriali;
+using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse;
+using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso;
 
 namespace SO115App.API.CompositionRoot
 {
@@ -156,8 +158,8 @@ namespace SO115App.API.CompositionRoot
 
             //TEST AND FAKE
             //************************************************************************************************************************                                
-            //c.Register<IGeneratoreRichieste,GeneratoreRichieste>();
-            c.RegisterInstance<IGeneratoreRichieste>(new GeneratoreRichieste());      
+            //c.Register<IGeneratoreRichieste, GeneratoreRichieste>();
+            //c.RegisterInstance<IGeneratoreRichieste>(new GeneratoreRichieste());
             c.Register<IGetOperatoreAutenticato, GetOperatoreAutenticato>();
             c.Register<IGetUnitaOperativaRadice, GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato>();
             c.Register<IGetUnitaOperativeVisibiliPerSoccorso, GetUnitaOperativeVisibiliPerSoccorso_OperatoreDirezioneRegionaleLazio>();
@@ -173,7 +175,7 @@ namespace SO115App.API.CompositionRoot
             c.Register<IGetNumeroMezziSoccorsoOraInServizio, GetNumeroMezziSoccorsoOraInServizio_Fake>();
             c.Register<IGetNumeroSquadreSoccorsoOraInServizio, GetNumeroSquadreSoccorsoOraInServizio_Fake>();
             c.Register<IGetCompetenzeByPunto, GetCompetenzeByPunto_Fake_Hardcoded>();
-            //************************************************************************************************************************
+            ////************************************************************************************************************************
 
 
         }

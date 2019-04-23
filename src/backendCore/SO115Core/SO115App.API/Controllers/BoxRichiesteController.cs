@@ -38,7 +38,7 @@ namespace SO115App.API.Controllers
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>    
         [HttpGet]
-        public async Task<IActionResult> Get(string connectionId)
+        public async Task<IActionResult> Get(string id)
         {
            
             var query = new BoxRichiesteQuery()
@@ -50,7 +50,7 @@ namespace SO115App.API.Controllers
                 BoxInterventi boxInterventi = new BoxInterventi();
                 boxInterventi = (BoxInterventi)this.handler.Handle(query).BoxRichieste;
 
-                await _NotificationHub.Clients.User(connectionId).SendAsync("NotifyGetBoxInterventi", boxInterventi);             
+                await _NotificationHub.Clients.Client(id).SendAsync("NotifyGetBoxInterventi", boxInterventi);             
 
                 return Ok();
 

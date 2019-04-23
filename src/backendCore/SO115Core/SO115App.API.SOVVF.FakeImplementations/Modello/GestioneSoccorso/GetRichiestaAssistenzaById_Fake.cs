@@ -25,7 +25,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso
     /// <summary>
     ///   Servizio per il recupero di una richiesta di assistenza per id
     /// </summary>
-    internal class GetRichiestaAssistenzaById_Fake : IGetRichiestaAssistenzaById
+    public class GetRichiestaAssistenzaById_Fake : IGetRichiestaAssistenzaById
     {
         /// <summary>
         ///   Restituisce la richiesta

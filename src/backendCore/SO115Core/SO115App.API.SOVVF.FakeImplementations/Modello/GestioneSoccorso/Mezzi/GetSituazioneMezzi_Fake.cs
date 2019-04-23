@@ -28,7 +28,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi
     /// <summary>
     ///   Servizio fake che restituisce la situazione dei mezzi in servizio
     /// </summary>
-    internal class GetSituazioneMezzi_Fake : IGetSituazioneMezzi
+    public class GetSituazioneMezzi_Fake : IGetSituazioneMezzi
     {
         /// <summary>
         ///   Restituisce una situazione dei mezzi fake

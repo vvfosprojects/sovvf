@@ -26,7 +26,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.Infrastruttura.Competen
     ///   Classe fake che implementa il servizio che restituisce le competenze territoriali dato un
     ///   punto geolocalizzato
     /// </summary>
-    internal class GetCompetenzeByPunto_Fake_Hardcoded : IGetCompetenzeByPunto
+    public class GetCompetenzeByPunto_Fake_Hardcoded : IGetCompetenzeByPunto
     {
         /// <summary>
         ///   Restituisce dei valori fake

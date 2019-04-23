@@ -24,7 +24,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risors
     /// <summary>
     ///   Classe fake per la selezione della disponibilita di un mezzo
     /// </summary>
-    internal class TestAndSetSelezioneDisponibilitaMezzo_Fake : ITestAndSetSelezioneDisponibilitaMezzo
+    public class TestAndSetSelezioneDisponibilitaMezzo_Fake : ITestAndSetSelezioneDisponibilitaMezzo
     {
         /// <summary>
         ///   Metodo vuoto

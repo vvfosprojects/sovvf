@@ -24,7 +24,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.Autenticazione
     /// <summary>
     ///   Implementazione fake del servizio che restituisce l'operatire correntemente autenticato
     /// </summary>
-    internal class GetOperatoreAutenticato : IGetOperatoreAutenticato
+    public class GetOperatoreAutenticato : IGetOperatoreAutenticato
     {
         /// <summary>
         ///   Restituisce l'operatore correntemente autenticato

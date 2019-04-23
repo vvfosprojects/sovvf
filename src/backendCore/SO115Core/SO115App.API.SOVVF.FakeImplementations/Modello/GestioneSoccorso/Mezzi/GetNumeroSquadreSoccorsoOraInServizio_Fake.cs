@@ -25,7 +25,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi
     /// <summary>
     ///   Servizio fake
     /// </summary>
-    internal class GetNumeroSquadreSoccorsoOraInServizio_Fake : IGetNumeroSquadreSoccorsoOraInServizio
+    public class GetNumeroSquadreSoccorsoOraInServizio_Fake : IGetNumeroSquadreSoccorsoOraInServizio
     {
         /// <summary>
         ///   Restituisce il numero di squadre in servizio

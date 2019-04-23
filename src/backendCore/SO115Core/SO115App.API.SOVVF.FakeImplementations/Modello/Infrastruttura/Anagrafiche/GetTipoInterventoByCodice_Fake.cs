@@ -25,7 +25,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.Infrastruttura.Anagrafi
     /// <summary>
     ///   Servizio fake che restituisce il tipo intervento a partire dal suo codice
     /// </summary>
-    internal class GetTipoInterventoByCodice_Fake : IGetTipoInterventoByCodice
+    public class GetTipoInterventoByCodice_Fake : IGetTipoInterventoByCodice
     {
         /// <summary>
         ///   Restituisce il tipo di intervento

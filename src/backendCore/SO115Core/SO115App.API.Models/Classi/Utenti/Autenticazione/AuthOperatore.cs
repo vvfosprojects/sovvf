@@ -12,13 +12,6 @@ namespace SO115App.API.Models.Classi.Utenti.Autenticazione
     public class AuthOperatore : IAuthOperatore
     {
 
-        //TODO, DA TOGLIERE - SERVE SOLO PER I FAKE
-        public enum utente {
-            admin,
-            user,
-            test           
-        }
-
         public async Task<Utente> Login(string username, string password)
         {
             Utente user = VerificaLogIn(username,password);            

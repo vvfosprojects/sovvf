@@ -24,7 +24,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risors
     /// <summary>
     ///   Classe fake per la deselezione disponibilità squadra
     /// </summary>
-    internal class TestAndSetDeselezioneDisponibilitaSquadra_DoNothing : ITestAndSetDeselezioneDisponibilitaSquadra
+    public class TestAndSetDeselezioneDisponibilitaSquadra_DoNothing : ITestAndSetDeselezioneDisponibilitaSquadra
     {
         /// <summary>
         ///   Metodo vuoto

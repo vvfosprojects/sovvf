@@ -82,7 +82,7 @@ namespace SO115App.API.Controllers
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns> 
         [HttpGet]
-        public async Task<IActionResult> Get(string connectionId)
+        public async Task<IActionResult> Get(string id)
         {
 
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
@@ -97,7 +97,7 @@ namespace SO115App.API.Controllers
                 List<SintesiRichiesta> listaSintesi = new List<SintesiRichiesta>();
                 listaSintesi = (List<SintesiRichiesta>)this.handler.Handle(query).SintesiRichiesta;
 
-                await _NotificationHub.Clients.User(connectionId).SendAsync("NotifyGetListaRichieste", listaSintesi);  
+                await _NotificationHub.Clients.Client(id).SendAsync("NotifyGetListaRichieste", listaSintesi);  
 
                 return Ok();
 

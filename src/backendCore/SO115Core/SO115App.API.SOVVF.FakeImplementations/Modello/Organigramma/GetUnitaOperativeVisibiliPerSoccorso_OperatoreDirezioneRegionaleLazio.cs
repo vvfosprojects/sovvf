@@ -28,7 +28,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma
     ///   Questa classe simula la restituzione delle unità operative visibili da un operatore del
     ///   soccorso appartenente alla Direzione Regionale Lazio.
     /// </summary>
-    internal class GetUnitaOperativeVisibiliPerSoccorso_OperatoreDirezioneRegionaleLazio : IGetUnitaOperativeVisibiliPerSoccorso
+    public class GetUnitaOperativeVisibiliPerSoccorso_OperatoreDirezioneRegionaleLazio : IGetUnitaOperativeVisibiliPerSoccorso
     {
         /// <summary>
         ///   Istanza del servizio
