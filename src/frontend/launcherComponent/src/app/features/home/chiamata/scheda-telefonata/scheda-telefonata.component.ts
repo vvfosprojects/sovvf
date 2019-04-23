@@ -19,6 +19,7 @@ import { ReducerSchedaTelefonata } from '../../store/actions/chiamata/scheda-tel
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Richiedente } from '../../../../shared/model/richiedente.model';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
+import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -274,7 +275,7 @@ export class SchedaTelefonataComponent implements OnInit {
         return !!this.chiamataForm.invalid;
     }
 
-    impostaAzioneChiamata($event) {
+    impostaAzioneChiamata() {
         // this.chiamataCorrente.azione = $event;
         this.onSubmit();
     }
