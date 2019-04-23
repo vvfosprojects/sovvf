@@ -2,7 +2,16 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 // Model
 import { GestioneUtente } from '../../../../../shared/model/gestione-utente.model';
 // Action
-import { AddUtente, AddUtenteSuccess, GetGestioneUtenti, RemoveUtente, RemoveUtenteSuccess, SetGestioneUtenti, ChangeRoleUtente, ChangeRoleUtenteSuccess } from '../../actions/gestione-utenti/gestione-utenti.actions';
+import {
+    AddUtente,
+    AddUtenteSuccess,
+    GetGestioneUtenti,
+    RemoveUtente,
+    RemoveUtenteSuccess,
+    SetGestioneUtenti,
+    ChangeRoleUtente,
+    ChangeRoleUtenteSuccess
+} from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
 // Immer
 import produce from 'immer';

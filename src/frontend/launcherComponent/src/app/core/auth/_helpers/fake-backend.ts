@@ -16,7 +16,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cognome: 'Bianchi',
                 username: 'admin',
                 password: 'admin',
-                ruolo: [
+                ruoli: [
                     {
                         descrizione: Role.CallTracker,
                         sede: null
@@ -43,7 +43,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cognome: 'Mancini',
                 username: 'user',
                 password: 'user',
-                ruolo: [
+                ruoli: [
                     {
                         descrizione: Role.CallTracker,
                         sede: null
@@ -71,7 +71,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 username: 'test',
                 password: 'test',
 
-                ruolo: [
+                ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
                         sede: null
@@ -98,7 +98,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cognome: 'Milano',
                 username: 'gualtiero',
                 password: 'milano',
-                ruolo: [
+                ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
                         sede: null
@@ -125,7 +125,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cognome: 'Rossi',
                 username: 'marco',
                 password: 'rossi',
-                ruolo: [
+                ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
                         sede: null
@@ -152,7 +152,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cognome: 'Verdi',
                 username: 'marco',
                 password: 'verdi',
-                ruolo: [
+                ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
                         sede: null
@@ -179,7 +179,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cognome: 'Monaldo',
                 username: 'isabella',
                 password: 'monaldo',
-                ruolo: [
+                ruoli: [
                     {
                         descrizione: Role.CallTracker,
                         sede: null
@@ -206,7 +206,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cognome: 'Sabbatini',
                 username: 'ivone',
                 password: 'sabbatini',
-                ruolo: [
+                ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
                         sede: null
@@ -233,7 +233,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cognome: 'Pinto',
                 username: 'flavio',
                 password: 'pinto',
-                ruolo: [
+                ruoli: [
                     {
                         descrizione: Role.CallTracker,
                         sede: null
@@ -260,7 +260,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cognome: 'Marcelo',
                 username: 'sandro',
                 password: 'marcelo',
-                ruolo: [
+                ruoli: [
                     {
                         descrizione: Role.CallTracker,
                         sede: null
@@ -287,7 +287,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cognome: 'Trentino',
                 username: 'isidora',
                 password: 'trentino',
-                ruolo: [
+                ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
                         sede: null
@@ -314,7 +314,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cognome: 'Zetticci',
                 username: 'amina',
                 password: 'zettici',
-                ruolo: [
+                ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
                         sede: null
@@ -341,7 +341,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cognome: 'Lori',
                 username: 'piera',
                 password: 'lori',
-                ruolo: [
+                ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
                         sede: null
@@ -368,7 +368,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cognome: 'Marchesi',
                 username: 'romeo',
                 password: 'marchesi',
-                ruolo: [
+                ruoli: [
                     {
                         descrizione: Role.CallTracker,
                         sede: null
@@ -395,7 +395,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cognome: 'Trentini',
                 username: 'cora',
                 password: 'trentini',
-                ruolo: [
+                ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
                         sede: null
@@ -436,9 +436,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                         username: user.username,
                         nome: user.nome,
                         cognome: user.cognome,
-                        ruolo: user.ruolo,
+                        ruolo: user.ruoli,
                         sede: user.sede,
-                        token: `fake-so115-jwt-token.${user.ruolo[0].descrizione}`
+                        token: `fake-so115-jwt-token.${user.ruoli[0].descrizione}`
                     }
                 });
             }
@@ -451,7 +451,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 const urlParts = request.url.split('/');
                 const id = parseInt(urlParts[urlParts.length - 1], 0);
 
-                const currentUser = users.find(x => x.ruolo[0].descrizione === role);
+                const currentUser = users.find(x => x.ruoli[0].descrizione === role);
                 if (id.toString() !== currentUser.id && (role !== Role.GestoreRichieste || role !== Role.CallTracker)) {
                     return unauthorised();
                 }

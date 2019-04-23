@@ -23,17 +23,13 @@ export class Utente {
          */
         public password?: string,
         /**
-         * ruolo utente
+         * ruoli utente
          */
-        public ruolo?: Ruolo[],
+        public ruoli?: Ruolo[],
         /**
-         * la sede di appartenzenza dell'utente
+         * sede di appartenzenza dell'utente
          */
         public sede?: Sede,
-        /**
-         * funzionalità associate all'utente
-         */
-        // public privilegi?: Features[],
         /**
          * json web token dell'utente
          */
@@ -43,19 +39,19 @@ export class Utente {
          */
         public codiceFiscale?: string,
         /**
-         * inizio validità accesso utente
+         * validoDa validità accesso utente
          */
         public validoDa?: Date,
         /**
-         * fine validità accesso utente
+         * validoFinoA validità accesso utente
          */
         public validoFinoA?: Date,
         /**
-         * verifica se l'utente è abilitato
+         * attivo verifica se l'utente è abilitato
          */
         public attivo?: boolean,
         /**
-         * la qualifica dell'utente
+         * qualifica dell'utente
          */
         public qualifica?: string,
     ) {
