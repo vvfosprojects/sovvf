@@ -8031,7 +8031,7 @@
       ]
     },
     "System.ComponentModel/4.0.1": {
-      "sha512": "tN5DPMYg6yFO5lF5L5hF6TIZDcRQ/+f1YcXGP8y2Yy4971XoxPOLH4lkkL20v6zb4aAVsp+xrkRwzMFeR5ZHqw==",
+      "sha512": "oBZFnm7seFiVfugsIyOvQCWobNZs7FzqDV/B7tx20Ep/l3UUFCPDkdTnCNaJZTU27zjeODmy2C/cP60u3D4c9w==",
       "type": "package",
       "path": "system.componentmodel/4.0.1",
       "files": [
@@ -12177,27 +12177,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Alkemis\\.nuget\\packages\\": {},
-    "C:\\ProgramData\\Xamarin\\NuGet\\": {},
+    "C:\\Users\\VJTechnology\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.Models\\SO115App.API.Models.csproj",
+      "projectUniqueName": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.Models\\SO115App.API.Models.csproj",
       "projectName": "SO115App.API.Models",
-      "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.Models\\SO115App.API.Models.csproj",
-      "packagesPath": "C:\\Users\\Alkemis\\.nuget\\packages\\",
-      "outputPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.Models\\obj\\",
+      "projectPath": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.Models\\SO115App.API.Models.csproj",
+      "packagesPath": "C:\\Users\\VJTechnology\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.Models\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\ProgramData\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Alkemis\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\VJTechnology\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.2"
