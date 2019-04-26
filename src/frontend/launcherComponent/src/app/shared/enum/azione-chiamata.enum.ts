@@ -1,5 +1,7 @@
 export enum AzioneChiamataEnum {
     FalsoAllarme,
-    InternventoNonPiuNecessario,
-    MettiInCoda
+    InterventoNonPiuNecessario,
+    InterventoDuplicato,
+    MettiInCoda,
+    InviaPartenza
 }

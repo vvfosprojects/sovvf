@@ -1,6 +1,7 @@
 import { SchedaTelefonataInterface } from '../../../chiamata/model/scheda-telefonata.interface';
 import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
+import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
 
 export class ReducerSchedaTelefonata {
     static readonly type = '[Scheda Telefonata] Reduce completato';
@@ -12,7 +13,7 @@ export class ReducerSchedaTelefonata {
 export class SetChiamata {
     static readonly type = '[Scheda Telefonata] Set chiamata';
 
-    constructor(public nuovaRichiesta: SintesiRichiesta) {
+    constructor(public nuovaRichiesta: SintesiRichiesta, public azioneChiamata: AzioneChiamataEnum) {
     }
 
 }

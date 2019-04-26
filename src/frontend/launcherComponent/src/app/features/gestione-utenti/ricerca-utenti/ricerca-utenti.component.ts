@@ -1,5 +1,4 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {SchedaTelefonataInterface} from '../../home/chiamata/model/scheda-telefonata.interface';
 
 @Component({
     selector: 'app-ricerca-utenti',

@@ -30,7 +30,7 @@ import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
 export class SchedaTelefonataComponent implements OnInit {
 
     options = {
-        componentRestrictions: {country: ['IT', 'FR', 'AT', 'CH', 'SI']}
+        componentRestrictions: { country: ['IT', 'FR', 'AT', 'CH', 'SI'] }
     };
     chiamataCorrente: FormChiamataModel;
     chiamataMarker: ChiamataMarker;
@@ -39,7 +39,7 @@ export class SchedaTelefonataComponent implements OnInit {
     submitted = false;
     idChiamata: string;
 
-    AzioneChiamata = AzioneChiamataEnum;
+    AzioneChiamataEnum = AzioneChiamataEnum;
 
     @Input() tipologie: TipologieInterface[];
     @Input() operatore: Utente;
@@ -64,6 +64,7 @@ export class SchedaTelefonataComponent implements OnInit {
 
     createForm(): FormGroup {
         return this.formBuilder.group({
+            selectedTipologie: [],
             nome: [null],
             cognome: [null],
             ragioneSociale: [null],
@@ -127,7 +128,7 @@ export class SchedaTelefonataComponent implements OnInit {
             this.f.cognome.reset();
         }
         this.cdRef.detectChanges();
-        console.log(this.f);
+        // console.log(this.f);
     }
 
     setRilevanza() {
@@ -178,15 +179,20 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.tipologie.splice(this.nuovaRichiesta.tipologie.indexOf(tipologia.codice), 1);
     }
 
+    clearTipologieSelezionate() {
+        this.f.selectedTipologie.patchValue([]);
+        this.nuovaRichiesta.tipologie = [];
+    }
+
     onAnnullaChiamata(): void {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {backdropClass: 'light-blue-backdrop', centered: true});
-        modalConfermaAnnulla.componentInstance.icona = {descrizione: 'trash', colore: 'danger'};
+        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
         modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tornerai alla lista eliminando tutti i dati inseriti.';
         modalConfermaAnnulla.componentInstance.bottoni = [
-            {type: 'ko', descrizione: 'Annulla', colore: 'danger'},
-            {type: 'ok', descrizione: 'Conferma', colore: 'dark'},
+            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
         ];
 
         modalConfermaAnnulla.result.then(
@@ -209,14 +215,14 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     onResetChiamata(): void {
-        const modalConfermaReset = this.modalService.open(ConfirmModalComponent, {backdropClass: 'light-blue-backdrop', centered: true});
-        modalConfermaReset.componentInstance.icona = {descrizione: 'exclamation-triangle', colore: 'danger'};
+        const modalConfermaReset = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        modalConfermaReset.componentInstance.icona = { descrizione: 'exclamation-triangle', colore: 'danger' };
         modalConfermaReset.componentInstance.titolo = 'Reset Chiamata';
         modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler effettuare il reset della chiamata?';
         modalConfermaReset.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti verranno eliminati.';
         modalConfermaReset.componentInstance.bottoni = [
-            {type: 'ko', descrizione: 'Annulla', colore: 'danger'},
-            {type: 'ok', descrizione: 'Conferma', colore: 'dark'},
+            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
         ];
 
         modalConfermaReset.result.then(
@@ -225,7 +231,7 @@ export class SchedaTelefonataComponent implements OnInit {
                     case 'ok':
                         this.submitted = false;
                         this.chiamataForm.reset();
-                        this.nuovaRichiesta.tipologie = [];
+                        this.clearTipologieSelezionate();
                         this.coordinate = null;
                         this.store.dispatch(new ClearClipboard());
                         this._statoChiamata('reset');
@@ -275,33 +281,29 @@ export class SchedaTelefonataComponent implements OnInit {
         return !!this.chiamataForm.invalid;
     }
 
-    impostaAzioneChiamata() {
-        // this.chiamataCorrente.azione = $event;
-        this.onSubmit();
+    impostaAzioneChiamata($event) {
+        this.onSubmit($event);
     }
 
-    inviaPartenza() {
-        // this.chiamataCorrente.azione = AzioneChiamataEnum.MettiInCoda;
-        this.onSubmit();
-        console.log('Inizio composizione Partenza');
-    }
-
-    onSubmit() {
+    onSubmit(azione?: AzioneChiamataEnum) {
         this.submitted = true;
         if (this.formIsValid() || !this.coordinate) {
             console.error('Il form non è valido');
             return;
         }
         this.getChiamataForm();
-        this._statoChiamata('inserita');
+        this._statoChiamata('inserita', azione);
     }
 
-    _statoChiamata(tipo: string) {
+    _statoChiamata(tipo: string, azione?: AzioneChiamataEnum) {
         const schedaTelefonata: SchedaTelefonataInterface = {
             tipo: tipo,
             nuovaRichiesta: this.nuovaRichiesta,
             markerChiamata: this.chiamataMarker
         };
+        if (azione) {
+            schedaTelefonata.azioneChiamata = azione;
+        }
 
         console.log('Scheda Telefonata', schedaTelefonata);
         this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata));
