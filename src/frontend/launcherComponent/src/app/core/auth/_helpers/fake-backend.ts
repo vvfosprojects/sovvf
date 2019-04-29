@@ -436,7 +436,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                         username: user.username,
                         nome: user.nome,
                         cognome: user.cognome,
-                        ruolo: user.ruoli,
+                        ruoli: user.ruoli,
                         sede: user.sede,
                         token: `fake-so115-jwt-token.${user.ruoli[0].descrizione}`
                     }
