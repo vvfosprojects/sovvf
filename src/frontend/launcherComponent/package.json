@@ -31,7 +31,7 @@
     "@angular/router": "^7.2.7",
     "@aspnet/signalr": "^1.1.2",
     "@ng-bootstrap/ng-bootstrap": "^4.1.2",
-    "@ng-select/ng-select": "^2.14.0",
+    "@ng-select/ng-select": "^2.18.0",
     "@ngx-progressbar/core": "^5.3.1",
     "@ngx-progressbar/http": "^5.3.1",
     "@ngxs/devtools-plugin": "^3.4.3",
