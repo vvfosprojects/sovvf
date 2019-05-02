@@ -30,7 +30,7 @@
     "@angular/platform-browser-dynamic": "^7.2.7",
     "@angular/router": "^7.2.7",
     "@aspnet/signalr": "^1.1.2",
-    "@ng-bootstrap/ng-bootstrap": "^4.0.4",
+    "@ng-bootstrap/ng-bootstrap": "^4.1.2",
     "@ng-select/ng-select": "^2.14.0",
     "@ngx-progressbar/core": "^5.3.1",
     "@ngx-progressbar/http": "^5.3.1",
