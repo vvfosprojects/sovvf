@@ -21,12 +21,15 @@
             </ng-select>
         </div>
         <div class="col">
-            <ng-select [items]="sedi"
-                       bindLabel="descrizione"
-                       bindValue="codice"
-                       placeholder="Seleziona sede"
-                       [(ngModel)]="codiceSedeSelezionata">
-            </ng-select>
+            <!--            <ng-select [items]="sedi"-->
+            <!--                       bindLabel="descrizione"-->
+            <!--                       bindValue="codice"-->
+            <!--                       placeholder="Seleziona sede"-->
+            <!--                       [(ngModel)]="codiceSedeSelezionata">-->
+            <!--            </ng-select>-->
+            <app-shared-treeview [items]="items" [testoSedeSelezionata]="'Seleziona una o più sedi'" [placement]="'bottom-left'"
+                                 [visualizzaTasti]="false" (confermaSelezione)="onPatchSedi($event)">
+            </app-shared-treeview>
         </div>
     </div>
 </div>
