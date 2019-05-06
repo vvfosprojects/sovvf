@@ -45,5 +45,16 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Classe Icona Fontawsome corrispondente alla tipologia
         /// </summary>
         public string icona { get; set; }
+
+        /// <summary>
+        ///   Definisce la categoria della Tipologia
+        /// </summary>
+        public string categoria { get; set; }
+
+        /// <summary>
+        ///   Indica se questa tipologia sarà presente nei "preferiti" nella sezione Filtri
+        /// </summary>
+        public bool star { get; set; }
+
     }
 }
