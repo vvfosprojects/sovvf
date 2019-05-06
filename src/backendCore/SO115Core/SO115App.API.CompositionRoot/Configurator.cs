@@ -95,9 +95,36 @@ namespace SO115App.API.CompositionRoot
 
             c.RegisterDecorator(
                 typeof(ISintesiRichiestaAssistenzaMarkerQueryHandler<,>),
-                typeof(SintesiRichiesteAssitenzaMarkerValidatingQueryHandlerDecorator<,>));           
+                typeof(SintesiRichiesteAssitenzaMarkerValidatingQueryHandlerDecorator<,>));
 
-//Registrazione componenti "Box Richieste"
+            //Registrazione componenti "Sintesi Mezzi Marker"
+            c.Register(
+                typeof(ISintesiMezziMarkerQueryHandler<,>),
+                AppDomain.CurrentDomain.GetAssemblies());
+
+            c.RegisterDecorator(
+                typeof(ISintesiMezziMarkerQueryHandler<,>),
+                typeof(SintesiMezziMarkerAuthorizationQueryHandlerDecorator<,>));
+
+            c.RegisterDecorator(
+                typeof(ISintesiMezziMarkerQueryHandler<,>),
+                typeof(SintesiMezziMarkerValidatingQueryHandlerDecorator<,>));
+
+
+            //Registrazione componenti "Sintesi Sedi Marker"
+            c.Register(
+                typeof(ISintesiSediMarkerQueryHandler<,>),
+                AppDomain.CurrentDomain.GetAssemblies());
+
+            c.RegisterDecorator(
+                typeof(ISintesiSediMarkerQueryHandler<,>),
+                typeof(SintesiSediMarkerAuthorizationQueryHandlerDecorator<,>));
+
+            c.RegisterDecorator(
+                typeof(ISintesiSediMarkerQueryHandler<,>),
+                typeof(SintesiSediMarkerValidatingQueryHandlerDecorator<,>));
+
+            //Registrazione componenti "Box Richieste"
             c.Register(
                 typeof(IBoxRichiesteQueryHandler<,>), 
                 AppDomain.CurrentDomain.GetAssemblies());

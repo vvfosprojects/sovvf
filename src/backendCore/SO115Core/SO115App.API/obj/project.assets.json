@@ -7591,7 +7591,7 @@
       ]
     },
     "NWebsec.AspNetCore.Core/2.0.0": {
-      "sha512": "3uajiUcZ37VI2SRmdYq9Lb7y+eHPZsdSn0+zzbm1xRy/bmD92+FTrLsEm6pEF/J9rnBFl7oQ9CKvA4EoFd9CWA==",
+      "sha512": "rBzLHzTQx7X3vcLbhcHPVgNUALl1mb2zoiIqNw/M7z4lda7WkvMbsHrb4+hh1lZVgeYp4qZwDbO8gAoPdnXmrQ==",
       "type": "package",
       "path": "nwebsec.aspnetcore.core/2.0.0",
       "files": [
@@ -7604,7 +7604,7 @@
       ]
     },
     "NWebsec.AspNetCore.Mvc/2.0.0": {
-      "sha512": "iO1J83AfLyXBGYGnpHIzj6ZKHSA9TdgqymfK9J5NOj3UQ9TN5RFEF17qKzWsV+f96xeatPnsjJitKO/nm6Jerg==",
+      "sha512": "/T2sg2GgvhkUg7hZDyfH8335e+vsMFkSxWm58WzAo9ixtDAPSykoluy5jxN6ljVxQNF3pqhnb4FUZ0EJsSAETA==",
       "type": "package",
       "path": "nwebsec.aspnetcore.mvc/2.0.0",
       "files": [
@@ -7617,7 +7617,7 @@
       ]
     },
     "NWebsec.AspNetCore.Mvc.TagHelpers/2.0.0": {
-      "sha512": "P6pPb5NrNiNRXjX0Z1py4nx5oo09+qcg/bJvLa8or+xTss/h5JTNBAgldI6pOQ+fm6L5ffODgaUR99EdPK2WiQ==",
+      "sha512": "cIO4DjKEgIBOec0cTvHHCKmF3w8zi4YxHtdRGa/IG36295mECTu/a10o10BFMSrYNukQxviWPj4JGS0zL6D4DA==",
       "type": "package",
       "path": "nwebsec.aspnetcore.mvc.taghelpers/2.0.0",
       "files": [
@@ -8294,7 +8294,7 @@
       ]
     },
     "System.ComponentModel/4.0.1": {
-      "sha512": "tN5DPMYg6yFO5lF5L5hF6TIZDcRQ/+f1YcXGP8y2Yy4971XoxPOLH4lkkL20v6zb4aAVsp+xrkRwzMFeR5ZHqw==",
+      "sha512": "oBZFnm7seFiVfugsIyOvQCWobNZs7FzqDV/B7tx20Ep/l3UUFCPDkdTnCNaJZTU27zjeODmy2C/cP60u3D4c9w==",
       "type": "package",
       "path": "system.componentmodel/4.0.1",
       "files": [
@@ -12431,7 +12431,7 @@
       ]
     },
     "WebEssentials.AspNetCore.PWA/1.0.49": {
-      "sha512": "SfVoNchxf3sW47o7p3T9YVXwtkxt/2uk6qCdh4bPdq3c9i9jj9DNCWHwutA2DgLRPsNmbo0fE6QGxyLU32a6uQ==",
+      "sha512": "b73VYrbYIZEaLgwA7DSemGq4qI57A/qxEnJY2pDZtT+obe7hA7d2kcc2n8lgV8LJ+mjb+imTsGujKsaqrudH6g==",
       "type": "package",
       "path": "webessentials.aspnetcore.pwa/1.0.49",
       "files": [
@@ -12475,27 +12475,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Alkemis\\.nuget\\packages\\": {},
-    "C:\\ProgramData\\Xamarin\\NuGet\\": {},
+    "C:\\Users\\VJTechnology\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API\\SO115App.API.csproj",
+      "projectUniqueName": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API\\SO115App.API.csproj",
       "projectName": "SO115App.API",
-      "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API\\SO115App.API.csproj",
-      "packagesPath": "C:\\Users\\Alkemis\\.nuget\\packages\\",
-      "outputPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API\\obj\\",
+      "projectPath": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API\\SO115App.API.csproj",
+      "packagesPath": "C:\\Users\\VJTechnology\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\ProgramData\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Alkemis\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\VJTechnology\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.2"
@@ -12507,11 +12504,11 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.CompositionRoot\\SO115App.API.CompositionRoot.csproj": {
-              "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.CompositionRoot\\SO115App.API.CompositionRoot.csproj"
+            "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.CompositionRoot\\SO115App.API.CompositionRoot.csproj": {
+              "projectPath": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.CompositionRoot\\SO115App.API.CompositionRoot.csproj"
             },
-            "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.Models\\SO115App.API.Models.csproj": {
-              "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.Models\\SO115App.API.Models.csproj"
+            "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.Models\\SO115App.API.Models.csproj": {
+              "projectPath": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.Models\\SO115App.API.Models.csproj"
             }
           }
         }
