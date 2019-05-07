@@ -23,7 +23,6 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Features
     {
-        
         public Features(AppFeatures NameFunction, List<Sede> Read, List<Sede> Write)
         {
             this.nameFunction = NameFunction;
@@ -36,8 +35,8 @@ namespace SO115App.API.Models.Classi.Condivise
         public List<Sede> read { get; set; }
 
         public List<Sede> write { get; set; }
-
     }
+
     public enum AppFeatures
     {
         Mappa,

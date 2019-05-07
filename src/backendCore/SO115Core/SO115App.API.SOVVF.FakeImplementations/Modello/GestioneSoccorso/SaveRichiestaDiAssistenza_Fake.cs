@@ -17,9 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using System;
 
 namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso
 {

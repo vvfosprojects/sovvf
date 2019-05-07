@@ -1,7 +1,5 @@
-﻿using System;
+﻿using Serilog;
 using System.Collections.Generic;
-using System.Text;
-using Serilog;
 
 namespace CQRS.Commands.Notifiers
 {

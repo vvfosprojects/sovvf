@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CQRS.Authorization
+﻿namespace CQRS.Authorization
 {
     public class AuthorizationResult
     {

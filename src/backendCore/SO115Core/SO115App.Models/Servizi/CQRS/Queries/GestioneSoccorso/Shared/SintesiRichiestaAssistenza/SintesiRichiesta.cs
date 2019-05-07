@@ -17,16 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.API.Models.Classi.Soccorso.Fonogramma;
-using SO115App.API.Models.Classi.Soccorso.Complessita;
-using System.Linq;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
@@ -34,14 +32,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
     ///   Contiene le informazioni di sintesi di una Richiesta di Assistenza, utile ad alimentare il
     ///   primo ed il secondo livello di dettaglio del componente richiesta di assistenza sul frontend.
     /// </summary>
-    public class SintesiRichiesta: IGetListaSintesiRichieste
+    public class SintesiRichiesta : IGetListaSintesiRichieste
     {
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         public SintesiRichiesta()
-        {  
-            this.zoneEmergenza = new string[0]; 
+        {
+            this.zoneEmergenza = new string[0];
             this.etichette = new string[0];
             this.eventi = new List<Evento>();
             this.competenze = new List<Sede>();
@@ -107,23 +105,23 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Complessità della richiesta
         /// </summary>
-        public Complessita complessita {
-
+        public Complessita complessita
+        {
             get
             {
-
                 int CountEventi;
-                if(this.eventi == null)
+                if (this.eventi == null)
                 {
                     CountEventi = 0;
-                }else
+                }
+                else
                 {
                     CountEventi = this.eventi.Count;
                 }
 
                 if (CountEventi <= 20)
                 {
-                    return new Complessita("0","Basso", CountEventi.ToString());
+                    return new Complessita("0", "Basso", CountEventi.ToString());
                 }
 
                 if (CountEventi <= 60)
@@ -133,7 +131,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
 
                 return new Complessita("2", "Alta", CountEventi.ToString());
             }
-      
         }
 
         /// <summary>
@@ -146,9 +143,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// </summary>
         public DateTime? istantePrimaAssegnazione { get; set; }
 
-
         /// <summary>
-        ///   Indica la data in cui è stato marcato RILEVANTE l'ultima volta 
+        ///   Indica la data in cui è stato marcato RILEVANTE l'ultima volta
         /// </summary>
         /// <remarks>
         ///   Una richiesta può essere rilevante se è l'operatore a marcarla come tale, oppure in
@@ -156,7 +152,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   machine learning.
         /// </remarks>
         public DateTime? rilevanza { get; set; }
-
 
         /// <summary>
         ///   Codice della scheda Nue
@@ -176,7 +171,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                if(this.eventi != null)
+                if (this.eventi != null)
                 {
                     var ultimoEventoFonogramma = this.eventi
                         .Where(e => e is Classi.Soccorso.Eventi.Fonogramma.IFonogramma)
@@ -196,6 +191,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
                 return new Classi.Soccorso.Fonogramma.NonNecessario();
             }
         }
+
         /// <summary>
         ///  Lista eventi associato alla richiesta
         /// </summary>
@@ -214,6 +210,5 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///  Lista eventi associato alla richiesta
         /// </summary>
         public List<Evento> eventi { get; set; }
-
     }
 }

@@ -1,9 +1,9 @@
-﻿using System.Reflection;
-using SimpleInjector;
+﻿using SimpleInjector;
 using SO115App.API.Models.Classi.Utenti.Autenticazione;
 using SO115App.API.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.API.Models.Servizi.Infrastruttura.Organigramma;
 using SO115App.API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni;
+using System.Reflection;
 
 namespace SO115App.CompositionRoot
 {
@@ -66,12 +66,11 @@ namespace SO115App.CompositionRoot
                 typeof(CQRS.Commands.ICommandHandler<>),
                 typeof(Logging.CQRS.CommandHandlerLogDecorator<>));
 
-
             container.Register(typeof(IAuthOperatore), typeof(AuthOperatore));
             container.Register<IGetUnitaOperativaPerCodice, GetUnitaOperativaPerCodice>();
 
             //TEST AND FAKE
-            //************************************************************************************************************************                                
+            //************************************************************************************************************************
             //c.Register<IGeneratoreRichieste, GeneratoreRichieste>();
             //c.RegisterInstance<IGeneratoreRichieste>(new GeneratoreRichieste());
             container.Register<SO115App.API.Models.Servizi.Infrastruttura.Autenticazione.IGetOperatoreAutenticato, SO115App.API.SOVVF.FakeImplementations.Modello.Autenticazione.GetOperatoreAutenticato>();
@@ -90,7 +89,6 @@ namespace SO115App.CompositionRoot
             container.Register<SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetNumeroSquadreSoccorsoOraInServizio, SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi.GetNumeroSquadreSoccorsoOraInServizio_Fake>();
             container.Register<SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.CompetenzeTerritoriali.IGetCompetenzeByPunto, SO115App.API.SOVVF.FakeImplementations.Modello.Infrastruttura.CompetenzeTerritoriali.GetCompetenzeByPunto_Fake_Hardcoded>();
             ////************************************************************************************************************************
-
         }
     }
 }

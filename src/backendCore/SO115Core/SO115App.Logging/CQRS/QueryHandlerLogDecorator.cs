@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using CQRS.Queries;
+﻿using CQRS.Queries;
 using Newtonsoft.Json;
 using Serilog;
+using System;
+using System.Diagnostics;
 
 namespace SO115App.Logging.CQRS
 {

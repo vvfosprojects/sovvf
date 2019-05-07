@@ -17,21 +17,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Security.Principal;
-using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Marker;
-using SO115App.API.Models.Servizi.CQRS.Queries;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using System.Collections.Generic;
+using System.Net;
+using System.Security.Principal;
+using System.Threading.Tasks;
 
 /* using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste; */
 
@@ -50,6 +47,7 @@ namespace SO115App.API.Controllers
         ///   Handler del servizio
         /// </summary>
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> handler;
+
         private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
 
@@ -57,7 +55,7 @@ namespace SO115App.API.Controllers
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public SintesiRichiesteAssistenzaMarkerController(IHubContext<NotificationHub> NotificationHubContext,IPrincipal currentUser,
+        public SintesiRichiesteAssistenzaMarkerController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> handler)
         {
             this.handler = handler;
@@ -70,10 +68,9 @@ namespace SO115App.API.Controllers
         /// </summary>
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
-        [HttpGet] 
+        [HttpGet]
         public async Task<IActionResult> Get(string id)
         {
-
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
             filtro.SearchKey = "0";
 
@@ -82,20 +79,20 @@ namespace SO115App.API.Controllers
                 Filtro = filtro
             };
 
-           try{
+            try
+            {
                 List<SintesiRichiestaMarker> listaSintesi = new List<SintesiRichiestaMarker>();
                 listaSintesi = (List<SintesiRichiestaMarker>)this.handler.Handle(query).SintesiRichiestaMarker;
 
-                await _NotificationHub.Clients.Client(id).SendAsync("NotifyGetListaRichiesteMarker", listaSintesi);  
+                await _NotificationHub.Clients.Client(id).SendAsync("NotifyGetListaRichiesteMarker", listaSintesi);
 
                 return Ok();
-
-           }catch
-           {
-               return Ok(HttpStatusCode.BadRequest);
-           }
+            }
+            catch
+            {
+                return Ok(HttpStatusCode.BadRequest);
+            }
         }
-
 
         [HttpGet("{filtro}")]
         public SintesiRichiesteAssistenzaMarkerResult GetMarkerFromId(FiltroRicercaRichiesteAssistenza filtro)
@@ -107,7 +104,5 @@ namespace SO115App.API.Controllers
 
             return this.handler.Handle(query);
         }
-
-
     }
 }

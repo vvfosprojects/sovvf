@@ -1,13 +1,11 @@
-﻿using System;
+﻿using CQRS.Authorization;
+using Serilog;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using CQRS.Authorization;
-using Serilog;
 
 namespace CQRS.Queries.Authorizers
 {
-    public class AuthorizingQueryHandlerDecorator<TQuery, TResult>: IQueryHandler<TQuery, TResult> where TQuery: IQuery<TResult>
+    public class AuthorizingQueryHandlerDecorator<TQuery, TResult> : IQueryHandler<TQuery, TResult> where TQuery : IQuery<TResult>
     {
         private readonly IQueryHandler<TQuery, TResult> decoratee;
         private readonly IEnumerable<IQueryAuthorizer<TQuery, TResult>> authorizers;

@@ -17,9 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Geo;
+using System;
 
 namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata.CommandDTO
 {
@@ -47,7 +46,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTe
         ///   La ragione sociale del chiamante
         /// </summary>
         public string RagioneSociale { get; set; }
-
 
         /// <summary>
         ///   Il codice della scheda contatto

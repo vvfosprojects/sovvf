@@ -17,9 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Eccezioni;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using System;
 
 namespace SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo
 {

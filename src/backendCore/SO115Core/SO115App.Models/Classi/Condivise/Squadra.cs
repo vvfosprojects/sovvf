@@ -58,14 +58,11 @@ namespace SO115App.API.Models.Classi.Condivise
 
         public Squadra(string Nome, StatoSquadra Stato, List<Componente> Componenti, Sede Distaccamento)
         {
-
             this.nome = Nome;
             this.stato = Stato;
             this.componenti = Componenti;
             this.distaccamento = Distaccamento;
         }
-
-
 
         /// <summary>
         ///   Nominativo Squadra
@@ -76,7 +73,6 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Lo stato della squadra
         /// </summary>
         public StatoSquadra stato { get; set; }
-
 
         /// <summary>
         ///   Lista dei componenti della squadra

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Serilog;
+﻿using Serilog;
 
 namespace SO115App.Logging
 {

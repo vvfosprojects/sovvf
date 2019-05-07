@@ -1,7 +1,5 @@
-﻿using System;
+﻿using CQRS.Authorization;
 using System.Collections.Generic;
-using System.Text;
-using CQRS.Authorization;
 
 namespace CQRS.Commands.Authorizers
 {

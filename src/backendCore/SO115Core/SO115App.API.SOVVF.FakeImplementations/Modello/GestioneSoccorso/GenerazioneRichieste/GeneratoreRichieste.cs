@@ -15,28 +15,26 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
-// </copyright> 
+// </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Bogus;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+
 //using MongoDB.Driver;
 using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.AzioniSuRichiesta;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
 {
-
     public interface IGeneratoreRichieste
     {
-        IEnumerable<RichiestaAssistenza> ListaRichieste{get;}
-
+        IEnumerable<RichiestaAssistenza> ListaRichieste { get; }
     }
 
     /// <summary>
@@ -142,20 +140,18 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
         /// </param>
         public GeneratoreRichieste
         (
-/*             string codiceUnitaOperativa,
-            int numeroMezziDisponibili,
-            DateTime dataMin,
-            DateTime dataMax,
-            int richiesteMedieAlGiorno,
-            int mediaSecondiPartenzaDallaSedeSuccessive,
-            int mediaSecondiArrivoSulPosto,
-            int mediaSecondiDurataIntervento,
-            int mediaSecondiRientroInSede,
-            float[] pesiNumeroMezziPartecipanti */
+            /*             string codiceUnitaOperativa,
+                        int numeroMezziDisponibili,
+                        DateTime dataMin,
+                        DateTime dataMax,
+                        int richiesteMedieAlGiorno,
+                        int mediaSecondiPartenzaDallaSedeSuccessive,
+                        int mediaSecondiArrivoSulPosto,
+                        int mediaSecondiDurataIntervento,
+                        int mediaSecondiRientroInSede,
+                        float[] pesiNumeroMezziPartecipanti */
             )
         {
-
-
             this.codiceUnitaOperativa = "RM";
             this.numeroMezzi = 4;
             this.dataMin = DateTime.Now.AddHours(-12);
@@ -183,13 +179,10 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
                 .RuleFor(g => g.Latitudine, f => f.Address.Latitude())
                 .RuleFor(g => g.Longitudine, f => f.Address.Longitude());
 
-
             //Questi Faker sono messi qui perchè contengono dei dati comuni a più proprietà
             Faker generaFaker = new Faker("it");
             string indirizzo = generaFaker.Address.StreetAddress();
             string NoteLocalita = generaFaker.Lorem.Sentence();
-
-            
 
             var zoneEmergenza = new[] { "Sisma Gotham City", "Alluvione Smallville", "Uragano Metropolis" }.ToList();
             var fakerRichiesteAssistenza = new Faker<RichiestaAssistenza>("it")
@@ -197,7 +190,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
                 .RuleFor(ra => ra.Id, f => f.UniqueIndex.ToString())
                 .RuleFor(ra => ra.Codice, f => f.IndexGlobal.ToString())
                 .RuleFor(ra => ra.CodiceUnitaOperativaCompetente, f => this.codiceUnitaOperativa)
-                .RuleFor(ra => ra.Operatore, f=> GeneraOperatore())
+                .RuleFor(ra => ra.Operatore, f => GeneraOperatore())
                 .RuleFor(ra => ra.CodiciUnitaOperativeAllertate, f => new HashSet<string> { this.codiceUnitaOperativa })
                 .RuleFor(ra => ra.Geolocalizzazione, f => GeneraCoordinateLocalita())
                 .RuleFor(ra => ra.Tipologie, f => this.GeneraTipologie())
@@ -206,7 +199,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
                 .RuleFor(ra => ra.NoteLocalita, f => NoteLocalita)
                 .RuleFor(ra => ra.ZoneEmergenza, f => f.Random.Float() < 0.001 ? new[] { f.Random.ListItem(zoneEmergenza) } : new string[0])
                 .RuleFor(ra => ra.Descrizione, f => f.Lorem.Sentence())
-                .RuleFor(ra => ra.Richiedente, f => new Richiedente ( f.Name.FirstName(), f.Name.LastName(),f.Company.CompanyName(), f.Phone.Locale ))
+                .RuleFor(ra => ra.Richiedente, f => new Richiedente(f.Name.FirstName(), f.Name.LastName(), f.Company.CompanyName(), f.Phone.Locale))
                 .RuleFor(ra => ra.NumeroRichiedente, f => f.Phone.PhoneNumber())
                 .RuleFor(ra => ra.CodiciUOCompetenza, f => new[] { f.Address.StateAbbr(), f.Address.StateAbbr(), f.Address.StateAbbr() })
                 .RuleFor(ra => ra.ListaPartenze, f => GeneraListaPartenze())
@@ -289,8 +282,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
                     .Where(a => !a.Eseguita())
                     .OrderBy(a => a.IstantePrevisto)
                     .ToList();
-            }   
-        
+            }
 
             return richiesteConParametri.Select(r => r.Richiesta);
         }
@@ -303,15 +295,14 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
 
         public static Utente GeneraOperatore()
         {
-
             Bogus.Faker faker = new Bogus.Faker("it");
 
             string Nome = faker.Name.FirstName();
             string Cognome = faker.Name.LastName();
 
             return new Utente(Nome + Cognome + faker.Random.Number(0, 99).ToString(), Nome, Cognome, faker.Random.AlphaNumeric(16));
-
         }
+
         private List<Sede> GeneraCompetenze()
         {
             Bogus.Faker faker = new Bogus.Faker();
@@ -339,12 +330,10 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
                 new Sede("3", "Bufalotta", "Via della Bufalotta 54", new Coordinate(faker.Random.Double() + 41.895, faker.Random.Double() + 12.495), "Distaccamento", null, null,"Lazio","Roma")
             };
 
-
             switch (numeroFaker)
             {
                 case int n when (n <= 30):
                     return sede;
-
 
                 case int n when (n > 30) && (n <= 60):
                     return sede2;
@@ -354,9 +343,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
 
                 default:
                     return sede;
-
             }
-
         }
 
         private Localita GeneraLocalita()
@@ -366,9 +353,8 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
 
         private Richiedente GeneraRichiedente()
         {
-
             var fakerRichiedente = new Faker<Richiedente>()
-                .StrictMode(true)                
+                .StrictMode(true)
                 .RuleFor(t => t.nome, f => f.Name.FirstName())
                 .RuleFor(t => t.cognome, f => f.Name.LastName())
                 .RuleFor(t => t.ragioneSociale, f => f.Company.CompanyName())
@@ -421,20 +407,17 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
                 new Componente("CS","Michele Dragonetti", "MD", false,false,false),
             };
 
-
             List<Squadra> ListaSquadre = new List<Squadra>()
             {
                 new Squadra("SO115",Squadra.StatoSquadra.InViaggio,ListaComponentiSquadra,distaccamento)
-
             };
 
-
-            Mezzo mezzo = new Mezzo("0", "APS", "Auto pompa serbatoio", "In sede", 0,distaccamento);
+            Mezzo mezzo = new Mezzo("0", "APS", "Auto pompa serbatoio", "In sede", 0, distaccamento);
 
             Partenza partenza = new Partenza();
             partenza.mezzo = mezzo;
             partenza.squadre = ListaSquadre;
-            
+
             List<Partenza> NewPartenza = new List<Partenza>()
             {
                 partenza

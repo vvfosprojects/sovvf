@@ -1,7 +1,7 @@
 namespace SO115App.API.Models.Classi.Boxes
 {
     public class BoxMezzi
-    {      
+    {
         public int InSede { get; set; }
 
         public int InViaggio { get; set; }
@@ -13,6 +13,5 @@ namespace SO115App.API.Models.Classi.Boxes
         public int Istituto { get; set; }
 
         public int InServizio { get; set; }
-
     }
 }

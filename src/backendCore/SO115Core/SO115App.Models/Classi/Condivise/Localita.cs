@@ -22,19 +22,15 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Localita
     {
-
         public Localita(Coordinate _coordinate, string Indirizzo, string Note)
         {
             this.coordinate = _coordinate;
             this.indirizzo = Indirizzo;
             this.note = Note;
-
         }
-
 
         public Coordinate coordinate { get; set; }
         public string indirizzo { get; set; }
         public string note { get; set; }
-
     }
 }

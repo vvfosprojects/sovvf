@@ -31,7 +31,5 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
         /// </summary>
         public BoxPersonale BoxPersonale
         { get; set; }
-
-
     }
 }

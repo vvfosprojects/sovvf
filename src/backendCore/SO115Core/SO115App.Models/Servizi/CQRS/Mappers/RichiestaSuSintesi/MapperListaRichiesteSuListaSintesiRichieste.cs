@@ -5,15 +5,13 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRi
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
 {
-    class MapperListaRichieste
+    internal class MapperListaRichieste
     {
         public List<SintesiRichiesta> MapRichiesteSuSintesi(List<RichiestaAssistenza> ListaRichieste)
-        {           
+        {
             List<SintesiRichiesta> ListaSintesi = new List<SintesiRichiesta>();
             List<SintesiRichiesta> AppoListaSintesiChiamate = new List<SintesiRichiesta>();
             List<SintesiRichiesta> AppoListaSintesiAltroStato = new List<SintesiRichiesta>();
@@ -34,7 +32,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 sintesi.id = elemento.Id;
                 sintesi.istantePresaInCarico = elemento.IstantePresaInCarico;
                 sintesi.istantePrimaAssegnazione = elemento.IstantePrimaAssegnazione;
-                
+
                 sintesi.istanteRicezioneRichiesta = sintesi.eventi.Count > 0 ? elemento.IstanteRicezioneRichiesta : DateTime.MinValue;
                 sintesi.localita = elemento.Localita;
                 sintesi.operatore = elemento.Operatore;
@@ -53,13 +51,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
             }
 
             //INIZIO - TUTTA QUESTA PARTE VA CANCELLATA DOPO IL FAKE
-            foreach(SintesiRichiesta richiesta in AppoListaSintesiChiamate)
+            foreach (SintesiRichiesta richiesta in AppoListaSintesiChiamate)
             {
-                if(richiesta.partenze.Count > 0)
+                if (richiesta.partenze.Count > 0)
                 {
                     richiesta.partenze.Clear();
                 }
-                
             }
 
             ListaSintesi.AddRange(AppoListaSintesiChiamate);
@@ -67,7 +64,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
             //FINE
 
             return ListaSintesi;
-
         }
 
         public List<SintesiRichiestaMarker> MapRichiesteSuMarkerSintesi(List<RichiestaAssistenza> listaRichieste)
@@ -88,7 +84,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 sintesi.rilevanza = DateTime.Now;
 
                 ListaSintesi.Add(sintesi);
-
             }
 
             return ListaSintesi;
@@ -96,24 +91,23 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
 
         private string DecodifcaStatoRichiesta(IStatoRichiesta statoRichiesta)
         {
-
             switch (statoRichiesta.ToString())
             {
-
                 case "Modello.Classi.Soccorso.StatiRichiesta.InAttesa":
                     return "Chiamata";
+
                 case "Modello.Classi.Soccorso.StatiRichiesta.Assegnata":
                     return "Assegnata";
+
                 case "Modello.Classi.Soccorso.StatiRichiesta.Chiusa":
                     return "Chiusa";
+
                 case "Modello.Classi.Soccorso.StatiRichiesta.Sospesa":
                     return "Sospesa";
+
                 default:
                     return "Chiusa";
             }
-
         }
-
-
     }
 }

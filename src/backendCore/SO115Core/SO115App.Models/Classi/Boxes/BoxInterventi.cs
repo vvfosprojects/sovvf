@@ -11,7 +11,7 @@ namespace SO115App.API.Models.Classi.Boxes
         public int Sospesi { get; set; }
 
         public int Totale { get; set; }
-        
+
         public int TotTurnoCorrente { get; set; }
 
         public int TotTurnoPrecedente { get; set; }

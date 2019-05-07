@@ -17,12 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
+using CQRS.Queries;
+using Newtonsoft.Json;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.IO;
-using CQRS.Queries;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
@@ -53,7 +53,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
     /// </summary>
     public class SintesiRichiesteAssistenzaQueryHandler : IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult>
     {
- 
         /// <summary>
         ///   Istanza del servizio
         /// </summary>
@@ -63,7 +62,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         ///   Costruttore della classe
         /// </summary>
         /// <param name="cercaRichiesteAssistenza">L'istanza del servizio</param>
-        
+
         public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza)
         {
             this.cercaRichiesteAssistenza = cercaRichiesteAssistenza;
@@ -76,10 +75,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
         {
-                                 
             var sintesiRichiesta = new List<SintesiRichiesta>();
             sintesiRichiesta = ElencoSintesiRichiesta(query);
-           
+
             return new SintesiRichiesteAssistenzaResult()
             {
                 SintesiRichiesta = sintesiRichiesta
@@ -90,33 +88,29 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
 
         public List<SintesiRichiesta> ElencoSintesiRichiesta(SintesiRichiesteAssistenzaQuery query)
         {
-         
             List<SintesiRichiesta> ListaSintesi = CercaRichieste(query);
-                      
+
             return ListaSintesi;
-          
-        }       
+        }
+
         private static List<SintesiRichiesta> CercaRichieste(SintesiRichiesteAssistenzaQuery query)
         {
-
             //TODO PARTE CHIAMATA DB
 
-             //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI           
+            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
             //DATI FAKE - ORA LI LEGGO DA FILE
             string filepath = "Fake/ListaRichieste.json";
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
-                json = r.ReadToEnd();              
+                json = r.ReadToEnd();
             }
 
             List<SintesiRichiesta> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichiesta>>(json);
 
-            return  ListaRichieste; 
-
+            return ListaRichieste;
         }
 
-        #endregion
+        #endregion Interrogazione Fake da Session + Mapper della Richiesta sulla Sintesi
     }
 }
-

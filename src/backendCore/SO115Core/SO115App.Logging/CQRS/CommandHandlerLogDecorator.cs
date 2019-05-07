@@ -1,8 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-using CQRS.Commands;
+﻿using CQRS.Commands;
 using Newtonsoft.Json;
 using Serilog;
+using System;
+using System.Diagnostics;
 
 namespace SO115App.Logging.CQRS
 {

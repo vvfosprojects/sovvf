@@ -17,11 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SO115App.API.Models.Classi.Soccorso.Complessita
 {
@@ -30,7 +25,6 @@ namespace SO115App.API.Models.Classi.Soccorso.Complessita
     /// </summary>
     public interface IComplessita
     {
-
         /// <summary>
         ///   Il codice
         /// </summary>

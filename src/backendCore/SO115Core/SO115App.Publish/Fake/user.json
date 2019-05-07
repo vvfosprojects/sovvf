@@ -15,8 +15,8 @@
 		"regione" : "Lazio",
 		"provincia" : "RM"
 	},
-	"ruolo" : [{
-		"descrizione":"Admin",
+	"ruoli" : [{
+		"descrizione":"GestoreRichieste",
 		"sede" : {
 			"codice" : "RM",
 			"descrizione" : "Comando di Roma",
@@ -47,8 +47,8 @@
 		"regione" : "Lazio",
 		"provincia" : "RM"
 	},
-	"ruolo" : [{
-		"descrizione" :"Admin",
+	"ruoli" : [{
+		"descrizione" :"GestoreRichieste",
 		"sede" : {
 			"codice" : "RM",
 			"descrizione" : "Comando di Roma",
@@ -79,8 +79,8 @@
 		"regione" : "Lazio",
 		"provincia" : "RM"
 	},
-	"ruolo" : [{
-		"descrizione":"User",
+	"ruoli" : [{
+		"descrizione":"CallTracker",
 		"sede" : {
 			"codice" : "RM",
 			"descrizione" : "Comando di Roma",

@@ -17,13 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Persistenza;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
@@ -31,6 +26,10 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace SO115App.API.Models.Classi.Soccorso
 {
@@ -69,7 +68,6 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </remarks>
         public enum Priorita
         {
-
             /// <summary>
             ///   Livello 1
             /// </summary>
@@ -81,17 +79,17 @@ namespace SO115App.API.Models.Classi.Soccorso
             Bassa,
 
             /// <summary>
-            ///   Livello 3 
+            ///   Livello 3
             /// </summary>
             Media,
 
             /// <summary>
-            ///   Livello 4 
+            ///   Livello 4
             /// </summary>
             Alta,
 
             /// <summary>
-            ///   Livello 5 
+            ///   Livello 5
             /// </summary>
             Altissima
         }
@@ -212,7 +210,6 @@ namespace SO115App.API.Models.Classi.Soccorso
                     return ultimoEventoRilevanza.istante.ToString();
                 else
                     return null;
-                
             }
         }
 
@@ -265,7 +262,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             //set;
         }
 
-        public List<Partenza> ListaPartenze{   get; set;  }
+        public List<Partenza> ListaPartenze { get; set; }
 
         /// <summary>
         ///   Indica l'istante di chiusura della richiesta, impostato dall'evento <see cref="ChiusuraRichiesta" />
@@ -280,7 +277,6 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   } in un sinistro simile al Rigopiano
         /// </remarks>
         public virtual List<Tipologia> Tipologie { get; set; }
-
 
         /// <summary>
         ///   La località dove è avvenuto il fatto
@@ -483,7 +479,6 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   Lista delle Competenze della richiesta
         /// </summary>
         public virtual List<Sede> Competenze { get; set; }
-
 
         /// <summary>
         ///   Codice della scheda Nue, estratto dalla prima telefonata che è legata ad una scheda

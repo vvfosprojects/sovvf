@@ -17,12 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using System.IO;
+using CQRS.Queries;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Marker;
-using CQRS.Queries;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using System.Collections.Generic;
+using System.IO;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker
 {
@@ -74,8 +74,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssist
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaMarkerResult Handle(SintesiRichiesteAssistenzaMarkerQuery query)
         {
-
-           var sintesiRichiestaMarker = new List<SintesiRichiestaMarker>();
+            var sintesiRichiestaMarker = new List<SintesiRichiestaMarker>();
 
             sintesiRichiestaMarker = CercaMarkerRichieste(query);
 
@@ -89,24 +88,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssist
 
         private static List<SintesiRichiestaMarker> CercaMarkerRichieste(SintesiRichiesteAssistenzaMarkerQuery query)
         {
-
             //TODO PARTE CHIAMATA DB
-            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI           
-            
+            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
+
             //DATI FAKE - ORA LI LEGGO DA FILE
             string filepath = "Fake/fakeMarkerRichiesta.json";
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
-                json = r.ReadToEnd();              
+                json = r.ReadToEnd();
             }
 
             List<SintesiRichiestaMarker> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichiestaMarker>>(json);
 
-            return  ListaRichieste; 
-
+            return ListaRichieste;
         }
-       
-        #endregion
+
+        #endregion Interrogazione Fake da Session + Mapper della Richiesta sul Marker
     }
 }

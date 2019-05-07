@@ -1,13 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using CQRS.Validation;
+﻿using CQRS.Validation;
 using Serilog;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CQRS.Queries.Validators
 {
-    public class ValidatingQueryHandlerDecorator<TQuery, TResult> : IQueryHandler<TQuery, TResult> where TQuery: IQuery<TResult>
+    public class ValidatingQueryHandlerDecorator<TQuery, TResult> : IQueryHandler<TQuery, TResult> where TQuery : IQuery<TResult>
     {
         private readonly IQueryHandler<TQuery, TResult> decoratee;
         private readonly IEnumerable<IQueryValidator<TQuery, TResult>> validators;

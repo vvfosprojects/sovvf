@@ -29,12 +29,9 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         public List<Squadra> squadre { get; set; }
 
-
         /// <summary>
         ///  Lista dei mezzi coinvolti
         /// </summary>
         public Mezzo mezzo { get; set; }
-
-
     }
 }

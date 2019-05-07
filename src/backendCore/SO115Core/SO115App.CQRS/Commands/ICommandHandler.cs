@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CQRS.Commands
+﻿namespace CQRS.Commands
 {
     public interface ICommandHandler<TCommand>
     {

@@ -17,10 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
 using SO115App.API.Models.Classi.Soccorso.Risorse;
 using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneMezzo.CommandDTO;
 using SO115App.API.Models.Servizi.Infrastruttura.Autenticazione;
+using System;
 
 namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneMezzo
 {

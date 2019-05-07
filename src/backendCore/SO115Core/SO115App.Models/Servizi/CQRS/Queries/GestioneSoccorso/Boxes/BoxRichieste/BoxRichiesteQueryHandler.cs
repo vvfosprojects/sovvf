@@ -17,14 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.IO;
 using CQRS.Queries;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi
 {
@@ -40,7 +40,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
         /// <returns>Elenco dei mezzi disponibili</returns>
         public BoxRichiesteResult Handle(BoxRichiesteQuery query)
         {
-
             // preparazione del DTO
             var boxes = CaricaBox(query);
 
@@ -48,24 +47,21 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
             {
                 BoxRichieste = boxes
             };
-
         }
-
 
         private static BoxInterventi CaricaBox(BoxRichiesteQuery query)
         {
-
             BoxInterventi interventi = new BoxInterventi();
 
             //TODO PARTE CHIAMATA DB
 
-             //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI           
+            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
             //DATI FAKE - ORA LI LEGGO DA FILE
             string filepath = "Fake/ListaRichieste.json";
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
-                json = r.ReadToEnd();              
+                json = r.ReadToEnd();
             }
 
             List<SintesiRichiesta> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichiesta>>(json);
@@ -83,8 +79,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
             interventi.Totale = ListaRichieste.Count;
 
             return interventi;
-
         }
-
     }
 }

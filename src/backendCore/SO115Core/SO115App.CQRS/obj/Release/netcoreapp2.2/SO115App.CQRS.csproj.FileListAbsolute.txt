@@ -1,0 +1,9 @@
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.CQRS\bin\Release\netcoreapp2.2\SO115App.CQRS.deps.json
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.CQRS\bin\Release\netcoreapp2.2\SO115App.CQRS.dll
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.CQRS\bin\Release\netcoreapp2.2\SO115App.CQRS.pdb
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.CQRS\obj\Release\netcoreapp2.2\SO115App.CQRS.csprojAssemblyReference.cache
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.CQRS\obj\Release\netcoreapp2.2\SO115App.CQRS.csproj.CoreCompileInputs.cache
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.CQRS\obj\Release\netcoreapp2.2\SO115App.CQRS.AssemblyInfoInputs.cache
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.CQRS\obj\Release\netcoreapp2.2\SO115App.CQRS.AssemblyInfo.cs
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.CQRS\obj\Release\netcoreapp2.2\SO115App.CQRS.dll
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.CQRS\obj\Release\netcoreapp2.2\SO115App.CQRS.pdb

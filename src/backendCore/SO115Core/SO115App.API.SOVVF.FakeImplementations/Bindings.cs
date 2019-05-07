@@ -23,12 +23,11 @@ namespace SO115App.API.SOVVF.FakeImplementations
     /// <summary>
     ///   Bindings delle implementazioni fake
     /// </summary>
-    public class Bindings 
+    public class Bindings
     {
         /// <summary>
         ///   Contiene le regole di bindings
         /// </summary>
         /// <param name="container">Il container sul quale le registrazioni hanno effetto</param>
-
     }
 }

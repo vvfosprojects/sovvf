@@ -17,8 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Linq;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.Organigramma;
@@ -84,7 +82,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 //fonogramma = richiesta.StatoInvioFonogramma,
                 //ComplessitaIntervento = richiesta.Complessita,
                 partenze = richiesta.ListaPartenze
-               
             };
         }
     }

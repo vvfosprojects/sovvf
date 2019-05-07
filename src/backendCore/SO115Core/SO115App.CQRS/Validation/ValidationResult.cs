@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CQRS.Validation
+﻿namespace CQRS.Validation
 {
     public class ValidationResult
     {

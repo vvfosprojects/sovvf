@@ -1,29 +1,28 @@
-﻿using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using SO115App.API.Hubs;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
-using System.Security.Principal;
-using System.Diagnostics;
+using SO115App.API.Hubs;
 using SO115App.API.Models.Servizi.Infrastruttura;
-using SO115App.Logging;
 using SO115App.CompositionRoot;
+using SO115App.Logging;
+using System.Diagnostics;
+using System.Security.Principal;
+using System.Text;
 
 namespace SO115App.API
 {
     public class Startup
     {
-
         private Container container = new Container();
 
         public Startup(IConfiguration configuration)
@@ -46,12 +45,13 @@ namespace SO115App.API
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader()
-                        .AllowCredentials();                
+                        .AllowCredentials();
                 });
             });
-        
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(option => {
+                .AddJwtBearer(option =>
+                {
                     option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
@@ -59,7 +59,7 @@ namespace SO115App.API
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
-                }); 
+                });
             services.AddSignalR();
             services.AddProgressiveWebApp();
             IntegrateSimpleInjector(services);
@@ -78,13 +78,11 @@ namespace SO115App.API
 
             services.EnableSimpleInjectorCrossWiring(container);
             services.UseSimpleInjectorAspNetRequestScoping(container);
-  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-
             LogConfigurator.Configure();
 
             if (env.IsDevelopment())
@@ -100,13 +98,13 @@ namespace SO115App.API
             app.UseCors("CorsSo115");
             app.UseAuthentication();
 
-            app.UseSignalR( route => 
-                {
+            app.UseSignalR(route =>
+               {
                     //route.MapHub<SubscriptionHub>("/SubscriptionHub");
                     route.MapHub<NotificationHub>("/NotificationHub");
-                    //route.MapHub<NotificationHub>("/NotificationMarkerHub");                    
+                    //route.MapHub<NotificationHub>("/NotificationMarkerHub");
                 }
-            );  
+            );
 
             app.UseHttpsRedirection();
             app.UseMvc();
@@ -116,7 +114,6 @@ namespace SO115App.API
             container.RegisterSingleton<IPrincipal, HttpContextPrincipal>();
             container.RegisterInstance<ILogger>(new DebugLogger());
             container.Verify();
-             
         }
 
         private void InitializeContainer(IApplicationBuilder app)
@@ -139,8 +136,10 @@ namespace SO115App.API
             {
                 this.httpContextAccessor = httpContextAccessor;
             }
+
             public IIdentity Identity => this.Principal.Identity;
             private IPrincipal Principal => this.httpContextAccessor.HttpContext.User;
+
             public bool IsInRole(string role) => this.Principal.IsInRole(role);
         }
 
@@ -152,6 +151,5 @@ namespace SO115App.API
                 Debug.WriteLine(message);
             }
         }
-
     }
 }

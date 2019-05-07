@@ -22,13 +22,11 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Tipologia
     {
-
         public Tipologia(string Codice, string Descrizione, string Icona)
         {
             this.codice = Codice;
             this.descrizione = Descrizione;
             this.icona = Icona;
-
         }
 
         /// <summary>
@@ -55,6 +53,5 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Indica se questa tipologia sarà presente nei "preferiti" nella sezione Filtri
         /// </summary>
         public bool star { get; set; }
-
     }
 }

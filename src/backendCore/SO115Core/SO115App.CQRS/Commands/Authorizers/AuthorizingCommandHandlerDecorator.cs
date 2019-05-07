@@ -1,9 +1,7 @@
-﻿using System;
+﻿using CQRS.Authorization;
+using Serilog;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using CQRS.Authorization;
-using Serilog;
 
 namespace CQRS.Commands.Authorizers
 {

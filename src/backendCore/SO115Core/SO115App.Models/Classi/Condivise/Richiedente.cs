@@ -22,7 +22,6 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Richiedente
     {
-
         public Richiedente(string Nome, string Cognome, string RagineSociale, string Telefono)
         {
             this.nome = Nome;
@@ -30,10 +29,10 @@ namespace SO115App.API.Models.Classi.Condivise
             this.ragioneSociale = RagineSociale;
             this.telefono = Telefono;
         }
+
         public string telefono { get; set; }
         public string nome { get; set; }
         public string cognome { get; set; }
         public string ragioneSociale { get; set; }
-
     }
 }

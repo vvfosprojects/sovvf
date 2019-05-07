@@ -18,14 +18,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Mezzo
     {
-
-        public Mezzo(string Codice, string Descrizione, string Genere,string  Stato, 
+        public Mezzo(string Codice, string Descrizione, string Genere, string Stato,
                      int Appartenenza, Sede Distaccamento)
         {
             this.codice = Codice;
@@ -35,7 +32,6 @@ namespace SO115App.API.Models.Classi.Condivise
             this.appartenenza = Appartenenza;
             this.distaccamento = Distaccamento;
         }
-
 
         /// <summary>
         ///   Codice del mezzo
@@ -111,6 +107,5 @@ namespace SO115App.API.Models.Classi.Condivise
         /// Note eventuali
         /// </summary>
         public string[] notifiche { get; set; }
-
     }
 }

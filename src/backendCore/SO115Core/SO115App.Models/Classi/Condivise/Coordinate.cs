@@ -22,7 +22,6 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Coordinate
     {
-
         public Coordinate(double Latitudine, double Longitudine)
         {
             this.latitudine = Latitudine;
@@ -38,6 +37,5 @@ namespace SO115App.API.Models.Classi.Condivise
         /// Latitudine
         /// </summary>
         public double longitudine { get; set; }
-
     }
 }

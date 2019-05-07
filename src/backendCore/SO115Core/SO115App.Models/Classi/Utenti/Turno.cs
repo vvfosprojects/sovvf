@@ -4,9 +4,8 @@ namespace SO115App.API.Models.Classi.Utenti
 {
     public class TurnoExtra
     {
-        public TurnoExtra(string PrefissoTurno,string DescrizioneTurno,DateTime DataOraInizioTurnoCorrente,DateTime DataOraFineTurnoCorrente)
+        public TurnoExtra(string PrefissoTurno, string DescrizioneTurno, DateTime DataOraInizioTurnoCorrente, DateTime DataOraFineTurnoCorrente)
         {
-            
         }
 
         public string PrefissoTurno { get; set; }

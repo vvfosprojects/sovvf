@@ -17,9 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
@@ -28,6 +25,8 @@ using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefo
 using SO115App.API.Models.Servizi.Infrastruttura.Anagrafiche;
 using SO115App.API.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using System;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata
 {
@@ -81,15 +80,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTe
         {
             var fonte = string.Format("op: {0}", this.getOperatoreAutenticato.Get());
 
-            
             List<Tipologia> ListaTipologie = new List<Tipologia>();
             foreach (string codice in command.idTipiIntervento)
             {
-                Tipologia tipologiaRichiesta = new Tipologia(getTipoInterventoByCodice.Get(codice).Codice, getTipoInterventoByCodice.Get(codice).Descrizione,"");
+                Tipologia tipologiaRichiesta = new Tipologia(getTipoInterventoByCodice.Get(codice).Codice, getTipoInterventoByCodice.Get(codice).Descrizione, "");
                 ListaTipologie.Add(tipologiaRichiesta);
             }
 
-           
             var richiesta = new RichiestaAssistenza()
             {
                 //Geolocalizzazione = command.Geolocalizzazione,

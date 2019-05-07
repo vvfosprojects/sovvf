@@ -22,7 +22,6 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Componente
     {
-
         public Componente(string DescrizioneQualifica, string Nominativo, string Tooltip, bool CapoPartenza, bool Autista, bool Rimpiazzo)
         {
             this.descrizioneQualifica = DescrizioneQualifica;
@@ -31,9 +30,7 @@ namespace SO115App.API.Models.Classi.Condivise
             this.capoPartenza = CapoPartenza;
             this.autista = Autista;
             this.rimpiazzo = Rimpiazzo;
-
         }
-
 
         /// <summary>
         ///   Descrizione qualifica Componente
@@ -51,7 +48,7 @@ namespace SO115App.API.Models.Classi.Condivise
         public string tooltip { get; set; }
 
         /// <summary>
-        ///   Indica se il Componente è un capo Partenza 
+        ///   Indica se il Componente è un capo Partenza
         /// </summary>
         public bool capoPartenza { get; set; }
 
@@ -64,6 +61,5 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Indica se il componente è un rimpiazzo
         /// </summary>
         public bool rimpiazzo { get; set; }
-
     }
 }

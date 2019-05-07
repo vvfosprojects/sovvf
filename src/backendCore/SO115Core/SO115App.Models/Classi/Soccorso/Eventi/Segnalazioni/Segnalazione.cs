@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
-using SO115App.API.Models.Classi.Geo;
 
 namespace SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni
 {

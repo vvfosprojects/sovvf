@@ -17,15 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.API.Models.Classi.Soccorso.Fonogramma;
-using SO115App.API.Models.Classi.Soccorso.Complessita;
-using System.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Marker
 {
@@ -39,8 +34,7 @@ namespace SO115App.API.Models.Classi.Marker
         ///   Costruttore della classe
         /// </summary>
         public SintesiRichiestaMarker()
-        {  
-  
+        {
         }
 
         /// <summary>
@@ -87,7 +81,7 @@ namespace SO115App.API.Models.Classi.Marker
         public string stato { get; set; }
 
         /// <summary>
-        ///   Indica la data in cui è stato marcato RILEVANTE l'ultima volta 
+        ///   Indica la data in cui è stato marcato RILEVANTE l'ultima volta
         /// </summary>
         /// <remarks>
         ///   Una richiesta può essere rilevante se è l'operatore a marcarla come tale, oppure in
@@ -100,6 +94,5 @@ namespace SO115App.API.Models.Classi.Marker
         ///   Opacità della richiesta, serve per opacizzare i Marker che non sono rilevanti ai fini della ricerca effettuata
         /// </summary>
         //public string opacita { get; set; }
-
     }
 }

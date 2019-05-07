@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CQRS.Queries
+﻿namespace CQRS.Queries
 {
     public interface IQuery<TResult>
     {

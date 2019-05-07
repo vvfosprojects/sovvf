@@ -17,11 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.IO;
 using CQRS.Queries;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
+using System.IO;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaPersonale
 {
@@ -37,7 +37,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
         /// <returns>Elenco dei mezzi disponibili</returns>
         public BoxPersonaleResult Handle(BoxPersonaleQuery query)
         {
-
             // preparazione del DTO
             var boxes = CaricaBox(query);
 
@@ -45,31 +44,26 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
             {
                 BoxPersonale = boxes
             };
-
         }
-
 
         private static BoxPersonale CaricaBox(BoxPersonaleQuery query)
         {
-
             BoxPersonale personale = new BoxPersonale();
 
             //TODO PARTE CHIAMATA DB
 
-             //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI           
+            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
             //DATI FAKE - ORA LI LEGGO DA FILE
             string filepath = "Fake/ListaPersonale.json";
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
-                json = r.ReadToEnd();              
+                json = r.ReadToEnd();
             }
 
             personale = JsonConvert.DeserializeObject<BoxPersonale>(json);
 
             return personale;
-
         }
-
     }
 }

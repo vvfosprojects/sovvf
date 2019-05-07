@@ -22,10 +22,8 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Sede
     {
-
-        public Sede(string Codice,string Descrizione,string Indirizzo, Coordinate Coordinate,string TipoSede, string Label, string Icona, string Regione, string Provincia)
+        public Sede(string Codice, string Descrizione, string Indirizzo, Coordinate Coordinate, string TipoSede, string Label, string Icona, string Regione, string Provincia)
         {
-
             this.codice = Codice;
             this.descrizione = Descrizione;
             this.indirizzo = Indirizzo;
@@ -35,7 +33,6 @@ namespace SO115App.API.Models.Classi.Condivise
             this.icona = Icona;
             this.regione = Regione;
             this.provincia = Provincia;
-       
         }
 
         /// <summary>
@@ -82,6 +79,5 @@ namespace SO115App.API.Models.Classi.Condivise
         /// Icona
         /// </summary>
         public string icona { get; set; }
-
     }
 }

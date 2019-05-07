@@ -1,8 +1,6 @@
 ﻿using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SO115App.API.Models.Classi.Soccorso
 {
@@ -17,7 +15,5 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             return Enumerable.Empty<RichiestaAssistenza>();
         }
-
     }
 }
-
