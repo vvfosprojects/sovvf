@@ -1,4 +1,4 @@
-<div class="row p-2">
+<div *ngIf="mezzi" class="row p-2">
     <div class="col-12">
         <div class="row">
             <div class="col-7">
@@ -54,5 +54,10 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div *ngIf="!mezzi" class="row" style="min-height: 113px">
+    <div class="w-100 text-center">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw my-4"></i>
     </div>
 </div>

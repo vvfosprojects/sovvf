@@ -13,7 +13,9 @@ export class BoxPersonaleComponent implements OnChanges {
     presenze = {} as Presenze;
 
     ngOnChanges(): void {
-        this.getPresenze();
+        if (this.personale) {
+            this.getPresenze();
+        }
     }
 
     getPresenze() {

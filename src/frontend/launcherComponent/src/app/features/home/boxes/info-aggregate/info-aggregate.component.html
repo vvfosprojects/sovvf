@@ -5,7 +5,7 @@
                 <!-- box interventi -->
                 <div class="col-4 pr-0">
                     <div class="card app-shadow">
-                        <ng-container *ngIf="richieste">
+                        <ng-container>
                             <app-box-interventi [interventi]="richieste" [boxClick]="(boxClick$ | async)"
                                                 (clickRichieste)="clickBox('richieste', $event)"></app-box-interventi>
                         </ng-container>
@@ -14,7 +14,7 @@
                 <!-- box interventi -->
                 <div class="col-4 pr-0">
                     <div class="card app-shadow">
-                        <ng-container *ngIf="mezzi">
+                        <ng-container>
                             <app-box-mezzi [mezzi]="mezzi" [boxClick]="(boxClick$ | async)"
                                            (clickMezzi)="clickBox('mezzi', $event)"></app-box-mezzi>
                         </ng-container>
@@ -23,7 +23,7 @@
                 <!-- box interventi -->
                 <div class="col-4 pr-0">
                     <div class="card app-shadow">
-                        <ng-container *ngIf="personale">
+                        <ng-container>
                             <app-box-personale [personale]="personale"
                                                (clickServizi)="clickServizi($event)"></app-box-personale>
                         </ng-container>
