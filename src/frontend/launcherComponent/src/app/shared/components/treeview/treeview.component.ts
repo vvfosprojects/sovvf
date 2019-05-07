@@ -23,7 +23,7 @@ import { Observable } from 'rxjs';
     selector: 'app-shared-treeview',
     templateUrl: './treeview.component.html',
     styleUrls: ['./treeview.component.css'],
-    encapsulation: ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.Emulated,
     providers: [
         { provide: TreeviewEventParser, useClass: OrderDownlineTreeviewEventParser },
     ]
