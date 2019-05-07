@@ -1,7 +1,7 @@
 .tutto-schermo {
     width:100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, .65);
+    background-color: rgb(52,58,64);
     position: absolute;
     top: 0;
     left: 0;
