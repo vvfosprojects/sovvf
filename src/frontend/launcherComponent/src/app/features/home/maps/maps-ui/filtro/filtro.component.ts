@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MapsFiltroState } from '../../../store/states/maps/maps-filtro.state';
 import { Observable, Subscription } from 'rxjs';
@@ -9,7 +9,8 @@ import { MarkerFiltro } from '../../../../../shared/interface/marker-filtro.inte
 @Component({
     selector: 'app-maps-filtro',
     templateUrl: './filtro.component.html',
-    styleUrls: ['./filtro.component.css']
+    styleUrls: ['./filtro.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class MapsFiltroComponent implements OnDestroy {
     subscription = new Subscription();
@@ -22,7 +23,7 @@ export class MapsFiltroComponent implements OnDestroy {
                 config: NgbDropdownConfig) {
         this.subscription.add(this.filtroMarker$.subscribe((filtro: MarkerFiltro[]) => this.filtroMarker = filtro));
         config.placement = 'bottom-right';
-        config.autoClose = false;
+        config.autoClose = 'outside';
     }
 
     ngOnDestroy(): void {
