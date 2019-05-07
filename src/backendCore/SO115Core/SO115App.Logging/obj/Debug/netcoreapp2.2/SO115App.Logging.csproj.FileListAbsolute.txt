@@ -1,0 +1,12 @@
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.Logging\bin\Debug\netcoreapp2.2\SO115App.Logging.deps.json
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.Logging\bin\Debug\netcoreapp2.2\SO115App.Logging.dll
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.Logging\bin\Debug\netcoreapp2.2\SO115App.Logging.pdb
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.Logging\bin\Debug\netcoreapp2.2\SO115App.CQRS.dll
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.Logging\bin\Debug\netcoreapp2.2\SO115App.CQRS.pdb
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.Logging\obj\Debug\netcoreapp2.2\SO115App.Logging.csprojAssemblyReference.cache
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.Logging\obj\Debug\netcoreapp2.2\SO115App.Logging.csproj.CoreCompileInputs.cache
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.Logging\obj\Debug\netcoreapp2.2\SO115App.Logging.AssemblyInfoInputs.cache
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.Logging\obj\Debug\netcoreapp2.2\SO115App.Logging.AssemblyInfo.cs
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.Logging\obj\Debug\netcoreapp2.2\SO115App.Logging.csproj.CopyComplete
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.Logging\obj\Debug\netcoreapp2.2\SO115App.Logging.dll
+C:\Lavoro\sovvf\src\backendCore\SO115Core\SO115App.Logging\obj\Debug\netcoreapp2.2\SO115App.Logging.pdb

@@ -1,39 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-
 using SO115App.API.Hubs;
-
-using SO115App.API.CompositionRoot;
-
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
-using SO115App.API.Models.Servizi;
 using System.Security.Principal;
-using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using System.Diagnostics;
 using SO115App.API.Models.Servizi.Infrastruttura;
-using Microsoft.AspNetCore.SignalR;
-
-/* using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste; */
-
+using SO115App.Logging;
+using SO115App.CompositionRoot;
 
 namespace SO115App.API
 {
@@ -100,6 +84,9 @@ namespace SO115App.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
+            LogConfigurator.Configure();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -128,27 +115,6 @@ namespace SO115App.API
             InitializeContainer(app);
             container.RegisterSingleton<IPrincipal, HttpContextPrincipal>();
             container.RegisterInstance<ILogger>(new DebugLogger());
-
-            //REGISTRAZIONE DI TUTTI GLI HUB DI SIGNALR PER 
-            //FARLO FUNZIONARE CON SIMPLE INJECTION
-            //SE SI AGGIUNGONO NUOVI HUB VA AGGIUNTO ANCHE IL CICLO CHE LO REGISTRI IN TUTTE LE SUE ISTANZE
-            //******************************************************************************************************/
-/*             foreach (Type type in container.GetTypesToRegister(typeof(Hub), typeof(NotificationHub).Assembly))
-            {
-                container.Register(type, type, Lifestyle.Scoped);
-            }
-
-            foreach (Type type in container.GetTypesToRegister(typeof(Hub), typeof(SubscriptionHub).Assembly))
-            {
-                container.Register(type, type, Lifestyle.Scoped);
-            }
-
-            foreach (Type type in container.GetTypesToRegister(typeof(Hub), typeof(NotificationMarkerHub).Assembly))
-            {
-                container.Register(type, type, Lifestyle.Scoped);
-            } */
-            //******************************************************************************************************/
-
             container.Verify();
              
         }
@@ -159,7 +125,7 @@ namespace SO115App.API
             container.RegisterMvcControllers(app);
             container.RegisterMvcViewComponents(app);
 
-            Configurator.Configure(container);
+            Configurator.Bind(container);
 
             // Allow Simple Injector to resolve services from ASP.NET Core.
             container.AutoCrossWireAspNetComponents(app);

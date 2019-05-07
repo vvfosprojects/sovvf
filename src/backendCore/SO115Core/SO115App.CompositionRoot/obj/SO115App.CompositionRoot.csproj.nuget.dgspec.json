@@ -1,0 +1,347 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CompositionRoot\\SO115App.CompositionRoot.csproj": {}
+  },
+  "projects": {
+    "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.SOVVF.FakeImplementations\\SO115App.API.SOVVF.FakeImplementations.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.SOVVF.FakeImplementations\\SO115App.API.SOVVF.FakeImplementations.csproj",
+        "projectName": "SO115App.API.SOVVF.FakeImplementations",
+        "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.SOVVF.FakeImplementations\\SO115App.API.SOVVF.FakeImplementations.csproj",
+        "packagesPath": "C:\\Users\\Alkemis\\.nuget\\packages\\",
+        "outputPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.SOVVF.FakeImplementations\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\ProgramData\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Alkemis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {
+              "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Models\\SO115App.Models.csproj": {
+                "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Models\\SO115App.Models.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Bogus": {
+              "target": "Package",
+              "version": "[27.0.1, )"
+            },
+            "Microsoft.AspNetCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "Microsoft.AspNetCore.Razor.Design": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "SimpleInjector": {
+              "target": "Package",
+              "version": "[4.5.2, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CompositionRoot\\SO115App.CompositionRoot.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CompositionRoot\\SO115App.CompositionRoot.csproj",
+        "projectName": "SO115App.CompositionRoot",
+        "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CompositionRoot\\SO115App.CompositionRoot.csproj",
+        "packagesPath": "C:\\Users\\Alkemis\\.nuget\\packages\\",
+        "outputPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CompositionRoot\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\ProgramData\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Alkemis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {
+              "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.SOVVF.FakeImplementations\\SO115App.API.SOVVF.FakeImplementations.csproj": {
+                "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.SOVVF.FakeImplementations\\SO115App.API.SOVVF.FakeImplementations.csproj"
+              },
+              "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CQRS\\SO115App.CQRS.csproj": {
+                "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CQRS\\SO115App.CQRS.csproj"
+              },
+              "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Logging\\SO115App.Logging.csproj": {
+                "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Logging\\SO115App.Logging.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "SimpleInjector": {
+              "target": "Package",
+              "version": "[4.5.2, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CQRS\\SO115App.CQRS.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CQRS\\SO115App.CQRS.csproj",
+        "projectName": "SO115App.CQRS",
+        "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CQRS\\SO115App.CQRS.csproj",
+        "packagesPath": "C:\\Users\\Alkemis\\.nuget\\packages\\",
+        "outputPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CQRS\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\ProgramData\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Alkemis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[2.8.0, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Logging\\SO115App.Logging.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Logging\\SO115App.Logging.csproj",
+        "projectName": "SO115App.Logging",
+        "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Logging\\SO115App.Logging.csproj",
+        "packagesPath": "C:\\Users\\Alkemis\\.nuget\\packages\\",
+        "outputPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Logging\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\ProgramData\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Alkemis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {
+              "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CQRS\\SO115App.CQRS.csproj": {
+                "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CQRS\\SO115App.CQRS.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.2, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[2.8.0, )"
+            },
+            "Serilog.Sinks.Trace": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Models\\SO115App.Models.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Models\\SO115App.Models.csproj",
+        "projectName": "SO115App.Models",
+        "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Models\\SO115App.Models.csproj",
+        "packagesPath": "C:\\Users\\Alkemis\\.nuget\\packages\\",
+        "outputPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Models\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\ProgramData\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Alkemis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {
+              "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CQRS\\SO115App.CQRS.csproj": {
+                "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CQRS\\SO115App.CQRS.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.2, )"
+            },
+            "SimpleInjector": {
+              "target": "Package",
+              "version": "[4.5.2, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}

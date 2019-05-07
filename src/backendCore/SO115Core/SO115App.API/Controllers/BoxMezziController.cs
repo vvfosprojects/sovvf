@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Servizi.CQRS.Queries;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes.ResultDTO;
+
 
 namespace SO115App.API.Controllers
 {
@@ -18,7 +18,7 @@ namespace SO115App.API.Controllers
     public class BoxMezziController: ControllerBase
     {
 
-        private readonly  IBoxMezziQueryHandler<BoxMezziQuery, BoxMezziResult> handler;
+        private readonly  IQueryHandler<BoxMezziQuery, BoxMezziResult> handler;
         private readonly IHubContext<NotificationHub> _NotificationHub;
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace SO115App.API.Controllers
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
         public BoxMezziController(IHubContext<NotificationHub> NotificationHubContext,            
-            IBoxMezziQueryHandler<BoxMezziQuery, BoxMezziResult> handler)
+            IQueryHandler<BoxMezziQuery, BoxMezziResult> handler)
         {            
             this.handler = handler;
             _NotificationHub = NotificationHubContext;

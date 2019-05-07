@@ -1,19 +1,9 @@
 using System.Threading.Tasks;
 using SO115App.API.Models.Classi.Notifications;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Models.Servizi;
 using System;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
-using Microsoft.AspNetCore.Http;
-using SO115App.API.Models.Servizi.CQRS.Commands;
-using SO115App.API.Models.Servizi.CQRS.Queries;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
-using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata.CommandDTO;
-using System.IO;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.API.Models.Classi.Autenticazione;
-using SO115App.API.Models.Classi.Utenti;
 using System.Collections.Generic;
 
 namespace SO115App.API.Hubs

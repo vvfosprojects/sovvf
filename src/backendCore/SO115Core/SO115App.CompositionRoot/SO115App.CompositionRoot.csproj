@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SimpleInjector" Version="4.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SO115App.API.SOVVF.FakeImplementations\SO115App.API.SOVVF.FakeImplementations.csproj" />
+    <ProjectReference Include="..\SO115App.CQRS\SO115App.CQRS.csproj" />
+    <ProjectReference Include="..\SO115App.Logging\SO115App.Logging.csproj" />
+  </ItemGroup>
+
+</Project>

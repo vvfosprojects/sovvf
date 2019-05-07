@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.2": {
-      "Bogus/26.0.2": {
+      "Bogus/27.0.1": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Bogus.dll": {}
@@ -2733,7 +2733,7 @@
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
       },
-      "Newtonsoft.Json/11.0.2": {
+      "Newtonsoft.Json/12.0.2": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
@@ -2983,7 +2983,19 @@
           }
         }
       },
-      "SimpleInjector/4.5.1": {
+      "Serilog/2.8.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections.NonGeneric": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Serilog.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Serilog.dll": {}
+        }
+      },
+      "SimpleInjector/4.5.2": {
         "type": "package",
         "dependencies": {
           "System.ComponentModel": "4.0.1"
@@ -3068,7 +3080,7 @@
           "System.Threading": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Collections.NonGeneric.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Collections.NonGeneric.dll": {}
@@ -4472,30 +4484,45 @@
           "lib/netstandard1.3/System.Xml.XPath.XDocument.dll": {}
         }
       },
-      "SO115App.API.Models/1.0.0": {
+      "SO115App.CQRS/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.2",
         "dependencies": {
-          "SimpleInjector": "4.5.1"
+          "Serilog": "2.8.0"
         },
         "compile": {
-          "bin/placeholder/SO115App.API.Models.dll": {}
+          "bin/placeholder/SO115App.CQRS.dll": {}
         },
         "runtime": {
-          "bin/placeholder/SO115App.API.Models.dll": {}
+          "bin/placeholder/SO115App.CQRS.dll": {}
+        }
+      },
+      "SO115App.Models/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.2",
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.2",
+          "SO115App.CQRS": "1.0.0",
+          "SimpleInjector": "4.5.2"
+        },
+        "compile": {
+          "bin/placeholder/SO115App.Models.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SO115App.Models.dll": {}
         }
       }
     }
   },
   "libraries": {
-    "Bogus/26.0.2": {
-      "sha512": "lmiH9iJor/2UUKa2Eo/yEk6X72hrKQmEfnWGhohBMh5m6hVSK9o49uSX4bFSBnUdrH4hDnh9twdCfyjiTBgIJA==",
+    "Bogus/27.0.1": {
+      "sha512": "+Sz/jbEvGUYkhISItjoismJXVzA+gXYtuAo1xvyA1QMohS5zWd0lkN+OTnyk63FyZcSX66vgQ2DM9u97VJ+fJQ==",
       "type": "package",
-      "path": "bogus/26.0.2",
+      "path": "bogus/27.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "bogus.26.0.2.nupkg.sha512",
+        "bogus.27.0.1.nupkg.sha512",
         "bogus.nuspec",
         "lib/net40/Bogus.dll",
         "lib/net40/Bogus.pdb",
@@ -7401,10 +7428,10 @@
         "netstandard.library.nuspec"
       ]
     },
-    "Newtonsoft.Json/11.0.2": {
-      "sha512": "IvJe1pj7JHEsP8B8J8DwlMEx8UInrs/x+9oVY+oCD13jpLu4JbJU2WCIsMRn5C4yW9+DgkaO8uiVE5VHKjpmdQ==",
+    "Newtonsoft.Json/12.0.2": {
+      "sha512": "rTK0s2EKlfHsQsH6Yx2smvcTCeyoDNgCW7FEYyV01drPlh2T243PR2DiDXqtC5N4GDm4Ma/lkxfW5a/4793vbA==",
       "type": "package",
-      "path": "newtonsoft.json/11.0.2",
+      "path": "newtonsoft.json/12.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7427,7 +7454,7 @@
         "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
         "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
         "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
-        "newtonsoft.json.11.0.2.nupkg.sha512",
+        "newtonsoft.json.12.0.2.nupkg.sha512",
         "newtonsoft.json.nuspec"
       ]
     },
@@ -7735,10 +7762,36 @@
         "version.txt"
       ]
     },
-    "SimpleInjector/4.5.1": {
-      "sha512": "F7VZl+7wbnZ1JVyytgXSnjpN9Bac0i6d62MVwcr/IZx5FRMhs3iEp+rXlLuvTqGEu7E8d9js+oJdAOTW32JNAQ==",
+    "Serilog/2.8.0": {
+      "sha512": "zjuKXW5IQws43IHX7VY9nURsaCiBYh2kyJCWLJRSWrTsx/syBKHV8MibWe2A+QH3Er0AiwA+OJmO3DhFJDY1+A==",
       "type": "package",
-      "path": "simpleinjector/4.5.1",
+      "path": "serilog/2.8.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net45/Serilog.dll",
+        "lib/net45/Serilog.pdb",
+        "lib/net45/Serilog.xml",
+        "lib/net46/Serilog.dll",
+        "lib/net46/Serilog.pdb",
+        "lib/net46/Serilog.xml",
+        "lib/netstandard1.0/Serilog.dll",
+        "lib/netstandard1.0/Serilog.pdb",
+        "lib/netstandard1.0/Serilog.xml",
+        "lib/netstandard1.3/Serilog.dll",
+        "lib/netstandard1.3/Serilog.pdb",
+        "lib/netstandard1.3/Serilog.xml",
+        "lib/netstandard2.0/Serilog.dll",
+        "lib/netstandard2.0/Serilog.pdb",
+        "lib/netstandard2.0/Serilog.xml",
+        "serilog.2.8.0.nupkg.sha512",
+        "serilog.nuspec"
+      ]
+    },
+    "SimpleInjector/4.5.2": {
+      "sha512": "hNh6IJdWDuVDdfLmuP38Q6PTYMZ3chA/TiKFiandQP7Ij4D2Yhw35IsOUb45iaYb/qQ18xCSOnl+HEcNaqGUGQ==",
+      "type": "package",
+      "path": "simpleinjector/4.5.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7752,7 +7805,7 @@
         "lib/netstandard1.3/SimpleInjector.xml",
         "lib/netstandard2.0/SimpleInjector.dll",
         "lib/netstandard2.0/SimpleInjector.xml",
-        "simpleinjector.4.5.1.nupkg.sha512",
+        "simpleinjector.4.5.2.nupkg.sha512",
         "simpleinjector.nuspec"
       ]
     },
@@ -8073,7 +8126,7 @@
       ]
     },
     "System.ComponentModel/4.0.1": {
-      "sha512": "oBZFnm7seFiVfugsIyOvQCWobNZs7FzqDV/B7tx20Ep/l3UUFCPDkdTnCNaJZTU27zjeODmy2C/cP60u3D4c9w==",
+      "sha512": "tN5DPMYg6yFO5lF5L5hF6TIZDcRQ/+f1YcXGP8y2Yy4971XoxPOLH4lkkL20v6zb4aAVsp+xrkRwzMFeR5ZHqw==",
       "type": "package",
       "path": "system.componentmodel/4.0.1",
       "files": [
@@ -12209,41 +12262,49 @@
         "system.xml.xpath.xdocument.nuspec"
       ]
     },
-    "SO115App.API.Models/1.0.0": {
+    "SO115App.CQRS/1.0.0": {
       "type": "project",
-      "path": "../SO115App.API.Models/SO115App.API.Models.csproj",
-      "msbuildProject": "../SO115App.API.Models/SO115App.API.Models.csproj"
+      "path": "../SO115App.CQRS/SO115App.CQRS.csproj",
+      "msbuildProject": "../SO115App.CQRS/SO115App.CQRS.csproj"
+    },
+    "SO115App.Models/1.0.0": {
+      "type": "project",
+      "path": "../SO115App.Models/SO115App.Models.csproj",
+      "msbuildProject": "../SO115App.Models/SO115App.Models.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.2": [
-      "Bogus >= 26.0.2",
+      "Bogus >= 27.0.1",
       "Microsoft.AspNetCore.App >= 2.2.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
       "Microsoft.NETCore.App >= 2.2.0",
-      "SO115App.API.Models >= 1.0.0",
-      "SimpleInjector >= 4.5.1"
+      "SO115App.Models >= 1.0.0",
+      "SimpleInjector >= 4.5.2"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\VJTechnology\\.nuget\\packages\\": {},
+    "C:\\Users\\Alkemis\\.nuget\\packages\\": {},
+    "C:\\ProgramData\\Xamarin\\NuGet\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.SOVVF.FakeImplementations\\SO115App.API.SOVVF.FakeImplementations.csproj",
+      "projectUniqueName": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.SOVVF.FakeImplementations\\SO115App.API.SOVVF.FakeImplementations.csproj",
       "projectName": "SO115App.API.SOVVF.FakeImplementations",
-      "projectPath": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.SOVVF.FakeImplementations\\SO115App.API.SOVVF.FakeImplementations.csproj",
-      "packagesPath": "C:\\Users\\VJTechnology\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.SOVVF.FakeImplementations\\obj\\",
+      "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.SOVVF.FakeImplementations\\SO115App.API.SOVVF.FakeImplementations.csproj",
+      "packagesPath": "C:\\Users\\Alkemis\\.nuget\\packages\\",
+      "outputPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.SOVVF.FakeImplementations\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
+        "C:\\ProgramData\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\VJTechnology\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Alkemis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.2"
@@ -12255,8 +12316,8 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.Models\\SO115App.API.Models.csproj": {
-              "projectPath": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.Models\\SO115App.API.Models.csproj"
+            "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Models\\SO115App.Models.csproj": {
+              "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Models\\SO115App.Models.csproj"
             }
           }
         }
@@ -12272,7 +12333,7 @@
         "dependencies": {
           "Bogus": {
             "target": "Package",
-            "version": "[26.0.2, )"
+            "version": "[27.0.1, )"
           },
           "Microsoft.AspNetCore.App": {
             "suppressParent": "All",
@@ -12293,7 +12354,7 @@
           },
           "SimpleInjector": {
             "target": "Package",
-            "version": "[4.5.1, )"
+            "version": "[4.5.2, )"
           }
         },
         "imports": [

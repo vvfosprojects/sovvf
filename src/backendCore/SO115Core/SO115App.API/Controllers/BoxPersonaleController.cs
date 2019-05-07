@@ -1,5 +1,6 @@
 using System.Net;
 using System.Threading.Tasks;
+using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -7,7 +8,6 @@ using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes.ResultDTO;
 
 namespace SO115App.API.Controllers
 {
@@ -17,7 +17,7 @@ namespace SO115App.API.Controllers
     public class BoxPersonaleController: ControllerBase
     {
 
-        private readonly  IBoxPersonaleQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> handler;
+        private readonly  IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> handler;
         private readonly IHubContext<NotificationHub> _NotificationHub;
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace SO115App.API.Controllers
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
         public BoxPersonaleController(IHubContext<NotificationHub> NotificationHubContext,            
-            IBoxPersonaleQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> handler)
+            IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> handler)
         {            
             this.handler = handler;
             _NotificationHub = NotificationHubContext;

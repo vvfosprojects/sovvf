@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "fc5769f6d7f5581085c70a72bb3f6c7b78a9b524"
+    "signature": "ef8b4432b45921ba84ded9ec9befca9d33818b51"
   },
   "compilationOptions": {
     "defines": [
@@ -28,11 +28,12 @@
           "Microsoft.AspNetCore.App": "2.2.0",
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
           "Microsoft.NETCore.App": "2.2.0",
-          "SO115App.API.CompositionRoot": "1.0.0",
-          "SO115App.API.Models": "1.0.0",
-          "SimpleInjector": "4.5.1",
-          "SimpleInjector.Integration.AspNetCore": "4.5.1",
-          "SimpleInjector.Integration.AspNetCore.Mvc": "4.5.1",
+          "SO115App.CompositionRoot": "1.0.0",
+          "SO115App.Logging": "1.0.0",
+          "SO115App.Models": "1.0.0",
+          "SimpleInjector": "4.5.2",
+          "SimpleInjector.Integration.AspNetCore": "4.5.2",
+          "SimpleInjector.Integration.AspNetCore.Mvc": "4.5.2",
           "System.IO": "4.3.0",
           "WebEssentials.AspNetCore.PWA": "1.0.49"
         },
@@ -43,11 +44,11 @@
           "SO115App.API.dll": {}
         }
       },
-      "Bogus/26.0.2": {
+      "Bogus/27.0.1": {
         "runtime": {
           "lib/netstandard2.0/Bogus.dll": {
-            "assemblyVersion": "26.0.2.0",
-            "fileVersion": "26.0.2.0"
+            "assemblyVersion": "27.0.1.0",
+            "fileVersion": "27.0.1.0"
           }
         },
         "compile": {
@@ -55,6 +56,17 @@
         }
       },
       "Microsoft.AspNet.SignalR/2.4.1": {},
+      "Newtonsoft.Json/12.0.2": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.2.23222"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        }
+      },
       "NWebsec.AspNetCore.Core/2.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Http.Abstractions": "2.2.0"
@@ -99,62 +111,91 @@
           "lib/netstandard2.0/NWebsec.AspNetCore.Mvc.TagHelpers.dll": {}
         }
       },
-      "SimpleInjector/4.5.1": {
+      "Serilog/2.8.0": {
+        "dependencies": {
+          "System.Collections.NonGeneric": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Serilog.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.8.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Serilog.dll": {}
+        }
+      },
+      "Serilog.Sinks.Trace/2.1.0": {
+        "dependencies": {
+          "Serilog": "2.8.0",
+          "System.Diagnostics.TraceSource": "4.0.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/Serilog.Sinks.Trace.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.1.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.3/Serilog.Sinks.Trace.dll": {}
+        }
+      },
+      "SimpleInjector/4.5.2": {
         "dependencies": {
           "System.ComponentModel": "4.0.1"
         },
         "runtime": {
           "lib/netstandard2.0/SimpleInjector.dll": {
-            "assemblyVersion": "4.5.1.0",
-            "fileVersion": "4.5.1.0"
+            "assemblyVersion": "4.5.2.0",
+            "fileVersion": "4.5.2.0"
           }
         },
         "compile": {
           "lib/netstandard2.0/SimpleInjector.dll": {}
         }
       },
-      "SimpleInjector.Integration.AspNetCore/4.5.1": {
+      "SimpleInjector.Integration.AspNetCore/4.5.2": {
         "dependencies": {
           "Microsoft.AspNetCore.Hosting.Abstractions": "2.2.0",
           "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
-          "SimpleInjector": "4.5.1"
+          "SimpleInjector": "4.5.2"
         },
         "runtime": {
           "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.dll": {
-            "assemblyVersion": "4.5.1.0",
-            "fileVersion": "4.5.1.0"
+            "assemblyVersion": "4.5.2.0",
+            "fileVersion": "4.5.2.0"
           }
         },
         "compile": {
           "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.dll": {}
         }
       },
-      "SimpleInjector.Integration.AspNetCore.Mvc/4.5.1": {
+      "SimpleInjector.Integration.AspNetCore.Mvc/4.5.2": {
         "dependencies": {
           "Microsoft.AspNetCore.Mvc.Razor": "2.2.0",
           "Microsoft.AspNetCore.Mvc.RazorPages": "2.2.0",
-          "SimpleInjector.Integration.AspNetCore.Mvc.Core": "4.5.1"
+          "SimpleInjector.Integration.AspNetCore.Mvc.Core": "4.5.2"
         },
         "runtime": {
           "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.Mvc.dll": {
-            "assemblyVersion": "4.5.1.0",
-            "fileVersion": "4.5.1.0"
+            "assemblyVersion": "4.5.2.0",
+            "fileVersion": "4.5.2.0"
           }
         },
         "compile": {
           "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.Mvc.dll": {}
         }
       },
-      "SimpleInjector.Integration.AspNetCore.Mvc.Core/4.5.1": {
+      "SimpleInjector.Integration.AspNetCore.Mvc.Core/4.5.2": {
         "dependencies": {
           "Microsoft.AspNetCore.Mvc.Core": "2.2.0",
           "Microsoft.AspNetCore.Mvc.ViewFeatures": "2.2.0",
-          "SimpleInjector.Integration.AspNetCore": "4.5.1"
+          "SimpleInjector.Integration.AspNetCore": "4.5.2"
         },
         "runtime": {
           "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.Mvc.Core.dll": {
-            "assemblyVersion": "4.5.1.0",
-            "fileVersion": "4.5.1.0"
+            "assemblyVersion": "4.5.2.0",
+            "fileVersion": "4.5.2.0"
           }
         },
         "compile": {
@@ -164,6 +205,29 @@
       "System.ComponentModel/4.0.1": {
         "dependencies": {
           "System.Runtime": "4.3.0"
+        }
+      },
+      "System.Diagnostics.TraceSource/4.0.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.2.0",
+          "System.Collections": "4.3.0",
+          "System.Diagnostics.Debug": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Threading": "4.3.0",
+          "runtime.native.System": "4.3.0"
+        },
+        "runtimeTargets": {
+          "runtime/unix/lib/_._": {
+            "rid": "unix",
+            "assetType": "runtime"
+          },
+          "runtime/win/lib/_._": {
+            "rid": "win",
+            "assetType": "runtime"
+          }
         }
       },
       "WebEssentials.AspNetCore.PWA/1.0.49": {
@@ -187,47 +251,74 @@
           "lib/netstandard2.0/WebEssentials.AspNetCore.Pwa.dll": {}
         }
       },
-      "SO115App.API.CompositionRoot/1.0.0": {
-        "dependencies": {
-          "SO115App.API.Models": "1.0.0",
-          "SO115App.API.SOVVF.FakeImplementations": "1.0.0",
-          "SimpleInjector": "4.5.1",
-          "SimpleInjector.Integration.AspNetCore.Mvc": "4.5.1"
-        },
-        "runtime": {
-          "SO115App.API.CompositionRoot.dll": {}
-        },
-        "compile": {
-          "SO115App.API.CompositionRoot.dll": {}
-        }
-      },
-      "SO115App.API.Models/1.0.0": {
-        "dependencies": {
-          "SimpleInjector": "4.5.1"
-        },
-        "runtime": {
-          "SO115App.API.Models.dll": {}
-        },
-        "compile": {
-          "SO115App.API.Models.dll": {}
-        }
-      },
       "SO115App.API.SOVVF.FakeImplementations/1.0.0": {
         "dependencies": {
-          "Bogus": "26.0.2",
-          "SO115App.API.Models": "1.0.0",
-          "SimpleInjector": "4.5.1"
+          "Bogus": "27.0.1",
+          "SO115App.Models": "1.0.0",
+          "SimpleInjector": "4.5.2"
         },
         "runtime": {
           "SO115App.API.SOVVF.FakeImplementations.dll": {}
         },
         "compile": {
           "SO115App.API.SOVVF.FakeImplementations.dll": {}
+        }
+      },
+      "SO115App.CompositionRoot/1.0.0": {
+        "dependencies": {
+          "SO115App.API.SOVVF.FakeImplementations": "1.0.0",
+          "SO115App.CQRS": "1.0.0",
+          "SO115App.Logging": "1.0.0",
+          "SimpleInjector": "4.5.2"
+        },
+        "runtime": {
+          "SO115App.CompositionRoot.dll": {}
+        },
+        "compile": {
+          "SO115App.CompositionRoot.dll": {}
+        }
+      },
+      "SO115App.CQRS/1.0.0": {
+        "dependencies": {
+          "Serilog": "2.8.0"
+        },
+        "runtime": {
+          "SO115App.CQRS.dll": {}
+        },
+        "compile": {
+          "SO115App.CQRS.dll": {}
+        }
+      },
+      "SO115App.Logging/1.0.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.2",
+          "SO115App.CQRS": "1.0.0",
+          "Serilog": "2.8.0",
+          "Serilog.Sinks.Trace": "2.1.0"
+        },
+        "runtime": {
+          "SO115App.Logging.dll": {}
+        },
+        "compile": {
+          "SO115App.Logging.dll": {}
+        }
+      },
+      "SO115App.Models/1.0.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.2",
+          "SO115App.CQRS": "1.0.0",
+          "SimpleInjector": "4.5.2"
+        },
+        "runtime": {
+          "SO115App.Models.dll": {}
+        },
+        "compile": {
+          "SO115App.Models.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
         "dependencies": {
-          "Newtonsoft.Json": "11.0.2",
+          "Newtonsoft.Json": "12.0.2",
           "Newtonsoft.Json.Bson": "1.0.1"
         },
         "compile": {
@@ -515,7 +606,7 @@
       "Microsoft.AspNetCore.Authentication.OAuth/2.2.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Authentication": "2.2.0",
-          "Newtonsoft.Json": "11.0.2"
+          "Newtonsoft.Json": "12.0.2"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.AspNetCore.Authentication.OAuth.dll": {}
@@ -793,7 +884,7 @@
           "Microsoft.AspNetCore.Http.Connections.Common": "1.1.0",
           "Microsoft.AspNetCore.Routing": "2.2.0",
           "Microsoft.AspNetCore.WebSockets": "2.2.0",
-          "Newtonsoft.Json": "11.0.2",
+          "Newtonsoft.Json": "12.0.2",
           "System.Security.Principal.Windows": "4.5.0"
         },
         "compile": {
@@ -804,7 +895,7 @@
       "Microsoft.AspNetCore.Http.Connections.Common/1.1.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Connections.Abstractions": "2.2.0",
-          "Newtonsoft.Json": "11.0.2",
+          "Newtonsoft.Json": "12.0.2",
           "System.Buffers": "4.5.0"
         },
         "compile": {
@@ -898,7 +989,7 @@
       "Microsoft.AspNetCore.JsonPatch/2.2.0": {
         "dependencies": {
           "Microsoft.CSharp": "4.5.0",
-          "Newtonsoft.Json": "11.0.2"
+          "Newtonsoft.Json": "12.0.2"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.AspNetCore.JsonPatch.dll": {}
@@ -1131,7 +1222,7 @@
         "dependencies": {
           "Microsoft.AspNetCore.Hosting.Abstractions": "2.2.0",
           "Microsoft.Extensions.Logging.Console": "2.2.0",
-          "Newtonsoft.Json": "11.0.2"
+          "Newtonsoft.Json": "12.0.2"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.AspNetCore.NodeServices.dll": {}
@@ -1381,7 +1472,7 @@
         "dependencies": {
           "Microsoft.AspNetCore.Connections.Abstractions": "2.2.0",
           "Microsoft.Extensions.Options": "2.2.0",
-          "Newtonsoft.Json": "11.0.2",
+          "Newtonsoft.Json": "12.0.2",
           "System.Buffers": "4.5.0"
         },
         "compile": {
@@ -1407,7 +1498,7 @@
       "Microsoft.AspNetCore.SignalR.Protocols.Json/1.1.0": {
         "dependencies": {
           "Microsoft.AspNetCore.SignalR.Common": "1.1.0",
-          "Newtonsoft.Json": "11.0.2"
+          "Newtonsoft.Json": "12.0.2"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.AspNetCore.SignalR.Protocols.Json.dll": {}
@@ -1732,7 +1823,7 @@
         "dependencies": {
           "Microsoft.Extensions.Configuration": "2.2.0",
           "Microsoft.Extensions.Configuration.FileExtensions": "2.2.0",
-          "Newtonsoft.Json": "11.0.2"
+          "Newtonsoft.Json": "12.0.2"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.Extensions.Configuration.Json.dll": {}
@@ -1787,7 +1878,7 @@
       "Microsoft.Extensions.DependencyModel/2.1.0": {
         "dependencies": {
           "Microsoft.DotNet.PlatformAbstractions": "2.1.0",
-          "Newtonsoft.Json": "11.0.2",
+          "Newtonsoft.Json": "12.0.2",
           "System.Diagnostics.Debug": "4.3.0",
           "System.Dynamic.Runtime": "4.3.0",
           "System.Linq": "4.3.0"
@@ -1994,7 +2085,7 @@
       "Microsoft.Extensions.Logging.EventSource/2.2.0": {
         "dependencies": {
           "Microsoft.Extensions.Logging": "2.2.0",
-          "Newtonsoft.Json": "11.0.2"
+          "Newtonsoft.Json": "12.0.2"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.Extensions.Logging.EventSource.dll": {}
@@ -2074,7 +2165,7 @@
       "Microsoft.IdentityModel.JsonWebTokens/5.3.0": {
         "dependencies": {
           "Microsoft.IdentityModel.Tokens": "5.3.0",
-          "Newtonsoft.Json": "11.0.2"
+          "Newtonsoft.Json": "12.0.2"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.IdentityModel.JsonWebTokens.dll": {}
@@ -2109,7 +2200,7 @@
       "Microsoft.IdentityModel.Protocols.OpenIdConnect/5.3.0": {
         "dependencies": {
           "Microsoft.IdentityModel.Protocols": "5.3.0",
-          "Newtonsoft.Json": "11.0.2",
+          "Newtonsoft.Json": "12.0.2",
           "System.Dynamic.Runtime": "4.3.0",
           "System.IdentityModel.Tokens.Jwt": "5.3.0"
         },
@@ -2133,7 +2224,7 @@
       "Microsoft.IdentityModel.Tokens/5.3.0": {
         "dependencies": {
           "Microsoft.IdentityModel.Logging": "5.3.0",
-          "Newtonsoft.Json": "11.0.2",
+          "Newtonsoft.Json": "12.0.2",
           "System.Collections": "4.3.0",
           "System.Diagnostics.Tools": "4.3.0",
           "System.Reflection": "4.3.0",
@@ -2373,16 +2464,10 @@
         },
         "compileOnly": true
       },
-      "Newtonsoft.Json/11.0.2": {
-        "compile": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
-        },
-        "compileOnly": true
-      },
       "Newtonsoft.Json.Bson/1.0.1": {
         "dependencies": {
           "NETStandard.Library": "2.0.3",
-          "Newtonsoft.Json": "11.0.2"
+          "Newtonsoft.Json": "12.0.2"
         },
         "compile": {
           "lib/netstandard1.3/Newtonsoft.Json.Bson.dll": {}
@@ -2690,7 +2775,7 @@
         "dependencies": {
           "Microsoft.IdentityModel.JsonWebTokens": "5.3.0",
           "Microsoft.IdentityModel.Tokens": "5.3.0",
-          "Newtonsoft.Json": "11.0.2"
+          "Newtonsoft.Json": "12.0.2"
         },
         "compile": {
           "lib/netstandard2.0/System.IdentityModel.Tokens.Jwt.dll": {}
@@ -3427,12 +3512,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Bogus/26.0.2": {
+    "Bogus/27.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-lmiH9iJor/2UUKa2Eo/yEk6X72hrKQmEfnWGhohBMh5m6hVSK9o49uSX4bFSBnUdrH4hDnh9twdCfyjiTBgIJA==",
-      "path": "bogus/26.0.2",
-      "hashPath": "bogus.26.0.2.nupkg.sha512"
+      "sha512": "sha512-+Sz/jbEvGUYkhISItjoismJXVzA+gXYtuAo1xvyA1QMohS5zWd0lkN+OTnyk63FyZcSX66vgQ2DM9u97VJ+fJQ==",
+      "path": "bogus/27.0.1",
+      "hashPath": "bogus.27.0.1.nupkg.sha512"
     },
     "Microsoft.AspNet.SignalR/2.4.1": {
       "type": "package",
@@ -3440,6 +3525,13 @@
       "sha512": "sha512-aYbLVE5toZwv/qaQ0BiIZRRwN/00WKYzGjaYUWIQuI91xZ50nnAymWD1sxCZFN9XXDRq8bevM5ET9GmAeOI/Nw==",
       "path": "microsoft.aspnet.signalr/2.4.1",
       "hashPath": "microsoft.aspnet.signalr.2.4.1.nupkg.sha512"
+    },
+    "Newtonsoft.Json/12.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rTK0s2EKlfHsQsH6Yx2smvcTCeyoDNgCW7FEYyV01drPlh2T243PR2DiDXqtC5N4GDm4Ma/lkxfW5a/4793vbA==",
+      "path": "newtonsoft.json/12.0.2",
+      "hashPath": "newtonsoft.json.12.0.2.nupkg.sha512"
     },
     "NWebsec.AspNetCore.Core/2.0.0": {
       "type": "package",
@@ -3462,33 +3554,47 @@
       "path": "nwebsec.aspnetcore.mvc.taghelpers/2.0.0",
       "hashPath": "nwebsec.aspnetcore.mvc.taghelpers.2.0.0.nupkg.sha512"
     },
-    "SimpleInjector/4.5.1": {
+    "Serilog/2.8.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-F7VZl+7wbnZ1JVyytgXSnjpN9Bac0i6d62MVwcr/IZx5FRMhs3iEp+rXlLuvTqGEu7E8d9js+oJdAOTW32JNAQ==",
-      "path": "simpleinjector/4.5.1",
-      "hashPath": "simpleinjector.4.5.1.nupkg.sha512"
+      "sha512": "sha512-zjuKXW5IQws43IHX7VY9nURsaCiBYh2kyJCWLJRSWrTsx/syBKHV8MibWe2A+QH3Er0AiwA+OJmO3DhFJDY1+A==",
+      "path": "serilog/2.8.0",
+      "hashPath": "serilog.2.8.0.nupkg.sha512"
     },
-    "SimpleInjector.Integration.AspNetCore/4.5.1": {
+    "Serilog.Sinks.Trace/2.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-jDBJ/kpZnWFwuAedARzatVnBRYg5W06++b+U4eaetr6NDmYHhASoQ1FjhC3HHBs5Kgw8oAZIjxGOX7AbHdoK0A==",
-      "path": "simpleinjector.integration.aspnetcore/4.5.1",
-      "hashPath": "simpleinjector.integration.aspnetcore.4.5.1.nupkg.sha512"
+      "sha512": "sha512-VgJNH1F3UOrmI8m32WFS9x5cxmYOrSfc+mLxXFmgN3bG1zg0jRf7jgbBB15NoJjfAn0nJMZgP0Hqx/w0bxKGvQ==",
+      "path": "serilog.sinks.trace/2.1.0",
+      "hashPath": "serilog.sinks.trace.2.1.0.nupkg.sha512"
     },
-    "SimpleInjector.Integration.AspNetCore.Mvc/4.5.1": {
+    "SimpleInjector/4.5.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-lzqDv+PHPc6KgnqH4obEep3S6MrhaH+honmGq5HkhhLJE2oVNdtaq5yvpU45fIYNeeWNN2JQQ8xv50pX7umScQ==",
-      "path": "simpleinjector.integration.aspnetcore.mvc/4.5.1",
-      "hashPath": "simpleinjector.integration.aspnetcore.mvc.4.5.1.nupkg.sha512"
+      "sha512": "sha512-hNh6IJdWDuVDdfLmuP38Q6PTYMZ3chA/TiKFiandQP7Ij4D2Yhw35IsOUb45iaYb/qQ18xCSOnl+HEcNaqGUGQ==",
+      "path": "simpleinjector/4.5.2",
+      "hashPath": "simpleinjector.4.5.2.nupkg.sha512"
     },
-    "SimpleInjector.Integration.AspNetCore.Mvc.Core/4.5.1": {
+    "SimpleInjector.Integration.AspNetCore/4.5.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Ncas2VretQN4iFIK3SxnHN4EIfPt3VTB3yk38BmbeqoUkahO0Zys1q/bgdHcpFMJ8t46B9WrnWJnzIvcjpTIag==",
-      "path": "simpleinjector.integration.aspnetcore.mvc.core/4.5.1",
-      "hashPath": "simpleinjector.integration.aspnetcore.mvc.core.4.5.1.nupkg.sha512"
+      "sha512": "sha512-ROfC2lipNDFj53++tlJ1P0LW3UTwPVozDIQ1/dn8o3rGmJ49jauP1WtttCHOUZeadzh+cP2sNmnK6q9IgRiwTw==",
+      "path": "simpleinjector.integration.aspnetcore/4.5.2",
+      "hashPath": "simpleinjector.integration.aspnetcore.4.5.2.nupkg.sha512"
+    },
+    "SimpleInjector.Integration.AspNetCore.Mvc/4.5.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-O5aAktlUmVWIBhlMKapD7kF15ukMY10TyRng4I3yEVKzSYSEtr8shiJEtHsXNzhWS2MOVOwT2Ds9koob9Hxw+w==",
+      "path": "simpleinjector.integration.aspnetcore.mvc/4.5.2",
+      "hashPath": "simpleinjector.integration.aspnetcore.mvc.4.5.2.nupkg.sha512"
+    },
+    "SimpleInjector.Integration.AspNetCore.Mvc.Core/4.5.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jWmMDvLZVNv6H/65U76wEjrI/skc7ilIsoc6fLMTr8tKIXR1SyhnKgI6FBT7UhjaFL5P0J/3UwZ1/T76b8JO3w==",
+      "path": "simpleinjector.integration.aspnetcore.mvc.core/4.5.2",
+      "hashPath": "simpleinjector.integration.aspnetcore.mvc.core.4.5.2.nupkg.sha512"
     },
     "System.ComponentModel/4.0.1": {
       "type": "package",
@@ -3497,6 +3603,13 @@
       "path": "system.componentmodel/4.0.1",
       "hashPath": "system.componentmodel.4.0.1.nupkg.sha512"
     },
+    "System.Diagnostics.TraceSource/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6WVCczFZKXwpWpzd/iJkYnsmWTSFFiU24Xx/YdHXBcu+nFI/ehTgeqdJQFbtRPzbrO3KtRNjvkhtj4t5/WwWsA==",
+      "path": "system.diagnostics.tracesource/4.0.0",
+      "hashPath": "system.diagnostics.tracesource.4.0.0.nupkg.sha512"
+    },
     "WebEssentials.AspNetCore.PWA/1.0.49": {
       "type": "package",
       "serviceable": true,
@@ -3504,17 +3617,27 @@
       "path": "webessentials.aspnetcore.pwa/1.0.49",
       "hashPath": "webessentials.aspnetcore.pwa.1.0.49.nupkg.sha512"
     },
-    "SO115App.API.CompositionRoot/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "SO115App.API.Models/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
     "SO115App.API.SOVVF.FakeImplementations/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SO115App.CompositionRoot/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SO115App.CQRS/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SO115App.Logging/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SO115App.Models/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -4722,13 +4845,6 @@
       "sha512": "sha512-st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
       "path": "netstandard.library/2.0.3",
       "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
-    },
-    "Newtonsoft.Json/11.0.2": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-IvJe1pj7JHEsP8B8J8DwlMEx8UInrs/x+9oVY+oCD13jpLu4JbJU2WCIsMRn5C4yW9+DgkaO8uiVE5VHKjpmdQ==",
-      "path": "newtonsoft.json/11.0.2",
-      "hashPath": "newtonsoft.json.11.0.2.nupkg.sha512"
     },
     "Newtonsoft.Json.Bson/1.0.1": {
       "type": "package",

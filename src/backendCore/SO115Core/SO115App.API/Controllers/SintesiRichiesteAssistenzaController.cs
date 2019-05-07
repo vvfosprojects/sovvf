@@ -17,29 +17,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using System.Web;
+using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
-using SimpleInjector;
 using SO115App.API.Hubs;
-using SO115App.API.Models.AOP.Validation;
-using SO115App.API.Models.Classi.Autenticazione;
-using SO115App.API.Models.Classi.Notifications;
-using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.CQRS.Queries;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.QueryDTO;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.ResultDTO;
-using SO115App.API.Models.Servizi.Infrastruttura;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
 /* using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste; */
@@ -58,7 +47,7 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly ISintesiRichiestaAssistenzaQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler;
+        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler;
         private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
 
@@ -69,7 +58,7 @@ namespace SO115App.API.Controllers
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
         public SintesiRichiesteAssistenzaController(IPrincipal currentUser,IHubContext<NotificationHub> NotificationHubContext,            
-            ISintesiRichiestaAssistenzaQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler)
+            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> handler)
         {            
             this.handler = handler;
             _NotificationHub = NotificationHubContext;

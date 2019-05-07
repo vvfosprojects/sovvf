@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.2": {
-      "Bogus/26.0.2": {
+      "Bogus/27.0.1": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Bogus.dll": {}
@@ -2736,7 +2736,7 @@
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
       },
-      "Newtonsoft.Json/11.0.2": {
+      "Newtonsoft.Json/12.0.2": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
@@ -3024,7 +3024,32 @@
           }
         }
       },
-      "SimpleInjector/4.5.1": {
+      "Serilog/2.8.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections.NonGeneric": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Serilog.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Serilog.dll": {}
+        }
+      },
+      "Serilog.Sinks.Trace/2.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Serilog": "2.0.0",
+          "System.Diagnostics.TraceSource": "4.0.0"
+        },
+        "compile": {
+          "lib/netstandard1.3/Serilog.Sinks.Trace.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/Serilog.Sinks.Trace.dll": {}
+        }
+      },
+      "SimpleInjector/4.5.2": {
         "type": "package",
         "dependencies": {
           "System.ComponentModel": "4.0.1"
@@ -3036,12 +3061,12 @@
           "lib/netstandard2.0/SimpleInjector.dll": {}
         }
       },
-      "SimpleInjector.Integration.AspNetCore/4.5.1": {
+      "SimpleInjector.Integration.AspNetCore/4.5.2": {
         "type": "package",
         "dependencies": {
           "Microsoft.AspNetCore.Hosting.Abstractions": "2.0.0",
           "Microsoft.AspNetCore.Http.Abstractions": "2.0.0",
-          "SimpleInjector": "4.5.1"
+          "SimpleInjector": "4.5.2"
         },
         "compile": {
           "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.dll": {}
@@ -3050,12 +3075,12 @@
           "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.dll": {}
         }
       },
-      "SimpleInjector.Integration.AspNetCore.Mvc/4.5.1": {
+      "SimpleInjector.Integration.AspNetCore.Mvc/4.5.2": {
         "type": "package",
         "dependencies": {
           "Microsoft.AspNetCore.Mvc.Razor": "2.0.0",
           "Microsoft.AspNetCore.Mvc.RazorPages": "2.0.0",
-          "SimpleInjector.Integration.AspNetCore.Mvc.Core": "4.5.1"
+          "SimpleInjector.Integration.AspNetCore.Mvc.Core": "4.5.2"
         },
         "compile": {
           "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.Mvc.dll": {}
@@ -3064,12 +3089,12 @@
           "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.Mvc.dll": {}
         }
       },
-      "SimpleInjector.Integration.AspNetCore.Mvc.Core/4.5.1": {
+      "SimpleInjector.Integration.AspNetCore.Mvc.Core/4.5.2": {
         "type": "package",
         "dependencies": {
           "Microsoft.AspNetCore.Mvc.Core": "2.0.0",
           "Microsoft.AspNetCore.Mvc.ViewFeatures": "2.0.0",
-          "SimpleInjector.Integration.AspNetCore": "4.5.1"
+          "SimpleInjector.Integration.AspNetCore": "4.5.2"
         },
         "compile": {
           "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.Mvc.Core.dll": {}
@@ -3151,7 +3176,7 @@
           "System.Threading": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Collections.NonGeneric.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Collections.NonGeneric.dll": {}
@@ -3317,6 +3342,33 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Diagnostics.Tools.dll": {}
+        }
+      },
+      "System.Diagnostics.TraceSource/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.0.1",
+          "System.Collections": "4.0.11",
+          "System.Diagnostics.Debug": "4.0.11",
+          "System.Globalization": "4.0.11",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Threading": "4.0.11",
+          "runtime.native.System": "4.0.0"
+        },
+        "compile": {
+          "ref/netstandard1.3/System.Diagnostics.TraceSource.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/unix/lib/netstandard1.3/System.Diagnostics.TraceSource.dll": {
+            "assetType": "runtime",
+            "rid": "unix"
+          },
+          "runtimes/win/lib/netstandard1.3/System.Diagnostics.TraceSource.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
         }
       },
       "System.Diagnostics.Tracing/4.3.0": {
@@ -4574,61 +4626,92 @@
           "lib/netstandard2.0/WebEssentials.AspNetCore.Pwa.dll": {}
         }
       },
-      "SO115App.API.CompositionRoot/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v2.2",
-        "dependencies": {
-          "SO115App.API.Models": "1.0.0",
-          "SO115App.API.SOVVF.FakeImplementations": "1.0.0",
-          "SimpleInjector": "4.5.1",
-          "SimpleInjector.Integration.AspNetCore.Mvc": "4.5.1"
-        },
-        "compile": {
-          "bin/placeholder/SO115App.API.CompositionRoot.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/SO115App.API.CompositionRoot.dll": {}
-        }
-      },
-      "SO115App.API.Models/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v2.2",
-        "dependencies": {
-          "SimpleInjector": "4.5.1"
-        },
-        "compile": {
-          "bin/placeholder/SO115App.API.Models.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/SO115App.API.Models.dll": {}
-        }
-      },
       "SO115App.API.SOVVF.FakeImplementations/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.2",
         "dependencies": {
-          "Bogus": "26.0.2",
-          "SO115App.API.Models": "1.0.0",
-          "SimpleInjector": "4.5.1"
+          "Bogus": "27.0.1",
+          "SO115App.Models": "1.0.0",
+          "SimpleInjector": "4.5.2"
         },
         "compile": {
           "bin/placeholder/SO115App.API.SOVVF.FakeImplementations.dll": {}
         },
         "runtime": {
           "bin/placeholder/SO115App.API.SOVVF.FakeImplementations.dll": {}
+        }
+      },
+      "SO115App.CompositionRoot/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.2",
+        "dependencies": {
+          "SO115App.API.SOVVF.FakeImplementations": "1.0.0",
+          "SO115App.CQRS": "1.0.0",
+          "SO115App.Logging": "1.0.0",
+          "SimpleInjector": "4.5.2"
+        },
+        "compile": {
+          "bin/placeholder/SO115App.CompositionRoot.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SO115App.CompositionRoot.dll": {}
+        }
+      },
+      "SO115App.CQRS/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.2",
+        "dependencies": {
+          "Serilog": "2.8.0"
+        },
+        "compile": {
+          "bin/placeholder/SO115App.CQRS.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SO115App.CQRS.dll": {}
+        }
+      },
+      "SO115App.Logging/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.2",
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.2",
+          "SO115App.CQRS": "1.0.0",
+          "Serilog": "2.8.0",
+          "Serilog.Sinks.Trace": "2.1.0"
+        },
+        "compile": {
+          "bin/placeholder/SO115App.Logging.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SO115App.Logging.dll": {}
+        }
+      },
+      "SO115App.Models/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.2",
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.2",
+          "SO115App.CQRS": "1.0.0",
+          "SimpleInjector": "4.5.2"
+        },
+        "compile": {
+          "bin/placeholder/SO115App.Models.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SO115App.Models.dll": {}
         }
       }
     }
   },
   "libraries": {
-    "Bogus/26.0.2": {
-      "sha512": "lmiH9iJor/2UUKa2Eo/yEk6X72hrKQmEfnWGhohBMh5m6hVSK9o49uSX4bFSBnUdrH4hDnh9twdCfyjiTBgIJA==",
+    "Bogus/27.0.1": {
+      "sha512": "+Sz/jbEvGUYkhISItjoismJXVzA+gXYtuAo1xvyA1QMohS5zWd0lkN+OTnyk63FyZcSX66vgQ2DM9u97VJ+fJQ==",
       "type": "package",
-      "path": "bogus/26.0.2",
+      "path": "bogus/27.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "bogus.26.0.2.nupkg.sha512",
+        "bogus.27.0.1.nupkg.sha512",
         "bogus.nuspec",
         "lib/net40/Bogus.dll",
         "lib/net40/Bogus.pdb",
@@ -7545,10 +7628,10 @@
         "netstandard.library.nuspec"
       ]
     },
-    "Newtonsoft.Json/11.0.2": {
-      "sha512": "IvJe1pj7JHEsP8B8J8DwlMEx8UInrs/x+9oVY+oCD13jpLu4JbJU2WCIsMRn5C4yW9+DgkaO8uiVE5VHKjpmdQ==",
+    "Newtonsoft.Json/12.0.2": {
+      "sha512": "rTK0s2EKlfHsQsH6Yx2smvcTCeyoDNgCW7FEYyV01drPlh2T243PR2DiDXqtC5N4GDm4Ma/lkxfW5a/4793vbA==",
       "type": "package",
-      "path": "newtonsoft.json/11.0.2",
+      "path": "newtonsoft.json/12.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7571,7 +7654,7 @@
         "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
         "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
         "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
-        "newtonsoft.json.11.0.2.nupkg.sha512",
+        "newtonsoft.json.12.0.2.nupkg.sha512",
         "newtonsoft.json.nuspec"
       ]
     },
@@ -7591,7 +7674,7 @@
       ]
     },
     "NWebsec.AspNetCore.Core/2.0.0": {
-      "sha512": "rBzLHzTQx7X3vcLbhcHPVgNUALl1mb2zoiIqNw/M7z4lda7WkvMbsHrb4+hh1lZVgeYp4qZwDbO8gAoPdnXmrQ==",
+      "sha512": "3uajiUcZ37VI2SRmdYq9Lb7y+eHPZsdSn0+zzbm1xRy/bmD92+FTrLsEm6pEF/J9rnBFl7oQ9CKvA4EoFd9CWA==",
       "type": "package",
       "path": "nwebsec.aspnetcore.core/2.0.0",
       "files": [
@@ -7604,7 +7687,7 @@
       ]
     },
     "NWebsec.AspNetCore.Mvc/2.0.0": {
-      "sha512": "/T2sg2GgvhkUg7hZDyfH8335e+vsMFkSxWm58WzAo9ixtDAPSykoluy5jxN6ljVxQNF3pqhnb4FUZ0EJsSAETA==",
+      "sha512": "iO1J83AfLyXBGYGnpHIzj6ZKHSA9TdgqymfK9J5NOj3UQ9TN5RFEF17qKzWsV+f96xeatPnsjJitKO/nm6Jerg==",
       "type": "package",
       "path": "nwebsec.aspnetcore.mvc/2.0.0",
       "files": [
@@ -7617,7 +7700,7 @@
       ]
     },
     "NWebsec.AspNetCore.Mvc.TagHelpers/2.0.0": {
-      "sha512": "cIO4DjKEgIBOec0cTvHHCKmF3w8zi4YxHtdRGa/IG36295mECTu/a10o10BFMSrYNukQxviWPj4JGS0zL6D4DA==",
+      "sha512": "P6pPb5NrNiNRXjX0Z1py4nx5oo09+qcg/bJvLa8or+xTss/h5JTNBAgldI6pOQ+fm6L5ffODgaUR99EdPK2WiQ==",
       "type": "package",
       "path": "nwebsec.aspnetcore.mvc.taghelpers/2.0.0",
       "files": [
@@ -7917,10 +8000,51 @@
         "version.txt"
       ]
     },
-    "SimpleInjector/4.5.1": {
-      "sha512": "F7VZl+7wbnZ1JVyytgXSnjpN9Bac0i6d62MVwcr/IZx5FRMhs3iEp+rXlLuvTqGEu7E8d9js+oJdAOTW32JNAQ==",
+    "Serilog/2.8.0": {
+      "sha512": "zjuKXW5IQws43IHX7VY9nURsaCiBYh2kyJCWLJRSWrTsx/syBKHV8MibWe2A+QH3Er0AiwA+OJmO3DhFJDY1+A==",
       "type": "package",
-      "path": "simpleinjector/4.5.1",
+      "path": "serilog/2.8.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net45/Serilog.dll",
+        "lib/net45/Serilog.pdb",
+        "lib/net45/Serilog.xml",
+        "lib/net46/Serilog.dll",
+        "lib/net46/Serilog.pdb",
+        "lib/net46/Serilog.xml",
+        "lib/netstandard1.0/Serilog.dll",
+        "lib/netstandard1.0/Serilog.pdb",
+        "lib/netstandard1.0/Serilog.xml",
+        "lib/netstandard1.3/Serilog.dll",
+        "lib/netstandard1.3/Serilog.pdb",
+        "lib/netstandard1.3/Serilog.xml",
+        "lib/netstandard2.0/Serilog.dll",
+        "lib/netstandard2.0/Serilog.pdb",
+        "lib/netstandard2.0/Serilog.xml",
+        "serilog.2.8.0.nupkg.sha512",
+        "serilog.nuspec"
+      ]
+    },
+    "Serilog.Sinks.Trace/2.1.0": {
+      "sha512": "VgJNH1F3UOrmI8m32WFS9x5cxmYOrSfc+mLxXFmgN3bG1zg0jRf7jgbBB15NoJjfAn0nJMZgP0Hqx/w0bxKGvQ==",
+      "type": "package",
+      "path": "serilog.sinks.trace/2.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net45/Serilog.Sinks.Trace.dll",
+        "lib/net45/Serilog.Sinks.Trace.xml",
+        "lib/netstandard1.3/Serilog.Sinks.Trace.dll",
+        "lib/netstandard1.3/Serilog.Sinks.Trace.xml",
+        "serilog.sinks.trace.2.1.0.nupkg.sha512",
+        "serilog.sinks.trace.nuspec"
+      ]
+    },
+    "SimpleInjector/4.5.2": {
+      "sha512": "hNh6IJdWDuVDdfLmuP38Q6PTYMZ3chA/TiKFiandQP7Ij4D2Yhw35IsOUb45iaYb/qQ18xCSOnl+HEcNaqGUGQ==",
+      "type": "package",
+      "path": "simpleinjector/4.5.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7934,46 +8058,46 @@
         "lib/netstandard1.3/SimpleInjector.xml",
         "lib/netstandard2.0/SimpleInjector.dll",
         "lib/netstandard2.0/SimpleInjector.xml",
-        "simpleinjector.4.5.1.nupkg.sha512",
+        "simpleinjector.4.5.2.nupkg.sha512",
         "simpleinjector.nuspec"
       ]
     },
-    "SimpleInjector.Integration.AspNetCore/4.5.1": {
-      "sha512": "jDBJ/kpZnWFwuAedARzatVnBRYg5W06++b+U4eaetr6NDmYHhASoQ1FjhC3HHBs5Kgw8oAZIjxGOX7AbHdoK0A==",
+    "SimpleInjector.Integration.AspNetCore/4.5.2": {
+      "sha512": "ROfC2lipNDFj53++tlJ1P0LW3UTwPVozDIQ1/dn8o3rGmJ49jauP1WtttCHOUZeadzh+cP2sNmnK6q9IgRiwTw==",
       "type": "package",
-      "path": "simpleinjector.integration.aspnetcore/4.5.1",
+      "path": "simpleinjector.integration.aspnetcore/4.5.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.dll",
         "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.xml",
-        "simpleinjector.integration.aspnetcore.4.5.1.nupkg.sha512",
+        "simpleinjector.integration.aspnetcore.4.5.2.nupkg.sha512",
         "simpleinjector.integration.aspnetcore.nuspec"
       ]
     },
-    "SimpleInjector.Integration.AspNetCore.Mvc/4.5.1": {
-      "sha512": "lzqDv+PHPc6KgnqH4obEep3S6MrhaH+honmGq5HkhhLJE2oVNdtaq5yvpU45fIYNeeWNN2JQQ8xv50pX7umScQ==",
+    "SimpleInjector.Integration.AspNetCore.Mvc/4.5.2": {
+      "sha512": "O5aAktlUmVWIBhlMKapD7kF15ukMY10TyRng4I3yEVKzSYSEtr8shiJEtHsXNzhWS2MOVOwT2Ds9koob9Hxw+w==",
       "type": "package",
-      "path": "simpleinjector.integration.aspnetcore.mvc/4.5.1",
+      "path": "simpleinjector.integration.aspnetcore.mvc/4.5.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.Mvc.dll",
         "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.Mvc.xml",
-        "simpleinjector.integration.aspnetcore.mvc.4.5.1.nupkg.sha512",
+        "simpleinjector.integration.aspnetcore.mvc.4.5.2.nupkg.sha512",
         "simpleinjector.integration.aspnetcore.mvc.nuspec"
       ]
     },
-    "SimpleInjector.Integration.AspNetCore.Mvc.Core/4.5.1": {
-      "sha512": "Ncas2VretQN4iFIK3SxnHN4EIfPt3VTB3yk38BmbeqoUkahO0Zys1q/bgdHcpFMJ8t46B9WrnWJnzIvcjpTIag==",
+    "SimpleInjector.Integration.AspNetCore.Mvc.Core/4.5.2": {
+      "sha512": "jWmMDvLZVNv6H/65U76wEjrI/skc7ilIsoc6fLMTr8tKIXR1SyhnKgI6FBT7UhjaFL5P0J/3UwZ1/T76b8JO3w==",
       "type": "package",
-      "path": "simpleinjector.integration.aspnetcore.mvc.core/4.5.1",
+      "path": "simpleinjector.integration.aspnetcore.mvc.core/4.5.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.Mvc.Core.dll",
         "lib/netstandard2.0/SimpleInjector.Integration.AspNetCore.Mvc.Core.xml",
-        "simpleinjector.integration.aspnetcore.mvc.core.4.5.1.nupkg.sha512",
+        "simpleinjector.integration.aspnetcore.mvc.core.4.5.2.nupkg.sha512",
         "simpleinjector.integration.aspnetcore.mvc.core.nuspec"
       ]
     },
@@ -8294,7 +8418,7 @@
       ]
     },
     "System.ComponentModel/4.0.1": {
-      "sha512": "oBZFnm7seFiVfugsIyOvQCWobNZs7FzqDV/B7tx20Ep/l3UUFCPDkdTnCNaJZTU27zjeODmy2C/cP60u3D4c9w==",
+      "sha512": "tN5DPMYg6yFO5lF5L5hF6TIZDcRQ/+f1YcXGP8y2Yy4971XoxPOLH4lkkL20v6zb4aAVsp+xrkRwzMFeR5ZHqw==",
       "type": "package",
       "path": "system.componentmodel/4.0.1",
       "files": [
@@ -8837,6 +8961,47 @@
         "ref/xamarinwatchos10/_._",
         "system.diagnostics.tools.4.3.0.nupkg.sha512",
         "system.diagnostics.tools.nuspec"
+      ]
+    },
+    "System.Diagnostics.TraceSource/4.0.0": {
+      "sha512": "6WVCczFZKXwpWpzd/iJkYnsmWTSFFiU24Xx/YdHXBcu+nFI/ehTgeqdJQFbtRPzbrO3KtRNjvkhtj4t5/WwWsA==",
+      "type": "package",
+      "path": "system.diagnostics.tracesource/4.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Diagnostics.TraceSource.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Diagnostics.TraceSource.dll",
+        "ref/netstandard1.3/System.Diagnostics.TraceSource.dll",
+        "ref/netstandard1.3/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/de/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/es/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/fr/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/it/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/ja/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/ko/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/ru/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/zh-hans/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/zh-hant/System.Diagnostics.TraceSource.xml",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "runtimes/unix/lib/netstandard1.3/System.Diagnostics.TraceSource.dll",
+        "runtimes/win/lib/net46/System.Diagnostics.TraceSource.dll",
+        "runtimes/win/lib/netstandard1.3/System.Diagnostics.TraceSource.dll",
+        "system.diagnostics.tracesource.4.0.0.nupkg.sha512",
+        "system.diagnostics.tracesource.nuspec"
       ]
     },
     "System.Diagnostics.Tracing/4.3.0": {
@@ -12431,7 +12596,7 @@
       ]
     },
     "WebEssentials.AspNetCore.PWA/1.0.49": {
-      "sha512": "b73VYrbYIZEaLgwA7DSemGq4qI57A/qxEnJY2pDZtT+obe7hA7d2kcc2n8lgV8LJ+mjb+imTsGujKsaqrudH6g==",
+      "sha512": "SfVoNchxf3sW47o7p3T9YVXwtkxt/2uk6qCdh4bPdq3c9i9jj9DNCWHwutA2DgLRPsNmbo0fE6QGxyLU32a6uQ==",
       "type": "package",
       "path": "webessentials.aspnetcore.pwa/1.0.49",
       "files": [
@@ -12443,20 +12608,30 @@
         "webessentials.aspnetcore.pwa.nuspec"
       ]
     },
-    "SO115App.API.CompositionRoot/1.0.0": {
-      "type": "project",
-      "path": "../SO115App.API.CompositionRoot/SO115App.API.CompositionRoot.csproj",
-      "msbuildProject": "../SO115App.API.CompositionRoot/SO115App.API.CompositionRoot.csproj"
-    },
-    "SO115App.API.Models/1.0.0": {
-      "type": "project",
-      "path": "../SO115App.API.Models/SO115App.API.Models.csproj",
-      "msbuildProject": "../SO115App.API.Models/SO115App.API.Models.csproj"
-    },
     "SO115App.API.SOVVF.FakeImplementations/1.0.0": {
       "type": "project",
       "path": "../SO115App.API.SOVVF.FakeImplementations/SO115App.API.SOVVF.FakeImplementations.csproj",
       "msbuildProject": "../SO115App.API.SOVVF.FakeImplementations/SO115App.API.SOVVF.FakeImplementations.csproj"
+    },
+    "SO115App.CompositionRoot/1.0.0": {
+      "type": "project",
+      "path": "../SO115App.CompositionRoot/SO115App.CompositionRoot.csproj",
+      "msbuildProject": "../SO115App.CompositionRoot/SO115App.CompositionRoot.csproj"
+    },
+    "SO115App.CQRS/1.0.0": {
+      "type": "project",
+      "path": "../SO115App.CQRS/SO115App.CQRS.csproj",
+      "msbuildProject": "../SO115App.CQRS/SO115App.CQRS.csproj"
+    },
+    "SO115App.Logging/1.0.0": {
+      "type": "project",
+      "path": "../SO115App.Logging/SO115App.Logging.csproj",
+      "msbuildProject": "../SO115App.Logging/SO115App.Logging.csproj"
+    },
+    "SO115App.Models/1.0.0": {
+      "type": "project",
+      "path": "../SO115App.Models/SO115App.Models.csproj",
+      "msbuildProject": "../SO115App.Models/SO115App.Models.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -12465,34 +12640,38 @@
       "Microsoft.AspNetCore.App >= 2.2.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
       "Microsoft.NETCore.App >= 2.2.0",
-      "SO115App.API.CompositionRoot >= 1.0.0",
-      "SO115App.API.Models >= 1.0.0",
-      "SimpleInjector >= 4.5.1",
-      "SimpleInjector.Integration.AspNetCore >= 4.5.1",
-      "SimpleInjector.Integration.AspNetCore.Mvc >= 4.5.1",
+      "SO115App.CompositionRoot >= 1.0.0",
+      "SO115App.Logging >= 1.0.0",
+      "SO115App.Models >= 1.0.0",
+      "SimpleInjector >= 4.5.2",
+      "SimpleInjector.Integration.AspNetCore >= 4.5.2",
+      "SimpleInjector.Integration.AspNetCore.Mvc >= 4.5.2",
       "System.IO >= 4.3.0",
       "WebEssentials.AspNetCore.PWA >= 1.0.49"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\VJTechnology\\.nuget\\packages\\": {},
+    "C:\\Users\\Alkemis\\.nuget\\packages\\": {},
+    "C:\\ProgramData\\Xamarin\\NuGet\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API\\SO115App.API.csproj",
+      "projectUniqueName": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API\\SO115App.API.csproj",
       "projectName": "SO115App.API",
-      "projectPath": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API\\SO115App.API.csproj",
-      "packagesPath": "C:\\Users\\VJTechnology\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API\\obj\\",
+      "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API\\SO115App.API.csproj",
+      "packagesPath": "C:\\Users\\Alkemis\\.nuget\\packages\\",
+      "outputPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
+        "C:\\ProgramData\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\VJTechnology\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Alkemis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.2"
@@ -12504,11 +12683,14 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.CompositionRoot\\SO115App.API.CompositionRoot.csproj": {
-              "projectPath": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.CompositionRoot\\SO115App.API.CompositionRoot.csproj"
+            "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CompositionRoot\\SO115App.CompositionRoot.csproj": {
+              "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.CompositionRoot\\SO115App.CompositionRoot.csproj"
             },
-            "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.Models\\SO115App.API.Models.csproj": {
-              "projectPath": "C:\\Users\\VJTechnology\\source\\repos\\sovvf\\src\\backendCore\\SO115Core\\SO115App.API.Models\\SO115App.API.Models.csproj"
+            "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Logging\\SO115App.Logging.csproj": {
+              "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Logging\\SO115App.Logging.csproj"
+            },
+            "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Models\\SO115App.Models.csproj": {
+              "projectPath": "C:\\Lavoro\\sovvf\\src\\backendCore\\SO115Core\\SO115App.Models\\SO115App.Models.csproj"
             }
           }
         }
@@ -12545,15 +12727,15 @@
           },
           "SimpleInjector": {
             "target": "Package",
-            "version": "[4.5.1, )"
+            "version": "[4.5.2, )"
           },
           "SimpleInjector.Integration.AspNetCore": {
             "target": "Package",
-            "version": "[4.5.1, )"
+            "version": "[4.5.2, )"
           },
           "SimpleInjector.Integration.AspNetCore.Mvc": {
             "target": "Package",
-            "version": "[4.5.1, )"
+            "version": "[4.5.2, )"
           },
           "System.IO": {
             "target": "Package",
