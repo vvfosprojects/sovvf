@@ -30,6 +30,11 @@ namespace SO115App.API.Models.AOP.Authorization
     {
         private readonly IPrincipal currentUser;
 
+        public SintesiSediMarkerAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
+        {
+            this.currentUser = currentUser;
+        }
+
         public IEnumerable<AuthorizationResult> Authorize(SintesiSediMarkerQuery query)
         {
             string username = this.currentUser.Identity.Name;

@@ -18,3 +18,16 @@ src/backendCore/SO115Core/SO115App.API.SOVVF.FakeImplementations/obj
 /src/backendCore/SO115Core/.vs/SO115App.API/v16/Server/sqlite3/storage.ide
 /src/backendCore/SO115Core/.vs/SO115App.API/v16/Server/sqlite3/storage.ide-shm
 /src/backendCore/SO115Core/.vs/SO115App.API/v16/Server/sqlite3/storage.ide-wal
+/src/backend/SO115.licenseheader
+/src/backendCore/SO115Core/.vs/SO115App.API
+/src/backendCore/SO115Core/SO115App.CompositionRoot/bin/Debug/netcoreapp2.2
+/src/backendCore/SO115Core/SO115App.CompositionRoot/obj
+/src/backendCore/SO115Core/SO115App.CQRS/bin/Debug/netcoreapp2.2
+/src/backendCore/SO115Core/SO115App.CQRS/obj/Debug/netcoreapp2.2
+/src/backendCore/SO115Core/SO115App.CQRS/obj
+/src/backendCore/SO115Core/SO115App.Logging/bin/Debug/netcoreapp2.2
+/src/backendCore/SO115Core/SO115App.Logging/obj/Debug/netcoreapp2.2
+/src/backendCore/SO115Core/SO115App.Logging/obj
+/src/backendCore/SO115Core/SO115App.Models/bin/Debug/netcoreapp2.2
+/src/backendCore/SO115Core/SO115App.Models/obj/Debug/netcoreapp2.2
+/src/backendCore/SO115Core/SO115App.Models/obj

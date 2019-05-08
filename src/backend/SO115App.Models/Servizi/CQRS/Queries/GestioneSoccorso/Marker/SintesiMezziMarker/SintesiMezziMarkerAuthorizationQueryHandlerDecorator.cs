@@ -29,6 +29,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiMezziMarker
     {
         private readonly IPrincipal currentUser;
 
+        public SintesiMezziMarkerAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
+        {
+            this.currentUser = currentUser;
+        }
+
         public IEnumerable<AuthorizationResult> Authorize(SintesiMezziMarkerQuery query)
         {
             string username = this.currentUser.Identity.Name;

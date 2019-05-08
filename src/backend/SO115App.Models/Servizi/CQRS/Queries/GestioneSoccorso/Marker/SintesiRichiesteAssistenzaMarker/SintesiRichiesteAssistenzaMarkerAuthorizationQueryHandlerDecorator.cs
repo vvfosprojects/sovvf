@@ -26,9 +26,14 @@ using System.Security.Principal;
 
 namespace SO115App.API.Models.AOP.Authorization
 {
-    public class SintesiRichiesteAssistenzaMarkerAuthorizationQueryHandlerDecorator<TQuery, TResult> : IQueryAuthorizer<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult>
+    public class SintesiRichiesteAssistenzaMarkerAuthorizationQueryHandlerDecorator : IQueryAuthorizer<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult>
     {
         private readonly IPrincipal currentUser;
+
+        public SintesiRichiesteAssistenzaMarkerAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
+        {
+            this.currentUser = currentUser;
+        }
 
         public IEnumerable<AuthorizationResult> Authorize(SintesiRichiesteAssistenzaMarkerQuery query)
         {

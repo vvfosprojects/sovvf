@@ -29,6 +29,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
     {
         private readonly IPrincipal currentUser;
 
+        public BoxMezziAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
+        {
+            this.currentUser = currentUser;
+        }
+
         public IEnumerable<AuthorizationResult> Authorize(BoxMezziQuery query)
         {
             string username = this.currentUser.Identity.Name;

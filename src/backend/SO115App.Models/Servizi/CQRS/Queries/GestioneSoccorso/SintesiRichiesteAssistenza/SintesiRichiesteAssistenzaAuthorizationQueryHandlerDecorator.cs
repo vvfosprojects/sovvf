@@ -29,6 +29,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
     {
         private readonly IPrincipal currentUser;
 
+        public SintesiRichiesteAssistenzaAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
+        {
+            this.currentUser = currentUser;
+        }
+
         public IEnumerable<AuthorizationResult> Authorize(SintesiRichiesteAssistenzaQuery query)
         {
             string username = this.currentUser.Identity.Name;

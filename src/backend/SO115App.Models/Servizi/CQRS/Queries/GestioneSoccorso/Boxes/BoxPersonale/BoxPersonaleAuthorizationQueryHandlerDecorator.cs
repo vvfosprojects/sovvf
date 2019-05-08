@@ -29,6 +29,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
     {
         private readonly IPrincipal currentUser;
 
+        public BoxPersonaleAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
+        {
+            this.currentUser = currentUser;
+        }
+
         public IEnumerable<AuthorizationResult> Authorize(BoxPersonaleQuery query)
         {
             string username = this.currentUser.Identity.Name;
