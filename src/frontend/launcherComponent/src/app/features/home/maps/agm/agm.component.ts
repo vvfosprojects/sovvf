@@ -172,7 +172,7 @@ export class AgmComponent implements OnDestroy {
         return this.markerService.isHovered(id, tipoMarker);
     }
 
-    isRilevante(rilevante: Date): string {
+    isRilevante(rilevante: Date): 'BOUNCE' | 'DROP' | null {
         if (!!rilevante && !this.controlAnimation.toggleStatus && this.bounceAnimationStatus) {
             return 'BOUNCE';
         }
