@@ -1,8 +1,10 @@
 export const environment = {
     production: true,
     fakeProvider: false,
+    signalRHub: '/NotificationHub',
+    signalR: true,
     apiUrl: {
-        appSettings: 'https://api.myjson.com/bins/1gwhxs',
+        appSettings: 'assets/json/app-settings.json',
         boxes: {
             personale: '/api/BoxPersonale',
             mezzi: '/api/BoxMezzi',
@@ -18,14 +20,14 @@ export const environment = {
         },
         maps: {
             markers: {
-                richieste: 'http://so115-mike/so115rest/api/SintesiRichiesteAssistenzaMarker',
+                richieste: '/api/SintesiRichiesteAssistenzaMarker',
                 sedi: 'https://api.myjson.com/bins/18m83u',
                 mezzi: 'https://api.myjson.com/bins/jwy84',
                 centro: '',
                 chiamate: ''
             }
         },
-        rigaElencoRichieste: 'http://so115-mike/so115rest/api/SintesiRichiesteAssistenza',
+        rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
         eventiRichieste: 'https://api.myjson.com/bins/kz0w0',
         turno: '',
         composizione: {
