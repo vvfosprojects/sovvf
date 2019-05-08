@@ -5,7 +5,6 @@ import { SedeMarker } from '../../maps-model/sede-marker.model';
 import { MezzoMarker } from '../../maps-model/mezzo-marker.model';
 import { CambioSedeModalComponent } from './cambio-sede-modal/cambio-sede-modal.component';
 import { NgbModal, NgbPopover, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ColoriStatoMezzo } from '../../../../../shared/helper/_colori';
 import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
 import { MeteoMarker } from '../../maps-model/meteo-marker.model';
 import { HelperSintesiRichiesta } from '../../../richieste/helper/_helper-sintesi-richiesta';
@@ -31,7 +30,6 @@ export class InfoWindowComponent implements OnInit {
     @Input() mezzoMarker: MezzoMarker;
     @Input() meteoMarker: MeteoMarker;
     @Input() tipoSedeIcona: string;
-    stato = new ColoriStatoMezzo();
 
     clickedPopover: NgbPopover;
     methods = new HelperSintesiRichiesta;
@@ -72,45 +70,6 @@ export class InfoWindowComponent implements OnInit {
     }
 
     ngOnInit() {
-    }
-
-    coloraIcona(nome): any {
-        const colori = [
-            {
-                icon: 'fa fa-fire',
-                color: 'text-danger'
-            },
-            {
-                icon: 'fa fa-exclamation-triangle',
-                color: 'text-warning'
-            },
-            {
-                icon: 'fa fa-medkit',
-                color: 'text-primary'
-            }
-        ];
-
-        const colore = colori.find(x => x.icon === nome);
-        if (nome === undefined || nome === '') {
-            return 'fa fa-exclamation-triangle text-warning';
-        } else if (colore !== undefined) {
-            return nome + ' ' + colore.color;
-        } else {
-            return nome + ' guida';
-        }
-    }
-
-    vettorePallini(richiesta) {
-        return new Array(richiesta.priorita);
-    }
-
-    vettoreBuchini(richiesta) {
-        const MAX_PRIORITA = 5;
-        return new Array(MAX_PRIORITA - richiesta.priorita);
-    }
-
-    dettagliMezzo(stato, tipostato, classe) {
-        return this.stato.getColor(stato, tipostato, classe);
     }
 
     apriPopover(popover: NgbPopover) {
