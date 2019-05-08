@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="DisponibilitaMezziQuery.cs" company="CNVVF">
+// <copyright file="BoxPersonaleQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,22 +17,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 using CQRS.Queries;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
 {
     /// <summary>
-    ///   DTO che alimenta tutti i box presenti in Home Page
+    /// DTO che alimenta tutti i box presenti in Home Page
     /// </summary>
     public class BoxPersonaleQuery : IQuery<BoxPersonaleResult>
     {
         /// <summary>
-        ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
+        /// Filtra solo i mezzi appartenenti all'unità operativa indicata.
         /// </summary>
-        /// <remarks>
-        ///   Eventualmente si può filtrare per cercare solo i dati di un singolo Box
-        /// </remarks>
+        /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
         public string FiltroBox { get; set; }
     }
 }

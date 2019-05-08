@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiRichiesteAssistenzaQuery.cs" company="CNVVF">
+// <copyright file="SintesiRichiesteAssistenzaMarkerQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -23,12 +23,12 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichies
 namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker
 {
     /// <summary>
-    ///   DTO di input
+    /// DTO di input
     /// </summary>
     public class SintesiRichiesteAssistenzaMarkerQuery : IQuery<SintesiRichiesteAssistenzaMarkerResult>
     {
         /// <summary>
-        ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
+        /// Il filtro utilizzato per la ricerca delle richieste di assistenza
         /// </summary>
         public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
     }

@@ -17,18 +17,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 using SO115App.API.Models.Servizi.Infrastruttura.Autenticazione;
 
 namespace SO115App.API.SOVVF.FakeImplementations.Modello.Autenticazione
 {
     /// <summary>
-    ///   Implementazione fake del servizio che restituisce l'operatire correntemente autenticato
+    /// Implementazione fake del servizio che restituisce l'operatire correntemente autenticato
     /// </summary>
     public class GetOperatoreAutenticato : IGetOperatoreAutenticato
     {
         /// <summary>
-        ///   Restituisce l'operatore correntemente autenticato
+        /// Restituisce l'operatore correntemente autenticato
         /// </summary>
         /// <returns>La username dell'operatore</returns>
         public string Get()

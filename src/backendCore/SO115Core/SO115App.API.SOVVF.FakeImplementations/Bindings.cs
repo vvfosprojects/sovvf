@@ -17,16 +17,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace SO115App.API.SOVVF.FakeImplementations
 {
     /// <summary>
-    ///   Bindings delle implementazioni fake
+    /// Bindings delle implementazioni fake
     /// </summary>
     public class Bindings
     {
         /// <summary>
-        ///   Contiene le regole di bindings
+        /// Contiene le regole di bindings
         /// </summary>
         /// <param name="container">Il container sul quale le registrazioni hanno effetto</param>
     }

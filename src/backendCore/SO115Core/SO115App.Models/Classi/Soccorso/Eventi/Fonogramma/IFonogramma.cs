@@ -17,16 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma
 {
     /// <summary>
-    ///   Interfaccia di un evento che riguarda il trattamento dei fonogrammi per una <see cref="RichiestaAssistenza" />.
+    /// Interfaccia di un evento che riguarda il trattamento dei fonogrammi per una <see cref="RichiestaAssistenza"/>.
     /// </summary>
     /// <remarks>
-    ///   Il termine "fonogramma" storicamente identifica una comunicazione ad enti esterni al fine
-    ///   di notificare l'evento ed eventuali altre informazioni collegate. Attualmente avviene
-    ///   mediante PEC.
+    /// Il termine "fonogramma" storicamente identifica una comunicazione ad enti esterni al fine di
+    /// notificare l'evento ed eventuali altre informazioni collegate. Attualmente avviene mediante PEC.
     /// </remarks>
     public interface IFonogramma : IEvento
     {

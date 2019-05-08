@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="DisponibilitaMezziQueryHandler.cs" company="CNVVF">
+// <copyright file="BoxMezziQueryHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -25,12 +25,12 @@ using System.IO;
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
 {
     /// <summary>
-    ///   Servizio che restituisce tutti i valori dei Box presenti in HomePage.
+    /// Servizio che restituisce tutti i valori dei Box presenti in HomePage.
     /// </summary>
     public class BoxMezziQueryHandler : IQueryHandler<BoxMezziQuery, BoxMezziResult>
     {
         /// <summary>
-        ///   Query che estrae i valori dei Box presenti in Home Page
+        /// Query che estrae i valori dei Box presenti in Home Page
         /// </summary>
         /// <param name="query">Filtri utilizzati per l'estrazione</param>
         /// <returns>Elenco dei mezzi disponibili</returns>

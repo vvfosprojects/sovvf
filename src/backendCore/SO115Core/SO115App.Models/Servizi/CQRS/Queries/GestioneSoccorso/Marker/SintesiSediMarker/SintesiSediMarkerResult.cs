@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiRichiesteAssistenzaResult.cs" company="CNVVF">
+// <copyright file="SintesiSediMarkerResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -23,12 +23,12 @@ using System.Collections.Generic;
 namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiSediMarker
 {
     /// <summary>
-    ///   DTO di output
+    /// DTO di output
     /// </summary>
     public class SintesiSediMarkerResult
     {
         /// <summary>
-        ///   La sintesi delle richieste di assistenza
+        /// La sintesi delle richieste di assistenza
         /// </summary>
         public IEnumerable<SintesiSedeMarker> SintesiSediMarker
         { get; set; }

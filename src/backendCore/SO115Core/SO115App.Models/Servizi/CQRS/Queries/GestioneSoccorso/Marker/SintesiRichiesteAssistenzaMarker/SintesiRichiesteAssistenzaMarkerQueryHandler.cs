@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiRichiesteAssistenzaQueryHandler.cs" company="CNVVF">
+// <copyright file="SintesiRichiesteAssistenzaMarkerQueryHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -27,39 +27,39 @@ using System.IO;
 namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker
 {
     /// <summary>
-    ///   Query per l'accesso alla lista delle richieste di assistenza "di interesse". Quali sono le
-    ///   richieste interessanti è specificato dal DTO di input. Ecco alcuni esempi di ricerca, in
-    ///   base ai valori contenuti nel DTO di input:
-    ///   <para>
-    ///     - DTO vuoto: vengono selezionate le prime 10 richieste aperte più recenti, appartenenti
-    ///       all'unità operativa a cui fa capo l'utente autenticato;
-    ///   </para>
-    ///   <para>
-    ///     - DTO contenente una lista di unità operative: vengono selezionate le prime 10 richieste
-    ///       aperte più recenti, appartenenti alle unità operative indicate dal DTO;
-    ///   </para>
-    ///   <para>
-    ///     - DTO contenente una stringa chiave: la ricerca restituisce le prime 10 richieste più
-    ///       rilevanti rispetto al testo chiave (full-text search);
-    ///   </para>
-    ///   <para>
-    ///     - DTO contenente un riferimento geo-referenziato: la ricerca restituisce le prime 10
-    ///       richieste più vicine al riferimento;
-    ///   </para>
-    ///   <para>
-    ///     - DTO contenente un array di stati richiesta: la ricerca restituisce le prime 10
-    ///       richieste negli stati specificati.
-    ///   </para>
+    /// Query per l'accesso alla lista delle richieste di assistenza "di interesse". Quali sono le
+    /// richieste interessanti è specificato dal DTO di input. Ecco alcuni esempi di ricerca, in base
+    /// ai valori contenuti nel DTO di input:
+    /// <para>
+    /// - DTO vuoto: vengono selezionate le prime 10 richieste aperte più recenti, appartenenti
+    /// all'unità operativa a cui fa capo l'utente autenticato;
+    /// </para>
+    /// <para>
+    /// - DTO contenente una lista di unità operative: vengono selezionate le prime 10 richieste
+    /// aperte più recenti, appartenenti alle unità operative indicate dal DTO;
+    /// </para>
+    /// <para>
+    /// - DTO contenente una stringa chiave: la ricerca restituisce le prime 10 richieste più
+    /// rilevanti rispetto al testo chiave (full-text search);
+    /// </para>
+    /// <para>
+    /// - DTO contenente un riferimento geo-referenziato: la ricerca restituisce le prime 10
+    /// richieste più vicine al riferimento;
+    /// </para>
+    /// <para>
+    /// - DTO contenente un array di stati richiesta: la ricerca restituisce le prime 10 richieste
+    /// negli stati specificati.
+    /// </para>
     /// </summary>
     public class SintesiRichiesteAssistenzaMarkerQueryHandler : IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult>
     {
         /// <summary>
-        ///   Istanza del servizio
+        /// Istanza del servizio
         /// </summary>
         private readonly ICercaRichiesteAssistenza cercaRichiesteAssistenza;
 
         /// <summary>
-        ///   Costruttore della classe
+        /// Costruttore della classe
         /// </summary>
         /// <param name="cercaRichiesteAssistenzaMarker">L'istanza del servizio</param>
         public SintesiRichiesteAssistenzaMarkerQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza)
@@ -68,7 +68,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssist
         }
 
         /// <summary>
-        ///   Metodo di esecuzione della query
+        /// Metodo di esecuzione della query
         /// </summary>
         /// <param name="query">Il DTO di ingresso della query</param>
         /// <returns>Il DTO di uscita della query</returns>

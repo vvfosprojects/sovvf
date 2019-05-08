@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="NonNecessario.cs" company="CNVVF">
+// <copyright file="ComponenteSquadra.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Componente
@@ -33,32 +32,32 @@ namespace SO115App.API.Models.Classi.Condivise
         }
 
         /// <summary>
-        ///   Descrizione qualifica Componente
+        /// Descrizione qualifica Componente
         /// </summary>
         public string descrizioneQualifica { get; set; }
 
         /// <summary>
-        ///   Nominativo Componente
+        /// Nominativo Componente
         /// </summary>
         public string nominativo { get; set; }
 
         /// <summary>
-        ///   ToolTip Componente
+        /// ToolTip Componente
         /// </summary>
         public string tooltip { get; set; }
 
         /// <summary>
-        ///   Indica se il Componente è un capo Partenza
+        /// Indica se il Componente è un capo Partenza
         /// </summary>
         public bool capoPartenza { get; set; }
 
         /// <summary>
-        ///   Indica se è un autista
+        /// Indica se è un autista
         /// </summary>
         public bool autista { get; set; }
 
         /// <summary>
-        ///   Indica se il componente è un rimpiazzo
+        /// Indica se il componente è un rimpiazzo
         /// </summary>
         public bool rimpiazzo { get; set; }
     }

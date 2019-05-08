@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="NonNecessario.cs" company="CNVVF">
+// <copyright file="Squadra.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 using System;
 using System.Collections.Generic;
 
@@ -26,32 +25,32 @@ namespace SO115App.API.Models.Classi.Condivise
     public class Squadra
     {
         /// <summary>
-        ///   Enumera gli stati in cui un capopartenza partecipante ad una richiesta può trovarsi
+        /// Enumera gli stati in cui un capopartenza partecipante ad una richiesta può trovarsi
         /// </summary>
         public enum StatoSquadra
         {
             /// <summary>
-            ///   In viaggio verso il luogo del sinistro.
+            /// In viaggio verso il luogo del sinistro.
             /// </summary>
             InViaggio,
 
             /// <summary>
-            ///   Giunta sul luogo del sinistro
+            /// Giunta sul luogo del sinistro
             /// </summary>
             SulPosto,
 
             /// <summary>
-            ///   In viaggio verso la sede di servizio
+            /// In viaggio verso la sede di servizio
             /// </summary>
             InRientro,
 
             /// <summary>
-            ///   Presso la sede di servizio
+            /// Presso la sede di servizio
             /// </summary>
             InSede,
 
             /// <summary>
-            ///   Fuori per ragioni di istituto
+            /// Fuori per ragioni di istituto
             /// </summary>
             Istituto
         }
@@ -65,27 +64,27 @@ namespace SO115App.API.Models.Classi.Condivise
         }
 
         /// <summary>
-        ///   Nominativo Squadra
+        /// Nominativo Squadra
         /// </summary>
         public string nome { get; set; }
 
         /// <summary>
-        ///   Lo stato della squadra
+        /// Lo stato della squadra
         /// </summary>
         public StatoSquadra stato { get; set; }
 
         /// <summary>
-        ///   Lista dei componenti della squadra
+        /// Lista dei componenti della squadra
         /// </summary>
         public List<Componente> componenti { get; set; }
 
         /// <summary>
-        ///   Indica il distaccamento della squadra
+        /// Indica il distaccamento della squadra
         /// </summary>
         public Sede distaccamento { get; set; }
 
         /// <summary>
-        ///   Indica l'istante in cui la squadra termina il suo impegno
+        /// Indica l'istante in cui la squadra termina il suo impegno
         /// </summary>
         public DateTime? istanteTermineImpegno { get; set; }
     }

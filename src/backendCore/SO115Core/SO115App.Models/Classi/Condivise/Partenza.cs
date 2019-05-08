@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="NonNecessario.cs" company="CNVVF">
+// <copyright file="Partenza.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Condivise
@@ -25,12 +24,12 @@ namespace SO115App.API.Models.Classi.Condivise
     public class Partenza
     {
         /// <summary>
-        ///  Lista delle squadre coinvolte
+        /// Lista delle squadre coinvolte
         /// </summary>
         public List<Squadra> squadre { get; set; }
 
         /// <summary>
-        ///  Lista dei mezzi coinvolti
+        /// Lista dei mezzi coinvolti
         /// </summary>
         public Mezzo mezzo { get; set; }
     }

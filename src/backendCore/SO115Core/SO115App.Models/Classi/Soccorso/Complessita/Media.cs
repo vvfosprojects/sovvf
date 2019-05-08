@@ -17,16 +17,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace SO115App.API.Models.Classi.Soccorso.Complessita
 {
     /// <summary>
-    ///   La complessità media di una richiesta di assistenza.
+    /// La complessità media di una richiesta di assistenza.
     /// </summary>
     public class Media : IComplessita
     {
         /// <summary>
-        ///   Il codice
+        /// Il codice
         /// </summary>
         public string Codice
         {
@@ -37,7 +36,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Complessita
         }
 
         /// <summary>
-        ///   La descrizione
+        /// La descrizione
         /// </summary>
         public string Descrizione
         {

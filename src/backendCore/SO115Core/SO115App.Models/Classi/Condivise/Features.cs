@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------
-// <copyright file="Utente.cs" company="CNVVF">
+// <copyright file="Features.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.

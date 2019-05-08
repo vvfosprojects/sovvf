@@ -17,25 +17,3 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-/* using SO115App.API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni;
-using SimpleInjector;
-using SimpleInjector.Packaging;
-
-namespace SO115App.API.Models.Servizi.Infrastruttura.Organigramma
-{
-    /// <summary>
-    ///   Classe deputata alla registrazione i servizi relativi all'organigramma
-    /// </summary>
-    public class Bindings : IPackage
-    {
-        /// <summary>
-        ///   Registra i servizi relativi all'organigramma.
-        /// </summary>
-        /// <param name="container">Il container che accoglie le regole di binding.</param>
-        public void RegisterServices(Container container)
-        {
-            container.Register<IGetUnitaOperativaPerCodice, GetUnitaOperativaPerCodice>();
-        }
-    }
-}
- */

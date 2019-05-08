@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="NonNecessario.cs" company="CNVVF">
+// <copyright file="Tipologia.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Tipologia
@@ -30,27 +29,27 @@ namespace SO115App.API.Models.Classi.Condivise
         }
 
         /// <summary>
-        ///   Codice della Tipologia
+        /// Codice della Tipologia
         /// </summary>
         public string codice { get; set; }
 
         /// <summary>
-        ///   Descrizione Tipologia
+        /// Descrizione Tipologia
         /// </summary>
         public string descrizione { get; set; }
 
         /// <summary>
-        ///   Classe Icona Fontawsome corrispondente alla tipologia
+        /// Classe Icona Fontawsome corrispondente alla tipologia
         /// </summary>
         public string icona { get; set; }
 
         /// <summary>
-        ///   Definisce la categoria della Tipologia
+        /// Definisce la categoria della Tipologia
         /// </summary>
         public string categoria { get; set; }
 
         /// <summary>
-        ///   Indica se questa tipologia sarà presente nei "preferiti" nella sezione Filtri
+        /// Indica se questa tipologia sarà presente nei "preferiti" nella sezione Filtri
         /// </summary>
         public bool star { get; set; }
     }

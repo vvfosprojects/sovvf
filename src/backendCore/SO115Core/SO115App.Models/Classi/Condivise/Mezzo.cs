@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="NonNecessario.cs" company="CNVVF">
+// <copyright file="Mezzo.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Mezzo
@@ -34,42 +33,42 @@ namespace SO115App.API.Models.Classi.Condivise
         }
 
         /// <summary>
-        ///   Codice del mezzo
+        /// Codice del mezzo
         /// </summary>
         public string codice { get; set; }
 
         /// <summary>
-        ///   Descrizione del mezzo
+        /// Descrizione del mezzo
         /// </summary>
         public string descrizione { get; set; }
 
         /// <summary>
-        ///   Genere del mezzo
+        /// Genere del mezzo
         /// </summary>
         public string genere { get; set; }
 
         /// <summary>
-        ///   Stato del mezzo
+        /// Stato del mezzo
         /// </summary>
         public string stato { get; set; }
 
         /// <summary>
-        ///   Appartenenza del mezzo
+        /// Appartenenza del mezzo
         /// </summary>
         public int appartenenza { get; set; }
 
         /// <summary>
-        ///   Indica il distaccamento del mezzo
+        /// Indica il distaccamento del mezzo
         /// </summary>
         public Sede distaccamento { get; set; }
 
         /// <summary>
-        ///  Descrizione dell'appartenenza del mezzo
+        /// Descrizione dell'appartenenza del mezzo
         /// </summary>
         public string descrizioneAppartenenza { get; set; }
 
         /// <summary>
-        ///  Descrizione dello stato del mezzo
+        /// Descrizione dello stato del mezzo
         /// </summary>
         public string descrizioneStato { get; set; }
 

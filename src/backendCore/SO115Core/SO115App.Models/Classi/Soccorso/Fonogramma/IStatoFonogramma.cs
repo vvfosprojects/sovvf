@@ -17,21 +17,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace SO115App.API.Models.Classi.Soccorso.Fonogramma
 {
     /// <summary>
-    ///   Lo stato di un fonogramma, con riferimento alla singola istanza di <see cref="RichiestaAssistenza" />.
+    /// Lo stato di un fonogramma, con riferimento alla singola istanza di <see cref="RichiestaAssistenza"/>.
     /// </summary>
     public interface IStatoFonogramma
     {
         /// <summary>
-        ///   Il codice dello stato fonogramma, utile per la serializzazione mediante i DTO.
+        /// Il codice dello stato fonogramma, utile per la serializzazione mediante i DTO.
         /// </summary>
         string Codice { get; }
 
         /// <summary>
-        ///   La descrizione dello stato del fonogramma, da mostrare in GUI.
+        /// La descrizione dello stato del fonogramma, da mostrare in GUI.
         /// </summary>
         string Descrizione { get; }
     }
