@@ -14,6 +14,7 @@ import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-per
 import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.actions';
 import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
+import { SetRichiesteMarkers } from '../../features/home/store/actions/maps/richieste-markers.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -106,6 +107,11 @@ export class SignalRService {
             console.log(data);
             this.store.dispatch(new SetBoxRichieste(data));
             this.store.dispatch(new ShowToastr('success', 'Box Richieste ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetListaRichiesteMarker', (data: any) => {
+            console.log(data);
+            this.store.dispatch(new SetRichiesteMarkers(data));
+            this.store.dispatch(new ShowToastr('success', 'Richieste Markers ricevute da signalR', null, 5));
         });
         /**
          * fine nuova implementazione

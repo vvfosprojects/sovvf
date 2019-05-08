@@ -60,7 +60,7 @@ export class HomeState {
             new GetCentroMappa(),
             new GetSediMarkers(),
             new GetMezziMarkers(),
-            new GetRichiesteMarkers(),
+            new GetRichiesteMarkers(connectionID),
             new GetChiamateMarkers(),
             new GetBoxRichieste(connectionID),
             new GetBoxMezzi(connectionID),

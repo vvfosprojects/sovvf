@@ -6,16 +6,18 @@ import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { RichiestaMarker } from '../../../../features/home/maps/maps-model/richiesta-marker.model';
 import * as moment from 'moment';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
+import { Store } from '@ngxs/store';
+import { SetRichiesteMarkers } from '../../../../features/home/store/actions/maps/richieste-markers.actions';
 
 @Injectable()
 export class RichiesteMarkerServiceFake {
 
     private richiesteMarkers: RichiestaMarker[] = [];
 
-    constructor() {
+    constructor(private store: Store) {
     }
 
-    public getRichiesteMarkers(): Observable<RichiestaMarker[]> {
+    public getRichiesteMarkers(signalRConnectionId: string): Observable<RichiestaMarker[]> {
         this.richiesteMarkers = [
             new RichiestaMarker(
                 '1',
@@ -166,6 +168,8 @@ export class RichiesteMarkerServiceFake {
             ),
         ];
 
-        return of(this.richiesteMarkers);
+        this.store.dispatch(new SetRichiesteMarkers(this.richiesteMarkers));
+
+        return of();
     }
 }

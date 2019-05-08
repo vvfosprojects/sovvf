@@ -15,6 +15,9 @@ import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/o
 import { Observable } from 'rxjs';
 import { HomeState } from '../home.state';
 import { ToggleAnimation } from '../../actions/maps/maps-buttons.actions';
+import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { RichiesteMarkerAdapterService } from '../../../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
+import { map } from 'rxjs/operators';
 
 export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];
@@ -50,14 +53,14 @@ export class RichiesteMarkersState {
         return state.richiestaMarkerById;
     }
 
-    constructor(private _richieste: RichiesteMarkerService) {
+    constructor(private _richieste: RichiesteMarkerService, private adapter: RichiesteMarkerAdapterService) {
     }
 
     @Action(GetRichiesteMarkers)
-    getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>) {
-        this._richieste.getRichiesteMarkers().subscribe((result: RichiestaMarker[]) => {
+    getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: GetRichiesteMarkers) {
+        this._richieste.getRichiesteMarkers(action.connectionId).subscribe((result) => {
             dispatch(new SetRichiesteMarkers(result));
-        });
+        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5000)));
     }
 
     @Action(SetRichiesteMarkers)
@@ -76,7 +79,7 @@ export class RichiesteMarkersState {
     addRichiesteMarkers({ setState }: StateContext<RichiesteMarkersStateModel>, { payload }: AddRichiesteMarkers) {
         setState(
             patch({
-                richiesteMarkers: append(payload)
+                richiesteMarkers: append(payload.map(item => this.adapter.adapt(item)))
             })
         );
     }
