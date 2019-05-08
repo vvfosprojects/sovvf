@@ -13,18 +13,11 @@ namespace SO115App.CompositionRoot
         {
             var assemblies = new Assembly[]
             {
-                typeof(API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes.BoxMezziQuery).Assembly,
-                typeof(API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes.BoxPersonaleQuery).Assembly,
-                typeof(API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes.BoxRichiesteQuery).Assembly,
-                typeof(API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza.SintesiRichiesteAssistenzaQuery).Assembly,
-                typeof(API.Models.Servizi.CQRS.Queries.Marker.SintesiMezziMarker.SintesiMezziMarkerQuery).Assembly,
-                typeof(API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker.SintesiRichiesteAssistenzaMarkerQuery).Assembly,
-                typeof(API.Models.Servizi.CQRS.Queries.Marker.SintesiSediMarker.SintesiSediMarkerQuery).Assembly,
-                typeof(API.Models.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso.QueryDTO.IndicatoriStatoSoccorsoQuery).Assembly
+                typeof(API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes.BoxMezziQuery).Assembly
             };
 
-            // The following two lines perform the batch registration by using
-            // the great generics support provided by SimpleInjector.
+            // The following two lines perform the batch registration by using the great generics
+            // support provided by SimpleInjector.
             container.Register(typeof(CQRS.Commands.ICommandHandler<>), assemblies);
             container.Register(typeof(CQRS.Queries.IQueryHandler<,>), assemblies);
 
