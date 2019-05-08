@@ -29,7 +29,7 @@ import { ClearMarkerRichiestaSelezionato } from '../store/actions/maps/marker.ac
     styleUrls: ['./composizione-partenza.component.css']
 })
 export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
-    @Input() compPartenzaMode: string;
+    @Input() compPartenzaMode: Composizione;
 
     dismissPartenzaSubject: Subject<boolean> = new Subject<boolean>();
     Composizione = Composizione;
