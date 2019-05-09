@@ -36,7 +36,7 @@ export class BoxMezziState {
     getBoxMezzi({ dispatch }: StateContext<BoxMezziStateModel>, action: GetBoxMezzi) {
         this._mezzi.getMezzi(action.connectionId).subscribe(() => {
             // dispatch(new SetBoxMezzi(m));
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5000)));
+        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetBoxMezzi)

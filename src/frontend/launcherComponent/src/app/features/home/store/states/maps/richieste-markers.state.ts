@@ -17,7 +17,6 @@ import { HomeState } from '../home.state';
 import { ToggleAnimation } from '../../actions/maps/maps-buttons.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { RichiesteMarkerAdapterService } from '../../../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
-import { map } from 'rxjs/operators';
 
 export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];
@@ -59,8 +58,8 @@ export class RichiesteMarkersState {
     @Action(GetRichiesteMarkers)
     getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: GetRichiesteMarkers) {
         this._richieste.getRichiesteMarkers(action.connectionId).subscribe((result) => {
-            dispatch(new SetRichiesteMarkers(result));
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5000)));
+            console.log(result);
+        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetRichiesteMarkers)

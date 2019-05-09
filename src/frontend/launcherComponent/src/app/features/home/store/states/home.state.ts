@@ -58,8 +58,8 @@ export class HomeState {
         dispatch([
             new GetRichieste(connectionID),
             new GetCentroMappa(),
-            new GetSediMarkers(),
-            new GetMezziMarkers(),
+            new GetSediMarkers(connectionID),
+            new GetMezziMarkers(connectionID),
             new GetRichiesteMarkers(connectionID),
             new GetChiamateMarkers(),
             new GetBoxRichieste(connectionID),

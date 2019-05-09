@@ -2,6 +2,9 @@ import { MezzoMarker } from '../../../maps/maps-model/mezzo-marker.model';
 
 export class GetMezziMarkers {
     static readonly type = '[Mezzi Marker] Get Mezzi Marker';
+
+    constructor(public connectionId: string) {
+    }
 }
 
 export class SetMezziMarkers {

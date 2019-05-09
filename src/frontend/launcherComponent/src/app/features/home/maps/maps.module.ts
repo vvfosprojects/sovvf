@@ -100,8 +100,8 @@ import { environment } from '../../../../environments/environment';
     providers: [
         RichiesteMarkerAdapterService,
         { provide: RichiesteMarkerService, useClass: environment.fakeProvider ? RichiesteMarkerServiceFake : RichiesteMarkerService},
-        { provide: MezziMarkerService, useClass: MezziMarkerServiceFake },
-        { provide: SediMarkerService, useClass: SediMarkerServiceFake },
+        { provide: MezziMarkerService, useClass: environment.fakeProvider ? MezziMarkerServiceFake : MezziMarkerService},
+        { provide: SediMarkerService, useClass: environment.fakeProvider ? SediMarkerServiceFake : SediMarkerService},
         { provide: CentroMappaService, useClass: CentroMappaServiceFake },
         { provide: ChiamateMarkerService, useClass: ChiamateMarkerServiceFake}
     ]

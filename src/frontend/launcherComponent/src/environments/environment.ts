@@ -1,8 +1,8 @@
 export const environment = {
     production: false,
-    fakeProvider: false,
+    fakeProvider: true,
     signalRHub: '/NotificationHub',
-    signalR: true,
+    signalR: false,
     apiUrl: {
         appSettings: 'assets/json/app-settings.json',
         boxes: {
@@ -21,8 +21,8 @@ export const environment = {
         maps: {
             markers: {
                 richieste: '/api/SintesiRichiesteAssistenzaMarker',
-                sedi: 'https://api.myjson.com/bins/18m83u',
-                mezzi: 'https://api.myjson.com/bins/jwy84',
+                sedi: '/api/SintesiSediMarker',
+                mezzi: '/api/SintesiMezziMarker',
                 centro: '',
                 chiamate: ''
             }
@@ -40,6 +40,7 @@ export const environment = {
         },
         listaSedi: '',
         login: '/api/auth/Login',
-        users: '/api/users'
+        users: '/api/users',
+        navbar: '/api/Navbar'
     }
 };

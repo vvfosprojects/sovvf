@@ -1,10 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {MezzoMarker} from '../../../../features/home/maps/maps-model/mezzo-marker.model';
-import {Coordinate} from '../../../../shared/model/coordinate.model';
-import {Mezzo} from '../../../../shared/model/mezzo.model';
-import {Sede} from '../../../../shared/model/sede.model';
-import {Tipologia} from '../../../../shared/model/tipologia.model';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { MezzoMarker } from '../../../../features/home/maps/maps-model/mezzo-marker.model';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { Mezzo } from '../../../../shared/model/mezzo.model';
+import { Sede } from '../../../../shared/model/sede.model';
+import { Tipologia } from '../../../../shared/model/tipologia.model';
+import { Store } from '@ngxs/store';
+import { SetMezziMarkers } from '../../../../features/home/store/actions/maps/mezzi-markers.actions';
 
 
 @Injectable()
@@ -12,10 +14,10 @@ export class MezziMarkerServiceFake {
 
     private mezziMarkers: MezzoMarker[] = [];
 
-    constructor() {
+    constructor(private store: Store) {
     }
 
-    public getMezziMarkers(): Observable<MezzoMarker[]> {
+    public getMezziMarkers(signalRConnectionId: string): Observable<MezzoMarker[]> {
         this.mezziMarkers = [
             new MezzoMarker(
                 new Coordinate(41.8311007, 12.4686518),
@@ -50,6 +52,9 @@ export class MezziMarkerServiceFake {
                 'Mezzo in soccorso'
             )
         ];
-        return of(this.mezziMarkers);
+
+        this.store.dispatch(new SetMezziMarkers(this.mezziMarkers));
+
+        return of();
     }
 }

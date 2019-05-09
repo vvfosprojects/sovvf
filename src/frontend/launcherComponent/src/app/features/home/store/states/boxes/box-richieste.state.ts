@@ -37,7 +37,7 @@ export class BoxRichiesteState {
 
         this._richieste.getInterventi(action.connectionId).subscribe(() => {
             // dispatch(new SetBoxRichieste(i));
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5000)));
+        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetBoxRichieste)
