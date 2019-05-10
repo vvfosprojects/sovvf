@@ -30,6 +30,8 @@ import {
     CentroMappaService, MezziMarkerService, SediMarkerService, RichiesteMarkerService,
     CentroMappaServiceFake, MezziMarkerServiceFake, SediMarkerServiceFake, RichiesteMarkerServiceFake, ChiamateMarkerService, ChiamateMarkerServiceFake
 } from '../../../core/service/maps-service';
+import { RichiesteMarkerAdapterService } from '../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
+
 /**
  * Ngxs
  */
@@ -50,6 +52,7 @@ import { MarkerOpachiState } from '../store/states/maps/marker-opachi.state';
 import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
 import { MapsButtonComponent } from './maps-ui/buttons/maps-button.component';
 import { MapsButtonsState } from '../store/states/maps/maps-buttons.state';
+import { environment } from '../../../../environments/environment';
 
 @NgModule({
     imports: [
@@ -95,9 +98,10 @@ import { MapsButtonsState } from '../store/states/maps/maps-buttons.state';
         MapsComponent
     ],
     providers: [
-        { provide: RichiesteMarkerService, useClass: RichiesteMarkerServiceFake },
-        { provide: MezziMarkerService, useClass: MezziMarkerServiceFake },
-        { provide: SediMarkerService, useClass: SediMarkerServiceFake },
+        RichiesteMarkerAdapterService,
+        { provide: RichiesteMarkerService, useClass: environment.fakeProvider ? RichiesteMarkerServiceFake : RichiesteMarkerService},
+        { provide: MezziMarkerService, useClass: environment.fakeProvider ? MezziMarkerServiceFake : MezziMarkerService},
+        { provide: SediMarkerService, useClass: environment.fakeProvider ? SediMarkerServiceFake : SediMarkerService},
         { provide: CentroMappaService, useClass: CentroMappaServiceFake },
         { provide: ChiamateMarkerService, useClass: ChiamateMarkerServiceFake}
     ]

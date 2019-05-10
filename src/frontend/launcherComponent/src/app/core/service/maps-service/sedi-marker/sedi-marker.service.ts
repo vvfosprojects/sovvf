@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError, map, retry } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { handleError } from '../../../../shared/helper/handleError';
@@ -13,11 +13,9 @@ export class SediMarkerService {
     constructor(private http: HttpClient) {
     }
 
-    getSediMarkers(): Observable<any> {
-        return this.http.get(API_URL_SEDI).pipe(
-            map((data: any) => {
-                return data;
-            }),
+    getSediMarkers(signalRConnectionId: string): Observable<any> {
+        console.log(API_URL_SEDI + `?id=${signalRConnectionId}`);
+        return this.http.get(API_URL_SEDI + `?id=${signalRConnectionId}`).pipe(
             retry(3),
             catchError(handleError)
         );

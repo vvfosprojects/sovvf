@@ -1,0 +1,1524 @@
+[
+  {
+    "id": "1",
+    "codice": "RM-022",
+    "codiceRichiesta": null,
+    "operatore": {
+      "id": "10",
+      "nome": "Mario",
+      "cognome": "Rossi"
+    },
+    "istanteRicezioneRichiesta": "2019-03-26T14:18:10.350Z",
+    "stato": 0,
+    "priorita": 5,
+    "tipologie": [
+      {
+        "codice": "2",
+        "descrizione": "Incendio ed esplosione",
+        "icona": "fa fa-fire"
+      }
+    ],
+    "descrizione": "Esplosione nei pressi di un centro abitato",
+    "richiedente": {
+      "telefono": "3202676253",
+      "nome": "Alessandro",
+      "cognome": "Palletta"
+    },
+    "localita": {
+      "coordinate": {
+        "latitudine": 41.8624992,
+        "longitudine": 12.5532867
+      },
+      "indirizzo": "Via Scribonio Curione, 22",
+      "note": "nei pressi dell'uscita della metro"
+    },
+    "competenze": [
+      {
+        "codice": "2",
+        "descrizione": "Tuscolano II",
+        "coordinate": {
+          "latitudine": 41.8638843,
+          "longitudine": 12.5522048
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      },
+      {
+        "codice": "4",
+        "descrizione": "Ostiense",
+        "coordinate": {
+          "latitudine": 41.8606045,
+          "longitudine": 12.4730873
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      },
+      {
+        "codice": "3",
+        "descrizione": "Tuscolana I",
+        "coordinate": {
+          "latitudine": 41.8607859,
+          "longitudine": 12.5226281
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    ],
+    "complessita": {
+      "indice": "100",
+      "descrizione": "Alto"
+    },
+    "istantePresaInCarico": null,
+    "istantePrimaAssegnazione": null,
+    "rilevanza": "2019-03-26T14:18:10.352Z",
+    "codiceSchedaNue": null,
+    "zoneEmergenza": null,
+    "fonogramma": {
+      "codice": "0",
+      "descrizione": "Non necessario"
+    },
+    "partenze": null,
+    "etichette": null,
+    "notePubbliche": null,
+    "notePrivate": null,
+    "eventi": null
+  },
+  {
+    "id": "2",
+    "codice": "RM-021",
+    "codiceRichiesta": null,
+    "operatore": {
+      "id": "10",
+      "nome": "Mario",
+      "cognome": "Rossi"
+    },
+    "istanteRicezioneRichiesta": "2019-03-26T13:56:10.352Z",
+    "stato": 0,
+    "priorita": 1,
+    "tipologie": [
+      {
+        "codice": "360",
+        "descrizione": "Messa in sicurezza impianti tecnologici di servizio (acqua, energia elettrica, gas)",
+        "icona": ""
+      }
+    ],
+    "descrizione": "Scintille da palo elettrico",
+    "richiedente": {
+      "telefono": "062815692",
+      "nome": "Rosalba",
+      "cognome": "Di Tonno"
+    },
+    "localita": {
+      "coordinate": {
+        "latitudine": 41.8607234,
+        "longitudine": 12.555459
+      },
+      "indirizzo": "Viale Giuseppe Mazzini, 159",
+      "note": "nelle vicinanze di un ristorante"
+    },
+    "competenze": [
+      {
+        "codice": "5",
+        "descrizione": "Prati",
+        "coordinate": {
+          "latitudine": 41.9184282,
+          "longitudine": 12.4635564
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      },
+      {
+        "codice": "6",
+        "descrizione": "Monte Mario",
+        "coordinate": {
+          "latitudine": 41.9186602,
+          "longitudine": 12.4360771
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    ],
+    "complessita": {
+      "indice": "20",
+      "descrizione": "Media"
+    },
+    "istantePresaInCarico": "2019-03-26T14:02:10.352Z",
+    "istantePrimaAssegnazione": "2019-03-26T14:06:10.352Z",
+    "rilevanza": null,
+    "codiceSchedaNue": null,
+    "zoneEmergenza": null,
+    "fonogramma": {
+      "codice": "0",
+      "descrizione": "Non necessario"
+    },
+    "partenze": null,
+    "etichette": [ "Scintille", "Mazzini", "Di Tonno" ],
+    "notePubbliche": null,
+    "notePrivate": null,
+    "eventi": null
+  },
+  {
+    "id": "3",
+    "codice": "RM-020",
+    "codiceRichiesta": null,
+    "operatore": {
+      "id": "10",
+      "nome": "Mario",
+      "cognome": "Rossi"
+    },
+    "istanteRicezioneRichiesta": "2019-03-26T13:55:10.352Z",
+    "stato": 0,
+    "priorita": 1,
+    "tipologie": [
+      {
+        "codice": "2",
+        "descrizione": "Incendio ed esplosione",
+        "icona": "fa fa-fire"
+      }
+    ],
+    "descrizione": "Incendio a bordo strada",
+    "richiedente": {
+      "telefono": "3245898977",
+      "nome": "Marco",
+      "cognome": "Liguori"
+    },
+    "localita": {
+      "coordinate": {
+        "latitudine": 41.8654843,
+        "longitudine": 12.5805044
+      },
+      "indirizzo": "Viale dei Romanisti, 40",
+      "note": "vicino ai secchi dell'immondizia"
+    },
+    "competenze": [
+      {
+        "codice": "2",
+        "descrizione": "Tuscolano II",
+        "coordinate": {
+          "latitudine": 41.8638843,
+          "longitudine": 12.5522048
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      },
+      {
+        "codice": "3",
+        "descrizione": "Tuscolana I",
+        "coordinate": {
+          "latitudine": 41.8607859,
+          "longitudine": 12.5226281
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    ],
+    "complessita": {
+      "indice": "10",
+      "descrizione": "Basso"
+    },
+    "istantePresaInCarico": null,
+    "istantePrimaAssegnazione": null,
+    "rilevanza": null,
+    "codiceSchedaNue": null,
+    "zoneEmergenza": null,
+    "fonogramma": {
+      "codice": "0",
+      "descrizione": "Non necessario"
+    },
+    "partenze": null,
+    "etichette": null,
+    "notePubbliche": null,
+    "notePrivate": null,
+    "eventi": null
+  },
+  {
+    "id": "4",
+    "codice": "RM-019",
+    "codiceRichiesta": "RM-12842",
+    "operatore": {
+      "id": "10",
+      "nome": "Mario",
+      "cognome": "Rossi"
+    },
+    "istanteRicezioneRichiesta": "2019-03-26T13:43:10.352Z",
+    "stato": 3,
+    "priorita": 4,
+    "tipologie": [
+      {
+        "codice": "360",
+        "descrizione": "Salvataggio persone",
+        "icona": ""
+      }
+    ],
+    "descrizione": "Persona che minaccia di buttarsi da un tetto",
+    "richiedente": {
+      "telefono": "112",
+      "nome": null,
+      "cognome": null,
+      "ragioneSociale": "Carabinieri"
+    },
+    "localita": {
+      "coordinate": {
+        "latitudine": 41.8311007,
+        "longitudine": 12.4683518
+      },
+      "indirizzo": "Viale Europa, 184",
+      "note": "dal palazzo delle Poste Italiane"
+    },
+    "competenze": [
+      {
+        "codice": "8",
+        "descrizione": "EUR",
+        "coordinate": {
+          "latitudine": 41.8315918,
+          "longitudine": 12.4666971
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      },
+      {
+        "codice": "4",
+        "descrizione": "Ostiense",
+        "coordinate": {
+          "latitudine": 41.8606045,
+          "longitudine": 12.4730873
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    ],
+    "complessita": {
+      "indice": "80",
+      "descrizione": "Alta"
+    },
+    "istantePresaInCarico": "2019-03-26T13:48:10.352Z",
+    "istantePrimaAssegnazione": "2019-03-26T13:49:10.352Z",
+    "rilevanza": "2019-03-26T13:43:10.352Z",
+    "codiceSchedaNue": null,
+    "zoneEmergenza": null,
+    "fonogramma": {
+      "codice": "0",
+      "descrizione": "Non necessario"
+    },
+    "partenze": [
+      {
+        "squadre": [
+          {
+            "nome": "3A",
+            "stato": 2,
+            "componenti": [
+              {
+                "descrizioneQualifica": "CS",
+                "nominativo": "Paolo Di Tonno",
+                "tooltip": "Paolo Di Tonno - RSSTZN56T56R454E",
+                "capoPartenza": true,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Antonio Marsalà",
+                "tooltip": "Antonio Marsalà - MRCMRC66T66R454F",
+                "capoPartenza": false,
+                "autista": true,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Bernardo Belli",
+                "tooltip": "Bernardo Belli - CNTRFL66T45R343E",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Maurizio Cutolo",
+                "tooltip": "Maurizio Cutolo - VRTGVN56T74H565Y",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              }
+            ],
+            "distaccamento": {
+              "codice": null,
+              "descrizione": null,
+              "coordinate": null,
+              "indirizzo": null,
+              "tipo": null,
+              "regione": null,
+              "provincia": null
+            }
+          }
+        ],
+        "mezzo": {
+          "codice": "1",
+          "descrizione": "Autobotte",
+          "genere": "ABP",
+          "stato": "InViaggio",
+          "appartenenza": 1,
+          "distaccamento": {
+            "codice": "1",
+            "descrizione": "",
+            "coordinate": null,
+            "indirizzo": null,
+            "tipo": null,
+            "regione": null,
+            "provincia": null
+          },
+          "descrizioneAppartenenza": "appartenenza",
+          "descrizioneStato": "stato",
+          "statoEfficienza": 2,
+          "descrizioneStatoEfficienza": "efficienza",
+          "livelloCarburante": 3,
+          "descrizioneLivelloCarburante": "carburante",
+          "livelloEstinguente": 2,
+          "descrizioneLivelloEstinguente": "estinguente"
+        }
+      }
+    ],
+    "etichette": null,
+    "notePubbliche": null,
+    "notePrivate": null,
+    "eventi": null
+  },
+  {
+    "id": "5",
+    "codice": "RM-018",
+    "codiceRichiesta": "RM-12841",
+    "operatore": {
+      "id": "10",
+      "nome": "Mario",
+      "cognome": "Rossi"
+    },
+    "istanteRicezioneRichiesta": "2019-03-26T14:14:10.352Z",
+    "stato": 3,
+    "priorita": 3,
+    "tipologie": [
+      {
+        "codice": "1",
+        "descrizione": "Danni d'acqua in genere",
+        "icona": "fa fa-tint"
+      }
+    ],
+    "descrizione": "Allagamento garage con personale da soccorrere",
+    "richiedente": {
+      "telefono": "113",
+      "nome": null,
+      "cognome": null,
+      "ragioneSociale": "Polizia"
+    },
+    "localita": {
+      "coordinate": {
+        "latitudine": 41.82699,
+        "longitudine": 12.4874854
+      },
+      "indirizzo": "Via Simone Martini, 125",
+      "note": "persone all'interno del garage"
+    },
+    "competenze": [
+      {
+        "codice": "2",
+        "descrizione": "Tuscolano II",
+        "coordinate": {
+          "latitudine": 41.8638843,
+          "longitudine": 12.5522048
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      },
+      {
+        "codice": "4",
+        "descrizione": "Ostiense",
+        "coordinate": {
+          "latitudine": 41.8606045,
+          "longitudine": 12.4730873
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      },
+      {
+        "codice": "3",
+        "descrizione": "Tuscolana I",
+        "coordinate": {
+          "latitudine": 41.8607859,
+          "longitudine": 12.5226281
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    ],
+    "complessita": {
+      "indice": "20",
+      "descrizione": "Media"
+    },
+    "istantePresaInCarico": "2019-03-26T14:06:10.352Z",
+    "istantePrimaAssegnazione": "2019-03-26T14:07:10.353Z",
+    "rilevanza": null,
+    "codiceSchedaNue": null,
+    "zoneEmergenza": null,
+    "fonogramma": {
+      "codice": "0",
+      "descrizione": "Non necessario"
+    },
+    "partenze": [
+      {
+        "squadre": [
+          {
+            "nome": "3A",
+            "stato": 2,
+            "componenti": [
+              {
+                "descrizioneQualifica": "CS",
+                "nominativo": "Paolo Di Tonno",
+                "tooltip": "Paolo Di Tonno - RSSTZN56T56R454E",
+                "capoPartenza": true,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Antonio Marsalà",
+                "tooltip": "Antonio Marsalà - MRCMRC66T66R454F",
+                "capoPartenza": false,
+                "autista": true,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Bernardo Belli",
+                "tooltip": "Bernardo Belli - CNTRFL66T45R343E",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Maurizio Cutolo",
+                "tooltip": "Maurizio Cutolo - VRTGVN56T74H565Y",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              }
+            ],
+            "distaccamento": {
+              "codice": null,
+              "descrizione": null,
+              "coordinate": null,
+              "indirizzo": null,
+              "tipo": null,
+              "regione": null,
+              "provincia": null
+            }
+          }
+        ],
+        "mezzo": {
+          "codice": "1",
+          "descrizione": "Autobotte",
+          "genere": "ABP",
+          "stato": "InViaggio",
+          "appartenenza": 1,
+          "distaccamento": {
+            "codice": "1",
+            "descrizione": "",
+            "coordinate": null,
+            "indirizzo": null,
+            "tipo": null,
+            "regione": null,
+            "provincia": null
+          },
+          "descrizioneAppartenenza": "appartenenza",
+          "descrizioneStato": "stato",
+          "statoEfficienza": 2,
+          "descrizioneStatoEfficienza": "efficienza",
+          "livelloCarburante": 3,
+          "descrizioneLivelloCarburante": "carburante",
+          "livelloEstinguente": 2,
+          "descrizioneLivelloEstinguente": "estinguente"
+        }
+      }
+    ],
+    "etichette": null,
+    "notePubbliche": null,
+    "notePrivate": null,
+    "eventi": null
+  },
+  {
+    "id": "6",
+    "codice": "RM-017",
+    "codiceRichiesta": "RM-12840",
+    "operatore": {
+      "id": "10",
+      "nome": "Mario",
+      "cognome": "Rossi"
+    },
+    "istanteRicezioneRichiesta": "2019-03-26T14:12:10.353Z",
+    "stato": 3,
+    "priorita": 3,
+    "tipologie": [
+      {
+        "codice": "1",
+        "descrizione": "Incidente stradale generico",
+        "icona": "fa fa-car"
+      }
+    ],
+    "descrizione": "Incidente automobile ribaltata",
+    "richiedente": {
+      "telefono": "113",
+      "nome": null,
+      "cognome": null,
+      "ragioneSociale": "Polizia"
+    },
+    "localita": {
+      "coordinate": {
+        "latitudine": 41.8531486,
+        "longitudine": 12.5411702
+      },
+      "indirizzo": "Via Tuscolana, 1500",
+      "note": "automobile ribaltata, persona anziana"
+    },
+    "competenze": [
+      {
+        "codice": "2",
+        "descrizione": "Tuscolano II",
+        "coordinate": {
+          "latitudine": 41.8638843,
+          "longitudine": 12.5522048
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      },
+      {
+        "codice": "4",
+        "descrizione": "Ostiense",
+        "coordinate": {
+          "latitudine": 41.8606045,
+          "longitudine": 12.4730873
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      },
+      {
+        "codice": "3",
+        "descrizione": "Tuscolana I",
+        "coordinate": {
+          "latitudine": 41.8607859,
+          "longitudine": 12.5226281
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    ],
+    "complessita": {
+      "indice": "20",
+      "descrizione": "Media"
+    },
+    "istantePresaInCarico": "2019-03-26T14:16:10.353Z",
+    "istantePrimaAssegnazione": "2019-03-26T14:17:10.353Z",
+    "rilevanza": null,
+    "codiceSchedaNue": null,
+    "zoneEmergenza": null,
+    "fonogramma": {
+      "codice": "0",
+      "descrizione": "Non necessario"
+    },
+    "partenze": [
+      {
+        "squadre": [
+          {
+            "nome": "3A",
+            "stato": 2,
+            "componenti": [
+              {
+                "descrizioneQualifica": "CS",
+                "nominativo": "Paolo Di Tonno",
+                "tooltip": "Paolo Di Tonno - RSSTZN56T56R454E",
+                "capoPartenza": true,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Antonio Marsalà",
+                "tooltip": "Antonio Marsalà - MRCMRC66T66R454F",
+                "capoPartenza": false,
+                "autista": true,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Bernardo Belli",
+                "tooltip": "Bernardo Belli - CNTRFL66T45R343E",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Maurizio Cutolo",
+                "tooltip": "Maurizio Cutolo - VRTGVN56T74H565Y",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              }
+            ],
+            "distaccamento": {
+              "codice": null,
+              "descrizione": null,
+              "coordinate": null,
+              "indirizzo": null,
+              "tipo": null,
+              "regione": null,
+              "provincia": null
+            }
+          }
+        ],
+        "mezzo": {
+          "codice": "1",
+          "descrizione": "Autobotte",
+          "genere": "ABP",
+          "stato": "InViaggio",
+          "appartenenza": 1,
+          "distaccamento": {
+            "codice": "1",
+            "descrizione": "",
+            "coordinate": null,
+            "indirizzo": null,
+            "tipo": null,
+            "regione": null,
+            "provincia": null
+          },
+          "descrizioneAppartenenza": "appartenenza",
+          "descrizioneStato": "stato",
+          "statoEfficienza": 2,
+          "descrizioneStatoEfficienza": "efficienza",
+          "livelloCarburante": 3,
+          "descrizioneLivelloCarburante": "carburante",
+          "livelloEstinguente": 2,
+          "descrizioneLivelloEstinguente": "estinguente"
+        }
+      }
+    ],
+    "etichette": null,
+    "notePubbliche": null,
+    "notePrivate": null,
+    "eventi": null
+  },
+  {
+    "id": "7",
+    "codice": "RM-016",
+    "codiceRichiesta": "RM-12839",
+    "operatore": {
+      "id": "10",
+      "nome": "Mario",
+      "cognome": "Rossi"
+    },
+    "istanteRicezioneRichiesta": "2019-03-26T13:53:10.353Z",
+    "stato": 2,
+    "priorita": 2,
+    "tipologie": [
+      {
+        "codice": "360",
+        "descrizione": "Cedimento sede stradale",
+        "icona": ""
+      }
+    ],
+    "descrizione": "Cedimento sede stradale con rimozione veicolo",
+    "richiedente": {
+      "telefono": "112",
+      "nome": null,
+      "cognome": null,
+      "ragioneSociale": "Carabinieri"
+    },
+    "localita": {
+      "coordinate": {
+        "latitudine": 41.8932662,
+        "longitudine": 12.5417044
+      },
+      "indirizzo": "Via di Portonaccio",
+      "note": "incrocio con Via Prenestina"
+    },
+    "competenze": [
+      {
+        "codice": "7",
+        "descrizione": "La Rustica",
+        "coordinate": {
+          "latitudine": 41.9073166,
+          "longitudine": 12.5934988
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      },
+      {
+        "codice": "2",
+        "descrizione": "Tuscolano II",
+        "coordinate": {
+          "latitudine": 41.8638843,
+          "longitudine": 12.5522048
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      },
+      {
+        "codice": "3",
+        "descrizione": "Tuscolana I",
+        "coordinate": {
+          "latitudine": 41.8607859,
+          "longitudine": 12.5226281
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    ],
+    "complessita": {
+      "indice": "20",
+      "descrizione": "Media"
+    },
+    "istantePresaInCarico": "2019-03-26T14:00:10.353Z",
+    "istantePrimaAssegnazione": "2019-03-26T14:02:10.353Z",
+    "rilevanza": null,
+    "codiceSchedaNue": null,
+    "zoneEmergenza": null,
+    "fonogramma": {
+      "codice": "0",
+      "descrizione": "Non necessario"
+    },
+    "partenze": [
+      {
+        "squadre": [
+          {
+            "nome": "3A",
+            "stato": 2,
+            "componenti": [
+              {
+                "descrizioneQualifica": "CS",
+                "nominativo": "Paolo Di Tonno",
+                "tooltip": "Paolo Di Tonno - RSSTZN56T56R454E",
+                "capoPartenza": true,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Antonio Marsalà",
+                "tooltip": "Antonio Marsalà - MRCMRC66T66R454F",
+                "capoPartenza": false,
+                "autista": true,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Bernardo Belli",
+                "tooltip": "Bernardo Belli - CNTRFL66T45R343E",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Maurizio Cutolo",
+                "tooltip": "Maurizio Cutolo - VRTGVN56T74H565Y",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              }
+            ],
+            "distaccamento": {
+              "codice": null,
+              "descrizione": null,
+              "coordinate": null,
+              "indirizzo": null,
+              "tipo": null,
+              "regione": null,
+              "provincia": null
+            }
+          }
+        ],
+        "mezzo": {
+          "codice": "1",
+          "descrizione": "Autobotte",
+          "genere": "ABP",
+          "stato": "InViaggio",
+          "appartenenza": 1,
+          "distaccamento": {
+            "codice": "1",
+            "descrizione": "",
+            "coordinate": null,
+            "indirizzo": null,
+            "tipo": null,
+            "regione": null,
+            "provincia": null
+          },
+          "descrizioneAppartenenza": "appartenenza",
+          "descrizioneStato": "stato",
+          "statoEfficienza": 2,
+          "descrizioneStatoEfficienza": "efficienza",
+          "livelloCarburante": 3,
+          "descrizioneLivelloCarburante": "carburante",
+          "livelloEstinguente": 2,
+          "descrizioneLivelloEstinguente": "estinguente"
+        }
+      }
+    ],
+    "etichette": null,
+    "notePubbliche": null,
+    "notePrivate": null,
+    "eventi": null
+  },
+  {
+    "id": "8",
+    "codice": "RM-015",
+    "codiceRichiesta": "RM-12838",
+    "operatore": {
+      "id": "10",
+      "nome": "Mario",
+      "cognome": "Rossi"
+    },
+    "istanteRicezioneRichiesta": "2019-03-26T13:41:10.353Z",
+    "stato": 1,
+    "priorita": 2,
+    "tipologie": [
+      {
+        "codice": "360",
+        "descrizione": "Recupero merci e beni",
+        "icona": ""
+      }
+    ],
+    "descrizione": "Recupero merci e beni da camion ribaltato",
+    "richiedente": {
+      "telefono": "113",
+      "nome": null,
+      "cognome": null,
+      "ragioneSociale": "Polizia"
+    },
+    "localita": {
+      "coordinate": {
+        "latitudine": 41.9125723,
+        "longitudine": 12.4952921
+      },
+      "indirizzo": "Via Isonzo, 21",
+      "note": "beni alimentari di vario tipo"
+    },
+    "competenze": [
+      {
+        "codice": "8",
+        "descrizione": "EUR",
+        "coordinate": {
+          "latitudine": 41.8315918,
+          "longitudine": 12.4666971
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      },
+      {
+        "codice": "4",
+        "descrizione": "Ostiense",
+        "coordinate": {
+          "latitudine": 41.8606045,
+          "longitudine": 12.4730873
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    ],
+    "complessita": {
+      "indice": "19",
+      "descrizione": "Bassa"
+    },
+    "istantePresaInCarico": "2019-03-26T13:48:10.353Z",
+    "istantePrimaAssegnazione": "2019-03-26T13:49:10.353Z",
+    "rilevanza": null,
+    "codiceSchedaNue": "NUE4382746",
+    "zoneEmergenza": null,
+    "fonogramma": {
+      "codice": "0",
+      "descrizione": "Non necessario"
+    },
+    "partenze": [
+      {
+        "squadre": [
+          {
+            "nome": "3A",
+            "stato": 2,
+            "componenti": [
+              {
+                "descrizioneQualifica": "CS",
+                "nominativo": "Paolo Di Tonno",
+                "tooltip": "Paolo Di Tonno - RSSTZN56T56R454E",
+                "capoPartenza": true,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Antonio Marsalà",
+                "tooltip": "Antonio Marsalà - MRCMRC66T66R454F",
+                "capoPartenza": false,
+                "autista": true,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Bernardo Belli",
+                "tooltip": "Bernardo Belli - CNTRFL66T45R343E",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Maurizio Cutolo",
+                "tooltip": "Maurizio Cutolo - VRTGVN56T74H565Y",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              }
+            ],
+            "distaccamento": {
+              "codice": null,
+              "descrizione": null,
+              "coordinate": null,
+              "indirizzo": null,
+              "tipo": null,
+              "regione": null,
+              "provincia": null
+            }
+          }
+        ],
+        "mezzo": {
+          "codice": "1",
+          "descrizione": "Autobotte",
+          "genere": "ABP",
+          "stato": "InViaggio",
+          "appartenenza": 1,
+          "distaccamento": {
+            "codice": "1",
+            "descrizione": "",
+            "coordinate": null,
+            "indirizzo": null,
+            "tipo": null,
+            "regione": null,
+            "provincia": null
+          },
+          "descrizioneAppartenenza": "appartenenza",
+          "descrizioneStato": "stato",
+          "statoEfficienza": 2,
+          "descrizioneStatoEfficienza": "efficienza",
+          "livelloCarburante": 3,
+          "descrizioneLivelloCarburante": "carburante",
+          "livelloEstinguente": 2,
+          "descrizioneLivelloEstinguente": "estinguente"
+        }
+      }
+    ],
+    "etichette": null,
+    "notePubbliche": null,
+    "notePrivate": null,
+    "eventi": null
+  },
+  {
+    "id": "9",
+    "codice": "RM-014",
+    "codiceRichiesta": "RM-12837",
+    "operatore": {
+      "id": "10",
+      "nome": "Mario",
+      "cognome": "Rossi"
+    },
+    "istanteRicezioneRichiesta": "2019-03-26T13:39:10.353Z",
+    "stato": 1,
+    "priorita": 2,
+    "tipologie": [
+      {
+        "codice": "360",
+        "descrizione": "Terremoto",
+        "icona": ""
+      }
+    ],
+    "descrizione": "Scossa di terremoto a Roma",
+    "richiedente": {
+      "telefono": "113",
+      "nome": null,
+      "cognome": null,
+      "ragioneSociale": "Polizia"
+    },
+    "localita": {
+      "coordinate": {
+        "latitudine": 41.856683,
+        "longitudine": 12.471484
+      },
+      "indirizzo": "Viale Guglielmo Marconi, 21",
+      "note": "Presidio e aiuto alla popolazione"
+    },
+    "competenze": [
+      {
+        "codice": "8",
+        "descrizione": "EUR",
+        "coordinate": {
+          "latitudine": 41.8334226,
+          "longitudine": 12.4652289
+        },
+        "indirizzo": "Piazza Francesco Vivona, 4",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      },
+      {
+        "codice": "4",
+        "descrizione": "Ostiense",
+        "coordinate": {
+          "latitudine": 41.8606045,
+          "longitudine": 12.4730873
+        },
+        "indirizzo": "Via Ignorasi",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    ],
+    "complessita": {
+      "indice": "19",
+      "descrizione": "Bassa"
+    },
+    "istantePresaInCarico": "2019-03-26T13:48:10.353Z",
+    "istantePrimaAssegnazione": "2019-03-26T13:49:10.353Z",
+    "rilevanza": null,
+    "codiceSchedaNue": "NUE4382746",
+    "zoneEmergenza": null,
+    "fonogramma": {
+      "codice": "0",
+      "descrizione": "Non necessario"
+    },
+    "partenze": [
+      {
+        "squadre": [
+          {
+            "nome": "3A",
+            "stato": 2,
+            "componenti": [
+              {
+                "descrizioneQualifica": "CS",
+                "nominativo": "Paolo Di Tonno",
+                "tooltip": "Paolo Di Tonno - RSSTZN56T56R454E",
+                "capoPartenza": true,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Antonio Marsalà",
+                "tooltip": "Antonio Marsalà - MRCMRC66T66R454F",
+                "capoPartenza": false,
+                "autista": true,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Bernardo Belli",
+                "tooltip": "Bernardo Belli - CNTRFL66T45R343E",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Maurizio Cutolo",
+                "tooltip": "Maurizio Cutolo - VRTGVN56T74H565Y",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              }
+            ],
+            "distaccamento": {
+              "codice": null,
+              "descrizione": null,
+              "coordinate": null,
+              "indirizzo": null,
+              "tipo": null,
+              "regione": null,
+              "provincia": null
+            }
+          }
+        ],
+        "mezzo": {
+          "codice": "1",
+          "descrizione": "Autobotte",
+          "genere": "ABP",
+          "stato": "InViaggio",
+          "appartenenza": 1,
+          "distaccamento": {
+            "codice": "1",
+            "descrizione": "",
+            "coordinate": null,
+            "indirizzo": null,
+            "tipo": null,
+            "regione": null,
+            "provincia": null
+          },
+          "descrizioneAppartenenza": "appartenenza",
+          "descrizioneStato": "stato",
+          "statoEfficienza": 2,
+          "descrizioneStatoEfficienza": "efficienza",
+          "livelloCarburante": 3,
+          "descrizioneLivelloCarburante": "carburante",
+          "livelloEstinguente": 2,
+          "descrizioneLivelloEstinguente": "estinguente"
+        }
+      }
+    ],
+    "etichette": null,
+    "notePubbliche": null,
+    "notePrivate": null,
+    "eventi": null
+  },
+  {
+    "id": "10",
+    "codice": "RM-012",
+    "codiceRichiesta": "RM-12836",
+    "operatore": {
+      "id": "10",
+      "nome": "Mario",
+      "cognome": "Rossi"
+    },
+    "istanteRicezioneRichiesta": "2019-03-26T13:36:10.353Z",
+    "stato": 4,
+    "priorita": 4,
+    "tipologie": [
+      {
+        "codice": "360",
+        "descrizione": "Incendio",
+        "icona": "fa fa-fire"
+      }
+    ],
+    "descrizione": "Incendio in appartamento",
+    "richiedente": {
+      "telefono": "113",
+      "nome": null,
+      "cognome": null,
+      "ragioneSociale": "Polizia"
+    },
+    "localita": {
+      "coordinate": {
+        "latitudine": 41.9113629,
+        "longitudine": 12.4652858
+      },
+      "indirizzo": "Viale Giulio Cesare, 21",
+      "note": "Intervento per spegnimento incendio e salvataggio inquilini"
+    },
+    "competenze": [
+      {
+        "codice": "8",
+        "descrizione": "PRATI",
+        "coordinate": {
+          "latitudine": 41.9116264,
+          "longitudine": 12.467068
+        },
+        "indirizzo": "Via Caposile, 9",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      },
+      {
+        "codice": "4",
+        "descrizione": "Ostiense",
+        "coordinate": {
+          "latitudine": 41.9046958,
+          "longitudine": 12.4809725
+        },
+        "indirizzo": "Via Genova, 1",
+        "tipo": "Comando Provinciale",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    ],
+    "complessita": {
+      "indice": "30",
+      "descrizione": "Media"
+    },
+    "istantePresaInCarico": "2019-03-26T13:48:10.353Z",
+    "istantePrimaAssegnazione": "2019-03-26T13:49:10.353Z",
+    "rilevanza": null,
+    "codiceSchedaNue": "NUE4382746",
+    "zoneEmergenza": null,
+    "fonogramma": {
+      "codice": "0",
+      "descrizione": "Non necessario"
+    },
+    "partenze": [
+      {
+        "squadre": [
+          {
+            "nome": "3A",
+            "stato": 2,
+            "componenti": [
+              {
+                "descrizioneQualifica": "CS",
+                "nominativo": "Paolo Di Tonno",
+                "tooltip": "Paolo Di Tonno - RSSTZN56T56R454E",
+                "capoPartenza": true,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Antonio Marsalà",
+                "tooltip": "Antonio Marsalà - MRCMRC66T66R454F",
+                "capoPartenza": false,
+                "autista": true,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Bernardo Belli",
+                "tooltip": "Bernardo Belli - CNTRFL66T45R343E",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Maurizio Cutolo",
+                "tooltip": "Maurizio Cutolo - VRTGVN56T74H565Y",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              }
+            ],
+            "distaccamento": {
+              "codice": null,
+              "descrizione": null,
+              "coordinate": null,
+              "indirizzo": null,
+              "tipo": null,
+              "regione": null,
+              "provincia": null
+            }
+          }
+        ],
+        "mezzo": {
+          "codice": "1",
+          "descrizione": "Autobotte",
+          "genere": "ABP",
+          "stato": "InViaggio",
+          "appartenenza": 1,
+          "distaccamento": {
+            "codice": "1",
+            "descrizione": "",
+            "coordinate": null,
+            "indirizzo": null,
+            "tipo": null,
+            "regione": null,
+            "provincia": null
+          },
+          "descrizioneAppartenenza": "appartenenza",
+          "descrizioneStato": "stato",
+          "statoEfficienza": 2,
+          "descrizioneStatoEfficienza": "efficienza",
+          "livelloCarburante": 3,
+          "descrizioneLivelloCarburante": "carburante",
+          "livelloEstinguente": 2,
+          "descrizioneLivelloEstinguente": "estinguente"
+        }
+      }
+    ],
+    "etichette": null,
+    "notePubbliche": null,
+    "notePrivate": null,
+    "eventi": null
+  },
+  {
+    "id": "11",
+    "codice": "RM-010",
+    "codiceRichiesta": "RM-12835",
+    "operatore": {
+      "id": "10",
+      "nome": "Mario",
+      "cognome": "Rossi"
+    },
+    "istanteRicezioneRichiesta": "2019-03-26T13:33:10.353Z",
+    "stato": 4,
+    "priorita": 3,
+    "tipologie": [
+      {
+        "codice": "360",
+        "descrizione": "Incidente",
+        "icona": "fa fa-car"
+      }
+    ],
+    "descrizione": "Incidente stradale",
+    "richiedente": {
+      "telefono": "113",
+      "nome": null,
+      "cognome": null,
+      "ragioneSociale": "Polizia"
+    },
+    "localita": {
+      "coordinate": {
+        "latitudine": 41.870025,
+        "longitudine": 12.4647536
+      },
+      "indirizzo": "Piazzale della radio, 21",
+      "note": "Intervento per estrarre persone dalle lamiere di una automobile"
+    },
+    "competenze": [
+      {
+        "codice": "8",
+        "descrizione": "EUR",
+        "coordinate": {
+          "latitudine": 41.8735128,
+          "longitudine": 12.4551751
+        },
+        "indirizzo": "Piazza Francesco Vivona, 4",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      },
+      {
+        "codice": "4",
+        "descrizione": "Ostiense",
+        "coordinate": {
+          "latitudine": 41.9046958,
+          "longitudine": 12.4809725
+        },
+        "indirizzo": "Via Genova, 1",
+        "tipo": "Comando Provinciale",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    ],
+    "complessita": {
+      "indice": "30",
+      "descrizione": "Media"
+    },
+    "istantePresaInCarico": "2019-03-26T13:48:10.353Z",
+    "istantePrimaAssegnazione": "2019-03-26T13:49:10.353Z",
+    "rilevanza": null,
+    "codiceSchedaNue": "NUE4382746",
+    "zoneEmergenza": null,
+    "fonogramma": {
+      "codice": "0",
+      "descrizione": "Non necessario"
+    },
+    "partenze": [
+      {
+        "squadre": [
+          {
+            "nome": "3A",
+            "stato": 2,
+            "componenti": [
+              {
+                "descrizioneQualifica": "CS",
+                "nominativo": "Paolo Di Tonno",
+                "tooltip": "Paolo Di Tonno - RSSTZN56T56R454E",
+                "capoPartenza": true,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Antonio Marsalà",
+                "tooltip": "Antonio Marsalà - MRCMRC66T66R454F",
+                "capoPartenza": false,
+                "autista": true,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Bernardo Belli",
+                "tooltip": "Bernardo Belli - CNTRFL66T45R343E",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              },
+              {
+                "descrizioneQualifica": "VIG",
+                "nominativo": "Maurizio Cutolo",
+                "tooltip": "Maurizio Cutolo - VRTGVN56T74H565Y",
+                "capoPartenza": false,
+                "autista": false,
+                "rimpiazzo": false
+              }
+            ],
+            "distaccamento": {
+              "codice": null,
+              "descrizione": null,
+              "coordinate": null,
+              "indirizzo": null,
+              "tipo": null,
+              "regione": null,
+              "provincia": null
+            }
+          }
+        ],
+        "mezzo": {
+          "codice": "1",
+          "descrizione": "Autobotte",
+          "genere": "ABP",
+          "stato": "InViaggio",
+          "appartenenza": 1,
+          "distaccamento": {
+            "codice": "1",
+            "descrizione": "",
+            "coordinate": null,
+            "indirizzo": null,
+            "tipo": null,
+            "regione": null,
+            "provincia": null
+          },
+          "descrizioneAppartenenza": "appartenenza",
+          "descrizioneStato": "stato",
+          "statoEfficienza": 2,
+          "descrizioneStatoEfficienza": "efficienza",
+          "livelloCarburante": 3,
+          "descrizioneLivelloCarburante": "carburante",
+          "livelloEstinguente": 2,
+          "descrizioneLivelloEstinguente": "estinguente"
+        }
+      }
+    ],
+    "etichette": null,
+    "notePubbliche": null,
+    "notePrivate": null,
+    "eventi": null
+  }
+]

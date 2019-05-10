@@ -1,0 +1,104 @@
+[
+  {
+    "id": "1",
+    "nome": "Luigi",
+    "cognome": "Bianchi",
+    "username": "Admin",
+    "password": "Admin",
+    "sede": {
+      "codice": "RM.1000",
+      "descrizione": "Comando di Roma",
+      "indirizzo": "Via Cavour 5",
+      "coordinate": null,
+      "tipoSede": null,
+      "label": null,
+      "icona": null,
+      "regione": "Lazio",
+      "provincia": "RM"
+    },
+    "ruoli": [
+      {
+        "descrizione": "GestoreRichieste",
+        "sede": {
+          "codice": "RM",
+          "descrizione": "Comando di Roma",
+          "indirizzo": "Via Cavour 5",
+          "coordinate": null,
+          "tipoSede": null,
+          "label": null,
+          "icona": null,
+          "regione": "Lazio",
+          "provincia": "RM"
+        }
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "nome": "Mario",
+    "cognome": "Rossi",
+    "username": "test",
+    "password": "test",
+    "sede": {
+      "codice": "RM.1000",
+      "descrizione": "Comando di Roma",
+      "indirizzo": "Via Cavour 5",
+      "coordinate": null,
+      "tipoSede": null,
+      "label": null,
+      "icona": null,
+      "regione": "Lazio",
+      "provincia": "RM"
+    },
+    "ruoli": [
+      {
+        "descrizione": "GestoreRichieste",
+        "sede": {
+          "codice": "RM",
+          "descrizione": "Comando di Roma",
+          "indirizzo": "Via Cavour 5",
+          "coordinate": null,
+          "tipoSede": null,
+          "label": null,
+          "icona": null,
+          "regione": "Lazio",
+          "provincia": "RM"
+        }
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "nome": "Teresio",
+    "cognome": "Mancini",
+    "username": "user",
+    "password": "user",
+    "sede": {
+      "codice": "RM.1000",
+      "descrizione": "Comando di Roma",
+      "indirizzo": "Via Cavour 5",
+      "coordinate": null,
+      "tipoSede": null,
+      "label": null,
+      "icona": null,
+      "regione": "Lazio",
+      "provincia": "RM"
+    },
+    "ruoli": [
+      {
+        "descrizione": "CallTracker",
+        "sede": {
+          "codice": "RM",
+          "descrizione": "Comando di Roma",
+          "indirizzo": "Via Cavour 5",
+          "coordinate": null,
+          "tipoSede": null,
+          "label": null,
+          "icona": null,
+          "regione": "Lazio",
+          "provincia": "RM"
+        }
+      }
+    ]
+  }
+]

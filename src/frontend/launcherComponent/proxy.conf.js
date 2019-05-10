@@ -3,6 +3,10 @@ const PROXY_CONFIG = [
         context: [
             "/NotificationHub",
             "/api/SintesiRichiesteAssistenza",
+            "/api/SintesiRichiesteAssistenzaMarker",
+            "/api/SintesiSediMarker",
+            "/api/SintesiMezziMarker",
+            "/api/Navbar",
             "/api/auth/Login",
             "/api/BoxRichieste",
             "/api/BoxMezzi",

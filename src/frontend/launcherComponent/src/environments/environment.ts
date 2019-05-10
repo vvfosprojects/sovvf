@@ -20,9 +20,9 @@ export const environment = {
         },
         maps: {
             markers: {
-                richieste: 'https://api.myjson.com/bins/17xt98',
-                sedi: 'https://api.myjson.com/bins/18m83u',
-                mezzi: 'https://api.myjson.com/bins/jwy84',
+                richieste: '/api/SintesiRichiesteAssistenzaMarker',
+                sedi: '/api/SintesiSediMarker',
+                mezzi: '/api/SintesiMezziMarker',
                 centro: '',
                 chiamate: ''
             }
@@ -40,6 +40,7 @@ export const environment = {
         },
         listaSedi: '',
         login: '/api/auth/Login',
-        users: '/api/users'
+        users: '/api/users',
+        navbar: '/api/Navbar'
     }
 };

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { SedeMarker } from '../../../../features/home/maps/maps-model/sede-marker.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { Store } from '@ngxs/store';
+import { SetSediMarkers } from '../../../../features/home/store/actions/maps/sedi-markers.actions';
 
 
 @Injectable()
@@ -9,10 +11,10 @@ export class SediMarkerServiceFake {
 
     private sediMarkers: SedeMarker[] = [];
 
-    constructor() {
+    constructor(private store: Store) {
     }
 
-    public getSediMarkers(): Observable<SedeMarker[]> {
+    public getSediMarkers(signalRConnectionId: string): Observable<SedeMarker[]> {
         this.sediMarkers = [
             new SedeMarker('1', 'Comando di Roma', new Coordinate(41.899940, 12.491270), 'Via Genova, 1, 00184 Roma RM', 'Comando', 'Lazio', 'Roma'),
             new SedeMarker('2', 'Comando di Latina', new Coordinate(41.474258, 12.903250), 'Piazzale G. Carturan, 1, 04100 Latina LT', 'Comando', 'Lazio', 'Latina'),
@@ -21,7 +23,10 @@ export class SediMarkerServiceFake {
             new SedeMarker('5', 'Comando di Viterbo', new Coordinate(42.3736121, 12.1129142), 'Str. Cassia Nord, km 84, 01100 Viterbo VT', 'Comando', 'Lazio', 'Viterbo'),
             new SedeMarker('8', 'Distaccamento Cittadino La Rustica', new Coordinate(41.9095454, 12.6119425), 'Via Achille Vertunni, 98 00155 Roma', 'Distaccamento', 'Lazio', 'Roma'),
         ];
-        return of(this.sediMarkers);
+
+        this.store.dispatch(new SetSediMarkers(this.sediMarkers));
+
+        return of();
     }
 
 }

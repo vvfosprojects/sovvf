@@ -2,8 +2,11 @@ import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.mod
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { Partenza } from '../../../../shared/model/partenza.model';
 import { Squadra } from '../../../../shared/model/squadra.model';
+import { ColoriStatoMezzo } from '../../../../shared/helper/_colori';
 
 export class HelperSintesiRichiesta {
+
+    stato = new ColoriStatoMezzo();
 
     /* Restituisce i nomi delle squadre  */
     nomiSquadre(richiesta: SintesiRichiesta): string[] {
@@ -68,7 +71,7 @@ export class HelperSintesiRichiesta {
             }
         ];
 
-        const colore = colori.find(x => x.icon === nome);
+        const colore = nome ? colori.find(x => x.icon === nome) : undefined;
         if (nome === undefined || nome === '') {
             return 'fa fa-exclamation-triangle text-warning';
         } else if (colore !== undefined) {
@@ -146,5 +149,18 @@ export class HelperSintesiRichiesta {
                 'status_chiuso': r.stato === StatoRichiesta.Chiusa,
             };
         }
+    }
+
+    vettorePallini(richiesta) {
+        return new Array(richiesta.priorita);
+    }
+
+    vettoreBuchini(richiesta) {
+        const MAX_PRIORITA = 5;
+        return new Array(MAX_PRIORITA - richiesta.priorita);
+    }
+
+    dettagliMezzo(stato, tipostato, classe) {
+        return this.stato.getColor(stato, tipostato, classe);
     }
 }

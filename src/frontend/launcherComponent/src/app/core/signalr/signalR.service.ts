@@ -14,6 +14,9 @@ import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-per
 import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.actions';
 import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
+import { SetRichiesteMarkers } from '../../features/home/store/actions/maps/richieste-markers.actions';
+import { SetMezziMarkers } from '../../features/home/store/actions/maps/mezzi-markers.actions';
+import { SetSediMarkers } from '../../features/home/store/actions/maps/sedi-markers.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -107,6 +110,21 @@ export class SignalRService {
             this.store.dispatch(new SetBoxRichieste(data));
             this.store.dispatch(new ShowToastr('success', 'Box Richieste ricevute da signalR', null, 5));
         });
+        this.hubNotification.on('NotifyGetListaRichiesteMarker', (data: any) => {
+            console.log(data);
+            this.store.dispatch(new SetRichiesteMarkers(data));
+            this.store.dispatch(new ShowToastr('success', 'Richieste Markers ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetListaMezziMarker', (data: any) => {
+            console.log(data);
+            this.store.dispatch(new SetMezziMarkers(data));
+            this.store.dispatch(new ShowToastr('info', 'Mezzi Markers ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetListaSediMarker', (data: any) => {
+            console.log(data);
+            this.store.dispatch(new SetSediMarkers(data));
+            this.store.dispatch(new ShowToastr('info', 'Sedi Markers ricevute da signalR', null, 5));
+        });
         /**
          * fine nuova implementazione
          */
@@ -125,6 +143,13 @@ export class SignalRService {
             this.connectionEstablished.next(false);
             this.store.dispatch(new SignalRHubDisconnesso());
             this.startSubscriptionConnection();
+        });
+        /**
+         * test nuove notifiche by signalr
+         */
+        this.hubNotification.on('NotifyGetNavbar', (data: any) => {
+            console.log(data);
+            this.store.dispatch(new ShowToastr('info', 'Dati della Navbar', null, 10));
         });
     }
 

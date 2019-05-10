@@ -51,8 +51,8 @@
                         <span [ngClass]="{'text-success':richiestaMarker.priorita <= 2,
                     'text-warning':richiestaMarker.priorita > 2 && richiestaMarker.priorita <= 4,
                     'text-danger': richiestaMarker.priorita == 5}">
-                            <i *ngFor="let n of vettorePallini(richiestaMarker)" class="fa fa-circle"></i>
-                            <i *ngFor="let n of vettoreBuchini(richiestaMarker)" class="fa fa-circle-o"></i>
+                            <i *ngFor="let n of methods.vettorePallini(richiestaMarker)" class="fa fa-circle"></i>
+                            <i *ngFor="let n of methods.vettoreBuchini(richiestaMarker)" class="fa fa-circle-o"></i>
                         </span>
                     </div>
                 </th>
@@ -61,7 +61,7 @@
             <tbody>
             <tr>
                 <th scope="row" class="py-1 s-info-window">
-                    <span class="fa-fw mr-1 {{ coloraIcona(richiestaMarker.tipologia[0].icona) }}"
+                    <span class="fa-fw mr-1 {{ methods.coloraIcona(richiestaMarker.tipologia[0].icona) }}"
                           ngbTooltip="{{ richiestaMarker.tipologia[0].descrizione }}">
                     </span>
                     <span ngbTooltip="{{ richiestaMarker.label }}"
@@ -141,7 +141,7 @@
                            ngbPopover="{{mezzoMarker.mezzo.descrizioneStatoEfficienza}}"
                            popoverTitle="Stato di efficienza del mezzo">
                             <i class='fa fa-cogs fa-fw'
-                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.statoEfficienza, 'efficienza', 'text')"></i>
+                               [ngClass]="methods.dettagliMezzo(mezzoMarker.mezzo.statoEfficienza, 'efficienza', 'text')"></i>
                         </a>
                         <a class="mr-1" href="javascript:void(0)" title="Livello Carburante"
                            ngbPopover="{{mezzoMarker.mezzo.descrizioneLivelloCarburante }}"
@@ -149,7 +149,7 @@
                            (click)="apriPopover(livelloCarburante)"
                            popoverTitle="Livello Carburante">
                             <i class='fa fa-tachometer fa-fw'
-                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.livelloCarburante, 'carburante', 'text')"></i>
+                               [ngClass]="methods.dettagliMezzo(mezzoMarker.mezzo.livelloCarburante, 'carburante', 'text')"></i>
                         </a>
                         <a class="mr-1" href="javascript:void(0)" title="Livello Estinguente"
                            ngbPopover="{{mezzoMarker.mezzo.descrizioneLivelloEstinguente }}"
@@ -157,7 +157,7 @@
                            (click)="apriPopover(livelloEstinguente)"
                            popoverTitle="Livello Estinguente">
                             <i class='fa fa-tint fa-fw'
-                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.livelloEstinguente, 'estinguente', 'text')"></i>
+                               [ngClass]="methods.dettagliMezzo(mezzoMarker.mezzo.livelloEstinguente, 'estinguente', 'text')"></i>
                         </a>
                         <a class="mr-1" href="javascript:void(0)" title="Appartenenza del mezzo"
                            ngbPopover="{{mezzoMarker.mezzo.descrizioneAppartenenza }}"
@@ -165,7 +165,7 @@
                            (click)="apriPopover(appartenenzaMezzo)"
                            popoverTitle="Appartenenza del mezzo">
                             <i class='fa fa-flag fa-fw'
-                               [ngClass]="dettagliMezzo(mezzoMarker.mezzo.appartenenza, 'appartenenza', 'text')"></i>
+                               [ngClass]="methods.dettagliMezzo(mezzoMarker.mezzo.appartenenza, 'appartenenza', 'text')"></i>
                         </a>
                     </div>
                 </th>
