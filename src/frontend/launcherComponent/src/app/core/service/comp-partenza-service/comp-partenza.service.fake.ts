@@ -6,6 +6,7 @@ import { MezzoComposizione } from '../../../features/home/composizione-partenza/
 import { BoxPartenza } from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { SquadraComposizione } from 'src/app/features/home/composizione-partenza/interface/squadra-composizione-interface';
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
+import { delay } from 'rxjs/operators';
 
 
 
@@ -429,7 +430,10 @@ export class CompPartenzaServiceFake {
       },
     ];
 
-    return of(this.preAccoppiati);
+    const _return = of(this.preAccoppiati);
+    return _return.pipe(
+        delay(2000)
+    );
   }
 
   public getMezziComposizione(): Observable<MezzoComposizione[]> {
@@ -624,8 +628,10 @@ export class CompPartenzaServiceFake {
         hover: false
       },
     ];
-
-    return of(this.mezzi);
+    const _return = of(this.mezzi);
+    return _return.pipe(
+        delay(2000)
+    );
   }
 
   public getSquadre(): Observable<SquadraComposizione[]> {
@@ -701,6 +707,9 @@ export class CompPartenzaServiceFake {
       },
     ];
 
-    return of(this.squadre);
+    const _return = of(this.squadre);
+    return _return.pipe(
+        delay(2000)
+    );
   }
 }
