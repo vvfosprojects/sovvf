@@ -57,6 +57,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.mezziComposizione$.subscribe((mezziComp: MezzoComposizione[]) => {
                 this.mezziComposizione = makeCopy(mezziComp);
+                console.log(this.mezziComposizione);
             })
         );
 
@@ -64,6 +65,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.squadraComposizione$.subscribe((squadreComp: SquadraComposizione[]) => {
                 this.squadreComposizione = makeCopy(squadreComp);
+                console.log(this.squadreComposizione);
             })
         );
 
@@ -71,6 +73,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.preAccoppiati$.subscribe((preAccoppiati: BoxPartenza[]) => {
                 this.preAccoppiati = makeCopy(preAccoppiati);
+                console.log(this.preAccoppiati);
             })
         );
     }
