@@ -31,7 +31,7 @@ namespace SO115App.CompositionRoot
                 API.SOVVF.FakeImplementations.Modello.Autenticazione.GetOperatoreAutenticato>();
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaRadice,
-                API.SOVVF.FakeImplementations.Modello.Organigramma.GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato>();
+                API.SOVVF.FakeImplementations.Modello.Organigramma.GetUnitaOperativaRadice_CON_Direzioni_ComLazio>();
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativeVisibiliPerSoccorso,
                 API.SOVVF.FakeImplementations.Modello.Organigramma.GetUnitaOperativeVisibiliPerSoccorso_OperatoreDirezioneRegionaleLazio>();

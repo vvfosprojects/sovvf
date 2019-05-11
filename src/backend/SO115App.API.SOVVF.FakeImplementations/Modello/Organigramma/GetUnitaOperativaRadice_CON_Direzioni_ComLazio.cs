@@ -27,7 +27,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma
     ///   Regionali come figli. La sola Direzione Regionale Lazio è popolata con i suoi Comandi
     ///   Provinciali. Non vi sono altre unità operative.
     /// </summary>
-    public class GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato : IGetUnitaOperativaRadice
+    public class GetUnitaOperativaRadice_CON_Direzioni_ComLazio : IGetUnitaOperativaRadice
     {
         /// <summary>
         ///   Restituisce l'unità operativa del CON correttamente popolata.
