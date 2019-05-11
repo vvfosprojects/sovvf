@@ -17,6 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Bogus;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
@@ -26,9 +29,6 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 
 //using MongoDB.Driver;
 using SO115App.GeneratoreRichiesteFake.AzioniSuRichiesta;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SO115App.GeneratoreRichiesteFake
 {
@@ -84,7 +84,7 @@ namespace SO115App.GeneratoreRichiesteFake
         /// <summary>
         ///   Il numero di mezzi considerati disponibili nel parco mezzi
         /// </summary>
-        private readonly int numeroMezzi;
+        private readonly int numeroMezziDisponibili;
 
         /// <summary>
         ///   Pesi del numero di mezzi partecipanti ad un intervento (per es. se i pesi sono[0.75,
@@ -133,35 +133,29 @@ namespace SO115App.GeneratoreRichiesteFake
         ///   0.20, 0.05] significa che al 75% un intervento ha un solo mezzo, al 20% ne ha due, al
         ///   5% ne ha tre).
         /// </param>
-        public GeneratoreRichieste
-        (
-            /*             string codiceUnitaOperativa,
-                        int numeroMezziDisponibili,
-                        DateTime dataMin,
-                        DateTime dataMax,
-                        int richiesteMedieAlGiorno,
-                        int mediaSecondiPartenzaDallaSedeSuccessive,
-                        int mediaSecondiArrivoSulPosto,
-                        int mediaSecondiDurataIntervento,
-                        int mediaSecondiRientroInSede,
-                        float[] pesiNumeroMezziPartecipanti */
-            )
+        public GeneratoreRichieste(
+            string codiceUnitaOperativa,
+            int numeroMezziDisponibili,
+            DateTime dataMin,
+            DateTime dataMax,
+            int richiesteMedieAlGiorno,
+            int mediaSecondiPartenzaDallaSedeSuccessive,
+            int mediaSecondiArrivoSulPosto,
+            int mediaSecondiDurataIntervento,
+            int mediaSecondiRientroInSede,
+            float[] pesiNumeroMezziPartecipanti)
         {
-            this.codiceUnitaOperativa = "RM";
-            this.numeroMezzi = 4;
-            this.dataMin = DateTime.Now.AddHours(-12);
-            this.dataMax = DateTime.Now;
-            this.richiesteMedieAlGiorno = 50;
-            this.mediaSecondiPartenzaDallaSedeSuccessive = 30 * 60;
-            this.mediaSecondiArrivoSulPosto = 15 * 60;
-            this.mediaSecondiDurataIntervento = 30 * 60;
-            this.mediaSecondiRientroInSede = 15 * 60;
-            this.pesiNumeroMezziPartecipanti = new float[] { .85F, .7F, .4F, .3F, .1F };
-
-            ListaRichieste = Genera();
+            this.codiceUnitaOperativa = codiceUnitaOperativa;
+            this.numeroMezziDisponibili = numeroMezziDisponibili;
+            this.dataMin = dataMin;
+            this.dataMax = dataMax;
+            this.richiesteMedieAlGiorno = richiesteMedieAlGiorno;
+            this.mediaSecondiPartenzaDallaSedeSuccessive = mediaSecondiPartenzaDallaSedeSuccessive;
+            this.mediaSecondiArrivoSulPosto = mediaSecondiArrivoSulPosto;
+            this.mediaSecondiDurataIntervento = mediaSecondiDurataIntervento;
+            this.mediaSecondiRientroInSede = mediaSecondiRientroInSede;
+            this.pesiNumeroMezziPartecipanti = pesiNumeroMezziPartecipanti;
         }
-
-        public IEnumerable<RichiestaAssistenza> ListaRichieste { get; private set; }
 
         /// <summary>
         ///   Genera le richieste secondo i parametri specificati nel costruttore della classe.
@@ -241,7 +235,7 @@ namespace SO115App.GeneratoreRichiesteFake
                     .Generate();
             }
 
-            var parcoMezzi = new ParcoMezzi(this.numeroMezzi, this.codiceUnitaOperativa);
+            var parcoMezzi = new ParcoMezzi(this.numeroMezziDisponibili, this.codiceUnitaOperativa);
             var azioni = richiesteConParametri
                 .SelectMany(r => this.GetAzioni(r, parcoMezzi))
                 .Where(a => a.IstantePrevisto <= this.dataMax)
