@@ -63,3 +63,11 @@ Screenshot visualizzazione condizioni Meteo.
 Screenshot della dashboard in modalità __solo Mappa__.
 
 ![Dashboard solo mappa](doc/images/dashboard-solo-mappa.jpg)
+
+## Il backend
+
+Il backend di SOVVF è un backend RESTful implementato in .NET Core, cluster enabled e conforme ai paradigmi SOLID e CQRS. Ogni azione svolta dal backend attraversa una catena di fasi successive, rappresentate nel seguente schema.
+
+![Action chain](doc/images/ActionChain.png)
+
+La fase di log registra la natura dell'azione svolta, l'utente che la svolge, l'istante di esecuzione e i dati di ingresso che alimentano l'azione, anche a fini di auditing sul sistema. La fase di validazione verifica che i dati di ingresso siano validi e sicuri. La fase di autorizzazione verifica che l'utente abbia i permessi per eseguire l'azione. La fase di notifica ha il compito di notificare l'avvenuta azione ai sottomoduli del sistema ed ai sistemi esterni integrati con SOVVF. Infine la fase di log di performance, registra i tempi di esecuzione dell'azione ai fini di analisi delle prestazioni e profilazione del sistema.
