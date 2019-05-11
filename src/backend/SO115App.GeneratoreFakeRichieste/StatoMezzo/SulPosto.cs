@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InViaggio.cs" company="CNVVF">
+// <copyright file="SulPosto.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -19,12 +19,12 @@
 //-----------------------------------------------------------------------
 using System;
 
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.StatoMezzo
+namespace SO115App.GeneratoreRichiesteFake.StatoMezzo
 {
     /// <summary>
-    ///   Indica lo stato in viaggio verso il luogo del sinistro per un mezzo (pattern state)
+    ///   Indica lo stato in sede per un mezzo (pattern state)
     /// </summary>
-    internal class InViaggio : IStatoMezzo
+    internal class SulPosto : IStatoMezzo
     {
         /// <summary>
         ///   Indica se il mezzo, in questo stato, è da considerarsi disponibile.
@@ -61,16 +61,16 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
         /// <param name="context">Il contesto corrente del mezzo</param>
         public void Rientro(ContestoMezzo context)
         {
-            throw new InvalidOperationException();
+            context.State = new InRientro();
         }
 
         /// <summary>
         ///   Invia al mezzo l'evento di arrivo sul luogo del sinistro
         /// </summary>
         /// <param name="context">Il contesto corrente del mezzo</param>
-        public void SulPosto(ContestoMezzo context)
+        void IStatoMezzo.SulPosto(ContestoMezzo context)
         {
-            context.State = new SulPosto();
+            throw new InvalidOperationException();
         }
 
         /// <summary>

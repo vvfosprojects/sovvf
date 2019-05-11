@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AggiungiPartenzaDalPosto.cs" company="CNVVF">
+// <copyright file="AggiungiArrivoSulPosto.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -21,12 +21,12 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using System;
 using System.Collections.Generic;
 
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.AzioniSuRichiesta
+namespace SO115App.GeneratoreRichiesteFake.AzioniSuRichiesta
 {
     /// <summary>
-    ///   Azione di aggiunta dell'evento di partenza dal posto in una richiesta di assistenza
+    ///   Azione di aggiunta dell'evento di arrivo sul posto in una richiesta di assistenza
     /// </summary>
-    internal class AggiungiPartenzaDalPosto : IAzioneSuRichiesta
+    internal class AggiungiArrivoSulPosto : IAzioneSuRichiesta
     {
         /// <summary>
         ///   Istante previsto di esecuzione dell'azione
@@ -54,7 +54,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
         /// <param name="istantePrevisto">L'istante previsto di esecuzione dell'azione</param>
         /// <param name="richiesta">La richiesta con parametri su cui l'azione agisce</param>
         /// <param name="parametriMezzo">I parametri del mezzo utilizzati dall'azione</param>
-        public AggiungiPartenzaDalPosto(DateTime istantePrevisto, RichiestaConParametri richiesta, ParametriMezzo parametriMezzo)
+        public AggiungiArrivoSulPosto(DateTime istantePrevisto, RichiestaConParametri richiesta, ParametriMezzo parametriMezzo)
         {
             this.istantePrevisto = istantePrevisto;
             this.richiesta = richiesta;
@@ -88,13 +88,12 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
                 yield break;
             }
 
-            mezzo.ContestoMezzo.Rientro();
-            new PartenzaInRientro(this.richiesta.Richiesta, this.parametriMezzo.MezzoUtilizzato.Codice, istanteEffettivo, "Fonte");
-
+            mezzo.ContestoMezzo.SulPosto();
+            new ArrivoSulPosto(this.richiesta.Richiesta, this.parametriMezzo.MezzoUtilizzato.Codice, istanteEffettivo, "Fonte");
             this.eseguita = true;
 
-            yield return new AggiungiRientroInSede(
-                istanteEffettivo.AddSeconds(this.parametriMezzo.SecondiInRientro),
+            yield return new AggiungiPartenzaDalPosto(
+                istanteEffettivo.AddSeconds(this.parametriMezzo.SecondiPermanenzaSulPosto),
                 this.richiesta,
                 this.parametriMezzo);
         }

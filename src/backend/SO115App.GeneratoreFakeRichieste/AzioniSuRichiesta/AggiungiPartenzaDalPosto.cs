@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AggiungiRientroInSede.cs" company="CNVVF">
+// <copyright file="AggiungiPartenzaDalPosto.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,17 +17,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using System;
 using System.Collections.Generic;
 
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.AzioniSuRichiesta
+namespace SO115App.GeneratoreRichiesteFake.AzioniSuRichiesta
 {
     /// <summary>
-    ///   Azione di aggiunta dell'evento di rientro in sede in una richiesta di assistenza
+    ///   Azione di aggiunta dell'evento di partenza dal posto in una richiesta di assistenza
     /// </summary>
-    internal class AggiungiRientroInSede : IAzioneSuRichiesta
+    internal class AggiungiPartenzaDalPosto : IAzioneSuRichiesta
     {
         /// <summary>
         ///   Istante previsto di esecuzione dell'azione
@@ -55,7 +54,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
         /// <param name="istantePrevisto">L'istante previsto di esecuzione dell'azione</param>
         /// <param name="richiesta">La richiesta con parametri su cui l'azione agisce</param>
         /// <param name="parametriMezzo">I parametri del mezzo utilizzati dall'azione</param>
-        public AggiungiRientroInSede(DateTime istantePrevisto, RichiestaConParametri richiesta, ParametriMezzo parametriMezzo)
+        public AggiungiPartenzaDalPosto(DateTime istantePrevisto, RichiestaConParametri richiesta, ParametriMezzo parametriMezzo)
         {
             this.istantePrevisto = istantePrevisto;
             this.richiesta = richiesta;
@@ -89,21 +88,15 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
                 yield break;
             }
 
-            try
-            {
-                mezzo.ContestoMezzo.InSede();
-                new PartenzaRientrata(this.richiesta.Richiesta, this.parametriMezzo.MezzoUtilizzato.Codice, istanteEffettivo, "Fonte");
-                this.richiesta.MezziAncoraDaInviare--;
-                if (this.richiesta.MezziAncoraDaInviare == 0)
-                    new ChiusuraRichiesta("Risolto", this.richiesta.Richiesta, istanteEffettivo, "Fonte");
-            }
-            catch
-            {
-            }
+            mezzo.ContestoMezzo.Rientro();
+            new PartenzaInRientro(this.richiesta.Richiesta, this.parametriMezzo.MezzoUtilizzato.Codice, istanteEffettivo, "Fonte");
 
             this.eseguita = true;
 
-            yield break;
+            yield return new AggiungiRientroInSede(
+                istanteEffettivo.AddSeconds(this.parametriMezzo.SecondiInRientro),
+                this.richiesta,
+                this.parametriMezzo);
         }
 
         /// <summary>

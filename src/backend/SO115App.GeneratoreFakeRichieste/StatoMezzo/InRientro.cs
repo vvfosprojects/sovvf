@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SulPosto.cs" company="CNVVF">
+// <copyright file="InRientro.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -19,12 +19,12 @@
 //-----------------------------------------------------------------------
 using System;
 
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.StatoMezzo
+namespace SO115App.GeneratoreRichiesteFake.StatoMezzo
 {
     /// <summary>
-    ///   Indica lo stato in sede per un mezzo (pattern state)
+    ///   Indica lo stato in rientro per un mezzo (pattern state)
     /// </summary>
-    internal class SulPosto : IStatoMezzo
+    internal class InRientro : IStatoMezzo
     {
         /// <summary>
         ///   Indica se il mezzo, in questo stato, è da considerarsi disponibile.
@@ -33,7 +33,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
         {
             get
             {
-                return false;
+                return true;
             }
         }
 
@@ -43,7 +43,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
         /// <param name="context">Il contesto corrente del mezzo</param>
         public void Composizione(ContestoMezzo context)
         {
-            throw new InvalidOperationException();
+            context.State = new Assegnato();
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
         /// <param name="context">Il contesto corrente del mezzo</param>
         public void InSede(ContestoMezzo context)
         {
-            throw new InvalidOperationException();
+            context.State = new InSede();
         }
 
         /// <summary>
@@ -61,14 +61,14 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
         /// <param name="context">Il contesto corrente del mezzo</param>
         public void Rientro(ContestoMezzo context)
         {
-            context.State = new InRientro();
+            throw new InvalidOperationException();
         }
 
         /// <summary>
         ///   Invia al mezzo l'evento di arrivo sul luogo del sinistro
         /// </summary>
         /// <param name="context">Il contesto corrente del mezzo</param>
-        void IStatoMezzo.SulPosto(ContestoMezzo context)
+        public void SulPosto(ContestoMezzo context)
         {
             throw new InvalidOperationException();
         }

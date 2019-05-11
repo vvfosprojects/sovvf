@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AggiungiComposizionePartenza.cs" company="CNVVF">
+// <copyright file="AggiungiRientroInSede.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,29 +17,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using static SO115App.API.Models.Classi.Soccorso.Squadre.Componente;
 
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.AzioniSuRichiesta
+namespace SO115App.GeneratoreRichiesteFake.AzioniSuRichiesta
 {
     /// <summary>
-    ///   Azione di aggiunta dell'evento di composizione partenza in una richiesta di assistenza
+    ///   Azione di aggiunta dell'evento di rientro in sede in una richiesta di assistenza
     /// </summary>
-    internal class AggiungiComposizionePartenza : IAzioneSuRichiesta
+    internal class AggiungiRientroInSede : IAzioneSuRichiesta
     {
         /// <summary>
         ///   Istante previsto di esecuzione dell'azione
         /// </summary>
         private readonly DateTime istantePrevisto;
-
-        /// <summary>
-        ///   Il parco mezzi sul quale l'azione agisce per selezionare il mezzo disponibile per la
-        ///   composizione partenza
-        /// </summary>
-        private readonly ParcoMezzi parcoMezzi;
 
         /// <summary>
         ///   Parametri del mezzo
@@ -62,16 +55,11 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
         /// <param name="istantePrevisto">L'istante previsto di esecuzione dell'azione</param>
         /// <param name="richiesta">La richiesta con parametri su cui l'azione agisce</param>
         /// <param name="parametriMezzo">I parametri del mezzo utilizzati dall'azione</param>
-        /// <param name="parcoMezzi">
-        ///   Il parco mezzi sul quale l'azione agisce per selezionare il mezzo disponibile per la
-        ///   composizione partenza
-        /// </param>
-        public AggiungiComposizionePartenza(DateTime istantePrevisto, RichiestaConParametri richiesta, ParametriMezzo parametriMezzo, ParcoMezzi parcoMezzi)
+        public AggiungiRientroInSede(DateTime istantePrevisto, RichiestaConParametri richiesta, ParametriMezzo parametriMezzo)
         {
             this.istantePrevisto = istantePrevisto;
             this.richiesta = richiesta;
             this.parametriMezzo = parametriMezzo;
-            this.parcoMezzi = parcoMezzi;
         }
 
         /// <summary>
@@ -94,29 +82,28 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
         /// <returns>Le azioni da eseguire a seguito dell'esecuzione della presente azione</returns>
         public IEnumerable<IAzioneSuRichiesta> Esegui(DateTime istanteEffettivo)
         {
-            var mezzoSelezionato = this.parcoMezzi.GetPrimoMezzoDisponibile();
-            if (mezzoSelezionato == null)
+            var mezzo = this.parametriMezzo.MezzoUtilizzato;
+
+            if (mezzo == null)
             {
                 yield break;
             }
 
-            mezzoSelezionato.ContestoMezzo.Composizione();
-            this.parametriMezzo.MezzoUtilizzato = mezzoSelezionato; // questa assegnazione alimenta l'esecuzione di tutti gli altri eventi successivi
-            var composizione = new ComposizionePartenze(this.richiesta.Richiesta, istanteEffettivo, "Fonte", false)
+            try
             {
-                Componenti = new HashSet<ComponentePartenza>(mezzoSelezionato.Membri
-                    .Select((m, i) =>
-                        new ComponentePartenza(m, mezzoSelezionato.Codice, "Ticket")
-                        {
-                            Ruoli = i == 0 ? new HashSet<Ruolo>() { Ruolo.CapoPartenza } : i == 1 ? new HashSet<Ruolo> { Ruolo.Autista } : new HashSet<Ruolo> { Ruolo.Vigile }
-                        }))
-            };
+                mezzo.ContestoMezzo.InSede();
+                new PartenzaRientrata(this.richiesta.Richiesta, this.parametriMezzo.MezzoUtilizzato.Codice, istanteEffettivo, "Fonte");
+                this.richiesta.MezziAncoraDaInviare--;
+                if (this.richiesta.MezziAncoraDaInviare == 0)
+                    new ChiusuraRichiesta("Risolto", this.richiesta.Richiesta, istanteEffettivo, "Fonte");
+            }
+            catch
+            {
+            }
+
             this.eseguita = true;
 
-            yield return new AggiungiPartenzaDallaSede(
-                istanteEffettivo.AddMinutes(1), // la partenza avviene un minuto dopo la composizione
-                this.richiesta,
-                this.parametriMezzo);
+            yield break;
         }
 
         /// <summary>

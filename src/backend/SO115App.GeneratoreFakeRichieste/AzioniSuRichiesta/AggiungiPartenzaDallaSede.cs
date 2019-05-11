@@ -21,7 +21,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using System;
 using System.Collections.Generic;
 
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.AzioniSuRichiesta
+namespace SO115App.GeneratoreRichiesteFake.AzioniSuRichiesta
 {
     /// <summary>
     ///   Azione di aggiunta dell'evento di partenza dalla sede in una richiesta di assistenza

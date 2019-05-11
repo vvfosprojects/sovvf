@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IStatoMezzo.cs" company="CNVVF">
+// <copyright file="ContestoMezzo.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,46 +17,64 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.StatoMezzo
+namespace SO115App.GeneratoreRichiesteFake.StatoMezzo
 {
     /// <summary>
-    ///   Indica lo stato corrente del mezzo
+    ///   Il contesto in cui un mezzo si trova (pattern state)
     /// </summary>
-    internal interface IStatoMezzo
+    internal class ContestoMezzo
     {
         /// <summary>
-        ///   Indica se il mezzo è disponibile nello stato corrente
+        ///   Il costruttore della classe
         /// </summary>
-        bool Disponibile { get; }
+        public ContestoMezzo()
+        {
+            this.State = new InSede();
+        }
+
+        /// <summary>
+        ///   L'istanza dello stato corrente per il mezzo
+        /// </summary>
+        public IStatoMezzo State { get; set; }
 
         /// <summary>
         ///   Invia al mezzo l'evento di composizione
         /// </summary>
-        /// <param name="context">Il contesto corrente del mezzo</param>
-        void Composizione(ContestoMezzo context);
+        public void Composizione()
+        {
+            this.State.Composizione(this);
+        }
 
         /// <summary>
         ///   Invia al mezzo l'evento di arrivo in sede
         /// </summary>
-        /// <param name="context">Il contesto corrente del mezzo</param>
-        void InSede(ContestoMezzo context);
-
-        /// <summary>
-        ///   Invia al mezzo l'evento di rientro in sede
-        /// </summary>
-        /// <param name="context">Il contesto corrente del mezzo</param>
-        void Rientro(ContestoMezzo context);
-
-        /// <summary>
-        ///   Invia al mezzo l'evento di arrivo sul luogo del sinistro
-        /// </summary>
-        /// <param name="context">Il contesto corrente del mezzo</param>
-        void SulPosto(ContestoMezzo context);
+        public void InSede()
+        {
+            this.State.InSede(this);
+        }
 
         /// <summary>
         ///   Invia al mezzo l'evento di uscita dalla sede
         /// </summary>
-        /// <param name="context">Il contesto corrente del mezzo</param>
-        void Uscita(ContestoMezzo context);
+        public void Uscita()
+        {
+            this.State.Uscita(this);
+        }
+
+        /// <summary>
+        ///   Invia al mezzo l'evento di rientro in sede
+        /// </summary>
+        public void Rientro()
+        {
+            this.State.Rientro(this);
+        }
+
+        /// <summary>
+        ///   Invia al mezzo l'evento di arrivo sul luogo del sinistro
+        /// </summary>
+        public void SulPosto()
+        {
+            this.State.SulPosto(this);
+        }
     }
 }

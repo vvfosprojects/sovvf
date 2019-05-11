@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Soccorso;
 
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
+namespace SO115App.GeneratoreRichiesteFake
 {
     /// <summary>
     ///   Una richiesta ed i relativi parametri casuali, utilizzati per la creazione degli eventi

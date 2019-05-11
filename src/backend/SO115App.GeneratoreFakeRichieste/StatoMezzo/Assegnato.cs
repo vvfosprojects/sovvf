@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InSede.cs" company="CNVVF">
+// <copyright file="Assegnato.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -19,12 +19,12 @@
 //-----------------------------------------------------------------------
 using System;
 
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.StatoMezzo
+namespace SO115App.GeneratoreRichiesteFake.StatoMezzo
 {
     /// <summary>
-    ///   Indica lo stato in sede per un mezzo (pattern state)
+    ///   Indica lo stato assegnato per un mezzo (pattern state)
     /// </summary>
-    internal class InSede : IStatoMezzo
+    internal class Assegnato : IStatoMezzo
     {
         /// <summary>
         ///   Indica se il mezzo, in questo stato, è da considerarsi disponibile.
@@ -33,7 +33,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
         {
             get
             {
-                return true;
+                return false;
             }
         }
 
@@ -43,16 +43,25 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
         /// <param name="context">Il contesto corrente del mezzo</param>
         public void Composizione(ContestoMezzo context)
         {
-            context.State = new Assegnato();
+            throw new InvalidOperationException();
         }
 
         /// <summary>
         ///   Invia al mezzo l'evento di arrivo in sede
         /// </summary>
         /// <param name="context">Il contesto corrente del mezzo</param>
-        void IStatoMezzo.InSede(ContestoMezzo context)
+        public void InSede(ContestoMezzo context)
         {
             throw new InvalidOperationException();
+        }
+
+        /// <summary>
+        ///   Invia al mezzo l'evento di uscita dalla sede
+        /// </summary>
+        /// <param name="context">Il contesto corrente del mezzo</param>
+        public void Uscita(ContestoMezzo context)
+        {
+            context.State = new InViaggio();
         }
 
         /// <summary>
@@ -69,15 +78,6 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
         /// </summary>
         /// <param name="context">Il contesto corrente del mezzo</param>
         public void SulPosto(ContestoMezzo context)
-        {
-            throw new InvalidOperationException();
-        }
-
-        /// <summary>
-        ///   Invia al mezzo l'evento di uscita dalla sede
-        /// </summary>
-        /// <param name="context">Il contesto corrente del mezzo</param>
-        public void Uscita(ContestoMezzo context)
         {
             throw new InvalidOperationException();
         }

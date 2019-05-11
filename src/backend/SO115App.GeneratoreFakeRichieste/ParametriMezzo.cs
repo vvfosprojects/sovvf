@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------
 using Bogus;
 
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
+namespace SO115App.GeneratoreRichiesteFake
 {
     /// <summary>
     ///   Indica il profilo di comportamento di un mezzo in una richiesta, estratto in maniera casuale

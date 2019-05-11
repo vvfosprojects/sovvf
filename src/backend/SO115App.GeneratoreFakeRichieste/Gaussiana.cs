@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------
 using System;
 
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
+namespace SO115App.GeneratoreRichiesteFake
 {
     /// <summary>
     ///   Generatore di una variabile pseudo-random con distribuzione gaussiana.

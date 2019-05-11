@@ -18,11 +18,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using Bogus;
-using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.StatoMezzo;
+using SO115App.GeneratoreRichiesteFake.StatoMezzo;
 using System;
 using System.Linq;
 
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
+namespace SO115App.GeneratoreRichiesteFake
 {
     /// <summary>
     ///   Il mezzo utilizzato per evadere una richiesta

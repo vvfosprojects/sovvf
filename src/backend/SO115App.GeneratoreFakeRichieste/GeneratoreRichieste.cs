@@ -25,12 +25,12 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 
 //using MongoDB.Driver;
-using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.AzioniSuRichiesta;
+using SO115App.GeneratoreRichiesteFake.AzioniSuRichiesta;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
+namespace SO115App.GeneratoreRichiesteFake
 {
     public interface IGeneratoreRichieste
     {

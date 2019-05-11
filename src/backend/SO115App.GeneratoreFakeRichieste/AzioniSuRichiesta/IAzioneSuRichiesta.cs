@@ -20,7 +20,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste.AzioniSuRichiesta
+namespace SO115App.GeneratoreRichiesteFake.AzioniSuRichiesta
 {
     /// <summary>
     ///   Interfaccia dell'azione di aggiunta evento che può essere eseguita su una richiesta

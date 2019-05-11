@@ -21,7 +21,7 @@ using Bogus;
 using System;
 using System.Linq;
 
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
+namespace SO115App.GeneratoreRichiesteFake
 {
     /// <summary>
     ///   Indica i parametri di una richiesta di assistenza, calcolati in maniera random secondo la

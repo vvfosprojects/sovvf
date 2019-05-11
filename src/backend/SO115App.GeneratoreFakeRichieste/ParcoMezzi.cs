@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------
 using System.Linq;
 
-namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste
+namespace SO115App.GeneratoreRichiesteFake
 {
     /// <summary>
     ///   Classe per la simulazione di un parco mezzi. Crea una serie di mezzi fake secondo i
