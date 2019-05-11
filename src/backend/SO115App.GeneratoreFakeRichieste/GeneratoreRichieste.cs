@@ -32,17 +32,12 @@ using System.Linq;
 
 namespace SO115App.GeneratoreRichiesteFake
 {
-    public interface IGeneratoreRichieste
-    {
-        IEnumerable<RichiestaAssistenza> ListaRichieste { get; }
-    }
-
     /// <summary>
     ///   Classe deputata alla generazione di richieste pseudo-random. Le richieste generate
     ///   rispettano la fisica realizzabilità, rispetto ad un parco mezzi fornito in ingresso al
     ///   costruttore e dotato di uno specifico numero di mezzi.
     /// </summary>
-    public class GeneratoreRichieste : IGeneratoreRichieste
+    public class GeneratoreRichieste
     {
         /// <summary>
         ///   Il generatore random utilizzato dall'implementazione dei metodi
