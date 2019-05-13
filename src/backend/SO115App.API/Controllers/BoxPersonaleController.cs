@@ -69,7 +69,7 @@ namespace SO115App.API.Controllers
             try
             {
                 BoxPersonale boxPersonale = new BoxPersonale();
-                boxPersonale = (BoxPersonale)this.handler.Handle(query).BoxPersonale;
+                boxPersonale = handler.Handle(query).BoxPersonale;
 
                 await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetBoxPersonale", boxPersonale);
 

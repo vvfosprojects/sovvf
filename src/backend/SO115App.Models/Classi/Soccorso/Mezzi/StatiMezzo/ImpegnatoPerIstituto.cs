@@ -81,7 +81,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo
         /// <returns>Lo stato <see cref="FuoriServizio" /></returns>
         public override IStatoMezzo AcceptVisitor(VaInFuoriServizio vaInFuoriServizio)
         {
-            return new FuoriServizio(vaInFuoriServizio.istante);
+            return new FuoriServizio(vaInFuoriServizio.Istante);
         }
     }
 }

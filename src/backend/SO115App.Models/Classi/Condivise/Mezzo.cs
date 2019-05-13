@@ -24,87 +24,87 @@ namespace SO115App.API.Models.Classi.Condivise
         public Mezzo(string Codice, string Descrizione, string Genere, string Stato,
                      int Appartenenza, Sede Distaccamento)
         {
-            this.codice = Codice;
-            this.descrizione = Descrizione;
-            this.genere = Genere;
-            this.stato = Stato;
-            this.appartenenza = Appartenenza;
-            this.distaccamento = Distaccamento;
+            this.Codice = Codice;
+            this.Descrizione = Descrizione;
+            this.Genere = Genere;
+            this.Stato = Stato;
+            this.Appartenenza = Appartenenza;
+            this.Distaccamento = Distaccamento;
         }
 
         /// <summary>
         /// Codice del mezzo
         /// </summary>
-        public string codice { get; set; }
+        public string Codice { get; set; }
 
         /// <summary>
         /// Descrizione del mezzo
         /// </summary>
-        public string descrizione { get; set; }
+        public string Descrizione { get; set; }
 
         /// <summary>
         /// Genere del mezzo
         /// </summary>
-        public string genere { get; set; }
+        public string Genere { get; set; }
 
         /// <summary>
         /// Stato del mezzo
         /// </summary>
-        public string stato { get; set; }
+        public string Stato { get; set; }
 
         /// <summary>
         /// Appartenenza del mezzo
         /// </summary>
-        public int appartenenza { get; set; }
+        public int Appartenenza { get; set; }
 
         /// <summary>
         /// Indica il distaccamento del mezzo
         /// </summary>
-        public Sede distaccamento { get; set; }
+        public Sede Distaccamento { get; set; }
 
         /// <summary>
         /// Descrizione dell'appartenenza del mezzo
         /// </summary>
-        public string descrizioneAppartenenza { get; set; }
+        public string DescrizioneAppartenenza { get; set; }
 
         /// <summary>
         /// Descrizione dello stato del mezzo
         /// </summary>
-        public string descrizioneStato { get; set; }
+        public string DescrizioneStato { get; set; }
 
         /// <summary>
         /// Stato efficenza del mezzo
         /// </summary>
-        public int statoEfficenza { get; set; }
+        public int StatoEfficenza { get; set; }
 
         /// <summary>
         /// Descrizione dello Stato efficenza del mezzo
         /// </summary>
-        public string descrizioneStatoEfficenza { get; set; }
+        public string DescrizioneStatoEfficenza { get; set; }
 
         /// <summary>
         /// Indica il livello del carburante del mezzo
         /// </summary>
-        public int livelloCarburante { get; set; }
+        public int LivelloCarburante { get; set; }
 
         /// <summary>
         /// descrive il livello del carburante del mezzo
         /// </summary>
-        public string descrizioneLivelloCarburante { get; set; }
+        public string DescrizioneLivelloCarburante { get; set; }
 
         /// <summary>
         /// Indica il livello dell'estinguente del mezzo
         /// </summary>
-        public int livelloEstinguente { get; set; }
+        public int LivelloEstinguente { get; set; }
 
         /// <summary>
         /// descrive il livello dell'estinguente del mezzo
         /// </summary>
-        public string descrizioneLivelloEstinguente { get; set; }
+        public string DescrizioneLivelloEstinguente { get; set; }
 
         /// <summary>
         /// Note eventuali
         /// </summary>
-        public string[] notifiche { get; set; }
+        public string[] Notifiche { get; set; }
     }
 }

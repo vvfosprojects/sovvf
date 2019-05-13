@@ -69,7 +69,7 @@ namespace SO115App.API.Controllers
             try
             {
                 BoxMezzi boxMezzi = new BoxMezzi();
-                boxMezzi = (BoxMezzi)this.handler.Handle(query).BoxMezzi;
+                boxMezzi = handler.Handle(query).BoxMezzi;
 
                 await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetBoxMezzi", boxMezzi);
 

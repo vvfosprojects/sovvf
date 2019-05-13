@@ -87,7 +87,7 @@ namespace SO115App.API.Controllers
             try
             {
                 List<ComposizioneMezzi> composizioneMezzi = new List<ComposizioneMezzi>();
-                composizioneMezzi = (List<ComposizioneMezzi>)this.handler.Handle(query).ComposizioneMezzi;
+                composizioneMezzi = handler.Handle(query).ComposizioneMezzi;
 
                 await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetComposizioneMezzi", composizioneMezzi);
 
@@ -107,7 +107,7 @@ namespace SO115App.API.Controllers
                 Filtro = filtro
             };
 
-            return this.handler.Handle(query);
+            return handler.Handle(query);
         }
     }
 }

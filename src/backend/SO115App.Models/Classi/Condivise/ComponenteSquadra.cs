@@ -23,42 +23,42 @@ namespace SO115App.API.Models.Classi.Condivise
     {
         public Componente(string DescrizioneQualifica, string Nominativo, string Tooltip, bool CapoPartenza, bool Autista, bool Rimpiazzo)
         {
-            this.descrizioneQualifica = DescrizioneQualifica;
-            this.nominativo = Nominativo;
-            this.tooltip = Tooltip;
-            this.capoPartenza = CapoPartenza;
-            this.autista = Autista;
-            this.rimpiazzo = Rimpiazzo;
+            this.DescrizioneQualifica = DescrizioneQualifica;
+            this.Nominativo = Nominativo;
+            this.Tooltip = Tooltip;
+            this.CapoPartenza = CapoPartenza;
+            this.Autista = Autista;
+            this.Rimpiazzo = Rimpiazzo;
         }
 
         /// <summary>
         /// Descrizione qualifica Componente
         /// </summary>
-        public string descrizioneQualifica { get; set; }
+        public string DescrizioneQualifica { get; set; }
 
         /// <summary>
         /// Nominativo Componente
         /// </summary>
-        public string nominativo { get; set; }
+        public string Nominativo { get; set; }
 
         /// <summary>
         /// ToolTip Componente
         /// </summary>
-        public string tooltip { get; set; }
+        public string Tooltip { get; set; }
 
         /// <summary>
         /// Indica se il Componente è un capo Partenza
         /// </summary>
-        public bool capoPartenza { get; set; }
+        public bool CapoPartenza { get; set; }
 
         /// <summary>
         /// Indica se è un autista
         /// </summary>
-        public bool autista { get; set; }
+        public bool Autista { get; set; }
 
         /// <summary>
         /// Indica se il componente è un rimpiazzo
         /// </summary>
-        public bool rimpiazzo { get; set; }
+        public bool Rimpiazzo { get; set; }
     }
 }

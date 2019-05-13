@@ -42,17 +42,17 @@ namespace SO115App.API.Models.Classi.Marker
         /// <summary>
         /// Identifica il codice della Chiamata
         /// </summary>
-        public string codice { get; set; }
+        public string Codice { get; set; }
 
         /// <summary>
         /// E' il codice della Richiesta di Assistenza
         /// </summary>
-        public string descrizione { get; set; }
+        public string Descrizione { get; set; }
 
         /// <summary>
         /// Localita della richiesta
         /// </summary>
-        public Coordinate coordinate { get; set; }
+        public Coordinate Coordinate { get; set; }
 
         /// <summary>
         /// Tipologia della richiesta
@@ -62,40 +62,14 @@ namespace SO115App.API.Models.Classi.Marker
         /// <summary>
         /// Label della richiesta
         /// </summary>
-        public string indirizzo { get; set; }
+        public string Indirizzo { get; set; }
 
-        public string tipo { get; set; }
+        public string Tipo { get; set; }
 
-        public string regione { get; set; }
+        public string Regione { get; set; }
 
-        public string provincia { get; set; }
+        public string Provincia { get; set; }
 
-        /// <summary>
-        /// Priorita della richiesta
-        /// </summary>
-        //public RichiestaAssistenza.Priorita priorita
-        //{
-        //    get; set;
-        //}
-
-        /// <summary>
-        /// Stato della richiesta
-        /// </summary>
-        //public string stato { get; set; }
-
-        /// <summary>
-        /// Indica la data in cui è stato marcato RILEVANTE l'ultima volta
-        /// </summary>
-        /// <remarks>
-        /// Una richiesta può essere rilevante se è l'operatore a marcarla come tale, oppure in base
-        /// ad un insieme di regole automatiche deterministiche o basate su algoritmi di machine learning.
-        /// </remarks>
-        //public DateTime? rilevanza { get; set; }
-
-        /// <summary>
-        /// Opacità della richiesta, serve per opacizzare i Marker che non sono rilevanti ai fini
-        /// della ricerca effettuata
-        /// </summary>
-        //public string opacita { get; set; }
+       
     }
 }

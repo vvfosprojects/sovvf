@@ -76,8 +76,10 @@ namespace SO115App.API.Controllers
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 
-            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
-            filtro.SearchKey = "0";
+            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
+            {
+                SearchKey = "0"
+            };
 
             var query = new SintesiMezziMarkerQuery()
             {
@@ -87,7 +89,7 @@ namespace SO115App.API.Controllers
             try
             {
                 List<SintesiMezzoMarker> listaSintesi = new List<SintesiMezzoMarker>();
-                listaSintesi = (List<SintesiMezzoMarker>)this.handler.Handle(query).SintesiMezziMarker;
+                listaSintesi = (List<SintesiMezzoMarker>)handler.Handle(query).SintesiMezziMarker;
 
                 await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetListaMezziMarker", listaSintesi);
 
@@ -107,7 +109,7 @@ namespace SO115App.API.Controllers
                 Filtro = filtro
             };
 
-            return this.handler.Handle(query);
+            return handler.Handle(query);
         }
     }
 }

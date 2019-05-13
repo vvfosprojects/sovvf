@@ -52,8 +52,6 @@ namespace SO115App.API.Controllers
         private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
 
-        private readonly NotificationHub notifyHub = new NotificationHub();
-
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
@@ -78,8 +76,10 @@ namespace SO115App.API.Controllers
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 
-            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
-            filtro.SearchKey = "0";
+            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
+            {
+                SearchKey = "0"
+            };
 
             var query = new SintesiRichiesteAssistenzaQuery()
             {
@@ -89,7 +89,7 @@ namespace SO115App.API.Controllers
             try
             {
                 List<SintesiRichiesta> listaSintesi = new List<SintesiRichiesta>();
-                listaSintesi = (List<SintesiRichiesta>)this.handler.Handle(query).SintesiRichiesta;
+                listaSintesi = (List<SintesiRichiesta>)handler.Handle(query).SintesiRichiesta;
 
                 await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetListaRichieste", listaSintesi);
 
