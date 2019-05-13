@@ -44,7 +44,7 @@ export class SchedaTelefonataComponent implements OnInit {
     @Input() tipologie: TipologieInterface[];
     @Input() operatore: Utente;
 
-    nuovaRichiesta: SintesiRichiesta;
+    nuovaRichiesta: any;
     tipologiaRichiedente: string;
     isCollapsed = true;
 
@@ -85,32 +85,21 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     initNuovaRichiesta() {
-        this.nuovaRichiesta = new SintesiRichiesta(
-            null,
-            null,
-            null,
-            this.operatore,
-            null,
-            StatoRichiesta.Chiamata,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
-        );
+        this.nuovaRichiesta = {
+            'id': null,
+            'codice': null,
+            'codiceRichiesta': null,
+            'id_utente': this.operatore.id,
+            'istanteRicezioneRichiesta': null,
+            'stato': StatoRichiesta.Chiamata,
+            'priorita': null,
+            'tipologie': null,
+            'descrizione': null,
+            'richiedente': null,
+            'localita': null,
+            'competenze': null,
+            'complessita': null
+        };
     }
 
     cambiaTipologiaRichiedente(tipologia: string) {
