@@ -30,31 +30,9 @@ namespace SO115App.API.Models.Classi.Utenti.Autenticazione
     {
         public async Task<Utente> Login(string username, string password)
         {
-            Utente user = VerificaLogIn(username, password);
+            Utente user = Utente.VerificaLogIn(username, password);
 
             return user;
-        }
-
-        //TODO DA MODIFICARE CON LA LOGICA DEL DB
-        private Utente VerificaLogIn(string username, string password)
-        {
-            Utente user = new Utente(username);
-
-            string filepath = "Fake/user.json";
-            string json;
-            using (StreamReader r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            List<Utente> ListaUtenti = JsonConvert.DeserializeObject<List<Utente>>(json);
-
-            user = ListaUtenti.Find(x => x.password.Equals(password) && x.username.Equals(username));
-
-            if (user != null)
-                return user;
-            else
-                return null;
         }
     }
 }

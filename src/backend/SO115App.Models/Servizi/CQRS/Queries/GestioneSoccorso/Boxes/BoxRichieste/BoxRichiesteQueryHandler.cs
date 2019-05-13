@@ -67,14 +67,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
             List<SintesiRichiesta> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichiesta>>(json);
 
             interventi.AnnoCorrente = DateTime.Now.Year;
-            interventi.Assegnati = ListaRichieste.FindAll(x => x.stato == 3).Count;
-            interventi.Chiamate = ListaRichieste.FindAll(x => x.stato == 0).Count;
+            interventi.Assegnati = ListaRichieste.FindAll(x => x.Stato == 3).Count;
+            interventi.Chiamate = ListaRichieste.FindAll(x => x.Stato == 0).Count;
             interventi.NomeTurnoCorrente = "B";
             interventi.NomeTurnoPrecedente = "A";
-            interventi.Presidiati = ListaRichieste.FindAll(x => x.stato == 2).Count;
-            interventi.Sospesi = ListaRichieste.FindAll(x => x.stato == 1).Count;
-            interventi.TotAnnoCorrente = ListaRichieste.FindAll(x => x.istanteRicezioneRichiesta.Year == DateTime.Now.Year).Count;
-            interventi.TotTurnoCorrente = ListaRichieste.FindAll(x => x.istanteRicezioneRichiesta.Year == DateTime.Now.Year).Count;
+            interventi.Presidiati = ListaRichieste.FindAll(x => x.Stato == 2).Count;
+            interventi.Sospesi = ListaRichieste.FindAll(x => x.Stato == 1).Count;
+            interventi.TotAnnoCorrente = ListaRichieste.FindAll(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year).Count;
+            interventi.TotTurnoCorrente = ListaRichieste.FindAll(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year).Count;
             interventi.TotTurnoPrecedente = 0;
             interventi.Totale = ListaRichieste.Count;
 

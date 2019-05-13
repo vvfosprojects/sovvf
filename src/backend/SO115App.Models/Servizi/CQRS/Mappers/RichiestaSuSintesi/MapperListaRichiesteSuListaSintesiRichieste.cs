@@ -40,28 +40,28 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 SintesiRichiesta sintesi = new SintesiRichiesta();
                 string statoRichiesta = DecodifcaStatoRichiesta(elemento.StatoRichiesta);
 
-                sintesi.codice = elemento.Codice;
-                sintesi.codiceSchedaNue = elemento.CodiceSchedaNue;
-                sintesi.competenze = elemento.Competenze;
+                sintesi.Codice = elemento.Codice;
+                sintesi.CodiceSchedaNue = elemento.CodiceSchedaNue;
+                sintesi.Competenze = elemento.Competenze;
                 //sintesi.complessita = elemento.Richiesta.Complessita;
-                sintesi.descrizione = elemento.Descrizione;
-                sintesi.etichette = elemento.Tags.ToArray();
-                sintesi.eventi = elemento.Eventi.ToList();
+                sintesi.Descrizione = elemento.Descrizione;
+                sintesi.Etichette = elemento.Tags.ToArray();
+                sintesi.Eventi = elemento.Eventi.ToList();
                 //sintesi.fonogramma = elemento.Richiesta.StatoInvioFonogramma;
-                sintesi.id = elemento.Id;
-                sintesi.istantePresaInCarico = elemento.IstantePresaInCarico;
-                sintesi.istantePrimaAssegnazione = elemento.IstantePrimaAssegnazione;
+                sintesi.Id = elemento.Id;
+                sintesi.IstantePresaInCarico = elemento.IstantePresaInCarico;
+                sintesi.IstantePrimaAssegnazione = elemento.IstantePrimaAssegnazione;
 
-                sintesi.istanteRicezioneRichiesta = sintesi.eventi.Count > 0 ? elemento.IstanteRicezioneRichiesta : DateTime.MinValue;
-                sintesi.localita = elemento.Localita;
-                sintesi.operatore = elemento.Operatore;
-                sintesi.partenze = elemento.ListaPartenze;
-                sintesi.priorita = elemento.PrioritaRichiesta;
-                sintesi.richiedente = elemento.Richiedente;
-                sintesi.rilevanza = DateTime.Now;
-                sintesi.stato = Convert.ToInt16(statoRichiesta);
-                sintesi.tipologie = elemento.Tipologie;
-                sintesi.zoneEmergenza = elemento.ZoneEmergenza;
+                sintesi.IstanteRicezioneRichiesta = sintesi.Eventi.Count > 0 ? elemento.IstanteRicezioneRichiesta : DateTime.MinValue;
+                sintesi.Localita = elemento.Localita;
+                sintesi.Operatore = elemento.Operatore;
+                sintesi.Partenze = elemento.ListaPartenze;
+                sintesi.Priorita = elemento.PrioritaRichiesta;
+                sintesi.Richiedente = elemento.Richiedente;
+                sintesi.Rilevanza = DateTime.Now;
+                sintesi.Stato = Convert.ToInt16(statoRichiesta);
+                sintesi.Tipologie = elemento.Tipologie;
+                sintesi.ZoneEmergenza = elemento.ZoneEmergenza;
 
                 if (statoRichiesta.Equals("Chiamata"))
                     AppoListaSintesiChiamate.Add(sintesi);
@@ -72,9 +72,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
             //INIZIO - TUTTA QUESTA PARTE VA CANCELLATA DOPO IL FAKE
             foreach (SintesiRichiesta richiesta in AppoListaSintesiChiamate)
             {
-                if (richiesta.partenze.Count > 0)
+                if (richiesta.Partenze.Count > 0)
                 {
-                    richiesta.partenze.Clear();
+                    richiesta.Partenze.Clear();
                 }
             }
 
@@ -94,7 +94,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 SintesiRichiestaMarker sintesi = new SintesiRichiestaMarker();
                 string statoRichiesta = DecodifcaStatoRichiesta(elemento.StatoRichiesta);
 
-                sintesi.id = elemento.Id;
+                sintesi.Id = elemento.Id;
                 sintesi.localita = elemento.Localita;
                 sintesi.tipologia = elemento.Tipologie;
                 sintesi.label = elemento.Descrizione;

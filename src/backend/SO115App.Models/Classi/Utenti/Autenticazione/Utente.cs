@@ -21,6 +21,7 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 
 namespace SO115App.API.Models.Classi.Autenticazione
@@ -38,10 +39,10 @@ namespace SO115App.API.Models.Classi.Autenticazione
         [JsonConstructor]
         public Utente(string id, string nome, string cognome)
         {
-            this.id = id;
-            this.nome = nome;
-            this.cognome = cognome;
-            this.attivo = true;
+            this.Id = id;
+            this.Nome = nome;
+            this.Cognome = cognome;
+            this.Attivo = true;
         }
 
         /// <summary>
@@ -56,8 +57,8 @@ namespace SO115App.API.Models.Classi.Autenticazione
                 throw new ArgumentException("Cannot be null or whitespace", nameof(username));
             }
 
-            this.username = username;
-            this.attivo = true;
+            this.Username = username;
+            this.Attivo = true;
         }
 
         /// <summary>
@@ -73,7 +74,7 @@ namespace SO115App.API.Models.Classi.Autenticazione
                 throw new ArgumentOutOfRangeException(nameof(ValidoFinoA));
             }
 
-            this.validoFinoA = ValidoFinoA;
+            this.ValidoFinoA = ValidoFinoA;
         }
 
         /// <summary>
@@ -90,80 +91,87 @@ namespace SO115App.API.Models.Classi.Autenticazione
                 throw new ArgumentOutOfRangeException(nameof(ValidoDa));
             }
 
-            this.validoDa = ValidoDa;
+            this.ValidoDa = ValidoDa;
         }
 
         public Utente(string username, string nome, string cognome, string codiceFiscale)
         {
-            this.username = username;
-            this.nome = nome;
-            this.cognome = cognome;
-            this.codiceFiscale = codiceFiscale;
+            this.Username = username;
+            this.Nome = nome;
+            this.Cognome = cognome;
+            this.CodiceFiscale = codiceFiscale;
         }
 
         /// <summary>
         ///   Id
         /// </summary>
-        public string id { get; set; }
+        [Required(ErrorMessage = "Id obbligatorio.")]
+        public string Id { get; set; }
 
         /// <summary>
         ///   Nome Operatore
         /// </summary>
-        public string nome { get; set; }
+        [Required(ErrorMessage = "Il nome utente è obbligatorio.")]
+        public string Nome { get; set; }
 
         /// <summary>
         ///   Cognome Operatore
         /// </summary>
-        public string cognome { get; set; }
-
-        /// <summary>
-        ///   La username
-        /// </summary>
-        public string username { get; set; }
-
-        /// <summary>
-        ///   Password dell'utente loggato
-        /// </summary>
-        public string password { get; set; }
-
-        /// <summary>
-        ///   Ruolo
-        /// </summary>
-        public List<Role> ruoli { get; set; }
-
-        /// <summary>
-        ///   Sede utente loggato
-        /// </summary>
-        public Sede sede { get; set; }
-
-        /*         public List<Features> Privilegi { get; set; }
-         */
-        public string token { get; set; }
+        [Required(ErrorMessage = "Il cognome utente è obbligatorio.")]
+        public string Cognome { get; set; }
 
         /// <summary>
         ///   CodiceFiscale Operatore
         /// </summary>
-        public string codiceFiscale { get; set; }
+        [Required(ErrorMessage = "Il codice fiscale è obbligatorio")]
+        [StringLength(16, ErrorMessage = "Il codice fiscale deve essere lungo 16 caratteri")]
+        public string CodiceFiscale { get; set; }
+
+        /// <summary>
+        ///   Sede utente loggato
+        /// </summary>
+        [Required]
+        public Sede Sede { get; set; }
+
+        /// <summary>
+        ///   La username
+        /// </summary>
+        [Required]        
+        public string Username { get; set; }
+
+        /// <summary>
+        ///   Password dell'utente loggato
+        /// </summary>
+        public string Password { get; set; }
+
+        /// <summary>
+        ///   Ruolo
+        /// </summary>
+        public List<Role> Ruoli { get; set; }
+
+        /*         public List<Features> Privilegi { get; set; }
+         */
+        public string Token { get; set; }
 
         /// <summary>
         ///   La data di inizio della validità dell'account. Se è null, la validità inizia dal big bang.
         /// </summary>
-        public DateTime? validoDa { get; set; }
+        public DateTime? ValidoDa { get; set; }
 
         /// <summary>
         ///   La data di fine della validità dell'account. Se è null, la validità ha durata indefinita.
         /// </summary>
-        public DateTime? validoFinoA { get; set; }
+        public DateTime? ValidoFinoA { get; set; }
 
         /// <summary>
         ///   Indica se l'account è attivo.
         /// </summary>
-        public bool attivo { get; set; }
+        public bool Attivo { get; set; }
 
         /// <summary>
         ///   Qualifica utente loggato
         /// </summary>
-        public string qualifica { get; set; }
+        public string Qualifica { get; set; }
 
         public static Utente FindUserByUsername(string username)
         {
@@ -178,10 +186,32 @@ namespace SO115App.API.Models.Classi.Autenticazione
 
             List<Utente> ListaUtenti = JsonConvert.DeserializeObject<List<Utente>>(json);
 
-            userFind = ListaUtenti.Find(x => x.username.Equals(username));
+            userFind = ListaUtenti.Find(x => x.Username.Equals(username));
 
             if (userFind != null)
                 return userFind;
+            else
+                return null;
+        }
+
+        //TODO DA MODIFICARE CON LA LOGICA DEL DB
+        public static Utente VerificaLogIn(string username, string password)
+        {
+            Utente user = new Utente(username);
+
+            string filepath = "Fake/user.json";
+            string json;
+            using (StreamReader r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();
+            }
+
+            List<Utente> ListaUtenti = JsonConvert.DeserializeObject<List<Utente>>(json);
+
+            user = ListaUtenti.Find(x => x.Password.Equals(password) && x.Username.Equals(username));
+
+            if (user != null)
+                return user;
             else
                 return null;
         }
@@ -198,14 +228,4 @@ namespace SO115App.API.Models.Classi.Autenticazione
         public string descrizione { get; set; }
         public Sede sede { get; set; }
     }
-
-    /*
-        public enum Ruolo
-        {
-            [Description("CallTracker")]
-            CallTracker,
-            [Description("GestoreRichieste")]
-            GestoreRichieste
-        }
-     */
 }
