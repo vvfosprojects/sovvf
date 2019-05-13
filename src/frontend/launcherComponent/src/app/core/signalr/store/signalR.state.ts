@@ -64,7 +64,7 @@ export class SignalRState {
 
     @Action(SetConnectionId)
     setConnectionId({ patchState }: StateContext<SignalRStateModel>, action: SetConnectionId) {
-
+        console.log(action.connectionId);
         patchState({
             connectionId: action.connectionId
         });

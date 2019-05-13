@@ -9,6 +9,7 @@ import { ClearBoxRichieste, GetBoxRichieste } from '../actions/boxes/box-richies
 import { ClearBoxMezzi, GetBoxMezzi } from '../actions/boxes/box-mezzi.actions';
 import { ClearBoxPersonale, GetBoxPersonale } from '../actions/boxes/box-personale.actions';
 import { ClearChiamateMarkers, GetChiamateMarkers } from '../actions/maps/chiamate-markers.actions';
+import { HttpClient } from '@angular/common/http';
 
 export interface HomeStateModel {
     loaded: boolean;
@@ -31,7 +32,7 @@ export class HomeState {
         return state.mapIsLoaded;
     }
 
-    constructor() {
+    constructor(private http: HttpClient) {
 
     }
 
@@ -53,20 +54,27 @@ export class HomeState {
 
     @Action(GetDataHome)
     getDataHome({ patchState, dispatch }: StateContext<HomeStateModel>) {
-        dispatch([
-            new GetRichieste(),
-            new GetCentroMappa(),
-            new GetSediMarkers(),
-            new GetMezziMarkers(),
-            new GetRichiesteMarkers(),
-            new GetChiamateMarkers(),
-            new GetBoxRichieste(),
-            new GetBoxMezzi(),
-            new GetBoxPersonale()
-        ]);
-        patchState({
-            loaded: true
-        });
+        // Todo: da sistemare
+        setTimeout( () => {
+            this.http.get('/api/Welcome').subscribe(() => {
+                console.log('ok');
+            }, () => console.error('error'));
+            dispatch([
+                new GetChiamateMarkers(),
+                new GetCentroMappa(),
+                // new GetRichieste(),
+                // new GetSediMarkers(),
+                // new GetMezziMarkers(),
+                // new GetRichiesteMarkers(),
+                // new GetBoxRichieste(),
+                // new GetBoxMezzi(),
+                // new GetBoxPersonale()
+            ]);
+            patchState({
+                loaded: true
+            });
+        }, 500);
+
     }
 
     @Action(SetMapLoaded)

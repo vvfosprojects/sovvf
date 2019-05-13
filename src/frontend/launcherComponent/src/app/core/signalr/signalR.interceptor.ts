@@ -1,22 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Store } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { Select } from '@ngxs/store';
 import { SignalRState } from './store/signalR.state';
 
 @Injectable()
 export class SignalRInterceptor implements HttpInterceptor {
-    constructor(private store: Store) {
+
+    private subscription = new Subscription();
+
+    @Select(SignalRState.connectionIdSignalR) connectionId$: Observable<string>;
+    private connectionId: string;
+
+    constructor() {
+        this.subscription.add(this.connectionId$.subscribe(result => this.connectionId = result));
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        const connectionId = this.store.selectSnapshot(SignalRState.connectionIdSignalR);
+        // const connectionId = this.store.selectSnapshot(SignalRState.connectionIdSignalR);
 
-        if (connectionId) {
+        if (this.connectionId) {
+            console.log(this.connectionId);
             request = request.clone({
                 setHeaders: {
-                    HubConnectionId: `${connectionId}`
+                    HubConnectionId: `${this.connectionId}`
                 }
             });
         }
