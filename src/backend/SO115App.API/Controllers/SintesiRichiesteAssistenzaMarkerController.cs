@@ -76,8 +76,10 @@ namespace SO115App.API.Controllers
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 
-            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
-            filtro.SearchKey = "0";
+            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
+            {
+                SearchKey = "0"
+            };
 
             var query = new SintesiRichiesteAssistenzaMarkerQuery()
             {
@@ -87,7 +89,7 @@ namespace SO115App.API.Controllers
             try
             {
                 List<SintesiRichiestaMarker> listaSintesi = new List<SintesiRichiestaMarker>();
-                listaSintesi = (List<SintesiRichiestaMarker>)this.handler.Handle(query).SintesiRichiestaMarker;
+                listaSintesi = (List<SintesiRichiestaMarker>)handler.Handle(query).SintesiRichiestaMarker;
 
                 await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetListaRichiesteMarker", listaSintesi);
 

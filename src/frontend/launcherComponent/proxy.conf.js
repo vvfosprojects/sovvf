@@ -10,7 +10,8 @@ const PROXY_CONFIG = [
             "/api/auth/Login",
             "/api/BoxRichieste",
             "/api/BoxMezzi",
-            "/api/BoxPersonale"
+            "/api/BoxPersonale",
+            "/api/Filtri"
         ],
         target: "http://DESKTOP-RC0RAUA:5000/",
         secure: false,

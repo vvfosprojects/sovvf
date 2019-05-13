@@ -24,8 +24,8 @@ namespace SO115App.API.Models.Classi.Condivise
         public Complessita(string Codice, string Descrizione, string Indice)
         {
             //this.codice = Codice;
-            this.descrizione = Descrizione;
-            this.indice = Indice;
+            this.Descrizione = Descrizione;
+            this.Indice = Indice;
         }
 
         /// <summary>
@@ -36,11 +36,11 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         /// Indice Complessità
         /// </summary>
-        public string indice { get; set; }
+        public string Indice { get; set; }
 
         /// <summary>
         /// Descrizione Comlessità
         /// </summary>
-        public string descrizione { get; set; }
+        public string Descrizione { get; set; }
     }
 }

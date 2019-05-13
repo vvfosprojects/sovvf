@@ -75,8 +75,10 @@ namespace SO115App.API.Controllers
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 
-            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
-            filtro.SearchKey = "0";
+            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
+            {
+                SearchKey = "0"
+            };
 
             var query = new FiltriQuery()
             {
@@ -86,7 +88,7 @@ namespace SO115App.API.Controllers
             try
             {
                 Filtri filtri = new Filtri();
-                filtri = (Filtri)this.handler.Handle(query).Filtri;
+                filtri = this.handler.Handle(query).Filtri;
 
                 await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetFiltri", filtri);
 

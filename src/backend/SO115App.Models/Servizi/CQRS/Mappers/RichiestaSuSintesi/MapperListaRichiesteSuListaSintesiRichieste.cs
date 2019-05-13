@@ -95,12 +95,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 string statoRichiesta = DecodifcaStatoRichiesta(elemento.StatoRichiesta);
 
                 sintesi.Id = elemento.Id;
-                sintesi.localita = elemento.Localita;
-                sintesi.tipologia = elemento.Tipologie;
-                sintesi.label = elemento.Descrizione;
-                sintesi.priorita = elemento.PrioritaRichiesta;
-                sintesi.stato = statoRichiesta;
-                sintesi.rilevanza = DateTime.Now;
+                sintesi.Localita = elemento.Localita;
+                sintesi.Tipologia = elemento.Tipologie;
+                sintesi.Label = elemento.Descrizione;
+                sintesi.Priorita = elemento.PrioritaRichiesta;
+                sintesi.Stato = statoRichiesta;
+                sintesi.Rilevanza = DateTime.Now;
 
                 ListaSintesi.Add(sintesi);
             }

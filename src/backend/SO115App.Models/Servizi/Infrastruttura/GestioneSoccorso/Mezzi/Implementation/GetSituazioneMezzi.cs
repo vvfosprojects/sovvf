@@ -131,7 +131,7 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.Impl
 
             var situazioneMezzi =
                 from gruppo in eventiPerCodiceMezzo
-                let eventoPiuRecente = gruppo.OrderByDescending(e => e.Evento.istante).First()
+                let eventoPiuRecente = gruppo.OrderByDescending(e => e.Evento.Istante).First()
                 let stato = new ProcessoreStato().ProcessaEventi(gruppo.Select(e => e.Evento)).Stato
                 select new SituazioneMezzo()
                 {
@@ -139,7 +139,7 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.Impl
                     CodiceStato = stato.Codice,
 #warning il codice richiesta e l'istante devono essere prelevati dallo stato, e non dall'evento più recente che potrebbe essere ininfluente
                     CodiceRichiestaAssistenza = eventoPiuRecente.CodiceRichiesta,
-                    IstanteAggiornamentoStato = eventoPiuRecente.Evento.istante
+                    IstanteAggiornamentoStato = eventoPiuRecente.Evento.Istante
                 };
 
             return situazioneMezzi;

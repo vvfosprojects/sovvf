@@ -5,9 +5,9 @@ namespace SO115App.API.Models.Classi.Navbar
 {
     public class Navbar
     {
-        public ListaSedi listaSedi { get; set; }
+        public ListaSedi ListaSedi { get; set; }
 
-        public List<Tipologie> tipologie { get; set; }
+        public List<Tipologie> Tipologie { get; set; }
 
     }
 }

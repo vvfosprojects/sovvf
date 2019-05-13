@@ -87,7 +87,7 @@ namespace SO115App.API.Controllers
             try
             {
                 List<ComposizioneSquadre> composizioneSquadre= new List<ComposizioneSquadre>();
-                composizioneSquadre = (List<ComposizioneSquadre>)this.handler.Handle(query).ComposizioneSquadre;
+                composizioneSquadre = handler.Handle(query).ComposizioneSquadre;
 
                 await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetComposizioneSquadre", composizioneSquadre);
 
@@ -107,7 +107,7 @@ namespace SO115App.API.Controllers
                 Filtro = filtro
             };
 
-            return this.handler.Handle(query);
+            return handler.Handle(query);
         }
     }
 }

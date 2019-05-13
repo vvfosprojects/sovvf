@@ -355,10 +355,10 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
         {
             var fakerRichiedente = new Faker<Richiedente>()
                 .StrictMode(true)
-                .RuleFor(t => t.nome, f => f.Name.FirstName())
-                .RuleFor(t => t.cognome, f => f.Name.LastName())
-                .RuleFor(t => t.ragioneSociale, f => f.Company.CompanyName())
-                .RuleFor(t => t.telefono, f => f.Phone.PhoneNumber());
+                .RuleFor(t => t.Nome, f => f.Name.FirstName())
+                .RuleFor(t => t.Cognome, f => f.Name.LastName())
+                .RuleFor(t => t.RagioneSociale, f => f.Company.CompanyName())
+                .RuleFor(t => t.Telefono, f => f.Phone.PhoneNumber());
 
             return fakerRichiedente;
         }
@@ -415,8 +415,8 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
             Mezzo mezzo = new Mezzo("0", "APS", "Auto pompa serbatoio", "In sede", 0, distaccamento);
 
             Partenza partenza = new Partenza();
-            partenza.mezzo = mezzo;
-            partenza.squadre = ListaSquadre;
+            partenza.Mezzo = mezzo;
+            partenza.Squadre = ListaSquadre;
 
             List<Partenza> NewPartenza = new List<Partenza>()
             {

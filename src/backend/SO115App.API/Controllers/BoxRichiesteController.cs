@@ -69,7 +69,7 @@ namespace SO115App.API.Controllers
             try
             {
                 BoxInterventi boxInterventi = new BoxInterventi();
-                boxInterventi = (BoxInterventi)this.handler.Handle(query).BoxRichieste;
+                boxInterventi = handler.Handle(query).BoxRichieste;
 
                 await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetBoxInterventi", boxInterventi);
 

@@ -20,8 +20,6 @@ namespace SO115App.API.Controllers
         private readonly IQueryHandler<NavbarQuery, NavbarResult> handler;
         private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
-        private readonly NotificationHub notifyHub = new NotificationHub();
-
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
@@ -54,7 +52,7 @@ namespace SO115App.API.Controllers
             try
             {
                 Navbar navbar = new Navbar();
-                navbar = (Navbar)this.handler.Handle(query).Navbar;
+                navbar = handler.Handle(query).Navbar;
 
                 await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetNavbar", navbar);
 

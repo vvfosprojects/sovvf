@@ -7,6 +7,9 @@
                                        (dismissNuovaPartenza)="dismissPartenza()"></app-sintesi-richiesta>
             </div>
         </div>
+        <div class="col-12">
+            <app-composizione-filterbar [filtri]="filtri$ | async"></app-composizione-filterbar>
+        </div>
         <div *ngIf="richiesta && preAccoppiati.length > 0 && compPartenzaMode === Composizione.Veloce" class="col-12">
             <app-composizione-veloce [richiesta]="richiesta" [preAccoppiati]="preAccoppiati"
                                      [dismissEvents]="dismissPartenzaSubject.asObservable()"
