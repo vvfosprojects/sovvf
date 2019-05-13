@@ -93,27 +93,27 @@ export class SignalRService {
         this.hubNotification.on('NotifyGetListaRichieste', (data: any) => {
             console.log(data);
             this.store.dispatch(new SetRichieste(data));
-            this.store.dispatch(new ShowToastr('success', 'Richieste ricevute da signalR', null, 5));
+            this.store.dispatch(new ShowToastr('info', 'Richieste ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetBoxPersonale', (data: any) => {
             console.log(data);
             this.store.dispatch(new SetBoxPersonale(data));
-            this.store.dispatch(new ShowToastr('success', 'Box Personale ricevute da signalR', null, 5));
+            this.store.dispatch(new ShowToastr('info', 'Box Personale ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetBoxMezzi', (data: any) => {
             console.log(data);
             this.store.dispatch(new SetBoxMezzi(data));
-            this.store.dispatch(new ShowToastr('success', 'Box Mezzi ricevute da signalR', null, 5));
+            this.store.dispatch(new ShowToastr('info', 'Box Mezzi ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetBoxInterventi', (data: any) => {
             console.log(data);
             this.store.dispatch(new SetBoxRichieste(data));
-            this.store.dispatch(new ShowToastr('success', 'Box Richieste ricevute da signalR', null, 5));
+            this.store.dispatch(new ShowToastr('info', 'Box Richieste ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetListaRichiesteMarker', (data: any) => {
             console.log(data);
             this.store.dispatch(new SetRichiesteMarkers(data));
-            this.store.dispatch(new ShowToastr('success', 'Richieste Markers ricevute da signalR', null, 5));
+            this.store.dispatch(new ShowToastr('info', 'Richieste Markers ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetListaMezziMarker', (data: any) => {
             console.log(data);
