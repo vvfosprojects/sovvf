@@ -14,7 +14,6 @@ export class SediMarkerService {
     }
 
     getSediMarkers(signalRConnectionId: string): Observable<any> {
-        console.log(API_URL_SEDI + `?id=${signalRConnectionId}`);
         return this.http.get(API_URL_SEDI + `?id=${signalRConnectionId}`).pipe(
             retry(3),
             catchError(handleError)

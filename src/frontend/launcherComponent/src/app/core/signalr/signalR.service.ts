@@ -17,6 +17,7 @@ import { environment } from '../../../environments/environment';
 import { SetRichiesteMarkers } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { SetMezziMarkers } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import { SetSediMarkers } from '../../features/home/store/actions/maps/sedi-markers.actions';
+import { SetPreAccoppiati } from '../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -78,12 +79,12 @@ export class SignalRService {
 
 
         this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: SintesiRichiesta) => {
-            console.log(`Login: ${data}`);
+            // console.log(`Login: ${data}`);
             // Todo Provvisorio: diventerà inserisci richiesta/inserisci marker/aggiorna contatori boxes con un id di tipo RM-001
             this.store.dispatch(new ShowToastr('info', 'Nuova Sintesi Richiesta', null, 3));
         });
         this.hubNotification.on('ModifyAndNotifySuccess', (data: SintesiRichiesta) => {
-            console.log(`Login: ${data}`);
+            // console.log(`Login: ${data}`);
             // Todo Provvisorio: diventerà modifica richiesta/modifica marker/aggiorna contatori boxes
             this.store.dispatch(new ShowToastr('info', 'Modifica Sintesi Richiesta', null, 3));
         });
@@ -91,39 +92,54 @@ export class SignalRService {
          * inizio nuova implementazione
          */
         this.hubNotification.on('NotifyGetListaRichieste', (data: any) => {
-            console.log(data);
+            // console.log(data);
             this.store.dispatch(new SetRichieste(data));
             this.store.dispatch(new ShowToastr('info', 'Richieste ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetBoxPersonale', (data: any) => {
-            console.log(data);
+            // console.log(data);
             this.store.dispatch(new SetBoxPersonale(data));
             this.store.dispatch(new ShowToastr('info', 'Box Personale ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetBoxMezzi', (data: any) => {
-            console.log(data);
+            // console.log(data);
             this.store.dispatch(new SetBoxMezzi(data));
             this.store.dispatch(new ShowToastr('info', 'Box Mezzi ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetBoxInterventi', (data: any) => {
-            console.log(data);
+            // console.log(data);
             this.store.dispatch(new SetBoxRichieste(data));
             this.store.dispatch(new ShowToastr('info', 'Box Richieste ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetListaRichiesteMarker', (data: any) => {
-            console.log(data);
+            // console.log(data);
             this.store.dispatch(new SetRichiesteMarkers(data));
             this.store.dispatch(new ShowToastr('info', 'Richieste Markers ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetListaMezziMarker', (data: any) => {
-            console.log(data);
+            // console.log(data);
             this.store.dispatch(new SetMezziMarkers(data));
             this.store.dispatch(new ShowToastr('info', 'Mezzi Markers ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetListaSediMarker', (data: any) => {
-            console.log(data);
+            // console.log(data);
             this.store.dispatch(new SetSediMarkers(data));
             this.store.dispatch(new ShowToastr('info', 'Sedi Markers ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetMezziComposizione', (data: any) => {
+            // console.log(data);
+            // this.store.dispatch(new SetRichiesteMarkers(data)); <- da correggere
+            this.store.dispatch(new ShowToastr('info', 'Mezzi Composizione ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetSquadreComposizione', (data: any) => {
+            // console.log(data);
+            // this.store.dispatch(new SetMezziMarkers(data)); <- da correggere
+            this.store.dispatch(new ShowToastr('info', 'Squadre Composizione ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetPreaccoppiatiComposizione', (data: any) => {
+            // console.log(data);
+            this.store.dispatch(new SetPreAccoppiati(data));
+            this.store.dispatch(new ShowToastr('info', 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
         /**
          * fine nuova implementazione
