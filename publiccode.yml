@@ -66,7 +66,16 @@ description:
        - Emergency Teams dispatch.
        - GIS based emergency management.
     screenshots:
-      - doc/Cattura1.png
+      - doc/images/dashboard.jpg
+      - doc/images/composizione-rapida.jpg
+      - doc/images/dettaglio-richiesta.jpg
+      - doc/images/chiamata.jpg
+      - doc/images/dettaglio-richiesta-mappa.jpg
+      - doc/images/composizione.jpg
+      - doc/images/meteo-marker.jpg
+      - doc/images/boxes.jpg
+      - doc/images/dettaglio-marker.jpg
+      - doc/images/dashboard-solo-mappa.jpg
 inputTypes:
   - text/plain
 outputTypes:
