@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError, retry, map } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { handleError } from '../../../shared/helper/handleError';
@@ -17,9 +17,6 @@ export class CompPartenzaService {
 
     public getPreAccoppiati(): Observable<any> {
         return this.http.get(API_URL_PREACCOPPIATI).pipe(
-            map((data: any) => {
-                return data.SintesiRichiesta;
-            }),
             retry(3),
             catchError(handleError)
         );
@@ -27,9 +24,6 @@ export class CompPartenzaService {
 
     public getMezziComposizione(): Observable<any> {
         return this.http.get(API_URL_MEZZI).pipe(
-            map((data: any) => {
-                return data.Mezzi;
-            }),
             retry(3),
             catchError(handleError)
         );
@@ -37,9 +31,6 @@ export class CompPartenzaService {
 
     public getSquadre(): Observable<any> {
         return this.http.get(API_URL_SQUADRE).pipe(
-            map((data: any) => {
-                return data.Squadre;
-            }),
             retry(3),
             catchError(handleError)
         );

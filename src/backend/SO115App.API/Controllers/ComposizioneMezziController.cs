@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiRichiesteAssistenzaMarkerController.cs" company="CNVVF">
+// <copyright file="ComposizioneMezziController.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -22,10 +22,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Hubs;
-using SO115App.API.Models.Classi.Marker;
-using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
+using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -41,12 +42,12 @@ namespace SO115App.API.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class SintesiRichiesteAssistenzaMarkerController : ControllerBase
+    public class ComposizioneMezziController : ControllerBase
     {
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> handler;
+        private readonly IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> handler;
 
         private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
@@ -55,8 +56,8 @@ namespace SO115App.API.Controllers
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public SintesiRichiesteAssistenzaMarkerController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
-            IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> handler)
+        public ComposizioneMezziController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
+            IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> handler)
         {
             this.handler = handler;
             _NotificationHub = NotificationHubContext;
@@ -69,40 +70,44 @@ namespace SO115App.API.Controllers
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpGet]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> Get()
         {
+
+            var headerValues = Request.Headers["HubConnectionId"];
+            string ConId = headerValues.FirstOrDefault();
+
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
             filtro.SearchKey = "0";
 
-            var query = new SintesiRichiesteAssistenzaMarkerQuery()
+            var query = new ComposizioneMezziQuery()
             {
                 Filtro = filtro
             };
 
             try
             {
-                List<SintesiRichiestaMarker> listaSintesi = new List<SintesiRichiestaMarker>();
-                listaSintesi = (List<SintesiRichiestaMarker>)this.handler.Handle(query).SintesiRichiestaMarker;
+                List<ComposizioneMezzi> composizioneMezzi = new List<ComposizioneMezzi>();
+                composizioneMezzi = handler.Handle(query).ComposizioneMezzi;
 
-                await _NotificationHub.Clients.Client(id).SendAsync("NotifyGetListaRichiesteMarker", listaSintesi);
+                await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetComposizioneMezzi", composizioneMezzi);
 
                 return Ok();
             }
             catch
             {
-                return Ok(HttpStatusCode.BadRequest);
+                return BadRequest();
             }
         }
 
         [HttpGet("{filtro}")]
-        public SintesiRichiesteAssistenzaMarkerResult GetMarkerFromId(FiltroRicercaRichiesteAssistenza filtro)
+        public ComposizioneMezziResult GetMarkerFromId(FiltroRicercaRichiesteAssistenza filtro)
         {
-            var query = new SintesiRichiesteAssistenzaMarkerQuery()
+            var query = new ComposizioneMezziQuery()
             {
                 Filtro = filtro
             };
 
-            return this.handler.Handle(query);
+            return handler.Handle(query);
         }
     }
 }

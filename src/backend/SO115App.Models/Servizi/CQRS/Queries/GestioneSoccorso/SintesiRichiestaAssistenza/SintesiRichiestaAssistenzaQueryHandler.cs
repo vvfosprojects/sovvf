@@ -59,7 +59,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
             {
                 SintesiRichiesta = new SintesiRichiesta()
                 {
-                    codice = richiesteAssistenza.Codice
+                    Codice = richiesteAssistenza.Codice
                 }
             };
 

@@ -18,6 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.Marker;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Marker
 {
@@ -38,69 +40,10 @@ namespace SO115App.API.Models.Classi.Marker
         ///   L'id della richiesta
         /// </summary>
         //public string id { get; set; }
-        public Coordinate coordinate { get; set; }
-
-        public Mezzo mezzo { get; set; }
-
-        /// <summary>
-        ///   Identifica il codice della Chiamata
-        /// </summary>
-        public string descrizioneAppartenenza { get; set; }
-
-        /// <summary>
-        ///   E' il codice della Richiesta di Assistenza
-        /// </summary>
-        public string descrizioneStato { get; set; }
-
-        public int statoEfficienza { get; set; }
-
-        public string descrizioneStatoEfficienza { get; set; }
-
-        public int livelloCarburante { get; set; }
-
-        public string descrizioneLivelloCarburante { get; set; }
-
-        public int livelloEstinguente { get; set; }
-
-        public string descrizioneLivelloEstinguente { get; set; }
-
-        public string id_richiesta { get; set; }
-
-        public Tipologia tipologie_richiesta { get; set; }
-
-        public string label { get; set; }
-
-        /// <summary>
-        ///   Localita della richiesta
-        /// </summary>
-        //public Localita localita { get; set; }
-
-        /// <summary>
-        ///   Priorita della richiesta
-        /// </summary>
-        //public RichiestaAssistenza.Priorita priorita
-        //{
-        //    get; set;
-        //}
-
-        /// <summary>
-        ///   Stato della richiesta
-        /// </summary>
-        //public string stato { get; set; }
-
-        /// <summary>
-        ///   Indica la data in cui è stato marcato RILEVANTE l'ultima volta
-        /// </summary>
-        /// <remarks>
-        ///   Una richiesta può essere rilevante se è l'operatore a marcarla come tale, oppure in
-        ///   base ad un insieme di regole automatiche deterministiche o basate su algoritmi di
-        ///   machine learning.
-        /// </remarks>
-        //public DateTime? rilevanza { get; set; }
-
-        /// <summary>
-        ///   Opacità della richiesta, serve per opacizzare i Marker che non sono rilevanti ai fini della ricerca effettuata
-        /// </summary>
-        //public string opacita { get; set; }
+        public Coordinate Coordinate { get; set; }
+        public Mezzo Mezzo { get; set; }
+        public string Id_richiesta { get; set; }
+        public List<TipologieRichiesta> Tipologie_richiesta { get; set; }
+        public string Label { get; set; }
     }
 }

@@ -32,14 +32,21 @@ export class SintesiRichiesteServiceFake {
 
     }
 
-    getRichieste(signalRConnectionId: string, idUltimaRichiesta?: string) {
+    getRichieste(idUltimaRichiesta?: string) {
 
         this.richieste = [
             new SintesiRichiesta(
                 '1',
                 'RM-022',
                 null,
-                new Utente('10', 'Mario', 'Rossi'),
+                new Utente(
+                    '10',
+                    'Mario',
+                    'Rossi',
+                    'BMLVJZ99B12E096S',
+                    new Sede('RM.001', 'Comando di Roma', new Coordinate(12, 12), 'Via Ignorasi 32', 'Comando', 'Lazio', 'Roma'),
+                    'mario_rossi'
+                ),
                 moment().subtract(0, 'minutes').toDate(),
                 StatoRichiesta.Chiamata,
                 5,
@@ -69,7 +76,14 @@ export class SintesiRichiesteServiceFake {
                 '2',
                 'RM-021',
                 null,
-                new Utente('10', 'Mario', 'Rossi'),
+                new Utente(
+                    '10',
+                    'Mario',
+                    'Rossi',
+                    'BMLVJZ99B12E096S',
+                    new Sede('RM.001', 'Comando di Roma', new Coordinate(12, 12), 'Via Ignorasi 32', 'Comando', 'Lazio', 'Roma'),
+                    'mario_rossi'
+                ),
                 moment().subtract(22, 'minutes').toDate(),
                 StatoRichiesta.Chiamata,
                 1,
@@ -103,7 +117,14 @@ export class SintesiRichiesteServiceFake {
                 '3',
                 'RM-020',
                 null,
-                new Utente('10', 'Mario', 'Rossi'),
+                new Utente(
+                    '10',
+                    'Mario',
+                    'Rossi',
+                    'BMLVJZ99B12E096S',
+                    new Sede('RM.001', 'Comando di Roma', new Coordinate(12, 12), 'Via Ignorasi 32', 'Comando', 'Lazio', 'Roma'),
+                    'mario_rossi'
+                ),
                 moment().subtract(23, 'minutes').toDate(),
                 StatoRichiesta.Chiamata,
                 1,
@@ -132,7 +153,14 @@ export class SintesiRichiesteServiceFake {
                 '4',
                 'RM-019',
                 'RM-12842',
-                new Utente('10', 'Mario', 'Rossi'),
+                new Utente(
+                    '10',
+                    'Mario',
+                    'Rossi',
+                    'BMLVJZ99B12E096S',
+                    new Sede('RM.001', 'Comando di Roma', new Coordinate(12, 12), 'Via Ignorasi 32', 'Comando', 'Lazio', 'Roma'),
+                    'mario_rossi'
+                ),
                 moment().subtract(35, 'minutes').toDate(),
                 StatoRichiesta.Assegnata,
                 4,
@@ -204,7 +232,14 @@ export class SintesiRichiesteServiceFake {
                 '5',
                 'RM-018',
                 'RM-12841',
-                new Utente('10', 'Mario', 'Rossi'),
+                new Utente(
+                    '10',
+                    'Mario',
+                    'Rossi',
+                    'BMLVJZ99B12E096S',
+                    new Sede('RM.001', 'Comando di Roma', new Coordinate(12, 12), 'Via Ignorasi 32', 'Comando', 'Lazio', 'Roma'),
+                    'mario_rossi'
+                ),
                 moment().subtract(4, 'minutes').toDate(),
                 StatoRichiesta.Assegnata,
                 3,
@@ -277,7 +312,14 @@ export class SintesiRichiesteServiceFake {
                 '6',
                 'RM-017',
                 'RM-12840',
-                new Utente('10', 'Mario', 'Rossi'),
+                new Utente(
+                    '10',
+                    'Mario',
+                    'Rossi',
+                    'BMLVJZ99B12E096S',
+                    new Sede('RM.001', 'Comando di Roma', new Coordinate(12, 12), 'Via Ignorasi 32', 'Comando', 'Lazio', 'Roma'),
+                    'mario_rossi'
+                ),
                 moment().subtract(6, 'minutes').toDate(),
                 StatoRichiesta.Assegnata,
                 3,
@@ -350,7 +392,14 @@ export class SintesiRichiesteServiceFake {
                 '7',
                 'RM-016',
                 'RM-12839',
-                new Utente('10', 'Mario', 'Rossi'),
+                new Utente(
+                    '10',
+                    'Mario',
+                    'Rossi',
+                    'BMLVJZ99B12E096S',
+                    new Sede('RM.001', 'Comando di Roma', new Coordinate(12, 12), 'Via Ignorasi 32', 'Comando', 'Lazio', 'Roma'),
+                    'mario_rossi'
+                ),
                 moment().subtract(25, 'minutes').toDate(),
                 StatoRichiesta.Presidiata,
                 2,
@@ -423,7 +472,14 @@ export class SintesiRichiesteServiceFake {
                 '8',
                 'RM-015',
                 'RM-12838',
-                new Utente('10', 'Mario', 'Rossi'),
+                new Utente(
+                    '10',
+                    'Mario',
+                    'Rossi',
+                    'BMLVJZ99B12E096S',
+                    new Sede('RM.001', 'Comando di Roma', new Coordinate(12, 12), 'Via Ignorasi 32', 'Comando', 'Lazio', 'Roma'),
+                    'mario_rossi'
+                ),
                 moment().subtract(37, 'minutes').toDate(),
                 StatoRichiesta.Sospesa,
                 2,
@@ -495,7 +551,14 @@ export class SintesiRichiesteServiceFake {
                 '9',
                 'RM-014',
                 'RM-12837',
-                new Utente('10', 'Mario', 'Rossi'),
+                new Utente(
+                    '10',
+                    'Mario',
+                    'Rossi',
+                    'BMLVJZ99B12E096S',
+                    new Sede('RM.001', 'Comando di Roma', new Coordinate(12, 12), 'Via Ignorasi 32', 'Comando', 'Lazio', 'Roma'),
+                    'mario_rossi'
+                ),
                 moment().subtract(39, 'minutes').toDate(),
                 StatoRichiesta.Sospesa,
                 2,
@@ -567,7 +630,14 @@ export class SintesiRichiesteServiceFake {
                 '10',
                 'RM-012',
                 'RM-12836',
-                new Utente('10', 'Mario', 'Rossi'),
+                new Utente(
+                    '10',
+                    'Mario',
+                    'Rossi',
+                    'BMLVJZ99B12E096S',
+                    new Sede('RM.001', 'Comando di Roma', new Coordinate(12, 12), 'Via Ignorasi 32', 'Comando', 'Lazio', 'Roma'),
+                    'mario_rossi'
+                ),
                 moment().subtract(42, 'minutes').toDate(),
                 StatoRichiesta.Chiusa,
                 4,
@@ -639,7 +709,14 @@ export class SintesiRichiesteServiceFake {
                 '11',
                 'RM-010',
                 'RM-12835',
-                new Utente('10', 'Mario', 'Rossi'),
+                new Utente(
+                    '10',
+                    'Mario',
+                    'Rossi',
+                    'BMLVJZ99B12E096S',
+                    new Sede('RM.001', 'Comando di Roma', new Coordinate(12, 12), 'Via Ignorasi 32', 'Comando', 'Lazio', 'Roma'),
+                    'mario_rossi'
+                ),
                 moment().subtract(45, 'minutes').toDate(),
                 StatoRichiesta.Chiusa,
                 3,

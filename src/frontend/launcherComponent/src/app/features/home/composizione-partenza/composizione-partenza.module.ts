@@ -32,6 +32,9 @@ import { MezziComposizioneState } from '../store/states/composizione-partenza/me
 import { SquadreComposizioneState } from '../store/states/composizione-partenza/squadre-composizione.state';
 import { PreAccoppiatiState } from '../store/states/composizione-partenza/pre-accoppiati.state';
 import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
+import { environment } from '../../../../environments/environment';
+import { FilterbarComposizioneState } from '../store/states/composizione-partenza/filterbar-composizione.state';
+import { FilterbarService } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
 
 @NgModule({
     declarations: [
@@ -59,7 +62,8 @@ import { RichiestaComposizioneState } from '../store/states/composizione-partenz
                 RichiestaComposizioneState,
                 MezziComposizioneState,
                 SquadreComposizioneState,
-                PreAccoppiatiState
+                PreAccoppiatiState,
+                FilterbarComposizioneState
             ]
         ),
     ],
@@ -67,7 +71,9 @@ import { RichiestaComposizioneState } from '../store/states/composizione-partenz
         ComposizionePartenzaComponent
     ],
     providers: [
-        { provide: CompPartenzaService, useClass: CompPartenzaServiceFake }
+        FilterbarService,
+        { provide: CompPartenzaService, useClass: CompPartenzaServiceFake },
+        // { provide: CompPartenzaService, useClass: environment.fakeProvider ? CompPartenzaServiceFake : CompPartenzaService}
     ]
 })
 export class ComposizionePartenzaModule {

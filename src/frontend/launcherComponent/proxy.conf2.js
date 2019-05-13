@@ -2,6 +2,7 @@ const PROXY_CONFIG = [
     {
         context: [
             "/NotificationHub",
+            "/api/Welcome",
             "/api/SintesiRichiesteAssistenza",
             "/api/SintesiRichiesteAssistenzaMarker",
             "/api/SintesiSediMarker",
@@ -10,7 +11,8 @@ const PROXY_CONFIG = [
             "/api/auth/Login",
             "/api/BoxRichieste",
             "/api/BoxMezzi",
-            "/api/BoxPersonale"
+            "/api/BoxPersonale",
+            "/api/Filtri"
         ],
         target: "http://so115.api2.test/",
         secure: false,

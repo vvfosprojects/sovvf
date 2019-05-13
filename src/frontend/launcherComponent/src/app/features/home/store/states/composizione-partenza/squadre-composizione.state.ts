@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext, NgxsOnInit } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 
 // Interface
 import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
@@ -7,7 +7,8 @@ import { SquadraComposizione } from '../../../composizione-partenza/interface/sq
 
 // Service
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
-import { GetSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import { GetSquadreComposizione, SetSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 
 // State
 
@@ -31,18 +32,21 @@ export class SquadreComposizioneState {
         return state.squadreComposizione;
     }
 
-    constructor(private squadreService: CompPartenzaService) { }
+    constructor(private squadreService: CompPartenzaService) {
+    }
 
     // SET
     @Action(GetSquadreComposizione)
-    getSquadreComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateModel>) {
-        const state = getState();
-
+    getSquadreComposizione({ dispatch }: StateContext<SquadreComposizioneStateModel>) {
         this.squadreService.getSquadre().subscribe((s: SquadraComposizione[]) => {
-            patchState({
-                ...state,
-                squadreComposizione: s
-            });
+            // dispatch(new SetSquadreComposizione(s));
+        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+    }
+
+    @Action(SetSquadreComposizione)
+    setSquadreComposizione({ patchState }: StateContext<SquadreComposizioneStateModel>, action: SetSquadreComposizione) {
+        patchState({
+            squadreComposizione: action.squadraComposizione
         });
     }
 }

@@ -4,10 +4,11 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 
 // Action
-import { GetMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
+import { GetMezziComposizione, SetMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 
 // Service
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
+import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 
 export interface MezziComposizioneStateModel {
     mezziComposizione: MezzoComposizione[];
@@ -29,18 +30,20 @@ export class MezziComposizioneState {
         return state.mezziComposizione;
     }
 
-    constructor(private mezziService: CompPartenzaService) { }
+    constructor(private mezziService: CompPartenzaService) {
+    }
 
     @Action(GetMezziComposizione)
-    getMezziComposizione({ getState, patchState }: StateContext<MezziComposizioneStateModel>) {
-        const state = getState();
-
+    getMezziComposizione({ dispatch }: StateContext<MezziComposizioneStateModel>) {
         this.mezziService.getMezziComposizione().subscribe((m: MezzoComposizione[]) => {
-            patchState({
-                ...state,
-                mezziComposizione: m
-            });
-        });
+            // dispatch(new SetMezziComposizione(m));
+        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+    }
 
+    @Action(SetMezziComposizione)
+    setMezziComposizione({ patchState }: StateContext<MezziComposizioneStateModel>, action: SetMezziComposizione) {
+        patchState({
+            mezziComposizione: action.mezzoComposizione
+        });
     }
 }

@@ -8,7 +8,6 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
 import { SetRichieste } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
-import { ToggleChiamata } from '../../features/home/store/actions/view/view.actions';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
 import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.actions';
@@ -17,6 +16,12 @@ import { environment } from '../../../environments/environment';
 import { SetRichiesteMarkers } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { SetMezziMarkers } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import { SetSediMarkers } from '../../features/home/store/actions/maps/sedi-markers.actions';
+import { SetPreAccoppiati } from '../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
+import { SetSquadreComposizione } from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
+import { SetMezziComposizione } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
+import { AuthenticationService } from '../auth/_services';
+import { Utente } from '../../shared/model/utente.model';
+import { SetFiltriComposizione } from '../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -27,8 +32,9 @@ const SIGNALR_BYPASS = !environment.signalR;
 export class SignalRService {
     connectionEstablished = new Subject<boolean>();
     private hubNotification: HubConnection;
+    private localName = 'userSO115';
 
-    constructor(private store: Store) {
+    constructor(private store: Store, private auth: AuthenticationService) {
     }
 
     initSubscription(): void {
@@ -60,6 +66,12 @@ export class SignalRService {
     }
 
     private registerOnSubscriptionEvents(): void {
+        this.hubNotification.on('NotifyAuth', (data: Utente) => {
+
+            localStorage.setItem(this.localName, JSON.stringify(data));
+            this.auth.currentUserSubject.next(data);
+            this.store.dispatch(new ShowToastr('info', 'Utente autorizzato:', '', 3));
+        });
         this.hubNotification.on('NotifyLogIn', (data: any) => {
             // console.log(`Login: ${data}`);
             // avvisa gli altri client che un utente si è collegato alla sua stessa sede
@@ -78,12 +90,12 @@ export class SignalRService {
 
 
         this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: SintesiRichiesta) => {
-            console.log(`Login: ${data}`);
+            // console.log(`Login: ${data}`);
             // Todo Provvisorio: diventerà inserisci richiesta/inserisci marker/aggiorna contatori boxes con un id di tipo RM-001
             this.store.dispatch(new ShowToastr('info', 'Nuova Sintesi Richiesta', null, 3));
         });
         this.hubNotification.on('ModifyAndNotifySuccess', (data: SintesiRichiesta) => {
-            console.log(`Login: ${data}`);
+            // console.log(`Login: ${data}`);
             // Todo Provvisorio: diventerà modifica richiesta/modifica marker/aggiorna contatori boxes
             this.store.dispatch(new ShowToastr('info', 'Modifica Sintesi Richiesta', null, 3));
         });
@@ -91,39 +103,59 @@ export class SignalRService {
          * inizio nuova implementazione
          */
         this.hubNotification.on('NotifyGetListaRichieste', (data: any) => {
-            console.log(data);
+            // console.log(data);
             this.store.dispatch(new SetRichieste(data));
-            this.store.dispatch(new ShowToastr('success', 'Richieste ricevute da signalR', null, 5));
+            this.store.dispatch(new ShowToastr('info', 'Richieste ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetBoxPersonale', (data: any) => {
-            console.log(data);
+            // console.log(data);
             this.store.dispatch(new SetBoxPersonale(data));
-            this.store.dispatch(new ShowToastr('success', 'Box Personale ricevute da signalR', null, 5));
+            this.store.dispatch(new ShowToastr('info', 'Box Personale ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetBoxMezzi', (data: any) => {
-            console.log(data);
+            // console.log(data);
             this.store.dispatch(new SetBoxMezzi(data));
-            this.store.dispatch(new ShowToastr('success', 'Box Mezzi ricevute da signalR', null, 5));
+            this.store.dispatch(new ShowToastr('info', 'Box Mezzi ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetBoxInterventi', (data: any) => {
-            console.log(data);
+            // console.log(data);
             this.store.dispatch(new SetBoxRichieste(data));
-            this.store.dispatch(new ShowToastr('success', 'Box Richieste ricevute da signalR', null, 5));
+            this.store.dispatch(new ShowToastr('info', 'Box Richieste ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetListaRichiesteMarker', (data: any) => {
-            console.log(data);
+            // console.log(data);
             this.store.dispatch(new SetRichiesteMarkers(data));
-            this.store.dispatch(new ShowToastr('success', 'Richieste Markers ricevute da signalR', null, 5));
+            this.store.dispatch(new ShowToastr('info', 'Richieste Markers ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetListaMezziMarker', (data: any) => {
-            console.log(data);
+            // console.log(data);
             this.store.dispatch(new SetMezziMarkers(data));
             this.store.dispatch(new ShowToastr('info', 'Mezzi Markers ricevute da signalR', null, 5));
         });
+        this.hubNotification.on('NotifyGetFiltri', (data: any) => {
+            console.log('Filtri signalR', data);
+            this.store.dispatch(new SetFiltriComposizione(data));
+            this.store.dispatch(new ShowToastr('info', 'Filtri Composizione ricevuti da signalR', null, 5));
+        });
         this.hubNotification.on('NotifyGetListaSediMarker', (data: any) => {
-            console.log(data);
+            // console.log(data);
             this.store.dispatch(new SetSediMarkers(data));
             this.store.dispatch(new ShowToastr('info', 'Sedi Markers ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetMezziComposizione', (data: any) => {
+            // console.log(data);
+            this.store.dispatch(new SetMezziComposizione(data));
+            this.store.dispatch(new ShowToastr('info', 'Mezzi Composizione ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetSquadreComposizione', (data: any) => {
+            // console.log(data);
+            this.store.dispatch(new SetSquadreComposizione(data));
+            this.store.dispatch(new ShowToastr('info', 'Squadre Composizione ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetPreaccoppiatiComposizione', (data: any) => {
+            // console.log(data);
+            this.store.dispatch(new SetPreAccoppiati(data));
+            this.store.dispatch(new ShowToastr('info', 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
         /**
          * fine nuova implementazione
@@ -170,7 +202,7 @@ export class SignalRService {
         if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('GetDateTime')
                 .then((data: any) => {
-                        this.store.dispatch(new SetTimeSync(data));
+                    this.store.dispatch(new SetTimeSync(data));
                 })
                 .catch(() => console.log('GetTime Error'));
         }
@@ -197,66 +229,4 @@ export class SignalRService {
         }
     }
 
-    insertChiamata(notification: SignalRNotification) {
-        if (!SIGNALR_BYPASS) {
-            this.hubNotification.invoke('SaveAndNotifyChiamata', notification).then(
-                (data: SintesiRichiesta) => {
-                    // Todo Provvisorio: diventerà inserisci richiesta/inserisci marker/aggiorna contatori boxes con un id di tipo RM-001
-                    this.store.dispatch(new ToggleChiamata());
-                    this.store.dispatch(new ShowToastr('success', 'Inserimento della chiamata effettuato', null, 5));
-                    console.log(data.descrizione);
-                }
-            ).catch(
-                (data: string) => {
-                    // mostra alert dell'inserimento fallito della chiamata
-                    this.store.dispatch(new ShowToastr('error', 'Inserimento della chiamata fallito', data, 5));
-                    console.log(data);
-                }
-            );
-        }
-    }
-
-    getChiamate(notification?: SignalRNotification) {
-        if (!SIGNALR_BYPASS) {
-            this.hubNotification.invoke('GetAndNotifyListaSintesi').catch(
-                (data: string) => {
-                    console.log(data);
-                    this.store.dispatch(new ShowToastr('error', 'Richieste non ricevute da signalR', data, 5));
-                }
-            );
-        }
-    }
-
-    insertMarkerChiamata(notification: SignalRNotification) {
-        if (!SIGNALR_BYPASS) {
-            // Invio a signalR il marker della chiamata che sto effettuando
-            this.hubNotification.invoke('NotifyChiamataInCorsoMarker', notification);
-        }
-    }
-
-    deleteMarkerChiamata(notification: SignalRNotification) {
-        if (!SIGNALR_BYPASS) {
-            // Avviso signalR che il marker della chiamata in corso è da cancellare
-            this.hubNotification.invoke('NotifyChiamataInCorsoMarkerDelete', notification);
-        }
-    }
-
-
-    modifySintesiRichiesta(notification: SignalRNotification) {
-        if (!SIGNALR_BYPASS) {
-            this.hubNotification.invoke('ModifyAndNotify', notification).then(
-                (data: SintesiRichiesta) => {
-                    // Todo Provvisorio: diventerà modifica richiesta/modifica marker/aggiorna contatori boxes
-                    this.store.dispatch(new ShowToastr('success', 'Modifica effettuata con successo', null, 5));
-                    console.log(data.descrizione);
-                }
-            ).catch(
-                (data: string) => {
-                    // mostra alert del fallimento della modifica
-                    this.store.dispatch(new ShowToastr('error', 'Modifica fallita', data, 5));
-                    console.log(data);
-                }
-            );
-        }
-    }
 }

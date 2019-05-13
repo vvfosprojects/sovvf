@@ -1,13 +1,14 @@
-import { Action, Selector, State, StateContext, NgxsOnInit } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 
 // Interface
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 
 // Action
-import { GetPreAccoppiati } from '../../actions/composizione-partenza/pre-accoppiati.actions';
+import { GetPreAccoppiati, SetPreAccoppiati } from '../../actions/composizione-partenza/pre-accoppiati.actions';
 
 // Service
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
+import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 
 export interface PreAccoppiatiStateModel {
     preAccoppiati: BoxPartenza[];
@@ -29,18 +30,20 @@ export class PreAccoppiatiState {
         return state.preAccoppiati;
     }
 
-    constructor(private preAccoppiatiService: CompPartenzaService) { }
+    constructor(private preAccoppiatiService: CompPartenzaService) {
+    }
 
     @Action(GetPreAccoppiati)
-    getPreAccoppiati({ getState, patchState }: StateContext<PreAccoppiatiStateModel>) {
-        const state = getState();
-
+    getPreAccoppiati({ dispatch }: StateContext<PreAccoppiatiStateModel>) {
         this.preAccoppiatiService.getPreAccoppiati().subscribe((p: BoxPartenza[]) => {
-            patchState({
-                ...state,
-                preAccoppiati: p
-            });
-        });
+            // dispatch(new SetPreAccoppiati(p));
+        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+    }
 
+    @Action(SetPreAccoppiati)
+    setPreAccoppiati({ patchState }: StateContext<PreAccoppiatiStateModel>, action: SetPreAccoppiati) {
+        patchState({
+            preAccoppiati: action.boxPartenza
+        });
     }
 }

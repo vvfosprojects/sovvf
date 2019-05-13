@@ -57,8 +57,7 @@ export class RichiesteMarkersState {
 
     @Action(GetRichiesteMarkers)
     getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: GetRichiesteMarkers) {
-        this._richieste.getRichiesteMarkers(action.connectionId).subscribe((result) => {
-            console.log(result);
+        this._richieste.getRichiesteMarkers().subscribe(() => {
         }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
     }
 
@@ -129,16 +128,18 @@ export class RichiesteMarkersState {
         const state = getState();
         const filteredId: string[] = [];
         if (action.stato) {
-            state.richiesteMarkers.forEach(r => {
-                action.stato.forEach(c => {
-                    if (wipeStatoRichiesta(r.stato).substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
-                        filteredId.push(r.id);
-                    }
+            if (state.richiesteMarkers) {
+                state.richiesteMarkers.forEach(r => {
+                    action.stato.forEach(c => {
+                        if (wipeStatoRichiesta(r.stato).substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
+                            filteredId.push(r.id);
+                        }
+                    });
                 });
-            });
-        }
-        if (filteredId.length > 0) {
-            dispatch(new SetMarkerOpachiRichieste(filteredId));
+            }
+            if (filteredId.length > 0) {
+                dispatch(new SetMarkerOpachiRichieste(filteredId));
+            }
         }
     }
 

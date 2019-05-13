@@ -37,9 +37,8 @@ export class MezziMarkersState {
     }
 
     @Action(GetMezziMarkers)
-    getMezziMarkers({ dispatch }: StateContext<MezziMarkersStateModel>, action: GetMezziMarkers) {
-        this._mezzi.getMezziMarkers(action.connectionId).subscribe((result) => {
-            console.log(result);
+    getMezziMarkers({ dispatch }: StateContext<MezziMarkersStateModel>) {
+        this._mezzi.getMezziMarkers().subscribe(() => {
         }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
     }
 
@@ -69,14 +68,16 @@ export class MezziMarkersState {
         const state = getState();
         const filteredId: string[] = [];
         if (action.stato) {
-            state.mezziMarkers.forEach(r => {
-                action.stato.forEach(c => {
-                    if (r.mezzo.stato.substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
-                        filteredId.push(r.mezzo.codice);
-                    }
+            if (state.mezziMarkers) {
+                state.mezziMarkers.forEach(r => {
+                    action.stato.forEach(c => {
+                        if (r.mezzo.stato.substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
+                            filteredId.push(r.mezzo.codice);
+                        }
+                    });
                 });
-            });
-            dispatch(new SetMarkerOpachiMezzi(filteredId));
+                dispatch(new SetMarkerOpachiMezzi(filteredId));
+            }
         }
     }
 

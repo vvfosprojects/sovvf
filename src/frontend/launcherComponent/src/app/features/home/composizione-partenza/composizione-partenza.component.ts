@@ -22,6 +22,7 @@ import { RichiestaComposizioneState } from '../store/states/composizione-partenz
 import { SquadreComposizioneState } from '../store/states/composizione-partenza/squadre-composizione.state';
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
+import { FilterbarComposizioneState } from '../store/states/composizione-partenza/filterbar-composizione.state';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -35,6 +36,8 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     Composizione = Composizione;
 
     subscription = new Subscription();
+
+    @Select(FilterbarComposizioneState.filtri) filtri$: Observable<any>;
 
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
     mezziComposizione: MezzoComposizione[];
@@ -51,7 +54,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     prevStateBoxClick: BoxClickStateModel;
 
     constructor(private store: Store) {
-        this.subscription.add(this.nuovaPartenza$.subscribe( r => this.richiesta = r));
+        this.subscription.add(this.nuovaPartenza$.subscribe(r => this.richiesta = r));
 
         // Prendo i mezzi da visualizzare nella lista
         this.subscription.add(

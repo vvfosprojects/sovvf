@@ -1,0 +1,143 @@
+[
+  {
+    "id": "1",
+    "squadra": {
+      "nome": "Rossa",
+      "stato": 3,
+      "componenti": [
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Mario Verdi",
+          "tooltip": "",
+          "capoPartenza": true,
+          "autista": false,
+          "rimpiazzo": false
+        },
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Francesco Rossi",
+          "tooltip": "",
+          "capoPartenza": false,
+          "autista": true,
+          "rimpiazzo": false
+        },
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Mario Verna",
+          "tooltip": "",
+          "capoPartenza": false,
+          "autista": false,
+          "rimpiazzo": true
+        }
+      ],
+      "distaccamento": {
+        "codice": "1",
+        "descrizione": "Tuscolana II",
+        "coordinate": {
+          "latitudine": 1,
+          "longitudine": 1
+        },
+        "indirizzo": "Via Prova, 1",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    },
+    "selezionato": false,
+    "hover": false
+  },
+  {
+    "id": "2",
+    "squadra": {
+      "nome": "Verde",
+      "stato": 3,
+      "componenti": [
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Paolo Marchio",
+          "tooltip": "",
+          "capoPartenza": true,
+          "autista": false,
+          "rimpiazzo": false
+        },
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Francesca Ventura",
+          "tooltip": "",
+          "capoPartenza": false,
+          "autista": true,
+          "rimpiazzo": false
+        },
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Federico Calu",
+          "tooltip": "",
+          "capoPartenza": false,
+          "autista": false,
+          "rimpiazzo": true
+        }
+      ],
+      "distaccamento": {
+        "codice": "1",
+        "descrizione": "Tuscolana II",
+        "coordinate": {
+          "latitudine": 1,
+          "longitudine": 1
+        },
+        "indirizzo": "Via Prova, 1",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    },
+    "selezionato": false,
+    "hover": false
+  },
+  {
+    "id": "3",
+    "squadra": {
+      "nome": "Arancione",
+      "stato": 3,
+      "componenti": [
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Paolo Marchio",
+          "tooltip": "",
+          "capoPartenza": true,
+          "autista": false,
+          "rimpiazzo": false
+        },
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Francesca Ventura",
+          "tooltip": "",
+          "capoPartenza": false,
+          "autista": true,
+          "rimpiazzo": false
+        },
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Federico Calu",
+          "tooltip": "",
+          "capoPartenza": false,
+          "autista": false,
+          "rimpiazzo": true
+        }
+      ],
+      "distaccamento": {
+        "codice": "1",
+        "descrizione": "Tuscolana II",
+        "coordinate": {
+          "latitudine": 1,
+          "longitudine": 1
+        },
+        "indirizzo": "Via Prova, 1",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    },
+    "selezionato": false,
+    "hover": false
+  }
+]

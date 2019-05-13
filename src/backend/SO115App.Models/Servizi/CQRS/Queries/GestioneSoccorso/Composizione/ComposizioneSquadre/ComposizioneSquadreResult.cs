@@ -1,5 +1,5 @@
-//-----------------------------------------------------------------------
-// <copyright file="IAuthOperatore.cs" company="CNVVF">
+﻿//-----------------------------------------------------------------------
+// <copyright file="ComposizioneSquadraResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,13 +17,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Autenticazione;
-using System.Threading.Tasks;
+using SO115App.API.Models.Classi.Composizione;
+using System.Collections.Generic;
 
-namespace SO115App.API.Models.Servizi.Infrastruttura.Autenticazione
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre
 {
-    public interface IAuthOperatore
+    /// <summary>
+    ///   DTO di output
+    /// </summary>
+    public class ComposizioneSquadreResult
     {
-        Task<Utente> Login(string username, string password);
+        /// <summary>
+        ///   Json Navbar Richieste
+        /// </summary>
+        public List<Classi.Composizione.ComposizioneSquadre> ComposizioneSquadre
+        { get; set; }
     }
 }
