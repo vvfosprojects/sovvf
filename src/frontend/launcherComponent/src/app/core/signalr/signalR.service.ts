@@ -8,7 +8,6 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
 import { SetRichieste } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
-import { ToggleChiamata } from '../../features/home/store/actions/view/view.actions';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
 import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.actions';
@@ -18,6 +17,7 @@ import { SetRichiesteMarkers } from '../../features/home/store/actions/maps/rich
 import { SetMezziMarkers } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import { SetSediMarkers } from '../../features/home/store/actions/maps/sedi-markers.actions';
 import { SetPreAccoppiati } from '../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
+import { SetSquadreComposizione } from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -133,7 +133,7 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyGetSquadreComposizione', (data: any) => {
             // console.log(data);
-            // this.store.dispatch(new SetMezziMarkers(data)); <- da correggere
+            this.store.dispatch(new SetSquadreComposizione(data));
             this.store.dispatch(new ShowToastr('info', 'Squadre Composizione ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetPreaccoppiatiComposizione', (data: any) => {
@@ -213,66 +213,4 @@ export class SignalRService {
         }
     }
 
-    insertChiamata(notification: SignalRNotification) {
-        if (!SIGNALR_BYPASS) {
-            this.hubNotification.invoke('SaveAndNotifyChiamata', notification).then(
-                (data: SintesiRichiesta) => {
-                    // Todo Provvisorio: diventerà inserisci richiesta/inserisci marker/aggiorna contatori boxes con un id di tipo RM-001
-                    this.store.dispatch(new ToggleChiamata());
-                    this.store.dispatch(new ShowToastr('success', 'Inserimento della chiamata effettuato', null, 5));
-                    console.log(data.descrizione);
-                }
-            ).catch(
-                (data: string) => {
-                    // mostra alert dell'inserimento fallito della chiamata
-                    this.store.dispatch(new ShowToastr('error', 'Inserimento della chiamata fallito', data, 5));
-                    console.log(data);
-                }
-            );
-        }
-    }
-
-    getChiamate(notification?: SignalRNotification) {
-        if (!SIGNALR_BYPASS) {
-            this.hubNotification.invoke('GetAndNotifyListaSintesi').catch(
-                (data: string) => {
-                    console.log(data);
-                    this.store.dispatch(new ShowToastr('error', 'Richieste non ricevute da signalR', data, 5));
-                }
-            );
-        }
-    }
-
-    insertMarkerChiamata(notification: SignalRNotification) {
-        if (!SIGNALR_BYPASS) {
-            // Invio a signalR il marker della chiamata che sto effettuando
-            this.hubNotification.invoke('NotifyChiamataInCorsoMarker', notification);
-        }
-    }
-
-    deleteMarkerChiamata(notification: SignalRNotification) {
-        if (!SIGNALR_BYPASS) {
-            // Avviso signalR che il marker della chiamata in corso è da cancellare
-            this.hubNotification.invoke('NotifyChiamataInCorsoMarkerDelete', notification);
-        }
-    }
-
-
-    modifySintesiRichiesta(notification: SignalRNotification) {
-        if (!SIGNALR_BYPASS) {
-            this.hubNotification.invoke('ModifyAndNotify', notification).then(
-                (data: SintesiRichiesta) => {
-                    // Todo Provvisorio: diventerà modifica richiesta/modifica marker/aggiorna contatori boxes
-                    this.store.dispatch(new ShowToastr('success', 'Modifica effettuata con successo', null, 5));
-                    console.log(data.descrizione);
-                }
-            ).catch(
-                (data: string) => {
-                    // mostra alert del fallimento della modifica
-                    this.store.dispatch(new ShowToastr('error', 'Modifica fallita', data, 5));
-                    console.log(data);
-                }
-            );
-        }
-    }
 }
