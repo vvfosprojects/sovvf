@@ -6,27 +6,27 @@ namespace SO115App.API.Models.Classi.Composizione
 {
     public class ComposizioneSquadre
     {
-        public string id { get; set; }
-        public Squadra1 squadra { get; set; }
-        public bool selezionato { get; set; }
-        public bool hover { get; set; }
+        public string Id { get; set; }
+        public Squadra1 Squadra { get; set; }
+        public bool Selezionato { get; set; }
+        public bool Hover { get; set; }
     }
 
     public class Squadra1
     {
-        public string nome { get; set; }
-        public int stato { get; set; }
-        public List<Componenti> componenti { get; set; }
-        public Distaccamento distaccamento { get; set; }
+        public string Nome { get; set; }
+        public int Stato { get; set; }
+        public List<Componenti> Componenti { get; set; }
+        public Distaccamento Distaccamento { get; set; }
     }
 
     public class Componenti
     {
-        public string descrizioneQualifica { get; set; }
-        public string nominativo { get; set; }
-        public string tooltip { get; set; }
-        public bool capoPartenza { get; set; }
-        public bool autista { get; set; }
-        public bool rimpiazzo { get; set; }
+        public string DescrizioneQualifica { get; set; }
+        public string Nominativo { get; set; }
+        public string Tooltip { get; set; }
+        public bool CapoPartenza { get; set; }
+        public bool Autista { get; set; }
+        public bool Rimpiazzo { get; set; }
     }
 }

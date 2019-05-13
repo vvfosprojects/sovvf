@@ -40,10 +40,10 @@ namespace SO115App.API.Models.Classi.Marker
         ///   L'id della richiesta
         /// </summary>
         //public string id { get; set; }
-        public Coordinate coordinate { get; set; }
-        public Mezzo mezzo { get; set; }
-        public string id_richiesta { get; set; }
-        public List<TipologieRichiesta> tipologie_richiesta { get; set; }
-        public string label { get; set; }
+        public Coordinate Coordinate { get; set; }
+        public Mezzo Mezzo { get; set; }
+        public string Id_richiesta { get; set; }
+        public List<TipologieRichiesta> Tipologie_richiesta { get; set; }
+        public string Label { get; set; }
     }
 }

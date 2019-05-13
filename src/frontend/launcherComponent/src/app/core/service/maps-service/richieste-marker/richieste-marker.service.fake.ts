@@ -17,7 +17,7 @@ export class RichiesteMarkerServiceFake {
     constructor(private store: Store) {
     }
 
-    public getRichiesteMarkers(signalRConnectionId: string): Observable<RichiestaMarker[]> {
+    public getRichiesteMarkers(): Observable<RichiestaMarker[]> {
         this.richiesteMarkers = [
             new RichiestaMarker(
                 '1',

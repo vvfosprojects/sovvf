@@ -24,6 +24,6 @@ namespace SO115App.API.Models.Classi.Notifications
         public string CodiceSede { get; set; }
         public string NominativoUtente { get; set; }
         public T ActionObj { get; set; }
-        public int idUtente { get; set; }
+        public int IdUtente { get; set; }
     }
 }

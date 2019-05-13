@@ -6,7 +6,7 @@ namespace SO115App.API.Models.Classi.Filtri
 {
     public class GeneriMezzi
     {
-        public string id { get; set; }
-        public string descrizione { get; set; }
+        public string Id { get; set; }
+        public string Descrizione { get; set; }
     }
 }

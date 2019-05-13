@@ -13,8 +13,8 @@ export class SediMarkerService {
     constructor(private http: HttpClient) {
     }
 
-    getSediMarkers(signalRConnectionId: string): Observable<any> {
-        return this.http.get(API_URL_SEDI + `?id=${signalRConnectionId}`).pipe(
+    getSediMarkers(): Observable<any> {
+        return this.http.get(API_URL_SEDI).pipe(
             retry(3),
             catchError(handleError)
         );

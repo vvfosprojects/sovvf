@@ -2,9 +2,6 @@ import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model
 
 export class GetRichiesteMarkers {
     static readonly type = '[Richieste Marker] Get Richieste Markers';
-
-    constructor(public connectionId: string) {
-    }
 }
 
 export class SetRichiesteMarkers {

@@ -207,7 +207,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                     .LastOrDefault();
 
                 if ((ultimoEventoRilevanza != null) && (ultimoEventoRilevanza is MarcaRilevante))
-                    return ultimoEventoRilevanza.istante.ToString();
+                    return ultimoEventoRilevanza.Istante.ToString();
                 else
                     return null;
             }
@@ -361,7 +361,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                         .Where(e => e is Segnalazione)
                         .First() as Segnalazione;
 
-                    return eventoSegnalazione.istante;
+                    return eventoSegnalazione.Istante;
                 }
                 catch (Exception ex)
                 {
@@ -388,7 +388,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 }
                 else
                 {
-                    return eventoPresaInCarico.istante;
+                    return eventoPresaInCarico.Istante;
                 }
             }
         }
@@ -410,7 +410,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 }
                 else
                 {
-                    return eventoAssegnazione.istante;
+                    return eventoAssegnazione.Istante;
                 }
             }
         }
@@ -555,7 +555,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="evento">L'evento da aggiungere</param>
         public void AddEvento(Evento evento)
         {
-            if (this.eventi.Any() && this.eventi.Last().istante > evento.istante)
+            if (this.eventi.Any() && this.eventi.Last().Istante > evento.Istante)
             {
                 throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
             }

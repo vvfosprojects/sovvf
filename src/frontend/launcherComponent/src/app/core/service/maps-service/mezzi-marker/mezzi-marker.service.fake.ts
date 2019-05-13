@@ -17,7 +17,7 @@ export class MezziMarkerServiceFake {
     constructor(private store: Store) {
     }
 
-    public getMezziMarkers(signalRConnectionId: string): Observable<MezzoMarker[]> {
+    public getMezziMarkers(): Observable<MezzoMarker[]> {
         this.mezziMarkers = [
             new MezzoMarker(
                 new Coordinate(41.8311007, 12.4686518),

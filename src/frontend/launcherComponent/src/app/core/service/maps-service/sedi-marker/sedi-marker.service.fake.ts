@@ -14,7 +14,7 @@ export class SediMarkerServiceFake {
     constructor(private store: Store) {
     }
 
-    public getSediMarkers(signalRConnectionId: string): Observable<SedeMarker[]> {
+    public getSediMarkers(): Observable<SedeMarker[]> {
         this.sediMarkers = [
             new SedeMarker('1', 'Comando di Roma', new Coordinate(41.899940, 12.491270), 'Via Genova, 1, 00184 Roma RM', 'Comando', 'Lazio', 'Roma'),
             new SedeMarker('2', 'Comando di Latina', new Coordinate(41.474258, 12.903250), 'Piazzale G. Carturan, 1, 04100 Latina LT', 'Comando', 'Lazio', 'Latina'),

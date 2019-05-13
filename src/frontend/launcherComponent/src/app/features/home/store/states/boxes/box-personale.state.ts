@@ -33,9 +33,8 @@ export class BoxPersonaleState {
     }
 
     @Action(GetBoxPersonale)
-    getBoxPersonale({ dispatch }: StateContext<BoxPersonaleStateModel>, action: GetBoxPersonale) {
-        this._personale.getPersonale(action.connectionId).subscribe((p: BoxPersonale) => {
-            // dispatch(new SetBoxPersonale(p));
+    getBoxPersonale({ dispatch }: StateContext<BoxPersonaleStateModel>) {
+        this._personale.getPersonale().subscribe(() => {
         }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
     }
 

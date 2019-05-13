@@ -46,17 +46,7 @@ export class RichiesteState {
 
     @Action(GetRichieste, { cancelUncompleted: true })
     getRichieste({ dispatch }: StateContext<RichiesteStateModel>, action: GetRichieste) {
-        // this.richiesteService.getRichieste(action.idUltimaRichiesta).subscribe((r: SintesiRichiesta[]) => {
-        //     if (r.length === 0) {
-        //         dispatch(new ShowToastr('warning', 'Non ci sono altre richieste da visualizzare', 'Richieste terminate', 5000));
-        //     }
-        //     dispatch(new SetRichieste(r));
-        // });
-        this.richiesteService.getRichieste(action.connectionId, action.idUltimaRichiesta).subscribe(() => {
-            // if (r.length === 0) {
-            //     dispatch(new ShowToastr('warning', 'Non ci sono altre richieste da visualizzare', 'Richieste terminate', 5000));
-            // }
-            // dispatch(new SetRichieste(r));
+        this.richiesteService.getRichieste(action.idUltimaRichiesta).subscribe(() => {
         }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
     }
 
