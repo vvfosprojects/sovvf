@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiMezzoMarker.cs" company="CNVVF">
+// <copyright file="ComposizioneMezziResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,33 +17,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Marker;
+using SO115App.API.Models.Classi.Composizione;
 using System.Collections.Generic;
 
-namespace SO115App.API.Models.Classi.Marker
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi
 {
     /// <summary>
-    ///   Contiene le informazioni di sintesi di una Richiesta di Assistenza, utile ad alimentare il
-    ///   primo ed il secondo livello di dettaglio del componente richiesta di assistenza sul frontend.
+    ///   DTO di output
     /// </summary>
-    public class SintesiMezzoMarker
+    public class ComposizioneMezziResult
     {
         /// <summary>
-        ///   Costruttore della classe
+        ///   Json Navbar Richieste
         /// </summary>
-        public SintesiMezzoMarker()
-        {
-        }
-
-        /// <summary>
-        ///   L'id della richiesta
-        /// </summary>
-        //public string id { get; set; }
-        public Coordinate coordinate { get; set; }
-        public Mezzo mezzo { get; set; }
-        public string id_richiesta { get; set; }
-        public List<TipologieRichiesta> tipologie_richiesta { get; set; }
-        public string label { get; set; }
+        public List<Classi.Composizione.ComposizioneMezzi> ComposizioneMezzi
+        { get; set; }
     }
 }

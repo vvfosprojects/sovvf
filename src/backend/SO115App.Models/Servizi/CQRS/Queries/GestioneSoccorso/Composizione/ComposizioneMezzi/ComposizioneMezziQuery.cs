@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiMezzoMarker.cs" company="CNVVF">
+// <copyright file="ComposizioneMezziQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,33 +17,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Marker;
-using System.Collections.Generic;
+using CQRS.Queries;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
-namespace SO115App.API.Models.Classi.Marker
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi
 {
     /// <summary>
-    ///   Contiene le informazioni di sintesi di una Richiesta di Assistenza, utile ad alimentare il
-    ///   primo ed il secondo livello di dettaglio del componente richiesta di assistenza sul frontend.
+    ///   DTO che alimenta il Navbar presente in Home Page
     /// </summary>
-    public class SintesiMezzoMarker
+    public class ComposizioneMezziQuery : IQuery<ComposizioneMezziResult>
     {
         /// <summary>
-        ///   Costruttore della classe
+        ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
         /// </summary>
-        public SintesiMezzoMarker()
-        {
-        }
-
-        /// <summary>
-        ///   L'id della richiesta
-        /// </summary>
-        //public string id { get; set; }
-        public Coordinate coordinate { get; set; }
-        public Mezzo mezzo { get; set; }
-        public string id_richiesta { get; set; }
-        public List<TipologieRichiesta> tipologie_richiesta { get; set; }
-        public string label { get; set; }
+        /// <remarks>
+        ///   Eventualmente si può filtrare per cercare solo i dati di un singolo Box
+        /// </remarks>
+        public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
     }
 }
