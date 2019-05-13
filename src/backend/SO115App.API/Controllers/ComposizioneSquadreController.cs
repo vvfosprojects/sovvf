@@ -26,6 +26,7 @@ using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -69,8 +70,12 @@ namespace SO115App.API.Controllers
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpGet]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> Get()
         {
+
+            var headerValues = Request.Headers["HubConnectionId"];
+            string ConId = headerValues.FirstOrDefault();
+
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
             filtro.SearchKey = "0";
 
@@ -84,7 +89,7 @@ namespace SO115App.API.Controllers
                 List<ComposizioneSquadre> composizioneSquadre= new List<ComposizioneSquadre>();
                 composizioneSquadre = (List<ComposizioneSquadre>)this.handler.Handle(query).ComposizioneSquadre;
 
-                await _NotificationHub.Clients.Client(id).SendAsync("NotifyGetComposizioneSquadre", composizioneSquadre);
+                await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetComposizioneSquadre", composizioneSquadre);
 
                 return Ok();
             }

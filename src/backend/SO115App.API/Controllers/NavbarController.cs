@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Navbar;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar;
+using System.Linq;
 using System.Net;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -39,8 +40,12 @@ namespace SO115App.API.Controllers
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpGet]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> Get()
         {
+
+            var headerValues = Request.Headers["HubConnectionId"];
+            string ConId = headerValues.FirstOrDefault();
+
             var query = new NavbarQuery()
             {
                 FiltroBox = ""
@@ -51,7 +56,7 @@ namespace SO115App.API.Controllers
                 Navbar navbar = new Navbar();
                 navbar = (Navbar)this.handler.Handle(query).Navbar;
 
-                await _NotificationHub.Clients.Client(id).SendAsync("NotifyGetNavbar", navbar);
+                await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetNavbar", navbar);
 
                 return Ok();
             }

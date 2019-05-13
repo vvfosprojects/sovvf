@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -54,8 +55,12 @@ namespace SO115App.API.Controllers
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpGet]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> Get()
         {
+
+            var headerValues = Request.Headers["HubConnectionId"];
+            string ConId = headerValues.FirstOrDefault();
+
             var query = new BoxRichiesteQuery()
             {
                 FiltroBox = ""
@@ -66,7 +71,7 @@ namespace SO115App.API.Controllers
                 BoxInterventi boxInterventi = new BoxInterventi();
                 boxInterventi = (BoxInterventi)this.handler.Handle(query).BoxRichieste;
 
-                await _NotificationHub.Clients.Client(id).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+                await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetBoxInterventi", boxInterventi);
 
                 return Ok();
             }

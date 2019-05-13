@@ -26,6 +26,7 @@ using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiMezziMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -69,8 +70,12 @@ namespace SO115App.API.Controllers
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpGet]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> Get()
         {
+
+            var headerValues = Request.Headers["HubConnectionId"];
+            string ConId = headerValues.FirstOrDefault();
+
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
             filtro.SearchKey = "0";
 
@@ -84,7 +89,7 @@ namespace SO115App.API.Controllers
                 List<SintesiMezzoMarker> listaSintesi = new List<SintesiMezzoMarker>();
                 listaSintesi = (List<SintesiMezzoMarker>)this.handler.Handle(query).SintesiMezziMarker;
 
-                await _NotificationHub.Clients.Client(id).SendAsync("NotifyGetListaMezziMarker", listaSintesi);
+                await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetListaMezziMarker", listaSintesi);
 
                 return Ok();
             }
