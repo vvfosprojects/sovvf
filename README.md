@@ -2,7 +2,7 @@
 
 ## Introduzione
 
-Di seguito sono elencante alcune delle funzionalità della nuova applicazione per la gestione del soccorso dei Vigili del Fuoco.
+Di seguito sono elencate alcune delle funzionalità della nuova applicazione per la gestione del soccorso dei Vigili del Fuoco.
 
 ### Dashboard
 

@@ -7,6 +7,8 @@ import { BoxPartenza } from '../../../features/home/composizione-partenza/interf
 import { SquadraComposizione } from 'src/app/features/home/composizione-partenza/interface/squadra-composizione-interface';
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
 import { delay } from 'rxjs/operators';
+import { Store } from '@ngxs/store';
+import { SetPreAccoppiati } from '../../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
 
 
 
@@ -16,10 +18,10 @@ export class CompPartenzaServiceFake {
   mezzi: MezzoComposizione[];
   squadre: SquadraComposizione[];
 
-  constructor() {
+  constructor(private store: Store) {
   }
 
-  public getPreAccoppiati(): Observable<BoxPartenza[]> {
+  public getPreAccoppiati(signalRConnectionId?: string): Observable<BoxPartenza[]> {
     this.preAccoppiati = [
       {
         id: '1',
@@ -430,13 +432,12 @@ export class CompPartenzaServiceFake {
       },
     ];
 
-    const _return = of(this.preAccoppiati);
-    return _return.pipe(
-        delay(2000)
-    );
+    this.store.dispatch(new SetPreAccoppiati(this.preAccoppiati));
+
+    return of();
   }
 
-  public getMezziComposizione(): Observable<MezzoComposizione[]> {
+  public getMezziComposizione(signalRConnectionId?: string): Observable<MezzoComposizione[]> {
     this.mezzi = [
       {
         id: '1',
@@ -634,7 +635,7 @@ export class CompPartenzaServiceFake {
     );
   }
 
-  public getSquadre(): Observable<SquadraComposizione[]> {
+  public getSquadre(signalRConnectionId?: string): Observable<SquadraComposizione[]> {
     this.squadre = [
       {
         id: '1',
