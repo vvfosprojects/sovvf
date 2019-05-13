@@ -89,7 +89,7 @@ namespace SO115App.API.Controllers
             }
             catch
             {
-                return Ok(HttpStatusCode.BadRequest);
+                return BadRequest();
             }
         }
 

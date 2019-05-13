@@ -1,5 +1,5 @@
-//-----------------------------------------------------------------------
-// <copyright file="IAuthOperatore.cs" company="CNVVF">
+﻿//-----------------------------------------------------------------------
+// <copyright file="BoxMezziQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,13 +17,21 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Autenticazione;
-using System.Threading.Tasks;
+using CQRS.Queries;
 
-namespace SO115App.API.Models.Servizi.Infrastruttura.Autenticazione
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
 {
-    public interface IAuthOperatore
+    /// <summary>
+    /// DTO che alimenta il Box Mezzi presente in Home Page
+    /// </summary>
+    public class LogInQuery : IQuery<LogInResult>
     {
-        Task<Utente> Login(string username, string password);
+        /// <summary>
+        /// Filtra solo i mezzi appartenenti all'unità operativa indicata.
+        /// </summary>
+        /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
+        public string Username { get; set; }
+
+        public string Password { get; set; }
     }
 }

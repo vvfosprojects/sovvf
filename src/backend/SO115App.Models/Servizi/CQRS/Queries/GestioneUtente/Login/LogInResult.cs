@@ -1,5 +1,5 @@
-//-----------------------------------------------------------------------
-// <copyright file="AuthOperatore.cs" company="CNVVF">
+﻿//-----------------------------------------------------------------------
+// <copyright file="BoxMezziResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,22 +17,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Autenticazione;
-using SO115App.API.Models.Servizi.Infrastruttura.Autenticazione;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
+using SO115App.API.Models.Classi.Boxes;
 
-namespace SO115App.API.Models.Classi.Utenti.Autenticazione
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
 {
-    public class AuthOperatore : IAuthOperatore
+    /// <summary>
+    ///   DTO di output
+    /// </summary>
+    public class LogInResult
     {
-        public async Task<Utente> Login(string username, string password)
-        {
-            Utente user = Utente.VerificaLogIn(username, password);
-
-            return user;
-        }
+        /// <summary>
+        ///   Json Box Richieste
+        /// </summary>
+        public Utente User
+        { get; set; }
     }
 }
