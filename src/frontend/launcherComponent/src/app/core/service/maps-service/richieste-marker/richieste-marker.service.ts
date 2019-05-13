@@ -14,8 +14,8 @@ export class RichiesteMarkerService {
     constructor(private http: HttpClient) {
     }
 
-    public getRichiesteMarkers(signalRConnectionId: string): Observable<any> {
-        return this.http.get(API_URL_RICHIESTE + `?id=${signalRConnectionId}`).pipe(
+    public getRichiesteMarkers(): Observable<any> {
+        return this.http.get(API_URL_RICHIESTE).pipe(
             retry(3),
             catchError(handleError));
     }

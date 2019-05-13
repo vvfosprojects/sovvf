@@ -11,13 +11,11 @@ import { Select, Store } from '@ngxs/store';
 import { RicercaRichiesteState } from '../store/states/filterbar/ricerca-richieste.state';
 import { ClearRichiestaFissata, SetRichiestaFissata } from '../store/actions/richieste/richiesta-fissata.actions';
 import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
-import { GetRichieste } from '../store/actions/richieste/richieste.actions';
 import { ClearRichiestaHover, SetRichiestaHover } from '../store/actions/richieste/richiesta-hover.actions';
 import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from '../store/actions/richieste/richiesta-selezionata.actions';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
-import { AppFeatures } from '../../../shared/enum/app-features.enum';
 import { SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
 import { ToggleComposizione } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
@@ -58,7 +56,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     richiesteTerminate: boolean;
     listHeightClass = 'm-h-750';
 
-    AppFeatures = AppFeatures;
     subscription = new Subscription();
 
     constructor(private modalService: NgbModal,

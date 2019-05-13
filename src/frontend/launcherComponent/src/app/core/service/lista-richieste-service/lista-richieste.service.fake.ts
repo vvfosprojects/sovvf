@@ -32,7 +32,7 @@ export class SintesiRichiesteServiceFake {
 
     }
 
-    getRichieste(signalRConnectionId: string, idUltimaRichiesta?: string) {
+    getRichieste(idUltimaRichiesta?: string) {
 
         this.richieste = [
             new SintesiRichiesta(
