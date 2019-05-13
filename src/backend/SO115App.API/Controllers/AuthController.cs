@@ -71,7 +71,7 @@ namespace SO115App.API.Controllers
 
                 await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyAuth", utente);
 
-                return Ok();
+                return Ok(utente);
             }
             catch
             {

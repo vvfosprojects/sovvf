@@ -24,6 +24,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
@@ -48,63 +49,76 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   L'id della richiesta
         /// </summary>
+        [Required(ErrorMessage = "Id obbligatorio.")]
         public string Id { get; set; }
 
         /// <summary>
         ///   Identifica il codice della Chiamata
         /// </summary>
+        [Required(ErrorMessage = "Codice obbligatorio.")]
         public string Codice { get; set; }
 
         /// <summary>
         ///   E' il codice della Richiesta di Assistenza
         /// </summary>
+        [Required(ErrorMessage = "Codice Richiesta obbligatorio.")]
         public string CodiceRichiesta { get; set; }
 
         /// <summary>
         ///   Utente che ha generato la segnalazione
         /// </summary>
+        [Required(ErrorMessage = "Operatore obbligatorio.")]
         public Utente Operatore { get; set; }
 
         /// <summary>
         ///   Ricezione della richiesta (via telefono, ecc.)
         /// </summary>
+        [Required(ErrorMessage = "Istante ricezione richiesta obbligatorio.")]
         public DateTime IstanteRicezioneRichiesta { get; set; }
 
         /// <summary>
         ///   Stato della richiesta
         /// </summary>
+        [Required(ErrorMessage = "Stato obbligatorio.")]
         public int Stato { get; set; }
 
         /// <summary>
         ///   Priorita della richiesta
         /// </summary>
+        [Required(ErrorMessage = "Priorità obbligatoria.")]
         public RichiestaAssistenza.Priorita Priorita { get; set; }
 
+        [Required(ErrorMessage = "Tipologia obbligatoria.")]
         public List<Tipologia> Tipologie { get; set; }
 
         /// <summary>
         ///   Descrizione della richiesta
         /// </summary>
+        [Required(ErrorMessage = "Descrizione obbligatoria.")]
         public string Descrizione { get; set; }
 
         /// <summary>
         ///   Descrizione del richiedente
         /// </summary>
+        [Required(ErrorMessage = "Richiedtente obbligatorio.")]
         public Richiedente Richiedente { get; set; }
 
         /// <summary>
         ///   Localita della richiesta
         /// </summary>
+        [Required(ErrorMessage = "Località obbligatoria.")]
         public Localita Localita { get; set; }
 
         /// <summary>
         ///   Competenze della richiesta
         /// </summary>
+        [Required(ErrorMessage = "Competenze obbligatorie.")]
         public List<Sede> Competenze { get; set; }
 
         /// <summary>
         ///   Complessità della richiesta
         /// </summary>
+        [Required(ErrorMessage = "Complessità obbligatoria.")]
         public Complessita Complessita
         {
             get
