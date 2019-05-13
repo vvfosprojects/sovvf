@@ -1,11 +1,7 @@
-// Model
 import { BoxInterventi } from '../../../boxes/boxes-model/box-interventi.model';
 
 export class GetBoxRichieste {
     static readonly type = '[BoxRichieste] Get data';
-
-    constructor(public connectionId: string) {
-    }
 }
 
 export class SetBoxRichieste {

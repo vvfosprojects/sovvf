@@ -23,18 +23,18 @@ namespace SO115App.API.Models.Classi.Condivise
     {
         public Coordinate(double Latitudine, double Longitudine)
         {
-            this.latitudine = Latitudine;
-            this.longitudine = Longitudine;
+            this.Latitudine = Latitudine;
+            this.Longitudine = Longitudine;
         }
 
         /// <summary>
         /// Latitudine
         /// </summary>
-        public double latitudine { get; set; }
+        public double Latitudine { get; set; }
 
         /// <summary>
         /// Latitudine
         /// </summary>
-        public double longitudine { get; set; }
+        public double Longitudine { get; set; }
     }
 }

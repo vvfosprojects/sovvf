@@ -33,10 +33,8 @@ export class BoxRichiesteState {
     }
 
     @Action(GetBoxRichieste)
-    getBoxRichieste({ dispatch }: StateContext<BoxRichiesteStateModel>, action: GetBoxRichieste) {
-
-        this._richieste.getInterventi(action.connectionId).subscribe(() => {
-            // dispatch(new SetBoxRichieste(i));
+    getBoxRichieste({ dispatch }: StateContext<BoxRichiesteStateModel>) {
+        this._richieste.getInterventi().subscribe(() => {
         }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
     }
 

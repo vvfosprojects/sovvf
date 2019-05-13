@@ -2,9 +2,6 @@ import { SedeMarker } from '../../../maps/maps-model/sede-marker.model';
 
 export class GetSediMarkers {
     static readonly type = '[Sedi Marker] Get Sedi Marker';
-
-    constructor(public connectionId: string) {
-    }
 }
 
 export class SetSediMarkers {

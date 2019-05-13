@@ -26,7 +26,7 @@ export class ListaRichiesteComponent implements OnInit {
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() loaderRichieste = true;
     @Input() loaderNuoveRichieste: boolean;
-    @Input() contatoreNuoveRichieste = 0;
+    @Input() contatoreNuoveRichieste;
     @Input() richiesteTerminate: boolean;
     @Input() itemSize = 10;
     @Input() listHeightClass: string;

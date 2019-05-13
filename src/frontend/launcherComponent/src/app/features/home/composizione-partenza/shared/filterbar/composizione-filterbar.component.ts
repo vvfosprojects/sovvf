@@ -1,70 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { FilterbarService } from '../../../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
 
 @Component({
     selector: 'app-composizione-filterbar',
     templateUrl: './composizione-filterbar.component.html',
     styleUrls: ['./composizione-filterbar.component.css']
 })
-export class ComposizioneFilterbarComponent implements OnInit {
-    generiMezzi = [
-        {
-            id: '1',
-            descrizione: 'APS'
-        },
-        {
-            id: '2',
-            descrizione: 'ABP'
-        },
-        {
-            id: '3',
-            descrizione: 'AG'
-        },
-        {
-            id: '4',
-            descrizione: 'AS'
-        }
-    ];
-    stati = [
-        {
-            id: '1',
-            descrizione: 'In Sede'
-        },
-        {
-            id: '2',
-            descrizione: 'In Rientro'
-        },
-        {
-            id: '3',
-            descrizione: 'In Viaggio'
-        },
-        {
-            id: '4',
-            descrizione: 'Sul Posto'
-        }
-    ];
-    distaccamenti = [
-        {
-            id: '1',
-            descrizione: 'Roma'
-        },
-        {
-            id: '2',
-            descrizione: 'Frosinone'
-        },
-        {
-            id: '3',
-            descrizione: 'Latina'
-        },
-        {
-            id: '4',
-            descrizione: 'Rieti'
-        }
-    ];
+export class ComposizioneFilterbarComponent {
 
-    constructor() {
-    }
+    @Input() filtri: any;
 
-    ngOnInit() {
+    constructor(private filterbarService: FilterbarService) {
+        this.getFiltri();
     }
 
     iconaStatiClass(stato: string) {
@@ -89,5 +36,10 @@ export class ComposizioneFilterbarComponent implements OnInit {
         }
 
         return returnClass;
+    }
+
+    getFiltri() {
+        this.filterbarService.getFiltri().subscribe(() => {
+        });
     }
 }

@@ -33,7 +33,8 @@ export const environment = {
         composizione: {
             preaccoppiati: '',
             mezzi: '',
-            squadre: ''
+            squadre: '',
+            filtri: '/api/Filtri'
         },
         chiamata: {
             currentId: '',

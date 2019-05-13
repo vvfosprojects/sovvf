@@ -19,6 +19,9 @@ import { SetSediMarkers } from '../../features/home/store/actions/maps/sedi-mark
 import { SetPreAccoppiati } from '../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
 import { SetSquadreComposizione } from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
 import { SetMezziComposizione } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
+import { AuthenticationService } from '../auth/_services';
+import { Utente } from '../../shared/model/utente.model';
+import { SetFiltriComposizione } from '../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -29,8 +32,9 @@ const SIGNALR_BYPASS = !environment.signalR;
 export class SignalRService {
     connectionEstablished = new Subject<boolean>();
     private hubNotification: HubConnection;
+    private localName = 'userSO115';
 
-    constructor(private store: Store) {
+    constructor(private store: Store, private auth: AuthenticationService) {
     }
 
     initSubscription(): void {
@@ -62,6 +66,12 @@ export class SignalRService {
     }
 
     private registerOnSubscriptionEvents(): void {
+        this.hubNotification.on('NotifyAuth', (data: Utente) => {
+
+            localStorage.setItem(this.localName, JSON.stringify(data));
+            this.auth.currentUserSubject.next(data);
+            this.store.dispatch(new ShowToastr('info', 'Utente autorizzato:', '', 3));
+        });
         this.hubNotification.on('NotifyLogIn', (data: any) => {
             // console.log(`Login: ${data}`);
             // avvisa gli altri client che un utente si è collegato alla sua stessa sede
@@ -121,6 +131,11 @@ export class SignalRService {
             // console.log(data);
             this.store.dispatch(new SetMezziMarkers(data));
             this.store.dispatch(new ShowToastr('info', 'Mezzi Markers ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetFiltri', (data: any) => {
+            console.log('Filtri signalR', data);
+            this.store.dispatch(new SetFiltriComposizione(data));
+            this.store.dispatch(new ShowToastr('info', 'Filtri Composizione ricevuti da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetListaSediMarker', (data: any) => {
             // console.log(data);
@@ -187,7 +202,7 @@ export class SignalRService {
         if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('GetDateTime')
                 .then((data: any) => {
-                        this.store.dispatch(new SetTimeSync(data));
+                    this.store.dispatch(new SetTimeSync(data));
                 })
                 .catch(() => console.log('GetTime Error'));
         }

@@ -5,19 +5,19 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { handleError } from '../../../../shared/helper/handleError';
 
-const API_URL_RICHIESTE = environment.apiUrl.maps.markers.richieste;
+const API_URL_FILTRI = environment.apiUrl.composizione.filtri;
 
 @Injectable()
-export class RichiesteMarkerService {
-
+export class FilterbarService {
 
     constructor(private http: HttpClient) {
     }
 
-    public getRichiesteMarkers(): Observable<any> {
-        return this.http.get(API_URL_RICHIESTE).pipe(
+    getFiltri(): Observable<any> {
+        return this.http.get(API_URL_FILTRI).pipe(
             retry(3),
-            catchError(handleError));
+            catchError(handleError)
+        );
     }
 
 }

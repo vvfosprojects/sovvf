@@ -1,17 +1,17 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges} from '@angular/core';
-import {NgbPopoverConfig, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
-import {Observable, Subscription} from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges } from '@angular/core';
+import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subscription } from 'rxjs';
 
 // Interface
-import {BoxPartenza} from '../interface/box-partenza-interface';
-import {MezzoComposizione} from '../interface/mezzo-composizione-interface';
-import {SquadraComposizione} from '../interface/squadra-composizione-interface';
-import {DirectionInterface} from '../../maps/maps-interface/direction-interface';
+import { BoxPartenza } from '../interface/box-partenza-interface';
+import { MezzoComposizione } from '../interface/mezzo-composizione-interface';
+import { SquadraComposizione } from '../interface/squadra-composizione-interface';
+import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 
 // Model
-import {SintesiRichiesta} from '../../../../shared/model/sintesi-richiesta.model';
-import {Coordinate} from '../../../../shared/model/coordinate.model';
-import {Composizione} from '../../../../shared/enum/composizione.enum';
+import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { Composizione } from '../../../../shared/enum/composizione.enum';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -110,7 +110,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     // Partenza
     initPartenzaVuota() {
-        this.partenze.push({id: this.generateUniqueId(), squadraComposizione: [], mezzoComposizione: null, selezionato: true, hover: false});
+        this.partenze.push({ id: this.generateUniqueId(), squadraComposizione: [], mezzoComposizione: null, selezionato: true, hover: false });
         const length = this.partenze.length;
         this.idPartenzaCorrente = this.partenze[length - 1].id;
         this.setPartenzaAttuale(this.idPartenzaCorrente);

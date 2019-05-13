@@ -10,7 +10,8 @@ const PROXY_CONFIG = [
             "/api/auth/Login",
             "/api/BoxRichieste",
             "/api/BoxMezzi",
-            "/api/BoxPersonale"
+            "/api/BoxPersonale",
+            "/api/Filtri"
         ],
         target: "http://so115.api2.test/",
         secure: false,

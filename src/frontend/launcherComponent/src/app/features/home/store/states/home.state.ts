@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ClearDataHome, GetDataHome, SetMapLoaded } from '../actions/home.actions';
 import { ClearRichieste, GetRichieste } from '../actions/richieste/richieste.actions';
 import { ClearSediMarkers, GetSediMarkers } from '../actions/maps/sedi-markers.actions';
@@ -8,7 +8,6 @@ import { ClearRichiesteMarkers, GetRichiesteMarkers } from '../actions/maps/rich
 import { ClearBoxRichieste, GetBoxRichieste } from '../actions/boxes/box-richieste.actions';
 import { ClearBoxMezzi, GetBoxMezzi } from '../actions/boxes/box-mezzi.actions';
 import { ClearBoxPersonale, GetBoxPersonale } from '../actions/boxes/box-personale.actions';
-import { SignalRState } from '../../../../core/signalr/store/signalR.state';
 import { ClearChiamateMarkers, GetChiamateMarkers } from '../actions/maps/chiamate-markers.actions';
 
 export interface HomeStateModel {
@@ -32,7 +31,7 @@ export class HomeState {
         return state.mapIsLoaded;
     }
 
-    constructor(private store: Store) {
+    constructor() {
 
     }
 
@@ -54,17 +53,16 @@ export class HomeState {
 
     @Action(GetDataHome)
     getDataHome({ patchState, dispatch }: StateContext<HomeStateModel>) {
-        const connectionID = this.store.selectSnapshot(SignalRState.connectionIdSignalR);
         dispatch([
-            new GetRichieste(connectionID),
+            new GetRichieste(),
             new GetCentroMappa(),
-            new GetSediMarkers(connectionID),
-            new GetMezziMarkers(connectionID),
-            new GetRichiesteMarkers(connectionID),
+            new GetSediMarkers(),
+            new GetMezziMarkers(),
+            new GetRichiesteMarkers(),
             new GetChiamateMarkers(),
-            new GetBoxRichieste(connectionID),
-            new GetBoxMezzi(connectionID),
-            new GetBoxPersonale(connectionID)
+            new GetBoxRichieste(),
+            new GetBoxMezzi(),
+            new GetBoxPersonale()
         ]);
         patchState({
             loaded: true

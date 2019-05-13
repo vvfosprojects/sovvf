@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-import { AuthenticationService } from '../_services';
+import { Store } from '@ngxs/store';
+import { SignalRState } from './store/signalR.state';
 
 @Injectable()
-export class JwtInterceptor implements HttpInterceptor {
-    constructor(private authenticationService: AuthenticationService) {
+export class SignalRInterceptor implements HttpInterceptor {
+    constructor(private store: Store) {
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        const currentUser = this.authenticationService.currentUserValue;
+        const connectionId = this.store.selectSnapshot(SignalRState.connectionIdSignalR);
 
-        if (currentUser && currentUser.token) {
+        if (connectionId) {
             request = request.clone({
                 setHeaders: {
-                    Authorization: `Bearer ${currentUser.token}`
+                    HubConnectionId: `${connectionId}`
                 }
             });
         }

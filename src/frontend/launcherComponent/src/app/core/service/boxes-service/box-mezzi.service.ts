@@ -14,8 +14,8 @@ export class BoxMezziService {
     }
 
 
-    public getMezzi(signalRConnectionId: string): Observable<any> {
-        return this.http.get(API_URL + `?id=${signalRConnectionId}`).pipe(
+    public getMezzi(): Observable<any> {
+        return this.http.get(API_URL).pipe(
             retry(3),
             catchError(handleError)
         );
