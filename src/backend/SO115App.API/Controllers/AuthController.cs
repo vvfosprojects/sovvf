@@ -69,7 +69,7 @@ namespace SO115App.API.Controllers
                     return Unauthorized();
                 }
 
-                await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyLogIn", utente);
+                await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyAuth", utente);
 
                 return Ok();
             }
