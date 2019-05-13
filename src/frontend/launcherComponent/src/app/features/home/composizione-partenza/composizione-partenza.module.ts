@@ -33,6 +33,7 @@ import { SquadreComposizioneState } from '../store/states/composizione-partenza/
 import { PreAccoppiatiState } from '../store/states/composizione-partenza/pre-accoppiati.state';
 import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
 import { environment } from '../../../../environments/environment';
+import { FilterbarComposizioneState } from '../store/states/composizione-partenza/filterbar-composizione.state';
 
 @NgModule({
     declarations: [
@@ -60,7 +61,8 @@ import { environment } from '../../../../environments/environment';
                 RichiestaComposizioneState,
                 MezziComposizioneState,
                 SquadreComposizioneState,
-                PreAccoppiatiState
+                PreAccoppiatiState,
+                FilterbarComposizioneState
             ]
         ),
     ],

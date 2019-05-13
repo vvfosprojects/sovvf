@@ -10,6 +10,7 @@ import { Store } from '@ngxs/store';
 import { SetPreAccoppiati } from '../../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
 import { SetSquadreComposizione } from '../../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
 import { SetMezziComposizione } from '../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
+import { SetFiltriComposizione } from '../../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
 
 
 @Injectable()
@@ -17,6 +18,8 @@ export class CompPartenzaServiceFake {
     preAccoppiati: BoxPartenza[];
     mezzi: MezzoComposizione[];
     squadre: SquadraComposizione[];
+
+    filtri: any;
 
     constructor(private store: Store) {
     }
@@ -630,7 +633,7 @@ export class CompPartenzaServiceFake {
             },
         ];
 
-        setTimeout( () => this.store.dispatch(new SetMezziComposizione(this.mezzi)), 2000);
+        setTimeout(() => this.store.dispatch(new SetMezziComposizione(this.mezzi)), 2000);
 
         return of();
     }
@@ -710,6 +713,69 @@ export class CompPartenzaServiceFake {
 
         this.store.dispatch(new SetSquadreComposizione(this.squadre));
 
+        return of();
+    }
+
+    // Filterbar
+    getFiltri(): Observable<any> {
+        this.filtri = {
+            'distaccamenti': [
+                {
+                    'id': '1',
+                    'descrizione': 'Roma'
+                },
+                {
+                    'id': '2',
+                    'descrizione': 'Frosinone'
+                },
+                {
+                    'id': '3',
+                    'descrizione': 'Latina'
+                },
+                {
+                    'id': '4',
+                    'descrizione': 'Rieti'
+                }
+            ],
+            'generiMezzi': [
+                {
+                    'id': '1',
+                    'descrizione': 'APS'
+                },
+                {
+                    'id': '2',
+                    'descrizione': 'ABP'
+                },
+                {
+                    'id': '3',
+                    'descrizione': 'AG'
+                },
+                {
+                    'id': '4',
+                    'descrizione': 'AS'
+                }
+            ],
+            'stati': [
+                {
+                    'id': '1',
+                    'descrizione': 'In Sede'
+                },
+                {
+                    'id': '2',
+                    'descrizione': 'In Rientro'
+                },
+                {
+                    'id': '3',
+                    'descrizione': 'In Viaggio'
+                },
+                {
+                    'id': '4',
+                    'descrizione': 'Sul Posto'
+                }
+            ]
+        };
+
+        this.store.dispatch(new SetFiltriComposizione(this.filtri));
         return of();
     }
 }

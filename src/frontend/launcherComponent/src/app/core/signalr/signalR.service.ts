@@ -21,6 +21,7 @@ import { SetSquadreComposizione } from '../../features/home/store/actions/compos
 import { SetMezziComposizione } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { AuthenticationService } from '../auth/_services';
 import { Utente } from '../../shared/model/utente.model';
+import { SetFiltriComposizione } from '../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -130,6 +131,11 @@ export class SignalRService {
             // console.log(data);
             this.store.dispatch(new SetMezziMarkers(data));
             this.store.dispatch(new ShowToastr('info', 'Mezzi Markers ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetFiltri', (data: any) => {
+            console.log('Filtri signalR', data);
+            this.store.dispatch(new SetFiltriComposizione(data));
+            this.store.dispatch(new ShowToastr('info', 'Filtri Composizione ricevuti da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetListaSediMarker', (data: any) => {
             // console.log(data);
