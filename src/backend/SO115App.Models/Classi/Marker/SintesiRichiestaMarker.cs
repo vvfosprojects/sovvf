@@ -40,7 +40,7 @@ namespace SO115App.API.Models.Classi.Marker
         /// <summary>
         /// L'id della richiesta
         /// </summary>
-        public string id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Identifica il codice della Chiamata

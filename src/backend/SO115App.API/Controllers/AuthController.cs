@@ -46,7 +46,7 @@ namespace SO115App.API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login(Utente user)
         {
-            var _user = await _auth.Login(user.username, user.password);
+            var _user = await _auth.Login(user.Username, user.Password);
 
             if (_user == null)
             {
@@ -55,8 +55,8 @@ namespace SO115App.API.Controllers
 
             var claim = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, _user.id.ToString()),
-                new Claim(ClaimTypes.Name,_user.username)
+                new Claim(ClaimTypes.NameIdentifier, _user.Id.ToString()),
+                new Claim(ClaimTypes.Name,_user.Username)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
@@ -74,7 +74,7 @@ namespace SO115App.API.Controllers
 
             var token = tokenHandler.CreateToken(TokenDescriptor);
 
-            _user.token = tokenHandler.WriteToken(token);
+            _user.Token = tokenHandler.WriteToken(token);
 
             return Ok(new
             {
