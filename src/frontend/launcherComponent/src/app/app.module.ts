@@ -47,6 +47,7 @@ import { SediTreeviewState } from './shared/store/states/sedi-treeview/sedi-tree
 import { ListaSediService } from './core/service/lista-sedi-service/lista-sedi.service';
 import { ListaSediServiceFake } from './core/service/lista-sedi-service/lista-sedi.service.fake';
 import { AppState } from './shared/store/states/app/app.state';
+import { SignalRInterceptor } from './core/signalr/signalR.interceptor';
 
 
 
@@ -97,6 +98,7 @@ import { AppState } from './shared/store/states/app/app.state';
         { provide: ListaSediService, useClass: ListaSediServiceFake},
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: SignalRInterceptor, multi: true },
         I18n,
         /**
          * provider fake per la login
