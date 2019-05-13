@@ -18,6 +18,7 @@ import { SetMezziMarkers } from '../../features/home/store/actions/maps/mezzi-ma
 import { SetSediMarkers } from '../../features/home/store/actions/maps/sedi-markers.actions';
 import { SetPreAccoppiati } from '../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
 import { SetSquadreComposizione } from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
+import { SetMezziComposizione } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -128,7 +129,7 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyGetMezziComposizione', (data: any) => {
             // console.log(data);
-            // this.store.dispatch(new SetRichiesteMarkers(data)); <- da correggere
+            this.store.dispatch(new SetMezziComposizione(data));
             this.store.dispatch(new ShowToastr('info', 'Mezzi Composizione ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetSquadreComposizione', (data: any) => {

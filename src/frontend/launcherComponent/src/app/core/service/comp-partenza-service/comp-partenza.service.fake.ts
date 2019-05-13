@@ -6,10 +6,10 @@ import { MezzoComposizione } from '../../../features/home/composizione-partenza/
 import { BoxPartenza } from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { SquadraComposizione } from 'src/app/features/home/composizione-partenza/interface/squadra-composizione-interface';
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
-import { delay } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { SetPreAccoppiati } from '../../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
 import { SetSquadreComposizione } from '../../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
+import { SetMezziComposizione } from '../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 
 
 @Injectable()
@@ -629,10 +629,10 @@ export class CompPartenzaServiceFake {
                 hover: false
             },
         ];
-        const _return = of(this.mezzi);
-        return _return.pipe(
-            delay(2000)
-        );
+
+        setTimeout( () => this.store.dispatch(new SetMezziComposizione(this.mezzi)), 2000);
+
+        return of();
     }
 
     public getSquadre(signalRConnectionId?: string): Observable<SquadraComposizione[]> {
