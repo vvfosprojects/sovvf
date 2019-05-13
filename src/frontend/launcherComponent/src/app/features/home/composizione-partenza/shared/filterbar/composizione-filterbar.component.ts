@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
+import { FilterbarService } from '../../../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
 
 @Component({
     selector: 'app-composizione-filterbar',
@@ -10,7 +10,7 @@ export class ComposizioneFilterbarComponent {
 
     @Input() filtri: any;
 
-    constructor(private compPartenzaService: CompPartenzaService) {
+    constructor(private filterbarService: FilterbarService) {
         this.getFiltri();
     }
 
@@ -39,7 +39,7 @@ export class ComposizioneFilterbarComponent {
     }
 
     getFiltri() {
-        this.compPartenzaService.getFiltri().subscribe((res: any) => {
+        this.filterbarService.getFiltri().subscribe(() => {
         });
     }
 }
