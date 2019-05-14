@@ -1,15 +1,16 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ClearDataHome, GetDataHome, SetMapLoaded } from '../actions/home.actions';
-import { ClearRichieste, GetRichieste } from '../actions/richieste/richieste.actions';
-import { ClearSediMarkers, GetSediMarkers } from '../actions/maps/sedi-markers.actions';
+import { ClearRichieste } from '../actions/richieste/richieste.actions';
+import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import { ClearCentroMappa, GetCentroMappa } from '../actions/maps/centro-mappa.actions';
-import { ClearMezziMarkers, GetMezziMarkers } from '../actions/maps/mezzi-markers.actions';
-import { ClearRichiesteMarkers, GetRichiesteMarkers } from '../actions/maps/richieste-markers.actions';
-import { ClearBoxRichieste, GetBoxRichieste } from '../actions/boxes/box-richieste.actions';
-import { ClearBoxMezzi, GetBoxMezzi } from '../actions/boxes/box-mezzi.actions';
-import { ClearBoxPersonale, GetBoxPersonale } from '../actions/boxes/box-personale.actions';
+import { ClearMezziMarkers } from '../actions/maps/mezzi-markers.actions';
+import { ClearRichiesteMarkers } from '../actions/maps/richieste-markers.actions';
+import { ClearBoxRichieste } from '../actions/boxes/box-richieste.actions';
+import { ClearBoxMezzi } from '../actions/boxes/box-mezzi.actions';
+import { ClearBoxPersonale } from '../actions/boxes/box-personale.actions';
 import { ClearChiamateMarkers, GetChiamateMarkers } from '../actions/maps/chiamate-markers.actions';
-import { HttpClient } from '@angular/common/http';
+import { HomeService } from '../../../../core/service/home-service/home.service';
+import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 
 export interface HomeStateModel {
     loaded: boolean;
@@ -32,8 +33,7 @@ export class HomeState {
         return state.mapIsLoaded;
     }
 
-    constructor(private http: HttpClient) {
-
+    constructor(private homeService: HomeService) {
     }
 
     @Action(ClearDataHome)
@@ -54,26 +54,16 @@ export class HomeState {
 
     @Action(GetDataHome)
     getDataHome({ patchState, dispatch }: StateContext<HomeStateModel>) {
-        // Todo: da sistemare
-        setTimeout( () => {
-            this.http.get('/api/Welcome').subscribe(() => {
-                console.log('ok');
-            }, () => console.error('error'));
-            dispatch([
-                new GetChiamateMarkers(),
-                new GetCentroMappa(),
-                // new GetRichieste(),
-                // new GetSediMarkers(),
-                // new GetMezziMarkers(),
-                // new GetRichiesteMarkers(),
-                // new GetBoxRichieste(),
-                // new GetBoxMezzi(),
-                // new GetBoxPersonale()
-            ]);
-            patchState({
-                loaded: true
-            });
-        }, 500);
+        this.homeService.getHome().subscribe(() => {
+        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+        // Todo: controller da fare
+        dispatch([
+            new GetChiamateMarkers(),
+            new GetCentroMappa(),
+        ]);
+        patchState({
+            loaded: true
+        });
 
     }
 

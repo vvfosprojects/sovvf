@@ -29,26 +29,29 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+/**
+ * State
+ */
 import { UtenteState } from './features/navbar/store/states/operatore/utente.state';
+import { AppState } from './shared/store/states/app/app.state';
+import { SignalRState } from './core/signalr/store/signalR.state';
+import { ToastrState } from './shared/store/states/toastr/toastr.state';
+import { SediTreeviewState } from './shared/store/states/sedi-treeview/sedi-treeview.state';
 /**
  * Route
  */
 import { APP_ROUTING } from './app.routing';
+/**
+ * Interceptor
+ */
 import { JwtInterceptor, ErrorInterceptor, FakeBackendInterceptor } from './core/auth/_helpers';
+import { SignalRInterceptor } from './core/signalr/signalR.interceptor';
 /**
  * Module Components
  */
 import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
-import { SignalRState } from './core/signalr/store/signalR.state';
-import { ToastrState } from './shared/store/states/toastr/toastr.state';
-import { SediTreeviewState } from './shared/store/states/sedi-treeview/sedi-treeview.state';
-import { ListaSediService } from './core/service/lista-sedi-service/lista-sedi.service';
-import { ListaSediServiceFake } from './core/service/lista-sedi-service/lista-sedi.service.fake';
-import { AppState } from './shared/store/states/app/app.state';
-import { SignalRInterceptor } from './core/signalr/signalR.interceptor';
-
 
 
 @NgModule({
@@ -95,15 +98,12 @@ import { SignalRInterceptor } from './core/signalr/signalR.interceptor';
         }),
     ],
     providers: [
-        { provide: ListaSediService, useClass: ListaSediServiceFake},
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: SignalRInterceptor, multi: true },
+        environment.fakeProvider ? { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true } : [],
         I18n,
-        /**
-         * provider fake per la login
-         */
-        environment.fakeProvider ? { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true } : []
+        // Todo: implementare Tipologie Service e poi mettere environmente che controlla se l'app deve caricare i fake provider
     ],
     bootstrap: [AppComponent]
 })

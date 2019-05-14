@@ -193,6 +193,7 @@ export class SignalRService {
     getContextId() {
         if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('GetConnectionId').then(connectionId => {
+                console.log(connectionId);
                 this.store.dispatch(new SetConnectionId(connectionId));
             });
         }

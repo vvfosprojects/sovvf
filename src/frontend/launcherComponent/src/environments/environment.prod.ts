@@ -4,6 +4,7 @@ export const environment = {
     signalRHub: '/NotificationHub',
     signalR: true,
     apiUrl: {
+        home: '/api/Welcome',
         appSettings: 'assets/json/app-settings.json',
         boxes: {
             personale: '/api/BoxPersonale',
@@ -33,7 +34,8 @@ export const environment = {
         composizione: {
             preaccoppiati: '',
             mezzi: '',
-            squadre: ''
+            squadre: '',
+            filtri: '/api/Filtri'
         },
         chiamata: {
             currentId: '',
