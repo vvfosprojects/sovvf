@@ -5,7 +5,7 @@ import { handleError } from '../../../shared/helper/handleError';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
-const API_URL_HOME = environment.apiUrl.turno;
+const API_URL_HOME = environment.apiUrl.home;
 
 @Injectable()
 export class HomeService {
