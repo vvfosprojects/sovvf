@@ -4,6 +4,7 @@ export const environment = {
     signalRHub: '/NotificationHub',
     signalR: false,
     apiUrl: {
+        home: '/api/Welcome',
         appSettings: 'assets/json/app-settings.json',
         boxes: {
             personale: '/api/BoxPersonale',
