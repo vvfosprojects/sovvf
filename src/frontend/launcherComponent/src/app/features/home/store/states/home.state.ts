@@ -10,6 +10,7 @@ import { ClearBoxMezzi } from '../actions/boxes/box-mezzi.actions';
 import { ClearBoxPersonale } from '../actions/boxes/box-personale.actions';
 import { ClearChiamateMarkers, GetChiamateMarkers } from '../actions/maps/chiamate-markers.actions';
 import { HomeService } from '../../../../core/service/home-service/home.service';
+import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 
 export interface HomeStateModel {
     loaded: boolean;
@@ -53,19 +54,16 @@ export class HomeState {
 
     @Action(GetDataHome)
     getDataHome({ patchState, dispatch }: StateContext<HomeStateModel>) {
-        // Todo: da sistemare
-        setTimeout(() => {
-            this.homeService.getHome().subscribe(() => {
-                console.log('ok');
-            }, () => console.error('error'));
-            dispatch([
-                new GetChiamateMarkers(),
-                new GetCentroMappa(),
-            ]);
-            patchState({
-                loaded: true
-            });
-        }, 500);
+        this.homeService.getHome().subscribe(() => {
+        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+        // Todo: controller da fare
+        dispatch([
+            new GetChiamateMarkers(),
+            new GetCentroMappa(),
+        ]);
+        patchState({
+            loaded: true
+        });
 
     }
 

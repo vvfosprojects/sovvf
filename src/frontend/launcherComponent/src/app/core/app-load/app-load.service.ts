@@ -22,7 +22,6 @@ export class AppLoadService {
         if (!SIGNALR_BYPASS) {
             this.signalR.initSubscription();
             this.subscription.add(this.signalR.checkConnection().subscribe(result => {
-                console.log('test');
                 this.checkConnectionSignalR = result;
                 if (result) {
                     this.signalR.getContextId();

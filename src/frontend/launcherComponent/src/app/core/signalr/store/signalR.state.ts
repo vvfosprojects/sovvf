@@ -25,7 +25,7 @@ export class SignalRState {
 
     @Selector()
     static statusSignalR(state: SignalRStateModel): boolean {
-        return state.connected;
+        return state.connected && !!state.connectionId;
     }
 
     @Selector()
@@ -58,13 +58,13 @@ export class SignalRState {
         patchState({
             connected: SignalRStateDefaults.connected,
             reconnected: SignalRStateDefaults.reconnected,
-            disconnected: disconnected
+            disconnected: disconnected,
+            connectionId: null
         });
     }
 
     @Action(SetConnectionId)
     setConnectionId({ patchState }: StateContext<SignalRStateModel>, action: SetConnectionId) {
-        console.log(action.connectionId);
         patchState({
             connectionId: action.connectionId
         });

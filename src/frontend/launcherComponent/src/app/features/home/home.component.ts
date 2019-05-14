@@ -27,9 +27,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         isDevMode() && console.log('Componente Home creato');
-        /**
-         * importante: non mettere nel costruttore
-         */
         this.store.dispatch(new GetDataHome());
     }
 
