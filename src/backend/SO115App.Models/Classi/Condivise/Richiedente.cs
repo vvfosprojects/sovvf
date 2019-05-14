@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.ComponentModel.DataAnnotations;
+
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Richiedente
@@ -29,9 +31,14 @@ namespace SO115App.API.Models.Classi.Condivise
             this.Telefono = Telefono;
         }
 
+        [Required]
+        [DataType(DataType.PhoneNumber)]
         public string Telefono { get; set; }
+
         public string Nome { get; set; }
+
         public string Cognome { get; set; }
+
         public string RagioneSociale { get; set; }
     }
 }

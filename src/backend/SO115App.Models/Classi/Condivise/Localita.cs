@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.ComponentModel.DataAnnotations;
+
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Localita
@@ -28,6 +30,7 @@ namespace SO115App.API.Models.Classi.Condivise
             this.Note = Note;
         }
 
+        [Required]
         public Coordinate Coordinate { get; set; }
         public string Indirizzo { get; set; }
         public string Note { get; set; }

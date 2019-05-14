@@ -49,19 +49,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   L'id della richiesta
         /// </summary>
-        [Required(ErrorMessage = "Id obbligatorio.")]
         public string Id { get; set; }
 
         /// <summary>
         ///   Identifica il codice della Chiamata
         /// </summary>
-        [Required(ErrorMessage = "Codice obbligatorio.")]
         public string Codice { get; set; }
 
         /// <summary>
         ///   E' il codice della Richiesta di Assistenza
         /// </summary>
-        [Required(ErrorMessage = "Codice Richiesta obbligatorio.")]
         public string CodiceRichiesta { get; set; }
 
         /// <summary>
@@ -74,6 +71,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   Ricezione della richiesta (via telefono, ecc.)
         /// </summary>
         [Required(ErrorMessage = "Istante ricezione richiesta obbligatorio.")]
+        [DataType(DataType.DateTime)]
         public DateTime IstanteRicezioneRichiesta { get; set; }
 
         /// <summary>
@@ -85,8 +83,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Priorita della richiesta
         /// </summary>
-        [Required(ErrorMessage = "Priorità obbligatoria.")]
-        public RichiestaAssistenza.Priorita Priorita { get; set; }
+        public RichiestaAssistenza.Priorita Priorita {
+            get
+            {
+                var eventoAssegnazionePriorita = this.Eventi
+                    .Where(e => e is AssegnazionePriorita)
+                    .LastOrDefault() as AssegnazionePriorita;
+
+                return eventoAssegnazionePriorita != null ? eventoAssegnazionePriorita.Priorita : RichiestaAssistenza.Priorita.Media;
+            }
+        }
 
         [Required(ErrorMessage = "Tipologia obbligatoria.")]
         public List<Tipologia> Tipologie { get; set; }
@@ -112,13 +118,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Competenze della richiesta
         /// </summary>
-        [Required(ErrorMessage = "Competenze obbligatorie.")]
         public List<Sede> Competenze { get; set; }
 
         /// <summary>
         ///   Complessità della richiesta
         /// </summary>
-        [Required(ErrorMessage = "Complessità obbligatoria.")]
         public Complessita Complessita
         {
             get
@@ -150,11 +154,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Eventuale istante di presa in carico della richiesta
         /// </summary>
+        [DataType(DataType.DateTime)]
         public DateTime? IstantePresaInCarico { get; set; }
 
         /// <summary>
         ///   Eventuale istante di prima assegnazione di risorse alla richiesta
         /// </summary>
+        [DataType(DataType.DateTime)]
         public DateTime? IstantePrimaAssegnazione { get; set; }
 
         /// <summary>
@@ -165,6 +171,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   base ad un insieme di regole automatiche deterministiche o basate su algoritmi di
         ///   machine learning.
         /// </remarks>
+        [DataType(DataType.DateTime)]
         public DateTime? Rilevanza { get; set; }
 
         /// <summary>

@@ -112,12 +112,17 @@ namespace SO115App.API.Models.Classi.Autenticazione
         ///   Nome Operatore
         /// </summary>
         [Required(ErrorMessage = "Il nome utente è obbligatorio.")]
+        [RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$",
+         ErrorMessage = "Nel nome sono presenti caratteri non ammessi")]
         public string Nome { get; set; }
 
         /// <summary>
         ///   Cognome Operatore
         /// </summary>
         [Required(ErrorMessage = "Il cognome utente è obbligatorio.")]
+        [RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$",
+         ErrorMessage = "Nel cognome sono presenti caratteri non ammessi")]
+
         public string Cognome { get; set; }
 
         /// <summary>
@@ -125,6 +130,7 @@ namespace SO115App.API.Models.Classi.Autenticazione
         /// </summary>
         [Required(ErrorMessage = "Il codice fiscale è obbligatorio")]
         [StringLength(16, ErrorMessage = "Il codice fiscale deve essere lungo 16 caratteri")]
+        [RegularExpression(@"^[A-Z]{6}[A-Z0-9]{2}[A-Z][A-Z0-9]{2}[A-Z][A-Z0-9]{3}[A-Z]$", ErrorMessage = "Il codice fiscale non è nel formato corretto")]
         public string CodiceFiscale { get; set; }
 
         /// <summary>
@@ -156,11 +162,13 @@ namespace SO115App.API.Models.Classi.Autenticazione
         /// <summary>
         ///   La data di inizio della validità dell'account. Se è null, la validità inizia dal big bang.
         /// </summary>
+        [DataType(DataType.DateTime)]
         public DateTime? ValidoDa { get; set; }
 
         /// <summary>
         ///   La data di fine della validità dell'account. Se è null, la validità ha durata indefinita.
         /// </summary>
+        [DataType(DataType.DateTime)]
         public DateTime? ValidoFinoA { get; set; }
 
         /// <summary>

@@ -70,7 +70,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 Rilevanza = null, //richiesta.Rilevante != null ? richiesta.Rilevante : null,
                 IstanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta,
                 IstantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione,
-                Priorita = richiesta.PrioritaRichiesta,
+                //Priorita = richiesta.PrioritaRichiesta,
                 Tipologie = richiesta.Tipologie,
                 Descrizione = richiesta.Descrizione,
                 Richiedente = richiesta.Richiedente,

@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using CQRS.Commands;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
@@ -110,17 +111,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTe
                 NotePrivate = command.NotePrivate,
                 NotePubbliche = command.NotePubbliche,
                 NumeroTelefono = command.Telefono,
-                Esito = command.Azione.ToString(),
+                //Esito = command.Azione.ToString(),
             };
-
-            if (command.Azione == Azione.FalsoAllarme || command.Azione == Azione.InterventoNonPiuNecessario)
-            {
-                new ChiusuraRichiesta(
-                    command.Azione.ToString(),
-                    richiesta,
-                    DateTime.Now,
-                    fonte);
-            }
 
             this.saveRichiestaAssistenza.Save(richiesta);
         }
