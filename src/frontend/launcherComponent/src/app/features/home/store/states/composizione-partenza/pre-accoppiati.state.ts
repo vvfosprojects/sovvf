@@ -9,6 +9,7 @@ import { GetPreAccoppiati, SetPreAccoppiati } from '../../actions/composizione-p
 // Service
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
 
 export interface PreAccoppiatiStateModel {
     preAccoppiati: BoxPartenza[];
@@ -37,7 +38,7 @@ export class PreAccoppiatiState {
     getPreAccoppiati({ dispatch }: StateContext<PreAccoppiatiStateModel>) {
         this.preAccoppiatiService.getPreAccoppiati().subscribe((p: BoxPartenza[]) => {
             // dispatch(new SetPreAccoppiati(p));
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetPreAccoppiati)

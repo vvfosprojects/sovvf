@@ -9,6 +9,7 @@ import { GetMezziComposizione, SetMezziComposizione } from '../../actions/compos
 // Service
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
 
 export interface MezziComposizioneStateModel {
     mezziComposizione: MezzoComposizione[];
@@ -37,7 +38,7 @@ export class MezziComposizioneState {
     getMezziComposizione({ dispatch }: StateContext<MezziComposizioneStateModel>) {
         this.mezziService.getMezziComposizione().subscribe((m: MezzoComposizione[]) => {
             // dispatch(new SetMezziComposizione(m));
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetMezziComposizione)

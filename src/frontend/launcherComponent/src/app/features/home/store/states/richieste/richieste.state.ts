@@ -14,6 +14,7 @@ import { RichiestaFissataState } from './richiesta-fissata.state';
 import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
 import { RichiestaModificaState } from './richiesta-modifica.state';
+import { ToastrType } from '../../../../../shared/enum/toastr';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -47,7 +48,7 @@ export class RichiesteState {
     @Action(GetRichieste, { cancelUncompleted: true })
     getRichieste({ dispatch }: StateContext<RichiesteStateModel>, action: GetRichieste) {
         this.richiesteService.getRichieste(action.idUltimaRichiesta).subscribe(() => {
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetRichieste)

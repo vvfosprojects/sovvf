@@ -7,6 +7,7 @@ import { ClearMarkerSedeSelezionato } from '../../../../store/actions/maps/marke
 import { ShowToastr } from '../../../../../../shared/store/actions/toastr/toastr.actions';
 import { SedeMarker } from '../../../maps-model/sede-marker.model';
 import { SediMarkersState } from '../../../../store/states/maps/sedi-markers.state';
+import { ToastrType } from '../../../../../../shared/enum/toastr';
 
 @Component({
     selector: 'app-cambio-sede-modal',
@@ -35,7 +36,7 @@ export class CambioSedeModalComponent implements OnDestroy {
     }
 
     annullaCambioSede() {
-        this.store.dispatch(new ShowToastr('warning', 'Attenzione', 'Azione annullata'));
+        this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Attenzione', 'Azione annullata'));
     }
 
 }

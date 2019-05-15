@@ -4,6 +4,7 @@ import { MezziMarkerService } from '../../../../../core/service/maps-service';
 import { ClearMezziMarkers, GetMezziMarkers, OpacizzaMezziMarkers, SetMezziMarkers, SetMezzoMarkerById } from '../../actions/maps/mezzi-markers.actions';
 import { SetMarkerOpachiMezzi } from '../../actions/maps/marker-opachi.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
 
 export interface MezziMarkersStateModel {
     mezziMarkers: MezzoMarker[];
@@ -39,7 +40,7 @@ export class MezziMarkersState {
     @Action(GetMezziMarkers)
     getMezziMarkers({ dispatch }: StateContext<MezziMarkersStateModel>) {
         this._mezzi.getMezziMarkers().subscribe(() => {
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetMezziMarkers)

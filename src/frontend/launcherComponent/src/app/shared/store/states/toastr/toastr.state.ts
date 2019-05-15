@@ -30,44 +30,72 @@ export class ToastrState {
     }
 
     @Action(ShowToastr)
-    showToastr({getState, dispatch}: StateContext<ToastrStateModel>, action: ShowToastr) {
+    showToastr({ getState, dispatch }: StateContext<ToastrStateModel>, action: ShowToastr) {
         dispatch(new SetToastr(action.type, action.title, action.message, action.duration, action.tapToDismiss));
     }
 
     @Action(SetToastr)
     setToastr({ patchState }: StateContext<ToastrStateModel>, action: SetToastr) {
 
-        switch (action.type) {
-            case 'clear':
-                this._toastr[action.type]();
+        if (action.type === 'clear') {
+            this._toastr[action.type]();
 
-                patchState({
-                    type: action.type
-                });
-                break;
-
-            default:
-                const timeout = action.timeout || action.timeout === 0 ? action.timeout : toastrStateDefaults.timeout;
-                let tapToDismiss = true;
-                let extendedTimeOut = 1000;
-                if (action.tapToDismiss === false) {
-                    tapToDismiss = false;
-                    extendedTimeOut = 0;
+            patchState({
+                type: action.type
+            });
+        } else {
+            const timeout = action.timeout || action.timeout === 0 ? action.timeout : toastrStateDefaults.timeout;
+            let tapToDismiss = true;
+            let extendedTimeOut = 1000;
+            if (action.tapToDismiss === false) {
+                tapToDismiss = false;
+                extendedTimeOut = 0;
+            }
+            this._toastr[action.type.toString()](action.message, action.title, {
+                    timeOut: timeout * 1000,
+                    extendedTimeOut: extendedTimeOut,
+                    tapToDismiss: tapToDismiss
                 }
-                this._toastr[action.type](action.message, action.title, {
-                        timeOut: timeout * 1000,
-                        extendedTimeOut: extendedTimeOut,
-                        tapToDismiss: tapToDismiss
-                    }
-                );
-                patchState({
-                    type: action.type,
-                    title: action.title,
-                    message: action.message,
-                    timeout: timeout
-                });
-                break;
+            );
+            patchState({
+                type: action.type,
+                title: action.title,
+                message: action.message,
+                timeout: timeout
+            });
         }
+
+        // switch (action.type) {
+        //     case 'clear':
+        //         this._toastr[action.type]();
+        //
+        //         patchState({
+        //             type: action.type
+        //         });
+        //         break;
+        //
+        //     default:
+        //         const timeout = action.timeout || action.timeout === 0 ? action.timeout : toastrStateDefaults.timeout;
+        //         let tapToDismiss = true;
+        //         let extendedTimeOut = 1000;
+        //         if (action.tapToDismiss === false) {
+        //             tapToDismiss = false;
+        //             extendedTimeOut = 0;
+        //         }
+        //         this._toastr[action.type](action.message, action.title, {
+        //                 timeOut: timeout * 1000,
+        //                 extendedTimeOut: extendedTimeOut,
+        //                 tapToDismiss: tapToDismiss
+        //             }
+        //         );
+        //         patchState({
+        //             type: action.type,
+        //             title: action.title,
+        //             message: action.message,
+        //             timeout: timeout
+        //         });
+        //         break;
+        // }
 
     }
 }

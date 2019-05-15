@@ -4,6 +4,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { GetFiltriComposizione, SetFiltriComposizione } from '../../actions/composizione-partenza/filterbar-composizione.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { FilterbarService } from '../../../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
+import { ToastrType } from '../../../../../shared/enum/toastr';
 
 export interface FilterbarComposizioneStateModel {
     filtri: any;
@@ -32,7 +33,7 @@ export class FilterbarComposizioneState {
     getFiltriComposizione({ dispatch }: StateContext<FilterbarComposizioneStateModel >) {
         this.filterbar.getFiltri().subscribe((filtri: any) => {
             dispatch(new SetFiltriComposizione(filtri));
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
 
     }
 

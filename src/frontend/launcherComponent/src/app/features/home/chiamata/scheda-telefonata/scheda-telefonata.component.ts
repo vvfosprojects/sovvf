@@ -16,10 +16,10 @@ import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/co
 import { Utente } from '../../../../shared/model/utente.model';
 import { ClearClipboard } from '../../store/actions/chiamata/clipboard.actions';
 import { ReducerSchedaTelefonata } from '../../store/actions/chiamata/scheda-telefonata.actions';
-import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Richiedente } from '../../../../shared/model/richiedente.model';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
+import { ToastrType } from '../../../../shared/enum/toastr';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -261,11 +261,11 @@ export class SchedaTelefonataComponent implements OnInit {
         const title = messageArr.length > 1 ? 'Campi obbligatori:' : 'Campo obbligatorio:';
         if (messageArr.length > 0) {
             message = message.substring(0, message.length - 2);
-            const type = 'error';
-            this.store.dispatch(new ShowToastr('clear'));
+            const type = ToastrType.Error;
+            this.store.dispatch(new ShowToastr(ToastrType.Clear));
             this.store.dispatch(new ShowToastr(type, title, message));
         } else {
-            this.store.dispatch(new ShowToastr('clear'));
+            this.store.dispatch(new ShowToastr(ToastrType.Clear));
         }
         return !!this.chiamataForm.invalid;
     }

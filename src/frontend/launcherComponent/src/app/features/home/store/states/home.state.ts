@@ -11,6 +11,7 @@ import { ClearBoxPersonale } from '../actions/boxes/box-personale.actions';
 import { ClearChiamateMarkers, GetChiamateMarkers } from '../actions/maps/chiamate-markers.actions';
 import { HomeService } from '../../../../core/service/home-service/home.service';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../shared/enum/toastr';
 
 export interface HomeStateModel {
     loaded: boolean;
@@ -55,7 +56,7 @@ export class HomeState {
     @Action(GetDataHome)
     getDataHome({ patchState, dispatch }: StateContext<HomeStateModel>) {
         this.homeService.getHome().subscribe(() => {
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
         // Todo: controller da fare
         dispatch([
             new GetChiamateMarkers(),

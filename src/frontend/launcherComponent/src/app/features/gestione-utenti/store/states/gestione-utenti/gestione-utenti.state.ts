@@ -5,17 +5,18 @@ import { GestioneUtente } from '../../../../../shared/model/gestione-utente.mode
 import {
     AddUtente,
     AddUtenteSuccess,
+    ChangeRoleUtente,
+    ChangeRoleUtenteSuccess,
     GetGestioneUtenti,
     RemoveUtente,
     RemoveUtenteSuccess,
-    SetGestioneUtenti,
-    ChangeRoleUtente,
-    ChangeRoleUtenteSuccess
+    SetGestioneUtenti
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
 // Immer
 import produce from 'immer';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
 
 export interface GestioneUtentiStateModel {
     lista_gestione_utenti: GestioneUtente[];
@@ -63,7 +64,7 @@ export class GestioneUtentiState {
 
     @Action(ChangeRoleUtenteSuccess)
     changeRoleUtenteSuccess({ getState, setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: ChangeRoleUtenteSuccess) {
-        dispatch(new ShowToastr('info', 'Ruolo Utente Aggiornato', 'Ruolo utente aggiornato con successo.', 2));
+        dispatch(new ShowToastr(ToastrType.Info, 'Ruolo Utente Aggiornato', 'Ruolo utente aggiornato con successo.', 2));
         setState(
             produce(getState(), draft => {
                 draft.lista_gestione_utenti.forEach((utente: GestioneUtente) => {
@@ -82,7 +83,7 @@ export class GestioneUtentiState {
 
     @Action(AddUtenteSuccess)
     addUtenteSuccess({ getState, setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: AddUtenteSuccess) {
-        dispatch(new ShowToastr('info', 'Utente Aggiunto', 'Utente aggiunto con successo.', 3));
+        dispatch(new ShowToastr(ToastrType.Info, 'Utente Aggiunto', 'Utente aggiunto con successo.', 3));
         setState(
             produce(getState(), draft => {
                 draft.lista_gestione_utenti.push(action.nuovoUtente);
@@ -97,7 +98,7 @@ export class GestioneUtentiState {
 
     @Action(RemoveUtenteSuccess)
     removeUtenteSuccess({ getState, setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveUtenteSuccess) {
-        dispatch(new ShowToastr('info', 'Utente Rimosso', 'Utente rimosso con successo.', 3));
+        dispatch(new ShowToastr(ToastrType.Info, 'Utente Rimosso', 'Utente rimosso con successo.', 3));
         setState(
             produce(getState(), draft => {
                 draft.lista_gestione_utenti.forEach((gestioneUtente: GestioneUtente, index) => {

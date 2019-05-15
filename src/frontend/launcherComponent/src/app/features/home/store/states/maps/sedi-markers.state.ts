@@ -3,6 +3,7 @@ import { SedeMarker } from '../../../maps/maps-model/sede-marker.model';
 import { SediMarkerService } from '../../../../../core/service/maps-service';
 import { ClearSediMarkers, GetSediMarkers, SetSedeMarkerById, SetSediMarkers } from '../../actions/maps/sedi-markers.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
 
 export interface SediMarkersStateModel {
     sediMarkers: SedeMarker[];
@@ -38,7 +39,7 @@ export class SediMarkersState {
     @Action(GetSediMarkers)
     getSediMarkers({ dispatch }: StateContext<SediMarkersStateModel>) {
         this._sedi.getSediMarkers().subscribe(() => {
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetSediMarkers)

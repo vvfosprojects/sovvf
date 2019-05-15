@@ -13,6 +13,7 @@ import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { allFalseTreeItem, checkTreeItem, findItem } from './sedi-treeview.helper';
 import { SetAppLoaded } from '../../actions/app/app.actions';
 import { SetTurno } from '../../../../features/navbar/store/actions/turno/turno.actions';
+import { ToastrType } from '../../../enum/toastr';
 
 export interface SediTreeviewStateModel {
     listeSedi: ListaSedi;
@@ -139,7 +140,7 @@ export class SediTreeviewState {
             },
             sediNavbarDisableConfirm: SediTreeviewStateDefaults.sediNavbarDisableConfirm
         });
-        dispatch(new ShowToastr('warning', 'Attenzione', 'Selezione della sede annullata', 5));
+        dispatch(new ShowToastr(ToastrType.Warning, 'Attenzione', 'Selezione della sede annullata', 5));
     }
 
     @Action(SetSediNavbarSelezionate)

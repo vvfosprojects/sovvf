@@ -9,6 +9,7 @@ import { SquadraComposizione } from '../../../composizione-partenza/interface/sq
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import { GetSquadreComposizione, SetSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
 
 // State
 
@@ -40,7 +41,7 @@ export class SquadreComposizioneState {
     getSquadreComposizione({ dispatch }: StateContext<SquadreComposizioneStateModel>) {
         this.squadreService.getSquadre().subscribe((s: SquadraComposizione[]) => {
             // dispatch(new SetSquadreComposizione(s));
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetSquadreComposizione)
