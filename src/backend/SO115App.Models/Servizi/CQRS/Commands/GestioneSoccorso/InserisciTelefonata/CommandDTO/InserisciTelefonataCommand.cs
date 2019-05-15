@@ -118,6 +118,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTe
         /// <summary>
         ///   E' l'azione che si intende eseguire dopo l'acquisizione della chiamata
         /// </summary>
-        //public Azione Azione { get; set; }
+        public Azione Azione { get; set; }
     }
 }
