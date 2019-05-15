@@ -44,9 +44,7 @@ namespace Tests.Modello.Organigramma
             var radice = organigramma.Get();
             var roma = radice.GetSottoAlbero().Single(uo => uo.Codice == "RM");
 
-            var tuscolanoII = roma.GetSottoAlbero().Single(uo => uo.Codice == "RM.1008");
-
-            Assert.That(tuscolanoII.Codice, Is.EqualTo("RM.1008"));
+            Assert.DoesNotThrow(() => roma.GetSottoAlbero().Single(uo => uo.Codice == "RM.1008"));
         }
     }
 }
