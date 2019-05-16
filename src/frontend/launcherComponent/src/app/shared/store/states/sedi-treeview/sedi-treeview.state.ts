@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ListaSedi } from '../../../../core/settings/lista-sedi';
+import { ListaSedi } from '../../../interface/lista-sedi';
 import {
     ClearListaSediNavbar,
     ClearSediNavbarSelezionate,

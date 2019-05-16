@@ -1,4 +1,4 @@
-import { ListaSedi } from '../../../../core/settings/lista-sedi';
+import { ListaSedi } from '../../../interface/lista-sedi';
 
 export class SetListaSediTreeview {
     static readonly type = '[Sedi Treeview] Set lista sedi';
