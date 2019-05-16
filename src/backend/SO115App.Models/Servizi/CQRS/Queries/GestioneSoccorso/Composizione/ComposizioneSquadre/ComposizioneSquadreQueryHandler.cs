@@ -20,8 +20,10 @@
 using CQRS.Queries;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Classi.Condivise;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre
 {
@@ -59,10 +61,34 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 json = r.ReadToEnd();
             }
-
+            List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = new List<Classi.Composizione.ComposizioneMezzi>();
+            Classi.Composizione.ComposizioneMezzi mezzo = new Classi.Composizione.ComposizioneMezzi();
+            var codiceDistaccamento = "";
             List<Classi.Composizione.ComposizioneSquadre> composizioneSquadre = JsonConvert.DeserializeObject<List<Classi.Composizione.ComposizioneSquadre>>(json);
-
-            return composizioneSquadre;
+            if (query.Filtro.CodiceDistaccamento != null || query.Filtro.CodiceMezzo != null
+              //  || query.Filtro.CodiceSede != null
+                || query.Filtro.CodiceSquadra != null || query.Filtro.CodiceStatoMezzo != null || query.Filtro.CodiceTipoMezzo != null)
+            {
+                if(query.Filtro.CodiceMezzo != null )
+                {
+                    string path = "Fake/MezziComposizione.json";
+                    string jsonMezzi;
+                    using (StreamReader r = new StreamReader(path))
+                    {
+                        jsonMezzi = r.ReadToEnd();
+                    }
+                    composizioneMezzi = JsonConvert.DeserializeObject<List<Classi.Composizione.ComposizioneMezzi>>(jsonMezzi);
+                    mezzo = composizioneMezzi.Where(x => x.Mezzo.Codice == query.Filtro.CodiceMezzo).FirstOrDefault();
+                    codiceDistaccamento = mezzo.Mezzo.Distaccamento.Ccodice;
+                    return composizioneSquadre.Where(x => x.Squadra.Distaccamento.Ccodice == codiceDistaccamento).ToList();
+               }
+                return composizioneSquadre.Where(x => (query.Filtro.CodiceDistaccamento != null && x.Squadra.Distaccamento.Ccodice == query.Filtro.CodiceDistaccamento)).ToList();
+                //&& (query.Filtro.CodiceSede != null && x.Squadra.Distaccamento.Ccodice == query.Filtro.CodiceSede)).ToList();
+            }
+            else
+            {
+                return composizioneSquadre;
+            }
         }
     }
 }

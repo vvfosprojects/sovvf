@@ -25,6 +25,7 @@ using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Classi.Composizione;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -68,21 +69,15 @@ namespace SO115App.API.Controllers
         /// </summary>
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpPost]
+        public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
         {
-
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 
-            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
-            {
-                SearchKey = "0"
-            };
-
             var query = new  PreAccoppiatiQuery()
             {
-                Filtro = filtro
+                Filtro = filtri
             };
 
             try
@@ -101,7 +96,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet("{filtro}")]
-        public PreAccoppiatiResult GetMarkerFromId(FiltroRicercaRichiesteAssistenza filtro)
+        public PreAccoppiatiResult GetMarkerFromId(FiltriComposizionePartenza filtro)
         {
             var query = new PreAccoppiatiQuery()
             {

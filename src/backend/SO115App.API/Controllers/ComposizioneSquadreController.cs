@@ -25,6 +25,7 @@ using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Classi.Composizione;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -69,42 +70,45 @@ namespace SO115App.API.Controllers
         /// </summary>
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpPost]
+        public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
         {
-
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 
-            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
-            filtro.SearchKey = "0";
-
             var query = new ComposizioneSquadreQuery()
             {
-                Filtro = filtro
+                Filtro = filtri
             };
 
-            try
+            if (ModelState.IsValid)
             {
-                List<ComposizioneSquadre> composizioneSquadre= new List<ComposizioneSquadre>();
-                composizioneSquadre = handler.Handle(query).ComposizioneSquadre;
+                try
+                {
+                    List<ComposizioneSquadre> composizioneSquadre= new List<ComposizioneSquadre>();
+                    composizioneSquadre = handler.Handle(query).ComposizioneSquadre;
 
-                await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetComposizioneSquadre", composizioneSquadre);
+                    await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetComposizioneSquadre", composizioneSquadre);
 
-                return Ok();
+                    return Ok();
+                }
+                catch
+                {
+                    return BadRequest();
+                }
             }
-            catch
+            else
             {
                 return BadRequest();
             }
         }
 
         [HttpGet("{filtro}")]
-        public ComposizioneSquadreResult GetMarkerFromId(FiltroRicercaRichiesteAssistenza filtro)
+        public ComposizioneSquadreResult GetMarkerFromId(FiltriComposizionePartenza filtri)
         {
             var query = new ComposizioneSquadreQuery()
             {
-                Filtro = filtro
+                Filtro = filtri
             };
 
             return handler.Handle(query);

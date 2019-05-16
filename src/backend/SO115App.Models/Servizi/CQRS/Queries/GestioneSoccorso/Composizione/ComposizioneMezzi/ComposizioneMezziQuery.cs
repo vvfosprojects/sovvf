@@ -18,7 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Classi.Composizione;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi
 {
@@ -33,6 +33,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <remarks>
         ///   Eventualmente si può filtrare per cercare solo i dati di un singolo Box
         /// </remarks>
-        public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
+        public FiltriComposizionePartenza Filtro { get; set; }
     }
 }

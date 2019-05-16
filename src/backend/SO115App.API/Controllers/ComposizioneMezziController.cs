@@ -25,6 +25,7 @@ using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Classi.Composizione;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -69,38 +70,42 @@ namespace SO115App.API.Controllers
         /// </summary>
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpPost]
+        public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
         {
 
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 
-            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza();
-            filtro.SearchKey = "0";
-
             var query = new ComposizioneMezziQuery()
             {
-                Filtro = filtro
+                Filtro = filtri
             };
 
-            try
+            if (ModelState.IsValid)
             {
-                List<ComposizioneMezzi> composizioneMezzi = new List<ComposizioneMezzi>();
-                composizioneMezzi = handler.Handle(query).ComposizioneMezzi;
+                try
+                {
+                    List<ComposizioneMezzi> composizioneMezzi = new List<ComposizioneMezzi>();
+                    composizioneMezzi = handler.Handle(query).ComposizioneMezzi;
 
-                await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetComposizioneMezzi", composizioneMezzi);
+                    await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetComposizioneMezzi", composizioneMezzi);
 
-                return Ok();
+                    return Ok();
+                }
+                catch
+                {
+                    return BadRequest();
+                }
             }
-            catch
+            else
             {
                 return BadRequest();
             }
         }
 
         [HttpGet("{filtro}")]
-        public ComposizioneMezziResult GetMarkerFromId(FiltroRicercaRichiesteAssistenza filtro)
+        public ComposizioneMezziResult GetMarkerFromId(FiltriComposizionePartenza filtro)
         {
             var query = new ComposizioneMezziQuery()
             {

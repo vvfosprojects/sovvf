@@ -21,6 +21,7 @@ using CQRS.Queries;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati
 {
@@ -62,8 +63,40 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             }
 
             preAccoppiati = JsonConvert.DeserializeObject<List<Classi.Composizione.PreAccoppiati>>(json);
+            List<Classi.Composizione.ComposizioneSquadre> composizioneSquadre = new List<Classi.Composizione.ComposizioneSquadre>();
+            var squadra = new Classi.Composizione.ComposizioneSquadre();
+            var codiceDistaccamento = "";
+            if (query.Filtro.CodiceDistaccamento != null || query.Filtro.CodiceMezzo != null 
+               // || query.Filtro.CodiceSede != null
+                || query.Filtro.CodiceSquadra != null || query.Filtro.CodiceStatoMezzo != null || query.Filtro.CodiceTipoMezzo != null)
+            {
+                if (query.Filtro.CodiceSquadra != null)
+                {
+                    string path = "Fake/SquadreComposizione.json";
+                    string jsonSquadre;
+                    using (StreamReader r = new StreamReader(path))
+                    {
+                        jsonSquadre = r.ReadToEnd();
+                    }
 
-            return preAccoppiati;
+                    composizioneSquadre = JsonConvert.DeserializeObject<List<Classi.Composizione.ComposizioneSquadre>>(jsonSquadre);
+                    squadra = composizioneSquadre.Where(x => x.Id == query.Filtro.CodiceSquadra).FirstOrDefault();
+                    codiceDistaccamento = squadra.Squadra.Distaccamento.Ccodice;
+                    return preAccoppiati.Where(x => (x.MezzoComposizione.Mezzo.Distaccamento.Ccodice == codiceDistaccamento) && (query.Filtro.CodiceDistaccamento != null && x.MezzoComposizione.Mezzo.Distaccamento.Ccodice == query.Filtro.CodiceDistaccamento)
+                && (query.Filtro.CodiceMezzo != null && x.MezzoComposizione.Mezzo.Codice == query.Filtro.CodiceMezzo)
+                && (query.Filtro.CodiceStatoMezzo != null && x.MezzoComposizione.Mezzo.Stato == query.Filtro.CodiceStatoMezzo)
+                && (query.Filtro.CodiceTipoMezzo != null && x.MezzoComposizione.Mezzo.Genere == query.Filtro.CodiceTipoMezzo)).ToList();
+                }
+                return preAccoppiati.Where(x => (query.Filtro.CodiceDistaccamento != null && x.MezzoComposizione.Mezzo.Distaccamento.Ccodice == query.Filtro.CodiceDistaccamento)
+                && (query.Filtro.CodiceMezzo != null && x.MezzoComposizione.Mezzo.Codice == query.Filtro.CodiceMezzo)
+               // && (query.Filtro.CodiceSede != null && x.MezzoComposizione.Mezzo.Distaccamento.Ccodice == query.Filtro.CodiceSede)
+                && (query.Filtro.CodiceStatoMezzo != null && x.MezzoComposizione.Mezzo.Stato == query.Filtro.CodiceStatoMezzo)
+                && (query.Filtro.CodiceTipoMezzo != null && x.MezzoComposizione.Mezzo.Genere == query.Filtro.CodiceTipoMezzo)).ToList();
+            }
+            else
+            {
+                return preAccoppiati;
+            }
         }
     }
 }
