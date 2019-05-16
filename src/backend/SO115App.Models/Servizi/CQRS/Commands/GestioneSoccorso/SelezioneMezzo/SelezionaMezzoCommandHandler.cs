@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso.Risorse;
 using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneMezzo.CommandDTO;
 using SO115App.API.Models.Servizi.Infrastruttura.Autenticazione;

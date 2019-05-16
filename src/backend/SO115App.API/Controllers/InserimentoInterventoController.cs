@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
+﻿using System.Security.Principal;
 using System.Threading.Tasks;
 using CQRS.Commands;
 using DomainModel.CQRS.Commands.AddIntervento;
@@ -23,20 +20,17 @@ namespace SO115App.API.Controllers
         ///   Handler del servizio
         /// </summary>
         private readonly ICommandHandler<AddInterventoCommand> _handler;
-
         private readonly IHubContext<NotificationHub> _NotificationHub;
-        private readonly IPrincipal _currentUser;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public InserimentoInterventoController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
+        public InserimentoInterventoController(IHubContext<NotificationHub> NotificationHubContext,
             ICommandHandler<AddInterventoCommand> handler)
         {
             this._handler = handler;
             _NotificationHub = NotificationHubContext;
-            _currentUser = currentUser;
         }
 
         [HttpPost]
@@ -52,7 +46,7 @@ namespace SO115App.API.Controllers
                 try
                 {
                     this._handler.Handle(command);
-                    await _NotificationHub.Clients.Groups(sintesi.Operatore.Sede.Codice).SendAsync("NotifyInserimentoIntervento", command);
+                    await _NotificationHub.Clients.Groups(sintesi.Operatore.Sede.Codice).SendAsync("SaveAndNotifySuccessChiamata", command);
                     return Ok();
                 }
                 catch
