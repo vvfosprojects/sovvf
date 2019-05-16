@@ -38,6 +38,11 @@ import { SignalRState } from './core/signalr/store/signalR.state';
 import { ToastrState } from './shared/store/states/toastr/toastr.state';
 import { SediTreeviewState } from './shared/store/states/sedi-treeview/sedi-treeview.state';
 /**
+ * Service
+ */
+import { NavbarService } from './core/service/navbar-service/navbar.service';
+import { NavbarServiceFake } from './core/service/navbar-service/navbar.service.fake';
+/**
  * Route
  */
 import { APP_ROUTING } from './app.routing';
@@ -103,7 +108,7 @@ import { AppLoadModule } from './core/app-load/app-load.module';
         { provide: HTTP_INTERCEPTORS, useClass: SignalRInterceptor, multi: true },
         environment.fakeProvider ? { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true } : [],
         I18n,
-        // Todo: implementare Tipologie Service e poi mettere environmente che controlla se l'app deve caricare i fake provider
+        { provide: NavbarService, useClass: environment.fakeProvider ? NavbarServiceFake : NavbarService},
     ],
     bootstrap: [AppComponent]
 })
