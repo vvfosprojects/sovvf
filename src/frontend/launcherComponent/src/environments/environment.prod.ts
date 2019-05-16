@@ -39,6 +39,7 @@ export const environment = {
         },
         chiamata: {
             currentId: '',
+            inserimento: '/api/InserimentoIntervento'
         },
         listaSedi: '',
         login: '/api/auth/Login',
