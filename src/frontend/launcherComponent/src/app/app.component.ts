@@ -7,6 +7,8 @@ import { Observable, Subscription } from 'rxjs';
 import { SignalRState } from './core/signalr/store/signalR.state';
 import { AppState } from './shared/store/states/app/app.state';
 import { OFFSET_SYNC_TIME } from './core/settings/referral-time';
+import { Utente } from './shared/model/utente.model';
+import { UtenteState } from './features/navbar/store/states/operatore/utente.state';
 
 
 @Component({
@@ -25,6 +27,8 @@ export class AppComponent implements OnDestroy {
     _isLoaded: boolean;
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
+
+    @Select(UtenteState.utente) user$: Observable<Utente>;
 
     _opened = false;
     _toggle = false;

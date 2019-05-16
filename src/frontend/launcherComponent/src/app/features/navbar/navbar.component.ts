@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, isDevMode, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, isDevMode, OnDestroy, Input } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ClockService } from './clock/clock-service/clock.service';
 import { AuthenticationService } from '../../core/auth/_services';
@@ -25,12 +25,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     colorButton = 'btn-dark';
 
+    @Input() user: Utente;
     @Output() openedSidebar = new EventEmitter<any>();
     @Select(TurnoState.turno) turno$: Observable<Turno>;
     turno: Turno;
     @Select(TurnoState.turnoExtra) turnoExtra$: Observable<TurnoExtra>;
     turnoExtra: TurnoExtra;
-    @Select(UtenteState.utente) user$: Observable<Utente>;
 
     constructor(private store: Store,
                 private _clock: ClockService,
