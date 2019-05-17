@@ -187,6 +187,7 @@ export class SignalRService {
     byPassSignalR(): void {
         this.connectionEstablished.next(true);
         this.store.dispatch(new SignalRHubConnesso());
+        this.store.dispatch(new SetConnectionId('N{[=sE=2\\_A/y"J7v;ZMEDcGZ3a$K5Bdmn9UJ]mR{PXd8rx\\M\\tdeE>:2NPH<&!n:s^2;'));
     }
 
     getContextId() {
