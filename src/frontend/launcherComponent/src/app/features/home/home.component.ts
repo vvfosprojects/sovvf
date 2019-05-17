@@ -5,6 +5,7 @@ import { Select, Store } from '@ngxs/store';
 import { ViewComponentState } from './store/states/view/view.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
 import { ClearDataHome, GetDataHome, SetMapLoaded } from './store/actions/home.actions';
+import { NavbarState } from '../navbar/store/states/navbar.state';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -13,6 +14,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     viewState: ViewLayouts;
     columnState: Grids;
     loading = true;
+
+    @Select(NavbarState.navbarIsLoaded) navbarLoaded: Observable<boolean>;
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
     @Select(ViewComponentState.columnGrid) columnState$: Observable<Grids>;

@@ -23,6 +23,7 @@ import { AuthenticationService } from '../auth/_services';
 import { Utente } from '../../shared/model/utente.model';
 import { SetFiltriComposizione } from '../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
 import { ToastrType } from '../../shared/enum/toastr';
+import { SetDataNavbar } from '../../features/navbar/store/actions/navbar.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -68,10 +69,9 @@ export class SignalRService {
 
     private registerOnSubscriptionEvents(): void {
         this.hubNotification.on('NotifyAuth', (data: Utente) => {
-
             localStorage.setItem(this.localName, JSON.stringify(data));
             this.auth.currentUserSubject.next(data);
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Sei autorizzato', '', 3));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Sei loggato', '', 3));
         });
         this.hubNotification.on('NotifyLogIn', (data: any) => {
             // console.log(`Login: ${data}`);
@@ -103,6 +103,11 @@ export class SignalRService {
         /**
          * inizio nuova implementazione
          */
+        this.hubNotification.on('NotifyGetNavbar', (data: any) => {
+            // console.log(data);
+            this.store.dispatch(new SetDataNavbar(data));
+            this.store.dispatch(new ShowToastr(ToastrType.Error, 'Dati della Navbar', null, 10));
+        });
         this.hubNotification.on('NotifyGetListaRichieste', (data: any) => {
             // console.log(data);
             this.store.dispatch(new SetRichieste(data));
@@ -176,13 +181,6 @@ export class SignalRService {
             this.connectionEstablished.next(false);
             this.store.dispatch(new SignalRHubDisconnesso());
             this.startSubscriptionConnection();
-        });
-        /**
-         * test nuove notifiche by signalr
-         */
-        this.hubNotification.on('NotifyGetNavbar', (data: any) => {
-            console.log(data);
-            this.store.dispatch(new ShowToastr(ToastrType.Error, 'Dati della Navbar', null, 10));
         });
     }
 

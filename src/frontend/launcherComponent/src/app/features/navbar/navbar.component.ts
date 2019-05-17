@@ -7,10 +7,10 @@ import { Store, Select } from '@ngxs/store';
 import { TurnoState } from './store/states/turno/turno.state';
 import { SetTurno } from './store/actions/turno/turno.actions';
 import { Utente } from '../../shared/model/utente.model';
-import { UtenteState } from './store/states/operatore/utente.state';
 import { ClearUtente, SetUtente } from './store/actions/operatore/utente.actions';
 import { calcolaTurno } from '../../shared/helper/calcola-turno';
 import { TurnoExtra } from './turno/turno-extra.model';
+import { ClearDataNavbar, GetDataNavbar } from './store/actions/navbar.actions';
 
 @Component({
     selector: 'app-navbar',
@@ -53,11 +53,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         isDevMode() && console.log('Componente Navbar creato');
+        this.store.dispatch(new GetDataNavbar());
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
         isDevMode() && console.log('Componente Navbar distrutto');
+        this.store.dispatch(new ClearDataNavbar());
     }
 
     openSidebar() {
