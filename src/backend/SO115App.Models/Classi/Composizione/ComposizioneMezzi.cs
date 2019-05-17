@@ -16,7 +16,7 @@ namespace SO115App.API.Models.Classi.Composizione
 
     public class Distaccamento
     {
-        public string Ccodice { get; set; }
+        public string Codice { get; set; }
         public string Descrizione { get; set; }
         public Coordinate Coordinate { get; set; }
         public string Indirizzo { get; set; }

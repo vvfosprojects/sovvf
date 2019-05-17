@@ -562,6 +562,36 @@
   },
   {
     "id": "6",
+    "mezzoComposizione": {
+      "id": "2",
+      "mezzo": {
+        "codice": "2",
+        "descrizione": "A2",
+        "genere": "APS",
+        "stato": "inSede",
+        "appartenenza": 0,
+        "distaccamento": {
+          "codice": "1",
+          "descrizione": "Tuscolana II",
+          "coordinate": {
+            "latitudine": 1,
+            "longitudine": 1
+          },
+          "indirizzo": "Via Prova, 2",
+          "tipo": "Distaccamento",
+          "regione": "Lazio",
+          "provincia": "Roma"
+        }
+      },
+      "km": "25.6 km",
+      "tempoPercorrenza": "26 min",
+      "coordinate": {
+        "latitudine": 41.82699,
+        "longitudine": 12.4879854
+      },
+      "selezionato": false,
+      "hover": false
+    },
     "squadraComposizione": [
       {
         "id": "1",
