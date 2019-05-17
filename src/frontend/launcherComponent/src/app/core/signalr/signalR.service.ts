@@ -106,7 +106,7 @@ export class SignalRService {
         this.hubNotification.on('NotifyGetNavbar', (data: any) => {
             // console.log(data);
             this.store.dispatch(new SetDataNavbar(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Error, 'Dati della Navbar', null, 10));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Dati della Navbar', null, 5));
         });
         this.hubNotification.on('NotifyGetListaRichieste', (data: any) => {
             // console.log(data);
@@ -193,7 +193,6 @@ export class SignalRService {
     getContextId() {
         if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('GetConnectionId').then(connectionId => {
-                console.log(connectionId);
                 this.store.dispatch(new SetConnectionId(connectionId));
             });
         }

@@ -3,11 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { SignalRService } from '../signalr/signalR.service';
 import { Subscription } from 'rxjs';
-import { AppSettings } from '../../shared/interface/app-settings.interface';
-import { Store } from '@ngxs/store';
-import { SetListaSediTreeview } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 
-const API_URL = environment.apiUrl.appSettings;
 const SIGNALR_BYPASS = !environment.signalR;
 
 @Injectable()
@@ -17,7 +13,7 @@ export class AppLoadService {
     checkConnectionSignalR: boolean;
 
 
-    constructor(private http: HttpClient, private signalR: SignalRService, private store: Store) {
+    constructor(private http: HttpClient, private signalR: SignalRService) {
         if (!SIGNALR_BYPASS) {
             this.signalR.initSubscription();
             this.subscription.add(this.signalR.checkConnection().subscribe(result => {
@@ -48,13 +44,5 @@ export class AppLoadService {
                 resolve();
             }
         });
-    }
-
-    getSettings(): Promise<any> {
-        return this.http.get<AppSettings>(API_URL)
-            .toPromise()
-            .then(settings => {
-                this.store.dispatch(new SetListaSediTreeview(settings.listaSedi));
-            }).catch();
     }
 }

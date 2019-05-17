@@ -19,7 +19,6 @@ export class SignalRInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         if (this.connectionId) {
-            console.log(this.connectionId);
             request = request.clone({
                 setHeaders: {
                     HubConnectionId: `${this.connectionId}`

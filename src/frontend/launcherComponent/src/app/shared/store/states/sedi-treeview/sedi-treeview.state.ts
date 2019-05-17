@@ -42,8 +42,13 @@ export const SediTreeviewStateDefaults: SediTreeviewStateModel = {
 export class SediTreeviewState {
 
     @Selector()
-    static listeSedi(state: SediTreeviewStateModel) {
-        return state.listeSedi;
+    static listeSediLoaded(state: SediTreeviewStateModel) {
+        return !!state.listeSedi;
+    }
+
+    @Selector()
+    static listeSediNavbarLoaded(state: SediTreeviewStateModel) {
+        return !!state.listaSediNavbar;
     }
 
     @Selector()
@@ -63,7 +68,6 @@ export class SediTreeviewState {
 
     @Action(SetListaSediTreeview)
     setListaSediTreeview({ patchState }: StateContext<SediTreeviewStateModel>, action: SetListaSediTreeview) {
-        allFalseTreeItem(action.listaSedi);
         patchState({
             listeSedi: action.listaSedi
         });
@@ -71,16 +75,23 @@ export class SediTreeviewState {
 
     @Action(PatchListaSediNavbar)
     patchListaSediNavbar({ getState, patchState }: StateContext<SediTreeviewStateModel>, action: PatchListaSediNavbar) {
-        const listeChecked = makeCopy(getState().listeSedi);
-        checkTreeItem(listeChecked, action.selected);
-        patchState({
-            listaSediNavbar: listeChecked
-        });
+        const state = getState();
+        if (state.listeSedi) {
+            const listeChecked = makeCopy(state.listeSedi);
+            allFalseTreeItem(listeChecked);
+            if (action.selected) {
+                checkTreeItem(listeChecked, action.selected);
+            }
+            patchState({
+                listaSediNavbar: listeChecked
+            });
+        }
     }
 
     @Action(ClearListaSediNavbar)
     clearListaSediNavbar({ patchState }: StateContext<SediTreeviewStateModel>) {
         patchState({
+            listaSediNavbar: SediTreeviewStateDefaults.listaSediNavbar,
             sediNavbarTesto: SediTreeviewStateDefaults.sediNavbarTesto,
             sediNavbarSelezionate: SediTreeviewStateDefaults.sediNavbarSelezionate,
             sediNavbarDisableConfirm: SediTreeviewStateDefaults.sediNavbarDisableConfirm,

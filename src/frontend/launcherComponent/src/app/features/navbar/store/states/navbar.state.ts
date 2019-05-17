@@ -5,6 +5,7 @@ import { ToastrType } from '../../../../shared/enum/toastr';
 import { NavbarService } from '../../../../core/service/navbar-service/navbar.service';
 import { TipologieInterface } from '../../../../shared/interface/tipologie';
 import { ListaSedi } from '../../../../shared/interface/lista-sedi';
+import { SetListaSediTreeview } from '../../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 
 export interface NavbarStateModel {
     loaded: boolean;
@@ -30,6 +31,11 @@ export class NavbarState {
     }
 
     @Selector()
+    static listaSedi(state: NavbarStateModel) {
+        return state.listaSedi;
+    }
+
+    @Selector()
     static navbarIsLoaded(state: NavbarStateModel) {
         return state.loaded;
     }
@@ -44,10 +50,8 @@ export class NavbarState {
 
     @Action(GetDataNavbar)
     getDataNavbar({ dispatch }: StateContext<NavbarStateModel>) {
-        console.log('chiamo il controller della navbar');
         this.navbarService.getNavbar().subscribe(() => {
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
-
     }
 
     @Action(SetDataNavbar)
@@ -57,6 +61,7 @@ export class NavbarState {
             listaSedi: action.settings.listaSedi,
             loaded: true
         });
+        dispatch(new SetListaSediTreeview(action.settings.listaSedi));
     }
 
 }

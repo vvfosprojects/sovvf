@@ -5,7 +5,6 @@ export const environment = {
     signalR: false,
     apiUrl: {
         home: '/api/Welcome',
-        appSettings: 'assets/json/app-settings.json',
         boxes: {
             personale: '/api/BoxPersonale',
             mezzi: '/api/BoxMezzi',
@@ -41,9 +40,9 @@ export const environment = {
             currentId: '',
             inserimento: '/api/InserimentoIntervento'
         },
-        listaSedi: '',
         login: '/api/auth/Login',
         users: '/api/users',
         navbar: '/api/Navbar'
     }
 };
+

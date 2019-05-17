@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
@@ -12,7 +12,7 @@ import { TreeviewEmitterInterface } from '../../../shared/interface/treeview.int
     templateUrl: './unita-operativa.component.html',
     styleUrls: ['./unita-operativa.component.css'],
 })
-export class UnitaOperativaComponent implements OnDestroy {
+export class UnitaOperativaComponent implements OnDestroy, OnInit {
 
     subscription = new Subscription();
 
@@ -26,11 +26,15 @@ export class UnitaOperativaComponent implements OnDestroy {
     @Select(SediTreeviewState.sediNavbarTastoConferma) tastoConferma$: Observable<boolean>;
 
     constructor(private store: Store) {
+    }
 
+    ngOnInit(): void {
         this.subscription.add(
             this.listeSedi$.subscribe((listaSedi: TreeItem) => {
-                this.items = [];
-                this.items[0] = new TreeviewItem(listaSedi);
+                if (listaSedi) {
+                    this.items = [];
+                    this.items[0] = new TreeviewItem(listaSedi);
+                }
             })
         );
     }

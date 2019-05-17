@@ -11,6 +11,7 @@ import { ClearUtente, SetUtente } from './store/actions/operatore/utente.actions
 import { calcolaTurno } from '../../shared/helper/calcola-turno';
 import { TurnoExtra } from './turno/turno-extra.model';
 import { ClearDataNavbar, GetDataNavbar } from './store/actions/navbar.actions';
+import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
 
 @Component({
     selector: 'app-navbar',
@@ -27,10 +28,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     @Input() user: Utente;
     @Output() openedSidebar = new EventEmitter<any>();
+
     @Select(TurnoState.turno) turno$: Observable<Turno>;
     turno: Turno;
     @Select(TurnoState.turnoExtra) turnoExtra$: Observable<TurnoExtra>;
     turnoExtra: TurnoExtra;
+
+    @Select(SediTreeviewState.listeSediNavbarLoaded) listeSediNavbarLoaded$: Observable<boolean>;
 
     constructor(private store: Store,
                 private _clock: ClockService,
