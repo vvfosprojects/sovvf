@@ -3,7 +3,7 @@ import { ClearDataNavbar, GetDataNavbar, SetDataNavbar } from '../actions/navbar
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../shared/enum/toastr';
 import { NavbarService } from '../../../../core/service/navbar-service/navbar.service';
-import { TipologieInterface } from '../../../../core/settings/tipologie';
+import { TipologieInterface } from '../../../../shared/interface/tipologie';
 import { ListaSedi } from '../../../../shared/interface/lista-sedi';
 
 export interface NavbarStateModel {

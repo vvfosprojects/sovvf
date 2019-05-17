@@ -1,4 +1,4 @@
-import { TipologieInterface } from '../../core/settings/tipologie';
+import { TipologieInterface } from './tipologie';
 import { ListaSedi } from './lista-sedi';
 
 export interface AppSettings {

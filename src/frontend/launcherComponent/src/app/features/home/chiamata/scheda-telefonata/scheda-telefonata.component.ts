@@ -4,7 +4,7 @@ import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormChiamataModel } from '../model/form-scheda-telefonata.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
-import { TipologieInterface } from '../../../../core/settings/tipologie';
+import { TipologieInterface } from '../../../../shared/interface/tipologie';
 import { SchedaTelefonataInterface } from '../model/scheda-telefonata.interface';
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
 import { makeCopy, makeID } from '../../../../shared/helper/function';
@@ -20,6 +20,7 @@ import { Richiedente } from '../../../../shared/model/richiedente.model';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
 import { ToastrType } from '../../../../shared/enum/toastr';
+import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-scheda-telefonata',

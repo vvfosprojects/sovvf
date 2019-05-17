@@ -37,7 +37,7 @@
                 <label>Tipologia intervento</label>
                 <ng-select class="border"
                            bindLabel="descrizione"
-                           [items]="tipologie"
+                           [items]="(tipologie$ | async)"
                            [multiple]="true"
                            [closeOnSelect]="true"
                            [hideSelected]="true"
@@ -238,3 +238,4 @@
         </form>
     </div>
 </div>
+{{richiestaModifica | json}}

@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { makeCopy } from '../../../../../shared/helper/function';
 
 // Model
@@ -8,7 +8,8 @@ import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.mode
 import { GetFiltriRichieste, SetFiltroSelezionato, ResetFiltriSelezionati } from '../../actions/filterbar/filtri-richieste.actions';
 
 // Tipologie
-import { APP_TIPOLOGIE } from 'src/app/core/settings/tipologie';
+import { TipologieInterface } from 'src/app/shared/interface/tipologie';
+import { NavbarState } from '../../../../navbar/store/states/navbar.state';
 
 
 export interface FiltriRichiesteStateModel {
@@ -30,7 +31,7 @@ export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
 })
 export class FiltriRichiesteState {
 
-    constructor() {
+    constructor(private store: Store) {
     }
 
     // SELECTORS
@@ -56,9 +57,10 @@ export class FiltriRichiesteState {
             new VoceFiltro('3', 'Rilevante', 'Rilevante', true),
             new VoceFiltro('4', 'Rilevante', 'Non Rilevante', true)
         ];
+        const tipologie: TipologieInterface[] = this.store.selectSnapshot(NavbarState.tipologie);
         filtriRichieste.push(...filtriStatici);
-        APP_TIPOLOGIE.forEach(tipologie => {
-            filtriRichieste.push(new VoceFiltro('' + tipologie.codice, tipologie.categoria, tipologie.descrizione, tipologie.star));
+        tipologie.forEach(tipologia => {
+            filtriRichieste.push(new VoceFiltro('' + tipologia.codice, tipologia.categoria, tipologia.descrizione, tipologia.star));
         });
 
         patchState({

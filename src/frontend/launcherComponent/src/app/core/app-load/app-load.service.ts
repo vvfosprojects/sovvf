@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { APP_TIPOLOGIE } from '../settings/tipologie';
 import { environment } from '../../../environments/environment';
 import { SignalRService } from '../signalr/signalR.service';
 import { Subscription } from 'rxjs';
@@ -55,7 +54,6 @@ export class AppLoadService {
         return this.http.get<AppSettings>(API_URL)
             .toPromise()
             .then(settings => {
-                APP_TIPOLOGIE.push(...settings.tipologie);
                 this.store.dispatch(new SetListaSediTreeview(settings.listaSedi));
             }).catch();
     }

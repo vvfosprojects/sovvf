@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { APP_TIPOLOGIE, TipologieInterface } from '../../../../core/settings/tipologie';
+import { TipologieInterface } from '../../../../shared/interface/tipologie';
 import { RichiestaModificaState } from '../../store/states/richieste/richiesta-modifica.state';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
@@ -11,6 +11,7 @@ import { UpdateRichiesta } from '../../store/actions/richieste/richieste.actions
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { CopyToClipboard } from '../../store/actions/chiamata/clipboard.actions';
+import { NavbarState } from '../../../navbar/store/states/navbar.state';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -18,11 +19,13 @@ import { CopyToClipboard } from '../../store/actions/chiamata/clipboard.actions'
     styleUrls: ['./modifica-richiesta.component.css']
 })
 export class ModificaRichiestaComponent implements OnInit {
+
     options = {
-        componentRestrictions: {country: ['IT', 'FR', 'AT', 'CH', 'SI']}
+        componentRestrictions: { country: ['IT', 'FR', 'AT', 'CH', 'SI'] }
     };
-    tipologie: TipologieInterface[] = APP_TIPOLOGIE;
+
     tipologiaRichiedente: string;
+    @Select(NavbarState.tipologie) tipologie$: Observable<TipologieInterface[]>;
 
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
     richiestaModifica: SintesiRichiesta;
