@@ -35,6 +35,7 @@ import { RichiestaComposizioneState } from '../store/states/composizione-partenz
 import { environment } from '../../../../environments/environment';
 import { FilterbarComposizioneState } from '../store/states/composizione-partenza/filterbar-composizione.state';
 import { FilterbarService } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
+import { FilterbarServiceFake } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service.fake';
 
 @NgModule({
     declarations: [
@@ -71,9 +72,8 @@ import { FilterbarService } from '../../../core/service/comp-partenza-service/fi
         ComposizionePartenzaComponent
     ],
     providers: [
-        FilterbarService,
-        { provide: CompPartenzaService, useClass: CompPartenzaServiceFake },
-        // { provide: CompPartenzaService, useClass: environment.fakeProvider ? CompPartenzaServiceFake : CompPartenzaService}
+        { provide: FilterbarService, useClass: environment.fakeProvider ? FilterbarServiceFake : CompPartenzaService},
+        { provide: CompPartenzaService, useClass: environment.fakeProvider ? CompPartenzaServiceFake : CompPartenzaService}
     ]
 })
 export class ComposizionePartenzaModule {
