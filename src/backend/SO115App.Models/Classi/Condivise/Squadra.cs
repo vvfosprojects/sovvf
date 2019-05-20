@@ -62,7 +62,7 @@ namespace SO115App.API.Models.Classi.Condivise
             this.Componenti = Componenti;
             this.Distaccamento = Distaccamento;
         }
-
+        public string Id { get; set; }
         /// <summary>
         /// Nominativo Squadra
         /// </summary>
