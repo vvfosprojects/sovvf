@@ -19,7 +19,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.CallTracker,
-                        sede: null
+                        sede: {
+                            codice: 'RM.1000',
+                            provincia: 'ROMA',
+                            regione: 'Lazio',
+                            tipo: 'Comando',
+                            descrizione: 'Comando VV.F. ROMA',
+                            coordinate: {
+                                latitudine: 41.89996,
+                                longitudine: 12.49104,
+                            },
+                            indirizzo: 'Via Genova, 3/a',
+                        }
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -46,7 +57,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.CallTracker,
-                        sede: null
+                        sede: {
+                            codice: 'RM.1000',
+                            provincia: 'ROMA',
+                            regione: 'Lazio',
+                            tipo: 'Comando',
+                            descrizione: 'Comando VV.F. ROMA',
+                            coordinate: {
+                                latitudine: 41.89996,
+                                longitudine: 12.49104,
+                            },
+                            indirizzo: 'Via Genova, 3/a',
+                        }
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -70,11 +92,21 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cognome: 'Rossi',
                 username: 'test',
                 password: 'test',
-
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        sede: null
+                        sede: {
+                            codice: 'RM.1000',
+                            provincia: 'ROMA',
+                            regione: 'Lazio',
+                            tipo: 'Comando',
+                            descrizione: 'Comando VV.F. ROMA',
+                            coordinate: {
+                                latitudine: 41.89996,
+                                longitudine: 12.49104,
+                            },
+                            indirizzo: 'Via Genova, 3/a',
+                        }
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -101,7 +133,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        sede: null
+                        sede: {
+                            codice: 'RM.1000',
+                            provincia: 'ROMA',
+                            regione: 'Lazio',
+                            tipo: 'Comando',
+                            descrizione: 'Comando VV.F. ROMA',
+                            coordinate: {
+                                latitudine: 41.89996,
+                                longitudine: 12.49104,
+                            },
+                            indirizzo: 'Via Genova, 3/a',
+                        }
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -128,7 +171,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        sede: null
+                        sede: {
+                            codice: 'RM.1000',
+                            provincia: 'ROMA',
+                            regione: 'Lazio',
+                            tipo: 'Comando',
+                            descrizione: 'Comando VV.F. ROMA',
+                            coordinate: {
+                                latitudine: 41.89996,
+                                longitudine: 12.49104,
+                            },
+                            indirizzo: 'Via Genova, 3/a',
+                        }
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -155,7 +209,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        sede: null
+                        sede: {
+                            codice: 'RM.1000',
+                            provincia: 'ROMA',
+                            regione: 'Lazio',
+                            tipo: 'Comando',
+                            descrizione: 'Comando VV.F. ROMA',
+                            coordinate: {
+                                latitudine: 41.89996,
+                                longitudine: 12.49104,
+                            },
+                            indirizzo: 'Via Genova, 3/a',
+                        }
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -182,7 +247,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.CallTracker,
-                        sede: null
+                        sede: {
+                            codice: 'RM.1000',
+                            provincia: 'ROMA',
+                            regione: 'Lazio',
+                            tipo: 'Comando',
+                            descrizione: 'Comando VV.F. ROMA',
+                            coordinate: {
+                                latitudine: 41.89996,
+                                longitudine: 12.49104,
+                            },
+                            indirizzo: 'Via Genova, 3/a',
+                        }
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -209,7 +285,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        sede: null
+                        sede: {
+                            codice: 'RM.1000',
+                            provincia: 'ROMA',
+                            regione: 'Lazio',
+                            tipo: 'Comando',
+                            descrizione: 'Comando VV.F. ROMA',
+                            coordinate: {
+                                latitudine: 41.89996,
+                                longitudine: 12.49104,
+                            },
+                            indirizzo: 'Via Genova, 3/a',
+                        }
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -236,7 +323,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.CallTracker,
-                        sede: null
+                        sede: {
+                            codice: 'RM.1000',
+                            provincia: 'ROMA',
+                            regione: 'Lazio',
+                            tipo: 'Comando',
+                            descrizione: 'Comando VV.F. ROMA',
+                            coordinate: {
+                                latitudine: 41.89996,
+                                longitudine: 12.49104,
+                            },
+                            indirizzo: 'Via Genova, 3/a',
+                        }
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -263,7 +361,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.CallTracker,
-                        sede: null
+                        sede: {
+                            codice: 'RM.1000',
+                            provincia: 'ROMA',
+                            regione: 'Lazio',
+                            tipo: 'Comando',
+                            descrizione: 'Comando VV.F. ROMA',
+                            coordinate: {
+                                latitudine: 41.89996,
+                                longitudine: 12.49104,
+                            },
+                            indirizzo: 'Via Genova, 3/a',
+                        }
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -290,7 +399,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        sede: null
+                        sede: {
+                            codice: 'RM.1000',
+                            provincia: 'ROMA',
+                            regione: 'Lazio',
+                            tipo: 'Comando',
+                            descrizione: 'Comando VV.F. ROMA',
+                            coordinate: {
+                                latitudine: 41.89996,
+                                longitudine: 12.49104,
+                            },
+                            indirizzo: 'Via Genova, 3/a',
+                        }
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -317,7 +437,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        sede: null
+                        sede: {
+                            codice: 'RM.1000',
+                            provincia: 'ROMA',
+                            regione: 'Lazio',
+                            tipo: 'Comando',
+                            descrizione: 'Comando VV.F. ROMA',
+                            coordinate: {
+                                latitudine: 41.89996,
+                                longitudine: 12.49104,
+                            },
+                            indirizzo: 'Via Genova, 3/a',
+                        }
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -344,7 +475,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        sede: null
+                        sede: {
+                            codice: 'RM.1000',
+                            provincia: 'ROMA',
+                            regione: 'Lazio',
+                            tipo: 'Comando',
+                            descrizione: 'Comando VV.F. ROMA',
+                            coordinate: {
+                                latitudine: 41.89996,
+                                longitudine: 12.49104,
+                            },
+                            indirizzo: 'Via Genova, 3/a',
+                        }
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -371,7 +513,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.CallTracker,
-                        sede: null
+                        sede: {
+                            codice: 'RM.1000',
+                            provincia: 'ROMA',
+                            regione: 'Lazio',
+                            tipo: 'Comando',
+                            descrizione: 'Comando VV.F. ROMA',
+                            coordinate: {
+                                latitudine: 41.89996,
+                                longitudine: 12.49104,
+                            },
+                            indirizzo: 'Via Genova, 3/a',
+                        }
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -398,7 +551,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        sede: null
+                        sede: {
+                            codice: 'RM.1000',
+                            provincia: 'ROMA',
+                            regione: 'Lazio',
+                            tipo: 'Comando',
+                            descrizione: 'Comando VV.F. ROMA',
+                            coordinate: {
+                                latitudine: 41.89996,
+                                longitudine: 12.49104,
+                            },
+                            indirizzo: 'Via Genova, 3/a',
+                        }
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -423,6 +587,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         const roleString = isLoggedIn && authHeader.split('.')[1];
         const role = roleString ? Role[roleString] : null;
 
+        console.log(JSON.stringify(users));
         return of(null).pipe(mergeMap(() => {
 
             if (request.url.endsWith('/api/auth/Login') && request.method === 'POST') {
@@ -430,6 +595,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 if (!user) {
                     return error('Username o password errati');
                 }
+
                 return ok({
                     _user: {
                         id: user.id,
