@@ -1,9 +1,9 @@
-﻿using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+﻿using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
 {
     public class AddInterventoCommand
     {
-        public SintesiRichiesta sintesiRichiesta { get; set; }
+        public InserimentoChiamata Chiamata { get; set; }
     }
 }

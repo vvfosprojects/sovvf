@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Persistenza;
@@ -51,6 +52,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   Costruisce una nuova istanza di <see cref="RichiestaAssistenza" />
         /// </summary>
+        [JsonConstructor]
         public RichiestaAssistenza()
         {
             this.eventi = new List<Evento>();

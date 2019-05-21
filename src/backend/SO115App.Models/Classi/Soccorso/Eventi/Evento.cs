@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Newtonsoft.Json;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using System;
 
 namespace SO115App.API.Models.Classi.Soccorso.Eventi
@@ -28,8 +30,19 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
     ///   un sensore che individua una geo-localizzazione, ecc.). A seconda della natura del
     ///   particolare evento, esiste una classe concreta derivata da Evento, con gli attributi del caso.
     /// </summary>
-    public abstract class Evento : IEvento
+    public  class Evento : IEvento
     {
+
+
+        [JsonConstructor]
+        public Evento(DateTime Istante, string CodiceFonte,string Codice)
+        {
+            this.Istante = Istante;
+            this.CodiceFonte = CodiceFonte;
+            this.IstanteCreazione = DateTime.UtcNow;
+            this.CodiceRichiesta = Codice;
+        }
+
         /// <summary>
         ///   Costruttore della classe.
         /// </summary>

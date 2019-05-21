@@ -16,45 +16,21 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             /// Se lo stato è 3 - Assegnata
             /// Se lo stato è 4 - Chiusa
             /// </summary>
-            if (command.sintesiRichiesta.Stato == 0)
-            {
-                if (!string.IsNullOrWhiteSpace(command.sintesiRichiesta.Codice))
-                {
-                    yield return new ValidationResult("Non può essere presente un codice chiamata");
-                }
-
-                if (!string.IsNullOrWhiteSpace(command.sintesiRichiesta.CodiceRichiesta))
-                {
-                    yield return new ValidationResult("Non può essere presente un codice richiesta in una nuova chiamata");
-                }
-            }
-            else
-            { 
-                if (string.IsNullOrWhiteSpace(command.sintesiRichiesta.Codice))
-                {
-                    yield return new ValidationResult("Non è presente il un codice chiamata");
-                }
-
-                if (string.IsNullOrWhiteSpace(command.sintesiRichiesta.CodiceRichiesta))
-                {
-                    yield return new ValidationResult("Non è presente il un codice richiesta");
-                }
-            }
 
             /// <summary>
             /// Controlli sul richiedente
             /// </summary>
-            if (command.sintesiRichiesta.Richiedente.Nome.Length > 0)
+            if (command.Chiamata.Richiedente.Nome.Length > 0)
             {
-                if(string.IsNullOrWhiteSpace(command.sintesiRichiesta.Richiedente.Cognome))
+                if(string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome))
                 {
                     yield return new ValidationResult("E' presente il nome del richiedente ma non il suo cognome");
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(command.sintesiRichiesta.Richiedente.RagioneSociale))
+            if (!string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.RagioneSociale))
             {
-                if (!string.IsNullOrWhiteSpace(command.sintesiRichiesta.Richiedente.Cognome) && !string.IsNullOrWhiteSpace(command.sintesiRichiesta.Richiedente.Nome))
+                if (!string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome) && !string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Nome))
                 {
                     yield return new ValidationResult("Se è presente un nominativo per una persona fisica non può essere presente una ragione sociale");
                 }

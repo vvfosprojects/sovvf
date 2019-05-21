@@ -55,7 +55,7 @@ namespace SO115App.CompositionRoot
                 API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse.TestAndSetDeselezioneDisponibilitaMezzo_DoNothing>();
             container.Register<
                 API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
-                API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.SaveRichiestaDiAssistenza_Fake>();
+                FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
             container.Register<
                 API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaAssistenzaById,
                 API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GetRichiestaAssistenzaById_Fake>();

@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SO115App.API.SOVVF.FakeImplementations\SO115App.API.SOVVF.FakeImplementations.csproj" />
     <ProjectReference Include="..\SO115App.CQRS\SO115App.CQRS.csproj" />
+    <ProjectReference Include="..\SO115App.FakePersistenceJSon\SO115App.FakePersistenceJSon.csproj" />
     <ProjectReference Include="..\SO115App.Logging\SO115App.Logging.csproj" />
   </ItemGroup>
 

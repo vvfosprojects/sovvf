@@ -1,35 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CQRS.Commands;
+﻿using CQRS.Commands;
+using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
 {
-    public class AddInterventoCommandCommandHandler : ICommandHandler<AddInterventoCommand>
+    public class AddInterventoCommandHandler : ICommandHandler<AddInterventoCommand>
     {
         private readonly ISaveRichiestaAssistenza _saveRichiestaAssistenza;
-        public AddInterventoCommandCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza)
+        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza)
         {
             this._saveRichiestaAssistenza = saveRichiestaAssistenza;
         }
 
         public void Handle(AddInterventoCommand command)
         {
-            // Here the user should be added.
-            //
-            // A good strategy consists in injecting the class
-            // providing the service, e.g. a class encapsulating
-            // the database query, located in the persistence
-            // layer and implemented by a class library explicitely
-            // aimed at providing the persistence services against
-            // the chosen database technology (e.g. relational
-            // database, document database, etc.).
-            //
-            // In this fake implementation we simply do nothing.
 
+            var richiesta = new RichiestaAssistenza()
+            {
+                Tipologie = command.Chiamata.Tipologie,
+                Indirizzo = command.Chiamata.Localita.Indirizzo,
+                ZoneEmergenza = command.Chiamata.ZoneEmergenza,
+                Operatore = command.Chiamata.Operatore,
+                Richiedente = command.Chiamata.Richiedente
 
+            };
 
+            if (command.Chiamata.Etichette != null)
+            {
+                foreach (var t in command.Chiamata.Etichette)
+                {
+                    richiesta.Tags.Add(t);
+                }
             }
+
+            new Telefonata(richiesta, command.Chiamata.Richiedente.Telefono, command.Chiamata.IstantePresaInCarico.Value, command.Chiamata.Operatore.Id)
+            {
+                CognomeChiamante = command.Chiamata.Richiedente.Cognome,
+                NomeChiamante = command.Chiamata.Richiedente.Nome,
+                RagioneSociale = command.Chiamata.Richiedente.RagioneSociale,
+                Motivazione = command.Chiamata.Descrizione,
+                NotePrivate = command.Chiamata.NotePrivate,
+                NotePubbliche = command.Chiamata.NotePubbliche,
+                NumeroTelefono = command.Chiamata.Richiedente.Telefono,
+                Esito = command.Chiamata.Azione.ToString(),
+            };
+
+            this._saveRichiestaAssistenza.Save(richiesta);
+        }
     }
 }
