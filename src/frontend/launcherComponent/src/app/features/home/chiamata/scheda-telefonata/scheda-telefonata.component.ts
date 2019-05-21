@@ -103,7 +103,7 @@ export class SchedaTelefonataComponent implements OnInit {
             null,
             null,
             null,
-            this.operatore,
+            new Utente(this.operatore.id, this.operatore.nome, this.operatore.cognome, this.operatore.codiceFiscale, this.operatore.sede, this.operatore.username),
             null,
             StatoRichiesta.Chiamata,
             0,

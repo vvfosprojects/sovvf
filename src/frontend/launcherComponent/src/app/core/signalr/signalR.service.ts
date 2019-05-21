@@ -92,7 +92,7 @@ export class SignalRService {
 
 
         this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: any) => {
-            // console.log('Richiesta:', data.sintesiRichiesta);
+            console.log('Richiesta:', data.sintesiRichiesta);
             // Todo Provvisorio: diventerà inserisci richiesta/inserisci marker/aggiorna contatori boxes con un id di tipo RM-001
             // this.store.dispatch(new ShowToastr(ToastrType.Info, 'Nuova Sintesi Richiesta', null, 3));
             this.store.dispatch(new InsertChiamataSuccess(data.sintesiRichiesta));

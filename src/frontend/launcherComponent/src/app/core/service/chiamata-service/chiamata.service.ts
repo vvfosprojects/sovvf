@@ -23,7 +23,7 @@ export class ChiamataService {
 
     public insertChiamata(chiamata: any): Observable<any> {
         return this.http.post<any>(API_URL_INSERIMENTO, chiamata).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }
