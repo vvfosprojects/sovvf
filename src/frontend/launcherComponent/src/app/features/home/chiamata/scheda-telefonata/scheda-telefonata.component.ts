@@ -9,18 +9,21 @@ import { SchedaTelefonataInterface } from '../model/scheda-telefonata.interface'
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
 import { makeCopy, makeID } from '../../../../shared/helper/function';
 import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/confirm-modal.component';
 import { Utente } from '../../../../shared/model/utente.model';
 import { ClearClipboard } from '../../store/actions/chiamata/clipboard.actions';
-import { ReducerSchedaTelefonata } from '../../store/actions/chiamata/scheda-telefonata.actions';
+import { ReducerSchedaTelefonata, StartChiamata } from '../../store/actions/chiamata/scheda-telefonata.actions';
 import { Richiedente } from '../../../../shared/model/richiedente.model';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
 import { ToastrType } from '../../../../shared/enum/toastr';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
+import { UtenteState } from '../../../navbar/store/states/operatore/utente.state';
+import { Observable } from 'rxjs';
+import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefonata.state';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -45,14 +48,17 @@ export class SchedaTelefonataComponent implements OnInit {
     @Input() tipologie: TipologieInterface[];
     @Input() operatore: Utente;
 
-    nuovaRichiesta: any;
+    nuovaRichiesta: SintesiRichiesta;
     tipologiaRichiedente: string;
     isCollapsed = true;
+
+    @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
 
     constructor(private formBuilder: FormBuilder,
                 private cdRef: ChangeDetectorRef,
                 private store: Store,
                 private modalService: NgbModal) {
+        this.store.dispatch(new StartChiamata());
     }
 
     ngOnInit() {
@@ -61,6 +67,12 @@ export class SchedaTelefonataComponent implements OnInit {
         this.initNuovaRichiesta();
         this.cambiaTipologiaRichiedente('Nome-Cognome');
         this.nuovaRichiesta.istanteRicezioneRichiesta = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
+
+        this.resetChiamata$.subscribe((reset: boolean) => {
+            if (reset) {
+                this.chiamataForm.reset();
+            }
+        });
     }
 
     createForm(): FormGroup {
@@ -76,7 +88,8 @@ export class SchedaTelefonataComponent implements OnInit {
             rilevanza: [null],
             notePrivate: [null],
             notePubbliche: [null],
-            motivazione: [null, Validators.required],
+            // descrizione: [null, Validators.required],
+            descrizione: [null],
             zoneEmergenza: [null],
         });
     }
@@ -93,18 +106,7 @@ export class SchedaTelefonataComponent implements OnInit {
             this.operatore,
             null,
             StatoRichiesta.Chiamata,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
+            0,
             null,
             null,
             null,
@@ -142,6 +144,7 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     getChiamataForm() {
+        console.log(this.f.descrizione.value);
         // Set form data
         const f = this.f;
         if (this.tipologiaRichiedente === 'Nome-Cognome') {
@@ -151,9 +154,9 @@ export class SchedaTelefonataComponent implements OnInit {
         }
         // this.nuovaRichiesta.localita = new Localita(this.coordinate ? this.coordinate : null, f.indirizzo.value, f.noteIndirizzo.value);
         this.nuovaRichiesta.localita.note = f.noteIndirizzo.value;
-        this.nuovaRichiesta.etichette = f.etichette.value;
+        this.nuovaRichiesta.etichette = f.etichette.value ? f.etichette.value.split(' ') : null;
         this.nuovaRichiesta.rilevanza = f.rilevanza.value;
-        this.nuovaRichiesta.descrizione = f.motivazione.value;
+        this.nuovaRichiesta.descrizione = f.descrizione.value;
         this.nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value;
         this.nuovaRichiesta.notePrivate = f.notePrivate.value;
         this.nuovaRichiesta.notePubbliche = f.notePubbliche.value;

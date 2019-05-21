@@ -72,7 +72,7 @@ export class HelperSintesiRichiesta {
         ];
 
         const colore = nome ? colori.find(x => x.icon === nome) : undefined;
-        if (nome === undefined || nome === '') {
+        if (!nome || nome === '') {
             return 'fa fa-exclamation-triangle text-warning';
         } else if (colore !== undefined) {
             return nome + ' ' + colore.color;

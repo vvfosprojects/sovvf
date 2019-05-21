@@ -587,7 +587,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         const roleString = isLoggedIn && authHeader.split('.')[1];
         const role = roleString ? Role[roleString] : null;
 
-        console.log(JSON.stringify(users));
         return of(null).pipe(mergeMap(() => {
 
             if (request.url.endsWith('/api/auth/Login') && request.method === 'POST') {

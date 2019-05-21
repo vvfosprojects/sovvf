@@ -10,14 +10,6 @@ export class ReducerSchedaTelefonata {
     }
 }
 
-export class SetChiamata {
-    static readonly type = '[Scheda Telefonata] Set chiamata';
-
-    constructor(public nuovaRichiesta: SintesiRichiesta, public azioneChiamata: AzioneChiamataEnum) {
-    }
-
-}
-
 export class SetMarkerChiamata {
     static readonly type = '[Scheda Telefonata] Set chiamata Marker';
 
@@ -46,5 +38,10 @@ export class CestinaChiamata {
 
 export class ResetChiamata {
     static readonly type = '[Scheda Telefonata] Reset chiamata';
+
+}
+
+export class StartChiamata {
+    static readonly type = '[Scheda Telefonata] Start Chiamata';
 
 }

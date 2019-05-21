@@ -17,6 +17,7 @@ import { ClipboardState } from '../store/states/chiamata/clipboard.state';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { environment } from '../../../../environments/environment';
 
 @NgModule({
     imports: [
@@ -43,9 +44,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
         ChiamataComponent
     ],
     entryComponents: [ConfirmModalComponent],
-    providers: [{
-        provide: ChiamataService, useClass: ChiamataServiceFake
-    }]
+    providers: [
+        environment.fakeProvider ? { provide: ChiamataService, useClass: ChiamataServiceFake } : ChiamataService
+    ]
 })
 export class ChiamataModule {
 }

@@ -37,7 +37,8 @@
             <div class="form-group mb-2">
                 <label>Tipologia intervento</label>
                 <ng-select class="border" bindLabel="descrizione" bindValue="codice" [items]="tipologie"
-                           [multiple]="true" [closeOnSelect]="true" [hideSelected]="true" clearAllText="Clear" (add)="onAddTipologia($event)"
+                           [multiple]="true" [closeOnSelect]="true" [hideSelected]="true" clearAllText="Clear"
+                           (add)="onAddTipologia($event)"
                            (remove)="onRemoveTipologia($event)" placeholder="Seleziona Tipologia Intervento"
                            formControlName="selectedTipologie">
                 </ng-select>
@@ -67,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="tipologiaRichiedente === 'Nome-Cognome'" class="col">
+                <div *ngIf="tipologiaRichiedente === 'Nome-Cognome'" class="col pl-0">
                     <div class="form-group">
                         <label for="nome">Nome</label>
                         <input id="nome" type="text" placeholder="Inserisci il Nome" formControlName="nome"
@@ -78,7 +79,7 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="tipologiaRichiedente === 'Nome-Cognome'" class="col">
+                <div *ngIf="tipologiaRichiedente === 'Nome-Cognome'" class="col pl-0">
                     <div class="form-group">
                         <label for="cognome">Cognome</label>
                         <input id="cognome" type="text" placeholder="Inserisci il Cognome" formControlName="cognome"
@@ -89,7 +90,7 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="tipologiaRichiedente === 'RagioneSociale'" class="col-6">
+                <div *ngIf="tipologiaRichiedente === 'RagioneSociale'" class="col-6 pl-0">
                     <div class="form-group">
                         <label for="ragioneSociale">Ragione Sociale</label>
                         <input id="ragioneSociale" type="text" placeholder="Inserisci la Ragione Sociale"
@@ -101,7 +102,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col pl-0">
                     <div class="form-group">
                         <label for="telefono">Telefono</label>
                         <input id="telefono" type="text" placeholder="Inserisci il Telefono" formControlName="telefono"
@@ -141,12 +142,12 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label for="motivazione">Motivazione</label>
-                        <textarea id="motivazione" placeholder="Inserisci la Motivazione" formControlName="motivazione"
+                        <label for="descrizione">Motivazione</label>
+                        <textarea id="descrizione" placeholder="Inserisci la Motivazione" formControlName="descrizione"
                                   class="form-control"
-                                  [ngClass]="{ 'is-invalid': submitted && f.motivazione.errors }"></textarea>
-                        <div *ngIf="submitted && f.motivazione.errors" class="invalid-feedback">
-                            <div *ngIf="f.motivazione.errors.required">La Motivazione è richiesta</div>
+                                  [ngClass]="{ 'is-invalid': submitted && f.descrizione.errors }"></textarea>
+                        <div *ngIf="submitted && f.descrizione.errors" class="invalid-feedback">
+                            <div *ngIf="f.descrizione.errors.required">La Motivazione è richiesta</div>
                         </div>
                     </div>
                 </div>

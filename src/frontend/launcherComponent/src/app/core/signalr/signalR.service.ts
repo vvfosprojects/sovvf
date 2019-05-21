@@ -24,6 +24,7 @@ import { Utente } from '../../shared/model/utente.model';
 import { SetFiltriComposizione } from '../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
 import { ToastrType } from '../../shared/enum/toastr';
 import { SetDataNavbar } from '../../features/navbar/store/actions/navbar.actions';
+import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -90,10 +91,11 @@ export class SignalRService {
         });
 
 
-        this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: SintesiRichiesta) => {
-            // console.log(`Login: ${data}`);
+        this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: any) => {
+            // console.log('Richiesta:', data.sintesiRichiesta);
             // Todo Provvisorio: diventerà inserisci richiesta/inserisci marker/aggiorna contatori boxes con un id di tipo RM-001
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Nuova Sintesi Richiesta', null, 3));
+            // this.store.dispatch(new ShowToastr(ToastrType.Info, 'Nuova Sintesi Richiesta', null, 3));
+            this.store.dispatch(new InsertChiamataSuccess(data.sintesiRichiesta));
         });
         this.hubNotification.on('ModifyAndNotifySuccess', (data: SintesiRichiesta) => {
             // console.log(`Login: ${data}`);
