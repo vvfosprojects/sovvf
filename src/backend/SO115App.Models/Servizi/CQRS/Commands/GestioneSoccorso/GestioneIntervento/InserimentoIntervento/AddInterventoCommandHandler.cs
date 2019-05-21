@@ -16,6 +16,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         public void Handle(AddInterventoCommand command)
         {
 
+            command.Chiamata.Codice = command.Chiamata.Operatore.Sede.Codice.Split('.')[0] + "1";
+
             var richiesta = new RichiestaAssistenza()
             {
                 Tipologie = command.Chiamata.Tipologie,
