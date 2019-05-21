@@ -315,3 +315,15 @@ a:hover {
   width: 250px;
   height: 140px;
 }
+
+.border-info-aggregate:hover {
+  -webkit-box-shadow: 0 0 1px 3px rgba(90,94,107,0.55);
+  -moz-box-shadow: 0 0 1px 3px rgba(90,94,107,0.55);
+  box-shadow: 0 0 1px 3px rgba(90,94,107,0.55);
+}
+
+.border-click-checked {
+  -webkit-box-shadow: 0 0 1px 3px rgba(90,94,107,1);
+  -moz-box-shadow: 0 0 1px 3px rgba(90,94,107,1);
+  box-shadow: 0 0 1px 3px rgba(90,94,107,1);
+}
