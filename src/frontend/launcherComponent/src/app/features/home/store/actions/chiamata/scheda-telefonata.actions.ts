@@ -28,6 +28,15 @@ export class ClearChiamata {
 export class InsertChiamata {
     static readonly type = '[Scheda Telefonata] Insert chiamata';
 
+    constructor(public nuovaRichiesta: SintesiRichiesta, public azioneChiamata: AzioneChiamataEnum) {
+    }
+}
+
+export class InsertChiamataSuccess {
+    static readonly type = '[Scheda Telefonata] Insert chiamata success';
+
+    constructor(public nuovaRichiesta: SintesiRichiesta) {
+    }
 }
 
 
