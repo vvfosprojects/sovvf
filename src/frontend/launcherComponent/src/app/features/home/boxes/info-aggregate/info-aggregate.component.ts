@@ -15,6 +15,7 @@ import { BoxRichiesteState } from '../../store/states/boxes/box-richieste.state'
 import { BoxMezziState } from '../../store/states/boxes/box-mezzi.state';
 import { BoxPersonaleState } from '../../store/states/boxes/box-personale.state';
 import { ReducerBoxClick } from '../../store/actions/boxes/box-click.actions';
+import { UtenteState } from '../../../navbar/store/states/operatore/utente.state';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -53,10 +54,8 @@ export class InfoAggregateComponent implements OnDestroy {
     }
 
     startMeteo() {
-        /**
-         * Dati coordinate fake in attesa di quelle passate dal servizio località utente
-         */
-        const coordinate = new Coordinate(41.899940, 12.491270);
+        const coordinateUtente = this.store.selectSnapshot(UtenteState.utente).sede.coordinate;
+        const coordinate = new Coordinate(coordinateUtente.latitudine, coordinateUtente.longitudine);
         this._getMeteoData(coordinate);
         setInterval(() => {
             this.datimeteo = undefined;
