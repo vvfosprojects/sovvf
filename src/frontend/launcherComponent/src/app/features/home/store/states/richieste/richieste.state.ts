@@ -4,12 +4,12 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Action
-import { ClearRichieste, GetRichieste, SetRichieste, UpdateRichiesta } from '../../actions/richieste/richieste.actions';
+import { AddRichiesta, ClearRichieste, GetRichieste, SetRichieste, UpdateRichiesta } from '../../actions/richieste/richieste.actions';
 
 // Service
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { patch, updateItem } from '@ngxs/store/operators';
+import { insertItem, patch, updateItem } from '@ngxs/store/operators';
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
@@ -68,6 +68,15 @@ export class RichiesteState {
         setState(
             patch({
                 richieste: updateItem<SintesiRichiesta>(r => r.id === richiesta.id, richiesta)
+            })
+        );
+    }
+
+    @Action(AddRichiesta)
+    addRichiesta({ setState }: StateContext<RichiesteStateModel>, { richiesta }: AddRichiesta) {
+        setState(
+            patch({
+                richieste: insertItem(richiesta, 0)
             })
         );
     }

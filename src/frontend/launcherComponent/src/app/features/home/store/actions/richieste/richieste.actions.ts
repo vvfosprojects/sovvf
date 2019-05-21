@@ -24,3 +24,10 @@ export class UpdateRichiesta {
     constructor(public richiesta: SintesiRichiesta) {
     }
 }
+
+export class AddRichiesta {
+    static readonly type = '[Richieste] Add Richiesta';
+
+    constructor(public richiesta: SintesiRichiesta) {
+    }
+}
