@@ -5,7 +5,6 @@ export const environment = {
     signalR: true,
     apiUrl: {
         home: '/api/Welcome',
-        appSettings: 'assets/json/app-settings.json',
         boxes: {
             personale: '/api/BoxPersonale',
             mezzi: '/api/BoxMezzi',
@@ -24,24 +23,23 @@ export const environment = {
                 richieste: '/api/SintesiRichiesteAssistenzaMarker',
                 sedi: '/api/SintesiSediMarker',
                 mezzi: '/api/SintesiMezziMarker',
-                centro: '',
-                chiamate: ''
+                centro: '',  // Todo: controller mancante
+                chiamate: ''  // Todo: controller mancante
             }
         },
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
-        eventiRichieste: 'https://api.myjson.com/bins/kz0w0',
-        turno: '',
+        eventiRichieste: 'https://api.myjson.com/bins/kz0w0', // Todo: controller mancante
+        turno: '',  // Todo: controller mancante
         composizione: {
-            preaccoppiati: '',
-            mezzi: '',
-            squadre: '',
+            preaccoppiati: '/api/PreAccoppiati',
+            mezzi: '/api/ComposizioneMezzi',
+            squadre: '/api/ComposizioneMezzi',
             filtri: '/api/Filtri'
         },
         chiamata: {
-            currentId: '',
+            currentId: '', // Todo: controller mancante non sicuro se da fare
             inserimento: '/api/InserimentoIntervento'
         },
-        listaSedi: '',
         login: '/api/auth/Login',
         users: '/api/users',
         navbar: '/api/Navbar'
