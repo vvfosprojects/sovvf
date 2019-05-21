@@ -23,11 +23,8 @@ import { ReducerBoxClick } from '../../store/actions/boxes/box-click.actions';
 })
 export class InfoAggregateComponent implements OnDestroy {
     @Select(BoxRichiesteState.richieste) richieste$: Observable<BoxInterventi>;
-    richieste: BoxInterventi;
     @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
-    mezzi: BoxMezzi;
     @Select(BoxPersonaleState.personale) personale$: Observable<BoxPersonale>;
-    personale: BoxPersonale;
 
     datimeteo: Meteo;
 
@@ -39,9 +36,6 @@ export class InfoAggregateComponent implements OnDestroy {
                 private modalService: NgbModal,
                 private meteoService: MeteoService) {
         this.startMeteo();
-        this.subscription.add(this.richieste$.subscribe( r => this.richieste = r));
-        this.subscription.add(this.mezzi$.subscribe( r => this.mezzi = r));
-        this.subscription.add(this.personale$.subscribe( r => this.personale = r));
     }
 
     ngOnDestroy() {
