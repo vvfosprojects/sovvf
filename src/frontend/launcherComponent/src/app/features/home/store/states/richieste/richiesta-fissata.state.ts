@@ -1,14 +1,16 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 
 // Action
-import { SetRichiestaFissata, ClearRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
+import { SetRichiestaFissata, ClearRichiestaFissata, SetEspanso } from '../../actions/richieste/richiesta-fissata.actions';
 
 export interface RichiestaFissataStateModel {
     idRichiestaFissata: string;
+    espanso: boolean;
 }
 
 export const RichiestaFissataStateDefaults: RichiestaFissataStateModel = {
-    idRichiestaFissata: null
+    idRichiestaFissata: null,
+    espanso: false
 };
 
 @State<RichiestaFissataStateModel>({
@@ -17,7 +19,8 @@ export const RichiestaFissataStateDefaults: RichiestaFissataStateModel = {
 })
 export class RichiestaFissataState {
 
-    constructor() { }
+    constructor() {
+    }
 
     // SELECTORS
     @Selector()
@@ -25,7 +28,11 @@ export class RichiestaFissataState {
         return state.idRichiestaFissata;
     }
 
-    // SET
+    @Selector()
+    static espanso(state: RichiestaFissataStateModel) {
+        return state.espanso;
+    }
+
     @Action(SetRichiestaFissata)
     setRichiestaFissata({ getState, patchState }: StateContext<RichiestaFissataStateModel>, action: SetRichiestaFissata) {
         const state = getState();
@@ -36,14 +43,15 @@ export class RichiestaFissataState {
         });
     }
 
-    // CLEAR
     @Action(ClearRichiestaFissata)
-    clearRichiestaFissata({ getState, patchState }: StateContext<RichiestaFissataStateModel>) {
-        const state = getState();
+    clearRichiestaFissata({ patchState }: StateContext<RichiestaFissataStateModel>) {
+        patchState(RichiestaFissataStateDefaults);
+    }
 
+    @Action(SetEspanso)
+    setEspanso({ patchState }: StateContext<RichiestaFissataStateModel>, action: SetEspanso) {
         patchState({
-            ...state,
-            idRichiestaFissata: null
+            espanso: action.espanso
         });
     }
 }
