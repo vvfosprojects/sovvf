@@ -92,10 +92,10 @@ export class SignalRService {
 
 
         this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: any) => {
-            console.log('Richiesta:', data.sintesiRichiesta);
+            console.log('Richiesta:', data.chiamata);
             // Todo Provvisorio: diventerà inserisci richiesta/inserisci marker/aggiorna contatori boxes con un id di tipo RM-001
             // this.store.dispatch(new ShowToastr(ToastrType.Info, 'Nuova Sintesi Richiesta', null, 3));
-            this.store.dispatch(new InsertChiamataSuccess(data.sintesiRichiesta));
+            this.store.dispatch(new InsertChiamataSuccess(data.chiamata));
         });
         this.hubNotification.on('ModifyAndNotifySuccess', (data: SintesiRichiesta) => {
             // console.log(`Login: ${data}`);
@@ -213,6 +213,7 @@ export class SignalRService {
 
     addToGroup(notification: SignalRNotification) {
         if (!SIGNALR_BYPASS) {
+            console.log(notification);
             this.hubNotification.invoke('AddToGroup', notification).then(
                 () => this.store.dispatch(new ShowToastr(ToastrType.Info, 'Connessione al gruppo effettuata con successo', null, 3))
             ).catch(

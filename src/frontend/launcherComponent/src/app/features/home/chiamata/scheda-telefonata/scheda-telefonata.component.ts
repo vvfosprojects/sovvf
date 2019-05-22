@@ -144,7 +144,7 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     getChiamataForm() {
-        console.log(this.f.descrizione.value);
+        // console.log(this.f.descrizione.value);
         // Set form data
         const f = this.f;
         if (this.tipologiaRichiedente === 'Nome-Cognome') {
