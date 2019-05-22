@@ -28,6 +28,7 @@ body, html {
 .pac-container {
   z-index: 99999 !important;
 }
+
 // End Dropdown Google Places
 
 .xlModal > .modal-dialog {
@@ -317,13 +318,31 @@ a:hover {
 }
 
 .border-info-aggregate:hover {
-  -webkit-box-shadow: 0 0 1px 3px rgba(90,94,107,0.55);
-  -moz-box-shadow: 0 0 1px 3px rgba(90,94,107,0.55);
-  box-shadow: 0 0 1px 3px rgba(90,94,107,0.55);
+  -webkit-box-shadow: 0 0 1px 3px rgba(90, 94, 107, 0.55);
+  -moz-box-shadow: 0 0 1px 3px rgba(90, 94, 107, 0.55);
+  box-shadow: 0 0 1px 3px rgba(90, 94, 107, 0.55);
 }
 
 .border-click-checked {
-  -webkit-box-shadow: 0 0 1px 3px rgba(90,94,107,1);
-  -moz-box-shadow: 0 0 1px 3px rgba(90,94,107,1);
-  box-shadow: 0 0 1px 3px rgba(90,94,107,1);
+  -webkit-box-shadow: 0 0 1px 3px rgba(90, 94, 107, 1);
+  -moz-box-shadow: 0 0 1px 3px rgba(90, 94, 107, 1);
+  box-shadow: 0 0 1px 3px rgba(90, 94, 107, 1);
+}
+
+.blink-aggregate span {
+  animation: blink 0.8s linear infinite;
+}
+
+.blink-i-aggregate {
+  font-size: 12px;
+  position: absolute;
+  left: 10px;
+  top: 4px;
+  animation: blink 0.8s linear infinite;
+}
+
+@keyframes blink{
+  0%{opacity: .2;}
+  50%{opacity: .5;}
+  100%{opacity: 1;}
 }

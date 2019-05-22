@@ -15,7 +15,7 @@ export class BoxRichiesteFakeService {
     public getInterventi(): Observable<BoxInterventi> {
         this.interventi = new BoxInterventi(3, 3, 1, 2, 9, 20, 'B', 30, 'A', 2018, 12.842);
         this.store.dispatch(new SetBoxRichieste(this.interventi));
-        return of(this.interventi);
+        return of();
     }
 
 }
