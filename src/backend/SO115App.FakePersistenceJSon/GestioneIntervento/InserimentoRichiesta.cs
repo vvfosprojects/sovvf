@@ -23,7 +23,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                     json = r.ReadToEnd();
                 }
 
-                List<RichiestaAssistenza> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenza>>(json);
+                List<RichiestaAssistenzaRead> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaRead>>(json);
 
                 if (ListaRichieste != null)
                     MaxIdSintesi = Convert.ToInt16(ListaRichieste.OrderByDescending(x => x.Codice).FirstOrDefault().Codice.Split('-')[1]) + 1;
@@ -34,10 +34,9 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 
                 if (ListaRichieste != null)
                 {
-                    ListaRichieste.Add(richiestaAssistenza);
-                    string jsonNew = JsonConvert.SerializeObject(ListaRichieste);
-                    System.IO.File.AppendAllText(@"Fake/ListaRichiesteAssistenza.json", jsonNew);
-
+                    string fileText = System.IO.File.ReadAllText(@"Fake/ListaRichiesteAssistenza.json");
+                    string jsonNew = JsonConvert.SerializeObject(richiestaAssistenza);
+                    System.IO.File.WriteAllText(@"Fake/ListaRichiesteAssistenza.json", "[" + fileText.Substring(1, fileText.Length - 2) + "," + jsonNew + "]");
                 }
                 else
                 {
@@ -53,24 +52,6 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 
             }
         }
-
     }
 
-    class EventiConverter : JsonConverter
-    {
-        public override bool CanConvert(Type objectType)
-        {
-            return (objectType == typeof(Evento));
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            return serializer.Deserialize(reader, typeof(Evento));
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            serializer.Serialize(writer, value, typeof(Evento));
-        }
-    }
 }

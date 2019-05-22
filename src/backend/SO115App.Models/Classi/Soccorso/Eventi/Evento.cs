@@ -32,9 +32,6 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
     /// </summary>
     public  class Evento : IEvento
     {
-
-
-        [JsonConstructor]
         public Evento(DateTime Istante, string CodiceFonte,string Codice)
         {
             this.Istante = Istante;

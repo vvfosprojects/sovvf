@@ -29,6 +29,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 using System.Collections.Generic;
+using Azione = SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata.CommandDTO.Azione;
 
 namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.InserisciTelefonata
 {

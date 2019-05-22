@@ -202,7 +202,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Genera
                 .RuleFor(ra => ra.Richiedente, f => new Richiedente(f.Name.FirstName(), f.Name.LastName(), f.Company.CompanyName(), f.Phone.Locale))
                 .RuleFor(ra => ra.NumeroRichiedente, f => f.Phone.PhoneNumber())
                 .RuleFor(ra => ra.CodiciUOCompetenza, f => new[] { f.Address.StateAbbr(), f.Address.StateAbbr(), f.Address.StateAbbr() })
-                .RuleFor(ra => ra.ListaPartenze, f => GeneraListaPartenze())
+               // .RuleFor(ra => ra.ListaPartenze, f => GeneraListaPartenze())
                 .RuleFor(ra => ra.Localita, f => new Localita(GeneraCoordinateLocalita(), indirizzo, NoteLocalita))
                 .RuleFor(ra => ra.Competenze, f => GeneraCompetenze())
                 .Ignore(ra => ra.Tags);
