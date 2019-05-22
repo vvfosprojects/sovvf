@@ -72,3 +72,20 @@ export function arrayDiff(a1, a2) {
     return a1.filter(item => a2.indexOf(item) < 0);
 }
 
+export function randomNumber(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+export function objectDiff(current: object, previous: object) {
+    const newObj: object = {};
+    const previousKeys = Object.keys(previous);
+    let hasError = false;
+    Object.keys(current).forEach( (key, index) => {
+        if (previousKeys[index] === key && !hasError) {
+            newObj[key] = current[key] - previous[key];
+        } else {
+            hasError = true;
+        }
+    });
+    return !hasError ? newObj : null;
+}
