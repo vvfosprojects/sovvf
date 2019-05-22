@@ -81,7 +81,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 CodiceSchedaNue = richiesta.CodiceSchedaNue,
                 //fonogramma = richiesta.StatoInvioFonogramma,
                 //ComplessitaIntervento = richiesta.Complessita,
-                Partenze = richiesta.ListaPartenze
+                //Partenze = richiesta.ListaPartenze
             };
         }
     }

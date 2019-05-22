@@ -58,7 +58,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             this.eventi = new List<Evento>();
             this.Tipologie = new List<Tipologia>();
             this.Tags = new HashSet<string>();
-            this.ListaPartenze = new List<Partenza>();
+            //this.ListaPartenze = new List<Partenza>();
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             //set;
         }
 
-        public List<Partenza> ListaPartenze { get; set; }
+        //public List<Partenza> ListaPartenze { get; set; }
 
         /// <summary>
         ///   Indica l'istante di chiusura della richiesta, impostato dall'evento <see cref="ChiusuraRichiesta" />
