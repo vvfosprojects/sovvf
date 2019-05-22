@@ -10,6 +10,8 @@ import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.componen
 
 // Helper Methods
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
+import { Store } from '@ngxs/store';
+import { SetEspanso } from '../../store/actions/richieste/richiesta-fissata.actions';
 
 
 @Component({
@@ -36,7 +38,8 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     private playerRichiesta: AnimationPlayer;
 
     constructor(private animationBuilder: AnimationBuilder,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private store: Store) {
     }
 
     ngOnInit(): void {
@@ -70,14 +73,14 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
 
         const animationContainerRichiesta = this.animationBuilder
             .build([
-                style({height: '0', width: '0'}),
-                animate(450, style({height: '100%', width: '100%'}))
+                style({ height: '0', width: '0' }),
+                animate(450, style({ height: '100%', width: '100%' }))
             ]);
 
         const animationRichiesta = this.animationBuilder
             .build([
-                style({height: '0', opacity: '0'}),
-                animate(350, style({height: 'auto', opacity: '1'}))
+                style({ height: '0', opacity: '0' }),
+                animate(350, style({ height: 'auto', opacity: '1' }))
             ]);
 
         this.playerContainer = animationContainerRichiesta.create(this.richiestaContainer.nativeElement);
@@ -93,14 +96,14 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
 
         const animationContainerRichiesta = this.animationBuilder
             .build([
-                style({width: '100%'}),
-                animate(300, style({width: '0'}))
+                style({ width: '100%' }),
+                animate(300, style({ width: '0' }))
             ]);
 
         const animationRichiesta = this.animationBuilder
             .build([
-                style({height: 'auto', opacity: '1'}),
-                animate(300, style({height: '0', opacity: '0'}))
+                style({ height: 'auto', opacity: '1' }),
+                animate(300, style({ height: '0', opacity: '0' }))
             ]);
 
         this.playerContainer = animationContainerRichiesta.create(this.richiestaContainer.nativeElement);
@@ -121,7 +124,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(richiesta: any) {
-        this.modalService.open(EventiRichiestaComponent, {size: 'lg'});
+        this.modalService.open(EventiRichiestaComponent, { size: 'lg' });
     }
 
     /* Apre il componente per la creazione della partenza */
@@ -134,6 +137,11 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
 
     onModificaRichiesta(richiesta: SintesiRichiesta) {
         this.modificaRichiesta.emit(richiesta);
+    }
+
+    setEspanso(espanso: boolean) {
+        this.store.dispatch(new SetEspanso(espanso));
+        console.log('Stato espanso:', espanso);
     }
 
     /* NgClass Template */

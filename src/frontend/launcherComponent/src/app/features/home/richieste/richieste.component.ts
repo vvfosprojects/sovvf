@@ -44,6 +44,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(RichiestaFissataState.idRichiestaFissata) idRichiestaFissata$: Observable<string>;
     richiestaFissata: SintesiRichiesta;
 
+    @Select(RichiestaFissataState.espanso) richiestaFissataEspanso$: Observable<boolean>;
+
     @Select(RichiestaHoverState.idRichiestaHover) idRichiestaHover$: Observable<string>;
     richiestaHover: SintesiRichiesta;
 
@@ -66,6 +68,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getRichiestaFissata();
+        this.getRichiestaFissataEspanso();
         this.getRichiestaHover();
         this.getRichiestaSelezionata();
         this.getRicerca();
@@ -121,6 +124,19 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                         this.richiestaFissata = null;
                         this.listHeightClass = 'm-h-750';
                     }, 300);
+                }
+            })
+        );
+    }
+
+    getRichiestaFissataEspanso() {
+        this.subscription.add(
+            this.richiestaFissataEspanso$.subscribe((richiestaEspanso: boolean) => {
+                // console.log(richiestaEspanso);
+                if (richiestaEspanso === true) {
+                    this.listHeightClass = 'm-h-400';
+                } else {
+                    this.listHeightClass = 'm-h-600';
                 }
             })
         );
