@@ -24,7 +24,8 @@ export class BoxMezziFakeService {
     constructor(private store: Store) {
         setInterval(() => {
             this.store.dispatch(new SetBoxMezzi(this.mezziFake[this.count++]));
-            if (this.count > 8) {
+            this.count++;
+            if (this.count === this.mezziFake.length) {
                 this.count = 0;
             }
         }, 20000);
