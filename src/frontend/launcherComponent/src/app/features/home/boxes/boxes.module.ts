@@ -24,7 +24,7 @@ import { BoxMezziService } from '../../../core/service/boxes-service/box-mezzi.s
 import { BoxPersonaleService } from '../../../core/service/boxes-service/box-personale.service';
 import { BoxRichiesteFakeService } from '../../../core/service/boxes-service/box-richieste-fake.service';
 import { BoxMezziFakeService } from '../../../core/service/boxes-service/box-mezzi-fake.service';
-import { BoxPesonaleFakeService } from '../../../core/service/boxes-service/box-pesonale-fake.service';
+import { BoxPersonaleFakeService } from '../../../core/service/boxes-service/box-personale-fake.service';
 /**
  * Ngxs
  */
@@ -63,7 +63,7 @@ import { BoxRichiesteState } from '../store/states/boxes/box-richieste.state';
     providers: [
         { provide: BoxRichiesteService, useClass: environment.fakeProvider ? BoxRichiesteFakeService : BoxRichiesteService},
         { provide: BoxMezziService, useClass: environment.fakeProvider ? BoxMezziFakeService : BoxMezziService},
-        { provide: BoxPersonaleService, useClass: environment.fakeProvider ? BoxPesonaleFakeService : BoxPersonaleService}
+        { provide: BoxPersonaleService, useClass: environment.fakeProvider ? BoxPersonaleFakeService : BoxPersonaleService}
     ]
 })
 export class BoxesModule {

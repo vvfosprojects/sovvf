@@ -16,6 +16,7 @@ import { BoxMezziState } from '../../store/states/boxes/box-mezzi.state';
 import { BoxPersonaleState } from '../../store/states/boxes/box-personale.state';
 import { ReducerBoxClick } from '../../store/actions/boxes/box-click.actions';
 import { UtenteState } from '../../../navbar/store/states/operatore/utente.state';
+import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../shared/interface/box-personale.interface';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -25,7 +26,8 @@ import { UtenteState } from '../../../navbar/store/states/operatore/utente.state
 export class InfoAggregateComponent implements OnDestroy {
     @Select(BoxRichiesteState.richieste) richieste$: Observable<BoxInterventi>;
     @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
-    @Select(BoxPersonaleState.personale) personale$: Observable<BoxPersonale>;
+    @Select(BoxPersonaleState.personaleQty) personaleQty$: Observable<BoxPersonaleQty>;
+    @Select(BoxPersonaleState.presenze) presenze$: Observable<BoxPersonalePresenze>;
 
     datimeteo: Meteo;
 

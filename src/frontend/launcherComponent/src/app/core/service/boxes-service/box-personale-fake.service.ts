@@ -6,15 +6,12 @@ import { Store } from '@ngxs/store';
 import { SetBoxPersonale } from '../../../features/home/store/actions/boxes/box-personale.actions';
 
 @Injectable()
-export class BoxPesonaleFakeService {
+export class BoxPersonaleFakeService {
 
-    personale: BoxPersonale;
+    count = 0;
 
-    constructor(private store: Store) {
-    }
-
-    public getPersonale(): Observable<BoxPersonale> {
-        this.personale = new BoxPersonale(
+    personaleFake = [
+        new BoxPersonale(
             374,
             [
                 new BoxFunzionariSo(
@@ -52,8 +49,52 @@ export class BoxPesonaleFakeService {
             ],
             59,
             8
-        );
-        this.store.dispatch(new SetBoxPersonale(this.personale));
+        ),
+        new BoxPersonale(
+            372,
+            [
+                new BoxFunzionariSo(
+                    'RSSMRA80A01C707K',
+                    'CRE',
+                    'Mario Rossi',
+                    true,
+                    false,
+                    false,
+                    false),
+                new BoxFunzionariSo(
+                    'BNCMRC80A01H501C',
+                    'VCSC',
+                    'Francesco Bianchi',
+                    false,
+                    false,
+                    false,
+                    true),
+                new BoxFunzionariSo(
+                    'VRDGPP80A01H501U',
+                    'CRESC',
+                    'Giuseppe Verdi',
+                    false,
+                    true,
+                    false,
+                    false)
+            ],
+            58,
+            7
+        )
+    ];
+
+    constructor(private store: Store) {
+        setInterval(() => {
+            this.store.dispatch(new SetBoxPersonale(this.personaleFake[this.count]));
+            this.count++;
+            if (this.count === this.personaleFake.length) {
+                this.count = 0;
+            }
+        }, 30000);
+    }
+
+    public getPersonale(): Observable<BoxPersonale> {
+        this.store.dispatch(new SetBoxPersonale(this.personaleFake[this.count]));
         return of();
     }
 
