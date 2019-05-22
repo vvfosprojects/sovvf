@@ -72,7 +72,7 @@ import { FilterbarServiceFake } from '../../../core/service/comp-partenza-servic
         ComposizionePartenzaComponent
     ],
     providers: [
-        { provide: FilterbarService, useClass: environment.fakeProvider ? FilterbarServiceFake : CompPartenzaService},
+        { provide: FilterbarService, useClass: environment.fakeProvider ? FilterbarServiceFake : FilterbarService},
         { provide: CompPartenzaService, useClass: environment.fakeProvider ? CompPartenzaServiceFake : CompPartenzaService}
     ]
 })
