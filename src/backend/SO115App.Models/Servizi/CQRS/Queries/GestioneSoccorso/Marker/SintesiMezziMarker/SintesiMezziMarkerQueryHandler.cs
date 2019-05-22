@@ -21,6 +21,7 @@ using CQRS.Queries;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Servizi.Infrastruttura.Marker;
 using System.Collections.Generic;
 using System.IO;
 
@@ -53,18 +54,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiMezziMarker
     /// </summary>
     public class SintesiMezziMarkerQueryHandler : IQueryHandler<SintesiMezziMarkerQuery, SintesiMezziMarkerResult>
     {
-        /// <summary>
-        /// Istanza del servizio
-        /// </summary>
-        private readonly ICercaRichiesteAssistenza cercaRichiesteAssistenza;
+        private readonly IGetMezziMarker iGetMezziMarker;
 
         /// <summary>
         /// Costruttore della classe
         /// </summary>
-        /// <param name="cercaRichiesteAssistenzaMarker">L'istanza del servizio</param>
-        public SintesiMezziMarkerQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza)
+        public SintesiMezziMarkerQueryHandler(IGetMezziMarker iGetMezziMarker)
         {
-            this.cercaRichiesteAssistenza = cercaRichiesteAssistenza;
+            this.iGetMezziMarker = iGetMezziMarker;
         }
 
         /// <summary>
@@ -76,34 +73,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiMezziMarker
         {
             var sintesiMezziMarker = new List<SintesiMezzoMarker>();
 
-            sintesiMezziMarker = CercaMarkerMezzi(query);
+            sintesiMezziMarker = iGetMezziMarker.GetListaMezziMarker();
 
             return new SintesiMezziMarkerResult()
             {
                 SintesiMezziMarker = sintesiMezziMarker
             };
         }
-
-        #region Interrogazione Fake da Session + Mapper della Richiesta sul Marker
-
-        private static List<SintesiMezzoMarker> CercaMarkerMezzi(SintesiMezziMarkerQuery query)
-        {
-            //TODO PARTE CHIAMATA DB
-            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
-
-            //DATI FAKE - ORA LI LEGGO DA FILE
-            string filepath = "Fake/fakeMarkerMezzo.json";
-            string json;
-            using (StreamReader r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            List<SintesiMezzoMarker> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiMezzoMarker>>(json);
-
-            return ListaRichieste;
-        }
-
-        #endregion Interrogazione Fake da Session + Mapper della Richiesta sul Marker
     }
 }

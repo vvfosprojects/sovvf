@@ -21,6 +21,7 @@ using CQRS.Queries;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
 using System.Collections.Generic;
 using System.IO;
 
@@ -53,18 +54,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Filtri
     /// </summary>
     public class FiltriQueryHandler : IQueryHandler<FiltriQuery, FiltriResult>
     {
-        /// <summary>
-        /// Istanza del servizio
-        /// </summary>
-        private readonly ICercaRichiesteAssistenza cercaRichiesteAssistenza;
+        private readonly IGetFiltri _ifiltri;
 
         /// <summary>
         /// Costruttore della classe
         /// </summary>
-        /// <param name="cercaRichiesteAssistenzaMarker">L'istanza del servizio</param>
-        public FiltriQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza)
+        public FiltriQueryHandler(IGetFiltri ifiltri)
         {
-            this.cercaRichiesteAssistenza = cercaRichiesteAssistenza;
+            this._ifiltri = ifiltri;
         }
 
         /// <summary>
@@ -75,7 +72,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Filtri
         public FiltriResult Handle(FiltriQuery query)
         {
 
-            Classi.Filtri.Filtri filtri = CercaFiltri(query);
+            Classi.Filtri.Filtri filtri = _ifiltri.Get();
 
             return new FiltriResult()
             {
@@ -83,26 +80,5 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Filtri
             };
         }
 
-        #region Interrogazione Fake da Session + Mapper della Richiesta sul Marker
-
-        private static Classi.Filtri.Filtri CercaFiltri(FiltriQuery query)
-        {
-            //TODO PARTE CHIAMATA DB
-            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
-
-            //DATI FAKE - ORA LI LEGGO DA FILE
-            string filepath = "Fake/Filtri.json";
-            string json;
-            using (StreamReader r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            Classi.Filtri.Filtri filtri = JsonConvert.DeserializeObject<Classi.Filtri.Filtri>(json);
-
-            return filtri;
-        }
-
-        #endregion Interrogazione Fake da Session + Mapper della Richiesta sul Marker
     }
 }

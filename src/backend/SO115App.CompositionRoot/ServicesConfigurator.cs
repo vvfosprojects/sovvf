@@ -39,6 +39,18 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxRichieste,
                 FakePersistenceJSon.Box.GetRichieste>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,
+                FakePersistenceJSon.Filtri.GetFiltri>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Marker.IGetMezziMarker,
+                FakePersistenceJSon.Marker.GetMezziMarker>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Marker.IGetRichiesteMarker,
+                FakePersistenceJSon.Marker.GetRichiesteMarker>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Marker.IGetSediMarker,
+                FakePersistenceJSon.Marker.GetSediMarker>();
 
 
 
