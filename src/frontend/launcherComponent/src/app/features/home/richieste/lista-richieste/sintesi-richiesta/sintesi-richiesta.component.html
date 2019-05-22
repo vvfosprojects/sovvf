@@ -211,7 +211,7 @@
 
                 <!-- box note localita e zone emergenza -->
                 <div *ngIf="espanso" class="col-md-12 default-cursor">
-                    <div class="col-md-12">
+                    <div *ngIf="richiesta.localita.note || richiesta.zoneEmergenza || richiesta.etichette" class="col-md-12">
                         <div class="row card bt-0 note-localita mt-1">
                             <div class="col-md-12 bg_diagonal_grey">
                                 <div class="row">

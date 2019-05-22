@@ -38,6 +38,8 @@ export class SintesiRichiestaComponent implements OnInit {
     @Output() nuovaPartenza: EventEmitter<any> = new EventEmitter();
     @Output() dismissNuovaPartenza: EventEmitter<any> = new EventEmitter();
     @Output() modificaRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
+    // tslint:disable-next-line:no-output-on-prefix
+    @Output() onEspanso: EventEmitter<boolean> = new EventEmitter();
 
     methods = new HelperSintesiRichiesta;
     isSingleClick = true;
@@ -104,6 +106,7 @@ export class SintesiRichiestaComponent implements OnInit {
     toggleEspanso(): void {
         if (this.espandibile) {
             this.espanso = !this.espanso;
+            this.onEspanso.emit(this.espanso);
         }
     }
 
