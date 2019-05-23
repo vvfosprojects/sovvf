@@ -18,18 +18,22 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Navbar;
-using System.Collections.Generic;
-using System.IO;
+using SO115App.Models.Servizi.Infrastruttura.NavBar;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
 {
     /// <summary>
-    ///   Servizio che restituisce tutti i valori dei Box presenti in HomePage.
+    ///   Servizio che restituisce tutti i valori della Navbar.
     /// </summary>
     public class NavbarQueryHandler : IQueryHandler<NavbarQuery, NavbarResult>
     {
+        private readonly IGetNavbar _iGetNavbar;
+
+        public NavbarQueryHandler(IGetNavbar iGetNavbar)
+        {
+            this._iGetNavbar = iGetNavbar;
+        }
+
         /// <summary>
         ///   Query che estrae i valori dei Box presenti in Home Page
         /// </summary>
@@ -38,32 +42,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         public NavbarResult Handle(NavbarQuery query)
         {
             var navbars = new Classi.Navbar.Navbar();
-            // preparazione del DTO
-             navbars = CaricaNavbar(query);
-
+            navbars = _iGetNavbar.Get();
             return new NavbarResult()
             {
                 Navbar = navbars
             };
-        }
-
-        private static Classi.Navbar.Navbar CaricaNavbar(NavbarQuery query)
-        {
-
-            //TODO PARTE CHIAMATA DB
-
-            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
-            //DATI FAKE - ORA LI LEGGO DA FILE
-            string filepath = "Fake/Navbar.json";
-            string json;
-            using (StreamReader r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            Classi.Navbar.Navbar navbars = JsonConvert.DeserializeObject<Classi.Navbar.Navbar>(json);
-
-            return navbars;
         }
     }
 }

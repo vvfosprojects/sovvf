@@ -51,9 +51,18 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetSediMarker,
                 FakePersistenceJSon.Marker.GetSediMarker>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.NavBar.IGetNavbar,
+                SO115App.FakePersistenceJSon.Navbar.GetNavbar>();
+            container.Register<
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetListaSintesiRichieste,
+                SO115App.FakePersistenceJSon.GestioneIntervento.GetListaSintesi>();
 
 
 
+            container.Register<
+                API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
+                API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni.GetUnitaOperativaPerCodice>();
             container.Register<
                 API.Models.Servizi.Infrastruttura.Autenticazione.IGetOperatoreAutenticato,
                 API.SOVVF.FakeImplementations.Modello.Autenticazione.GetOperatoreAutenticato>();

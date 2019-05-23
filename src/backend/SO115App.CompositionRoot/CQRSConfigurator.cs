@@ -75,9 +75,6 @@ namespace SO115App.CompositionRoot
                 typeof(CQRS.Commands.ICommandHandler<>),
                 typeof(Logging.CQRS.CommandHandlerLogDecorator<>));
 
-            container.Register<
-                API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
-                API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni.GetUnitaOperativaPerCodice>();
         }
     }
 }

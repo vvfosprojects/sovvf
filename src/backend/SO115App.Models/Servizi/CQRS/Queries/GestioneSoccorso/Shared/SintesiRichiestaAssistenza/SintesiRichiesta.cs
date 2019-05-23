@@ -22,6 +22,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -222,5 +223,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///  Lista eventi associato alla richiesta
         /// </summary>
         public List<Evento> Eventi { get; set; }
+
+        public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
