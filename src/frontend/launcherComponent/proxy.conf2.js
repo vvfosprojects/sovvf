@@ -6,7 +6,8 @@ const PROXY_CONFIG = [
             "/api/Welcome",
             "/api/Navbar",
             "/api/Filtri",
-            "/api/InserimentoIntervento"
+            "/api/InserimentoIntervento",
+            "/api/ComposizionePartenzaAvanzata"
         ],
         target: "http://so115.api2.test/",
         secure: false,

@@ -150,19 +150,19 @@ export class SignalRService {
             this.store.dispatch(new SetSediMarkers(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Sedi Markers ricevute da signalR', null, 5));
         });
-        this.hubNotification.on('NotifyGetMezziComposizione', (data: any) => {
-            // console.log(data);
+        this.hubNotification.on('NotifyGetComposizioneMezzi', (data: any) => {
+            console.log(data);
             this.store.dispatch(new SetMezziComposizione(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Mezzi Composizione ricevute da signalR', null, 5));
         });
-        this.hubNotification.on('NotifyGetSquadreComposizione', (data: any) => {
-            // console.log(data);
+        this.hubNotification.on('NotifyGetComposizioneSquadre', (data: any) => {
+            console.log(data);
             this.store.dispatch(new SetSquadreComposizione(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Squadre Composizione ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetPreaccoppiatiComposizione', (data: any) => {
-            // console.log(data);
-            this.store.dispatch(new SetPreAccoppiati(data));
+            console.log(data);
+            // this.store.dispatch(new SetPreAccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
         /**
@@ -213,7 +213,7 @@ export class SignalRService {
 
     addToGroup(notification: SignalRNotification) {
         if (!SIGNALR_BYPASS) {
-            console.log(notification);
+            // console.log(notification);
             this.hubNotification.invoke('AddToGroup', notification).then(
                 () => this.store.dispatch(new ShowToastr(ToastrType.Info, 'Connessione al gruppo effettuata con successo', null, 3))
             ).catch(
