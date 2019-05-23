@@ -27,7 +27,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
             if (ListaRichieste != null)
                 MaxIdSintesi = Convert.ToInt16(ListaRichieste.OrderByDescending(x => x.Codice).FirstOrDefault().Codice.Split('-')[1]);
             else
-                MaxIdSintesi = 1;
+                MaxIdSintesi = 0;
 
             return MaxIdSintesi;
 
