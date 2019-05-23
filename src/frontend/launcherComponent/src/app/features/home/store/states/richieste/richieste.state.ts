@@ -59,7 +59,7 @@ export class RichiesteState {
     }
 
     @Action(ClearRichieste)
-    clearRichieste({ patchState}: StateContext<RichiesteStateModel>) {
+    clearRichieste({ patchState }: StateContext<RichiesteStateModel>) {
         patchState(RichiesteStateDefaults);
     }
 
@@ -73,10 +73,12 @@ export class RichiesteState {
     }
 
     @Action(AddRichiesta)
-    addRichiesta({ setState }: StateContext<RichiesteStateModel>, { richiesta }: AddRichiesta) {
+    addRichiesta({ getState, setState }: StateContext<RichiesteStateModel>, { richiesta }: AddRichiesta) {
+        const state = getState();
+        const beforePosition = state.richieste.length > 0 ? 0 : null;
         setState(
             patch({
-                richieste: insertItem(richiesta, 0)
+                richieste: insertItem(richiesta, beforePosition)
             })
         );
     }

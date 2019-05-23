@@ -1,7 +1,7 @@
 [
   {
-    "id": "1",
     "squadra": {
+      "id":  "1",
       "nome": "Rossa",
       "stato": 3,
       "componenti": [
@@ -42,13 +42,11 @@
         "regione": "Lazio",
         "provincia": "Roma"
       }
-    },
-    "selezionato": false,
-    "hover": false
+    }
   },
   {
-    "id": "2",
     "squadra": {
+      "id": "2",
       "nome": "Verde",
       "stato": 3,
       "componenti": [
@@ -89,13 +87,11 @@
         "regione": "Lazio",
         "provincia": "Roma"
       }
-    },
-    "selezionato": false,
-    "hover": false
+    }
   },
   {
-    "id": "3",
     "squadra": {
+      "id" :  "3",
       "nome": "Arancione",
       "stato": 3,
       "componenti": [
@@ -136,8 +132,6 @@
         "regione": "Lazio",
         "provincia": "Roma"
       }
-    },
-    "selezionato": false,
-    "hover": false
+    }
   }
 ]

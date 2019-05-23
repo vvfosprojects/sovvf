@@ -41,16 +41,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             var composizioneMezzi = new List<Classi.Composizione.ComposizioneMezzi>();
             // preparazione del DTO
-             composizioneMezzi = CaricaComposizioneMezzi(query);
+            composizioneMezzi = CaricaComposizioneMezzi(query);
 
-            foreach (var mezzo in composizioneMezzi)
+            if ((composizioneMezzi != null && composizioneMezzi.Count > 0) && (query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0))
             {
-                if (query.Filtro.CodiceMezzo.Any(mezzo.Mezzo.Codice.Contains))
+                foreach (var mezzo in composizioneMezzi)
                 {
-                    mezzo.IstanteScadenzaSelezione = DateTime.Now.Date.AddMinutes(3);
+                    if (query.Filtro.CodiceMezzo.Any(mezzo.Mezzo.Codice.Equals))
+                    {
+                        mezzo.IstanteScadenzaSelezione = DateTime.Now.AddMinutes(3);
+                    }
                 }
             }
-
             return new ComposizioneMezziResult()
             {
                 ComposizioneMezzi = composizioneMezzi
@@ -60,7 +62,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private static List<Classi.Composizione.ComposizioneMezzi> CaricaComposizioneMezzi(ComposizioneMezziQuery query)
         {
             List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = new List<Classi.Composizione.ComposizioneMezzi>();
-            List<Classi.Composizione.ComposizioneMezzi> composizioneMezziFiltrati = new List<Classi.Composizione.ComposizioneMezzi>();
             //TODO PARTE CHIAMATA DB
 
             //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
@@ -77,11 +78,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             List<Classi.Composizione.ComposizioneSquadre> composizioneSquadre = new List<Classi.Composizione.ComposizioneSquadre>();
             var squadra = new Classi.Composizione.ComposizioneSquadre();
             var codiceDistaccamento = "";
-            if ((query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length >0) || (query.Filtro.CodiceMezzo !=null && query.Filtro.CodiceMezzo.Length > 0)
-                 // || query.Filtro.CodiceSede != null
-                 || (query.Filtro.CodiceSquadra != null && query.Filtro.CodiceSquadra.Length > 0) || (query.Filtro.CodiceStatoMezzo != null && query.Filtro.CodiceStatoMezzo.Length > 0) || (query.Filtro.CodiceTipoMezzo != null && query.Filtro.CodiceTipoMezzo.Length >0))
+            if ((query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
+                || (query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo[0]))
+                || (query.Filtro.CodiceSquadra != null && query.Filtro.CodiceSquadra.Length > 0) && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0])
+                || (query.Filtro.CodiceStatoMezzo != null && query.Filtro.CodiceStatoMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
+                || (query.Filtro.CodiceTipoMezzo != null && query.Filtro.CodiceTipoMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0])))
             {
-                if (query.Filtro.CodiceSquadra != null && query.Filtro.CodiceSquadra.Length > 0)
+                if (query.Filtro.CodiceSquadra != null && query.Filtro.CodiceSquadra.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0]))
                 {
                     string path = "Fake/SquadreComposizione.json";
                     string jsonSquadre;
@@ -91,33 +94,28 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     }
 
                     composizioneSquadre = JsonConvert.DeserializeObject<List<Classi.Composizione.ComposizioneSquadre>>(jsonSquadre);
-                    squadra = composizioneSquadre.Where(x => query.Filtro.CodiceSquadra.Any(x.Squadra.Id.Contains)).FirstOrDefault();
+                    squadra = composizioneSquadre.Where(x => query.Filtro.CodiceSquadra.Any(x.Squadra.Id.Equals)).FirstOrDefault();
                     if (squadra != null)
                     {
                         codiceDistaccamento = squadra.Squadra.Distaccamento.Codice;
-                        composizioneMezziFiltrati = composizioneMezzi.Where(x => (x.Mezzo.Distaccamento.Codice == codiceDistaccamento)
-                        && ((query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length > 0) 
-                        && query.Filtro.CodiceDistaccamento.Any(x.Mezzo.Distaccamento.Codice.Contains))
-                        && ((query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0) 
-                        && query.Filtro.CodiceMezzo.Any(x.Mezzo.Codice.Contains))
-                        && ((query.Filtro.CodiceStatoMezzo != null && query.Filtro.CodiceStatoMezzo.Length > 0)
-                        && query.Filtro.CodiceStatoMezzo.Any(x.Mezzo.Stato.Contains))
-                        && ((query.Filtro.CodiceTipoMezzo != null && query.Filtro.CodiceTipoMezzo.Length > 0)
-                        && query.Filtro.CodiceTipoMezzo.Any(x.Mezzo.Genere.Contains))).ToList();
+                        composizioneMezzi = composizioneMezzi.Where(x => (x.Mezzo.Distaccamento.Codice == codiceDistaccamento)).ToList();
                     }
-                    return composizioneMezziFiltrati;
                 }
-                composizioneMezziFiltrati = composizioneMezzi.Where(x => ((query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length > 0)
-                        && query.Filtro.CodiceDistaccamento.Any(x.Mezzo.Distaccamento.Codice.Contains))
-                        && ((query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0)
-                        && query.Filtro.CodiceMezzo.Any(x.Mezzo.Codice.Contains))
-                        && ((query.Filtro.CodiceStatoMezzo != null && query.Filtro.CodiceStatoMezzo.Length > 0)
-                        && query.Filtro.CodiceStatoMezzo.Any(x.Mezzo.Stato.Contains))
-                        && ((query.Filtro.CodiceTipoMezzo != null && query.Filtro.CodiceTipoMezzo.Length > 0)
-                        && query.Filtro.CodiceTipoMezzo.Any(x.Mezzo.Genere.Contains))).ToList();
-                //*&& (query.Filtro.CodiceSede != null && x.Mezzo.Distaccamento.Ccodice == query.Filtro.CodiceSede))*/.ToList();
-                return composizioneMezziFiltrati;
+                if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
+                    composizioneMezzi = composizioneMezzi.Where(x => query.Filtro.CodiceDistaccamento.Any(x.Mezzo.Distaccamento.Codice.Equals)).ToList();
+
+                if (query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo[0]))
+                    composizioneMezzi = composizioneMezzi.Where(x => query.Filtro.CodiceMezzo.Any(x.Mezzo.Codice.Equals)).ToList();
+
+                if (query.Filtro.CodiceStatoMezzo != null && query.Filtro.CodiceStatoMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
+                    composizioneMezzi = composizioneMezzi.Where(x => query.Filtro.CodiceStatoMezzo.Any(x.Mezzo.Stato.Equals)).ToList();
+
+                if (query.Filtro.CodiceTipoMezzo != null && query.Filtro.CodiceTipoMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0]))
+                    composizioneMezzi = composizioneMezzi.Where(x => query.Filtro.CodiceTipoMezzo.Any(x.Mezzo.Genere.Equals)).ToList();
+
+                return composizioneMezzi;
             }
+
             else
             {
                 return composizioneMezzi;
