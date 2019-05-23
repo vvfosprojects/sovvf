@@ -33,4 +33,7 @@ export class MezzoComponent implements OnInit {
         return this.stato.getColor(stato, tipostato, classe);
     }
 
+    arrivatoSulPosto() {
+        console.log('Mezzo ' + this.mezzo.descrizione + ' arrivato sul posto.');
+    }
 }
