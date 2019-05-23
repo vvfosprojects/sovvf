@@ -12,16 +12,33 @@ namespace SO115App.FakePersistenceJSon.Marker
     {
         public List<SintesiRichiestaMarker> GetListaRichiesteMarker()
         {
-            string filepath = "Fake/fakeMarkerRichiesta.json";
+            string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
+            List<SintesiRichiestaMarker> ListaRichieste = new List<SintesiRichiestaMarker>();
+
             using (StreamReader r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
 
-            List<SintesiRichiestaMarker> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichiestaMarker>>(json);
+            ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichiestaMarker>>(json);
 
-            return ListaRichieste;
+            if (ListaRichieste != null)
+            { 
+                int id = 0;
+                foreach (SintesiRichiestaMarker sintesi in ListaRichieste)
+                {
+                    sintesi.Id = id.ToString();
+                    id++;
+                }
+
+                return ListaRichieste;
+            }
+            else
+            {
+                List<SintesiRichiestaMarker> ListaRichiesteVuota = new List<SintesiRichiestaMarker>();
+                return ListaRichiesteVuota;
+            }
         }
     }
 }

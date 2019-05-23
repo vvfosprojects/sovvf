@@ -33,8 +33,21 @@ namespace SO115App.API.Models.Classi.Marker
         /// <summary>
         /// Costruttore della classe
         /// </summary>
-        public SintesiRichiestaMarker()
+        public SintesiRichiestaMarker(string id, string codice, string codiceRichiesta, Localita localita, 
+                                      List<Tipologia> Tipologie, string Descrizione, RichiestaAssistenza.Priorita PrioritaRichiesta,
+                                      DateTime? Rilevante)
         {
+            Id = id;
+            Codice = codice;
+            CodiceRichiesta = codiceRichiesta;
+            Localita = localita;
+            Tipologia = Tipologie;
+            Label = Descrizione;
+            Priorita = PrioritaRichiesta;
+
+            if(Rilevante!=null)
+                Rilevanza = Rilevante;
+
         }
 
         /// <summary>
@@ -78,7 +91,7 @@ namespace SO115App.API.Models.Classi.Marker
         /// <summary>
         /// Stato della richiesta
         /// </summary>
-        public string Stato { get; set; }
+        public int Stato { get; set; }
 
         /// <summary>
         /// Indica la data in cui è stato marcato RILEVANTE l'ultima volta

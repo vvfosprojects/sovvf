@@ -85,29 +85,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
             return ListaSintesi;
         }
 
-        public List<SintesiRichiestaMarker> MapRichiesteSuMarkerSintesi(List<RichiestaAssistenza> listaRichieste)
-        {
-            List<SintesiRichiestaMarker> ListaSintesi = new List<SintesiRichiestaMarker>();
-
-            foreach (RichiestaAssistenza elemento in listaRichieste)
-            {
-                SintesiRichiestaMarker sintesi = new SintesiRichiestaMarker();
-                string statoRichiesta = DecodifcaStatoRichiesta(elemento.StatoRichiesta);
-
-                sintesi.Id = elemento.Id;
-                sintesi.Localita = elemento.Localita;
-                sintesi.Tipologia = elemento.Tipologie;
-                sintesi.Label = elemento.Descrizione;
-                sintesi.Priorita = elemento.PrioritaRichiesta;
-                sintesi.Stato = statoRichiesta;
-                sintesi.Rilevanza = DateTime.Now;
-
-                ListaSintesi.Add(sintesi);
-            }
-
-            return ListaSintesi;
-        }
-
         private string DecodifcaStatoRichiesta(IStatoRichiesta statoRichiesta)
         {
             switch (statoRichiesta.ToString())

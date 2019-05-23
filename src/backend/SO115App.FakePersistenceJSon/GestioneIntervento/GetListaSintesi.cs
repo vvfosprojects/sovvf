@@ -18,6 +18,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 
             string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
+
             using (StreamReader r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
@@ -25,13 +26,29 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 
             ListaSintesiRichieste = JsonConvert.DeserializeObject<List<SintesiRichiesta>>(json);
 
-            foreach(SintesiRichiesta sintesi in ListaSintesiRichieste)
+            int id = 0;
+
+            if (ListaSintesiRichieste != null)
             {
-                sintesi.Priorita = MapProprietaSintesi(sintesi.Codice);
+                foreach (SintesiRichiesta sintesi in ListaSintesiRichieste)
+                {
+                    sintesi.Priorita = MapProprietaSintesi(sintesi.Codice);
+                    sintesi.Id = id.ToString();
+                    id++;
+                }
+
+
+                ListaSintesiRichieste = ListaSintesiRichieste.OrderBy(x => x.Stato).OrderByDescending(x => x.IstanteRicezioneRichiesta).ToList();
+
+                return ListaSintesiRichieste;
+
             }
-
-            return ListaSintesiRichieste.OrderBy(x => x.Stato).OrderByDescending(x => x.IstanteRicezioneRichiesta).ToList();
-
+            else
+            {
+                List<SintesiRichiesta> ListaSintesiRichiesteVuota = new List<SintesiRichiesta>();
+                return ListaSintesiRichiesteVuota;
+            }
+ 
         }
 
         public RichiestaAssistenza.Priorita MapProprietaSintesi(string Codicesintesi)

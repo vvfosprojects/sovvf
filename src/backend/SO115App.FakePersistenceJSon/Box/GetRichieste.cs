@@ -22,17 +22,20 @@ namespace SO115App.FakePersistenceJSon.Box
 
             List<SintesiRichiesta> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichiesta>>(json);
 
-            interventi.AnnoCorrente = DateTime.Now.Year;
-            interventi.Assegnati = ListaRichieste.FindAll(x => x.Stato == 3).Count;
-            interventi.Chiamate = ListaRichieste.FindAll(x => x.Stato == 0).Count;
-            interventi.NomeTurnoCorrente = "B";
-            interventi.NomeTurnoPrecedente = "A";
-            interventi.Presidiati = ListaRichieste.FindAll(x => x.Stato == 2).Count;
-            interventi.Sospesi = ListaRichieste.FindAll(x => x.Stato == 1).Count;
-            interventi.TotAnnoCorrente = ListaRichieste.FindAll(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year).Count;
-            interventi.TotTurnoCorrente = ListaRichieste.FindAll(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year).Count;
-            interventi.TotTurnoPrecedente = 0;
-            interventi.Totale = ListaRichieste.Count;
+            if (ListaRichieste != null)
+            { 
+                interventi.AnnoCorrente = DateTime.Now.Year;
+                interventi.Assegnati = ListaRichieste.FindAll(x => x.Stato == 3).Count;
+                interventi.Chiamate = ListaRichieste.FindAll(x => x.Stato == 0).Count;
+                interventi.NomeTurnoCorrente = "B";
+                interventi.NomeTurnoPrecedente = "A";
+                interventi.Presidiati = ListaRichieste.FindAll(x => x.Stato == 2).Count;
+                interventi.Sospesi = ListaRichieste.FindAll(x => x.Stato == 1).Count;
+                interventi.TotAnnoCorrente = ListaRichieste.FindAll(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year).Count;
+                interventi.TotTurnoCorrente = ListaRichieste.FindAll(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year).Count;
+                interventi.TotTurnoPrecedente = 0;
+                interventi.Totale = ListaRichieste.Count;
+            }
 
             return interventi;
         }
