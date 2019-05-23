@@ -8,15 +8,18 @@ namespace DomainModel.CQRS.Commands.AddIntervento
     public class AddInterventoCommandHandler : ICommandHandler<AddInterventoCommand>
     {
         private readonly ISaveRichiestaAssistenza _saveRichiestaAssistenza;
-        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza)
+        private readonly IGetMaxCodice _iGetMaxCodice;
+
+        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza,IGetMaxCodice iGetMaxCodice)
         {
             this._saveRichiestaAssistenza = saveRichiestaAssistenza;
+            this._iGetMaxCodice = iGetMaxCodice;
         }
 
         public void Handle(AddInterventoCommand command)
         {
 
-            command.Chiamata.Codice = command.Chiamata.Operatore.Sede.Codice.Split('.')[0] + "-" + "1";
+            command.Chiamata.Codice = command.Chiamata.Operatore.Sede.Codice.Split('.')[0] + "-" + (_iGetMaxCodice.GetMax() + 1).ToString();
 
             var richiesta = new RichiestaAssistenza()
             {
@@ -24,8 +27,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Indirizzo = command.Chiamata.Localita.Indirizzo,
                 ZoneEmergenza = command.Chiamata.ZoneEmergenza,
                 Operatore = command.Chiamata.Operatore,
-                Richiedente = command.Chiamata.Richiedente
-
+                Richiedente = command.Chiamata.Richiedente,
+                Localita = command.Chiamata.Localita,
+                Descrizione = command.Chiamata.Descrizione
             };
 
             if (command.Chiamata.Etichette != null)

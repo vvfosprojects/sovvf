@@ -13,7 +13,7 @@ namespace SO115App.FakePersistenceJSon.Box
         public BoxInterventi Get()
         {
             BoxInterventi interventi = new BoxInterventi();
-            string filepath = "Fake/ListaRichieste.json";
+            string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {

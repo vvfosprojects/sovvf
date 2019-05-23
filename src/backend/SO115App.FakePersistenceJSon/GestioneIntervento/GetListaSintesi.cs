@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
@@ -12,6 +14,8 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
     {
         public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
+            List<SintesiRichiesta> ListaSintesiRichieste = new List<SintesiRichiesta>();
+
             string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
             using (StreamReader r = new StreamReader(filepath))
@@ -19,9 +23,39 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                 json = r.ReadToEnd();
             }
 
-            List<SintesiRichiesta> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichiesta>>(json);
+            ListaSintesiRichieste = JsonConvert.DeserializeObject<List<SintesiRichiesta>>(json);
 
-            return ListaRichieste;
+            foreach(SintesiRichiesta sintesi in ListaSintesiRichieste)
+            {
+                sintesi.Priorita = MapProprietaSintesi(sintesi.Codice);
+            }
+
+            return ListaSintesiRichieste.OrderBy(x => x.Stato).OrderByDescending(x => x.IstanteRicezioneRichiesta).ToList();
+
         }
+
+        public RichiestaAssistenza.Priorita MapProprietaSintesi(string Codicesintesi)
+        {
+            List<RichiestaAssistenzaRead> ListaRichieste = new List<RichiestaAssistenzaRead>();
+            string filepath = "Fake/ListaRichiesteAssistenza.json";
+            string json;
+            using (StreamReader r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();
+            }
+            ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaRead>>(json);
+
+            RichiestaAssistenza.Priorita prio = new RichiestaAssistenza.Priorita();
+
+            foreach (RichiestaAssistenzaRead richiesta in ListaRichieste)
+            {
+                if(Codicesintesi.Equals(richiesta.Codice))
+                    prio = richiesta.PrioritaRichiesta;
+            }
+
+            return prio;
+
+        }
+
     }
 }

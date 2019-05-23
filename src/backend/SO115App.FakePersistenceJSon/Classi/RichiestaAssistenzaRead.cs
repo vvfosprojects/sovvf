@@ -41,6 +41,7 @@ namespace SO115App.API.Models.Classi.Soccorso
     public class RichiestaAssistenzaRead : Entity
     {
         public string Codice { get; set; }
+        public RichiestaAssistenza.Priorita PrioritaRichiesta { get; set; }
 
     }
 }

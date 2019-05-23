@@ -57,6 +57,9 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetListaSintesiRichieste,
                 SO115App.FakePersistenceJSon.GestioneIntervento.GetListaSintesi>();
+            container.Register<
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetMaxCodice,
+                SO115App.FakePersistenceJSon.GestioneIntervento.GetMaxCodice>();
 
 
 
