@@ -6,7 +6,8 @@ const PROXY_CONFIG = [
             "/api/Welcome",
             "/api/Navbar",
             "/api/Filtri",
-            "/api/InserimentoIntervento"
+            "/api/InserimentoIntervento",
+            "/api/ComposizionePartenzaAvanzata"
         ],
         target: "http://DESKTOP-RC0RAUA:5000/",
         secure: false,
