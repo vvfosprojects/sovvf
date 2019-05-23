@@ -1,5 +1,7 @@
-import { Component, Input, EventEmitter, Output, OnChanges } from '@angular/core';
-import { BoxPersonale } from '../../boxes-model/box-personale.model';
+import { Component, Input, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { objectDiff } from '../../../../../shared/helper/function';
+import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
+import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
 
 @Component({
     selector: 'app-box-personale',
@@ -8,36 +10,33 @@ import { BoxPersonale } from '../../boxes-model/box-personale.model';
 })
 export class BoxPersonaleComponent implements OnChanges {
 
-    @Input() personale: BoxPersonale;
-    @Output() clickServizi = new EventEmitter<string>();
-    presenze = {} as Presenze;
+    personaleDiff: any;
 
-    ngOnChanges(): void {
-        if (this.personale) {
-            this.getPresenze();
+    @Input() personaleQty: BoxPersonaleQty;
+    @Input() personalePresenze: BoxPersonalePresenze;
+    @Output() clickServizi = new EventEmitter<string>();
+
+    ngOnChanges(changes: SimpleChanges): void {
+        const personaleQty = changes['personaleQty'];
+        if (personaleQty && personaleQty.currentValue && personaleQty.previousValue) {
+            this.personaleDiff = objectDiff(personaleQty.currentValue, personaleQty.previousValue);
+            setTimeout(() => {
+                this.personaleDiff = null;
+            }, 5000);
+        }
+
+    }
+
+    checkDiff(key: string) {
+        if (this.personaleDiff) {
+            return setBlinking(this.personaleDiff[key]);
         }
     }
 
-    getPresenze() {
-        this.presenze.totFunzionari = 0;
-        this.presenze.totTecnici = 0;
-        this.personale.funzionari.forEach(result => {
-            if (result.funzGuardia || result.capoTurno) {
-                this.presenze.totFunzionari++;
-            }
-            if (result.tecnicoGuardia1 || result.tecnicoGuardia2) {
-                this.presenze.totTecnici++;
-            }
-        });
-        this.presenze.capoTurno = this.personale.funzionari.some(key => key.capoTurno);
-        this.presenze.funzGuardia = this.personale.funzionari.some(key => key.funzGuardia);
+    realDiff(key: string) {
+        if (this.personaleDiff) {
+            return setArrow(this.personaleDiff[key]);
+        }
     }
 
-}
-
-interface Presenze {
-    totFunzionari: number;
-    totTecnici: number;
-    funzGuardia: boolean;
-    capoTurno: boolean;
 }
