@@ -94,6 +94,7 @@ namespace SO115App.API.Controllers
             {
                 try
                 {
+
                     List<ComposizioneMezzi> composizioneMezzi = new List<ComposizioneMezzi>();
                     composizioneMezzi = _mezziHandler.Handle(mezziQuery).ComposizioneMezzi;
                     await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetComposizioneMezzi", composizioneMezzi);
@@ -101,7 +102,6 @@ namespace SO115App.API.Controllers
                     List<ComposizioneSquadre> composizioneSquadre = new List<ComposizioneSquadre>();
                     composizioneSquadre = _squadreHandler.Handle(squadreQuery).ComposizioneSquadre;
                     await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetComposizioneSquadre", composizioneSquadre);
-
 
                     return Ok();
                 }
