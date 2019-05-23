@@ -19,7 +19,7 @@ export class BoxMezziComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         const mezzi = changes['mezzi'];
-        if (mezzi.previousValue) {
+        if (mezzi && mezzi.currentValue && mezzi.previousValue) {
             this.mezziDiff = objectDiff(mezzi.currentValue, mezzi.previousValue);
             setTimeout( () => {
                 this.mezziDiff = null;

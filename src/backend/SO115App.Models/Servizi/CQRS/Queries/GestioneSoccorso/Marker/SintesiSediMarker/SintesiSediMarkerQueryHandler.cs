@@ -21,6 +21,7 @@ using CQRS.Queries;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Servizi.Infrastruttura.Marker;
 using System.Collections.Generic;
 using System.IO;
 
@@ -53,18 +54,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiSediMarker
     /// </summary>
     public class SintesiSediMarkerQueryHandler : IQueryHandler<SintesiSediMarkerQuery, SintesiSediMarkerResult>
     {
-        /// <summary>
-        /// Istanza del servizio
-        /// </summary>
-        private readonly ICercaRichiesteAssistenza cercaRichiesteAssistenza;
+        private readonly IGetSediMarker iGetSediMarker;
 
         /// <summary>
         /// Costruttore della classe
         /// </summary>
-        /// <param name="cercaRichiesteAssistenzaMarker">L'istanza del servizio</param>
-        public SintesiSediMarkerQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza)
+        public SintesiSediMarkerQueryHandler(IGetSediMarker iGetSediMarker)
         {
-            this.cercaRichiesteAssistenza = cercaRichiesteAssistenza;
+            this.iGetSediMarker = iGetSediMarker;
         }
 
         /// <summary>
@@ -76,7 +73,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiSediMarker
         {
             var sintesiSediMarker = new List<SintesiSedeMarker>();
 
-            sintesiSediMarker = CercaMarkerSedi(query);
+            sintesiSediMarker = iGetSediMarker.GetListaSediMarker();
 
             return new SintesiSediMarkerResult()
             {
@@ -84,26 +81,5 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiSediMarker
             };
         }
 
-        #region Interrogazione Fake da Session + Mapper della Richiesta sul Marker
-
-        private static List<SintesiSedeMarker> CercaMarkerSedi(SintesiSediMarkerQuery query)
-        {
-            //TODO PARTE CHIAMATA DB
-            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
-
-            //DATI FAKE - ORA LI LEGGO DA FILE
-            string filepath = "Fake/fakeMarkerSede.json";
-            string json;
-            using (StreamReader r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            List<SintesiSedeMarker> ListaSedi = JsonConvert.DeserializeObject<List<SintesiSedeMarker>>(json);
-
-            return ListaSedi;
-        }
-
-        #endregion Interrogazione Fake da Session + Mapper della Richiesta sul Marker
     }
 }

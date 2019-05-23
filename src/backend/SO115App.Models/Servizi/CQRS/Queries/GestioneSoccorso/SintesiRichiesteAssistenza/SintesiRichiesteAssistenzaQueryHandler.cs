@@ -20,6 +20,7 @@
 using CQRS.Queries;
 using Newtonsoft.Json;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using System.Collections.Generic;
 using System.IO;
@@ -57,15 +58,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         ///   Istanza del servizio
         /// </summary>
         private readonly ICercaRichiesteAssistenza cercaRichiesteAssistenza;
+        private readonly IGetListaSintesiRichieste iGetListaSintesi;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="cercaRichiesteAssistenza">L'istanza del servizio</param>
+        /// <param name="iGetListaSintesi">Interfaccia che restituisce l'elenco delle Sintesi delle Richieste</param>
 
-        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza)
+        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza,IGetListaSintesiRichieste iGetListaSintesi)
         {
             this.cercaRichiesteAssistenza = cercaRichiesteAssistenza;
+            this.iGetListaSintesi = iGetListaSintesi;
         }
 
         /// <summary>
@@ -76,41 +80,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
         {
             var sintesiRichiesta = new List<SintesiRichiesta>();
-            sintesiRichiesta = ElencoSintesiRichiesta(query);
+            sintesiRichiesta = iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
 
             return new SintesiRichiesteAssistenzaResult()
             {
                 SintesiRichiesta = sintesiRichiesta
             };
         }
-
-        #region Interrogazione Fake da Session + Mapper della Richiesta sulla Sintesi
-
-        public List<SintesiRichiesta> ElencoSintesiRichiesta(SintesiRichiesteAssistenzaQuery query)
-        {
-            List<SintesiRichiesta> ListaSintesi = CercaRichieste(query);
-
-            return ListaSintesi;
-        }
-
-        private static List<SintesiRichiesta> CercaRichieste(SintesiRichiesteAssistenzaQuery query)
-        {
-            //TODO PARTE CHIAMATA DB
-
-            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
-            //DATI FAKE - ORA LI LEGGO DA FILE
-            string filepath = "Fake/ListaRichieste.json";
-            string json;
-            using (StreamReader r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            List<SintesiRichiesta> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichiesta>>(json);
-
-            return ListaRichieste;
-        }
-
-        #endregion Interrogazione Fake da Session + Mapper della Richiesta sulla Sintesi
     }
 }

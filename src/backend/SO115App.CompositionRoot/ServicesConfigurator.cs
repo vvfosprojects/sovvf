@@ -26,6 +26,43 @@ namespace SO115App.CompositionRoot
     {
         internal static void Configure(Container container)
         {
+
+            container.Register<
+                API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
+                FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxMezzi,
+                FakePersistenceJSon.Box.GetBoxMezzi>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
+                FakePersistenceJSon.Box.GetPersonale>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxRichieste,
+                FakePersistenceJSon.Box.GetRichieste>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,
+                FakePersistenceJSon.Filtri.GetFiltri>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Marker.IGetMezziMarker,
+                FakePersistenceJSon.Marker.GetMezziMarker>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Marker.IGetRichiesteMarker,
+                FakePersistenceJSon.Marker.GetRichiesteMarker>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Marker.IGetSediMarker,
+                FakePersistenceJSon.Marker.GetSediMarker>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.NavBar.IGetNavbar,
+                SO115App.FakePersistenceJSon.Navbar.GetNavbar>();
+            container.Register<
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetListaSintesiRichieste,
+                SO115App.FakePersistenceJSon.GestioneIntervento.GetListaSintesi>();
+
+
+
+            container.Register<
+                API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
+                API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni.GetUnitaOperativaPerCodice>();
             container.Register<
                 API.Models.Servizi.Infrastruttura.Autenticazione.IGetOperatoreAutenticato,
                 API.SOVVF.FakeImplementations.Modello.Autenticazione.GetOperatoreAutenticato>();
@@ -53,9 +90,6 @@ namespace SO115App.CompositionRoot
             container.Register<
                 API.Models.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaMezzo.CommandDTO.ITestAndSetDeselezioneDisponibilitaMezzo,
                 API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse.TestAndSetDeselezioneDisponibilitaMezzo_DoNothing>();
-            container.Register<
-                API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
-                FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
             container.Register<
                 API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaAssistenzaById,
                 API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GetRichiestaAssistenzaById_Fake>();

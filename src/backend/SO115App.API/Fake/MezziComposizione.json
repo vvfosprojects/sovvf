@@ -1,6 +1,5 @@
 [
   {
-    "id": "1",
     "mezzo": {
       "codice": "1",
       "descrizione": "A1",
@@ -25,12 +24,9 @@
     "coordinate": {
       "latitudine": 41.8311007,
       "longitudine": 12.4686518
-    },
-    "selezionato": false,
-    "hover": false
+    }
   },
   {
-    "id": "2",
     "mezzo": {
       "codice": "2",
       "descrizione": "A2",
@@ -55,12 +51,9 @@
     "coordinate": {
       "latitudine": 41.82699,
       "longitudine": 12.4879854
-    },
-    "selezionato": false,
-    "hover": false
+    }
   },
   {
-    "id": "3",
     "mezzo": {
       "codice": "3",
       "descrizione": "A3",
@@ -85,12 +78,9 @@
     "coordinate": {
       "latitudine": 41.8531486,
       "longitudine": 12.5418702
-    },
-    "selezionato": false,
-    "hover": false
+    }
   },
   {
-    "id": "4",
     "mezzo": {
       "codice": "4",
       "descrizione": "A4",
@@ -115,12 +105,9 @@
     "coordinate": {
       "latitudine": 41.8935662,
       "longitudine": 12.5417044
-    },
-    "selezionato": false,
-    "hover": false
+    }
   },
   {
-    "id": "5",
     "mezzo": {
       "codice": "5",
       "descrizione": "A5",
@@ -145,12 +132,9 @@
     "coordinate": {
       "latitudine": 41.8311007,
       "longitudine": 12.4686518
-    },
-    "selezionato": false,
-    "hover": false
+    }
   },
   {
-    "id": "6",
     "mezzo": {
       "codice": "6",
       "descrizione": "A6",
@@ -175,12 +159,9 @@
     "coordinate": {
       "latitudine": 41.8311007,
       "longitudine": 12.4686518
-    },
-    "selezionato": false,
-    "hover": false
+    }
   },
   {
-    "id": "7",
     "mezzo": {
       "codice": "7",
       "descrizione": "A7",
@@ -205,8 +186,6 @@
     "coordinate": {
       "latitudine": 41.8311007,
       "longitudine": 12.4686518
-    },
-    "selezionato": false,
-    "hover": false
+    }
   }
 ]

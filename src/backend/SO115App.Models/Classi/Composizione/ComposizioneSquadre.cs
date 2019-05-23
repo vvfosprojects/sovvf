@@ -9,7 +9,7 @@ namespace SO115App.API.Models.Classi.Composizione
     {
         public Squadra Squadra { get; set; }
         public DateTime IstanteScadenzaSelezione { get; set; }
-        public string idOperatore { get; set; }
+        public string IdOperatore { get; set; }
 
     }
 

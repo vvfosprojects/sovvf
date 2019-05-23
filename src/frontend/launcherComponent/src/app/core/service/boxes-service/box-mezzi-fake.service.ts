@@ -23,7 +23,7 @@ export class BoxMezziFakeService {
 
     constructor(private store: Store) {
         setInterval(() => {
-            this.store.dispatch(new SetBoxMezzi(this.mezziFake[this.count++]));
+            this.store.dispatch(new SetBoxMezzi(this.mezziFake[this.count]));
             this.count++;
             if (this.count === this.mezziFake.length) {
                 this.count = 0;
