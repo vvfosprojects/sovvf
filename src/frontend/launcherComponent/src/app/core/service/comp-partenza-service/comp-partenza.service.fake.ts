@@ -8,9 +8,7 @@ import { SquadraComposizione } from 'src/app/features/home/composizione-partenza
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
 import { Store } from '@ngxs/store';
 import { SetPreAccoppiati } from '../../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
-import { SetSquadreComposizione } from '../../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
-import { SetMezziComposizione } from '../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
-import { SetFiltriComposizione } from '../../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
+import { SetListaMezziComposizione, SetListaSquadreComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 
 
 @Injectable()
@@ -440,7 +438,7 @@ export class CompPartenzaServiceFake {
         return of();
     }
 
-    public getMezziComposizione(signalRConnectionId?: string): Observable<MezzoComposizione[]> {
+    public getListeComposizioneAvanzata(signalRConnectionId?: string): Observable<MezzoComposizione[]> {
         this.mezzi = [
             {
                 id: '1',
@@ -632,13 +630,6 @@ export class CompPartenzaServiceFake {
                 hover: false
             },
         ];
-
-        setTimeout(() => this.store.dispatch(new SetMezziComposizione(this.mezzi)), 2000);
-
-        return of();
-    }
-
-    public getSquadre(signalRConnectionId?: string): Observable<SquadraComposizione[]> {
         this.squadre = [
             {
                 id: '1',
@@ -711,7 +702,10 @@ export class CompPartenzaServiceFake {
             },
         ];
 
-        this.store.dispatch(new SetSquadreComposizione(this.squadre));
+        setTimeout(() => {
+            this.store.dispatch(new SetListaMezziComposizione(this.mezzi));
+            this.store.dispatch(new SetListaSquadreComposizione(this.squadre));
+        }, 2000);
 
         return of();
     }

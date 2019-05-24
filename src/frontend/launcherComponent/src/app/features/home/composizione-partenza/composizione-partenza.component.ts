@@ -1,7 +1,7 @@
 import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { Subject, Subscription, Observable } from 'rxjs';
-import { Store, Select } from '@ngxs/store';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { Select, Store } from '@ngxs/store';
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
 import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
 import { MezzoComposizione } from './interface/mezzo-composizione-interface';
@@ -9,20 +9,18 @@ import { SquadraComposizione } from './interface/squadra-composizione-interface'
 import { BoxPartenza } from './interface/box-partenza-interface';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
-import { GetMezziComposizione } from '../store/actions/composizione-partenza/mezzi-composizione.actions';
-import { GetSquadreComposizione } from '../store/actions/composizione-partenza/squadre-composizione.actions';
-import { MezziComposizioneState } from '../store/states/composizione-partenza/mezzi-composizione.state';
 import { PreAccoppiatiState } from '../store/states/composizione-partenza/pre-accoppiati.state';
 import { GetPreAccoppiati } from '../store/actions/composizione-partenza/pre-accoppiati.actions';
 import { DirectionInterface } from '../maps/maps-interface/direction-interface';
-import { SetDirection, ClearDirection } from '../store/actions/maps/maps-direction.actions';
+import { ClearDirection, SetDirection } from '../store/actions/maps/maps-direction.actions';
 import { makeCopy, wipeStatoRichiesta } from '../../../shared/helper/function';
 import { TurnOffComposizione } from '../store/actions/view/view.actions';
 import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
-import { SquadreComposizioneState } from '../store/states/composizione-partenza/squadre-composizione.state';
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
 import { FilterbarComposizioneState } from '../store/states/composizione-partenza/filterbar-composizione.state';
+import { ComposizioneAvanzataState } from '../store/states/composizione-partenza/composizione-avanzata.state';
+import { GetListeCoposizioneAvanzata } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -39,12 +37,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     @Select(FilterbarComposizioneState.filtri) filtri$: Observable<any>;
 
-    @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
-    mezziComposizione: MezzoComposizione[];
-
-    @Select(SquadreComposizioneState.squadreComposizione) squadraComposizione$: Observable<SquadraComposizione[]>;
-    squadreComposizione: SquadraComposizione[];
-
     @Select(PreAccoppiatiState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     preAccoppiati: BoxPartenza[];
 
@@ -55,22 +47,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     constructor(private store: Store) {
         this.subscription.add(this.nuovaPartenza$.subscribe(r => this.richiesta = r));
-
-        // Prendo i mezzi da visualizzare nella lista
-        this.subscription.add(
-            this.mezziComposizione$.subscribe((mezziComp: MezzoComposizione[]) => {
-                this.mezziComposizione = makeCopy(mezziComp);
-                console.log(this.mezziComposizione);
-            })
-        );
-
-        // Prendo le squadre da visualizzare nella lista
-        this.subscription.add(
-            this.squadraComposizione$.subscribe((squadreComp: SquadraComposizione[]) => {
-                this.squadreComposizione = makeCopy(squadreComp);
-                console.log(this.squadreComposizione);
-            })
-        );
 
         // Restituisce i PreAccoppiati
         this.subscription.add(
@@ -84,8 +60,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState);
         if (this.richiesta) {
-            this.store.dispatch(new GetMezziComposizione());
-            this.store.dispatch(new GetSquadreComposizione());
             this.store.dispatch(new GetPreAccoppiati());
             this.store.dispatch(new AllFalseBoxRichieste());
             this.store.dispatch(new AllTrueBoxMezzi());

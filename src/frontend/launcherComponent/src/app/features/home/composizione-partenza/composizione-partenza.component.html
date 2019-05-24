@@ -17,21 +17,17 @@
                                      (centraMappa)="centraMappa()">
             </app-composizione-veloce>
         </div>
-        <div *ngIf="preAccoppiati.length <= 0" class="align-center-custom">
+        <div *ngIf="preAccoppiati.length <= 0 && compPartenzaMode === Composizione.Veloce" class="align-center-custom">
             <i class="fa fa-spinner fa-3x fa-spin"></i>
             <h6 class="m-0 mt-2">Caricamento...</h6>
         </div>
-        <div *ngIf="richiesta && mezziComposizione.length > 0 && squadreComposizione.length > 0 && compPartenzaMode === Composizione.Avanzata" class="col-12">
-            <app-composizione-avanzata [richiesta]="richiesta" [mezziComposizione]="mezziComposizione"
-                                       [squadreComposizione]="squadreComposizione"
+        <div *ngIf="richiesta && compPartenzaMode === Composizione.Avanzata"
+             class="col-12">
+            <app-composizione-avanzata [richiesta]="richiesta"
                                        [dismissEvents]="dismissPartenzaSubject.asObservable()"
                                        (sendDirection)="onSendDirection($event)"
                                        (clearDirection)="onClearDirection()"
                                        (centraMappa)="centraMappa()"></app-composizione-avanzata>
-        </div>
-        <div *ngIf="mezziComposizione.length <= 0 || squadreComposizione.length <= 0" class="align-center-custom">
-            <i class="fa fa-spinner fa-3x fa-spin"></i>
-            <h6 class="m-0 mt-2">Caricamento...</h6>
         </div>
     </div>
 </div>
