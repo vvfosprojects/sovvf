@@ -62,7 +62,7 @@ namespace SO115App.CompositionRoot
                 SO115App.FakePersistenceJSon.GestioneIntervento.GetMaxCodice>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IChiamateInCorso,
-                FakePersistenceJSon.Marker.GetChiamateInCorso>();
+                FakePersistenceJSon.Marker.AddChiamateInCorso>();
 
 
 
