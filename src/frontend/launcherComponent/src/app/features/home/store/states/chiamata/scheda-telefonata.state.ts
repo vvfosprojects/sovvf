@@ -8,13 +8,13 @@ import {
     InsertChiamataSuccess,
     ReducerSchedaTelefonata,
     ResetChiamata,
-    SetMarkerChiamata, StartChiamata
+    MarkerChiamata, StartChiamata
 } from '../../actions/chiamata/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
 import { ToggleChiamata } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
-import { InsertChiamataMarker, RemoveChiamataMarker } from '../../actions/maps/chiamate-markers.actions';
+import { DelChiamataMarker, SetChiamataMarker } from '../../actions/maps/chiamate-markers.actions';
 import { ClipboardState } from './clipboard.state';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
@@ -55,6 +55,11 @@ export class SchedaTelefonataState {
         return state.resetChiamata;
     }
 
+    @Selector()
+    static myChiamataMarker(state: SchedaTelefonataStateModel) {
+        return state.idChiamataMarker;
+    }
+
     @Action(ReducerSchedaTelefonata)
     reducer({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata) {
         switch (action.schedaTelefonata.tipo) {
@@ -68,7 +73,7 @@ export class SchedaTelefonataState {
                 dispatch(new ResetChiamata());
                 break;
             case 'cerca':
-                dispatch(new SetMarkerChiamata(action.schedaTelefonata.markerChiamata));
+                dispatch(new MarkerChiamata(action.schedaTelefonata.markerChiamata));
                 break;
             case 'inserita':
                 dispatch(new InsertChiamata(action.schedaTelefonata.nuovaRichiesta, action.schedaTelefonata.azioneChiamata));
@@ -79,8 +84,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(InsertChiamata)
-    insertChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata) {
-        const state = getState();
+    insertChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata) {
         console.log('Richiesta da inviare a SignalR', action.nuovaRichiesta);
 
         patchState({
@@ -111,6 +115,8 @@ export class SchedaTelefonataState {
 
     @Action(ResetChiamata)
     resetChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>) {
+        // Todo: rimuovere il marker della chiamata in corso
+        console.log('reset chiamata');
         dispatch(new ClearChiamata());
         dispatch(new GetInitCentroMappa());
     }
@@ -120,8 +126,14 @@ export class SchedaTelefonataState {
         dispatch(new ToggleChiamata());
     }
 
-    @Action(SetMarkerChiamata)
-    setMarkerChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetMarkerChiamata) {
+    @Action(MarkerChiamata)
+    MarkerChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata) {
+        const state = getState();
+
+        if (state.idChiamataMarker) {
+            dispatch(new DelChiamataMarker(state.idChiamataMarker));
+        }
+
         const coordinate: Coordinate = {
             latitudine: action.marker.localita.coordinate.latitudine,
             longitudine: action.marker.localita.coordinate.longitudine
@@ -129,7 +141,7 @@ export class SchedaTelefonataState {
         dispatch(new GetMarkerDatiMeteo('chiamata-' + action.marker.id, coordinate));
         dispatch(new SetCoordCentroMappa(coordinate));
         dispatch(new SetZoomCentroMappa(18));
-        dispatch(new InsertChiamataMarker(action.marker, true));
+        dispatch(new SetChiamataMarker(action.marker));
         patchState({
             coordinate: coordinate,
             idChiamataMarker: action.marker.id
@@ -138,7 +150,10 @@ export class SchedaTelefonataState {
 
     @Action(ClearMarkerChiamata)
     clearMarkerChiamata({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
-        dispatch(new RemoveChiamataMarker(getState().idChiamataMarker));
+        const state = getState();
+        if (state.idChiamataMarker) {
+            dispatch(new DelChiamataMarker(state.idChiamataMarker));
+        }
     }
 
     @Action(ClearChiamata)

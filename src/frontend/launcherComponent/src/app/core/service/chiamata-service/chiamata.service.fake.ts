@@ -9,8 +9,8 @@ export class ChiamataServiceFake {
     constructor() {
     }
 
-    getIdChiamata(): Observable<string> {
-        this.idChiamata = `RM-0${Math.floor(Math.random() * 5) + 23}`;
-        return of(this.idChiamata);
+    insertChiamata(chiamata: any): Observable<any> {
+        return of();
     }
+
 }

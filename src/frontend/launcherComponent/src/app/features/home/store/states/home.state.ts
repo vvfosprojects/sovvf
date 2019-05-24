@@ -8,7 +8,7 @@ import { ClearRichiesteMarkers } from '../actions/maps/richieste-markers.actions
 import { ClearBoxRichieste } from '../actions/boxes/box-richieste.actions';
 import { ClearBoxMezzi } from '../actions/boxes/box-mezzi.actions';
 import { ClearBoxPersonale } from '../actions/boxes/box-personale.actions';
-import { ClearChiamateMarkers, GetChiamateMarkers } from '../actions/maps/chiamate-markers.actions';
+import { ClearChiamateMarkers } from '../actions/maps/chiamate-markers.actions';
 import { HomeService } from '../../../../core/service/home-service/home.service';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../shared/enum/toastr';
@@ -57,10 +57,8 @@ export class HomeState {
     getDataHome({ patchState, dispatch }: StateContext<HomeStateModel>) {
         this.homeService.getHome().subscribe(() => {
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
-        // Todo: controller da fare
         dispatch([
-            new GetChiamateMarkers(),
-            new GetCentroMappa(),
+            new GetCentroMappa(), // Todo: controller da fare
         ]);
         patchState({
             loaded: true

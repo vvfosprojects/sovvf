@@ -41,7 +41,6 @@ export class SchedaTelefonataComponent implements OnInit {
     chiamataForm: FormGroup;
     coordinate: Coordinate;
     submitted = false;
-    idChiamata: string;
 
     AzioneChiamataEnum = AzioneChiamataEnum;
 
@@ -62,7 +61,6 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.idChiamata = `${this.operatore.sede.codice}-${this.operatore.id}-${makeID(8)}`;
         this.chiamataForm = this.createForm();
         this.initNuovaRichiesta();
         this.cambiaTipologiaRichiedente('Nome-Cognome');
@@ -256,8 +254,8 @@ export class SchedaTelefonataComponent implements OnInit {
 
     onCercaIndirizzo(result: Address): void {
         this.coordinate = new Coordinate(result.geometry.location.lat(), result.geometry.location.lng());
-        this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`,
-            new Localita(this.coordinate ? this.coordinate : null, result.formatted_address), null, true
+        this.chiamataMarker = new ChiamataMarker(this.makeIdChiamata(), `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
+            new Localita(this.coordinate ? this.coordinate : null, result.formatted_address), null
         );
         this.nuovaRichiesta.localita = new Localita(this.coordinate ? this.coordinate : null, result.formatted_address, null);
         this._statoChiamata('cerca');
@@ -311,5 +309,9 @@ export class SchedaTelefonataComponent implements OnInit {
 
         console.log('Scheda Telefonata', schedaTelefonata);
         this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata));
+    }
+
+    makeIdChiamata(): string {
+        return `${this.operatore.sede.codice}-${this.operatore.id}-${makeID(8)}`;
     }
 }

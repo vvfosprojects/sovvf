@@ -24,7 +24,7 @@ export const environment = {
                 sedi: '/api/SintesiSediMarker',
                 mezzi: '/api/SintesiMezziMarker',
                 centro: '',  // Todo: controller mancante
-                chiamate: ''  // Todo: controller mancante
+                chiamate: '/api/ChiamataInCorso'
             }
         },
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
@@ -36,7 +36,7 @@ export const environment = {
             filtri: '/api/Filtri'
         },
         chiamata: {
-            currentId: '', // Todo: controller mancante non sicuro se da fare
+            marker: '/api/ChiamataInCorso',
             inserimento: '/api/InserimentoIntervento'
         },
         login: '/api/auth/Login',

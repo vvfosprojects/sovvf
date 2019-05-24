@@ -11,6 +11,10 @@ export class ChiamataMarker {
          */
         public descrizioneOperatore: string,
         /**
+         * codice della Sede dell'operatore
+         */
+        public codiceSedeOperatore: string,
+        /**
          * La stringa dell'indirizzo e le relative coordinate
          */
         public localita: Localita,
