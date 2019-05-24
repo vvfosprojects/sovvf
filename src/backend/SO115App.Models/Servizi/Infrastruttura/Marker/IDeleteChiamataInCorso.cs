@@ -1,5 +1,5 @@
 ﻿
-namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso
+namespace SO115App.Models.Servizi.Infrastruttura.Marker
 {
     public interface IDeleteChiamataInCorso
     {

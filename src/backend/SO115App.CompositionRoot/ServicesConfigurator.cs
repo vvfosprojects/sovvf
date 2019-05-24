@@ -63,6 +63,13 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IChiamateInCorso,
                 FakePersistenceJSon.Marker.AddChiamateInCorso>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Marker.IGetChiamateInCorso,
+                FakePersistenceJSon.Marker.GetChiamateInCorso>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Marker.IDeleteChiamataInCorso,
+                FakePersistenceJSon.Marker.DelChiamataInCorso>();
+
 
 
 
