@@ -8,10 +8,16 @@ import { ToastrType } from '../../../../../shared/enum/toastr';
 
 export interface FilterbarComposizioneStateModel {
     filtri: any;
+    filtriSelezionati: any;
 }
 
-export const FiltriComposizioneStateDefaults: FilterbarComposizioneStateModel  = {
-    filtri: null
+export const FiltriComposizioneStateDefaults: FilterbarComposizioneStateModel = {
+    filtri: null,
+    filtriSelezionati: {
+        'CodiceDistaccamento': [],
+        'CodiceTipoMezzo': [],
+        'CodiceStatoMezzo': []
+    }
 };
 
 @State<FilterbarComposizioneStateModel>({
@@ -20,17 +26,21 @@ export const FiltriComposizioneStateDefaults: FilterbarComposizioneStateModel  =
 })
 export class FilterbarComposizioneState {
 
-    // SELECTORS
     @Selector()
-    static filtri(state: FilterbarComposizioneStateModel ) {
+    static filtri(state: FilterbarComposizioneStateModel) {
         return state.filtri;
+    }
+
+    @Selector()
+    static filtriSelezionati(state: FilterbarComposizioneStateModel) {
+        return state.filtriSelezionati;
     }
 
     constructor(private filterbar: FilterbarService) {
     }
 
     @Action(GetFiltriComposizione)
-    getFiltriComposizione({ dispatch }: StateContext<FilterbarComposizioneStateModel >) {
+    getFiltriComposizione({ dispatch }: StateContext<FilterbarComposizioneStateModel>) {
         this.filterbar.getFiltri().subscribe((filtri: any) => {
             dispatch(new SetFiltriComposizione(filtri));
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
@@ -38,7 +48,7 @@ export class FilterbarComposizioneState {
     }
 
     @Action(SetFiltriComposizione)
-    setFiltriComposizione({ patchState }: StateContext<FilterbarComposizioneStateModel >, action: SetFiltriComposizione) {
+    setFiltriComposizione({ patchState }: StateContext<FilterbarComposizioneStateModel>, action: SetFiltriComposizione) {
         patchState({
             filtri: action.filtri
         });

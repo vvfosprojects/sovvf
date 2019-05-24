@@ -17,8 +17,7 @@ import { SetRichiesteMarkers } from '../../features/home/store/actions/maps/rich
 import { SetMezziMarkers } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import { SetSediMarkers } from '../../features/home/store/actions/maps/sedi-markers.actions';
 import { SetPreAccoppiati } from '../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
-import { SetSquadreComposizione } from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
-import { SetMezziComposizione } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
+import { SetListaSquadreComposizione, SetListaMezziComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { AuthenticationService } from '../auth/_services';
 import { Utente } from '../../shared/model/utente.model';
 import { SetFiltriComposizione } from '../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
@@ -152,12 +151,12 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyGetComposizioneMezzi', (data: any) => {
             console.log(data);
-            this.store.dispatch(new SetMezziComposizione(data));
+            this.store.dispatch(new SetListaMezziComposizione(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Mezzi Composizione ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetComposizioneSquadre', (data: any) => {
             console.log(data);
-            this.store.dispatch(new SetSquadreComposizione(data));
+            this.store.dispatch(new SetListaSquadreComposizione(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Squadre Composizione ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetPreaccoppiatiComposizione', (data: any) => {

@@ -1,4 +1,4 @@
-<div class="row">
+<div *ngIf="mezziComposizione.length > 0 && squadreComposizione.length > 0" class="row">
     <div class="col-5 pr-0">
         <div class="card card-shadow mx-auto">
             <div class="card-header">
@@ -62,5 +62,13 @@
             <span class="mr-1">Conferma partenze</span>
             <span class="badge badge-light">{{partenze.length}}</span>
         </button>
+    </div>
+</div>
+<div class="row">
+    <div *ngIf="mezziComposizione.length <= 0 && squadreComposizione.length <= 0" class="col-12 mt-5">
+        <div class="text-center">
+            <i class="fa fa-spinner fa-3x fa-spin"></i>
+            <h6 class="m-0 mt-2">Caricamento...</h6>
+        </div>
     </div>
 </div>

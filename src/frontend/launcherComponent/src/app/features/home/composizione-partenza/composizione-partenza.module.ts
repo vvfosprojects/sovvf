@@ -28,14 +28,13 @@ import { CompPartenzaServiceFake } from '../../../core/service/comp-partenza-ser
  * Ngxs
  */
 import { NgxsModule } from '@ngxs/store';
-import { MezziComposizioneState } from '../store/states/composizione-partenza/mezzi-composizione.state';
-import { SquadreComposizioneState } from '../store/states/composizione-partenza/squadre-composizione.state';
 import { PreAccoppiatiState } from '../store/states/composizione-partenza/pre-accoppiati.state';
 import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
 import { environment } from '../../../../environments/environment';
 import { FilterbarComposizioneState } from '../store/states/composizione-partenza/filterbar-composizione.state';
 import { FilterbarService } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
 import { FilterbarServiceFake } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service.fake';
+import { ComposizioneAvanzataState } from '../store/states/composizione-partenza/composizione-avanzata.state';
 
 @NgModule({
     declarations: [
@@ -61,8 +60,7 @@ import { FilterbarServiceFake } from '../../../core/service/comp-partenza-servic
         NgxsModule.forFeature(
             [
                 RichiestaComposizioneState,
-                MezziComposizioneState,
-                SquadreComposizioneState,
+                ComposizioneAvanzataState,
                 PreAccoppiatiState,
                 FilterbarComposizioneState
             ]

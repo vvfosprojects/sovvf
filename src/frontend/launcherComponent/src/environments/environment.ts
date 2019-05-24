@@ -32,8 +32,7 @@ export const environment = {
         turno: '',  // Todo: controller mancante
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',
-            mezzi: '/api/ComposizioneMezzi',
-            squadre: '/api/ComposizioneMezzi',
+            avanzata: '/api/ComposizionePartenzaAvanzata',
             filtri: '/api/Filtri'
         },
         chiamata: {

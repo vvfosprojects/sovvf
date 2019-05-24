@@ -215,10 +215,12 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         if (this.richiesta && this.mezzoComp) {
             const distaccamentoMezzo = this.mezzoComp.mezzo.distaccamento.descrizione;
 
-            if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
-                result = 'badge-primary';
-            } else if (this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
-                result = 'badge-info';
+            if (this.richiesta.competenze) {
+                if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
+                    result = 'badge-primary';
+                } else if (this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
+                    result = 'badge-info';
+                }
             }
         }
 

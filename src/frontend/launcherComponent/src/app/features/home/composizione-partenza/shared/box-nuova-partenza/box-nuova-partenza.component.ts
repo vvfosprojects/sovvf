@@ -80,10 +80,12 @@ export class BoxNuovaPartenzaComponent {
         if (this.richiesta && this.partenza.mezzoComposizione) {
             const distaccamentoMezzo = this.partenza.mezzoComposizione.mezzo.distaccamento.descrizione;
 
-            if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
-                result = 'badge-primary';
-            } else if (this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
-                result = 'badge-info';
+            if (this.richiesta.competenze) {
+                if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
+                    result = 'badge-primary';
+                } else if (this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
+                    result = 'badge-info';
+                }
             }
         }
 
