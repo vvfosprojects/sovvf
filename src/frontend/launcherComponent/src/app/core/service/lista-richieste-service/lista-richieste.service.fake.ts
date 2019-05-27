@@ -69,7 +69,6 @@ export class SintesiRichiesteServiceFake {
                 null,
                 null,
                 null,
-                null,
                 null
             ),
             new SintesiRichiesta(
@@ -110,7 +109,6 @@ export class SintesiRichiesteServiceFake {
                     'Di Tonno'
                 ],
                 null,
-                null,
                 null
             ),
             new SintesiRichiesta(
@@ -143,7 +141,6 @@ export class SintesiRichiesteServiceFake {
                 null,
                 null,
                 new Fonogramma('0', 'Non necessario'),
-                null,
                 null,
                 null,
                 null,
@@ -225,7 +222,6 @@ export class SintesiRichiesteServiceFake {
                 ],
                 null,
                 null,
-                null,
                 null
             ),
             new SintesiRichiesta(
@@ -303,7 +299,6 @@ export class SintesiRichiesteServiceFake {
                             3, 'carburante', 2, 'estinguente')
                     )
                 ],
-                null,
                 null,
                 null,
                 null
@@ -385,7 +380,6 @@ export class SintesiRichiesteServiceFake {
                 ],
                 null,
                 null,
-                null,
                 null
             ),
             new SintesiRichiesta(
@@ -463,7 +457,6 @@ export class SintesiRichiesteServiceFake {
                             3, 'carburante', 2, 'estinguente')
                     )
                 ],
-                null,
                 null,
                 null,
                 null
@@ -544,7 +537,6 @@ export class SintesiRichiesteServiceFake {
                 ],
                 null,
                 null,
-                null,
                 null
             ),
             new SintesiRichiesta(
@@ -621,7 +613,6 @@ export class SintesiRichiesteServiceFake {
                             3, 'carburante', 2, 'estinguente')
                     )
                 ],
-                null,
                 null,
                 null,
                 null
@@ -702,7 +693,6 @@ export class SintesiRichiesteServiceFake {
                 ],
                 null,
                 null,
-                null,
                 null
             ),
             new SintesiRichiesta(
@@ -779,7 +769,6 @@ export class SintesiRichiesteServiceFake {
                             3, 'carburante', 2, 'estinguente')
                     )
                 ],
-                null,
                 null,
                 null,
                 null

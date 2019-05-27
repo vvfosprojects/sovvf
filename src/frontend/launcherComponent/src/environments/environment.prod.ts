@@ -28,7 +28,7 @@ export const environment = {
             }
         },
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
-        eventiRichieste: 'https://api.myjson.com/bins/kz0w0',
+        eventiRichieste: '/api/ListaEventi',
         turno: '',
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',

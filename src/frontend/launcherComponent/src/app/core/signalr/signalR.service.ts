@@ -24,6 +24,7 @@ import { SetDataNavbar } from '../../features/navbar/store/actions/navbar.action
 import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
 import { SetFiltriComposizione } from '../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
 import { InsertChiamataMarker, InsertChiamateMarkers, RemoveChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
+import { SetEventiRichiesta } from '../../features/home/store/actions/eventi/eventi-richiesta.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -117,6 +118,16 @@ export class SignalRService {
             // console.log(data);
             this.store.dispatch(new SetRichieste(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richieste ricevute da signalR', null, 5));
+        });
+
+        /**
+         * Eventi Richieste
+         */
+
+        this.hubNotification.on('NotifyGetEventiRichieste', (data: any) => {
+            // console.log(data);
+            this.store.dispatch(new SetEventiRichiesta(data));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Eventi richiesta ricevuti da signalR', null, 5));
         });
 
         /**

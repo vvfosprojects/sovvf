@@ -28,7 +28,7 @@ export const environment = {
             }
         },
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
-        eventiRichieste: 'https://api.myjson.com/bins/kz0w0', // Todo: controller mancante
+        eventiRichieste: '/api/ListaEventi',
         turno: '',  // Todo: controller mancante
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',

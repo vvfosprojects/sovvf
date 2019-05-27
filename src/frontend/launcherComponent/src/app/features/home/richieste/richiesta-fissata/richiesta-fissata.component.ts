@@ -12,6 +12,7 @@ import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.componen
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { Store } from '@ngxs/store';
 import { SetEspanso } from '../../store/actions/richieste/richiesta-fissata.actions';
+import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../../store/actions/eventi/eventi-richiesta.actions';
 
 
 @Component({
@@ -123,8 +124,12 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
-    visualizzaEventiRichiesta(richiesta: any) {
-        this.modalService.open(EventiRichiestaComponent, { size: 'lg' });
+    visualizzaEventiRichiesta(idRichiesta: string) {
+        this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
+        const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+        modal.result.then(() => {
+            },
+            () => this.store.dispatch(new ClearEventiRichiesta()));
     }
 
     /* Apre il componente per la creazione della partenza */

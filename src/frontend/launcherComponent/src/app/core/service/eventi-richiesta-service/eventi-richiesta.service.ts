@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { EventoRichiesta } from '../../../features/home/eventi/eventi-model/evento-richiesta.model';
+import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
 import { environment } from '../../../../environments/environment';
 import { handleError } from '../../../shared/helper/handleError';
 
@@ -15,7 +15,9 @@ export class EventiRichiestaService {
     }
 
     getEventiRichiesta(idRichiesta: string): Observable<EventoRichiesta[]> {
-        return this.http.get<EventoRichiesta[]>(API_URL).pipe(
+        const url = `${API_URL}?id=${idRichiesta}`;
+        console.log(url);
+        return this.http.get<any>(url).pipe(
             retry(3),
             catchError(handleError)
         );
