@@ -24,11 +24,11 @@ export const environment = {
                 sedi: '/api/SintesiSediMarker',
                 mezzi: '/api/SintesiMezziMarker',
                 centro: '',  // Todo: controller mancante
-                chiamate: ''  // Todo: controller mancante
+                chiamate: '/api/ChiamataInCorso'
             }
         },
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
-        eventiRichieste: 'https://api.myjson.com/bins/kz0w0', // Todo: controller mancante
+        eventiRichieste: '/api/ListaEventi',
         turno: '',  // Todo: controller mancante
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',
@@ -36,7 +36,7 @@ export const environment = {
             filtri: '/api/Filtri'
         },
         chiamata: {
-            currentId: '', // Todo: controller mancante non sicuro se da fare
+            marker: '/api/ChiamataInCorso',
             inserimento: '/api/InserimentoIntervento'
         },
         login: '/api/auth/Login',

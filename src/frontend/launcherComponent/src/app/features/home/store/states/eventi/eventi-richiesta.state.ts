@@ -4,10 +4,12 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { EventiRichiestaService } from 'src/app/core/service/eventi-richiesta-service/eventi-richiesta.service';
 
 // Model
-import { EventoRichiesta } from '../../../eventi/eventi-model/evento-richiesta.model';
+import { EventoRichiesta } from '../../../../../shared/model/evento-richiesta.model';
 
 // Action
-import { GetEventiRichiesta, SetIdRichiestaEventi } from '../../actions/eventi/eventi-richiesta.actions';
+import { ClearEventiRichiesta, GetEventiRichiesta, SetEventiRichiesta, SetIdRichiestaEventi } from '../../actions/eventi/eventi-richiesta.actions';
+import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
 
 export interface EventiRichiestaStateModel {
     idRichiesta: string;
@@ -34,26 +36,35 @@ export class EventiRichiestaState {
     }
 
     @Action(SetIdRichiestaEventi)
-    setIdRichiesta({ getState, patchState }: StateContext<EventiRichiestaStateModel>, action: SetIdRichiestaEventi) {
-        const state = getState();
+    setIdRichiesta({ patchState, dispatch }: StateContext<EventiRichiestaStateModel>, action: SetIdRichiestaEventi) {
 
         patchState({
-            ...state,
-            idRichiesta: action.idRichiesta
+            eventi: null, idRichiesta: action.idRichiesta
         });
+
+        dispatch(new GetEventiRichiesta(action.idRichiesta));
     }
 
     @Action(GetEventiRichiesta)
-    getEventiRichiesta({ getState, patchState }: StateContext<EventiRichiestaStateModel>) {
-        const state = getState();
+    getEventiRichiesta({ getState, dispatch }: StateContext<EventiRichiestaStateModel>, action: GetEventiRichiesta) {
 
-        if (state.idRichiesta) {
-            this._eventiRichiesta.getEventiRichiesta(state.idRichiesta).subscribe((e: EventoRichiesta[]) => {
-                patchState({
-                    ...state,
-                    eventi: e
-                });
-            });
-        }
+        this._eventiRichiesta.getEventiRichiesta(action.idRichiesta).subscribe(() => {
+            console.log(`Get Eventi Richiesta: ${action.idRichiesta}`);
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+
     }
+
+    @Action(SetEventiRichiesta)
+    setEventiRichiesta({ patchState }: StateContext<EventiRichiestaStateModel>, action: SetEventiRichiesta) {
+        patchState({
+            eventi: action.eventi
+        });
+    }
+
+    @Action(ClearEventiRichiesta)
+    clearEventiRichiesta({ patchState }: StateContext<EventiRichiestaStateModel>) {
+        patchState(eventiRichiestaStateDefaults);
+    }
+
+
 }

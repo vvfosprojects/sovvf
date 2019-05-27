@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
-import { FormChiamataModel } from '../model/form-scheda-telefonata.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { TipologieInterface } from '../../../../shared/interface/tipologie';
@@ -21,7 +20,6 @@ import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
 import { ToastrType } from '../../../../shared/enum/toastr';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
-import { UtenteState } from '../../../navbar/store/states/operatore/utente.state';
 import { Observable } from 'rxjs';
 import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefonata.state';
 
@@ -36,12 +34,10 @@ export class SchedaTelefonataComponent implements OnInit {
     options = {
         componentRestrictions: { country: ['IT', 'FR', 'AT', 'CH', 'SI'] }
     };
-    chiamataCorrente: FormChiamataModel;
     chiamataMarker: ChiamataMarker;
     chiamataForm: FormGroup;
     coordinate: Coordinate;
     submitted = false;
-    idChiamata: string;
 
     AzioneChiamataEnum = AzioneChiamataEnum;
 
@@ -62,7 +58,6 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.idChiamata = `${this.operatore.sede.codice}-${this.operatore.id}-${makeID(8)}`;
         this.chiamataForm = this.createForm();
         this.initNuovaRichiesta();
         this.cambiaTipologiaRichiedente('Nome-Cognome');
@@ -203,7 +198,6 @@ export class SchedaTelefonataComponent implements OnInit {
             (val) => {
                 switch (val) {
                     case 'ok':
-                        this.chiamataCorrente = null;
                         this.chiamataForm.reset();
                         this.nuovaRichiesta.tipologie = [];
                         this._statoChiamata('annullata');
@@ -256,8 +250,8 @@ export class SchedaTelefonataComponent implements OnInit {
 
     onCercaIndirizzo(result: Address): void {
         this.coordinate = new Coordinate(result.geometry.location.lat(), result.geometry.location.lng());
-        this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`,
-            new Localita(this.coordinate ? this.coordinate : null, result.formatted_address), null, true
+        this.chiamataMarker = new ChiamataMarker(this.makeIdChiamata(), `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
+            new Localita(this.coordinate ? this.coordinate : null, result.formatted_address), null
         );
         this.nuovaRichiesta.localita = new Localita(this.coordinate ? this.coordinate : null, result.formatted_address, null);
         this._statoChiamata('cerca');
@@ -311,5 +305,9 @@ export class SchedaTelefonataComponent implements OnInit {
 
         console.log('Scheda Telefonata', schedaTelefonata);
         this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata));
+    }
+
+    makeIdChiamata(): string {
+        return `${this.operatore.sede.codice}-${this.operatore.id}-${makeID(8)}`;
     }
 }

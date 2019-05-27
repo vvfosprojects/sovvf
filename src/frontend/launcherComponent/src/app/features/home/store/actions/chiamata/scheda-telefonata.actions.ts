@@ -10,7 +10,7 @@ export class ReducerSchedaTelefonata {
     }
 }
 
-export class SetMarkerChiamata {
+export class MarkerChiamata {
     static readonly type = '[Scheda Telefonata] Set chiamata Marker';
 
     constructor(public marker: ChiamataMarker) {

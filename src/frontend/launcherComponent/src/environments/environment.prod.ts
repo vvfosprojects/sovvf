@@ -23,21 +23,22 @@ export const environment = {
                 richieste: '/api/SintesiRichiesteAssistenzaMarker',
                 sedi: '/api/SintesiSediMarker',
                 mezzi: '/api/SintesiMezziMarker',
-                centro: '',  // Todo: controller mancante
-                chiamate: ''  // Todo: controller mancante
+                centro: '',
+                chiamate: '/api/ChiamateInCorso'
             }
         },
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
-        eventiRichieste: 'https://api.myjson.com/bins/kz0w0', // Todo: controller mancante
-        turno: '',  // Todo: controller mancante
+        eventiRichieste: '/api/ListaEventi',
+        turno: '',
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',
+            avanzata: '/api/ComposizionePartenzaAvanzata',
             mezzi: '/api/ComposizioneMezzi',
             squadre: '/api/ComposizioneMezzi',
             filtri: '/api/Filtri'
         },
         chiamata: {
-            currentId: '', // Todo: controller mancante non sicuro se da fare
+            marker: '/api/ChiamataInCorso',
             inserimento: '/api/InserimentoIntervento'
         },
         login: '/api/auth/Login',

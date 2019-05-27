@@ -11,7 +11,6 @@ import { SchedaTelefonataComponent } from './scheda-telefonata/scheda-telefonata
 import { ChiamataService } from '../../../core/service/chiamata-service/chiamata.service';
 import { ChiamataServiceFake } from '../../../core/service/chiamata-service/chiamata.service.fake';
 import { NgxsModule } from '@ngxs/store';
-import { ChiamataState } from '../store/states/chiamata/chiamata.state';
 import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
 import { ClipboardState } from '../store/states/chiamata/clipboard.state';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
@@ -31,7 +30,6 @@ import { environment } from '../../../../environments/environment';
         SharedModule,
         UiSwitchModule.forRoot(null),
         NgxsModule.forFeature([
-            ChiamataState,
             SchedaTelefonataState,
             ClipboardState
         ])

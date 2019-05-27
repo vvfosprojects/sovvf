@@ -1,16 +1,17 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {EventoRichiesta} from '../../../features/home/eventi/eventi-model/evento-richiesta.model';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
 import * as moment from 'moment';
+import { Store } from '@ngxs/store';
+import { SetEventiRichiesta } from '../../../features/home/store/actions/eventi/eventi-richiesta.actions';
 
 @Injectable()
 export class EventiRichiestaServiceFake {
 
-    constructor() {
-    }
+    private eventiFake: EventoRichiesta[];
 
-    public getEventiRichiesta(idRichiesta: string): Observable<EventoRichiesta[]> {
-        const elencoEventiRichiesta: EventoRichiesta[] = [
+    constructor(private store: Store) {
+        this.eventiFake = [
             new EventoRichiesta(
                 '6',
                 'ChiusuraRichiesta',
@@ -88,10 +89,15 @@ export class EventiRichiestaServiceFake {
                 '',
                 'richiesta da 118',
                 'http://about:blank')
-        ];
+        ].reverse();
+    }
 
-        return of(elencoEventiRichiesta.reverse());
+    public getEventiRichiesta(idRichiesta: string): Observable<EventoRichiesta[]> {
+        setTimeout(() => {
+            this.store.dispatch(new SetEventiRichiesta(this.eventiFake));
+        }, 1000);
 
+        return of();
     }
 
 }

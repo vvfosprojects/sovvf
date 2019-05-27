@@ -297,7 +297,7 @@
                                 [latitude]="chiamataMarker.localita.coordinate.latitudine"
                                 [longitude]="chiamataMarker.localita.coordinate.longitudine"
                                 [iconUrl]="richiestaMarkerIconUrl"
-                                [animation]="animation(chiamataMarker.mySelf)">
+                                [animation]="animation(chiamataMarker?.mySelf)">
                         <agm-snazzy-info-window
                                 [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: '#dc3545'}"
                                 [pointer]="'10px'"

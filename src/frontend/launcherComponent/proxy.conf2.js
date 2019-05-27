@@ -7,7 +7,11 @@ const PROXY_CONFIG = [
             "/api/Navbar",
             "/api/Filtri",
             "/api/InserimentoIntervento",
-            "/api/ComposizionePartenzaAvanzata"
+            "/api/ComposizionePartenzaAvanzata",
+            "/api/GetChiamataInCorso",
+            "/api/ChiamataInCorso/Add",
+            "/api/ChiamataInCorso/Delete",
+            "/api/ChiamataInCorso"
         ],
         target: "http://so115.api2.test/",
         secure: false,

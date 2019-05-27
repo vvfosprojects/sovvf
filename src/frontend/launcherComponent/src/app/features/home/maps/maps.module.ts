@@ -105,7 +105,7 @@ import { environment } from '../../../../environments/environment';
         { provide: MezziMarkerService, useClass: MezziMarkerServiceFake },
         { provide: SediMarkerService, useClass: SediMarkerServiceFake },
         { provide: CentroMappaService, useClass: CentroMappaServiceFake },
-        { provide: ChiamateMarkerService, useClass: ChiamateMarkerServiceFake }
+        { provide: ChiamateMarkerService, useClass: environment.fakeProvider ? ChiamateMarkerServiceFake : ChiamateMarkerService}
     ]
 })
 export class MapsModule {
