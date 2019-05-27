@@ -81,6 +81,10 @@ namespace SO115App.CompositionRoot
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
              FakePersistenceJSon.Composizione.GetPreAccoppiati>();
+            container.Register<
+            SO115App.Models.Servizi.Infrastruttura.GetListaEventi.IGetListaEventi,
+             FakePersistenceJSon.ListaEventi.GetListaEventi>();
+
 
 
 

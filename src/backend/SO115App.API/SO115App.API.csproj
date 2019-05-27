@@ -22,4 +22,5 @@
     <ProjectReference Include="..\SO115App.Logging\SO115App.Logging.csproj" />
     <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
   </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 </Project>
