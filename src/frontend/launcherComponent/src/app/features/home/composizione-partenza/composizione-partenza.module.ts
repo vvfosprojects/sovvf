@@ -31,10 +31,10 @@ import { NgxsModule } from '@ngxs/store';
 import { PreAccoppiatiState } from '../store/states/composizione-partenza/pre-accoppiati.state';
 import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
 import { environment } from '../../../../environments/environment';
-import { FilterbarComposizioneState } from '../store/states/composizione-partenza/filterbar-composizione.state';
 import { FilterbarService } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
 import { FilterbarServiceFake } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service.fake';
 import { ComposizioneAvanzataState } from '../store/states/composizione-partenza/composizione-avanzata.state';
+import { FilterbarComposizioneState } from '../store/states/composizione-partenza/filterbar-composizione.state';
 
 @NgModule({
     declarations: [

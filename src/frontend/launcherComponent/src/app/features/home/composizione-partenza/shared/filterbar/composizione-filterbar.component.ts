@@ -1,5 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { FilterbarService } from '../../../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
+import { Store } from '@ngxs/store';
+import {
+    AddFiltroSelezionatoComposizione,
+    RemoveFiltriSelezionatiComposizione,
+    RemoveFiltroSelezionatoComposizione
+} from '../../../store/actions/composizione-partenza/filterbar-composizione.actions';
 
 @Component({
     selector: 'app-composizione-filterbar',
@@ -10,7 +16,8 @@ export class ComposizioneFilterbarComponent {
 
     @Input() filtri: any;
 
-    constructor(private filterbarService: FilterbarService) {
+    constructor(private filterbarService: FilterbarService,
+                private store: Store) {
         this.getFiltri();
     }
 
@@ -41,5 +48,20 @@ export class ComposizioneFilterbarComponent {
     getFiltri() {
         this.filterbarService.getFiltri().subscribe(() => {
         });
+    }
+
+    addFiltro(event: any, tipo: string) {
+        // console.log('Filtro deselezionato', event);
+        this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id, tipo));
+    }
+
+    removeFiltro(event: any, tipo: string) {
+        // console.log('Filtro deselezionato', event);
+        this.store.dispatch(new RemoveFiltroSelezionatoComposizione(event.value.id, tipo));
+    }
+
+    clearFiltri(tipo: string) {
+        // console.log('Filtri deselezionati', tipo);
+        this.store.dispatch(new RemoveFiltriSelezionatiComposizione(tipo));
     }
 }

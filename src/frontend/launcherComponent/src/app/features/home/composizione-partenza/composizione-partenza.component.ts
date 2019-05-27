@@ -4,8 +4,6 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
 import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
-import { MezzoComposizione } from './interface/mezzo-composizione-interface';
-import { SquadraComposizione } from './interface/squadra-composizione-interface';
 import { BoxPartenza } from './interface/box-partenza-interface';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
@@ -19,8 +17,6 @@ import { RichiestaComposizioneState } from '../store/states/composizione-partenz
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
 import { FilterbarComposizioneState } from '../store/states/composizione-partenza/filterbar-composizione.state';
-import { ComposizioneAvanzataState } from '../store/states/composizione-partenza/composizione-avanzata.state';
-import { GetListeCoposizioneAvanzata } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
