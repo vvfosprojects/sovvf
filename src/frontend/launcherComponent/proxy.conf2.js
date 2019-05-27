@@ -8,10 +8,8 @@ const PROXY_CONFIG = [
             "/api/Filtri",
             "/api/InserimentoIntervento",
             "/api/ComposizionePartenzaAvanzata",
-            "/api/GetChiamataInCorso",
-            "/api/ChiamataInCorso/Add",
-            "/api/ChiamataInCorso/Delete",
-            "/api/ChiamataInCorso"
+            "/api/ChiamataInCorso",
+            "/api/ListaEventi"
         ],
         target: "http://so115.api2.test/",
         secure: false,

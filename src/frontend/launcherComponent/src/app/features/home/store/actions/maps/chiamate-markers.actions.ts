@@ -11,6 +11,13 @@ export class SetChiamataMarker {
     }
 }
 
+export class UpdateChiamataMarker {
+    static readonly type = '[Chiamate Marker] Update Chiamata Marker';
+
+    constructor(public chiamataMarker: ChiamataMarker) {
+    }
+}
+
 export class DelChiamataMarker {
     static readonly type = '[Chiamate Marker] Del Chiamata Marker';
 
@@ -27,6 +34,13 @@ export class InsertChiamateMarkers {
 
 export class InsertChiamataMarker {
     static readonly type = '[Chiamate Marker] Insert Chiamata Marker';
+
+    constructor(public chiamataMarker: ChiamataMarker) {
+    }
+}
+
+export class UpdateItemChiamataMarker {
+    static readonly type = '[Chiamate Marker] Update Item Chiamata Marker';
 
     constructor(public chiamataMarker: ChiamataMarker) {
     }

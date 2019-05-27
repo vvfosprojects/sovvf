@@ -14,7 +14,7 @@ import { CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
 import { ToggleChiamata } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
-import { DelChiamataMarker, SetChiamataMarker } from '../../actions/maps/chiamate-markers.actions';
+import { DelChiamataMarker, SetChiamataMarker, UpdateChiamataMarker } from '../../actions/maps/chiamate-markers.actions';
 import { ClipboardState } from './clipboard.state';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
@@ -131,7 +131,9 @@ export class SchedaTelefonataState {
         const state = getState();
 
         if (state.idChiamataMarker) {
-            dispatch(new DelChiamataMarker(state.idChiamataMarker));
+            dispatch(new UpdateChiamataMarker(action.marker));
+        } else {
+            dispatch(new SetChiamataMarker(action.marker));
         }
 
         const coordinate: Coordinate = {
@@ -141,7 +143,6 @@ export class SchedaTelefonataState {
         dispatch(new GetMarkerDatiMeteo('chiamata-' + action.marker.id, coordinate));
         dispatch(new SetCoordCentroMappa(coordinate));
         dispatch(new SetZoomCentroMappa(18));
-        dispatch(new SetChiamataMarker(action.marker));
         patchState({
             coordinate: coordinate,
             idChiamataMarker: action.marker.id

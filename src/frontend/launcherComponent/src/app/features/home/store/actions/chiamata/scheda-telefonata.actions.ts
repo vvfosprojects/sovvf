@@ -22,7 +22,7 @@ export class ClearMarkerChiamata {
 }
 
 export class ClearChiamata {
-    static readonly type = '[Scheda Telefonata] Clear chiamata Marker';
+    static readonly type = '[Scheda Telefonata] Clear chiamata';
 }
 
 export class InsertChiamata {

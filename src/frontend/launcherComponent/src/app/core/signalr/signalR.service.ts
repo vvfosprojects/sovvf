@@ -23,7 +23,7 @@ import { ToastrType } from '../../shared/enum/toastr';
 import { SetDataNavbar } from '../../features/navbar/store/actions/navbar.actions';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
 import { SetFiltriComposizione } from '../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
-import { InsertChiamataMarker, InsertChiamateMarkers, RemoveChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
+import { InsertChiamataMarker, InsertChiamateMarkers, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import { SetEventiRichiesta } from '../../features/home/store/actions/eventi/eventi-richiesta.actions';
 
 const HUB_URL = environment.signalRHub;
@@ -188,6 +188,11 @@ export class SignalRService {
             console.log(data);
             this.store.dispatch(new InsertChiamataMarker(data.addChiamataInCorso));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Nuova chiamata in corso sulla mappa', null, 3));
+        });
+        this.hubNotification.on('NotifyChiamataInCorsoMarkerUpdate', (data: any) => {
+            console.log(data);
+            this.store.dispatch(new UpdateItemChiamataMarker(data.chiamataInCorso));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa aggiornata', null, 3));
         });
         this.hubNotification.on('NotifyChiamataInCorsoMarkerDelete', (id: string) => {
             console.log(id);

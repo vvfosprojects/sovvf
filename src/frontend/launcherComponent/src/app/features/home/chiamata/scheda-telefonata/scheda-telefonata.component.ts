@@ -22,6 +22,7 @@ import { ToastrType } from '../../../../shared/enum/toastr';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Observable } from 'rxjs';
 import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefonata.state';
+import { ClearChiamateMarkers, DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -38,6 +39,8 @@ export class SchedaTelefonataComponent implements OnInit {
     chiamataForm: FormGroup;
     coordinate: Coordinate;
     submitted = false;
+
+    idChiamata: string;
 
     AzioneChiamataEnum = AzioneChiamataEnum;
 
@@ -68,6 +71,7 @@ export class SchedaTelefonataComponent implements OnInit {
                 this.chiamataForm.reset();
             }
         });
+        this.idChiamata = this.makeIdChiamata();
     }
 
     createForm(): FormGroup {
@@ -201,6 +205,7 @@ export class SchedaTelefonataComponent implements OnInit {
                         this.chiamataForm.reset();
                         this.nuovaRichiesta.tipologie = [];
                         this._statoChiamata('annullata');
+                        this.store.dispatch(new DelChiamataMarker(this.idChiamata));
                         break;
                     case 'ko':
                         console.log('Azione annullata');
@@ -233,6 +238,7 @@ export class SchedaTelefonataComponent implements OnInit {
                         this.coordinate = null;
                         this.store.dispatch(new ClearClipboard());
                         this._statoChiamata('reset');
+                        this.store.dispatch(new DelChiamataMarker(this.idChiamata));
                         break;
                     case 'ko':
                         console.log('Azione annullata');
@@ -250,7 +256,7 @@ export class SchedaTelefonataComponent implements OnInit {
 
     onCercaIndirizzo(result: Address): void {
         this.coordinate = new Coordinate(result.geometry.location.lat(), result.geometry.location.lng());
-        this.chiamataMarker = new ChiamataMarker(this.makeIdChiamata(), `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
+        this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
             new Localita(this.coordinate ? this.coordinate : null, result.formatted_address), null
         );
         this.nuovaRichiesta.localita = new Localita(this.coordinate ? this.coordinate : null, result.formatted_address, null);

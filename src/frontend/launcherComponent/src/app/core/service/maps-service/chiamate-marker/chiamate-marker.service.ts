@@ -22,7 +22,6 @@ export class ChiamateMarkerService {
         );
     }
 
-
     setChiamataInCorso(marker: ChiamataMarker): Observable<any> {
         return this.http.post<any>(API_URL_MARKER_IN_CORSO + '/Add', marker).pipe(
             // retry(3),
@@ -32,6 +31,13 @@ export class ChiamateMarkerService {
 
     deleteChiamataInCorso(marker: ChiamataMarker): Observable<any> {
         return this.http.post<any>(API_URL_MARKER_IN_CORSO + '/Delete', marker).pipe(
+            // retry(3),
+            catchError(handleError)
+        );
+    }
+
+    updateChiamataInCorso(marker: ChiamataMarker): Observable<any> {
+        return this.http.post<any>(API_URL_MARKER_IN_CORSO + '/Update', marker).pipe(
             // retry(3),
             catchError(handleError)
         );

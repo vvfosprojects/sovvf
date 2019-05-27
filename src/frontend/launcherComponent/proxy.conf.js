@@ -8,10 +8,8 @@ const PROXY_CONFIG = [
             "/api/Filtri",
             "/api/InserimentoIntervento",
             "/api/ComposizionePartenzaAvanzata",
-            "/api/GetChiamataInCorso",
-            "/api/ChiamataInCorso/Add",
-            "/api/ChiamataInCorso/Delete",
-            "/api/ChiamataInCorso"
+            "/api/ChiamataInCorso",
+            "/api/ListaEventi"
         ],
         target: "http://DESKTOP-RC0RAUA:5000/",
         secure: false,
