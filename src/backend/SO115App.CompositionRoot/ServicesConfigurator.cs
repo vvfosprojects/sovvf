@@ -69,6 +69,17 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IDeleteChiamataInCorso,
                 FakePersistenceJSon.Marker.DelChiamataInCorso>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
+                FakePersistenceJSon.Composizione.GetComposizioneSquadre>();
+            container.Register<
+             SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi.IGetComposizioneMezzi,
+             FakePersistenceJSon.Composizione.GetComposizioneMezzi>();
+            container.Register<
+            SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
+             FakePersistenceJSon.Composizione.GetPreAccoppiati>();
+
+
 
 
 
