@@ -31,7 +31,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Localita = command.Chiamata.Localita,
                 Descrizione = command.Chiamata.Descrizione,
                 Codice = command.Chiamata.Codice,
-                Id = (_iGetMaxCodice.GetMax() + 1).ToString() // DA TOGLIERE CON LA VERSIONE DB
+                Id = (_iGetMaxCodice.GetMax() + 1).ToString() // DA TOGLIERE CON LA VERSIONE DB                
             };
 
             if (command.Chiamata.Etichette != null)

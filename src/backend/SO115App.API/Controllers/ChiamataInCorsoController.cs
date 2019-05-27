@@ -24,6 +24,7 @@ namespace SO115App.API.Controllers
         /// </summary>
         private readonly ICommandHandler<ChiamataInCorsoMarkerCommand> _Addhandler;
         private readonly ICommandHandler<CancellazioneChiamataInCorsoMarkerCommand> _Delhandler;
+        private readonly ICommandHandler<UpDateChiamataInCorsoMarkerCommand> _upDatehandler;
         private readonly IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> _listaChiamateInCorsoMarkerhandler;
         private readonly IHubContext<NotificationHub> _NotificationHub;
 
@@ -35,11 +36,13 @@ namespace SO115App.API.Controllers
             IHubContext<NotificationHub> NotificationHubContext,
             ICommandHandler<ChiamataInCorsoMarkerCommand> Addhandler,
             ICommandHandler<CancellazioneChiamataInCorsoMarkerCommand> Delhandler,
+            ICommandHandler<UpDateChiamataInCorsoMarkerCommand> UpDatehandler,
             IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> ListaChiamateInCorsoMarkerhandler
             )
         {
             _Addhandler = Addhandler;
             _Delhandler = Delhandler;
+            _upDatehandler = UpDatehandler;
             _listaChiamateInCorsoMarkerhandler = ListaChiamateInCorsoMarkerhandler;
             _NotificationHub = NotificationHubContext;
         }
@@ -123,5 +126,32 @@ namespace SO115App.API.Controllers
             }
         }
 
+        [HttpPost("UpDate")]
+        public async Task<IActionResult> UpDate([FromBody]ChiamateInCorso chiamata)
+        {
+            if (ModelState.IsValid)
+            {
+                var command = new UpDateChiamataInCorsoMarkerCommand()
+                {
+                    ChiamataInCorso = chiamata
+                };
+
+                try
+                {
+                    this._upDatehandler.Handle(command);
+                    await _NotificationHub.Clients.Group(chiamata.codiceSedeOperatore).SendAsync("NotifyChiamataInCorsoMarkerUpDate", command);
+
+                    return Ok();
+                }
+                catch
+                {
+                    return BadRequest();
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
     }
 }

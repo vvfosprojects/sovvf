@@ -16,14 +16,13 @@ import { environment } from '../../../environments/environment';
 import { SetRichiesteMarkers } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { SetMezziMarkers } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import { SetSediMarkers } from '../../features/home/store/actions/maps/sedi-markers.actions';
-import { SetPreAccoppiati } from '../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
 import { SetListaSquadreComposizione, SetListaMezziComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { AuthenticationService } from '../auth/_services';
 import { Utente } from '../../shared/model/utente.model';
-import { SetFiltriComposizione } from '../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
 import { ToastrType } from '../../shared/enum/toastr';
 import { SetDataNavbar } from '../../features/navbar/store/actions/navbar.actions';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
+import { SetFiltriComposizione } from '../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
 import { InsertChiamataMarker, InsertChiamateMarkers, RemoveChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 
 const HUB_URL = environment.signalRHub;

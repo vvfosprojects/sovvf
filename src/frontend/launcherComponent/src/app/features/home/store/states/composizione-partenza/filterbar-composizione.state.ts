@@ -1,23 +1,25 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 
-// Action
+import { insertItem, patch, removeItem } from '@ngxs/store/operators';
+import { AddFiltroSelezionatoComposizione, RemoveFiltriSelezionatiComposizione, RemoveFiltroSelezionatoComposizione } from '../../actions/composizione-partenza/filterbar-composizione.actions';
 import { GetFiltriComposizione, SetFiltriComposizione } from '../../actions/composizione-partenza/filterbar-composizione.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { FilterbarService } from '../../../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
 import { ToastrType } from '../../../../../shared/enum/toastr';
+import { FilterbarComposizioneStateModel } from './filterbar-composizione.state';
+import { FilterbarService } from '../../../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
 
 export interface FilterbarComposizioneStateModel {
     filtri: any;
-    filtriSelezionati: any;
+    codiceDistaccamento: any[];
+    codiceTipoMezzo: any[];
+    codiceStatoMezzo: any[];
 }
 
 export const FiltriComposizioneStateDefaults: FilterbarComposizioneStateModel = {
     filtri: null,
-    filtriSelezionati: {
-        'CodiceDistaccamento': [],
-        'CodiceTipoMezzo': [],
-        'CodiceStatoMezzo': []
-    }
+    codiceDistaccamento: [],
+    codiceTipoMezzo: [],
+    codiceStatoMezzo: []
 };
 
 @State<FilterbarComposizioneStateModel>({
@@ -33,7 +35,11 @@ export class FilterbarComposizioneState {
 
     @Selector()
     static filtriSelezionati(state: FilterbarComposizioneStateModel) {
-        return state.filtriSelezionati;
+        return {
+            'CodiceDistaccamento': state.codiceDistaccamento,
+            'CodiceTipoMezzo': state.codiceTipoMezzo,
+            'CodiceStatoMezzo': state.codiceStatoMezzo
+        };
     }
 
     constructor(private filterbar: FilterbarService) {
@@ -52,5 +58,90 @@ export class FilterbarComposizioneState {
         patchState({
             filtri: action.filtri
         });
+    }
+
+    @Action(AddFiltroSelezionatoComposizione)
+    addFiltroSelezionatoComposizione(ctx: StateContext<FilterbarComposizioneStateModel>, action: AddFiltroSelezionatoComposizione) {
+        console.log('Filtro selezionato', action.filtro);
+        // const state = ctx.getState();
+        switch (action.tipo) {
+            case 'codiceDistaccamento':
+                ctx.setState(
+                    patch({
+                        codiceDistaccamento: insertItem(action.filtro)
+                    })
+                );
+                break;
+            case 'codiceTipoMezzo':
+                ctx.setState(
+                    patch({
+                        codiceTipoMezzo: insertItem(action.filtro)
+                    })
+                );
+                break;
+            case 'codiceStatoMezzo':
+                ctx.setState(
+                    patch({
+                        codiceStatoMezzo: insertItem(action.filtro)
+                    })
+                );
+                break;
+        }
+    }
+
+    @Action(RemoveFiltroSelezionatoComposizione)
+    removeFiltroSelezionatoComposizione(ctx: StateContext<FilterbarComposizioneStateModel>, action: RemoveFiltroSelezionatoComposizione) {
+        console.log('Filtro deselezionato', action.filtro);
+        switch (action.tipo) {
+            case 'codiceDistaccamento':
+                ctx.setState(
+                    patch({
+                        codiceDistaccamento: removeItem(filtro => filtro === action.filtro)
+                    })
+                );
+                break;
+            case 'codiceTipoMezzo':
+                ctx.setState(
+                    patch({
+                        codiceTipoMezzo: removeItem(filtro => filtro === action.filtro)
+                    })
+                );
+                break;
+            case 'codiceStatoMezzo':
+                ctx.setState(
+                    patch({
+                        codiceStatoMezzo: removeItem(filtro => filtro === action.filtro)
+                    })
+                );
+                break;
+        }
+    }
+
+    @Action(RemoveFiltriSelezionatiComposizione)
+    removeFiltriSelezionatiComposizione(ctx: StateContext<FilterbarComposizioneStateModel>, action: RemoveFiltriSelezionatiComposizione) {
+        console.log('Filtro deselezionati', action.tipo);
+        switch (action.tipo) {
+            case 'codiceDistaccamento':
+                ctx.setState(
+                    patch({
+                        codiceDistaccamento: []
+                    })
+                );
+                break;
+            case 'codiceTipoMezzo':
+                ctx.setState(
+                    patch({
+                        codiceTipoMezzo: []
+                    })
+                );
+                break;
+            case 'codiceStatoMezzo':
+                ctx.setState(
+                    patch({
+                        codiceStatoMezzo: []
+                    })
+                );
+                break;
+        }
     }
 }
