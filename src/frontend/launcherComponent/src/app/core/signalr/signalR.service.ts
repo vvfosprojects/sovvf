@@ -124,7 +124,7 @@ export class SignalRService {
          * Eventi Richieste
          */
 
-        this.hubNotification.on('NotifyGetEventiRichieste', (data: any) => {
+        this.hubNotification.on('NotifyGetEventiRichiesta', (data: any) => {
             // console.log(data);
             this.store.dispatch(new SetEventiRichiesta(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Eventi richiesta ricevuti da signalR', null, 5));
