@@ -6,17 +6,17 @@ using SO115App.API.Models.Classi.Autenticazione;
 
 namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
 {
-    public class ChiamataInCorsoMarkerAuthorization : ICommandAuthorizer<ChiamataInCorsoMarkerCommand>
+    public class CancellazioneChiamataInCorsoMarkerAuthorization : ICommandAuthorizer<CancellazioneChiamataInCorsoMarkerCommand>
     {
 
         private readonly IPrincipal currentUser;
 
-        public ChiamataInCorsoMarkerAuthorization(IPrincipal currentUser)
+        public CancellazioneChiamataInCorsoMarkerAuthorization(IPrincipal currentUser)
         {
             this.currentUser = currentUser;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(ChiamataInCorsoMarkerCommand command)
+        public IEnumerable<AuthorizationResult> Authorize(CancellazioneChiamataInCorsoMarkerCommand command)
         {
             string username = this.currentUser.Identity.Name;
 

@@ -2,8 +2,8 @@
 
 namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
 {
-    public class ChiamataInCorsoMarkerCommand
+    public class CancellazioneChiamataInCorsoMarkerCommand
     {
-        public ChiamateInCorso AddChiamataInCorso { get; set; }
+        public string IdChiamataInCorso { get; set; }
     }
 }

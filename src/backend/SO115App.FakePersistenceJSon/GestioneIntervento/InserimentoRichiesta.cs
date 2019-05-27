@@ -25,13 +25,6 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
             List<RichiestaAssistenzaRead> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaRead>>(json);
 
             if (ListaRichieste != null)
-                MaxIdSintesi = Convert.ToInt16(ListaRichieste.OrderByDescending(x => x.Codice).FirstOrDefault().Codice.Split('-')[1]) + 1;
-            else
-                MaxIdSintesi = 1;
-
-            richiestaAssistenza.Codice = richiestaAssistenza.Operatore.Sede.Codice.Split('.')[0] + "-" + MaxIdSintesi.ToString();
-
-            if (ListaRichieste != null)
             {
                 string fileText = System.IO.File.ReadAllText(@"Fake/ListaRichiesteAssistenza.json");
                 string jsonNew = JsonConvert.SerializeObject(richiestaAssistenza);
