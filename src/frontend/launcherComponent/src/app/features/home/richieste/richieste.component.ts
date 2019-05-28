@@ -11,14 +11,12 @@ import { Select, Store } from '@ngxs/store';
 import { RicercaRichiesteState } from '../store/states/filterbar/ricerca-richieste.state';
 import { ClearRichiestaFissata, SetRichiestaFissata } from '../store/actions/richieste/richiesta-fissata.actions';
 import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
-import { GetRichieste } from '../store/actions/richieste/richieste.actions';
 import { ClearRichiestaHover, SetRichiestaHover } from '../store/actions/richieste/richiesta-hover.actions';
 import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from '../store/actions/richieste/richiesta-selezionata.actions';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
-import { AppFeatures } from '../../../shared/enum/app-features.enum';
-import { SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
+import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
 import { ToggleComposizione } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { RichiestaComposizione } from '../store/actions/composizione-partenza/richiesta-composizione.actions';
@@ -46,6 +44,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(RichiestaFissataState.idRichiestaFissata) idRichiestaFissata$: Observable<string>;
     richiestaFissata: SintesiRichiesta;
 
+    @Select(RichiestaFissataState.espanso) richiestaFissataEspanso$: Observable<boolean>;
+
     @Select(RichiestaHoverState.idRichiestaHover) idRichiestaHover$: Observable<string>;
     richiestaHover: SintesiRichiesta;
 
@@ -58,7 +58,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     richiesteTerminate: boolean;
     listHeightClass = 'm-h-750';
 
-    AppFeatures = AppFeatures;
     subscription = new Subscription();
 
     constructor(private modalService: NgbModal,
@@ -69,6 +68,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getRichiestaFissata();
+        this.getRichiestaFissataEspanso();
         this.getRichiestaHover();
         this.getRichiestaSelezionata();
         this.getRicerca();
@@ -124,6 +124,19 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                         this.richiestaFissata = null;
                         this.listHeightClass = 'm-h-750';
                     }, 300);
+                }
+            })
+        );
+    }
+
+    getRichiestaFissataEspanso() {
+        this.subscription.add(
+            this.richiestaFissataEspanso$.subscribe((richiestaEspanso: boolean) => {
+                // console.log(richiestaEspanso);
+                if (richiestaEspanso === true) {
+                    this.listHeightClass = 'm-h-400';
+                } else {
+                    this.listHeightClass = 'm-h-600';
                 }
             })
         );
@@ -215,7 +228,10 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     onVisualizzaEventiRichiesta(idRichiesta: string) {
         this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
-        this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+        const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+        modal.result.then(() => {
+            },
+            () => this.store.dispatch(new ClearEventiRichiesta()));
     }
 
     onModificaRichiesta(richiesta: SintesiRichiesta) {

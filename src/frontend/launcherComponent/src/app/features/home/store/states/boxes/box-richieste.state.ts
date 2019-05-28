@@ -9,6 +9,7 @@ import { BoxInterventi } from '../../../boxes/boxes-model/box-interventi.model';
 // Action
 import { ClearBoxRichieste, GetBoxRichieste, SetBoxRichieste } from '../../actions/boxes/box-richieste.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
 
 export interface BoxRichiesteStateModel {
     richieste: BoxInterventi;
@@ -33,11 +34,9 @@ export class BoxRichiesteState {
     }
 
     @Action(GetBoxRichieste)
-    getBoxRichieste({ dispatch }: StateContext<BoxRichiesteStateModel>, action: GetBoxRichieste) {
-
-        this._richieste.getInterventi(action.connectionId).subscribe(() => {
-            // dispatch(new SetBoxRichieste(i));
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+    getBoxRichieste({ dispatch }: StateContext<BoxRichiesteStateModel>) {
+        this._richieste.getInterventi().subscribe(() => {
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetBoxRichieste)

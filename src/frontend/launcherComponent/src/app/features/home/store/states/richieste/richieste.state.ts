@@ -4,16 +4,17 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Action
-import { ClearRichieste, GetRichieste, SetRichieste, UpdateRichiesta } from '../../actions/richieste/richieste.actions';
+import { AddRichiesta, ClearRichieste, GetRichieste, SetRichieste, UpdateRichiesta } from '../../actions/richieste/richieste.actions';
 
 // Service
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { patch, updateItem } from '@ngxs/store/operators';
+import { insertItem, patch, updateItem } from '@ngxs/store/operators';
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
 import { RichiestaModificaState } from './richiesta-modifica.state';
+import { ToastrType } from '../../../../../shared/enum/toastr';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -46,18 +47,8 @@ export class RichiesteState {
 
     @Action(GetRichieste, { cancelUncompleted: true })
     getRichieste({ dispatch }: StateContext<RichiesteStateModel>, action: GetRichieste) {
-        // this.richiesteService.getRichieste(action.idUltimaRichiesta).subscribe((r: SintesiRichiesta[]) => {
-        //     if (r.length === 0) {
-        //         dispatch(new ShowToastr('warning', 'Non ci sono altre richieste da visualizzare', 'Richieste terminate', 5000));
-        //     }
-        //     dispatch(new SetRichieste(r));
-        // });
-        this.richiesteService.getRichieste(action.connectionId, action.idUltimaRichiesta).subscribe(() => {
-            // if (r.length === 0) {
-            //     dispatch(new ShowToastr('warning', 'Non ci sono altre richieste da visualizzare', 'Richieste terminate', 5000));
-            // }
-            // dispatch(new SetRichieste(r));
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+        this.richiesteService.getRichieste(action.idUltimaRichiesta).subscribe(() => {
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetRichieste)
@@ -68,7 +59,7 @@ export class RichiesteState {
     }
 
     @Action(ClearRichieste)
-    clearRichieste({ patchState}: StateContext<RichiesteStateModel>) {
+    clearRichieste({ patchState }: StateContext<RichiesteStateModel>) {
         patchState(RichiesteStateDefaults);
     }
 
@@ -77,6 +68,17 @@ export class RichiesteState {
         setState(
             patch({
                 richieste: updateItem<SintesiRichiesta>(r => r.id === richiesta.id, richiesta)
+            })
+        );
+    }
+
+    @Action(AddRichiesta)
+    addRichiesta({ getState, setState }: StateContext<RichiesteStateModel>, { richiesta }: AddRichiesta) {
+        const state = getState();
+        const beforePosition = state.richieste.length > 0 ? 0 : null;
+        setState(
+            patch({
+                richieste: insertItem(richiesta, beforePosition)
             })
         );
     }

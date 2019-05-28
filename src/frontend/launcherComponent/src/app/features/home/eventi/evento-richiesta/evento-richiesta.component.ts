@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {EventoRichiesta} from '../eventi-model/evento-richiesta.model';
+import {EventoRichiesta} from '../../../../shared/model/evento-richiesta.model';
 
 @Component({
     selector: '[app-evento-richiesta]',

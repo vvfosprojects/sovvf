@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError, retry, map } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { handleError } from '../../../shared/helper/handleError';
 
 const API_URL_PREACCOPPIATI = environment.apiUrl.composizione.preaccoppiati;
-const API_URL_SQUADRE = environment.apiUrl.composizione.squadre;
-const API_URL_MEZZI = environment.apiUrl.composizione.mezzi;
+const API_URL_AVANZATA = environment.apiUrl.composizione.avanzata;
 
 @Injectable()
 export class CompPartenzaService {
@@ -17,32 +16,23 @@ export class CompPartenzaService {
 
     public getPreAccoppiati(): Observable<any> {
         return this.http.get(API_URL_PREACCOPPIATI).pipe(
-            map((data: any) => {
-                return data.SintesiRichiesta;
-            }),
             retry(3),
             catchError(handleError)
         );
     }
 
-    public getMezziComposizione(): Observable<any> {
-        return this.http.get(API_URL_MEZZI).pipe(
-            map((data: any) => {
-                return data.Mezzi;
-            }),
+    getListeComposizioneAvanzata(object: any): Observable<any> {
+        const obj = {
+            'CodiceDistaccamento': [],
+            'CodiceTipoMezzo': [],
+            'CodiceStatoMezzo': [],
+            'CodiceMezzo': [],
+            'CodiceSquadra': []
+        };
+
+        return this.http.post(API_URL_AVANZATA, object).pipe(
             retry(3),
             catchError(handleError)
         );
     }
-
-    public getSquadre(): Observable<any> {
-        return this.http.get(API_URL_SQUADRE).pipe(
-            map((data: any) => {
-                return data.Squadre;
-            }),
-            retry(3),
-            catchError(handleError)
-        );
-    }
-
 }

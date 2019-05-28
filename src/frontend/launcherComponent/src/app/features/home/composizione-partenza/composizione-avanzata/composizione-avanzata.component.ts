@@ -1,17 +1,22 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges} from '@angular/core';
-import {NgbPopoverConfig, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
-import {Observable, Subscription} from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges } from '@angular/core';
+import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subscription } from 'rxjs';
 
 // Interface
-import {BoxPartenza} from '../interface/box-partenza-interface';
-import {MezzoComposizione} from '../interface/mezzo-composizione-interface';
-import {SquadraComposizione} from '../interface/squadra-composizione-interface';
-import {DirectionInterface} from '../../maps/maps-interface/direction-interface';
+import { BoxPartenza } from '../interface/box-partenza-interface';
+import { MezzoComposizione } from '../interface/mezzo-composizione-interface';
+import { SquadraComposizione } from '../interface/squadra-composizione-interface';
+import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 
 // Model
-import {SintesiRichiesta} from '../../../../shared/model/sintesi-richiesta.model';
-import {Coordinate} from '../../../../shared/model/coordinate.model';
-import {Composizione} from '../../../../shared/enum/composizione.enum';
+import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { Composizione } from '../../../../shared/enum/composizione.enum';
+import { Select, Store } from '@ngxs/store';
+import { ComposizioneAvanzataState } from '../../store/states/composizione-partenza/composizione-avanzata.state';
+import { makeCopy } from '../../../../shared/helper/function';
+import { GetListeCoposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
+import { FilterbarComposizioneState } from '../../store/states/composizione-partenza/filterbar-composizione.state';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -21,8 +26,15 @@ import {Composizione} from '../../../../shared/enum/composizione.enum';
 export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() richiesta: SintesiRichiesta;
-    @Input() mezziComposizione: MezzoComposizione[];
-    @Input() squadreComposizione: SquadraComposizione[];
+
+    @Select(ComposizioneAvanzataState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
+    mezziComposizione: MezzoComposizione[];
+
+    @Select(ComposizioneAvanzataState.squadreComposizione) squadraComposizione$: Observable<SquadraComposizione[]>;
+    squadreComposizione: SquadraComposizione[];
+
+    @Select(FilterbarComposizioneState.filtriSelezionati) filtriSelezionati$: Observable<SquadraComposizione[]>;
+    filtriSelezionati: any;
 
     interval = [];
     subscription = new Subscription();
@@ -43,16 +55,42 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() clearDirection: EventEmitter<any> = new EventEmitter();
 
     constructor(private popoverConfig: NgbPopoverConfig,
-                private tooltipConfig: NgbTooltipConfig) {
+                private tooltipConfig: NgbTooltipConfig,
+                private store: Store) {
         // Popover options
         this.popoverConfig.container = 'body';
         this.popoverConfig.placement = 'top';
         // Tooltip options
         this.tooltipConfig.container = 'body';
         this.tooltipConfig.placement = 'top';
+
+        // Prendo i mezzi da visualizzare nella lista
+        this.subscription.add(
+            this.mezziComposizione$.subscribe((mezziComp: MezzoComposizione[]) => {
+                this.mezziComposizione = makeCopy(mezziComp);
+                console.log(this.mezziComposizione);
+            })
+        );
+
+        // Prendo le squadre da visualizzare nella lista
+        this.subscription.add(
+            this.squadraComposizione$.subscribe((squadreComp: SquadraComposizione[]) => {
+                this.squadreComposizione = makeCopy(squadreComp);
+                console.log(this.squadreComposizione);
+            })
+        );
+
+        // Prendo i filtri selezionati
+        this.subscription.add(
+            this.filtriSelezionati$.subscribe((filtriSelezionati: any) => {
+                this.filtriSelezionati = makeCopy(filtriSelezionati);
+                console.log(this.filtriSelezionati);
+            })
+        );
     }
 
     ngOnInit() {
+        this.updateListe();
         this.subscription.add(this.dismissEvents.subscribe(
             events => this.annullaPartenza(events)
         ));
@@ -67,6 +105,18 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
+    }
+
+    updateListe() {
+        const filtri = {
+            'CodiceDistaccamento': this.filtriSelezionati.CodiceDistaccamento,
+            'CodiceTipoMezzo': this.filtriSelezionati.CodiceTipoMezzo,
+            'CodiceStatoMezzo': this.filtriSelezionati.CodiceStatoMezzo,
+            'CodiceMezzo': [],
+            'CodiceSquadra': []
+        };
+
+        this.store.dispatch(new GetListeCoposizioneAvanzata(filtri));
     }
 
     // Metodi richiamati dagli eventi di output
@@ -110,7 +160,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     // Partenza
     initPartenzaVuota() {
-        this.partenze.push({id: this.generateUniqueId(), squadraComposizione: [], mezzoComposizione: null, selezionato: true, hover: false});
+        this.partenze.push({ id: this.generateUniqueId(), squadraComposizione: [], mezzoComposizione: null, selezionato: true, hover: false });
         const length = this.partenze.length;
         this.idPartenzaCorrente = this.partenze[length - 1].id;
         this.setPartenzaAttuale(this.idPartenzaCorrente);

@@ -179,7 +179,7 @@ export class AgmComponent implements OnDestroy {
         return null;
     }
 
-    animation(mySelf: boolean): string {
+    animation(mySelf: boolean): 'BOUNCE' | 'DROP' | null {
         if (mySelf) {
             return 'DROP';
         }

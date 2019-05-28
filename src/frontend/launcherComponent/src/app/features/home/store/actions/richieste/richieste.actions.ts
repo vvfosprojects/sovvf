@@ -3,7 +3,7 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 export class GetRichieste {
     static readonly type = '[Richieste] Get Lista Richieste';
 
-    constructor(public connectionId: string, public idUltimaRichiesta?: string) {
+    constructor(public idUltimaRichiesta?: string) {
     }
 }
 
@@ -20,6 +20,13 @@ export class ClearRichieste {
 
 export class UpdateRichiesta {
     static readonly type = '[Richieste] Modifica Richiesta';
+
+    constructor(public richiesta: SintesiRichiesta) {
+    }
+}
+
+export class AddRichiesta {
+    static readonly type = '[Richieste] Add Richiesta';
 
     constructor(public richiesta: SintesiRichiesta) {
     }

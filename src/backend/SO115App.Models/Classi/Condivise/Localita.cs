@@ -17,19 +17,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.ComponentModel.DataAnnotations;
+
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Localita
     {
         public Localita(Coordinate _coordinate, string Indirizzo, string Note)
         {
-            this.coordinate = _coordinate;
-            this.indirizzo = Indirizzo;
-            this.note = Note;
+            this.Coordinate = _coordinate;
+            this.Indirizzo = Indirizzo;
+            this.Note = Note;
         }
 
-        public Coordinate coordinate { get; set; }
-        public string indirizzo { get; set; }
-        public string note { get; set; }
+        [Required]
+        public Coordinate Coordinate { get; set; }
+        public string Indirizzo { get; set; }
+        public string Note { get; set; }
     }
 }

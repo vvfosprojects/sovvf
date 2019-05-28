@@ -3,7 +3,6 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ClearUtente, SetUtente } from '../../actions/operatore/utente.actions';
 import { SignalRService } from '../../../../../core/signalr/signalR.service';
 import { SignalRNotification } from '../../../../../core/signalr/model/signalr-notification.model';
-import { ClearListaSediNavbar, PatchListaSediNavbar } from '../../../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 
 export interface UtenteStateModel {
     utente: Utente;
@@ -28,7 +27,7 @@ export class UtenteState {
     }
 
     @Action(SetUtente)
-    setUtente({ patchState, dispatch }: StateContext<UtenteStateModel>, action: SetUtente) {
+    setUtente({ patchState }: StateContext<UtenteStateModel>, action: SetUtente) {
         // Todo: da spostare su signalrState
         this.signalR.addToGroup(new SignalRNotification(
             action.utente.sede.codice,
@@ -38,11 +37,10 @@ export class UtenteState {
         patchState({
             utente: action.utente
         });
-        dispatch(new PatchListaSediNavbar([action.utente.sede.codice]));
     }
 
     @Action(ClearUtente)
-    clearUtente({ getState, patchState, dispatch }: StateContext<UtenteStateModel>) {
+    clearUtente({ getState, patchState }: StateContext<UtenteStateModel>) {
         // Todo: da spostare su signalrState
         const state = getState();
         this.signalR.removeToGroup(new SignalRNotification(
@@ -52,6 +50,5 @@ export class UtenteState {
             )
         );
         patchState(UtenteStateDefaults);
-        dispatch(new ClearListaSediNavbar());
     }
 }

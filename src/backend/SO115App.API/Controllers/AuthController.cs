@@ -17,16 +17,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.SignalR;
+using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Autenticazione;
-using SO115App.API.Models.Servizi.Infrastruttura.Autenticazione;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
+using SO115App.Models.Classi.Utenti.Autenticazione;
 
 namespace SO115App.API.Controllers
 {
@@ -34,52 +36,47 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthOperatore _auth;
-        private readonly IConfiguration _config;
+        private readonly IQueryHandler<LogInQuery, LogInResult> _handler;
+        private readonly IHubContext<NotificationHub> _NotificationHub;
 
-        public AuthController(IAuthOperatore auth, IConfiguration config)
+        public AuthController(IHubContext<NotificationHub> NotificationHubContext,
+            IQueryHandler<LogInQuery, LogInResult> handler)
         {
-            this._auth = auth;
-            this._config = config;
+            this._handler = handler;
+            this._NotificationHub = NotificationHubContext;
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(Utente user)
+        public async Task<IActionResult> Login([FromBody]AuthLogIn crenenziali)
         {
-            var _user = await _auth.Login(user.username, user.password);
 
-            if (_user == null)
+            var headerValues = Request.Headers["HubConnectionId"];
+
+            string ConId = headerValues.FirstOrDefault();
+
+            var query = new LogInQuery()
             {
-                return Unauthorized();
+                Username = crenenziali.username,
+                Password = crenenziali.password
+            };
+
+            try
+            {
+                var utente = (Utente)this._handler.Handle(query).User;
+
+                if (utente == null)
+                {
+                    return Unauthorized();
+                }
+
+                await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyAuth", utente);
+
+                return Ok(utente);
             }
-
-            var claim = new[]
+            catch
             {
-                new Claim(ClaimTypes.NameIdentifier, _user.id.ToString()),
-                new Claim(ClaimTypes.Name,_user.username)
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            var TokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claim),
-                Expires = DateTime.UtcNow.AddDays(1),
-                SigningCredentials = creds
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var token = tokenHandler.CreateToken(TokenDescriptor);
-
-            _user.token = tokenHandler.WriteToken(token);
-
-            return Ok(new
-            {
-                _user
-            });
+                return BadRequest();
+            }
         }
     }
 }

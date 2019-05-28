@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, isDevMode, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, isDevMode, OnDestroy, Input } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ClockService } from './clock/clock-service/clock.service';
 import { AuthenticationService } from '../../core/auth/_services';
@@ -7,10 +7,11 @@ import { Store, Select } from '@ngxs/store';
 import { TurnoState } from './store/states/turno/turno.state';
 import { SetTurno } from './store/actions/turno/turno.actions';
 import { Utente } from '../../shared/model/utente.model';
-import { UtenteState } from './store/states/operatore/utente.state';
 import { ClearUtente, SetUtente } from './store/actions/operatore/utente.actions';
 import { calcolaTurno } from '../../shared/helper/calcola-turno';
 import { TurnoExtra } from './turno/turno-extra.model';
+import { ClearDataNavbar, GetDataNavbar } from './store/actions/navbar.actions';
+import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
 
 @Component({
     selector: 'app-navbar',
@@ -25,12 +26,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     colorButton = 'btn-dark';
 
+    @Input() user: Utente;
     @Output() openedSidebar = new EventEmitter<any>();
+
     @Select(TurnoState.turno) turno$: Observable<Turno>;
     turno: Turno;
     @Select(TurnoState.turnoExtra) turnoExtra$: Observable<TurnoExtra>;
     turnoExtra: TurnoExtra;
-    @Select(UtenteState.utente) user$: Observable<Utente>;
+
+    @Select(SediTreeviewState.listeSediNavbarLoaded) listeSediNavbarLoaded$: Observable<boolean>;
 
     constructor(private store: Store,
                 private _clock: ClockService,
@@ -53,11 +57,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         isDevMode() && console.log('Componente Navbar creato');
+        this.store.dispatch(new GetDataNavbar());
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
         isDevMode() && console.log('Componente Navbar distrutto');
+        this.store.dispatch(new ClearDataNavbar());
     }
 
     openSidebar() {

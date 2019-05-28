@@ -2,13 +2,16 @@
     <div class="col-12">
         <div class="row">
             <div class="col-7">
-                <i class="fa fa-truck mb-2 mr-1"></i><span class="font-weight-bold cursor-pointer" (click)="clickMezzi.emit('tutti')">Mezzi in servizio:
-                    {{mezzi.inServizio}}</span>
+                <i class="fa fa-truck mb-2 mr-1"></i><span class="font-weight-bold cursor-pointer"
+                                                           (click)="clickMezzi.emit('tutti')">Mezzi in servizio:
+                {{mezzi.inServizio}}</span>
             </div>
             <div class="col-5 ml-auto text-secondary text-right">
                 <i class="mb-2 mr-1"></i>
                 <span class="mr-2 font-weight-bold">Istituto</span>
-                <span class="badge badge-secondary h6 w-25 cursor-pointer mr-3 mb-0" [ngClass]="{'border-click-checked': boxClick?.mezzi.istituto}" (click)="clickMezzi.emit('istituto')">{{mezzi.istituto}}</span>
+                <span class="badge badge-secondary h6 w-25 cursor-pointer mr-3 mb-0"
+                      [ngClass]="{'border-click-checked': boxClick?.mezzi.istituto, 'border-info-aggregate': !boxClick?.mezzi.istituto}"
+                      (click)="clickMezzi.emit('istituto')">{{mezzi.istituto}}</span>
             </div>
         </div>
         <hr class="m-0 mb-2">
@@ -26,8 +29,12 @@
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
-                            <li><span class="badge badge-secondary h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick?.mezzi.inSede}" (click)="clickMezzi.emit('inSede')">{{mezzi.inSede}}</span></li>
-                            <li><span class="badge badge-primary h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick?.mezzi.inRientro}" (click)="clickMezzi.emit('inRientro')">{{mezzi.inRientro}}</span></li>
+                            <li [ngClass]="checkDiff('inSede')"><span class="position-relative badge badge-secondary h6 w-75 cursor-pointer"
+                                      [ngClass]="{'border-click-checked': boxClick?.mezzi.inSede, 'border-info-aggregate': !boxClick?.mezzi.inSede}"
+                                      (click)="clickMezzi.emit('inSede')"><i *ngIf="mezziDiff" class="blink-i-aggregate fa" [ngClass]="realDiff('inSede')"></i>{{mezzi.inSede}}</span></li>
+                            <li [ngClass]="checkDiff('inRientro')"><span class="position-relative d-inline-block badge badge-primary h6 w-75 cursor-pointer"
+                                      [ngClass]="{'border-click-checked': boxClick?.mezzi.inRientro, 'border-info-aggregate': !boxClick?.mezzi.inRientro}"
+                                      (click)="clickMezzi.emit('inRientro')"><i *ngIf="mezziDiff" class="blink-i-aggregate fa" [ngClass]="realDiff('inRientro')"></i>{{mezzi.inRientro}}</span></li>
                         </ul>
                     </div>
                 </div>
@@ -47,8 +54,12 @@
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
-                            <li><span class="badge badge-info h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick?.mezzi.inViaggio}" (click)="clickMezzi.emit('inViaggio')">{{mezzi.inViaggio}}</span></li>
-                            <li><span class="badge badge-success h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick?.mezzi.sulPosto}" (click)="clickMezzi.emit('sulPosto')">{{mezzi.sulPosto}}</span></li>
+                            <li [ngClass]="checkDiff('inViaggio')"><span class="position-relative badge badge-info h6 w-75 cursor-pointer"
+                                      [ngClass]="{'border-click-checked': boxClick?.mezzi.inViaggio, 'border-info-aggregate': !boxClick?.mezzi.inViaggio}"
+                                      (click)="clickMezzi.emit('inViaggio')"><i *ngIf="mezziDiff" class="blink-i-aggregate fa" [ngClass]="realDiff('inViaggio')"></i>{{mezzi.inViaggio}}</span></li>
+                            <li [ngClass]="checkDiff('sulPosto')"><span class="position-relative badge badge-success h6 w-75 cursor-pointer"
+                                      [ngClass]="{'border-click-checked': boxClick?.mezzi.sulPosto, 'border-info-aggregate': !boxClick?.mezzi.sulPosto}"
+                                      (click)="clickMezzi.emit('sulPosto')"><i *ngIf="mezziDiff" class="blink-i-aggregate fa" [ngClass]="realDiff('sulPosto')"></i>{{mezzi.sulPosto}}</span></li>
                         </ul>
                     </div>
                 </div>

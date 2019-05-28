@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ListaSedi } from '../../../../core/settings/lista-sedi';
+import { ListaSedi } from '../../../interface/lista-sedi';
 import {
     ClearListaSediNavbar,
     ClearSediNavbarSelezionate,
@@ -13,6 +13,7 @@ import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { allFalseTreeItem, checkTreeItem, findItem } from './sedi-treeview.helper';
 import { SetAppLoaded } from '../../actions/app/app.actions';
 import { SetTurno } from '../../../../features/navbar/store/actions/turno/turno.actions';
+import { ToastrType } from '../../../enum/toastr';
 
 export interface SediTreeviewStateModel {
     listeSedi: ListaSedi;
@@ -41,8 +42,13 @@ export const SediTreeviewStateDefaults: SediTreeviewStateModel = {
 export class SediTreeviewState {
 
     @Selector()
-    static listeSedi(state: SediTreeviewStateModel) {
-        return state.listeSedi;
+    static listeSediLoaded(state: SediTreeviewStateModel) {
+        return !!state.listeSedi;
+    }
+
+    @Selector()
+    static listeSediNavbarLoaded(state: SediTreeviewStateModel) {
+        return !!state.listaSediNavbar;
     }
 
     @Selector()
@@ -62,7 +68,6 @@ export class SediTreeviewState {
 
     @Action(SetListaSediTreeview)
     setListaSediTreeview({ patchState }: StateContext<SediTreeviewStateModel>, action: SetListaSediTreeview) {
-        allFalseTreeItem(action.listaSedi);
         patchState({
             listeSedi: action.listaSedi
         });
@@ -70,16 +75,23 @@ export class SediTreeviewState {
 
     @Action(PatchListaSediNavbar)
     patchListaSediNavbar({ getState, patchState }: StateContext<SediTreeviewStateModel>, action: PatchListaSediNavbar) {
-        const listeChecked = makeCopy(getState().listeSedi);
-        checkTreeItem(listeChecked, action.selected);
-        patchState({
-            listaSediNavbar: listeChecked
-        });
+        const state = getState();
+        if (state.listeSedi) {
+            const listeChecked = makeCopy(state.listeSedi);
+            allFalseTreeItem(listeChecked);
+            if (action.selected) {
+                checkTreeItem(listeChecked, action.selected);
+            }
+            patchState({
+                listaSediNavbar: listeChecked
+            });
+        }
     }
 
     @Action(ClearListaSediNavbar)
     clearListaSediNavbar({ patchState }: StateContext<SediTreeviewStateModel>) {
         patchState({
+            listaSediNavbar: SediTreeviewStateDefaults.listaSediNavbar,
             sediNavbarTesto: SediTreeviewStateDefaults.sediNavbarTesto,
             sediNavbarSelezionate: SediTreeviewStateDefaults.sediNavbarSelezionate,
             sediNavbarDisableConfirm: SediTreeviewStateDefaults.sediNavbarDisableConfirm,
@@ -139,7 +151,7 @@ export class SediTreeviewState {
             },
             sediNavbarDisableConfirm: SediTreeviewStateDefaults.sediNavbarDisableConfirm
         });
-        dispatch(new ShowToastr('warning', 'Attenzione', 'Selezione della sede annullata', 5));
+        dispatch(new ShowToastr(ToastrType.Warning, 'Attenzione', 'Selezione della sede annullata', 5));
     }
 
     @Action(SetSediNavbarSelezionate)

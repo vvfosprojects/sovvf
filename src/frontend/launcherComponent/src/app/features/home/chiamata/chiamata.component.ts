@@ -1,9 +1,10 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { APP_TIPOLOGIE, TipologieInterface } from '../../../core/settings/tipologie';
+import { TipologieInterface } from '../../../shared/interface/tipologie';
 import { Select } from '@ngxs/store';
 import { Utente } from '../../../shared/model/utente.model';
 import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
+import { NavbarState } from '../../navbar/store/states/navbar.state';
 
 
 @Component({
@@ -13,9 +14,8 @@ import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
 })
 export class ChiamataComponent implements OnInit, OnDestroy {
 
-    tipologie: TipologieInterface[] = APP_TIPOLOGIE;
-
     @Select(UtenteState.utente) utente$: Observable<Utente>;
+    @Select(NavbarState.tipologie) tipologie$: Observable<TipologieInterface[]>;
 
     constructor() {
     }

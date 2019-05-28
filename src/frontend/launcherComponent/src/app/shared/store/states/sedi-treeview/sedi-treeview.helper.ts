@@ -1,4 +1,4 @@
-import { ListaSedi } from '../../../../core/settings/lista-sedi';
+import { ListaSedi } from '../../../interface/lista-sedi';
 import { Ricorsivo } from '../../../interface/treeview.interface';
 
 export function allFalseTreeItem(lista: ListaSedi) {

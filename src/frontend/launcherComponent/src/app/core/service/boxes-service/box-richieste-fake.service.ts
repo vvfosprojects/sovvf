@@ -7,15 +7,26 @@ import { SetBoxRichieste } from '../../../features/home/store/actions/boxes/box-
 @Injectable()
 export class BoxRichiesteFakeService {
 
-    interventi: BoxInterventi;
+    count = 0;
+    interventiFake = [
+        new BoxInterventi(3, 3, 1, 2, 9, 20, 'B', 30, 'A', 2018, 12.842),
+        new BoxInterventi(4, 3, 1, 2, 9, 21, 'B', 30, 'A', 2018, 12.843)
+
+    ];
 
     constructor(private store: Store) {
+        setInterval(() => {
+            this.store.dispatch(new SetBoxRichieste(this.interventiFake[this.count]));
+            this.count++;
+            if (this.count === this.interventiFake.length) {
+                this.count = 0;
+            }
+        }, 15000);
     }
 
     public getInterventi(): Observable<BoxInterventi> {
-        this.interventi = new BoxInterventi(3, 3, 1, 2, 9, 20, 'B', 30, 'A', 2018, 12.842);
-        this.store.dispatch(new SetBoxRichieste(this.interventi));
-        return of(this.interventi);
+        this.store.dispatch(new SetBoxRichieste(this.interventiFake[this.count]));
+        return of();
     }
 
 }

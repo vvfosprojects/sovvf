@@ -9,6 +9,7 @@ import { BoxMezzi } from '../../../boxes/boxes-model/box-mezzi.model';
 // Action
 import { SetBoxMezzi, GetBoxMezzi, ClearBoxMezzi } from '../../actions/boxes/box-mezzi.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
 
 export interface BoxMezziStateModel {
     mezzi: BoxMezzi;
@@ -33,10 +34,9 @@ export class BoxMezziState {
     }
 
     @Action(GetBoxMezzi)
-    getBoxMezzi({ dispatch }: StateContext<BoxMezziStateModel>, action: GetBoxMezzi) {
-        this._mezzi.getMezzi(action.connectionId).subscribe(() => {
-            // dispatch(new SetBoxMezzi(m));
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+    getBoxMezzi({ dispatch }: StateContext<BoxMezziStateModel>) {
+        this._mezzi.getMezzi().subscribe(() => {
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetBoxMezzi)

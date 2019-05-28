@@ -21,6 +21,7 @@ using CQRS.Queries;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
+using SO115App.Models.Servizi.Infrastruttura.Box;
 using System.IO;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaPersonale
@@ -30,6 +31,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
     /// </summary>
     public class BoxPersonaleQueryHandler : IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult>
     {
+        private readonly IGetBoxPersonale iGetBox;
+
+        public BoxPersonaleQueryHandler(IGetBoxPersonale iGetBox)
+        {
+            this.iGetBox = iGetBox;
+        }
+
         /// <summary>
         /// Query che estrae i valori dei Box presenti in Home Page
         /// </summary>
@@ -38,32 +46,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
         public BoxPersonaleResult Handle(BoxPersonaleQuery query)
         {
             // preparazione del DTO
-            var boxes = CaricaBox(query);
+            var boxes = iGetBox.Get();
 
             return new BoxPersonaleResult()
             {
                 BoxPersonale = boxes
             };
-        }
-
-        private static BoxPersonale CaricaBox(BoxPersonaleQuery query)
-        {
-            BoxPersonale personale = new BoxPersonale();
-
-            //TODO PARTE CHIAMATA DB
-
-            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
-            //DATI FAKE - ORA LI LEGGO DA FILE
-            string filepath = "Fake/ListaPersonale.json";
-            string json;
-            using (StreamReader r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            personale = JsonConvert.DeserializeObject<BoxPersonale>(json);
-
-            return personale;
         }
     }
 }

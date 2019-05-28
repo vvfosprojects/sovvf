@@ -10,15 +10,7 @@ export class ReducerSchedaTelefonata {
     }
 }
 
-export class SetChiamata {
-    static readonly type = '[Scheda Telefonata] Set chiamata';
-
-    constructor(public nuovaRichiesta: SintesiRichiesta, public azioneChiamata: AzioneChiamataEnum) {
-    }
-
-}
-
-export class SetMarkerChiamata {
+export class MarkerChiamata {
     static readonly type = '[Scheda Telefonata] Set chiamata Marker';
 
     constructor(public marker: ChiamataMarker) {
@@ -30,12 +22,21 @@ export class ClearMarkerChiamata {
 }
 
 export class ClearChiamata {
-    static readonly type = '[Scheda Telefonata] Clear chiamata Marker';
+    static readonly type = '[Scheda Telefonata] Clear chiamata';
 }
 
 export class InsertChiamata {
     static readonly type = '[Scheda Telefonata] Insert chiamata';
 
+    constructor(public nuovaRichiesta: SintesiRichiesta, public azioneChiamata: AzioneChiamataEnum) {
+    }
+}
+
+export class InsertChiamataSuccess {
+    static readonly type = '[Scheda Telefonata] Insert chiamata success';
+
+    constructor(public nuovaRichiesta: any) {
+    }
 }
 
 
@@ -46,5 +47,10 @@ export class CestinaChiamata {
 
 export class ResetChiamata {
     static readonly type = '[Scheda Telefonata] Reset chiamata';
+
+}
+
+export class StartChiamata {
+    static readonly type = '[Scheda Telefonata] Start Chiamata';
 
 }

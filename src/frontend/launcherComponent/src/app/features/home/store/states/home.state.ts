@@ -1,15 +1,17 @@
-import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ClearDataHome, GetDataHome, SetMapLoaded } from '../actions/home.actions';
-import { ClearRichieste, GetRichieste } from '../actions/richieste/richieste.actions';
-import { ClearSediMarkers, GetSediMarkers } from '../actions/maps/sedi-markers.actions';
+import { ClearRichieste } from '../actions/richieste/richieste.actions';
+import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import { ClearCentroMappa, GetCentroMappa } from '../actions/maps/centro-mappa.actions';
-import { ClearMezziMarkers, GetMezziMarkers } from '../actions/maps/mezzi-markers.actions';
-import { ClearRichiesteMarkers, GetRichiesteMarkers } from '../actions/maps/richieste-markers.actions';
-import { ClearBoxRichieste, GetBoxRichieste } from '../actions/boxes/box-richieste.actions';
-import { ClearBoxMezzi, GetBoxMezzi } from '../actions/boxes/box-mezzi.actions';
-import { ClearBoxPersonale, GetBoxPersonale } from '../actions/boxes/box-personale.actions';
-import { SignalRState } from '../../../../core/signalr/store/signalR.state';
-import { ClearChiamateMarkers, GetChiamateMarkers } from '../actions/maps/chiamate-markers.actions';
+import { ClearMezziMarkers } from '../actions/maps/mezzi-markers.actions';
+import { ClearRichiesteMarkers } from '../actions/maps/richieste-markers.actions';
+import { ClearBoxRichieste } from '../actions/boxes/box-richieste.actions';
+import { ClearBoxMezzi } from '../actions/boxes/box-mezzi.actions';
+import { ClearBoxPersonale } from '../actions/boxes/box-personale.actions';
+import { ClearChiamateMarkers } from '../actions/maps/chiamate-markers.actions';
+import { HomeService } from '../../../../core/service/home-service/home.service';
+import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../shared/enum/toastr';
 
 export interface HomeStateModel {
     loaded: boolean;
@@ -32,8 +34,7 @@ export class HomeState {
         return state.mapIsLoaded;
     }
 
-    constructor(private store: Store) {
-
+    constructor(private homeService: HomeService) {
     }
 
     @Action(ClearDataHome)
@@ -54,21 +55,15 @@ export class HomeState {
 
     @Action(GetDataHome)
     getDataHome({ patchState, dispatch }: StateContext<HomeStateModel>) {
-        const connectionID = this.store.selectSnapshot(SignalRState.connectionIdSignalR);
+        this.homeService.getHome().subscribe(() => {
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
         dispatch([
-            new GetRichieste(connectionID),
-            new GetCentroMappa(),
-            new GetSediMarkers(connectionID),
-            new GetMezziMarkers(connectionID),
-            new GetRichiesteMarkers(connectionID),
-            new GetChiamateMarkers(),
-            new GetBoxRichieste(connectionID),
-            new GetBoxMezzi(connectionID),
-            new GetBoxPersonale(connectionID)
+            new GetCentroMappa(), // Todo: controller da fare
         ]);
         patchState({
             loaded: true
         });
+
     }
 
     @Action(SetMapLoaded)

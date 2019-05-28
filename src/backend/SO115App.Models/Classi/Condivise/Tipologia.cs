@@ -23,34 +23,34 @@ namespace SO115App.API.Models.Classi.Condivise
     {
         public Tipologia(string Codice, string Descrizione, string Icona)
         {
-            this.codice = Codice;
-            this.descrizione = Descrizione;
-            this.icona = Icona;
+            this.Codice = Codice;
+            this.Descrizione = Descrizione;
+            this.Icona = Icona;
         }
 
         /// <summary>
         /// Codice della Tipologia
         /// </summary>
-        public string codice { get; set; }
+        public string Codice { get; set; }
 
         /// <summary>
         /// Descrizione Tipologia
         /// </summary>
-        public string descrizione { get; set; }
+        public string Descrizione { get; set; }
 
         /// <summary>
         /// Classe Icona Fontawsome corrispondente alla tipologia
         /// </summary>
-        public string icona { get; set; }
+        public string Icona { get; set; }
 
         /// <summary>
         /// Definisce la categoria della Tipologia
         /// </summary>
-        public string categoria { get; set; }
+        public string Categoria { get; set; }
 
         /// <summary>
         /// Indica se questa tipologia sarà presente nei "preferiti" nella sezione Filtri
         /// </summary>
-        public bool star { get; set; }
+        public bool Star { get; set; }
     }
 }

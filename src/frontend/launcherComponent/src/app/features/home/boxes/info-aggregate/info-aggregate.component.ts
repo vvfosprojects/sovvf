@@ -15,6 +15,8 @@ import { BoxRichiesteState } from '../../store/states/boxes/box-richieste.state'
 import { BoxMezziState } from '../../store/states/boxes/box-mezzi.state';
 import { BoxPersonaleState } from '../../store/states/boxes/box-personale.state';
 import { ReducerBoxClick } from '../../store/actions/boxes/box-click.actions';
+import { UtenteState } from '../../../navbar/store/states/operatore/utente.state';
+import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../shared/interface/box-personale.interface';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -23,11 +25,9 @@ import { ReducerBoxClick } from '../../store/actions/boxes/box-click.actions';
 })
 export class InfoAggregateComponent implements OnDestroy {
     @Select(BoxRichiesteState.richieste) richieste$: Observable<BoxInterventi>;
-    richieste: BoxInterventi;
     @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
-    mezzi: BoxMezzi;
-    @Select(BoxPersonaleState.personale) personale$: Observable<BoxPersonale>;
-    personale: BoxPersonale;
+    @Select(BoxPersonaleState.personaleQty) personaleQty$: Observable<BoxPersonaleQty>;
+    @Select(BoxPersonaleState.presenze) presenze$: Observable<BoxPersonalePresenze>;
 
     datimeteo: Meteo;
 
@@ -39,9 +39,6 @@ export class InfoAggregateComponent implements OnDestroy {
                 private modalService: NgbModal,
                 private meteoService: MeteoService) {
         this.startMeteo();
-        this.subscription.add(this.richieste$.subscribe( r => this.richieste = r));
-        this.subscription.add(this.mezzi$.subscribe( r => this.mezzi = r));
-        this.subscription.add(this.personale$.subscribe( r => this.personale = r));
     }
 
     ngOnDestroy() {
@@ -59,10 +56,8 @@ export class InfoAggregateComponent implements OnDestroy {
     }
 
     startMeteo() {
-        /**
-         * Dati coordinate fake in attesa di quelle passate dal servizio località utente
-         */
-        const coordinate = new Coordinate(41.899940, 12.491270);
+        const coordinateUtente = this.store.selectSnapshot(UtenteState.utente).sede.coordinate;
+        const coordinate = new Coordinate(coordinateUtente.latitudine, coordinateUtente.longitudine);
         this._getMeteoData(coordinate);
         setInterval(() => {
             this.datimeteo = undefined;

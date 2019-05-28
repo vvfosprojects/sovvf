@@ -191,7 +191,7 @@ namespace SO115App.GeneratoreRichiesteFake
                 .RuleFor(ra => ra.Richiedente, f => new Richiedente(f.Name.FirstName(), f.Name.LastName(), f.Company.CompanyName(), f.Phone.Locale))
                 .RuleFor(ra => ra.NumeroRichiedente, f => f.Phone.PhoneNumber())
                 .RuleFor(ra => ra.CodiciUOCompetenza, f => new[] { f.Address.StateAbbr(), f.Address.StateAbbr(), f.Address.StateAbbr() })
-                .RuleFor(ra => ra.ListaPartenze, f => GeneraListaPartenze())
+               // .RuleFor(ra => ra.ListaPartenze, f => GeneraListaPartenze())
                 .RuleFor(ra => ra.Localita, f => new Localita(GeneraCoordinateLocalita(), indirizzo, NoteLocalita))
                 .RuleFor(ra => ra.Competenze, f => GeneraCompetenze())
                 .Ignore(ra => ra.Tags);
@@ -344,10 +344,10 @@ namespace SO115App.GeneratoreRichiesteFake
         {
             var fakerRichiedente = new Faker<Richiedente>()
                 .StrictMode(true)
-                .RuleFor(t => t.nome, f => f.Name.FirstName())
-                .RuleFor(t => t.cognome, f => f.Name.LastName())
-                .RuleFor(t => t.ragioneSociale, f => f.Company.CompanyName())
-                .RuleFor(t => t.telefono, f => f.Phone.PhoneNumber());
+                .RuleFor(t => t.Nome, f => f.Name.FirstName())
+                .RuleFor(t => t.Cognome, f => f.Name.LastName())
+                .RuleFor(t => t.RagioneSociale, f => f.Company.CompanyName())
+                .RuleFor(t => t.Telefono, f => f.Phone.PhoneNumber());
 
             return fakerRichiedente;
         }
@@ -404,8 +404,8 @@ namespace SO115App.GeneratoreRichiesteFake
             Mezzo mezzo = new Mezzo("0", "APS", "Auto pompa serbatoio", "In sede", 0, distaccamento);
 
             Partenza partenza = new Partenza();
-            partenza.mezzo = mezzo;
-            partenza.squadre = ListaSquadre;
+            partenza.Mezzo = mezzo;
+            partenza.Squadre = ListaSquadre;
 
             List<Partenza> NewPartenza = new List<Partenza>()
             {

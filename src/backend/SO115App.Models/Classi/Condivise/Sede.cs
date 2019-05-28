@@ -17,66 +17,75 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.ComponentModel.DataAnnotations;
+
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Sede
     {
         public Sede(string Codice, string Descrizione, string Indirizzo, Coordinate Coordinate, string TipoSede, string Label, string Icona, string Regione, string Provincia)
         {
-            this.codice = Codice;
-            this.descrizione = Descrizione;
-            this.indirizzo = Indirizzo;
-            this.coordinate = Coordinate;
-            this.tipo = TipoSede;
-            this.label = Label;
-            this.icona = Icona;
-            this.regione = Regione;
-            this.provincia = Provincia;
+            this.Codice = Codice;
+            this.Descrizione = Descrizione;
+            this.Indirizzo = Indirizzo;
+            this.Coordinate = Coordinate;
+            this.Tipo = TipoSede;
+            this.Label = Label;
+            this.Icona = Icona;
+            this.Regione = Regione;
+            this.Provincia = Provincia;
         }
 
         /// <summary>
         /// Codice Sede
         /// </summary>
-        public string codice { get; set; }
+        [Required]
+        public string Codice { get; set; }
 
         /// <summary>
         /// Descrizione Sede
         /// </summary>
-        public string descrizione { get; set; }
+        [Required]
+        public string Descrizione { get; set; }
 
         /// <summary>
         /// Coordinate
         /// </summary>
-        public Coordinate coordinate { get; set; }
+        [Required]
+        public Coordinate Coordinate { get; set; }
 
         /// <summary>
         /// Indirizzo della Sede
         /// </summary>
-        public string indirizzo { get; set; }
+        [Required]
+        public string Indirizzo { get; set; }
 
         /// <summary>
         /// Tipologia Sede
         /// </summary>
-        public string tipo { get; set; }
+        [Required]
+        public string Tipo { get; set; }
 
         /// <summary>
         /// Tipologia Sede
         /// </summary>
-        public string regione { get; set; }
+        [Required]
+        public string Regione { get; set; }
 
         /// <summary>
         /// Tipologia Sede
         /// </summary>
-        public string provincia { get; set; }
+        [Required]
+        public string Provincia { get; set; }
 
         /// <summary>
         /// Label
         /// </summary>
-        public string label { get; set; }
+        public string Label { get; set; }
 
         /// <summary>
         /// Icona
         /// </summary>
-        public string icona { get; set; }
+        public string Icona { get; set; }
     }
 }

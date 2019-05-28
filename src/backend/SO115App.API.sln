@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.API", "SO115App.API\SO115App.API.csproj", "{42DE1A08-3415-4767-9D2A-FC4D6B36799B}"
 EndProject
@@ -23,6 +23,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.GeneratoreFakeRichieste", "SO115App.GeneratoreFakeRichieste\SO115App.GeneratoreFakeRichieste.csproj", "{59432123-3536-4860-8823-0914618C7FA3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115App.API.SOVVF.FakeImplementations.Test", "SO115App.API.SOVVF.FakeImplementations.Test\SO115App.API.SOVVF.FakeImplementations.Test.csproj", "{2CCEA532-DCD3-4EB9-BA09-248976D7E702}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115App.FakePersistenceJSon", "SO115App.FakePersistenceJSon\SO115App.FakePersistenceJSon.csproj", "{6B0CA229-033A-4B8B-B5D8-7382B744BA26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +64,10 @@ Global
 		{2CCEA532-DCD3-4EB9-BA09-248976D7E702}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CCEA532-DCD3-4EB9-BA09-248976D7E702}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CCEA532-DCD3-4EB9-BA09-248976D7E702}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B0CA229-033A-4B8B-B5D8-7382B744BA26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B0CA229-033A-4B8B-B5D8-7382B744BA26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B0CA229-033A-4B8B-B5D8-7382B744BA26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B0CA229-033A-4B8B-B5D8-7382B744BA26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -75,13 +75,6 @@ namespace SO115App.CompositionRoot
                 typeof(CQRS.Commands.ICommandHandler<>),
                 typeof(Logging.CQRS.CommandHandlerLogDecorator<>));
 
-            container.Register(
-                typeof(API.Models.Servizi.Infrastruttura.Autenticazione.IAuthOperatore),
-                typeof(API.Models.Classi.Utenti.Autenticazione.AuthOperatore));
-
-            container.Register<
-                API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
-                API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni.GetUnitaOperativaPerCodice>();
         }
     }
 }

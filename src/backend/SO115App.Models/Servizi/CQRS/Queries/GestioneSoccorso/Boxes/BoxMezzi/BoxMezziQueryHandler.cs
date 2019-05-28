@@ -18,9 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
-using System.IO;
+using SO115App.Models.Servizi.Infrastruttura.Box;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
 {
@@ -29,6 +28,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
     /// </summary>
     public class BoxMezziQueryHandler : IQueryHandler<BoxMezziQuery, BoxMezziResult>
     {
+        private readonly IGetBoxMezzi _iGetbox;
+
+        public BoxMezziQueryHandler(IGetBoxMezzi iGetbox)
+        {
+            this._iGetbox = iGetbox;
+        }
+
         /// <summary>
         /// Query che estrae i valori dei Box presenti in Home Page
         /// </summary>
@@ -37,32 +43,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
         public BoxMezziResult Handle(BoxMezziQuery query)
         {
             // preparazione del DTO
-            var boxes = CaricaBox(query);
+            var boxes = _iGetbox.Get();
 
             return new BoxMezziResult()
             {
                 BoxMezzi = boxes
             };
-        }
-
-        private static BoxMezzi CaricaBox(BoxMezziQuery query)
-        {
-            BoxMezzi mezzi = new BoxMezzi();
-
-            //TODO PARTE CHIAMATA DB
-
-            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
-            //DATI FAKE - ORA LI LEGGO DA FILE
-            string filepath = "Fake/BoxMezzi.json";
-            string json;
-            using (StreamReader r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            mezzi = JsonConvert.DeserializeObject<BoxMezzi>(json);
-
-            return mezzi;
         }
     }
 }

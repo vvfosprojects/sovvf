@@ -1,25 +1,28 @@
 import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
-import { FormChiamataModel } from '../model/form-scheda-telefonata.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
-import { TipologieInterface } from '../../../../core/settings/tipologie';
+import { TipologieInterface } from '../../../../shared/interface/tipologie';
 import { SchedaTelefonataInterface } from '../model/scheda-telefonata.interface';
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
 import { makeCopy, makeID } from '../../../../shared/helper/function';
 import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/confirm-modal.component';
 import { Utente } from '../../../../shared/model/utente.model';
 import { ClearClipboard } from '../../store/actions/chiamata/clipboard.actions';
-import { ReducerSchedaTelefonata } from '../../store/actions/chiamata/scheda-telefonata.actions';
-import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
+import { ReducerSchedaTelefonata, StartChiamata } from '../../store/actions/chiamata/scheda-telefonata.actions';
 import { Richiedente } from '../../../../shared/model/richiedente.model';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
+import { ToastrType } from '../../../../shared/enum/toastr';
+import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
+import { Observable } from 'rxjs';
+import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefonata.state';
+import { ClearChiamateMarkers, DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -32,11 +35,11 @@ export class SchedaTelefonataComponent implements OnInit {
     options = {
         componentRestrictions: { country: ['IT', 'FR', 'AT', 'CH', 'SI'] }
     };
-    chiamataCorrente: FormChiamataModel;
     chiamataMarker: ChiamataMarker;
     chiamataForm: FormGroup;
     coordinate: Coordinate;
     submitted = false;
+
     idChiamata: string;
 
     AzioneChiamataEnum = AzioneChiamataEnum;
@@ -48,18 +51,27 @@ export class SchedaTelefonataComponent implements OnInit {
     tipologiaRichiedente: string;
     isCollapsed = true;
 
+    @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
+
     constructor(private formBuilder: FormBuilder,
                 private cdRef: ChangeDetectorRef,
                 private store: Store,
                 private modalService: NgbModal) {
+        this.store.dispatch(new StartChiamata());
     }
 
     ngOnInit() {
-        this.idChiamata = `${this.operatore.sede.codice}-${this.operatore.id}-${makeID(8)}`;
         this.chiamataForm = this.createForm();
         this.initNuovaRichiesta();
         this.cambiaTipologiaRichiedente('Nome-Cognome');
         this.nuovaRichiesta.istanteRicezioneRichiesta = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
+
+        this.resetChiamata$.subscribe((reset: boolean) => {
+            if (reset) {
+                this.chiamataForm.reset();
+            }
+        });
+        this.idChiamata = this.makeIdChiamata();
     }
 
     createForm(): FormGroup {
@@ -75,7 +87,8 @@ export class SchedaTelefonataComponent implements OnInit {
             rilevanza: [null],
             notePrivate: [null],
             notePubbliche: [null],
-            motivazione: [null, Validators.required],
+            // descrizione: [null, Validators.required],
+            descrizione: [null],
             zoneEmergenza: [null],
         });
     }
@@ -89,21 +102,10 @@ export class SchedaTelefonataComponent implements OnInit {
             null,
             null,
             null,
-            this.operatore,
+            new Utente(this.operatore.id, this.operatore.nome, this.operatore.cognome, this.operatore.codiceFiscale, this.operatore.sede, this.operatore.username),
             null,
             StatoRichiesta.Chiamata,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
+            0,
             null,
             null,
             null,
@@ -141,6 +143,7 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     getChiamataForm() {
+        // console.log(this.f.descrizione.value);
         // Set form data
         const f = this.f;
         if (this.tipologiaRichiedente === 'Nome-Cognome') {
@@ -150,9 +153,9 @@ export class SchedaTelefonataComponent implements OnInit {
         }
         // this.nuovaRichiesta.localita = new Localita(this.coordinate ? this.coordinate : null, f.indirizzo.value, f.noteIndirizzo.value);
         this.nuovaRichiesta.localita.note = f.noteIndirizzo.value;
-        this.nuovaRichiesta.etichette = f.etichette.value;
+        this.nuovaRichiesta.etichette = f.etichette.value ? f.etichette.value.split(' ') : null;
         this.nuovaRichiesta.rilevanza = f.rilevanza.value;
-        this.nuovaRichiesta.descrizione = f.motivazione.value;
+        this.nuovaRichiesta.descrizione = f.descrizione.value;
         this.nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value;
         this.nuovaRichiesta.notePrivate = f.notePrivate.value;
         this.nuovaRichiesta.notePubbliche = f.notePubbliche.value;
@@ -199,10 +202,10 @@ export class SchedaTelefonataComponent implements OnInit {
             (val) => {
                 switch (val) {
                     case 'ok':
-                        this.chiamataCorrente = null;
                         this.chiamataForm.reset();
                         this.nuovaRichiesta.tipologie = [];
                         this._statoChiamata('annullata');
+                        this.store.dispatch(new DelChiamataMarker(this.idChiamata));
                         break;
                     case 'ko':
                         console.log('Azione annullata');
@@ -235,6 +238,7 @@ export class SchedaTelefonataComponent implements OnInit {
                         this.coordinate = null;
                         this.store.dispatch(new ClearClipboard());
                         this._statoChiamata('reset');
+                        this.store.dispatch(new DelChiamataMarker(this.idChiamata));
                         break;
                     case 'ko':
                         console.log('Azione annullata');
@@ -252,8 +256,8 @@ export class SchedaTelefonataComponent implements OnInit {
 
     onCercaIndirizzo(result: Address): void {
         this.coordinate = new Coordinate(result.geometry.location.lat(), result.geometry.location.lng());
-        this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`,
-            new Localita(this.coordinate ? this.coordinate : null, result.formatted_address), null, true
+        this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
+            new Localita(this.coordinate ? this.coordinate : null, result.formatted_address), null
         );
         this.nuovaRichiesta.localita = new Localita(this.coordinate ? this.coordinate : null, result.formatted_address, null);
         this._statoChiamata('cerca');
@@ -272,11 +276,11 @@ export class SchedaTelefonataComponent implements OnInit {
         const title = messageArr.length > 1 ? 'Campi obbligatori:' : 'Campo obbligatorio:';
         if (messageArr.length > 0) {
             message = message.substring(0, message.length - 2);
-            const type = 'error';
-            this.store.dispatch(new ShowToastr('clear'));
+            const type = ToastrType.Error;
+            this.store.dispatch(new ShowToastr(ToastrType.Clear));
             this.store.dispatch(new ShowToastr(type, title, message));
         } else {
-            this.store.dispatch(new ShowToastr('clear'));
+            this.store.dispatch(new ShowToastr(ToastrType.Clear));
         }
         return !!this.chiamataForm.invalid;
     }
@@ -307,5 +311,9 @@ export class SchedaTelefonataComponent implements OnInit {
 
         console.log('Scheda Telefonata', schedaTelefonata);
         this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata));
+    }
+
+    makeIdChiamata(): string {
+        return `${this.operatore.sede.codice}-${this.operatore.id}-${makeID(8)}`;
     }
 }

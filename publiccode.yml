@@ -46,7 +46,7 @@ description:
   it:
     localisedName: Sala Operativa VVF
     genericName: sovvf
-    shortDescription: Sala Operativa VVF
+    shortDescription: Software di Sala Operativa (in fase di reingegnerizzazione) del Corpo Nazionale dei Vigili del Fuoco.
     longDescription: >
       SOVVF è il progetto di reingegnerizzazione del software applicativo per
       le sale operative del Corpo Nazionale dei Vigili del Fuoco. Il software
@@ -58,7 +58,7 @@ description:
       moduli a corredo per la gestione di processi collaterali. Il software
       è al momento in piena fase di sviluppo e non è acquisibile per scenari di
       esercizio.
-    documentation: 'https://github.com/vvfosprojects/sovvf/tree/master/doc'
+    documentation: 'https://github.com/vvfosprojects/sovvf/blob/master/README.md'
     features:
        - Web based frontend for operators.
        - RESTful backend.
@@ -66,7 +66,16 @@ description:
        - Emergency Teams dispatch.
        - GIS based emergency management.
     screenshots:
-      - doc/Cattura1.png
+      - doc/images/dashboard.jpg
+      - doc/images/composizione-rapida.jpg
+      - doc/images/dettaglio-richiesta.jpg
+      - doc/images/chiamata.jpg
+      - doc/images/dettaglio-richiesta-mappa.jpg
+      - doc/images/composizione.jpg
+      - doc/images/meteo-marker.jpg
+      - doc/images/boxes.jpg
+      - doc/images/dettaglio-marker.jpg
+      - doc/images/dashboard-solo-mappa.jpg
 inputTypes:
   - text/plain
 outputTypes:

@@ -65,23 +65,23 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
 #warning Sarebbe conveniente usare la libreria AutoMapper per garantire la copertura completa
             return new SintesiRichiesta()
             {
-                id = richiesta.Id,
-                codice = richiesta.Codice,
-                rilevanza = null, //richiesta.Rilevante != null ? richiesta.Rilevante : null,
-                istanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta,
-                istantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione,
-                priorita = richiesta.PrioritaRichiesta,
-                tipologie = richiesta.Tipologie,
-                descrizione = richiesta.Descrizione,
-                richiedente = richiesta.Richiedente,
-                localita = richiesta.Localita,
-                competenze = richiesta.Competenze,
-                zoneEmergenza = richiesta.ZoneEmergenza,
-                istantePresaInCarico = richiesta.IstantePresaInCarico,
-                codiceSchedaNue = richiesta.CodiceSchedaNue,
+                Id = richiesta.Id,
+                Codice = richiesta.Codice,
+                Rilevanza = null, //richiesta.Rilevante != null ? richiesta.Rilevante : null,
+                IstanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta,
+                IstantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione,
+                //Priorita = richiesta.PrioritaRichiesta,
+                Tipologie = richiesta.Tipologie,
+                Descrizione = richiesta.Descrizione,
+                Richiedente = richiesta.Richiedente,
+                Localita = richiesta.Localita,
+                Competenze = richiesta.Competenze,
+                ZoneEmergenza = richiesta.ZoneEmergenza,
+                IstantePresaInCarico = richiesta.IstantePresaInCarico,
+                CodiceSchedaNue = richiesta.CodiceSchedaNue,
                 //fonogramma = richiesta.StatoInvioFonogramma,
                 //ComplessitaIntervento = richiesta.Complessita,
-                partenze = richiesta.ListaPartenze
+                //Partenze = richiesta.ListaPartenze
             };
         }
     }

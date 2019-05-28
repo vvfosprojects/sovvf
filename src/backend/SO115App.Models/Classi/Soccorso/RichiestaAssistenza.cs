@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Persistenza;
@@ -51,12 +52,13 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   Costruisce una nuova istanza di <see cref="RichiestaAssistenza" />
         /// </summary>
+        [JsonConstructor]
         public RichiestaAssistenza()
         {
             this.eventi = new List<Evento>();
             this.Tipologie = new List<Tipologia>();
             this.Tags = new HashSet<string>();
-            this.ListaPartenze = new List<Partenza>();
+            //this.ListaPartenze = new List<Partenza>();
         }
 
         /// <summary>
@@ -207,7 +209,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                     .LastOrDefault();
 
                 if ((ultimoEventoRilevanza != null) && (ultimoEventoRilevanza is MarcaRilevante))
-                    return ultimoEventoRilevanza.istante.ToString();
+                    return ultimoEventoRilevanza.Istante.ToString();
                 else
                     return null;
             }
@@ -262,7 +264,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             //set;
         }
 
-        public List<Partenza> ListaPartenze { get; set; }
+        //public List<Partenza> ListaPartenze { get; set; }
 
         /// <summary>
         ///   Indica l'istante di chiusura della richiesta, impostato dall'evento <see cref="ChiusuraRichiesta" />
@@ -361,7 +363,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                         .Where(e => e is Segnalazione)
                         .First() as Segnalazione;
 
-                    return eventoSegnalazione.istante;
+                    return eventoSegnalazione.Istante;
                 }
                 catch (Exception ex)
                 {
@@ -388,7 +390,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 }
                 else
                 {
-                    return eventoPresaInCarico.istante;
+                    return eventoPresaInCarico.Istante;
                 }
             }
         }
@@ -410,7 +412,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 }
                 else
                 {
-                    return eventoAssegnazione.istante;
+                    return eventoAssegnazione.Istante;
                 }
             }
         }
@@ -555,7 +557,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="evento">L'evento da aggiungere</param>
         public void AddEvento(Evento evento)
         {
-            if (this.eventi.Any() && this.eventi.Last().istante > evento.istante)
+            if (this.eventi.Any() && this.eventi.Last().Istante > evento.Istante)
             {
                 throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
             }

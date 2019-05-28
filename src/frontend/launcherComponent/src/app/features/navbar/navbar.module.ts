@@ -31,6 +31,7 @@ import { NgxsModule } from '@ngxs/store';
  * Ngxs State
  */
 import { TurnoState } from './store/states/turno/turno.state';
+import { NavbarState } from './store/states/navbar.state';
 
 @NgModule({
     imports: [
@@ -44,6 +45,7 @@ import { TurnoState } from './store/states/turno/turno.state';
         RouterModule,
         NgxsModule.forFeature(
             [
+                NavbarState,
                 TurnoState
             ]
         ),

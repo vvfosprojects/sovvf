@@ -28,10 +28,13 @@ import { CompPartenzaServiceFake } from '../../../core/service/comp-partenza-ser
  * Ngxs
  */
 import { NgxsModule } from '@ngxs/store';
-import { MezziComposizioneState } from '../store/states/composizione-partenza/mezzi-composizione.state';
-import { SquadreComposizioneState } from '../store/states/composizione-partenza/squadre-composizione.state';
 import { PreAccoppiatiState } from '../store/states/composizione-partenza/pre-accoppiati.state';
 import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
+import { environment } from '../../../../environments/environment';
+import { FilterbarService } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
+import { FilterbarServiceFake } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service.fake';
+import { ComposizioneAvanzataState } from '../store/states/composizione-partenza/composizione-avanzata.state';
+import { FilterbarComposizioneState } from '../store/states/composizione-partenza/filterbar-composizione.state';
 
 @NgModule({
     declarations: [
@@ -57,9 +60,9 @@ import { RichiestaComposizioneState } from '../store/states/composizione-partenz
         NgxsModule.forFeature(
             [
                 RichiestaComposizioneState,
-                MezziComposizioneState,
-                SquadreComposizioneState,
-                PreAccoppiatiState
+                ComposizioneAvanzataState,
+                PreAccoppiatiState,
+                FilterbarComposizioneState
             ]
         ),
     ],
@@ -67,7 +70,8 @@ import { RichiestaComposizioneState } from '../store/states/composizione-partenz
         ComposizionePartenzaComponent
     ],
     providers: [
-        { provide: CompPartenzaService, useClass: CompPartenzaServiceFake }
+        { provide: FilterbarService, useClass: environment.fakeProvider ? FilterbarServiceFake : FilterbarService},
+        { provide: CompPartenzaService, useClass: environment.fakeProvider ? CompPartenzaServiceFake : CompPartenzaService}
     ]
 })
 export class ComposizionePartenzaModule {

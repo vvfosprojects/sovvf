@@ -4,6 +4,7 @@ import { MezziMarkerService } from '../../../../../core/service/maps-service';
 import { ClearMezziMarkers, GetMezziMarkers, OpacizzaMezziMarkers, SetMezziMarkers, SetMezzoMarkerById } from '../../actions/maps/mezzi-markers.actions';
 import { SetMarkerOpachiMezzi } from '../../actions/maps/marker-opachi.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
 
 export interface MezziMarkersStateModel {
     mezziMarkers: MezzoMarker[];
@@ -37,10 +38,9 @@ export class MezziMarkersState {
     }
 
     @Action(GetMezziMarkers)
-    getMezziMarkers({ dispatch }: StateContext<MezziMarkersStateModel>, action: GetMezziMarkers) {
-        this._mezzi.getMezziMarkers(action.connectionId).subscribe((result) => {
-            console.log(result);
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+    getMezziMarkers({ dispatch }: StateContext<MezziMarkersStateModel>) {
+        this._mezzi.getMezziMarkers().subscribe(() => {
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetMezziMarkers)
@@ -69,14 +69,16 @@ export class MezziMarkersState {
         const state = getState();
         const filteredId: string[] = [];
         if (action.stato) {
-            state.mezziMarkers.forEach(r => {
-                action.stato.forEach(c => {
-                    if (r.mezzo.stato.substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
-                        filteredId.push(r.mezzo.codice);
-                    }
+            if (state.mezziMarkers) {
+                state.mezziMarkers.forEach(r => {
+                    action.stato.forEach(c => {
+                        if (r.mezzo.stato.substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
+                            filteredId.push(r.mezzo.codice);
+                        }
+                    });
                 });
-            });
-            dispatch(new SetMarkerOpachiMezzi(filteredId));
+                dispatch(new SetMarkerOpachiMezzi(filteredId));
+            }
         }
     }
 

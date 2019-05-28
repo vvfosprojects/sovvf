@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BoxInterventi } from '../../../features/home/boxes/boxes-model/box-interventi.model';
 import { Observable } from 'rxjs';
-import { catchError, map, retry } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { handleError } from '../../../shared/helper/handleError';
@@ -15,9 +15,8 @@ export class BoxRichiesteService {
     constructor(private http: HttpClient) {
     }
 
-    public getInterventi(signalRConnectionId: string): Observable<BoxInterventi> {
-        return this.http.get<any>(API_URL + `?id=${signalRConnectionId}`).pipe(
-            // map((data: BoxInterventi[]) => data['boxRichieste']),
+    public getInterventi(): Observable<BoxInterventi> {
+        return this.http.get<any>(API_URL).pipe(
             retry(3),
             catchError(handleError)
         );

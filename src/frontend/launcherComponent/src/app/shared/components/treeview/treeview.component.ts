@@ -189,12 +189,12 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
             }
         }
         if (this.visualizzaTasti) {
-            console.log(eventEmitter);
+            // console.log(eventEmitter);
             this.patch(eventEmitter);
         } else {
             this.conferma();
         }
-        console.log(this.treeViewSelection);
+        // console.log(this.treeViewSelection);
     }
 
     annulla(): void {

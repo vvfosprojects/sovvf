@@ -4,10 +4,13 @@ import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model
 import {
     AddRichiesteMarkers,
     ClearRichiesteMarkers,
-    GetRichiesteMarkers, InsertRichiestaMarker,
-    OpacizzaRichiesteMarkers, RemoveRichiestaMarker,
+    GetRichiesteMarkers,
+    InsertRichiestaMarker,
+    OpacizzaRichiesteMarkers,
+    RemoveRichiestaMarker,
     SetRichiestaMarkerById,
-    SetRichiesteMarkers, UpdateRichiestaMarker
+    SetRichiesteMarkers,
+    UpdateRichiestaMarker
 } from '../../actions/maps/richieste-markers.actions';
 import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
 import { SetMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
@@ -17,6 +20,7 @@ import { HomeState } from '../home.state';
 import { ToggleAnimation } from '../../actions/maps/maps-buttons.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { RichiesteMarkerAdapterService } from '../../../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
+import { ToastrType } from '../../../../../shared/enum/toastr';
 
 export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];
@@ -57,9 +61,8 @@ export class RichiesteMarkersState {
 
     @Action(GetRichiesteMarkers)
     getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: GetRichiesteMarkers) {
-        this._richieste.getRichiesteMarkers(action.connectionId).subscribe((result) => {
-            console.log(result);
-        }, () => dispatch(new ShowToastr('error', 'Errore', 'Il server web non risponde', 5)));
+        this._richieste.getRichiesteMarkers().subscribe(() => {
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetRichiesteMarkers)
@@ -129,16 +132,18 @@ export class RichiesteMarkersState {
         const state = getState();
         const filteredId: string[] = [];
         if (action.stato) {
-            state.richiesteMarkers.forEach(r => {
-                action.stato.forEach(c => {
-                    if (wipeStatoRichiesta(r.stato).substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
-                        filteredId.push(r.id);
-                    }
+            if (state.richiesteMarkers) {
+                state.richiesteMarkers.forEach(r => {
+                    action.stato.forEach(c => {
+                        if (wipeStatoRichiesta(r.stato).substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
+                            filteredId.push(r.id);
+                        }
+                    });
                 });
-            });
-        }
-        if (filteredId.length > 0) {
-            dispatch(new SetMarkerOpachiRichieste(filteredId));
+            }
+            if (filteredId.length > 0) {
+                dispatch(new SetMarkerOpachiRichieste(filteredId));
+            }
         }
     }
 

@@ -15,9 +15,17 @@ export class Utente {
          */
         public cognome: string,
         /**
+         * codice fiscale utente
+         */
+        public codiceFiscale: string,
+        /**
+         * sede di appartenzenza dell'utente
+         */
+        public sede: Sede,
+        /**
          * username dell'utente
          */
-        public username?: string,
+        public username: string,
         /**
          * password dell'utente
          */
@@ -27,17 +35,9 @@ export class Utente {
          */
         public ruoli?: Ruolo[],
         /**
-         * sede di appartenzenza dell'utente
-         */
-        public sede?: Sede,
-        /**
          * json web token dell'utente
          */
         public token?: string,
-        /**
-         * codice fiscale utente
-         */
-        public codiceFiscale?: string,
         /**
          * validoDa validità accesso utente
          */

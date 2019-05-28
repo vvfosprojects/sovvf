@@ -4,7 +4,6 @@ import { Localita } from './localita.model';
 import { Richiedente } from './richiedente.model';
 import { Fonogramma } from './fonogramma.model';
 import { Complessita } from './complessita.model';
-import { Evento } from './evento.model';
 import { Utente } from './utente.model';
 import { StatoRichiesta } from '../enum/stato-richiesta.enum';
 import { Partenza } from './partenza.model';
@@ -111,10 +110,6 @@ export class SintesiRichiesta {
          * note private
          */
         public notePrivate?: string,
-        /**
-         * eventi della richiesta, serve al back-end per determinare il valore della complessità
-         */
-        public eventi?: Evento[]
     ) {
     }
 }

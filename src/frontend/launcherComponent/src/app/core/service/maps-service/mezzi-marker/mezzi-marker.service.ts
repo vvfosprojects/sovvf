@@ -13,8 +13,8 @@ export class MezziMarkerService {
     constructor(private http: HttpClient) {
     }
 
-    public getMezziMarkers(signalRConnectionId: string): Observable<any> {
-        return this.http.get(API_URL_MEZZI + `?id=${signalRConnectionId}`).pipe(
+    public getMezziMarkers(): Observable<any> {
+        return this.http.get(API_URL_MEZZI).pipe(
             retry(3),
             catchError(handleError)
         );

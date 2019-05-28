@@ -1,16 +1,28 @@
-// Model
 import { BoxPersonale } from '../../../boxes/boxes-model/box-personale.model';
+import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
 
 export class GetBoxPersonale {
     static readonly type = '[BoxPersonale] Get data';
-    constructor(public connectionId: string) {
-    }
 }
 
 export class SetBoxPersonale {
     static readonly type = '[BoxPersonale] Set data';
 
     constructor(public payload: BoxPersonale) {
+    }
+}
+
+export class SetBoxPersonaleQty {
+    static readonly type = '[BoxPersonale] Set Personale Qty';
+
+    constructor(public personaleQty: BoxPersonaleQty) {
+    }
+}
+
+export class SetBoxPersonalePresenze {
+    static readonly type = '[BoxPersonale] Set Personale Presenze';
+
+    constructor(public personalePresenze: BoxPersonalePresenze) {
     }
 }
 

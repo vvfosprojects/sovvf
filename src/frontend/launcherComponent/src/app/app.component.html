@@ -38,7 +38,7 @@
         </div>
     </ng-sidebar>
     <div ng-sidebar-content>
-        <app-navbar *ngIf="_toggle" (openedSidebar)="_toggleOpened()"></app-navbar>
+        <app-navbar *ngIf="_toggle" (openedSidebar)="_toggleOpened()" [user]="user"></app-navbar>
         <div *ngIf="!_isLoaded || !_signalR">
             <app-loader></app-loader>
         </div>
@@ -47,4 +47,3 @@
         </div>
     </div>
 </ng-sidebar-container>
-

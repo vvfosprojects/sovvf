@@ -22,8 +22,10 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
@@ -39,84 +41,92 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// </summary>
         public SintesiRichiesta()
         {
-            this.zoneEmergenza = new string[0];
-            this.etichette = new string[0];
-            this.eventi = new List<Evento>();
-            this.competenze = new List<Sede>();
+            this.ZoneEmergenza = new string[0];
+            this.Etichette = new string[0];
+            this.Eventi = new List<Evento>();
+            this.Competenze = new List<Sede>();
         }
 
         /// <summary>
         ///   L'id della richiesta
         /// </summary>
-        public string id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         ///   Identifica il codice della Chiamata
         /// </summary>
-        public string codice { get; set; }
+        public string Codice { get; set; }
 
         /// <summary>
         ///   E' il codice della Richiesta di Assistenza
         /// </summary>
-        public string codiceRichiesta { get; set; }
+        public string CodiceRichiesta { get; set; }
 
         /// <summary>
         ///   Utente che ha generato la segnalazione
         /// </summary>
-        public Utente operatore { get; set; }
+        [Required(ErrorMessage = "Operatore obbligatorio.")]
+        public Utente Operatore { get; set; }
 
         /// <summary>
         ///   Ricezione della richiesta (via telefono, ecc.)
         /// </summary>
-        public DateTime istanteRicezioneRichiesta { get; set; }
+        [Required(ErrorMessage = "Istante ricezione richiesta obbligatorio.")]
+        [DataType(DataType.DateTime)]
+        public DateTime IstanteRicezioneRichiesta { get; set; }
 
         /// <summary>
         ///   Stato della richiesta
         /// </summary>
-        public int stato { get; set; }
+        [Required(ErrorMessage = "Stato obbligatorio.")]
+        public int Stato { get; set; }
 
         /// <summary>
         ///   Priorita della richiesta
         /// </summary>
-        public RichiestaAssistenza.Priorita priorita { get; set; }
+        public RichiestaAssistenza.Priorita Priorita { get; set; }
 
-        public List<Tipologia> tipologie { get; set; }
+        [Required(ErrorMessage = "Tipologia obbligatoria.")]
+        public List<Tipologia> Tipologie { get; set; }
 
         /// <summary>
         ///   Descrizione della richiesta
         /// </summary>
-        public string descrizione { get; set; }
+        [Required(ErrorMessage = "Descrizione obbligatoria.")]
+        public string Descrizione { get; set; }
 
         /// <summary>
         ///   Descrizione del richiedente
         /// </summary>
-        public Richiedente richiedente { get; set; }
+        [Required(ErrorMessage = "Richiedtente obbligatorio.")]
+        public Richiedente Richiedente { get; set; }
 
         /// <summary>
         ///   Localita della richiesta
         /// </summary>
-        public Localita localita { get; set; }
+        [Required(ErrorMessage = "Località obbligatoria.")]
+        public Localita Localita { get; set; }
 
         /// <summary>
         ///   Competenze della richiesta
         /// </summary>
-        public List<Sede> competenze { get; set; }
+        public List<Sede> Competenze { get; set; }
 
         /// <summary>
         ///   Complessità della richiesta
         /// </summary>
-        public Complessita complessita
+        public Complessita Complessita
         {
             get
             {
                 int CountEventi;
-                if (this.eventi == null)
+                if (this.Eventi == null)
                 {
                     CountEventi = 0;
                 }
                 else
                 {
-                    CountEventi = this.eventi.Count;
+                    CountEventi = this.Eventi.Count;
                 }
 
                 if (CountEventi <= 20)
@@ -136,12 +146,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Eventuale istante di presa in carico della richiesta
         /// </summary>
-        public DateTime? istantePresaInCarico { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime? IstantePresaInCarico { get; set; }
 
         /// <summary>
         ///   Eventuale istante di prima assegnazione di risorse alla richiesta
         /// </summary>
-        public DateTime? istantePrimaAssegnazione { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime? IstantePrimaAssegnazione { get; set; }
 
         /// <summary>
         ///   Indica la data in cui è stato marcato RILEVANTE l'ultima volta
@@ -151,29 +163,30 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   base ad un insieme di regole automatiche deterministiche o basate su algoritmi di
         ///   machine learning.
         /// </remarks>
-        public DateTime? rilevanza { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime? Rilevanza { get; set; }
 
         /// <summary>
         ///   Codice della scheda Nue
         /// </summary>
-        public virtual string codiceSchedaNue { get; set; }
+        public virtual string CodiceSchedaNue { get; set; }
 
         /// <summary>
         ///   Descrizione delle zone di emergenza
         /// </summary>
-        public string[] zoneEmergenza { get; set; }
+        public string[] ZoneEmergenza { get; set; }
 
         /// <summary>
         ///   Codice dello stato di invio del fonogramma (0 = Non necessario, 1 = Da inviare, 2 =
         ///   Inviato). Utile a calcolare il colore della segnalazione.
         /// </summary>
-        public virtual Classi.Soccorso.Fonogramma.IStatoFonogramma fonogramma
+        public virtual Classi.Soccorso.Fonogramma.IStatoFonogramma Fonogramma
         {
             get
             {
-                if (this.eventi != null)
+                if (this.Eventi != null)
                 {
-                    var ultimoEventoFonogramma = this.eventi
+                    var ultimoEventoFonogramma = this.Eventi
                         .Where(e => e is Classi.Soccorso.Eventi.Fonogramma.IFonogramma)
                         .LastOrDefault();
 
@@ -195,20 +208,25 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///  Lista eventi associato alla richiesta
         /// </summary>
-        public List<Partenza> partenze { get; set; }
+        public List<Partenza> Partenze { get; set; }
 
         /// <summary>
         ///   Etichette associate all'intervento (per es. aPagamento, imp, ecc.)
         /// </summary>
-        public string[] etichette { get; set; }
+        public string[] Etichette { get; set; }
 
-        public string notePubbliche { get; set; }
+        public string NotePubbliche { get; set; }
 
-        public string notePrivate { get; set; }
+        public string NotePrivate { get; set; }
 
         /// <summary>
         ///  Lista eventi associato alla richiesta
         /// </summary>
-        public List<Evento> eventi { get; set; }
+        public List<Evento> Eventi { get; set; }
+
+        public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

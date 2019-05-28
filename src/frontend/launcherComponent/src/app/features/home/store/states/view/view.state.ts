@@ -13,6 +13,7 @@ import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { RichiestaComposizioneState } from '../composizione-partenza/richiesta-composizione.state';
 import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ResetChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
+import { ClearChiamateMarkers, GetChiamateMarkers } from '../../actions/maps/chiamate-markers.actions';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -118,6 +119,7 @@ export class ViewComponentState {
                 view: newState.view,
                 column: newState.column
             });
+            dispatch(new GetChiamateMarkers());
         } else {
             const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
             patchState({
@@ -126,6 +128,7 @@ export class ViewComponentState {
                 column: lastState.column
             });
             dispatch(new ResetChiamata());
+            dispatch(new ClearChiamateMarkers());
         }
     }
 
@@ -162,7 +165,7 @@ export class ViewComponentState {
         const currentState = makeCopy(state);
         const newState = switchComposizione(currentState, action.modalita);
         dispatch(new ClearDirection());
-        this.store.select(RichiestaComposizioneState.richiestaComposizione).subscribe( richiesta => {
+        this.store.select(RichiestaComposizioneState.richiestaComposizione).subscribe(richiesta => {
             if (richiesta) {
                 dispatch(new SetCoordCentroMappa(richiesta.localita.coordinate));
             }

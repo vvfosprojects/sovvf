@@ -4,7 +4,7 @@ export const environment = {
     signalRHub: '/NotificationHub',
     signalR: false,
     apiUrl: {
-        appSettings: 'assets/json/app-settings.json',
+        home: '/api/Welcome',
         boxes: {
             personale: '/api/BoxPersonale',
             mezzi: '/api/BoxMezzi',
@@ -23,22 +23,22 @@ export const environment = {
                 richieste: '/api/SintesiRichiesteAssistenzaMarker',
                 sedi: '/api/SintesiSediMarker',
                 mezzi: '/api/SintesiMezziMarker',
-                centro: '',
-                chiamate: ''
+                centro: '',  // Todo: controller mancante
+                chiamate: '/api/ChiamataInCorso'
             }
         },
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
-        eventiRichieste: 'https://api.myjson.com/bins/kz0w0',
-        turno: '',
+        eventiRichieste: '/api/ListaEventi',
+        turno: '',  // Todo: controller mancante
         composizione: {
-            preaccoppiati: '',
-            mezzi: '',
-            squadre: ''
+            preaccoppiati: '/api/PreAccoppiati',
+            avanzata: '/api/ComposizionePartenzaAvanzata',
+            filtri: '/api/Filtri'
         },
         chiamata: {
-            currentId: '',
+            marker: '/api/ChiamataInCorso',
+            inserimento: '/api/InserimentoIntervento'
         },
-        listaSedi: '',
         login: '/api/auth/Login',
         users: '/api/users',
         navbar: '/api/Navbar'
