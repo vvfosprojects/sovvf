@@ -6,36 +6,20 @@
     
     "Eventi": [
       {
-        "CodiceOrigine": "434456564",
-        "CognomeChiamante": "Rossi",
-        "NomeChiamante": "Mario",
-        "NumeroTelefono": "434456564",
-        "RagioneSociale": "",
-        "CodiceSchedaContatto": null,
-        "Codice": "434456564",
-        "Motivazione": "Incendio cassonetto",
-        "NotePubbliche": null,
-        "NotePrivate": null,
-        "Esito": "MettiInCoda",
-        "Istante": "2019-05-23T13:56:15.09Z",
-        "CodiceFonte": "3",
-        "CodiceRichiesta": null
+        "id": "0",
+        "nomeClasseEvento": "Telefonata",
+        "istanteEvento": "2019-05-28T08:16:27.180Z",
+        "targa": "",
+        "note": "richiesta da 118",
+        "HTMLLinkElement": "http://about:blank"
       },
       {
-        "CodiceOrigine": "434456565",
-        "CognomeChiamante": "Verdi",
-        "NomeChiamante": "Luigi",
-        "NumeroTelefono": "434456565",
-        "RagioneSociale": "",
-        "CodiceSchedaContatto": null,
-        "Codice": "434456565",
-        "Motivazione": "Incendio cassonetto",
-        "NotePubbliche": null,
-        "NotePrivate": null,
-        "Esito": "MettiInCoda",
-        "Istante": "2019-05-23T13:56:15.09Z",
-        "CodiceFonte": "3",
-        "CodiceRichiesta": null
+        "id": "0a",
+        "nomeClasseEvento": "InizioPresaInCarico",
+        "istanteEvento": "2019-05-28T08:17:27.180Z",
+        "targa": "",
+        "note": "dall'operatore UTENTE1",
+        "HTMLLinkElement": "http://about:blank"
       }
     ],
     "Geolocalizzazione": null,
@@ -147,20 +131,12 @@
     "CodiciUnitaOperativeAllertate": null,
     "Eventi": [
       {
-        "CodiceOrigine": "566576767",
-        "CognomeChiamante": "Bianchi",
-        "NomeChiamante": "Danilo",
-        "NumeroTelefono": "566576767",
-        "RagioneSociale": "",
-        "CodiceSchedaContatto": null,
-        "Codice": "566576767",
-        "Motivazione": "Espliosione da sostanza",
-        "NotePubbliche": null,
-        "NotePrivate": null,
-        "Esito": "MettiInCoda",
-        "Istante": "2019-05-23T14:01:07.089Z",
-        "CodiceFonte": "3",
-        "CodiceRichiesta": null
+        "id": "0",
+        "nomeClasseEvento": "Telefonata",
+        "istanteEvento": "2019-05-28T08:16:27.180Z",
+        "targa": "",
+        "note": "richiesta da 118",
+        "HTMLLinkElement": "http://about:blank"
       }
     ],
     "Geolocalizzazione": null,
@@ -272,20 +248,12 @@
     "CodiciUnitaOperativeAllertate": null,
     "Eventi": [
       {
-        "CodiceOrigine": "54667887",
-        "CognomeChiamante": "Bianchi",
-        "NomeChiamante": "Mario",
-        "NumeroTelefono": "54667887",
-        "RagioneSociale": "",
-        "CodiceSchedaContatto": null,
-        "Codice": "54667887",
-        "Motivazione": "Incendio auto a seguito di un incidente",
-        "NotePubbliche": null,
-        "NotePrivate": null,
-        "Esito": "MettiInCoda",
-        "Istante": "2019-05-27T09:55:50.722Z",
-        "CodiceFonte": "3",
-        "CodiceRichiesta": "RM-3"
+        "id": "0a",
+        "nomeClasseEvento": "InizioPresaInCarico",
+        "istanteEvento": "2019-05-28T08:17:27.180Z",
+        "targa": "",
+        "note": "dall'operatore UTENTE1",
+        "HTMLLinkElement": "http://about:blank"
       }
     ],
     "Geolocalizzazione": null,
