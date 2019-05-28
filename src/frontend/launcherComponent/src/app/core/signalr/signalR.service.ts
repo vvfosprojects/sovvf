@@ -16,7 +16,6 @@ import { environment } from '../../../environments/environment';
 import { SetRichiesteMarkers } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { SetMezziMarkers } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import { SetSediMarkers } from '../../features/home/store/actions/maps/sedi-markers.actions';
-import { SetListaSquadreComposizione, SetListaMezziComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { AuthenticationService } from '../auth/_services';
 import { Utente } from '../../shared/model/utente.model';
 import { ToastrType } from '../../shared/enum/toastr';
@@ -25,6 +24,8 @@ import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamat
 import { SetFiltriComposizione } from '../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
 import { InsertChiamataMarker, InsertChiamateMarkers, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import { SetEventiRichiesta } from '../../features/home/store/actions/eventi/eventi-richiesta.actions';
+import { SetListaMezziComposizione } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
+import { SetListaSquadreComposizione } from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;

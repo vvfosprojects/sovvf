@@ -13,10 +13,11 @@ import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.mod
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
-import { ComposizioneAvanzataState } from '../../store/states/composizione-partenza/composizione-avanzata.state';
 import { makeCopy } from '../../../../shared/helper/function';
 import { GetListeCoposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { FilterbarComposizioneState } from '../../store/states/composizione-partenza/filterbar-composizione.state';
+import { MezziComposizioneState } from '../../store/states/composizione-partenza/mezzi-composizione.state';
+import { SquadreComposizioneState } from '../../store/states/composizione-partenza/squadre-composizione.state';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -27,10 +28,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     @Input() richiesta: SintesiRichiesta;
 
-    @Select(ComposizioneAvanzataState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
+    @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
     mezziComposizione: MezzoComposizione[];
 
-    @Select(ComposizioneAvanzataState.squadreComposizione) squadraComposizione$: Observable<SquadraComposizione[]>;
+    @Select(SquadreComposizioneState.squadreComposizione) squadraComposizione$: Observable<SquadraComposizione[]>;
     squadreComposizione: SquadraComposizione[];
 
     @Select(FilterbarComposizioneState.filtriSelezionati) filtriSelezionati$: Observable<SquadraComposizione[]>;
