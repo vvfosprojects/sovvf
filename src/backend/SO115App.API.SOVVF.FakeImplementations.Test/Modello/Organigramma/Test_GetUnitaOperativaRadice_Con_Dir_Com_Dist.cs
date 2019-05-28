@@ -26,15 +26,17 @@ namespace Tests.Modello.Organigramma
     public class Test_GetUnitaOperativaRadice_Con_Dir_Com_Dist
     {
         [Test]
-        public void IlComandoDiLeccoHaQuattroDistaccamenti()
+        public void IlComandoDiLeccoHaTreDistaccamenti()
         {
             var organigramma = new GetUnitaOperativaRadice_Con_Dir_Com_Dist();
             var radice = organigramma.Get();
             var lecco = radice.GetSottoAlbero().Single(uo => uo.Codice == "LC");
 
-            var numeroDistaccamentiLecco = lecco.GetSottoAlbero().Count();
+            var numeroDistaccamentiLecco = lecco.GetSottoAlbero()
+                .Where(uo => uo.Codice != "LC")
+                .Count();
 
-            Assert.That(numeroDistaccamentiLecco, Is.EqualTo(4));
+            Assert.That(numeroDistaccamentiLecco, Is.EqualTo(3));
         }
 
         [Test]
