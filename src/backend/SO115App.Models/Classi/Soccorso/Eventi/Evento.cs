@@ -30,10 +30,10 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
     ///   un sensore che individua una geo-localizzazione, ecc.). A seconda della natura del
     ///   particolare evento, esiste una classe concreta derivata da Evento, con gli attributi del caso.
     /// </summary>
-    public  class Evento : IEvento
+    public class Evento : IEvento
     {
         [JsonConstructor]
-        public Evento(DateTime Istante, string CodiceFonte,string Codice)
+        public Evento(DateTime Istante, string CodiceFonte, string Codice)
         {
             this.Istante = Istante;
             this.CodiceFonte = CodiceFonte;
@@ -47,25 +47,25 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <param name="richiesta">E' la richiesta di assistenza a cui si aggiunge l'evento</param>
         /// <param name="istante">L'istante in cui avviene l'evento.</param>
         /// <param name="codiceFonte">Il codice della fonte informativa dell'evento.</param>
-        public Evento(RichiestaAssistenza richiesta, DateTime Istante, string CodiceFonte)
+        public Evento(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte)
         {
             if (richiesta == null)
             {
                 throw new ArgumentNullException(nameof(richiesta));
             }
 
-            //if (istante == DateTime.MinValue)
-            //{
-            //    throw new ArgumentOutOfRangeException(nameof(istante));
-            //}
+            if (istante == DateTime.MinValue)
+            {
+                throw new ArgumentOutOfRangeException(nameof(istante));
+            }
 
-            //if (string.IsNullOrWhiteSpace(codiceFonte))
-            //{
-            //    throw new ArgumentException("Cannot be null or whitespace", nameof(CodiceFonte));
-            //}
+            if (string.IsNullOrWhiteSpace(codiceFonte))
+            {
+                throw new ArgumentException("Cannot be null or whitespace", nameof(CodiceFonte));
+            }
 
-            this.Istante = Istante;
-            this.CodiceFonte = CodiceFonte;
+            this.Istante = istante;
+            this.CodiceFonte = codiceFonte;
             richiesta.AddEvento(this);
             this.IstanteCreazione = DateTime.UtcNow;
             this.CodiceRichiesta = richiesta.Codice;

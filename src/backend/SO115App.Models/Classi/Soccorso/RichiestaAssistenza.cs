@@ -38,9 +38,9 @@ namespace SO115App.API.Models.Classi.Soccorso
     ///   Questa classe modella la generica richiesta di assistenza inoltrata ai VVF. La richiesta
     ///   può non avere seguito oppure generare un intervento da parte dei VVF. Esempi di istanze
     ///   sono: richiesta per un incendio in un'abitazione, richiesta per porta bloccata, richiesta
-    ///         per vigilanza in occasione di una manifestazione, richiesta per partecipazione di una
-    ///         delegazione VVF ad un convegno. Non è un'istanza di richiesta il terremoto, che
-    ///         essendo un macro evento calamitoso darà luogo a più richieste di assistenza.
+    ///   per vigilanza in occasione di una manifestazione, richiesta per partecipazione di una
+    ///   delegazione VVF ad un convegno. Non è un'istanza di richiesta il terremoto, che essendo un
+    ///   macro evento calamitoso darà luogo a più richieste di assistenza.
     /// </summary>
     public class RichiestaAssistenza : Entity
     {
@@ -122,7 +122,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///     - RM è il codice della provincia attualmente usato,
         ///     - 17 sono le ultime due cifre dell'anno dell'intervento
         ///     - le restanti cifre sono l'attuale numero intervento (senza progressivo) per un
-        ///       totale di 100.000 interventi mappabili per ogni anno (mai raggiunto).
+        ///     totale di 100.000 interventi mappabili per ogni anno (mai raggiunto).
         ///   </para>
         /// </summary>
         public string Codice { get; set; }
@@ -284,17 +284,6 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   La località dove è avvenuto il fatto
         /// </summary>
         public virtual Localita Localita { get; set; }
-
-        /// <summary>
-        ///   E' l'indirizzo della richiesta
-        /// </summary>
-        public virtual string Indirizzo { get; set; }
-
-        /// <summary>
-        ///   Note sulla località della richiesta (per es. "accanto a ingresso carico/scarico del
-        ///   supermercato Spendibene")
-        /// </summary>
-        public virtual string NoteLocalita { get; set; }
 
         /// <summary>
         ///   E' la descrizione della richiesta, che ne sintetizza le caratteristiche principali.
