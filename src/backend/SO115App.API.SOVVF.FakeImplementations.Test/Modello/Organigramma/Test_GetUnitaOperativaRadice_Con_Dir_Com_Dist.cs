@@ -40,6 +40,34 @@ namespace Tests.Modello.Organigramma
         }
 
         [Test]
+        public void TuttiIDistaccamentiDiLeccoHannoCodiceCheCominciaPerLCPunto()
+        {
+            var organigramma = new GetUnitaOperativaRadice_Con_Dir_Com_Dist();
+
+            var radice = organigramma.Get();
+            var lecco = radice.GetSottoAlbero().Single(uo => uo.Codice == "LC");
+            var distaccamentiLecco = lecco.GetSottoAlbero()
+                .Where(uo => uo.Codice != "LC");
+            var listaCodici = distaccamentiLecco.Select(uo => uo.Codice);
+
+            Assert.That(listaCodici, Is.All.StartsWith("LC."));
+        }
+
+        [Test]
+        public void TuttiIDistaccamentiDiTorinoHannoCodiceCheCominciaPerTOPunto()
+        {
+            var organigramma = new GetUnitaOperativaRadice_Con_Dir_Com_Dist();
+
+            var radice = organigramma.Get();
+            var lecco = radice.GetSottoAlbero().Single(uo => uo.Codice == "TO");
+            var distaccamentiLecco = lecco.GetSottoAlbero()
+                .Where(uo => uo.Codice != "TO");
+            var listaCodici = distaccamentiLecco.Select(uo => uo.Codice);
+
+            Assert.That(listaCodici, Is.All.StartsWith("TO."));
+        }
+
+        [Test]
         public void IlComandoDiRomaHaIlDistaccamentoTuscolanoII()
         {
             var organigramma = new GetUnitaOperativaRadice_Con_Dir_Com_Dist();
