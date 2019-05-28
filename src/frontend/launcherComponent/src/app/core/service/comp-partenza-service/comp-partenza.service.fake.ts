@@ -8,7 +8,8 @@ import { SquadraComposizione } from 'src/app/features/home/composizione-partenza
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
 import { Store } from '@ngxs/store';
 import { SetPreAccoppiati } from '../../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
-import { SetListaMezziComposizione, SetListaSquadreComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
+import { SetListaMezziComposizione } from '../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
+import { SetListaSquadreComposizione } from '../../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
 
 
 @Injectable()

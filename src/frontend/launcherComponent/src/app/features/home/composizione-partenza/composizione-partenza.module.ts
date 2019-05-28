@@ -35,6 +35,13 @@ import { FilterbarService } from '../../../core/service/comp-partenza-service/fi
 import { FilterbarServiceFake } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service.fake';
 import { ComposizioneAvanzataState } from '../store/states/composizione-partenza/composizione-avanzata.state';
 import { FilterbarComposizioneState } from '../store/states/composizione-partenza/filterbar-composizione.state';
+import { MezziComposizioneState } from '../store/states/composizione-partenza/mezzi-composizione.state';
+import { SquadreComposizioneState } from '../store/states/composizione-partenza/squadre-composizione.state';
+import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
+import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
+import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
+import { RichiestaModificaState } from '../store/states/richieste/richiesta-modifica.state';
+import { RichiesteStateDefaults } from '../store/states/richieste/richieste.state';
 
 @NgModule({
     declarations: [
@@ -60,9 +67,11 @@ import { FilterbarComposizioneState } from '../store/states/composizione-partenz
         NgxsModule.forFeature(
             [
                 RichiestaComposizioneState,
-                ComposizioneAvanzataState,
                 PreAccoppiatiState,
-                FilterbarComposizioneState
+                FilterbarComposizioneState,
+                ComposizioneAvanzataState,
+                MezziComposizioneState,
+                SquadreComposizioneState
             ]
         ),
     ],
@@ -70,8 +79,8 @@ import { FilterbarComposizioneState } from '../store/states/composizione-partenz
         ComposizionePartenzaComponent
     ],
     providers: [
-        { provide: FilterbarService, useClass: environment.fakeProvider ? FilterbarServiceFake : FilterbarService},
-        { provide: CompPartenzaService, useClass: environment.fakeProvider ? CompPartenzaServiceFake : CompPartenzaService}
+        { provide: FilterbarService, useClass: environment.fakeProvider ? FilterbarServiceFake : FilterbarService },
+        { provide: CompPartenzaService, useClass: environment.fakeProvider ? CompPartenzaServiceFake : CompPartenzaService }
     ]
 })
 export class ComposizionePartenzaModule {
