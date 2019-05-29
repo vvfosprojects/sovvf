@@ -67,8 +67,10 @@ import { RichiesteStateDefaults } from '../store/states/richieste/richieste.stat
         NgxsModule.forFeature(
             [
                 RichiestaComposizioneState,
-                PreAccoppiatiState,
                 FilterbarComposizioneState,
+                // Comp Rapida
+                PreAccoppiatiState,
+                // Comp Avanzata
                 ComposizioneAvanzataState,
                 MezziComposizioneState,
                 SquadreComposizioneState

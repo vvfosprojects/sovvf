@@ -1,7 +1,12 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { SetListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
-import { SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import {
+    AddSquadraComposizione,
+    RemoveSquadraComposizione,
+    SelectSquadraComposizione,
+    SetListaSquadreComposizione, UnselectSquadraComposizione,
+    UpdateSquadraComposizione
+} from '../../actions/composizione-partenza/squadre-composizione.actions';
 
 export interface SquadreComposizioneStateStateModel {
     squadreComposizione: SquadraComposizione[];
@@ -25,11 +30,35 @@ export class SquadreComposizioneState {
     constructor() {
     }
 
-    // SET
     @Action(SetListaSquadreComposizione)
     setListaSquadreComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: SetListaSquadreComposizione) {
         patchState({
-            squadreComposizione: action.squadreComposizione
+            squadreComposizione: action.squadre
         });
+    }
+
+    @Action(AddSquadraComposizione)
+    addSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: AddSquadraComposizione) {
+        console.log(action.squadra);
+    }
+
+    @Action(RemoveSquadraComposizione)
+    removeSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: RemoveSquadraComposizione) {
+        console.log(action.idSquadra);
+    }
+
+    @Action(UpdateSquadraComposizione)
+    updateSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: UpdateSquadraComposizione) {
+        console.log(action.squadra);
+    }
+
+    @Action(SelectSquadraComposizione)
+    selectSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizione) {
+        console.log(action.idSquadra);
+    }
+
+    @Action(UnselectSquadraComposizione)
+    unselectSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: UnselectSquadraComposizione) {
+        console.log(action.idSquadra);
     }
 }
