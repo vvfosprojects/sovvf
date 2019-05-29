@@ -57,7 +57,7 @@ export class ModificaRichiestaComponent implements OnInit {
             indirizzo: [this.richiestaModifica.localita.indirizzo, Validators.required],
             etichette: [this.richiestaModifica.etichette],
             noteIndirizzo: [this.richiestaModifica.localita.note],
-            rilevanza: [this.richiestaModifica.rilevanza ? this.richiestaModifica.rilevanza.toString().split('T')[0] : null],
+            rilevanza: [this.richiestaModifica.rilevanza],
             latitudine: [this.richiestaModifica.localita.coordinate.latitudine, Validators.required],
             longitudine: [this.richiestaModifica.localita.coordinate.longitudine, Validators.required],
             notePrivate: [this.richiestaModifica.notePrivate],
@@ -76,11 +76,10 @@ export class ModificaRichiestaComponent implements OnInit {
     }
 
     setRilevanza() {
-        if (this.f.rilevanza.value !== null) {
-            this.f.rilevanza.setValue(null);
+        if (this.f.rilevanza.value === true) {
+            this.f.rilevanza.setValue(false);
         } else {
-            const date = new Date().toDateString() + ' ' + new Date().toTimeString().split(' ')[0];
-            this.f.rilevanza.setValue(date);
+            this.f.rilevanza.setValue(true);
         }
     }
 

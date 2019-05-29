@@ -2,11 +2,15 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
 import {
-    InsertChiamateMarkers, ClearChiamateMarkers,
+    ClearChiamateMarkers,
+    DelChiamataMarker,
     GetChiamateMarkers,
     InsertChiamataMarker,
+    InsertChiamateMarkers,
     RemoveChiamataMarker,
-    SetChiamataMarker, DelChiamataMarker, UpdateItemChiamataMarker, UpdateChiamataMarker
+    SetChiamataMarker,
+    UpdateChiamataMarker,
+    UpdateItemChiamataMarker
 } from '../../actions/maps/chiamate-markers.actions';
 import { ChiamateMarkerService } from '../../../../../core/service/maps-service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
@@ -40,7 +44,6 @@ export class ChiamateMarkersState {
     @Action(GetChiamateMarkers)
     getChiamateMarkers({ dispatch }: StateContext<ChiamateMarkersStateModel>) {
         this.chiamateMarkerService.getChiamateMarkers().subscribe(() => {
-            // dispatch(new SetChiamateMarkers(result));
         }, error => {
             console.error(error);
             dispatch(new ShowToastr(ToastrType.Error, 'Reperimento delle chiamate fallito', 'Si è verificato un errore, riprova.', 5));
@@ -68,13 +71,17 @@ export class ChiamateMarkersState {
     @Action(DelChiamataMarker)
     delChiamataMarker({ getState, dispatch }: StateContext<ChiamateMarkersStateModel>, action: DelChiamataMarker) {
         const state = getState();
-        const marker = state.chiamateMarkers.find(chiamataMarker => chiamataMarker.id === action.id);
 
-        this.chiamateMarkerService.deleteChiamataInCorso(marker).subscribe(() => {
-        }, error => {
-            console.error(error);
-            dispatch(new ShowToastr(ToastrType.Error, 'Cancellazione della chiamata in corso fallito', 'Si è verificato un errore, riprova.', 5));
-        });
+        if (state.chiamateMarkers) {
+            const marker = state.chiamateMarkers.find(chiamataMarker => chiamataMarker.id === action.id);
+            if (marker) {
+                this.chiamateMarkerService.deleteChiamataInCorso(marker).subscribe(() => {
+                }, error => {
+                    console.error(error);
+                    dispatch(new ShowToastr(ToastrType.Error, 'Cancellazione della chiamata in corso fallito', 'Si è verificato un errore, riprova.', 5));
+                });
+            }
+        }
     }
 
     @Action(InsertChiamateMarkers)

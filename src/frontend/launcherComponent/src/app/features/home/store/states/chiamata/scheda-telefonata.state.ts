@@ -85,15 +85,13 @@ export class SchedaTelefonataState {
 
     @Action(InsertChiamata)
     insertChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata) {
-        console.log('Richiesta da inviare a SignalR', action.nuovaRichiesta);
 
         patchState({
             azioneChiamata: action.azioneChiamata
         });
 
         this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe(() => {
-        }, error => {
-            console.error(error);
+        }, () => {
             dispatch(new ShowToastr(ToastrType.Error, 'Inserimento della chiamata fallito', 'Si è verificato un errore, riprova.', 5));
             patchState({
                 nuovaRichiesta: null,
@@ -106,24 +104,22 @@ export class SchedaTelefonataState {
     @Action(InsertChiamataSuccess)
     insertChiamataSuccess({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamataSuccess) {
         dispatch(new AddRichiesta(action.nuovaRichiesta));
-        dispatch(new ResetChiamata());
-        dispatch(new ToggleChiamata());
-
-        console.log('Richiesta inserita', action.nuovaRichiesta);
+        dispatch(new CestinaChiamata());
         dispatch(new ShowToastr(ToastrType.Success, 'Inserimento della chiamata effettuato', action.nuovaRichiesta.descrizione, 5));
     }
 
     @Action(ResetChiamata)
-    resetChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>) {
-        // Todo: rimuovere il marker della chiamata in corso
-        console.log('reset chiamata');
-        dispatch(new ClearChiamata());
-        dispatch(new GetInitCentroMappa());
+    resetChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>) {
+        patchState(SchedaTelefonataStateDefaults);
     }
 
     @Action(CestinaChiamata)
     cestinaChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>) {
+        dispatch(new ClearMarkerChiamata());
+        dispatch(new ResetChiamata());
         dispatch(new ToggleChiamata());
+        dispatch(new ClearChiamata());
+        dispatch(new GetInitCentroMappa());
     }
 
     @Action(MarkerChiamata)

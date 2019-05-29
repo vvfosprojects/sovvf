@@ -22,7 +22,7 @@ import { ToastrType } from '../../../../shared/enum/toastr';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Observable } from 'rxjs';
 import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefonata.state';
-import { ClearChiamateMarkers, DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
+import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -84,11 +84,10 @@ export class SchedaTelefonataComponent implements OnInit {
             indirizzo: [null, Validators.required],
             etichette: [null],
             noteIndirizzo: [null],
-            rilevanza: [null],
+            rilevanza: [false],
             notePrivate: [null],
             notePubbliche: [null],
-            // descrizione: [null, Validators.required],
-            descrizione: [null],
+            descrizione: [null, Validators.required],
             zoneEmergenza: [null],
         });
     }
@@ -134,11 +133,10 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     setRilevanza() {
-        if (this.f.rilevanza.value !== null) {
-            this.f.rilevanza.setValue(null);
+        if (this.f.rilevanza.value === true) {
+            this.f.rilevanza.setValue(false);
         } else {
-            const date = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).toDateString() + ' ' + new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).toTimeString().split(' ')[0];
-            this.f.rilevanza.setValue(date);
+            this.f.rilevanza.setValue(true);
         }
     }
 
@@ -159,7 +157,7 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value;
         this.nuovaRichiesta.notePrivate = f.notePrivate.value;
         this.nuovaRichiesta.notePubbliche = f.notePubbliche.value;
-        this.nuovaRichiesta.istantePresaInCarico = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
+        // this.nuovaRichiesta.istantePresaInCarico = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
 
         if (this.coordinate) {
             const marker: ChiamataMarker = makeCopy(this.chiamataMarker);
@@ -285,7 +283,13 @@ export class SchedaTelefonataComponent implements OnInit {
         return !!this.chiamataForm.invalid;
     }
 
-    impostaAzioneChiamata($event) {
+    impostaAzioneChiamata($event: AzioneChiamataEnum) {
+        if ($event === AzioneChiamataEnum.InviaPartenza || $event === AzioneChiamataEnum.MettiInCoda) {
+            this.nuovaRichiesta.azione = AzioneChiamataEnum.MettiInCoda;
+        } else {
+            this.nuovaRichiesta.azione = $event;
+            this.nuovaRichiesta.stato = StatoRichiesta.Chiusa;
+        }
         this.onSubmit($event);
     }
 

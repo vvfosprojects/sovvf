@@ -32,7 +32,7 @@ export class ComposizioneMarker {
         /**
          * Determina la rilevanza del marcatore
          */
-        public rilevanza?: Date,
+        public rilevanza?: boolean,
         /**
          * Determina se il marcatore è opaco o meno
          */
