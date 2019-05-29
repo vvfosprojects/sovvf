@@ -1,8 +1,8 @@
 ﻿using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 
-namespace DomainModel.CQRS.Commands.AddIntervento
+namespace DomainModel.CQRS.Commands.UpDateIntervento
 {
-    public class AddInterventoCommand
+    public class UpDateInterventoCommand
     {
         public Intervento Chiamata { get; set; }
     }

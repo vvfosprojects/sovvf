@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Boxes;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
@@ -59,7 +60,6 @@ namespace SO115App.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 
@@ -86,8 +86,8 @@ namespace SO115App.API.Controllers
                 await _NotificationHubContext.Clients.Client(ConId).SendAsync("NotifyGetListaMezziMarker", listaMezzi);
 
                 var SintesiRichiesteAssistenzaquery = new SintesiRichiesteAssistenzaQuery();
-                List<SintesiRichiesta> listaSintesi = new List<SintesiRichiesta>();
-                listaSintesi = (List<SintesiRichiesta>)this._SintesiRichiesteAssistenzahandler.Handle(SintesiRichiesteAssistenzaquery).SintesiRichiesta;
+                List<SintesiRichieste> listaSintesi = new List<SintesiRichieste>();
+                listaSintesi = (List<SintesiRichieste>)this._SintesiRichiesteAssistenzahandler.Handle(SintesiRichiesteAssistenzaquery).SintesiRichiesta;
                 await _NotificationHubContext.Clients.Client(ConId).SendAsync("NotifyGetListaRichieste", listaSintesi);
 
                 var query = new SintesiRichiesteAssistenzaMarkerQuery();

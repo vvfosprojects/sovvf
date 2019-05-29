@@ -1,38 +1,19 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="RichiestaAssistenza.cs" company="CNVVF">
-// Copyright (C) 2017 - CNVVF
-//
-// This file is part of SOVVF.
-// SOVVF is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Affero General Public License as
-// published by the Free Software Foundation, either version 3 of the
-// License, or (at your option) any later version.
-//
-// SOVVF is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU Affero General Public License for more details.
-//
-// You should have received a copy of the GNU Affero General Public License
-// along with this program.  If not, see http://www.gnu.org/licenses/.
-// </copyright>
-//-----------------------------------------------------------------------
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.ListaEventi;
 using SO115App.API.Models.Classi.Persistenza;
-using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Text;
+using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
 
-namespace SO115App.API.Models.Classi.Soccorso
+namespace SO115App.FakePersistenceJSon.Classi
 {
     /// <summary>
     ///   Questa classe modella la generica richiesta di assistenza inoltrata ai VVF. La richiesta
@@ -42,58 +23,23 @@ namespace SO115App.API.Models.Classi.Soccorso
     ///   delegazione VVF ad un convegno. Non è un'istanza di richiesta il terremoto, che essendo un
     ///   macro evento calamitoso darà luogo a più richieste di assistenza.
     /// </summary>
-    public class RichiestaAssistenza : Entity
+    public class RichiestaAssistenzaDTO : Entity
     {
         /// <summary>
         ///   Contiene la lista degli eventi considerati di interesse per la richiesta.
         /// </summary>
-        private List<Evento> eventi;
+        private List<Eventi> eventi;
 
         /// <summary>
         ///   Costruisce una nuova istanza di <see cref="RichiestaAssistenza" />
         /// </summary>
         [JsonConstructor]
-        public RichiestaAssistenza()
+        public RichiestaAssistenzaDTO()
         {
-            this.eventi = new List<Evento>();
+            this.eventi = new List<Eventi>();
             this.Tipologie = new List<Tipologia>();
             this.Tags = new HashSet<string>();
             //this.ListaPartenze = new List<Partenza>();
-        }
-
-        /// <summary>
-        ///   E' la priorità della richiesta. Questa informazione è di ausilio nell'accodamento delle richieste.
-        /// </summary>
-        /// <remarks>
-        ///   Al momento non è sensato assegnare una priorità a richieste del tipo vigilanza. Questo
-        ///   aspetto deve essere valutato successivamente.
-        /// </remarks>
-        public enum Priorita
-        {
-            /// <summary>
-            ///   Livello 1
-            /// </summary>
-            Bassissima = 1,
-
-            /// <summary>
-            ///   Livello 2
-            /// </summary>
-            Bassa,
-
-            /// <summary>
-            ///   Livello 3
-            /// </summary>
-            Media,
-
-            /// <summary>
-            ///   Livello 4
-            /// </summary>
-            Alta,
-
-            /// <summary>
-            ///   Livello 5
-            /// </summary>
-            Altissima
         }
 
         /// <summary>
@@ -149,7 +95,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   Espone la lista degli eventi considerati di interesse per la richiesta.
         /// </summary>
-        public IReadOnlyList<Evento> Eventi
+        public IReadOnlyList<Eventi> Eventi
         {
             get
             {
@@ -168,13 +114,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         public IList<Telefonata> Telefonate
         {
-            get
-            {
-                return this.eventi
-                    .Where(e => e is Telefonata)
-                    .Select(e => e as Telefonata)
-                    .ToList();
-            }
+            get;
         }
 
         /// <summary>
@@ -202,17 +142,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         public virtual bool Rilevante
         {
-            get
-            {
-                var ultimoEventoRilevanza = this.eventi
-                    .Where(e => (e is MarcaRilevante) || (e is MarcaNonRilevante))
-                    .LastOrDefault();
-
-                if ((ultimoEventoRilevanza != null) && (ultimoEventoRilevanza is MarcaRilevante))
-                    return true;
-                else
-                    return false;
-            }
+            get;
         }
 
         /// <summary>
@@ -220,39 +150,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         public IDictionary<string, IStatoMezzo> MezziCoinvolti
         {
-            get
-            {
-                var eventiPartenza = this.eventi
-                    .Where(e => e is IPartenza)
-                    .Select(e => (IPartenza)e);
-
-                var eventiPartenzaRaggruppatiPerMezzo = eventiPartenza.SelectMany(
-                    e => e.CodiciMezzo,
-                    (evento, codiceMezzo) => new
-                    {
-                        Codice = codiceMezzo,
-                        Evento = evento
-                    })
-                    .GroupBy(el => el.Codice, el => el.Evento);
-
-                var d = new Dictionary<string, IStatoMezzo>();
-
-                foreach (var gruppoEventiPartenza in eventiPartenzaRaggruppatiPerMezzo)
-                {
-                    var codice = gruppoEventiPartenza.Key;
-                    var eventi = gruppoEventiPartenza.AsEnumerable();
-                    var processoreStato = new ProcessoreStato();
-                    processoreStato.ProcessaEventi(eventi);
-                    var stato = processoreStato.Stato;
-
-                    d[codice] = stato;
-                }
-
-                // Se la richiesta è chiusa, i mezzi devono essere stati tutti liberati.
-                Debug.Assert(!this.Chiusa || d.Values.All(stato => stato is Libero), "La richiesta è chiusa ma contiene mezzi non liberi");
-
-                return d;
-            }
+            get;
         }
 
         /// <summary>
@@ -329,14 +227,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         public virtual Priorita PrioritaRichiesta
         {
-            get
-            {
-                var eventoAssegnazionePriorita = this.eventi
-                    .Where(e => e is AssegnazionePriorita)
-                    .LastOrDefault() as AssegnazionePriorita;
-
-                return eventoAssegnazionePriorita != null ? eventoAssegnazionePriorita.Priorita : RichiestaAssistenza.Priorita.Media;
-            }
+            get;
         }
 
         /// <summary>
@@ -344,21 +235,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         public virtual DateTime IstanteRicezioneRichiesta
         {
-            get
-            {
-                try
-                {
-                    var eventoSegnalazione = this.eventi
-                        .Where(e => e is Segnalazione)
-                        .First() as Segnalazione;
-
-                    return eventoSegnalazione.Istante;
-                }
-                catch (Exception ex)
-                {
-                    throw new InvalidOperationException("Impossibile recuperare l'istante della Richiesta di Assistenza.", ex);
-                }
-            }
+            get;
         }
 
         /// <summary>
@@ -367,21 +244,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         public virtual DateTime? IstantePresaInCarico
         {
-            get
-            {
-                var eventoPresaInCarico = this.eventi
-                    .Where(e => e is InizioPresaInCarico)
-                    .FirstOrDefault() as InizioPresaInCarico;
-
-                if (eventoPresaInCarico == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return eventoPresaInCarico.Istante;
-                }
-            }
+            get;
         }
 
         /// <summary>
@@ -389,21 +252,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         public virtual DateTime? IstantePrimaAssegnazione
         {
-            get
-            {
-                var eventoAssegnazione = this.eventi
-                    .Where(e => e is ComposizionePartenze)
-                    .FirstOrDefault() as ComposizionePartenze;
-
-                if (eventoAssegnazione == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return eventoAssegnazione.Istante;
-                }
-            }
+            get;
         }
 
         /// <summary>
@@ -411,33 +260,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         public IStatoRichiesta StatoRichiesta
         {
-            get
-            {
-                var eventoChiusura = this.eventi
-                    .Where(e => e is ChiusuraRichiesta);
-
-                if (this.Chiusa)
-                {
-                    return new Chiusa();
-                }
-
-                var elencoMezziCoinvolti = this.MezziCoinvolti;
-                if (!elencoMezziCoinvolti.Any())
-                {
-                    return new InAttesa();
-                }
-                else
-                {
-                    if (elencoMezziCoinvolti.Values.Any(e => e.AssegnatoARichiesta))
-                    {
-                        return new Assegnata();
-                    }
-                    else
-                    {
-                        return new Sospesa();
-                    }
-                }
-            }
+            get;
         }
 
         /// <summary>
@@ -445,10 +268,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         public virtual bool Presidiato
         {
-            get
-            {
-                return this.MezziCoinvolti.Values.Any(statoMezzo => statoMezzo is SulPosto);
-            }
+            get;
         }
 
         /// <summary>
@@ -477,81 +297,25 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         public virtual string CodiceSchedaNue
         {
-            get
-            {
-                var primoCodiceNue = this.eventi
-                    .Where(e => e is Telefonata)
-                    .Select(e => e as Telefonata)
-                    .Select(e => e.CodiceSchedaContatto)
-                    .Where(cod => !string.IsNullOrWhiteSpace(cod))
-                    .FirstOrDefault();
-
-                return primoCodiceNue;
-            }
+            get;
         }
 
         /// <summary>
         ///   Calcola lo stato di invio del fonogramma per la richiesta, in base all'ultimo evento
         ///   fonogramma presente nella richiesta.
         /// </summary>
-        public virtual Fonogramma.IStatoFonogramma StatoInvioFonogramma
+        public virtual API.Models.Classi.Soccorso.Fonogramma.IStatoFonogramma StatoInvioFonogramma
         {
-            get
-            {
-                var ultimoEventoFonogramma = this.eventi
-                    .Where(e => e is IFonogramma)
-                    .LastOrDefault();
-
-                if (ultimoEventoFonogramma is FonogrammaInviato)
-                {
-                    return new Fonogramma.Inviato();
-                }
-
-                if (ultimoEventoFonogramma is InviareFonogramma)
-                {
-                    return new Fonogramma.DaInviare();
-                }
-
-                return new Fonogramma.NonNecessario();
-            }
+            get;
         }
 
         /// <summary>
-        ///   Modella la complessità legata ad una <see cref="RichiestaAssistenza" />. Le soglie sono
-        ///   le seguenti: 0 - 20: bassa; 21 - 60: media; maggiore di 61: alta;
+        ///   Modella la complessità legata ad una <see cref="RichiestaAssistenza" />. Le soglie sono le
+        ///   seguenti: 0 - 20: bassa; 21 - 60: media; maggiore di 61: alta;
         /// </summary>
-        public virtual Complessita.IComplessita Complessita
+        public virtual API.Models.Classi.Soccorso.Complessita.IComplessita Complessita
         {
-            get
-            {
-                if (this.eventi.Count <= 20)
-                {
-                    return new Complessita.Bassa();
-                }
-
-                if (this.eventi.Count <= 60)
-                {
-                    return new Complessita.Media();
-                }
-
-                return new Complessita.Alta();
-            }
-        }
-
-        /// <summary>
-        ///   Aggiunge un evento alla lista degli eventi. L'evento deve essersi verificato in un
-        ///   istante superiore a quello dell'ultimo evento in lista. In caso contrario il metodo
-        ///   solleva un'eccezione.
-        /// </summary>
-        /// <param name="evento">L'evento da aggiungere</param>
-        public void AddEvento(Evento evento)
-        {
-            if (this.eventi.Any() && this.eventi.Last().Istante > evento.Istante)
-            {
-                throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
-            }
-
-            this.eventi.Add(evento);
+            get;
         }
     }
 }

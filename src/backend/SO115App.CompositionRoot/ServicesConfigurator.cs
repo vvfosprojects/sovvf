@@ -26,10 +26,12 @@ namespace SO115App.CompositionRoot
     {
         internal static void Configure(Container container)
         {
-
             container.Register<
                 API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
                 FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
+            container.Register<
+                API.Models.Servizi.Infrastruttura.GestioneSoccorso.IUpDateRichiestaAssistenza,
+                FakePersistenceJSon.GestioneIntervento.UpDateRichiesta>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxMezzi,
                 FakePersistenceJSon.Box.GetBoxMezzi>();
@@ -55,7 +57,7 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.NavBar.IGetNavbar,
                 SO115App.FakePersistenceJSon.Navbar.GetNavbar>();
             container.Register<
-                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetListaSintesiRichieste,
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetListaSintesi,
                 SO115App.FakePersistenceJSon.GestioneIntervento.GetListaSintesi>();
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetMaxCodice,
@@ -84,12 +86,6 @@ namespace SO115App.CompositionRoot
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.GetListaEventi.IGetListaEventi,
              FakePersistenceJSon.ListaEventi.GetListaEventi>();
-
-
-
-
-
-
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,

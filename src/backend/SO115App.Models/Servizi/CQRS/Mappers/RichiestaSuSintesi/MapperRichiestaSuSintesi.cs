@@ -67,10 +67,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
             {
                 Id = richiesta.Id,
                 Codice = richiesta.Codice,
-                Rilevanza = null, //richiesta.Rilevante != null ? richiesta.Rilevante : null,
                 IstanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta,
                 IstantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione,
-                //Priorita = richiesta.PrioritaRichiesta,
                 Tipologie = richiesta.Tipologie,
                 Descrizione = richiesta.Descrizione,
                 Richiedente = richiesta.Richiedente,
@@ -79,9 +77,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 ZoneEmergenza = richiesta.ZoneEmergenza,
                 IstantePresaInCarico = richiesta.IstantePresaInCarico,
                 CodiceSchedaNue = richiesta.CodiceSchedaNue,
-                //fonogramma = richiesta.StatoInvioFonogramma,
-                //ComplessitaIntervento = richiesta.Complessita,
-                //Partenze = richiesta.ListaPartenze
             };
         }
     }

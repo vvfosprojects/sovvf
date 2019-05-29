@@ -163,8 +163,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   base ad un insieme di regole automatiche deterministiche o basate su algoritmi di
         ///   machine learning.
         /// </remarks>
-        [DataType(DataType.DateTime)]
-        public DateTime? Rilevanza { get; set; }
+        public bool Rilevanza { get; set; }
 
         /// <summary>
         ///   Codice della scheda Nue
@@ -206,7 +205,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         }
 
         /// <summary>
-        ///  Lista eventi associato alla richiesta
+        ///   Lista eventi associato alla richiesta
         /// </summary>
         public List<Partenza> Partenze { get; set; }
 
@@ -220,7 +219,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         public string NotePrivate { get; set; }
 
         /// <summary>
-        ///  Lista eventi associato alla richiesta
+        ///   Lista eventi associato alla richiesta
         /// </summary>
         public List<Evento> Eventi { get; set; }
 
