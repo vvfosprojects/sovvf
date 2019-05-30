@@ -91,6 +91,7 @@ export class SchedaTelefonataState {
         });
 
         this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe(() => {
+            dispatch(new CestinaChiamata());
         }, () => {
             dispatch(new ShowToastr(ToastrType.Error, 'Inserimento della chiamata fallito', 'Si è verificato un errore, riprova.', 5));
             patchState({
@@ -104,7 +105,6 @@ export class SchedaTelefonataState {
     @Action(InsertChiamataSuccess)
     insertChiamataSuccess({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamataSuccess) {
         dispatch(new AddRichiesta(action.nuovaRichiesta));
-        dispatch(new CestinaChiamata());
         dispatch(new ShowToastr(ToastrType.Success, 'Inserimento della chiamata effettuato', action.nuovaRichiesta.descrizione, 5));
     }
 
