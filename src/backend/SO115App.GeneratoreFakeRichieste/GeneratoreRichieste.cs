@@ -26,8 +26,6 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
-
-//using MongoDB.Driver;
 using SO115App.GeneratoreRichiesteFake.AzioniSuRichiesta;
 
 namespace SO115App.GeneratoreRichiesteFake
