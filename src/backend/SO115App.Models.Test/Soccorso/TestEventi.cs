@@ -452,7 +452,7 @@ namespace Modello.Test.Classi.Soccorso
         {
             var richiesta = new RichiestaAssistenza();
 
-            Assert.That(richiesta.Rilevante, Is.Null.Or.Empty);
+            Assert.That(richiesta.Rilevante, Is.False);
         }
 
         [Test]
@@ -461,7 +461,7 @@ namespace Modello.Test.Classi.Soccorso
             var richiesta = new RichiestaAssistenza();
             new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest");
 
-            Assert.That(richiesta.Rilevante, Is.Not.Empty);
+            Assert.That(richiesta.Rilevante, Is.True);
         }
 
         [Test]
@@ -472,7 +472,7 @@ namespace Modello.Test.Classi.Soccorso
             new MarcaRilevante(richiesta, now.AddSeconds(-10), "fonte", "motivazioneTest1");
             new MarcaNonRilevante(richiesta, now, "fonte", "motivazioneTest2");
 
-            Assert.That(richiesta.Rilevante, Is.Null.Or.Empty);
+            Assert.That(richiesta.Rilevante, Is.False);
         }
 
         [Test]
@@ -485,7 +485,7 @@ namespace Modello.Test.Classi.Soccorso
             new MarcaNonRilevante(richiesta, now.AddSeconds(-5), "fonte", "motivazioneTest2");
             new MarcaRilevante(richiesta, now, "fonte", "motivazioneTest3");
 
-            Assert.That(richiesta.Rilevante, Is.Not.Empty);
+            Assert.That(richiesta.Rilevante, Is.True);
         }
     }
 }
