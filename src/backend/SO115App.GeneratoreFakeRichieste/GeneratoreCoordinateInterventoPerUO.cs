@@ -143,7 +143,7 @@ namespace SO115App.GeneratoreRichiesteFake
             { "VV", new StatisticaUo("VV", 38.6670353, 16.112641, .1205382, .1301653) },
         };
 
-        public Coordinate GetCoordinatePerUO(string codiceUO)
+        public Coordinate Genera(string codiceUO)
         {
             if (this.statistiche.ContainsKey(codiceUO))
             {

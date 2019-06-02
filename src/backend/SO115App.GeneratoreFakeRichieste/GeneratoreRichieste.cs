@@ -91,6 +91,8 @@ namespace SO115App.GeneratoreRichiesteFake
         /// </summary>
         private readonly float[] pesiNumeroMezziPartecipanti;
 
+        private readonly GeneratoreCoordinateInterventoPerUO generatoreCoordinateInterventoPerUO;
+
         /// <summary>
         ///   Numero medio di richieste generate in ogni giorno
         /// </summary>
@@ -141,7 +143,8 @@ namespace SO115App.GeneratoreRichiesteFake
             int mediaSecondiArrivoSulPosto,
             int mediaSecondiDurataIntervento,
             int mediaSecondiRientroInSede,
-            float[] pesiNumeroMezziPartecipanti)
+            float[] pesiNumeroMezziPartecipanti,
+            GeneratoreCoordinateInterventoPerUO generatoreCoordinateInterventoPerUO)
         {
             this.codiceUnitaOperativa = codiceUnitaOperativa;
             this.numeroMezziDisponibili = numeroMezziDisponibili;
@@ -153,6 +156,7 @@ namespace SO115App.GeneratoreRichiesteFake
             this.mediaSecondiDurataIntervento = mediaSecondiDurataIntervento;
             this.mediaSecondiRientroInSede = mediaSecondiRientroInSede;
             this.pesiNumeroMezziPartecipanti = pesiNumeroMezziPartecipanti;
+            this.generatoreCoordinateInterventoPerUO = generatoreCoordinateInterventoPerUO ?? throw new ArgumentNullException(nameof(generatoreCoordinateInterventoPerUO));
         }
 
         /// <summary>
@@ -161,15 +165,10 @@ namespace SO115App.GeneratoreRichiesteFake
         /// <returns>Le richieste pseudo-random</returns>
         public IEnumerable<RichiestaAssistenza> Genera()
         {
-            var fakerGeolocalizzazione = new Faker<Punto>()
-                .StrictMode(true)
-                .RuleFor(g => g.Latitudine, f => f.Address.Latitude())
-                .RuleFor(g => g.Longitudine, f => f.Address.Longitude());
-
             //Questi Faker sono messi qui perchè contengono dei dati comuni a più proprietà
             Faker generaFaker = new Faker("it");
             string indirizzo = generaFaker.Address.StreetAddress();
-            string NoteLocalita = generaFaker.Lorem.Sentence();
+            string noteLocalita = generaFaker.Lorem.Sentence();
 
             var zoneEmergenza = new[] { "Sisma Gotham City", "Alluvione Smallville", "Uragano Metropolis" }.ToList();
             var fakerRichiesteAssistenza = new Faker<RichiestaAssistenza>("it")
@@ -179,7 +178,6 @@ namespace SO115App.GeneratoreRichiesteFake
                 .RuleFor(ra => ra.CodiceUnitaOperativaCompetente, f => this.codiceUnitaOperativa)
                 .RuleFor(ra => ra.Operatore, f => GeneraOperatore())
                 .RuleFor(ra => ra.CodiciUnitaOperativeAllertate, f => new HashSet<string> { this.codiceUnitaOperativa })
-                .RuleFor(ra => ra.Geolocalizzazione, f => GeneraCoordinateLocalita())
                 .RuleFor(ra => ra.Tipologie, f => this.GeneraTipologie())
                 .RuleFor(ra => ra.IstanteChiusura, f => null)
                 .RuleFor(ra => ra.ZoneEmergenza, f => f.Random.Float() < 0.001 ? new[] { f.Random.ListItem(zoneEmergenza) } : new string[0])
@@ -187,7 +185,10 @@ namespace SO115App.GeneratoreRichiesteFake
                 .RuleFor(ra => ra.Richiedente, f => new Richiedente(f.Name.FirstName(), f.Name.LastName(), f.Company.CompanyName(), f.Phone.Locale))
                 .RuleFor(ra => ra.NumeroRichiedente, f => f.Phone.PhoneNumber())
                 .RuleFor(ra => ra.CodiciUOCompetenza, f => new[] { f.Address.StateAbbr(), f.Address.StateAbbr(), f.Address.StateAbbr() })
-                .RuleFor(ra => ra.Localita, f => new Localita(GeneraCoordinateLocalita(), indirizzo, NoteLocalita))
+                .RuleFor(ra => ra.Localita, f => new Localita(
+                    this.generatoreCoordinateInterventoPerUO.Genera(codiceUnitaOperativa),
+                    indirizzo,
+                    noteLocalita))
                 .RuleFor(ra => ra.Competenze, f => GeneraCompetenze())
                 .Ignore(ra => ra.Tags);
 
@@ -268,12 +269,6 @@ namespace SO115App.GeneratoreRichiesteFake
             }
 
             return richiesteConParametri.Select(r => r.Richiesta);
-        }
-
-        private Coordinate GeneraCoordinateLocalita()
-        {
-            Faker generaFaker = new Faker("it");
-            return new Coordinate(Math.Round(generaFaker.Random.Double(0.0, 1) * 0.03 + 41.850, 6), Math.Round(generaFaker.Random.Double(0.0, 1) * 0.12 + 12.450, 6));
         }
 
         public static Utente GeneraOperatore()

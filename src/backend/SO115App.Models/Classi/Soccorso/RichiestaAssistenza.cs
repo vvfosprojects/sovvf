@@ -158,11 +158,6 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         /// <summary>
-        ///   E' la geolocalizzazione dell'evento calamitoso, vigilanza, ecc.
-        /// </summary>
-        public Coordinate Geolocalizzazione { get; set; }
-
-        /// <summary>
         ///   Restituisce le sole istanze della classe Telefonata presenti all'interno della lista
         ///   degli eventi.
         /// </summary>
