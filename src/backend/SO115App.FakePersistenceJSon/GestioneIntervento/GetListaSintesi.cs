@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
 namespace SO115App.FakePersistenceJSon.GestioneIntervento
 {
-    public class GetListaSintesi : IGetListaSintesiRichieste
+    public class GetListaSintesi : IGetListaSintesi
     {
-        public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
+        public List<SintesiRichieste> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
-            List<SintesiRichiesta> ListaSintesiRichieste = new List<SintesiRichiesta>();
+            List<SintesiRichieste> ListaSintesiRichieste = new List<SintesiRichieste>();
 
             string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
@@ -24,55 +24,58 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                 json = r.ReadToEnd();
             }
 
-            ListaSintesiRichieste = JsonConvert.DeserializeObject<List<SintesiRichiesta>>(json);
+            ListaSintesiRichieste = JsonConvert.DeserializeObject<List<SintesiRichieste>>(json);
 
-            int id = 0;
+            int id = 1;
 
             if (ListaSintesiRichieste != null)
             {
-                foreach (SintesiRichiesta sintesi in ListaSintesiRichieste)
+                foreach (SintesiRichieste sintesi in ListaSintesiRichieste)
                 {
-                    sintesi.Priorita = MapProprietaSintesi(sintesi.Codice);
                     sintesi.Id = id.ToString();
+                    sintesi.Stato = MapStatoRichiesta(sintesi);
                     id++;
                 }
-
 
                 ListaSintesiRichieste = ListaSintesiRichieste.OrderBy(x => x.Stato).OrderByDescending(x => x.IstanteRicezioneRichiesta).ToList();
 
                 return ListaSintesiRichieste;
-
             }
             else
             {
-                List<SintesiRichiesta> ListaSintesiRichiesteVuota = new List<SintesiRichiesta>();
+                List<SintesiRichieste> ListaSintesiRichiesteVuota = new List<SintesiRichieste>();
                 return ListaSintesiRichiesteVuota;
             }
- 
         }
 
-        public RichiestaAssistenza.Priorita MapProprietaSintesi(string Codicesintesi)
+        private int MapStatoRichiesta(SintesiRichieste sintesi)
         {
-            List<RichiestaAssistenzaRead> ListaRichieste = new List<RichiestaAssistenzaRead>();
-            string filepath = "Fake/ListaRichiesteAssistenza.json";
-            string json;
-            using (StreamReader r = new StreamReader(filepath))
+            /*
+            Controlli sui codici
+            Se lo stato è 0 - InAttesa
+            Se lo stato è 1 - Sospesa
+            Se lo stato è 2 - Presidiata
+            Se lo stato è 3 - Assegnata
+            Se lo stato è 4 - Chiusa
+            */
+
+            int stato = 0;
+
+            if (sintesi.Chiusa)
+                stato = 4;
+
+            if (sintesi.Sospesa)
+                stato = 1;
+
+            if (sintesi.Aperta)
             {
-                json = r.ReadToEnd();
-            }
-            ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaRead>>(json);
-
-            RichiestaAssistenza.Priorita prio = new RichiestaAssistenza.Priorita();
-
-            foreach (RichiestaAssistenzaRead richiesta in ListaRichieste)
-            {
-                if(Codicesintesi.Equals(richiesta.Codice))
-                    prio = richiesta.PrioritaRichiesta;
+                if (sintesi.Presidiato)
+                    stato = 2;
+                else if (sintesi.IstantePrimaAssegnazione != null)
+                    stato = 3;
             }
 
-            return prio;
-
+            return stato;
         }
-
     }
 }

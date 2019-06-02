@@ -1,5 +1,5 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="IGetRichiestaAssistenzaById.cs" company="CNVVF">
+//-----------------------------------------------------------------------
+// <copyright file="IGetListaSintesiRichieste.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,21 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso
 {
-    /// <summary>
-    ///   Servizio di erogazione del contenuto di una Richiesta di Assistenza
-    /// </summary>
-    public interface IGetRichiestaAssistenzaById
+    public interface IGetListaSintesi
     {
-        /// <summary>
-        ///   Restituisce una Richiesta di Assistenza
-        /// </summary>
-        /// <param name="idRichiestaAssistenza">Identificativo della Richiesta di Assistenza</param>
-        /// <returns>La Richiesta di Assistenza</returns>
-        RichiestaAssistenza Get(string idRichiestaAssistenza);
+        List<SintesiRichieste> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro);
     }
 }

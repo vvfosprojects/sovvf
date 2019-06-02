@@ -1,5 +1,6 @@
 ﻿using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
@@ -29,8 +30,27 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Localita = command.Chiamata.Localita,
                 Descrizione = command.Chiamata.Descrizione,
                 Codice = command.Chiamata.Codice,
-                Id = (_iGetMaxCodice.GetMax() + 1).ToString() // DA TOGLIERE CON LA VERSIONE DB
+                Id = (_iGetMaxCodice.GetMax() + 1).ToString(), // DA TOGLIERE CON LA VERSIONE DB
             };
+
+            if (command.Chiamata.Rilevanza)
+            {
+                new MarcaRilevante(richiesta, command.Chiamata.IstanteRicezioneRichiesta, command.Chiamata.Operatore.Id, "");
+            }
+            else
+            {
+                new MarcaNonRilevante(richiesta, command.Chiamata.IstanteRicezioneRichiesta, command.Chiamata.Operatore.Id, "");
+            }
+
+            if (command.Chiamata.IstantePresaInCarico != null)
+            {
+                new InizioPresaInCarico(richiesta, command.Chiamata.IstantePresaInCarico.Value, command.Chiamata.Operatore.Id);
+            }
+
+            if (command.Chiamata.Stato == 4)
+            {
+                new ChiusuraRichiesta("", richiesta, command.Chiamata.IstanteRicezioneRichiesta, command.Chiamata.Operatore.Id);
+            }
 
             if (command.Chiamata.Etichette != null)
             {
@@ -40,7 +60,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 }
             }
 
-            new Telefonata(richiesta, command.Chiamata.Richiedente.Telefono, command.Chiamata.IstantePresaInCarico.Value, command.Chiamata.Operatore.Id)
+            new Telefonata(richiesta, command.Chiamata.Richiedente.Telefono, command.Chiamata.IstanteRicezioneRichiesta, command.Chiamata.Operatore.Id)
             {
                 CognomeChiamante = command.Chiamata.Richiedente.Cognome,
                 NomeChiamante = command.Chiamata.Richiedente.Nome,

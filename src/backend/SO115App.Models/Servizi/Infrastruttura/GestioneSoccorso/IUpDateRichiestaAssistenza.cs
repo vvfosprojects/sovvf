@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IGetRichiestaAssistenzaById.cs" company="CNVVF">
+// <copyright file="ISaveRichiestaAssistenza.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -23,15 +23,16 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRi
 namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso
 {
     /// <summary>
-    ///   Servizio di erogazione del contenuto di una Richiesta di Assistenza
+    ///   Servizio di salvataggio di una richiesta di assistenza. Nel caso in cui sia una nuova
+    ///   richiesta, identificata dall'assenza di un codice, imposta il codice della richiesta e il
+    ///   codice dell'unità operativa competente in base all'utente autenticato.
     /// </summary>
-    public interface IGetRichiestaAssistenzaById
+    public interface IUpDateRichiestaAssistenza
     {
         /// <summary>
-        ///   Restituisce una Richiesta di Assistenza
+        ///   Salva una Richiesta di Assistenza
         /// </summary>
-        /// <param name="idRichiestaAssistenza">Identificativo della Richiesta di Assistenza</param>
-        /// <returns>La Richiesta di Assistenza</returns>
-        RichiestaAssistenza Get(string idRichiestaAssistenza);
+        /// <param name="richiestaAssistenza">Richiesta di Assistenza da salvare</param>
+        void Save(RichiestaAssistenza richiestaAssistenza);
     }
 }

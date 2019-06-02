@@ -72,7 +72,6 @@ namespace SO115App.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(string Id)
         {
-
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 

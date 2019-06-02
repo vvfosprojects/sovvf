@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Newtonsoft.Json;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
@@ -33,23 +34,23 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
     ///   base ai valori contenuti nel DTO di input:
     ///   <para>
     ///     - DTO vuoto: vengono selezionate le prime 10 richieste aperte più recenti, appartenenti
-    ///       all'unità operativa a cui fa capo l'utente autenticato;
+    ///     all'unità operativa a cui fa capo l'utente autenticato;
     ///   </para>
     ///   <para>
     ///     - DTO contenente una lista di unità operative: vengono selezionate le prime 10 richieste
-    ///       aperte più recenti, appartenenti alle unità operative indicate dal DTO;
+    ///     aperte più recenti, appartenenti alle unità operative indicate dal DTO;
     ///   </para>
     ///   <para>
     ///     - DTO contenente una stringa chiave: la ricerca restituisce le prime 10 richieste più
-    ///       rilevanti rispetto al testo chiave (full-text search);
+    ///     rilevanti rispetto al testo chiave (full-text search);
     ///   </para>
     ///   <para>
     ///     - DTO contenente un riferimento geo-referenziato: la ricerca restituisce le prime 10
-    ///       richieste più vicine al riferimento;
+    ///     richieste più vicine al riferimento;
     ///   </para>
     ///   <para>
     ///     - DTO contenente un array di stati richiesta: la ricerca restituisce le prime 10
-    ///       richieste negli stati specificati.
+    ///     richieste negli stati specificati.
     ///   </para>
     /// </summary>
     public class SintesiRichiesteAssistenzaQueryHandler : IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult>
@@ -58,15 +59,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         ///   Istanza del servizio
         /// </summary>
         private readonly ICercaRichiesteAssistenza cercaRichiesteAssistenza;
-        private readonly IGetListaSintesiRichieste iGetListaSintesi;
+
+        private readonly IGetListaSintesi iGetListaSintesi;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="cercaRichiesteAssistenza">L'istanza del servizio</param>
-        /// <param name="iGetListaSintesi">Interfaccia che restituisce l'elenco delle Sintesi delle Richieste</param>
+        /// <param name="iGetListaSintesi">
+        ///   Interfaccia che restituisce l'elenco delle Sintesi delle Richieste
+        /// </param>
 
-        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza,IGetListaSintesiRichieste iGetListaSintesi)
+        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza, IGetListaSintesi iGetListaSintesi)
         {
             this.cercaRichiesteAssistenza = cercaRichiesteAssistenza;
             this.iGetListaSintesi = iGetListaSintesi;
@@ -79,7 +83,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
         {
-            var sintesiRichiesta = new List<SintesiRichiesta>();
+            var sintesiRichiesta = new List<SintesiRichieste>();
             sintesiRichiesta = iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
 
             return new SintesiRichiesteAssistenzaResult()

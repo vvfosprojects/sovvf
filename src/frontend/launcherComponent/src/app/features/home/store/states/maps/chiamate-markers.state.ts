@@ -2,17 +2,20 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
 import {
-    InsertChiamateMarkers, ClearChiamateMarkers,
+    ClearChiamateMarkers,
+    DelChiamataMarker,
     GetChiamateMarkers,
     InsertChiamataMarker,
+    InsertChiamateMarkers,
     RemoveChiamataMarker,
-    SetChiamataMarker, DelChiamataMarker, UpdateItemChiamataMarker, UpdateChiamataMarker
+    SetChiamataMarker,
+    UpdateChiamataMarker,
+    UpdateItemChiamataMarker
 } from '../../actions/maps/chiamate-markers.actions';
 import { ChiamateMarkerService } from '../../../../../core/service/maps-service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { SchedaTelefonataState } from '../chiamata/scheda-telefonata.state';
-import { ViewComponentState } from '../view/view.state';
 
 export interface ChiamateMarkersStateModel {
     chiamateMarkers: ChiamataMarker[];
@@ -40,7 +43,6 @@ export class ChiamateMarkersState {
     @Action(GetChiamateMarkers)
     getChiamateMarkers({ dispatch }: StateContext<ChiamateMarkersStateModel>) {
         this.chiamateMarkerService.getChiamateMarkers().subscribe(() => {
-            // dispatch(new SetChiamateMarkers(result));
         }, error => {
             console.error(error);
             dispatch(new ShowToastr(ToastrType.Error, 'Reperimento delle chiamate fallito', 'Si è verificato un errore, riprova.', 5));
@@ -68,13 +70,17 @@ export class ChiamateMarkersState {
     @Action(DelChiamataMarker)
     delChiamataMarker({ getState, dispatch }: StateContext<ChiamateMarkersStateModel>, action: DelChiamataMarker) {
         const state = getState();
-        const marker = state.chiamateMarkers.find(chiamataMarker => chiamataMarker.id === action.id);
 
-        this.chiamateMarkerService.deleteChiamataInCorso(marker).subscribe(() => {
-        }, error => {
-            console.error(error);
-            dispatch(new ShowToastr(ToastrType.Error, 'Cancellazione della chiamata in corso fallito', 'Si è verificato un errore, riprova.', 5));
-        });
+        if (state.chiamateMarkers) {
+            const marker = state.chiamateMarkers.find(chiamataMarker => chiamataMarker.id === action.id);
+            if (marker) {
+                this.chiamateMarkerService.deleteChiamataInCorso(marker).subscribe(() => {
+                }, error => {
+                    console.error(error);
+                    dispatch(new ShowToastr(ToastrType.Error, 'Cancellazione della chiamata in corso fallito', 'Si è verificato un errore, riprova.', 5));
+                });
+            }
+        }
     }
 
     @Action(InsertChiamateMarkers)
@@ -89,46 +95,38 @@ export class ChiamateMarkersState {
     @Action(InsertChiamataMarker)
     insertChiamataMarker({ setState, dispatch }: StateContext<ChiamateMarkersStateModel>, { chiamataMarker }: InsertChiamataMarker) {
         const mySelf = this.store.selectSnapshot(SchedaTelefonataState.myChiamataMarker);
-        const viewComponent = this.store.selectSnapshot(ViewComponentState.viewComponent);
-        if (viewComponent.chiamata.active) {
-            if (mySelf) {
-                chiamataMarker.mySelf = mySelf === chiamataMarker.id;
-            }
-            setState(
-                patch({
-                    chiamateMarkers: insertItem(chiamataMarker)
-                })
-            );
+        if (mySelf) {
+            chiamataMarker.mySelf = mySelf === chiamataMarker.id;
         }
+        setState(
+            patch({
+                chiamateMarkers: insertItem(chiamataMarker)
+            })
+        );
     }
 
     @Action(UpdateItemChiamataMarker)
     updateItemChiamataMarker({ setState, dispatch }: StateContext<ChiamateMarkersStateModel>, { chiamataMarker }: UpdateItemChiamataMarker) {
         const mySelf = this.store.selectSnapshot(SchedaTelefonataState.myChiamataMarker);
-        const viewComponent = this.store.selectSnapshot(ViewComponentState.viewComponent);
-        if (viewComponent.chiamata.active) {
-            if (mySelf) {
-                chiamataMarker.mySelf = mySelf === chiamataMarker.id;
-            }
-            setState(
-                patch({
-                    chiamateMarkers: updateItem<ChiamataMarker>(chiamata => chiamata.id === chiamataMarker.id, chiamataMarker)
-                })
-            );
+        if (mySelf) {
+            chiamataMarker.mySelf = mySelf === chiamataMarker.id;
         }
+        setState(
+            patch({
+                chiamateMarkers: updateItem<ChiamataMarker>(chiamata => chiamata.id === chiamataMarker.id, chiamataMarker)
+            })
+        );
     }
 
     @Action(RemoveChiamataMarker)
     removeChiamataMarker({ setState }: StateContext<ChiamateMarkersStateModel>, { id }: RemoveChiamataMarker) {
         console.log(id);
-        const viewComponent = this.store.selectSnapshot(ViewComponentState.viewComponent);
-        if (viewComponent.chiamata.active) {
-            setState(
-                patch({
-                    chiamateMarkers: removeItem<ChiamataMarker>(chiamata => chiamata.id === id)
-                })
-            );
-        }
+
+        setState(
+            patch({
+                chiamateMarkers: removeItem<ChiamataMarker>(chiamata => chiamata.id === id)
+            })
+        );
     }
 
     @Action(ClearChiamateMarkers)

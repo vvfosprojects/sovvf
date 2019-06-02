@@ -16,7 +16,7 @@
                         <div class="col pl-0">
                             <div class="form-group m-0 float-right">
                                 <span class="d-inline-block mt-1 mr-2">
-                                    <ui-switch size="small" color="#dc3545" [checked]="richiestaModifica.rilevanza !== null"
+                                    <ui-switch size="small" color="#dc3545" [checked]="richiestaModifica.rilevanza !== false"
                                                (change)="setRilevanza()"></ui-switch>
                                 </span>
                             </div>
@@ -28,7 +28,7 @@
                         Intervento non rilevante
                     </span>
                     <span *ngIf="f.rilevanza.value" class="d-inline-block mt-1">
-                        {{f.rilevanza.value | date: 'dd/MM/yyyy - HH:mm:ss'}}
+                        Intervento rilevante
                     </span>
                 </div>
             </div>

@@ -206,7 +206,6 @@ export class SignalRService {
          */
         this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: any) => {
             console.log('Richiesta:', data.chiamata);
-            // this.store.dispatch(new ShowToastr(ToastrType.Info, 'Nuova Sintesi Richiesta', null, 3));
             this.store.dispatch(new InsertChiamataSuccess(data.chiamata));
         });
 

@@ -25,11 +25,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestrioneIn
     public enum Azione
     {
         /// <summary>
-        ///   La chiamata viene messa in coda, senza particolari azioni
-        /// </summary>
-        MettiInCoda,
-
-        /// <summary>
         ///   La chiamata è considerata un falso allarme. Viene chiusa dopo l'acquisizione.
         /// </summary>
         FalsoAllarme,
@@ -38,6 +33,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestrioneIn
         ///   La chiamata è considerata risolta e non necessita di intervento da parte dei VVF. Viene
         ///   chiusa dopo l'acquisizione.
         /// </summary>
-        InterventoNonPiuNecessario
+        InterventoNonPiuNecessario,
+
+        /// <summary>
+        ///   La chiamata è considerata duplicata. Viene chiusa dopo l'acquisizione.
+        /// </summary>
+        InterventoDuplicato,
+
+        /// <summary>
+        ///   La chiamata viene messa in coda, senza particolari azioni
+        /// </summary>
+        MettiInCoda
     }
 }

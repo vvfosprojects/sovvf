@@ -15,7 +15,6 @@ using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenza
 
 namespace SO115App.API.Controllers
 {
-
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
@@ -25,6 +24,7 @@ namespace SO115App.API.Controllers
         ///   Handler del servizio
         /// </summary>
         private readonly ICommandHandler<AddInterventoCommand> _handler;
+
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _BoxRichiestehandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _SintesiRichiesteAssistenzaMarkerhandler;
         private readonly IHubContext<NotificationHub> _NotificationHub;
@@ -46,9 +46,9 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> InserimentoIntervento([FromBody]InserimentoChiamata chiamata)
+        public async Task<IActionResult> InserimentoIntervento([FromBody]Intervento chiamata)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var command = new AddInterventoCommand()
                 {

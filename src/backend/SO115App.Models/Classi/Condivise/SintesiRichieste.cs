@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InserimentoChiamata.cs" company="CNVVF">
+// <copyright file="SintesiRichiesta.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -19,23 +19,27 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestrioneIntervento.Shared.AddIntervento;
+using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
-namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
+namespace SO115App.API.Models.Classi.Condivise
 {
     /// <summary>
     ///   Contiene le informazioni di sintesi di una Richiesta di Assistenza, utile ad alimentare il
     ///   primo ed il secondo livello di dettaglio del componente richiesta di assistenza sul frontend.
     /// </summary>
-    public class Intervento
+    public class SintesiRichieste
     {
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public Intervento()
+        public SintesiRichieste()
         {
             this.ZoneEmergenza = new string[0];
             this.Etichette = new string[0];
@@ -43,9 +47,19 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         }
 
         /// <summary>
+        ///   L'id della richiesta
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
         ///   Identifica il codice della Chiamata
         /// </summary>
         public string Codice { get; set; }
+
+        /// <summary>
+        ///   E' il codice della Richiesta di Assistenza
+        /// </summary>
+        public string CodiceRichiesta { get; set; }
 
         /// <summary>
         ///   Utente che ha generato la segnalazione
@@ -65,6 +79,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         /// </summary>
         [Required(ErrorMessage = "Stato obbligatorio.")]
         public int Stato { get; set; }
+
+        /// <summary>
+        ///   Priorita della richiesta
+        /// </summary>
+        public RichiestaAssistenza.Priorita PrioritaRichiesta { get; set; }
 
         [Required(ErrorMessage = "Tipologia obbligatoria.")]
         public List<Tipologia> Tipologie { get; set; }
@@ -93,10 +112,24 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         public List<Sede> Competenze { get; set; }
 
         /// <summary>
+        ///   Complessità della richiesta
+        /// </summary>
+        public Complessita Complessita
+        {
+            get;
+        }
+
+        /// <summary>
         ///   Eventuale istante di presa in carico della richiesta
         /// </summary>
         [DataType(DataType.DateTime)]
         public DateTime? IstantePresaInCarico { get; set; }
+
+        /// <summary>
+        ///   Eventuale istante di prima assegnazione di risorse alla richiesta
+        /// </summary>
+        [DataType(DataType.DateTime)]
+        public DateTime? IstantePrimaAssegnazione { get; set; }
 
         /// <summary>
         ///   Indica la data in cui è stato marcato RILEVANTE l'ultima volta
@@ -119,6 +152,20 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         public string[] ZoneEmergenza { get; set; }
 
         /// <summary>
+        ///   Codice dello stato di invio del fonogramma (0 = Non necessario, 1 = Da inviare, 2 =
+        ///   Inviato). Utile a calcolare il colore della segnalazione.
+        /// </summary>
+        public virtual Classi.Soccorso.Fonogramma.IStatoFonogramma Fonogramma
+        {
+            get;
+        }
+
+        /// <summary>
+        ///   Lista eventi associato alla richiesta
+        /// </summary>
+        public List<Partenza> Partenze { get; set; }
+
+        /// <summary>
         ///   Etichette associate all'intervento (per es. aPagamento, imp, ecc.)
         /// </summary>
         public string[] Etichette { get; set; }
@@ -127,6 +174,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
 
         public string NotePrivate { get; set; }
 
-        public Azione Azione { get; set; }
+        public bool Chiusa { get; set; }
+
+        public bool Aperta { get; set; }
+
+        public bool Sospesa { get; set; }
+
+        public bool Presidiato { get; set; }
     }
 }

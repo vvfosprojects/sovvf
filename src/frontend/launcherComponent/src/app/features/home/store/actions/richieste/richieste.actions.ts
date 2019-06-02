@@ -1,9 +1,16 @@
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 
 export class GetRichieste {
-    static readonly type = '[Richieste] Get Lista Richieste';
+    static readonly type = '[Richieste] Get Lista Richieste API';
 
     constructor(public idUltimaRichiesta?: string) {
+    }
+}
+
+export class PatchRichiesta {
+    static readonly type = '[Richieste] Modifica Richiesta API';
+
+    constructor(public richiesta: SintesiRichiesta) {
     }
 }
 

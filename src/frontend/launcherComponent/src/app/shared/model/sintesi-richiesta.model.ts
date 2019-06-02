@@ -7,6 +7,7 @@ import { Complessita } from './complessita.model';
 import { Utente } from './utente.model';
 import { StatoRichiesta } from '../enum/stato-richiesta.enum';
 import { Partenza } from './partenza.model';
+import { AzioneChiamataEnum } from '../enum/azione-chiamata.enum';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -80,7 +81,7 @@ export class SintesiRichiesta {
         /**
          * Indica se la richiesta è rilevante
          */
-        public rilevanza?: string,
+        public rilevanza?: boolean,
         /**
          * codice della scheda NUE
          */
@@ -110,6 +111,10 @@ export class SintesiRichiesta {
          * note private
          */
         public notePrivate?: string,
+        /**
+         *
+         */
+        public azione?: AzioneChiamataEnum
     ) {
     }
 }
