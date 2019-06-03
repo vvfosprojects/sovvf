@@ -4,6 +4,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.ListaEventi;
 using SO115App.API.Models.Classi.Persistenza;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
@@ -28,7 +29,7 @@ namespace SO115App.FakePersistenceJSon.Classi
         /// <summary>
         ///   Contiene la lista degli eventi considerati di interesse per la richiesta.
         /// </summary>
-        private List<Eventi> eventi;
+        private List<Evento> eventi;
 
         /// <summary>
         ///   Costruisce una nuova istanza di <see cref="RichiestaAssistenza" />
@@ -36,7 +37,7 @@ namespace SO115App.FakePersistenceJSon.Classi
         [JsonConstructor]
         public RichiestaAssistenzaDTO()
         {
-            this.eventi = new List<Eventi>();
+            this.eventi = new List<Evento>();
             this.Tipologie = new List<Tipologia>();
             this.Tags = new HashSet<string>();
             //this.ListaPartenze = new List<Partenza>();
@@ -95,7 +96,7 @@ namespace SO115App.FakePersistenceJSon.Classi
         /// <summary>
         ///   Espone la lista degli eventi considerati di interesse per la richiesta.
         /// </summary>
-        public IReadOnlyList<Eventi> Eventi
+        public IReadOnlyList<Evento> Eventi
         {
             get
             {

@@ -4,25 +4,31 @@ using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
 namespace DomainModel.CQRS.Commands.UpDateIntervento
 {
     public class UpDateInterventoCommandHandler : ICommandHandler<UpDateInterventoCommand>
     {
         private readonly IUpDateRichiestaAssistenza _UpDateRichiestaAssistenza;
-        private readonly IGetRichiestaAssistenzaById _getRichiestaById;
+        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetIdByCodice _getGetIdRichiestaByCodice;
 
         public UpDateInterventoCommandHandler(
             IUpDateRichiestaAssistenza UpDateRichiestaAssistenza,
-            IGetRichiestaAssistenzaById GetRichiestaById)
+            IGetRichiestaById GetRichiestaById,
+            IGetIdByCodice GetIdRichiestaByCodice)
         {
             this._UpDateRichiestaAssistenza = UpDateRichiestaAssistenza;
             this._getRichiestaById = GetRichiestaById;
+            this._getGetIdRichiestaByCodice = GetIdRichiestaByCodice;
         }
 
         public void Handle(UpDateInterventoCommand command)
         {
             RichiestaAssistenza richiesta = _getRichiestaById.Get(command.Chiamata.Codice);
+
+            string idRichiesta = _getGetIdRichiestaByCodice.Get(command.Chiamata.Codice);
 
             richiesta.Tipologie = command.Chiamata.Tipologie;
             richiesta.ZoneEmergenza = command.Chiamata.ZoneEmergenza;
@@ -30,6 +36,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.Richiedente = command.Chiamata.Richiedente;
             richiesta.Localita = command.Chiamata.Localita;
             richiesta.Descrizione = command.Chiamata.Descrizione;
+            richiesta.Id = idRichiesta;
 
             if (command.Chiamata.Etichette != null)
             {

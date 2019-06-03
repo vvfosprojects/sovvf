@@ -1,15 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AutoMapper;
 using Newtonsoft.Json;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+using SO115App.FakePersistenceJSon.Classi;
+using SO115App.FakePersistenceJSon.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
 namespace SO115App.FakePersistenceJSon.GestioneIntervento
 {
-    public class GetRichiestaById : IGetSintesiRichiestaAssistenzaById
+    public class GetRichiestaById : IGetRichiestaById
     {
-        public SintesiRichiesta Get(string idRichiestaAssistenza)
+        public RichiestaAssistenza Get(string idRichiestaAssistenza)
         {
             string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
@@ -19,11 +25,13 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                 json = r.ReadToEnd();
             }
 
-            List<SintesiRichiesta> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichiesta>>(json);
+            List<RichiestaAssistenzaDTO> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
 
-            SintesiRichiesta richiesta = (SintesiRichiesta)ListaRichieste.FirstOrDefault(x => x.Id == idRichiestaAssistenza);
+            RichiestaAssistenzaDTO richiesta = (RichiestaAssistenzaDTO)ListaRichieste.FirstOrDefault(x => x.Codice == idRichiestaAssistenza);
 
-            return richiesta;
+            RichiestaAssistenza richiestaReturn = MapperDTO.MapRichiestaDTOtoRichiesta(richiesta);
+
+            return richiestaReturn;
         }
     }
 }

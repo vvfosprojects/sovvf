@@ -37,7 +37,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                     id++;
                 }
 
-                ListaSintesiRichieste = ListaSintesiRichieste.OrderBy(x => x.Stato).OrderByDescending(x => x.IstanteRicezioneRichiesta).ToList();
+                ListaSintesiRichieste = ListaSintesiRichieste.OrderByDescending(x => x.IstanteRicezioneRichiesta).OrderBy(x => x.Stato).ToList();
 
                 return ListaSintesiRichieste;
             }
