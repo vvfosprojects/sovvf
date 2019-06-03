@@ -30,6 +30,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.Models.Test", "SO1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115App.GeneratoreFakeRichieste.Test", "SO115App.GeneratoreFakeRichieste.Test\SO115App.GeneratoreFakeRichieste.Test.csproj", "{91327105-7826-4948-A289-40741D5F1324}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115App.GeneratoreFakeRichieste.ConsoleRunner", "SO115App.GeneratoreFakeRichieste.ConsoleRunner\SO115App.GeneratoreFakeRichieste.ConsoleRunner.csproj", "{532CDBDD-C932-44AF-A892-C76930968EAE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{91327105-7826-4948-A289-40741D5F1324}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91327105-7826-4948-A289-40741D5F1324}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91327105-7826-4948-A289-40741D5F1324}.Release|Any CPU.Build.0 = Release|Any CPU
+		{532CDBDD-C932-44AF-A892-C76930968EAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{532CDBDD-C932-44AF-A892-C76930968EAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{532CDBDD-C932-44AF-A892-C76930968EAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{532CDBDD-C932-44AF-A892-C76930968EAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
