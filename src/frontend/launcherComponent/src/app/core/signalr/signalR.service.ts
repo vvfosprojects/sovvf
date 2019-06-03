@@ -6,7 +6,7 @@ import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './st
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
-import { SetRichieste } from '../../features/home/store/actions/richieste/richieste.actions';
+import { SetRichieste, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
@@ -134,8 +134,9 @@ export class SignalRService {
         /**
          * Modifica Richiesta
          */
-        this.hubNotification.on('ModifyAndNotifySuccess', (data: SintesiRichiesta) => {
-            // console.log(`Login: ${data}`);
+        this.hubNotification.on('ModifyAndNotifySuccess', (data: any) => {
+            console.log(data);
+            this.store.dispatch(new UpdateRichiesta(data.chiamata));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3));
         });
 

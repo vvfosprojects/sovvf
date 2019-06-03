@@ -20,7 +20,7 @@ import { Squadra } from '../../../shared/model/squadra.model';
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
 import { Store } from '@ngxs/store';
-import { SetRichieste } from '../../../features/home/store/actions/richieste/richieste.actions';
+import { SetRichieste, UpdateRichiesta } from '../../../features/home/store/actions/richieste/richieste.actions';
 
 
 @Injectable()
@@ -794,5 +794,12 @@ export class SintesiRichiesteServiceFake {
         });
 
         return of(richiesta);
+    }
+
+    patchRichiesta(richiesta: SintesiRichiesta) {
+
+        this.store.dispatch(new UpdateRichiesta(richiesta));
+
+        return of(null);
     }
 }

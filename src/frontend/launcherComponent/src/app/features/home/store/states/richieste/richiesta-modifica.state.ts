@@ -3,17 +3,19 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 
 // Action
-import { ClearRichiestaModifica, ModificaRilevanza, SetRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
+import { ClearRichiestaModifica, ModificaRilevanza, SetRichiestaModifica, SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
 import produce from 'immer';
 import { copyObj } from '@angular/animations/browser/src/util';
 import { makeCopy } from '../../../../../shared/helper/function';
 
 export interface RichiestaModificaStateModel {
     richiestaModifica: SintesiRichiesta;
+    successModifica: boolean;
 }
 
 export const RichiestaModificaStateDefaults: RichiestaModificaStateModel = {
-    richiestaModifica: null
+    richiestaModifica: null,
+    successModifica: false
 };
 
 @State<RichiestaModificaStateModel>({
@@ -30,8 +32,13 @@ export class RichiestaModificaState {
         return state.richiestaModifica;
     }
 
+    @Selector()
+    static successModifica(state: RichiestaModificaStateModel) {
+        return state.successModifica;
+    }
+
     @Action(SetRichiestaModifica)
-    setRichiestaModifica({getState, patchState}: StateContext<RichiestaModificaStateModel>, action: SetRichiestaModifica) {
+    setRichiestaModifica({ getState, patchState }: StateContext<RichiestaModificaStateModel>, action: SetRichiestaModifica) {
         const state = getState();
 
         patchState({
@@ -40,18 +47,8 @@ export class RichiestaModificaState {
         });
     }
 
-    @Action(ClearRichiestaModifica)
-    clearRichiestaModifica({getState, patchState}: StateContext<RichiestaModificaStateModel>) {
-        const state = getState();
-
-        patchState({
-            ...state,
-            richiestaModifica: null
-        });
-    }
-
     @Action(ModificaRilevanza)
-    modificaRilevanza({getState, setState}: StateContext<RichiestaModificaStateModel>) {
+    modificaRilevanza({ getState, setState }: StateContext<RichiestaModificaStateModel>) {
         setState(
             produce(getState(), draft => {
                 const richiesta = makeCopy(draft.richiestaModifica);
@@ -65,4 +62,17 @@ export class RichiestaModificaState {
             })
         );
     }
+
+    @Action(SuccessRichiestaModifica)
+    successModifica({ patchState }: StateContext<RichiestaModificaStateModel>) {
+        patchState({
+            successModifica: true
+        });
+    }
+
+    @Action(ClearRichiestaModifica)
+    clearRichiestaModifica({ patchState }: StateContext<RichiestaModificaStateModel>) {
+        patchState(RichiestaModificaStateDefaults);
+    }
+
 }

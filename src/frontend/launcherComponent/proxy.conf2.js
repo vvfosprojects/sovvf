@@ -7,6 +7,7 @@ const PROXY_CONFIG = [
             "/api/Navbar",
             "/api/Filtri",
             "/api/InserimentoIntervento",
+            "/api/UpdateIntervento",
             "/api/ComposizionePartenzaAvanzata",
             "/api/ChiamataInCorso",
             "/api/ListaEventi"

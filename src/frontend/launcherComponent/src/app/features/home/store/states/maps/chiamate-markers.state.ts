@@ -16,7 +16,6 @@ import { ChiamateMarkerService } from '../../../../../core/service/maps-service'
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { SchedaTelefonataState } from '../chiamata/scheda-telefonata.state';
-import { ViewComponentState } from '../view/view.state';
 
 export interface ChiamateMarkersStateModel {
     chiamateMarkers: ChiamataMarker[];
@@ -96,46 +95,38 @@ export class ChiamateMarkersState {
     @Action(InsertChiamataMarker)
     insertChiamataMarker({ setState, dispatch }: StateContext<ChiamateMarkersStateModel>, { chiamataMarker }: InsertChiamataMarker) {
         const mySelf = this.store.selectSnapshot(SchedaTelefonataState.myChiamataMarker);
-        const viewComponent = this.store.selectSnapshot(ViewComponentState.viewComponent);
-        if (viewComponent.chiamata.active) {
-            if (mySelf) {
-                chiamataMarker.mySelf = mySelf === chiamataMarker.id;
-            }
-            setState(
-                patch({
-                    chiamateMarkers: insertItem(chiamataMarker)
-                })
-            );
+        if (mySelf) {
+            chiamataMarker.mySelf = mySelf === chiamataMarker.id;
         }
+        setState(
+            patch({
+                chiamateMarkers: insertItem(chiamataMarker)
+            })
+        );
     }
 
     @Action(UpdateItemChiamataMarker)
     updateItemChiamataMarker({ setState, dispatch }: StateContext<ChiamateMarkersStateModel>, { chiamataMarker }: UpdateItemChiamataMarker) {
         const mySelf = this.store.selectSnapshot(SchedaTelefonataState.myChiamataMarker);
-        const viewComponent = this.store.selectSnapshot(ViewComponentState.viewComponent);
-        if (viewComponent.chiamata.active) {
-            if (mySelf) {
-                chiamataMarker.mySelf = mySelf === chiamataMarker.id;
-            }
-            setState(
-                patch({
-                    chiamateMarkers: updateItem<ChiamataMarker>(chiamata => chiamata.id === chiamataMarker.id, chiamataMarker)
-                })
-            );
+        if (mySelf) {
+            chiamataMarker.mySelf = mySelf === chiamataMarker.id;
         }
+        setState(
+            patch({
+                chiamateMarkers: updateItem<ChiamataMarker>(chiamata => chiamata.id === chiamataMarker.id, chiamataMarker)
+            })
+        );
     }
 
     @Action(RemoveChiamataMarker)
     removeChiamataMarker({ setState }: StateContext<ChiamateMarkersStateModel>, { id }: RemoveChiamataMarker) {
         console.log(id);
-        const viewComponent = this.store.selectSnapshot(ViewComponentState.viewComponent);
-        if (viewComponent.chiamata.active) {
-            setState(
-                patch({
-                    chiamateMarkers: removeItem<ChiamataMarker>(chiamata => chiamata.id === id)
-                })
-            );
-        }
+
+        setState(
+            patch({
+                chiamateMarkers: removeItem<ChiamataMarker>(chiamata => chiamata.id === id)
+            })
+        );
     }
 
     @Action(ClearChiamateMarkers)

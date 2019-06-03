@@ -119,7 +119,7 @@ export class ViewComponentState {
                 view: newState.view,
                 column: newState.column
             });
-            dispatch(new GetChiamateMarkers());
+            // dispatch(new GetChiamateMarkers());
         } else {
             const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
             patchState({
