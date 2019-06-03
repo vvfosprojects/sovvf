@@ -27,6 +27,7 @@ using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.GeneratoreRichiesteFake.AzioniSuRichiesta;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 
 namespace SO115App.GeneratoreRichiesteFake
 {
@@ -80,17 +81,15 @@ namespace SO115App.GeneratoreRichiesteFake
         private readonly int mediaSecondiRientroInSede;
 
         /// <summary>
-        ///   Il numero di mezzi considerati disponibili nel parco mezzi
-        /// </summary>
-        private readonly int numeroMezziDisponibili;
-
-        /// <summary>
         ///   Pesi del numero di mezzi partecipanti ad un intervento (per es. se i pesi sono[0.75,
         ///   0.20, 0.05] significa che al 75% un intervento ha un solo mezzo, al 20% ne ha due, al
         ///   5% ne ha tre).
         /// </summary>
         private readonly float[] pesiNumeroMezziPartecipanti;
 
+        /// <summary>
+        ///   Servizio per la generazione di coordinate intervento data un'unità operativa.
+        /// </summary>
         private readonly GeneratoreCoordinateInterventoPerUO generatoreCoordinateInterventoPerUO;
 
         /// <summary>
@@ -99,13 +98,18 @@ namespace SO115App.GeneratoreRichiesteFake
         private readonly int richiesteMedieAlGiorno;
 
         /// <summary>
+        ///   Servizio utile a conoscere il parco mezzi data un'unità operativa
+        /// </summary>
+        private readonly IGetMezziInServizioPerUnitaOperativa getMezziInServizioPerUnitaOperativa;
+
+        /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="codiceUnitaOperativa">
         ///   L'unità operativa con cui vengono etichettate le richieste generate
         /// </param>
-        /// <param name="numeroMezziDisponibili">
-        ///   Il numero di mezzi considerati disponibili nel parco mezzi
+        /// <param name="getMezziInServizioPerUnitaOperativa">
+        ///   Servizio per il recupero dei mezzi in servizio
         /// </param>
         /// <param name="dataMin">
         ///   L'estremo inferiore dell'intervallo in cui le richieste possono essere generate
@@ -133,9 +137,12 @@ namespace SO115App.GeneratoreRichiesteFake
         ///   0.20, 0.05] significa che al 75% un intervento ha un solo mezzo, al 20% ne ha due, al
         ///   5% ne ha tre).
         /// </param>
+        /// <param name="generatoreCoordinateInterventoPerUO">
+        ///   Servizio di generazione fake delle coordinate dell'intervento
+        /// </param>
         public GeneratoreRichieste(
             string codiceUnitaOperativa,
-            int numeroMezziDisponibili,
+            IGetMezziInServizioPerUnitaOperativa getMezziInServizioPerUnitaOperativa,
             DateTime dataMin,
             DateTime dataMax,
             int richiesteMedieAlGiorno,
@@ -147,7 +154,7 @@ namespace SO115App.GeneratoreRichiesteFake
             GeneratoreCoordinateInterventoPerUO generatoreCoordinateInterventoPerUO)
         {
             this.codiceUnitaOperativa = codiceUnitaOperativa;
-            this.numeroMezziDisponibili = numeroMezziDisponibili;
+            this.getMezziInServizioPerUnitaOperativa = getMezziInServizioPerUnitaOperativa ?? throw new ArgumentNullException(nameof(getMezziInServizioPerUnitaOperativa));
             this.dataMin = dataMin;
             this.dataMax = dataMax;
             this.richiesteMedieAlGiorno = richiesteMedieAlGiorno;
@@ -230,7 +237,9 @@ namespace SO115App.GeneratoreRichiesteFake
                     .Generate();
             }
 
-            var parcoMezzi = new ParcoMezzi(this.numeroMezziDisponibili, this.codiceUnitaOperativa);
+            var parcoMezzi = new ParcoMezzi(
+                this.getMezziInServizioPerUnitaOperativa,
+                this.codiceUnitaOperativa);
             var azioni = richiesteConParametri
                 .SelectMany(r => this.GetAzioni(r, parcoMezzi))
                 .Where(a => a.IstantePrevisto <= this.dataMax)

@@ -89,7 +89,7 @@ namespace SO115App.GeneratoreRichiesteFake.AzioniSuRichiesta
             }
 
             mezzo.ContestoMezzo.Uscita();
-            new UscitaPartenza(this.richiesta.Richiesta, this.parametriMezzo.MezzoUtilizzato.Codice, istanteEffettivo, "Fonte");
+            new UscitaPartenza(this.richiesta.Richiesta, this.parametriMezzo.MezzoUtilizzato.Mezzo.Codice, istanteEffettivo, "Fonte");
 
             this.eseguita = true;
 

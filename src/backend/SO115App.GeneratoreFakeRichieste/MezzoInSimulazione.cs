@@ -27,7 +27,7 @@ namespace SO115App.GeneratoreRichiesteFake
     /// <summary>
     ///   Il mezzo utilizzato per evadere una richiesta
     /// </summary>
-    internal class Mezzo2
+    internal class MezzoInSimulazione
     {
         /// <summary>
         ///   Il generatore random utilizzato
@@ -37,25 +37,22 @@ namespace SO115App.GeneratoreRichiesteFake
         /// <summary>
         ///   Il generatore di valori fake
         /// </summary>
-        private static Faker faker = null;
-
-        /// <summary>
-        ///   Il generatore di istanze fake del mezzo
-        /// </summary>
-        private static Faker<Mezzo2> fakerMezzo = null;
+        private static Faker faker = new Faker("it");
 
         /// <summary>
         ///   Il costruttore della classe
         /// </summary>
-        public Mezzo2()
+        public MezzoInSimulazione(API.Models.Classi.Soccorso.Mezzi.Mezzo mezzo)
         {
-            ContestoMezzo = new ContestoMezzo();
+            this.ContestoMezzo = new ContestoMezzo();
+            this.Membri = Enumerable.Range(0, 5).Select(i => GeneraCodiceFiscale()).ToArray();
+            Mezzo = mezzo ?? throw new ArgumentNullException(nameof(mezzo));
         }
 
         /// <summary>
         ///   Il codice del mezzo
         /// </summary>
-        public string Codice { get; set; }
+        public API.Models.Classi.Soccorso.Mezzi.Mezzo Mezzo { get; set; }
 
         /// <summary>
         ///   Lo stato del mezzo (pattern state)
@@ -65,7 +62,7 @@ namespace SO115App.GeneratoreRichiesteFake
         /// <summary>
         ///   I membri dell'equipaggio del mezzo
         /// </summary>
-        public string[] Membri { get; set; }
+        public string[] Membri { get; }
 
         /// <summary>
         ///   Indica se il mezzo è occupato
@@ -76,27 +73,6 @@ namespace SO115App.GeneratoreRichiesteFake
             {
                 return !this.ContestoMezzo.State.Disponibile;
             }
-        }
-
-        /// <summary>
-        ///   Metodo per la creazione di un mezzo fake
-        /// </summary>
-        /// <param name="codiceUnitaOperativa">
-        ///   L'unità operativa utilizzata nella generazione delle informazioni
-        /// </param>
-        /// <returns>Il mezzo fake creato</returns>
-        public static Mezzo2 CreateMezzoFake(string codiceUnitaOperativa)
-        {
-            if (fakerMezzo == null)
-            {
-                fakerMezzo = new Faker<Mezzo2>()
-                    .StrictMode(true)
-                    .RuleFor(m => m.Codice, f => codiceUnitaOperativa + "/APS/" + f.Random.Number(10000, 99999))
-                    .RuleFor(m => m.Membri, f => Enumerable.Range(1, 5).Select(n => GeneraCodiceFiscale()).ToArray());
-                faker = new Faker();
-            }
-
-            return fakerMezzo.Generate();
         }
 
         /// <summary>

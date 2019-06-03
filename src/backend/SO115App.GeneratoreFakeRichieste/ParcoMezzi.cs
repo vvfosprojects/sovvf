@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Organigramma;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using System.Linq;
 
 namespace SO115App.GeneratoreRichiesteFake
@@ -30,7 +32,7 @@ namespace SO115App.GeneratoreRichiesteFake
         /// <summary>
         ///   L'array dei mezzi fake
         /// </summary>
-        private Mezzo2[] mezzi;
+        private MezzoInSimulazione[] mezzi;
 
         /// <summary>
         ///   Costruttore della classe
@@ -40,21 +42,19 @@ namespace SO115App.GeneratoreRichiesteFake
         ///   L'unità operativa alla quale appartengono i mezzi (l'etichetta viene usata per creare
         ///   il codice di un mezzo)
         /// </param>
-        public ParcoMezzi(int numeroMezzi, string codiceUnitaOperativa)
+        public ParcoMezzi(IGetMezziInServizioPerUnitaOperativa getMezziInServizioPerUnitaOperativa,
+            string codiceUnitàOperativa)
         {
-            this.mezzi = new Mezzo2[numeroMezzi];
-
-            for (int i = 0; i < numeroMezzi; i++)
-            {
-                this.mezzi[i] = Mezzo2.CreateMezzoFake(codiceUnitaOperativa);
-            }
+            var pinNodo = new PinNodo(codiceUnitàOperativa, true);
+            var mezzi = getMezziInServizioPerUnitaOperativa.Get(new[] { pinNodo });
+            this.mezzi = mezzi.Select(m => new MezzoInSimulazione(m)).ToArray();
         }
 
         /// <summary>
         ///   Restituisce il primo mezzo disponibile, se esistente
         /// </summary>
         /// <returns>Il primo mezzo disponibile, null se nessun mezzo è disponibile</returns>
-        public Mezzo2 GetPrimoMezzoDisponibile()
+        public MezzoInSimulazione GetPrimoMezzoDisponibile()
         {
             return this.mezzi.FirstOrDefault(m => m.ContestoMezzo.State.Disponibile);
         }

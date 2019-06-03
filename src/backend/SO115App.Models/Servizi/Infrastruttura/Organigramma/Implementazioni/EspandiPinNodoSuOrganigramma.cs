@@ -26,7 +26,7 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.Organigramma.Implementazion
     /// <summary>
     ///   Implementazione del servizio di espansione dei pins su organigramma.
     /// </summary>
-    internal class EspandiPinNodoSuOrganigramma : IEspandiPinNodoSuOrganigramma
+    public class EspandiPinNodoSuOrganigramma : IEspandiPinNodoSuOrganigramma
     {
         /// <summary>
         ///   L'istanza del servizio <see cref="IGetUnitaOperativaRadice" />

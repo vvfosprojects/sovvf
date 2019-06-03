@@ -56,7 +56,7 @@ namespace SO115App.GeneratoreRichiesteFake
         /// <summary>
         ///   E' il mezzo che, dinamicamente, viene selezionato per evadere la richiesta.
         /// </summary>
-        public Mezzo2 MezzoUtilizzato { get; set; }
+        public MezzoInSimulazione MezzoUtilizzato { get; set; }
 
         /// <summary>
         ///   Genera un'istanza della classe in modo casuale
