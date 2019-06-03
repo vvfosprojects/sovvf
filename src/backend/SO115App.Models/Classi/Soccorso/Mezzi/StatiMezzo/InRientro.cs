@@ -106,5 +106,16 @@ namespace SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo
         {
             return new FuoriServizio(vaInFuoriServizio.Istante);
         }
+
+        /// <summary>
+        ///   Nello stato <see cref="InRientro" /> l'evento <see cref="ComposizionePartenze" />
+        ///   produce la transizione nello stato <see cref="InViaggio" />.
+        /// </summary>
+        /// <param name="composizionePartenze">Il visitor</param>
+        /// <returns>Lo stato <see cref="Assegnato" /></returns>
+        public override IStatoMezzo AcceptVisitor(ComposizionePartenze composizionePartenze)
+        {
+            return new Assegnato(composizionePartenze.Istante, composizionePartenze.CodiceRichiesta);
+        }
     }
 }
