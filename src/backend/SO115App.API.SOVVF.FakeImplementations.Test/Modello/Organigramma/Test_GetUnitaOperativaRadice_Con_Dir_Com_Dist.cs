@@ -30,10 +30,10 @@ namespace Tests.Modello.Organigramma
         {
             var organigramma = new GetUnitaOperativaRadice_Con_Dir_Com_Dist();
             var radice = organigramma.Get();
-            var lecco = radice.GetSottoAlbero().Single(uo => uo.Codice == "LC");
+            var lecco = radice.GetSottoAlbero().Single(uo => uo.Codice == "LC.1000");
 
             var numeroDistaccamentiLecco = lecco.GetSottoAlbero()
-                .Where(uo => uo.Codice != "LC")
+                .Where(uo => uo.Codice != "LC.1000")
                 .Count();
 
             Assert.That(numeroDistaccamentiLecco, Is.EqualTo(3));
@@ -45,9 +45,8 @@ namespace Tests.Modello.Organigramma
             var organigramma = new GetUnitaOperativaRadice_Con_Dir_Com_Dist();
 
             var radice = organigramma.Get();
-            var lecco = radice.GetSottoAlbero().Single(uo => uo.Codice == "LC");
-            var distaccamentiLecco = lecco.GetSottoAlbero()
-                .Where(uo => uo.Codice != "LC");
+            var lecco = radice.GetSottoAlbero().Single(uo => uo.Codice == "LC.1000");
+            var distaccamentiLecco = lecco.GetSottoAlbero();
             var listaCodici = distaccamentiLecco.Select(uo => uo.Codice);
 
             Assert.That(listaCodici, Is.All.StartsWith("LC."));
@@ -59,9 +58,8 @@ namespace Tests.Modello.Organigramma
             var organigramma = new GetUnitaOperativaRadice_Con_Dir_Com_Dist();
 
             var radice = organigramma.Get();
-            var lecco = radice.GetSottoAlbero().Single(uo => uo.Codice == "TO");
-            var distaccamentiLecco = lecco.GetSottoAlbero()
-                .Where(uo => uo.Codice != "TO");
+            var lecco = radice.GetSottoAlbero().Single(uo => uo.Codice == "TO.1000");
+            var distaccamentiLecco = lecco.GetSottoAlbero();
             var listaCodici = distaccamentiLecco.Select(uo => uo.Codice);
 
             Assert.That(listaCodici, Is.All.StartsWith("TO."));
@@ -72,7 +70,7 @@ namespace Tests.Modello.Organigramma
         {
             var organigramma = new GetUnitaOperativaRadice_Con_Dir_Com_Dist();
             var radice = organigramma.Get();
-            var roma = radice.GetSottoAlbero().Single(uo => uo.Codice == "RM");
+            var roma = radice.GetSottoAlbero().Single(uo => uo.Codice == "RM.1000");
 
             Assert.DoesNotThrow(() => roma.GetSottoAlbero().Single(uo => uo.Codice == "RM.1008"));
         }

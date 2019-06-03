@@ -21,7 +21,7 @@ namespace SO115App.GeneratoreFakeRichieste.ConsoleRunner
             var getMezziInServizioPerUnitaOperativa_Fake = new GetMezziInServizioPerUnitaOperativa_Fake(espandiPinNodoSuOrganigramma);
             var generatoreCoordinateIntervento = new GeneratoreCoordinateInterventoPerUO();
             var generatoreFakeRichieste = new GeneratoreRichieste(
-                "TO",
+                "TO.1000",
                 getMezziInServizioPerUnitaOperativa_Fake,
                 DateTime.UtcNow.AddDays(-5),
                 DateTime.UtcNow,
