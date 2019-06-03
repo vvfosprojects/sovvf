@@ -28,6 +28,7 @@ export const environment = {
             }
         },
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
+        updateRichiesta: '/api/UpdateIntervento',
         eventiRichieste: '/api/ListaEventi',
         turno: '',
         composizione: {
