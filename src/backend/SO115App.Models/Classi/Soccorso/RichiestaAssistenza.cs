@@ -244,7 +244,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 }
 
                 // Se la richiesta è chiusa, i mezzi devono essere stati tutti liberati.
-                Debug.Assert(!this.Chiusa || d.Values.All(stato => stato is Libero), "La richiesta è chiusa ma contiene mezzi non liberi");
+                Debug.Assert(!this.Chiusa || d.Values.All(stato => stato.Disponibile), "La richiesta è chiusa ma contiene mezzi non liberi");
 
                 return d;
             }
