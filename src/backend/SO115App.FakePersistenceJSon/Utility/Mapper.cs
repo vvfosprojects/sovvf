@@ -16,7 +16,6 @@ namespace SO115App.FakePersistenceJSon.Utility
                 CodiciUOCompetenza = richiesta.CodiciUOCompetenza,
                 Competenze = richiesta.Competenze,
                 Descrizione = richiesta.Descrizione,
-                Geolocalizzazione = richiesta.Geolocalizzazione,
                 Localita = richiesta.Localita,
                 NumeroRichiedente = richiesta.NumeroRichiedente,
                 Operatore = richiesta.Operatore,

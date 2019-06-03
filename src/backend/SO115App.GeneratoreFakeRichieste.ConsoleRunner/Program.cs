@@ -1,4 +1,6 @@
-﻿using SO115App.API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni;
+﻿using Newtonsoft.Json;
+using Serilog;
+using SO115App.API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni;
 using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi;
 using SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma;
 using SO115App.GeneratoreRichiesteFake;
@@ -16,6 +18,8 @@ namespace SO115App.GeneratoreFakeRichieste.ConsoleRunner
         /// <param name="args">Inutilizzato</param>
         private static void Main(string[] args)
         {
+            ConfigureLog();
+
             var getUnitaOperativaRadice = new GetUnitaOperativaRadice_Con_Dir_Com_Dist();
             var espandiPinNodoSuOrganigramma = new EspandiPinNodoSuOrganigramma(getUnitaOperativaRadice);
             var getMezziInServizioPerUnitaOperativa_Fake = new GetMezziInServizioPerUnitaOperativa_Fake(espandiPinNodoSuOrganigramma);
@@ -35,6 +39,20 @@ namespace SO115App.GeneratoreFakeRichieste.ConsoleRunner
                 );
 
             var richieste = generatoreFakeRichieste.Genera().ToArray();
+
+            Log.Debug(JsonConvert.SerializeObject(richieste));
+        }
+
+        private static void ConfigureLog()
+        {
+            var log = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Trace()
+                .CreateLogger();
+
+            Log.Logger = log;
+
+            Log.Debug("Log configured");
         }
     }
 }
