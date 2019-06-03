@@ -4,7 +4,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Action
-import { AddRichiesta, ClearRichieste, GetRichieste, SetRichieste, UpdateRichiesta } from '../../actions/richieste/richieste.actions';
+import { AddRichiesta, ClearRichieste, GetRichieste, PatchRichiesta, SetRichieste, UpdateRichiesta } from '../../actions/richieste/richieste.actions';
 
 // Service
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
@@ -15,6 +15,7 @@ import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
 import { RichiestaModificaState } from './richiesta-modifica.state';
 import { ToastrType } from '../../../../../shared/enum/toastr';
+import { SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -51,6 +52,13 @@ export class RichiesteState {
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
+    @Action(PatchRichiesta)
+    patchRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: PatchRichiesta) {
+        this.richiesteService.patchRichiesta(action.richiesta).subscribe(() => {
+            dispatch(new SuccessRichiestaModifica);
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+    }
+
     @Action(SetRichieste)
     setRichieste({ patchState }: StateContext<RichiesteStateModel>, action: SetRichieste) {
         patchState({
@@ -65,6 +73,7 @@ export class RichiesteState {
 
     @Action(UpdateRichiesta)
     updateRichiesta({ setState }: StateContext<RichiesteStateModel>, { richiesta }: UpdateRichiesta) {
+        console.log(richiesta);
         setState(
             patch({
                 richieste: updateItem<SintesiRichiesta>(r => r.id === richiesta.id, richiesta)

@@ -72,11 +72,25 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
         {
 
             List<Eventi> eventi = _iEventi.Get(query);
-
+            List<EventiMapper> eventiMapper = new List<EventiMapper>();
+            foreach (var evento in eventi)
+            {
+                EventiMapper eventoMapper = new EventiMapper
+                {
+                    NomeClasseEvento = evento.Esito ?? "",
+                    IstanteEvento = evento.Istante != null ? evento.Istante.ToString() : "",
+                    Targa = "",
+                    Note = evento.NotePubbliche != null ? evento.NotePubbliche.ToString() : "",
+                    HTMLLinkElement = ""
+                    
+                };
+                eventiMapper.Add(eventoMapper);
+            }
             return new ListaEventiResult()
             {
-                Eventi = eventi
+                Eventi = eventiMapper
             };
+
         }
 
     }

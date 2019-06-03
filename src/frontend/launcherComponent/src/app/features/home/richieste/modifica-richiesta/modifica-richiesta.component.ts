@@ -1,24 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TipologieInterface } from '../../../../shared/interface/tipologie';
 import { RichiestaModificaState } from '../../store/states/richieste/richiesta-modifica.state';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { makeCopy } from '../../../../shared/helper/function';
-import { UpdateRichiesta } from '../../store/actions/richieste/richieste.actions';
+import { PatchRichiesta, UpdateRichiesta } from '../../store/actions/richieste/richieste.actions';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { CopyToClipboard } from '../../store/actions/chiamata/clipboard.actions';
 import { NavbarState } from '../../../navbar/store/states/navbar.state';
+import { ClearRichiestaModifica } from '../../store/actions/richieste/richiesta-modifica.actions';
 
 @Component({
     selector: 'app-modifica-richiesta',
     templateUrl: './modifica-richiesta.component.html',
     styleUrls: ['./modifica-richiesta.component.css']
 })
-export class ModificaRichiestaComponent implements OnInit {
+export class ModificaRichiestaComponent implements OnInit, OnDestroy {
 
     options = {
         componentRestrictions: { country: ['IT', 'FR', 'AT', 'CH', 'SI'] }
@@ -30,18 +31,35 @@ export class ModificaRichiestaComponent implements OnInit {
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
     richiestaModifica: SintesiRichiesta;
 
+    @Select(RichiestaModificaState.successModifica) successModifica$: Observable<boolean>;
+
+    subscription = new Subscription();
+
     modificaRichiestaForm: FormGroup;
-    submitted = false;
 
     constructor(private formBuilder: FormBuilder,
                 private modal: NgbActiveModal,
                 private store: Store) {
-        this.richiestaModifica$.subscribe((richiesta: SintesiRichiesta) => {
-            this.richiestaModifica = richiesta;
-        });
+        this.subscription.add(this.richiestaModifica$.subscribe((richiesta: SintesiRichiesta) => this.richiestaModifica = makeCopy(richiesta)));
+        this.subscription.add(this.successModifica$.subscribe((success: boolean) => success ? this.onSuccess() : false));
     }
 
     ngOnInit() {
+        isDevMode() && console.log('Componente Modifica Richiesta creato');
+        this.creaForm();
+    }
+
+    ngOnDestroy(): void {
+        this.store.dispatch(new ClearRichiestaModifica);
+        this.subscription.unsubscribe();
+        isDevMode() && console.log('Componente Modifica Richiesta Distrutto');
+    }
+
+    get f() {
+        return this.modificaRichiestaForm.controls;
+    }
+
+    creaForm(): void {
         if (this.richiestaModifica.richiedente.ragioneSociale) {
             this.tipologiaRichiedente = 'RagioneSociale';
         } else {
@@ -50,9 +68,9 @@ export class ModificaRichiestaComponent implements OnInit {
 
         this.modificaRichiestaForm = this.formBuilder.group({
             tipoIntervento: [this.richiestaModifica.tipologie, Validators.required],
-            nome: [this.richiestaModifica.richiedente.nome],
-            cognome: [this.richiestaModifica.richiedente.cognome],
-            ragioneSociale: [this.richiestaModifica.richiedente.ragioneSociale],
+            nome: [this.richiestaModifica.richiedente.nome, Validators.required],
+            cognome: [this.richiestaModifica.richiedente.cognome, Validators.required],
+            ragioneSociale: [this.richiestaModifica.richiedente.ragioneSociale, Validators.required],
             telefono: [this.richiestaModifica.richiedente.telefono, Validators.required],
             indirizzo: [this.richiestaModifica.localita.indirizzo, Validators.required],
             etichette: [this.richiestaModifica.etichette],
@@ -65,14 +83,13 @@ export class ModificaRichiestaComponent implements OnInit {
             motivazione: [this.richiestaModifica.descrizione],
             zoneEmergenza: [this.richiestaModifica.zoneEmergenza],
         });
-    }
 
-    get f() {
-        return this.modificaRichiestaForm.controls;
+        this.setValidatorsRichiesta(this.tipologiaRichiedente);
     }
 
     cambiaTipologiaRichiedente(tipologia: string) {
         this.tipologiaRichiedente = tipologia;
+        this.setValidatorsRichiesta(tipologia);
     }
 
     setRilevanza() {
@@ -80,6 +97,23 @@ export class ModificaRichiestaComponent implements OnInit {
             this.f.rilevanza.setValue(false);
         } else {
             this.f.rilevanza.setValue(true);
+        }
+    }
+
+    setValidatorsRichiesta(tipologia: string) {
+        switch (tipologia) {
+            case 'RagioneSociale':
+                console.log('ragione sociale');
+                this.modificaRichiestaForm.get('nome').setValidators(null);
+                this.modificaRichiestaForm.get('cognome').setValidators(null);
+                this.modificaRichiestaForm.get('ragioneSociale').setValidators(Validators.required);
+                break;
+            case 'Nome-Cognome':
+                console.log('nome-cognome');
+                this.modificaRichiestaForm.get('ragioneSociale').setValidators(null);
+                this.modificaRichiestaForm.get('nome').setValidators(Validators.required);
+                this.modificaRichiestaForm.get('cognome').setValidators(Validators.required);
+                break;
         }
     }
 
@@ -95,7 +129,7 @@ export class ModificaRichiestaComponent implements OnInit {
     }
 
     getNuovaRichiesta() {
-        const nuovaRichiesta = makeCopy(this.richiestaModifica);
+        const nuovaRichiesta = this.richiestaModifica;
 
         // Set form data
         const f = this.f;
@@ -128,15 +162,16 @@ export class ModificaRichiestaComponent implements OnInit {
     }
 
     onConfermaModifica() {
-        this.submitted = true;
         if (this.modificaRichiestaForm.invalid) {
             return;
         }
 
-        this.modal.close(this.modificaRichiestaForm.value);
-
         const nuovaRichiesta = this.getNuovaRichiesta();
 
-        this.store.dispatch(new UpdateRichiesta(nuovaRichiesta));
+        this.store.dispatch(new PatchRichiesta(nuovaRichiesta));
+    }
+
+    onSuccess() {
+        this.modal.close(this.modificaRichiestaForm.value);
     }
 }

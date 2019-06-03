@@ -13,8 +13,6 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
     {
         public void Save(RichiestaAssistenza richiestaAssistenza)
         {
-            int MaxIdSintesi;
-
             string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
             using (StreamReader r = new StreamReader(filepath))

@@ -34,14 +34,14 @@ namespace SO115App.API.Models.Classi.Soccorso
     ///   Questa classe modella la generica richiesta di assistenza inoltrata ai VVF. La richiesta
     ///   può non avere seguito oppure generare un intervento da parte dei VVF. Esempi di istanze
     ///   sono: richiesta per un incendio in un'abitazione, richiesta per porta bloccata, richiesta
-    ///         per vigilanza in occasione di una manifestazione, richiesta per partecipazione di una
-    ///         delegazione VVF ad un convegno. Non è un'istanza di richiesta il terremoto, che
-    ///         essendo un macro evento calamitoso darà luogo a più richieste di assistenza.
+    ///   per vigilanza in occasione di una manifestazione, richiesta per partecipazione di una
+    ///   delegazione VVF ad un convegno. Non è un'istanza di richiesta il terremoto, che essendo un
+    ///   macro evento calamitoso darà luogo a più richieste di assistenza.
     /// </summary>
     public class RichiestaAssistenzaRead : Entity
     {
         public string Codice { get; set; }
+        public string Id { get; set; }
         public RichiestaAssistenza.Priorita PrioritaRichiesta { get; set; }
-
     }
 }

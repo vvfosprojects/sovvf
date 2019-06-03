@@ -86,6 +86,12 @@ namespace SO115App.CompositionRoot
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.GetListaEventi.IGetListaEventi,
              FakePersistenceJSon.ListaEventi.GetListaEventi>();
+            container.Register<
+            SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaById,
+             FakePersistenceJSon.GestioneIntervento.GetRichiestaById>();
+            container.Register<
+            SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetIdByCodice,
+             FakePersistenceJSon.GestioneIntervento.GetIdByCodice>();
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,

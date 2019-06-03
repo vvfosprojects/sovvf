@@ -38,11 +38,11 @@
         </div>
     </ng-sidebar>
     <div ng-sidebar-content>
-        <app-navbar *ngIf="_toggle" (openedSidebar)="_toggleOpened()" [user]="user"></app-navbar>
-        <div *ngIf="!_isLoaded || !_signalR">
+        <app-navbar *ngIf="_toggle && isReady" (openedSidebar)="_toggleOpened()" [user]="user"></app-navbar>
+        <div *ngIf="!isReady">
             <app-loader></app-loader>
         </div>
-        <div *ngIf="_isLoaded && _signalR">
+        <div *ngIf="isReady">
             <router-outlet></router-outlet>
         </div>
     </div>

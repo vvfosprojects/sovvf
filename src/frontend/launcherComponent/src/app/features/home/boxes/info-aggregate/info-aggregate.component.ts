@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { BoxInterventi } from '../boxes-model/box-interventi.model';
 import { BoxMezzi } from '../boxes-model/box-mezzi.model';
 import { BoxPersonale } from '../boxes-model/box-personale.model';
@@ -23,7 +23,7 @@ import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../shared/interf
     templateUrl: './info-aggregate.component.html',
     styleUrls: ['./info-aggregate.component.css']
 })
-export class InfoAggregateComponent implements OnDestroy {
+export class InfoAggregateComponent implements OnInit, OnDestroy {
     @Select(BoxRichiesteState.richieste) richieste$: Observable<BoxInterventi>;
     @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
     @Select(BoxPersonaleState.personaleQty) personaleQty$: Observable<BoxPersonaleQty>;
@@ -41,8 +41,13 @@ export class InfoAggregateComponent implements OnDestroy {
         this.startMeteo();
     }
 
-    ngOnDestroy() {
+    ngOnInit(): void {
+        isDevMode() && console.log('Componente Info Aggregate creato');
+    }
+
+    ngOnDestroy(): void {
         this.subscription.unsubscribe();
+        isDevMode() && console.log('Componente Info Aggregate Distrutto');
     }
 
     clickBox(cat: string, tipo: string): void {

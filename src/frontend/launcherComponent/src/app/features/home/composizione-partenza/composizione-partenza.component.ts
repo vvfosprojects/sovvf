@@ -17,6 +17,9 @@ import { RichiestaComposizioneState } from '../store/states/composizione-partenz
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
 import { FilterbarComposizioneState } from '../store/states/composizione-partenza/filterbar-composizione.state';
+import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
+import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -41,7 +44,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     prevStateBoxClick: BoxClickStateModel;
 
-    constructor(private store: Store) {
+    constructor(private modalService: NgbModal, private store: Store) {
         this.subscription.add(this.nuovaPartenza$.subscribe(r => this.richiesta = r));
 
         // Restituisce i PreAccoppiati
@@ -103,6 +106,14 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     centraMappa() {
         this.store.dispatch(new SetCoordCentroMappa(this.richiesta.localita.coordinate));
+    }
+
+    onVisualizzaEventiRichiesta(idRichiesta: string) {
+        this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
+        const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+        modal.result.then(() => {
+            },
+            () => this.store.dispatch(new ClearEventiRichiesta()));
     }
 
 }

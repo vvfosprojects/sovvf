@@ -87,7 +87,7 @@ namespace SO115App.API.Controllers
 
             try
             {
-                List<Eventi> eventi = new List<Eventi>();
+                List<EventiMapper> eventi = new List<EventiMapper>();
                 eventi = this.handler.Handle(query).Eventi;
 
                 await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetEventiRichiesta", eventi);

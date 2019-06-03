@@ -15,3 +15,6 @@ export class ModificaRilevanza {
     static readonly  type = '[RichiestaModifica] Modifica Rilevanza';
 }
 
+export class SuccessRichiestaModifica {
+    static readonly  type = '[RichiestaModifica] Modifica Rilevanza Success';
+}

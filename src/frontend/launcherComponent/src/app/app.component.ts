@@ -11,6 +11,7 @@ import { Utente } from './shared/model/utente.model';
 import { UtenteState } from './features/navbar/store/states/operatore/utente.state';
 import { ClearListaSediNavbar, PatchListaSediNavbar } from './shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { SediTreeviewState } from './shared/store/states/sedi-treeview/sedi-treeview.state';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -36,6 +37,8 @@ export class AppComponent implements OnDestroy {
     @Select(UtenteState.utente) user$: Observable<Utente>;
     user: Utente;
 
+    isReady = false;
+
     _opened = false;
     _toggle = false;
     RoutesPath = RoutesPath;
@@ -43,14 +46,21 @@ export class AppComponent implements OnDestroy {
 
     constructor(private router: Router,
                 private authService: AuthenticationService,
-                private store: Store) {
+                private store: Store,
+                private modals: NgbModal) {
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd) {
                 !this.deniedPath.includes(val.urlAfterRedirects.slice(1)) && authService._isLogged() ? this._toggle = true : this._toggle = false;
             }
         });
-        this.subscription.add(this._signalR$.subscribe((r: boolean) => this._signalR = r));
-        this.subscription.add(this._isLoaded$.subscribe((r: boolean) => this._isLoaded = r));
+        this.subscription.add(this._signalR$.subscribe((r: boolean) => {
+            this._signalR = r;
+            this._isReady();
+        }));
+        this.subscription.add(this._isLoaded$.subscribe((r: boolean) => {
+            this._isLoaded = r;
+            this._isReady();
+        }));
         this.subscription.add(this.offsetTime$.subscribe((serverTime: number) => OFFSET_SYNC_TIME.unshift(serverTime)));
         this.subscription.add(this.user$.subscribe((user: Utente) => {
             this.user = user;
@@ -68,6 +78,13 @@ export class AppComponent implements OnDestroy {
                 this.store.dispatch(new PatchListaSediNavbar([this.user.sede.codice]));
             }
         }));
+    }
+
+    _isReady() {
+        this.isReady = !!this._signalR && !!this._isLoaded;
+        if (!this.isReady) {
+            this.modals.dismissAll();
+        }
     }
 
     _toggleOpened() {

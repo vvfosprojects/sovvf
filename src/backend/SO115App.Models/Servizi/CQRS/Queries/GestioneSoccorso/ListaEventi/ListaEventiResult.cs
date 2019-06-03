@@ -30,7 +30,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
         /// <summary>
         /// La sintesi delle richieste di assistenza
         /// </summary>
-        public List<Eventi> Eventi
+        public List<EventiMapper> Eventi
         { get; set; }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using System;
+using SO115App.FakePersistenceJSon.Classi;
+using SO115App.FakePersistenceJSon.Utility;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,16 +21,22 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                 json = r.ReadToEnd();
             }
 
-            List<SintesiRichiesta> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichiesta>>(json);
+            List<RichiestaAssistenzaDTO> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
 
             if (ListaRichieste != null)
             {
-                SintesiRichiesta chiamata = (SintesiRichiesta)ListaRichieste.FirstOrDefault(x => x.Id == richiestaAssistenza.Id);
-                ListaRichieste.Remove(chiamata);
+                List<RichiestaAssistenza> ListaRichiesteNew = new List<RichiestaAssistenza>();
 
-                string fileText = System.IO.File.ReadAllText(@"Fake/ListaRichiesteAssistenza.json");
-                string jsonNew = JsonConvert.SerializeObject(richiestaAssistenza);
-                System.IO.File.WriteAllText(@"Fake/ListaRichiesteAssistenza.json", "[" + fileText.Substring(1, fileText.Length - 2) + "," + jsonNew + "]");
+                foreach (RichiestaAssistenzaDTO richiesta in ListaRichieste)
+                {
+                    if (richiesta.Id != richiestaAssistenza.Id)
+                        ListaRichiesteNew.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
+                }
+
+                ListaRichiesteNew.Add(richiestaAssistenza);
+
+                string jsonListaPresente = JsonConvert.SerializeObject(ListaRichiesteNew);
+                System.IO.File.WriteAllText(@"Fake/ListaRichiesteAssistenza.json", "[" + jsonListaPresente + "]");
             }
             else
             {
