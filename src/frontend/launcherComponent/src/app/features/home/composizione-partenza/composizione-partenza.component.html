@@ -4,6 +4,7 @@
             <div class="w-100 rounded card-shadow" [ngClass]="cardClasses(richiesta)">
                 <app-sintesi-richiesta [richiesta]="richiesta" [fissata]="false" [espanso]="true" [partenza]="true"
                                        [listaEventi]="true" [modificabile]="false"
+                                       (eventiRichiesta)="onVisualizzaEventiRichiesta($event)"
                                        (dismissNuovaPartenza)="dismissPartenza()"></app-sintesi-richiesta>
             </div>
         </div>
