@@ -11,7 +11,7 @@ namespace Tests
         {
             var generatore = new GeneratoreCoordinateInterventoPerUO();
 
-            var coordinate = generatore.Genera("TO");
+            var coordinate = generatore.Genera("TO.1000");
 
             Assert.That(coordinate.Latitudine, Is.GreaterThan(44.08).And.LessThan(46.08));
             Assert.That(coordinate.Longitudine, Is.GreaterThan(6.62).And.LessThan(8.62));
@@ -23,7 +23,7 @@ namespace Tests
         {
             var generatore = new GeneratoreCoordinateInterventoPerUO();
 
-            var coordinate = generatore.Genera("SR");
+            var coordinate = generatore.Genera("SR.1000");
 
             Assert.That(coordinate.Latitudine, Is.GreaterThan(36.08).And.LessThan(38.08));
             Assert.That(coordinate.Longitudine, Is.GreaterThan(14.18).And.LessThan(16.18));
