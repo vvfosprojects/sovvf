@@ -5,7 +5,7 @@ namespace SO115App.API.Models.Classi.Composizione
 {
     public class ComposizioneMezzi
     {
-        public string IdMezzoComposizione { get; set; }
+        public string Id { get; set; }
         public Mezzo Mezzo { get; set; }
         public string Km { get; set; }
         public string TempoPercorrenza { get; set; }

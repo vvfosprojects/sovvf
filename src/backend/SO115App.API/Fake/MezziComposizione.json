@@ -1,6 +1,6 @@
 [
   {
-    "idMezzoComposizione": 1,
+    "id": 1,
     "mezzo": {
       "codice": "1",
       "descrizione": "A1",
@@ -28,7 +28,7 @@
     }
   },
   {
-    "idMezzoComposizione": 2,
+    "id": 2,
     "mezzo": {
       "codice": "2",
       "descrizione": "A2",
@@ -56,7 +56,7 @@
     }
   },
   {
-    "idMezzoComposizione": 3,
+    "id": 3,
     "mezzo": {
       "codice": "3",
       "descrizione": "A3",
@@ -84,7 +84,7 @@
     }
   },
   {
-    "idMezzoComposizione": "4",
+    "id": "4",
     "mezzo": {
       "codice": "4",
       "descrizione": "A4",
@@ -112,7 +112,7 @@
     }
   },
   {
-    "idMezzoComposizione": 5,
+    "id": 5,
     "mezzo": {
       "codice": "5",
       "descrizione": "A5",
@@ -140,7 +140,7 @@
     }
   },
   {
-    "idMezzoComposizione": 6,
+    "id": 6,
     "mezzo": {
       "codice": "6",
       "descrizione": "A6",
@@ -168,7 +168,7 @@
     }
   },
   {
-    "idMezzoComposizione": 7,
+    "id": 7,
     "mezzo": {
       "codice": "7",
       "descrizione": "A7",

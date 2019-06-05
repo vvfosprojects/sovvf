@@ -6,7 +6,7 @@ namespace SO115App.API.Models.Classi.Composizione
 {
     public class PreAccoppiati
     {
-        public string Id { get; set; }
+        public string IdPreAccoppiato { get; set; }
         public ComposizioneMezzi MezzoComposizione { get; set; }
         public List<ComposizioneSquadre> SquadraComposizione { get; set; }
         public bool Selezionato { get; set; }
