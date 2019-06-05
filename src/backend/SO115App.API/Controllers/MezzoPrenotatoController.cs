@@ -23,13 +23,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Composizione;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.MezzoPrenotato;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.Models.Classi.Composizione;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
@@ -87,7 +82,7 @@ namespace SO115App.API.Controllers
                 try
                 {
 
-                    MezzoPrenotato mezzo = handler.Handle(query).MezzoPrenotato;
+                    ComposizioneMezzi mezzo = handler.Handle(query).ComposizioneMezzi;
                     await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyMezzoPrenotato", mezzo);
 
                     return Ok();

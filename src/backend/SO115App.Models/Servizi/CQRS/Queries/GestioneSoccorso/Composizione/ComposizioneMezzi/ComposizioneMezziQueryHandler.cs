@@ -49,8 +49,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             if ((composizioneMezzi != null && composizioneMezzi.Count > 0) && (query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0))
             {
+                var count = 1;
                 foreach (var mezzo in composizioneMezzi)
                 {
+                    
+                    mezzo.Id = count++.ToString();
                     if (query.Filtro.CodiceMezzo.Any(mezzo.Mezzo.Codice.Equals))
                     {
                         mezzo.IstanteScadenzaSelezione = DateTime.Now.AddMinutes(3);

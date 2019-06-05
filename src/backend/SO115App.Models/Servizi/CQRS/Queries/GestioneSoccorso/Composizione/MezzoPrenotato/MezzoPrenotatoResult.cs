@@ -28,7 +28,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <summary>
         ///   Json Navbar Richieste
         /// </summary>
-        public Classi.Composizione.MezzoPrenotato MezzoPrenotato
+        public Classi.Composizione.ComposizioneMezzi ComposizioneMezzi
         { get; set; }
     }
 }

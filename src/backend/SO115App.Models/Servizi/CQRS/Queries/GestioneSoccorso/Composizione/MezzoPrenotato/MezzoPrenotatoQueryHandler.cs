@@ -41,13 +41,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         public MezzoPrenotatoResult Handle(MezzoPrenotatoQuery query)
         {
             // preparazione del DTO
-            Classi.Composizione.MezzoPrenotato mezzoPrenotato = _iGetMezzoPrenotato.Get(query);
+            Classi.Composizione.ComposizioneMezzi composizioneMezzi= _iGetMezzoPrenotato.Get(query);
 //            composizioneMezzi = CaricaComposizioneMezzi(query);
 
           
             return new MezzoPrenotatoResult()
             {
-                MezzoPrenotato = mezzoPrenotato
+                ComposizioneMezzi = composizioneMezzi
             };
         }
 
