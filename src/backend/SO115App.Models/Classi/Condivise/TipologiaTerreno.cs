@@ -1,6 +1,6 @@
-//-----------------------------------------------------------------------
-// <copyright file="Turno.cs" company="CNVVF">
-// Copyright (C) 2017 - CNVVF
+﻿//-----------------------------------------------------------------------
+// <copyright file="TipologiaTerreno.cs" company="CNVVF">
+// Copyright (C) 2019 - CNVVF
 //
 // This file is part of SOVVF.
 // SOVVF is free software: you can redistribute it and/or modify
@@ -17,19 +17,30 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-
-namespace SO115App.API.Models.Classi.Utenti
+namespace SO115App.API.Models.Classi.Condivise
 {
-    public class Turno
+    public class TipologiaTerreno
     {
-        public Turno()
-        { }
+        public TipologiaTerreno(string Codice, string Descrizione, string mq)
+        {
+            this.Codice = Codice;
+            this.Descrizione = Descrizione;
+            this.Mq = mq;
+        }
 
+        /// <summary>
+        ///   Codice della TipologiaTerreno
+        /// </summary>
         public string Codice { get; set; }
+
+        /// <summary>
+        ///   Descrizione TipologiaTerreno ( BOSCHI/CAMPI/STERPAGLIE )
+        /// </summary>
         public string Descrizione { get; set; }
-        public string DiurnoNotturno { get; set; }
-        public DateTime DataOraInizio { get; set; }
-        public DateTime DataOraFine { get; set; }
+
+        /// <summary>
+        ///   Metri quadri che hanno interessato l'intervento
+        /// </summary>
+        public string Mq { get; set; }
     }
 }

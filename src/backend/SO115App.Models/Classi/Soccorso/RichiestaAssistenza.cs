@@ -27,6 +27,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
+using SO115App.API.Models.Classi.Utenti;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -211,6 +212,11 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         /// <summary>
+        ///   Indica se la rilevanza è di tipo Storico/Artistico/Culturale
+        /// </summary>
+        public bool RilevanzaStArCu { get; set; }
+
+        /// <summary>
         ///   Restituisce l'elenco degli stati dei mezzi coinvolti nella Richiesta di Assistenza
         /// </summary>
         public IDictionary<string, IStatoMezzo> MezziCoinvolti
@@ -279,6 +285,32 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   La località dove è avvenuto il fatto
         /// </summary>
         public virtual Localita Localita { get; set; }
+
+        /// <summary>
+        ///   Il turno nel quale viene presa la chiamata
+        /// </summary>
+        public Turno TurnoInserimentoChiamata { get; set; }
+
+        /// <summary>
+        ///   Il turno nel quale viene lavorato l'intervento
+        /// </summary>
+        public Turno TurnoIntervento { get; set; }
+
+        /// <summary>
+        ///   Indica se il terreno è uno tra Boschi/Campi/Sterpaglie e ne indica i mq.
+        /// </summary>
+        public TipologiaTerreno TipoTerreno { get; set; }
+
+        /// <summary>
+        ///   Lista degli enti intervenuti (Es. ACEA)
+        /// </summary>
+        public List<EntiIntervenuti> ListaEntiIntervenuti { get; set; }
+
+        /// <summary>
+        ///   Se l'intervento è su un obiettivo ritenuto rilevante (Es. Colosseo) si seleziona da
+        ///   interfaccia e si registra il codice
+        /// </summary>
+        public string CodiceObiettivoRilevante { get; set; }
 
         /// <summary>
         ///   E' la descrizione della richiesta, che ne sintetizza le caratteristiche principali.

@@ -36,7 +36,12 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.Richiedente = command.Chiamata.Richiedente;
             richiesta.Localita = command.Chiamata.Localita;
             richiesta.Descrizione = command.Chiamata.Descrizione;
-            richiesta.Id = idRichiesta;
+            richiesta.TurnoInserimentoChiamata = command.Chiamata.TurnoInserimentoChiamata;
+            richiesta.TipoTerreno = command.Chiamata.TipoTerreno;
+            richiesta.ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti;
+            richiesta.CodiceObiettivoRilevante = command.Chiamata.CodiceObiettivoRilevante;
+            richiesta.RilevanzaStArCu = command.Chiamata.RilevanzaStArCu;
+            richiesta.Id = idRichiesta; //TODO DA TOGLIERE CON LA VERSIONE DB
 
             if (command.Chiamata.Etichette != null)
             {

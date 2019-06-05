@@ -30,7 +30,12 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Localita = command.Chiamata.Localita,
                 Descrizione = command.Chiamata.Descrizione,
                 Codice = command.Chiamata.Codice,
-                Id = (_iGetMaxCodice.GetMax() + 1).ToString(), // DA TOGLIERE CON LA VERSIONE DB
+                TurnoInserimentoChiamata = command.Chiamata.TurnoInserimentoChiamata,
+                TipoTerreno = command.Chiamata.TipoTerreno,
+                ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti,
+                CodiceObiettivoRilevante = command.Chiamata.CodiceObiettivoRilevante,
+                RilevanzaStArCu = command.Chiamata.RilevanzaStArCu,
+                Id = (_iGetMaxCodice.GetMax() + 1).ToString(), //TODO DA TOGLIERE CON LA VERSIONE DB
             };
 
             if (command.Chiamata.Rilevanza)

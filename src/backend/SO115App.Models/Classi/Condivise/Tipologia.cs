@@ -29,27 +29,32 @@ namespace SO115App.API.Models.Classi.Condivise
         }
 
         /// <summary>
-        /// Codice della Tipologia
+        ///   Codice della Tipologia
         /// </summary>
         public string Codice { get; set; }
 
         /// <summary>
-        /// Descrizione Tipologia
+        ///   Descrizione Tipologia
         /// </summary>
         public string Descrizione { get; set; }
 
         /// <summary>
-        /// Classe Icona Fontawsome corrispondente alla tipologia
+        ///   Indica la tipologia di luogo nel quale è avvenuto il fatto (Es. Abitazione)
+        /// </summary>
+        public TipologiaLuogoEvento TipoLuogoEvento { get; set; }
+
+        /// <summary>
+        ///   Classe Icona Fontawsome corrispondente alla tipologia
         /// </summary>
         public string Icona { get; set; }
 
         /// <summary>
-        /// Definisce la categoria della Tipologia
+        ///   Definisce la categoria della Tipologia
         /// </summary>
         public string Categoria { get; set; }
 
         /// <summary>
-        /// Indica se questa tipologia sarà presente nei "preferiti" nella sezione Filtri
+        ///   Indica se questa tipologia sarà presente nei "preferiti" nella sezione Filtri
         /// </summary>
         public bool Star { get; set; }
     }

@@ -22,7 +22,12 @@ namespace SO115App.FakePersistenceJSon.Utility
                 Richiedente = richiesta.Richiedente,
                 Tags = richiesta.Tags,
                 Tipologie = richiesta.Tipologie,
-                ZoneEmergenza = richiesta.ZoneEmergenza
+                ZoneEmergenza = richiesta.ZoneEmergenza,
+                TurnoInserimentoChiamata = richiesta.TurnoInserimentoChiamata,
+                TipoTerreno = richiesta.TipoTerreno,
+                ListaEntiIntervenuti = richiesta.ListaEntiIntervenuti,
+                CodiceObiettivoRilevante = richiesta.CodiceObiettivoRilevante,
+                RilevanzaStArCu = richiesta.RilevanzaStArCu,
             };
 
             foreach (Evento evento in richiesta.Eventi)

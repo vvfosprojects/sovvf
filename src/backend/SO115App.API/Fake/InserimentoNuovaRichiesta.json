@@ -25,6 +25,10 @@
       "codice": 5,
       "categoria": "Incendi ed Esplosioni",
       "descrizione": "Incendio normale (generico)",
+      "TipoLuogoEvento": {
+        "Codice": null,
+        "Descrizione": null
+      },
       "star": true
     }
   ],
@@ -43,9 +47,36 @@
     "indirizzo": "Vienna, Austria",
     "note": null
   },
+  "TurnoInserimentoChiamata": {
+    "Codice": "",
+    "Descrizione": "",
+    "DiurnoNotturno": "",
+    "DataOraInizio": "",
+    "DataOraFine": ""
+  },
+  "TurnoIntervento": {
+    "Codice": "",
+    "Descrizione": "",
+    "DiurnoNotturno": "",
+    "DataOraInizio": "",
+    "DataOraFine": ""
+  },
+  "TipoTerreno": {
+    "Codice": "",
+    "Descrizione": "",
+    "Mq": ""
+  },
+  "ListaEntiIntervenuti": [
+    {
+      "Codice": "",
+      "Descrizione": ""
+    }
+  ],
+  "CodiceObiettivoRilevante": null,
   "competenze": null,
   "istantePresaInCarico": "2019-05-17T15:06:42.855Z",
   "rilevanza": null,
+  "RilevanzaStArCu": null,
   "codiceSchedaNue": null,
   "zoneEmergenza": null,
   "partenze": null,

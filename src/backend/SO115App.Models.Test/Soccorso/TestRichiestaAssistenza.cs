@@ -204,7 +204,7 @@ namespace Modello.Test.Classi.Soccorso
         public void IlFonogrammaEDaInviareConEventoDiInvioRichiesto()
         {
             var richiesta = new RichiestaAssistenza();
-            new InviareFonogramma(richiesta, DateTime.Now, "fonte", "Cc e Polizia");
+            new InviareFonogramma(richiesta, DateTime.Now, "fonte", "Cc e Polizia", "1234", "5668");
 
             var statoInvioFonogramma = richiesta.StatoInvioFonogramma;
 
@@ -216,8 +216,8 @@ namespace Modello.Test.Classi.Soccorso
         {
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
-            new InviareFonogramma(richiesta, now, "fonte", "Cc e Polizia");
-            new FonogrammaInviato(richiesta, now.AddSeconds(5), "fonte");
+            new InviareFonogramma(richiesta, now, "fonte", "Cc e Polizia", "1234", "5668");
+            new FonogrammaInviato(richiesta, now.AddSeconds(5), "fonte", "1234", "5668");
 
             var statoInvioFonogramma = richiesta.StatoInvioFonogramma;
 
@@ -229,9 +229,9 @@ namespace Modello.Test.Classi.Soccorso
         {
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
-            new InviareFonogramma(richiesta, now, "fonte", "Cc e Polizia");
-            new FonogrammaInviato(richiesta, now.AddSeconds(5), "fonte");
-            new InviareFonogramma(richiesta, now.AddSeconds(10), "fonte", "Cc e Polizia");
+            new InviareFonogramma(richiesta, now, "fonte", "Cc e Polizia", "1234", "5668");
+            new FonogrammaInviato(richiesta, now.AddSeconds(5), "fonte", "1234", "5668");
+            new InviareFonogramma(richiesta, now.AddSeconds(10), "fonte", "Cc e Polizia", "1234", "5668");
 
             var statoInvioFonogramma = richiesta.StatoInvioFonogramma;
 

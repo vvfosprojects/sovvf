@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestrioneIntervento.Shared.AddIntervento;
 using System;
 using System.Collections.Generic;
@@ -88,6 +89,32 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         public Localita Localita { get; set; }
 
         /// <summary>
+        ///   Il turno nel quale viene presa la chiamata
+        /// </summary>
+        public Turno TurnoInserimentoChiamata { get; set; }
+
+        /// <summary>
+        ///   Il turno nel quale viene lavorato l'intervento
+        /// </summary>
+        public Turno TurnoIntervento { get; set; }
+
+        /// <summary>
+        ///   Indica se il terreno è uno tra Boschi/Campi/Sterpaglie e ne indica i mq.
+        /// </summary>
+        public TipologiaTerreno TipoTerreno { get; set; }
+
+        /// <summary>
+        ///   Lista degli enti intervenuti (Es. ACEA)
+        /// </summary>
+        public List<EntiIntervenuti> ListaEntiIntervenuti { get; set; }
+
+        /// <summary>
+        ///   Se l'intervento è su un obiettivo ritenuto rilevante (Es. Colosseo) si seleziona da
+        ///   interfaccia e si registra il codice
+        /// </summary>
+        public string CodiceObiettivoRilevante { get; set; }
+
+        /// <summary>
         ///   Competenze della richiesta
         /// </summary>
         public List<Sede> Competenze { get; set; }
@@ -99,7 +126,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         public DateTime? IstantePresaInCarico { get; set; }
 
         /// <summary>
-        ///   Indica la data in cui è stato marcato RILEVANTE l'ultima volta
+        ///   Indica se la richiesta è stata marcata RILEVANTE
         /// </summary>
         /// <remarks>
         ///   Una richiesta può essere rilevante se è l'operatore a marcarla come tale, oppure in
@@ -107,6 +134,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         ///   machine learning.
         /// </remarks>
         public bool Rilevanza { get; set; }
+
+        /// <summary>
+        ///   Indica se la rilevanza è di tipo Storico/Artistico/Culturale
+        /// </summary>
+        public bool RilevanzaStArCu { get; set; }
 
         /// <summary>
         ///   Codice della scheda Nue

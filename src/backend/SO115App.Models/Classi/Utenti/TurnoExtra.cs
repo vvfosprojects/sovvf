@@ -21,15 +21,15 @@ using System;
 
 namespace SO115App.API.Models.Classi.Utenti
 {
-    public class Turno
+    public class TurnoExtra
     {
-        public Turno()
-        { }
+        public TurnoExtra(string PrefissoTurno, string DescrizioneTurno, DateTime DataOraInizioTurnoCorrente, DateTime DataOraFineTurnoCorrente)
+        {
+        }
 
-        public string Codice { get; set; }
-        public string Descrizione { get; set; }
-        public string DiurnoNotturno { get; set; }
-        public DateTime DataOraInizio { get; set; }
-        public DateTime DataOraFine { get; set; }
+        public string PrefissoTurno { get; set; }
+        public string DescrizioneTurno { get; set; }
+        public DateTime DataOraInizioTurnoCorrente { get; set; }
+        public DateTime DataOraFineTurnoCorrente { get; set; }
     }
 }
