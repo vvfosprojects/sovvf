@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "mezzo": {
       "codice": "1",
       "descrizione": "A1",
@@ -27,6 +28,7 @@
     }
   },
   {
+    "id": 2,
     "mezzo": {
       "codice": "2",
       "descrizione": "A2",
@@ -54,6 +56,7 @@
     }
   },
   {
+    "id": 3,
     "mezzo": {
       "codice": "3",
       "descrizione": "A3",
@@ -81,6 +84,7 @@
     }
   },
   {
+    "id": "4",
     "mezzo": {
       "codice": "4",
       "descrizione": "A4",
@@ -108,6 +112,7 @@
     }
   },
   {
+    "id": 5,
     "mezzo": {
       "codice": "5",
       "descrizione": "A5",
@@ -135,6 +140,7 @@
     }
   },
   {
+    "id": 6,
     "mezzo": {
       "codice": "6",
       "descrizione": "A6",
@@ -162,6 +168,7 @@
     }
   },
   {
+    "id": 7,
     "mezzo": {
       "codice": "7",
       "descrizione": "A7",

@@ -1,7 +1,8 @@
 [
   {
+    "id": 1,
     "squadra": {
-      "id":  "1",
+      "id": "1",
       "nome": "Rossa",
       "stato": 3,
       "componenti": [
@@ -45,6 +46,7 @@
     }
   },
   {
+    "id": 2,
     "squadra": {
       "id": "2",
       "nome": "Verde",
@@ -90,8 +92,9 @@
     }
   },
   {
+    "id": 3,
     "squadra": {
-      "id" :  "3",
+      "id": "3",
       "nome": "Arancione",
       "stato": 3,
       "componenti": [
