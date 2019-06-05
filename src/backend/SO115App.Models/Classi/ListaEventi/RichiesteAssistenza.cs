@@ -1,9 +1,7 @@
 ﻿using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.ListaEventi;
-using SO115App.Models.Classi.Navbar;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Models.Classi.ListaEventi
 {
@@ -22,7 +20,7 @@ namespace SO115App.Models.Classi.ListaEventi
         public MezziCoinvolti MezziCoinvolti { get; set; }
         public object SquadreCoinvolte { get; set; }
         public object IstanteChiusura { get; set; }
-        public List<Tipologie> Tipologie { get; set; }
+        public List<Tipologia> Tipologie { get; set; }
         public Localita Localita { get; set; }
         public string Indirizzo { get; set; }
         public object NoteLocalita { get; set; }
