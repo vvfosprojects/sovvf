@@ -2,6 +2,7 @@
   {
     "id": "1",
     "mezzoComposizione": {
+      "idMezzoComposizione": "1",
       "mezzo": {
         "codice": "1",
         "descrizione": "A1",
@@ -30,6 +31,7 @@
     },
     "squadraComposizione": [
       {
+        "idSquadraComposizione": "1",
         "squadra": {
           "id": "1",
           "nome": "Rossa",
@@ -81,6 +83,7 @@
   {
     "id": "2",
     "mezzoComposizione": {
+      "idMezzoComposizione": "2",
       "mezzo": {
         "codice": "2",
         "descrizione": "A2",
@@ -109,6 +112,7 @@
     },
     "squadraComposizione": [
       {
+        "idSquadraComposizione": "2",
         "squadra": {
           "id": "2",
           "nome": "Verde",
@@ -154,6 +158,7 @@
         }
       },
       {
+        "idSquadraComposizione": "3",
         "squadra": {
           "id": "1",
           "nome": "Rossa",
@@ -205,6 +210,7 @@
   {
     "id": "3",
     "mezzoComposizione": {
+      "idMezzoComposizione": "3",
       "mezzo": {
         "codice": "3",
         "descrizione": "A3",
@@ -233,6 +239,7 @@
     },
     "squadraComposizione": [
       {
+        "idSquadraComposizione": "4",
         "squadra": {
           "id": "3",
           "nome": "Arancione",
@@ -278,6 +285,7 @@
         }
       },
       {
+        "idSquadraComposizione": "5",
         "squadra": {
           "id": "2",
           "nome": "Verde",
@@ -329,6 +337,7 @@
   {
     "id": "4",
     "mezzoComposizione": {
+      "idMezzoComposizione": "4",
       "mezzo": {
         "codice": "4",
         "descrizione": "A4",
@@ -357,6 +366,7 @@
     },
     "squadraComposizione": [
       {
+        "idSquadraComposizione": "6",
         "squadra": {
           "id": "2",
           "nome": "Verde",
@@ -408,6 +418,7 @@
   {
     "id": "5",
     "mezzoComposizione": {
+      "idMezzoComposizione": "5",
       "mezzo": {
         "codice": "5",
         "descrizione": "A5",
@@ -436,6 +447,7 @@
     },
     "squadraComposizione": [
       {
+        "idSquadraComposizione": "7",
         "squadra": {
           "id": "2",
           "nome": "Verde",
@@ -481,6 +493,7 @@
         }
       },
       {
+        "idSquadraComposizione": "8",
         "squadra": {
           "nome": "Verde",
           "stato": 3,
@@ -531,6 +544,7 @@
   {
     "id": "6",
     "mezzoComposizione": {
+      "idMezzoComposizione": "6",
       "mezzo": {
         "codice": "6",
         "descrizione": "A6",
@@ -559,6 +573,7 @@
     },
     "squadraComposizione": [
       {
+        "idSquadraComposizione": "9",
         "squadra": {
           "id": "3",
           "nome": "Arancione",
@@ -604,6 +619,7 @@
         }
       },
       {
+        "idSquadraComposizione": "10",
         "squadra": {
           "id": "2",
           "nome": "Verde",
