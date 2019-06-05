@@ -11,6 +11,5 @@ namespace SO115App.API.Models.Classi.Composizione
         public string TempoPercorrenza { get; set; }
         public Coordinate Coordinate { get; set; }
         public DateTime IstanteScadenzaSelezione { get; set; }
-        public string IdOperatore { get; set; }
     }
 }

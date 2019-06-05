@@ -8,9 +8,7 @@ namespace SO115App.API.Models.Classi.Composizione
     public class MezzoPrenotato
     {
         [JsonRequired]
-        public string IdOperatore { get; set; }
-
-        public string NomeOperatore { get; set; }
+        public string IdRichiesta { get; set; }
 
         [JsonRequired]
         public string IdMezzoComposizione { get; set; }

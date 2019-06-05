@@ -29,9 +29,8 @@ namespace SO115App.FakePersistenceJSon.Composizione
             }
 
             mezzi = JsonConvert.DeserializeObject<List<MezzoPrenotato>>(json);
-            mezzo = mezzi.Where(x => x.IdMezzoComposizione.Equals(query.MezzoPrenotato.IdMezzoComposizione)&& x.IdOperatore.Equals(query.MezzoPrenotato.IdOperatore)).FirstOrDefault();
+            mezzo = mezzi.Where(x => x.IdMezzoComposizione.Equals(query.MezzoPrenotato.IdMezzoComposizione)).FirstOrDefault();
             return mezzo;
-
         }
     }
 }
