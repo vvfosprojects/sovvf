@@ -284,9 +284,9 @@
                             <!-- complessità -->
                             <div class="h6">
                                 <i class="guida fa fa-gears fa-fw mr-1" ngbTooltip="Complessità" placement="right"></i>
-                                <a><b>{{ richiesta.complessita.indice }}</b></a>
+                                <a><b>{{ richiesta.complessita?.indice }}</b></a>
                                 <span class="h6 badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">{{
-                                    richiesta.complessita.descrizione }}</span>
+                                    richiesta.complessita?.descrizione }}</span>
                             </div>
                         </div>
 
