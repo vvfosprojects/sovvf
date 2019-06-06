@@ -8,6 +8,10 @@ import { Utente } from './utente.model';
 import { StatoRichiesta } from '../enum/stato-richiesta.enum';
 import { Partenza } from './partenza.model';
 import { AzioneChiamataEnum } from '../enum/azione-chiamata.enum';
+import { TipoTerreno } from './tipo-terreno';
+import { EnteIntervenuto } from './ente-intervenuto';
+import { TurnoInserimentoChiamata } from './turno-inserimento-chiamata';
+import { TurnoIntervento } from './turno-intervento';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -112,9 +116,33 @@ export class SintesiRichiesta {
          */
         public notePrivate?: string,
         /**
-         *
+         * azione della richiesta
          */
-        public azione?: AzioneChiamataEnum
+        public azione?: AzioneChiamataEnum,
+        /**
+         * turno inserimento della chiamata
+         */
+        public turnoInserimentoChiamata?: TurnoInserimentoChiamata,
+        /**
+         * turno dell'intervento
+         */
+        public turnoIntervento?: TurnoIntervento,
+        /**
+         * tipo terreno
+         */
+        public tipoTerreno?: TipoTerreno,
+        /**
+         * lista enti intervenuti
+         */
+        public listaEntiIntervenuti?: EnteIntervenuto[],
+        /**
+         * codice obiettivo rilevante
+         */
+        public codiceObiettivoRilevante?: string,
+        /**
+         * rilevanza st ???
+         */
+        public rilevanzaStArCu?: string
     ) {
     }
 }
