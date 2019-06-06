@@ -1,18 +1,18 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TipologieInterface } from '../../../../shared/interface/tipologie';
 import { RichiestaModificaState } from '../../store/states/richieste/richiesta-modifica.state';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { makeCopy } from '../../../../shared/helper/function';
-import { PatchRichiesta, UpdateRichiesta } from '../../store/actions/richieste/richieste.actions';
+import { PatchRichiesta } from '../../store/actions/richieste/richieste.actions';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { CopyToClipboard } from '../../store/actions/chiamata/clipboard.actions';
 import { NavbarState } from '../../../navbar/store/states/navbar.state';
 import { ClearRichiestaModifica } from '../../store/actions/richieste/richiesta-modifica.actions';
+import { Tipologia } from '../../../../shared/model/tipologia.model';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -26,7 +26,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     };
 
     tipologiaRichiedente: string;
-    @Select(NavbarState.tipologie) tipologie$: Observable<TipologieInterface[]>;
+    @Select(NavbarState.tipologie) tipologie$: Observable<Tipologia[]>;
 
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
     richiestaModifica: SintesiRichiesta;

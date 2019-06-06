@@ -3,7 +3,6 @@ import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
-import { TipologieInterface } from '../../../../shared/interface/tipologie';
 import { SchedaTelefonataInterface } from '../../../../shared/interface/scheda-telefonata.interface';
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
 import { makeCopy, makeID } from '../../../../shared/helper/function';
@@ -23,6 +22,7 @@ import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.mod
 import { Observable } from 'rxjs';
 import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefonata.state';
 import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
+import { Tipologia } from '../../../../shared/model/tipologia.model';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -44,7 +44,7 @@ export class SchedaTelefonataComponent implements OnInit {
 
     AzioneChiamataEnum = AzioneChiamataEnum;
 
-    @Input() tipologie: TipologieInterface[];
+    @Input() tipologie: Tipologia[];
     @Input() operatore: Utente;
 
     nuovaRichiesta: SintesiRichiesta;

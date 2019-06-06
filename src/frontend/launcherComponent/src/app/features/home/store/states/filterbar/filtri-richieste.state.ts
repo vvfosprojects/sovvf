@@ -8,8 +8,8 @@ import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.mode
 import { GetFiltriRichieste, SetFiltroSelezionato, ResetFiltriSelezionati } from '../../actions/filterbar/filtri-richieste.actions';
 
 // Tipologie
-import { TipologieInterface } from 'src/app/shared/interface/tipologie';
 import { NavbarState } from '../../../../navbar/store/states/navbar.state';
+import { Tipologia } from '../../../../../shared/model/tipologia.model';
 
 
 export interface FiltriRichiesteStateModel {
@@ -57,7 +57,7 @@ export class FiltriRichiesteState {
             new VoceFiltro('3', 'Rilevante', 'Rilevante', true),
             new VoceFiltro('4', 'Rilevante', 'Non Rilevante', true)
         ];
-        const tipologie: TipologieInterface[] = this.store.selectSnapshot(NavbarState.tipologie);
+        const tipologie: Tipologia[] = this.store.selectSnapshot(NavbarState.tipologie);
         filtriRichieste.push(...filtriStatici);
         tipologie.forEach(tipologia => {
             filtriRichieste.push(new VoceFiltro('' + tipologia.codice, tipologia.categoria, tipologia.descrizione, tipologia.star));

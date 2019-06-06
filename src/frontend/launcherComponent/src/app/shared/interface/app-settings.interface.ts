@@ -1,7 +1,7 @@
-import { TipologieInterface } from './tipologie';
 import { ListaSedi } from './lista-sedi';
+import { Tipologia } from '../model/tipologia.model';
 
 export interface AppSettings {
-    tipologie: TipologieInterface[];
+    tipologie: Tipologia[];
     listaSedi: ListaSedi;
 }

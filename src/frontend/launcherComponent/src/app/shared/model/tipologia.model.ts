@@ -1,20 +1,34 @@
 /**
  * Modella una tipologia di intervento
  */
+import { TipoLuogoEvento } from './tipo-luogo-evento';
+
 export class Tipologia {
     constructor(
         /**
-         * Codice tipologia
+         * codice tipologia
          */
         public codice: string,
         /**
-         * Descrizione della tipologia
+         * descrizione della tipologia
          */
         public descrizione: string,
         /**
-         * Classe font-awesome
+         * icona font-awesome
          */
-        public icona: string
+        public icona?: string,
+        /**
+         *
+         */
+        public categoria?: string,
+        /**
+         *
+         */
+        public star?: boolean,
+        /**
+         *
+         */
+        public tipoLuogoEvento?: TipoLuogoEvento
     ) {
     }
 }
