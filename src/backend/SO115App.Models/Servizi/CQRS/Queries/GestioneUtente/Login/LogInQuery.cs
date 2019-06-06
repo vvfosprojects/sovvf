@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="BoxMezziQuery.cs" company="CNVVF">
+// <copyright file="LogInQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -22,12 +22,12 @@ using CQRS.Queries;
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
 {
     /// <summary>
-    /// DTO che alimenta il Box Mezzi presente in Home Page
+    ///   DTO che alimenta il Box Mezzi presente in Home Page
     /// </summary>
     public class LogInQuery : IQuery<LogInResult>
     {
         /// <summary>
-        /// Filtra solo i mezzi appartenenti all'unità operativa indicata.
+        ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
         /// </summary>
         /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
         public string Username { get; set; }

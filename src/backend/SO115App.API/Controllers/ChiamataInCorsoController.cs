@@ -1,4 +1,23 @@
-﻿using System.Collections.Generic;
+﻿//-----------------------------------------------------------------------
+// <copyright file="ChiamataInCorsoController.cs" company="CNVVF">
+// Copyright (C) 2017 - CNVVF
+//
+// This file is part of SOVVF.
+// SOVVF is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// SOVVF is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+//-----------------------------------------------------------------------
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Commands;
@@ -13,7 +32,6 @@ using SO115App.Models.Classi.Marker;
 
 namespace SO115App.API.Controllers
 {
-
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
@@ -23,6 +41,7 @@ namespace SO115App.API.Controllers
         ///   Handler del servizio
         /// </summary>
         private readonly ICommandHandler<ChiamataInCorsoMarkerCommand> _Addhandler;
+
         private readonly ICommandHandler<CancellazioneChiamataInCorsoMarkerCommand> _Delhandler;
         private readonly ICommandHandler<UpDateChiamataInCorsoMarkerCommand> _upDatehandler;
         private readonly IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> _listaChiamateInCorsoMarkerhandler;
@@ -61,19 +80,18 @@ namespace SO115App.API.Controllers
                 ListaChiamate = (List<ChiamateInCorso>)this._listaChiamateInCorsoMarkerhandler.Handle(Listaquery).ListaChiamateInCorsoMarker;
                 await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyChiamateInCorsoMarker", ListaChiamate);
 
-            return Ok();
+                return Ok();
             }
             catch
             {
                 return BadRequest();
             };
-
         }
 
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody]ChiamateInCorso chiamata)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var command = new ChiamataInCorsoMarkerCommand()
                 {

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ComposizioneMezziController.cs" company="CNVVF">
+// <copyright file="ComposizionePartenzaAvanzataController.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -50,6 +50,7 @@ namespace SO115App.API.Controllers
         ///   Handler del servizio
         /// </summary>
         private readonly IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> _mezziHandler;
+
         private readonly IQueryHandler<ComposizioneSquadreQuery, ComposizioneSquadreResult> _squadreHandler;
 
         private readonly IHubContext<NotificationHub> _NotificationHub;
@@ -76,7 +77,6 @@ namespace SO115App.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
         {
-
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 
@@ -94,7 +94,6 @@ namespace SO115App.API.Controllers
             {
                 try
                 {
-
                     List<ComposizioneMezzi> composizioneMezzi = new List<ComposizioneMezzi>();
                     composizioneMezzi = _mezziHandler.Handle(mezziQuery).ComposizioneMezzi;
                     await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetComposizioneMezzi", composizioneMezzi);
@@ -124,10 +123,8 @@ namespace SO115App.API.Controllers
                 Filtro = filtro
             };
 
-
             return _mezziHandler.Handle(mezziQuery);
         }
-
 
         [HttpGet("{filtro}")]
         public ComposizioneSquadreResult GetMarkerSquadreFromId(FiltriComposizionePartenza filtro)
@@ -136,7 +133,6 @@ namespace SO115App.API.Controllers
             {
                 Filtro = filtro
             };
-
 
             return _squadreHandler.Handle(squadreQuery);
         }

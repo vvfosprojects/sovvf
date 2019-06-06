@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------
-// <copyright file="SintesiMezziMarkerAuthorizationQueryHandlerDecorator.cs" company="CNVVF">
+// <copyright file="ListaChiamateInCorsoAuthorizationQueryHandlerDecorator.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.

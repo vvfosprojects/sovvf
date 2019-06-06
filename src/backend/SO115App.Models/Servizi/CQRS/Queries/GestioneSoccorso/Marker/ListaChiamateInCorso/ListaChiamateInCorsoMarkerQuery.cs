@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiMezziMarkerQuery.cs" company="CNVVF">
+// <copyright file="ListaChiamateInCorsoMarkerQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -23,10 +23,9 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichies
 namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker
 {
     /// <summary>
-    /// DTO di input
+    ///   DTO di input
     /// </summary>
     public class ListaChiamateInCorsoMarkerQuery : IQuery<ListaChiamateInCorsoMarkerResult>
     {
-       
     }
 }

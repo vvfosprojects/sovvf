@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="EntiIntervenuti.cs" company="CNVVF">
-// Copyright (C) 2019 - CNVVF
+// Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
 // SOVVF is free software: you can redistribute it and/or modify

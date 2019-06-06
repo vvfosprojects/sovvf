@@ -1,4 +1,23 @@
-﻿using CQRS.Queries;
+﻿//-----------------------------------------------------------------------
+// <copyright file="NavbarController.cs" company="CNVVF">
+// Copyright (C) 2017 - CNVVF
+//
+// This file is part of SOVVF.
+// SOVVF is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// SOVVF is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+//-----------------------------------------------------------------------
+using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -20,11 +39,12 @@ namespace SO115App.API.Controllers
         private readonly IQueryHandler<NavbarQuery, NavbarResult> handler;
         private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
+
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public NavbarController(IPrincipal currentUser,IHubContext<NotificationHub> NotificationHubContext,
+        public NavbarController(IPrincipal currentUser, IHubContext<NotificationHub> NotificationHubContext,
             IQueryHandler<NavbarQuery, NavbarResult> handler)
         {
             this.handler = handler;
@@ -40,7 +60,6 @@ namespace SO115App.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 

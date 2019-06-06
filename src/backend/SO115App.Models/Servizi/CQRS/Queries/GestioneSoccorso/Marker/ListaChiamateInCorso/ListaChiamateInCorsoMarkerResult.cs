@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiMezziMarkerResult.cs" company="CNVVF">
+// <copyright file="ListaChiamateInCorsoMarkerResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -24,12 +24,12 @@ using System.Collections.Generic;
 namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker
 {
     /// <summary>
-    /// DTO di output
+    ///   DTO di output
     /// </summary>
     public class ListaChiamateInCorsoMarkerResult
     {
         /// <summary>
-        /// La sintesi delle richieste di assistenza
+        ///   La sintesi delle richieste di assistenza
         /// </summary>
         public IEnumerable<ChiamateInCorso> ListaChiamateInCorsoMarker
         { get; set; }

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="RichiestaAssistenza.cs" company="CNVVF">
+// <copyright file="RichiestaAssistenzaRead.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.

@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------
-// <copyright file="Turno.cs" company="CNVVF">
+// <copyright file="TurnoExtra.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.

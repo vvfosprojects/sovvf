@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ComposizioneMezziQueryHandler.cs" company="CNVVF">
+// <copyright file="MezzoPrenotatoQueryHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -33,6 +33,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             this._iGetMezzoPrenotato = iGetMezzoPrenotato;
         }
+
         /// <summary>
         ///   Query che estrae i valori dei Box presenti in Home Page
         /// </summary>
@@ -41,16 +42,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         public MezzoPrenotatoResult Handle(MezzoPrenotatoQuery query)
         {
             // preparazione del DTO
-            Classi.Composizione.ComposizioneMezzi composizioneMezzi= _iGetMezzoPrenotato.Get(query);
-//            composizioneMezzi = CaricaComposizioneMezzi(query);
+            Classi.Composizione.ComposizioneMezzi composizioneMezzi = _iGetMezzoPrenotato.Get(query);
+            // composizioneMezzi = CaricaComposizioneMezzi(query);
 
-          
             return new MezzoPrenotatoResult()
             {
                 ComposizioneMezzi = composizioneMezzi
             };
         }
-
-      
     }
 }

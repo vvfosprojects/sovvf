@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ComposizioneMezziController.cs" company="CNVVF">
+// <copyright file="PreAccoppiatiController.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -75,7 +75,7 @@ namespace SO115App.API.Controllers
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 
-            var query = new  PreAccoppiatiQuery()
+            var query = new PreAccoppiatiQuery()
             {
                 Filtro = filtri
             };
@@ -107,4 +107,3 @@ namespace SO115App.API.Controllers
         }
     }
 }
-

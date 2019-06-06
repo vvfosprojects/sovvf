@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ComposizioneMezziQuery.cs" company="CNVVF">
+// <copyright file="MezzoPrenotatoQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -29,10 +29,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <summary>
         ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
         /// </summary>
-        /// <remarks>
-        ///   Eventualmente si può filtrare per cercare solo i dati di un singolo Box
-        /// </remarks>
-        /// 
+        /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
         public Classi.Composizione.MezzoPrenotato MezzoPrenotato { get; set; }
     }
 }

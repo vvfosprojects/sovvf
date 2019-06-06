@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="GetUnitaOperativaRadice_OrganigrammaCONRidottoCablato.cs" company="CNVVF">
+// <copyright file="GetUnitaOperativaRadice_CON_Direzioni_ComLazio.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
