@@ -7,6 +7,17 @@ import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
 import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treeview-i18n';
 import { ConfirmModalComponent } from './modal/confirm-modal/confirm-modal.component';
 
+const COMPONENTS = [
+    Shared.DebounceClickDirective,
+    Shared.DebounceKeyUpDirective,
+    Shared.ComponenteComponent,
+    Shared.CompetenzaComponent,
+    Shared.MezzoComponent,
+    Shared.LoaderComponent,
+    Shared.TreeviewComponent,
+    ConfirmModalComponent
+];
+
 @NgModule({
     imports: [
         CommonModule,
@@ -15,23 +26,10 @@ import { ConfirmModalComponent } from './modal/confirm-modal/confirm-modal.compo
         TreeviewModule.forRoot(),
     ],
     declarations: [
-        Shared.DebounceClickDirective,
-        Shared.DebounceKeyUpDirective,
-        Shared.ComponenteComponent,
-        Shared.CompetenzaComponent,
-        Shared.MezzoComponent,
-        Shared.LoaderComponent,
-        Shared.TreeviewComponent,
-        ConfirmModalComponent
+        ...COMPONENTS
     ],
     exports: [
-        Shared.DebounceClickDirective,
-        Shared.DebounceKeyUpDirective,
-        Shared.ComponenteComponent,
-        Shared.CompetenzaComponent,
-        Shared.MezzoComponent,
-        Shared.LoaderComponent,
-        Shared.TreeviewComponent
+        ...COMPONENTS
     ]
 })
 export class SharedModule {
