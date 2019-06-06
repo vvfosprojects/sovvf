@@ -26,6 +26,8 @@ namespace SO115App.CompositionRoot
     {
         internal static void Configure(Container container)
         {
+            PersistenceServicesConfigurator.Configure(container);
+
             container.Register<
                 API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
                 FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
