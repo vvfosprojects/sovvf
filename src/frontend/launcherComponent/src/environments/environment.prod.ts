@@ -36,7 +36,8 @@ export const environment = {
             avanzata: '/api/ComposizionePartenzaAvanzata',
             mezzi: '/api/ComposizioneMezzi',
             squadre: '/api/ComposizioneMezzi',
-            filtri: '/api/Filtri'
+            filtri: '/api/Filtri',
+            mezzoBloccato: '/api/MezzoBloccato'
         },
         chiamata: {
             marker: '/api/ChiamataInCorso',

@@ -37,7 +37,7 @@ export class PreAccoppiatiState {
     @Action(GetPreAccoppiati)
     getPreAccoppiati({ dispatch }: StateContext<PreAccoppiatiStateModel>) {
         this.preAccoppiatiService.getPreAccoppiati().subscribe((p: BoxPartenza[]) => {
-            // dispatch(new SetPreAccoppiati(p));
+            dispatch(new SetPreAccoppiati(p));
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 

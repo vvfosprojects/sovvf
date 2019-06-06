@@ -4,8 +4,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
-// Service
-
 @Component({
     selector: 'app-squadra-composizione',
     templateUrl: './squadra-composizione.component.html',
@@ -14,8 +12,16 @@ import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 export class SquadraComposizioneComponent implements OnInit {
     @Input() squadraComp: SquadraComposizione;
     @Input() richiesta: SintesiRichiesta;
+    @Input() itemSelezionato: boolean;
+    @Input() itemHover: boolean;
+    @Input() itemPrenotato: boolean;
+    @Input() itemBloccato: boolean;
+
     @Output() selezionata = new EventEmitter<SquadraComposizione>();
     @Output() deselezionata = new EventEmitter<SquadraComposizione>();
+    @Output() hoverIn = new EventEmitter<SquadraComposizione>();
+    @Output() hoverOut = new EventEmitter<SquadraComposizione>();
+    @Output() sbloccata = new EventEmitter<SquadraComposizione>();
 
     constructor() {
     }
@@ -23,29 +29,27 @@ export class SquadraComposizioneComponent implements OnInit {
     ngOnInit() {
     }
 
+    onClick() {
+        if (!this.itemSelezionato) {
+            this.selezionata.emit(this.squadraComp);
+        } else {
+            this.deselezionata.emit(this.squadraComp);
+        }
+    }
+
     onHoverIn() {
-        this.squadraComp.hover = true;
+        this.hoverIn.emit(this.squadraComp);
     }
 
     onHoverOut() {
-        this.squadraComp.hover = false;
-    }
-
-    onClick() {
-        if (!this.squadraComp.selezionato) {
-            this.squadraComp.selezionato = true;
-            this.selezionata.emit(this.squadraComp);
-        } else {
-            this.squadraComp.selezionato = false;
-            this.deselezionata.emit(this.squadraComp);
-        }
+        this.hoverOut.emit(this.squadraComp);
     }
 
     liClass() {
         let returnClass = '';
 
-        const hover = this.squadraComp.hover ? 'hover-si' : 'hover-no';
-        const selezionato = this.squadraComp.selezionato ? 'selezionato-si' : 'selezionato-no';
+        const hover = this.itemHover ? 'hover-si' : 'hover-no';
+        const selezionato = this.itemSelezionato ? 'selezionato-si' : 'selezionato-no';
 
         switch (hover + '|' + selezionato) {
             case 'hover-si|selezionato-no':

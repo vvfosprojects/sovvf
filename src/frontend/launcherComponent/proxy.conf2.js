@@ -10,7 +10,8 @@ const PROXY_CONFIG = [
             "/api/UpdateIntervento",
             "/api/ComposizionePartenzaAvanzata",
             "/api/ChiamataInCorso",
-            "/api/ListaEventi"
+            "/api/ListaEventi",
+            "/api/MezzoPrenotato"
         ],
         target: "http://so115.api2.test/",
         secure: false,

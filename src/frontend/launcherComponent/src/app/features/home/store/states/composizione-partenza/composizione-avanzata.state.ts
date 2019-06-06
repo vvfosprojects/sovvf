@@ -32,8 +32,8 @@ export class ComposizioneAvanzataState {
     // SET
     @Action(GetListeCoposizioneAvanzata)
     getListeComposizione({ dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: GetListeCoposizioneAvanzata) {
-        this.squadreService.getListeComposizioneAvanzata(action.filtri).subscribe((res: any) => {
-            console.log('Composizione Partenza Avanzata Service', res);
+        this.squadreService.getListeComposizioneAvanzata(action.filtri).subscribe(() => {
+            // console.log('Composizione Partenza Avanzata Service');
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 }

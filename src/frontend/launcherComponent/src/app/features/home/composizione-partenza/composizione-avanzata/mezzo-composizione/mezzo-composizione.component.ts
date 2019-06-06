@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 // Interface
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
@@ -8,127 +8,57 @@ import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 
-// Service
-import { ToastrService } from 'ngx-toastr';
-
 @Component({
     selector: 'app-mezzo-composizione',
     templateUrl: './mezzo-composizione.component.html',
     styleUrls: ['./mezzo-composizione.component.css']
 })
-export class MezzoComposizioneComponent implements OnInit, OnChanges {
+export class MezzoComposizioneComponent implements OnInit {
     @Input() mezzoComp: MezzoComposizione;
+    @Input() richiesta: SintesiRichiesta;
+    @Input() partenze: BoxPartenza[];
+    @Input() itemSelezionato: boolean;
+    @Input() itemHover: boolean;
+    @Input() itemPrenotato: boolean;
+    @Input() itemBloccato: boolean;
+
     @Output() selezionato = new EventEmitter<MezzoComposizione>();
     @Output() deselezionato = new EventEmitter<MezzoComposizione>();
+    @Output() hoverIn = new EventEmitter<MezzoComposizione>();
+    @Output() hoverOut = new EventEmitter<MezzoComposizione>();
     @Output() sbloccato = new EventEmitter<MezzoComposizione>();
-
-    @Input() richiesta: SintesiRichiesta;
-    @Input() partenzaCorrente: BoxPartenza;
-    @Input() partenze: BoxPartenza[];
-
-    lucchetto: boolean;
 
     // Progress Bar
     @Output() startTimeout = new EventEmitter<MezzoComposizione>();
     @Output() stopTimeout = new EventEmitter<MezzoComposizione>();
-    @Input() lockInterval: any;
-    @Input() progressBar: boolean;
-    @Input() lockTimeout: number;
 
     // Mappa
     @Output() mezzoCoordinate = new EventEmitter<Coordinate>();
 
-    constructor(private toastr: ToastrService) {
+    constructor() {
     }
 
     ngOnInit() {
-        this.setLucchetto();
     }
 
-    ngOnChanges() {
-        this.setLucchetto();
-    }
-
-    // Mezzo
+    // Events
     onClick() {
-        if (!this.mezzoComp.selezionato) {
+        if (!this.itemSelezionato) {
             this.selezionato.emit(this.mezzoComp);
-
-            // progressbar new
-            this.startTimeout.emit(this.mezzoComp);
 
             // mappa
             this.mezzoDirection(this.mezzoComp);
-        } else if (this.mezzoComp.selezionato) {
+        } else if (this.selezionato) {
             this.deselezionato.emit(this.mezzoComp);
-
-            // progressbar new
-            this.stopTimeout.emit(this.mezzoComp);
         }
     }
 
     onHoverIn() {
-        if (!this.mezzoComp.bloccato) {
-            this.mezzoComp.hover = true;
-        }
+        this.hoverIn.emit(this.mezzoComp);
     }
 
     onHoverOut() {
-        if (!this.mezzoComp.bloccato) {
-            this.mezzoComp.hover = false;
-        }
-    }
-
-    validateOnClick() {
-        if (this.partenze.length > 0 && !this.lucchetto) {
-            if (this.isBloccato(this.mezzoComp)) {
-                this.showAlert('Attenzione!', 'Il mezzo selezionato è stato già assegnato ad una partenza', 'warning', 5000);
-                // TEST
-                // console.error('Mezzo bloccato da un\'altra partenza');
-            } else if (this.isMezzoPartenzaBloccato(this.partenzaCorrente)) {
-                this.sbloccaMezzoPartenza();
-                this.onClick();
-            } else {
-                this.onClick();
-            }
-        } else if (!this.lucchetto) {
-            this.onClick();
-        } else if (this.lucchetto) {
-            this.showAlert('Attenzione!', 'Il mezzo selezionato è già assegnato ad un intervento', 'error', 5000);
-        }
-    }
-
-    isBloccato(mezzo: MezzoComposizione): boolean {
-        let returnBool = false;
-
-        /* se almeno una partenza ha il mezzo === mezzoComposizione, ed è bloccato, ritorna true */
-        this.partenze.forEach(p => {
-            if (p.mezzoComposizione && p.mezzoComposizione.bloccato && mezzo === p.mezzoComposizione) {
-                returnBool = true;
-            }
-        });
-
-        return returnBool;
-    }
-
-    isMezzoPartenzaBloccato(partenza: BoxPartenza): boolean {
-        let returnBool = false;
-
-        if (partenza.mezzoComposizione && partenza.mezzoComposizione.bloccato) {
-            returnBool = true;
-        }
-
-        return returnBool;
-    }
-
-    sbloccaMezzoPartenza() {
-        if (this.partenzaCorrente.mezzoComposizione) {
-            const mezzo = this.partenzaCorrente.mezzoComposizione;
-            mezzo.bloccato = false;
-            this.sbloccato.emit(mezzo);
-            // TEST
-            // console.log('Sblocco il mezzo dalla partenza perchè ne ho selezionato un altro');
-        }
+        this.hoverOut.emit(this.mezzoComp);
     }
 
     // Lucchetto
@@ -136,53 +66,39 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         // prevedere sblocco mezzo
     }
 
-    setLucchetto() {
-        switch (this.mezzoComp.mezzo.stato) {
-            case 'sulPosto':
-                this.lucchetto = true;
-                break;
-            case 'inViaggio':
-                this.lucchetto = true;
-                break;
-            default:
-                this.lucchetto = false;
-                break;
-        }
-    }
-
     // NgClass
     liClass() {
         let returnClass = '';
 
-        const hover = this.mezzoComp.hover ? 'hover-si' : 'hover-no';
-        const selezionato = this.mezzoComp.selezionato ? 'selezionato-si' : 'selezionato-no';
-        const bloccato = this.mezzoComp.bloccato ? 'bloccato-si' : 'bloccato-no';
+        const hover = this.itemHover ? 'hover-si' : 'hover-no';
+        const selezionato = this.itemSelezionato ? 'selezionato-si' : 'selezionato-no';
+        const prenotato = this.itemPrenotato ? 'prenotato-si' : 'prenotato-no';
 
-        switch (hover + '|' + selezionato + '|' + bloccato) {
-            case 'hover-si|selezionato-no|bloccato-no':
+        switch (hover + '|' + selezionato + '|' + prenotato) {
+            case 'hover-si|selezionato-no|prenotato-no':
                 returnClass += 'border-warning';
                 break;
-            case 'hover-no|selezionato-si|bloccato-no':
+            case 'hover-no|selezionato-si|prenotato-no':
                 returnClass += 'border-danger diagonal-stripes bg-lightgrey';
                 break;
-            case 'hover-si|selezionato-si|bloccato-no':
+            case 'hover-si|selezionato-si|prenotato-no':
                 returnClass += 'border-danger diagonal-stripes bg-lightgrey';
                 break;
-            case 'hover-no|selezionato-no|bloccato-si':
+            case 'hover-no|selezionato-no|prenotato-si':
                 returnClass += 'diagonal-stripes bg-lightgrey';
                 break;
-            case 'hover-si|selezionato-no|bloccato-si':
+            case 'hover-si|selezionato-no|prenotato-si':
                 returnClass += 'diagonal-stripes bg-lightgrey';
                 break;
-            case 'hover-no|selezionato-si|bloccato-si':
+            case 'hover-no|selezionato-si|prenotato-si':
                 returnClass += 'border-danger diagonal-stripes bg-lightgrey';
                 break;
-            case 'hover-si|selezionato-si|bloccato-si':
+            case 'hover-si|selezionato-si|prenotato-si':
                 returnClass += 'border-danger diagonal-stripes bg-lightgrey';
                 break;
         }
 
-        if (this.lucchetto) {
+        if (this.itemBloccato) {
             switch (this.mezzoComp.mezzo.stato) {
                 case 'inViaggio':
                     returnClass += '  diagonal-stripes bg-lightinfo';
@@ -225,13 +141,6 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         }
 
         return result;
-    }
-
-    // Alert
-    showAlert(title: string, message: string, type: any, duration: number) {
-        this.toastr[type](message, title, {
-            timeOut: duration
-        });
     }
 
     // Mappa

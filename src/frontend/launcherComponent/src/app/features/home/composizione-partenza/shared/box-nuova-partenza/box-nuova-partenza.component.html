@@ -62,7 +62,7 @@
       <i class="fa fa-map-marker mr-2 ml-1"></i>
       <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
     </div>
-    <div *ngIf="alert" class="col text-right">
+    <div *ngIf="alert && boxValidationClass().tooltip && boxValidationClass().result" class="col text-right">
       <i class="mt-1" [ngbTooltip]="boxValidationClass().tooltip" [ngClass]="boxValidationClass().result"></i>
     </div>
   </div>

@@ -24,8 +24,9 @@ import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamat
 import { SetFiltriComposizione } from '../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
 import { InsertChiamataMarker, InsertChiamateMarkers, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import { SetEventiRichiesta } from '../../features/home/store/actions/eventi/eventi-richiesta.actions';
-import { SetListaMezziComposizione } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
+import { AddBookMezzoComposizione, SetListaMezziComposizione } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { SetListaSquadreComposizione } from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
+import { MezzoPrenotatoInterface } from '../../shared/interface/mezzo-prenotato.interface';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -231,6 +232,12 @@ export class SignalRService {
         this.hubNotification.on('NotifyGetPreaccoppiatiComposizione', (data: any) => {
             console.log(data);
             // this.store.dispatch(new SetPreAccoppiati(data));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyMezzoPrenotato', (data: MezzoPrenotatoInterface) => {
+            console.log('[MezzoBloccatoSignalR] Richiesta:', data.idRichiesta);
+            console.log('[MezzoBloccatoSignalR] Mezzo:', data.idMezzoComposizione);
+            this.store.dispatch(new AddBookMezzoComposizione(data.idMezzoComposizione));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
 

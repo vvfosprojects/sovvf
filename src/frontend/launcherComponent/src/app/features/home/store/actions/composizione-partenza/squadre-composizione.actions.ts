@@ -41,3 +41,21 @@ export class UnselectSquadraComposizione {
     constructor(public idSquadra: string) {
     }
 }
+
+export class ClearSelectedSquadreComposizione {
+    static readonly type = '[SquadreComposizione] Clear Selected Squadre Composizione';
+}
+
+export class HoverInSquadraComposizione {
+    static readonly type = '[SquadreComposizione] Hover In Squadra Composizione';
+
+    constructor(public idSquadra: string) {
+    }
+}
+
+export class HoverOutSquadraComposizione {
+    static readonly type = '[SquadreComposizione] Hover Out Squadra Composizione';
+
+    constructor(public idSquadra: string) {
+    }
+}

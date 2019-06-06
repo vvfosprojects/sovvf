@@ -7,9 +7,6 @@ export interface MezzoComposizione {
     km: string;
     coordinate?: Coordinate;
     tempoPercorrenza: string;
-    selezionato: boolean;
-    hover: boolean;
-    bloccato?: boolean;
     dataScadenzaTimeout?: Date;
     timeout?: number;
 }

@@ -17,6 +17,8 @@ import { RichiestaComposizioneState } from '../store/states/composizione-partenz
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
 import { FilterbarComposizioneState } from '../store/states/composizione-partenza/filterbar-composizione.state';
+import { AddBoxPartenza, ClearBoxPartenze } from '../store/actions/composizione-partenza/box-partenza.actions';
+import { ClearSelectedMezziComposizione } from '../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -59,10 +61,10 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState);
         if (this.richiesta) {
-            this.store.dispatch(new GetPreAccoppiati());
             this.store.dispatch(new AllFalseBoxRichieste());
             this.store.dispatch(new AllTrueBoxMezzi());
             this.store.dispatch(new ReducerBoxClick('richieste', wipeStatoRichiesta(this.richiesta.stato)));
+            this.store.dispatch(new AddBoxPartenza());
         } else {
             this.dismissPartenza();
         }
@@ -76,6 +78,8 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     dismissPartenza(): void {
         this.dismissPartenzaSubject.next(true);
+        this.store.dispatch(new ClearSelectedMezziComposizione());
+        this.store.dispatch(new ClearBoxPartenze());
         this.store.dispatch(new ClearMarkerRichiestaSelezionato());
         this.store.dispatch(new GetInitCentroMappa());
         // this.centraMappa();

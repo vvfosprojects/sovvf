@@ -10,19 +10,20 @@ import { Composizione } from '../../../../../shared/enum/composizione.enum';
 })
 export class BoxNuovaPartenzaComponent {
     @Input() partenza: BoxPartenza;
-    @Output() selezionato = new EventEmitter<BoxPartenza>();
-    @Output() deselezionato = new EventEmitter<BoxPartenza>();
-    @Output() eliminato = new EventEmitter<BoxPartenza>();
-
     @Input() richiesta: SintesiRichiesta;
     @Input() compPartenzaMode: Composizione;
+    @Input() itemSelezionato: boolean;
 
     // Options
     @Input() elimina: boolean;
     @Input() alert: boolean;
 
+    @Output() selezionato = new EventEmitter<BoxPartenza>();
+    @Output() deselezionato = new EventEmitter<BoxPartenza>();
+    @Output() eliminato = new EventEmitter<BoxPartenza>();
+
     onClick() {
-        if (!this.partenza.selezionato) {
+        if (!this.itemSelezionato) {
             this.selezionato.emit(this.partenza);
         } else {
             this.deselezionato.emit(this.partenza);
@@ -39,14 +40,13 @@ export class BoxNuovaPartenzaComponent {
         if (this.compPartenzaMode === Composizione.Veloce) {
             /* Se è attiva la modalità rapida */
             returnClass = {
-                'card-shadow': !this.partenza.selezionato,
-                'bg-light border-success card-shadow-success': this.partenza.selezionato
+                'card-shadow': !this.itemSelezionato,
+                'bg-light border-success card-shadow-success': this.itemSelezionato
             };
 
         } else if (this.compPartenzaMode === Composizione.Avanzata) {
             /* Se è attiva la modalità avanzata */
-
-            if (this.partenza.selezionato) {
+            if (this.itemSelezionato) {
                 const squadra = this.partenza.squadraComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
                 const mezzo = this.partenza.mezzoComposizione ? 'mezzo-si' : 'mezzo-no';
 
@@ -57,16 +57,16 @@ export class BoxNuovaPartenzaComponent {
                         returnClass += 'border-danger card-shadow-danger';
                         break;
                     case 'mezzo-no|squadra-no':
-                        returnClass = 'border-danger card-shadow-danger';
+                        returnClass += 'border-danger card-shadow-danger';
                         break;
                     case 'mezzo-si|squadra-si':
-                        returnClass = 'border-success card-shadow-success';
+                        returnClass += 'border-success card-shadow-success';
                         break;
                     case 'mezzo-no|squadra-si':
-                        returnClass = 'border-warning card-shadow-warning';
+                        returnClass += 'border-warning card-shadow-warning';
                         break;
                 }
-            } else if (!this.partenza.selezionato) {
+            } else if (!this.itemSelezionato) {
                 returnClass = 'card-shadow';
             }
         }

@@ -1,23 +1,47 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 
 // Interface
-import { BoxPartenza } from '../interface/box-partenza-interface';
 import { MezzoComposizione } from '../interface/mezzo-composizione-interface';
 import { SquadraComposizione } from '../interface/squadra-composizione-interface';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
-
-// Model
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
+import { ToastrType } from '../../../../shared/enum/toastr';
+
+// Ngxs
 import { Select, Store } from '@ngxs/store';
 import { makeCopy } from '../../../../shared/helper/function';
 import { GetListeCoposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { FilterbarComposizioneState } from '../../store/states/composizione-partenza/filterbar-composizione.state';
 import { MezziComposizioneState } from '../../store/states/composizione-partenza/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../store/states/composizione-partenza/squadre-composizione.state';
+import {
+    AddBookMezzoComposizione,
+    HoverInMezzoComposizione,
+    HoverOutMezzoComposizione,
+    SelectMezzoComposizione,
+    UnselectMezzoComposizione
+} from '../../store/actions/composizione-partenza/mezzi-composizione.actions';
+import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
+import { BoxPartenza } from '../interface/box-partenza-interface';
+import {
+    AddBoxPartenza,
+    AddMezzoBoxPartenza,
+    AddSquadraBoxPartenza,
+    RemoveBoxPartenza,
+    RemoveMezzoBoxPartenza, RemoveSquadraBoxPartenza,
+    SelectBoxPartenza
+} from '../../store/actions/composizione-partenza/box-partenza.actions';
+import {
+    HoverInSquadraComposizione,
+    HoverOutSquadraComposizione,
+    SelectSquadraComposizione,
+    UnselectSquadraComposizione
+} from '../../store/actions/composizione-partenza/squadre-composizione.actions';
+import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -28,27 +52,38 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     @Input() richiesta: SintesiRichiesta;
 
+    // Mezzi Composizione
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
     mezziComposizione: MezzoComposizione[];
+    @Select(MezziComposizioneState.idMezzoSelezionato) idMezzoSelezionato$: Observable<string>;
+    idMezzoSelezionato: string;
+    @Select(MezziComposizioneState.idMezziPrenotati) idMezziPrenotati$: Observable<string[]>;
+    idMezziPrenotati: string[];
+    @Select(MezziComposizioneState.idMezziBloccati) idMezziBloccati$: Observable<string[]>;
+    idMezziBloccati: string[];
+    @Select(MezziComposizioneState.idMezzoHover) idMezzoHover$: Observable<string>;
+    idMezzoHover: string;
 
+    // Squadre Composizione
     @Select(SquadreComposizioneState.squadreComposizione) squadraComposizione$: Observable<SquadraComposizione[]>;
     squadreComposizione: SquadraComposizione[];
+    @Select(SquadreComposizioneState.idSquadreSelezionate) idSquadreSelezionate$: Observable<string[]>;
+    idSquadreSelezionate: Array<string>;
+    @Select(SquadreComposizioneState.idSquadraHover) idSquadraHover$: Observable<string>;
+    idSquadraHover: string;
 
-    @Select(FilterbarComposizioneState.filtriSelezionati) filtriSelezionati$: Observable<SquadraComposizione[]>;
+    // Filtri Composizione
+    @Select(FilterbarComposizioneState.filtriSelezionati) filtriSelezionati$: Observable<any>;
     filtriSelezionati: any;
 
-    interval = [];
-    subscription = new Subscription();
+    // BoxPartenza Composizione
+    @Select(BoxPartenzaState.boxPartenzaList) boxPartenzaList$: Observable<BoxPartenza[]>;
+    boxPartenzaList: BoxPartenza[];
+    @Select(BoxPartenzaState.idBoxPartenzaSelezionato) idBoxPartenzaSelezionato$: Observable<string>;
+    idBoxPartenzaSelezionato: string;
 
-    // Partenza
-    partenzaCorrente: BoxPartenza;
-    idPartenzaCorrente: string;
-    indexPartenzaCorrente: number;
-    buttonConferma = false;
-    partenze: BoxPartenza[] = [];
-
-    // Enum
     Composizione = Composizione;
+    subscription = new Subscription();
 
     @Input() dismissEvents: Observable<boolean>;
     @Output() centraMappa = new EventEmitter();
@@ -65,11 +100,42 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.tooltipConfig.container = 'body';
         this.tooltipConfig.placement = 'top';
 
+        // Richiedo la lista di mezzi e squadre
+        this.updateListe();
+
         // Prendo i mezzi da visualizzare nella lista
         this.subscription.add(
             this.mezziComposizione$.subscribe((mezziComp: MezzoComposizione[]) => {
                 this.mezziComposizione = makeCopy(mezziComp);
-                console.log(this.mezziComposizione);
+                // console.log(this.mezziComposizione);
+            })
+        );
+        // Prendo il mezzo selezionato
+        this.subscription.add(
+            this.idMezzoSelezionato$.subscribe((idMezzo: string) => {
+                this.idMezzoSelezionato = idMezzo;
+                // console.log(idMezzo);
+            })
+        );
+        // Prendo i mezzi prenotati
+        this.subscription.add(
+            this.idMezziPrenotati$.subscribe((idMezzi: string[]) => {
+                this.idMezziPrenotati = idMezzi;
+                // console.log(idMezzi);
+            })
+        );
+        // Prendo il mezzo hover
+        this.subscription.add(
+            this.idMezzoHover$.subscribe((idMezzo: string) => {
+                this.idMezzoHover = idMezzo;
+                // console.log(idMezzo);
+            })
+        );
+        // Prendo il mezzo bloccato
+        this.subscription.add(
+            this.idMezziBloccati$.subscribe((idMezzi: string[]) => {
+                this.idMezziBloccati = idMezzi;
+                // console.log(idMezzo);
             })
         );
 
@@ -77,7 +143,21 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.subscription.add(
             this.squadraComposizione$.subscribe((squadreComp: SquadraComposizione[]) => {
                 this.squadreComposizione = makeCopy(squadreComp);
-                console.log(this.squadreComposizione);
+                // console.log(this.squadreComposizione);
+            })
+        );
+        // Prendo la squadra selezionata
+        this.subscription.add(
+            this.idSquadreSelezionate$.subscribe((idSquadre: string[]) => {
+                this.idSquadreSelezionate = idSquadre;
+                // console.log(idSquadre);
+            })
+        );
+        // Prendo la squadra hover
+        this.subscription.add(
+            this.idSquadraHover$.subscribe((idSquadra: string) => {
+                this.idSquadraHover = idSquadra;
+                // console.log(idSquadra);
             })
         );
 
@@ -85,23 +165,33 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.subscription.add(
             this.filtriSelezionati$.subscribe((filtriSelezionati: any) => {
                 this.filtriSelezionati = makeCopy(filtriSelezionati);
-                console.log(this.filtriSelezionati);
+                // console.log(this.filtriSelezionati);
+            })
+        );
+
+        // Prendo i box partenza
+        this.subscription.add(
+            this.boxPartenzaList$.subscribe((boxPartenza: BoxPartenza[]) => {
+                this.boxPartenzaList = boxPartenza;
+                // console.log(boxPartenza);
+            })
+        );
+        // Prendo il box partenza selezionato
+        this.subscription.add(
+            this.idBoxPartenzaSelezionato$.subscribe((idBoxPartenza: string) => {
+                this.idBoxPartenzaSelezionato = idBoxPartenza;
+                // console.log(idBoxPartenza);
             })
         );
     }
 
     ngOnInit() {
-        this.updateListe();
         this.subscription.add(this.dismissEvents.subscribe(
             events => this.annullaPartenza(events)
         ));
-        this.deselezionaMezziComposizione();
-        this.deselezionaSquadreComposizione();
-        this.stopTimeoutAll();
     }
 
     ngOnChanges() {
-        this.buttonConferma = this.validaBoxPartenze();
     }
 
     ngOnDestroy(): void {
@@ -110,362 +200,116 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     updateListe() {
         const filtri = {
-            'CodiceDistaccamento': this.filtriSelezionati.CodiceDistaccamento,
-            'CodiceTipoMezzo': this.filtriSelezionati.CodiceTipoMezzo,
-            'CodiceStatoMezzo': this.filtriSelezionati.CodiceStatoMezzo,
+            'CodiceDistaccamento': this.filtriSelezionati ? this.filtriSelezionati.CodiceDistaccamento : [],
+            'CodiceTipoMezzo': this.filtriSelezionati ? this.filtriSelezionati.CodiceTipoMezzo : [],
+            'CodiceStatoMezzo': this.filtriSelezionati ? this.filtriSelezionati.CodiceStatoMezzo : [],
             'CodiceMezzo': [],
-            'CodiceSquadra': []
+            'CodiceSquadra': [],
         };
 
+        if (this.idMezzoSelezionato) {
+            const CodiceMezzo = [];
+            CodiceMezzo.push(this.idMezzoSelezionato);
+            filtri.CodiceMezzo = CodiceMezzo;
+        }
+
+        if (this.idSquadreSelezionate) {
+            filtri.CodiceMezzo = this.idSquadreSelezionate;
+        }
+
+        console.log('Oggetto "Filtri" per prendere aggiornare le liste', filtri);
         this.store.dispatch(new GetListeCoposizioneAvanzata(filtri));
     }
 
-    // Metodi richiamati dagli eventi di output
-    validateMezzoSelezionato(mezzo: MezzoComposizione) {
-        if (!this.partenzaCorrente) {
-            this.mezzoSelezionato(mezzo);
-        } else if (this.partenzaCorrente && this.partenzaCorrente.mezzoComposizione !== null) {
-            this.deselezionaMezziComposizioneExceptOne(this.partenzaCorrente.mezzoComposizione);
-            // TEST
-            // console.error('Non puoi, devi prima sbloccare il mezzo');
+    mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
+        if (this.boxPartenzaList.length <= 0) {
+            this.store.dispatch(new AddBoxPartenza());
         }
-    }
-
-    mezzoSelezionato(mezzo: MezzoComposizione) {
-        // Imposto il mezzo per la partenza attuale
-        this.setMezzo(mezzo);
-    }
-
-    mezzoDeselezionato(mezzo: MezzoComposizione) {
-        // Unsetto il mezzo per la partenza attuale
-        this.unsetMezzo(mezzo);
-
-        // Interazione con Mappa
-        this.annullaPartenza(true);
-        this.centraMappa.emit();
-    }
-
-    squadraSelezionata(squadra: SquadraComposizione) {
-        // Setto la squadra per la partenza attuale
-        this.setSquadra(squadra);
-    }
-
-    squadraDeselezionata(squadra: SquadraComposizione) {
-        // Unsetto la squadra per la partenza attuale
-        this.unsetSquadra(squadra);
-    }
-
-    boxPartenzaSelezionato(partenza: BoxPartenza) {
-        this.selezionaBoxPartenza(partenza);
-    }
-
-    // Partenza
-    initPartenzaVuota() {
-        this.partenze.push({ id: this.generateUniqueId(), squadraComposizione: [], mezzoComposizione: null, selezionato: true, hover: false });
-        const length = this.partenze.length;
-        this.idPartenzaCorrente = this.partenze[length - 1].id;
-        this.setPartenzaAttuale(this.idPartenzaCorrente);
-        // TEST
-        // console.log('Partenze', this.partenze);
-        // console.log('Id Partenza Corrente:', this.idPartenzaCorrente);
-        // console.log('Index Partenza Corrente:', this.indexPartenzaCorrente);
-    }
-
-    nuovaPartenza(noValidate?: boolean) {
-        if (!noValidate && this.partenzaCorrente) {
-            if (this.validaBoxPartenza(this.partenzaCorrente)) {
-                this.bloccaMezzo(this.partenzaCorrente.mezzoComposizione);
-                this.deselezionaBoxPartenza(this.partenzaCorrente);
-                this.initPartenzaVuota();
-            } else {
-                console.error('[CompA] BoxPartenza non valido');
-            }
+        if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) === -1) {
+            this.store.dispatch(new SelectMezzoComposizione(mezzoComposizione.id));
+            this.store.dispatch(new AddMezzoBoxPartenza(mezzoComposizione));
+            this.updateListe();
         } else {
-            this.initPartenzaVuota();
+            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza'));
         }
+        // console.log('Mezzo selezionato', mezzoComposizione);
     }
 
-    setPartenzaAttuale(idPartenzaCorrente: string) {
-        if (this.partenze.length > 0) {
-            this.partenze.forEach((p, index) => {
-                if (p.id === idPartenzaCorrente) {
-                    this.indexPartenzaCorrente = index;
-                }
-            });
-            this.partenzaCorrente = this.partenze[this.indexPartenzaCorrente];
+    mezzoDeselezionato(mezzoComposizione: MezzoComposizione) {
+        this.store.dispatch(new UnselectMezzoComposizione(mezzoComposizione.id));
+        this.store.dispatch(new RemoveMezzoBoxPartenza(mezzoComposizione.id));
+        this.clearDirection.emit();
+        // console.log('Mezzo deselezionato', mezzoComposizione);
+    }
+
+    mezzoHoverIn(mezzoComposizione: MezzoComposizione) {
+        this.store.dispatch(new HoverInMezzoComposizione(mezzoComposizione.id));
+    }
+
+    mezzoHoverOut(mezzoComposizione: MezzoComposizione) {
+        this.store.dispatch(new HoverOutMezzoComposizione(mezzoComposizione.id));
+    }
+
+    squadraSelezionata(squadraComposizione: SquadraComposizione) {
+        if (this.boxPartenzaList.length <= 0) {
+            this.store.dispatch(new AddBoxPartenza());
         }
+        this.store.dispatch(new SelectSquadraComposizione(squadraComposizione.id));
+        this.store.dispatch(new AddSquadraBoxPartenza(squadraComposizione));
+        // console.log('Squadra selezionata', squadraComposizione);
     }
 
-    unsetPartenzaAttuale() {
-        this.partenzaCorrente = null;
+    squadraDeselezionata(squadraComposizione: SquadraComposizione) {
+        this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione.id));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
+        this.clearDirection.emit();
+        // console.log('Squadra deselezionata', squadraComposizione);
     }
 
-    // Mezzo
-    setMezzo(mezzo: MezzoComposizione) {
-        if (this.partenzaCorrente) {
-            this.partenzaCorrente.mezzoComposizione = mezzo;
-            this.deselezionaMezziComposizioneExceptOne(mezzo);
-            mezzo.selezionato = true;
-        } else {
-            this.initPartenzaVuota();
-            this.setMezzo(mezzo);
-        }
-        // TEST
-        // console.log('[CompA] Mezzo settato, partenza', this.partenzaCorrente);
+    squadraHoverIn(squadraComposizione: SquadraComposizione) {
+        this.store.dispatch(new HoverInSquadraComposizione(squadraComposizione.id));
     }
 
-    unsetMezzo(mezzo: MezzoComposizione) {
-        if (this.partenzaCorrente) {
-            this.partenzaCorrente.mezzoComposizione = null;
-            mezzo.selezionato = false;
-
-            // Timeout
-            this.stopTimeout(mezzo, false);
-        } else {
-            console.error('[CompA] Non posso eliminare il mezzo se non esiste la partenza');
-        }
-        // TEST
-        // console.log('[CompA] Mezzo unsettato, partenza', this.partenzaCorrente);
+    squadraHoverOut(squadraComposizione: SquadraComposizione) {
+        this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.id));
     }
 
-    deselezionaMezziComposizione() {
-        this.mezziComposizione.forEach(mC => {
-            mC.selezionato = false;
-        });
-    }
-
-    deselezionaMezziComposizioneExceptOne(mezzo: MezzoComposizione) {
-        this.mezziComposizione.forEach(mC => {
-            if (mezzo !== mC) {
-                mC.selezionato = false;
+    checkSquadraSelezione(idSquadra: string) {
+        let selected = false;
+        this.idSquadreSelezionate.forEach((id: string) => {
+            if (id === idSquadra) {
+                selected = true;
             }
         });
+        return selected;
     }
 
-    selezionaMezzoComposizione(partenza: BoxPartenza) {
-        this.deselezionaMezziComposizione();
-        if (partenza.mezzoComposizione) {
-            partenza.mezzoComposizione.selezionato = true;
-        }
+    boxPartenzaSelezionato(boxPartenza: BoxPartenza) {
+        this.store.dispatch(new SelectBoxPartenza(boxPartenza.id));
     }
 
-    bloccaMezzo(mezzo: MezzoComposizione) {
-        this.mezziComposizione.forEach(mC => {
-            if (mezzo === mC) {
-                mC.bloccato = true;
+    getBoxPartenzaAttuale(idBoxPartenza: string): BoxPartenza {
+        let returnBox: BoxPartenza;
+        returnBox = null;
+        this.boxPartenzaList.forEach((box: BoxPartenza) => {
+            if (idBoxPartenza === box.id) {
+                returnBox = box;
             }
         });
-        console.log('Mezzo bloccato', mezzo);
+        return returnBox;
     }
 
-    sbloccaMezzo(mezzo: MezzoComposizione) {
-        this.mezziComposizione.forEach(mC => {
-            if (mezzo === mC) {
-                mC = mezzo;
-            }
-        });
-        console.log('Mezzo sbloccato', mezzo);
+    nuovaPartenza() {
+        this.store.dispatch(new AddBoxPartenza());
     }
 
-    sbloccaMezzoByPartenza(partenza: BoxPartenza) {
-        partenza.mezzoComposizione.bloccato = false;
-        console.log('Box partenza eliminato, mezzo relativo alla partenza sbloccato', partenza);
-    }
-
-    deselezionaMezziByPartenza(partenza: BoxPartenza) {
-        if (partenza) {
-            this.sbloccaMezzoByPartenza(partenza);
-            partenza.mezzoComposizione.selezionato = false;
-            partenza.mezzoComposizione = null;
-        }
-    }
-
-    // Squadra
-    setSquadra(squadra: SquadraComposizione) {
-        if (this.partenzaCorrente) {
-            this.partenzaCorrente.squadraComposizione.push(squadra);
-        } else {
-            this.initPartenzaVuota();
-            this.setSquadra(squadra);
-        }
-        // TEST
-        // console.log('[CompA] Squadra settata, partenza', this.partenzaCorrente);
-    }
-
-    unsetSquadra(squadra: SquadraComposizione) {
-        if (this.partenzaCorrente) {
-            this.partenzaCorrente.squadraComposizione.forEach((s: SquadraComposizione, index) => {
-                s === squadra && this.partenzaCorrente.squadraComposizione.splice(index, 1);
-            });
-        }
-        // TEST
-        // console.log('[CompA] Squadra unsettata, partenza', this.partenzaCorrente);
-    }
-
-    selezionaSquadrePartenza(partenza: BoxPartenza) {
-        this.deselezionaSquadreComposizione();
-        partenza.squadraComposizione.forEach(s => {
-            s.selezionato = true;
-        });
-    }
-
-    deselezionaSquadreComposizione() {
-        this.squadreComposizione.forEach(sC => {
-            sC.selezionato = false;
-        });
-    }
-
-    // Box Partenza
-    selezionaBoxPartenza(partenza: BoxPartenza, noValidate?: boolean) {
-        if (!noValidate && this.partenzaCorrente) {
-            if (this.validaBoxPartenza(this.partenzaCorrente)) {
-                this.deselezionaBoxPartenza(this.partenzaCorrente);
-                this.bloccaMezzo(this.partenzaCorrente.mezzoComposizione);
-            } else {
-                this.eliminaBoxPartenza(this.partenzaCorrente);
-            }
-        }
-        if (this.partenze.length > 0) {
-            /* this.bloccaMezzo(this.partenzaCorrente.mezzoComposizione); */
-            partenza.selezionato = true;
-            this.idPartenzaCorrente = partenza.id;
-            this.setPartenzaAttuale(this.idPartenzaCorrente);
-            this.selezionaSquadrePartenza(this.partenzaCorrente);
-            this.selezionaMezzoComposizione(this.partenzaCorrente);
-            // console.log('Partenza corrente', this.partenzaCorrente);
-        }
-    }
-
-    deselezionaBoxPartenza(partenza: BoxPartenza) {
-        if (partenza) {
-            partenza.selezionato = false;
-        }
-        this.deselezionaMezziComposizione();
-        this.deselezionaSquadreComposizione();
-    }
-
-    eliminaBoxPartenza(partenza: BoxPartenza) {
-        if (this.partenzaCorrente) {
-            this.bloccaMezzo(this.partenzaCorrente.mezzoComposizione);
-        }
-        if (this.partenze.length > 0) {
-            if (partenza.mezzoComposizione) {
-                this.sbloccaMezzoByPartenza(partenza);
-                this.stopTimeout(partenza.mezzoComposizione, false);
-            }
-            this.partenze.forEach((p, index) => {
-                if (partenza === p) {
-                    this.partenze.splice(index, 1);
-                }
-            });
-            this.deselezionaMezziComposizione();
-            this.deselezionaSquadreComposizione();
-            if (this.partenze[this.partenze.length - 1]) {
-                this.deselezionaBoxPartenza(this.partenzaCorrente);
-                this.selezionaBoxPartenza(this.partenze[this.partenze.length - 1], true);
-            } else {
-                this.partenzaCorrente = null;
-            }
-        }
-
-        // Interazione con Mappa
-        this.annullaPartenza(true);
-        this.centraMappa.emit();
-    }
-
-
-    validaBoxPartenza(partenza: BoxPartenza) {
-        if ((partenza.mezzoComposizione && partenza.squadraComposizione.length > 0) || (!partenza.mezzoComposizione && partenza.squadraComposizione.length > 0)) {
-            return true;
-        }
-    }
-
-    validaBoxPartenze(): boolean {
-        let result = false;
-        if (this.partenze.length > 0) {
-            const partenzeLength = this.partenze.length;
-            let partenzeValidate = 0;
-
-            this.partenze.forEach(p => {
-                if (this.validaBoxPartenza(p)) {
-                    partenzeValidate += 1;
-
-                    if (partenzeValidate === partenzeLength) {
-                        result = true;
-                    }
-                }
-            });
-        }
-        return result;
-    }
-
-    searchPartenzaByMezzo(mezzo: MezzoComposizione) {
-        let partenza: BoxPartenza = null;
-        this.partenze.forEach(p => {
-            if (p.mezzoComposizione === mezzo) {
-                partenza = p;
-            }
-        });
-        return partenza;
+    eliminaBoxPartenza(boxPartenza: BoxPartenza) {
+        this.store.dispatch(new RemoveBoxPartenza(boxPartenza.id));
     }
 
     // Id Maker
     generateUniqueId(): string {
         return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    }
-
-    // Progress bar
-    startTimeout(mezzo: MezzoComposizione) {
-        this.stopTimeoutAllExceptOne(mezzo);
-        if (mezzo.selezionato) {
-            const maxProgressBar = 300;
-            const minutesToAdd = 1;
-            const now = new Date;
-            mezzo.dataScadenzaTimeout = addMinutes(new Date, minutesToAdd);
-            // mezzo.dataScadenzaTimeout = dataScadenza;
-            mezzo.timeout = (mezzo.dataScadenzaTimeout.getMinutes() - now.getMinutes()) * maxProgressBar;
-
-            this.interval[mezzo.id] = setInterval(() => {
-                mezzo.timeout -= .3;
-
-                if (mezzo.timeout <= 0) {
-                    this.stopTimeout(mezzo, true);
-                }
-            }, 300);
-            // TEST
-            // console.log('Data Scadenza', dataScadenza);
-            // console.log('Timeout', mezzo.timeout);
-        }
-
-        function addMinutes(date: any, minutes: any) {
-            return new Date(date.getTime() + minutes * 60000);
-        }
-    }
-
-    stopTimeout(mezzo: MezzoComposizione, deseleziona: boolean) {
-        mezzo.dataScadenzaTimeout = null;
-        mezzo.timeout = null;
-        this.interval[mezzo.id] ? clearInterval(this.interval[mezzo.id]) : console.log('Interval[' + mezzo.id + '] non presente');
-
-        if (deseleziona) {
-            const partenzaTrovata = this.searchPartenzaByMezzo(mezzo);
-            this.deselezionaMezziByPartenza(partenzaTrovata);
-        }
-    }
-
-    stopTimeoutAll() {
-        this.mezziComposizione.forEach(mC => {
-            this.stopTimeout(mC, true);
-        });
-    }
-
-    stopTimeoutAllExceptOne(mezzo: MezzoComposizione) {
-        this.mezziComposizione.forEach(mC => {
-            if (mC !== mezzo && mC.timeout && !mC.bloccato) {
-                this.stopTimeout(mC, true);
-            }
-        });
-        this.mezzoSelezionato(mezzo);
     }
 
     // Interazione con Mappa

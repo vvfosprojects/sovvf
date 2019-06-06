@@ -8,8 +8,9 @@ import { SquadraComposizione } from 'src/app/features/home/composizione-partenza
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
 import { Store } from '@ngxs/store';
 import { SetPreAccoppiati } from '../../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
-import { SetListaMezziComposizione } from '../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
+import { AddBookMezzoComposizione, SetListaMezziComposizione } from '../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { SetListaSquadreComposizione } from '../../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
+import { MezzoPrenotatoInterface } from '../../../shared/interface/mezzo-prenotato.interface';
 
 
 @Injectable()
@@ -50,9 +51,7 @@ export class CompPartenzaServiceFake {
                     coordinate: {
                         latitudine: 41.8311007,
                         longitudine: 12.4686518
-                    },
-                    selezionato: false,
-                    hover: false
+                    }
                 },
                 squadraComposizione: [
                     {
@@ -74,13 +73,9 @@ export class CompPartenzaServiceFake {
                                 regione: 'Lazio',
                                 provincia: 'Roma'
                             }
-                        },
-                        selezionato: false,
-                        hover: false
+                        }
                     }
-                ],
-                selezionato: false,
-                hover: false
+                ]
             },
             {
                 id: '2',
@@ -107,9 +102,7 @@ export class CompPartenzaServiceFake {
                     coordinate: {
                         latitudine: 41.82699,
                         longitudine: 12.4879854,
-                    },
-                    selezionato: false,
-                    hover: false
+                    }
                 },
                 squadraComposizione: [
                     {
@@ -131,9 +124,7 @@ export class CompPartenzaServiceFake {
                                 regione: 'Lazio',
                                 provincia: 'Roma'
                             }
-                        },
-                        selezionato: false,
-                        hover: false
+                        }
                     },
                     {
                         id: '2',
@@ -154,13 +145,9 @@ export class CompPartenzaServiceFake {
                                 regione: 'Lazio',
                                 provincia: 'Roma'
                             }
-                        },
-                        selezionato: false,
-                        hover: false
+                        }
                     },
-                ],
-                selezionato: false,
-                hover: false
+                ]
             },
             {
                 id: '3',
@@ -187,9 +174,7 @@ export class CompPartenzaServiceFake {
                     coordinate: {
                         latitudine: 41.8311007,
                         longitudine: 12.4686518
-                    },
-                    selezionato: false,
-                    hover: false
+                    }
                 },
                 squadraComposizione: [
                     {
@@ -211,9 +196,7 @@ export class CompPartenzaServiceFake {
                                 regione: 'Lazio',
                                 provincia: 'Roma'
                             }
-                        },
-                        selezionato: false,
-                        hover: false
+                        }
                     },
                     {
                         id: '2',
@@ -234,13 +217,9 @@ export class CompPartenzaServiceFake {
                                 regione: 'Lazio',
                                 provincia: 'Roma'
                             }
-                        },
-                        selezionato: false,
-                        hover: false
+                        }
                     },
-                ],
-                selezionato: false,
-                hover: false
+                ]
             },
             {
                 id: '4',
@@ -267,9 +246,7 @@ export class CompPartenzaServiceFake {
                     coordinate: {
                         latitudine: 41.8311007,
                         longitudine: 12.4686518
-                    },
-                    selezionato: false,
-                    hover: false
+                    }
                 },
                 squadraComposizione: [
                     {
@@ -291,13 +268,9 @@ export class CompPartenzaServiceFake {
                                 regione: 'Lazio',
                                 provincia: 'Roma'
                             }
-                        },
-                        selezionato: false,
-                        hover: false
+                        }
                     }
-                ],
-                selezionato: false,
-                hover: false
+                ]
             },
             {
                 id: '5',
@@ -324,9 +297,7 @@ export class CompPartenzaServiceFake {
                     coordinate: {
                         latitudine: 41.82699,
                         longitudine: 12.4879854,
-                    },
-                    selezionato: false,
-                    hover: false
+                    }
                 },
                 squadraComposizione: [
                     {
@@ -348,9 +319,7 @@ export class CompPartenzaServiceFake {
                                 regione: 'Lazio',
                                 provincia: 'Roma'
                             }
-                        },
-                        selezionato: false,
-                        hover: false
+                        }
                     },
                     {
                         id: '2',
@@ -371,16 +340,13 @@ export class CompPartenzaServiceFake {
                                 regione: 'Lazio',
                                 provincia: 'Roma'
                             }
-                        },
-                        selezionato: false,
-                        hover: false
+                        }
                     },
-                ],
-                selezionato: false,
-                hover: false
+                ]
             },
             {
                 id: '6',
+                mezzoComposizione: null,
                 squadraComposizione: [
                     {
                         id: '1',
@@ -401,9 +367,7 @@ export class CompPartenzaServiceFake {
                                 regione: 'Lazio',
                                 provincia: 'Roma'
                             }
-                        },
-                        selezionato: false,
-                        hover: false
+                        }
                     },
                     {
                         id: '2',
@@ -424,17 +388,15 @@ export class CompPartenzaServiceFake {
                                 regione: 'Lazio',
                                 provincia: 'Roma'
                             }
-                        },
-                        selezionato: false,
-                        hover: false
+                        }
                     },
-                ],
-                selezionato: false,
-                hover: false
-            },
+                ]
+            }
         ];
 
-        this.store.dispatch(new SetPreAccoppiati(this.preAccoppiati));
+        setTimeout(() => {
+            this.store.dispatch(new SetPreAccoppiati(this.preAccoppiati));
+        }, 2000);
 
         return of();
     }
@@ -464,9 +426,7 @@ export class CompPartenzaServiceFake {
                 coordinate: {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
-                },
-                selezionato: false,
-                hover: false
+                }
             },
             {
                 id: '2',
@@ -491,9 +451,7 @@ export class CompPartenzaServiceFake {
                 coordinate: {
                     latitudine: 41.82699,
                     longitudine: 12.4879854,
-                },
-                selezionato: false,
-                hover: false
+                }
             },
             {
                 id: '3',
@@ -518,9 +476,7 @@ export class CompPartenzaServiceFake {
                 coordinate: {
                     latitudine: 41.8531486,
                     longitudine: 12.5418702
-                },
-                selezionato: false,
-                hover: false
+                }
             },
             {
                 id: '4',
@@ -545,9 +501,7 @@ export class CompPartenzaServiceFake {
                 coordinate: {
                     latitudine: 41.8935662,
                     longitudine: 12.5417044
-                },
-                selezionato: false,
-                hover: false
+                }
             },
             {
                 id: '5',
@@ -572,9 +526,7 @@ export class CompPartenzaServiceFake {
                 coordinate: {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
-                },
-                selezionato: false,
-                hover: false
+                }
             },
             {
                 id: '6',
@@ -599,9 +551,7 @@ export class CompPartenzaServiceFake {
                 coordinate: {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
-                },
-                selezionato: false,
-                hover: false
+                }
             },
             {
                 id: '7',
@@ -626,9 +576,7 @@ export class CompPartenzaServiceFake {
                 coordinate: {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
-                },
-                selezionato: false,
-                hover: false
+                }
             },
         ];
         this.squadre = [
@@ -651,9 +599,7 @@ export class CompPartenzaServiceFake {
                         regione: 'Lazio',
                         provincia: 'Roma'
                     }
-                },
-                selezionato: false,
-                hover: false
+                }
             },
             {
                 id: '2',
@@ -674,9 +620,7 @@ export class CompPartenzaServiceFake {
                         regione: 'Lazio',
                         provincia: 'Roma'
                     }
-                },
-                selezionato: false,
-                hover: false
+                }
             },
             {
                 id: '3',
@@ -697,9 +641,7 @@ export class CompPartenzaServiceFake {
                         regione: 'Lazio',
                         provincia: 'Roma'
                     }
-                },
-                selezionato: false,
-                hover: false
+                }
             },
         ];
 
@@ -707,6 +649,14 @@ export class CompPartenzaServiceFake {
             this.store.dispatch(new SetListaMezziComposizione(this.mezzi));
             this.store.dispatch(new SetListaSquadreComposizione(this.squadre));
         }, 2000);
+
+        return of();
+    }
+
+    setMezzoPrenotato(mezzoPrenotatoObj: MezzoPrenotatoInterface) {
+        setTimeout(() => {
+            this.store.dispatch(new AddBookMezzoComposizione(mezzoPrenotatoObj.idMezzoComposizione));
+        }, 1000);
 
         return of();
     }

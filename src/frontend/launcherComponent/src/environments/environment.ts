@@ -34,7 +34,8 @@ export const environment = {
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',
             avanzata: '/api/ComposizionePartenzaAvanzata',
-            filtri: '/api/Filtri'
+            filtri: '/api/Filtri',
+            mezzoPrenotato: '/api/MezzoPrenotato'
         },
         chiamata: {
             marker: '/api/ChiamataInCorso',

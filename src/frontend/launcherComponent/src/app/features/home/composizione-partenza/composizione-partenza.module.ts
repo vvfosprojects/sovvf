@@ -42,6 +42,7 @@ import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.s
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 import { RichiestaModificaState } from '../store/states/richieste/richiesta-modifica.state';
 import { RichiesteStateDefaults } from '../store/states/richieste/richieste.state';
+import { BoxPartenzaState } from '../store/states/composizione-partenza/box-partenza.state';
 
 @NgModule({
     declarations: [
@@ -68,6 +69,7 @@ import { RichiesteStateDefaults } from '../store/states/richieste/richieste.stat
             [
                 RichiestaComposizioneState,
                 FilterbarComposizioneState,
+                BoxPartenzaState,
                 // Comp Rapida
                 PreAccoppiatiState,
                 // Comp Avanzata

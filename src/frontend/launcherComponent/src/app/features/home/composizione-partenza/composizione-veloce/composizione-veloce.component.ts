@@ -1,14 +1,16 @@
-import {Component, Input, EventEmitter, Output, OnInit, OnDestroy} from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit, OnDestroy } from '@angular/core';
 
 // Model
-import {BoxPartenza} from '../interface/box-partenza-interface';
-import {SintesiRichiesta} from 'src/app/shared/model/sintesi-richiesta.model';
+import { BoxPartenza } from '../interface/box-partenza-interface';
+import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Service
-import {Observable, Subscription} from 'rxjs';
-import {Coordinate} from '../../../../shared/model/coordinate.model';
-import {DirectionInterface} from '../../maps/maps-interface/direction-interface';
-import {Composizione} from '../../../../shared/enum/composizione.enum';
+import { Observable, Subscription } from 'rxjs';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
+import { Composizione } from '../../../../shared/enum/composizione.enum';
+import { GetPreAccoppiati } from '../../store/actions/composizione-partenza/pre-accoppiati.actions';
+import { Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -21,6 +23,7 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Input() preAccoppiati: BoxPartenza[];
     @Input() dismissEvents: Observable<boolean>;
 
+    idPreAccoppiatiSelezionati: string[] = [];
     preAccoppiatiSelezionati: BoxPartenza[] = [];
 
     Composizione = Composizione;
@@ -31,8 +34,8 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Output() clearDirection: EventEmitter<any> = new EventEmitter();
     @Output() centraMappa = new EventEmitter();
 
-
-    constructor() {
+    constructor(private store: Store) {
+        this.store.dispatch(new GetPreAccoppiati());
     }
 
     ngOnInit() {
@@ -60,14 +63,21 @@ export class FasterComponent implements OnInit, OnDestroy {
     }
 
     selezionaPreaccoppiato(preAcc: BoxPartenza) {
-        preAcc.selezionato = true;
+        // preAcc.selezionato = true;
+        this.idPreAccoppiatiSelezionati.push(preAcc.id);
         this.preAccoppiatiSelezionati.push(preAcc);
     }
 
     deselezionaPreaccoppiato(preAcc: BoxPartenza) {
+        this.idPreAccoppiatiSelezionati.forEach((pA, index) => {
+            if (preAcc.id === pA) {
+                // preAcc.selezionato = false;
+                this.idPreAccoppiatiSelezionati.splice(index, 1);
+            }
+        });
         this.preAccoppiatiSelezionati.forEach((pA, index) => {
             if (preAcc === pA) {
-                preAcc.selezionato = false;
+                // preAcc.selezionato = false;
                 this.preAccoppiatiSelezionati.splice(index, 1);
             }
         });
@@ -75,7 +85,7 @@ export class FasterComponent implements OnInit, OnDestroy {
 
     deselezionaPreaccoppiati() {
         this.preAccoppiati.forEach(pA => {
-            pA.selezionato = false;
+            // pA.selezionato = false;
         });
     }
 

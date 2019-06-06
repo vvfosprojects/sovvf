@@ -42,6 +42,52 @@ export class UnselectMezzoComposizione {
     }
 }
 
+export class ClearSelectedMezziComposizione {
+    static readonly type = '[MezziComposizione] Clear Selected Mezzi Composizione';
+}
+
+export class HoverInMezzoComposizione {
+    static readonly type = '[MezziComposizione] Hover In Mezzo Composizione';
+
+    constructor(public idMezzo: string) {
+    }
+}
+
+export class HoverOutMezzoComposizione {
+    static readonly type = '[MezziComposizione] Hover Out Mezzo Composizione';
+
+    constructor(public idMezzo: string) {
+    }
+}
+
+export class AddBookMezzoComposizione {
+    static readonly type = '[MezziComposizione] Book Mezzo Composizione';
+
+    constructor(public idMezzo: string) {
+    }
+}
+
+export class RemoveBookMezzoComposizione {
+    static readonly type = '[MezziComposizione] Remove Book Mezzo Composizione';
+
+    constructor(public idMezzo: string) {
+    }
+}
+
+export class StartTimeoutMezzoComposizione {
+    static readonly type = '[MezziComposizione] Start Timeout Mezzo Composizione';
+
+    constructor(public idMezzo: string) {
+    }
+}
+
+export class StopTimeoutMezzoComposizione {
+    static readonly type = '[MezziComposizione] Stop Timeout Mezzo Composizione';
+
+    constructor(public idMezzo: string) {
+    }
+}
+
 export class LockMezzoComposizione {
     static readonly type = '[MezziComposizione] Lock Mezzo Composizione';
 
