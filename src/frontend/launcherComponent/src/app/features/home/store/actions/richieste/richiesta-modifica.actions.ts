@@ -1,4 +1,5 @@
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
+import { Localita } from '../../../../../shared/model/localita.model';
 
 export class SetRichiestaModifica {
     static readonly type = '[RichiestaModifica] Set Richiesta Modifica';
@@ -12,9 +13,23 @@ export class ClearRichiestaModifica {
 }
 
 export class ModificaRilevanza {
-    static readonly  type = '[RichiestaModifica] Modifica Rilevanza';
+    static readonly type = '[RichiestaModifica] Modifica Rilevanza';
+}
+
+export class ModificaIndirizzo {
+    static readonly type = '[RichiestaModifica] Modifica Indirizzo';
+
+    constructor(public nuovoIndirizzo: Localita) {
+    }
 }
 
 export class SuccessRichiestaModifica {
-    static readonly  type = '[RichiestaModifica] Modifica Rilevanza Success';
+    static readonly type = '[RichiestaModifica] Modifica Richiesta Success';
+}
+
+export class ChiudiRichiestaModifica {
+    static readonly type = '[RichiestaModifica] Modifica Richiesta Chiudi';
+
+    constructor(public mantieniModificaIndirizzo?: boolean) {
+    }
 }

@@ -236,6 +236,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onModificaRichiesta(richiesta: SintesiRichiesta) {
         this.store.dispatch(new SetRichiestaModifica(richiesta));
+        this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
         this.store.dispatch(new ToggleModifica());
     }
 

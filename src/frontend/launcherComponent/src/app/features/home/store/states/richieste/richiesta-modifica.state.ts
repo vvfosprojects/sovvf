@@ -1,21 +1,37 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Select, Selector, State, StateContext } from '@ngxs/store';
 // Model
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 
 // Action
-import { ClearRichiestaModifica, ModificaRilevanza, SetRichiestaModifica, SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
+import {
+    ChiudiRichiestaModifica,
+    ClearRichiestaModifica,
+    ModificaIndirizzo,
+    ModificaRilevanza,
+    SetRichiestaModifica,
+    SuccessRichiestaModifica
+} from '../../actions/richieste/richiesta-modifica.actions';
 import produce from 'immer';
-import { copyObj } from '@angular/animations/browser/src/util';
 import { makeCopy } from '../../../../../shared/helper/function';
+import { ToggleModifica } from '../../actions/view/view.actions';
+import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
+import { RichiesteMarkersState } from '../maps/richieste-markers.state';
+import { UpdateRichiestaMarker } from '../../actions/maps/richieste-markers.actions';
+import { SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
+import { Observable } from 'rxjs';
 
 export interface RichiestaModificaStateModel {
     richiestaModifica: SintesiRichiesta;
+    richiestaMarker: RichiestaMarker;
     successModifica: boolean;
+    modificaIndirizzo: boolean;
 }
 
 export const RichiestaModificaStateDefaults: RichiestaModificaStateModel = {
     richiestaModifica: null,
-    successModifica: false
+    richiestaMarker: null,
+    successModifica: false,
+    modificaIndirizzo: false
 };
 
 @State<RichiestaModificaStateModel>({
@@ -23,6 +39,8 @@ export const RichiestaModificaStateDefaults: RichiestaModificaStateModel = {
     defaults: RichiestaModificaStateDefaults
 })
 export class RichiestaModificaState {
+
+    @Select(RichiesteMarkersState.getRichiestaById) richiestaMarker$: Observable<RichiestaMarker>;
 
     constructor() {
     }
@@ -38,13 +56,19 @@ export class RichiestaModificaState {
     }
 
     @Action(SetRichiestaModifica)
-    setRichiestaModifica({ getState, patchState }: StateContext<RichiestaModificaStateModel>, action: SetRichiestaModifica) {
-        const state = getState();
-
+    setRichiestaModifica({ patchState }: StateContext<RichiestaModificaStateModel>, action: SetRichiestaModifica) {
         patchState({
-            ...state,
             richiestaModifica: action.richiesta
         });
+        if (action.richiesta) {
+            this.richiestaMarker$.subscribe(result => {
+                if (result) {
+                    patchState({
+                        richiestaMarker: result
+                    });
+                }
+            });
+        }
     }
 
     @Action(ModificaRilevanza)
@@ -63,11 +87,36 @@ export class RichiestaModificaState {
         );
     }
 
+    @Action(ModificaIndirizzo)
+    modificaIndirizzo({ getState, patchState, dispatch }: StateContext<RichiestaModificaStateModel>, action: ModificaIndirizzo) {
+        if (action.nuovoIndirizzo) {
+            patchState({
+                modificaIndirizzo: true
+            });
+            const temporaryMarker: RichiestaMarker = makeCopy(getState().richiestaMarker);
+            temporaryMarker.localita = action.nuovoIndirizzo;
+            dispatch(new UpdateRichiestaMarker(temporaryMarker));
+            dispatch(new SetCoordCentroMappa(action.nuovoIndirizzo.coordinate));
+            dispatch(new SetZoomCentroMappa(18));
+        }
+    }
+
+    @Action(ChiudiRichiestaModifica)
+    chiudiRichiestaModifica({ getState, dispatch }: StateContext<RichiestaModificaStateModel>, action: ChiudiRichiestaModifica) {
+        const state = getState();
+        if (state.modificaIndirizzo && !action.mantieniModificaIndirizzo) {
+            dispatch(new UpdateRichiestaMarker(state.richiestaMarker));
+        }
+        dispatch(new ToggleModifica(true));
+        dispatch(new ClearRichiestaModifica);
+    }
+
     @Action(SuccessRichiestaModifica)
-    successModifica({ patchState }: StateContext<RichiestaModificaStateModel>) {
+    successModifica({ patchState, dispatch }: StateContext<RichiestaModificaStateModel>) {
         patchState({
             successModifica: true
         });
+        dispatch(new ChiudiRichiestaModifica(true));
     }
 
     @Action(ClearRichiestaModifica)

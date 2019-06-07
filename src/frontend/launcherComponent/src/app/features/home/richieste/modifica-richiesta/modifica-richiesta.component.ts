@@ -10,10 +10,10 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { CopyToClipboard } from '../../store/actions/chiamata/clipboard.actions';
 import { NavbarState } from '../../../navbar/store/states/navbar.state';
-import { ClearRichiestaModifica } from '../../store/actions/richieste/richiesta-modifica.actions';
+import { ChiudiRichiestaModifica, ModificaIndirizzo } from '../../store/actions/richieste/richiesta-modifica.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
-import { ToggleModifica } from '../../store/actions/view/view.actions';
+import { Localita } from '../../../../shared/model/localita.model';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -30,8 +30,6 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
     richiestaModifica: SintesiRichiesta;
 
-    @Select(RichiestaModificaState.successModifica) successModifica$: Observable<boolean>;
-
     subscription = new Subscription();
 
     modificaRichiestaForm: FormGroup;
@@ -40,7 +38,6 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     constructor(private formBuilder: FormBuilder,
                 private store: Store) {
         this.subscription.add(this.richiestaModifica$.subscribe((richiesta: SintesiRichiesta) => this.richiestaModifica = makeCopy(richiesta)));
-        this.subscription.add(this.successModifica$.subscribe((success: boolean) => success ? this.onSuccess() : false));
     }
 
     ngOnInit() {
@@ -49,7 +46,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.store.dispatch(new ClearRichiestaModifica);
+        // this.onChiudiModifica();
         this.subscription.unsubscribe();
         isDevMode() && console.log('Componente Modifica Richiesta Distrutto');
     }
@@ -102,13 +99,11 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     setValidatorsRichiesta(tipologia: string) {
         switch (tipologia) {
             case 'RagioneSociale':
-                console.log('ragione sociale');
                 this.modificaRichiestaForm.get('nome').setValidators(null);
                 this.modificaRichiestaForm.get('cognome').setValidators(null);
                 this.modificaRichiestaForm.get('ragioneSociale').setValidators(Validators.required);
                 break;
             case 'Nome-Cognome':
-                console.log('nome-cognome');
                 this.modificaRichiestaForm.get('ragioneSociale').setValidators(null);
                 this.modificaRichiestaForm.get('nome').setValidators(Validators.required);
                 this.modificaRichiestaForm.get('cognome').setValidators(Validators.required);
@@ -121,6 +116,8 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         this.f.latitudine.patchValue(coordinate.latitudine);
         this.f.longitudine.patchValue(coordinate.longitudine);
         this.f.indirizzo.patchValue(result.formatted_address);
+        const nuovoIndirizzo = new Localita(coordinate ? coordinate : null, result.formatted_address);
+        this.store.dispatch(new ModificaIndirizzo(nuovoIndirizzo));
     }
 
     onCopiaIndirizzo() {
@@ -156,12 +153,8 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         return nuovaRichiesta;
     }
 
-    onAnnullaModifica() {
-        this.toggleComponent();
-    }
-
-    onSuccess() {
-        this.toggleComponent();
+    onChiudiModifica() {
+        this.store.dispatch(new ChiudiRichiestaModifica);
     }
 
     onConfermaModifica() {
@@ -175,7 +168,4 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         this.store.dispatch(new PatchRichiesta(nuovaRichiesta));
     }
 
-    toggleComponent() {
-        this.store.dispatch(new ToggleModifica(true));
-    }
 }

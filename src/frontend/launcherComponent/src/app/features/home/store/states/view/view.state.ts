@@ -143,9 +143,7 @@ export class ViewComponentState {
          */
         if (!state.view.modifica.active && !action.toggle) {
             dispatch(new ClearDirection());
-            // dispatch(new ClearMarkerRichiestaSelezionato());
-            // Todo: non serve perchè deve centrare la mappa sulla richiesta da modificare
-            // dispatch(new GetInitCentroMappa());
+
             dispatch(new SaveView(makeCopy(state)));
             const newState = activeModifica(stateDefault);
             patchState({
@@ -154,6 +152,8 @@ export class ViewComponentState {
                 column: newState.column
             });
         } else {
+            dispatch(new ClearMarkerRichiestaSelezionato());
+            dispatch(new GetInitCentroMappa());
             const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
             patchState({
                 ...state,
