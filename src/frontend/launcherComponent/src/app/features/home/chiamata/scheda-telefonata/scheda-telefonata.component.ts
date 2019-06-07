@@ -23,6 +23,7 @@ import { Observable } from 'rxjs';
 import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefonata.state';
 import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
+import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -32,9 +33,8 @@ import { Tipologia } from '../../../../shared/model/tipologia.model';
 })
 export class SchedaTelefonataComponent implements OnInit {
 
-    options = {
-        componentRestrictions: { country: ['IT', 'FR', 'AT', 'CH', 'SI'] }
-    };
+    options = GOOGLEPLACESOPTIONS;
+
     chiamataMarker: ChiamataMarker;
     chiamataForm: FormGroup;
     coordinate: Coordinate;

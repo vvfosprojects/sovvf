@@ -12,7 +12,8 @@ import { CopyToClipboard } from '../../store/actions/chiamata/clipboard.actions'
 import { NavbarState } from '../../../navbar/store/states/navbar.state';
 import { ClearRichiestaModifica } from '../../store/actions/richieste/richiesta-modifica.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
-import { ToggleModifica } from '../../store/actions/view/view.actions';
+import { Localita } from '../../../../shared/model/localita.model';
+import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -21,9 +22,7 @@ import { ToggleModifica } from '../../store/actions/view/view.actions';
 })
 export class ModificaRichiestaComponent implements OnInit, OnDestroy {
 
-    options = {
-        componentRestrictions: { country: ['IT', 'FR', 'AT', 'CH', 'SI'] }
-    };
+    options = GOOGLEPLACESOPTIONS;
 
     tipologiaRichiedente: string;
     @Select(NavbarState.tipologie) tipologie$: Observable<Tipologia[]>;
