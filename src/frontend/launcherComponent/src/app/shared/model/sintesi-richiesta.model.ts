@@ -140,9 +140,9 @@ export class SintesiRichiesta {
          */
         public codiceObiettivoRilevante?: string,
         /**
-         * rilevanza st ???
+         * rilevanza Storica Artistica e Culturale
          */
-        public rilevanzaStArCu?: string
+        public rilevanzaStArCu?: boolean
     ) {
     }
 }
