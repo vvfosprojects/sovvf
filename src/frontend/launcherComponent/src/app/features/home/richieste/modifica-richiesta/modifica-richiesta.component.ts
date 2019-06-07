@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RichiestaModificaState } from '../../store/states/richieste/richiesta-modifica.state';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { makeCopy } from '../../../../shared/helper/function';
 import { PatchRichiesta } from '../../store/actions/richieste/richieste.actions';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
@@ -13,6 +12,7 @@ import { CopyToClipboard } from '../../store/actions/chiamata/clipboard.actions'
 import { NavbarState } from '../../../navbar/store/states/navbar.state';
 import { ClearRichiestaModifica } from '../../store/actions/richieste/richiesta-modifica.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
+import { ToggleModifica } from '../../store/actions/view/view.actions';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -36,9 +36,9 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
 
     modificaRichiestaForm: FormGroup;
+    submitted = false;
 
     constructor(private formBuilder: FormBuilder,
-                private modal: NgbActiveModal,
                 private store: Store) {
         this.subscription.add(this.richiestaModifica$.subscribe((richiesta: SintesiRichiesta) => this.richiestaModifica = makeCopy(richiesta)));
         this.subscription.add(this.successModifica$.subscribe((success: boolean) => success ? this.onSuccess() : false));
@@ -158,10 +158,15 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     }
 
     onAnnullaModifica() {
-        this.modal.dismiss('Annulla');
+        this.toggleComponent();
+    }
+
+    onSuccess() {
+        this.toggleComponent();
     }
 
     onConfermaModifica() {
+        this.submitted = true;
         if (this.modificaRichiestaForm.invalid) {
             return;
         }
@@ -171,7 +176,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         this.store.dispatch(new PatchRichiesta(nuovaRichiesta));
     }
 
-    onSuccess() {
-        this.modal.close(this.modificaRichiestaForm.value);
+    toggleComponent() {
+        this.store.dispatch(new ToggleModifica(true));
     }
 }

@@ -17,7 +17,7 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
-import { ToggleComposizione } from '../store/actions/view/view.actions';
+import { ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { RichiestaComposizione } from '../store/actions/composizione-partenza/richiesta-composizione.actions';
 import { ClearMarkerRichiestaHover, ClearMarkerRichiestaSelezionato, SetMarkerRichiestaHover, SetMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
@@ -236,7 +236,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onModificaRichiesta(richiesta: SintesiRichiesta) {
         this.store.dispatch(new SetRichiestaModifica(richiesta));
-        this.modalService.open(ModificaRichiestaComponent, { windowClass: 'modalModificaRichiesta', backdrop: 'static', backdropClass: 'light-blue-backdrop', centered: true });
+        this.store.dispatch(new ToggleModifica());
     }
 
     toggleComposizione() {

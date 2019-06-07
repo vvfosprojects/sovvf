@@ -128,3 +128,14 @@ export function gridSolve(feature: AppFeatures): Grids {
     }
     return grids;
 }
+
+/**
+ * partendo dallo stato di default, cambia lo stato di visualizzazione di modifica
+ * @param stateDefault
+ */
+export function activeModifica(stateDefault: ViewComponentStateModel): ViewComponentStateModel {
+    stateDefault.view.richieste.active = false;
+    stateDefault.view.modifica.active = true;
+    stateDefault.view.mappa.options = [AppFeatures.Modifica];
+    return stateDefault;
+}

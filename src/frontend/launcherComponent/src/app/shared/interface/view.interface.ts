@@ -13,6 +13,7 @@ export interface ViewLayouts {
     chiamata: ViewLayout;
     composizione: ViewLayout;
     filterbar: ViewLayout;
+    modifica: ViewLayout;
 }
 
 export interface Grids {

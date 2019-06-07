@@ -3,17 +3,17 @@ import { makeCopy } from '../../../../../shared/helper/function';
 import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
 import { Grid } from '../../../../../shared/enum/layout.enum';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import { ChangeView, SaveView, SwitchComposizione, ToggleChiamata, ToggleComposizione, TurnOffComposizione } from '../../actions/view/view.actions';
+import { ChangeView, SaveView, SwitchComposizione, ToggleChiamata, ToggleComposizione, ToggleModifica, TurnOffComposizione } from '../../actions/view/view.actions';
 import { BackupViewComponentState } from './save-view.state';
 import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../../../../shared/interface/view.interface';
-import { activeChiamata, activeComposizione, colorButton, switchComposizione, turnOffComposizione, updateView, viewStateMaps } from '../../helper/view-state-function';
+import { activeChiamata, activeComposizione, activeModifica, colorButton, switchComposizione, turnOffComposizione, updateView, viewStateMaps } from '../../helper/view-state-function';
 import { TerminaComposizione } from '../../actions/composizione-partenza/richiesta-composizione.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { RichiestaComposizioneState } from '../composizione-partenza/richiesta-composizione.state';
 import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ResetChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
-import { ClearChiamateMarkers, GetChiamateMarkers } from '../../actions/maps/chiamate-markers.actions';
+import { ClearChiamateMarkers } from '../../actions/maps/chiamate-markers.actions';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -35,6 +35,9 @@ export const ViewComponentStateDefault: ViewComponentStateModel = {
         filterbar: {
             active: true,
             options: [Grid.Col5]
+        },
+        modifica: {
+            active: false
         }
     },
     column: {
@@ -119,7 +122,6 @@ export class ViewComponentState {
                 view: newState.view,
                 column: newState.column
             });
-            // dispatch(new GetChiamateMarkers());
         } else {
             const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
             patchState({
@@ -129,6 +131,35 @@ export class ViewComponentState {
             });
             dispatch(new ResetChiamata());
             dispatch(new ClearChiamateMarkers());
+        }
+    }
+
+    @Action(ToggleModifica)
+    toggleModifica({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleModifica) {
+        const state = getState();
+        const stateDefault = makeCopy(ViewComponentStateDefault);
+        /**
+         * se lo stato della modifica non è attivo creo uno snapshot, altrimenti ritorno allo stato precedente
+         */
+        if (!state.view.modifica.active && !action.toggle) {
+            dispatch(new ClearDirection());
+            // dispatch(new ClearMarkerRichiestaSelezionato());
+            // Todo: non serve perchè deve centrare la mappa sulla richiesta da modificare
+            // dispatch(new GetInitCentroMappa());
+            dispatch(new SaveView(makeCopy(state)));
+            const newState = activeModifica(stateDefault);
+            patchState({
+                ...state,
+                view: newState.view,
+                column: newState.column
+            });
+        } else {
+            const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
+            patchState({
+                ...state,
+                view: lastState.view,
+                column: lastState.column
+            });
         }
     }
 

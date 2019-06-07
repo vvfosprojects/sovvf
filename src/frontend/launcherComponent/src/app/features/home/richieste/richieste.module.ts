@@ -73,6 +73,7 @@ import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-s
     ],
     exports: [
         RichiesteComponent,
+        ModificaRichiestaComponent,
     ],
     entryComponents: [
         ModificaRichiestaComponent

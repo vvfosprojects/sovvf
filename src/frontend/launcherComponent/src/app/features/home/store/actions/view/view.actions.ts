@@ -41,3 +41,9 @@ export class SaveView {
     }
 }
 
+export class ToggleModifica {
+    static readonly type = '[Modifica] Toggle modifica';
+
+    constructor(public toggle?: boolean) {
+    }
+}

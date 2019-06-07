@@ -16,6 +16,7 @@
             <app-chiamata *ngIf="viewState.chiamata.active"></app-chiamata>
             <app-composizione-partenza *ngIf="viewState.composizione.active"
                                        [compPartenzaMode]="(composizioneMode$ | async)"></app-composizione-partenza>
+            <app-modifica-richiesta *ngIf="viewState.modifica.active"></app-modifica-richiesta>
         </div>
         <div class="mt-2" [ngClass]="columnState.destra || {'d-none' : !viewState.mappa.active}">
             <app-maps [viewStateMappa]="(viewStateMappa$ | async)" (mapFullLoaded)="onMapFullLoaded()"></app-maps>
