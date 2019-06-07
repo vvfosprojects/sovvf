@@ -17,13 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Navbar;
-using SO115App.Models.Servizi.Infrastruttura.NavBar;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using Newtonsoft.Json;
+using SO115App.Models.Servizi.Infrastruttura.NavBar;
 
 namespace SO115App.FakePersistenceJSon.Navbar
 {

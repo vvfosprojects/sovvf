@@ -23,7 +23,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 {
     /// <summary>
     ///   DTO di output
-    /// </summary>      
+    /// </summary>
     public class PreAccoppiatiResult
     {
         /// <summary>

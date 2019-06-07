@@ -17,14 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using System.Linq;
 using Newtonsoft.Json;
 using Serilog;
 using SO115App.API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni;
 using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi;
 using SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma;
 using SO115App.GeneratoreRichiesteFake;
-using System;
-using System.Linq;
 
 namespace SO115App.GeneratoreFakeRichieste.ConsoleRunner
 {

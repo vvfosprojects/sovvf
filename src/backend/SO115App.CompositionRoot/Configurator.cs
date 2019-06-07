@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SimpleInjector;
-using System.Reflection;
 
 namespace SO115App.CompositionRoot
 {

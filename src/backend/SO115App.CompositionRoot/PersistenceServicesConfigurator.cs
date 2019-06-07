@@ -17,10 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using SimpleInjector;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.GeneratoreFakeRichieste;

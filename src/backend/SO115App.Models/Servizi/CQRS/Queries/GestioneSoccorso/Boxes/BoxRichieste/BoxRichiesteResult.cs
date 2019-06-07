@@ -22,12 +22,12 @@ using SO115App.API.Models.Classi.Boxes;
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
 {
     /// <summary>
-    /// DTO di output
+    ///   DTO di output
     /// </summary>
     public class BoxRichiesteResult
     {
         /// <summary>
-        /// Json Box Richieste
+        ///   Json Box Richieste
         /// </summary>
         public BoxInterventi BoxRichieste
         { get; set; }

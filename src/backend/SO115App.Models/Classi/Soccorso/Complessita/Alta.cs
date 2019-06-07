@@ -20,12 +20,12 @@
 namespace SO115App.API.Models.Classi.Soccorso.Complessita
 {
     /// <summary>
-    /// La complessità alta di una richiesta di assistenza.
+    ///   La complessità alta di una richiesta di assistenza.
     /// </summary>
     public class Alta : IComplessita
     {
         /// <summary>
-        /// Il codice
+        ///   Il codice
         /// </summary>
         public string Codice
         {
@@ -36,7 +36,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Complessita
         }
 
         /// <summary>
-        /// La descrizione
+        ///   La descrizione
         /// </summary>
         public string Descrizione
         {

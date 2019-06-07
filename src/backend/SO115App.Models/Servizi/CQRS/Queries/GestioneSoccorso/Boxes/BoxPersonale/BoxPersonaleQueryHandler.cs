@@ -18,16 +18,13 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.Models.Servizi.Infrastruttura.Box;
-using System.IO;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaPersonale
 {
     /// <summary>
-    /// Servizio che restituisce tutti i valori dei Box presenti in HomePage.
+    ///   Servizio che restituisce tutti i valori dei Box presenti in HomePage.
     /// </summary>
     public class BoxPersonaleQueryHandler : IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult>
     {
@@ -39,7 +36,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
         }
 
         /// <summary>
-        /// Query che estrae i valori dei Box presenti in Home Page
+        ///   Query che estrae i valori dei Box presenti in Home Page
         /// </summary>
         /// <param name="query">Filtri utilizzati per l'estrazione</param>
         /// <returns>Elenco dei mezzi disponibili</returns>

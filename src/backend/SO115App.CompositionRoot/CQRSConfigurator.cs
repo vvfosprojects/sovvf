@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
 using System.Reflection;
 using SimpleInjector;
 
@@ -74,7 +73,6 @@ namespace SO115App.CompositionRoot
             container.RegisterDecorator(
                 typeof(CQRS.Commands.ICommandHandler<>),
                 typeof(Logging.CQRS.CommandHandlerLogDecorator<>));
-
         }
     }
 }

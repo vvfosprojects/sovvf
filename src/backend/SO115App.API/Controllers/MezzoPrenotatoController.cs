@@ -17,6 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Linq;
+using System.Security.Principal;
+using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,9 +27,6 @@ using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.MezzoPrenotato;
-using System.Linq;
-using System.Security.Principal;
-using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {
@@ -54,7 +54,6 @@ namespace SO115App.API.Controllers
         public MezzoPrenotatoController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
             IQueryHandler<MezzoPrenotatoQuery, MezzoPrenotatoResult> handler)
         {
-
             this.handler = handler;
             _NotificationHub = NotificationHubContext;
             _currentUser = currentUser;
@@ -68,7 +67,6 @@ namespace SO115App.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(MezzoPrenotato mezzoPrenotato)
         {
-
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 
@@ -81,7 +79,6 @@ namespace SO115App.API.Controllers
             {
                 try
                 {
-
                     ComposizioneMezzi mezzo = handler.Handle(query).ComposizioneMezzi;
                     await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyMezzoPrenotato", mezzo);
 

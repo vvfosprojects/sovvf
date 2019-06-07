@@ -32,32 +32,32 @@ namespace SO115App.API.Models.Classi.Condivise
         }
 
         /// <summary>
-        /// Descrizione qualifica Componente
+        ///   Descrizione qualifica Componente
         /// </summary>
         public string DescrizioneQualifica { get; set; }
 
         /// <summary>
-        /// Nominativo Componente
+        ///   Nominativo Componente
         /// </summary>
         public string Nominativo { get; set; }
 
         /// <summary>
-        /// ToolTip Componente
+        ///   ToolTip Componente
         /// </summary>
         public string Tooltip { get; set; }
 
         /// <summary>
-        /// Indica se il Componente è un capo Partenza
+        ///   Indica se il Componente è un capo Partenza
         /// </summary>
         public bool CapoPartenza { get; set; }
 
         /// <summary>
-        /// Indica se è un autista
+        ///   Indica se è un autista
         /// </summary>
         public bool Autista { get; set; }
 
         /// <summary>
-        /// Indica se il componente è un rimpiazzo
+        ///   Indica se il componente è un rimpiazzo
         /// </summary>
         public bool Rimpiazzo { get; set; }
     }

@@ -18,13 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
-using SO115App.API.Models.Classi.Boxes;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
 {
     /// <summary>
-    /// Servizio che restituisce tutti i valori dei Box presenti in HomePage.
+    ///   Servizio che restituisce tutti i valori dei Box presenti in HomePage.
     /// </summary>
     public class BoxMezziQueryHandler : IQueryHandler<BoxMezziQuery, BoxMezziResult>
     {
@@ -36,7 +35,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
         }
 
         /// <summary>
-        /// Query che estrae i valori dei Box presenti in Home Page
+        ///   Query che estrae i valori dei Box presenti in Home Page
         /// </summary>
         /// <param name="query">Filtri utilizzati per l'estrazione</param>
         /// <returns>Elenco dei mezzi disponibili</returns>

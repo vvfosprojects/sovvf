@@ -20,12 +20,12 @@
 namespace SO115App.API.Models.Classi.Soccorso.Fonogramma
 {
     /// <summary>
-    /// Lo stato che identifica un fonogramma inviato
+    ///   Lo stato che identifica un fonogramma inviato
     /// </summary>
     public class Inviato : IStatoFonogramma
     {
         /// <summary>
-        /// Il codice
+        ///   Il codice
         /// </summary>
         public string Codice
         {
@@ -36,7 +36,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Fonogramma
         }
 
         /// <summary>
-        /// La descrizione
+        ///   La descrizione
         /// </summary>
         public string Descrizione
         {

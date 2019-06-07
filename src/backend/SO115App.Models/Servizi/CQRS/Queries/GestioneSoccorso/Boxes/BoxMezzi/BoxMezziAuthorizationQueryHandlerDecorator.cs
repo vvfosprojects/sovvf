@@ -17,11 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Collections.Generic;
+using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Queries.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
-using System.Collections.Generic;
-using System.Security.Principal;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
 {

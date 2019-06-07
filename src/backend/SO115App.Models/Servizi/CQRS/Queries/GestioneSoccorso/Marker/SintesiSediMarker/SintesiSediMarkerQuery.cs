@@ -23,12 +23,12 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichies
 namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiSediMarker
 {
     /// <summary>
-    /// DTO di input
+    ///   DTO di input
     /// </summary>
     public class SintesiSediMarkerQuery : IQuery<SintesiSediMarkerResult>
     {
         /// <summary>
-        /// Il filtro utilizzato per la ricerca delle richieste di assistenza
+        ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
         /// </summary>
         public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
     }

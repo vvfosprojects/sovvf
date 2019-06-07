@@ -17,9 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Bogus;
 using System;
 using System.Linq;
+using Bogus;
 
 namespace SO115App.GeneratoreRichiesteFake
 {

@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Autenticazione;
-using SO115App.API.Models.Classi.Boxes;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
 {

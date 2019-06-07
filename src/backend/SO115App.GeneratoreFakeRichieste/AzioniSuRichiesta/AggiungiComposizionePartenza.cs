@@ -17,10 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using static SO115App.API.Models.Classi.Soccorso.Squadre.Componente;
 
 namespace SO115App.GeneratoreRichiesteFake.AzioniSuRichiesta

@@ -17,18 +17,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Marker;
 using System.Collections.Generic;
+using SO115App.API.Models.Classi.Marker;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker
 {
     /// <summary>
-    /// DTO di output
+    ///   DTO di output
     /// </summary>
     public class SintesiRichiesteAssistenzaMarkerResult
     {
         /// <summary>
-        /// La sintesi delle richieste di assistenza
+        ///   La sintesi delle richieste di assistenza
         /// </summary>
         public IEnumerable<SintesiRichiestaMarker> SintesiRichiestaMarker
         { get; set; }

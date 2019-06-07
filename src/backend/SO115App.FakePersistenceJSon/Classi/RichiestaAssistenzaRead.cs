@@ -17,16 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Autenticazione;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Persistenza;
-using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
-using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
-using System;
-using System.Collections.Generic;
-using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
 
 namespace SO115App.API.Models.Classi.Soccorso
 {

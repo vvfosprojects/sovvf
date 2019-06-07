@@ -17,8 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Condivise;
 using System;
+using SO115App.API.Models.Classi.Condivise;
 
 namespace SO115App.API.Models.Classi.Composizione
 {

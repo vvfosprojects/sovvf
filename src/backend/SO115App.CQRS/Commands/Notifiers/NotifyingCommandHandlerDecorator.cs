@@ -17,8 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Serilog;
 using System.Collections.Generic;
+using Serilog;
 
 namespace CQRS.Commands.Notifiers
 {

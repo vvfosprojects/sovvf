@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
-using System.Text;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni;
 using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi;

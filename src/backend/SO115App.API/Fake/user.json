@@ -1,1 +1,572 @@
-[{"id":"1","nome":"Luigi","cognome":"Bianchi","username":"admin","password":"admin","ruoli":[{"descrizione":"CallTracker","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}],"qualifica":"Operatore SO115","codiceFiscale":"VVVRCT81H56Z715N","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}},{"id":"2","nome":"Teresio","cognome":"Mancini","username":"user","password":"user","ruoli":[{"descrizione":"CallTracker","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}],"qualifica":"Operatore SO115","codiceFiscale":"VDPRHC53C14L424K","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}},{"id":"3","nome":"Mario","cognome":"Rossi","username":"test","password":"test","ruoli":[{"descrizione":"GestoreRichieste","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}],"qualifica":"Operatore SO115","codiceFiscale":"YZSPMD89M07M185L","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}},{"id":"4","nome":"Gualtiero","cognome":"Milano","username":"gualtiero","password":"milano","ruoli":[{"descrizione":"GestoreRichieste","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}],"qualifica":"Operatore SO115","codiceFiscale":"PRZSPRA89M03M117O","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}},{"id":"5","nome":"Marco","cognome":"Rossi","username":"marco","password":"rossi","ruoli":[{"descrizione":"GestoreRichieste","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}],"qualifica":"Operatore SO115","codiceFiscale":"DTNZMD81C49E783W","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}},{"id":"6","nome":"Marco","cognome":"Verdi","username":"marco","password":"verdi","ruoli":[{"descrizione":"GestoreRichieste","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}],"qualifica":"Operatore SO115","codiceFiscale":"VNFLYH70E01A412P","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}},{"id":"7","nome":"Isabella","cognome":"Monaldo","username":"isabella","password":"monaldo","ruoli":[{"descrizione":"CallTracker","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}],"qualifica":"Operatore SO115","codiceFiscale":"LBRVRY36B08D553W","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}},{"id":"8","nome":"Ivone","cognome":"Sabbatini","username":"ivone","password":"sabbatini","ruoli":[{"descrizione":"GestoreRichieste","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}],"qualifica":"Operatore SO115","codiceFiscale":"PQPDLS85P70I697B","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}},{"id":"9","nome":"Flavio","cognome":"Pinto","username":"flavio","password":"pinto","ruoli":[{"descrizione":"CallTracker","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}],"qualifica":"Operatore SO115","codiceFiscale":"HCLHND66C61A815O","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}},{"id":"10","nome":"Sandro","cognome":"Marcelo","username":"sandro","password":"marcelo","ruoli":[{"descrizione":"CallTracker","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}],"qualifica":"Operatore SO115","codiceFiscale":"HVHNHG30C12G396Q","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}},{"id":"11","nome":"Isidora","cognome":"Trentino","username":"isidora","password":"trentino","ruoli":[{"descrizione":"GestoreRichieste","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}],"qualifica":"Operatore SO115","codiceFiscale":"FMJKMI48C50C869C","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}},{"id":"12","nome":"Amina","cognome":"Zetticci","username":"amina","password":"zettici","ruoli":[{"descrizione":"GestoreRichieste","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}],"qualifica":"Operatore SO115","codiceFiscale":"VFRGXW29B17I633L","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}},{"id":"13","nome":"Piera","cognome":"Lori","username":"piera","password":"lori","ruoli":[{"descrizione":"GestoreRichieste","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}],"qualifica":"Operatore SO115","codiceFiscale":"HMLXKD51L66G417D","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}},{"id":"14","nome":"Romeo","cognome":"Marchesi","username":"romeo","password":"marchesi","ruoli":[{"descrizione":"CallTracker","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}],"qualifica":"Operatore SO115","codiceFiscale":"KCCRTM54M61H945I","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}},{"id":"15","nome":"Cora","cognome":"Trentini","username":"cora","password":"trentini","ruoli":[{"descrizione":"GestoreRichieste","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}],"qualifica":"Operatore SO115","codiceFiscale":"TFMSJR66P03H966R","sede":{"codice":"RM.1000","provincia":"ROMA","regione":"Lazio","tipo":"Comando","descrizione":"Comando VV.F. ROMA","coordinate":{"latitudine":41.89996,"longitudine":12.49104},"indirizzo":"Via Genova, 3/a"}}]
+[
+  {
+    "id": "1",
+    "nome": "Luigi",
+    "cognome": "Bianchi",
+    "username": "admin",
+    "password": "admin",
+    "ruoli": [
+      {
+        "descrizione": "CallTracker",
+        "sede": {
+          "codice": "RM.1000",
+          "provincia": "ROMA",
+          "regione": "Lazio",
+          "tipo": "Comando",
+          "descrizione": "Comando VV.F. ROMA",
+          "coordinate": {
+            "latitudine": 41.89996,
+            "longitudine": 12.49104
+          },
+          "indirizzo": "Via Genova, 3/a"
+        }
+      }
+    ],
+    "qualifica": "Operatore SO115",
+    "codiceFiscale": "VVVRCT81H56Z715N",
+    "sede": {
+      "codice": "RM.1000",
+      "provincia": "ROMA",
+      "regione": "Lazio",
+      "tipo": "Comando",
+      "descrizione": "Comando VV.F. ROMA",
+      "coordinate": {
+        "latitudine": 41.89996,
+        "longitudine": 12.49104
+      },
+      "indirizzo": "Via Genova, 3/a"
+    }
+  },
+  {
+    "id": "2",
+    "nome": "Teresio",
+    "cognome": "Mancini",
+    "username": "user",
+    "password": "user",
+    "ruoli": [
+      {
+        "descrizione": "CallTracker",
+        "sede": {
+          "codice": "RM.1000",
+          "provincia": "ROMA",
+          "regione": "Lazio",
+          "tipo": "Comando",
+          "descrizione": "Comando VV.F. ROMA",
+          "coordinate": {
+            "latitudine": 41.89996,
+            "longitudine": 12.49104
+          },
+          "indirizzo": "Via Genova, 3/a"
+        }
+      }
+    ],
+    "qualifica": "Operatore SO115",
+    "codiceFiscale": "VDPRHC53C14L424K",
+    "sede": {
+      "codice": "RM.1000",
+      "provincia": "ROMA",
+      "regione": "Lazio",
+      "tipo": "Comando",
+      "descrizione": "Comando VV.F. ROMA",
+      "coordinate": {
+        "latitudine": 41.89996,
+        "longitudine": 12.49104
+      },
+      "indirizzo": "Via Genova, 3/a"
+    }
+  },
+  {
+    "id": "3",
+    "nome": "Mario",
+    "cognome": "Rossi",
+    "username": "test",
+    "password": "test",
+    "ruoli": [
+      {
+        "descrizione": "GestoreRichieste",
+        "sede": {
+          "codice": "RM.1000",
+          "provincia": "ROMA",
+          "regione": "Lazio",
+          "tipo": "Comando",
+          "descrizione": "Comando VV.F. ROMA",
+          "coordinate": {
+            "latitudine": 41.89996,
+            "longitudine": 12.49104
+          },
+          "indirizzo": "Via Genova, 3/a"
+        }
+      }
+    ],
+    "qualifica": "Operatore SO115",
+    "codiceFiscale": "YZSPMD89M07M185L",
+    "sede": {
+      "codice": "RM.1000",
+      "provincia": "ROMA",
+      "regione": "Lazio",
+      "tipo": "Comando",
+      "descrizione": "Comando VV.F. ROMA",
+      "coordinate": {
+        "latitudine": 41.89996,
+        "longitudine": 12.49104
+      },
+      "indirizzo": "Via Genova, 3/a"
+    }
+  },
+  {
+    "id": "4",
+    "nome": "Gualtiero",
+    "cognome": "Milano",
+    "username": "gualtiero",
+    "password": "milano",
+    "ruoli": [
+      {
+        "descrizione": "GestoreRichieste",
+        "sede": {
+          "codice": "RM.1000",
+          "provincia": "ROMA",
+          "regione": "Lazio",
+          "tipo": "Comando",
+          "descrizione": "Comando VV.F. ROMA",
+          "coordinate": {
+            "latitudine": 41.89996,
+            "longitudine": 12.49104
+          },
+          "indirizzo": "Via Genova, 3/a"
+        }
+      }
+    ],
+    "qualifica": "Operatore SO115",
+    "codiceFiscale": "PRZSPRA89M03M117O",
+    "sede": {
+      "codice": "RM.1000",
+      "provincia": "ROMA",
+      "regione": "Lazio",
+      "tipo": "Comando",
+      "descrizione": "Comando VV.F. ROMA",
+      "coordinate": {
+        "latitudine": 41.89996,
+        "longitudine": 12.49104
+      },
+      "indirizzo": "Via Genova, 3/a"
+    }
+  },
+  {
+    "id": "5",
+    "nome": "Marco",
+    "cognome": "Rossi",
+    "username": "marco",
+    "password": "rossi",
+    "ruoli": [
+      {
+        "descrizione": "GestoreRichieste",
+        "sede": {
+          "codice": "RM.1000",
+          "provincia": "ROMA",
+          "regione": "Lazio",
+          "tipo": "Comando",
+          "descrizione": "Comando VV.F. ROMA",
+          "coordinate": {
+            "latitudine": 41.89996,
+            "longitudine": 12.49104
+          },
+          "indirizzo": "Via Genova, 3/a"
+        }
+      }
+    ],
+    "qualifica": "Operatore SO115",
+    "codiceFiscale": "DTNZMD81C49E783W",
+    "sede": {
+      "codice": "RM.1000",
+      "provincia": "ROMA",
+      "regione": "Lazio",
+      "tipo": "Comando",
+      "descrizione": "Comando VV.F. ROMA",
+      "coordinate": {
+        "latitudine": 41.89996,
+        "longitudine": 12.49104
+      },
+      "indirizzo": "Via Genova, 3/a"
+    }
+  },
+  {
+    "id": "6",
+    "nome": "Marco",
+    "cognome": "Verdi",
+    "username": "marco",
+    "password": "verdi",
+    "ruoli": [
+      {
+        "descrizione": "GestoreRichieste",
+        "sede": {
+          "codice": "RM.1000",
+          "provincia": "ROMA",
+          "regione": "Lazio",
+          "tipo": "Comando",
+          "descrizione": "Comando VV.F. ROMA",
+          "coordinate": {
+            "latitudine": 41.89996,
+            "longitudine": 12.49104
+          },
+          "indirizzo": "Via Genova, 3/a"
+        }
+      }
+    ],
+    "qualifica": "Operatore SO115",
+    "codiceFiscale": "VNFLYH70E01A412P",
+    "sede": {
+      "codice": "RM.1000",
+      "provincia": "ROMA",
+      "regione": "Lazio",
+      "tipo": "Comando",
+      "descrizione": "Comando VV.F. ROMA",
+      "coordinate": {
+        "latitudine": 41.89996,
+        "longitudine": 12.49104
+      },
+      "indirizzo": "Via Genova, 3/a"
+    }
+  },
+  {
+    "id": "7",
+    "nome": "Isabella",
+    "cognome": "Monaldo",
+    "username": "isabella",
+    "password": "monaldo",
+    "ruoli": [
+      {
+        "descrizione": "CallTracker",
+        "sede": {
+          "codice": "RM.1000",
+          "provincia": "ROMA",
+          "regione": "Lazio",
+          "tipo": "Comando",
+          "descrizione": "Comando VV.F. ROMA",
+          "coordinate": {
+            "latitudine": 41.89996,
+            "longitudine": 12.49104
+          },
+          "indirizzo": "Via Genova, 3/a"
+        }
+      }
+    ],
+    "qualifica": "Operatore SO115",
+    "codiceFiscale": "LBRVRY36B08D553W",
+    "sede": {
+      "codice": "RM.1000",
+      "provincia": "ROMA",
+      "regione": "Lazio",
+      "tipo": "Comando",
+      "descrizione": "Comando VV.F. ROMA",
+      "coordinate": {
+        "latitudine": 41.89996,
+        "longitudine": 12.49104
+      },
+      "indirizzo": "Via Genova, 3/a"
+    }
+  },
+  {
+    "id": "8",
+    "nome": "Ivone",
+    "cognome": "Sabbatini",
+    "username": "ivone",
+    "password": "sabbatini",
+    "ruoli": [
+      {
+        "descrizione": "GestoreRichieste",
+        "sede": {
+          "codice": "RM.1000",
+          "provincia": "ROMA",
+          "regione": "Lazio",
+          "tipo": "Comando",
+          "descrizione": "Comando VV.F. ROMA",
+          "coordinate": {
+            "latitudine": 41.89996,
+            "longitudine": 12.49104
+          },
+          "indirizzo": "Via Genova, 3/a"
+        }
+      }
+    ],
+    "qualifica": "Operatore SO115",
+    "codiceFiscale": "PQPDLS85P70I697B",
+    "sede": {
+      "codice": "RM.1000",
+      "provincia": "ROMA",
+      "regione": "Lazio",
+      "tipo": "Comando",
+      "descrizione": "Comando VV.F. ROMA",
+      "coordinate": {
+        "latitudine": 41.89996,
+        "longitudine": 12.49104
+      },
+      "indirizzo": "Via Genova, 3/a"
+    }
+  },
+  {
+    "id": "9",
+    "nome": "Flavio",
+    "cognome": "Pinto",
+    "username": "flavio",
+    "password": "pinto",
+    "ruoli": [
+      {
+        "descrizione": "CallTracker",
+        "sede": {
+          "codice": "RM.1000",
+          "provincia": "ROMA",
+          "regione": "Lazio",
+          "tipo": "Comando",
+          "descrizione": "Comando VV.F. ROMA",
+          "coordinate": {
+            "latitudine": 41.89996,
+            "longitudine": 12.49104
+          },
+          "indirizzo": "Via Genova, 3/a"
+        }
+      }
+    ],
+    "qualifica": "Operatore SO115",
+    "codiceFiscale": "HCLHND66C61A815O",
+    "sede": {
+      "codice": "RM.1000",
+      "provincia": "ROMA",
+      "regione": "Lazio",
+      "tipo": "Comando",
+      "descrizione": "Comando VV.F. ROMA",
+      "coordinate": {
+        "latitudine": 41.89996,
+        "longitudine": 12.49104
+      },
+      "indirizzo": "Via Genova, 3/a"
+    }
+  },
+  {
+    "id": "10",
+    "nome": "Sandro",
+    "cognome": "Marcelo",
+    "username": "sandro",
+    "password": "marcelo",
+    "ruoli": [
+      {
+        "descrizione": "CallTracker",
+        "sede": {
+          "codice": "RM.1000",
+          "provincia": "ROMA",
+          "regione": "Lazio",
+          "tipo": "Comando",
+          "descrizione": "Comando VV.F. ROMA",
+          "coordinate": {
+            "latitudine": 41.89996,
+            "longitudine": 12.49104
+          },
+          "indirizzo": "Via Genova, 3/a"
+        }
+      }
+    ],
+    "qualifica": "Operatore SO115",
+    "codiceFiscale": "HVHNHG30C12G396Q",
+    "sede": {
+      "codice": "RM.1000",
+      "provincia": "ROMA",
+      "regione": "Lazio",
+      "tipo": "Comando",
+      "descrizione": "Comando VV.F. ROMA",
+      "coordinate": {
+        "latitudine": 41.89996,
+        "longitudine": 12.49104
+      },
+      "indirizzo": "Via Genova, 3/a"
+    }
+  },
+  {
+    "id": "11",
+    "nome": "Isidora",
+    "cognome": "Trentino",
+    "username": "isidora",
+    "password": "trentino",
+    "ruoli": [
+      {
+        "descrizione": "GestoreRichieste",
+        "sede": {
+          "codice": "RM.1000",
+          "provincia": "ROMA",
+          "regione": "Lazio",
+          "tipo": "Comando",
+          "descrizione": "Comando VV.F. ROMA",
+          "coordinate": {
+            "latitudine": 41.89996,
+            "longitudine": 12.49104
+          },
+          "indirizzo": "Via Genova, 3/a"
+        }
+      }
+    ],
+    "qualifica": "Operatore SO115",
+    "codiceFiscale": "FMJKMI48C50C869C",
+    "sede": {
+      "codice": "RM.1000",
+      "provincia": "ROMA",
+      "regione": "Lazio",
+      "tipo": "Comando",
+      "descrizione": "Comando VV.F. ROMA",
+      "coordinate": {
+        "latitudine": 41.89996,
+        "longitudine": 12.49104
+      },
+      "indirizzo": "Via Genova, 3/a"
+    }
+  },
+  {
+    "id": "12",
+    "nome": "Amina",
+    "cognome": "Zetticci",
+    "username": "amina",
+    "password": "zettici",
+    "ruoli": [
+      {
+        "descrizione": "GestoreRichieste",
+        "sede": {
+          "codice": "RM.1000",
+          "provincia": "ROMA",
+          "regione": "Lazio",
+          "tipo": "Comando",
+          "descrizione": "Comando VV.F. ROMA",
+          "coordinate": {
+            "latitudine": 41.89996,
+            "longitudine": 12.49104
+          },
+          "indirizzo": "Via Genova, 3/a"
+        }
+      }
+    ],
+    "qualifica": "Operatore SO115",
+    "codiceFiscale": "VFRGXW29B17I633L",
+    "sede": {
+      "codice": "RM.1000",
+      "provincia": "ROMA",
+      "regione": "Lazio",
+      "tipo": "Comando",
+      "descrizione": "Comando VV.F. ROMA",
+      "coordinate": {
+        "latitudine": 41.89996,
+        "longitudine": 12.49104
+      },
+      "indirizzo": "Via Genova, 3/a"
+    }
+  },
+  {
+    "id": "13",
+    "nome": "Piera",
+    "cognome": "Lori",
+    "username": "piera",
+    "password": "lori",
+    "ruoli": [
+      {
+        "descrizione": "GestoreRichieste",
+        "sede": {
+          "codice": "RM.1000",
+          "provincia": "ROMA",
+          "regione": "Lazio",
+          "tipo": "Comando",
+          "descrizione": "Comando VV.F. ROMA",
+          "coordinate": {
+            "latitudine": 41.89996,
+            "longitudine": 12.49104
+          },
+          "indirizzo": "Via Genova, 3/a"
+        }
+      }
+    ],
+    "qualifica": "Operatore SO115",
+    "codiceFiscale": "HMLXKD51L66G417D",
+    "sede": {
+      "codice": "RM.1000",
+      "provincia": "ROMA",
+      "regione": "Lazio",
+      "tipo": "Comando",
+      "descrizione": "Comando VV.F. ROMA",
+      "coordinate": {
+        "latitudine": 41.89996,
+        "longitudine": 12.49104
+      },
+      "indirizzo": "Via Genova, 3/a"
+    }
+  },
+  {
+    "id": "14",
+    "nome": "Romeo",
+    "cognome": "Marchesi",
+    "username": "romeo",
+    "password": "marchesi",
+    "ruoli": [
+      {
+        "descrizione": "CallTracker",
+        "sede": {
+          "codice": "RM.1000",
+          "provincia": "ROMA",
+          "regione": "Lazio",
+          "tipo": "Comando",
+          "descrizione": "Comando VV.F. ROMA",
+          "coordinate": {
+            "latitudine": 41.89996,
+            "longitudine": 12.49104
+          },
+          "indirizzo": "Via Genova, 3/a"
+        }
+      }
+    ],
+    "qualifica": "Operatore SO115",
+    "codiceFiscale": "KCCRTM54M61H945I",
+    "sede": {
+      "codice": "RM.1000",
+      "provincia": "ROMA",
+      "regione": "Lazio",
+      "tipo": "Comando",
+      "descrizione": "Comando VV.F. ROMA",
+      "coordinate": {
+        "latitudine": 41.89996,
+        "longitudine": 12.49104
+      },
+      "indirizzo": "Via Genova, 3/a"
+    }
+  },
+  {
+    "id": "15",
+    "nome": "Cora",
+    "cognome": "Trentini",
+    "username": "cora",
+    "password": "trentini",
+    "ruoli": [
+      {
+        "descrizione": "GestoreRichieste",
+        "sede": {
+          "codice": "RM.1000",
+          "provincia": "ROMA",
+          "regione": "Lazio",
+          "tipo": "Comando",
+          "descrizione": "Comando VV.F. ROMA",
+          "coordinate": {
+            "latitudine": 41.89996,
+            "longitudine": 12.49104
+          },
+          "indirizzo": "Via Genova, 3/a"
+        }
+      }
+    ],
+    "qualifica": "Operatore SO115",
+    "codiceFiscale": "TFMSJR66P03H966R",
+    "sede": {
+      "codice": "RM.1000",
+      "provincia": "ROMA",
+      "regione": "Lazio",
+      "tipo": "Comando",
+      "descrizione": "Comando VV.F. ROMA",
+      "coordinate": {
+        "latitudine": 41.89996,
+        "longitudine": 12.49104
+      },
+      "indirizzo": "Via Genova, 3/a"
+    }
+  }
+]

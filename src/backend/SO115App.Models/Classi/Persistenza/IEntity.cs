@@ -20,13 +20,13 @@
 namespace SO115App.API.Models.Classi.Persistenza
 {
     /// <summary>
-    /// Interfaccia da cui derivano le entita, cioè le classi che hanno una corrispondenza uno-ad-uno
-    /// con una entry di database.
+    ///   Interfaccia da cui derivano le entita, cioè le classi che hanno una corrispondenza
+    ///   uno-ad-uno con una entry di database.
     /// </summary>
     public interface IEntity
     {
         /// <summary>
-        /// L'id dell'entità, che corrisponde alla chiave primaria nel database.
+        ///   L'id dell'entità, che corrisponde alla chiave primaria nel database.
         /// </summary>
         string Id { get; }
     }

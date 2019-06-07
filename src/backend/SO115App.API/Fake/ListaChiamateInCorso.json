@@ -1,1 +1,16 @@
-[{"id":"RM.1000-1-U3axTTlG","descrizioneOperatore":"Luigi Bianchi","codiceSedeOperatore":"RM.1000","localita":{"Coordinate":{"Latitudine":41.9654858,"Longitudine":12.442534199999955},"Indirizzo":"Via Cassia, 739-749, 00189 Roma RM, Italia","Note":null},"label":null}]
+[
+  {
+    "id": "RM.1000-1-U3axTTlG",
+    "descrizioneOperatore": "Luigi Bianchi",
+    "codiceSedeOperatore": "RM.1000",
+    "localita": {
+      "Coordinate": {
+        "Latitudine": 41.9654858,
+        "Longitudine": 12.442534199999955
+      },
+      "Indirizzo": "Via Cassia, 739-749, 00189 Roma RM, Italia",
+      "Note": null
+    },
+    "label": null
+  }
+]

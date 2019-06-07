@@ -17,11 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Soccorso.Eventi.Eccezioni;
-using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Eccezioni;
+using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
 {

@@ -17,15 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.ListaEventi;
 using SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi;
 using SO115App.Models.Classi.ListaEventi;
 using SO115App.Models.Servizi.Infrastruttura.GetListaEventi;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace SO115App.FakePersistenceJSon.ListaEventi
 {

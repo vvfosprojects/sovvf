@@ -17,11 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Bogus;
-using SO115App.API.Models.Classi.Condivise;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using Bogus;
+using SO115App.API.Models.Classi.Condivise;
 
 namespace SO115App.GeneratoreRichiesteFake
 {

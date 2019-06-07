@@ -23,7 +23,6 @@ using System.Linq;
 using Bogus;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.GeneratoreRichiesteFake.AzioniSuRichiesta;

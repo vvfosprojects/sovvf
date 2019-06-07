@@ -17,8 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Authorization;
 using System.Collections.Generic;
+using CQRS.Authorization;
 
 namespace CQRS.Queries.Authorizers
 {

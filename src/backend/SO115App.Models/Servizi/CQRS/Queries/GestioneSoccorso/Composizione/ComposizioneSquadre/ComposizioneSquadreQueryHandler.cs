@@ -17,14 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Queries;
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Composizione;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using CQRS.Queries;
+using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre
 {
@@ -61,57 +56,40 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         //{
         //    //TODO PARTE CHIAMATA DB
 
-        //    //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
-        //    //DATI FAKE - ORA LI LEGGO DA FILE
-        //    string filepath = "Fake/SquadreComposizione.json";
-        //    string json;
-        //    using (StreamReader r = new StreamReader(filepath))
-        //    {
-        //        json = r.ReadToEnd();
-        //    }
-        //    List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = new List<Classi.Composizione.ComposizioneMezzi>();
-        //    Classi.Composizione.ComposizioneMezzi mezzo = new Classi.Composizione.ComposizioneMezzi();
-        //    var codiceDistaccamento = "";
-        //    List<Classi.Composizione.ComposizioneSquadre> composizioneSquadre = JsonConvert.DeserializeObject<List<Classi.Composizione.ComposizioneSquadre>>(json);
-        //    if ((query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
-        //        || (query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo[0]))
-        //         || (query.Filtro.CodiceSquadra != null && query.Filtro.CodiceSquadra.Length > 0) && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0])
-        //         || (query.Filtro.CodiceStatoMezzo != null && query.Filtro.CodiceStatoMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
-        //         || (query.Filtro.CodiceTipoMezzo != null && query.Filtro.CodiceTipoMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0])))
-        //    {
-        //        if ((query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo[0])))
-        //        {
-        //            string path = "Fake/MezziComposizione.json";
-        //            string jsonMezzi;
-        //            using (StreamReader r = new StreamReader(path))
-        //            {
-        //                jsonMezzi = r.ReadToEnd();
-        //            }
-        //            composizioneMezzi = JsonConvert.DeserializeObject<List<Classi.Composizione.ComposizioneMezzi>>(jsonMezzi);
-        //            mezzo = composizioneMezzi.Where(x => (query.Filtro.CodiceMezzo.Any(x.Mezzo.Codice.Equals))).FirstOrDefault();
-        //            if(mezzo != null)
-        //            {
-        //                if (query.Filtro.CodiceStatoMezzo != null && query.Filtro.CodiceStatoMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
-        //                {
-        //                    if (!query.Filtro.CodiceStatoMezzo.Any(mezzo.Mezzo.Stato.Equals))
-        //                    {
-        //                        mezzo = null;
-        //                    }
-        //                }
-        //                if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
-        //                {
-        //                    if (!query.Filtro.CodiceDistaccamento.Any(mezzo.Mezzo.Distaccamento.Codice.Equals))
-        //                    {
-        //                        mezzo = null;
-        //                    }
-        //                }
-        //                if (query.Filtro.CodiceTipoMezzo != null && query.Filtro.CodiceTipoMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0]))
-        //                {
-        //                    if (!query.Filtro.CodiceTipoMezzo.Any(mezzo.Mezzo.Genere.Equals))
-        //                    {
-        //                        mezzo = null;
-        //                    }
-        //                }
+        // //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
+        // //DATI FAKE - ORA LI LEGGO DA FILE string filepath = "Fake/SquadreComposizione.json";
+        // string json; using (StreamReader r = new StreamReader(filepath)) { json = r.ReadToEnd(); }
+        // List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = new
+        // List<Classi.Composizione.ComposizioneMezzi>(); Classi.Composizione.ComposizioneMezzi mezzo
+        // = new Classi.Composizione.ComposizioneMezzi(); var codiceDistaccamento = "";
+        // List<Classi.Composizione.ComposizioneSquadre> composizioneSquadre =
+        // JsonConvert.DeserializeObject<List<Classi.Composizione.ComposizioneSquadre>>(json); if
+        // ((query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length > 0
+        // && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0])) ||
+        // (query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0 &&
+        // !string.IsNullOrEmpty(query.Filtro.CodiceMezzo[0])) || (query.Filtro.CodiceSquadra != null
+        // && query.Filtro.CodiceSquadra.Length > 0) &&
+        // !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0]) || (query.Filtro.CodiceStatoMezzo !=
+        // null && query.Filtro.CodiceStatoMezzo.Length > 0 &&
+        // !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0])) || (query.Filtro.CodiceTipoMezzo
+        // != null && query.Filtro.CodiceTipoMezzo.Length > 0 &&
+        // !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0]))) { if ((query.Filtro.CodiceMezzo
+        // != null && query.Filtro.CodiceMezzo.Length > 0 &&
+        // !string.IsNullOrEmpty(query.Filtro.CodiceMezzo[0]))) { string path =
+        // "Fake/MezziComposizione.json"; string jsonMezzi; using (StreamReader r = new
+        // StreamReader(path)) { jsonMezzi = r.ReadToEnd(); } composizioneMezzi =
+        // JsonConvert.DeserializeObject<List<Classi.Composizione.ComposizioneMezzi>>(jsonMezzi);
+        // mezzo = composizioneMezzi.Where(x =>
+        // (query.Filtro.CodiceMezzo.Any(x.Mezzo.Codice.Equals))).FirstOrDefault(); if(mezzo != null)
+        // { if (query.Filtro.CodiceStatoMezzo != null && query.Filtro.CodiceStatoMezzo.Length > 0 &&
+        // !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0])) { if
+        // (!query.Filtro.CodiceStatoMezzo.Any(mezzo.Mezzo.Stato.Equals)) { mezzo = null; } } if
+        // (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length > 0
+        // && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0])) { if
+        // (!query.Filtro.CodiceDistaccamento.Any(mezzo.Mezzo.Distaccamento.Codice.Equals)) { mezzo =
+        // null; } } if (query.Filtro.CodiceTipoMezzo != null && query.Filtro.CodiceTipoMezzo.Length
+        // > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0])) { if
+        // (!query.Filtro.CodiceTipoMezzo.Any(mezzo.Mezzo.Genere.Equals)) { mezzo = null; } }
 
         //            }
         //            if (mezzo != null)

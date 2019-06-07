@@ -37,54 +37,54 @@ namespace SO115App.API.Models.Classi.Condivise
         }
 
         /// <summary>
-        /// Codice Sede
+        ///   Codice Sede
         /// </summary>
         [Required]
         public string Codice { get; set; }
 
         /// <summary>
-        /// Descrizione Sede
+        ///   Descrizione Sede
         /// </summary>
         [Required]
         public string Descrizione { get; set; }
 
         /// <summary>
-        /// Coordinate
+        ///   Coordinate
         /// </summary>
         [Required]
         public Coordinate Coordinate { get; set; }
 
         /// <summary>
-        /// Indirizzo della Sede
+        ///   Indirizzo della Sede
         /// </summary>
         [Required]
         public string Indirizzo { get; set; }
 
         /// <summary>
-        /// Tipologia Sede
+        ///   Tipologia Sede
         /// </summary>
         [Required]
         public string Tipo { get; set; }
 
         /// <summary>
-        /// Tipologia Sede
+        ///   Tipologia Sede
         /// </summary>
         [Required]
         public string Regione { get; set; }
 
         /// <summary>
-        /// Tipologia Sede
+        ///   Tipologia Sede
         /// </summary>
         [Required]
         public string Provincia { get; set; }
 
         /// <summary>
-        /// Label
+        ///   Label
         /// </summary>
         public string Label { get; set; }
 
         /// <summary>
-        /// Icona
+        ///   Icona
         /// </summary>
         public string Icona { get; set; }
     }

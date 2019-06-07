@@ -29,17 +29,17 @@ namespace SO115App.API.Models.Classi.Condivise
         }
 
         /// <summary>
-        /// Codice Comlessità
+        ///   Codice Comlessità
         /// </summary>
         //public string codice { get; set; }
 
         /// <summary>
-        /// Indice Complessità
+        ///   Indice Complessità
         /// </summary>
         public string Indice { get; set; }
 
         /// <summary>
-        /// Descrizione Comlessità
+        ///   Descrizione Comlessità
         /// </summary>
         public string Descrizione { get; set; }
     }

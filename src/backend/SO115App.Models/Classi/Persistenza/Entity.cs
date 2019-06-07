@@ -20,13 +20,13 @@
 namespace SO115App.API.Models.Classi.Persistenza
 {
     /// <summary>
-    /// Classe astratta da cui derivano le entita, cioè le classi che hanno una corrispondenza
-    /// uno-ad-uno con una entry di database.
+    ///   Classe astratta da cui derivano le entita, cioè le classi che hanno una corrispondenza
+    ///   uno-ad-uno con una entry di database.
     /// </summary>
     public abstract class Entity : IEntity
     {
         /// <summary>
-        /// L'id dell'entità, che corrisponde alla chiave primaria nel database.
+        ///   L'id dell'entità, che corrisponde alla chiave primaria nel database.
         /// </summary>
         public string Id { get; protected internal set; }
     }

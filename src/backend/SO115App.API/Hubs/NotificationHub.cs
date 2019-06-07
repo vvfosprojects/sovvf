@@ -17,11 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Notifications;
-using System;
-using System.Threading.Tasks;
 
 namespace SO115App.API.Hubs
 {
@@ -42,16 +42,19 @@ namespace SO115App.API.Hubs
             }
             await base.OnConnectedAsync();
         }
+
         public async Task RemoveToGroup(Notification<Utente> utente)
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, utente.CodiceSede);
             await Clients.OthersInGroup(utente.CodiceSede).SendAsync("NotifyLogOut", "L'utente " + utente.NominativoUtente + " è uscito dalla sede " + utente.CodiceSede);
             await base.OnConnectedAsync();
         }
+
         public string GetConnectionId()
         {
             return Context.ConnectionId;
         }
+
         public long GetDateTime()
         {
             return DateTimeOffset.Now.ToUnixTimeMilliseconds();

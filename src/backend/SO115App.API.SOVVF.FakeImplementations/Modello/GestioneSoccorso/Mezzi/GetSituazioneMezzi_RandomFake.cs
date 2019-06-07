@@ -17,12 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Collections.Generic;
+using System.Linq;
 using Bogus;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.SituazioneMezzo;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi
 {

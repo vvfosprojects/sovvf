@@ -17,33 +17,27 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Collections.Generic;
 using CQRS.Queries;
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Marker;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Marker;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
-using System.Collections.Generic;
-using System.IO;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker
 {
-
     public class ListaChiamateInCorsoMarkerQueryHandler : IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult>
     {
-        
         private readonly IGetChiamateInCorso _iGetChiamateInCorso;
 
         /// <summary>
-        /// Costruttore della classe
+        ///   Costruttore della classe
         /// </summary>
         public ListaChiamateInCorsoMarkerQueryHandler(IGetChiamateInCorso iGetChiamateInCorso)
-        {          
+        {
             this._iGetChiamateInCorso = iGetChiamateInCorso;
         }
 
         /// <summary>
-        /// Metodo di esecuzione della query
+        ///   Metodo di esecuzione della query
         /// </summary>
         /// <param name="query">Il DTO di ingresso della query</param>
         /// <returns>Il DTO di uscita della query</returns>

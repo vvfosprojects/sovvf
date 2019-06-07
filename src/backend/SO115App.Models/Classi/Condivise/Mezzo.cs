@@ -33,77 +33,77 @@ namespace SO115App.API.Models.Classi.Condivise
         }
 
         /// <summary>
-        /// Codice del mezzo
+        ///   Codice del mezzo
         /// </summary>
         public string Codice { get; set; }
 
         /// <summary>
-        /// Descrizione del mezzo
+        ///   Descrizione del mezzo
         /// </summary>
         public string Descrizione { get; set; }
 
         /// <summary>
-        /// Genere del mezzo
+        ///   Genere del mezzo
         /// </summary>
         public string Genere { get; set; }
 
         /// <summary>
-        /// Stato del mezzo
+        ///   Stato del mezzo
         /// </summary>
         public string Stato { get; set; }
 
         /// <summary>
-        /// Appartenenza del mezzo
+        ///   Appartenenza del mezzo
         /// </summary>
         public int Appartenenza { get; set; }
 
         /// <summary>
-        /// Indica il distaccamento del mezzo
+        ///   Indica il distaccamento del mezzo
         /// </summary>
         public Sede Distaccamento { get; set; }
 
         /// <summary>
-        /// Descrizione dell'appartenenza del mezzo
+        ///   Descrizione dell'appartenenza del mezzo
         /// </summary>
         public string DescrizioneAppartenenza { get; set; }
 
         /// <summary>
-        /// Descrizione dello stato del mezzo
+        ///   Descrizione dello stato del mezzo
         /// </summary>
         public string DescrizioneStato { get; set; }
 
         /// <summary>
-        /// Stato efficenza del mezzo
+        ///   Stato efficenza del mezzo
         /// </summary>
         public int StatoEfficenza { get; set; }
 
         /// <summary>
-        /// Descrizione dello Stato efficenza del mezzo
+        ///   Descrizione dello Stato efficenza del mezzo
         /// </summary>
         public string DescrizioneStatoEfficenza { get; set; }
 
         /// <summary>
-        /// Indica il livello del carburante del mezzo
+        ///   Indica il livello del carburante del mezzo
         /// </summary>
         public int LivelloCarburante { get; set; }
 
         /// <summary>
-        /// descrive il livello del carburante del mezzo
+        ///   descrive il livello del carburante del mezzo
         /// </summary>
         public string DescrizioneLivelloCarburante { get; set; }
 
         /// <summary>
-        /// Indica il livello dell'estinguente del mezzo
+        ///   Indica il livello dell'estinguente del mezzo
         /// </summary>
         public int LivelloEstinguente { get; set; }
 
         /// <summary>
-        /// descrive il livello dell'estinguente del mezzo
+        ///   descrive il livello dell'estinguente del mezzo
         /// </summary>
         public string DescrizioneLivelloEstinguente { get; set; }
 
         /// <summary>
-        /// Note eventuali
+        ///   Note eventuali
         /// </summary>
         public string[] Notifiche { get; set; }
     }

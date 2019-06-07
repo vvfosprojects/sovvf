@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CQRS.Commands;
 using CQRS.Queries;
-using DomainModel.CQRS.Commands.AddIntervento;
 using DomainModel.CQRS.Commands.UpDateIntervento;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

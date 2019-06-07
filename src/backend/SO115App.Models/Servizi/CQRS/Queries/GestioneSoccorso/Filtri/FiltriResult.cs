@@ -17,18 +17,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Marker;
-using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.Filtri
 {
     /// <summary>
-    /// DTO di output
+    ///   DTO di output
     /// </summary>
     public class FiltriResult
     {
         /// <summary>
-        /// La sintesi delle richieste di assistenza
+        ///   La sintesi delle richieste di assistenza
         /// </summary>
         public Classi.Filtri.Filtri Filtri
         { get; set; }

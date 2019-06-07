@@ -17,6 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Linq;
+using System.Security.Principal;
+using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,10 +28,6 @@ using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Filtri;
 using SO115App.API.Models.Servizi.CQRS.Queries.Filtri;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using System.Linq;
-using System.Net;
-using System.Security.Principal;
-using System.Threading.Tasks;
 
 /* using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste; */
 
@@ -71,7 +70,6 @@ namespace SO115App.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 

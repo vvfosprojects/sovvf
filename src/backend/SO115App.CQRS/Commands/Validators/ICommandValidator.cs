@@ -17,8 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Validation;
 using System.Collections.Generic;
+using CQRS.Validation;
 
 // Credits to Steven van Deursen for this implementation https://stackoverflow.com/questions/52593426/registering-open-generic-decorators-through-a-single-binding-rule
 

@@ -17,10 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Authorization;
-using Serilog;
 using System.Collections.Generic;
 using System.Linq;
+using CQRS.Authorization;
+using Serilog;
 
 namespace CQRS.Queries.Authorizers
 {

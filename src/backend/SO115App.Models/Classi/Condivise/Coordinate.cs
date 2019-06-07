@@ -28,12 +28,12 @@ namespace SO115App.API.Models.Classi.Condivise
         }
 
         /// <summary>
-        /// Latitudine
+        ///   Latitudine
         /// </summary>
         public double Latitudine { get; set; }
 
         /// <summary>
-        /// Latitudine
+        ///   Latitudine
         /// </summary>
         public double Longitudine { get; set; }
     }

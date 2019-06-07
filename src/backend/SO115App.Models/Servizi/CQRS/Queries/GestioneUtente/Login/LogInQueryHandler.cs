@@ -17,40 +17,38 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Queries;
-using SO115App.API.Models.Classi.Autenticazione;
-using System.IO;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using CQRS.Queries;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using SO115App.API.Models.Classi.Autenticazione;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
 {
     /// <summary>
-    /// Servizio che restituisce tutti i valori dei Box presenti in HomePage.
+    ///   Servizio che restituisce tutti i valori dei Box presenti in HomePage.
     /// </summary>
     public class LogInQueryHandler : IQueryHandler<LogInQuery, LogInResult>
     {
         private readonly IConfiguration _config;
 
-        public LogInQueryHandler(IConfiguration config )
+        public LogInQueryHandler(IConfiguration config)
         {
             this._config = config;
         }
 
         /// <summary>
-        /// Query che estrae i valori dei Box presenti in Home Page
+        ///   Query che estrae i valori dei Box presenti in Home Page
         /// </summary>
         /// <param name="query">Filtri utilizzati per l'estrazione</param>
         /// <returns>Elenco dei mezzi disponibili</returns>
         public LogInResult Handle(LogInQuery query)
         {
             // preparazione del DTO
-            var utente = Utente.VerificaLogIn(query.Username,query.Password);
-
+            var utente = Utente.VerificaLogIn(query.Username, query.Password);
 
             var claim = new[]
                 {
@@ -77,7 +75,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
 
             return new LogInResult()
             {
-                User = utente                
+                User = utente
             };
         }
     }

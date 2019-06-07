@@ -22,12 +22,12 @@ using CQRS.Queries;
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
 {
     /// <summary>
-    /// DTO che alimenta il Box Mezzi presente in Home Page
+    ///   DTO che alimenta il Box Mezzi presente in Home Page
     /// </summary>
     public class BoxMezziQuery : IQuery<BoxMezziResult>
     {
         /// <summary>
-        /// Filtra solo i mezzi appartenenti all'unità operativa indicata.
+        ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
         /// </summary>
         /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
         public string FiltroBox { get; set; }

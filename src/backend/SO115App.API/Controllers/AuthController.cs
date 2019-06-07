@@ -17,17 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Linq;
+using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using SO115App.Models.Classi.Utenti.Autenticazione;
 
 namespace SO115App.API.Controllers
@@ -49,7 +46,6 @@ namespace SO115App.API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody]AuthLogIn crenenziali)
         {
-
             var headerValues = Request.Headers["HubConnectionId"];
 
             string ConId = headerValues.FirstOrDefault();

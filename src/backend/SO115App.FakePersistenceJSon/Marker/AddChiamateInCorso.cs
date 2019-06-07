@@ -17,10 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using Newtonsoft.Json;
 using SO115App.Models.Classi.Marker;
 using SO115App.Models.Servizi.Infrastruttura.Marker;

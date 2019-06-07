@@ -25,32 +25,32 @@ namespace SO115App.API.Models.Classi.Condivise
     public class Squadra
     {
         /// <summary>
-        /// Enumera gli stati in cui un capopartenza partecipante ad una richiesta può trovarsi
+        ///   Enumera gli stati in cui un capopartenza partecipante ad una richiesta può trovarsi
         /// </summary>
         public enum StatoSquadra
         {
             /// <summary>
-            /// In viaggio verso il luogo del sinistro.
+            ///   In viaggio verso il luogo del sinistro.
             /// </summary>
             InViaggio,
 
             /// <summary>
-            /// Giunta sul luogo del sinistro
+            ///   Giunta sul luogo del sinistro
             /// </summary>
             SulPosto,
 
             /// <summary>
-            /// In viaggio verso la sede di servizio
+            ///   In viaggio verso la sede di servizio
             /// </summary>
             InRientro,
 
             /// <summary>
-            /// Presso la sede di servizio
+            ///   Presso la sede di servizio
             /// </summary>
             InSede,
 
             /// <summary>
-            /// Fuori per ragioni di istituto
+            ///   Fuori per ragioni di istituto
             /// </summary>
             Istituto
         }
@@ -62,29 +62,31 @@ namespace SO115App.API.Models.Classi.Condivise
             this.Componenti = Componenti;
             this.Distaccamento = Distaccamento;
         }
+
         public string Id { get; set; }
+
         /// <summary>
-        /// Nominativo Squadra
+        ///   Nominativo Squadra
         /// </summary>
         public string Nome { get; set; }
 
         /// <summary>
-        /// Lo stato della squadra
+        ///   Lo stato della squadra
         /// </summary>
         public StatoSquadra Stato { get; set; }
 
         /// <summary>
-        /// Lista dei componenti della squadra
+        ///   Lista dei componenti della squadra
         /// </summary>
         public List<Componente> Componenti { get; set; }
 
         /// <summary>
-        /// Indica il distaccamento della squadra
+        ///   Indica il distaccamento della squadra
         /// </summary>
         public Sede Distaccamento { get; set; }
 
         /// <summary>
-        /// Indica l'istante in cui la squadra termina il suo impegno
+        ///   Indica l'istante in cui la squadra termina il suo impegno
         /// </summary>
         public DateTime? IstanteTermineImpegno { get; set; }
     }

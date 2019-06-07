@@ -20,17 +20,17 @@
 namespace SO115App.API.Models.Classi.Soccorso.Complessita
 {
     /// <summary>
-    /// La complessità legata ad una richiesta di assistenza.
+    ///   La complessità legata ad una richiesta di assistenza.
     /// </summary>
     public interface IComplessita
     {
         /// <summary>
-        /// Il codice
+        ///   Il codice
         /// </summary>
         string Codice { get; }
 
         /// <summary>
-        /// La descrizione
+        ///   La descrizione
         /// </summary>
         string Descrizione { get; }
     }

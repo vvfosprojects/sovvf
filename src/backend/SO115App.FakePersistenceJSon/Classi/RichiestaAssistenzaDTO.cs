@@ -17,10 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.ListaEventi;
 using SO115App.API.Models.Classi.Persistenza;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
@@ -28,10 +29,6 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Classi.Utenti;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
 
 namespace SO115App.FakePersistenceJSon.Classi

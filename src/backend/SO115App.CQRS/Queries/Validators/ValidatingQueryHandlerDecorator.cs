@@ -17,10 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Validation;
-using Serilog;
 using System.Collections.Generic;
 using System.Linq;
+using CQRS.Validation;
+using Serilog;
 
 namespace CQRS.Queries.Validators
 {
