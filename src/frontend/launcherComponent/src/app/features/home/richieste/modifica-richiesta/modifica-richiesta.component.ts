@@ -12,8 +12,8 @@ import { CopyToClipboard } from '../../store/actions/chiamata/clipboard.actions'
 import { NavbarState } from '../../../navbar/store/states/navbar.state';
 import { ClearRichiestaModifica } from '../../store/actions/richieste/richiesta-modifica.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
-import { Localita } from '../../../../shared/model/localita.model';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
+import { ToggleModifica } from '../../store/actions/view/view.actions';
 
 @Component({
     selector: 'app-modifica-richiesta',
