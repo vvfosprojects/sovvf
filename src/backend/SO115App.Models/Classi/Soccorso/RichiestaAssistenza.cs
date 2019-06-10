@@ -558,11 +558,6 @@ namespace SO115App.API.Models.Classi.Soccorso
         public virtual Richiedente Richiedente { get; set; }
 
         /// <summary>
-        ///   Il numero telefonico del richiedente della richiesta, se appropriato.
-        /// </summary>
-        public virtual string NumeroRichiedente { get; set; }
-
-        /// <summary>
         ///   E' il codice delle unità operative di prima, seconda, terza... competenza, in ordine di preferenza.
         /// </summary>
         public virtual string[] CodiciUOCompetenza { get; set; }

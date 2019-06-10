@@ -36,7 +36,6 @@ namespace SO115App.FakePersistenceJSon.Utility
                 Competenze = richiesta.Competenze,
                 Descrizione = richiesta.Descrizione,
                 Localita = richiesta.Localita,
-                NumeroRichiedente = richiesta.NumeroRichiedente,
                 Operatore = richiesta.Operatore,
                 Richiedente = richiesta.Richiedente,
                 Tags = richiesta.Tags,
