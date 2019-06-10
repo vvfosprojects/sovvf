@@ -26,10 +26,11 @@ namespace SO115App.FakePersistence.InMemory
     {
         private Dictionary<string, RichiestaAssistenza> richieste = new Dictionary<string, RichiestaAssistenza>();
 
-        public Richieste(IEnumerable<RichiestaAssistenza> richieste)
+        public Richieste(IEnumerable<RichiestaAssistenza> richieste = null)
         {
-            foreach (var richiesta in richieste)
-                this.richieste.Add(richiesta.Id, richiesta);
+            if (richieste != null)
+                foreach (var richiesta in richieste)
+                    this.richieste.Add(richiesta.Id, richiesta);
         }
 
         public RichiestaAssistenza GetById(string id)
