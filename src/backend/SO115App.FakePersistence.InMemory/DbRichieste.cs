@@ -17,16 +17,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using SO115App.API.Models.Classi.Soccorso;
 
 namespace SO115App.FakePersistence.InMemory
 {
-    public class Richieste
+    public class DbRichieste
     {
         private Dictionary<string, RichiestaAssistenza> richieste = new Dictionary<string, RichiestaAssistenza>();
 
-        public Richieste(IEnumerable<RichiestaAssistenza> richieste = null)
+        public DbRichieste(IEnumerable<RichiestaAssistenza> richieste = null)
         {
             if (richieste != null)
                 foreach (var richiesta in richieste)
@@ -36,6 +37,11 @@ namespace SO115App.FakePersistence.InMemory
         public RichiestaAssistenza GetById(string id)
         {
             return this.richieste[id];
+        }
+
+        public IEnumerable<RichiestaAssistenza> GetRichieste()
+        {
+            return this.richieste.Values;
         }
     }
 }

@@ -56,9 +56,9 @@ namespace SO115App.CompositionRoot
 
             if (inMemoryPersistence)
             {
-                container.Register<SO115App.FakePersistence.InMemory.Richieste>(() =>
+                container.Register<SO115App.FakePersistence.InMemory.DbRichieste>(() =>
                 {
-                    return new SO115App.FakePersistence.InMemory.Richieste(richieste);
+                    return new SO115App.FakePersistence.InMemory.DbRichieste(richieste);
                 },
                 Lifestyle.Singleton);
             }
