@@ -12,6 +12,7 @@ import { TipoTerreno } from './tipo-terreno';
 import { EnteIntervenuto } from './ente-intervenuto';
 import { TurnoInserimentoChiamata } from './turno-inserimento-chiamata';
 import { TurnoIntervento } from './turno-intervento';
+import { ObiettivoSensibile } from './obiettivo-sensibile';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -138,7 +139,7 @@ export class SintesiRichiesta {
         /**
          * codice obiettivo rilevante
          */
-        public codiceObiettivoRilevante?: string,
+        public obiettivoSensibile?: ObiettivoSensibile,
         /**
          * rilevanza Storica Artistica e Culturale
          */
