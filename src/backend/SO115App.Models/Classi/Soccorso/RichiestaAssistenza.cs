@@ -98,6 +98,37 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         /// <summary>
+        ///   Questo metodo analizza la richiesta, ne desume il tipo di rilevanza e aggiunge gli
+        ///   eventi necessari a sincronizzare la rilevanza corrente con quella richiesta nei
+        ///   parametri di ingresso.
+        /// </summary>
+        /// <param name="rilevanzaGrave">
+        ///   Indica se la richiesta deve impostata a rilevante per gravità
+        /// </param>
+        /// <param name="rilevanzaStArCu">
+        ///   Indica se la richiesta deve impostata a rilevante per edifici Storico/Artistico/Culturali
+        /// </param>
+        /// <param name="fonte">La fonte dell'evento</param>
+        /// <param name="motivazione">La motivazione dell'aggiornamento della rilevanza</param>
+        internal void SincronizzaRilevanza(bool rilevanzaGrave, bool rilevanzaStArCu, string fonte, string motivazione)
+        {
+            var ultimoEventoRilevanza = (MarcaRilevante)this.Eventi.LastOrDefault(e => e is MarcaRilevante);
+
+            var rilevanzaGraveCorrente =
+                ultimoEventoRilevanza != null &&
+                (ultimoEventoRilevanza as MarcaRilevante).PerGravita;
+
+            var rilevanzaStArCuCorrente =
+                ultimoEventoRilevanza != null &&
+                (ultimoEventoRilevanza as MarcaRilevante).PerEdificioStArCu;
+
+            if ((rilevanzaGraveCorrente ^ rilevanzaGrave) || (rilevanzaStArCuCorrente ^ rilevanzaStArCu))
+            {
+                this.AddEvento(new MarcaRilevante(this, DateTime.UtcNow, fonte, motivazione, rilevanzaGrave, rilevanzaStArCu));
+            }
+        }
+
+        /// <summary>
         ///   <para>
         ///     Il codice intervento è un codice parlante che si utilizza per identificare
         ///     univocamente una richiesta. Si può per esempio utilizzare nelle comunicazioni verbali
@@ -185,36 +216,25 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   La richiesta è sospesa se, prima del termine della sua evasione, tutte le risorse le
         ///   sono state sottratte e dirottate presso altro intervento
         /// </remarks>
-        public bool Sospesa { get; }
+        public bool Sospesa
+        {
+            get
+            {
+                return this.StatoRichiesta is Sospesa;
+            }
+        }
 
         /// <summary>
         ///   Indica se la richiesta è in attesa
         /// </summary>
         /// <remarks>La richiesta è in attesa se non le è stata ancora assegnata alcuna partenza</remarks>
-        public bool InAttesa { get; }
-
-        /// <summary>
-        ///   Indica se la <see cref="RichiestaAssistenza" /> è marcata come rilevante.
-        /// </summary>
-        public virtual bool Rilevante
+        public bool InAttesa
         {
             get
             {
-                var ultimoEventoRilevanza = this.eventi
-                    .Where(e => (e is MarcaRilevante) || (e is MarcaNonRilevante))
-                    .LastOrDefault();
-
-                if ((ultimoEventoRilevanza != null) && (ultimoEventoRilevanza is MarcaRilevante))
-                    return true;
-                else
-                    return false;
+                return this.StatoRichiesta is InAttesa;
             }
         }
-
-        /// <summary>
-        ///   Indica se la rilevanza è di tipo Storico/Artistico/Culturale
-        /// </summary>
-        public bool RilevanzaStArCu { get; set; }
 
         /// <summary>
         ///   Restituisce l'elenco degli stati dei mezzi coinvolti nella Richiesta di Assistenza
@@ -430,6 +450,60 @@ namespace SO115App.API.Models.Classi.Soccorso
                 {
                     return eventoAssegnazione.Istante;
                 }
+            }
+        }
+
+        /// <summary>
+        ///   Indica se la richiesta è rilevante per qualche motivo
+        /// </summary>
+        public bool Rilevante
+        {
+            get
+            {
+                var ultimoEventoRilevanza = (MarcaRilevante)this.eventi
+                    .Where(e => e is MarcaRilevante)
+                    .LastOrDefault();
+
+                if (ultimoEventoRilevanza != null)
+                    return ultimoEventoRilevanza.PerGravita || ultimoEventoRilevanza.PerEdificioStArCu;
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        ///   Indica se la richiesta è rilevante per gravità
+        /// </summary>
+        public bool RilevanteGrave
+        {
+            get
+            {
+                var ultimoEventoRilevanza = (MarcaRilevante)this.eventi
+                    .Where(e => e is MarcaRilevante)
+                    .LastOrDefault();
+
+                if (ultimoEventoRilevanza != null)
+                    return ultimoEventoRilevanza.PerGravita;
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        ///   Indica se la richiesta è rilevante per edificio Storico/Artistico/Culturale
+        /// </summary>
+        public bool RilevanteStArCu
+        {
+            get
+            {
+                var ultimoEventoRilevanza = (MarcaRilevante)this.eventi
+                    .Where(e => e is MarcaRilevante)
+                    .LastOrDefault();
+
+                if (ultimoEventoRilevanza != null)
+                    return ultimoEventoRilevanza.PerEdificioStArCu;
+
+                return false;
             }
         }
 

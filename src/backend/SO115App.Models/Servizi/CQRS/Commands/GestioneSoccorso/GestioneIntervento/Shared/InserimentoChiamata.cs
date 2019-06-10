@@ -133,7 +133,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         ///   base ad un insieme di regole automatiche deterministiche o basate su algoritmi di
         ///   machine learning.
         /// </remarks>
-        public bool Rilevanza { get; set; }
+        public bool RilevanzaGrave { get; set; }
 
         /// <summary>
         ///   Indica se la rilevanza è di tipo Storico/Artistico/Culturale

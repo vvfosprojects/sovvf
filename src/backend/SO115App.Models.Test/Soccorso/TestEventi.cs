@@ -456,23 +456,50 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void UnaRichiestaAssistenzaConEventoRilevanzaERilevante()
+        public void UnaRichiestaAssistenzaConRilevanzaGraveERilevante()
         {
             var richiesta = new RichiestaAssistenza();
-            new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest");
+            new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest", true, false);
 
             Assert.That(richiesta.Rilevante, Is.True);
         }
 
         [Test]
-        public void UnaRichiestaAssistenzaConEventoRilevanzaEPoiEventoNonRilevanzaENonRilevante()
+        public void UnaRichiestaAssistenzaConRilevanzaStArCuERilevante()
         {
             var richiesta = new RichiestaAssistenza();
-            var now = DateTime.Now;
-            new MarcaRilevante(richiesta, now.AddSeconds(-10), "fonte", "motivazioneTest1");
-            new MarcaNonRilevante(richiesta, now, "fonte", "motivazioneTest2");
+            new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest", false, true);
+
+            Assert.That(richiesta.Rilevante, Is.True);
+        }
+
+        [Test]
+        public void UnaRichiestaAssistenzaConRilevanzaNonSettataNonERilevante()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest", false, false);
 
             Assert.That(richiesta.Rilevante, Is.False);
+        }
+
+        [Test]
+        public void UnaRichiestaAssistenzaConRilevanzaNonSettataEPoiRimossaNonERilevante()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest", true, true);
+            new MarcaRilevante(richiesta, DateTime.Now.AddSeconds(1), "fonte", "motivazioneTest", false, false);
+
+            Assert.That(richiesta.Rilevante, Is.False);
+        }
+
+        [Test]
+        public void UnaRichiestaAssistenzaConRilevanzaNonSettataEPoiAttivataERilevante()
+        {
+            var richiesta = new RichiestaAssistenza();
+            new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest", false, false);
+            new MarcaRilevante(richiesta, DateTime.Now.AddSeconds(1), "fonte", "motivazioneTest", true, false);
+
+            Assert.That(richiesta.Rilevante, Is.True);
         }
 
         [Test]
@@ -481,11 +508,49 @@ namespace Modello.Test.Classi.Soccorso
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
 
-            new MarcaRilevante(richiesta, now.AddSeconds(-10), "fonte", "motivazioneTest1");
-            new MarcaNonRilevante(richiesta, now.AddSeconds(-5), "fonte", "motivazioneTest2");
-            new MarcaRilevante(richiesta, now, "fonte", "motivazioneTest3");
+            new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest", true, false);
+            new MarcaRilevante(richiesta, DateTime.Now.AddSeconds(1), "fonte", "motivazioneTest", false, false);
+            new MarcaRilevante(richiesta, DateTime.Now.AddSeconds(2), "fonte", "motivazioneTest", true, false);
 
             Assert.That(richiesta.Rilevante, Is.True);
+        }
+
+        [Test]
+        public void UnaRichiestaAssistenzaConRilevanzaGraveSeguitaDaSolaRilevanzaStArCuERilevante()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+
+            new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest", true, false);
+            new MarcaRilevante(richiesta, DateTime.Now.AddSeconds(1), "fonte", "motivazioneTest", false, true);
+
+            Assert.That(richiesta.Rilevante, Is.True);
+        }
+
+        [Test]
+        public void UnaRichiestaAssistenzaConRilevanzaGraveSeguitaDaSolaRilevanzaStArCuERilevanteStArCuENonRilevanteGrave()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+
+            new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest", true, false);
+            new MarcaRilevante(richiesta, DateTime.Now.AddSeconds(1), "fonte", "motivazioneTest", false, true);
+
+            Assert.That(richiesta.RilevanteStArCu, Is.True);
+            Assert.That(richiesta.RilevanteGrave, Is.False);
+        }
+
+        [Test]
+        public void UnaRichiestaAssistenzaConRilevanzaStArCuSeguitaDaSolaRilevanzaGraveERilevanteGraveENonRilevanteStArCu()
+        {
+            var richiesta = new RichiestaAssistenza();
+            var now = DateTime.Now;
+
+            new MarcaRilevante(richiesta, DateTime.Now, "fonte", "motivazioneTest", false, true);
+            new MarcaRilevante(richiesta, DateTime.Now.AddSeconds(1), "fonte", "motivazioneTest", true, false);
+
+            Assert.That(richiesta.RilevanteStArCu, Is.False);
+            Assert.That(richiesta.RilevanteGrave, Is.True);
         }
     }
 }

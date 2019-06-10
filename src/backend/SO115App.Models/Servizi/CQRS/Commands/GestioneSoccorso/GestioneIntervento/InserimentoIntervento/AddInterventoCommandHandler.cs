@@ -53,18 +53,10 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 TipoTerreno = command.Chiamata.TipoTerreno,
                 ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti,
                 CodiceObiettivoRilevante = command.Chiamata.CodiceObiettivoRilevante,
-                RilevanzaStArCu = command.Chiamata.RilevanzaStArCu,
                 Id = (_iGetMaxCodice.GetMax() + 1).ToString(), //TODO DA TOGLIERE CON LA VERSIONE DB
             };
 
-            if (command.Chiamata.Rilevanza)
-            {
-                new MarcaRilevante(richiesta, command.Chiamata.IstanteRicezioneRichiesta, command.Chiamata.Operatore.Id, "");
-            }
-            else
-            {
-                new MarcaNonRilevante(richiesta, command.Chiamata.IstanteRicezioneRichiesta, command.Chiamata.Operatore.Id, "");
-            }
+#warning gestire la logica sulla rilevanza, che è cambiata.
 
             if (command.Chiamata.IstantePresaInCarico != null)
             {

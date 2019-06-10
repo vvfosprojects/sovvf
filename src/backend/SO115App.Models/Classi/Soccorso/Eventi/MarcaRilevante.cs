@@ -26,6 +26,9 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
     /// </summary>
     public class MarcaRilevante : Evento
     {
+        private readonly bool perGravita;
+        private readonly bool perEdificioStArCu;
+
         /// <summary>
         ///   Costruttore dell'evento
         /// </summary>
@@ -33,19 +36,39 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <param name="istante">L'istante in cui avviene la marcatura</param>
         /// <param name="codiceFonte">La fonte da cui proviene l'informazione sulla rilevanza</param>
         /// <param name="motivazione">La motivazione percui la richiesta è marcata come rilevante</param>
-        public MarcaRilevante(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, string motivazione) : base(richiesta, istante, codiceFonte)
+        /// <param name="perGravita">Indica se la rilevanza è per gravità</param>
+        /// <param name="perEdificioStArCu">Indica se la rilevanza è per edificio Storico/Artistico/Culturale</param>
+        public MarcaRilevante(RichiestaAssistenza richiesta,
+            DateTime istante,
+            string codiceFonte,
+            string motivazione,
+            bool perGravita,
+            bool perEdificioStArCu) : base(richiesta, istante, codiceFonte)
         {
-            if (motivazione == null)
-            {
-                throw new ArgumentNullException(nameof(motivazione));
-            }
-
-            this.Motivazione = motivazione;
+            this.Motivazione = motivazione ?? throw new ArgumentNullException(nameof(motivazione));
+            this.perGravita = perGravita;
+            this.perEdificioStArCu = perEdificioStArCu;
         }
 
         /// <summary>
         ///   La motivazione percui la <see cref="RichiestaAssistenza" /> è marcata rilevante
         /// </summary>
         public string Motivazione { get; private set; }
+
+        /// <summary>
+        ///   Indica che la rilevanza è per gravità
+        /// </summary>
+        public bool PerGravita
+        {
+            get { return this.perGravita; }
+        }
+
+        /// <summary>
+        ///   Indica che la rilevanza è per edificio Storico/Artistico/Culturale
+        /// </summary>
+        public bool PerEdificioStArCu
+        {
+            get { return this.perEdificioStArCu; }
+        }
     }
 }

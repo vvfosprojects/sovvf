@@ -58,7 +58,6 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.TipoTerreno = command.Chiamata.TipoTerreno;
             richiesta.ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti;
             richiesta.CodiceObiettivoRilevante = command.Chiamata.CodiceObiettivoRilevante;
-            richiesta.RilevanzaStArCu = command.Chiamata.RilevanzaStArCu;
             richiesta.Id = idRichiesta; //TODO DA TOGLIERE CON LA VERSIONE DB
 
             if (command.Chiamata.Etichette != null)
@@ -69,14 +68,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                 }
             }
 
-            if (command.Chiamata.Rilevanza)
-            {
-                new MarcaRilevante(richiesta, command.Chiamata.IstanteRicezioneRichiesta, command.Chiamata.Operatore.Id, "");
-            }
-            else
-            {
-                new MarcaNonRilevante(richiesta, command.Chiamata.IstanteRicezioneRichiesta, command.Chiamata.Operatore.Id, "");
-            }
+            richiesta.SincronizzaRilevanza(command.Chiamata.RilevanzaGrave, command.Chiamata.RilevanzaStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione);
 
             if (command.Chiamata.IstantePresaInCarico != null)
             {
