@@ -142,7 +142,11 @@ export class SintesiRichiesta {
         /**
          * rilevanza Storica Artistica e Culturale
          */
-        public rilevanzaStArCu?: boolean
+        public rilevanzaStArCu?: boolean,
+        /**
+         * motivazione della chiusura
+         */
+        public motivazione?: string
     ) {
     }
 }
