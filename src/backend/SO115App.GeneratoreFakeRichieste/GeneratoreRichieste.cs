@@ -423,7 +423,7 @@ namespace SO115App.GeneratoreRichiesteFake
         {
             foreach (var parametriMezzo in richiesta.Parametri.ParametriMezzi)
             {
-                yield return new AggiungiComposizionePartenza(
+                yield return new AggiungiPresaInCarico(
                     richiesta.Parametri.DataSegnalazione.AddSeconds(parametriMezzo.SecondiComposizione),
                     richiesta,
                     parametriMezzo,
