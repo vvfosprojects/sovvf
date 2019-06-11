@@ -1,3 +1,5 @@
+import { TipoTerrenoEnum } from '../enum/tipo-terreno.enum';
+
 export class TipoTerreno {
     constructor(
         /**
@@ -7,7 +9,7 @@ export class TipoTerreno {
         /**
          * descrizione del tipo di terreno
          */
-        public descrizione: string,
+        public descrizione: TipoTerrenoEnum,
         /**
          * mq del tipo di terreno
          */
