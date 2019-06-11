@@ -5,19 +5,19 @@ using CQRS.Commands.Authorizers;
 using DomainModel.CQRS.Commands.MezzoPrenotato;
 using SO115App.API.Models.Classi.Autenticazione;
 
-namespace DomainModel.CQRS.Commands.MezzoPrenotato
+namespace DomainModel.CQRS.Commands.SbloccaMezzoPrenotato
 {
-    public class MezzoPrenotatoAuthorization : ICommandAuthorizer<MezzoPrenotatoCommand>
+    public class SbloccaMezzoPrenotatoAuthorization : ICommandAuthorizer<SbloccaMezzoPrenotatoCommand>
     {
 
         private readonly IPrincipal currentUser;
 
-        public MezzoPrenotatoAuthorization(IPrincipal currentUser)
+        public SbloccaMezzoPrenotatoAuthorization(IPrincipal currentUser)
         {
             this.currentUser = currentUser;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(MezzoPrenotatoCommand command)
+        public IEnumerable<AuthorizationResult> Authorize(SbloccaMezzoPrenotatoCommand command)
         {
             string username = this.currentUser.Identity.Name;
 
