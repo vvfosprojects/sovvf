@@ -17,16 +17,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Linq;
-using System.Security.Principal;
-using System.Threading.Tasks;
+using CQRS.Commands;
 using CQRS.Queries;
+using DomainModel.CQRS.Commands.MezzoPrenotato;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.MezzoPrenotato;
+using System;
+using System.Linq;
+using System.Security.Principal;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {
@@ -43,7 +46,7 @@ namespace SO115App.API.Controllers
         ///   Handler del servizio
         /// </summary>
 
-        private readonly IQueryHandler<MezzoPrenotatoQuery, MezzoPrenotatoResult> handler;
+        private readonly ICommandHandler<MezzoPrenotatoCommand> handler;
 
         private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
@@ -52,7 +55,7 @@ namespace SO115App.API.Controllers
         ///   Costruttore della classe
         /// </summary>
         public MezzoPrenotatoController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
-            IQueryHandler<MezzoPrenotatoQuery, MezzoPrenotatoResult> handler)
+            ICommandHandler<MezzoPrenotatoCommand> handler)
         {
             this.handler = handler;
             _NotificationHub = NotificationHubContext;
@@ -70,7 +73,7 @@ namespace SO115App.API.Controllers
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 
-            var query = new MezzoPrenotatoQuery()
+            var command = new MezzoPrenotatoCommand()
             {
                 MezzoPrenotato = mezzoPrenotato
             };
@@ -79,8 +82,9 @@ namespace SO115App.API.Controllers
             {
                 try
                 {
-                    ComposizioneMezzi mezzo = handler.Handle(query).ComposizioneMezzi;
-                    await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyMezzoPrenotato", mezzo);
+
+                   handler.Handle(command);
+                    await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyMezzoPrenotato", command);
 
                     return Ok();
                 }

@@ -28,5 +28,7 @@ namespace SO115App.API.Models.Classi.Composizione
 
         [JsonRequired]
         public string IdMezzoComposizione { get; set; }
+
+        public ComposizioneMezzi mezzo { get; set; }
     }
 }

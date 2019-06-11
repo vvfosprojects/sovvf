@@ -37,5 +37,9 @@ namespace SO115App.Models.Classi.Composizione
 
         [JsonRequired]
         public string[] CodiceSquadra { get; set; }
+
+        [JsonRequired]
+        public string IdRichiesta { get; set; }
+
     }
 }

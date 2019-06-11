@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="MezzoPrenotatoQuery.cs" company="CNVVF">
+// <copyright file="MezzoPrenotatoQueryHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,19 +17,35 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using CQRS.Commands;
 using CQRS.Queries;
+using DomainModel.CQRS.Commands.MezzoPrenotato;
+using SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.MezzoPrenotato
 {
     /// <summary>
-    ///   DTO che alimenta il Navbar presente in Home Page
+    ///   Servizio che restituisce tutti i valori dei Box presenti in HomePage.
     /// </summary>
-    public class MezzoPrenotatoQuery : IQuery<MezzoPrenotatoResult>
+    public class MezzoPrenotatoCommandHandler : ICommandHandler<MezzoPrenotatoCommand>
     {
+        private readonly IGetMezzoPrenotato _iGetMezzoPrenotato;
+
+        public MezzoPrenotatoCommandHandler(IGetMezzoPrenotato iGetMezzoPrenotato)
+        {
+            this._iGetMezzoPrenotato = iGetMezzoPrenotato;
+        }
+
         /// <summary>
-        ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
+        ///   Query che estrae i valori dei Box presenti in Home Page
         /// </summary>
-        /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
-        public Classi.Composizione.MezzoPrenotato MezzoPrenotato { get; set; }
+        /// <param name="query">Filtri utilizzati per l'estrazione</param>
+        /// <returns>Elenco dei mezzi disponibili</returns>
+        public void Handle(MezzoPrenotatoCommand command)
+        {
+            // preparazione del DTO
+            Classi.Composizione.MezzoPrenotato mezzoPrenotato = _iGetMezzoPrenotato.Get(command);
+            command.MezzoPrenotato = mezzoPrenotato;
+        }
     }
 }

@@ -46,18 +46,21 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             // preparazione del DTO
             List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = _iGetComposizioneMezzi.Get(query);
-            // composizioneMezzi = CaricaComposizioneMezzi(query);
+            composizioneMezzi.Sort(delegate (Classi.Composizione.ComposizioneMezzi x, Classi.Composizione.ComposizioneMezzi y)
+            {
+                return Convert.ToInt32(x.TempoPercorrenza.Substring(0, x.TempoPercorrenza.Length - 4)).CompareTo(Convert.ToInt32(y.TempoPercorrenza.Substring(0, y.TempoPercorrenza.Length - 4)));
+            });
 
-            if ((composizioneMezzi != null && composizioneMezzi.Count > 0) && (query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0))
+            if ((composizioneMezzi != null && composizioneMezzi.Count > 0))
             {
                 var count = 1;
                 foreach (var mezzo in composizioneMezzi)
                 {
-                    mezzo.Id = count++.ToString();
-                    if (query.Filtro.CodiceMezzo.Any(mezzo.Mezzo.Codice.Equals))
+                    if (mezzo.IstanteScadenzaSelezione < DateTime.Now)
                     {
-                        mezzo.IstanteScadenzaSelezione = DateTime.Now.AddMinutes(3);
+                        mezzo.IstanteScadenzaSelezione = null;
                     }
+                    mezzo.Id = count++.ToString();
                 }
             }
             return new ComposizioneMezziResult()
@@ -66,64 +69,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             };
         }
 
-        //private static List<Classi.Composizione.ComposizioneMezzi> CaricaComposizioneMezzi(ComposizioneMezziQuery query)
-        //{
-        //    List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = new List<Classi.Composizione.ComposizioneMezzi>();
-        //    //TODO PARTE CHIAMATA DB
-
-        // //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
-        // //DATI FAKE - ORA LI LEGGO DA FILE string filepath = "Fake/MezziComposizione.json"; string
-        // json; using (StreamReader r = new StreamReader(filepath)) { json = r.ReadToEnd(); }
-
-        // composizioneMezzi = JsonConvert.DeserializeObject<List<Classi.Composizione.ComposizioneMezzi>>(json);
-
-        // List<Classi.Composizione.ComposizioneSquadre> composizioneSquadre = new
-        // List<Classi.Composizione.ComposizioneSquadre>(); var squadra = new
-        // Classi.Composizione.ComposizioneSquadre(); var codiceDistaccamento = ""; if
-        // ((query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length > 0
-        // && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0])) ||
-        // (query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0 &&
-        // !string.IsNullOrEmpty(query.Filtro.CodiceMezzo[0])) || (query.Filtro.CodiceSquadra != null
-        // && query.Filtro.CodiceSquadra.Length > 0) &&
-        // !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0]) || (query.Filtro.CodiceStatoMezzo !=
-        // null && query.Filtro.CodiceStatoMezzo.Length > 0 &&
-        // !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0])) || (query.Filtro.CodiceTipoMezzo
-        // != null && query.Filtro.CodiceTipoMezzo.Length > 0 &&
-        // !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0]))) { if (query.Filtro.CodiceSquadra
-        // != null && query.Filtro.CodiceSquadra.Length > 0 &&
-        // !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0])) { string path =
-        // "Fake/SquadreComposizione.json"; string jsonSquadre; using (StreamReader r = new
-        // StreamReader(path)) { jsonSquadre = r.ReadToEnd(); }
-
-        // composizioneSquadre =
-        // JsonConvert.DeserializeObject<List<Classi.Composizione.ComposizioneSquadre>>(jsonSquadre);
-        // squadra = composizioneSquadre.Where(x =>
-        // query.Filtro.CodiceSquadra.Any(x.Squadra.Id.Equals)).FirstOrDefault(); if (squadra !=
-        // null) { codiceDistaccamento = squadra.Squadra.Distaccamento.Codice; composizioneMezzi =
-        // composizioneMezzi.Where(x => (x.Mezzo.Distaccamento.Codice ==
-        // codiceDistaccamento)).ToList(); } } if (query.Filtro.CodiceDistaccamento != null &&
-        // query.Filtro.CodiceDistaccamento.Length > 0 &&
-        // !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0])) composizioneMezzi =
-        // composizioneMezzi.Where(x => query.Filtro.CodiceDistaccamento.Any(x.Mezzo.Distaccamento.Codice.Equals)).ToList();
-
-        // if (query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0 &&
-        // !string.IsNullOrEmpty(query.Filtro.CodiceMezzo[0])) composizioneMezzi =
-        // composizioneMezzi.Where(x => query.Filtro.CodiceMezzo.Any(x.Mezzo.Codice.Equals)).ToList();
-
-        // if (query.Filtro.CodiceStatoMezzo != null && query.Filtro.CodiceStatoMezzo.Length > 0 &&
-        // !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0])) composizioneMezzi =
-        // composizioneMezzi.Where(x => query.Filtro.CodiceStatoMezzo.Any(x.Mezzo.Stato.Equals)).ToList();
-
-        // if (query.Filtro.CodiceTipoMezzo != null && query.Filtro.CodiceTipoMezzo.Length > 0 &&
-        // !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0])) composizioneMezzi =
-        // composizioneMezzi.Where(x => query.Filtro.CodiceTipoMezzo.Any(x.Mezzo.Genere.Equals)).ToList();
-
-        // return composizioneMezzi; }
-
-        //    else
-        //    {
-        //        return composizioneMezzi;
-        //    }
-        //}
+ 
     }
 }
