@@ -17,21 +17,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using CQRS.Commands;
 using CQRS.Queries;
-using SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato;
+using DomainModel.CQRS.Commands.MezzoPrenotato;
+using SO115App.Models.Servizi.Infrastruttura.GetSbloccaMezzoPrenotato;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.MezzoPrenotato
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.SbloccaMezzoPrenotato
 {
     /// <summary>
     ///   Servizio che restituisce tutti i valori dei Box presenti in HomePage.
     /// </summary>
-    public class MezzoPrenotatoQueryHandler : IQueryHandler<MezzoPrenotatoQuery, MezzoPrenotatoResult>
+    public class SbloccaMezzoPrenotatoCommandHandler : ICommandHandler<SbloccaMezzoPrenotatoCommand>
     {
-        private readonly IGetMezzoPrenotato _iGetMezzoPrenotato;
+        private readonly IGetSbloccaMezzoPrenotato _iGetSbloccaMezzoPrenotato;
 
-        public MezzoPrenotatoQueryHandler(IGetMezzoPrenotato iGetMezzoPrenotato)
+        public SbloccaMezzoPrenotatoCommandHandler(IGetSbloccaMezzoPrenotato iGetSbloccaMezzoPrenotato)
         {
-            this._iGetMezzoPrenotato = iGetMezzoPrenotato;
+            this._iGetSbloccaMezzoPrenotato = iGetSbloccaMezzoPrenotato;
         }
 
         /// <summary>
@@ -39,16 +41,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// </summary>
         /// <param name="query">Filtri utilizzati per l'estrazione</param>
         /// <returns>Elenco dei mezzi disponibili</returns>
-        public MezzoPrenotatoResult Handle(MezzoPrenotatoQuery query)
+        public void Handle(SbloccaMezzoPrenotatoCommand command)
         {
             // preparazione del DTO
-            Classi.Composizione.ComposizioneMezzi composizioneMezzi = _iGetMezzoPrenotato.Get(query);
-            // composizioneMezzi = CaricaComposizioneMezzi(query);
-
-            return new MezzoPrenotatoResult()
-            {
-                ComposizioneMezzi = composizioneMezzi
-            };
+            Classi.Composizione.MezzoPrenotato mezzoPrenotato = _iGetSbloccaMezzoPrenotato.Get(command);
+            command.MezzoPrenotato = mezzoPrenotato;
         }
     }
 }

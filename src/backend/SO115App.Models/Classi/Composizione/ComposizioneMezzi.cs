@@ -29,6 +29,8 @@ namespace SO115App.API.Models.Classi.Composizione
         public string Km { get; set; }
         public string TempoPercorrenza { get; set; }
         public Coordinate Coordinate { get; set; }
-        public DateTime IstanteScadenzaSelezione { get; set; }
+        public DateTime? IstanteScadenzaSelezione { get; set; }
+
+        public string IdRichiesta { get; set; }
     }
 }
