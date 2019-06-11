@@ -97,6 +97,26 @@ namespace SO115App.API.Models.Classi.Soccorso
             Altissima
         }
 
+        internal void SincronizzaStatoRichiesta(int stato, IStatoRichiesta statoRichiesta, string id, string motivazione)
+        {
+            /*
+            Stato richiesta
+            Se lo stato è 0 - Chiamata non devono essere presenti codici, verranno messi dal BE
+            Se lo stato è 1 - Sospesa
+            Se lo stato è 2 - Presidiato
+            Se lo stato è 3 - Assegnata
+            Se lo stato è 4 - Chiusa
+            */
+            if (stato == 4 && !(statoRichiesta is Chiusa))
+            {
+                new ChiusuraRichiesta(motivazione, this, DateTime.UtcNow, id);
+            }
+            else if (stato != 4 && (statoRichiesta is Chiusa))
+            {
+                new RiaperturaRichiesta(this, DateTime.UtcNow, id);
+            }
+        }
+
         /// <summary>
         ///   Questo metodo analizza la richiesta, ne desume il tipo di rilevanza e aggiunge gli
         ///   eventi necessari a sincronizzare la rilevanza corrente con quella richiesta nei
@@ -327,6 +347,11 @@ namespace SO115App.API.Models.Classi.Soccorso
         public List<EntiIntervenuti> ListaEntiIntervenuti { get; set; }
 
         /// <summary>
+        ///   Lista degli enti al quale è stata passata la richiesta (Es. ACEA)
+        /// </summary>
+        public List<EntiIntervenuti> ListaEntiPresaInCarico { get; set; }
+
+        /// <summary>
         ///   Se l'intervento è su un obiettivo ritenuto rilevante (Es. Colosseo) si seleziona da
         ///   interfaccia e si registra il codice
         /// </summary>
@@ -389,7 +414,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   Restituisce l'istante della Richiesta di Assistenza
         /// </summary>
-        public virtual DateTime IstanteRicezioneRichiesta
+        public virtual DateTime? IstanteRicezioneRichiesta
         {
             get
             {
@@ -397,9 +422,18 @@ namespace SO115App.API.Models.Classi.Soccorso
                 {
                     var eventoSegnalazione = this.eventi
                         .Where(e => e is Segnalazione)
-                        .First() as Segnalazione;
+                        .FirstOrDefault() as Segnalazione;
 
-                    return eventoSegnalazione.Istante;
+                    if (eventoSegnalazione == null)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        return eventoSegnalazione.Istante;
+                    }
+
+                    //return eventoSegnalazione.Istante;
                 }
                 catch (Exception ex)
                 {

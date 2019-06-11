@@ -160,5 +160,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         public string NotePrivate { get; set; }
 
         public Azione Azione { get; set; }
+
+        public string Motivazione { get; set; }
     }
 }

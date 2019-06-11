@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
@@ -46,7 +47,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 
                 foreach (RichiestaAssistenzaDTO richiesta in ListaRichieste)
                 {
-                    if (richiesta.Id != richiestaAssistenza.Id)
+                    if (richiesta.Codice != richiestaAssistenza.Codice)
                         ListaRichiesteNew.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
                 }
 

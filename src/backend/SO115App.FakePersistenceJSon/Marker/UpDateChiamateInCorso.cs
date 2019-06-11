@@ -44,20 +44,22 @@ namespace SO115App.FakePersistenceJSon.Marker
                 if (ListaRichieste.Count != 0)
                 {
                     ChiamateInCorso chiamataToUpDate = (ChiamateInCorso)ListaRichieste.FirstOrDefault(x => x.id == chiamata.id);
+
                     if (chiamataToUpDate != null)
                         ListaRichieste.Remove(chiamataToUpDate);
 
                     ListaRichieste.Add(chiamata);
 
-                    string fileText = System.IO.File.ReadAllText(@"Fake/ListaChiamateInCorso.json");
-                    string jsonNew = JsonConvert.SerializeObject(chiamata);
-                    System.IO.File.WriteAllText(@"Fake/ListaChiamateInCorso.json", "[" + fileText.Substring(1, fileText.Length - 2) + "," + jsonNew + "]");
+                    string jsonNew = JsonConvert.SerializeObject(ListaRichieste);
+                    System.IO.File.WriteAllText(@"Fake/ListaChiamateInCorso.json", jsonNew);
                 }
                 else
                 {
-                    string fileText = System.IO.File.ReadAllText(@"Fake/ListaChiamateInCorso.json");
-                    string jsonNew = JsonConvert.SerializeObject(chiamata);
-                    System.IO.File.WriteAllText(@"Fake/ListaChiamateInCorso.json", "[" + jsonNew + "]");
+                    List<ChiamateInCorso> ListaRichiesteNew = new List<ChiamateInCorso>();
+                    ListaRichiesteNew.Add(chiamata);
+
+                    string jsonNew = JsonConvert.SerializeObject(ListaRichiesteNew);
+                    System.IO.File.WriteAllText(@"Fake/ListaChiamateInCorso.json", jsonNew);
                 }
             }
             else

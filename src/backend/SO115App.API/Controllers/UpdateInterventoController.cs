@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using CQRS.Commands;
 using CQRS.Queries;
@@ -26,8 +25,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Hubs;
-using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
@@ -78,16 +75,6 @@ namespace SO115App.API.Controllers
                 {
                     this._handler.Handle(command);
                     await _NotificationHub.Clients.Group(chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", command);
-
-                    var BoxRichiestequery = new BoxRichiesteQuery();
-                    BoxInterventi boxInterventi = new BoxInterventi();
-                    boxInterventi = (BoxInterventi)this._BoxRichiestehandler.Handle(BoxRichiestequery).BoxRichieste;
-                    await _NotificationHub.Clients.Group(chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-
-                    var query = new SintesiRichiesteAssistenzaMarkerQuery();
-                    List<SintesiRichiestaMarker> listaSintesiMarker = new List<SintesiRichiestaMarker>();
-                    listaSintesiMarker = (List<SintesiRichiestaMarker>)this._SintesiRichiesteAssistenzaMarkerhandler.Handle(query).SintesiRichiestaMarker;
-                    await _NotificationHub.Clients.Group(chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetListaRichiesteMarker", listaSintesiMarker);
 
                     return Ok();
                 }

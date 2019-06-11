@@ -56,12 +56,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Id = (_iGetMaxCodice.GetMax() + 1).ToString(), //TODO DA TOGLIERE CON LA VERSIONE DB
             };
 
-#warning gestire la logica sulla rilevanza, che è cambiata.
-
-            if (command.Chiamata.IstantePresaInCarico != null)
-            {
-                new InizioPresaInCarico(richiesta, command.Chiamata.IstantePresaInCarico.Value, command.Chiamata.Operatore.Id);
-            }
+            richiesta.SincronizzaRilevanza(command.Chiamata.RilevanzaGrave, command.Chiamata.RilevanzaStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione);
 
             if (command.Chiamata.Stato == 4)
             {
@@ -81,7 +76,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 CognomeChiamante = command.Chiamata.Richiedente.Cognome,
                 NomeChiamante = command.Chiamata.Richiedente.Nome,
                 RagioneSociale = command.Chiamata.Richiedente.RagioneSociale,
-                Motivazione = command.Chiamata.Descrizione,
+                Motivazione = command.Chiamata.Motivazione,
                 NotePrivate = command.Chiamata.NotePrivate,
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NumeroTelefono = command.Chiamata.Richiedente.Telefono,

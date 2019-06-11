@@ -21,6 +21,7 @@ using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
@@ -70,30 +71,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
             richiesta.SincronizzaRilevanza(command.Chiamata.RilevanzaGrave, command.Chiamata.RilevanzaStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione);
 
-            if (command.Chiamata.IstantePresaInCarico != null)
-            {
-                new InizioPresaInCarico(richiesta, command.Chiamata.IstantePresaInCarico.Value, command.Chiamata.Operatore.Id);
-            }
-
-            if (command.Chiamata.Stato == 4)
-            {
-                new ChiusuraRichiesta("", richiesta, command.Chiamata.IstanteRicezioneRichiesta, command.Chiamata.Operatore.Id);
-            }
-
-            if (command.Chiamata.Stato == 0)
-            {
-                new Telefonata(richiesta, command.Chiamata.Richiedente.Telefono, command.Chiamata.IstanteRicezioneRichiesta, command.Chiamata.Operatore.Id)
-                {
-                    CognomeChiamante = command.Chiamata.Richiedente.Cognome,
-                    NomeChiamante = command.Chiamata.Richiedente.Nome,
-                    RagioneSociale = command.Chiamata.Richiedente.RagioneSociale,
-                    Motivazione = command.Chiamata.Descrizione,
-                    NotePrivate = command.Chiamata.NotePrivate,
-                    NotePubbliche = command.Chiamata.NotePubbliche,
-                    NumeroTelefono = command.Chiamata.Richiedente.Telefono,
-                    Esito = command.Chiamata.Azione.ToString()
-                };
-            }
+            richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.Chiamata.Operatore.Id, command.Chiamata.Motivazione);
 
             this._UpDateRichiestaAssistenza.Save(richiesta);
         }

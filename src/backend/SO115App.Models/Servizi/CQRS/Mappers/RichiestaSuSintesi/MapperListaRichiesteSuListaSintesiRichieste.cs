@@ -51,7 +51,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 sintesi.IstantePresaInCarico = elemento.IstantePresaInCarico;
                 sintesi.IstantePrimaAssegnazione = elemento.IstantePrimaAssegnazione;
 
-                sintesi.IstanteRicezioneRichiesta = sintesi.Eventi.Count > 0 ? elemento.IstanteRicezioneRichiesta : DateTime.MinValue;
+                sintesi.IstanteRicezioneRichiesta = sintesi.Eventi.Count > 0 ? elemento.IstanteRicezioneRichiesta.Value : DateTime.MinValue;
                 sintesi.Localita = elemento.Localita;
                 sintesi.Operatore = elemento.Operatore;
                 sintesi.Richiedente = elemento.Richiedente;

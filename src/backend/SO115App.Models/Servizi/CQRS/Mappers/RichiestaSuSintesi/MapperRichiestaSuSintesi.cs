@@ -67,7 +67,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
             {
                 Id = richiesta.Id,
                 Codice = richiesta.Codice,
-                IstanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta,
+                IstanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta.Value,
                 IstantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione,
                 Tipologie = richiesta.Tipologie,
                 Descrizione = richiesta.Descrizione,
