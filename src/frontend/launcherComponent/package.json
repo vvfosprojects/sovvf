@@ -10,7 +10,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "avvia": "ng serve --proxy-config proxy.conf.js --host 0.0.0.0 --disable-host-check",
-    "avvia2": "ng serve --proxy-config proxy.conf2.js --host 0.0.0.0 --disable-host-check"
+    "avvia2": "ng serve --proxy-config proxy.conf2.js --host 0.0.0.0 --disable-host-check",
+    "avvia3": "ng serve --proxy-config proxy.conf3.js --host 0.0.0.0 --disable-host-check"
   },
   "private": true,
   "dependencies": {

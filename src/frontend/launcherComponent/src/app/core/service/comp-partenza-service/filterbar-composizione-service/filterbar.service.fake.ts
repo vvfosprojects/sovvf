@@ -70,6 +70,6 @@ export class FilterbarServiceFake {
         };
 
         this.store.dispatch(new SetFiltriComposizione(this.filtri));
-        return of();
+        return of(null);
     }
 }

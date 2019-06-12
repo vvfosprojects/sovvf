@@ -2,21 +2,23 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
 import {
     AddSquadraComposizione, ClearSelectedSquadreComposizione, HoverInSquadraComposizione, HoverOutSquadraComposizione,
-    RemoveSquadraComposizione,
+    RemoveSquadraComposizione, SelectSquadra,
     SelectSquadraComposizione,
-    SetListaSquadreComposizione, UnselectSquadraComposizione,
+    SetListaSquadreComposizione, UnselectSquadra, UnselectSquadraComposizione,
     UpdateSquadraComposizione
 } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
 
 export interface SquadreComposizioneStateStateModel {
     squadreComposizione: SquadraComposizione[];
+    idSquadreComposizioneSelezionate: Array<string>;
     idSquadreSelezionate: Array<string>;
     idSquadraHover: string;
 }
 
 export const SquadreComposizioneStateDefaults: SquadreComposizioneStateStateModel = {
     squadreComposizione: [],
+    idSquadreComposizioneSelezionate: [],
     idSquadreSelezionate: [],
     idSquadraHover: null
 };
@@ -34,7 +36,7 @@ export class SquadreComposizioneState {
 
     @Selector()
     static idSquadreSelezionate(state: SquadreComposizioneStateStateModel) {
-        return state.idSquadreSelezionate;
+        return state.idSquadreComposizioneSelezionate;
     }
 
     @Selector()
@@ -48,13 +50,13 @@ export class SquadreComposizioneState {
     @Action(SetListaSquadreComposizione)
     setListaSquadreComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: SetListaSquadreComposizione) {
         patchState({
-            squadreComposizione: action.squadre
+            squadreComposizione: action.squadreComp
         });
     }
 
     @Action(AddSquadraComposizione)
     addSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: AddSquadraComposizione) {
-        console.log(action.squadra);
+        console.log(action.squadraComp);
     }
 
     @Action(RemoveSquadraComposizione)
@@ -64,11 +66,35 @@ export class SquadreComposizioneState {
 
     @Action(UpdateSquadraComposizione)
     updateSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: UpdateSquadraComposizione) {
-        console.log(action.squadra);
+        console.log(action.squadraComp);
     }
 
     @Action(SelectSquadraComposizione)
-    selectSquadraComposizione({ setState }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizione) {
+    selectSquadraComposizione({ setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizione) {
+        setState(
+            patch({
+                idSquadreComposizioneSelezionate: append([action.squadraComp.id]),
+                idSquadreSelezionate: append([action.squadraComp.squadra.id])
+            })
+        );
+        // dispatch(new SelectSquadra(action.squadraComp.squadra.id));
+        // console.log(action.idSquadra);
+    }
+
+    @Action(UnselectSquadraComposizione)
+    unselectSquadraComposizione({ setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: UnselectSquadraComposizione) {
+        setState(
+            patch({
+                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.id),
+                idSquadreSelezionate: removeItem(id => id === action.squadraComp.squadra.id)
+            })
+        );
+        // dispatch(new UnselectSquadra(action.squadraComp.squadra.id));
+        // console.log(action.idSquadra);
+    }
+
+    @Action(SelectSquadra)
+    selectSquadra({ setState }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadra) {
         setState(
             patch({
                 idSquadreSelezionate: append([action.idSquadra])
@@ -77,8 +103,8 @@ export class SquadreComposizioneState {
         // console.log(action.idSquadra);
     }
 
-    @Action(UnselectSquadraComposizione)
-    unselectSquadraComposizione({ setState }: StateContext<SquadreComposizioneStateStateModel>, action: UnselectSquadraComposizione) {
+    @Action(UnselectSquadra)
+    unselectSquadra({ setState }: StateContext<SquadreComposizioneStateStateModel>, action: UnselectSquadra) {
         setState(
             patch({
                 idSquadreSelezionate: removeItem(id => id === action.idSquadra)
@@ -92,7 +118,7 @@ export class SquadreComposizioneState {
         const state = getState();
         patchState({
             ...state,
-            idSquadreSelezionate: []
+            idSquadreComposizioneSelezionate: []
         });
     }
 
@@ -101,7 +127,7 @@ export class SquadreComposizioneState {
         const state = getState();
         patchState({
             ...state,
-            idSquadraHover: action.idSquadra
+            idSquadraHover: action.idSquadraComp
         });
         // console.log(action.idMezzo);
     }
