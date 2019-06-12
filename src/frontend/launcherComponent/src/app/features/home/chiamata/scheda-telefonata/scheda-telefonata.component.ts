@@ -190,7 +190,7 @@ export class SchedaTelefonataComponent implements OnInit {
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
         modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
-        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tornerai alla lista eliminando tutti i dati inseriti.';
+        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
         modalConfermaAnnulla.componentInstance.bottoni = [
             { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
             { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
