@@ -60,9 +60,11 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 string jsonNew = JsonConvert.SerializeObject(mezzi);
                 System.IO.File.WriteAllText(@"Fake/MezziComposizione.json", jsonNew);
                 mezzoPrenotato.IdRichiesta = command.MezzoPrenotato.IdRichiesta;
-                mezzoPrenotato.IdMezzoComposizione = command.MezzoPrenotato.IdMezzoComposizione;
+                mezzoPrenotato.IdMezzo = command.MezzoPrenotato.IdMezzo;
                 mezzoPrenotato.mezzo = mezzo;
-                return mezzoPrenotato;
+            mezzoPrenotato.mezzo.Id = command.MezzoPrenotato.IdMezzoComposizione;
+           // mezzoPrenotato.IdMezzoComposizione = command.MezzoPrenotato.IdMezzoComposizione;
+            return mezzoPrenotato;
         }
 
         public ComposizioneMezzi GetMezzo(MezzoPrenotatoCommand command)

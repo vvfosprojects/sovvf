@@ -84,7 +84,8 @@ namespace SO115App.API.Controllers
                 {
 
                    handler.Handle(command);
-                    await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyMezzoPrenotato", command);
+                   await _NotificationHub.Clients.All.SendAsync("NotifyMezzoPrenotato", command);
+                   //await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyMezzoPrenotato", command);
 
                     return Ok();
                 }

@@ -24,6 +24,7 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
+using SO115App.API.Models.Classi.Filtri;
 
 namespace SO115App.FakePersistenceJSon.Composizione
 {
@@ -47,6 +48,8 @@ namespace SO115App.FakePersistenceJSon.Composizione
 
             List<ComposizioneSquadre> composizioneSquadre = new List<ComposizioneSquadre>();
             var squadra = new ComposizioneSquadre();
+            string[] generiMezzi = new string[50];
+            string[] statiMezzi= new string[50];
             var codiceDistaccamento = "";
             if ((query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
                 || (query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo[0]))
@@ -71,6 +74,17 @@ namespace SO115App.FakePersistenceJSon.Composizione
                         composizioneMezzi = composizioneMezzi.Where(x => (x.Mezzo.Distaccamento.Codice == codiceDistaccamento)).ToList();
                     }
                 }
+
+                API.Models.Classi.Filtri.Filtri filtri = new API.Models.Classi.Filtri.Filtri();
+                string pathFiltri = "Fake/Filtri.json";
+                string jsonFiltri;
+                using (StreamReader r = new StreamReader(pathFiltri))
+                {
+                    jsonFiltri = r.ReadToEnd();
+                }
+                filtri = JsonConvert.DeserializeObject<API.Models.Classi.Filtri.Filtri>(jsonFiltri);
+
+
                 if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
                     composizioneMezzi = composizioneMezzi.Where(x => query.Filtro.CodiceDistaccamento.Any(x.Mezzo.Distaccamento.Codice.Equals)).ToList();
 
@@ -78,10 +92,12 @@ namespace SO115App.FakePersistenceJSon.Composizione
                     composizioneMezzi = composizioneMezzi.Where(x => query.Filtro.CodiceMezzo.Any(x.Mezzo.Codice.Equals)).ToList();
 
                 if (query.Filtro.CodiceStatoMezzo != null && query.Filtro.CodiceStatoMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
-                    composizioneMezzi = composizioneMezzi.Where(x => query.Filtro.CodiceStatoMezzo.Any(x.Mezzo.Stato.Equals)).ToList();
+                    statiMezzi = filtri.Stati.Where(x =>query.Filtro.CodiceStatoMezzo.Any(x.Id.Equals)).Select(x => x.Descrizione).ToArray();
+                composizioneMezzi = composizioneMezzi.Where(x => statiMezzi.Any(x.Mezzo.Stato.Equals)).ToList();
 
                 if (query.Filtro.CodiceTipoMezzo != null && query.Filtro.CodiceTipoMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0]))
-                    composizioneMezzi = composizioneMezzi.Where(x => query.Filtro.CodiceTipoMezzo.Any(x.Mezzo.Genere.Equals)).ToList();
+                    generiMezzi = filtri.GeneriMezzi.Where(x => query.Filtro.CodiceTipoMezzo.Any(x.Id.Equals)).Select(x => x.Descrizione).ToArray();
+                composizioneMezzi = composizioneMezzi.Where(x => generiMezzi.Any(x.Mezzo.Genere.Equals)).ToList();
 
                 return composizioneMezzi;
             }
