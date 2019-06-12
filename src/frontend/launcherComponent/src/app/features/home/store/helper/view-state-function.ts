@@ -65,7 +65,7 @@ export function switchComposizione(state: ViewComponentStateModel, modalita: Com
 }
 
 /**
- * partendo dallo stato attuale, torno a Richieste e verifico la modalità dallo stato salvato
+ * partendo dallo stato attuale di Composizione, torno a Richieste e verifico la modalità dallo stato salvato
  * @param state
  * @param lastState
  */
@@ -78,6 +78,25 @@ export function turnOffComposizione(state: ViewComponentStateModel, lastState: V
     }
     state.view.richieste.active = true;
     state.view.composizione.active = false;
+    state.view.mappa.options = [AppFeatures.Richieste];
+    state.view.filterbar.options = [Grid.Col5];
+    return state;
+}
+
+/**
+ * partendo dallo stato attuale di Composizione, torno a Richieste e verifico la modalità dallo stato salvato
+ * @param state
+ * @param lastState
+ */
+export function turnOffModifica(state: ViewComponentStateModel, lastState: ViewComponentStateModel): ViewComponentStateModel {
+    if (lastState.column.sinistra === Grid.No && !lastState.view.richieste.split) {
+        state.view.mappa.active = false;
+        state.view.richieste.split = false;
+        state.view.mappa.split = false;
+        state.column = gridSolve(AppFeatures.Richieste);
+    }
+    state.view.richieste.active = true;
+    state.view.modifica.active = false;
     state.view.mappa.options = [AppFeatures.Richieste];
     state.view.filterbar.options = [Grid.Col5];
     return state;
