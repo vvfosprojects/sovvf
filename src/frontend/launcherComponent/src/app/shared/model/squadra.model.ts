@@ -5,6 +5,10 @@ import { StatoSquadra } from '../enum/stato-squadra.enum';
 export class Squadra {
     constructor(
         /**
+         * Id della squadra
+         */
+        public id: string,
+        /**
          * Il nome della squadra
          */
         public nome: string,
@@ -18,8 +22,8 @@ export class Squadra {
          */
         public componenti: Componente[],
         /**
-        * Distaccamento di appartenza
-        */
+         * Distaccamento di appartenza
+         */
         public distaccamento: Sede,
         /**
          * E' l'istante in cui la squadra ha terminato il suo impegno sulla richiesta.

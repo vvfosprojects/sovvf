@@ -10,10 +10,10 @@ import { activeChiamata, activeComposizione, activeModifica, colorButton, switch
 import { TerminaComposizione } from '../../actions/composizione-partenza/richiesta-composizione.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
-import { RichiestaComposizioneState } from '../composizione-partenza/richiesta-composizione.state';
 import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ResetChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
 import { ClearChiamateMarkers } from '../../actions/maps/chiamate-markers.actions';
+import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza-state';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -198,7 +198,7 @@ export class ViewComponentState {
         const currentState = makeCopy(state);
         const newState = switchComposizione(currentState, action.modalita);
         dispatch(new ClearDirection());
-        this.store.select(RichiestaComposizioneState.richiestaComposizione).subscribe(richiesta => {
+        this.store.select(ComposizionePartenzaState.richiestaComposizione).subscribe(richiesta => {
             if (richiesta) {
                 dispatch(new SetCoordCentroMappa(richiesta.localita.coordinate));
             }

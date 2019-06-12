@@ -8,20 +8,19 @@ import { BoxPartenza } from './interface/box-partenza-interface';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 import { PreAccoppiatiState } from '../store/states/composizione-partenza/pre-accoppiati.state';
-import { GetPreAccoppiati } from '../store/actions/composizione-partenza/pre-accoppiati.actions';
 import { DirectionInterface } from '../maps/maps-interface/direction-interface';
 import { ClearDirection, SetDirection } from '../store/actions/maps/maps-direction.actions';
 import { makeCopy, wipeStatoRichiesta } from '../../../shared/helper/function';
 import { TurnOffComposizione } from '../store/actions/view/view.actions';
-import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
-import { FilterbarComposizioneState } from '../store/states/composizione-partenza/filterbar-composizione.state';
-import { AddBoxPartenza, ClearBoxPartenze } from '../store/actions/composizione-partenza/box-partenza.actions';
+import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza-state';
+import { ClearBoxPartenze } from '../store/actions/composizione-partenza/box-partenza.actions';
 import { ClearSelectedMezziComposizione } from '../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { GetFiltriComposizione } from '../store/actions/composizione-partenza/filterbar-composizione.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -36,13 +35,13 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     subscription = new Subscription();
 
-    @Select(FilterbarComposizioneState.filtri) filtri$: Observable<any>;
+    @Select(ComposizionePartenzaState.filtri) filtri$: Observable<any>;
 
     @Select(PreAccoppiatiState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
-    preAccoppiati: BoxPartenza[];
-
-    @Select(RichiestaComposizioneState.richiestaComposizione) nuovaPartenza$: Observable<SintesiRichiesta>;
+    @Select(ComposizionePartenzaState.richiestaComposizione) nuovaPartenza$: Observable<SintesiRichiesta>;
     richiesta: SintesiRichiesta;
+
+    preAccoppiati: BoxPartenza[];
 
     prevStateBoxClick: BoxClickStateModel;
 
@@ -50,12 +49,12 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.subscription.add(this.nuovaPartenza$.subscribe(r => this.richiesta = r));
 
         // Restituisce i PreAccoppiati
-        this.subscription.add(
-            this.preAccoppiati$.subscribe((preAccoppiati: BoxPartenza[]) => {
-                this.preAccoppiati = makeCopy(preAccoppiati);
-                console.log(this.preAccoppiati);
-            })
-        );
+        // this.subscription.add(
+        //     this.preAccoppiati$.subscribe((preAccoppiati: BoxPartenza[]) => {
+        //         this.preAccoppiati = makeCopy(preAccoppiati);
+        //         console.log(this.preAccoppiati);
+        //     })
+        // );
     }
 
     ngOnInit() {
@@ -64,7 +63,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
             this.store.dispatch(new AllFalseBoxRichieste());
             this.store.dispatch(new AllTrueBoxMezzi());
             this.store.dispatch(new ReducerBoxClick('richieste', wipeStatoRichiesta(this.richiesta.stato)));
-            this.store.dispatch(new AddBoxPartenza());
+            // this.store.dispatch(new GetFiltriComposizione());
         } else {
             this.dismissPartenza();
         }

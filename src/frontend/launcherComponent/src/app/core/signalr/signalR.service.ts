@@ -4,7 +4,6 @@ import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
-import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
 import { SetRichieste, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
@@ -235,10 +234,18 @@ export class SignalRService {
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyMezzoPrenotato', (data: MezzoPrenotatoInterface) => {
-            console.log('[MezzoBloccatoSignalR] Richiesta:', data.idRichiesta);
-            console.log('[MezzoBloccatoSignalR] Mezzo:', data.idMezzoComposizione);
-            this.store.dispatch(new AddBookMezzoComposizione(data.idMezzoComposizione));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
+            this.store.dispatch(new AddBookMezzoComposizione(data.mezzoPrenotato.idMezzoComposizione));
+            const mezzoComp = data.mezzoPrenotato.mezzo;
+            const dataScadenzaSelezione = new Date(mezzoComp.istanteScadenzaSelezione).getHours() + ':' + new Date(mezzoComp.istanteScadenzaSelezione).getMinutes() + ':' + new Date(mezzoComp.istanteScadenzaSelezione).getSeconds();
+            const idRichiesta = data.mezzoPrenotato.idRichiesta;
+            this.store.dispatch(new ShowToastr(
+                ToastrType.Info,
+                'Mezzo Prenotato',
+                'Mezzo ' + mezzoComp.mezzo.descrizione + ' prenotato fino alle ' + dataScadenzaSelezione + ' sulla richiesta ' + idRichiesta,
+                5)
+            );
+            // console.log('[MezzoBloccatoSignalR] Richiesta:', data.mezzoPrenotato.idRichiesta);
+            // console.log('[MezzoBloccatoSignalR] Mezzo:', data.mezzoPrenotato.idMezzoComposizione);
         });
 
         /**

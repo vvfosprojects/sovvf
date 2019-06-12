@@ -109,7 +109,7 @@ export class MezzoComposizioneComponent implements OnInit {
             }
         }
 
-        if (this.mezzoComp.timeout) {
+        if (this.itemPrenotato) {
             returnClass += '  pb-0';
         }
 

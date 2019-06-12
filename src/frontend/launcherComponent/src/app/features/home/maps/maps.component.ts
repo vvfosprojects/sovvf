@@ -8,7 +8,6 @@ import { ComposizioneMarker } from './maps-model/composizione-marker.model';
 import { Observable, Subscription } from 'rxjs';
 import { ViewInterfaceMaps } from '../../../shared/interface/view.interface';
 import { Select } from '@ngxs/store';
-import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
 import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
@@ -16,6 +15,7 @@ import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
 import { AgmService } from './agm/agm-service.service';
 import { MarkerService } from './service/marker-service/marker-service.service';
 import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
+import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza-state';
 
 @Component({
     selector: 'app-maps',
@@ -30,7 +30,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Select(CentroMappaState.centroMappa) centroMappa$: Observable<CentroMappa>;
     @Select(ChiamateMarkersState.chiamateMarkers) chiamataMarkers$: Observable<ChiamataMarker[]>;
-    @Select(RichiestaComposizioneState.richiestaComposizioneMarker) composizioneMarkers$: Observable<ComposizioneMarker[]>;
+    @Select(ComposizionePartenzaState.richiestaComposizioneMarker) composizioneMarkers$: Observable<ComposizioneMarker[]>;
     @Select(RichiesteMarkersState.richiesteMarkers) richiesteMarkers$: Observable<RichiestaMarker[]>;
     @Select(MezziMarkersState.mezziMarkers) mezziMarkers$: Observable<MezzoMarker[]>;
     @Select(SediMarkersState.sediMarkers) sediMarkers$: Observable<SedeMarker[]>;
