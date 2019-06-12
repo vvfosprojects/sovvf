@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.GeneratoreFakeRich
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.API.SOVVF.FakeImplementations.Test", "SO115App.API.SOVVF.FakeImplementations.Test\SO115App.API.SOVVF.FakeImplementations.Test.csproj", "{2CCEA532-DCD3-4EB9-BA09-248976D7E702}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.FakePersistenceJSon", "SO115App.FakePersistenceJSon\SO115App.FakePersistenceJSon.csproj", "{6B0CA229-033A-4B8B-B5D8-7382B744BA26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.FakePersistence.JSon", "SO115App.FakePersistenceJSon\SO115App.FakePersistence.JSon.csproj", "{6B0CA229-033A-4B8B-B5D8-7382B744BA26}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.Models.Test", "SO115App.Models.Test\SO115App.Models.Test.csproj", "{3B43664C-E2A8-4626-9F2A-4F37684D0CA7}"
 EndProject
@@ -32,7 +32,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.GeneratoreFakeRich
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.GeneratoreFakeRichieste.ConsoleRunner", "SO115App.GeneratoreFakeRichieste.ConsoleRunner\SO115App.GeneratoreFakeRichieste.ConsoleRunner.csproj", "{532CDBDD-C932-44AF-A892-C76930968EAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115App.FakePersistence.InMemory", "SO115App.FakePersistence.InMemory\SO115App.FakePersistence.InMemory.csproj", "{A091F135-BCA2-43F5-8109-CBC8BB651A0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.FakePersistence.InMemory", "SO115App.FakePersistence.InMemory\SO115App.FakePersistence.InMemory.csproj", "{A091F135-BCA2-43F5-8109-CBC8BB651A0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

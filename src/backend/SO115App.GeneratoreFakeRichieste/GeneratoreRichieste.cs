@@ -195,7 +195,13 @@ namespace SO115App.GeneratoreRichiesteFake
                     indirizzo,
                     noteLocalita))
                 .RuleFor(ra => ra.Competenze, f => GeneraCompetenze())
-                .Ignore(ra => ra.Tags);
+                .Ignore(ra => ra.Tags)
+                .Ignore(ra => ra.TurnoInserimentoChiamata)
+                .Ignore(ra => ra.TurnoIntervento)
+                .Ignore(ra => ra.TipoTerreno)
+                .Ignore(ra => ra.ListaEntiIntervenuti)
+                .Ignore(ra => ra.ListaEntiPresaInCarico)
+                .Ignore(ra => ra.CodiceObiettivoRilevante);
 
             var fakerTelefonata = new Faker<Telefonata>()
                 .StrictMode(true)
@@ -423,7 +429,7 @@ namespace SO115App.GeneratoreRichiesteFake
         {
             foreach (var parametriMezzo in richiesta.Parametri.ParametriMezzi)
             {
-                yield return new AggiungiComposizionePartenza(
+                yield return new AggiungiPresaInCarico(
                     richiesta.Parametri.DataSegnalazione.AddSeconds(parametriMezzo.SecondiComposizione),
                     richiesta,
                     parametriMezzo,

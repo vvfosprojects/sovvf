@@ -41,6 +41,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestrioneIn
         InterventoDuplicato,
 
         /// <summary>
+        ///   La chiamata viene chiusa forzatamente e tutti i mezzi ad essa associati vengono
+        ///   impostati in stato di RIENTRO
+        /// </summary>
+        ChiusuraForzata,
+
+        /// <summary>
         ///   La chiamata viene messa in coda, senza particolari azioni
         /// </summary>
         MettiInCoda
