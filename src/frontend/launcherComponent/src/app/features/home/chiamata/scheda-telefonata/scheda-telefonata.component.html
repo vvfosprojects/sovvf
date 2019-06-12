@@ -2,35 +2,38 @@
     <div class="col-11 pt-2 mx-auto rounded status_chiamata card-shadow-danger">
         <form [formGroup]="chiamataForm" autocomplete="off">
             <div class="row">
-                <div class="col-7">
-                    <h5 class="mb-0 mt-1">
-                        <i class="fa fa-fw fa-hashtag mr-1"></i>Chiamata in corso...
-                    </h5>
+                <div class="col-5">
+                    <ng-template #rilevante>
+                        <div *ngIf="f.rilevanza?.value">Intervento Rilevante</div>
+                        <div *ngIf="f.rilevanzaStArCu?.value">Intervento Rilevante Storico Artistico
+                            Culturale
+                        </div>
+                    </ng-template>
+                    <h3 class="mb-0">Chiamata in corso...
+                        <span *ngIf="f.rilevanza?.value || f.rilevanzaStArCu?.value"
+                              class="d-inline-block mr-1 text-danger"
+                              [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f.rilevanza?.value" class="fa fa-exclamation"></i><i *ngIf="f.rilevanzaStArCu?.value" class="fa fa-exclamation"></i></span>
+                    </h3>
                 </div>
-                <div class="col-2 pr-0">
-                    <div class="row">
-                        <div class="col pr-0 text-right">
-                            <span class="d-inline-block mt-1 mr-1" ngbTooltip="Rilevanza" placement="bottom"
-                                  [ngClass]="{'text-danger': f.rilevanza.value}">
-                                <i class="fa fa-exclamation-triangle"></i>
-                            </span>
-                        </div>
-                        <div class="col pl-0">
-                            <div class="form-group m-0 float-right">
+                <div class="col-3 pr-0">
+                    <div class="form-group m-0 float-right">
                                 <span class="d-inline-block mt-1 mr-2">
-                                    <ui-switch size="small" color="#dc3545" (change)="setRilevanza()"></ui-switch>
+                                    <ui-switch size="small" color="#dc3545"
+                                               [checked]="f.rilevanza?.value === true"
+                                               (change)="setRilevanza()"></ui-switch>
                                 </span>
-                            </div>
-                        </div>
+                        <span class="d-inline-block mt-1">Rilevante</span>
                     </div>
                 </div>
-                <div class="col-3">
-                    <span *ngIf="!f.rilevanza.value" class="d-inline-block mt-1">
-                        Intervento non rilevante
-                    </span>
-                    <span *ngIf="f.rilevanza.value" class="d-inline-block mt-1">
-                        Intervento rilevante
-                    </span>
+                <div class="col-3 px-0">
+                    <div class="form-group m-0 float-right">
+                                <span class="d-inline-block mt-1 mr-2">
+                                    <ui-switch size="small" color="#dc3545"
+                                               [checked]="f.rilevanzaStArCu?.value === true"
+                                               (change)="setRilevanzaStArCu()"></ui-switch>
+                                </span>
+                        <span class="d-inline-block mt-1">Rilevante Storico</span>
+                    </div>
                 </div>
             </div>
             <hr class="mt-1 mb-2">
