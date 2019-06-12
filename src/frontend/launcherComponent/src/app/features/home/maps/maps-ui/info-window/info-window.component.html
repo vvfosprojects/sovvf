@@ -36,13 +36,23 @@
             <thead class="thead-light">
             <tr>
                 <th scope="col" class="py-1 px-0 mx-0 row w-100">
+                    <ng-template #rilevante>
+                        <div *ngIf="richiestaMarker?.rilevanza">Intervento Rilevante</div>
+                        <div *ngIf="richiestaMarker?.rilevanzaStArCu">Intervento Rilevante Storico Artistico
+                            Culturale
+                        </div>
+                    </ng-template>
                     <div class="col pr-0">
                         <span class="fa fa-hashtag guida"></span>
                         <span *ngIf="richiestaMarker.codiceRichiesta">{{ richiestaMarker.codiceRichiesta }}&nbsp;</span>
-                        <span *ngIf="!richiestaMarker.codiceRichiesta">{{ richiestaMarker.codice }}&nbsp;</span> <i
-                            *ngIf="richiestaMarker.rilevanza"
-                            ngbTooltip="Rilevante il: {{richiestaMarker.rilevanza | date: 'dd/MM/yyyy'}}"
-                            class="fa fa-exclamation text-danger m-0"></i>
+                        <span *ngIf="!richiestaMarker.codiceRichiesta">{{ richiestaMarker.codice }}&nbsp;</span>
+                        <span *ngIf="richiestaMarker?.rilevanza || richiestaMarker?.rilevanzaStArCu"
+                              [ngbTooltip]="rilevante">
+                            <i *ngIf="richiestaMarker?.rilevanza" class="fa fa-exclamation text-danger m-0 mr-1"></i>
+                            <i *ngIf="richiestaMarker?.rilevanzaStArCu"
+                               class="fa fa-exclamation text-danger m-0 mr-1"></i>
+                        </span>
+
                     </div>
                     <div class="col text-right">
                         <span>
@@ -235,7 +245,8 @@
             <thead class="thead-light">
             <tr>
                 <th scope="col" class="py-1 px-0 mx-0 row w-100">
-                    <div *ngIf="!chiamataMarker.mySelf" class="col" ngbTooltip="Chiamata in corso di {{ chiamataMarker.descrizioneOperatore }}" placement="bottom"
+                    <div *ngIf="!chiamataMarker.mySelf" class="col"
+                         ngbTooltip="Chiamata in corso di {{ chiamataMarker.descrizioneOperatore }}" placement="bottom"
                          [disableTooltip]="chiamataMarker.descrizioneOperatore.length <= 40">
                         Chiamata in corso di {{chiamataMarker.descrizioneOperatore | truncate:30 }}
                     </div>

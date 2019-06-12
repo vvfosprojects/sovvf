@@ -33,7 +33,7 @@ export class RichiesteMarkerServiceFake {
                 'Esplosione nei pressi di un centro abitato',
                 5,
                 StatoRichiesta.Chiamata,
-                moment().subtract(0, 'minutes').toDate()
+                true
             ),
             new RichiestaMarker(
                 '2',
@@ -72,7 +72,7 @@ export class RichiesteMarkerServiceFake {
                 'Persona che minaccia di buttarsi da un tetto',
                 4,
                 StatoRichiesta.Assegnata,
-                moment().subtract(35, 'minutes').toDate()
+                true
             ),
             new RichiestaMarker(
                 '5',

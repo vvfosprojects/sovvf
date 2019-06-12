@@ -160,8 +160,8 @@ export class AgmComponent implements OnDestroy {
         this.agmService.map = mapWrapper;
     }
 
-    zIndex(id: string, tipoMarker: string, rilevante?: Date): number {
-        return this.markerService.zIndex(id, tipoMarker, rilevante);
+    zIndex(id: string, tipoMarker: string, rilevante?: boolean, rilevanzaStArCu?: boolean): number {
+        return this.markerService.zIndex(id, tipoMarker, rilevante, rilevanzaStArCu);
     }
 
     isClicked(id: string, tipoMarker: string): boolean {
@@ -172,8 +172,8 @@ export class AgmComponent implements OnDestroy {
         return this.markerService.isHovered(id, tipoMarker);
     }
 
-    isRilevante(rilevante: Date): 'BOUNCE' | 'DROP' | null {
-        if (!!rilevante && !this.controlAnimation.toggleStatus && this.bounceAnimationStatus) {
+    isRilevante(rilevante?: boolean, rilevanzaStArCu?: boolean): 'BOUNCE' | 'DROP' | null {
+        if ((!!rilevante || !!rilevanzaStArCu) && !this.controlAnimation.toggleStatus && this.bounceAnimationStatus) {
             return 'BOUNCE';
         }
         return null;

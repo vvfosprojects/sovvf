@@ -237,7 +237,7 @@ export class MarkerService implements OnDestroy {
         return trueMarkerValue;
     }
 
-    zIndex(id: string, tipoMarker: string, rilevante?: Date): number {
+    zIndex(id: string, tipoMarker: string, rilevante?: boolean, rilevanzaStArCu?: boolean): number {
         let zIndexValue = 30;
         const zIndexUp = 10;
         switch (tipoMarker) {
@@ -245,7 +245,7 @@ export class MarkerService implements OnDestroy {
                 if (this.markerRichiestaSelezionato === id || this.markerRichiestaHover === id) {
                     zIndexValue += zIndexUp;
                 }
-                if (!!rilevante) {
+                if (!!rilevante || !!rilevanzaStArCu) {
                     zIndexValue += zIndexUp / 2;
                 }
                 if (this.markerOpachi.stato.richieste) {
