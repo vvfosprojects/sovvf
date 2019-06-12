@@ -12,3 +12,10 @@ export class SetConnectionId {
     constructor(public connectionId: string) {
     }
 }
+
+export class SetCodiceSede {
+    static readonly type = '[signalR] Set Codice Sede';
+
+    constructor(public codiceSede: string) {
+    }
+}
