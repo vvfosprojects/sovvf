@@ -16,6 +16,10 @@ export class ModificaRilevanza {
     static readonly type = '[RichiestaModifica] Modifica Rilevanza';
 }
 
+export class ModificaRilevanzaStArCu {
+    static readonly type = '[RichiestaModifica] Modifica Rilevanza Storica Artistica e Culturale';
+}
+
 export class ModificaIndirizzo {
     static readonly type = '[RichiestaModifica] Modifica Indirizzo';
 
