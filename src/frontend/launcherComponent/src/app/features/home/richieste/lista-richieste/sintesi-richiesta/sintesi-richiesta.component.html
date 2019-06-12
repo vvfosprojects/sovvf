@@ -6,6 +6,12 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-3">
+                            <ng-template #rilevante>
+                                <div *ngIf="richiesta?.rilevanza">Intervento Rilevante</div>
+                                <div *ngIf="richiesta?.rilevanzaStArCu">Intervento Rilevante Storico Artistico
+                                    Culturale
+                                </div>
+                            </ng-template>
                             <div class="h6 mb-1 nowrap">
                                 <i class="guida fa fa-hashtag fa-fw mr-1"
                                    ngbTooltip="Identificativo richiesta assistenza" placement="right"></i>
@@ -13,9 +19,9 @@
                                     <span *ngIf="richiesta.codiceRichiesta">{{ richiesta.codiceRichiesta }} </span>
                                     <span *ngIf="!richiesta.codiceRichiesta">{{ richiesta.codice }} </span>
                                 </a>
-                                <i *ngIf="richiesta.rilevanza"
-                                   ngbTooltip="Intervento rilevante!"
-                                   class="fa fa-exclamation text-danger ml-2"></i>
+                                <span *ngIf="richiesta?.rilevanza || richiesta?.rilevanzaStArCu"
+                                      class="d-inline-block mr-1 text-danger"
+                                      [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="richiesta?.rilevanza" class="fa fa-exclamation"></i><i *ngIf="richiesta?.rilevanzaStArCu" class="fa fa-exclamation"></i></span>
                             </div>
                         </div>
                         <div class="col-6">
@@ -72,7 +78,7 @@
                                 <i class="guida fa fa-clock-o fa-fw mr-1" ngbTooltip="Ricezione richiesta"
                                    placement="right" container="body"></i>
                                 <a ngbTooltip="{{ richiesta.istanteRicezioneRichiesta | friendlyDateTooltip }}">
-                                    <span timeago [date]="richiesta.istanteRicezioneRichiesta.getTime()" [live]="live"></span>
+                                    <span timeago [date]="getDateIstanteRicezioneRichiesta(richiesta.istanteRicezioneRichiesta)" [live]="live"></span>
                                 </a>
                             </div>
                         </div>

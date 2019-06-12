@@ -117,4 +117,8 @@ export class SintesiRichiestaComponent implements OnInit {
     onModificaRichiesta() {
         this.modificaRichiesta.emit(this.richiesta);
     }
+
+    getDateIstanteRicezioneRichiesta(istante: any) {
+        return new Date(istante).getTime();
+    }
 }
