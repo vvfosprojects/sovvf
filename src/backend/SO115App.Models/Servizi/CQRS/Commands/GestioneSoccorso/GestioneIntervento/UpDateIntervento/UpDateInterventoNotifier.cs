@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CancellazioneChiamataInCorsoMarkerCommandHandler.cs" company="CNVVF">
+// <copyright file="UpDateInterventoNotifier.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,23 +17,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Commands;
-using SO115App.Models.Servizi.Infrastruttura.Marker;
+using CQRS.Commands.Notifiers;
+using Microsoft.AspNetCore.SignalR;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
 
-namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
+namespace DomainModel.CQRS.Commands.UpDateIntervento
 {
-    public class CancellazioneChiamataInCorsoCommandHandler : ICommandHandler<CancellazioneChiamataInCorsoMarkerCommand>
+    public class UpDateInterventoNotifier : ICommandNotifier<UpDateInterventoCommand>
     {
-        private readonly IDeleteChiamataInCorso _iDelChiamataInCorso;
+        private readonly INotifyUpDateChiamata _sender;
 
-        public CancellazioneChiamataInCorsoCommandHandler(IDeleteChiamataInCorso iDelChiamataInCorso)
+        public UpDateInterventoNotifier(INotifyUpDateChiamata sender)
         {
-            this._iDelChiamataInCorso = iDelChiamataInCorso;
+            _sender = sender;
         }
 
-        public void Handle(CancellazioneChiamataInCorsoMarkerCommand command)
+        public void Notify(UpDateInterventoCommand command)
         {
-            _iDelChiamataInCorso.DeleteChiamataInCorso(command.ChiamataInCorso.id);
+            _sender.SendNotification(command);
         }
     }
 }

@@ -24,9 +24,9 @@ using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Navbar;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar;
+using SO115App.SignalR;
 
 namespace SO115App.API.Controllers
 {

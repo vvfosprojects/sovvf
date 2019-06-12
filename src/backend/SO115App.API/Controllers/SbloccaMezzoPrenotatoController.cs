@@ -23,8 +23,8 @@ using DomainModel.CQRS.Commands.MezzoPrenotato;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Composizione;
+using SO115App.SignalR;
 using System;
 using System.Linq;
 using System.Security.Principal;
@@ -81,7 +81,6 @@ namespace SO115App.API.Controllers
             {
                 try
                 {
-
                     handler.Handle(command);
                     await _NotificationHub.Clients.Client(ConId).SendAsync("NotifySbloccaMezzoPrenotato", command);
 

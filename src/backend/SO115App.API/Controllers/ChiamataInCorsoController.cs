@@ -26,9 +26,9 @@ using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Hubs;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker;
 using SO115App.Models.Classi.Marker;
+using SO115App.SignalR;
 
 namespace SO115App.API.Controllers
 {
@@ -101,8 +101,6 @@ namespace SO115App.API.Controllers
                 try
                 {
                     this._Addhandler.Handle(command);
-                    await _NotificationHub.Clients.Group(chiamata.codiceSedeOperatore).SendAsync("NotifyChiamataInCorsoMarkerAdd", command);
-
                     return Ok();
                 }
                 catch
@@ -123,14 +121,12 @@ namespace SO115App.API.Controllers
             {
                 var command = new CancellazioneChiamataInCorsoMarkerCommand()
                 {
-                    IdChiamataInCorso = chiamata.id
+                    ChiamataInCorso = chiamata
                 };
 
                 try
                 {
                     this._Delhandler.Handle(command);
-                    await _NotificationHub.Clients.Group(chiamata.codiceSedeOperatore).SendAsync("NotifyChiamataInCorsoMarkerDelete", command.IdChiamataInCorso);
-
                     return Ok();
                 }
                 catch
@@ -157,8 +153,6 @@ namespace SO115App.API.Controllers
                 try
                 {
                     this._upDatehandler.Handle(command);
-                    await _NotificationHub.Clients.Group(chiamata.codiceSedeOperatore).SendAsync("NotifyChiamataInCorsoMarkerUpDate", command);
-
                     return Ok();
                 }
                 catch

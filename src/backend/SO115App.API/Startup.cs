@@ -33,10 +33,10 @@ using Microsoft.IdentityModel.Tokens;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
-using SO115App.API.Hubs;
 using SO115App.API.Models.Servizi.Infrastruttura;
 using SO115App.CompositionRoot;
 using SO115App.Logging;
+using SO115App.SignalR;
 
 namespace SO115App.API
 {
@@ -120,9 +120,7 @@ namespace SO115App.API
 
             app.UseSignalR(route =>
                {
-                   //route.MapHub<SubscriptionHub>("/SubscriptionHub");
                    route.MapHub<NotificationHub>("/NotificationHub");
-                   //route.MapHub<NotificationHub>("/NotificationMarkerHub");
                }
             );
 
@@ -132,7 +130,6 @@ namespace SO115App.API
             //SIMPLE INJECTION INIZIALIZE COMPONENT
             InitializeContainer(app);
             container.RegisterSingleton<IPrincipal, HttpContextPrincipal>();
-            container.RegisterInstance<ILogger>(new DebugLogger());
             container.Verify();
         }
 
@@ -161,15 +158,6 @@ namespace SO115App.API
             private IPrincipal Principal => this.httpContextAccessor.HttpContext.User;
 
             public bool IsInRole(string role) => this.Principal.IsInRole(role);
-        }
-
-        private sealed class DebugLogger : ILogger
-        {
-            public void Log(string message)
-            {
-                //Trace.WriteLine(message);
-                Debug.WriteLine(message);
-            }
         }
     }
 }
