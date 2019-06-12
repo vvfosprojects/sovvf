@@ -78,7 +78,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             notePrivate: [this.richiestaModifica.notePrivate],
             notePubbliche: [this.richiestaModifica.notePubbliche],
             motivazione: [this.richiestaModifica.descrizione],
-            zoneEmergenza: [this.richiestaModifica.zoneEmergenza],
+            zoneEmergenza: [this.richiestaModifica.zoneEmergenza]
         });
 
         this.setValidatorsRichiesta(this.tipologiaRichiedente);

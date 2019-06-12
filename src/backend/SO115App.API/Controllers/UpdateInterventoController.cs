@@ -24,10 +24,10 @@ using DomainModel.CQRS.Commands.UpDateIntervento;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Hubs;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
+using SO115App.SignalR;
 
 namespace SO115App.API.Controllers
 {
@@ -74,7 +74,7 @@ namespace SO115App.API.Controllers
                 try
                 {
                     this._handler.Handle(command);
-                    await _NotificationHub.Clients.Group(chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", command);
+                    //await _NotificationHub.Clients.Group(chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", command);
 
                     return Ok();
                 }

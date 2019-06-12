@@ -24,15 +24,17 @@ using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
+using SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiMezziMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiSediMarker;
+using SO115App.Models.Classi.Marker;
+using SO115App.SignalR;
 
 namespace SO115App.API.Controllers
 {
@@ -49,6 +51,7 @@ namespace SO115App.API.Controllers
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _SintesiRichiesteAssistenzahandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _SintesiRichiesteAssistenzaMarkerhandler;
         private readonly IQueryHandler<SintesiSediMarkerQuery, SintesiSediMarkerResult> _SintesiSediMarkerhandler;
+        private readonly IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> _listaChiamateInCorsoMarkerhandler;
 
         public WelcomeController(
             IHubContext<NotificationHub> NotificationHubContext,
@@ -58,7 +61,8 @@ namespace SO115App.API.Controllers
             IQueryHandler<SintesiMezziMarkerQuery, SintesiMezziMarkerResult> SintesiMezziMarkerhandler,
             IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> SintesiRichiesteAssistenzahandler,
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> SintesiRichiesteAssistenzaMarkerhandler,
-            IQueryHandler<SintesiSediMarkerQuery, SintesiSediMarkerResult> SintesiSediMarkerhandler
+            IQueryHandler<SintesiSediMarkerQuery, SintesiSediMarkerResult> SintesiSediMarkerhandler,
+            IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> ListaChiamateInCorsoMarkerhandler
             )
         {
             this._NotificationHubContext = NotificationHubContext;
@@ -69,6 +73,7 @@ namespace SO115App.API.Controllers
             this._SintesiRichiesteAssistenzahandler = SintesiRichiesteAssistenzahandler;
             this._SintesiRichiesteAssistenzaMarkerhandler = SintesiRichiesteAssistenzaMarkerhandler;
             this._SintesiSediMarkerhandler = SintesiSediMarkerhandler;
+            this._listaChiamateInCorsoMarkerhandler = ListaChiamateInCorsoMarkerhandler;
         }
 
         /// <summary>
@@ -116,6 +121,11 @@ namespace SO115App.API.Controllers
                 List<SintesiSedeMarker> listaSintesiSediMarker = new List<SintesiSedeMarker>();
                 listaSintesiSediMarker = (List<SintesiSedeMarker>)this._SintesiSediMarkerhandler.Handle(SintesiSediMarkerquery).SintesiSediMarker;
                 await _NotificationHubContext.Clients.Client(ConId).SendAsync("NotifyGetListaSediMarker", listaSintesiSediMarker);
+
+                var Listaquery = new ListaChiamateInCorsoMarkerQuery();
+                List<ChiamateInCorso> ListaChiamate = new List<ChiamateInCorso>();
+                ListaChiamate = (List<ChiamateInCorso>)this._listaChiamateInCorsoMarkerhandler.Handle(Listaquery).ListaChiamateInCorsoMarker;
+                await _NotificationHubContext.Clients.Client(ConId).SendAsync("NotifyChiamateInCorsoMarker", ListaChiamate);
 
                 return Ok();
             }

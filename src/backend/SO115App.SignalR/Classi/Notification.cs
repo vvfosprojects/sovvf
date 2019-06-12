@@ -1,5 +1,5 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="ChiamataInCorsoMarkerCommand.cs" company="CNVVF">
+//-----------------------------------------------------------------------
+// <copyright file="Notification.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,14 +17,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.Models.Classi.Marker;
-
-namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
+namespace SO115App.SignalR.Notifications
 {
-    public class ChiamataInCorsoMarkerCommand
+    public class Notification<T>
     {
-        public ChiamateInCorso AddChiamataInCorso { get; set; }
-
-        public string HubConId { get; set; }
+        public string CodiceSede { get; set; }
+        public string NominativoUtente { get; set; }
+        public T ActionObj { get; set; }
+        public int IdUtente { get; set; }
     }
 }

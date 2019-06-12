@@ -22,10 +22,10 @@ using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Hubs;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn;
 using SO115App.Models.Classi.Utenti.Autenticazione;
+using SO115App.SignalR;
 
 namespace SO115App.API.Controllers
 {

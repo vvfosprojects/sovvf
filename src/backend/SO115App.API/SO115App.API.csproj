@@ -21,6 +21,7 @@
     <ProjectReference Include="..\SO115App.CompositionRoot\SO115App.CompositionRoot.csproj" />
     <ProjectReference Include="..\SO115App.Logging\SO115App.Logging.csproj" />
     <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
+    <ProjectReference Include="..\SO115App.SignalR\SO115App.SignalR.csproj" />
   </ItemGroup>
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 </Project>

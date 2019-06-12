@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CancellazioneChiamataInCorsoMarkerCommandHandler.cs" company="CNVVF">
+// <copyright file="NotificationDeleteChiamataInCorso .cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,23 +17,26 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Commands;
-using SO115App.Models.Servizi.Infrastruttura.Marker;
 
-namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
+using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
+using Microsoft.AspNetCore.SignalR;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
+using System;
+
+namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
 {
-    public class CancellazioneChiamataInCorsoCommandHandler : ICommandHandler<CancellazioneChiamataInCorsoMarkerCommand>
+    public class NotificationDeleteChiamataInCorso : INotificationDeleteChiamataInCorso
     {
-        private readonly IDeleteChiamataInCorso _iDelChiamataInCorso;
+        private readonly IHubContext<NotificationHub> _notificationHubContext;
 
-        public CancellazioneChiamataInCorsoCommandHandler(IDeleteChiamataInCorso iDelChiamataInCorso)
+        public NotificationDeleteChiamataInCorso(IHubContext<NotificationHub> NotificationHubContext)
         {
-            this._iDelChiamataInCorso = iDelChiamataInCorso;
+            _notificationHubContext = NotificationHubContext;
         }
 
-        public void Handle(CancellazioneChiamataInCorsoMarkerCommand command)
+        public void SendNotification(CancellazioneChiamataInCorsoMarkerCommand chiamata)
         {
-            _iDelChiamataInCorso.DeleteChiamataInCorso(command.ChiamataInCorso.id);
+            _notificationHubContext.Clients.Client(chiamata.ChiamataInCorso.codiceSedeOperatore).SendAsync("NotifyChiamataInCorsoMarkerDelete", chiamata);
         }
     }
 }
