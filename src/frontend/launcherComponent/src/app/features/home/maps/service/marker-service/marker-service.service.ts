@@ -52,6 +52,7 @@ import { MarkerDatiMeteo } from '../../maps-model/marker-dati-meteo.interface';
 import { MarkerOpachiState, MarkerOpachiStateModel } from '../../../store/states/maps/marker-opachi.state';
 import { CustomButtonsMaps } from '../../maps-interface/maps-custom-buttons';
 import { CentraMappaButton, ToggleAnimation, ToggleAnimationButton } from '../../../store/actions/maps/maps-buttons.actions';
+import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
 
 
 @Injectable()
@@ -116,12 +117,12 @@ export class MarkerService implements OnDestroy {
          * marker minimi per creare un cluster
          * @type {number}
          */
-        this.minMarkerCluster = 99999;
+        this.minMarkerCluster = MAPSOPTIONS.minMarkerCluster;
         /**
          * imposto il livello di opacità generico,
          * si potrebbe implementare anche un metodo che imposta un opacità singolarmente
          */
-        this.livelloOpacita = 0.3;
+        this.livelloOpacita = MAPSOPTIONS.livelloOpacita;
         /**
          * creo un array con i path di tutte le icone da mettere in cache
          */
@@ -131,7 +132,7 @@ export class MarkerService implements OnDestroy {
          */
         setInterval(() => {
             this.store.dispatch(new ToggleAnimation());
-        }, 30000);
+        }, MAPSOPTIONS.animationTimeoutMs);
     }
 
     ngOnDestroy() {
@@ -236,7 +237,7 @@ export class MarkerService implements OnDestroy {
         return trueMarkerValue;
     }
 
-    zIndex(id: string, tipoMarker: string, rilevante?: Date): number {
+    zIndex(id: string, tipoMarker: string, rilevante?: boolean, rilevanzaStArCu?: boolean): number {
         let zIndexValue = 30;
         const zIndexUp = 10;
         switch (tipoMarker) {
@@ -244,7 +245,7 @@ export class MarkerService implements OnDestroy {
                 if (this.markerRichiestaSelezionato === id || this.markerRichiestaHover === id) {
                     zIndexValue += zIndexUp;
                 }
-                if (!!rilevante) {
+                if (!!rilevante || !!rilevanzaStArCu) {
                     zIndexValue += zIndexUp / 2;
                 }
                 if (this.markerOpachi.stato.richieste) {

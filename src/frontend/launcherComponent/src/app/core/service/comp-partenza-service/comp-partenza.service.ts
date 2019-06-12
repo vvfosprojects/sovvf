@@ -38,7 +38,7 @@ export class CompPartenzaService {
         );
     }
 
-    setMezzoPrenotato(mezzoPrenotatoObj: MezzoPrenotatoInterface) {
+    setMezzoPrenotato(mezzoPrenotatoObj: any) {
         return this.http.post(API_URL_MEZZO_PRENOTATO, mezzoPrenotatoObj).pipe(
             retry(3),
             catchError(handleError)

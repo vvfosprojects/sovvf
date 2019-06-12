@@ -72,12 +72,13 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             etichette: [this.richiestaModifica.etichette],
             noteIndirizzo: [this.richiestaModifica.localita.note],
             rilevanza: [this.richiestaModifica.rilevanza],
+            rilevanzaStArCu: [this.richiestaModifica.rilevanzaStArCu],
             latitudine: [this.richiestaModifica.localita.coordinate.latitudine, Validators.required],
             longitudine: [this.richiestaModifica.localita.coordinate.longitudine, Validators.required],
             notePrivate: [this.richiestaModifica.notePrivate],
             notePubbliche: [this.richiestaModifica.notePubbliche],
             motivazione: [this.richiestaModifica.descrizione],
-            zoneEmergenza: [this.richiestaModifica.zoneEmergenza],
+            zoneEmergenza: [this.richiestaModifica.zoneEmergenza]
         });
 
         this.setValidatorsRichiesta(this.tipologiaRichiedente);
@@ -93,6 +94,14 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             this.f.rilevanza.setValue(false);
         } else {
             this.f.rilevanza.setValue(true);
+        }
+    }
+
+    setRilevanzaStArCu() {
+        if (this.f.rilevanzaStArCu.value === true) {
+            this.f.rilevanzaStArCu.setValue(false);
+        } else {
+            this.f.rilevanzaStArCu.setValue(true);
         }
     }
 
@@ -144,6 +153,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         nuovaRichiesta.etichette = f.etichette.value;
         nuovaRichiesta.localita.note = f.noteIndirizzo.value;
         nuovaRichiesta.rilevanza = f.rilevanza.value;
+        nuovaRichiesta.rilevanzaStArCu = f.rilevanzaStArCu.value;
         nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
         nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
         nuovaRichiesta.descrizione = f.motivazione.value;

@@ -29,19 +29,13 @@ import { CompPartenzaServiceFake } from '../../../core/service/comp-partenza-ser
  */
 import { NgxsModule } from '@ngxs/store';
 import { PreAccoppiatiState } from '../store/states/composizione-partenza/pre-accoppiati.state';
-import { RichiestaComposizioneState } from '../store/states/composizione-partenza/richiesta-composizione.state';
 import { environment } from '../../../../environments/environment';
 import { FilterbarService } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
 import { FilterbarServiceFake } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service.fake';
 import { ComposizioneAvanzataState } from '../store/states/composizione-partenza/composizione-avanzata.state';
-import { FilterbarComposizioneState } from '../store/states/composizione-partenza/filterbar-composizione.state';
+import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza-state';
 import { MezziComposizioneState } from '../store/states/composizione-partenza/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../store/states/composizione-partenza/squadre-composizione.state';
-import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
-import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
-import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
-import { RichiestaModificaState } from '../store/states/richieste/richiesta-modifica.state';
-import { RichiesteStateDefaults } from '../store/states/richieste/richieste.state';
 import { BoxPartenzaState } from '../store/states/composizione-partenza/box-partenza.state';
 
 @NgModule({
@@ -67,8 +61,7 @@ import { BoxPartenzaState } from '../store/states/composizione-partenza/box-part
         NgSelectModule,
         NgxsModule.forFeature(
             [
-                RichiestaComposizioneState,
-                FilterbarComposizioneState,
+                ComposizionePartenzaState,
                 BoxPartenzaState,
                 // Comp Rapida
                 PreAccoppiatiState,

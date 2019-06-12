@@ -6,6 +6,10 @@ import {
     RemoveFiltriSelezionatiComposizione,
     RemoveFiltroSelezionatoComposizione
 } from '../../../store/actions/composizione-partenza/filterbar-composizione.actions';
+import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza-state';
+import { MezziComposizioneState } from '../../../store/states/composizione-partenza/mezzi-composizione.state';
+import { SquadreComposizioneState } from '../../../store/states/composizione-partenza/squadre-composizione.state';
+import { GetListeCoposizioneAvanzata } from '../../../store/actions/composizione-partenza/composizione-avanzata.actions';
 
 @Component({
     selector: 'app-composizione-filterbar',
@@ -51,17 +55,33 @@ export class ComposizioneFilterbarComponent {
     }
 
     addFiltro(event: any, tipo: string) {
-        // console.log('Filtro deselezionato', event);
         this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id, tipo));
+        // console.log('Filtro deselezionato', event);
     }
 
     removeFiltro(event: any, tipo: string) {
-        // console.log('Filtro deselezionato', event);
         this.store.dispatch(new RemoveFiltroSelezionatoComposizione(event.value.id, tipo));
+        // console.log('Filtro deselezionato', event);
     }
 
     clearFiltri(tipo: string) {
-        // console.log('Filtri deselezionati', tipo);
         this.store.dispatch(new RemoveFiltriSelezionatiComposizione(tipo));
+        // console.log('Filtri deselezionati', tipo);
+    }
+
+    dropdownClosed() {
+        const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+        const codiceMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato);
+        const codiceSquadra = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
+        const idRichiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id;
+        const filtri = {
+            'CodiceDistaccamento': filtriSelezionati ? filtriSelezionati.CodiceDistaccamento : [],
+            'CodiceTipoMezzo': filtriSelezionati ? filtriSelezionati.CodiceTipoMezzo : [],
+            'CodiceStatoMezzo': filtriSelezionati ? filtriSelezionati.CodiceStatoMezzo : [],
+            'CodiceMezzo': codiceMezzo ? codiceMezzo : [],
+            'CodiceSquadra': codiceSquadra ? codiceSquadra : [],
+            'idRichiesta': idRichiesta
+        };
+        this.store.dispatch(new GetListeCoposizioneAvanzata(filtri));
     }
 }

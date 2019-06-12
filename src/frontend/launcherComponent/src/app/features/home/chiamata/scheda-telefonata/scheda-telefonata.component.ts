@@ -85,6 +85,7 @@ export class SchedaTelefonataComponent implements OnInit {
             etichette: [null],
             noteIndirizzo: [null],
             rilevanza: [false],
+            rilevanzaStArCu: [false],
             notePrivate: [null],
             notePubbliche: [null],
             descrizione: [null, Validators.required],
@@ -140,6 +141,14 @@ export class SchedaTelefonataComponent implements OnInit {
         }
     }
 
+    setRilevanzaStArCu() {
+        if (this.f.rilevanzaStArCu.value === true) {
+            this.f.rilevanzaStArCu.setValue(false);
+        } else {
+            this.f.rilevanzaStArCu.setValue(true);
+        }
+    }
+
     getChiamataForm() {
         // console.log(this.f.descrizione.value);
         // Set form data
@@ -153,6 +162,7 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.localita.note = f.noteIndirizzo.value;
         this.nuovaRichiesta.etichette = f.etichette.value ? f.etichette.value.split(' ') : null;
         this.nuovaRichiesta.rilevanza = f.rilevanza.value;
+        this.nuovaRichiesta.rilevanzaStArCu = f.rilevanzaStArCu.value;
         this.nuovaRichiesta.descrizione = f.descrizione.value;
         this.nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value;
         this.nuovaRichiesta.notePrivate = f.notePrivate.value;
@@ -190,7 +200,7 @@ export class SchedaTelefonataComponent implements OnInit {
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
         modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
-        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tornerai alla lista eliminando tutti i dati inseriti.';
+        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
         modalConfermaAnnulla.componentInstance.bottoni = [
             { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
             { type: 'ok', descrizione: 'Conferma', colore: 'dark' },

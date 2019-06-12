@@ -4,21 +4,22 @@
             <ng-select [items]="filtri.generiMezzi" bindLabel="descrizione" bindValue="id" [multiple]="true"
                        [closeOnSelect]="false" [hideSelected]="true" (add)="addFiltro($event, 'codiceTipoMezzo')"
                        (remove)="removeFiltro($event, 'codiceTipoMezzo')" (clear)="clearFiltri('codiceTipoMezzo')"
-                       placeholder="Genere Mezzo: Tutti">
+                       (close)="dropdownClosed()" placeholder="Genere Mezzo: Tutti">
             </ng-select>
         </div>
         <div class="col-4 py-1">
             <ng-select [items]="filtri.distaccamenti" bindLabel="descrizione" [multiple]="true" [closeOnSelect]="false"
                        [hideSelected]="true" (add)="addFiltro($event, 'codiceDistaccamento')"
-                       (remove)="removeFiltro($event, 'codiceDistaccamento')" (clear)="clearFiltri('codiceDistaccamento')"
-                       placeholder="Distaccamento: Tutti">
+                       (remove)="removeFiltro($event, 'codiceDistaccamento')"
+                       (clear)="clearFiltri('codiceDistaccamento')"
+                       (close)="dropdownClosed()" placeholder="Distaccamento: Tutti">
             </ng-select>
         </div>
         <div class="col-4 py-1 pr-4">
             <ng-select [items]="filtri.stati" bindLabel="descrizione" [multiple]="true" [closeOnSelect]="false"
                        [hideSelected]="true" (add)="addFiltro($event, 'codiceStatoMezzo')"
                        (remove)="removeFiltro($event, 'codiceStatoMezzo')" (clear)="clearFiltri('codiceStatoMezzo')"
-                       placeholder="Stato: Tutti">
+                       (close)="dropdownClosed()" placeholder="Stato: Tutti">
                 <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
                     <div><span class="fa fa-eercast mr-2"
                                [ngClass]="iconaStatiClass(item.descrizione)"></span>{{item.descrizione}}</div>

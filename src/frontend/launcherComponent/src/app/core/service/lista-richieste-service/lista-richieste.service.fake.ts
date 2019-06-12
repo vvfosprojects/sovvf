@@ -180,6 +180,7 @@ export class SintesiRichiesteServiceFake {
                 [
                     new Partenza([
                             new Squadra(
+                                '3',
                                 '3A',
                                 StatoSquadra.InRientro,
                                 [
@@ -259,6 +260,7 @@ export class SintesiRichiesteServiceFake {
                 [
                     new Partenza([
                             new Squadra(
+                                '3',
                                 '3A',
                                 StatoSquadra.InRientro,
                                 [
@@ -338,6 +340,7 @@ export class SintesiRichiesteServiceFake {
                 [
                     new Partenza([
                             new Squadra(
+                                '3',
                                 '3A',
                                 StatoSquadra.InRientro,
                                 [
@@ -417,6 +420,7 @@ export class SintesiRichiesteServiceFake {
                 [
                     new Partenza([
                             new Squadra(
+                                '3',
                                 '3A',
                                 StatoSquadra.InRientro,
                                 [
@@ -495,6 +499,7 @@ export class SintesiRichiesteServiceFake {
                 [
                     new Partenza([
                             new Squadra(
+                                '3',
                                 '3A',
                                 StatoSquadra.InRientro,
                                 [
@@ -573,6 +578,7 @@ export class SintesiRichiesteServiceFake {
                 [
                     new Partenza([
                             new Squadra(
+                                '3',
                                 '3A',
                                 StatoSquadra.InRientro,
                                 [
@@ -651,6 +657,7 @@ export class SintesiRichiesteServiceFake {
                 [
                     new Partenza([
                             new Squadra(
+                                '3',
                                 '3A',
                                 StatoSquadra.InRientro,
                                 [
@@ -729,6 +736,7 @@ export class SintesiRichiesteServiceFake {
                 [
                     new Partenza([
                             new Squadra(
+                                '3',
                                 '3A',
                                 StatoSquadra.InRientro,
                                 [

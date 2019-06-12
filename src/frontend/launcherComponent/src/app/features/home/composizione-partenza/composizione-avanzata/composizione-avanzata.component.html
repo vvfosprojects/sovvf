@@ -1,10 +1,11 @@
-<div *ngIf="mezziComposizione.length > 0 && squadreComposizione.length > 0" class="row">
+<div class="row">
     <div class="col-5 pr-0">
         <div class="card card-shadow mx-auto">
             <div class="card-header">
                 <i class="fa fa-truck mr-2"></i><span class="h6">Mezzi</span>
             </div>
-            <ul class="list-group list-group-flush border-bottom scroll-y"
+            <h5 *ngIf="mezziComposizione?.length <= 0">Nessun Mezzo</h5>
+            <ul *ngIf="mezziComposizione?.length > 0" class="list-group list-group-flush border-bottom scroll-y"
                 style="max-height:345px; min-height:345px">
                 <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC"
                                         [itemSelezionato]="mC.id === idMezzoSelezionato"
@@ -25,7 +26,8 @@
             <div class="card-header">
                 <i class="fa fa-group mr-2"></i><span class="h6">Squadre</span>
             </div>
-            <ul class="list-group list-group-flush border-bottom scroll-y"
+            <h5 *ngIf="squadreComposizione?.length <= 0">Nessuna Squadra</h5>
+            <ul *ngIf="squadreComposizione?.length > 0" class="list-group list-group-flush border-bottom scroll-y"
                 style="max-height:345px; min-height:345px">
                 <app-squadra-composizione *ngFor="let sC of squadreComposizione" [squadraComp]="sC"
                                           [itemSelezionato]="checkSquadraSelezione(sC.id)"
@@ -38,7 +40,7 @@
             </ul>
         </div>
     </div>
-    <div class="col-4">
+    <div *ngIf="mezziComposizione && squadreComposizione" class="col-4">
         <div class="w-100 py-2 px-1 scroll-y" style="max-height:350px; min-height:350px">
             <!-- nessuna partenza -->
             <div *ngIf="boxPartenzaList.length <= 0" class="text-center mt-3">
@@ -71,8 +73,8 @@
         </button>
     </div>
 </div>
-<div class="row">
-    <div *ngIf="mezziComposizione.length <= 0 && squadreComposizione.length <= 0" class="col-12 mt-5">
+<div *ngIf="!mezziComposizione && !squadreComposizione" class="row">
+    <div class="col-12 mt-5">
         <div class="text-center">
             <i class="fa fa-spinner fa-3x fa-spin"></i>
             <h6 class="m-0 mt-2">Caricamento...</h6>

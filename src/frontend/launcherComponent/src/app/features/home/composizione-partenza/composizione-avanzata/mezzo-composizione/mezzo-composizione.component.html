@@ -21,10 +21,12 @@
           | slice:0:3}}</span>
         </div>
         <div class="col-2 text-right">
-            <i *ngIf="lucchetto" class="fa fa-lg fa-lock" (click)="onClickLucchetto()"></i>
+            <i *ngIf="itemBloccato" class="fa fa-lg fa-lock" (click)="onClickLucchetto()"
+               ngbTooltip="Richiedi sblocco mezzo"></i>
+            <i *ngIf="itemPrenotato" class="fa fa-lg fa-clock-o" ngbTooltip="Richiedi reset timer"></i>
         </div>
     </div>
-    <!--  <div *ngIf="mezzoComp.timeout" class="px-0 pt-1" style="width:100%; margin-bottom: 1px">-->
-    <!--    <ngb-progressbar type="secondary" [max]="300" [value]="mezzoComp.timeout" height="7px"></ngb-progressbar>-->
-    <!--  </div>-->
+    <div *ngIf="itemPrenotato" class="px-2 pt-2 pb-1" style="width:100%; margin-bottom: 1px">
+        <ngb-progressbar type="secondary" [max]="300" [value]="50" height="7px"></ngb-progressbar>
+    </div>
 </li>

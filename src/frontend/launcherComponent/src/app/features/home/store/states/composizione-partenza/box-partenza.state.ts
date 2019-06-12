@@ -5,7 +5,7 @@ import { BoxPartenza } from '../../../composizione-partenza/interface/box-parten
 import {
     AddBoxPartenza,
     AddMezzoBoxPartenza,
-    AddSquadraBoxPartenza,
+    AddSquadraBoxPartenza, ClearBoxPartenze,
     RemoveBoxPartenza,
     RemoveMezzoBoxPartenza,
     RemoveSquadraBoxPartenza,
@@ -80,42 +80,23 @@ export class BoxPartenzaState {
     @Action(SelectBoxPartenza)
     selectBoxPartenza({ getState, patchState, dispatch, setState }: StateContext<BoxPartenzaStateModel>, action: SelectBoxPartenza) {
         const state = getState();
-        if (state.boxPartenzaList.length > 0) {
-            state.boxPartenzaList.forEach((box: BoxPartenza) => {
-                if (box.id === state.idBoxPartenzaSelezionato && box.mezzoComposizione) {
-                    // Creazione oggetto Mezzo Prenotato di tipo "MezzoPrenotatoInterface"
-                    const idOperatore = this.store.selectSnapshot(UtenteState.utente).id;
-                    const idMezzoComposizione = box.mezzoComposizione.id;
-                    const mezzoPrenotatoObj = {
-                        'idOperatore': idOperatore,
-                        'idMezzoComposizione': idMezzoComposizione
-                    };
-                    console.log('Mezzo Prenotato Object', mezzoPrenotatoObj);
-                    this._compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
-                        console.log('Mezzo Prenotato Object', mezzoPrenotatoObj);
-                    }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Blocco Mezzo', 'Il server web non risponde', 5)));
-                }
-            });
-        }
         dispatch(new ClearSelectedMezziComposizione());
         dispatch(new ClearSelectedSquadreComposizione());
-        setState(
-            produce(state, draft => {
-                draft.idBoxPartenzaSelezionato = action.idBoxPartenza;
-                draft.boxPartenzaList.forEach((box: BoxPartenza) => {
-                    if (box.id === draft.idBoxPartenzaSelezionato) {
-                        if (box.mezzoComposizione) {
-                            dispatch(new SelectMezzoComposizione(box.mezzoComposizione.id));
-                        }
-                        if (box.squadraComposizione.length > 0) {
-                            box.squadraComposizione.forEach((squadra: SquadraComposizione) => {
-                                dispatch(new SelectSquadraComposizione(squadra.id));
-                            });
-                        }
-                    }
-                });
-            })
-        );
+        patchState({
+            idBoxPartenzaSelezionato: action.idBoxPartenza
+        });
+        state.boxPartenzaList.forEach((box: BoxPartenza) => {
+            if (box.id === action.idBoxPartenza) {
+                if (box.mezzoComposizione) {
+                    dispatch(new SelectMezzoComposizione(box.mezzoComposizione));
+                }
+                if (box.squadraComposizione.length > 0) {
+                    box.squadraComposizione.forEach((squadra: SquadraComposizione) => {
+                        dispatch(new SelectSquadraComposizione(squadra));
+                    });
+                }
+            }
+        });
         // console.log(action.idBoxPartenza);
     }
 
@@ -150,12 +131,12 @@ export class BoxPartenzaState {
                 if (box.id === action.idBoxPartenza && box.mezzoComposizione) {
                     dispatch(new RemoveBookMezzoComposizione(box.mezzoComposizione.id));
                     if (state.idBoxPartenzaSelezionato === action.idBoxPartenza) {
-                        dispatch(new UnselectMezzoComposizione(box.mezzoComposizione.id));
+                        dispatch(new UnselectMezzoComposizione(box.mezzoComposizione));
                     }
                 }
                 if (state.idBoxPartenzaSelezionato === action.idBoxPartenza && box.squadraComposizione.length > 0) {
                     box.squadraComposizione.forEach((squadra: SquadraComposizione) => {
-                        dispatch(new UnselectSquadraComposizione(squadra.id));
+                        dispatch(new UnselectSquadraComposizione(squadra));
                     });
                 }
             });
@@ -239,6 +220,14 @@ export class BoxPartenzaState {
                 });
             })
         );
+        // console.log(action.idMezzo);
+    }
+
+    @Action(ClearBoxPartenze)
+    clearBoxPartenze({ patchState }: StateContext<BoxPartenzaStateModel>) {
+        patchState({
+            boxPartenzaList: BoxPartenzaStateDefaults.boxPartenzaList
+        });
         // console.log(action.idMezzo);
     }
 }

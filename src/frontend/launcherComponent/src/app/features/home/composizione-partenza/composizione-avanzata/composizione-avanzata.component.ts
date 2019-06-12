@@ -15,14 +15,14 @@ import { ToastrType } from '../../../../shared/enum/toastr';
 import { Select, Store } from '@ngxs/store';
 import { makeCopy } from '../../../../shared/helper/function';
 import { GetListeCoposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
-import { FilterbarComposizioneState } from '../../store/states/composizione-partenza/filterbar-composizione.state';
+import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza-state';
 import { MezziComposizioneState } from '../../store/states/composizione-partenza/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../store/states/composizione-partenza/squadre-composizione.state';
 import {
     AddBookMezzoComposizione,
     HoverInMezzoComposizione,
-    HoverOutMezzoComposizione,
-    SelectMezzoComposizione,
+    HoverOutMezzoComposizione, RequestBookMezzoComposizione, SelectMezzo,
+    SelectMezzoComposizione, UnselectMezzo,
     UnselectMezzoComposizione
 } from '../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
@@ -30,7 +30,7 @@ import { BoxPartenza } from '../interface/box-partenza-interface';
 import {
     AddBoxPartenza,
     AddMezzoBoxPartenza,
-    AddSquadraBoxPartenza,
+    AddSquadraBoxPartenza, ClearBoxPartenze,
     RemoveBoxPartenza,
     RemoveMezzoBoxPartenza, RemoveSquadraBoxPartenza,
     SelectBoxPartenza
@@ -73,7 +73,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     idSquadraHover: string;
 
     // Filtri Composizione
-    @Select(FilterbarComposizioneState.filtriSelezionati) filtriSelezionati$: Observable<any>;
+    @Select(ComposizionePartenzaState.filtriSelezionati) filtriSelezionati$: Observable<any>;
     filtriSelezionati: any;
 
     // BoxPartenza Composizione
@@ -93,15 +93,15 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     constructor(private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,
                 private store: Store) {
+        // Richiedo la lista di mezzi e squadre
+        this.updateListe();
+
         // Popover options
         this.popoverConfig.container = 'body';
         this.popoverConfig.placement = 'top';
         // Tooltip options
         this.tooltipConfig.container = 'body';
         this.tooltipConfig.placement = 'top';
-
-        // Richiedo la lista di mezzi e squadre
-        this.updateListe();
 
         // Prendo i mezzi da visualizzare nella lista
         this.subscription.add(
@@ -186,6 +186,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     ngOnInit() {
+        // Aggiungo il primo box partenza vuoto
+        this.store.dispatch(new AddBoxPartenza());
         this.subscription.add(this.dismissEvents.subscribe(
             events => this.annullaPartenza(events)
         ));
@@ -195,30 +197,34 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     ngOnDestroy(): void {
+        this.store.dispatch(new ClearBoxPartenze());
         this.subscription.unsubscribe();
     }
 
     updateListe() {
-        const filtri = {
-            'CodiceDistaccamento': this.filtriSelezionati ? this.filtriSelezionati.CodiceDistaccamento : [],
-            'CodiceTipoMezzo': this.filtriSelezionati ? this.filtriSelezionati.CodiceTipoMezzo : [],
-            'CodiceStatoMezzo': this.filtriSelezionati ? this.filtriSelezionati.CodiceStatoMezzo : [],
-            'CodiceMezzo': [],
-            'CodiceSquadra': [],
-        };
-
-        if (this.idMezzoSelezionato) {
-            const CodiceMezzo = [];
-            CodiceMezzo.push(this.idMezzoSelezionato);
-            filtri.CodiceMezzo = CodiceMezzo;
-        }
-
-        if (this.idSquadreSelezionate) {
-            filtri.CodiceMezzo = this.idSquadreSelezionate;
-        }
-
-        console.log('Oggetto "Filtri" per prendere aggiornare le liste', filtri);
-        this.store.dispatch(new GetListeCoposizioneAvanzata(filtri));
+        // const idRichiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id;
+        //
+        // const filtri = {
+        //     'CodiceDistaccamento': this.filtriSelezionati ? this.filtriSelezionati.CodiceDistaccamento : [],
+        //     'CodiceTipoMezzo': this.filtriSelezionati ? this.filtriSelezionati.CodiceTipoMezzo : [],
+        //     'CodiceStatoMezzo': this.filtriSelezionati ? this.filtriSelezionati.CodiceStatoMezzo : [],
+        //     'CodiceMezzo': this.idMezzoSelezionato ? this.idMezzoSelezionato : [],
+        //     'CodiceSquadra': this.idSquadreSelezionate ? this.idSquadreSelezionate : [],
+        //     'idRichiesta': idRichiesta ? idRichiesta : null
+        // };
+        //
+        // if (this.idMezzoSelezionato) {
+        //     const CodiceMezzo = [];
+        //     CodiceMezzo.push(this.idMezzoSelezionato);
+        //     filtri.CodiceMezzo = CodiceMezzo;
+        // }
+        //
+        // if (this.idSquadreSelezionate) {
+        //     filtri.CodiceMezzo = this.idSquadreSelezionate;
+        // }
+        //
+        // console.log('Oggetto "Filtri" per prendere aggiornare le liste', filtri);
+        // this.store.dispatch(new GetListeCoposizioneAvanzata(filtri));
     }
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
@@ -226,9 +232,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             this.store.dispatch(new AddBoxPartenza());
         }
         if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) === -1) {
-            this.store.dispatch(new SelectMezzoComposizione(mezzoComposizione.id));
+            this.store.dispatch(new SelectMezzoComposizione(mezzoComposizione));
+            // this.store.dispatch(new SelectMezzo(mezzoComposizione.mezzo.codice));
             this.store.dispatch(new AddMezzoBoxPartenza(mezzoComposizione));
-            this.updateListe();
         } else {
             this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza'));
         }
@@ -236,7 +242,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     mezzoDeselezionato(mezzoComposizione: MezzoComposizione) {
-        this.store.dispatch(new UnselectMezzoComposizione(mezzoComposizione.id));
+        this.store.dispatch(new UnselectMezzoComposizione(mezzoComposizione));
+        // this.store.dispatch(new UnselectMezzo(mezzoComposizione.mezzo.codice));
         this.store.dispatch(new RemoveMezzoBoxPartenza(mezzoComposizione.id));
         this.clearDirection.emit();
         // console.log('Mezzo deselezionato', mezzoComposizione);
@@ -254,13 +261,13 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         if (this.boxPartenzaList.length <= 0) {
             this.store.dispatch(new AddBoxPartenza());
         }
-        this.store.dispatch(new SelectSquadraComposizione(squadraComposizione.id));
+        this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
         this.store.dispatch(new AddSquadraBoxPartenza(squadraComposizione));
         // console.log('Squadra selezionata', squadraComposizione);
     }
 
     squadraDeselezionata(squadraComposizione: SquadraComposizione) {
-        this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione.id));
+        this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
         this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
         this.clearDirection.emit();
         // console.log('Squadra deselezionata', squadraComposizione);
@@ -300,7 +307,11 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     nuovaPartenza() {
-        this.store.dispatch(new AddBoxPartenza());
+        if (this.boxPartenzaList.length <= 0) {
+            this.store.dispatch(new AddBoxPartenza());
+        } else {
+            this.store.dispatch(new RequestBookMezzoComposizione());
+        }
     }
 
     eliminaBoxPartenza(boxPartenza: BoxPartenza) {

@@ -137,6 +137,10 @@ export class SintesiRichiesta {
          */
         public listaEntiIntervenuti?: EnteIntervenuto[],
         /**
+         * lista enti presa in carico
+         */
+        public listaEntiPresaInCarico?: EnteIntervenuto[],
+        /**
          * codice obiettivo rilevante
          */
         public obiettivoSensibile?: ObiettivoSensibile,

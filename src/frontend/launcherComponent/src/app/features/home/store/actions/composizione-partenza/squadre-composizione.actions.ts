@@ -3,14 +3,14 @@ import { SquadraComposizione } from '../../../composizione-partenza/interface/sq
 export class SetListaSquadreComposizione {
     static readonly type = '[SquadreComposizione] Set Lista Squadre Composizione';
 
-    constructor(public squadre: SquadraComposizione[]) {
+    constructor(public squadreComp: SquadraComposizione[]) {
     }
 }
 
 export class AddSquadraComposizione {
     static readonly type = '[SquadreComposizione] Add Squadra Composizione';
 
-    constructor(public squadra: SquadraComposizione) {
+    constructor(public squadraComp: SquadraComposizione) {
     }
 }
 
@@ -24,19 +24,33 @@ export class RemoveSquadraComposizione {
 export class UpdateSquadraComposizione {
     static readonly type = '[SquadreComposizione] Update Squadra Composizione';
 
-    constructor(public squadra: SquadraComposizione) {
+    constructor(public squadraComp: SquadraComposizione) {
     }
 }
 
 export class SelectSquadraComposizione {
     static readonly type = '[SquadreComposizione] Select Squadra Composizione';
 
-    constructor(public idSquadra: string) {
+    constructor(public squadraComp: SquadraComposizione) {
     }
 }
 
 export class UnselectSquadraComposizione {
     static readonly type = '[SquadreComposizione] Unselect Squadra Composizione';
+
+    constructor(public squadraComp: SquadraComposizione) {
+    }
+}
+
+export class SelectSquadra {
+    static readonly type = '[SquadreComposizione] Select Squadra';
+
+    constructor(public idSquadra: string) {
+    }
+}
+
+export class UnselectSquadra {
+    static readonly type = '[SquadreComposizione] Unselect Squadra';
 
     constructor(public idSquadra: string) {
     }
@@ -49,13 +63,13 @@ export class ClearSelectedSquadreComposizione {
 export class HoverInSquadraComposizione {
     static readonly type = '[SquadreComposizione] Hover In Squadra Composizione';
 
-    constructor(public idSquadra: string) {
+    constructor(public idSquadraComp: string) {
     }
 }
 
 export class HoverOutSquadraComposizione {
     static readonly type = '[SquadreComposizione] Hover Out Squadra Composizione';
 
-    constructor(public idSquadra: string) {
+    constructor(public idSquadraComp: string) {
     }
 }

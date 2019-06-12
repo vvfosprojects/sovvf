@@ -6,14 +6,14 @@ import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { ChangeView, SaveView, SwitchComposizione, ToggleChiamata, ToggleComposizione, ToggleModifica, TurnOffComposizione } from '../../actions/view/view.actions';
 import { BackupViewComponentState } from './save-view.state';
 import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../../../../shared/interface/view.interface';
-import { activeChiamata, activeComposizione, activeModifica, colorButton, switchComposizione, turnOffComposizione, updateView, viewStateMaps } from '../../helper/view-state-function';
+import { activeChiamata, activeComposizione, activeModifica, colorButton, switchComposizione, turnOffComposizione, turnOffModifica, updateView, viewStateMaps } from '../../helper/view-state-function';
 import { TerminaComposizione } from '../../actions/composizione-partenza/richiesta-composizione.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
-import { RichiestaComposizioneState } from '../composizione-partenza/richiesta-composizione.state';
 import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ResetChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
 import { ClearChiamateMarkers } from '../../actions/maps/chiamate-markers.actions';
+import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza-state';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -137,6 +137,7 @@ export class ViewComponentState {
     @Action(ToggleModifica)
     toggleModifica({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleModifica) {
         const state = getState();
+        const currentState = makeCopy(state);
         const stateDefault = makeCopy(ViewComponentStateDefault);
         /**
          * se lo stato della modifica non è attivo creo uno snapshot, altrimenti ritorno allo stato precedente
@@ -144,7 +145,7 @@ export class ViewComponentState {
         if (!state.view.modifica.active && !action.toggle) {
             dispatch(new ClearDirection());
 
-            dispatch(new SaveView(makeCopy(state)));
+            dispatch(new SaveView(currentState));
             const newState = activeModifica(stateDefault);
             patchState({
                 ...state,
@@ -155,10 +156,11 @@ export class ViewComponentState {
             dispatch(new ClearMarkerRichiestaSelezionato());
             dispatch(new GetInitCentroMappa());
             const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
+            const newState = turnOffModifica(currentState, lastState);
             patchState({
                 ...state,
-                view: lastState.view,
-                column: lastState.column
+                view: newState.view,
+                column: newState.column
             });
         }
     }
@@ -196,7 +198,7 @@ export class ViewComponentState {
         const currentState = makeCopy(state);
         const newState = switchComposizione(currentState, action.modalita);
         dispatch(new ClearDirection());
-        this.store.select(RichiestaComposizioneState.richiestaComposizione).subscribe(richiesta => {
+        this.store.select(ComposizionePartenzaState.richiestaComposizione).subscribe(richiesta => {
             if (richiesta) {
                 dispatch(new SetCoordCentroMappa(richiesta.localita.coordinate));
             }

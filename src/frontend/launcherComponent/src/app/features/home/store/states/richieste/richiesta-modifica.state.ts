@@ -7,7 +7,7 @@ import {
     ChiudiRichiestaModifica,
     ClearRichiestaModifica,
     ModificaIndirizzo,
-    ModificaRilevanza,
+    ModificaRilevanza, ModificaRilevanzaStArCu,
     SetRichiestaModifica,
     SuccessRichiestaModifica
 } from '../../actions/richieste/richiesta-modifica.actions';
@@ -73,6 +73,22 @@ export class RichiestaModificaState {
 
     @Action(ModificaRilevanza)
     modificaRilevanza({ getState, setState }: StateContext<RichiestaModificaStateModel>) {
+        setState(
+            produce(getState(), draft => {
+                const richiesta = makeCopy(draft.richiestaModifica);
+                if (draft.richiestaModifica.rilevanza === true) {
+                    richiesta.rilevanza = false;
+                    draft.richiestaModifica = richiesta;
+                } else {
+                    richiesta.rilevanza = true;
+                    draft.richiestaModifica = richiesta;
+                }
+            })
+        );
+    }
+
+    @Action(ModificaRilevanzaStArCu)
+    modificaRilevanzaStArCu({ getState, setState }: StateContext<RichiestaModificaStateModel>) {
         setState(
             produce(getState(), draft => {
                 const richiesta = makeCopy(draft.richiestaModifica);

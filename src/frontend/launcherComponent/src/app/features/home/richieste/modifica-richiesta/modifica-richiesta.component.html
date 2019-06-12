@@ -1,35 +1,39 @@
-<div class="row p-4">
+<div *ngIf="richiestaModifica" class="row p-4">
     <div class="col-12">
-        <form [formGroup]="modificaRichiestaForm" (ngSubmit)="onConfermaModifica()">
+        <form [formGroup]="modificaRichiestaForm">
             <div class="row">
-                <div class="col-7">
-                    <h3 class="mb-0">Modifica #{{richiestaModifica.codice}}</h3>
-                </div>
-                <div class="col-2 pr-0">
-                    <div class="row">
-                        <div class="col pr-0 text-right">
-                            <span class="d-inline-block mt-1 mr-1" ngbTooltip="Rilevanza" placement="bottom"
-                                  [ngClass]="{'text-danger': f.rilevanza.value}">
-                                <i class="fa fa-exclamation-triangle"></i>
-                            </span>
+                <div class="col-5">
+                    <ng-template #rilevante>
+                        <div *ngIf="f.rilevanza?.value">Intervento Rilevante</div>
+                        <div *ngIf="f.rilevanzaStArCu?.value">Intervento Rilevante Storico Artistico
+                            Culturale
                         </div>
-                        <div class="col pl-0">
+                    </ng-template>
+                    <h3 class="mb-0">Modifica #{{richiestaModifica?.codice}}
+                        <span *ngIf="f.rilevanza?.value || f.rilevanzaStArCu?.value"
+                              class="d-inline-block mr-1 text-danger"
+                              [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f.rilevanza?.value" class="fa fa-exclamation"></i><i *ngIf="f.rilevanzaStArCu?.value" class="fa fa-exclamation"></i></span>
+                    </h3>
+                </div>
+                <div class="col-3 pr-0">
                             <div class="form-group m-0 float-right">
                                 <span class="d-inline-block mt-1 mr-2">
-                                    <ui-switch size="small" color="#dc3545" [checked]="richiestaModifica.rilevanza !== false"
+                                    <ui-switch size="small" color="#dc3545"
+                                               [checked]="f.rilevanza?.value === true"
                                                (change)="setRilevanza()"></ui-switch>
                                 </span>
-                            </div>
-                        </div>
+                                <span class="d-inline-block mt-1">Rilevante</span>
                     </div>
                 </div>
-                <div class="col-3">
-                    <span *ngIf="!f.rilevanza.value" class="d-inline-block mt-1">
-                        Intervento non rilevante
-                    </span>
-                    <span *ngIf="f.rilevanza.value" class="d-inline-block mt-1">
-                        Intervento rilevante
-                    </span>
+                <div class="col-3 px-0">
+                            <div class="form-group m-0 float-right">
+                                <span class="d-inline-block mt-1 mr-2">
+                                    <ui-switch size="small" color="#dc3545"
+                                               [checked]="f.rilevanzaStArCu?.value === true"
+                                               (change)="setRilevanzaStArCu()"></ui-switch>
+                                </span>
+                                <span class="d-inline-block mt-1">Rilevante Storico</span>
+                    </div>
                 </div>
             </div>
             <hr class="mt-1">
@@ -229,12 +233,11 @@
                 </div>
             </div>
             <hr class="mt-1">
-            <div class="form-group">
-                <button class="btn btn-primary float-right">Conferma
-                    Modifica
-                </button>
-                <button class="btn btn-danger float-right mr-2" (click)="onChiudiModifica()">Annulla</button>
-            </div>
         </form>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary float-right" (click)="onConfermaModifica()">Conferma Modifica
+            </button>
+            <button class="btn btn-danger float-right mr-2" (click)="onChiudiModifica()">Annulla</button>
+        </div>
     </div>
 </div>

@@ -11,7 +11,7 @@ import { SetPreAccoppiati } from '../../../features/home/store/actions/composizi
 import { AddBookMezzoComposizione, SetListaMezziComposizione } from '../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { SetListaSquadreComposizione } from '../../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
 import { MezzoPrenotatoInterface } from '../../../shared/interface/mezzo-prenotato.interface';
-
+import * as moment from 'moment';
 
 @Injectable()
 export class CompPartenzaServiceFake {
@@ -57,6 +57,7 @@ export class CompPartenzaServiceFake {
                     {
                         id: '1',
                         squadra: {
+                            id: '1',
                             nome: 'Rossa',
                             stato: StatoSquadra.InSede,
                             componenti: [
@@ -108,6 +109,7 @@ export class CompPartenzaServiceFake {
                     {
                         id: '1',
                         squadra: {
+                            id: '1',
                             nome: 'Rossa',
                             stato: StatoSquadra.InSede,
                             componenti: [
@@ -129,6 +131,7 @@ export class CompPartenzaServiceFake {
                     {
                         id: '2',
                         squadra: {
+                            id: '2',
                             nome: 'Verde',
                             stato: StatoSquadra.InSede,
                             componenti: [
@@ -180,6 +183,7 @@ export class CompPartenzaServiceFake {
                     {
                         id: '1',
                         squadra: {
+                            id: '1',
                             nome: 'Rossa',
                             stato: StatoSquadra.InSede,
                             componenti: [
@@ -201,6 +205,7 @@ export class CompPartenzaServiceFake {
                     {
                         id: '2',
                         squadra: {
+                            id: '2',
                             nome: 'Verde',
                             stato: StatoSquadra.InSede,
                             componenti: [
@@ -252,6 +257,7 @@ export class CompPartenzaServiceFake {
                     {
                         id: '1',
                         squadra: {
+                            id: '1',
                             nome: 'Rossa',
                             stato: StatoSquadra.InSede,
                             componenti: [
@@ -303,6 +309,7 @@ export class CompPartenzaServiceFake {
                     {
                         id: '1',
                         squadra: {
+                            id: '1',
                             nome: 'Rossa',
                             stato: StatoSquadra.InSede,
                             componenti: [
@@ -324,6 +331,7 @@ export class CompPartenzaServiceFake {
                     {
                         id: '2',
                         squadra: {
+                            id: '2',
                             nome: 'Verde',
                             stato: StatoSquadra.InSede,
                             componenti: [
@@ -351,6 +359,7 @@ export class CompPartenzaServiceFake {
                     {
                         id: '1',
                         squadra: {
+                            id: '1',
                             nome: 'Rossa',
                             stato: StatoSquadra.InSede,
                             componenti: [
@@ -372,6 +381,7 @@ export class CompPartenzaServiceFake {
                     {
                         id: '2',
                         squadra: {
+                            id: '2',
                             nome: 'Verde',
                             stato: StatoSquadra.InSede,
                             componenti: [
@@ -576,13 +586,15 @@ export class CompPartenzaServiceFake {
                 coordinate: {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
-                }
+                },
+                istanteScadenzaSelezione: moment(new Date()).add(30, 'm').toDate()
             },
         ];
         this.squadre = [
             {
                 id: '1',
                 squadra: {
+                    id: '1',
                     nome: 'Rossa',
                     stato: StatoSquadra.InSede,
                     componenti: [
@@ -604,6 +616,7 @@ export class CompPartenzaServiceFake {
             {
                 id: '2',
                 squadra: {
+                    id: '2',
                     nome: 'Verde',
                     stato: StatoSquadra.InSede,
                     componenti: [
@@ -625,6 +638,7 @@ export class CompPartenzaServiceFake {
             {
                 id: '3',
                 squadra: {
+                    id: '3',
                     nome: 'Arancione',
                     stato: StatoSquadra.InSede,
                     componenti: [
@@ -653,11 +667,12 @@ export class CompPartenzaServiceFake {
         return of();
     }
 
-    setMezzoPrenotato(mezzoPrenotatoObj: MezzoPrenotatoInterface) {
+    setMezzoPrenotato(mezzoPrenotatoObj: any) {
         setTimeout(() => {
             this.store.dispatch(new AddBookMezzoComposizione(mezzoPrenotatoObj.idMezzoComposizione));
         }, 1000);
 
-        return of();
+
+        return of(null);
     }
 }

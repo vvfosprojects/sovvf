@@ -45,9 +45,9 @@
                                 (mouseOver)="actionRichiestaMarker(richiestaMarker.id, MouseE.HoverIn)"
                                 (mouseOut)="actionRichiestaMarker(richiestaMarker.id, MouseE.HoverOut)"
                                 [iconUrl]="iconaRichiestaMarker(richiestaMarker)"
-                                [animation]="isRilevante(richiestaMarker?.rilevanza)"
+                                [animation]="isRilevante(richiestaMarker?.rilevanza, richiestaMarker?.rilevanzaStArCu)"
                                 [opacity]="isOpaque(richiestaMarker.id, 'richiesta')"
-                                [zIndex]="zIndex(richiestaMarker.id, 'richiesta', richiestaMarker?.rilevanza)"
+                                [zIndex]="zIndex(richiestaMarker.id, 'richiesta', richiestaMarker?.rilevanza, richiestaMarker?.rilevanzaStArCu)"
                                 [visible]="isVisible('richiesta')">
                         <agm-snazzy-info-window
                                 [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(wipeStatoRichiesta(richiestaMarker.stato))}"

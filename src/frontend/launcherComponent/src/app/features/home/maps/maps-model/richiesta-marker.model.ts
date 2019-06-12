@@ -38,9 +38,13 @@ export class RichiestaMarker {
          */
         public stato: StatoRichiesta,
         /**
-         * Determina la rilevanza del marcatore
+         * Determina se la richiesta è rilevante
          */
-        public rilevanza?: Date
+        public rilevanza?: boolean,
+        /**
+         * Determina se la richiesta è rilevante Storica Artistica e Culturale
+         */
+        public rilevanzaStArCu?: boolean
     ) {
     }
 

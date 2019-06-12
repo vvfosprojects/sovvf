@@ -13,7 +13,8 @@ export class RichiesteMarkerAdapterService {
         item.label,
         item.priorita,
         +item.stato,
-        item.rilevanza
+        item.rilevanza,
+        item.rilevanzaStArCu
     );
   }
 }
