@@ -70,6 +70,7 @@ namespace SO115App.API.Controllers
         public async Task<IActionResult> Post(MezzoPrenotato mezzoPrenotato)
         {
             var headerValues = Request.Headers["HubConnectionId"];
+            var codiceSede = Request.Headers["codicesede"];
             string ConId = headerValues.FirstOrDefault();
 
             var command = new SbloccaMezzoPrenotatoCommand()
@@ -82,9 +83,9 @@ namespace SO115App.API.Controllers
                 try
                 {
                     handler.Handle(command);
-                    await _NotificationHub.Clients.All.SendAsync("NotifySbloccaMezzoPrenotato", command);
+                    await _NotificationHub.Clients.Group(codiceSede).SendAsync("NotifySbloccaMezzoPrenotato", command);
 
-                    await _NotificationHub.Clients.Client(ConId).SendAsync("NotifySbloccaMezzoPrenotato", command);
+                    // await _NotificationHub.Clients.Client(ConId).SendAsync("NotifySbloccaMezzoPrenotato", command);
 
                     return Ok();
                 }

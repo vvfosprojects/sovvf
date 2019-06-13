@@ -1,16 +1,1 @@
-[
-  //{
-  //  "id": "RM.1000-1-U3axTTlG",
-  //  "descrizioneOperatore": "Luigi Bianchi",
-  //  "codiceSedeOperatore": "RM.1000",
-  //  "localita": {
-  //    "Coordinate": {
-  //      "Latitudine": 41.9654858,
-  //      "Longitudine": 12.442534199999955
-  //    },
-  //    "Indirizzo": "Via Cassia, 739-749, 00189 Roma RM, Italia",
-  //    "Note": null
-  //  },
-  //  "label": null
-  //}
-]
+[{"id":"RM.1000-3-55KB8dBv","descrizioneOperatore":"Mario Rossi","codiceSedeOperatore":"RM.1000","localita":{"Coordinate":{"Latitudine":41.925740900000008,"Longitudine":12.573898600000007},"Indirizzo":"Via Tiburtina, Roma RM, Italia","Note":null},"label":null},{"id":"RM.1000-3-EOcnWK9R","descrizioneOperatore":"Mario Rossi","codiceSedeOperatore":"RM.1000","localita":{"Coordinate":{"Latitudine":40.846792099999988,"Longitudine":14.337611199999969},"Indirizzo":"Via Bartolo Longo, 80147 Napoli NA, Italia","Note":null},"label":null},{"id":"RM.1000-3-XNRxF2Ot","descrizioneOperatore":"Mario Rossi","codiceSedeOperatore":"RM.1000","localita":{"Coordinate":{"Latitudine":41.920946599999994,"Longitudine":12.54692840000007},"Indirizzo":"Via di Pietralata, Roma RM, Italia","Note":null},"label":null},{"id":"RM.1000-3-3Si5DMze","descrizioneOperatore":"Mario Rossi","codiceSedeOperatore":"RM.1000","localita":{"Coordinate":{"Latitudine":45.4769859,"Longitudine":9.1885234000000082},"Indirizzo":"Via S. Marco, 20121 Milano MI, Italia","Note":null},"label":null},{"id":"RM.1000-3-TvK1W9O0","descrizioneOperatore":"Mario Rossi","codiceSedeOperatore":"RM.1000","localita":{"Coordinate":{"Latitudine":45.5449158,"Longitudine":10.196773500000063},"Indirizzo":"Via Milano, Brescia BS, Italia","Note":null},"label":null},{"id":"RM.1000-3-zIV4JBZa","descrizioneOperatore":"Mario Rossi","codiceSedeOperatore":"RM.1000","localita":{"Coordinate":{"Latitudine":45.5449158,"Longitudine":10.196773500000063},"Indirizzo":"Via Milano, Brescia BS, Italia","Note":null},"label":null},{"id":"RM.1000-3-DenMdmK1","descrizioneOperatore":"Mario Rossi","codiceSedeOperatore":"RM.1000","localita":{"Coordinate":{"Latitudine":41.9257109,"Longitudine":12.479038599999967},"Indirizzo":"Via Archimede, 00197 Roma RM, Italia","Note":null},"label":null}]
