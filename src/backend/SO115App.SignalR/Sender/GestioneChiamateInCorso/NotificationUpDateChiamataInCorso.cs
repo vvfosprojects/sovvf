@@ -22,6 +22,7 @@ using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
 using System;
+using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
 {
@@ -34,9 +35,9 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
             _notificationHubContext = NotificationHubContext;
         }
 
-        public void SendNotification(UpDateChiamataInCorsoMarkerCommand chiamata)
+        public async Task SendNotification(UpDateChiamataInCorsoMarkerCommand chiamata)
         {
-            _notificationHubContext.Clients.Group(chiamata.ChiamataInCorso.codiceSedeOperatore).SendAsync("NotifyChiamataInCorsoMarkerAdd", chiamata);
+            await _notificationHubContext.Clients.Group(chiamata.ChiamataInCorso.codiceSedeOperatore).SendAsync("NotifyChiamataInCorsoMarkerAdd", chiamata);
         }
     }
 }

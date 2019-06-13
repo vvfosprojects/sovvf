@@ -18,11 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using DomainModel.CQRS.Commands.UpDateIntervento;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata
 {
     public interface INotifyUpDateChiamata
     {
-        void SendNotification(UpDateInterventoCommand chiamata);
+        Task SendNotification(UpDateInterventoCommand chiamata);
     }
 }

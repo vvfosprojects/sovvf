@@ -19,11 +19,12 @@
 //-----------------------------------------------------------------------
 
 using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso
 {
     public interface INotificationDeleteChiamataInCorso
     {
-        void SendNotification(CancellazioneChiamataInCorsoMarkerCommand chiamata);
+        Task SendNotification(CancellazioneChiamataInCorsoMarkerCommand chiamata);
     }
 }

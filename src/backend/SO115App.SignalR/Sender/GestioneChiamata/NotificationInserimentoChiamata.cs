@@ -22,6 +22,7 @@ using DomainModel.CQRS.Commands.AddIntervento;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
 using System;
+using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneChiamata
 {
@@ -34,9 +35,9 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             _notificationHubContext = NotificationHubContext;
         }
 
-        public void SendNotification(AddInterventoCommand chiamata)
+        public async Task SendNotification(AddInterventoCommand chiamata)
         {
-            _notificationHubContext.Clients.Group(chiamata.Chiamata.Operatore.Sede.Codice).SendAsync("SaveAndNotifySuccessChiamata", chiamata);
+            await _notificationHubContext.Clients.Group(chiamata.Chiamata.Operatore.Sede.Codice).SendAsync("SaveAndNotifySuccessChiamata", chiamata);
         }
     }
 }

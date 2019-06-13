@@ -19,11 +19,12 @@
 //-----------------------------------------------------------------------
 
 using DomainModel.CQRS.Commands.AddIntervento;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata
 {
     public interface INotifyInserimentoChiamata
     {
-        void SendNotification(AddInterventoCommand chiamata);
+        Task SendNotification(AddInterventoCommand chiamata);
     }
 }
