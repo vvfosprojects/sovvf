@@ -69,7 +69,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                 }
             }
 
-            richiesta.SincronizzaRilevanza(command.Chiamata.RilevanzaGrave, command.Chiamata.RilevanzaStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione);
+            richiesta.SincronizzaRilevanza(command.Chiamata.RilevanzaGrave, command.Chiamata.RilevanzaStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione, command.Chiamata.IstanteRicezioneRichiesta);
 
             richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.Chiamata.Operatore.Id, command.Chiamata.Motivazione);
 

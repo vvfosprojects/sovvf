@@ -36,7 +36,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
         public void SendNotification(UpDateInterventoCommand chiamata)
         {
-            _notificationHubContext.Clients.Client(chiamata.Chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", chiamata);
+            _notificationHubContext.Clients.Group(chiamata.Chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", chiamata);
         }
     }
 }
