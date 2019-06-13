@@ -82,6 +82,8 @@ namespace SO115App.API.Controllers
                 try
                 {
                     handler.Handle(command);
+                    await _NotificationHub.Clients.All.SendAsync("NotifySbloccaMezzoPrenotato", command);
+
                     await _NotificationHub.Clients.Client(ConId).SendAsync("NotifySbloccaMezzoPrenotato", command);
 
                     return Ok();
