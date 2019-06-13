@@ -130,7 +130,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </param>
         /// <param name="fonte">La fonte dell'evento</param>
         /// <param name="motivazione">La motivazione dell'aggiornamento della rilevanza</param>
-        internal void SincronizzaRilevanza(bool rilevanzaGrave, bool rilevanzaStArCu, string fonte, string motivazione)
+        internal void SincronizzaRilevanza(bool rilevanzaGrave, bool rilevanzaStArCu, string fonte, string motivazione, DateTime istateRichiesta)
         {
             var ultimoEventoRilevanza = (MarcaRilevante)this.Eventi.LastOrDefault(e => e is MarcaRilevante);
 
@@ -144,7 +144,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
             if ((rilevanzaGraveCorrente ^ rilevanzaGrave) || (rilevanzaStArCuCorrente ^ rilevanzaStArCu))
             {
-                this.AddEvento(new MarcaRilevante(this, DateTime.UtcNow, fonte, motivazione, rilevanzaGrave, rilevanzaStArCu));
+                this.AddEvento(new MarcaRilevante(this, istateRichiesta, fonte, motivazione, rilevanzaGrave, rilevanzaStArCu));
             }
         }
 
