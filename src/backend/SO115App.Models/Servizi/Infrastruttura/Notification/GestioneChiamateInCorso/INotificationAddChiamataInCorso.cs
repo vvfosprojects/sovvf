@@ -19,11 +19,12 @@
 //-----------------------------------------------------------------------
 
 using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso
 {
     public interface INotificationAddChiamataInCorso
     {
-        void SendNotification(ChiamataInCorsoMarkerCommand chiamata);
+        Task SendNotification(ChiamataInCorsoMarkerCommand chiamata);
     }
 }
