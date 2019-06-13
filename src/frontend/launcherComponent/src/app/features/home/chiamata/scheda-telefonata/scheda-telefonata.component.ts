@@ -113,6 +113,8 @@ export class SchedaTelefonataComponent implements OnInit {
             null,
             null
         );
+        this.nuovaRichiesta.rilevanzaStArCu = false;
+        this.nuovaRichiesta.rilevanza = false;
     }
 
     cambiaTipologiaRichiedente(tipologia: string) {
