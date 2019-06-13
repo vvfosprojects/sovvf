@@ -23,11 +23,9 @@ using CQRS.Queries;
 using DomainModel.CQRS.Commands.UpDateIntervento;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
-using SO115App.SignalR;
 
 namespace SO115App.API.Controllers
 {
@@ -43,20 +41,17 @@ namespace SO115App.API.Controllers
 
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _BoxRichiestehandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _SintesiRichiesteAssistenzaMarkerhandler;
-        private readonly IHubContext<NotificationHub> _NotificationHub;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
         public UpdateInterventoController(
-            IHubContext<NotificationHub> NotificationHubContext,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> BoxRichiestehandler,
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> SintesiRichiesteAssistenzaMarkerhandler,
             ICommandHandler<UpDateInterventoCommand> handler)
         {
             _handler = handler;
-            _NotificationHub = NotificationHubContext;
             _BoxRichiestehandler = BoxRichiestehandler;
             _SintesiRichiesteAssistenzaMarkerhandler = SintesiRichiesteAssistenzaMarkerhandler;
         }
@@ -74,8 +69,6 @@ namespace SO115App.API.Controllers
                 try
                 {
                     this._handler.Handle(command);
-                    //await _NotificationHub.Clients.Group(chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", command);
-
                     return Ok();
                 }
                 catch
