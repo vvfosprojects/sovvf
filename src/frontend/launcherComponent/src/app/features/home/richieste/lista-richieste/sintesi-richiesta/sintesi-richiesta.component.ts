@@ -123,28 +123,4 @@ export class SintesiRichiestaComponent implements OnInit {
         console.log('Lista Enti');
     }
 
-    _dateNumber(dateString: any) {
-        return new Date(dateString).getTime();
-    }
-
-    _dateTime(dateString: any) {
-        return new Date(dateString);
-    }
-
-    _tipoTerreno(tipoTerreno: TipoTerrenoEnum): string {
-        if (tipoTerreno) {
-            return TipoTerrenoEnum[tipoTerreno];
-        } else {
-            return '-';
-        }
-    }
-
-    _entiCount(intervenuti?: number, presiInCarico?: number): string {
-        if (intervenuti || presiInCarico) {
-            const count = intervenuti + presiInCarico;
-            return count === 1 ? '1 Ente' : `${count} Enti`;
-        } else {
-            return null;
-        }
-    }
 }
