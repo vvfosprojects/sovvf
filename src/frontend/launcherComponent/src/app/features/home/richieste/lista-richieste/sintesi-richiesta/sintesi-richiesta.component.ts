@@ -9,6 +9,7 @@ import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
 // Helper Methods
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
 import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
+import { TipoTerrenoEnum } from '../../../../../shared/enum/tipo-terreno.enum';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -118,7 +119,19 @@ export class SintesiRichiestaComponent implements OnInit {
         this.modificaRichiesta.emit(this.richiesta);
     }
 
-    getDateIstanteRicezioneRichiesta(istante: any) {
-        return new Date(istante).getTime();
+    _dateNumber(dateString: any) {
+        return new Date(dateString).getTime();
+    }
+
+    _dateTime(dateString: any) {
+        return new Date(dateString);
+    }
+
+    _tipoTerreno(tipoTerreno: TipoTerrenoEnum): string {
+        if (tipoTerreno) {
+            return TipoTerrenoEnum[tipoTerreno];
+        } else {
+            return '-';
+        }
     }
 }

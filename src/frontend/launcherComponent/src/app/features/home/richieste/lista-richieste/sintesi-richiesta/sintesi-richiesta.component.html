@@ -21,7 +21,9 @@
                                 </a>
                                 <span *ngIf="richiesta?.rilevanza || richiesta?.rilevanzaStArCu"
                                       class="d-inline-block mr-1 text-danger"
-                                      [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="richiesta?.rilevanza" class="fa fa-exclamation"></i><i *ngIf="richiesta?.rilevanzaStArCu" class="fa fa-exclamation"></i></span>
+                                      [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="richiesta?.rilevanza"
+                                                                                     class="fa fa-exclamation"></i><i
+                                        *ngIf="richiesta?.rilevanzaStArCu" class="fa fa-exclamation"></i></span>
                             </div>
                         </div>
                         <div class="col-6">
@@ -78,7 +80,9 @@
                                 <i class="guida fa fa-clock-o fa-fw mr-1" ngbTooltip="Ricezione richiesta"
                                    placement="right" container="body"></i>
                                 <a ngbTooltip="{{ richiesta.istanteRicezioneRichiesta | friendlyDateTooltip }}">
-                                    <span timeago [date]="getDateIstanteRicezioneRichiesta(richiesta.istanteRicezioneRichiesta)" [live]="live"></span>
+                                    <span timeago
+                                          [date]="_dateNumber(richiesta.istanteRicezioneRichiesta)"
+                                          [live]="live"></span>
                                 </a>
                             </div>
                         </div>
@@ -217,7 +221,8 @@
 
                 <!-- box note localita e zone emergenza -->
                 <div *ngIf="espanso" class="col-md-12 default-cursor">
-                    <div *ngIf="richiesta.localita.note || richiesta.zoneEmergenza || richiesta.etichette" class="col-md-12">
+                    <div *ngIf="richiesta.localita.note || richiesta.zoneEmergenza || richiesta.etichette"
+                         class="col-md-12">
                         <div class="row card bt-0 note-localita mt-1">
                             <div class="col-md-12 bg_diagonal_grey">
                                 <div class="row">
@@ -296,7 +301,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-9 bg-red">
+                        <div class="col-md-6 bg-red pr-1">
                             <h5 class="my-0"><b>Partenze</b></h5>
                             <div *ngIf="!richiesta.partenze" class="text-center">
                                 <hr class="mt-0 mb-2">
@@ -305,10 +310,10 @@
                             <ul *ngIf="richiesta.partenze" class="list-unstyled">
                                 <li *ngFor="let p of richiesta.partenze; index as i" class="border-bottom">
                                     <div class="row">
-                                        <div class="col-2 my-1">
+                                        <div class="col-2 my-1 pr-0">
                                             <b class="ml-1">#{{i + 1}}</b>
                                         </div>
-                                        <div class="col-7 my-1">
+                                        <div class="col-7 my-1 pr-1">
                                             <app-mezzo [mezzo]="p.mezzo"></app-mezzo>
                                             <span *ngIf="!p.mezzo" class="p-2">
                                                 Nessun mezzo
@@ -349,6 +354,76 @@
                                     </div>
                                 </li>
                             </ul>
+                        </div>
+                        <div class="col-md-3">
+
+                            <!-- turno intervento -->
+                            <div class="h6 text-right">
+                                <span *ngIf="richiesta?.turnoInserimentoChiamata || richiesta?.turnoIntervento; else nessunTurno">
+                                    <span *ngIf="richiesta?.turnoInserimentoChiamata && !richiesta?.turnoIntervento">
+                                        <a ngbTooltip="Turno Inserimento {{richiesta.turnoInserimentoChiamata.descrizione}} ({{richiesta.turnoInserimentoChiamata.diurnoNotturno}})">Turno {{richiesta.turnoInserimentoChiamata.descrizione}} {{richiesta.turnoInserimentoChiamata.diurnoNotturno}}</a>
+                                        <i class="guida fa fa-clock-o fa-fw ml-1" [ngbTooltip]="orarioTurnoInserimento" placement="right"></i>
+                                    </span>
+                                    <span *ngIf="richiesta?.turnoInserimentoChiamata && richiesta?.turnoIntervento">
+                                        <a [ngbTooltip]="turnoInterventoTooltip">Turno {{richiesta.turnoIntervento.descrizione}} {{richiesta.turnoIntervento.diurnoNotturno}}</a>
+                                        <i class="guida fa fa-clock-o fa-fw ml-1" [ngbTooltip]="orarioTurnoIntervento" placement="right"></i>
+                                    </span>
+                                    <ng-template #turnoInterventoTooltip>
+                                        <div>Turno Inserimento {{richiesta.turnoInserimentoChiamata.descrizione}} ({{richiesta.turnoInserimentoChiamata.diurnoNotturno}})</div>
+                                        <div>Turno Intervento {{richiesta.turnoIntervento.descrizione}} ({{richiesta.turnoIntervento.diurnoNotturno}})</div>
+                                    </ng-template>
+                                    <ng-template #orarioTurnoInserimento>
+                                        <div>inizio {{ _dateTime(richiesta.turnoInserimentoChiamata.dataOraInizio) | friendlyDateTooltip }}</div>
+                                        <div>fine {{ _dateTime(richiesta.turnoInserimentoChiamata.dataOraFine) | friendlyDateTooltip }}</div>
+                                    </ng-template>
+                                    <ng-template #orarioTurnoIntervento>
+                                        <div>Turno Inserimento:</div>
+                                        <div>inizio {{ _dateTime(richiesta.turnoInserimentoChiamata.dataOraInizio) | friendlyDateTooltip }}</div>
+                                        <div>fine {{ _dateTime(richiesta.turnoInserimentoChiamata.dataOraFine) | friendlyDateTooltip }}</div>
+                                        <div>Turno Intervento:</div>
+                                        <div>inizio {{ _dateTime(richiesta.turnoIntervento.dataOraInizio) | friendlyDateTooltip }}</div>
+                                        <div>fine {{ _dateTime(richiesta.turnoIntervento.dataOraFine) | friendlyDateTooltip }}</div>
+                                    </ng-template>
+                                </span>
+                                <ng-template #nessunTurno>
+                                    <a>-</a>
+                                    <i class="guida fa fa-clock-o fa-fw ml-1" ngbTooltip="Turno non presente" placement="right"></i>
+                                </ng-template>
+
+                            </div>
+
+                            <!-- enti intervenuti -->
+                            <div class="h6 text-right">
+                                <a *ngIf="richiesta.listaEntiIntervenuti?.length > 0 || richiesta.listaEntiPresaInCarico?.length > 0; else nessunEnte">
+                                    {{ richiesta.listaEntiIntervenuti?.length + richiesta.listaEntiPresaInCarico?.length }}</a>
+                                <ng-template #nessunEnte>
+                                    <span class="badge badge-secondary text-light "
+                                          ngbTooltip="Al momento nessun ente è intervenuto">Nessun Ente</span>
+                                </ng-template>
+                                <i class="guida fa fa-industry fa-fw ml-1"
+                                   ngbTooltip="Enti intervenuti o che hanno preso in carico la richiesta"
+                                   placement="right"></i>
+                            </div>
+
+                            <!-- tipo terreno -->
+                            <div class="h6 text-right">
+                                <span *ngIf="_tipoTerreno(richiesta.tipoTerreno?.descrizione) as tipoTerrenoValue" class="h6 m-0">
+                                    {{ tipoTerrenoValue }}
+                                </span>
+                                <i class="guida fa fa-tree fa-fw ml-1" ngbTooltip="Tipologia terreno"
+                                   placement="right"></i>
+                            </div>
+
+                            <!-- mq terreno -->
+                            <div class="h6 text-right">
+                                <span *ngIf="richiesta.tipoTerreno?.mq.length > 0; else noMq"
+                                      class="h6 mr-1">{{ richiesta.tipoTerreno?.mq }}</span>
+                                <i class="guida fa fa-external-link fa-fw ml-1" ngbTooltip="Metri quadri terreno"
+                                   placement="right"></i>
+                                <ng-template #noMq>
+                                    <span ngbTooltip="Metri quadri terreno N/D">-</span>
+                                </ng-template>
+                            </div>
                         </div>
                     </div>
                 </div>

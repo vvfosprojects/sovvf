@@ -21,6 +21,10 @@ import { Mezzo } from '../../../shared/model/mezzo.model';
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
 import { Store } from '@ngxs/store';
 import { SetRichieste, UpdateRichiesta } from '../../../features/home/store/actions/richieste/richieste.actions';
+import { TurnoInserimentoChiamata } from '../../../shared/model/turno-inserimento-chiamata';
+import { TurnoIntervento } from '../../../shared/model/turno-intervento';
+import { TipoTerreno } from '../../../shared/model/tipo-terreno';
+import { TipoTerrenoEnum } from '../../../shared/enum/tipo-terreno.enum';
 
 
 @Injectable()
@@ -782,6 +786,12 @@ export class SintesiRichiesteServiceFake {
                 null
             ),
         ];
+
+        this.richieste[0].turnoInserimentoChiamata = new TurnoInserimentoChiamata('1', 'A', 'diurno', moment().subtract(42, 'minutes').toISOString(), moment().add(342, 'minutes').toISOString());
+        this.richieste[1].turnoInserimentoChiamata = new TurnoInserimentoChiamata('1', 'A', 'diurno', moment().subtract(42, 'minutes').toISOString(), moment().add(342, 'minutes').toISOString());
+        this.richieste[3].turnoInserimentoChiamata = new TurnoInserimentoChiamata('1', 'A', 'diurno', moment().subtract(42, 'minutes').toISOString(), moment().add(342, 'minutes').toISOString());
+        this.richieste[3].turnoIntervento = new TurnoIntervento('2', 'B', 'notturno', moment().subtract(1342, 'minutes').toISOString(), moment().add(842, 'minutes').toISOString());
+        this.richieste[3].tipoTerreno = new TipoTerreno('1', TipoTerrenoEnum.Boschi, '200mq');
 
         this.store.dispatch(new SetRichieste(this.richieste));
 
