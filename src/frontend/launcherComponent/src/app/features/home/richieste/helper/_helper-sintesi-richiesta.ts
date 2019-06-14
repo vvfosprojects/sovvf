@@ -3,6 +3,7 @@ import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { Partenza } from '../../../../shared/model/partenza.model';
 import { Squadra } from '../../../../shared/model/squadra.model';
 import { ColoriStatoMezzo } from '../../../../shared/helper/_colori';
+import { TipoTerrenoEnum } from '../../../../shared/enum/tipo-terreno.enum';
 
 export class HelperSintesiRichiesta {
 
@@ -164,5 +165,31 @@ export class HelperSintesiRichiesta {
 
     dettagliMezzo(stato, tipostato, classe) {
         return this.stato.getColor(stato, tipostato, classe);
+    }
+
+
+    _dateNumber(dateString: any) {
+        return new Date(dateString).getTime();
+    }
+
+    _dateTime(dateString: any) {
+        return new Date(dateString);
+    }
+
+    _tipoTerreno(tipoTerreno: TipoTerrenoEnum): string {
+        if (tipoTerreno) {
+            return TipoTerrenoEnum[tipoTerreno];
+        } else {
+            return '-';
+        }
+    }
+
+    _entiCount(intervenuti?: number, presiInCarico?: number): string {
+        if (intervenuti || presiInCarico) {
+            const count = intervenuti + presiInCarico;
+            return count === 1 ? '1 Ente' : `${count} Enti`;
+        } else {
+            return null;
+        }
     }
 }

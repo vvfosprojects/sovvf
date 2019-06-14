@@ -81,7 +81,7 @@
                                    placement="right" container="body"></i>
                                 <a ngbTooltip="{{ richiesta.istanteRicezioneRichiesta | friendlyDateTooltip }}">
                                     <span timeago
-                                          [date]="_dateNumber(richiesta.istanteRicezioneRichiesta)"
+                                          [date]="methods._dateNumber(richiesta.istanteRicezioneRichiesta)"
                                           [live]="live"></span>
                                 </a>
                             </div>
@@ -373,16 +373,16 @@
                                         <div>Turno Intervento {{richiesta.turnoIntervento.descrizione}} ({{richiesta.turnoIntervento.diurnoNotturno}})</div>
                                     </ng-template>
                                     <ng-template #orarioTurnoInserimento>
-                                        <div>inizio {{ _dateTime(richiesta.turnoInserimentoChiamata.dataOraInizio) | friendlyDateTooltip }}</div>
-                                        <div>fine {{ _dateTime(richiesta.turnoInserimentoChiamata.dataOraFine) | friendlyDateTooltip }}</div>
+                                        <div>inizio {{ methods._dateTime(richiesta.turnoInserimentoChiamata.dataOraInizio) | friendlyDateTooltip }}</div>
+                                        <div>fine {{ methods._dateTime(richiesta.turnoInserimentoChiamata.dataOraFine) | friendlyDateTooltip }}</div>
                                     </ng-template>
                                     <ng-template #orarioTurnoIntervento>
                                         <div>Turno Inserimento:</div>
-                                        <div>inizio {{ _dateTime(richiesta.turnoInserimentoChiamata.dataOraInizio) | friendlyDateTooltip }}</div>
-                                        <div>fine {{ _dateTime(richiesta.turnoInserimentoChiamata.dataOraFine) | friendlyDateTooltip }}</div>
+                                        <div>inizio {{ methods._dateTime(richiesta.turnoInserimentoChiamata.dataOraInizio) | friendlyDateTooltip }}</div>
+                                        <div>fine {{ methods._dateTime(richiesta.turnoInserimentoChiamata.dataOraFine) | friendlyDateTooltip }}</div>
                                         <div>Turno Intervento:</div>
-                                        <div>inizio {{ _dateTime(richiesta.turnoIntervento.dataOraInizio) | friendlyDateTooltip }}</div>
-                                        <div>fine {{ _dateTime(richiesta.turnoIntervento.dataOraFine) | friendlyDateTooltip }}</div>
+                                        <div>inizio {{ methods._dateTime(richiesta.turnoIntervento.dataOraInizio) | friendlyDateTooltip }}</div>
+                                        <div>fine {{ methods._dateTime(richiesta.turnoIntervento.dataOraFine) | friendlyDateTooltip }}</div>
                                     </ng-template>
                                 </span>
                                 <ng-template #nessunTurno>
@@ -394,8 +394,8 @@
 
                             <!-- enti intervenuti -->
                             <div class="h6 text-right">
-                                <a *ngIf="richiesta.listaEntiIntervenuti?.length > 0 || richiesta.listaEntiPresaInCarico?.length > 0; else nessunEnte">
-                                    {{ richiesta.listaEntiIntervenuti?.length + richiesta.listaEntiPresaInCarico?.length }}</a>
+                                <button class="btn btn-light border big_font py-0 px-1" ngbTooltip="Elenco Enti" *ngIf="methods._entiCount(richiesta.listaEntiIntervenuti?.length, richiesta.listaEntiPresaInCarico?.length) as totaleEnti; else nessunEnte" (click)="onListaEnti(); $event.stopPropagation()">
+                                    {{ totaleEnti }}</button>
                                 <ng-template #nessunEnte>
                                     <span class="badge badge-secondary text-light "
                                           ngbTooltip="Al momento nessun ente è intervenuto">Nessun Ente</span>
@@ -407,7 +407,7 @@
 
                             <!-- tipo terreno -->
                             <div class="h6 text-right">
-                                <span *ngIf="_tipoTerreno(richiesta.tipoTerreno?.descrizione) as tipoTerrenoValue" class="h6 m-0">
+                                <span *ngIf="methods._tipoTerreno(richiesta.tipoTerreno?.descrizione) as tipoTerrenoValue" class="h6 m-0">
                                     {{ tipoTerrenoValue }}
                                 </span>
                                 <i class="guida fa fa-tree fa-fw ml-1" ngbTooltip="Tipologia terreno"

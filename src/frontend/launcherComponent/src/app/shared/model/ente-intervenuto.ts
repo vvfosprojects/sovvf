@@ -8,5 +8,6 @@ export class EnteIntervenuto {
          * descrizione dell'ente intervenuto
          */
         public descrizione: string
-    ) {}
+    ) {
+    }
 }

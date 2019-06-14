@@ -7,6 +7,11 @@
     font-weight: bold;
 }
 
+.big_font {
+    font-weight: 500;
+    color: #666666 !important;
+}
+
 .bg_diagonal_grey {
     background: repeating-linear-gradient(135deg, white, white 0.1em, #F0F0F0 0.4em, #E9EEFB 0.1em);
 }

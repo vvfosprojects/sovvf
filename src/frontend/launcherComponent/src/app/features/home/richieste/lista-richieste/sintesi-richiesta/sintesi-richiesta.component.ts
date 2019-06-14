@@ -119,19 +119,8 @@ export class SintesiRichiestaComponent implements OnInit {
         this.modificaRichiesta.emit(this.richiesta);
     }
 
-    _dateNumber(dateString: any) {
-        return new Date(dateString).getTime();
+    onListaEnti() {
+        console.log('Lista Enti');
     }
 
-    _dateTime(dateString: any) {
-        return new Date(dateString);
-    }
-
-    _tipoTerreno(tipoTerreno: TipoTerrenoEnum): string {
-        if (tipoTerreno) {
-            return TipoTerrenoEnum[tipoTerreno];
-        } else {
-            return '-';
-        }
-    }
 }

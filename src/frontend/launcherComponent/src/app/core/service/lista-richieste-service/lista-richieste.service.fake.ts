@@ -25,6 +25,7 @@ import { TurnoInserimentoChiamata } from '../../../shared/model/turno-inseriment
 import { TurnoIntervento } from '../../../shared/model/turno-intervento';
 import { TipoTerreno } from '../../../shared/model/tipo-terreno';
 import { TipoTerrenoEnum } from '../../../shared/enum/tipo-terreno.enum';
+import { EnteIntervenuto } from '../../../shared/model/ente-intervenuto';
 
 
 @Injectable()
@@ -792,6 +793,8 @@ export class SintesiRichiesteServiceFake {
         this.richieste[3].turnoInserimentoChiamata = new TurnoInserimentoChiamata('1', 'A', 'diurno', moment().subtract(42, 'minutes').toISOString(), moment().add(342, 'minutes').toISOString());
         this.richieste[3].turnoIntervento = new TurnoIntervento('2', 'B', 'notturno', moment().subtract(1342, 'minutes').toISOString(), moment().add(842, 'minutes').toISOString());
         this.richieste[3].tipoTerreno = new TipoTerreno('1', TipoTerrenoEnum.Boschi, '200mq');
+        this.richieste[3].listaEntiPresaInCarico = [new EnteIntervenuto('1', 'Polizia di Stato')];
+        this.richieste[4].listaEntiPresaInCarico = [new EnteIntervenuto('1', 'Polizia di Stato'), new EnteIntervenuto('2' , 'Carabinieri')];
 
         this.store.dispatch(new SetRichieste(this.richieste));
 
