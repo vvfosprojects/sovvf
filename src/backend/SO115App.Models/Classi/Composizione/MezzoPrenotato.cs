@@ -23,16 +23,16 @@ namespace SO115App.API.Models.Classi.Composizione
 {
     public class MezzoPrenotato
     {
-        [JsonRequired]
-        public string IdRichiesta { get; set; }
+        //[JsonRequired]
+        //public string IdRichiesta { get; set; }
 
-        [JsonRequired]
-        public string IdMezzoComposizione { get; set; }
+        //[JsonRequired]
+        //public string IdMezzoComposizione { get; set; }
 
-        public ComposizioneMezzi mezzo { get; set; }
+        public ComposizioneMezzi mezzoComposizione { get; set; }
 
-        [JsonRequired]
-        public string IdMezzo { get; set; }
+        //[JsonRequired]
+        //public string IdMezzo { get; set; }
 
     }
 }

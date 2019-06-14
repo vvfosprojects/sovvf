@@ -99,6 +99,9 @@ namespace SO115App.CompositionRoot
             container.Register<
           SO115App.Models.Servizi.Infrastruttura.GetSbloccaMezzoPrenotato.IGetSbloccaMezzoPrenotato,
            FakePersistenceJSon.Composizione.GetSbloccaMezzoPrenotato>();
+            container.Register<
+        SO115App.Models.Servizi.Infrastruttura.GetResetPrenotazioneMezzo.IGetResetPrenotazioneMezzo,
+           FakePersistenceJSon.Composizione.GetResetPrenotazioneMezzo>();
 
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata.INotifyInserimentoChiamata,

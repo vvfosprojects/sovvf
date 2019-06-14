@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SbloccaMezzoPrenotatoController.cs" company="CNVVF">
+// <copyright file="MezzoPrenotatoController.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.MezzoPrenotato;
 using SO115App.SignalR;
 using System;
 using System.Linq;
@@ -39,13 +40,13 @@ namespace SO115App.API.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class SbloccaMezzoPrenotatoController : ControllerBase
+    public class AddPrenotazioneMezzoController : ControllerBase
     {
         /// <summary>
         ///   Handler del servizio
         /// </summary>
 
-        private readonly ICommandHandler<SbloccaMezzoPrenotatoCommand> handler;
+        private readonly ICommandHandler<MezzoPrenotatoCommand> handler;
 
         private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
@@ -53,8 +54,8 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public SbloccaMezzoPrenotatoController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
-            ICommandHandler<SbloccaMezzoPrenotatoCommand> handler)
+        public AddPrenotazioneMezzoController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
+            ICommandHandler<MezzoPrenotatoCommand> handler)
         {
             this.handler = handler;
             _NotificationHub = NotificationHubContext;
@@ -73,7 +74,7 @@ namespace SO115App.API.Controllers
             var codiceSede = Request.Headers["codicesede"];
             string ConId = headerValues.FirstOrDefault();
 
-            var command = new SbloccaMezzoPrenotatoCommand()
+            var command = new MezzoPrenotatoCommand()
             {
                 MezzoPrenotato = mezzoPrenotato
             };
@@ -82,10 +83,10 @@ namespace SO115App.API.Controllers
             {
                 try
                 {
-                    handler.Handle(command);
-                    await _NotificationHub.Clients.Group(codiceSede).SendAsync("NotifySbloccaMezzoPrenotato", command);
 
-                    // await _NotificationHub.Clients.Client(ConId).SendAsync("NotifySbloccaMezzoPrenotato", command);
+                   handler.Handle(command);
+                   await _NotificationHub.Clients.Group(codiceSede).SendAsync("NotifyAddPrenotazioneMezzo", command);
+                   //await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyMezzoPrenotato", command);
 
                     return Ok();
                 }

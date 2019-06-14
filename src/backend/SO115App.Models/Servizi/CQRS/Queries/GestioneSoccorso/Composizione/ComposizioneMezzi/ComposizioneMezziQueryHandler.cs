@@ -61,8 +61,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         mezzo.IstanteScadenzaSelezione = null;
                     }
                     mezzo.Id = count++.ToString();
+                    mezzo.IdRichiesta = query.Filtro.IdRichiesta;
                 }
             }
+            
             return new ComposizioneMezziResult()
             {
                 ComposizioneMezzi = composizioneMezzi

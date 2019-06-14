@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="MezzoPrenotatoController.cs" company="CNVVF">
+// <copyright file="ResetPrenotazioneMezzoController.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -20,6 +20,7 @@
 using CQRS.Commands;
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.MezzoPrenotato;
+using DomainModel.CQRS.Commands.ResetPrenotazioneMezzo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -40,13 +41,13 @@ namespace SO115App.API.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class MezzoPrenotatoController : ControllerBase
+    public class ResetPrenotazioneMezzoController : ControllerBase
     {
         /// <summary>
         ///   Handler del servizio
         /// </summary>
 
-        private readonly ICommandHandler<MezzoPrenotatoCommand> handler;
+        private readonly ICommandHandler<ResetPrenotazioneMezzoCommand> handler;
 
         private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
@@ -54,8 +55,8 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public MezzoPrenotatoController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
-            ICommandHandler<MezzoPrenotatoCommand> handler)
+        public ResetPrenotazioneMezzoController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
+            ICommandHandler<ResetPrenotazioneMezzoCommand> handler)
         {
             this.handler = handler;
             _NotificationHub = NotificationHubContext;
@@ -74,7 +75,7 @@ namespace SO115App.API.Controllers
             var codiceSede = Request.Headers["codicesede"];
             string ConId = headerValues.FirstOrDefault();
 
-            var command = new MezzoPrenotatoCommand()
+            var command = new ResetPrenotazioneMezzoCommand()
             {
                 MezzoPrenotato = mezzoPrenotato
             };
@@ -84,9 +85,8 @@ namespace SO115App.API.Controllers
                 try
                 {
 
-                   handler.Handle(command);
-                   await _NotificationHub.Clients.Group(codiceSede).SendAsync("NotifyMezzoPrenotato", command);
-                   //await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyMezzoPrenotato", command);
+                    handler.Handle(command);
+                    await _NotificationHub.Clients.Group(codiceSede).SendAsync("NotifyResetPrenotazioneMezzo", command);
 
                     return Ok();
                 }

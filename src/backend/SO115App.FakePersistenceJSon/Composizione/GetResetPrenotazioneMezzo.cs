@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="GetMezzoPrenotato.cs" company="CNVVF">
+// <copyright file="GetResetPrenotazioneMezzo.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -26,13 +26,14 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.Mez
 using SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato;
 using DomainModel.CQRS.Commands.MezzoPrenotato;
 using System;
-using SO115App.Models.Servizi.Infrastruttura.GetSbloccaMezzoPrenotato;
+using SO115App.Models.Servizi.Infrastruttura.GetResetPrenotazioneMezzo;
+using DomainModel.CQRS.Commands.ResetPrenotazioneMezzo;
 
 namespace SO115App.FakePersistenceJSon.Composizione
 {
-    public class GetSbloccaMezzoPrenotato : IGetSbloccaMezzoPrenotato
+    public class GetResetPrenotazioneMezzo : IGetResetPrenotazioneMezzo
     {
-        public MezzoPrenotato Get(SbloccaMezzoPrenotatoCommand command)
+        public MezzoPrenotato Get(ResetPrenotazioneMezzoCommand command)
         {
             //TODO PARTE CHIAMATA DB
 
@@ -41,6 +42,10 @@ namespace SO115App.FakePersistenceJSon.Composizione
             List<ComposizioneMezzi> mezzi = new List<ComposizioneMezzi>();
             ComposizioneMezzi mezzo = new ComposizioneMezzi();
             MezzoPrenotato mezzoPrenotato = new MezzoPrenotato();
+            //DateTime? istanteScadenzaPrecedente = null;
+            //TimeSpan tempoPassato = new TimeSpan();
+            //TimeSpan tempoMancante = new TimeSpan();
+            //TimeSpan minutes = new TimeSpan(0, 3, 0);
             string filepath = "Fake/MezziComposizione.json";
             string json;
             using (StreamReader r = new StreamReader(filepath))
@@ -50,8 +55,12 @@ namespace SO115App.FakePersistenceJSon.Composizione
 
             mezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(json);
             mezzo = mezzi.Where(x => x.Mezzo.Codice.Equals(command.MezzoPrenotato.mezzoComposizione.Mezzo.Codice)).FirstOrDefault();
+            //istanteScadenzaPrecedente = mezzo.IstanteScadenzaSelezione;
             mezzi.Remove(mezzo);
-            mezzo.IstanteScadenzaSelezione = null;
+            mezzo.IstanteScadenzaSelezione = DateTime.Now.AddMinutes(3);
+           // tempoMancante = istanteScadenzaPrecedente.Value.Subtract(DateTime.Now);
+            //tempoPassato = new TimeSpan(0, 3, 0) - istanteScadenzaPrecedente.Value.Subtract(DateTime.Now);
+           //  mezzo.IstanteScadenzaSelezione = DateTime.Now.Add(tempoPassato);
             mezzi.Add(mezzo);
             mezzi.Sort(delegate (ComposizioneMezzi x, ComposizioneMezzi y)
             {
@@ -59,14 +68,14 @@ namespace SO115App.FakePersistenceJSon.Composizione
             });
             string fileText = System.IO.File.ReadAllText(@"Fake/MezziComposizione.json");
             string jsonNew = JsonConvert.SerializeObject(mezzi);
-            System.IO.File.WriteAllText(@"Fake/MezziComposizione.json", jsonNew);  
+            System.IO.File.WriteAllText(@"Fake/MezziComposizione.json", jsonNew);
             mezzoPrenotato.mezzoComposizione = mezzo;
             mezzoPrenotato.mezzoComposizione.Id = command.MezzoPrenotato.mezzoComposizione.Id;
             mezzoPrenotato.mezzoComposizione.IdRichiesta = command.MezzoPrenotato.mezzoComposizione.IdRichiesta;
             return mezzoPrenotato;
         }
 
-        public ComposizioneMezzi GetMezzo(SbloccaMezzoPrenotatoCommand command)
+        public ComposizioneMezzi GetMezzo(ResetPrenotazioneMezzoCommand command)
         {
             ComposizioneMezzi mezzo = new ComposizioneMezzi();
             List<ComposizioneMezzi> mezzi = new List<ComposizioneMezzi>();
@@ -84,3 +93,4 @@ namespace SO115App.FakePersistenceJSon.Composizione
         }
     }
 }
+

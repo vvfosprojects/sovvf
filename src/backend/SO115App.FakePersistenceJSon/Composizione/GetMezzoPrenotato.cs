@@ -48,7 +48,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
             }
 
             mezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(json);
-            mezzo = mezzi.Where(x => x.Mezzo.Codice.Equals(command.MezzoPrenotato.IdMezzo)).FirstOrDefault();
+            mezzo = mezzi.Where(x => x.Mezzo.Codice.Equals(command.MezzoPrenotato.mezzoComposizione.Mezzo.Codice)).FirstOrDefault();
                 mezzi.Remove(mezzo);
                 mezzo.IstanteScadenzaSelezione = DateTime.Now.AddMinutes(3);
                 mezzi.Add(mezzo);
@@ -59,12 +59,9 @@ namespace SO115App.FakePersistenceJSon.Composizione
             string fileText = System.IO.File.ReadAllText(@"Fake/MezziComposizione.json");
                 string jsonNew = JsonConvert.SerializeObject(mezzi);
                 System.IO.File.WriteAllText(@"Fake/MezziComposizione.json", jsonNew);
-                mezzoPrenotato.IdRichiesta = command.MezzoPrenotato.IdRichiesta;
-                mezzoPrenotato.IdMezzo = command.MezzoPrenotato.IdMezzo;
-                mezzoPrenotato.IdMezzoComposizione = command.MezzoPrenotato.IdMezzoComposizione;
-                mezzoPrenotato.mezzo = mezzo;
-            mezzoPrenotato.mezzo.Id = command.MezzoPrenotato.IdMezzoComposizione;
-            mezzoPrenotato.mezzo.IdRichiesta = command.MezzoPrenotato.IdRichiesta;
+                mezzoPrenotato.mezzoComposizione = mezzo;
+            mezzoPrenotato.mezzoComposizione.Id = command.MezzoPrenotato.mezzoComposizione.Id;
+            mezzoPrenotato.mezzoComposizione.IdRichiesta = command.MezzoPrenotato.mezzoComposizione.IdRichiesta;
             return mezzoPrenotato;
         }
 
@@ -81,7 +78,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
             }
 
             mezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(json);
-            mezzo = mezzi.Where(x => x.Mezzo.Codice.Equals(command.MezzoPrenotato.IdMezzo)).FirstOrDefault();
+            mezzo = mezzi.Where(x => x.Mezzo.Codice.Equals(command.MezzoPrenotato.mezzoComposizione.Mezzo.Codice)).FirstOrDefault();
             return mezzo;
         }
     }
