@@ -119,6 +119,10 @@ export class SintesiRichiestaComponent implements OnInit {
         this.modificaRichiesta.emit(this.richiesta);
     }
 
+    onListaEnti() {
+        console.log('Lista Enti');
+    }
+
     _dateNumber(dateString: any) {
         return new Date(dateString).getTime();
     }
@@ -132,6 +136,15 @@ export class SintesiRichiestaComponent implements OnInit {
             return TipoTerrenoEnum[tipoTerreno];
         } else {
             return '-';
+        }
+    }
+
+    _entiCount(intervenuti?: number, presiInCarico?: number): string {
+        if (intervenuti || presiInCarico) {
+            const count = intervenuti + presiInCarico;
+            return count === 1 ? '1 Ente' : `${count} Enti`;
+        } else {
+            return null;
         }
     }
 }
