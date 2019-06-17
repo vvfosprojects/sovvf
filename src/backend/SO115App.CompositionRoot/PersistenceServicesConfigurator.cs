@@ -17,10 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
 using SimpleInjector;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.GeneratoreFakeRichieste;
+using System;
+using System.Collections.Generic;
 
 namespace SO115App.CompositionRoot
 {
@@ -34,12 +35,18 @@ namespace SO115App.CompositionRoot
     {
         internal static void Configure(Container container)
         {
-            // Indica se lo strato di persistenza inizializzato deve contenere interventi fake
-            var generazioneInterventiFake = false;
+            //Configure_JsonDatabase(container);
+            Configure_InMemoryDatabase(container, false);
+        }
 
-            // Indica se la persistenza va effettuata in memoria
-            var inMemoryPersistence = false;
+        private static void Configure_JsonDatabase(Container container)
+        {
+            // qui vanno inseriti i bindings dei servizi di persistenza affidati al modulo di
+            // persistenza basato su files Json.
+        }
 
+        private static void Configure_InMemoryDatabase(Container container, bool generazioneInterventiFake = false)
+        {
             // Indica quali sono le unità operative per le quali si generano interventi fake
             var codiciUnitaOperativeInterventiFake = new[] { "RM.1000", "VT.1000", "RI.1000", "LT.1000", "FR.1000" };
 
@@ -54,14 +61,11 @@ namespace SO115App.CompositionRoot
                 richieste.AddRange(quickGenerator.Genera());
             }
 
-            if (inMemoryPersistence)
+            container.Register<SO115App.FakePersistence.InMemory.DbRichieste>(() =>
             {
-                container.Register<SO115App.FakePersistence.InMemory.DbRichieste>(() =>
-                {
-                    return new SO115App.FakePersistence.InMemory.DbRichieste(richieste);
-                },
-                Lifestyle.Singleton);
-            }
+                return new SO115App.FakePersistence.InMemory.DbRichieste(richieste);
+            },
+            Lifestyle.Singleton);
         }
     }
 }
