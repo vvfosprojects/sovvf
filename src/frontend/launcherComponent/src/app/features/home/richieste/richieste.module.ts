@@ -37,6 +37,7 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
+import { ListaEntiComponent } from '../../../shared';
 
 @NgModule({
     imports: [
@@ -76,7 +77,7 @@ import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-s
         ModificaRichiestaComponent,
     ],
     entryComponents: [
-        ModificaRichiestaComponent
+        ListaEntiComponent
     ],
     providers: [
         { provide: SintesiRichiesteService, useClass: environment.fakeProvider ? SintesiRichiesteServiceFake : SintesiRichiesteService}

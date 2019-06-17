@@ -795,6 +795,7 @@ export class SintesiRichiesteServiceFake {
         this.richieste[3].tipoTerreno = new TipoTerreno('1', TipoTerrenoEnum.Boschi, '200mq');
         this.richieste[3].listaEntiPresaInCarico = [new EnteIntervenuto('1', 'Polizia di Stato')];
         this.richieste[4].listaEntiPresaInCarico = [new EnteIntervenuto('1', 'Polizia di Stato'), new EnteIntervenuto('2' , 'Carabinieri')];
+        this.richieste[4].listaEntiIntervenuti = [new EnteIntervenuto('3', 'Protezione Civile')];
 
         this.store.dispatch(new SetRichieste(this.richieste));
 
