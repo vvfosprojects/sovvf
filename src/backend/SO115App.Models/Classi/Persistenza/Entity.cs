@@ -17,6 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("SO115App.FakePersistence.InMemory")]
+
 namespace SO115App.API.Models.Classi.Persistenza
 {
     /// <summary>

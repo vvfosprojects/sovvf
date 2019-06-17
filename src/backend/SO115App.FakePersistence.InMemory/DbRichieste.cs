@@ -20,12 +20,13 @@
 using System;
 using System.Collections.Generic;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
 namespace SO115App.FakePersistence.InMemory
 {
-    public class DbRichieste
+    public class DbRichieste : ISaveRichiestaAssistenza
     {
-        private Dictionary<string, RichiestaAssistenza> richieste = new Dictionary<string, RichiestaAssistenza>();
+        private readonly Dictionary<string, RichiestaAssistenza> richieste = new Dictionary<string, RichiestaAssistenza>();
 
         public DbRichieste(IEnumerable<RichiestaAssistenza> richieste = null)
         {
@@ -42,6 +43,15 @@ namespace SO115App.FakePersistence.InMemory
         public IEnumerable<RichiestaAssistenza> GetRichieste()
         {
             return this.richieste.Values;
+        }
+
+        public void Save(RichiestaAssistenza richiestaAssistenza)
+        {
+            if (richiestaAssistenza.Id != null)
+                throw new InvalidOperationException("L'id di una nuova richiesta da inserire nel database deve essere null");
+
+            richiestaAssistenza.Id = Guid.NewGuid().ToString();
+            this.richieste[richiestaAssistenza.Id] = richiestaAssistenza;
         }
     }
 }
