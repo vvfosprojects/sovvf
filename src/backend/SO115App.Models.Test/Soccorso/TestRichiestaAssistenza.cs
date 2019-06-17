@@ -340,5 +340,13 @@ namespace Modello.Test.Classi.Soccorso
 
             Assert.That(chiusa, Is.True);
         }
+
+        [Test]
+        public void UnaRichiestaDiAssistenzaVuotaHaIdNull()
+        {
+            var richiesta = new RichiestaAssistenza();
+
+            Assert.That(richiesta.Id, Is.Null);
+        }
     }
 }

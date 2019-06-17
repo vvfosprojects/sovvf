@@ -45,6 +45,11 @@ namespace SO115App.FakePersistence.InMemory
             return this.richieste.Values;
         }
 
+        /// <summary>
+        ///   Salva nel DB in memory la richiesta. La richiesta deve avere id null e, dopo il
+        ///   salvataggio, l'id risulta inizializzato.
+        /// </summary>
+        /// <param name="richiestaAssistenza">La richiesta da salvare</param>
         public void Save(RichiestaAssistenza richiestaAssistenza)
         {
             if (richiestaAssistenza.Id != null)
