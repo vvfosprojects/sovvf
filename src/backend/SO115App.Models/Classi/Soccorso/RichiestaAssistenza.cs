@@ -418,26 +418,17 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                try
+                var eventoSegnalazione = this.eventi
+                    .Where(e => e is Segnalazione)
+                    .FirstOrDefault() as Segnalazione;
+
+                if (eventoSegnalazione == null)
                 {
-                    var eventoSegnalazione = this.eventi
-                        .Where(e => e is Segnalazione)
-                        .FirstOrDefault() as Segnalazione;
-
-                    if (eventoSegnalazione == null)
-                    {
-                        return null;
-                    }
-                    else
-                    {
-                        return eventoSegnalazione.Istante;
-                    }
-
-                    //return eventoSegnalazione.Istante;
+                    return null;
                 }
-                catch (Exception ex)
+                else
                 {
-                    throw new InvalidOperationException("Impossibile recuperare l'istante della Richiesta di Assistenza.", ex);
+                    return eventoSegnalazione.Istante;
                 }
             }
         }

@@ -86,14 +86,13 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void InAssenzaDiSegnalazioniLIstanteRichiestaDaEccezione()
+        public void InAssenzaDiSegnalazioniLIstanteRichiestaENull()
         {
             var richiesta = new RichiestaAssistenza();
 
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                var istanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta;
-            });
+            var istanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta;
+
+            Assert.That(istanteRicezioneRichiesta, Is.Null);
         }
 
         [Test]
