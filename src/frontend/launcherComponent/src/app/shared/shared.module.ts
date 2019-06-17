@@ -15,6 +15,7 @@ const COMPONENTS = [
     Shared.MezzoComponent,
     Shared.LoaderComponent,
     Shared.TreeviewComponent,
+    Shared.ListaEntiComponent,
     ConfirmModalComponent
 ];
 
@@ -26,7 +27,7 @@ const COMPONENTS = [
         TreeviewModule.forRoot(),
     ],
     declarations: [
-        ...COMPONENTS
+        ...COMPONENTS,
     ],
     exports: [
         ...COMPONENTS

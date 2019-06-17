@@ -1,15 +1,15 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
 
 // Model
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
+import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
 
 // Helper Methods
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
-import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
-import { TipoTerrenoEnum } from '../../../../../shared/enum/tipo-terreno.enum';
+import { ListaEntiComponent } from '../../../../../shared';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -49,7 +49,8 @@ export class SintesiRichiestaComponent implements OnInit {
     // Enum
     StatoRichiesta = StatoRichiesta;
 
-    constructor(popoverConfig: NgbPopoverConfig,
+    constructor(private modalService: NgbModal,
+                popoverConfig: NgbPopoverConfig,
                 tooltipConfig: NgbTooltipConfig,
                 intl: TimeagoIntl) {
 
@@ -120,7 +121,11 @@ export class SintesiRichiestaComponent implements OnInit {
     }
 
     onListaEnti() {
-        console.log('Lista Enti');
+        const modal = this.modalService.open(ListaEntiComponent, { windowClass: 'enti', backdropClass: 'light-blue-backdrop', centered: true });
+        modal.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
+        modal.componentInstance.listaEntiPresaInCarico = this.richiesta.listaEntiPresaInCarico ? this.richiesta.listaEntiPresaInCarico : null;
+        modal.result.then(() => console.log('Lista Enti Aperta'),
+            () => console.log('Lista Enti Chiusa'));
     }
 
 }
