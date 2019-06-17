@@ -176,6 +176,12 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///     - le restanti cifre sono l'attuale numero intervento (senza progressivo) per un
         ///     totale di 100.000 interventi mappabili per ogni anno (mai raggiunto).
         ///   </para>
+        ///   <para>
+        ///     Gli operativi del CNVVF spingono per avere un codice parlante, del tipo "RM.12345".
+        ///     In questa modalità di composizione, il codice reca informazioni geografiche che
+        ///     potrebbero variare durante il corso di evasione dell'intervento, rendendo il codice
+        ///     fuorviante. Tuttavia per il momento si decide di usare questa metodologia.
+        ///   </para>
         /// </summary>
         public string Codice { get; set; }
 

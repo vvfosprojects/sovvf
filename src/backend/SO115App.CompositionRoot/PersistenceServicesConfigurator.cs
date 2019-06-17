@@ -66,6 +66,12 @@ namespace SO115App.CompositionRoot
                 return new SO115App.FakePersistence.InMemory.DbRichieste(richieste);
             },
             Lifestyle.Singleton);
+
+            container.Register<SO115App.FakePersistence.InMemory.DbCodiciRichieste>(Lifestyle.Singleton);
+
+            container.Register<
+                Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta.IGeneraCodiceRichiesta,
+                FakePersistence.InMemory.DbCodiciRichieste>();
         }
     }
 }
