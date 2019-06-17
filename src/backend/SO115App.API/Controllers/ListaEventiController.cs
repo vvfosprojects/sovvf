@@ -17,20 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Models.Classi.ListaEventi;
 using SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.SignalR;
-
-/* using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste; */
 
 namespace SO115App.API.Controllers
 {
@@ -48,19 +40,13 @@ namespace SO115App.API.Controllers
         /// </summary>
         private readonly IQueryHandler<ListaEventiQuery, ListaEventiResult> handler;
 
-        private readonly IHubContext<NotificationHub> _NotificationHub;
-        private readonly IPrincipal _currentUser;
-
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public ListaEventiController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
-            IQueryHandler<ListaEventiQuery, ListaEventiResult> handler)
+        public ListaEventiController(IQueryHandler<ListaEventiQuery, ListaEventiResult> handler)
         {
             this.handler = handler;
-            _NotificationHub = NotificationHubContext;
-            _currentUser = currentUser;
         }
 
         /// <summary>
@@ -71,9 +57,6 @@ namespace SO115App.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(string Id)
         {
-            var headerValues = Request.Headers["HubConnectionId"];
-            string ConId = headerValues.FirstOrDefault();
-
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
             {
                 SearchKey = "0"
@@ -86,12 +69,7 @@ namespace SO115App.API.Controllers
 
             try
             {
-                List<EventiMapper> eventi = new List<EventiMapper>();
-                eventi = this.handler.Handle(query).Eventi;
-
-                await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetEventiRichiesta", eventi);
-
-                return Ok();
+                return Ok(this.handler.Handle(query).Eventi);
             }
             catch
             {

@@ -18,17 +18,14 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Commands;
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker;
 using SO115App.Models.Classi.Marker;
-using SO115App.SignalR;
 
 namespace SO115App.API.Controllers
 {
@@ -45,14 +42,12 @@ namespace SO115App.API.Controllers
         private readonly ICommandHandler<CancellazioneChiamataInCorsoMarkerCommand> _Delhandler;
         private readonly ICommandHandler<UpDateChiamataInCorsoMarkerCommand> _upDatehandler;
         private readonly IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> _listaChiamateInCorsoMarkerhandler;
-        private readonly IHubContext<NotificationHub> _NotificationHub;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
         public ChiamataInCorsoController(
-            IHubContext<NotificationHub> NotificationHubContext,
             ICommandHandler<ChiamataInCorsoMarkerCommand> Addhandler,
             ICommandHandler<CancellazioneChiamataInCorsoMarkerCommand> Delhandler,
             ICommandHandler<UpDateChiamataInCorsoMarkerCommand> UpDatehandler,
@@ -63,24 +58,15 @@ namespace SO115App.API.Controllers
             _Delhandler = Delhandler;
             _upDatehandler = UpDatehandler;
             _listaChiamateInCorsoMarkerhandler = ListaChiamateInCorsoMarkerhandler;
-            _NotificationHub = NotificationHubContext;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var headerValues = Request.Headers["HubConnectionId"];
-            string ConId = headerValues.FirstOrDefault();
-
             var Listaquery = new ListaChiamateInCorsoMarkerQuery();
-            List<ChiamateInCorso> ListaChiamate = new List<ChiamateInCorso>();
-
             try
             {
-                ListaChiamate = (List<ChiamateInCorso>)this._listaChiamateInCorsoMarkerhandler.Handle(Listaquery).ListaChiamateInCorsoMarker;
-                await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyChiamateInCorsoMarker", ListaChiamate);
-
-                return Ok();
+                return Ok((List<ChiamateInCorso>)this._listaChiamateInCorsoMarkerhandler.Handle(Listaquery).ListaChiamateInCorsoMarker);
             }
             catch
             {
@@ -91,24 +77,17 @@ namespace SO115App.API.Controllers
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody]ChiamateInCorso chiamata)
         {
-            if (ModelState.IsValid)
+            var command = new ChiamataInCorsoMarkerCommand()
             {
-                var command = new ChiamataInCorsoMarkerCommand()
-                {
-                    AddChiamataInCorso = chiamata
-                };
+                AddChiamataInCorso = chiamata
+            };
 
-                try
-                {
-                    this._Addhandler.Handle(command);
-                    return Ok();
-                }
-                catch
-                {
-                    return BadRequest();
-                }
+            try
+            {
+                this._Addhandler.Handle(command);
+                return Ok();
             }
-            else
+            catch
             {
                 return BadRequest();
             }
@@ -117,24 +96,17 @@ namespace SO115App.API.Controllers
         [HttpPost("Delete")]
         public async Task<IActionResult> Delete([FromBody]ChiamateInCorso chiamata)
         {
-            if (ModelState.IsValid)
+            var command = new CancellazioneChiamataInCorsoMarkerCommand()
             {
-                var command = new CancellazioneChiamataInCorsoMarkerCommand()
-                {
-                    ChiamataInCorso = chiamata
-                };
+                ChiamataInCorso = chiamata
+            };
 
-                try
-                {
-                    this._Delhandler.Handle(command);
-                    return Ok();
-                }
-                catch
-                {
-                    return BadRequest();
-                }
+            try
+            {
+                this._Delhandler.Handle(command);
+                return Ok();
             }
-            else
+            catch
             {
                 return BadRequest();
             }
@@ -143,24 +115,17 @@ namespace SO115App.API.Controllers
         [HttpPost("UpDate")]
         public async Task<IActionResult> UpDate([FromBody]ChiamateInCorso chiamata)
         {
-            if (ModelState.IsValid)
+            var command = new UpDateChiamataInCorsoMarkerCommand()
             {
-                var command = new UpDateChiamataInCorsoMarkerCommand()
-                {
-                    ChiamataInCorso = chiamata
-                };
+                ChiamataInCorso = chiamata
+            };
 
-                try
-                {
-                    this._upDatehandler.Handle(command);
-                    return Ok();
-                }
-                catch
-                {
-                    return BadRequest();
-                }
+            try
+            {
+                this._upDatehandler.Handle(command);
+                return Ok();
             }
-            else
+            catch
             {
                 return BadRequest();
             }

@@ -18,10 +18,16 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using CQRS.Queries;
 using DomainModel.CQRS.Commands.UpDateIntervento;
 using Microsoft.AspNetCore.SignalR;
+using SO115App.API.Models.Classi.Boxes;
+using SO115App.API.Models.Classi.Marker;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
+using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneChiamata
@@ -29,15 +35,27 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
     public class NotificationUpDateChiamata : INotifyUpDateChiamata
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
+        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _BoxRichiestehandler;
+        private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _SintesiRichiesteAssistenzaMarkerhandler;
 
         public NotificationUpDateChiamata(IHubContext<NotificationHub> NotificationHubContext)
         {
             _notificationHubContext = NotificationHubContext;
         }
 
-        public async Task SendNotification(UpDateInterventoCommand chiamata)
+        public async Task SendNotification(UpDateInterventoCommand intervento)
         {
-            await _notificationHubContext.Clients.Group(chiamata.Chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", chiamata);
+            var BoxRichiestequery = new BoxRichiesteQuery();
+            BoxInterventi boxInterventi = new BoxInterventi();
+            boxInterventi = (BoxInterventi)this._BoxRichiestehandler.Handle(BoxRichiestequery).BoxRichieste;
+
+            var query = new SintesiRichiesteAssistenzaMarkerQuery();
+            List<SintesiRichiestaMarker> listaSintesiMarker = new List<SintesiRichiestaMarker>();
+            listaSintesiMarker = (List<SintesiRichiestaMarker>)this._SintesiRichiesteAssistenzaMarkerhandler.Handle(query).SintesiRichiestaMarker;
+
+            await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", intervento);
+            await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+            await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetListaRichiesteMarker", listaSintesiMarker);
         }
     }
 }

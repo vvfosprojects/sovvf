@@ -18,16 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Linq;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Models.Classi.Filtri;
 using SO115App.API.Models.Servizi.CQRS.Queries.Filtri;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.SignalR;
 
 /* using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste; */
 
@@ -47,19 +43,13 @@ namespace SO115App.API.Controllers
         /// </summary>
         private readonly IQueryHandler<FiltriQuery, FiltriResult> handler;
 
-        private readonly IHubContext<NotificationHub> _NotificationHub;
-        private readonly IPrincipal _currentUser;
-
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public FiltriController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
-            IQueryHandler<FiltriQuery, FiltriResult> handler)
+        public FiltriController(IQueryHandler<FiltriQuery, FiltriResult> handler)
         {
             this.handler = handler;
-            _NotificationHub = NotificationHubContext;
-            _currentUser = currentUser;
         }
 
         /// <summary>
@@ -85,12 +75,7 @@ namespace SO115App.API.Controllers
 
             try
             {
-                Filtri filtri = new Filtri();
-                filtri = this.handler.Handle(query).Filtri;
-
-                await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetFiltri", filtri);
-
-                return Ok();
+                return Ok(this.handler.Handle(query).Filtri);
             }
             catch
             {
