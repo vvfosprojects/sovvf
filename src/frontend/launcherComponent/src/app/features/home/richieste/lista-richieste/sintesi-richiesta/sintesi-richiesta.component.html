@@ -416,7 +416,7 @@
 
                             <!-- mq terreno -->
                             <div class="h6 text-right">
-                                <span *ngIf="richiesta.tipoTerreno?.mq.length > 0; else noMq"
+                                <span *ngIf="richiesta.tipoTerreno?.mq > 0; else noMq"
                                       class="h6 mr-1">{{ richiesta.tipoTerreno?.mq }}</span>
                                 <i class="guida fa fa-external-link fa-fw ml-1" ngbTooltip="Metri quadri terreno"
                                    placement="right"></i>

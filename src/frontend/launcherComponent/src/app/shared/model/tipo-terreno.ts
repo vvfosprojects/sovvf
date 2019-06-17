@@ -13,7 +13,7 @@ export class TipoTerreno {
         /**
          * mq del tipo di terreno
          */
-        public mq: string,
+        public mq: number,
     ) {
 
     }
