@@ -14,25 +14,18 @@ import { ToastrType } from '../../../../shared/enum/toastr';
 // Ngxs
 import { Select, Store } from '@ngxs/store';
 import { makeCopy } from '../../../../shared/helper/function';
-import { GetListeCoposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza-state';
 import { MezziComposizioneState } from '../../store/states/composizione-partenza/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../store/states/composizione-partenza/squadre-composizione.state';
-import {
-    AddBookMezzoComposizione,
-    HoverInMezzoComposizione,
-    HoverOutMezzoComposizione, RequestBookMezzoComposizione, SelectMezzo,
-    SelectMezzoComposizione, UnselectMezzo,
-    UnselectMezzoComposizione
-} from '../../store/actions/composizione-partenza/mezzi-composizione.actions';
+import { HoverInMezzoComposizione, HoverOutMezzoComposizione, SelectMezzoComposizione, UnselectMezzoComposizione } from '../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
 import {
     AddBoxPartenza,
-    AddMezzoBoxPartenza,
+    AddMezzoBoxPartenzaSelezionato,
     AddSquadraBoxPartenza, ClearBoxPartenze,
     RemoveBoxPartenza,
-    RemoveMezzoBoxPartenza, RemoveSquadraBoxPartenza,
+    RemoveMezzoBoxPartenzaSelezionato, RemoveSquadraBoxPartenza,
     SelectBoxPartenza
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
@@ -93,8 +86,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     constructor(private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,
                 private store: Store) {
-        // Richiedo la lista di mezzi e squadre
-        this.updateListe();
 
         // Popover options
         this.popoverConfig.container = 'body';
@@ -106,7 +97,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         // Prendo i mezzi da visualizzare nella lista
         this.subscription.add(
             this.mezziComposizione$.subscribe((mezziComp: MezzoComposizione[]) => {
-                this.mezziComposizione = makeCopy(mezziComp);
+                this.mezziComposizione = mezziComp;
                 // console.log(this.mezziComposizione);
             })
         );
@@ -201,32 +192,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.subscription.unsubscribe();
     }
 
-    updateListe() {
-        // const idRichiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id;
-        //
-        // const filtri = {
-        //     'CodiceDistaccamento': this.filtriSelezionati ? this.filtriSelezionati.CodiceDistaccamento : [],
-        //     'CodiceTipoMezzo': this.filtriSelezionati ? this.filtriSelezionati.CodiceTipoMezzo : [],
-        //     'CodiceStatoMezzo': this.filtriSelezionati ? this.filtriSelezionati.CodiceStatoMezzo : [],
-        //     'CodiceMezzo': this.idMezzoSelezionato ? this.idMezzoSelezionato : [],
-        //     'CodiceSquadra': this.idSquadreSelezionate ? this.idSquadreSelezionate : [],
-        //     'idRichiesta': idRichiesta ? idRichiesta : null
-        // };
-        //
-        // if (this.idMezzoSelezionato) {
-        //     const CodiceMezzo = [];
-        //     CodiceMezzo.push(this.idMezzoSelezionato);
-        //     filtri.CodiceMezzo = CodiceMezzo;
-        // }
-        //
-        // if (this.idSquadreSelezionate) {
-        //     filtri.CodiceMezzo = this.idSquadreSelezionate;
-        // }
-        //
-        // console.log('Oggetto "Filtri" per prendere aggiornare le liste', filtri);
-        // this.store.dispatch(new GetListeCoposizioneAvanzata(filtri));
-    }
-
     mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
         if (this.boxPartenzaList.length <= 0) {
             this.store.dispatch(new AddBoxPartenza());
@@ -234,7 +199,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) === -1) {
             this.store.dispatch(new SelectMezzoComposizione(mezzoComposizione));
             // this.store.dispatch(new SelectMezzo(mezzoComposizione.mezzo.codice));
-            this.store.dispatch(new AddMezzoBoxPartenza(mezzoComposizione));
+            this.store.dispatch(new AddMezzoBoxPartenzaSelezionato(mezzoComposizione));
         } else {
             this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza'));
         }
@@ -243,8 +208,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     mezzoDeselezionato(mezzoComposizione: MezzoComposizione) {
         this.store.dispatch(new UnselectMezzoComposizione(mezzoComposizione));
-        // this.store.dispatch(new UnselectMezzo(mezzoComposizione.mezzo.codice));
-        this.store.dispatch(new RemoveMezzoBoxPartenza(mezzoComposizione.id));
+        this.store.dispatch(new RemoveMezzoBoxPartenzaSelezionato(mezzoComposizione.id));
         this.clearDirection.emit();
         // console.log('Mezzo deselezionato', mezzoComposizione);
     }
@@ -310,12 +274,12 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         if (this.boxPartenzaList.length <= 0) {
             this.store.dispatch(new AddBoxPartenza());
         } else {
-            this.store.dispatch(new RequestBookMezzoComposizione());
+            this.store.dispatch(new AddBoxPartenza());
         }
     }
 
     eliminaBoxPartenza(boxPartenza: BoxPartenza) {
-        this.store.dispatch(new RemoveBoxPartenza(boxPartenza.id));
+        this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
     }
 
     // Id Maker
