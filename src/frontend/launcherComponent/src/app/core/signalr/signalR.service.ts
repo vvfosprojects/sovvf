@@ -23,9 +23,14 @@ import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamat
 import { SetFiltriComposizione } from '../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
 import { InsertChiamataMarker, InsertChiamateMarkers, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import { SetEventiRichiesta } from '../../features/home/store/actions/eventi/eventi-richiesta.actions';
-import { AddBookMezzoComposizione, SetListaMezziComposizione } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
+import {
+    AddBookMezzoComposizione,
+    RemoveBookMezzoComposizione,
+    SetListaMezziComposizione,
+    UpdateMezzoComposizione
+} from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { SetListaSquadreComposizione } from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
-import { MezzoPrenotatoInterface } from '../../shared/interface/mezzo-prenotato.interface';
+import { RemoveBoxPartenzaByMezzoId } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -229,28 +234,39 @@ export class SignalRService {
             this.store.dispatch(new SetListaSquadreComposizione(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Squadre Composizione ricevute da signalR', null, 5));
         });
-        this.hubNotification.on('NotifyGetPreaccoppiatiComposizione', (data: any) => {
+        this.hubNotification.on('NotifyGetPreaccoppiati', (data: any) => {
             console.log('NotifyGetPreaccoppiatiComposizione', data);
             // this.store.dispatch(new SetPreAccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
-        this.hubNotification.on('NotifyMezzoPrenotato', (data: MezzoPrenotatoInterface) => {
-            this.store.dispatch(new AddBookMezzoComposizione(data.mezzoPrenotato.idMezzoComposizione));
-            const mezzoComp = data.mezzoPrenotato.mezzo;
+        this.hubNotification.on('NotifyAddPrenotazioneMezzo', (data: any) => {
+            this.store.dispatch(new AddBookMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
+            this.store.dispatch(new UpdateMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
+            const mezzoComp = data.mezzoPrenotato.mezzoComposizione;
             let dataScadenzaSelezione = new Date(mezzoComp.istanteScadenzaSelezione).getHours() + ':';
             dataScadenzaSelezione += new Date(mezzoComp.istanteScadenzaSelezione).getMinutes() + ':';
             dataScadenzaSelezione += new Date(mezzoComp.istanteScadenzaSelezione).getSeconds();
-            const idRichiesta = data.mezzoPrenotato.idRichiesta;
+            const idRichiesta = data.mezzoPrenotato.mezzoComposizione.idRichiesta;
             this.store.dispatch(new ShowToastr(
                 ToastrType.Info,
                 'Mezzo Prenotato',
                 'Mezzo ' + mezzoComp.mezzo.descrizione + ' prenotato fino alle ' + dataScadenzaSelezione + ' sulla richiesta ' + idRichiesta,
                 5)
             );
-            console.log('[MezzoBloccatoSignalR] Richiesta:', data.mezzoPrenotato.idRichiesta);
-            console.log('[MezzoBloccatoSignalR] Mezzo:', data.mezzoPrenotato.idMezzoComposizione);
+            console.log('Mezzo prenotato signalr', data.mezzoPrenotato.mezzoComposizione);
         });
 
+        this.hubNotification.on('NotifyRemovePrenotazioneMezzo', (data: any) => {
+            this.store.dispatch(new RemoveBookMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
+            this.store.dispatch(new UpdateMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
+            this.store.dispatch(new RemoveBoxPartenzaByMezzoId(data.mezzoPrenotato.mezzoComposizione.mezzo.codice));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Prenotazione Scaduta', 'La prenotazione del mezzo ' + data.mezzoPrenotato.mezzoComposizione.mezzo.codice + ' è scaduta.', 5));
+            console.log('Mezzo remove prenotato signalr', data.mezzoPrenotato.mezzoComposizione);
+        });
+        this.hubNotification.on('NotifyResetPrenotazioneMezzo', (data: any) => {
+            this.store.dispatch(new UpdateMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
+            console.log('[SignalR] Reset Prenotazione Mezzo', data.mezzoPrenotato.mezzoComposizione);
+        });
         /**
          * Disconnessione SignalR
          */

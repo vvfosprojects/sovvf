@@ -8,10 +8,18 @@ import { SquadraComposizione } from 'src/app/features/home/composizione-partenza
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
 import { Store } from '@ngxs/store';
 import { SetPreAccoppiati } from '../../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
-import { AddBookMezzoComposizione, SetListaMezziComposizione } from '../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
+import {
+    AddBookMezzoComposizione,
+    RemoveBookMezzoComposizione,
+    SetListaMezziComposizione,
+    UpdateMezzoComposizione
+} from '../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { SetListaSquadreComposizione } from '../../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
-import { MezzoPrenotatoInterface } from '../../../shared/interface/mezzo-prenotato.interface';
 import * as moment from 'moment';
+import { makeCopy } from '../../../shared/helper/function';
+import { OFFSET_SYNC_TIME } from '../../settings/referral-time';
+import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza-state';
+import { RemoveBoxPartenzaByMezzoId } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 
 @Injectable()
 export class CompPartenzaServiceFake {
@@ -24,7 +32,7 @@ export class CompPartenzaServiceFake {
     constructor(private store: Store) {
     }
 
-    public getPreAccoppiati(signalRConnectionId?: string): Observable<BoxPartenza[]> {
+    getPreAccoppiati(signalRConnectionId?: string): Observable<BoxPartenza[]> {
         this.preAccoppiati = [
             {
                 id: '1',
@@ -411,7 +419,8 @@ export class CompPartenzaServiceFake {
         return of();
     }
 
-    public getListeComposizioneAvanzata(signalRConnectionId?: string): Observable<MezzoComposizione[]> {
+    getListeComposizioneAvanzata(signalRConnectionId?: string): Observable<any[]> {
+        const idRichiestaAttuale = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id;
         this.mezzi = [
             {
                 id: '1',
@@ -436,7 +445,9 @@ export class CompPartenzaServiceFake {
                 coordinate: {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
-                }
+                },
+                idRichiesta: idRichiestaAttuale,
+                istanteScadenzaSelezione: null
             },
             {
                 id: '2',
@@ -461,7 +472,9 @@ export class CompPartenzaServiceFake {
                 coordinate: {
                     latitudine: 41.82699,
                     longitudine: 12.4879854,
-                }
+                },
+                idRichiesta: idRichiestaAttuale,
+                istanteScadenzaSelezione: null
             },
             {
                 id: '3',
@@ -486,7 +499,9 @@ export class CompPartenzaServiceFake {
                 coordinate: {
                     latitudine: 41.8531486,
                     longitudine: 12.5418702
-                }
+                },
+                idRichiesta: idRichiestaAttuale,
+                istanteScadenzaSelezione: null
             },
             {
                 id: '4',
@@ -511,7 +526,9 @@ export class CompPartenzaServiceFake {
                 coordinate: {
                     latitudine: 41.8935662,
                     longitudine: 12.5417044
-                }
+                },
+                idRichiesta: idRichiestaAttuale,
+                istanteScadenzaSelezione: null
             },
             {
                 id: '5',
@@ -536,7 +553,9 @@ export class CompPartenzaServiceFake {
                 coordinate: {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
-                }
+                },
+                idRichiesta: idRichiestaAttuale,
+                istanteScadenzaSelezione: null
             },
             {
                 id: '6',
@@ -561,7 +580,9 @@ export class CompPartenzaServiceFake {
                 coordinate: {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
-                }
+                },
+                idRichiesta: idRichiestaAttuale,
+                istanteScadenzaSelezione: null
             },
             {
                 id: '7',
@@ -587,7 +608,8 @@ export class CompPartenzaServiceFake {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
                 },
-                istanteScadenzaSelezione: moment(new Date()).add(30, 'm').toDate()
+                idRichiesta: idRichiestaAttuale,
+                istanteScadenzaSelezione: null
             },
         ];
         this.squadre = [
@@ -667,9 +689,49 @@ export class CompPartenzaServiceFake {
         return of();
     }
 
-    setMezzoPrenotato(mezzoPrenotatoObj: any) {
+    setMezzoPrenotato(mezzoComp: MezzoComposizione) {
         setTimeout(() => {
-            this.store.dispatch(new AddBookMezzoComposizione(mezzoPrenotatoObj.idMezzoComposizione));
+            const obj = makeCopy(mezzoComp);
+            // mezzo.istanteScadenzaSelezione = moment(new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime()).add(3, 'minutes').toDate();
+            obj.mezzoComposizione.istanteScadenzaSelezione = moment(new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime()).add(10, 'seconds').toDate();
+            const response = {
+                'mezzoComposizione': obj.mezzoComposizione
+            };
+            this.store.dispatch(new AddBookMezzoComposizione(response.mezzoComposizione));
+            this.store.dispatch(new UpdateMezzoComposizione(response.mezzoComposizione));
+        }, 1000);
+
+
+        return of(null);
+    }
+
+    resetMezzoPrenotato(mezzoComp: MezzoComposizione) {
+        setTimeout(() => {
+            const obj = makeCopy(mezzoComp);
+            // mezzo.istanteScadenzaSelezione = moment(new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime()).add(3, 'minutes').toDate();
+            obj.mezzoComposizione.istanteScadenzaSelezione = moment(new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime()).add(3, 'minutes').toDate();
+            const response = {
+                'mezzoComposizione': obj.mezzoComposizione
+            };
+            // this.store.dispatch(new AddBookMezzoComposizione(response.mezzoComposizione));
+            this.store.dispatch(new UpdateMezzoComposizione(response.mezzoComposizione));
+        }, 1000);
+
+
+        return of(null);
+    }
+
+    removeMezzoPrenotato(mezzoComp: MezzoComposizione) {
+        setTimeout(() => {
+            const obj = makeCopy(mezzoComp);
+            obj.mezzoComposizione.istanteScadenzaSelezione = null;
+            const response = {
+                'mezzoComposizione': obj.mezzoComposizione
+            };
+            this.store.dispatch(new RemoveBookMezzoComposizione(response.mezzoComposizione));
+            this.store.dispatch(new UpdateMezzoComposizione(response.mezzoComposizione));
+            this.store.dispatch(new RemoveBoxPartenzaByMezzoId(response.mezzoComposizione.mezzo.codice));
+            console.log('idMezzo', response.mezzoComposizione.mezzo.codice);
         }, 1000);
 
 

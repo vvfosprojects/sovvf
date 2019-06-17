@@ -51,7 +51,7 @@
             </div>
             <!-- bottone nuova partenza -->
             <div *ngIf="boxPartenzaList.length > 0" class="text-center mb-2">
-                <button class="btn btn-primary" (click)="nuovaPartenza()"><i class="fa fa-plus mr-2"></i>Aggiungi
+                <button class="btn btn-primary" (click)="nuovaPartenza()" [disabled]="boxPartenzaList.length > 2"><i class="fa fa-plus mr-2"></i>Aggiungi
                     partenza
                 </button>
             </div>

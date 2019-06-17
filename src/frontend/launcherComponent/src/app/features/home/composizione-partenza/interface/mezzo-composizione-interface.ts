@@ -8,4 +8,5 @@ export interface MezzoComposizione {
     coordinate?: Coordinate;
     tempoPercorrenza: string;
     istanteScadenzaSelezione?: any;
+    idRichiesta?: string;
 }
