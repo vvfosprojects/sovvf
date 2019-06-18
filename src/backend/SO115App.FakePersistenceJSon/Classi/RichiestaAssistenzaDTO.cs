@@ -219,7 +219,7 @@ namespace SO115App.FakePersistenceJSon.Classi
         /// <summary>
         ///   Indica se il terreno è uno tra Boschi/Campi/Sterpaglie e ne indica i mq.
         /// </summary>
-        public TipologiaTerreno TipoTerreno { get; set; }
+        public List<TipologiaTerreno> TipoTerreno { get; set; }
 
         /// <summary>
         ///   Lista degli enti intervenuti (Es. ACEA)
@@ -230,7 +230,7 @@ namespace SO115App.FakePersistenceJSon.Classi
         ///   Se l'intervento è su un obiettivo ritenuto rilevante (Es. Colosseo) si seleziona da
         ///   interfaccia e si registra il codice
         /// </summary>
-        public string CodiceObiettivoRilevante { get; set; }
+        public string CodiceObiettivoSensibile { get; set; }
 
         /// <summary>
         ///   E' la descrizione della richiesta, che ne sintetizza le caratteristiche principali.

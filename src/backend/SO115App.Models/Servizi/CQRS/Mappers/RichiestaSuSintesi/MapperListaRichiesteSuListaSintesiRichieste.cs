@@ -55,7 +55,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 sintesi.Localita = elemento.Localita;
                 sintesi.Operatore = elemento.Operatore;
                 sintesi.Richiedente = elemento.Richiedente;
-                sintesi.Stato = Convert.ToInt16(statoRichiesta);
+                sintesi.Stato = statoRichiesta;
                 sintesi.Tipologie = elemento.Tipologie;
                 sintesi.ZoneEmergenza = elemento.ZoneEmergenza;
 

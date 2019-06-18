@@ -73,7 +73,7 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Stato della richiesta
         /// </summary>
         [Required(ErrorMessage = "Stato obbligatorio.")]
-        public int Stato { get; set; }
+        public string Stato { get; set; }
 
         /// <summary>
         ///   Priorita della richiesta

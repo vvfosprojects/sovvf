@@ -30,19 +30,18 @@ namespace DomainModel.CQRS.Commands.AddIntervento
     public class AddInterventoCommandHandler : ICommandHandler<AddInterventoCommand>
     {
         private readonly ISaveRichiestaAssistenza _saveRichiestaAssistenza;
-        private readonly IGetMaxCodice _iGetMaxCodice;
-        private readonly IGeneraCodiceRichiesta generaCodiceRichiesta;
+        private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
 
-        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza, IGetMaxCodice iGetMaxCodice)
+        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza, IGeneraCodiceRichiesta generaCodiceRichiesta)
         {
             this._saveRichiestaAssistenza = saveRichiestaAssistenza;
-            this._iGetMaxCodice = iGetMaxCodice;
+            _generaCodiceRichiesta = generaCodiceRichiesta;
         }
 
         public void Handle(AddInterventoCommand command)
         {
             var sedeRichiesta = command.Chiamata.Operatore.Sede.Codice;
-            var codiceRichiesta = generaCodiceRichiesta.Genera(sedeRichiesta, DateTime.UtcNow.Year);
+            var codiceRichiesta = _generaCodiceRichiesta.Genera(sedeRichiesta, DateTime.UtcNow.Year);
 
             var richiesta = new RichiestaAssistenza()
             {
@@ -56,12 +55,12 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 TurnoInserimentoChiamata = command.Chiamata.TurnoInserimentoChiamata,
                 TipoTerreno = command.Chiamata.TipoTerreno,
                 ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti,
-                CodiceObiettivoRilevante = command.Chiamata.CodiceObiettivoRilevante
+                CodiceObiettivoSensibile = command.Chiamata.CodiceObiettivoSensibile
             };
 
             richiesta.SincronizzaRilevanza(command.Chiamata.RilevanzaGrave, command.Chiamata.RilevanzaStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione, command.Chiamata.IstanteRicezioneRichiesta);
 
-            if (command.Chiamata.Stato == 4)
+            if (command.Chiamata.Stato == "Chiusa")
             {
                 new ChiusuraRichiesta("", richiesta, command.Chiamata.IstanteRicezioneRichiesta, command.Chiamata.Operatore.Id);
             }

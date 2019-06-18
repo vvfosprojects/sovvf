@@ -97,21 +97,13 @@ namespace SO115App.API.Models.Classi.Soccorso
             Altissima
         }
 
-        internal void SincronizzaStatoRichiesta(int stato, IStatoRichiesta statoRichiesta, string id, string motivazione)
+        internal void SincronizzaStatoRichiesta(string stato, IStatoRichiesta statoRichiesta, string id, string motivazione)
         {
-            /*
-            Stato richiesta
-            Se lo stato è 0 - Chiamata non devono essere presenti codici, verranno messi dal BE
-            Se lo stato è 1 - Sospesa
-            Se lo stato è 2 - Presidiato
-            Se lo stato è 3 - Assegnata
-            Se lo stato è 4 - Chiusa
-            */
-            if (stato == 4 && !(statoRichiesta is Chiusa))
+            if (stato == "Chiusa" && !(statoRichiesta is Chiusa))
             {
                 new ChiusuraRichiesta(motivazione, this, DateTime.UtcNow, id);
             }
-            else if (stato != 4 && (statoRichiesta is Chiusa))
+            else if (stato != "Chiusa" && (statoRichiesta is Chiusa))
             {
                 new RiaperturaRichiesta(this, DateTime.UtcNow, id);
             }
@@ -345,7 +337,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   Indica se il terreno è uno tra Boschi/Campi/Sterpaglie e ne indica i mq.
         /// </summary>
-        public TipologiaTerreno TipoTerreno { get; set; }
+        public List<TipologiaTerreno> TipoTerreno { get; set; }
 
         /// <summary>
         ///   Lista degli enti intervenuti (Es. ACEA)
@@ -361,7 +353,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   Se l'intervento è su un obiettivo ritenuto rilevante (Es. Colosseo) si seleziona da
         ///   interfaccia e si registra il codice
         /// </summary>
-        public string CodiceObiettivoRilevante { get; set; }
+        public string CodiceObiettivoSensibile { get; set; }
 
         /// <summary>
         ///   E' la descrizione della richiesta, che ne sintetizza le caratteristiche principali.

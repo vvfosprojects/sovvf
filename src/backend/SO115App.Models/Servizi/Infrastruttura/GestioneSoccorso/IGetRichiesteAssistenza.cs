@@ -1,10 +1,12 @@
-﻿using System;
+﻿using SO115App.API.Models.Classi.Soccorso;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso
 {
-    interface IGetRichiesteAssistenza
+    public interface IGetRichiesteAssistenza
     {
+        IEnumerable<RichiestaAssistenza> GetRichieste();
     }
 }

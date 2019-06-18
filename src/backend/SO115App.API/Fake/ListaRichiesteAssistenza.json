@@ -1,1 +1,400 @@
-[{"Codice":"RM-1","CodiceUnitaOperativaCompetente":null,"CodiciUnitaOperativeAllertate":null,"Eventi":[{"Motivazione":"dasdasdas","PerGravita":false,"PerEdificioStArCu":true,"Istante":"2019-06-13T12:59:39.978Z","CodiceFonte":"3","CodiceRichiesta":"RM-1"},{"Motivazione":"dasdasdas","PerGravita":false,"PerEdificioStArCu":true,"Istante":"2019-06-13T12:59:39.978Z","CodiceFonte":"3","CodiceRichiesta":"RM-1"},{"CodiceOrigine":"31312","CognomeChiamante":"das","NomeChiamante":"dasdas","NumeroTelefono":"31312","RagioneSociale":"","CodiceSchedaContatto":null,"Codice":"31312","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-06-13T12:59:39.978Z","CodiceFonte":"3","CodiceRichiesta":"RM-1"}],"Telefonate":[{"CodiceOrigine":"31312","CognomeChiamante":"das","NomeChiamante":"dasdas","NumeroTelefono":"31312","RagioneSociale":"","CodiceSchedaContatto":null,"Codice":"31312","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-06-13T12:59:39.978Z","CodiceFonte":"3","CodiceRichiesta":"RM-1"}],"Operatore":{"Id":"3","Nome":"Mario","Cognome":"Rossi","CodiceFiscale":"YZSPMD89M07M185L","Sede":{"Codice":"RM.1000","Descrizione":"Comando VV.F. ROMA","Coordinate":{"Latitudine":41.89996,"Longitudine":12.49104},"Indirizzo":"Via Genova, 3/a","Tipo":"Comando","Regione":"Lazio","Provincia":"ROMA","Label":null,"Icona":null},"Username":"test","Password":null,"Ruoli":null,"Token":null,"ValidoDa":null,"ValidoFinoA":null,"Attivo":true,"Qualifica":null},"Sospesa":false,"InAttesa":true,"MezziCoinvolti":{},"SquadreCoinvolte":null,"IstanteChiusura":null,"Tipologie":[{"Codice":"7","Descrizione":"Esplosione da sostanza esplodente","TipoLuogoEvento":null,"Icona":null,"Categoria":"Incendi ed Esplosioni","Star":true}],"Localita":{"Coordinate":{"Latitudine":41.791922600000007,"Longitudine":12.384012299999995},"Indirizzo":"Via Ostiense, Roma RM, Italia","Note":null},"TurnoInserimentoChiamata":null,"TurnoIntervento":null,"TipoTerreno":null,"ListaEntiIntervenuti":null,"ListaEntiPresaInCarico":null,"CodiceObiettivoRilevante":null,"Descrizione":"dasdasdas","ZoneEmergenza":null,"Tags":[],"Chiusa":false,"Aperta":true,"PrioritaRichiesta":3,"IstanteRicezioneRichiesta":"2019-06-13T12:59:39.978Z","IstantePresaInCarico":null,"IstantePrimaAssegnazione":null,"Rilevante":true,"RilevanteGrave":false,"RilevanteStArCu":true,"StatoRichiesta":{"Evasa":false},"Presidiato":false,"Richiedente":{"Telefono":"31312","Nome":"dasdas","Cognome":"das","RagioneSociale":""},"CodiciUOCompetenza":null,"Competenze":null,"CodiceSchedaNue":null,"StatoInvioFonogramma":{"Codice":"0","Descrizione":"Non necessario"},"Complessita":{"Codice":"2","Descrizione":"Bassa"},"Id":"1"},{"Codice":"RM-2","CodiceUnitaOperativaCompetente":null,"CodiciUnitaOperativeAllertate":null,"Eventi":[{"CodiceOrigine":"312312","CognomeChiamante":"dasd","NomeChiamante":"dsadas","NumeroTelefono":"312312","RagioneSociale":"","CodiceSchedaContatto":null,"Codice":"312312","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-06-13T13:00:44.44Z","CodiceFonte":"3","CodiceRichiesta":"RM-2"}],"Telefonate":[{"CodiceOrigine":"312312","CognomeChiamante":"dasd","NomeChiamante":"dsadas","NumeroTelefono":"312312","RagioneSociale":"","CodiceSchedaContatto":null,"Codice":"312312","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-06-13T13:00:44.44Z","CodiceFonte":"3","CodiceRichiesta":"RM-2"}],"Operatore":{"Id":"3","Nome":"Mario","Cognome":"Rossi","CodiceFiscale":"YZSPMD89M07M185L","Sede":{"Codice":"RM.1000","Descrizione":"Comando VV.F. ROMA","Coordinate":{"Latitudine":41.89996,"Longitudine":12.49104},"Indirizzo":"Via Genova, 3/a","Tipo":"Comando","Regione":"Lazio","Provincia":"ROMA","Label":null,"Icona":null},"Username":"test","Password":null,"Ruoli":null,"Token":null,"ValidoDa":null,"ValidoFinoA":null,"Attivo":true,"Qualifica":null},"Sospesa":false,"InAttesa":true,"MezziCoinvolti":{},"SquadreCoinvolte":null,"IstanteChiusura":null,"Tipologie":[{"Codice":"7","Descrizione":"Esplosione da sostanza esplodente","TipoLuogoEvento":null,"Icona":null,"Categoria":"Incendi ed Esplosioni","Star":true}],"Localita":{"Coordinate":{"Latitudine":41.925740900000008,"Longitudine":12.573898600000007},"Indirizzo":"Via Tiburtina, Roma RM, Italia","Note":null},"TurnoInserimentoChiamata":null,"TurnoIntervento":null,"TipoTerreno":null,"ListaEntiIntervenuti":null,"ListaEntiPresaInCarico":null,"CodiceObiettivoRilevante":null,"Descrizione":"dasdasdas","ZoneEmergenza":null,"Tags":[],"Chiusa":false,"Aperta":true,"PrioritaRichiesta":3,"IstanteRicezioneRichiesta":"2019-06-13T13:00:44.44Z","IstantePresaInCarico":null,"IstantePrimaAssegnazione":null,"Rilevante":false,"RilevanteGrave":false,"RilevanteStArCu":false,"StatoRichiesta":{"Evasa":false},"Presidiato":false,"Richiedente":{"Telefono":"312312","Nome":"dsadas","Cognome":"dasd","RagioneSociale":""},"CodiciUOCompetenza":null,"Competenze":null,"CodiceSchedaNue":null,"StatoInvioFonogramma":{"Codice":"0","Descrizione":"Non necessario"},"Complessita":{"Codice":"2","Descrizione":"Bassa"},"Id":"2"},{"Codice":"RM-3","CodiceUnitaOperativaCompetente":null,"CodiciUnitaOperativeAllertate":null,"Eventi":[{"Motivazione":"Motivazione","PerGravita":false,"PerEdificioStArCu":true,"Istante":"2019-06-13T13:06:48.853Z","CodiceFonte":"3","CodiceRichiesta":"RM-3"},{"Motivazione":"Motivazione","PerGravita":false,"PerEdificioStArCu":true,"Istante":"2019-06-13T13:06:48.853Z","CodiceFonte":"3","CodiceRichiesta":"RM-3"},{"CodiceOrigine":"342131321","CognomeChiamante":"dasdsa","NomeChiamante":"dsadas","NumeroTelefono":"342131321","RagioneSociale":"","CodiceSchedaContatto":null,"Codice":"342131321","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-06-13T13:06:48.853Z","CodiceFonte":"3","CodiceRichiesta":"RM-3"}],"Telefonate":[{"CodiceOrigine":"342131321","CognomeChiamante":"dasdsa","NomeChiamante":"dsadas","NumeroTelefono":"342131321","RagioneSociale":"","CodiceSchedaContatto":null,"Codice":"342131321","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-06-13T13:06:48.853Z","CodiceFonte":"3","CodiceRichiesta":"RM-3"}],"Operatore":{"Id":"3","Nome":"Mario","Cognome":"Rossi","CodiceFiscale":"YZSPMD89M07M185L","Sede":{"Codice":"RM.1000","Descrizione":"Comando VV.F. ROMA","Coordinate":{"Latitudine":41.89996,"Longitudine":12.49104},"Indirizzo":"Via Genova, 3/a","Tipo":"Comando","Regione":"Lazio","Provincia":"ROMA","Label":null,"Icona":null},"Username":"test","Password":null,"Ruoli":null,"Token":null,"ValidoDa":null,"ValidoFinoA":null,"Attivo":true,"Qualifica":null},"Sospesa":false,"InAttesa":true,"MezziCoinvolti":{},"SquadreCoinvolte":null,"IstanteChiusura":null,"Tipologie":[{"Codice":"8","Descrizione":"Esplosione (escluso esplosione da sostanza esplodente)","TipoLuogoEvento":null,"Icona":null,"Categoria":"Incendi ed Esplosioni","Star":false}],"Localita":{"Coordinate":{"Latitudine":41.488947,"Longitudine":12.619429200000013},"Indirizzo":"Via della Piramide, 00042 Anzio RM, Italia","Note":null},"TurnoInserimentoChiamata":null,"TurnoIntervento":null,"TipoTerreno":null,"ListaEntiIntervenuti":null,"ListaEntiPresaInCarico":null,"CodiceObiettivoRilevante":null,"Descrizione":"Motivazione","ZoneEmergenza":null,"Tags":[],"Chiusa":false,"Aperta":true,"PrioritaRichiesta":3,"IstanteRicezioneRichiesta":"2019-06-13T13:06:48.853Z","IstantePresaInCarico":null,"IstantePrimaAssegnazione":null,"Rilevante":true,"RilevanteGrave":false,"RilevanteStArCu":true,"StatoRichiesta":{"Evasa":false},"Presidiato":false,"Richiedente":{"Telefono":"342131321","Nome":"dsadas","Cognome":"dasdsa","RagioneSociale":""},"CodiciUOCompetenza":null,"Competenze":null,"CodiceSchedaNue":null,"StatoInvioFonogramma":{"Codice":"0","Descrizione":"Non necessario"},"Complessita":{"Codice":"2","Descrizione":"Bassa"},"Id":"3"},{"Codice":"RM-4","CodiceUnitaOperativaCompetente":null,"CodiciUnitaOperativeAllertate":null,"Eventi":[{"CodiceOrigine":"112","CognomeChiamante":"","NomeChiamante":"","NumeroTelefono":"112","RagioneSociale":"Polizia","CodiceSchedaContatto":null,"Codice":"112","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-06-13T13:07:21.927Z","CodiceFonte":"3","CodiceRichiesta":"RM-4"}],"Telefonate":[{"CodiceOrigine":"112","CognomeChiamante":"","NomeChiamante":"","NumeroTelefono":"112","RagioneSociale":"Polizia","CodiceSchedaContatto":null,"Codice":"112","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-06-13T13:07:21.927Z","CodiceFonte":"3","CodiceRichiesta":"RM-4"}],"Operatore":{"Id":"3","Nome":"Mario","Cognome":"Rossi","CodiceFiscale":"YZSPMD89M07M185L","Sede":{"Codice":"RM.1000","Descrizione":"Comando VV.F. ROMA","Coordinate":{"Latitudine":41.89996,"Longitudine":12.49104},"Indirizzo":"Via Genova, 3/a","Tipo":"Comando","Regione":"Lazio","Provincia":"ROMA","Label":null,"Icona":null},"Username":"test","Password":null,"Ruoli":null,"Token":null,"ValidoDa":null,"ValidoFinoA":null,"Attivo":true,"Qualifica":null},"Sospesa":false,"InAttesa":true,"MezziCoinvolti":{},"SquadreCoinvolte":null,"IstanteChiusura":null,"Tipologie":[{"Codice":"6","Descrizione":"Incendio ed esplosione","TipoLuogoEvento":null,"Icona":null,"Categoria":"Incendi ed Esplosioni","Star":false}],"Localita":{"Coordinate":{"Latitudine":40.846792099999988,"Longitudine":14.337611199999969},"Indirizzo":"Via Bartolo Longo, 80147 Napoli NA, Italia","Note":null},"TurnoInserimentoChiamata":null,"TurnoIntervento":null,"TipoTerreno":null,"ListaEntiIntervenuti":null,"ListaEntiPresaInCarico":null,"CodiceObiettivoRilevante":null,"Descrizione":"Motivazione","ZoneEmergenza":null,"Tags":[],"Chiusa":false,"Aperta":true,"PrioritaRichiesta":3,"IstanteRicezioneRichiesta":"2019-06-13T13:07:21.927Z","IstantePresaInCarico":null,"IstantePrimaAssegnazione":null,"Rilevante":false,"RilevanteGrave":false,"RilevanteStArCu":false,"StatoRichiesta":{"Evasa":false},"Presidiato":false,"Richiedente":{"Telefono":"112","Nome":"","Cognome":"","RagioneSociale":"Polizia"},"CodiciUOCompetenza":null,"Competenze":null,"CodiceSchedaNue":null,"StatoInvioFonogramma":{"Codice":"0","Descrizione":"Non necessario"},"Complessita":{"Codice":"2","Descrizione":"Bassa"},"Id":"4"},{"Codice":"RM-5","CodiceUnitaOperativaCompetente":null,"CodiciUnitaOperativeAllertate":null,"Eventi":[{"CodiceOrigine":"4234","CognomeChiamante":"","NomeChiamante":"","NumeroTelefono":"4234","RagioneSociale":"dasdsa","CodiceSchedaContatto":null,"Codice":"4234","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-06-13T14:57:30.264Z","CodiceFonte":"3","CodiceRichiesta":"RM-5"}],"Telefonate":[{"CodiceOrigine":"4234","CognomeChiamante":"","NomeChiamante":"","NumeroTelefono":"4234","RagioneSociale":"dasdsa","CodiceSchedaContatto":null,"Codice":"4234","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-06-13T14:57:30.264Z","CodiceFonte":"3","CodiceRichiesta":"RM-5"}],"Operatore":{"Id":"3","Nome":"Mario","Cognome":"Rossi","CodiceFiscale":"YZSPMD89M07M185L","Sede":{"Codice":"RM.1000","Descrizione":"Comando VV.F. ROMA","Coordinate":{"Latitudine":41.89996,"Longitudine":12.49104},"Indirizzo":"Via Genova, 3/a","Tipo":"Comando","Regione":"Lazio","Provincia":"ROMA","Label":null,"Icona":null},"Username":"test","Password":null,"Ruoli":null,"Token":null,"ValidoDa":null,"ValidoFinoA":null,"Attivo":true,"Qualifica":null},"Sospesa":false,"InAttesa":true,"MezziCoinvolti":{},"SquadreCoinvolte":null,"IstanteChiusura":null,"Tipologie":[{"Codice":"6","Descrizione":"Incendio ed esplosione","TipoLuogoEvento":null,"Icona":null,"Categoria":"Incendi ed Esplosioni","Star":false}],"Localita":{"Coordinate":{"Latitudine":43.8657267,"Longitudine":10.2513103},"Indirizzo":"55049 Viareggio LU, Italia","Note":null},"TurnoInserimentoChiamata":null,"TurnoIntervento":null,"TipoTerreno":null,"ListaEntiIntervenuti":null,"ListaEntiPresaInCarico":null,"CodiceObiettivoRilevante":null,"Descrizione":"dasdasdasd","ZoneEmergenza":null,"Tags":[],"Chiusa":false,"Aperta":true,"PrioritaRichiesta":3,"IstanteRicezioneRichiesta":"2019-06-13T14:57:30.264Z","IstantePresaInCarico":null,"IstantePrimaAssegnazione":null,"Rilevante":false,"RilevanteGrave":false,"RilevanteStArCu":false,"StatoRichiesta":{"Evasa":false},"Presidiato":false,"Richiedente":{"Telefono":"4234","Nome":"","Cognome":"","RagioneSociale":"dasdsa"},"CodiciUOCompetenza":null,"Competenze":null,"CodiceSchedaNue":null,"StatoInvioFonogramma":{"Codice":"0","Descrizione":"Non necessario"},"Complessita":{"Codice":"2","Descrizione":"Bassa"},"Id":"5"},{"Codice":"RM-6","CodiceUnitaOperativaCompetente":null,"CodiciUnitaOperativeAllertate":null,"Eventi":[{"CodiceOrigine":"423423","CognomeChiamante":"dasdas","NomeChiamante":"dasdsa","NumeroTelefono":"423423","RagioneSociale":"","CodiceSchedaContatto":null,"Codice":"423423","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-06-13T15:05:33.95Z","CodiceFonte":"3","CodiceRichiesta":"RM-6"}],"Telefonate":[{"CodiceOrigine":"423423","CognomeChiamante":"dasdas","NomeChiamante":"dasdsa","NumeroTelefono":"423423","RagioneSociale":"","CodiceSchedaContatto":null,"Codice":"423423","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-06-13T15:05:33.95Z","CodiceFonte":"3","CodiceRichiesta":"RM-6"}],"Operatore":{"Id":"3","Nome":"Mario","Cognome":"Rossi","CodiceFiscale":"YZSPMD89M07M185L","Sede":{"Codice":"RM.1000","Descrizione":"Comando VV.F. ROMA","Coordinate":{"Latitudine":41.89996,"Longitudine":12.49104},"Indirizzo":"Via Genova, 3/a","Tipo":"Comando","Regione":"Lazio","Provincia":"ROMA","Label":null,"Icona":null},"Username":"test","Password":null,"Ruoli":null,"Token":null,"ValidoDa":null,"ValidoFinoA":null,"Attivo":true,"Qualifica":null},"Sospesa":false,"InAttesa":true,"MezziCoinvolti":{},"SquadreCoinvolte":null,"IstanteChiusura":null,"Tipologie":[{"Codice":"6","Descrizione":"Incendio ed esplosione","TipoLuogoEvento":null,"Icona":null,"Categoria":"Incendi ed Esplosioni","Star":false}],"Localita":{"Coordinate":{"Latitudine":41.9257109,"Longitudine":12.479038599999967},"Indirizzo":"Via Archimede, 00197 Roma RM, Italia","Note":null},"TurnoInserimentoChiamata":null,"TurnoIntervento":null,"TipoTerreno":null,"ListaEntiIntervenuti":null,"ListaEntiPresaInCarico":null,"CodiceObiettivoRilevante":null,"Descrizione":"Descrizione","ZoneEmergenza":null,"Tags":[],"Chiusa":false,"Aperta":true,"PrioritaRichiesta":3,"IstanteRicezioneRichiesta":"2019-06-13T15:05:33.95Z","IstantePresaInCarico":null,"IstantePrimaAssegnazione":null,"Rilevante":false,"RilevanteGrave":false,"RilevanteStArCu":false,"StatoRichiesta":{"Evasa":false},"Presidiato":false,"Richiedente":{"Telefono":"423423","Nome":"dasdsa","Cognome":"dasdas","RagioneSociale":""},"CodiciUOCompetenza":null,"Competenze":null,"CodiceSchedaNue":null,"StatoInvioFonogramma":{"Codice":"0","Descrizione":"Non necessario"},"Complessita":{"Codice":"2","Descrizione":"Bassa"},"Id":"6"},{"Codice":"RM-7","CodiceUnitaOperativaCompetente":null,"CodiciUnitaOperativeAllertate":null,"Eventi":[{"CodiceOrigine":"423423","CognomeChiamante":"dsadas","NomeChiamante":"dasdas","NumeroTelefono":"423423","RagioneSociale":"","CodiceSchedaContatto":null,"Codice":"423423","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-06-13T15:07:49.105Z","CodiceFonte":"3","CodiceRichiesta":"RM-7"}],"Telefonate":[{"CodiceOrigine":"423423","CognomeChiamante":"dsadas","NomeChiamante":"dasdas","NumeroTelefono":"423423","RagioneSociale":"","CodiceSchedaContatto":null,"Codice":"423423","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-06-13T15:07:49.105Z","CodiceFonte":"3","CodiceRichiesta":"RM-7"}],"Operatore":{"Id":"3","Nome":"Mario","Cognome":"Rossi","CodiceFiscale":"YZSPMD89M07M185L","Sede":{"Codice":"RM.1000","Descrizione":"Comando VV.F. ROMA","Coordinate":{"Latitudine":41.89996,"Longitudine":12.49104},"Indirizzo":"Via Genova, 3/a","Tipo":"Comando","Regione":"Lazio","Provincia":"ROMA","Label":null,"Icona":null},"Username":"test","Password":null,"Ruoli":null,"Token":null,"ValidoDa":null,"ValidoFinoA":null,"Attivo":true,"Qualifica":null},"Sospesa":false,"InAttesa":true,"MezziCoinvolti":{},"SquadreCoinvolte":null,"IstanteChiusura":null,"Tipologie":[{"Codice":"5","Descrizione":"Incendio normale (generico)","TipoLuogoEvento":null,"Icona":null,"Categoria":"Incendi ed Esplosioni","Star":true}],"Localita":{"Coordinate":{"Latitudine":41.8889729,"Longitudine":12.464372000000026},"Indirizzo":"Via Garibaldi, 00153 Roma RM, Italia","Note":null},"TurnoInserimentoChiamata":null,"TurnoIntervento":null,"TipoTerreno":null,"ListaEntiIntervenuti":null,"ListaEntiPresaInCarico":null,"CodiceObiettivoRilevante":null,"Descrizione":"Motivazione","ZoneEmergenza":null,"Tags":[],"Chiusa":false,"Aperta":true,"PrioritaRichiesta":3,"IstanteRicezioneRichiesta":"2019-06-13T15:07:49.105Z","IstantePresaInCarico":null,"IstantePrimaAssegnazione":null,"Rilevante":false,"RilevanteGrave":false,"RilevanteStArCu":false,"StatoRichiesta":{"Evasa":false},"Presidiato":false,"Richiedente":{"Telefono":"423423","Nome":"dasdas","Cognome":"dsadas","RagioneSociale":""},"CodiciUOCompetenza":null,"Competenze":null,"CodiceSchedaNue":null,"StatoInvioFonogramma":{"Codice":"0","Descrizione":"Non necessario"},"Complessita":{"Codice":"2","Descrizione":"Bassa"},"Id":"7"}]
+[
+  {
+    "Codice": "RM.1000-19-0",
+    "CodiceUnitaOperativaCompetente": null,
+    "CodiciUnitaOperativeAllertate": null,
+    "Eventi": [
+      {
+        "CodiceOrigine": "454654564",
+        "CognomeChiamante": "Franco",
+        "NomeChiamante": "Pippo",
+        "NumeroTelefono": "454654564",
+        "RagioneSociale": "",
+        "CodiceSchedaContatto": null,
+        "Codice": "454654564",
+        "Motivazione": null,
+        "NotePubbliche": null,
+        "NotePrivate": null,
+        "Esito": "MettiInCoda",
+        "Istante": "2019-06-18T10:06:45.042Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM.1000-19-0"
+      }
+    ],
+    "Telefonate": [
+      {
+        "CodiceOrigine": "454654564",
+        "CognomeChiamante": "Franco",
+        "NomeChiamante": "Pippo",
+        "NumeroTelefono": "454654564",
+        "RagioneSociale": "",
+        "CodiceSchedaContatto": null,
+        "Codice": "454654564",
+        "Motivazione": null,
+        "NotePubbliche": null,
+        "NotePrivate": null,
+        "Esito": "MettiInCoda",
+        "Istante": "2019-06-18T10:06:45.042Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM.1000-19-0"
+      }
+    ],
+    "Operatore": {
+      "Id": "3",
+      "Nome": "Mario",
+      "Cognome": "Rossi",
+      "CodiceFiscale": "YZSPMD89M07M185L",
+      "Sede": {
+        "Codice": "RM.1000",
+        "Descrizione": "Comando VV.F. ROMA",
+        "Coordinate": {
+          "Latitudine": 41.89996,
+          "Longitudine": 12.49104
+        },
+        "Indirizzo": "Via Genova, 3/a",
+        "Tipo": "Comando",
+        "Regione": "Lazio",
+        "Provincia": "ROMA",
+        "Label": null,
+        "Icona": null
+      },
+      "Username": "test",
+      "Password": null,
+      "Ruoli": null,
+      "Token": null,
+      "ValidoDa": null,
+      "ValidoFinoA": null,
+      "Attivo": true,
+      "Qualifica": null
+    },
+    "Sospesa": false,
+    "InAttesa": true,
+    "MezziCoinvolti": {},
+    "SquadreCoinvolte": null,
+    "IstanteChiusura": null,
+    "Tipologie": [
+      {
+        "Codice": "5",
+        "Descrizione": "Incendio normale (generico)",
+        "TipoLuogoEvento": null,
+        "Icona": null,
+        "Categoria": "Incendi ed Esplosioni",
+        "Star": true
+      }
+    ],
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.896578,
+        "Longitudine": 12.495185699999979
+      },
+      "Indirizzo": "Via Cavour, Roma RM, Italia",
+      "Note": null
+    },
+    "TurnoInserimentoChiamata": null,
+    "TurnoIntervento": null,
+    "TipoTerreno": null,
+    "ListaEntiIntervenuti": null,
+    "ListaEntiPresaInCarico": null,
+    "CodiceObiettivoSensibile": null,
+    "Descrizione": "motivazione",
+    "ZoneEmergenza": null,
+    "Tags": [],
+    "Chiusa": false,
+    "Aperta": true,
+    "PrioritaRichiesta": 3,
+    "IstanteRicezioneRichiesta": "2019-06-18T10:06:45.042Z",
+    "IstantePresaInCarico": null,
+    "IstantePrimaAssegnazione": null,
+    "Rilevante": false,
+    "RilevanteGrave": false,
+    "RilevanteStArCu": false,
+    "StatoRichiesta": { "Evasa": false },
+    "Presidiato": false,
+    "Richiedente": {
+      "Telefono": "454654564",
+      "Nome": "Pippo",
+      "Cognome": "Franco",
+      "RagioneSociale": ""
+    },
+    "CodiciUOCompetenza": null,
+    "Competenze": null,
+    "CodiceSchedaNue": null,
+    "StatoInvioFonogramma": {
+      "Codice": "0",
+      "Descrizione": "Non necessario"
+    },
+    "Complessita": {
+      "Codice": "2",
+      "Descrizione": "Bassa"
+    },
+    "Id": null
+  },
+  {
+    "Codice": "RM.1000-19-19",
+    "CodiceUnitaOperativaCompetente": null,
+    "CodiciUnitaOperativeAllertate": null,
+    "Eventi": [
+      {
+        "CodiceOrigine": "45646545",
+        "CognomeChiamante": "Bertolucci",
+        "NomeChiamante": "Mario",
+        "NumeroTelefono": "45646545",
+        "RagioneSociale": "",
+        "CodiceSchedaContatto": null,
+        "Codice": "45646545",
+        "Motivazione": null,
+        "NotePubbliche": null,
+        "NotePrivate": null,
+        "Esito": "MettiInCoda",
+        "Istante": "2019-06-18T10:10:13.439Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM.1000-19-19"
+      }
+    ],
+    "Telefonate": [
+      {
+        "CodiceOrigine": "45646545",
+        "CognomeChiamante": "Bertolucci",
+        "NomeChiamante": "Mario",
+        "NumeroTelefono": "45646545",
+        "RagioneSociale": "",
+        "CodiceSchedaContatto": null,
+        "Codice": "45646545",
+        "Motivazione": null,
+        "NotePubbliche": null,
+        "NotePrivate": null,
+        "Esito": "MettiInCoda",
+        "Istante": "2019-06-18T10:10:13.439Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM.1000-19-19"
+      }
+    ],
+    "Operatore": {
+      "Id": "3",
+      "Nome": "Mario",
+      "Cognome": "Rossi",
+      "CodiceFiscale": "YZSPMD89M07M185L",
+      "Sede": {
+        "Codice": "RM.1000",
+        "Descrizione": "Comando VV.F. ROMA",
+        "Coordinate": {
+          "Latitudine": 41.89996,
+          "Longitudine": 12.49104
+        },
+        "Indirizzo": "Via Genova, 3/a",
+        "Tipo": "Comando",
+        "Regione": "Lazio",
+        "Provincia": "ROMA",
+        "Label": null,
+        "Icona": null
+      },
+      "Username": "test",
+      "Password": null,
+      "Ruoli": null,
+      "Token": null,
+      "ValidoDa": null,
+      "ValidoFinoA": null,
+      "Attivo": true,
+      "Qualifica": null
+    },
+    "Sospesa": false,
+    "InAttesa": true,
+    "MezziCoinvolti": {},
+    "SquadreCoinvolte": null,
+    "IstanteChiusura": null,
+    "Tipologie": [
+      {
+        "Codice": "5",
+        "Descrizione": "Incendio normale (generico)",
+        "TipoLuogoEvento": null,
+        "Icona": null,
+        "Categoria": "Incendi ed Esplosioni",
+        "Star": true
+      }
+    ],
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.920946599999994,
+        "Longitudine": 12.54692840000007
+      },
+      "Indirizzo": "Via di Pietralata, Roma RM, Italia",
+      "Note": null
+    },
+    "TurnoInserimentoChiamata": null,
+    "TurnoIntervento": null,
+    "TipoTerreno": null,
+    "ListaEntiIntervenuti": null,
+    "ListaEntiPresaInCarico": null,
+    "CodiceObiettivoSensibile": null,
+    "Descrizione": "Incendio",
+    "ZoneEmergenza": null,
+    "Tags": [],
+    "Chiusa": false,
+    "Aperta": true,
+    "PrioritaRichiesta": 3,
+    "IstanteRicezioneRichiesta": "2019-06-18T10:10:13.439Z",
+    "IstantePresaInCarico": null,
+    "IstantePrimaAssegnazione": null,
+    "Rilevante": false,
+    "RilevanteGrave": false,
+    "RilevanteStArCu": false,
+    "StatoRichiesta": { "Evasa": false },
+    "Presidiato": false,
+    "Richiedente": {
+      "Telefono": "45646545",
+      "Nome": "Mario",
+      "Cognome": "Bertolucci",
+      "RagioneSociale": ""
+    },
+    "CodiciUOCompetenza": null,
+    "Competenze": null,
+    "CodiceSchedaNue": null,
+    "StatoInvioFonogramma": {
+      "Codice": "0",
+      "Descrizione": "Non necessario"
+    },
+    "Complessita": {
+      "Codice": "2",
+      "Descrizione": "Bassa"
+    },
+    "Id": null
+  },
+  {
+    "Codice": "RM.1000-19-19",
+    "CodiceUnitaOperativaCompetente": null,
+    "CodiciUnitaOperativeAllertate": null,
+    "Eventi": [
+      {
+        "CodiceOrigine": "34223903290",
+        "CognomeChiamante": "Maresca",
+        "NomeChiamante": "Carlo",
+        "NumeroTelefono": "34223903290",
+        "RagioneSociale": "",
+        "CodiceSchedaContatto": null,
+        "Codice": "34223903290",
+        "Motivazione": null,
+        "NotePubbliche": null,
+        "NotePrivate": null,
+        "Esito": "MettiInCoda",
+        "Istante": "2019-06-18T10:27:35.082Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM.1000-19-19"
+      }
+    ],
+    "Telefonate": [
+      {
+        "CodiceOrigine": "34223903290",
+        "CognomeChiamante": "Maresca",
+        "NomeChiamante": "Carlo",
+        "NumeroTelefono": "34223903290",
+        "RagioneSociale": "",
+        "CodiceSchedaContatto": null,
+        "Codice": "34223903290",
+        "Motivazione": null,
+        "NotePubbliche": null,
+        "NotePrivate": null,
+        "Esito": "MettiInCoda",
+        "Istante": "2019-06-18T10:27:35.082Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM.1000-19-19"
+      }
+    ],
+    "Operatore": {
+      "Id": "3",
+      "Nome": "Mario",
+      "Cognome": "Rossi",
+      "CodiceFiscale": "YZSPMD89M07M185L",
+      "Sede": {
+        "Codice": "RM.1000",
+        "Descrizione": "Comando VV.F. ROMA",
+        "Coordinate": {
+          "Latitudine": 41.89996,
+          "Longitudine": 12.49104
+        },
+        "Indirizzo": "Via Genova, 3/a",
+        "Tipo": "Comando",
+        "Regione": "Lazio",
+        "Provincia": "ROMA",
+        "Label": null,
+        "Icona": null
+      },
+      "Username": "test",
+      "Password": null,
+      "Ruoli": null,
+      "Token": null,
+      "ValidoDa": null,
+      "ValidoFinoA": null,
+      "Attivo": true,
+      "Qualifica": null
+    },
+    "Sospesa": false,
+    "InAttesa": true,
+    "MezziCoinvolti": {},
+    "SquadreCoinvolte": null,
+    "IstanteChiusura": null,
+    "Tipologie": [
+      {
+        "Codice": "5",
+        "Descrizione": "Incendio normale (generico)",
+        "TipoLuogoEvento": null,
+        "Icona": null,
+        "Categoria": "Incendi ed Esplosioni",
+        "Star": true
+      },
+      {
+        "Codice": "8",
+        "Descrizione": "Esplosione (escluso esplosione da sostanza esplodente)",
+        "TipoLuogoEvento": null,
+        "Icona": null,
+        "Categoria": "Incendi ed Esplosioni",
+        "Star": false
+      }
+    ],
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.860060900000008,
+        "Longitudine": 12.494048799999973
+      },
+      "Indirizzo": "Via delle Sette Chiese, Roma RM, Italia",
+      "Note": null
+    },
+    "TurnoInserimentoChiamata": null,
+    "TurnoIntervento": null,
+    "TipoTerreno": null,
+    "ListaEntiIntervenuti": null,
+    "ListaEntiPresaInCarico": null,
+    "CodiceObiettivoSensibile": null,
+    "Descrizione": "motivazione",
+    "ZoneEmergenza": null,
+    "Tags": [],
+    "Chiusa": false,
+    "Aperta": true,
+    "PrioritaRichiesta": 3,
+    "IstanteRicezioneRichiesta": "2019-06-18T10:27:35.082Z",
+    "IstantePresaInCarico": null,
+    "IstantePrimaAssegnazione": null,
+    "Rilevante": false,
+    "RilevanteGrave": false,
+    "RilevanteStArCu": false,
+    "StatoRichiesta": { "Evasa": false },
+    "Presidiato": false,
+    "Richiedente": {
+      "Telefono": "34223903290",
+      "Nome": "Carlo",
+      "Cognome": "Maresca",
+      "RagioneSociale": ""
+    },
+    "CodiciUOCompetenza": null,
+    "Competenze": null,
+    "CodiceSchedaNue": null,
+    "StatoInvioFonogramma": {
+      "Codice": "0",
+      "Descrizione": "Non necessario"
+    },
+    "Complessita": {
+      "Codice": "2",
+      "Descrizione": "Bassa"
+    },
+    "Id": null
+  }
+]

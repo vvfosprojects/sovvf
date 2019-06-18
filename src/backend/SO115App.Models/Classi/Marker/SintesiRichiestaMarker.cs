@@ -34,7 +34,7 @@ namespace SO115App.API.Models.Classi.Marker
         /// </summary>
         public SintesiRichiestaMarker(string id, string codice, string codiceRichiesta, Localita localita,
                                       List<Tipologia> Tipologie, string Descrizione, RichiestaAssistenza.Priorita PrioritaRichiesta,
-                                      bool Rilevante, int stato)
+                                      bool Rilevante, string stato)
         {
             Id = id;
             Codice = codice;
@@ -90,7 +90,7 @@ namespace SO115App.API.Models.Classi.Marker
         /// <summary>
         ///   Stato della richiesta
         /// </summary>
-        public int Stato { get; set; }
+        public string Stato { get; set; }
 
         /// <summary>
         ///   Indica la data in cui è stato marcato RILEVANTE l'ultima volta

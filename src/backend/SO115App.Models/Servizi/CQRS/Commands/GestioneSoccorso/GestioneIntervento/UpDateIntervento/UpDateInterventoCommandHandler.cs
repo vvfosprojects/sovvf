@@ -58,8 +58,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.TurnoInserimentoChiamata = command.Chiamata.TurnoInserimentoChiamata;
             richiesta.TipoTerreno = command.Chiamata.TipoTerreno;
             richiesta.ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti;
-            richiesta.CodiceObiettivoRilevante = command.Chiamata.CodiceObiettivoRilevante;
-            richiesta.Id = idRichiesta; //TODO DA TOGLIERE CON LA VERSIONE DB
+            richiesta.CodiceObiettivoSensibile = command.Chiamata.CodiceObiettivoSensibile;
 
             if (command.Chiamata.Etichette != null)
             {
@@ -73,7 +72,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
             richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.Chiamata.Operatore.Id, command.Chiamata.Motivazione);
 
-            this._UpDateRichiestaAssistenza.Save(richiesta);
+            this._UpDateRichiestaAssistenza.UpDate(richiesta);
         }
     }
 }

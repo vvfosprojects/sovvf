@@ -25,6 +25,7 @@ using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
@@ -79,7 +80,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   Stato della richiesta
         /// </summary>
         [Required(ErrorMessage = "Stato obbligatorio.")]
-        public int Stato { get; set; }
+        public string Stato { get; set; }
 
         /// <summary>
         ///   Priorita della richiesta
@@ -106,6 +107,32 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// </summary>
         [Required(ErrorMessage = "Località obbligatoria.")]
         public Localita Localita { get; set; }
+
+        /// <summary>
+        ///   Il turno nel quale viene presa la chiamata
+        /// </summary>
+        public Turno TurnoInserimentoChiamata { get; set; }
+
+        /// <summary>
+        ///   Il turno nel quale viene lavorato l'intervento
+        /// </summary>
+        public Turno TurnoIntervento { get; set; }
+
+        /// <summary>
+        ///   Indica se il terreno è uno tra Boschi/Campi/Sterpaglie e ne indica i mq.
+        /// </summary>
+        public List<TipologiaTerreno> TipoTerreno { get; set; }
+
+        /// <summary>
+        ///   Lista degli enti intervenuti (Es. ACEA)
+        /// </summary>
+        public List<EntiIntervenuti> ListaEntiIntervenuti { get; set; }
+
+        /// <summary>
+        ///   Se l'intervento è su un obiettivo ritenuto rilevante (Es. Colosseo) si seleziona da
+        ///   interfaccia e si registra il codice
+        /// </summary>
+        public string CodiceObiettivoSensibile { get; set; }
 
         /// <summary>
         ///   Competenze della richiesta
@@ -156,14 +183,19 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         public DateTime? IstantePrimaAssegnazione { get; set; }
 
         /// <summary>
-        ///   Indica la data in cui è stato marcato RILEVANTE l'ultima volta
+        ///   Indica se la richiesta è stata marcata RILEVANTE
         /// </summary>
         /// <remarks>
         ///   Una richiesta può essere rilevante se è l'operatore a marcarla come tale, oppure in
         ///   base ad un insieme di regole automatiche deterministiche o basate su algoritmi di
         ///   machine learning.
         /// </remarks>
-        public bool Rilevanza { get; set; }
+        public bool RilevanzaGrave { get; set; }
+
+        /// <summary>
+        ///   Indica se la rilevanza è di tipo Storico/Artistico/Culturale
+        /// </summary>
+        public bool RilevanzaStArCu { get; set; }
 
         /// <summary>
         ///   Codice della scheda Nue

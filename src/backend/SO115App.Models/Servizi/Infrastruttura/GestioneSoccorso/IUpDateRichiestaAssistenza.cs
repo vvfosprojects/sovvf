@@ -32,6 +32,6 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso
         ///   Salva una Richiesta di Assistenza
         /// </summary>
         /// <param name="richiestaAssistenza">Richiesta di Assistenza da salvare</param>
-        void Save(RichiestaAssistenza richiestaAssistenza);
+        void UpDate(RichiestaAssistenza richiestaAssistenza);
     }
 }

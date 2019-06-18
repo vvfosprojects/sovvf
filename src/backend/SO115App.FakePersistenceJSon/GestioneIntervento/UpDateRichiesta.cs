@@ -30,7 +30,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 {
     public class UpDateRichiesta : IUpDateRichiestaAssistenza
     {
-        public void Save(RichiestaAssistenza richiestaAssistenza)
+        public void UpDate(RichiestaAssistenza richiestaAssistenza)
         {
             string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;

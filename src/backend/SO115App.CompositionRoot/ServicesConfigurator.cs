@@ -79,29 +79,33 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
                 FakePersistenceJSon.Composizione.GetComposizioneSquadre>();
             container.Register<
-             SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi.IGetComposizioneMezzi,
-             FakePersistenceJSon.Composizione.GetComposizioneMezzi>();
+                SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi.IGetComposizioneMezzi,
+                FakePersistenceJSon.Composizione.GetComposizioneMezzi>();
             container.Register<
-            SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
-             FakePersistenceJSon.Composizione.GetPreAccoppiati>();
+                SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
+                FakePersistenceJSon.Composizione.GetPreAccoppiati>();
             container.Register<
-            SO115App.Models.Servizi.Infrastruttura.GetListaEventi.IGetListaEventi,
-             FakePersistenceJSon.ListaEventi.GetListaEventi>();
+                SO115App.Models.Servizi.Infrastruttura.GetListaEventi.IGetListaEventi,
+                FakePersistenceJSon.ListaEventi.GetListaEventi>();
             container.Register<
-            SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaById,
-             FakePersistenceJSon.GestioneIntervento.GetRichiestaById>();
+                SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaById,
+                FakePersistenceJSon.GestioneIntervento.GetRichiestaById>();
             container.Register<
-            SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetIdByCodice,
-             FakePersistenceJSon.GestioneIntervento.GetIdByCodice>();
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetIdByCodice,
+                FakePersistenceJSon.GestioneIntervento.GetIdByCodice>();
             container.Register<
-            SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato.IGetMezzoPrenotato,
-             FakePersistenceJSon.Composizione.GetMezzoPrenotato>();
+                SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato.IGetMezzoPrenotato,
+                FakePersistenceJSon.Composizione.GetMezzoPrenotato>();
             container.Register<
-          SO115App.Models.Servizi.Infrastruttura.GetSbloccaMezzoPrenotato.IGetSbloccaMezzoPrenotato,
-           FakePersistenceJSon.Composizione.GetSbloccaMezzoPrenotato>();
+                SO115App.Models.Servizi.Infrastruttura.GetSbloccaMezzoPrenotato.IGetSbloccaMezzoPrenotato,
+                FakePersistenceJSon.Composizione.GetSbloccaMezzoPrenotato>();
             container.Register<
-        SO115App.Models.Servizi.Infrastruttura.GetResetPrenotazioneMezzo.IGetResetPrenotazioneMezzo,
-           FakePersistenceJSon.Composizione.GetResetPrenotazioneMezzo>();
+                SO115App.Models.Servizi.Infrastruttura.GetResetPrenotazioneMezzo.IGetResetPrenotazioneMezzo,
+                FakePersistenceJSon.Composizione.GetResetPrenotazioneMezzo>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta.IGeneraCodiceRichiesta,
+                SO115App.FakePersistence.JSon.Utility.GeneraCodiceRichiesta>();
 
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata.INotifyInserimentoChiamata,

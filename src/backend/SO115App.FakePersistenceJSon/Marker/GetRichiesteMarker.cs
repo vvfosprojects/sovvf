@@ -80,31 +80,22 @@ namespace SO115App.FakePersistenceJSon.Marker
             return ListaMarker;
         }
 
-        private int MapStatoRichiesta(SintesiRichieste sintesi)
+        private string MapStatoRichiesta(SintesiRichieste sintesi)
         {
-            /*
-            Controlli sui codici
-            Se lo stato è 0 - InAttesa
-            Se lo stato è 1 - Sospesa
-            Se lo stato è 2 - Presidiata
-            Se lo stato è 3 - Assegnata
-            Se lo stato è 4 - Chiusa
-            */
-
-            int stato = 0;
+            string stato = "Chiamata";
 
             if (sintesi.Chiusa)
-                stato = 4;
+                stato = "Chiusa";
 
             if (sintesi.Sospesa)
-                stato = 1;
+                stato = "Sospesa";
 
             if (sintesi.Aperta)
             {
                 if (sintesi.Presidiato)
-                    stato = 2;
+                    stato = "Presidiata";
                 else if (sintesi.IstantePrimaAssegnazione != null)
-                    stato = 3;
+                    stato = "Assegnata";
             }
 
             return stato;
