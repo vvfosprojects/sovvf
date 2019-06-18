@@ -2,15 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
 import * as moment from 'moment';
-import { Store } from '@ngxs/store';
-import { SetEventiRichiesta } from '../../../features/home/store/actions/eventi/eventi-richiesta.actions';
 
 @Injectable()
 export class EventiRichiestaServiceFake {
 
     private eventiFake: EventoRichiesta[];
 
-    constructor(private store: Store) {
+    constructor() {
         this.eventiFake = [
             new EventoRichiesta(
                 '6',
@@ -93,11 +91,8 @@ export class EventiRichiestaServiceFake {
     }
 
     public getEventiRichiesta(idRichiesta: string): Observable<EventoRichiesta[]> {
-        setTimeout(() => {
-            this.store.dispatch(new SetEventiRichiesta(this.eventiFake));
-        }, 1000);
 
-        return of();
+        return of(this.eventiFake);
     }
 
 }

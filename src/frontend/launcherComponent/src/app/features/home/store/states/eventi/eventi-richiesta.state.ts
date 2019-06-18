@@ -48,8 +48,9 @@ export class EventiRichiestaState {
     @Action(GetEventiRichiesta)
     getEventiRichiesta({ getState, dispatch }: StateContext<EventiRichiestaStateModel>, action: GetEventiRichiesta) {
 
-        this._eventiRichiesta.getEventiRichiesta(action.idRichiesta).subscribe(() => {
+        this._eventiRichiesta.getEventiRichiesta(action.idRichiesta).subscribe((data: EventoRichiesta[]) => {
             console.log(`Get Eventi Richiesta: ${action.idRichiesta}`);
+            dispatch(new SetEventiRichiesta(data));
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
 
     }

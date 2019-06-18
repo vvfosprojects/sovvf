@@ -20,7 +20,6 @@ import { Utente } from '../../shared/model/utente.model';
 import { ToastrType } from '../../shared/enum/toastr';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
 import { InsertChiamataMarker, InsertChiamateMarkers, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
-import { SetEventiRichiesta } from '../../features/home/store/actions/eventi/eventi-richiesta.actions';
 import {
     AddBookMezzoComposizione,
     RemoveBookMezzoComposizione,
@@ -105,16 +104,6 @@ export class SignalRService {
             console.log('ReceiveMessage', data);
             // avvisa gli altri client che un utente si è collegato alla sua stessa sede
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Notifica importante:', data, 3));
-        });
-
-        /**
-         * Eventi Richieste --------------
-         */
-
-        this.hubNotification.on('NotifyGetEventiRichiesta', (data: any) => {
-            console.log('NotifyGetEventiRichiesta', data);
-            this.store.dispatch(new SetEventiRichiesta(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Eventi richiesta ricevuti da signalR', null, 5));
         });
 
         /**
