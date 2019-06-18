@@ -4,6 +4,8 @@ import { Partenza } from '../../../../shared/model/partenza.model';
 import { Squadra } from '../../../../shared/model/squadra.model';
 import { ColoriStatoMezzo } from '../../../../shared/helper/_colori';
 import { TipoTerrenoEnum } from '../../../../shared/enum/tipo-terreno.enum';
+import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
+import { TipoTerrenoMqHa } from '../../../../shared/interface/tipo-terreno-mq-ha';
 
 export class HelperSintesiRichiesta {
 
@@ -176,11 +178,39 @@ export class HelperSintesiRichiesta {
         return new Date(dateString);
     }
 
-    _tipoTerreno(tipoTerreno: TipoTerrenoEnum): string {
-        if (tipoTerreno) {
-            return TipoTerrenoEnum[tipoTerreno];
+    _terrenoMaggiore(tipoTerreno: TipoTerreno[]): TipoTerrenoMqHa {
+        if (tipoTerreno && tipoTerreno.length > 0) {
+            let value = 0;
+            let string = '';
+            tipoTerreno.forEach(result => {
+                if (result.mq > value) {
+                    string = TipoTerrenoEnum[result.descrizione];
+                    value = result.mq;
+                }
+            });
+            return { terrenoHa: `${string} (${round1decimal(value / 10000)} ha)`, terrenoMq: `${string} (${value} mq)` };
         } else {
-            return '-';
+            return null;
+        }
+    }
+
+    _terreniMinori(tipoTerreno: TipoTerreno[]): TipoTerreno[] {
+        if (tipoTerreno && tipoTerreno.length > 1) {
+            let value = 0;
+            tipoTerreno.forEach(terreno => {
+                if (terreno.mq > value) {
+                    value = terreno.mq;
+                }
+            });
+            return tipoTerreno.filter( terreno => terreno.mq !== value);
+        } else {
+            return null;
+        }
+    }
+
+    _tipoTerreno(tipoTerreno: TipoTerreno): string {
+        if (tipoTerreno) {
+            return `${TipoTerrenoEnum[tipoTerreno.descrizione]} (${tipoTerreno.mq} mq / ${round1decimal(tipoTerreno.mq / 10000)} ha)`;
         }
     }
 
@@ -192,4 +222,8 @@ export class HelperSintesiRichiesta {
             return null;
         }
     }
+}
+
+export function round1decimal(value: number) {
+    return Math.round(value * 10) / 10;
 }

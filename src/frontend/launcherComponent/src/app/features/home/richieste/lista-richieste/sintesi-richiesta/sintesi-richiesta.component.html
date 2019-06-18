@@ -407,22 +407,28 @@
 
                             <!-- tipo terreno -->
                             <div class="h6 text-right">
-                                <span *ngIf="methods._tipoTerreno(richiesta.tipoTerreno?.descrizione) as tipoTerrenoValue" class="h6 m-0">
-                                    {{ tipoTerrenoValue }}
+                                <span *ngIf="methods._terrenoMaggiore(richiesta.tipoTerreno) as tipoTerrenoValue; else noterreni" class="h6 m-0" [ngbTooltip]="tipoTerrenoValue.terrenoMq">
+                                    {{ tipoTerrenoValue.terrenoHa }}
                                 </span>
+                                <button *ngIf="richiesta.tipoTerreno && richiesta.tipoTerreno.length > 1" class="btn btn-light border big_font py-0 px-1" [ngbTooltip]="terreni" (click)="$event.stopPropagation()">
+                                    +{{ richiesta.tipoTerreno.length - 1 }}</button>
+                                <ng-template #terreni>
+                                    <div *ngIf="methods._terreniMinori(richiesta.tipoTerreno) as terreniTooltip">
+                                        <div *ngFor="let terreno of terreniTooltip">
+                                            {{ methods._tipoTerreno(terreno)}}
+                                        </div>
+                                    </div>
+                                </ng-template>
+                                <ng-template #noterreni>
+                                    -
+                                </ng-template>
                                 <i class="guida fa fa-tree fa-fw ml-1" ngbTooltip="Tipologia terreno"
                                    placement="right"></i>
                             </div>
 
                             <!-- mq terreno -->
                             <div class="h6 text-right">
-                                <span *ngIf="richiesta.tipoTerreno?.mq > 0; else noMq"
-                                      class="h6 mr-1">{{ richiesta.tipoTerreno?.mq }}</span>
-                                <i class="guida fa fa-external-link fa-fw ml-1" ngbTooltip="Metri quadri terreno"
-                                   placement="right"></i>
-                                <ng-template #noMq>
-                                    <span ngbTooltip="Metri quadri terreno N/D">-</span>
-                                </ng-template>
+                                <!--spazio libero-->
                             </div>
                         </div>
                     </div>

@@ -131,7 +131,7 @@ export class SintesiRichiesta {
         /**
          * tipo terreno
          */
-        public tipoTerreno?: TipoTerreno,
+        public tipoTerreno?: TipoTerreno[],
         /**
          * lista enti intervenuti
          */
