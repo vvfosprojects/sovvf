@@ -60,8 +60,9 @@ export class RichiesteMarkersState {
     }
 
     @Action(GetRichiesteMarkers)
-    getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: GetRichiesteMarkers) {
-        this._richieste.getRichiesteMarkers().subscribe(() => {
+    getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>) {
+        this._richieste.getRichiesteMarkers().subscribe((data: RichiestaMarker[]) => {
+            dispatch(new SetRichiesteMarkers(data));
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 

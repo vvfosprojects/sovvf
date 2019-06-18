@@ -4,17 +4,14 @@ import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { Localita } from '../../../../shared/model/localita.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { RichiestaMarker } from '../../../../features/home/maps/maps-model/richiesta-marker.model';
-import * as moment from 'moment';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
-import { Store } from '@ngxs/store';
-import { SetRichiesteMarkers } from '../../../../features/home/store/actions/maps/richieste-markers.actions';
 
 @Injectable()
 export class RichiesteMarkerServiceFake {
 
     private richiesteMarkers: RichiestaMarker[] = [];
 
-    constructor(private store: Store) {
+    constructor() {
     }
 
     public getRichiesteMarkers(): Observable<RichiestaMarker[]> {
@@ -168,8 +165,6 @@ export class RichiesteMarkerServiceFake {
             ),
         ];
 
-        this.store.dispatch(new SetRichiesteMarkers(this.richiesteMarkers));
-
-        return of();
+        return of(this.richiesteMarkers);
     }
 }

@@ -11,7 +11,6 @@ import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-per
 import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.actions';
 import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
-import { SetRichiesteMarkers } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { SetMezziMarkers } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import { SetSediMarkers } from '../../features/home/store/actions/maps/sedi-markers.actions';
 import { AuthenticationService } from '../auth/_services';
@@ -136,11 +135,6 @@ export class SignalRService {
         /**
          * Markers Mappa --------------
          */
-        this.hubNotification.on('NotifyGetListaRichiesteMarker', (data: any) => {
-            console.log('NotifyGetListaRichiesteMarker', data);
-            this.store.dispatch(new SetRichiesteMarkers(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richieste Markers ricevute da signalR', null, 5));
-        });
         this.hubNotification.on('NotifyGetListaMezziMarker', (data: any) => {
             console.log('NotifyGetListaMezziMarker', data);
             this.store.dispatch(new SetMezziMarkers(data));
