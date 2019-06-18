@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Store } from '@ngxs/store';
-import { SetFiltriComposizione } from '../../../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
 
 @Injectable()
 export class FilterbarServiceFake {
 
     filtri: any;
 
-    constructor(private store: Store) {
+    constructor() {
     }
 
     getFiltri(): Observable<any> {
@@ -69,7 +67,6 @@ export class FilterbarServiceFake {
             ]
         };
 
-        this.store.dispatch(new SetFiltriComposizione(this.filtri));
-        return of(null);
+        return of(this.filtri);
     }
 }

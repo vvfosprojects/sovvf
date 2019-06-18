@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import {
     AddFiltroSelezionatoComposizione,
@@ -15,9 +15,7 @@ import { RichiestaComposizione, TerminaComposizione } from '../../actions/compos
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
 import { GetListeCoposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
-import { ViewComponentState } from '../view/view.state';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import { GetPreAccoppiati } from '../../actions/composizione-partenza/pre-accoppiati.actions';
 
 export interface ComposizionePartenzaStateModel {
     filtri: any;
@@ -77,18 +75,14 @@ export class ComposizionePartenzaState {
         return composizioneMarkers;
     }
 
-    constructor(private filterbar: FilterbarService,
-                private store: Store) {
+    constructor(private filterbar: FilterbarService) {
     }
 
     @Action(GetFiltriComposizione)
     getFiltriComposizione({ dispatch }: StateContext<ComposizionePartenzaStateModel>) {
-
         this.filterbar.getFiltri().subscribe((filtri: any) => {
             dispatch(new SetFiltriComposizione(filtri));
-
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
-
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore GetFiltriComposizione', 'Il server web non risponde', 5)));
     }
 
     @Action(SetFiltriComposizione)

@@ -20,7 +20,6 @@ import { Utente } from '../../shared/model/utente.model';
 import { ToastrType } from '../../shared/enum/toastr';
 import { SetDataNavbar } from '../../features/navbar/store/actions/navbar.actions';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
-import { SetFiltriComposizione } from '../../features/home/store/actions/composizione-partenza/filterbar-composizione.actions';
 import { InsertChiamataMarker, InsertChiamateMarkers, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import { SetEventiRichiesta } from '../../features/home/store/actions/eventi/eventi-richiesta.actions';
 import {
@@ -77,7 +76,7 @@ export class SignalRService {
     private registerOnSubscriptionEvents(): void {
 
         /**
-         * Authorization
+         * Authorization --------------
          */
         this.hubNotification.on('NotifyAuth', (data: Utente) => {
             console.log('NotifyAuth', data);
@@ -110,7 +109,7 @@ export class SignalRService {
         });
 
         /**
-         * Navbar
+         * Navbar --------------
          */
         this.hubNotification.on('NotifyGetNavbar', (data: any) => {
             console.log('NotifyGetNavbar', data);
@@ -119,7 +118,7 @@ export class SignalRService {
         });
 
         /**
-         * Lista Richieste
+         * Lista Richieste --------------
          */
         this.hubNotification.on('NotifyGetListaRichieste', (data: any) => {
             console.log('NotifyGetListaRichieste', data);
@@ -128,7 +127,7 @@ export class SignalRService {
         });
 
         /**
-         * Eventi Richieste
+         * Eventi Richieste --------------
          */
 
         this.hubNotification.on('NotifyGetEventiRichiesta', (data: any) => {
@@ -166,7 +165,7 @@ export class SignalRService {
         });
 
         /**
-         * Markers Mappa
+         * Markers Mappa --------------
          */
         this.hubNotification.on('NotifyGetListaRichiesteMarker', (data: any) => {
             console.log('NotifyGetListaRichiesteMarker', data);
@@ -185,13 +184,17 @@ export class SignalRService {
         });
 
         /**
-         * Chiamate in Corso Markers
+         * Chiamate in Corso Markers --------------
          */
         this.hubNotification.on('NotifyChiamateInCorsoMarker', (data: ChiamataMarker[]) => {
             console.log('NotifyChiamateInCorsoMarker', data);
             this.store.dispatch(new InsertChiamateMarkers(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Nuove chiamate in corso sulla mappa', null, 3));
         });
+
+        /**
+         * Chiamata in Corso
+         */
         this.hubNotification.on('NotifyChiamataInCorsoMarkerAdd', (data: any) => {
             console.log('NotifyChiamataInCorsoMarkerAdd', data);
             this.store.dispatch(new InsertChiamataMarker(data.addChiamataInCorso));
@@ -219,11 +222,6 @@ export class SignalRService {
         /**
          * Composizione Partenza
          */
-        this.hubNotification.on('NotifyGetFiltri', (data: any) => {
-            console.log('NotifyGetFiltri', data);
-            this.store.dispatch(new SetFiltriComposizione(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Filtri Composizione ricevuti da signalR', null, 5));
-        });
         this.hubNotification.on('NotifyGetComposizioneMezzi', (data: any) => {
             console.log('NotifyGetComposizioneMezzi', data);
             this.store.dispatch(new SetListaMezziComposizione(data));

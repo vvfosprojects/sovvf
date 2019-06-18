@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FilterbarService } from '../../../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
 import { Store } from '@ngxs/store';
 import {
-    AddFiltroSelezionatoComposizione,
+    AddFiltroSelezionatoComposizione, GetFiltriComposizione,
     RemoveFiltriSelezionatiComposizione,
     RemoveFiltroSelezionatoComposizione
 } from '../../../store/actions/composizione-partenza/filterbar-composizione.actions';
@@ -20,8 +20,7 @@ export class ComposizioneFilterbarComponent {
 
     @Input() filtri: any;
 
-    constructor(private filterbarService: FilterbarService,
-                private store: Store) {
+    constructor(private store: Store) {
         this.getFiltri();
     }
 
@@ -50,8 +49,7 @@ export class ComposizioneFilterbarComponent {
     }
 
     getFiltri() {
-        this.filterbarService.getFiltri().subscribe(() => {
-        });
+        this.store.dispatch(new GetFiltriComposizione());
     }
 
     addFiltro(event: any, tipo: string) {

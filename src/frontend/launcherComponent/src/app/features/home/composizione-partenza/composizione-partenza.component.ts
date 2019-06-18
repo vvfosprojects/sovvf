@@ -46,14 +46,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     constructor(private modalService: NgbModal, private store: Store) {
         this.subscription.add(this.nuovaPartenza$.subscribe(r => this.richiesta = r));
-
-        // Restituisce i PreAccoppiati
-        // this.subscription.add(
-        //     this.preAccoppiati$.subscribe((preAccoppiati: BoxPartenza[]) => {
-        //         this.preAccoppiati = makeCopy(preAccoppiati);
-        //         console.log(this.preAccoppiati);
-        //     })
-        // );
     }
 
     ngOnInit() {
