@@ -6,6 +6,7 @@ import { NavbarService } from '../../../../core/service/navbar-service/navbar.se
 import { ListaSedi } from '../../../../shared/interface/lista-sedi';
 import { SetListaSediTreeview } from '../../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
+import { AppSettings } from '../../../../shared/interface/app-settings.interface';
 
 export interface NavbarStateModel {
     loaded: boolean;
@@ -50,7 +51,8 @@ export class NavbarState {
 
     @Action(GetDataNavbar)
     getDataNavbar({ dispatch }: StateContext<NavbarStateModel>) {
-        this.navbarService.getNavbar().subscribe(() => {
+        this.navbarService.getNavbar().subscribe((data: AppSettings) => {
+            dispatch(new SetDataNavbar(data));
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 

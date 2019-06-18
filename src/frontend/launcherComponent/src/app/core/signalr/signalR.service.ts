@@ -18,7 +18,6 @@ import { SetSediMarkers } from '../../features/home/store/actions/maps/sedi-mark
 import { AuthenticationService } from '../auth/_services';
 import { Utente } from '../../shared/model/utente.model';
 import { ToastrType } from '../../shared/enum/toastr';
-import { SetDataNavbar } from '../../features/navbar/store/actions/navbar.actions';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
 import { InsertChiamataMarker, InsertChiamateMarkers, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import { SetEventiRichiesta } from '../../features/home/store/actions/eventi/eventi-richiesta.actions';
@@ -106,15 +105,6 @@ export class SignalRService {
             console.log('ReceiveMessage', data);
             // avvisa gli altri client che un utente si è collegato alla sua stessa sede
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Notifica importante:', data, 3));
-        });
-
-        /**
-         * Navbar --------------
-         */
-        this.hubNotification.on('NotifyGetNavbar', (data: any) => {
-            console.log('NotifyGetNavbar', data);
-            this.store.dispatch(new SetDataNavbar(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Dati della Navbar', null, 5));
         });
 
         /**

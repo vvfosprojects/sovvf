@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { AppSettings } from '../../../shared/interface/app-settings.interface';
-import { Store } from '@ngxs/store';
-import { SetDataNavbar } from '../../../features/navbar/store/actions/navbar.actions';
 
 @Injectable()
 export class NavbarServiceFake {
 
     private navbar: AppSettings;
 
-    constructor(private store: Store) {
+    constructor() {
     }
 
     getNavbar() {
@@ -773,8 +771,6 @@ export class NavbarServiceFake {
             ]
         };
 
-        this.store.dispatch(new SetDataNavbar(this.navbar));
-
-        return of();
+        return of(this.navbar);
     }
 }
