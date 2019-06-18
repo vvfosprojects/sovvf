@@ -4,7 +4,6 @@ import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
-import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
 import { UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
@@ -19,7 +18,7 @@ import { AuthenticationService } from '../auth/_services';
 import { Utente } from '../../shared/model/utente.model';
 import { ToastrType } from '../../shared/enum/toastr';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
-import { InsertChiamataMarker, InsertChiamateMarkers, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
+import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import {
     AddBookMezzoComposizione,
     RemoveBookMezzoComposizione,
@@ -151,15 +150,6 @@ export class SignalRService {
             console.log('NotifyGetListaSediMarker', data);
             this.store.dispatch(new SetSediMarkers(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Sedi Markers ricevute da signalR', null, 5));
-        });
-
-        /**
-         * Chiamate in Corso Markers --------------
-         */
-        this.hubNotification.on('NotifyChiamateInCorsoMarker', (data: ChiamataMarker[]) => {
-            console.log('NotifyChiamateInCorsoMarker', data);
-            this.store.dispatch(new InsertChiamateMarkers(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Nuove chiamate in corso sulla mappa', null, 3));
         });
 
         /**

@@ -7,6 +7,7 @@ import { GetRichiesteMarkers } from '../../../features/home/store/actions/maps/r
 import { GetBoxRichieste } from '../../../features/home/store/actions/boxes/box-richieste.actions';
 import { GetBoxMezzi } from '../../../features/home/store/actions/boxes/box-mezzi.actions';
 import { GetBoxPersonale } from '../../../features/home/store/actions/boxes/box-personale.actions';
+import { GetChiamateMarkers } from '../../../features/home/store/actions/maps/chiamate-markers.actions';
 import { of } from 'rxjs';
 
 @Injectable()
@@ -23,7 +24,8 @@ export class HomeServiceFake {
             new GetRichiesteMarkers(),
             new GetBoxRichieste(),
             new GetBoxMezzi(),
-            new GetBoxPersonale()
+            new GetBoxPersonale(),
+            new GetChiamateMarkers()
         ]);
 
         return of();

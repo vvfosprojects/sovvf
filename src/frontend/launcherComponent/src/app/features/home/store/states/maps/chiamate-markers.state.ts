@@ -42,7 +42,8 @@ export class ChiamateMarkersState {
 
     @Action(GetChiamateMarkers)
     getChiamateMarkers({ dispatch }: StateContext<ChiamateMarkersStateModel>) {
-        this.chiamateMarkerService.getChiamateMarkers().subscribe(() => {
+        this.chiamateMarkerService.getChiamateMarkers().subscribe((data: ChiamataMarker[]) => {
+            dispatch(new InsertChiamateMarkers(data));
         }, error => {
             console.error(error);
             dispatch(new ShowToastr(ToastrType.Error, 'Reperimento delle chiamate fallito', 'Si è verificato un errore, riprova.', 5));

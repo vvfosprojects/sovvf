@@ -4,7 +4,7 @@ import { ChiamataMarker } from '../../../../features/home/maps/maps-model/chiama
 import { Localita } from '../../../../shared/model/localita.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Store } from '@ngxs/store';
-import { InsertChiamataMarker, InsertChiamateMarkers, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../../../features/home/store/actions/maps/chiamate-markers.actions';
+import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../../../features/home/store/actions/maps/chiamate-markers.actions';
 
 
 @Injectable()
@@ -20,8 +20,7 @@ export class ChiamateMarkerServiceFake {
     }
 
     getChiamateMarkers(): Observable<ChiamataMarker[]> {
-        this.store.dispatch(new InsertChiamateMarkers(this.chiamataMarkers));
-        return of();
+        return of(this.chiamataMarkers);
     }
 
     setChiamataInCorso(marker: ChiamataMarker): Observable<any> {
