@@ -3,7 +3,7 @@ import { RichiestaMarker } from '../../../../../features/home/maps/maps-model/ri
 
 @Injectable()
 export class RichiesteMarkerAdapterService {
-  adapt(item: any): RichiestaMarker {
+  static adapt(item: any): RichiestaMarker {
     return new RichiestaMarker(
         item.id,
         item.codice,
@@ -12,7 +12,7 @@ export class RichiesteMarkerAdapterService {
         item.tipologia,
         item.label,
         item.priorita,
-        +item.stato,
+        item.stato,
         item.rilevanza,
         item.rilevanzaStArCu
     );

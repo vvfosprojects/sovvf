@@ -56,7 +56,7 @@ export class RichiesteMarkersState {
         return state.richiestaMarkerById;
     }
 
-    constructor(private _richieste: RichiesteMarkerService, private adapter: RichiesteMarkerAdapterService) {
+    constructor(private _richieste: RichiesteMarkerService) {
     }
 
     @Action(GetRichiesteMarkers)
@@ -81,7 +81,7 @@ export class RichiesteMarkersState {
     addRichiesteMarkers({ setState }: StateContext<RichiesteMarkersStateModel>, { payload }: AddRichiesteMarkers) {
         setState(
             patch({
-                richiesteMarkers: append(payload.map(item => this.adapter.adapt(item)))
+                richiesteMarkers: append(payload.map(item => RichiesteMarkerAdapterService.adapt(item)))
             })
         );
     }

@@ -1,7 +1,7 @@
 export enum StatoRichiesta {
-    Chiamata,
-    Sospesa,
-    Presidiata,
-    Assegnata,
-    Chiusa
+    Chiamata = 'Chiamata',
+    Sospesa = 'Sospesa',
+    Presidiata = 'Presidiata',
+    Assegnata = 'Assegnata',
+    Chiusa = 'Chiusa'
 }
