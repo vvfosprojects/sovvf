@@ -5,8 +5,6 @@ import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Mezzo } from '../../../../shared/model/mezzo.model';
 import { Sede } from '../../../../shared/model/sede.model';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
-import { Store } from '@ngxs/store';
-import { SetMezziMarkers } from '../../../../features/home/store/actions/maps/mezzi-markers.actions';
 
 
 @Injectable()
@@ -14,7 +12,7 @@ export class MezziMarkerServiceFake {
 
     private mezziMarkers: MezzoMarker[] = [];
 
-    constructor(private store: Store) {
+    constructor() {
     }
 
     public getMezziMarkers(): Observable<MezzoMarker[]> {
@@ -53,8 +51,6 @@ export class MezziMarkerServiceFake {
             )
         ];
 
-        this.store.dispatch(new SetMezziMarkers(this.mezziMarkers));
-
-        return of();
+        return of(this.mezziMarkers);
     }
 }

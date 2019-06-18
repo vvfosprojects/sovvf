@@ -135,11 +135,6 @@ export class SignalRService {
         /**
          * Markers Mappa --------------
          */
-        this.hubNotification.on('NotifyGetListaMezziMarker', (data: any) => {
-            console.log('NotifyGetListaMezziMarker', data);
-            this.store.dispatch(new SetMezziMarkers(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Mezzi Markers ricevute da signalR', null, 5));
-        });
         this.hubNotification.on('NotifyGetListaSediMarker', (data: any) => {
             console.log('NotifyGetListaSediMarker', data);
             this.store.dispatch(new SetSediMarkers(data));

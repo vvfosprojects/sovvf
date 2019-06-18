@@ -39,7 +39,8 @@ export class MezziMarkersState {
 
     @Action(GetMezziMarkers)
     getMezziMarkers({ dispatch }: StateContext<MezziMarkersStateModel>) {
-        this._mezzi.getMezziMarkers().subscribe(() => {
+        this._mezzi.getMezziMarkers().subscribe((data: MezzoMarker[]) => {
+            dispatch(new SetMezziMarkers(data));
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
