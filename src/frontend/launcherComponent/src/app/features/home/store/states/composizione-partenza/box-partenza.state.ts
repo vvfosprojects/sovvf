@@ -111,14 +111,17 @@ export class BoxPartenzaState {
         // Seleziono il box precedente
         if (state.boxPartenzaList.length > 1 && state.idBoxPartenzaSelezionato === action.boxPartenza.id) {
             let prevIndex = null;
-            let prevBox = null;
             let prevIdBox = null;
             state.boxPartenzaList.forEach((box: BoxPartenza, index) => {
                 if (box.id === action.boxPartenza.id) {
                     prevIndex = index - 1;
-                    prevBox = state.boxPartenzaList[prevIndex];
-                    prevIdBox = prevBox.id;
-                    dispatch(new SelectBoxPartenza(prevIdBox));
+                    if (state.boxPartenzaList[prevIndex] && prevIndex > -1) {
+                        prevIdBox = state.boxPartenzaList[prevIndex].id;
+                        dispatch(new SelectBoxPartenza(prevIdBox));
+                    } else {
+                        prevIdBox = state.boxPartenzaList[state.boxPartenzaList.length - 1].id;
+                        dispatch(new SelectBoxPartenza(prevIdBox));
+                    }
                 }
             });
         }
@@ -254,16 +257,15 @@ export class BoxPartenzaState {
 
 export function validateBoxPartenza(idBoxPartenzaSelezionato: string, boxPartenzaList: BoxPartenza[]) {
     let _return = false;
-    if (boxPartenzaList.length > 0 && idBoxPartenzaSelezionato) {
+    let boxValidiCount = 0;
+    if (boxPartenzaList.length > 0) {
         boxPartenzaList.forEach((box: BoxPartenza) => {
-            if (box.id === idBoxPartenzaSelezionato) {
-                if (box.mezzoComposizione && box.squadraComposizione && box.squadraComposizione.length > 0) {
-                    _return = true;
-                } else if (!box.mezzoComposizione && box.squadraComposizione && box.squadraComposizione.length > 0) {
-                    _return = true;
-                }
+            if (box.squadraComposizione && box.squadraComposizione.length > 0) {
+                boxValidiCount++;
             }
         });
+
+        _return = boxValidiCount === boxPartenzaList.length;
     } else if (boxPartenzaList.length <= 0) {
         _return = true;
     }

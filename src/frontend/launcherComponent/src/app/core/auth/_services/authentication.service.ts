@@ -20,12 +20,12 @@ export class AuthenticationService {
 
     login(username: string, password: string) {
         return this.http.post<any>(`/api/auth/Login`, { 'username': username, 'password': password }).pipe(map(response => {
-            if (response && response._user && response._user.token) {
-                localStorage.setItem(this.localName, JSON.stringify(response._user));
-                this.currentUserSubject.next(response._user);
+            if (response && response.token) {
+                localStorage.setItem(this.localName, JSON.stringify(response));
+                this.currentUserSubject.next(response);
             }
-            if (response && response._user) {
-                return response._user;
+            if (response) {
+                return response;
             }
         }));
     }

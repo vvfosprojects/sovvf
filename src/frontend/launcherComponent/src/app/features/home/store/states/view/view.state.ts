@@ -130,7 +130,6 @@ export class ViewComponentState {
                 column: lastState.column
             });
             dispatch(new ResetChiamata());
-            dispatch(new ClearChiamateMarkers());
         }
     }
 
