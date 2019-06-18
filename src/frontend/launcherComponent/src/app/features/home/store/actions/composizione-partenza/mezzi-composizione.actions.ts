@@ -42,20 +42,6 @@ export class UnselectMezzoComposizione {
     }
 }
 
-export class SelectMezzo {
-    static readonly type = '[MezziComposizione] Select Mezzo';
-
-    constructor(public codiceMezzo: string) {
-    }
-}
-
-export class UnselectMezzo {
-    static readonly type = '[MezziComposizione] Unselect Mezzo';
-
-    constructor(public codiceMezzo: string) {
-    }
-}
-
 export class ClearSelectedMezziComposizione {
     static readonly type = '[MezziComposizione] Clear Selected Mezzi Composizione';
 }
@@ -76,35 +62,59 @@ export class HoverOutMezzoComposizione {
 
 export class RequestBookMezzoComposizione {
     static readonly type = '[MezziComposizione] Request Book Mezzo Composizione';
+
+    constructor(public mezzoComp: MezzoComposizione) {
+    }
 }
 
 export class AddBookMezzoComposizione {
     static readonly type = '[MezziComposizione] Book Mezzo Composizione';
 
-    constructor(public codiceMezzo: string) {
+    constructor(public mezzoComp: MezzoComposizione) {
+    }
+}
+
+export class RequestRemoveBookMezzoComposizione {
+    static readonly type = '[MezziComposizione] Request Remove Book Mezzo Composizione';
+
+    constructor(public mezzoComp: MezzoComposizione) {
     }
 }
 
 export class RemoveBookMezzoComposizione {
     static readonly type = '[MezziComposizione] Remove Book Mezzo Composizione';
 
-    constructor(public codiceMezzo: string) {
+    constructor(public mezzoComp: MezzoComposizione) {
     }
 }
 
-export class StartTimeoutMezzoComposizione {
-    static readonly type = '[MezziComposizione] Start Timeout Mezzo Composizione';
+export class RequestResetBookMezzoComposizione {
+    static readonly type = '[MezziComposizione] Request Reset Book Mezzo Composizione';
 
-    constructor(public idMezzoComp: string) {
+    constructor(public mezzoComp: MezzoComposizione) {
     }
 }
 
-export class StopTimeoutMezzoComposizione {
-    static readonly type = '[MezziComposizione] Stop Timeout Mezzo Composizione';
+export class ResetBookMezzoComposizione {
+    static readonly type = '[MezziComposizione] Reset Book Mezzo Composizione';
 
-    constructor(public idMezzoComp: string) {
+    constructor(public mezzoComp: MezzoComposizione) {
     }
 }
+
+// export class StartTimeoutMezzoComposizione {
+//     static readonly type = '[MezziComposizione] Start Timeout Mezzo Composizione';
+//
+//     constructor(public idMezzoComp: string) {
+//     }
+// }
+//
+// export class StopTimeoutMezzoComposizione {
+//     static readonly type = '[MezziComposizione] Stop Timeout Mezzo Composizione';
+//
+//     constructor(public idMezzoComp: string) {
+//     }
+// }
 
 export class LockMezzoComposizione {
     static readonly type = '[MezziComposizione] Lock Mezzo Composizione';

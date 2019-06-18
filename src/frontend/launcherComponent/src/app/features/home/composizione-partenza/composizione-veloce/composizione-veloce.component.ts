@@ -50,63 +50,75 @@ export class FasterComponent implements OnInit, OnDestroy {
     }
 
     preAccoppiatoSelezionato(preAcc: BoxPartenza) {
-        this.selezionaPreaccoppiato(preAcc);
-        if (preAcc.mezzoComposizione && preAcc.mezzoComposizione.coordinate) {
-            this.mezzoCoordinate(preAcc.mezzoComposizione.coordinate);
+        if (this.preAccoppiati) {
+            this.selezionaPreaccoppiato(preAcc);
+            if (preAcc.mezzoComposizione && preAcc.mezzoComposizione.coordinate) {
+                this.mezzoCoordinate(preAcc.mezzoComposizione.coordinate);
+            }
         }
     }
 
     preAccoppiatoDeselezionato(preAcc: BoxPartenza) {
-        this.deselezionaPreaccoppiato(preAcc);
-        this.annullaPartenza(true);
-        this.centraMappa.emit();
+        if (this.preAccoppiati) {
+            this.deselezionaPreaccoppiato(preAcc);
+            this.annullaPartenza(true);
+            this.centraMappa.emit();
+        }
     }
 
     selezionaPreaccoppiato(preAcc: BoxPartenza) {
-        // preAcc.selezionato = true;
-        this.idPreAccoppiatiSelezionati.push(preAcc.id);
-        this.preAccoppiatiSelezionati.push(preAcc);
+        if (this.preAccoppiati) {
+            // preAcc.selezionato = true;
+            this.idPreAccoppiatiSelezionati.push(preAcc.id);
+            this.preAccoppiatiSelezionati.push(preAcc);
+        }
     }
 
     deselezionaPreaccoppiato(preAcc: BoxPartenza) {
-        this.idPreAccoppiatiSelezionati.forEach((pA, index) => {
-            if (preAcc.id === pA) {
-                // preAcc.selezionato = false;
-                this.idPreAccoppiatiSelezionati.splice(index, 1);
-            }
-        });
-        this.preAccoppiatiSelezionati.forEach((pA, index) => {
-            if (preAcc === pA) {
-                // preAcc.selezionato = false;
-                this.preAccoppiatiSelezionati.splice(index, 1);
-            }
-        });
+        if (this.preAccoppiati) {
+            this.idPreAccoppiatiSelezionati.forEach((pA, index) => {
+                if (preAcc.id === pA) {
+                    // preAcc.selezionato = false;
+                    this.idPreAccoppiatiSelezionati.splice(index, 1);
+                }
+            });
+            this.preAccoppiatiSelezionati.forEach((pA, index) => {
+                if (preAcc === pA) {
+                    // preAcc.selezionato = false;
+                    this.preAccoppiatiSelezionati.splice(index, 1);
+                }
+            });
+        }
     }
 
     deselezionaPreaccoppiati() {
-        this.preAccoppiati.forEach(pA => {
-            // pA.selezionato = false;
-        });
+        if (this.preAccoppiati) {
+            this.preAccoppiati.forEach(pA => {
+                // pA.selezionato = false;
+            });
+        }
     }
 
     mezzoCoordinate(event: Coordinate): void {
-        if (event && this.richiesta.localita.coordinate) {
-            const direction: DirectionInterface = {
-                origin: {
-                    lat: event.latitudine,
-                    lng: event.longitudine
-                },
-                destination: {
-                    lat: this.richiesta.localita.coordinate.latitudine,
-                    lng: this.richiesta.localita.coordinate.longitudine
-                },
-                isVisible: true
-            };
+        if (this.richiesta) {
+            if (event && this.richiesta.localita.coordinate) {
+                const direction: DirectionInterface = {
+                    origin: {
+                        lat: event.latitudine,
+                        lng: event.longitudine
+                    },
+                    destination: {
+                        lat: this.richiesta.localita.coordinate.latitudine,
+                        lng: this.richiesta.localita.coordinate.longitudine
+                    },
+                    isVisible: true
+                };
 
-            this.sendDirection.emit(direction);
-        } else {
-            console.error('coordinate mezzo / coordinate richiesta non presenti');
-            this.clearDirection.emit();
+                this.sendDirection.emit(direction);
+            } else {
+                console.error('coordinate mezzo / coordinate richiesta non presenti');
+                this.clearDirection.emit();
+            }
         }
     }
 

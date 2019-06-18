@@ -4,13 +4,11 @@ import { BoxPartenza } from '../../../composizione-partenza/interface/box-parten
 
 import {
     AddBoxPartenza,
-    AddMezzoBoxPartenza,
+    AddMezzoBoxPartenzaSelezionato,
     AddSquadraBoxPartenza, ClearBoxPartenze,
-    RemoveBoxPartenza,
-    RemoveMezzoBoxPartenza,
+    RemoveBoxPartenza, RemoveBoxPartenzaByMezzoId, RemoveMezzoBoxPartenzaSelezionato,
     RemoveSquadraBoxPartenza,
-    SelectBoxPartenza,
-    SelectPreviousBoxPartenza,
+    SelectBoxPartenza, SelectPreviousBoxPartenza,
     UnselectBoxPartenza
 } from '../../actions/composizione-partenza/box-partenza.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
@@ -18,16 +16,14 @@ import { makeID } from '../../../../../shared/helper/function';
 import produce from 'immer';
 import {
     ClearSelectedMezziComposizione,
-    RemoveBookMezzoComposizione,
-    SelectMezzoComposizione,
-    UnselectMezzoComposizione
+    RemoveBookMezzoComposizione, RequestBookMezzoComposizione, RequestRemoveBookMezzoComposizione,
+    SelectMezzoComposizione, UnselectMezzoComposizione
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
 import { ClearSelectedSquadreComposizione, SelectSquadraComposizione, UnselectSquadraComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import { UtenteState } from '../../../../navbar/store/states/operatore/utente.state';
 
 
 export interface BoxPartenzaStateModel {
@@ -62,19 +58,79 @@ export class BoxPartenzaState {
 
     @Action(AddBoxPartenza)
     addBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>) {
+        const state = getState();
         const _id = makeID();
+        if (validateBoxPartenza(state.idBoxPartenzaSelezionato, state.boxPartenzaList)) {
+            // prendo il box partenza selezionato tramite l'id
+            const boxPartenzaSelezionato = state.boxPartenzaList.filter(x => x.id === state.idBoxPartenzaSelezionato)[0];
+            console.log('boxPartenzaSelezionato', boxPartenzaSelezionato);
+            // se il box partenza attualmente selezionato ha un mezzo lo prenoto
+            if (boxPartenzaSelezionato && boxPartenzaSelezionato.mezzoComposizione) {
+                const mezzoComp = boxPartenzaSelezionato.mezzoComposizione;
+                console.log('mezzoComp', mezzoComp);
+                dispatch(new RequestBookMezzoComposizione(mezzoComp));
+            }
+            if (state.boxPartenzaList.length <= 2) {
+                // creo il nuovo box partenza
+                setState(
+                    patch({
+                        boxPartenzaList: append([
+                            {
+                                id: _id,
+                                mezzoComposizione: null,
+                                squadraComposizione: []
+                            }
+                        ])
+                    })
+                );
+                // seleziono il nuovo box partenza
+                dispatch(new SelectBoxPartenza(_id));
+            } else {
+                dispatch(new ShowToastr(ToastrType.Error, 'Errore Aggiungi Partenza', 'Raggiunto il numero massimo di partenze.', 5));
+            }
+        } else {
+            // se il box partenza attualmente selezionato non è valido mostro un messaggio di errore
+            dispatch(new ShowToastr(ToastrType.Error, 'Errore Aggiungi Partenza', 'La partenza attuale non è valida, impossibile creare una nuova partenza.', 5));
+        }
+    }
+
+    @Action(RemoveBoxPartenza)
+    removeBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza) {
+        const state = getState();
+        if (action.boxPartenza.mezzoComposizione) {
+            const mezzoComp = action.boxPartenza.mezzoComposizione;
+            this.store.dispatch(new RequestRemoveBookMezzoComposizione(mezzoComp));
+            if (state.idBoxPartenzaSelezionato === action.boxPartenza.id) {
+                dispatch(new UnselectMezzoComposizione(mezzoComp));
+            }
+        }
+
+        if (action.boxPartenza.squadraComposizione) {
+            action.boxPartenza.squadraComposizione.forEach((squadra: SquadraComposizione) => {
+                dispatch(new UnselectSquadraComposizione(squadra));
+            });
+        }
+
         setState(
             patch({
-                boxPartenzaList: append([
-                    {
-                        id: _id,
-                        mezzoComposizione: null,
-                        squadraComposizione: []
-                    }
-                ])
+                boxPartenzaList: removeItem((item: BoxPartenza) => item.id === action.boxPartenza.id)
             })
         );
-        dispatch(new SelectBoxPartenza(_id));
+        // dispatch(new SelectPreviousBoxPartenza(action.idBoxPartenza));
+        // console.log(action.idBoxPartenza);
+    }
+
+    @Action(RemoveBoxPartenzaByMezzoId)
+    removeBoxPartenzaByMezzoId({ getState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenzaByMezzoId) {
+        const state = getState();
+        let boxPartenza: BoxPartenza;
+        state.boxPartenzaList.forEach((box: BoxPartenza) => {
+            if (box.mezzoComposizione && box.mezzoComposizione.mezzo.codice === action.idMezzo) {
+                boxPartenza = box;
+                dispatch(new RemoveBoxPartenza(boxPartenza));
+            }
+        });
+        // console.log(action.idMezzo);
     }
 
     @Action(SelectBoxPartenza)
@@ -100,53 +156,25 @@ export class BoxPartenzaState {
         // console.log(action.idBoxPartenza);
     }
 
-    @Action(SelectPreviousBoxPartenza)
-    selectPreviousBoxPartenza({ getState, dispatch }: StateContext<BoxPartenzaStateModel>, action: SelectPreviousBoxPartenza) {
-        const state = getState();
-
-        let boxIndex = null;
-        let previousIndex = null;
-        if (state.boxPartenzaList.length > 0) {
-            state.boxPartenzaList.forEach((box: BoxPartenza, index) => {
-                if (box.id === action.idBoxPartenza) {
-                    boxIndex = index;
-                    previousIndex = index - 1;
-                    dispatch(new SelectBoxPartenza(state.boxPartenzaList[previousIndex].id));
-                }
-            });
-        }
-        // console.log(action.idBoxPartenza);
-    }
-
     @Action(UnselectBoxPartenza)
     unselectBoxPartenza({ setState }: StateContext<BoxPartenzaStateModel>, action: SelectBoxPartenza) {
         console.log(action.idBoxPartenza);
     }
 
-    @Action(RemoveBoxPartenza)
-    removeBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza) {
+    @Action(SelectPreviousBoxPartenza)
+    selectPreviousBoxPartenza({ getState, patchState, dispatch, setState }: StateContext<BoxPartenzaStateModel>, action: SelectPreviousBoxPartenza) {
         const state = getState();
-        if (state.boxPartenzaList.length > 0) {
-            state.boxPartenzaList.forEach((box: BoxPartenza) => {
-                if (box.id === action.idBoxPartenza && box.mezzoComposizione) {
-                    dispatch(new RemoveBookMezzoComposizione(box.mezzoComposizione.id));
-                    if (state.idBoxPartenzaSelezionato === action.idBoxPartenza) {
-                        dispatch(new UnselectMezzoComposizione(box.mezzoComposizione));
-                    }
-                }
-                if (state.idBoxPartenzaSelezionato === action.idBoxPartenza && box.squadraComposizione.length > 0) {
-                    box.squadraComposizione.forEach((squadra: SquadraComposizione) => {
-                        dispatch(new UnselectSquadraComposizione(squadra));
-                    });
-                }
-            });
-        }
-        setState(
-            patch({
-                boxPartenzaList: removeItem((item: BoxPartenza) => item.id === action.idBoxPartenza)
-            })
-        );
-        // dispatch(new SelectPreviousBoxPartenza(action.idBoxPartenza));
+        let prevIndex = null;
+        let prevBox = null;
+        let prevIdBox = null;
+        state.boxPartenzaList.forEach((box: BoxPartenza, index) => {
+            if (box.id === action.idBoxPartenza) {
+                prevIndex = index - 1;
+                prevBox = state.boxPartenzaList[prevIndex];
+                prevIdBox = prevBox.id;
+                console.log('Prev ID Box', prevIdBox);
+            }
+        });
         // console.log(action.idBoxPartenza);
     }
 
@@ -186,13 +214,13 @@ export class BoxPartenzaState {
         // console.log(action.idSquadra);
     }
 
-    @Action(AddMezzoBoxPartenza)
-    addMezzoBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: AddMezzoBoxPartenza) {
+    @Action(AddMezzoBoxPartenzaSelezionato)
+    addMezzoBoxPartenzaSelezionato({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: AddMezzoBoxPartenzaSelezionato) {
         const state = getState();
         if (state.boxPartenzaList.length > 0) {
             state.boxPartenzaList.forEach((box: BoxPartenza) => {
                 if (box.id === state.idBoxPartenzaSelezionato && box.mezzoComposizione) {
-                    dispatch(new RemoveBookMezzoComposizione(box.mezzoComposizione.id));
+                    dispatch(new RemoveBookMezzoComposizione(box.mezzoComposizione));
                 }
             });
         }
@@ -208,8 +236,8 @@ export class BoxPartenzaState {
         // console.log(action.mezzo);
     }
 
-    @Action(RemoveMezzoBoxPartenza)
-    removeMezzoBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: RemoveMezzoBoxPartenza) {
+    @Action(RemoveMezzoBoxPartenzaSelezionato)
+    removeMezzoBoxPartenzaSelezionato({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: RemoveMezzoBoxPartenzaSelezionato) {
         const state = getState();
         setState(
             produce(state, draft => {
@@ -230,4 +258,22 @@ export class BoxPartenzaState {
         });
         // console.log(action.idMezzo);
     }
+}
+
+export function validateBoxPartenza(idBoxPartenzaSelezionato: string, boxPartenzaList: BoxPartenza[]) {
+    let _return = false;
+    if (boxPartenzaList.length > 0 && idBoxPartenzaSelezionato) {
+        boxPartenzaList.forEach((box: BoxPartenza) => {
+            if (box.id === idBoxPartenzaSelezionato) {
+                if (box.mezzoComposizione && box.squadraComposizione && box.squadraComposizione.length > 0) {
+                    _return = true;
+                } else if (!box.mezzoComposizione && box.squadraComposizione && box.squadraComposizione.length > 0) {
+                    _return = true;
+                }
+            }
+        });
+    } else if (boxPartenzaList.length <= 0) {
+        _return = true;
+    }
+    return _return;
 }

@@ -19,13 +19,10 @@
 //-----------------------------------------------------------------------
 using System.Threading.Tasks;
 using CQRS.Commands;
-using CQRS.Queries;
 using DomainModel.CQRS.Commands.UpDateIntervento;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
-using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 
 namespace SO115App.API.Controllers
 {
@@ -39,44 +36,30 @@ namespace SO115App.API.Controllers
         /// </summary>
         private readonly ICommandHandler<UpDateInterventoCommand> _handler;
 
-        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _BoxRichiestehandler;
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _SintesiRichiesteAssistenzaMarkerhandler;
-
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
         public UpdateInterventoController(
-            IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> BoxRichiestehandler,
-            IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> SintesiRichiesteAssistenzaMarkerhandler,
             ICommandHandler<UpDateInterventoCommand> handler)
         {
             _handler = handler;
-            _BoxRichiestehandler = BoxRichiestehandler;
-            _SintesiRichiesteAssistenzaMarkerhandler = SintesiRichiesteAssistenzaMarkerhandler;
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateIntervento([FromBody]Intervento chiamata)
         {
-            if (ModelState.IsValid)
+            var command = new UpDateInterventoCommand()
             {
-                var command = new UpDateInterventoCommand()
-                {
-                    Chiamata = chiamata
-                };
+                Chiamata = chiamata
+            };
 
-                try
-                {
-                    this._handler.Handle(command);
-                    return Ok();
-                }
-                catch
-                {
-                    return BadRequest();
-                }
+            try
+            {
+                this._handler.Handle(command);
+                return Ok();
             }
-            else
+            catch
             {
                 return BadRequest();
             }

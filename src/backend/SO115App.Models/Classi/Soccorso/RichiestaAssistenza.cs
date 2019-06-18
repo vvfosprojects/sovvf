@@ -176,6 +176,12 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///     - le restanti cifre sono l'attuale numero intervento (senza progressivo) per un
         ///     totale di 100.000 interventi mappabili per ogni anno (mai raggiunto).
         ///   </para>
+        ///   <para>
+        ///     Gli operativi del CNVVF spingono per avere un codice parlante, del tipo "RM.12345".
+        ///     In questa modalità di composizione, il codice reca informazioni geografiche che
+        ///     potrebbero variare durante il corso di evasione dell'intervento, rendendo il codice
+        ///     fuorviante. Tuttavia per il momento si decide di usare questa metodologia.
+        ///   </para>
         /// </summary>
         public string Codice { get; set; }
 
@@ -418,26 +424,17 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                try
+                var eventoSegnalazione = this.eventi
+                    .Where(e => e is Segnalazione)
+                    .FirstOrDefault() as Segnalazione;
+
+                if (eventoSegnalazione == null)
                 {
-                    var eventoSegnalazione = this.eventi
-                        .Where(e => e is Segnalazione)
-                        .FirstOrDefault() as Segnalazione;
-
-                    if (eventoSegnalazione == null)
-                    {
-                        return null;
-                    }
-                    else
-                    {
-                        return eventoSegnalazione.Istante;
-                    }
-
-                    //return eventoSegnalazione.Istante;
+                    return null;
                 }
-                catch (Exception ex)
+                else
                 {
-                    throw new InvalidOperationException("Impossibile recuperare l'istante della Richiesta di Assistenza.", ex);
+                    return eventoSegnalazione.Istante;
                 }
             }
         }

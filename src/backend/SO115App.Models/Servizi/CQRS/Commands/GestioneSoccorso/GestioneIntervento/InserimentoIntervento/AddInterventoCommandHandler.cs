@@ -22,6 +22,8 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
+using System;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
 {
@@ -29,6 +31,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
     {
         private readonly ISaveRichiestaAssistenza _saveRichiestaAssistenza;
         private readonly IGetMaxCodice _iGetMaxCodice;
+        private readonly IGeneraCodiceRichiesta generaCodiceRichiesta;
 
         public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza, IGetMaxCodice iGetMaxCodice)
         {
@@ -38,7 +41,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
         public void Handle(AddInterventoCommand command)
         {
-            command.Chiamata.Codice = command.Chiamata.Operatore.Sede.Codice.Split('.')[0] + "-" + (_iGetMaxCodice.GetMax() + 1).ToString();
+            var sedeRichiesta = command.Chiamata.Operatore.Sede.Codice;
+            var codiceRichiesta = generaCodiceRichiesta.Genera(sedeRichiesta, DateTime.UtcNow.Year);
 
             var richiesta = new RichiestaAssistenza()
             {
@@ -48,12 +52,11 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Richiedente = command.Chiamata.Richiedente,
                 Localita = command.Chiamata.Localita,
                 Descrizione = command.Chiamata.Descrizione,
-                Codice = command.Chiamata.Codice,
+                Codice = codiceRichiesta,
                 TurnoInserimentoChiamata = command.Chiamata.TurnoInserimentoChiamata,
                 TipoTerreno = command.Chiamata.TipoTerreno,
                 ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti,
-                CodiceObiettivoRilevante = command.Chiamata.CodiceObiettivoRilevante,
-                Id = (_iGetMaxCodice.GetMax() + 1).ToString(), //TODO DA TOGLIERE CON LA VERSIONE DB
+                CodiceObiettivoRilevante = command.Chiamata.CodiceObiettivoRilevante
             };
 
             richiesta.SincronizzaRilevanza(command.Chiamata.RilevanzaGrave, command.Chiamata.RilevanzaStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione, command.Chiamata.IstanteRicezioneRichiesta);

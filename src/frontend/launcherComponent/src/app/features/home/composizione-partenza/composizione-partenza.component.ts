@@ -10,7 +10,7 @@ import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 import { PreAccoppiatiState } from '../store/states/composizione-partenza/pre-accoppiati.state';
 import { DirectionInterface } from '../maps/maps-interface/direction-interface';
 import { ClearDirection, SetDirection } from '../store/actions/maps/maps-direction.actions';
-import { makeCopy, wipeStatoRichiesta } from '../../../shared/helper/function';
+import { wipeStatoRichiesta } from '../../../shared/helper/function';
 import { TurnOffComposizione } from '../store/actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
@@ -20,7 +20,6 @@ import { ClearSelectedMezziComposizione } from '../store/actions/composizione-pa
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GetFiltriComposizione } from '../store/actions/composizione-partenza/filterbar-composizione.actions';
 
 @Component({
     selector: 'app-composizione-partenza',

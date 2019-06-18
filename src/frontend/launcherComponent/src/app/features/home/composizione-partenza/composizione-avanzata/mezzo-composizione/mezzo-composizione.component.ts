@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
 // Interface
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
@@ -7,13 +7,20 @@ import { BoxPartenza } from '../../interface/box-partenza-interface';
 // Model
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
+import { COMPOSIZONEOPTIONS } from '../../../../../core/settings/timeout-composizione';
+import { Store } from '@ngxs/store';
+import { RequestRemoveBookMezzoComposizione, RequestResetBookMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
+import { OFFSET_SYNC_TIME } from '../../../../../core/settings/referral-time';
+import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
+import { makeCopy } from '../../../../../shared/helper/function';
 
 @Component({
     selector: 'app-mezzo-composizione',
     templateUrl: './mezzo-composizione.component.html',
     styleUrls: ['./mezzo-composizione.component.css']
 })
-export class MezzoComposizioneComponent implements OnInit {
+export class MezzoComposizioneComponent implements OnInit, OnChanges {
     @Input() mezzoComp: MezzoComposizione;
     @Input() richiesta: SintesiRichiesta;
     @Input() partenze: BoxPartenza[];
@@ -35,10 +42,46 @@ export class MezzoComposizioneComponent implements OnInit {
     // Mappa
     @Output() mezzoCoordinate = new EventEmitter<Coordinate>();
 
-    constructor() {
+    option = COMPOSIZONEOPTIONS;
+    currentTimeout: number;
+    _interval: any;
+    scadenza: any;
+
+    constructor(private store: Store) {
     }
 
     ngOnInit() {
+        // this.getProgressBarValue();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['itemPrenotato'] && changes['itemPrenotato'].currentValue) {
+            // console.log('scadenza', this.scadenza);
+
+            const istanteScadenzaSelezione = new Date(this.mezzoComp.istanteScadenzaSelezione).getTime();
+            // console.log('istante', istanteScadenzaSelezione);
+            if (this.scadenza && this.scadenza !== istanteScadenzaSelezione) {
+                this.scadenza = makeCopy(istanteScadenzaSelezione);
+                clearInterval(this._interval);
+                this.getProgressBarValue();
+                // console.log('test');
+            }
+            if (!this.scadenza && this.itemPrenotato && istanteScadenzaSelezione) {
+                this.scadenza = makeCopy(istanteScadenzaSelezione);
+                this.getProgressBarValue();
+                // console.log('scadenza', this.scadenza);
+
+            }
+
+
+            // if (!this.itemPrenotato && !this.mezzoComp.istanteScadenzaSelezione) {
+            //     console.log('test');
+            //     if (this._interval) {
+            //         console.log('test');
+            //         clearInterval(this._interval);
+            //     }
+            // }
+        }
     }
 
     // Events
@@ -146,5 +189,35 @@ export class MezzoComposizioneComponent implements OnInit {
     // Mappa
     mezzoDirection(mezzoComp: MezzoComposizione): void {
         this.mezzoCoordinate.emit(mezzoComp.coordinate);
+    }
+
+    getProgressBarValue() {
+        if (this.scadenza) {
+            let alert = false;
+            this._interval = setInterval(() => {
+                const dataScadenza = new Date(this.mezzoComp.istanteScadenzaSelezione).getTime();
+                const dataAttuale = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime();
+                this.currentTimeout = dataScadenza - dataAttuale;
+                this.currentTimeout = this.currentTimeout / 1000;
+
+                if (this.currentTimeout < this.option.alertTimeAgo) {
+                    if (!alert) {
+                        alert = true;
+                        this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Prenotazione in scadenza', 'La prenotazione del mezzo ' + this.mezzoComp.mezzo.codice + ' sta per scadere.', this.option.alertTimeAgo));
+                    }
+                }
+
+                if (this.currentTimeout <= 0) {
+                    this.store.dispatch(new RequestRemoveBookMezzoComposizione(this.mezzoComp));
+                    this.scadenza = null;
+                    clearInterval(this._interval);
+                    // console.log('Mezzo non più prenotato');
+                }
+            }, 500);
+        }
+    }
+
+    onResetTimeout() {
+        this.store.dispatch(new RequestResetBookMezzoComposizione(this.mezzoComp));
     }
 }

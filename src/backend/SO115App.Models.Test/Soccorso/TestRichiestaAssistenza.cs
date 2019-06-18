@@ -86,14 +86,13 @@ namespace Modello.Test.Classi.Soccorso
         }
 
         [Test]
-        public void InAssenzaDiSegnalazioniLIstanteRichiestaDaEccezione()
+        public void InAssenzaDiSegnalazioniLIstanteRichiestaENull()
         {
             var richiesta = new RichiestaAssistenza();
 
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                var istanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta;
-            });
+            var istanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta;
+
+            Assert.That(istanteRicezioneRichiesta, Is.Null);
         }
 
         [Test]
@@ -340,6 +339,14 @@ namespace Modello.Test.Classi.Soccorso
             var chiusa = richiesta.Chiusa;
 
             Assert.That(chiusa, Is.True);
+        }
+
+        [Test]
+        public void UnaRichiestaDiAssistenzaVuotaHaIdNull()
+        {
+            var richiesta = new RichiestaAssistenza();
+
+            Assert.That(richiesta.Id, Is.Null);
         }
     }
 }

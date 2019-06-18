@@ -17,15 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn;
 using SO115App.Models.Classi.Utenti.Autenticazione;
-using SO115App.SignalR;
 
 namespace SO115App.API.Controllers
 {
@@ -34,22 +31,15 @@ namespace SO115App.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IQueryHandler<LogInQuery, LogInResult> _handler;
-        private readonly IHubContext<NotificationHub> _NotificationHub;
 
-        public AuthController(IHubContext<NotificationHub> NotificationHubContext,
-            IQueryHandler<LogInQuery, LogInResult> handler)
+        public AuthController(IQueryHandler<LogInQuery, LogInResult> handler)
         {
             this._handler = handler;
-            this._NotificationHub = NotificationHubContext;
         }
 
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody]AuthLogIn crenenziali)
         {
-            var headerValues = Request.Headers["HubConnectionId"];
-
-            string ConId = headerValues.FirstOrDefault();
-
             var query = new LogInQuery()
             {
                 Username = crenenziali.username,
@@ -64,8 +54,6 @@ namespace SO115App.API.Controllers
                 {
                     return Unauthorized();
                 }
-
-                await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyAuth", utente);
 
                 return Ok(utente);
             }

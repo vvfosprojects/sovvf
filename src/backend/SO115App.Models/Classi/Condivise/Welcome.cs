@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Entity.cs" company="CNVVF">
+// <copyright file="TipologiaTerreno.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,21 +17,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Runtime.CompilerServices;
+using SO115App.API.Models.Classi.Boxes;
+using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Marker;
+using SO115App.Models.Classi.Marker;
+using System.Collections.Generic;
 
-[assembly: InternalsVisibleTo("SO115App.FakePersistence.InMemory")]
-
-namespace SO115App.API.Models.Classi.Persistenza
+namespace SO115App.Models.Classi.Condivise
 {
-    /// <summary>
-    ///   Classe astratta da cui derivano le entita, cioè le classi che hanno una corrispondenza
-    ///   uno-ad-uno con una entry di database.
-    /// </summary>
-    public abstract class Entity : IEntity
+    public class Welcome
     {
-        /// <summary>
-        ///   L'id dell'entità, che corrisponde alla chiave primaria nel database.
-        /// </summary>
-        public string Id { get; protected internal set; }
+        public BoxMezzi BoxListaMezzi { get; set; }
+        public BoxPersonale BoxListaPersonale { get; set; }
+        public BoxInterventi BoxListaInterventi { get; set; }
+        public List<SintesiRichieste> ListaSintesi { get; set; }
+        public List<ChiamateInCorso> ListaChiamateInCorso { get; set; }
+        public List<SintesiRichiestaMarker> ListaRichiesteMarker { get; set; }
+        public List<SintesiSedeMarker> ListaSediMarker { get; set; }
+        public List<SintesiMezzoMarker> ListaMezziMarker { get; set; }
     }
 }

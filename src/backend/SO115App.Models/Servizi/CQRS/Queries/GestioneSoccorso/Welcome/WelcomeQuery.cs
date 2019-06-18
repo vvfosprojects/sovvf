@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Entity.cs" company="CNVVF">
+// <copyright file="NavbarQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,21 +17,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Runtime.CompilerServices;
+using CQRS.Queries;
 
-[assembly: InternalsVisibleTo("SO115App.FakePersistence.InMemory")]
-
-namespace SO115App.API.Models.Classi.Persistenza
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 {
     /// <summary>
-    ///   Classe astratta da cui derivano le entita, cioè le classi che hanno una corrispondenza
-    ///   uno-ad-uno con una entry di database.
+    ///   DTO che alimenta il Navbar presente in Home Page
     /// </summary>
-    public abstract class Entity : IEntity
+    public class WelcomeQuery : IQuery<WelcomeResult>
     {
         /// <summary>
-        ///   L'id dell'entità, che corrisponde alla chiave primaria nel database.
+        ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
         /// </summary>
-        public string Id { get; protected internal set; }
+        /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
+        public string FiltroBox { get; set; }
     }
 }

@@ -37,7 +37,9 @@ export const environment = {
             mezzi: '/api/ComposizioneMezzi',
             squadre: '/api/ComposizioneMezzi',
             filtri: '/api/Filtri',
-            mezzoBloccato: '/api/MezzoBloccato'
+            addPrenotazioneMezzo: '/api/AddPrenotazioneMezzo',
+            removePrenotazioneMezzo: '/api/RemovePrenotazioneMezzo',
+            resetPrenotazioneMezzo: '/api/ResetPrenotazioneMezzo'
         },
         chiamata: {
             marker: '/api/ChiamataInCorso',

@@ -1,4 +1,4 @@
-<div *ngIf="preAccoppiati.length > 0" class="row">
+<div *ngIf="preAccoppiati?.length > 0" class="row">
     <div class="col-8 border-bottom scroll-y pb-1" style="max-height:405px">
         <div class="row">
             <div class="col-6" *ngFor="let preAcc of preAccoppiati">
@@ -41,7 +41,7 @@
     </div>
 </div>
 <div class="row">
-    <div *ngIf="preAccoppiati.length <= 0" class="col-12 mt-5">
+    <div *ngIf="preAccoppiati?.length <= 0" class="col-12 mt-5">
         <div class="text-center">
             <i class="fa fa-spinner fa-3x fa-spin"></i>
             <h6 class="m-0 mt-2">Caricamento...</h6>

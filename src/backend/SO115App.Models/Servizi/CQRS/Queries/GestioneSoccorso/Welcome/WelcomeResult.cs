@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Entity.cs" company="CNVVF">
+// <copyright file="NavbarResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,21 +17,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("SO115App.FakePersistence.InMemory")]
-
-namespace SO115App.API.Models.Classi.Persistenza
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 {
     /// <summary>
-    ///   Classe astratta da cui derivano le entita, cioè le classi che hanno una corrispondenza
-    ///   uno-ad-uno con una entry di database.
+    ///   DTO di output
     /// </summary>
-    public abstract class Entity : IEntity
+    public class WelcomeResult
     {
         /// <summary>
-        ///   L'id dell'entità, che corrisponde alla chiave primaria nel database.
+        ///   Json Welcome Richieste
         /// </summary>
-        public string Id { get; protected internal set; }
+        public SO115App.Models.Classi.Condivise.Welcome WelcomeRes
+        { get; set; }
     }
 }

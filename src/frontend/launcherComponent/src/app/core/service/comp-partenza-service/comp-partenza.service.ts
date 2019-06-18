@@ -6,9 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { handleError } from '../../../shared/helper/handleError';
 import { MezzoPrenotatoInterface } from '../../../shared/interface/mezzo-prenotato.interface';
 
-const API_URL_PREACCOPPIATI = environment.apiUrl.composizione.preaccoppiati;
-const API_URL_AVANZATA = environment.apiUrl.composizione.avanzata;
-const API_URL_MEZZO_PRENOTATO = environment.apiUrl.composizione.mezzoPrenotato;
+const API_URL_COMPOSIZIONE = environment.apiUrl.composizione;
 
 @Injectable()
 export class CompPartenzaService {
@@ -39,8 +37,22 @@ export class CompPartenzaService {
     }
 
     setMezzoPrenotato(mezzoPrenotatoObj: any) {
-        return this.http.post(API_URL_MEZZO_PRENOTATO, mezzoPrenotatoObj).pipe(
+        return this.http.post(API_URL_COMPOSIZIONE.addPrenotazioneMezzo, mezzoPrenotatoObj).pipe(
             retry(3),
+            catchError(handleError)
+        );
+    }
+
+    resetMezzoPrenotato(mezzoPrenotatoObj: any) {
+        return this.http.post(API_URL_COMPOSIZIONE.resetPrenotazioneMezzo, mezzoPrenotatoObj).pipe(
+            // retry(3),
+            catchError(handleError)
+        );
+    }
+
+    removeMezzoPrenotato(mezzoPrenotatoObj: any) {
+        return this.http.post(API_URL_COMPOSIZIONE.removePrenotazioneMezzo, mezzoPrenotatoObj).pipe(
+            // retry(3),
             catchError(handleError)
         );
     }
