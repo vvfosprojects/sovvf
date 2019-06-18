@@ -11,10 +11,6 @@ import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-per
 import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.actions';
 import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
-import { SetMezziMarkers } from '../../features/home/store/actions/maps/mezzi-markers.actions';
-import { SetSediMarkers } from '../../features/home/store/actions/maps/sedi-markers.actions';
-import { AuthenticationService } from '../auth/_services';
-import { Utente } from '../../shared/model/utente.model';
 import { ToastrType } from '../../shared/enum/toastr';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
 import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
@@ -36,9 +32,8 @@ const SIGNALR_BYPASS = !environment.signalR;
 export class SignalRService {
     connectionEstablished = new Subject<boolean>();
     private hubNotification: HubConnection;
-    private localName = 'userSO115';
 
-    constructor(private store: Store, private auth: AuthenticationService) {
+    constructor(private store: Store) {
     }
 
     initSubscription(): void {
@@ -70,16 +65,6 @@ export class SignalRService {
     }
 
     private registerOnSubscriptionEvents(): void {
-
-        /**
-         * Authorization --------------
-         */
-        this.hubNotification.on('NotifyAuth', (data: Utente) => {
-            console.log('NotifyAuth', data);
-            localStorage.setItem(this.localName, JSON.stringify(data));
-            this.auth.currentUserSubject.next(data);
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Sei loggato', '', 3));
-        });
 
         /**
          * Login
