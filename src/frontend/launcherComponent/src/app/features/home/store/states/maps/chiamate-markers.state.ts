@@ -6,7 +6,7 @@ import {
     DelChiamataMarker,
     GetChiamateMarkers,
     InsertChiamataMarker,
-    InsertChiamateMarkers,
+    SetChiamateMarkers,
     RemoveChiamataMarker,
     SetChiamataMarker,
     UpdateChiamataMarker,
@@ -43,7 +43,7 @@ export class ChiamateMarkersState {
     @Action(GetChiamateMarkers)
     getChiamateMarkers({ dispatch }: StateContext<ChiamateMarkersStateModel>) {
         this.chiamateMarkerService.getChiamateMarkers().subscribe((data: ChiamataMarker[]) => {
-            dispatch(new InsertChiamateMarkers(data));
+            dispatch(new SetChiamateMarkers(data));
         }, error => {
             console.error(error);
             dispatch(new ShowToastr(ToastrType.Error, 'Reperimento delle chiamate fallito', 'Si è verificato un errore, riprova.', 5));
@@ -84,8 +84,8 @@ export class ChiamateMarkersState {
         }
     }
 
-    @Action(InsertChiamateMarkers)
-    insertChiamateMarkers({ setState }: StateContext<ChiamateMarkersStateModel>, { chiamateMarkers }: InsertChiamateMarkers) {
+    @Action(SetChiamateMarkers)
+    insertChiamateMarkers({ setState }: StateContext<ChiamateMarkersStateModel>, { chiamateMarkers }: SetChiamateMarkers) {
         setState(
             patch({
                 chiamateMarkers: append(chiamateMarkers)

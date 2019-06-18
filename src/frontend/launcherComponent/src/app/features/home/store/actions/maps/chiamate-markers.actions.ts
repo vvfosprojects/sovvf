@@ -4,6 +4,13 @@ export class GetChiamateMarkers {
     static readonly type = '[Chiamate Marker] Get Chiamate Markers API';
 }
 
+export class SetChiamateMarkers {
+    static readonly type = '[Chiamate Marker] Insert Chiamate Markers signalR';
+
+    constructor(public chiamateMarkers: ChiamataMarker[]) {
+    }
+}
+
 export class SetChiamataMarker {
     static readonly type = '[Chiamate Marker] Set Chiamata Marker API';
 
@@ -22,13 +29,6 @@ export class DelChiamataMarker {
     static readonly type = '[Chiamate Marker] Del Chiamata Marker API';
 
     constructor(public id: string) {
-    }
-}
-
-export class InsertChiamateMarkers {
-    static readonly type = '[Chiamate Marker] Insert Chiamate Markers signalR';
-
-    constructor(public chiamateMarkers: ChiamataMarker[]) {
     }
 }
 
