@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { SedeMarker } from '../../../../features/home/maps/maps-model/sede-marker.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
-import { Store } from '@ngxs/store';
-import { SetSediMarkers } from '../../../../features/home/store/actions/maps/sedi-markers.actions';
 
 
 @Injectable()
@@ -11,7 +9,7 @@ export class SediMarkerServiceFake {
 
     private sediMarkers: SedeMarker[] = [];
 
-    constructor(private store: Store) {
+    constructor() {
     }
 
     public getSediMarkers(): Observable<SedeMarker[]> {
@@ -24,9 +22,7 @@ export class SediMarkerServiceFake {
             new SedeMarker('8', 'Distaccamento Cittadino La Rustica', new Coordinate(41.9095454, 12.6119425), 'Via Achille Vertunni, 98 00155 Roma', 'Distaccamento', 'Lazio', 'Roma'),
         ];
 
-        this.store.dispatch(new SetSediMarkers(this.sediMarkers));
-
-        return of();
+        return of(this.sediMarkers);
     }
 
 }

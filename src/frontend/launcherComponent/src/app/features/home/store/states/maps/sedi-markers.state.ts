@@ -38,7 +38,8 @@ export class SediMarkersState {
 
     @Action(GetSediMarkers)
     getSediMarkers({ dispatch }: StateContext<SediMarkersStateModel>) {
-        this._sedi.getSediMarkers().subscribe(() => {
+        this._sedi.getSediMarkers().subscribe((data: SedeMarker[]) => {
+            dispatch(new SetSediMarkers(data));
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 

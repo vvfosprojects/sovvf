@@ -133,15 +133,6 @@ export class SignalRService {
         });
 
         /**
-         * Markers Mappa --------------
-         */
-        this.hubNotification.on('NotifyGetListaSediMarker', (data: any) => {
-            console.log('NotifyGetListaSediMarker', data);
-            this.store.dispatch(new SetSediMarkers(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Sedi Markers ricevute da signalR', null, 5));
-        });
-
-        /**
          * Chiamata in Corso
          */
         this.hubNotification.on('NotifyChiamataInCorsoMarkerAdd', (data: any) => {
