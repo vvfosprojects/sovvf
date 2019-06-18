@@ -54,20 +54,28 @@ export class ComposizioneFilterbarComponent {
 
     addFiltro(event: any, tipo: string) {
         this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id, tipo));
+        this.update();
         // console.log('Filtro deselezionato', event);
     }
 
     removeFiltro(event: any, tipo: string) {
         this.store.dispatch(new RemoveFiltroSelezionatoComposizione(event.value.id, tipo));
+        this.update();
         // console.log('Filtro deselezionato', event);
     }
 
     clearFiltri(tipo: string) {
         this.store.dispatch(new RemoveFiltriSelezionatiComposizione(tipo));
+        this.update();
         // console.log('Filtri deselezionati', tipo);
     }
 
     dropdownClosed() {
+        // this.update();
+        // console.log('Dropdown closed');
+    }
+
+    update() {
         const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
         const codiceMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato);
         const codiceSquadra = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
