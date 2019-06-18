@@ -55,7 +55,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 TurnoInserimentoChiamata = command.Chiamata.TurnoInserimentoChiamata,
                 TipoTerreno = command.Chiamata.TipoTerreno,
                 ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti,
-                CodiceObiettivoSensibile = command.Chiamata.CodiceObiettivoSensibile
+                ObiettivoSensibile = command.Chiamata.ObiettivoSensibile
             };
 
             richiesta.SincronizzaRilevanza(command.Chiamata.RilevanzaGrave, command.Chiamata.RilevanzaStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione, command.Chiamata.IstanteRicezioneRichiesta);

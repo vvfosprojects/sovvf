@@ -201,7 +201,7 @@ namespace SO115App.GeneratoreRichiesteFake
                 .Ignore(ra => ra.TipoTerreno)
                 .Ignore(ra => ra.ListaEntiIntervenuti)
                 .Ignore(ra => ra.ListaEntiPresaInCarico)
-                .Ignore(ra => ra.CodiceObiettivoSensibile);
+                .Ignore(ra => ra.ObiettivoSensibile);
 
             var fakerTelefonata = new Faker<Telefonata>()
                 .StrictMode(true)

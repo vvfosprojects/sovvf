@@ -32,6 +32,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Classi.Utenti;
+using SO115App.Models.Classi.Condivise;
 
 namespace SO115App.API.Models.Classi.Soccorso
 {
@@ -353,7 +354,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   Se l'intervento è su un obiettivo ritenuto rilevante (Es. Colosseo) si seleziona da
         ///   interfaccia e si registra il codice
         /// </summary>
-        public string CodiceObiettivoSensibile { get; set; }
+        public ObiettivoSensibile ObiettivoSensibile { get; set; }
 
         /// <summary>
         ///   E' la descrizione della richiesta, che ne sintetizza le caratteristiche principali.

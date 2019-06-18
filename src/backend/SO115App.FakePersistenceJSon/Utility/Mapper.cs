@@ -44,7 +44,7 @@ namespace SO115App.FakePersistenceJSon.Utility
                 TurnoInserimentoChiamata = richiesta.TurnoInserimentoChiamata,
                 TipoTerreno = richiesta.TipoTerreno,
                 ListaEntiIntervenuti = richiesta.ListaEntiIntervenuti,
-                CodiceObiettivoSensibile = richiesta.CodiceObiettivoSensibile
+                ObiettivoSensibile = richiesta.ObiettivoSensibile
             };
 
             foreach (Evento evento in richiesta.Eventi)
