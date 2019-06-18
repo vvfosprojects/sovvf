@@ -5,7 +5,7 @@ import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
-import { SetRichieste, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
+import { UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
@@ -105,15 +105,6 @@ export class SignalRService {
             console.log('ReceiveMessage', data);
             // avvisa gli altri client che un utente si è collegato alla sua stessa sede
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Notifica importante:', data, 3));
-        });
-
-        /**
-         * Lista Richieste --------------
-         */
-        this.hubNotification.on('NotifyGetListaRichieste', (data: any) => {
-            console.log('NotifyGetListaRichieste', data);
-            this.store.dispatch(new SetRichieste(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richieste ricevute da signalR', null, 5));
         });
 
         /**

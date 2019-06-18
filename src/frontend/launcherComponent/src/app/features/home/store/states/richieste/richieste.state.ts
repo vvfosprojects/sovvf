@@ -48,7 +48,8 @@ export class RichiesteState {
 
     @Action(GetRichieste, { cancelUncompleted: true })
     getRichieste({ dispatch }: StateContext<RichiesteStateModel>, action: GetRichieste) {
-        this.richiesteService.getRichieste(action.idUltimaRichiesta).subscribe(() => {
+        this.richiesteService.getRichieste(action.idUltimaRichiesta).subscribe((data: SintesiRichiesta[]) => {
+            dispatch(new SetRichieste(data));
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 

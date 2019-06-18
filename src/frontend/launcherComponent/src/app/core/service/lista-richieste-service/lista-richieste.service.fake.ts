@@ -20,7 +20,7 @@ import { Squadra } from '../../../shared/model/squadra.model';
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
 import { Store } from '@ngxs/store';
-import { SetRichieste, UpdateRichiesta } from '../../../features/home/store/actions/richieste/richieste.actions';
+import { UpdateRichiesta } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { TurnoInserimentoChiamata } from '../../../shared/model/turno-inserimento-chiamata';
 import { TurnoIntervento } from '../../../shared/model/turno-intervento';
 import { TipoTerreno } from '../../../shared/model/tipo-terreno';
@@ -798,9 +798,7 @@ export class SintesiRichiesteServiceFake {
         this.richieste[4].listaEntiPresaInCarico = [new EnteIntervenuto('1', 'Polizia di Stato'), new EnteIntervenuto('2' , 'Carabinieri')];
         this.richieste[4].listaEntiIntervenuti = [new EnteIntervenuto('3', 'Protezione Civile')];
 
-        this.store.dispatch(new SetRichieste(this.richieste));
-
-        return of();
+        return of(this.richieste);
     }
 
     getRichiestaById(id_richiesta: string) {
