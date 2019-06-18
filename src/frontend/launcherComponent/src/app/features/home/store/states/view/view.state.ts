@@ -14,6 +14,7 @@ import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actio
 import { ResetChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
 import { ClearChiamateMarkers } from '../../actions/maps/chiamate-markers.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza-state';
+import { ToggleComposizioneMode } from '../../actions/composizione-partenza/filterbar-composizione.actions';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -197,6 +198,7 @@ export class ViewComponentState {
         const currentState = makeCopy(state);
         const newState = switchComposizione(currentState, action.modalita);
         dispatch(new ClearDirection());
+        dispatch(new ToggleComposizioneMode());
         this.store.select(ComposizionePartenzaState.richiestaComposizione).subscribe(richiesta => {
             if (richiesta) {
                 dispatch(new SetCoordCentroMappa(richiesta.localita.coordinate));

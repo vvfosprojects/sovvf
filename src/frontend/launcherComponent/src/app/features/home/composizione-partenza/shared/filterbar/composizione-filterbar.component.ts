@@ -1,15 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { FilterbarService } from '../../../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
 import { Store } from '@ngxs/store';
 import {
     AddFiltroSelezionatoComposizione, GetFiltriComposizione,
     RemoveFiltriSelezionatiComposizione,
-    RemoveFiltroSelezionatoComposizione
+    RemoveFiltroSelezionatoComposizione, UpdateListe
 } from '../../../store/actions/composizione-partenza/filterbar-composizione.actions';
 import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza-state';
 import { MezziComposizioneState } from '../../../store/states/composizione-partenza/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../../store/states/composizione-partenza/squadre-composizione.state';
-import { GetListeCoposizioneAvanzata } from '../../../store/actions/composizione-partenza/composizione-avanzata.actions';
 
 @Component({
     selector: 'app-composizione-filterbar',
@@ -21,7 +19,6 @@ export class ComposizioneFilterbarComponent {
     @Input() filtri: any;
 
     constructor(private store: Store) {
-        this.getFiltri();
     }
 
     iconaStatiClass(stato: string) {
@@ -70,11 +67,6 @@ export class ComposizioneFilterbarComponent {
         // console.log('Filtri deselezionati', tipo);
     }
 
-    dropdownClosed() {
-        // this.update();
-        // console.log('Dropdown closed');
-    }
-
     update() {
         const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
         const codiceMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato);
@@ -88,6 +80,6 @@ export class ComposizioneFilterbarComponent {
             'CodiceSquadra': codiceSquadra ? codiceSquadra : [],
             'idRichiesta': idRichiesta
         };
-        this.store.dispatch(new GetListeCoposizioneAvanzata(filtri));
+        this.store.dispatch(new UpdateListe(filtri));
     }
 }

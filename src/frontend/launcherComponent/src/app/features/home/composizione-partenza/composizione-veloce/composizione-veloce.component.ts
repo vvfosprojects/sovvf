@@ -9,8 +9,10 @@ import { Observable, Subscription } from 'rxjs';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
-import { GetPreAccoppiati } from '../../store/actions/composizione-partenza/pre-accoppiati.actions';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
+import { GetFiltriComposizione } from '../../store/actions/composizione-partenza/filterbar-composizione.actions';
+import { PreAccoppiatiState } from '../../store/states/composizione-partenza/pre-accoppiati.state';
+import { makeCopy } from '../../../../shared/helper/function';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -20,11 +22,13 @@ import { Store } from '@ngxs/store';
 export class FasterComponent implements OnInit, OnDestroy {
 
     @Input() richiesta: SintesiRichiesta;
-    @Input() preAccoppiati: BoxPartenza[];
     @Input() dismissEvents: Observable<boolean>;
 
     idPreAccoppiatiSelezionati: string[] = [];
     preAccoppiatiSelezionati: BoxPartenza[] = [];
+
+    @Select(PreAccoppiatiState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
+    preAccoppiati: BoxPartenza[];
 
     Composizione = Composizione;
 
@@ -35,7 +39,13 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Output() centraMappa = new EventEmitter();
 
     constructor(private store: Store) {
-        this.store.dispatch(new GetPreAccoppiati());
+        // Prendo i preaccoppiati da visualizzare nella lista
+        this.subscription.add(
+            this.preAccoppiati$.subscribe((preAcc: BoxPartenza[]) => {
+                this.preAccoppiati = makeCopy(preAcc);
+                // console.log(this.preAccoppiati);
+            })
+        );
     }
 
     ngOnInit() {
@@ -43,6 +53,7 @@ export class FasterComponent implements OnInit, OnDestroy {
             events => this.annullaPartenza(events)
         ));
         this.deselezionaPreaccoppiati();
+        this.store.dispatch(new GetFiltriComposizione());
     }
 
     ngOnDestroy(): void {

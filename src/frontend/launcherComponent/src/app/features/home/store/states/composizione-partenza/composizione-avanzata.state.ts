@@ -33,9 +33,8 @@ export class ComposizioneAvanzataState {
                 private store: Store) {
     }
 
-    // SET
     @Action(GetListeCoposizioneAvanzata)
-    getListeComposizione({ getState, dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: GetListeCoposizioneAvanzata) {
+    getListeComposizioneAvanzata({ getState, dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: GetListeCoposizioneAvanzata) {
         const filtri = {};
         if (action.filtri) {
             filtri['CodiceDistaccamento'] = action.filtri.CodiceDistaccamento;

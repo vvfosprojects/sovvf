@@ -12,8 +12,7 @@
             <app-composizione-filterbar [filtri]="filtri$ | async"></app-composizione-filterbar>
         </div>
         <div *ngIf="richiesta && compPartenzaMode === Composizione.Veloce" class="px-3">
-            <app-composizione-veloce [richiesta]="richiesta" [preAccoppiati]="preAccoppiati"
-                                     [dismissEvents]="dismissPartenzaSubject.asObservable()"
+            <app-composizione-veloce [richiesta]="richiesta" [dismissEvents]="dismissPartenzaSubject.asObservable()"
                                      (sendDirection)="onSendDirection($event)" (clearDirection)="onClearDirection()"
                                      (centraMappa)="centraMappa()">
             </app-composizione-veloce>

@@ -5,7 +5,9 @@ import {
     GetFiltriComposizione,
     RemoveFiltriSelezionatiComposizione,
     RemoveFiltroSelezionatoComposizione,
-    SetFiltriComposizione
+    SetFiltriComposizione,
+    ToggleComposizioneMode,
+    UpdateListe
 } from '../../actions/composizione-partenza/filterbar-composizione.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
@@ -14,8 +16,9 @@ import { FilterbarService } from '../../../../../core/service/comp-partenza-serv
 import { RichiestaComposizione, TerminaComposizione } from '../../actions/composizione-partenza/richiesta-composizione.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
-import { GetListeCoposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
+import { GetPreAccoppiati } from '../../actions/composizione-partenza/pre-accoppiati.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
+import { GetListeCoposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 
 export interface ComposizionePartenzaStateModel {
     filtri: any;
@@ -23,6 +26,7 @@ export interface ComposizionePartenzaStateModel {
     codiceTipoMezzo: any[];
     codiceStatoMezzo: any[];
     richiesta: SintesiRichiesta;
+    composizioneMode: Composizione;
 }
 
 export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
@@ -30,7 +34,8 @@ export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
     codiceDistaccamento: [],
     codiceTipoMezzo: [],
     codiceStatoMezzo: [],
-    richiesta: null
+    richiesta: null,
+    composizioneMode: Composizione.Avanzata
 };
 
 
@@ -92,8 +97,7 @@ export class ComposizionePartenzaState {
         });
 
         const state = getState();
-        // TODO: aggiungere composizioneMode allo stato
-        const composizioneMode = Composizione.Avanzata;
+        const composizioneMode = state.composizioneMode;
         if (composizioneMode === Composizione.Avanzata) {
             const objFiltriSelezionati = {
                 'CodiceDistaccamento': state.codiceDistaccamento,
@@ -102,8 +106,24 @@ export class ComposizionePartenzaState {
             };
             dispatch(new GetListeCoposizioneAvanzata(objFiltriSelezionati));
         } else if (composizioneMode === Composizione.Veloce) {
-            // TODO: da rivedere
-            // dispatch(new GetPreAccoppiati());
+            const objFiltriSelezionati = {
+                'CodiceDistaccamento': state.codiceDistaccamento,
+                'CodiceTipoMezzo': state.codiceTipoMezzo,
+                'CodiceStatoMezzo': state.codiceStatoMezzo
+            };
+            dispatch(new GetPreAccoppiati(objFiltriSelezionati));
+        }
+    }
+
+
+    @Action(UpdateListe)
+    updateListe({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListe) {
+        const state = getState();
+        const composizioneMode = state.composizioneMode;
+        if (composizioneMode === Composizione.Avanzata) {
+            dispatch(new GetListeCoposizioneAvanzata(action.filtri));
+        } else {
+            dispatch(new GetPreAccoppiati(action.filtri));
         }
     }
 
@@ -199,6 +219,20 @@ export class ComposizionePartenzaState {
             ...state,
             richiesta: action.richiesta
         });
+    }
+
+    @Action(ToggleComposizioneMode)
+    updateComposizioneMode({ getState, patchState }: StateContext<ComposizionePartenzaStateModel>) {
+        const state = getState();
+        if (state.composizioneMode === Composizione.Avanzata) {
+            patchState({
+                composizioneMode: Composizione.Veloce
+            });
+        } else {
+            patchState({
+                composizioneMode: Composizione.Avanzata
+            });
+        }
     }
 
     @Action(TerminaComposizione)

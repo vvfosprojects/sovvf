@@ -32,7 +32,8 @@ export class CompPartenzaServiceFake {
     constructor(private store: Store) {
     }
 
-    getPreAccoppiati(signalRConnectionId?: string): Observable<BoxPartenza[]> {
+    getPreAccoppiati(signalRConnectionId?: string): Observable<any[]> {
+        const idRichiestaAttuale = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id;
         this.preAccoppiati = [
             {
                 id: '1',
@@ -59,7 +60,9 @@ export class CompPartenzaServiceFake {
                     coordinate: {
                         latitudine: 41.8311007,
                         longitudine: 12.4686518
-                    }
+                    },
+                    idRichiesta: idRichiestaAttuale,
+                    istanteScadenzaSelezione: null
                 },
                 squadraComposizione: [
                     {
@@ -111,7 +114,9 @@ export class CompPartenzaServiceFake {
                     coordinate: {
                         latitudine: 41.82699,
                         longitudine: 12.4879854,
-                    }
+                    },
+                    idRichiesta: idRichiestaAttuale,
+                    istanteScadenzaSelezione: null
                 },
                 squadraComposizione: [
                     {
@@ -157,7 +162,7 @@ export class CompPartenzaServiceFake {
                                 provincia: 'Roma'
                             }
                         }
-                    },
+                    }
                 ]
             },
             {
@@ -185,7 +190,9 @@ export class CompPartenzaServiceFake {
                     coordinate: {
                         latitudine: 41.8311007,
                         longitudine: 12.4686518
-                    }
+                    },
+                    idRichiesta: idRichiestaAttuale,
+                    istanteScadenzaSelezione: null
                 },
                 squadraComposizione: [
                     {
@@ -231,7 +238,7 @@ export class CompPartenzaServiceFake {
                                 provincia: 'Roma'
                             }
                         }
-                    },
+                    }
                 ]
             },
             {
@@ -259,7 +266,9 @@ export class CompPartenzaServiceFake {
                     coordinate: {
                         latitudine: 41.8311007,
                         longitudine: 12.4686518
-                    }
+                    },
+                    idRichiesta: idRichiestaAttuale,
+                    istanteScadenzaSelezione: null
                 },
                 squadraComposizione: [
                     {
@@ -311,7 +320,9 @@ export class CompPartenzaServiceFake {
                     coordinate: {
                         latitudine: 41.82699,
                         longitudine: 12.4879854,
-                    }
+                    },
+                    idRichiesta: idRichiestaAttuale,
+                    istanteScadenzaSelezione: null
                 },
                 squadraComposizione: [
                     {
@@ -357,57 +368,7 @@ export class CompPartenzaServiceFake {
                                 provincia: 'Roma'
                             }
                         }
-                    },
-                ]
-            },
-            {
-                id: '6',
-                mezzoComposizione: null,
-                squadraComposizione: [
-                    {
-                        id: '1',
-                        squadra: {
-                            id: '1',
-                            nome: 'Rossa',
-                            stato: StatoSquadra.InSede,
-                            componenti: [
-                                { descrizioneQualifica: 'CP', nominativo: 'Mario Verdi', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
-                                { descrizioneQualifica: 'CP', nominativo: 'Francesco Rossi', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
-                                { descrizioneQualifica: 'CP', nominativo: 'Mario Verna', tooltip: '', capoPartenza: false, autista: false, rimpiazzo: true }
-                            ],
-                            distaccamento: {
-                                codice: '1',
-                                descrizione: 'Tuscolana II',
-                                coordinate: { latitudine: 1, longitudine: 1 },
-                                indirizzo: 'Via Prova, 1',
-                                tipo: 'Distaccamento',
-                                regione: 'Lazio',
-                                provincia: 'Roma'
-                            }
-                        }
-                    },
-                    {
-                        id: '2',
-                        squadra: {
-                            id: '2',
-                            nome: 'Verde',
-                            stato: StatoSquadra.InSede,
-                            componenti: [
-                                { descrizioneQualifica: 'CP', nominativo: 'Paolo Marchio', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
-                                { descrizioneQualifica: 'CP', nominativo: 'Francesca Ventura', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
-                                { descrizioneQualifica: 'CP', nominativo: 'Federico Calu', tooltip: '', capoPartenza: false, autista: false, rimpiazzo: true }
-                            ],
-                            distaccamento: {
-                                codice: '1',
-                                descrizione: 'Tuscolana II',
-                                coordinate: { latitudine: 1, longitudine: 1 },
-                                indirizzo: 'Via Prova, 1',
-                                tipo: 'Distaccamento',
-                                regione: 'Lazio',
-                                provincia: 'Roma'
-                            }
-                        }
-                    },
+                    }
                 ]
             }
         ];
@@ -693,7 +654,7 @@ export class CompPartenzaServiceFake {
         setTimeout(() => {
             const obj = makeCopy(mezzoComp);
             // mezzo.istanteScadenzaSelezione = moment(new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime()).add(3, 'minutes').toDate();
-            obj.mezzoComposizione.istanteScadenzaSelezione = moment(new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime()).add(10, 'seconds').toDate();
+            obj.mezzoComposizione.istanteScadenzaSelezione = moment(new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime()).add(3, 'minutes').toDate();
             const response = {
                 'mezzoComposizione': obj.mezzoComposizione
             };

@@ -35,6 +35,7 @@ import {
     UnselectSquadraComposizione
 } from '../../store/actions/composizione-partenza/squadre-composizione.actions';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
+import { GetFiltriComposizione } from '../../store/actions/composizione-partenza/filterbar-composizione.actions';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -179,6 +180,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     ngOnInit() {
         // Aggiungo il primo box partenza vuoto
         this.store.dispatch(new AddBoxPartenza());
+        this.store.dispatch(new GetFiltriComposizione());
         this.subscription.add(this.dismissEvents.subscribe(
             events => this.annullaPartenza(events)
         ));
