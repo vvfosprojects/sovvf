@@ -59,13 +59,6 @@ export class SelectBoxPartenza {
     }
 }
 
-export class SelectPreviousBoxPartenza {
-    static readonly type = '[BoxPartenza] Select Previous Box Partenza';
-
-    constructor(public idBoxPartenza: string) {
-    }
-}
-
 export class UnselectBoxPartenza {
     static readonly type = '[BoxPartenza] Unselect Box Partenza';
 

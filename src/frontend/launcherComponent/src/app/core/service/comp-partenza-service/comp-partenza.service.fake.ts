@@ -731,7 +731,6 @@ export class CompPartenzaServiceFake {
             this.store.dispatch(new RemoveBookMezzoComposizione(response.mezzoComposizione));
             this.store.dispatch(new UpdateMezzoComposizione(response.mezzoComposizione));
             this.store.dispatch(new RemoveBoxPartenzaByMezzoId(response.mezzoComposizione.mezzo.codice));
-            console.log('idMezzo', response.mezzoComposizione.mezzo.codice);
         }, 1000);
 
 

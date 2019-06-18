@@ -8,8 +8,7 @@ import {
     AddSquadraBoxPartenza, ClearBoxPartenze,
     RemoveBoxPartenza, RemoveBoxPartenzaByMezzoId, RemoveMezzoBoxPartenzaSelezionato,
     RemoveSquadraBoxPartenza,
-    SelectBoxPartenza, SelectPreviousBoxPartenza,
-    UnselectBoxPartenza
+    SelectBoxPartenza, UnselectBoxPartenza
 } from '../../actions/composizione-partenza/box-partenza.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
 import { makeID } from '../../../../../shared/helper/function';
@@ -63,11 +62,9 @@ export class BoxPartenzaState {
         if (validateBoxPartenza(state.idBoxPartenzaSelezionato, state.boxPartenzaList)) {
             // prendo il box partenza selezionato tramite l'id
             const boxPartenzaSelezionato = state.boxPartenzaList.filter(x => x.id === state.idBoxPartenzaSelezionato)[0];
-            console.log('boxPartenzaSelezionato', boxPartenzaSelezionato);
             // se il box partenza attualmente selezionato ha un mezzo lo prenoto
             if (boxPartenzaSelezionato && boxPartenzaSelezionato.mezzoComposizione) {
                 const mezzoComp = boxPartenzaSelezionato.mezzoComposizione;
-                console.log('mezzoComp', mezzoComp);
                 dispatch(new RequestBookMezzoComposizione(mezzoComp));
             }
             if (state.boxPartenzaList.length <= 2) {
@@ -111,13 +108,25 @@ export class BoxPartenzaState {
             });
         }
 
+        // Seleziono il box precedente
+        if (state.boxPartenzaList.length > 1 && state.idBoxPartenzaSelezionato === action.boxPartenza.id) {
+            let prevIndex = null;
+            let prevBox = null;
+            let prevIdBox = null;
+            state.boxPartenzaList.forEach((box: BoxPartenza, index) => {
+                if (box.id === action.boxPartenza.id) {
+                    prevIndex = index - 1;
+                    prevBox = state.boxPartenzaList[prevIndex];
+                    prevIdBox = prevBox.id;
+                    dispatch(new SelectBoxPartenza(prevIdBox));
+                }
+            });
+        }
         setState(
             patch({
                 boxPartenzaList: removeItem((item: BoxPartenza) => item.id === action.boxPartenza.id)
             })
         );
-        // dispatch(new SelectPreviousBoxPartenza(action.idBoxPartenza));
-        // console.log(action.idBoxPartenza);
     }
 
     @Action(RemoveBoxPartenzaByMezzoId)
@@ -159,23 +168,6 @@ export class BoxPartenzaState {
     @Action(UnselectBoxPartenza)
     unselectBoxPartenza({ setState }: StateContext<BoxPartenzaStateModel>, action: SelectBoxPartenza) {
         console.log(action.idBoxPartenza);
-    }
-
-    @Action(SelectPreviousBoxPartenza)
-    selectPreviousBoxPartenza({ getState, patchState, dispatch, setState }: StateContext<BoxPartenzaStateModel>, action: SelectPreviousBoxPartenza) {
-        const state = getState();
-        let prevIndex = null;
-        let prevBox = null;
-        let prevIdBox = null;
-        state.boxPartenzaList.forEach((box: BoxPartenza, index) => {
-            if (box.id === action.idBoxPartenza) {
-                prevIndex = index - 1;
-                prevBox = state.boxPartenzaList[prevIndex];
-                prevIdBox = prevBox.id;
-                console.log('Prev ID Box', prevIdBox);
-            }
-        });
-        // console.log(action.idBoxPartenza);
     }
 
     @Action(AddSquadraBoxPartenza)

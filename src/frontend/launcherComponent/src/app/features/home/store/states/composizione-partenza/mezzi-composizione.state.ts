@@ -156,7 +156,6 @@ export class MezziComposizioneState {
         const mezzoPrenotatoObj = {
             'mezzoComposizione': action.mezzoComp
         };
-        console.log('Mezzo prenotato Object', mezzoPrenotatoObj);
         this._compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
             // dispatch(new AddBoxPartenza());
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Prenotazione Mezzo', 'Il server web non risponde', 5)));
@@ -165,7 +164,6 @@ export class MezziComposizioneState {
     @Action(AddBookMezzoComposizione)
     addBookMezzoComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: AddBookMezzoComposizione) {
         const state = getState();
-        console.log('Mezzo prenotato Object', action.mezzoComp);
         const mezzoComp = state.mezziComposizione.filter(x => x.mezzo.codice === action.mezzoComp.mezzo.codice)[0];
         const idMezzoComp = mezzoComp ? mezzoComp.id : null;
         if (idMezzoComp) {
@@ -184,9 +182,7 @@ export class MezziComposizioneState {
         const mezzoPrenotatoObj = {
             'mezzoComposizione': action.mezzoComp
         };
-        console.log('Mezzo non più prenotato Object', mezzoPrenotatoObj);
         this._compPartenzaService.removeMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
-            console.log('Risposta remove mezzo prenotato');
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Rimozione Prenotazione Mezzo', 'Il server web non risponde', 5)));
     }
 
@@ -209,7 +205,6 @@ export class MezziComposizioneState {
         const mezzoPrenotatoObj = {
             'mezzoComposizione': action.mezzoComp
         };
-        console.log('Request Reset Mezzo prenotato Object', mezzoPrenotatoObj);
         this._compPartenzaService.resetMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
             // dispatch(new AddBoxPartenza());
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Reset Prenotazione Mezzo', 'Il server web non risponde', 5)));
