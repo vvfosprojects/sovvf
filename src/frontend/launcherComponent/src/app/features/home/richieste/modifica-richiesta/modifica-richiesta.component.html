@@ -1,5 +1,5 @@
-<div *ngIf="richiestaModifica" class="row p-4">
-    <div class="col-12">
+<div *ngIf="richiestaModifica" class="row mt-2 pl-3" style="height: 750px">
+    <div class="col-12 p-3 rounded" [ngClass]="methods.cardFissataClasses(richiestaModifica)">
         <form [formGroup]="modificaRichiestaForm">
             <div class="row">
                 <div class="col-5">
@@ -12,27 +12,29 @@
                     <h3 class="mb-0">Modifica #{{richiestaModifica?.codice}}
                         <span *ngIf="f.rilevanza?.value || f.rilevanzaStArCu?.value"
                               class="d-inline-block mr-1 text-danger"
-                              [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f.rilevanza?.value" class="fa fa-exclamation"></i><i *ngIf="f.rilevanzaStArCu?.value" class="fa fa-exclamation"></i></span>
+                              [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f.rilevanza?.value"
+                                                                             class="fa fa-exclamation"></i><i
+                                *ngIf="f.rilevanzaStArCu?.value" class="fa fa-exclamation"></i></span>
                     </h3>
                 </div>
                 <div class="col-3 pr-0">
-                            <div class="form-group m-0 float-right">
+                    <div class="form-group m-0 float-right">
                                 <span class="d-inline-block mt-1 mr-2">
                                     <ui-switch size="small" color="#dc3545"
                                                [checked]="f.rilevanza?.value === true"
                                                (change)="setRilevanza()"></ui-switch>
                                 </span>
-                                <span class="d-inline-block mt-1">Rilevante</span>
+                        <span class="d-inline-block mt-1">Rilevante</span>
                     </div>
                 </div>
                 <div class="col-3 px-0">
-                            <div class="form-group m-0 float-right">
+                    <div class="form-group m-0 float-right">
                                 <span class="d-inline-block mt-1 mr-2">
                                     <ui-switch size="small" color="#dc3545"
                                                [checked]="f.rilevanzaStArCu?.value === true"
                                                (change)="setRilevanzaStArCu()"></ui-switch>
                                 </span>
-                                <span class="d-inline-block mt-1">Rilevante Storico</span>
+                        <span class="d-inline-block mt-1">Rilevante Storico</span>
                     </div>
                 </div>
             </div>
@@ -59,21 +61,17 @@
                                 <span *ngIf="tipologiaRichiedente === 'Nome-Cognome'">Nome - Cognome</span>
                                 <span *ngIf="tipologiaRichiedente === 'RagioneSociale'">Ragione Sociale</span>
                             </button>
-                            <div ngbDropdownMenu class="bg-light">
-                                <div class="row">
-                                    <div class="col-11 mx-auto my-2">
-                                        <button type="button" class="btn btn-block"
-                                                [ngClass]="{ 'btn-primary text-light': tipologiaRichiedente === 'Nome-Cognome', 'btn-outline-primary': tipologiaRichiedente !== 'Nome-Cognome'}"
-                                                (click)="cambiaTipologiaRichiedente('Nome-Cognome')" ngbDropdownItem>
-                                            Nome - Cognome
-                                        </button>
-                                        <button type="button" class="btn btn-block"
-                                                [ngClass]="{'btn-primary text-light': tipologiaRichiedente === 'RagioneSociale', 'btn-outline-primary': tipologiaRichiedente !== 'RagioneSociale'}"
-                                                (click)="cambiaTipologiaRichiedente('RagioneSociale')" ngbDropdownItem>
-                                            Ragione Sociale
-                                        </button>
-                                    </div>
-                                </div>
+                            <div class="dropdown-menu dropdownTipologiaRichiedente" ngbDropdownMenu>
+                                <button type="button" class="dropdown-item"
+                                        [ngClass]="{'bg-primary text-light': tipologiaRichiedente === 'Nome-Cognome'}"
+                                        (click)="cambiaTipologiaRichiedente('Nome-Cognome')" ngbDropdownItem>
+                                    Nome - Cognome
+                                </button>
+                                <button type="button" class="dropdown-item"
+                                        [ngClass]="{'bg-primary text-light': tipologiaRichiedente === 'RagioneSociale'}"
+                                        (click)="cambiaTipologiaRichiedente('RagioneSociale')" ngbDropdownItem>
+                                    Ragione Sociale
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -207,7 +205,8 @@
                 <div class="col">
                     <div class="form-group">
                         <label for="notePrivate">Note Private</label>
-                        <textarea id="notePrivate" type="text" placeholder="Note Private" formControlName="notePrivate"
+                        <textarea id="notePrivate" type="text" placeholder="Note Private"
+                                  formControlName="notePrivate"
                                   class="form-control"
                                   [ngClass]="{ 'is-invalid': submitted && f.notePrivate.errors }"></textarea>
                     </div>
@@ -235,7 +234,8 @@
             <hr class="mt-1">
         </form>
         <div class="form-group">
-            <button type="button" class="btn btn-primary float-right" (click)="onConfermaModifica()">Conferma Modifica
+            <button type="button" class="btn btn-primary float-right" (click)="onConfermaModifica()">Conferma
+                Modifica
             </button>
             <button class="btn btn-danger float-right mr-2" (click)="onChiudiModifica()">Annulla</button>
         </div>

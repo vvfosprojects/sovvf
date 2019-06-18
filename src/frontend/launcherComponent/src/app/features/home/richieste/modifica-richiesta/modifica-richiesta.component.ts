@@ -14,6 +14,7 @@ import { ChiudiRichiestaModifica, ModificaIndirizzo } from '../../store/actions/
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
 import { Localita } from '../../../../shared/model/localita.model';
+import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -31,6 +32,8 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     richiestaModifica: SintesiRichiesta;
 
     subscription = new Subscription();
+
+    methods = new HelperSintesiRichiesta;
 
     modificaRichiestaForm: FormGroup;
     submitted = false;

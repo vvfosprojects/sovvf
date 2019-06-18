@@ -1,0 +1,12 @@
+.dropdownTipologiaRichiedente {
+    border-color: #007bff !important;
+}
+
+.dropdownTipologiaRichiedente button:hover {
+    background-color: #007bff !important;
+    color: white;
+}
+
+.dropdown-menu {
+    min-width: 200px !important;
+}
