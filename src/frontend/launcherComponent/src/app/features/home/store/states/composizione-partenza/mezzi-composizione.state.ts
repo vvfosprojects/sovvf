@@ -12,6 +12,8 @@ import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
+import { RemoveBoxPartenza, UpdateMezzoBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
+import { BoxPartenzaState } from './box-partenza.state';
 
 export interface MezziComposizioneStateStateModel {
     mezziComposizione: MezzoComposizione[];
@@ -105,6 +107,7 @@ export class MezziComposizioneState {
                 mezziComposizione: updateItem<MezzoComposizione>(mezzoComp => mezzoComp.mezzo.codice === action.mezzoComp.mezzo.codice, action.mezzoComp)
             })
         );
+        dispatch(new UpdateMezzoBoxPartenza(action.mezzoComp));
         // dispatch(new AddBookMezzoComposizione(action.mezzoComp));
         console.log('Update mezzo composizione', action.mezzoComp);
     }
@@ -190,6 +193,14 @@ export class MezziComposizioneState {
             'mezzoComposizione': action.mezzoComp
         };
         this._compPartenzaService.removeMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
+            // rimuovo il boxPartenza
+            if (action.boxPartenza) {
+                dispatch(new RemoveBoxPartenza(action.boxPartenza));
+                const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
+                if (idBoxPartenzaSelezionato === action.boxPartenza.id) {
+                    dispatch(new UnselectMezzoComposizione(action.mezzoComp));
+                }
+            }
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Rimozione Prenotazione Mezzo', 'Il server web non risponde', 5)));
     }
 

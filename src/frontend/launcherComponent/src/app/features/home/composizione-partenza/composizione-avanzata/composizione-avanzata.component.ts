@@ -17,7 +17,13 @@ import { makeCopy } from '../../../../shared/helper/function';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza-state';
 import { MezziComposizioneState } from '../../store/states/composizione-partenza/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../store/states/composizione-partenza/squadre-composizione.state';
-import { HoverInMezzoComposizione, HoverOutMezzoComposizione, SelectMezzoComposizione, UnselectMezzoComposizione } from '../../store/actions/composizione-partenza/mezzi-composizione.actions';
+import {
+    HoverInMezzoComposizione,
+    HoverOutMezzoComposizione,
+    RequestRemoveBookMezzoComposizione,
+    SelectMezzoComposizione,
+    UnselectMezzoComposizione
+} from '../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
 import {
@@ -210,7 +216,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     mezzoDeselezionato(mezzoComposizione: MezzoComposizione) {
         this.store.dispatch(new UnselectMezzoComposizione(mezzoComposizione));
-        this.store.dispatch(new RemoveMezzoBoxPartenzaSelezionato(mezzoComposizione.id));
+        this.store.dispatch(new RemoveMezzoBoxPartenzaSelezionato(mezzoComposizione));
         this.clearDirection.emit();
         // console.log('Mezzo deselezionato', mezzoComposizione);
     }
@@ -281,7 +287,12 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     eliminaBoxPartenza(boxPartenza: BoxPartenza) {
-        this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
+        if (boxPartenza.mezzoComposizione && boxPartenza.mezzoComposizione.istanteScadenzaSelezione) {
+            const mezzoComp = boxPartenza.mezzoComposizione;
+            this.store.dispatch(new RequestRemoveBookMezzoComposizione(mezzoComp, boxPartenza));
+        } else {
+            this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
+        }
     }
 
     // Id Maker

@@ -48,7 +48,14 @@ export class AddMezzoBoxPartenzaSelezionato {
 export class RemoveMezzoBoxPartenzaSelezionato {
     static readonly type = '[BoxPartenza] Remove Mezzo Box Partenza Selezionato';
 
-    constructor(public idMezzo: string) {
+    constructor(public mezzo: MezzoComposizione) {
+    }
+}
+
+export class UpdateMezzoBoxPartenza {
+    static readonly type = '[BoxPartenza] Update Mezzo Box Partenza Selezionato';
+
+    constructor(public mezzoComp: MezzoComposizione) {
     }
 }
 

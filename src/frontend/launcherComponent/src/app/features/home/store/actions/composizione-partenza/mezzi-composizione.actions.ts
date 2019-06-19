@@ -1,4 +1,5 @@
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
+import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 
 export class SetListaMezziComposizione {
     static readonly type = '[MezziComposizione] Set Lista Mezzi Composizione';
@@ -81,7 +82,7 @@ export class AddBookMezzoComposizione {
 export class RequestRemoveBookMezzoComposizione {
     static readonly type = '[MezziComposizione] Request Remove Book Mezzo Composizione';
 
-    constructor(public mezzoComp: MezzoComposizione) {
+    constructor(public mezzoComp: MezzoComposizione, public boxPartenza?: BoxPartenza) {
     }
 }
 

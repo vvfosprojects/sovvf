@@ -21,7 +21,7 @@ import {
     UpdateMezzoComposizione
 } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { SetListaSquadreComposizione } from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
-import { RemoveBoxPartenzaByMezzoId } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
+import { RemoveBoxPartenzaByMezzoId, UpdateMezzoBoxPartenza } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;

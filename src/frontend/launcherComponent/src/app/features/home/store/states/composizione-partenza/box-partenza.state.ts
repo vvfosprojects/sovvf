@@ -8,7 +8,7 @@ import {
     AddSquadraBoxPartenza, ClearBoxPartenze,
     RemoveBoxPartenza, RemoveBoxPartenzaByMezzoId, RemoveMezzoBoxPartenzaSelezionato,
     RemoveSquadraBoxPartenza,
-    SelectBoxPartenza, UnselectBoxPartenza
+    SelectBoxPartenza, UnselectBoxPartenza, UpdateMezzoBoxPartenza
 } from '../../actions/composizione-partenza/box-partenza.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
 import { makeID } from '../../../../../shared/helper/function';
@@ -23,6 +23,7 @@ import { ClearSelectedSquadreComposizione, SelectSquadraComposizione, UnselectSq
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
+import { GestioneUtente } from '../../../../../shared/model/gestione-utente.model';
 
 
 export interface BoxPartenzaStateModel {
@@ -94,14 +95,12 @@ export class BoxPartenzaState {
     @Action(RemoveBoxPartenza)
     removeBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza) {
         const state = getState();
+        // Deseleziono il mezzo selezionato
         if (action.boxPartenza.mezzoComposizione) {
-            const mezzoComp = action.boxPartenza.mezzoComposizione;
-            this.store.dispatch(new RequestRemoveBookMezzoComposizione(mezzoComp));
-            if (state.idBoxPartenzaSelezionato === action.boxPartenza.id) {
-                dispatch(new UnselectMezzoComposizione(mezzoComp));
-            }
+            dispatch(new UnselectMezzoComposizione(action.boxPartenza.mezzoComposizione));
         }
 
+        // Deseleziono le squadre selezionate
         if (action.boxPartenza.squadraComposizione) {
             action.boxPartenza.squadraComposizione.forEach((squadra: SquadraComposizione) => {
                 dispatch(new UnselectSquadraComposizione(squadra));
@@ -125,6 +124,8 @@ export class BoxPartenzaState {
                 }
             });
         }
+
+        // rimuovo il box dalla lista
         setState(
             patch({
                 boxPartenzaList: removeItem((item: BoxPartenza) => item.id === action.boxPartenza.id)
@@ -166,11 +167,6 @@ export class BoxPartenzaState {
             }
         });
         // console.log(action.idBoxPartenza);
-    }
-
-    @Action(UnselectBoxPartenza)
-    unselectBoxPartenza({ setState }: StateContext<BoxPartenzaStateModel>, action: SelectBoxPartenza) {
-        console.log(action.idBoxPartenza);
     }
 
     @Action(AddSquadraBoxPartenza)
@@ -231,6 +227,21 @@ export class BoxPartenzaState {
         // console.log(action.mezzo);
     }
 
+    @Action(UpdateMezzoBoxPartenza)
+    updateMezzoBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: UpdateMezzoBoxPartenza) {
+        const state = getState();
+        setState(
+            produce(state, draft => {
+                draft.boxPartenzaList.forEach((box: BoxPartenza) => {
+                    if (box.mezzoComposizione && box.mezzoComposizione.mezzo.codice === action.mezzoComp.mezzo.codice) {
+                        box.mezzoComposizione = action.mezzoComp;
+                    }
+                });
+            })
+        );
+        // console.log(action.mezzo);
+    }
+
     @Action(RemoveMezzoBoxPartenzaSelezionato)
     removeMezzoBoxPartenzaSelezionato({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: RemoveMezzoBoxPartenzaSelezionato) {
         const state = getState();
@@ -243,7 +254,7 @@ export class BoxPartenzaState {
                 });
             })
         );
-        // console.log(action.idMezzo);
+        // console.log(action.mezzo);
     }
 
     @Action(ClearBoxPartenze)
