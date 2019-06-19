@@ -12,7 +12,7 @@ import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
-import { RemoveBoxPartenza, UpdateMezzoBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
+import { AddBoxPartenza, RemoveBoxPartenza, UpdateMezzoBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
 import { BoxPartenzaState } from './box-partenza.state';
 
 export interface MezziComposizioneStateStateModel {
@@ -167,7 +167,9 @@ export class MezziComposizioneState {
             'mezzoComposizione': action.mezzoComp
         };
         this._compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
-            // dispatch(new AddBoxPartenza());
+            if (action.addBoxPartenza) {
+                dispatch(new AddBoxPartenza());
+            }
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Prenotazione Mezzo', 'Il server web non risponde', 5)));
     }
 
@@ -233,19 +235,6 @@ export class MezziComposizioneState {
         console.log('Reset Mezzo prenotato Object', action.mezzoComp);
     }
 
-    //
-    // @Action(StartTimeoutMezzoComposizione)
-    // startTimeoutMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: StartTimeoutMezzoComposizione) {
-    //     const state = getState();
-    //     // console.log(action.mezzoComp);
-    // }
-    //
-    // @Action(StopTimeoutMezzoComposizione)
-    // stopTimeoutMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: StopTimeoutMezzoComposizione) {
-    //     const state = getState();
-    //     // console.log(action.mezzoComp);
-    // }
-
     @Action(LockMezzoComposizione)
     lockMezzoComposizione({ setState }: StateContext<MezziComposizioneStateStateModel>, action: LockMezzoComposizione) {
         setState(
@@ -254,7 +243,6 @@ export class MezziComposizioneState {
                 idMezziBloccati: insertItem(action.idMezzoComp)
             })
         );
-        // console.log(action.idMezzo);
     }
 
     @Action(UnlockMezzoComposizione)
@@ -265,7 +253,6 @@ export class MezziComposizioneState {
                 idMezziBloccati: removeItem(id => id === action.idMezzoComp)
             })
         );
-        // console.log(action.idMezzo);
     }
 
     @Action(RequestUnlockMezzoComposizione)

@@ -6,6 +6,10 @@ export class AddBoxPartenza {
     static readonly type = '[BoxPartenza] Add Box Partenza';
 }
 
+export class RequestAddBoxPartenza {
+    static readonly type = '[BoxPartenza] Request Add Box Partenza';
+}
+
 export class RemoveBoxPartenza {
     static readonly type = '[BoxPartenza] Remove Box Partenza';
 
