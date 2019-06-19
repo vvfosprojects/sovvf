@@ -7,7 +7,7 @@ import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick, UndoAllBoxes } 
 import { BoxPartenza } from './interface/box-partenza-interface';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
-import { PreAccoppiatiState } from '../store/states/composizione-partenza/pre-accoppiati.state';
+import { ComposizioneVeloceState } from '../store/states/composizione-partenza/composizione-veloce.state';
 import { DirectionInterface } from '../maps/maps-interface/direction-interface';
 import { ClearDirection, SetDirection } from '../store/actions/maps/maps-direction.actions';
 import { wipeStatoRichiesta } from '../../../shared/helper/function';
@@ -16,10 +16,12 @@ import { GetInitCentroMappa, SetCoordCentroMappa } from '../store/actions/maps/c
 import { ClearMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza-state';
 import { ClearBoxPartenze } from '../store/actions/composizione-partenza/box-partenza.actions';
-import { ClearSelectedMezziComposizione } from '../store/actions/composizione-partenza/mezzi-composizione.actions';
+import { ClearListaMezziComposizione, ClearSelectedMezziComposizione } from '../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ClearListaComposizioneVeloce } from '../store/actions/composizione-partenza/composizione-veloce.actions';
+import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione } from '../store/actions/composizione-partenza/squadre-composizione.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -36,7 +38,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     @Select(ComposizionePartenzaState.filtri) filtri$: Observable<any>;
 
-    @Select(PreAccoppiatiState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
+    @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     @Select(ComposizionePartenzaState.richiestaComposizione) nuovaPartenza$: Observable<SintesiRichiesta>;
     richiesta: SintesiRichiesta;
 
@@ -68,10 +70,15 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     dismissPartenza(): void {
         this.dismissPartenzaSubject.next(true);
-        this.store.dispatch(new ClearSelectedMezziComposizione());
-        this.store.dispatch(new ClearBoxPartenze());
         this.store.dispatch(new ClearMarkerRichiestaSelezionato());
         this.store.dispatch(new GetInitCentroMappa());
+        // Pulisco le liste
+        this.store.dispatch(new ClearSelectedMezziComposizione());
+        this.store.dispatch(new ClearSelectedSquadreComposizione());
+        this.store.dispatch(new ClearListaSquadreComposizione());
+        this.store.dispatch(new ClearListaMezziComposizione());
+        this.store.dispatch(new ClearBoxPartenze());
+        this.store.dispatch(new ClearListaComposizioneVeloce());
         // this.centraMappa();
         this.turnOffComposizione();
     }

@@ -16,9 +16,11 @@ import { FilterbarService } from '../../../../../core/service/comp-partenza-serv
 import { RichiestaComposizione, TerminaComposizione } from '../../actions/composizione-partenza/richiesta-composizione.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
-import { GetPreAccoppiati } from '../../actions/composizione-partenza/pre-accoppiati.actions';
+import { ClearListaComposizioneVeloce, GetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { GetListeCoposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
+import { ClearListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
+import { ClearListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 
 export interface ComposizionePartenzaStateModel {
     filtri: any;
@@ -111,7 +113,7 @@ export class ComposizionePartenzaState {
                 'CodiceTipoMezzo': state.codiceTipoMezzo,
                 'CodiceStatoMezzo': state.codiceStatoMezzo
             };
-            dispatch(new GetPreAccoppiati(objFiltriSelezionati));
+            dispatch(new GetListaComposizioneVeloce(objFiltriSelezionati));
         }
     }
 
@@ -123,7 +125,7 @@ export class ComposizionePartenzaState {
         if (composizioneMode === Composizione.Avanzata) {
             dispatch(new GetListeCoposizioneAvanzata(action.filtri));
         } else {
-            dispatch(new GetPreAccoppiati(action.filtri));
+            dispatch(new GetListaComposizioneVeloce(action.filtri));
         }
     }
 
@@ -222,13 +224,16 @@ export class ComposizionePartenzaState {
     }
 
     @Action(ToggleComposizioneMode)
-    updateComposizioneMode({ getState, patchState }: StateContext<ComposizionePartenzaStateModel>) {
+    toggleComposizioneMode({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>) {
         const state = getState();
         if (state.composizioneMode === Composizione.Avanzata) {
+            dispatch(new ClearListaMezziComposizione());
+            dispatch(new ClearListaSquadreComposizione());
             patchState({
                 composizioneMode: Composizione.Veloce
             });
         } else {
+            dispatch(new ClearListaComposizioneVeloce());
             patchState({
                 composizioneMode: Composizione.Avanzata
             });

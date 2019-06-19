@@ -7,7 +7,7 @@ import { BoxPartenza } from '../../../features/home/composizione-partenza/interf
 import { SquadraComposizione } from 'src/app/features/home/composizione-partenza/interface/squadra-composizione-interface';
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
 import { Store } from '@ngxs/store';
-import { SetPreAccoppiati } from '../../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
+import { SetListaComposizioneVeloce } from '../../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import {
     AddBookMezzoComposizione,
     RemoveBookMezzoComposizione,
@@ -374,7 +374,7 @@ export class CompPartenzaServiceFake {
         ];
 
         setTimeout(() => {
-            this.store.dispatch(new SetPreAccoppiati(this.preAccoppiati));
+            this.store.dispatch(new SetListaComposizioneVeloce(this.preAccoppiati));
         }, 2000);
 
         return of();

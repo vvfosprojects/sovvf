@@ -4,7 +4,7 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 
 // Action
-import { GetPreAccoppiati, SetPreAccoppiati } from '../../actions/composizione-partenza/pre-accoppiati.actions';
+import { ClearListaComposizioneVeloce, GetListaComposizioneVeloce, SetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
 
 // Service
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
@@ -28,7 +28,7 @@ export const PreAccoppiatiStateModelStateDefaults: PreAccoppiatiStateModel = {
     name: 'preAccoppiati',
     defaults: PreAccoppiatiStateModelStateDefaults
 })
-export class PreAccoppiatiState {
+export class ComposizioneVeloceState {
 
     // SELECTORS
     @Selector()
@@ -40,8 +40,8 @@ export class PreAccoppiatiState {
                 private store: Store) {
     }
 
-    @Action(GetPreAccoppiati)
-    getPreAccoppiati({ getState, dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: GetPreAccoppiati) {
+    @Action(GetListaComposizioneVeloce)
+    getPreAccoppiati({ getState, dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: GetListaComposizioneVeloce) {
         const filtri = {};
         if (action.filtri) {
             filtri['CodiceDistaccamento'] = action.filtri.CodiceDistaccamento;
@@ -64,10 +64,17 @@ export class PreAccoppiatiState {
     }
 
 
-    @Action(SetPreAccoppiati)
-    setPreAccoppiati({ patchState }: StateContext<PreAccoppiatiStateModel>, action: SetPreAccoppiati) {
+    @Action(SetListaComposizioneVeloce)
+    setPreAccoppiati({ patchState }: StateContext<PreAccoppiatiStateModel>, action: SetListaComposizioneVeloce) {
         patchState({
             preAccoppiati: action.boxPartenza
+        });
+    }
+
+    @Action(ClearListaComposizioneVeloce)
+    clearListaComposizioneVeloce({ patchState }: StateContext<PreAccoppiatiStateModel>) {
+        patchState({
+            preAccoppiati: null
         });
     }
 }

@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 import {
     AddBookMezzoComposizione,
-    AddMezzoComposizione, ClearSelectedMezziComposizione, HoverInMezzoComposizione, HoverOutMezzoComposizione, LockMezzoComposizione, RemoveBookMezzoComposizione,
+    AddMezzoComposizione, ClearListaMezziComposizione, ClearSelectedMezziComposizione, HoverInMezzoComposizione, HoverOutMezzoComposizione, LockMezzoComposizione, RemoveBookMezzoComposizione,
     RemoveMezzoComposizione, RequestBookMezzoComposizione, RequestRemoveBookMezzoComposizione, RequestResetBookMezzoComposizione, RequestUnlockMezzoComposizione, ResetBookMezzoComposizione,
     SelectMezzoComposizione,
     SetListaMezziComposizione, UnlockMezzoComposizione, UnselectMezzoComposizione,
@@ -78,6 +78,13 @@ export class MezziComposizioneState {
             } else if (state.idMezziPrenotati.indexOf(mezzoComp.id) >= 0) {
                 dispatch(new RemoveBookMezzoComposizione(mezzoComp));
             }
+        });
+    }
+
+    @Action(ClearListaMezziComposizione)
+    clearListaMezziComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>) {
+        patchState({
+            mezziComposizione: null
         });
     }
 

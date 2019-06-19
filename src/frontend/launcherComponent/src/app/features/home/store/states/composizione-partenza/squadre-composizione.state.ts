@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
 import {
-    AddSquadraComposizione, ClearSelectedSquadreComposizione, HoverInSquadraComposizione, HoverOutSquadraComposizione,
+    AddSquadraComposizione, ClearListaSquadreComposizione, ClearSelectedSquadreComposizione, HoverInSquadraComposizione, HoverOutSquadraComposizione,
     RemoveSquadraComposizione, SelectSquadra,
     SelectSquadraComposizione,
     SetListaSquadreComposizione, UnselectSquadra, UnselectSquadraComposizione,
@@ -51,6 +51,13 @@ export class SquadreComposizioneState {
     setListaSquadreComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: SetListaSquadreComposizione) {
         patchState({
             squadreComposizione: action.squadreComp
+        });
+    }
+
+    @Action(ClearListaSquadreComposizione)
+    clearListaSquadreComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>) {
+        patchState({
+            squadreComposizione: null
         });
     }
 

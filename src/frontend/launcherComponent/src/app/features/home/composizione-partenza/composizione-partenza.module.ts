@@ -28,7 +28,7 @@ import { CompPartenzaServiceFake } from '../../../core/service/comp-partenza-ser
  * Ngxs
  */
 import { NgxsModule } from '@ngxs/store';
-import { PreAccoppiatiState } from '../store/states/composizione-partenza/pre-accoppiati.state';
+import { ComposizioneVeloceState } from '../store/states/composizione-partenza/composizione-veloce.state';
 import { environment } from '../../../../environments/environment';
 import { FilterbarService } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
 import { FilterbarServiceFake } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service.fake';
@@ -64,7 +64,7 @@ import { BoxPartenzaState } from '../store/states/composizione-partenza/box-part
                 ComposizionePartenzaState,
                 BoxPartenzaState,
                 // Comp Rapida
-                PreAccoppiatiState,
+                ComposizioneVeloceState,
                 // Comp Avanzata
                 ComposizioneAvanzataState,
                 MezziComposizioneState,
