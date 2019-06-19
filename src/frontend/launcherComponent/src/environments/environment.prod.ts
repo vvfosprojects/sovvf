@@ -23,19 +23,17 @@ export const environment = {
                 richieste: '/api/SintesiRichiesteAssistenzaMarker',
                 sedi: '/api/SintesiSediMarker',
                 mezzi: '/api/SintesiMezziMarker',
-                centro: '',
-                chiamate: '/api/ChiamateInCorso'
+                centro: '',  // Todo: controller mancante
+                chiamate: '/api/ChiamataInCorso'
             }
         },
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
-        updateRichiesta: '/api/UpdateIntervento',
+        updateRichiesta: '/api/Chiamata/Update',
         eventiRichieste: '/api/ListaEventi',
-        turno: '',
+        turno: '',  // Todo: controller mancante
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',
             avanzata: '/api/ComposizionePartenzaAvanzata',
-            mezzi: '/api/ComposizioneMezzi',
-            squadre: '/api/ComposizioneMezzi',
             filtri: '/api/Filtri',
             addPrenotazioneMezzo: '/api/AddPrenotazioneMezzo',
             removePrenotazioneMezzo: '/api/RemovePrenotazioneMezzo',
@@ -43,7 +41,7 @@ export const environment = {
         },
         chiamata: {
             marker: '/api/ChiamataInCorso',
-            inserimento: '/api/InserimentoIntervento'
+            inserimento: '/api/Chiamata/Add'
         },
         login: '/api/auth/Login',
         users: '/api/users',

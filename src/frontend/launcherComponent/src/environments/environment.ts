@@ -28,7 +28,7 @@ export const environment = {
             }
         },
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
-        updateRichiesta: '/api/UpdateIntervento',
+        updateRichiesta: '/api/Chiamata/Update',
         eventiRichieste: '/api/ListaEventi',
         turno: '',  // Todo: controller mancante
         composizione: {
@@ -41,7 +41,7 @@ export const environment = {
         },
         chiamata: {
             marker: '/api/ChiamataInCorso',
-            inserimento: '/api/InserimentoIntervento'
+            inserimento: '/api/Chiamata/Add'
         },
         login: '/api/auth/Login',
         users: '/api/users',
