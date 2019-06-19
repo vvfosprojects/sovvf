@@ -7,6 +7,10 @@ export class SetListaSquadreComposizione {
     }
 }
 
+export class ClearListaSquadreComposizione {
+    static readonly type = '[SquadreComposizione] Clear Lista Squadre Composizione';
+}
+
 export class AddSquadraComposizione {
     static readonly type = '[SquadreComposizione] Add Squadra Composizione';
 

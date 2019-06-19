@@ -7,6 +7,10 @@ export class SetListaMezziComposizione {
     }
 }
 
+export class ClearListaMezziComposizione {
+    static readonly type = '[MezziComposizione] Clear Lista Mezzi Composizione';
+}
+
 export class AddMezzoComposizione {
     static readonly type = '[MezziComposizione] Add Mezzo Composizione';
 

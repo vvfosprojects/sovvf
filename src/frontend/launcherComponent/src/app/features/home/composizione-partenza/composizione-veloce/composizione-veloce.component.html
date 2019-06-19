@@ -1,50 +1,57 @@
-<div *ngIf="preAccoppiati?.length > 0" class="row">
-    <div class="col-8 border-bottom scroll-y pb-1" style="max-height:405px">
-        <div class="row">
-            <div class="col-6" *ngFor="let preAcc of preAccoppiati">
-                <app-box-nuova-partenza [partenza]="preAcc"
-                                        [richiesta]="richiesta"
-                                        [itemSelezionato]="idPreAccoppiatiSelezionati.indexOf(preAcc.id) > -1"
-                                        [compPartenzaMode]="Composizione.Veloce"
-                                        (selezionato)="preAccoppiatoSelezionato($event)"
-                                        (deselezionato)="preAccoppiatoDeselezionato($event)"></app-box-nuova-partenza>
-            </div>
+<div class="card card-shadow mx-auto" style="max-height:405px">
+    <div class="card-header">
+        <i class="fa fa-truck mr-2"></i><span class="h6">Pre-Accoppiati</span>
+    </div>
+    <div *ngIf="preAccoppiati?.length > 0" class="row p-2 scroll-y">
+        <div class="col-3" *ngFor="let preAcc of preAccoppiati">
+            <app-box-nuova-partenza [partenza]="preAcc"
+                                    [richiesta]="richiesta"
+                                    [itemSelezionato]="idPreAccoppiatiSelezionati.indexOf(preAcc.id) > -1"
+                                    [compPartenzaMode]="Composizione.Veloce"
+                                    (selezionato)="preAccoppiatoSelezionato($event)"
+                                    (deselezionato)="preAccoppiatoDeselezionato($event)"></app-box-nuova-partenza>
+        </div>
+        <div class="col-12 text-right">
+            <button class="btn btn-success mt-2 w-25" [disabled]="preAccoppiatiSelezionati.length <= 0">
+                <span class="mr-1">Conferma partenze</span>
+                <span class="badge badge-light">{{preAccoppiatiSelezionati.length}}</span>
+            </button>
         </div>
     </div>
-    <!--    <div class="col-12 text-right">-->
-    <!--        <button class="btn btn-success mt-2 w-25" [disabled]="preAccoppiatiSelezionati.length <= 0">-->
-    <!--            <span class="mr-1">Conferma partenze</span>-->
-    <!--            <span class="badge badge-light">{{preAccoppiatiSelezionati.length}}</span>-->
-    <!--        </button>-->
-    <!--    </div>-->
-    <div class="col-4">
-        <div class="w-100 py-2 px-1 scroll-y" style="max-height:350px; min-height:350px">
-            <!-- nessuna partenza -->
-            <div *ngIf="idPreAccoppiatiSelezionati.length <= 0" class="text-center mt-3">
-                <h5>Nessuna partenza selezionata!</h5>
+    <div class="row">
+        <div *ngIf="preAccoppiati?.length <= 0" class="col-12 my-3">
+            <div class="text-center">
+                <i class="fa fa-spinner fa-3x fa-spin"></i>
+                <h6 class="m-0 mt-2">Caricamento...</h6>
             </div>
-            <!-- lista box partenze -->
-            <div *ngIf="idPreAccoppiatiSelezionati.length > 0">
-                <div *ngFor="let preAcc of preAccoppiatiSelezionati.slice().reverse()">
-                    <app-box-nuova-partenza [partenza]="preAcc"
-                                            [richiesta]="richiesta"
-                                            [compPartenzaMode]="Composizione.Veloce"
-                                            (selezionato)="preAccoppiatoSelezionato($event)"
-                                            (deselezionato)="preAccoppiatoDeselezionato($event)"></app-box-nuova-partenza>
-                </div>
-            </div>
-        </div>
-        <button class="btn btn-success btn-block card-shadow mt-2" [disabled]="idPreAccoppiatiSelezionati.length <= 0">
-            <span class="mr-1">Conferma partenze</span>
-            <span class="badge badge-light">{{idPreAccoppiatiSelezionati.length}}</span>
-        </button>
-    </div>
-</div>
-<div class="row">
-    <div *ngIf="preAccoppiati?.length <= 0" class="col-12 mt-5">
-        <div class="text-center">
-            <i class="fa fa-spinner fa-3x fa-spin"></i>
-            <h6 class="m-0 mt-2">Caricamento...</h6>
         </div>
     </div>
 </div>
+<!--    <div class="col-12 text-right">-->
+<!--        <button class="btn btn-success mt-2 w-25" [disabled]="preAccoppiatiSelezionati.length <= 0">-->
+<!--            <span class="mr-1">Conferma partenze</span>-->
+<!--            <span class="badge badge-light">{{preAccoppiatiSelezionati.length}}</span>-->
+<!--        </button>-->
+<!--    </div>-->
+<!--    <div class="col-4">-->
+<!--        <div class="w-100 py-2 px-1 scroll-y" style="max-height:350px; min-height:350px">-->
+<!--            &lt;!&ndash; nessuna partenza &ndash;&gt;-->
+<!--            <div *ngIf="idPreAccoppiatiSelezionati.length <= 0" class="text-center mt-3">-->
+<!--                <h5>Nessuna partenza selezionata!</h5>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; lista box partenze &ndash;&gt;-->
+<!--            <div *ngIf="idPreAccoppiatiSelezionati.length > 0">-->
+<!--                <div *ngFor="let preAcc of preAccoppiatiSelezionati.slice().reverse()">-->
+<!--                    <app-box-nuova-partenza [partenza]="preAcc"-->
+<!--                                            [richiesta]="richiesta"-->
+<!--                                            [compPartenzaMode]="Composizione.Veloce"-->
+<!--                                            (selezionato)="preAccoppiatoSelezionato($event)"-->
+<!--                                            (deselezionato)="preAccoppiatoDeselezionato($event)"></app-box-nuova-partenza>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <button class="btn btn-success btn-block card-shadow mt-2" [disabled]="idPreAccoppiatiSelezionati.length <= 0">-->
+<!--            <span class="mr-1">Conferma partenze</span>-->
+<!--            <span class="badge badge-light">{{idPreAccoppiatiSelezionati.length}}</span>-->
+<!--        </button>-->
+<!--    </div>-->

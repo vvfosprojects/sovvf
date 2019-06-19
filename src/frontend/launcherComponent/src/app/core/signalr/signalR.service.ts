@@ -159,7 +159,6 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyGetPreaccoppiati', (data: any) => {
             console.log('NotifyGetPreaccoppiatiComposizione', data);
-            // this.store.dispatch(new SetPreAccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyAddPrenotazioneMezzo', (data: any) => {
