@@ -58,8 +58,8 @@ export class ComposizioneVeloceState {
 
 
         console.log(filtri);
-        this.preAccoppiatiService.getPreAccoppiati(filtri).subscribe(() => {
-            // console.log('Composizione Partenza Veloce Service');
+        this.preAccoppiatiService.getPreAccoppiati(filtri).subscribe((preAccoppiati: BoxPartenza[]) => {
+            this.store.dispatch(new SetListaComposizioneVeloce(preAccoppiati));
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 

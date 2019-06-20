@@ -221,7 +221,8 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
         this.mezzoCoordinate.emit(mezzoComp.coordinate);
     }
 
-    onResetTimeout() {
+    onResetTimeout(e: MouseEvent) {
+        e.stopPropagation();
         this.store.dispatch(new RequestResetBookMezzoComposizione(this.mezzoComp));
     }
 }

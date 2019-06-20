@@ -6,6 +6,8 @@ import { ToastrType } from '../../../../../shared/enum/toastr';
 import { MezziComposizioneState } from './mezzi-composizione.state';
 import { SquadreComposizioneState } from './squadre-composizione.state';
 import { ComposizionePartenzaState } from './composizione-partenza-state';
+import { SetListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
+import { SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: Array<any>;
@@ -51,7 +53,11 @@ export class ComposizioneAvanzataState {
 
 
         console.log(filtri);
-        this.squadreService.getListeComposizioneAvanzata(filtri).subscribe(() => {
+        this.squadreService.getListeComposizioneAvanzata(filtri).subscribe((listeCompAvanzata: any) => {
+            if (listeCompAvanzata) {
+                this.store.dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezzi));
+                this.store.dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadre));
+            }
             // console.log('Composizione Partenza Avanzata Service');
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
