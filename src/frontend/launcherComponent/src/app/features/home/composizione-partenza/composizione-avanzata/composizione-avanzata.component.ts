@@ -31,7 +31,7 @@ import {
     AddMezzoBoxPartenzaSelezionato,
     AddSquadraBoxPartenza, ClearBoxPartenze,
     RemoveBoxPartenza,
-    RemoveMezzoBoxPartenzaSelezionato, RemoveSquadraBoxPartenza, RequestAddBoxPartenza,
+    RemoveMezzoBoxPartenzaSelezionato, RemoveSquadraBoxPartenza, RequestAddBoxPartenza, RequestSelectBoxPartenza,
     SelectBoxPartenza
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
@@ -264,7 +264,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     boxPartenzaSelezionato(boxPartenza: BoxPartenza) {
-        this.store.dispatch(new SelectBoxPartenza(boxPartenza.id));
+        this.store.dispatch(new RequestSelectBoxPartenza(boxPartenza.id));
     }
 
     getBoxPartenzaAttuale(idBoxPartenza: string): BoxPartenza {
@@ -279,13 +279,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     nuovaPartenza() {
-        if (this.boxPartenzaList.length <= 0) {
-            this.store.dispatch(new AddBoxPartenza());
-        } else {
-            // const idBoxSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
-            // const boxSelezionato =  this.boxPartenzaList.filter(x => x.id === idBoxSelezionato)[0];
-            this.store.dispatch(new RequestAddBoxPartenza());
-        }
+        this.store.dispatch(new RequestAddBoxPartenza());
     }
 
     eliminaBoxPartenza(boxPartenza: BoxPartenza) {

@@ -7,7 +7,7 @@ import {
     AddMezzoBoxPartenzaSelezionato,
     AddSquadraBoxPartenza, ClearBoxPartenze,
     RemoveBoxPartenza, RemoveBoxPartenzaByMezzoId, RemoveMezzoBoxPartenzaSelezionato,
-    RemoveSquadraBoxPartenza, RequestAddBoxPartenza,
+    RemoveSquadraBoxPartenza, RequestAddBoxPartenza, RequestSelectBoxPartenza,
     SelectBoxPartenza, UpdateMezzoBoxPartenza
 } from '../../actions/composizione-partenza/box-partenza.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
@@ -56,14 +56,18 @@ export class BoxPartenzaState {
     requestAddBoxPartenza({ getState, dispatch }: StateContext<BoxPartenzaStateModel>) {
         const state = getState();
         if (validateBoxPartenza(state.idBoxPartenzaSelezionato, state.boxPartenzaList)) {
-            // prendo il box partenza selezionato tramite l'id
-            const boxPartenzaSelezionato = state.boxPartenzaList.filter(x => x.id === state.idBoxPartenzaSelezionato)[0];
-            // se il box partenza attualmente selezionato ha un mezzo lo prenoto
-            if (boxPartenzaSelezionato && boxPartenzaSelezionato.mezzoComposizione && !boxPartenzaSelezionato.mezzoComposizione.istanteScadenzaSelezione) {
-                const mezzoComp = boxPartenzaSelezionato.mezzoComposizione;
-                dispatch(new RequestBookMezzoComposizione(mezzoComp, true));
-            } else if (boxPartenzaSelezionato) {
+            if (state.boxPartenzaList.length <= 0) {
                 dispatch(new AddBoxPartenza());
+            } else {
+                // prendo il box partenza selezionato tramite l'id
+                const boxPartenzaSelezionato = state.boxPartenzaList.filter(x => x.id === state.idBoxPartenzaSelezionato)[0];
+                // se il box partenza attualmente selezionato ha un mezzo lo prenoto
+                if (boxPartenzaSelezionato && boxPartenzaSelezionato.mezzoComposizione && !boxPartenzaSelezionato.mezzoComposizione.istanteScadenzaSelezione) {
+                    const mezzoComp = boxPartenzaSelezionato.mezzoComposizione;
+                    dispatch(new RequestBookMezzoComposizione(mezzoComp, true, null));
+                } else if (boxPartenzaSelezionato) {
+                    dispatch(new AddBoxPartenza());
+                }
             }
         } else {
             // se il box partenza attualmente selezionato non è valido mostro un messaggio di errore
@@ -110,14 +114,12 @@ export class BoxPartenzaState {
         if (action.boxPartenza.mezzoComposizione) {
             dispatch(new UnselectMezzoComposizione(action.boxPartenza.mezzoComposizione));
         }
-
         // Deseleziono le squadre selezionate
         if (action.boxPartenza.squadraComposizione) {
             action.boxPartenza.squadraComposizione.forEach((squadra: SquadraComposizione) => {
                 dispatch(new UnselectSquadraComposizione(squadra));
             });
         }
-
         // Seleziono il box precedente
         if (state.boxPartenzaList.length > 1 && state.idBoxPartenzaSelezionato === action.boxPartenza.id) {
             let prevIndex = null;
@@ -135,7 +137,6 @@ export class BoxPartenzaState {
                 }
             });
         }
-
         // rimuovo il box dalla lista
         setState(
             patch({
@@ -152,9 +153,31 @@ export class BoxPartenzaState {
             if (box.mezzoComposizione && box.mezzoComposizione.mezzo.codice === action.idMezzo) {
                 boxPartenza = box;
                 dispatch(new RemoveBoxPartenza(boxPartenza));
+                dispatch(new UnselectMezzoComposizione(boxPartenza.mezzoComposizione));
+                boxPartenza.squadraComposizione.forEach((squadraComp: SquadraComposizione) => {
+                    dispatch(new UnselectSquadraComposizione(squadraComp));
+                });
             }
         });
-        // console.log(action.idMezzo);
+    }
+
+    @Action(RequestSelectBoxPartenza)
+    requestSelectBoxPartenza({ getState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RequestSelectBoxPartenza) {
+        const state = getState();
+        if (validateBoxPartenza(state.idBoxPartenzaSelezionato, state.boxPartenzaList)) {
+            // prendo il box partenza selezionato tramite l'id
+            const boxPartenzaSelezionato = state.boxPartenzaList.filter(x => x.id === state.idBoxPartenzaSelezionato)[0];
+            // se il box partenza attualmente selezionato ha un mezzo lo prenoto
+            if (boxPartenzaSelezionato && boxPartenzaSelezionato.mezzoComposizione && !boxPartenzaSelezionato.mezzoComposizione.istanteScadenzaSelezione) {
+                const mezzoComp = boxPartenzaSelezionato.mezzoComposizione;
+                dispatch(new RequestBookMezzoComposizione(mezzoComp, false, action.idBoxPartenza));
+            } else if (boxPartenzaSelezionato) {
+                dispatch(new SelectBoxPartenza(action.idBoxPartenza));
+            }
+        } else {
+            // se il box partenza attualmente selezionato non è valido mostro un messaggio di errore
+            dispatch(new ShowToastr(ToastrType.Error, 'Errore Aggiungi Partenza', 'La partenza attuale non è valida, impossibile selezionare una nuova partenza.', 5));
+        }
     }
 
     @Action(SelectBoxPartenza)
@@ -177,7 +200,6 @@ export class BoxPartenzaState {
                 }
             }
         });
-        // console.log(action.idBoxPartenza);
     }
 
     @Action(AddSquadraBoxPartenza)
@@ -192,7 +214,6 @@ export class BoxPartenzaState {
                 });
             })
         );
-        // console.log(action.squadra);
     }
 
     @Action(RemoveSquadraBoxPartenza)
@@ -213,7 +234,6 @@ export class BoxPartenzaState {
                 });
             })
         );
-        // console.log(action.idSquadra);
     }
 
     @Action(AddMezzoBoxPartenzaSelezionato)
@@ -235,7 +255,6 @@ export class BoxPartenzaState {
                 });
             })
         );
-        // console.log(action.mezzo);
     }
 
     @Action(UpdateMezzoBoxPartenza)
@@ -250,7 +269,6 @@ export class BoxPartenzaState {
                 });
             })
         );
-        // console.log(action.mezzo);
     }
 
     @Action(RemoveMezzoBoxPartenzaSelezionato)
@@ -265,7 +283,6 @@ export class BoxPartenzaState {
                 });
             })
         );
-        // console.log(action.mezzo);
     }
 
     @Action(ClearBoxPartenze)
@@ -273,7 +290,6 @@ export class BoxPartenzaState {
         patchState({
             boxPartenzaList: BoxPartenzaStateDefaults.boxPartenzaList
         });
-        // console.log(action.idMezzo);
     }
 }
 
