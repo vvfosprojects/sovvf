@@ -68,7 +68,7 @@ export class HoverOutMezzoComposizione {
 export class RequestBookMezzoComposizione {
     static readonly type = '[MezziComposizione] Request Book Mezzo Composizione';
 
-    constructor(public mezzoComp: MezzoComposizione, public addBoxPartenza?: boolean) {
+    constructor(public mezzoComp: MezzoComposizione, public addBoxPartenza?: boolean, public selectBoxPartenza?: string) {
     }
 }
 

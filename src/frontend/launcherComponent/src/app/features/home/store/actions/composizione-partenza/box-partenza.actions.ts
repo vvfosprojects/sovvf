@@ -63,6 +63,13 @@ export class UpdateMezzoBoxPartenza {
     }
 }
 
+export class RequestSelectBoxPartenza {
+    static readonly type = '[BoxPartenza] Request Select Box Partenza';
+
+    constructor(public idBoxPartenza: string) {
+    }
+}
+
 export class SelectBoxPartenza {
     static readonly type = '[BoxPartenza] Select Box Partenza';
 

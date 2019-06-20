@@ -12,7 +12,7 @@ import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
-import { AddBoxPartenza, RemoveBoxPartenza, UpdateMezzoBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
+import { AddBoxPartenza, RemoveBoxPartenza, RemoveBoxPartenzaByMezzoId, SelectBoxPartenza, UpdateMezzoBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
 import { BoxPartenzaState } from './box-partenza.state';
 
 export interface MezziComposizioneStateStateModel {
@@ -169,6 +169,8 @@ export class MezziComposizioneState {
         this._compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
             if (action.addBoxPartenza) {
                 dispatch(new AddBoxPartenza());
+            } else if (action.selectBoxPartenza) {
+                dispatch(new SelectBoxPartenza(action.selectBoxPartenza));
             }
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Prenotazione Mezzo', 'Il server web non risponde', 5)));
     }
@@ -196,13 +198,14 @@ export class MezziComposizioneState {
         };
         this._compPartenzaService.removeMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
             // rimuovo il boxPartenza
-            if (action.boxPartenza) {
-                dispatch(new RemoveBoxPartenza(action.boxPartenza));
-                const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
-                if (idBoxPartenzaSelezionato === action.boxPartenza.id) {
-                    dispatch(new UnselectMezzoComposizione(action.mezzoComp));
-                }
-            }
+            // TODO: verificare se serve (backend)
+            // if (action.boxPartenza) {
+            //     dispatch(new RemoveBoxPartenza(action.boxPartenza));
+            //     const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
+            //     if (idBoxPartenzaSelezionato === action.boxPartenza.id) {
+            //         dispatch(new UnselectMezzoComposizione(action.mezzoComp));
+            //     }
+            // }
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Rimozione Prenotazione Mezzo', 'Il server web non risponde', 5)));
     }
 

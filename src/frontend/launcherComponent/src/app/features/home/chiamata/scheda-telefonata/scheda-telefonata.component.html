@@ -80,7 +80,6 @@
                                class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nome.errors }"/>
                         <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
                             <div *ngIf="f.nome.errors.required">Il Nome è richiesto</div>
-                            <div *ngIf="f.nome.errors.troppiDati">La ragione sociale deve essere vuota</div>
                         </div>
                     </div>
                 </div>
@@ -91,7 +90,6 @@
                                class="form-control" [ngClass]="{ 'is-invalid': submitted && f.cognome.errors }"/>
                         <div *ngIf="submitted && f.cognome.errors" class="invalid-feedback">
                             <div *ngIf="f.cognome.errors.required">Il Cognome è richiesto</div>
-                            <div *ngIf="f.cognome.errors.troppiDati">La ragione sociale deve essere vuota</div>
                         </div>
                     </div>
                 </div>
@@ -103,7 +101,6 @@
                                [ngClass]="{ 'is-invalid': submitted && f.ragioneSociale.errors }"/>
                         <div *ngIf="submitted && f.ragioneSociale.errors" class="invalid-feedback">
                             <div *ngIf="f.ragioneSociale.errors.required">La ragione sociale è richiesta</div>
-                            <div *ngIf="f.ragioneSociale.errors.troppiDati">Nome e Cognome devono essere vuoti</div>
                         </div>
                     </div>
                 </div>

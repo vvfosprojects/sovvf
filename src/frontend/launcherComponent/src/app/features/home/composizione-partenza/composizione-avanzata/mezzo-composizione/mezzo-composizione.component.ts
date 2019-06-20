@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 
 // Interface
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
@@ -20,7 +20,7 @@ import { makeCopy } from '../../../../../shared/helper/function';
     templateUrl: './mezzo-composizione.component.html',
     styleUrls: ['./mezzo-composizione.component.css']
 })
-export class MezzoComposizioneComponent implements OnInit, OnChanges {
+export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy {
     @Input() mezzoComp: MezzoComposizione;
     @Input() richiesta: SintesiRichiesta;
     @Input() partenze: BoxPartenza[];
@@ -55,32 +55,62 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes['itemPrenotato'] && changes['itemPrenotato'].currentValue) {
-            // console.log('scadenza', this.scadenza);
-
+        if (changes['mezzoComp'] && changes['mezzoComp'].currentValue) {
             const istanteScadenzaSelezione = new Date(this.mezzoComp.istanteScadenzaSelezione).getTime();
-            // console.log('istante', istanteScadenzaSelezione);
-            if (this.scadenza && this.scadenza !== istanteScadenzaSelezione) {
-                this.scadenza = makeCopy(istanteScadenzaSelezione);
+            if (istanteScadenzaSelezione !== 0) {
+                console.log('scadenza Selezione', istanteScadenzaSelezione); //
+                if (this.scadenza && this.scadenza !== istanteScadenzaSelezione) {
+                    this.scadenza = makeCopy(istanteScadenzaSelezione);
+                    clearInterval(this._interval);
+                    this.getProgressBarValue();
+                    // da vedere altrimenti si rimuoverebbe la prenotazione e subito dopo si rimetterebbe la prenotazione, invece non deve accadere...
+                    // console.log('data di scadenza cambiata');
+                }
+                if (!this.scadenza && this.itemPrenotato && istanteScadenzaSelezione) {
+                    this.scadenza = makeCopy(istanteScadenzaSelezione);
+                    this.getProgressBarValue();
+                    // console.log('data scadenza inserita');
+                }
+            } else if (this.scadenza > 0) {
                 clearInterval(this._interval);
-                this.getProgressBarValue();
-                // console.log('test');
+                // console.log('prenotazione rimossa manualmente');
+            } else {
+                // console.log('nessuna prenotazione in corso');
             }
-            if (!this.scadenza && this.itemPrenotato && istanteScadenzaSelezione) {
-                this.scadenza = makeCopy(istanteScadenzaSelezione);
-                this.getProgressBarValue();
-                // console.log('scadenza', this.scadenza);
+        }
+    }
 
-            }
+    ngOnDestroy(): void {
+        clearInterval(this._interval);
+    }
 
+    getProgressBarValue() {
+        if (this.scadenza) {
+            let alert = false;
+            this._interval = setInterval(() => {
+                const dataScadenza = new Date(this.mezzoComp.istanteScadenzaSelezione).getTime();
+                const dataAttuale = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime();
+                this.currentTimeout = dataScadenza - dataAttuale;
+                this.currentTimeout = this.currentTimeout / 1000;
 
-            // if (!this.itemPrenotato && !this.mezzoComp.istanteScadenzaSelezione) {
-            //     console.log('test');
-            //     if (this._interval) {
-            //         console.log('test');
-            //         clearInterval(this._interval);
-            //     }
-            // }
+                if (this.currentTimeout < this.option.alertTimeAgo) {
+                    if (!alert) {
+                        console.log('Prenotazione in scadenza');
+                        alert = true;
+                        this.store.dispatch(new ShowToastr(
+                            ToastrType.Warning, 'Prenotazione in scadenza',
+                            'La prenotazione del mezzo ' + this.mezzoComp.mezzo.codice + ' sta per scadere.',
+                            this.option.alertTimeAgo));
+                    }
+                }
+
+                if (this.currentTimeout <= 0) {
+                    this.store.dispatch(new RequestRemoveBookMezzoComposizione(this.mezzoComp));
+                    this.scadenza = null;
+                    clearInterval(this._interval);
+                    console.log('Mezzo non più prenotato');
+                }
+            }, 500);
         }
     }
 
@@ -189,32 +219,6 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     // Mappa
     mezzoDirection(mezzoComp: MezzoComposizione): void {
         this.mezzoCoordinate.emit(mezzoComp.coordinate);
-    }
-
-    getProgressBarValue() {
-        if (this.scadenza) {
-            let alert = false;
-            this._interval = setInterval(() => {
-                const dataScadenza = new Date(this.mezzoComp.istanteScadenzaSelezione).getTime();
-                const dataAttuale = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime();
-                this.currentTimeout = dataScadenza - dataAttuale;
-                this.currentTimeout = this.currentTimeout / 1000;
-
-                if (this.currentTimeout < this.option.alertTimeAgo) {
-                    if (!alert) {
-                        alert = true;
-                        this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Prenotazione in scadenza', 'La prenotazione del mezzo ' + this.mezzoComp.mezzo.codice + ' sta per scadere.', this.option.alertTimeAgo));
-                    }
-                }
-
-                if (this.currentTimeout <= 0) {
-                    this.store.dispatch(new RequestRemoveBookMezzoComposizione(this.mezzoComp));
-                    this.scadenza = null;
-                    clearInterval(this._interval);
-                    // console.log('Mezzo non più prenotato');
-                }
-            }, 500);
-        }
     }
 
     onResetTimeout() {
