@@ -58,6 +58,17 @@ export function makeID(lengthString?: number): string {
     return text;
 }
 
+export function makeIDChiamata(): string {
+    let text = '';
+    const _lengthString = 2;
+    const possible = '123456789';
+
+    for (let i = 0; i < _lengthString; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return `RM-0${text}`;
+}
+
 export function arraysEqual(a1: any[], a2: any[]) {
     return JSON.stringify(a1) === JSON.stringify(a2);
 }
