@@ -1,0 +1,37 @@
+<label class="mr-2">Tipo Terreno</label>
+<div class="row">
+    <div class="col">
+        <i>
+            <span class="mr-2">Unità di misura:</span>
+            <span class="d-block pl-1 pt-1">
+                <span class="mr-2"><i class="fa fa-object-group"></i></span>
+                <label class="mr-1" for="Mq">Mq</label>
+                <input class="mr-2" id="Mq" type="radio" name="linguaggio" (click)="setUnitaMisura()"
+                       [checked]="!terrenoHa"/>
+                <label class="mr-1" for="Ha">Ha</label>
+                <input id="Ha" type="radio" name="linguaggio" (click)="setUnitaMisura()" [checked]="terrenoHa"/>
+            </span>
+        </i>
+    </div>
+    <div class="col" *ngFor="let tipoTerreno of tipiTerreniChecked">
+        <label>
+            <input
+                    type="checkbox"
+                    name="{{tipoTerreno.name}}"
+                    [checked]="tipoTerreno.checked"
+                    (click)="onCheckboxTerreno(tipoTerreno.name)"/>
+            {{tipoTerreno.name}}
+            <input
+                    type="number"
+                    min="0"
+                    step="any"
+                    name="{{tipoTerreno.name}}"
+                    class="form-control"
+                    placeholder="{{getUnitaMisura()}} {{tipoTerreno.name}}"
+                    [disabled]="!tipoTerreno.checked"
+                    [value]="tipoTerreno.value > 0 && tipoTerreno.value"
+                    (keyup)="onKeyMqTerreno($event, tipoTerreno.name)"
+                    (click)="onKeyMqTerreno($event, tipoTerreno.name)"/>
+        </label>
+    </div>
+</div>

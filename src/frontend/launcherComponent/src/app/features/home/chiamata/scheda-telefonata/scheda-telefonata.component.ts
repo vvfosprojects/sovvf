@@ -24,6 +24,7 @@ import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefo
 import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
+import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -50,6 +51,8 @@ export class SchedaTelefonataComponent implements OnInit {
     nuovaRichiesta: SintesiRichiesta;
     tipologiaRichiedente: string;
     isCollapsed = true;
+
+    terreniSelezionati: TipoTerreno[];
 
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
 
@@ -177,6 +180,8 @@ export class SchedaTelefonataComponent implements OnInit {
                 marker.localita.note = f.noteIndirizzo.value;
             }
         }
+
+        // this.nuovaRichiesta.tipoTerreno = this.validateChechBoxTerreni();
     }
 
     onAddTipologia(tipologia: any) {
@@ -332,4 +337,9 @@ export class SchedaTelefonataComponent implements OnInit {
     makeIdChiamata(): string {
         return `${this.operatore.sede.codice}-${this.operatore.id}-${makeID(8)}`;
     }
+
+    onTerreniSelezionati($event: TipoTerreno[]): void {
+        this.nuovaRichiesta.tipoTerreno = $event;
+    }
+
 }

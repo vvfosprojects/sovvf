@@ -6,6 +6,7 @@ import * as Shared from './index';
 import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
 import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treeview-i18n';
 import { ConfirmModalComponent } from './modal/confirm-modal/confirm-modal.component';
+import { SelezioneTipiTerrenoComponent } from './components/selezione-tipi-terreno/selezione-tipi-terreno.component';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -16,7 +17,8 @@ const COMPONENTS = [
     Shared.LoaderComponent,
     Shared.TreeviewComponent,
     Shared.ListaEntiComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    SelezioneTipiTerrenoComponent
 ];
 
 @NgModule({

@@ -1,5 +1,5 @@
 export enum TipoTerrenoEnum {
-    Campi,
-    Boschi,
-    Sterpaglie
+    Boschi = 'Boschi',
+    Campi = 'Campi',
+    Sterpaglie = 'Sterpaglie'
 }

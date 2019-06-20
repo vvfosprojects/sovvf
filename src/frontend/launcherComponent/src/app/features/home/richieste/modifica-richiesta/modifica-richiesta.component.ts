@@ -15,6 +15,7 @@ import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
 import { Localita } from '../../../../shared/model/localita.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
+import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -179,6 +180,11 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         const nuovaRichiesta = this.getNuovaRichiesta();
 
         this.store.dispatch(new PatchRichiesta(nuovaRichiesta));
+    }
+
+
+    onTerreniSelezionati($event: TipoTerreno[]): void {
+        this.richiestaModifica.tipoTerreno = $event;
     }
 
 }
