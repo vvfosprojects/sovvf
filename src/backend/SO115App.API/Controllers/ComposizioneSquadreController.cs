@@ -24,11 +24,9 @@ using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
-using SO115App.SignalR;
 
 /* using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste; */
 
@@ -48,18 +46,16 @@ namespace SO115App.API.Controllers
         /// </summary>
         private readonly IQueryHandler<ComposizioneSquadreQuery, ComposizioneSquadreResult> handler;
 
-        private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public ComposizioneSquadreController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
+        public ComposizioneSquadreController( IPrincipal currentUser,
             IQueryHandler<ComposizioneSquadreQuery, ComposizioneSquadreResult> handler)
         {
             this.handler = handler;
-            _NotificationHub = NotificationHubContext;
             _currentUser = currentUser;
         }
 
@@ -71,8 +67,6 @@ namespace SO115App.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
         {
-            var headerValues = Request.Headers["HubConnectionId"];
-            string ConId = headerValues.FirstOrDefault();
 
             var query = new ComposizioneSquadreQuery()
             {
@@ -83,11 +77,7 @@ namespace SO115App.API.Controllers
             {
                 try
                 {
-                    List<ComposizioneSquadre> composizioneSquadre = new List<ComposizioneSquadre>();
-                    composizioneSquadre = handler.Handle(query).ComposizioneSquadre;
-
-                    await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetComposizioneSquadre", composizioneSquadre);
-
+                    List<ComposizioneSquadre> composizioneSquadre = handler.Handle(query).ComposizioneSquadre;
                     return Ok();
                 }
                 catch

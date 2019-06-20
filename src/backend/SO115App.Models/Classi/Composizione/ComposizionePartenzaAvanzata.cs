@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="MezzoPrenotato.cs" company="CNVVF">
+// <copyright file="ComposizioneMezzi.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using SO115App.API.Models.Classi.Condivise;
 
 namespace SO115App.API.Models.Classi.Composizione
 {
-    public class MezzoPrenotato
+    public class ComposizionePartenzaAvanzata
     {
-        //[JsonRequired]
-        //public string IdRichiesta { get; set; }
-
-        //[JsonRequired]
-        //public string IdMezzoComposizione { get; set; }
-
-        public ComposizioneMezzi mezzoComposizione { get; set; }
-
-        public string codiceSede { get; set; }
-
-        //[JsonRequired]
-        //public string IdMezzo { get; set; }
-
+        public List<ComposizioneMezzi> ComposizioneMezzi { get; set; }
+        public List<ComposizioneSquadre> ComposizioneSquadre { get; set; }
     }
 }

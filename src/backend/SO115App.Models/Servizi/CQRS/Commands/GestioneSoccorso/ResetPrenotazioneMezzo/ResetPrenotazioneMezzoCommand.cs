@@ -11,5 +11,7 @@ namespace DomainModel.CQRS.Commands.ResetPrenotazioneMezzo
     public class ResetPrenotazioneMezzoCommand
     {
         public SO115App.API.Models.Classi.Composizione.MezzoPrenotato MezzoPrenotato { get; set; }
+
+        public string codiceSede { get; set; }
     }
 }

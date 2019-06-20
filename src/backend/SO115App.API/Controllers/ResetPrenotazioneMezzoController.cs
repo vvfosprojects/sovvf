@@ -49,17 +49,15 @@ namespace SO115App.API.Controllers
 
         private readonly ICommandHandler<ResetPrenotazioneMezzoCommand> handler;
 
-        private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public ResetPrenotazioneMezzoController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
+        public ResetPrenotazioneMezzoController( IPrincipal currentUser,
             ICommandHandler<ResetPrenotazioneMezzoCommand> handler)
         {
             this.handler = handler;
-            _NotificationHub = NotificationHubContext;
             _currentUser = currentUser;
         }
 
@@ -71,34 +69,26 @@ namespace SO115App.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(MezzoPrenotato mezzoPrenotato)
         {
-            var headerValues = Request.Headers["HubConnectionId"];
             var codiceSede = Request.Headers["codicesede"];
-            string ConId = headerValues.FirstOrDefault();
 
             var command = new ResetPrenotazioneMezzoCommand()
             {
-                MezzoPrenotato = mezzoPrenotato
+                MezzoPrenotato = mezzoPrenotato,
+                codiceSede = codiceSede
             };
 
-            if (ModelState.IsValid)
-            {
+         
                 try
                 {
 
                     handler.Handle(command);
-                    await _NotificationHub.Clients.Group(codiceSede).SendAsync("NotifyResetPrenotazioneMezzo", command);
 
                     return Ok();
                 }
                 catch
                 {
                     return BadRequest();
-                }
-            }
-            else
-            {
-                return BadRequest();
-            }
+                }         
         }
     }
 }
