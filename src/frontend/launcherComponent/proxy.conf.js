@@ -9,6 +9,7 @@ const PROXY_CONFIG = [
             "/api/InserimentoIntervento",
             "/api/UpdateIntervento",
             "/api/ComposizionePartenzaAvanzata",
+            "/api/PreAccoppiati",
             "/api/ChiamataInCorso",
             "/api/ListaEventi",
             "/api/AddPrenotazioneMezzo",
