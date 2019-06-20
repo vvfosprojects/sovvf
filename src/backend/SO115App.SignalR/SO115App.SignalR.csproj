@@ -18,4 +18,8 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Sender\ComposizionePartenza\" />
+  </ItemGroup>
+
 </Project>

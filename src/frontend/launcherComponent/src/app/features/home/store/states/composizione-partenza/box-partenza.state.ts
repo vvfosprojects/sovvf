@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 // Interface
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 
@@ -7,20 +7,18 @@ import {
     AddMezzoBoxPartenzaSelezionato,
     AddSquadraBoxPartenza, ClearBoxPartenze,
     RemoveBoxPartenza, RemoveBoxPartenzaByMezzoId, RemoveMezzoBoxPartenzaSelezionato,
-    RemoveSquadraBoxPartenza,
-    SelectBoxPartenza, UnselectBoxPartenza
+    RemoveSquadraBoxPartenza, RequestAddBoxPartenza,
+    SelectBoxPartenza, UpdateMezzoBoxPartenza
 } from '../../actions/composizione-partenza/box-partenza.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
 import { makeID } from '../../../../../shared/helper/function';
 import produce from 'immer';
 import {
     ClearSelectedMezziComposizione,
-    RemoveBookMezzoComposizione, RequestBookMezzoComposizione, RequestRemoveBookMezzoComposizione,
-    SelectMezzoComposizione, UnselectMezzoComposizione
+    RemoveBookMezzoComposizione, RequestBookMezzoComposizione, SelectMezzoComposizione, UnselectMezzoComposizione
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
 import { ClearSelectedSquadreComposizione, SelectSquadraComposizione, UnselectSquadraComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
-import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 
@@ -51,22 +49,36 @@ export class BoxPartenzaState {
         return state.idBoxPartenzaSelezionato;
     }
 
-    constructor(private _compPartenzaService: CompPartenzaService,
-                private store: Store) {
+    constructor() {
+    }
+
+    @Action(RequestAddBoxPartenza)
+    requestAddBoxPartenza({ getState, dispatch }: StateContext<BoxPartenzaStateModel>) {
+        const state = getState();
+        if (validateBoxPartenza(state.idBoxPartenzaSelezionato, state.boxPartenzaList)) {
+            // prendo il box partenza selezionato tramite l'id
+            const boxPartenzaSelezionato = state.boxPartenzaList.filter(x => x.id === state.idBoxPartenzaSelezionato)[0];
+            // se il box partenza attualmente selezionato ha un mezzo lo prenoto
+            if (boxPartenzaSelezionato && boxPartenzaSelezionato.mezzoComposizione && !boxPartenzaSelezionato.mezzoComposizione.istanteScadenzaSelezione) {
+                const mezzoComp = boxPartenzaSelezionato.mezzoComposizione;
+                dispatch(new RequestBookMezzoComposizione(mezzoComp, true));
+            } else if (boxPartenzaSelezionato) {
+                dispatch(new AddBoxPartenza());
+            }
+        } else {
+            // se il box partenza attualmente selezionato non è valido mostro un messaggio di errore
+            dispatch(new ShowToastr(ToastrType.Error, 'Errore Aggiungi Partenza', 'La partenza attuale non è valida, impossibile creare una nuova partenza.', 5));
+        }
     }
 
     @Action(AddBoxPartenza)
     addBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>) {
         const state = getState();
+        // credo un ID logico random da asseganre al box-partenza
         const _id = makeID();
+        // controllo se tutti i box-partenza sono validi
         if (validateBoxPartenza(state.idBoxPartenzaSelezionato, state.boxPartenzaList)) {
-            // prendo il box partenza selezionato tramite l'id
-            const boxPartenzaSelezionato = state.boxPartenzaList.filter(x => x.id === state.idBoxPartenzaSelezionato)[0];
-            // se il box partenza attualmente selezionato ha un mezzo lo prenoto
-            if (boxPartenzaSelezionato && boxPartenzaSelezionato.mezzoComposizione) {
-                const mezzoComp = boxPartenzaSelezionato.mezzoComposizione;
-                dispatch(new RequestBookMezzoComposizione(mezzoComp));
-            }
+            // controllo se ho raggiunto il numero massimo di box-partenza (3 MAX)
             if (state.boxPartenzaList.length <= 2) {
                 // creo il nuovo box partenza
                 setState(
@@ -94,14 +106,12 @@ export class BoxPartenzaState {
     @Action(RemoveBoxPartenza)
     removeBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza) {
         const state = getState();
+        // Deseleziono il mezzo selezionato
         if (action.boxPartenza.mezzoComposizione) {
-            const mezzoComp = action.boxPartenza.mezzoComposizione;
-            this.store.dispatch(new RequestRemoveBookMezzoComposizione(mezzoComp));
-            if (state.idBoxPartenzaSelezionato === action.boxPartenza.id) {
-                dispatch(new UnselectMezzoComposizione(mezzoComp));
-            }
+            dispatch(new UnselectMezzoComposizione(action.boxPartenza.mezzoComposizione));
         }
 
+        // Deseleziono le squadre selezionate
         if (action.boxPartenza.squadraComposizione) {
             action.boxPartenza.squadraComposizione.forEach((squadra: SquadraComposizione) => {
                 dispatch(new UnselectSquadraComposizione(squadra));
@@ -125,6 +135,8 @@ export class BoxPartenzaState {
                 }
             });
         }
+
+        // rimuovo il box dalla lista
         setState(
             patch({
                 boxPartenzaList: removeItem((item: BoxPartenza) => item.id === action.boxPartenza.id)
@@ -166,11 +178,6 @@ export class BoxPartenzaState {
             }
         });
         // console.log(action.idBoxPartenza);
-    }
-
-    @Action(UnselectBoxPartenza)
-    unselectBoxPartenza({ setState }: StateContext<BoxPartenzaStateModel>, action: SelectBoxPartenza) {
-        console.log(action.idBoxPartenza);
     }
 
     @Action(AddSquadraBoxPartenza)
@@ -231,6 +238,21 @@ export class BoxPartenzaState {
         // console.log(action.mezzo);
     }
 
+    @Action(UpdateMezzoBoxPartenza)
+    updateMezzoBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: UpdateMezzoBoxPartenza) {
+        const state = getState();
+        setState(
+            produce(state, draft => {
+                draft.boxPartenzaList.forEach((box: BoxPartenza) => {
+                    if (box.mezzoComposizione && box.mezzoComposizione.mezzo.codice === action.mezzoComp.mezzo.codice) {
+                        box.mezzoComposizione = action.mezzoComp;
+                    }
+                });
+            })
+        );
+        // console.log(action.mezzo);
+    }
+
     @Action(RemoveMezzoBoxPartenzaSelezionato)
     removeMezzoBoxPartenzaSelezionato({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: RemoveMezzoBoxPartenzaSelezionato) {
         const state = getState();
@@ -243,7 +265,7 @@ export class BoxPartenzaState {
                 });
             })
         );
-        // console.log(action.idMezzo);
+        // console.log(action.mezzo);
     }
 
     @Action(ClearBoxPartenze)

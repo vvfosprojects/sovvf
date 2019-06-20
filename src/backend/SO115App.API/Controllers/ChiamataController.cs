@@ -20,6 +20,7 @@
 using System.Threading.Tasks;
 using CQRS.Commands;
 using DomainModel.CQRS.Commands.AddIntervento;
+using DomainModel.CQRS.Commands.UpDateIntervento;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
@@ -29,25 +30,29 @@ namespace SO115App.API.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class InserimentoInterventoController : ControllerBase
+    public class ChiamataController : ControllerBase
     {
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly ICommandHandler<AddInterventoCommand> _handler;
+        private readonly ICommandHandler<AddInterventoCommand> _Addhandler;
+
+        private readonly ICommandHandler<UpDateInterventoCommand> _Updatehandler;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public InserimentoInterventoController(
-            ICommandHandler<AddInterventoCommand> handler)
+        public ChiamataController(
+            ICommandHandler<AddInterventoCommand> Addhandler,
+            ICommandHandler<UpDateInterventoCommand> Updatehandler)
         {
-            _handler = handler;
+            _Addhandler = Addhandler;
+            _Updatehandler = Updatehandler;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> InserimentoIntervento([FromBody]Intervento chiamata)
+        [HttpPost("Add")]
+        public async Task<IActionResult> InserimentoChiamata([FromBody]Intervento chiamata)
         {
             var command = new AddInterventoCommand()
             {
@@ -56,7 +61,26 @@ namespace SO115App.API.Controllers
 
             try
             {
-                this._handler.Handle(command);
+                this._Addhandler.Handle(command);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("Update")]
+        public async Task<IActionResult> UpdateChiamata([FromBody]Intervento chiamata)
+        {
+            var command = new UpDateInterventoCommand()
+            {
+                Chiamata = chiamata
+            };
+
+            try
+            {
+                this._Updatehandler.Handle(command);
                 return Ok();
             }
             catch

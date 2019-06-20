@@ -1,10 +1,15 @@
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
+import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 
 export class SetListaMezziComposizione {
     static readonly type = '[MezziComposizione] Set Lista Mezzi Composizione';
 
     constructor(public mezziComp: MezzoComposizione[]) {
     }
+}
+
+export class ClearListaMezziComposizione {
+    static readonly type = '[MezziComposizione] Clear Lista Mezzi Composizione';
 }
 
 export class AddMezzoComposizione {
@@ -63,7 +68,7 @@ export class HoverOutMezzoComposizione {
 export class RequestBookMezzoComposizione {
     static readonly type = '[MezziComposizione] Request Book Mezzo Composizione';
 
-    constructor(public mezzoComp: MezzoComposizione) {
+    constructor(public mezzoComp: MezzoComposizione, public addBoxPartenza?: boolean) {
     }
 }
 
@@ -77,7 +82,7 @@ export class AddBookMezzoComposizione {
 export class RequestRemoveBookMezzoComposizione {
     static readonly type = '[MezziComposizione] Request Remove Book Mezzo Composizione';
 
-    constructor(public mezzoComp: MezzoComposizione) {
+    constructor(public mezzoComp: MezzoComposizione, public boxPartenza?: BoxPartenza) {
     }
 }
 
@@ -101,20 +106,6 @@ export class ResetBookMezzoComposizione {
     constructor(public mezzoComp: MezzoComposizione) {
     }
 }
-
-// export class StartTimeoutMezzoComposizione {
-//     static readonly type = '[MezziComposizione] Start Timeout Mezzo Composizione';
-//
-//     constructor(public idMezzoComp: string) {
-//     }
-// }
-//
-// export class StopTimeoutMezzoComposizione {
-//     static readonly type = '[MezziComposizione] Stop Timeout Mezzo Composizione';
-//
-//     constructor(public idMezzoComp: string) {
-//     }
-// }
 
 export class LockMezzoComposizione {
     static readonly type = '[MezziComposizione] Lock Mezzo Composizione';

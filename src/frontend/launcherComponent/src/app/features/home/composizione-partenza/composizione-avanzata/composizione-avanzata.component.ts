@@ -17,7 +17,13 @@ import { makeCopy } from '../../../../shared/helper/function';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza-state';
 import { MezziComposizioneState } from '../../store/states/composizione-partenza/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../store/states/composizione-partenza/squadre-composizione.state';
-import { HoverInMezzoComposizione, HoverOutMezzoComposizione, SelectMezzoComposizione, UnselectMezzoComposizione } from '../../store/actions/composizione-partenza/mezzi-composizione.actions';
+import {
+    HoverInMezzoComposizione,
+    HoverOutMezzoComposizione,
+    RequestRemoveBookMezzoComposizione,
+    SelectMezzoComposizione,
+    UnselectMezzoComposizione
+} from '../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
 import {
@@ -25,7 +31,7 @@ import {
     AddMezzoBoxPartenzaSelezionato,
     AddSquadraBoxPartenza, ClearBoxPartenze,
     RemoveBoxPartenza,
-    RemoveMezzoBoxPartenzaSelezionato, RemoveSquadraBoxPartenza,
+    RemoveMezzoBoxPartenzaSelezionato, RemoveSquadraBoxPartenza, RequestAddBoxPartenza,
     SelectBoxPartenza
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
@@ -210,7 +216,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     mezzoDeselezionato(mezzoComposizione: MezzoComposizione) {
         this.store.dispatch(new UnselectMezzoComposizione(mezzoComposizione));
-        this.store.dispatch(new RemoveMezzoBoxPartenzaSelezionato(mezzoComposizione.id));
+        this.store.dispatch(new RemoveMezzoBoxPartenzaSelezionato(mezzoComposizione));
         this.clearDirection.emit();
         // console.log('Mezzo deselezionato', mezzoComposizione);
     }
@@ -276,12 +282,19 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         if (this.boxPartenzaList.length <= 0) {
             this.store.dispatch(new AddBoxPartenza());
         } else {
-            this.store.dispatch(new AddBoxPartenza());
+            // const idBoxSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
+            // const boxSelezionato =  this.boxPartenzaList.filter(x => x.id === idBoxSelezionato)[0];
+            this.store.dispatch(new RequestAddBoxPartenza());
         }
     }
 
     eliminaBoxPartenza(boxPartenza: BoxPartenza) {
-        this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
+        if (boxPartenza.mezzoComposizione && boxPartenza.mezzoComposizione.istanteScadenzaSelezione) {
+            const mezzoComp = boxPartenza.mezzoComposizione;
+            this.store.dispatch(new RequestRemoveBookMezzoComposizione(mezzoComp, boxPartenza));
+        } else {
+            this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
+        }
     }
 
     // Id Maker

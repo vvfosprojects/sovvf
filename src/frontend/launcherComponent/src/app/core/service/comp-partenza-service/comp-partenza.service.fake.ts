@@ -7,7 +7,7 @@ import { BoxPartenza } from '../../../features/home/composizione-partenza/interf
 import { SquadraComposizione } from 'src/app/features/home/composizione-partenza/interface/squadra-composizione-interface';
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
 import { Store } from '@ngxs/store';
-import { SetPreAccoppiati } from '../../../features/home/store/actions/composizione-partenza/pre-accoppiati.actions';
+import { SetListaComposizioneVeloce } from '../../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import {
     AddBookMezzoComposizione,
     RemoveBookMezzoComposizione,
@@ -20,6 +20,7 @@ import { makeCopy } from '../../../shared/helper/function';
 import { OFFSET_SYNC_TIME } from '../../settings/referral-time';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza-state';
 import { RemoveBoxPartenzaByMezzoId } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
+import { timeout } from 'rxjs/operators';
 
 @Injectable()
 export class CompPartenzaServiceFake {
@@ -374,7 +375,7 @@ export class CompPartenzaServiceFake {
         ];
 
         setTimeout(() => {
-            this.store.dispatch(new SetPreAccoppiati(this.preAccoppiati));
+            this.store.dispatch(new SetListaComposizioneVeloce(this.preAccoppiati));
         }, 2000);
 
         return of();
@@ -653,7 +654,6 @@ export class CompPartenzaServiceFake {
     setMezzoPrenotato(mezzoComp: MezzoComposizione) {
         setTimeout(() => {
             const obj = makeCopy(mezzoComp);
-            // mezzo.istanteScadenzaSelezione = moment(new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime()).add(3, 'minutes').toDate();
             obj.mezzoComposizione.istanteScadenzaSelezione = moment(new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime()).add(3, 'minutes').toDate();
             const response = {
                 'mezzoComposizione': obj.mezzoComposizione
@@ -661,7 +661,6 @@ export class CompPartenzaServiceFake {
             this.store.dispatch(new AddBookMezzoComposizione(response.mezzoComposizione));
             this.store.dispatch(new UpdateMezzoComposizione(response.mezzoComposizione));
         }, 1000);
-
 
         return of(null);
     }
@@ -676,10 +675,10 @@ export class CompPartenzaServiceFake {
             };
             // this.store.dispatch(new AddBookMezzoComposizione(response.mezzoComposizione));
             this.store.dispatch(new UpdateMezzoComposizione(response.mezzoComposizione));
+            return of(null);
         }, 1000);
 
-
-        return of(null);
+        return of();
     }
 
     removeMezzoPrenotato(mezzoComp: MezzoComposizione) {
@@ -691,9 +690,8 @@ export class CompPartenzaServiceFake {
             };
             this.store.dispatch(new RemoveBookMezzoComposizione(response.mezzoComposizione));
             this.store.dispatch(new UpdateMezzoComposizione(response.mezzoComposizione));
-            this.store.dispatch(new RemoveBoxPartenzaByMezzoId(response.mezzoComposizione.mezzo.codice));
+            // this.store.dispatch(new RemoveBoxPartenzaByMezzoId(response.mezzoComposizione.mezzo.codice));
         }, 1000);
-
 
         return of(null);
     }

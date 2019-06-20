@@ -21,7 +21,7 @@ import {
     UpdateMezzoComposizione
 } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { SetListaSquadreComposizione } from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
-import { RemoveBoxPartenzaByMezzoId } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
+import { RemoveBoxPartenzaByMezzoId, UpdateMezzoBoxPartenza } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -159,7 +159,6 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyGetPreaccoppiati', (data: any) => {
             console.log('NotifyGetPreaccoppiatiComposizione', data);
-            // this.store.dispatch(new SetPreAccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyAddPrenotazioneMezzo', (data: any) => {

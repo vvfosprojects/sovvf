@@ -4,7 +4,6 @@
             <div class="card-header">
                 <i class="fa fa-truck mr-2"></i><span class="h6">Mezzi</span>
             </div>
-            <h5 *ngIf="mezziComposizione?.length <= 0">Nessun Mezzo</h5>
             <ul *ngIf="mezziComposizione?.length > 0" class="list-group list-group-flush border-bottom scroll-y"
                 style="max-height:345px; min-height:345px">
                 <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC"
@@ -19,6 +18,14 @@
                                         (hoverOut)="mezzoHoverOut($event)"
                                         (mezzoCoordinate)="mezzoCoordinate($event)"></app-mezzo-composizione>
             </ul>
+            <div class="row">
+                <div *ngIf="mezziComposizione?.length <= 0" class="col-12 my-3">
+                    <div class="text-center">
+                        <i class="fa fa-spinner fa-3x fa-spin"></i>
+                        <h6 class="m-0 mt-2">Caricamento...</h6>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-3 pr-0">
@@ -26,7 +33,6 @@
             <div class="card-header">
                 <i class="fa fa-group mr-2"></i><span class="h6">Squadre</span>
             </div>
-            <h5 *ngIf="squadreComposizione?.length <= 0">Nessuna Squadra</h5>
             <ul *ngIf="squadreComposizione?.length > 0" class="list-group list-group-flush border-bottom scroll-y"
                 style="max-height:345px; min-height:345px">
                 <app-squadra-composizione *ngFor="let sC of squadreComposizione" [squadraComp]="sC"
@@ -38,6 +44,14 @@
                                           (hoverIn)="squadraHoverIn($event)"
                                           (hoverOut)="squadraHoverOut($event)"></app-squadra-composizione>
             </ul>
+            <div class="row">
+                <div *ngIf="squadreComposizione?.length <= 0" class="col-12 my-3">
+                    <div class="text-center">
+                        <i class="fa fa-spinner fa-3x fa-spin"></i>
+                        <h6 class="m-0 mt-2">Caricamento...</h6>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div *ngIf="mezziComposizione && squadreComposizione" class="col-4">
@@ -51,7 +65,8 @@
             </div>
             <!-- bottone nuova partenza -->
             <div *ngIf="boxPartenzaList.length > 0" class="text-center mb-2">
-                <button class="btn btn-primary" (click)="nuovaPartenza()" [disabled]="boxPartenzaList.length > 2"><i class="fa fa-plus mr-2"></i>Aggiungi
+                <button class="btn btn-primary" (click)="nuovaPartenza()" [disabled]="boxPartenzaList.length > 2"><i
+                        class="fa fa-plus mr-2"></i>Aggiungi
                     partenza
                 </button>
             </div>
@@ -71,13 +86,5 @@
             <span class="mr-1">Conferma partenze</span>
             <span class="badge badge-light">{{boxPartenzaList.length}}</span>
         </button>
-    </div>
-</div>
-<div *ngIf="!mezziComposizione && !squadreComposizione" class="row">
-    <div class="col-12 mt-5">
-        <div class="text-center">
-            <i class="fa fa-spinner fa-3x fa-spin"></i>
-            <h6 class="m-0 mt-2">Caricamento...</h6>
-        </div>
     </div>
 </div>

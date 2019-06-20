@@ -11,7 +11,7 @@ import { DirectionInterface } from '../../maps/maps-interface/direction-interfac
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
 import { GetFiltriComposizione } from '../../store/actions/composizione-partenza/filterbar-composizione.actions';
-import { PreAccoppiatiState } from '../../store/states/composizione-partenza/pre-accoppiati.state';
+import { ComposizioneVeloceState } from '../../store/states/composizione-partenza/composizione-veloce.state';
 import { makeCopy } from '../../../../shared/helper/function';
 
 @Component({
@@ -27,7 +27,7 @@ export class FasterComponent implements OnInit, OnDestroy {
     idPreAccoppiatiSelezionati: string[] = [];
     preAccoppiatiSelezionati: BoxPartenza[] = [];
 
-    @Select(PreAccoppiatiState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
+    @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     preAccoppiati: BoxPartenza[];
 
     Composizione = Composizione;
