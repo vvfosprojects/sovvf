@@ -21,9 +21,10 @@
                                 </a>
                                 <span *ngIf="richiesta?.rilevanza || richiesta?.rilevanzaStArCu"
                                       class="d-inline-block mr-1 text-danger"
-                                      [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="richiesta?.rilevanza"
-                                                                                     class="fa fa-exclamation"></i><i
-                                        *ngIf="richiesta?.rilevanzaStArCu" class="fa fa-university"></i></span>
+                                      [ngbTooltip]="rilevante" placement="bottom">
+                                    <i *ngIf="richiesta?.rilevanzaStArCu" class="fa fa-university mr-2"></i>
+                                    <i *ngIf="richiesta?.rilevanza" class="fa fa-exclamation"></i>
+                                </span>
                             </div>
                         </div>
                         <div class="col-6">
@@ -362,15 +363,19 @@
                                 <span *ngIf="richiesta?.turnoInserimentoChiamata || richiesta?.turnoIntervento; else nessunTurno">
                                     <span *ngIf="richiesta?.turnoInserimentoChiamata && !richiesta?.turnoIntervento">
                                         <a ngbTooltip="Turno Inserimento {{richiesta.turnoInserimentoChiamata.descrizione}} ({{richiesta.turnoInserimentoChiamata.diurnoNotturno}})">Turno {{richiesta.turnoInserimentoChiamata.descrizione}} {{richiesta.turnoInserimentoChiamata.diurnoNotturno}}</a>
-                                        <i class="guida fa fa-clock-o fa-fw ml-1" [ngbTooltip]="orarioTurnoInserimento" placement="right"></i>
+                                        <i class="guida fa fa-clock-o fa-fw ml-1" [ngbTooltip]="orarioTurnoInserimento"
+                                           placement="right"></i>
                                     </span>
                                     <span *ngIf="richiesta?.turnoInserimentoChiamata && richiesta?.turnoIntervento">
                                         <a [ngbTooltip]="turnoInterventoTooltip">Turno {{richiesta.turnoIntervento.descrizione}} {{richiesta.turnoIntervento.diurnoNotturno}}</a>
-                                        <i class="guida fa fa-clock-o fa-fw ml-1" [ngbTooltip]="orarioTurnoIntervento" placement="right"></i>
+                                        <i class="guida fa fa-clock-o fa-fw ml-1" [ngbTooltip]="orarioTurnoIntervento"
+                                           placement="right"></i>
                                     </span>
                                     <ng-template #turnoInterventoTooltip>
-                                        <div>Turno Inserimento {{richiesta.turnoInserimentoChiamata.descrizione}} ({{richiesta.turnoInserimentoChiamata.diurnoNotturno}})</div>
-                                        <div>Turno Intervento {{richiesta.turnoIntervento.descrizione}} ({{richiesta.turnoIntervento.diurnoNotturno}})</div>
+                                        <div>Turno Inserimento {{richiesta.turnoInserimentoChiamata.descrizione}}
+                                            ({{richiesta.turnoInserimentoChiamata.diurnoNotturno}})</div>
+                                        <div>Turno Intervento {{richiesta.turnoIntervento.descrizione}}
+                                            ({{richiesta.turnoIntervento.diurnoNotturno}})</div>
                                     </ng-template>
                                     <ng-template #orarioTurnoInserimento>
                                         <div>inizio {{ methods._dateTime(richiesta.turnoInserimentoChiamata.dataOraInizio) | friendlyDateTooltip }}</div>
@@ -387,14 +392,17 @@
                                 </span>
                                 <ng-template #nessunTurno>
                                     <a>-</a>
-                                    <i class="guida fa fa-clock-o fa-fw ml-1" ngbTooltip="Turno non presente" placement="right"></i>
+                                    <i class="guida fa fa-clock-o fa-fw ml-1" ngbTooltip="Turno non presente"
+                                       placement="right"></i>
                                 </ng-template>
 
                             </div>
 
                             <!-- enti intervenuti -->
                             <div class="h6 text-right">
-                                <button class="btn btn-light border big_font py-0 px-1" ngbTooltip="Elenco Enti" *ngIf="methods._entiCount(richiesta.listaEntiIntervenuti?.length, richiesta.listaEntiPresaInCarico?.length) as totaleEnti; else nessunEnte" (click)="onListaEnti(); $event.stopPropagation()">
+                                <button class="btn btn-light border big_font py-0 px-1" ngbTooltip="Elenco Enti"
+                                        *ngIf="methods._entiCount(richiesta.listaEntiIntervenuti?.length, richiesta.listaEntiPresaInCarico?.length) as totaleEnti; else nessunEnte"
+                                        (click)="onListaEnti(); $event.stopPropagation()">
                                     {{ totaleEnti }}</button>
                                 <ng-template #nessunEnte>
                                     <span class="badge badge-secondary text-light "
@@ -407,10 +415,13 @@
 
                             <!-- tipo terreno -->
                             <div class="h6 text-right">
-                                <span *ngIf="methods._terrenoMaggiore(richiesta.tipoTerreno) as tipoTerrenoValue; else noterreni" class="h6 m-0" [ngbTooltip]="tipoTerrenoValue.terrenoMq">
+                                <span *ngIf="methods._terrenoMaggiore(richiesta.tipoTerreno) as tipoTerrenoValue; else noterreni"
+                                      class="h6 m-0" [ngbTooltip]="tipoTerrenoValue.terrenoMq">
                                     {{ tipoTerrenoValue.terrenoHa }}
                                 </span>
-                                <button *ngIf="richiesta.tipoTerreno && richiesta.tipoTerreno.length > 1" class="btn btn-light border big_font py-0 px-1" [ngbTooltip]="terreni" (click)="$event.stopPropagation()">
+                                <button *ngIf="richiesta.tipoTerreno && richiesta.tipoTerreno.length > 1"
+                                        class="btn btn-light border big_font py-0 px-1" [ngbTooltip]="terreni"
+                                        (click)="$event.stopPropagation()">
                                     +{{ richiesta.tipoTerreno.length - 1 }}</button>
                                 <ng-template #terreni>
                                     <div *ngIf="methods._terreniMinori(richiesta.tipoTerreno) as terreniTooltip">

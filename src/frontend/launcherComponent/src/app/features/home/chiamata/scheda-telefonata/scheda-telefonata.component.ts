@@ -52,8 +52,6 @@ export class SchedaTelefonataComponent implements OnInit {
     tipologiaRichiedente: string;
     isCollapsed = true;
 
-    terreniSelezionati: TipoTerreno[];
-
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
 
     constructor(private formBuilder: FormBuilder,
