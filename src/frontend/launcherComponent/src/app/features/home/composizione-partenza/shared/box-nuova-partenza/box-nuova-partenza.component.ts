@@ -30,7 +30,8 @@ export class BoxNuovaPartenzaComponent {
         }
     }
 
-    onElimina() {
+    onElimina(e: MouseEvent) {
+        e.stopPropagation();
         this.eliminato.emit(this.partenza);
     }
 
