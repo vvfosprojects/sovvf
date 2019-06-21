@@ -4,7 +4,7 @@ import {
     AddFiltroSelezionatoComposizione,
     GetFiltriComposizione,
     RemoveFiltriSelezionatiComposizione,
-    RemoveFiltroSelezionatoComposizione,
+    RemoveFiltroSelezionatoComposizione, SetComposizioneMode,
     SetFiltriComposizione,
     ToggleComposizioneMode,
     UpdateListe
@@ -238,6 +238,13 @@ export class ComposizionePartenzaState {
                 composizioneMode: Composizione.Avanzata
             });
         }
+    }
+
+    @Action(SetComposizioneMode)
+    setComposizioneMode({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: SetComposizioneMode) {
+        patchState({
+            composizioneMode: action.compMode
+        });
     }
 
     @Action(TerminaComposizione)
