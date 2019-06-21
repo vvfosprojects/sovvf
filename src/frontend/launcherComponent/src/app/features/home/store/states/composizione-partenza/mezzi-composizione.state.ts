@@ -1,25 +1,40 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 import {
+    AddBookingMezzoComposizione,
     AddBookMezzoComposizione,
-    AddMezzoComposizione, ClearListaMezziComposizione, ClearSelectedMezziComposizione, HoverInMezzoComposizione, HoverOutMezzoComposizione, LockMezzoComposizione, RemoveBookMezzoComposizione,
-    RemoveMezzoComposizione, RequestBookMezzoComposizione, RequestRemoveBookMezzoComposizione, RequestResetBookMezzoComposizione, RequestUnlockMezzoComposizione, ResetBookMezzoComposizione,
+    AddMezzoComposizione,
+    ClearListaMezziComposizione,
+    ClearSelectedMezziComposizione,
+    HoverInMezzoComposizione,
+    HoverOutMezzoComposizione,
+    LockMezzoComposizione,
+    RemoveBookingMezzoComposizione,
+    RemoveBookMezzoComposizione,
+    RemoveMezzoComposizione,
+    RequestBookMezzoComposizione,
+    RequestRemoveBookMezzoComposizione,
+    RequestResetBookMezzoComposizione,
+    RequestUnlockMezzoComposizione,
+    ResetBookMezzoComposizione,
     SelectMezzoComposizione,
-    SetListaMezziComposizione, UnlockMezzoComposizione, UnselectMezzoComposizione,
+    SetListaMezziComposizione,
+    UnlockMezzoComposizione,
+    UnselectMezzoComposizione,
     UpdateMezzoComposizione
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
-import { AddBoxPartenza, RemoveBoxPartenza, RemoveBoxPartenzaByMezzoId, SelectBoxPartenza, UpdateMezzoBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
-import { BoxPartenzaState } from './box-partenza.state';
+import { AddBoxPartenza, SelectBoxPartenza, UpdateMezzoBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
 
 export interface MezziComposizioneStateStateModel {
     mezziComposizione: MezzoComposizione[];
     idMezzoComposizioneSelezionato: string;
     idMezzoComposizioneHover: string;
     idMezzoSelezionato: string;
+    idMezziInPrenotazione: string[];
     idMezziPrenotati: string[];
     idMezziBloccati: string[];
 }
@@ -30,6 +45,7 @@ export const MezziComposizioneStateDefaults: MezziComposizioneStateStateModel = 
     idMezzoComposizioneHover: null,
     idMezzoSelezionato: null,
     idMezziPrenotati: [],
+    idMezziInPrenotazione: [],
     idMezziBloccati: []
 };
 
@@ -47,6 +63,11 @@ export class MezziComposizioneState {
     @Selector()
     static idMezzoSelezionato(state: MezziComposizioneStateStateModel) {
         return state.idMezzoComposizioneSelezionato;
+    }
+
+    @Selector()
+    static idMezziInPrenotazione(state: MezziComposizioneStateStateModel) {
+        return state.idMezziInPrenotazione;
     }
 
     @Selector()
@@ -166,6 +187,7 @@ export class MezziComposizioneState {
         const mezzoPrenotatoObj = {
             'mezzoComposizione': action.mezzoComp
         };
+        dispatch(new AddBookingMezzoComposizione(action.mezzoComp));
         this._compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
             if (action.addBoxPartenza) {
                 dispatch(new AddBoxPartenza());
@@ -191,21 +213,21 @@ export class MezziComposizioneState {
         }
     }
 
+    @Action(AddBookingMezzoComposizione)
+    addBookingMezzoComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: AddBookingMezzoComposizione) {
+        setState(
+            patch({
+                idMezziInPrenotazione: insertItem(action.mezzoComp.id)
+            })
+        );
+    }
+
     @Action(RequestRemoveBookMezzoComposizione)
     requestRemoveBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestRemoveBookMezzoComposizione) {
         const mezzoPrenotatoObj = {
             'mezzoComposizione': action.mezzoComp
         };
         this._compPartenzaService.removeMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
-            // rimuovo il boxPartenza
-            // TODO: verificare se serve (backend)
-            // if (action.boxPartenza) {
-            //     dispatch(new RemoveBoxPartenza(action.boxPartenza));
-            //     const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
-            //     if (idBoxPartenzaSelezionato === action.boxPartenza.id) {
-            //         dispatch(new UnselectMezzoComposizione(action.mezzoComp));
-            //     }
-            // }
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Rimozione Prenotazione Mezzo', 'Il server web non risponde', 5)));
     }
 
@@ -221,6 +243,15 @@ export class MezziComposizioneState {
                 })
             );
         }
+    }
+
+    @Action(RemoveBookingMezzoComposizione)
+    removeBookingMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: RemoveBookingMezzoComposizione) {
+        setState(
+            patch({
+                idMezziInPrenotazione: removeItem(id => id === action.mezzoComp.id)
+            })
+        );
     }
 
     @Action(RequestResetBookMezzoComposizione)

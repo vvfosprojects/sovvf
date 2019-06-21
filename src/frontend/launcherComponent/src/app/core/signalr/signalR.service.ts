@@ -15,7 +15,8 @@ import { ToastrType } from '../../shared/enum/toastr';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
 import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import {
-    AddBookMezzoComposizione,
+    AddBookingMezzoComposizione,
+    AddBookMezzoComposizione, RemoveBookingMezzoComposizione,
     RemoveBookMezzoComposizione,
     SetListaMezziComposizione,
     UpdateMezzoComposizione
@@ -163,6 +164,7 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyAddPrenotazioneMezzo', (data: any) => {
             this.store.dispatch(new AddBookMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
+            this.store.dispatch(new RemoveBookingMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
             this.store.dispatch(new UpdateMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
             const mezzoComp = data.mezzoPrenotato.mezzoComposizione;
             let dataScadenzaSelezione = new Date(mezzoComp.istanteScadenzaSelezione).getHours() + ':';

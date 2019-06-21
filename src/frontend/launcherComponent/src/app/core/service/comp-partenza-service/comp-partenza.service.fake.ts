@@ -8,7 +8,7 @@ import { SquadraComposizione } from 'src/app/features/home/composizione-partenza
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
 import { Store } from '@ngxs/store';
 import {
-    AddBookMezzoComposizione,
+    AddBookMezzoComposizione, RemoveBookingMezzoComposizione,
     RemoveBookMezzoComposizione,
     UpdateMezzoComposizione
 } from '../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
@@ -650,6 +650,7 @@ export class CompPartenzaServiceFake {
                 'mezzoComposizione': obj.mezzoComposizione
             };
             this.store.dispatch(new AddBookMezzoComposizione(response.mezzoComposizione));
+            this.store.dispatch(new RemoveBookingMezzoComposizione(response.mezzoComposizione));
             this.store.dispatch(new UpdateMezzoComposizione(response.mezzoComposizione));
         }, 1000);
 

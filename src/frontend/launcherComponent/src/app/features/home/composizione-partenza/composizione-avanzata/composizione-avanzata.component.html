@@ -9,6 +9,7 @@
                 <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC"
                                         [itemSelezionato]="mC.id === idMezzoSelezionato"
                                         [itemHover]="mC.id === idMezzoHover"
+                                        [itemInPrenotazione]="idMezziInPrenotazione.indexOf(mC.id) !== -1"
                                         [itemPrenotato]="idMezziPrenotati.indexOf(mC.id) !== -1"
                                         [itemBloccato]="idMezziBloccati.indexOf(mC.id) !== -1"
                                         [richiesta]="richiesta"

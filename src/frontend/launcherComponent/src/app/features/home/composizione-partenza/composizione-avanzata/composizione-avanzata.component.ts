@@ -57,6 +57,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     mezziComposizione: MezzoComposizione[];
     @Select(MezziComposizioneState.idMezzoSelezionato) idMezzoSelezionato$: Observable<string>;
     idMezzoSelezionato: string;
+    @Select(MezziComposizioneState.idMezziInPrenotazione) idMezziInPrenotazione$: Observable<string[]>;
+    idMezziInPrenotazione: string[];
     @Select(MezziComposizioneState.idMezziPrenotati) idMezziPrenotati$: Observable<string[]>;
     idMezziPrenotati: string[];
     @Select(MezziComposizioneState.idMezziBloccati) idMezziBloccati$: Observable<string[]>;
@@ -113,6 +115,13 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             this.idMezzoSelezionato$.subscribe((idMezzo: string) => {
                 this.idMezzoSelezionato = idMezzo;
                 // console.log(idMezzo);
+            })
+        );
+        // Prendo i mezzi in prenotazione
+        this.subscription.add(
+            this.idMezziInPrenotazione$.subscribe((idMezzi: string[]) => {
+                this.idMezziInPrenotazione = idMezzi;
+                // console.log(idMezzi);
             })
         );
         // Prendo i mezzi prenotati
@@ -204,12 +213,13 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         if (this.boxPartenzaList.length <= 0) {
             this.store.dispatch(new AddBoxPartenza());
         }
-        if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) === -1) {
+        if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) === -1 && this.idMezziInPrenotazione.indexOf(mezzoComposizione.id) === -1) {
             this.store.dispatch(new SelectMezzoComposizione(mezzoComposizione));
-            // this.store.dispatch(new SelectMezzo(mezzoComposizione.mezzo.codice));
             this.store.dispatch(new AddMezzoBoxPartenzaSelezionato(mezzoComposizione));
-        } else {
+        } else if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) !== -1) {
             this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza'));
+        } else if (this.idMezziInPrenotazione.indexOf(mezzoComposizione.id) !== -1) {
+            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente'));
         }
         // console.log('Mezzo selezionato', mezzoComposizione);
     }
