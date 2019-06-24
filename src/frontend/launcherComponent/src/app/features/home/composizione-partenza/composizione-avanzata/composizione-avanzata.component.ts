@@ -41,7 +41,8 @@ import {
     UnselectSquadraComposizione
 } from '../../store/actions/composizione-partenza/squadre-composizione.actions';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
-import { GetFiltriComposizione } from '../../store/actions/composizione-partenza/filterbar-composizione.actions';
+import { ConfirmPartenze, GetFiltriComposizione } from '../../store/actions/composizione-partenza/filterbar-composizione.actions';
+import { GetListeCoposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -55,7 +56,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     // Mezzi Composizione
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
     mezziComposizione: MezzoComposizione[];
-    @Select(MezziComposizioneState.idMezzoSelezionato) idMezzoSelezionato$: Observable<string>;
+    @Select(MezziComposizioneState.idMezzoComposizioneSelezionato) idMezzoSelezionato$: Observable<string>;
     idMezzoSelezionato: string;
     @Select(MezziComposizioneState.idMezziInPrenotazione) idMezziInPrenotazione$: Observable<string[]>;
     idMezziInPrenotazione: string[];
@@ -215,6 +216,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         }
         if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) === -1 && this.idMezziInPrenotazione.indexOf(mezzoComposizione.id) === -1) {
             this.store.dispatch(new SelectMezzoComposizione(mezzoComposizione));
+            // this.store.dispatch(new GetListeCoposizioneAvanzata());
             this.store.dispatch(new AddMezzoBoxPartenzaSelezionato(mezzoComposizione));
         } else if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) !== -1) {
             this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza'));

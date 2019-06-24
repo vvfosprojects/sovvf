@@ -61,8 +61,13 @@ export class MezziComposizioneState {
     }
 
     @Selector()
-    static idMezzoSelezionato(state: MezziComposizioneStateStateModel) {
+    static idMezzoComposizioneSelezionato(state: MezziComposizioneStateStateModel) {
         return state.idMezzoComposizioneSelezionato;
+    }
+
+    @Selector()
+    static idMezzoSelezionato(state: MezziComposizioneStateStateModel) {
+        return state.idMezzoSelezionato;
     }
 
     @Selector()

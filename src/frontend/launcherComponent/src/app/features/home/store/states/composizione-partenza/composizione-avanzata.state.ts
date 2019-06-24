@@ -47,7 +47,7 @@ export class ComposizioneAvanzataState {
             filtri['CodiceStatoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceStatoMezzo.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
             filtri['CodiceTipoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
         }
-        filtri['CodiceMezzo'] = this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato) ? this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato) : [''];
+        filtri['CodiceMezzo'] = this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato) ? [this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato)] : [''];
         filtri['CodiceSquadra'] = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate).length > 0 ? this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate) : [''];
         filtri['idRichiesta'] = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
 
@@ -60,6 +60,7 @@ export class ComposizioneAvanzataState {
                 if (listeCompAvanzata.composizioneSquadre) {
                     this.store.dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadre));
                 }
+                // console.log('listeCompAvanzata', listeCompAvanzata);
             }
             // console.log('Composizione Partenza Avanzata Service');
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
