@@ -45,6 +45,16 @@ namespace SO115App.FakePersistenceJSon.Composizione
             ComposizioneMezzi mezzo = new ComposizioneMezzi();
             var codiceDistaccamento = "";
             List<ComposizioneSquadre> composizioneSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(json);
+            string[] generiMezzi = new string[50];
+            string[] statiMezzi = new string[50];
+            API.Models.Classi.Filtri.Filtri filtri = new API.Models.Classi.Filtri.Filtri();
+            string pathFiltri = "Fake/Filtri.json";
+            string jsonFiltri;
+            using (StreamReader r = new StreamReader(pathFiltri))
+            {
+                jsonFiltri = r.ReadToEnd();
+            }
+            filtri = JsonConvert.DeserializeObject<API.Models.Classi.Filtri.Filtri>(jsonFiltri);
             if ((query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
                 || (query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo[0]))
                  || (query.Filtro.CodiceSquadra != null && query.Filtro.CodiceSquadra.Length > 0) && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0])
@@ -65,9 +75,12 @@ namespace SO115App.FakePersistenceJSon.Composizione
                     {
                         if (query.Filtro.CodiceStatoMezzo != null && query.Filtro.CodiceStatoMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
                         {
-                            if (!query.Filtro.CodiceStatoMezzo.Any(mezzo.Mezzo.Stato.Equals))
+                            statiMezzi = filtri.Stati.Where(x => query.Filtro.CodiceStatoMezzo.Any(x.Id.Equals)).Select(x => x.Descrizione).ToArray();
+
+                            if (!statiMezzi.Any(mezzo.Mezzo.Stato.Equals))
                             {
                                 mezzo = null;
+                                composizioneSquadre = null;
                             }
                         }
                         if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
@@ -75,13 +88,16 @@ namespace SO115App.FakePersistenceJSon.Composizione
                             if (!query.Filtro.CodiceDistaccamento.Any(mezzo.Mezzo.Distaccamento.Codice.Equals))
                             {
                                 mezzo = null;
+                                composizioneSquadre = null;
                             }
                         }
                         if (query.Filtro.CodiceTipoMezzo != null && query.Filtro.CodiceTipoMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0]))
                         {
-                            if (!query.Filtro.CodiceTipoMezzo.Any(mezzo.Mezzo.Genere.Equals))
+                            generiMezzi = filtri.GeneriMezzi.Where(x => query.Filtro.CodiceTipoMezzo.Any(x.Id.Equals)).Select(x => x.Descrizione).ToArray();
+                            if (!generiMezzi.Any(mezzo.Mezzo.Genere.Equals))
                             {
                                 mezzo = null;
+                                composizioneSquadre = null;
                             }
                         }
                     }

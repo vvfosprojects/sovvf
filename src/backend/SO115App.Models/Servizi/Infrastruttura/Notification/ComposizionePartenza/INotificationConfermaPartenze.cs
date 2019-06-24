@@ -18,14 +18,13 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
+using DomainModel.CQRS.Commands.ConfermaPartenze;
 using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza
 {
-    public interface INotificationPreAccoppiati
+    public interface INotificationConfermaPartenze
     {
-        Task SendNotification(PreAccoppiatiQuery query);
+        Task SendNotification(ConfermaPartenzeCommand command);
     }
 }

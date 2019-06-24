@@ -87,8 +87,8 @@
       "mezzo": {
         "codice": "2",
         "descrizione": "A2",
-        "genere": "APS",
-        "stato": "inSede",
+        "genere": "ABP",
+        "stato": "inRientro",
         "appartenenza": 0,
         "distaccamento": {
           "codice": "1",
@@ -214,8 +214,8 @@
       "mezzo": {
         "codice": "3",
         "descrizione": "A3",
-        "genere": "APS",
-        "stato": "inSede",
+        "genere": "AG",
+        "stato": "inViaggio",
         "appartenenza": 0,
         "distaccamento": {
           "codice": "1",
@@ -341,8 +341,8 @@
       "mezzo": {
         "codice": "1",
         "descrizione": "A1",
-        "genere": "APS",
-        "stato": "inSede",
+        "genere": "AS",
+        "stato": "sulPosto",
         "appartenenza": 0,
         "distaccamento": {
           "codice": "1",

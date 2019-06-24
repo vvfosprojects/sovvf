@@ -46,13 +46,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             // preparazione del DTO
             List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = _iGetComposizioneMezzi.Get(query);
-            composizioneMezzi.Sort(delegate (Classi.Composizione.ComposizioneMezzi x, Classi.Composizione.ComposizioneMezzi y)
-            {
-                return Convert.ToInt32(x.TempoPercorrenza.Substring(0, x.TempoPercorrenza.Length - 4)).CompareTo(Convert.ToInt32(y.TempoPercorrenza.Substring(0, y.TempoPercorrenza.Length - 4)));
-            });
+           
 
             if ((composizioneMezzi != null && composizioneMezzi.Count > 0))
             {
+                composizioneMezzi.Sort(delegate (Classi.Composizione.ComposizioneMezzi x, Classi.Composizione.ComposizioneMezzi y)
+                {
+                    return Convert.ToInt32(x.TempoPercorrenza.Substring(0, x.TempoPercorrenza.Length - 4)).CompareTo(Convert.ToInt32(y.TempoPercorrenza.Substring(0, y.TempoPercorrenza.Length - 4)));
+                });
                 var count = 1;
                 foreach (var mezzo in composizioneMezzi)
                 {

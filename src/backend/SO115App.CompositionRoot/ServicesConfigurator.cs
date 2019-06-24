@@ -102,6 +102,9 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetResetPrenotazioneMezzo.IGetResetPrenotazioneMezzo,
                 FakePersistenceJSon.Composizione.GetResetPrenotazioneMezzo>();
+            container.Register<
+         SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
+         FakePersistenceJSon.Composizione.UpdateConfermaPartenze>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta.IGeneraCodiceRichiesta,
@@ -131,6 +134,9 @@ namespace SO115App.CompositionRoot
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato.INotificationResetPrenotazioneMezzo,
             SO115App.SignalR.Sender.ComposizionePartenza.MezzoPrenotato.NotificationResetPrenotazioneMezzo>();
+            container.Register<
+            SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.INotificationConfermaPartenze,
+            SO115App.SignalR.Sender.ComposizionePartenza.NotificationConfermaPartenze>();
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
