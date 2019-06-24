@@ -122,6 +122,15 @@ namespace SO115App.CompositionRoot
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso.INotificationUpDateChiamataInCorso,
             SO115App.SignalR.Sender.GestioneChiamateInCorso.NotificationUpDateChiamataInCorso>();
+            container.Register<
+            SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato.INotificationAddPrenotazioneMezzo,
+            SO115App.SignalR.Sender.ComposizionePartenza.MezzoPrenotato.NotificationAddPrenotazioneMezzo>();
+            container.Register<
+            SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato.INotificationRemovePrenotazioneMezzo,
+            SO115App.SignalR.Sender.ComposizionePartenza.MezzoPrenotato.NotificationRemovePrenotazioneMezzo>();
+            container.Register<
+            SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato.INotificationResetPrenotazioneMezzo,
+            SO115App.SignalR.Sender.ComposizionePartenza.MezzoPrenotato.NotificationResetPrenotazioneMezzo>();
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,

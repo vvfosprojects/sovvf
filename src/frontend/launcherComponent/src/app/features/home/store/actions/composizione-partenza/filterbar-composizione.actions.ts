@@ -36,6 +36,13 @@ export class ToggleComposizioneMode {
     static readonly type = '[FilterBarComposizione] Toggle Composizione Mode';
 }
 
+export class SetComposizioneMode {
+    static readonly type = '[FilterBarComposizione] Set Composizione Mode';
+
+    constructor(public compMode: Composizione) {
+    }
+}
+
 export class RemoveFiltriSelezionatiComposizione {
     static readonly type = '[FilterBarComposizione] Remove Filtri Selezionati';
 

@@ -22,6 +22,7 @@ import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ClearListaComposizioneVeloce } from '../store/actions/composizione-partenza/composizione-veloce.actions';
 import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione } from '../store/actions/composizione-partenza/squadre-composizione.actions';
+import { SetComposizioneMode } from '../store/actions/composizione-partenza/filterbar-composizione.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -73,13 +74,20 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ClearMarkerRichiestaSelezionato());
         this.store.dispatch(new GetInitCentroMappa());
         // Pulisco le liste
-        this.store.dispatch(new ClearSelectedMezziComposizione());
-        this.store.dispatch(new ClearSelectedSquadreComposizione());
-        this.store.dispatch(new ClearListaSquadreComposizione());
-        this.store.dispatch(new ClearListaMezziComposizione());
-        this.store.dispatch(new ClearBoxPartenze());
-        this.store.dispatch(new ClearListaComposizioneVeloce());
-        // this.centraMappa();
+        const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
+        if (compMode === Composizione.Avanzata) {
+            this.store.dispatch(new ClearSelectedMezziComposizione());
+            this.store.dispatch(new ClearSelectedSquadreComposizione());
+            this.store.dispatch(new ClearListaSquadreComposizione());
+            this.store.dispatch(new ClearListaMezziComposizione());
+            this.store.dispatch(new ClearBoxPartenze());
+        } else if (compMode === Composizione.Veloce) {
+            this.store.dispatch(new ClearListaComposizioneVeloce());
+        }
+        // Reimposto la composizioneMode su Avanzata
+        this.store.dispatch(new SetComposizioneMode(Composizione.Avanzata));
+        console.log('Composizione Mode', compMode);
+        this.centraMappa();
         this.turnOffComposizione();
     }
 

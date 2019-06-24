@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="MezzoPrenotato.cs" company="CNVVF">
+// <copyright file="INotificationAddPrenotazioneMezzo.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
 
-namespace SO115App.API.Models.Classi.Composizione
+
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
+using System.Threading.Tasks;
+
+namespace SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza
 {
-    public class MezzoPrenotato
+    public interface INotificationPreAccoppiati
     {
-        //[JsonRequired]
-        //public string IdRichiesta { get; set; }
-
-        //[JsonRequired]
-        //public string IdMezzoComposizione { get; set; }
-
-        public ComposizioneMezzi mezzoComposizione { get; set; }
-
-        public string codiceSede { get; set; }
-
-        //[JsonRequired]
-        //public string IdMezzo { get; set; }
-
+        Task SendNotification(PreAccoppiatiQuery query);
     }
 }

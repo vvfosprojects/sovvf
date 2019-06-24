@@ -47,6 +47,18 @@ namespace SO115App.FakePersistenceJSon.Composizione
             List<ComposizioneSquadre> composizioneSquadre = new List<ComposizioneSquadre>();
             var squadra = new ComposizioneSquadre();
             var codiceDistaccamento = "";
+
+            string[] generiMezzi = new string[50];
+            string[] statiMezzi = new string[50];
+            API.Models.Classi.Filtri.Filtri filtri = new API.Models.Classi.Filtri.Filtri();
+            string pathFiltri = "Fake/Filtri.json";
+            string jsonFiltri;
+            using (StreamReader r = new StreamReader(pathFiltri))
+            {
+                jsonFiltri = r.ReadToEnd();
+            }
+            filtri = JsonConvert.DeserializeObject<API.Models.Classi.Filtri.Filtri>(jsonFiltri);
+
             if ((query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0])) || (query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo[0]))
                 || (query.Filtro.CodiceSquadra != null && query.Filtro.CodiceSquadra.Length > 0) && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0]) || (query.Filtro.CodiceStatoMezzo != null && query.Filtro.CodiceStatoMezzo.Length > 0 && string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0])) || (query.Filtro.CodiceTipoMezzo != null && query.Filtro.CodiceTipoMezzo.Length > 0 && string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0])))
             {
@@ -72,9 +84,15 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 if (query.Filtro.CodiceMezzo != null && query.Filtro.CodiceMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo[0]))
                     preAccoppiati = preAccoppiati.Where(x => query.Filtro.CodiceMezzo.Any(x.MezzoComposizione.Mezzo.Codice.Equals)).ToList();
                 if (query.Filtro.CodiceStatoMezzo != null && query.Filtro.CodiceStatoMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
-                    preAccoppiati = preAccoppiati.Where(x => query.Filtro.CodiceStatoMezzo.Any(x.MezzoComposizione.Mezzo.Stato.Equals)).ToList();
+                {
+                    statiMezzi = filtri.Stati.Where(x => query.Filtro.CodiceStatoMezzo.Any(x.Id.Equals)).Select(x => x.Descrizione).ToArray();
+                    preAccoppiati = preAccoppiati.Where(x => statiMezzi.Any(x.MezzoComposizione.Mezzo.Stato.Equals)).ToList();
+                }
                 if (query.Filtro.CodiceTipoMezzo != null && query.Filtro.CodiceTipoMezzo.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0]))
-                    preAccoppiati = preAccoppiati.Where(x => query.Filtro.CodiceTipoMezzo.Any(x.MezzoComposizione.Mezzo.Genere.Equals)).ToList();
+                {
+                    generiMezzi = filtri.GeneriMezzi.Where(x => query.Filtro.CodiceTipoMezzo.Any(x.Id.Equals)).Select(x => x.Descrizione).ToArray();
+                    preAccoppiati = preAccoppiati.Where(x => generiMezzi.Any(x.MezzoComposizione.Mezzo.Genere.Equals)).ToList();
+                }
                 return preAccoppiati;
             }
             else

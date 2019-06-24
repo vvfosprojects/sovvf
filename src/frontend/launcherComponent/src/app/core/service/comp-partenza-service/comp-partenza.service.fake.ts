@@ -7,20 +7,16 @@ import { BoxPartenza } from '../../../features/home/composizione-partenza/interf
 import { SquadraComposizione } from 'src/app/features/home/composizione-partenza/interface/squadra-composizione-interface';
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
 import { Store } from '@ngxs/store';
-import { SetListaComposizioneVeloce } from '../../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import {
-    AddBookMezzoComposizione,
+    AddBookMezzoComposizione, RemoveBookingMezzoComposizione,
     RemoveBookMezzoComposizione,
-    SetListaMezziComposizione,
     UpdateMezzoComposizione
 } from '../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
-import { SetListaSquadreComposizione } from '../../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
 import * as moment from 'moment';
 import { makeCopy } from '../../../shared/helper/function';
 import { OFFSET_SYNC_TIME } from '../../settings/referral-time';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza-state';
 import { RemoveBoxPartenzaByMezzoId } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
-import { timeout } from 'rxjs/operators';
 
 @Injectable()
 export class CompPartenzaServiceFake {
@@ -33,7 +29,7 @@ export class CompPartenzaServiceFake {
     constructor(private store: Store) {
     }
 
-    getPreAccoppiati(signalRConnectionId?: string): Observable<any[]> {
+    getPreAccoppiati(signalRConnectionId?: string): Observable<any> {
         const idRichiestaAttuale = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id;
         this.preAccoppiati = [
             {
@@ -373,15 +369,11 @@ export class CompPartenzaServiceFake {
                 ]
             }
         ];
-
-        setTimeout(() => {
-            this.store.dispatch(new SetListaComposizioneVeloce(this.preAccoppiati));
-        }, 2000);
-
-        return of();
+        const result = this.preAccoppiati;
+        return of(result);
     }
 
-    getListeComposizioneAvanzata(signalRConnectionId?: string): Observable<any[]> {
+    getListeComposizioneAvanzata(signalRConnectionId?: string): Observable<any> {
         const idRichiestaAttuale = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id;
         this.mezzi = [
             {
@@ -643,12 +635,11 @@ export class CompPartenzaServiceFake {
             },
         ];
 
-        setTimeout(() => {
-            this.store.dispatch(new SetListaMezziComposizione(this.mezzi));
-            this.store.dispatch(new SetListaSquadreComposizione(this.squadre));
-        }, 2000);
-
-        return of();
+        const result = {
+            'composizioneMezzi': this.mezzi,
+            'composizioneSquadre': this.squadre
+        };
+        return of(result);
     }
 
     setMezzoPrenotato(mezzoComp: MezzoComposizione) {
@@ -659,6 +650,7 @@ export class CompPartenzaServiceFake {
                 'mezzoComposizione': obj.mezzoComposizione
             };
             this.store.dispatch(new AddBookMezzoComposizione(response.mezzoComposizione));
+            this.store.dispatch(new RemoveBookingMezzoComposizione(response.mezzoComposizione));
             this.store.dispatch(new UpdateMezzoComposizione(response.mezzoComposizione));
         }, 1000);
 

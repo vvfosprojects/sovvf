@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="MezzoPrenotato.cs" company="CNVVF">
+// <copyright file="ComposizioneSquadreQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
+using CQRS.Queries;
+using SO115App.Models.Classi.Composizione;
 
-namespace SO115App.API.Models.Classi.Composizione
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata
 {
-    public class MezzoPrenotato
+    /// <summary>
+    ///   DTO che alimenta il Navbar presente in Home Page
+    /// </summary>
+    public class ComposizionePartenzaAvanzataQuery : IQuery<ComposizionePartenzaAvanzataResult>
     {
-        //[JsonRequired]
-        //public string IdRichiesta { get; set; }
-
-        //[JsonRequired]
-        //public string IdMezzoComposizione { get; set; }
-
-        public ComposizioneMezzi mezzoComposizione { get; set; }
-
-        public string codiceSede { get; set; }
-
-        //[JsonRequired]
-        //public string IdMezzo { get; set; }
-
+        /// <summary>
+        ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
+        /// </summary>
+        /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
+        public FiltriComposizionePartenza Filtro { get; set; }
     }
 }

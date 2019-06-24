@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SbloccaMezzoPrenotatoController.cs" company="CNVVF">
+// <copyright file="RemovePrenotazioneMezzoController.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -47,17 +47,15 @@ namespace SO115App.API.Controllers
 
         private readonly ICommandHandler<SbloccaMezzoPrenotatoCommand> handler;
 
-        private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public RemovePrenotazioneMezzoController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
+        public RemovePrenotazioneMezzoController( IPrincipal currentUser,
             ICommandHandler<SbloccaMezzoPrenotatoCommand> handler)
         {
             this.handler = handler;
-            _NotificationHub = NotificationHubContext;
             _currentUser = currentUser;
         }
 
@@ -69,21 +67,19 @@ namespace SO115App.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(MezzoPrenotato mezzoPrenotato)
         {
-            var headerValues = Request.Headers["HubConnectionId"];
             var codiceSede = Request.Headers["codicesede"];
-            string ConId = headerValues.FirstOrDefault();
 
             var command = new SbloccaMezzoPrenotatoCommand()
             {
-                MezzoPrenotato = mezzoPrenotato
+                MezzoPrenotato = mezzoPrenotato,
+                codiceSede = codiceSede
+
             };
 
-            if (ModelState.IsValid)
-            {
+       
                 try
                 {
                     handler.Handle(command);
-                    await _NotificationHub.Clients.Group(codiceSede).SendAsync("NotifyRemovePrenotazioneMezzo", command);
 
                     // await _NotificationHub.Clients.Client(ConId).SendAsync("NotifySbloccaMezzoPrenotato", command);
 
@@ -92,12 +88,7 @@ namespace SO115App.API.Controllers
                 catch
                 {
                     return BadRequest();
-                }
-            }
-            else
-            {
-                return BadRequest();
-            }
+                }          
         }
     }
 }

@@ -27,6 +27,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     @Input() itemSelezionato: boolean;
     @Input() itemHover: boolean;
     @Input() itemPrenotato: boolean;
+    @Input() itemInPrenotazione: boolean;
     @Input() itemBloccato: boolean;
 
     @Output() selezionato = new EventEmitter<MezzoComposizione>();
@@ -174,16 +175,19 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
         if (this.itemBloccato) {
             switch (this.mezzoComp.mezzo.stato) {
                 case 'inViaggio':
-                    returnClass += '  diagonal-stripes bg-lightinfo';
+                    returnClass += ' diagonal-stripes bg-lightinfo';
                     break;
                 case 'sulPosto':
-                    returnClass += '  diagonal-stripes bg-lightsuccess';
+                    returnClass += ' diagonal-stripes bg-lightsuccess';
                     break;
             }
         }
 
         if (this.itemPrenotato) {
-            returnClass += '  pb-0';
+            returnClass += ' pb-0';
+        }
+        if (this.itemInPrenotazione) {
+            returnClass += ' diagonal-stripes bg-lightgrey';
         }
 
         return returnClass;
@@ -221,7 +225,8 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
         this.mezzoCoordinate.emit(mezzoComp.coordinate);
     }
 
-    onResetTimeout() {
+    onResetTimeout(e: MouseEvent) {
+        e.stopPropagation();
         this.store.dispatch(new RequestResetBookMezzoComposizione(this.mezzoComp));
     }
 }

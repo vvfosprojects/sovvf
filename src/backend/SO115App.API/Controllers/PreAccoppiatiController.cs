@@ -46,20 +46,18 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly IQueryHandler<PreAccoppiatiQuery, PreAccoppiatiResult> handler;
+        private readonly IQueryHandler<PreAccoppiatiQuery, PreAccoppiatiResult> _handler;
 
-        private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public PreAccoppiatiController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
+        public PreAccoppiatiController( IPrincipal currentUser,
             IQueryHandler<PreAccoppiatiQuery, PreAccoppiatiResult> handler)
         {
-            this.handler = handler;
-            _NotificationHub = NotificationHubContext;
+            _handler = handler;
             _currentUser = currentUser;
         }
 
@@ -71,9 +69,6 @@ namespace SO115App.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
         {
-            var headerValues = Request.Headers["HubConnectionId"];
-            string ConId = headerValues.FirstOrDefault();
-
             var query = new PreAccoppiatiQuery()
             {
                 Filtro = filtri
@@ -81,12 +76,7 @@ namespace SO115App.API.Controllers
 
             try
             {
-                List<PreAccoppiati> preAccoppiati = new List<PreAccoppiati>();
-                preAccoppiati = handler.Handle(query).PreAccoppiati;
-
-                await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetPreAccoppiati", preAccoppiati);
-
-                return Ok();
+                 return Ok(this._handler.Handle(query).PreAccoppiati);
             }
             catch
             {
@@ -102,7 +92,7 @@ namespace SO115App.API.Controllers
                 Filtro = filtro
             };
 
-            return handler.Handle(query);
+            return _handler.Handle(query);
         }
     }
 }

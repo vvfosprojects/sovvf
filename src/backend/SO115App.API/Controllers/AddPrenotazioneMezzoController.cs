@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="MezzoPrenotatoController.cs" company="CNVVF">
+// <copyright file="AddPrenotazioneMezzoController.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -48,17 +48,15 @@ namespace SO115App.API.Controllers
 
         private readonly ICommandHandler<MezzoPrenotatoCommand> handler;
 
-        private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public AddPrenotazioneMezzoController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
+        public AddPrenotazioneMezzoController(IPrincipal currentUser,
             ICommandHandler<MezzoPrenotatoCommand> handler)
         {
             this.handler = handler;
-            _NotificationHub = NotificationHubContext;
             _currentUser = currentUser;
         }
 
@@ -70,32 +68,24 @@ namespace SO115App.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(MezzoPrenotato mezzoPrenotato)
         {
-            var headerValues = Request.Headers["HubConnectionId"];
             var codiceSede = Request.Headers["codicesede"];
-            string ConId = headerValues.FirstOrDefault();
+
 
             var command = new MezzoPrenotatoCommand()
             {
-                MezzoPrenotato = mezzoPrenotato
+                MezzoPrenotato = mezzoPrenotato,
+                codiceSede = codiceSede
+                
             };
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
 
-                   handler.Handle(command);
-                   await _NotificationHub.Clients.Group(codiceSede).SendAsync("NotifyAddPrenotazioneMezzo", command);
-                   //await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyMezzoPrenotato", command);
+                handler.Handle(command);
 
-                    return Ok();
-                }
-                catch
-                {
-                    return BadRequest();
-                }
+                return Ok();
             }
-            else
+            catch
             {
                 return BadRequest();
             }

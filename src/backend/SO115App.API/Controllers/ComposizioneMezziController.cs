@@ -48,18 +48,16 @@ namespace SO115App.API.Controllers
         /// </summary>
         private readonly IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> handler;
 
-        private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public ComposizioneMezziController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
+        public ComposizioneMezziController(IPrincipal currentUser,
             IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> handler)
         {
             this.handler = handler;
-            _NotificationHub = NotificationHubContext;
             _currentUser = currentUser;
         }
 
@@ -83,11 +81,7 @@ namespace SO115App.API.Controllers
             {
                 try
                 {
-                    List<ComposizioneMezzi> composizioneMezzi = new List<ComposizioneMezzi>();
-                    composizioneMezzi = handler.Handle(query).ComposizioneMezzi;
-
-                    await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetComposizioneMezzi", composizioneMezzi);
-
+                    List<ComposizioneMezzi> composizioneMezzi = handler.Handle(query).ComposizioneMezzi;
                     return Ok();
                 }
                 catch

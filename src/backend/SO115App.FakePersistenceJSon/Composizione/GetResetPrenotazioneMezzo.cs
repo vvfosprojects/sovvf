@@ -72,6 +72,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
             mezzoPrenotato.mezzoComposizione = mezzo;
             mezzoPrenotato.mezzoComposizione.Id = command.MezzoPrenotato.mezzoComposizione.Id;
             mezzoPrenotato.mezzoComposizione.IdRichiesta = command.MezzoPrenotato.mezzoComposizione.IdRichiesta;
+            mezzoPrenotato.codiceSede = command.codiceSede;
             return mezzoPrenotato;
         }
 

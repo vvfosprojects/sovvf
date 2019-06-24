@@ -24,12 +24,8 @@ using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Models.Classi.Composizione;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata;
 using SO115App.Models.Classi.Composizione;
-using SO115App.SignalR;
 
 /* using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste; */
 
@@ -47,23 +43,19 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> _mezziHandler;
+        private readonly IQueryHandler<ComposizionePartenzaAvanzataQuery, ComposizionePartenzaAvanzataResult> _handler;
 
-        private readonly IQueryHandler<ComposizioneSquadreQuery, ComposizioneSquadreResult> _squadreHandler;
 
-        private readonly IHubContext<NotificationHub> _NotificationHub;
         private readonly IPrincipal _currentUser;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public ComposizionePartenzaAvanzataController(IHubContext<NotificationHub> NotificationHubContext, IPrincipal currentUser,
-            IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> mezziHandler, IQueryHandler<ComposizioneSquadreQuery, ComposizioneSquadreResult> squadreHandler)
+        public ComposizionePartenzaAvanzataController(IPrincipal currentUser,
+            IQueryHandler<ComposizionePartenzaAvanzataQuery, ComposizionePartenzaAvanzataResult> handler)
         {
-            this._mezziHandler = mezziHandler;
-            this._squadreHandler = squadreHandler;
-            _NotificationHub = NotificationHubContext;
+            _handler = handler;
             _currentUser = currentUser;
         }
 
@@ -75,32 +67,17 @@ namespace SO115App.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
         {
-            var headerValues = Request.Headers["HubConnectionId"];
-            string ConId = headerValues.FirstOrDefault();
-
-            var mezziQuery = new ComposizioneMezziQuery()
+            var partenzaAvanzataQuery = new ComposizionePartenzaAvanzataQuery()
             {
                 Filtro = filtri
             };
 
-            var squadreQuery = new ComposizioneSquadreQuery()
-            {
-                Filtro = filtri
-            };
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    List<ComposizioneMezzi> composizioneMezzi = new List<ComposizioneMezzi>();
-                    composizioneMezzi = _mezziHandler.Handle(mezziQuery).ComposizioneMezzi;
-                    await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetComposizioneMezzi", composizioneMezzi);
-
-                    List<ComposizioneSquadre> composizioneSquadre = new List<ComposizioneSquadre>();
-                    composizioneSquadre = _squadreHandler.Handle(squadreQuery).ComposizioneSquadre;
-                    await _NotificationHub.Clients.Client(ConId).SendAsync("NotifyGetComposizioneSquadre", composizioneSquadre);
-
-                    return Ok();
+                    return Ok(this._handler.Handle(partenzaAvanzataQuery).ComposizionePartenzaAvanzata);
                 }
                 catch
                 {
@@ -114,25 +91,15 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet("{filtro}")]
-        public ComposizioneMezziResult GetMarkerMezziFromId(FiltriComposizionePartenza filtro)
+        public ComposizionePartenzaAvanzataResult GetMarkerComposizionePartenzaAvanzataFromId(FiltriComposizionePartenza filtro)
         {
-            var mezziQuery = new ComposizioneMezziQuery()
+            var partenzaAvanzataQuery = new ComposizionePartenzaAvanzataQuery()
             {
                 Filtro = filtro
             };
 
-            return _mezziHandler.Handle(mezziQuery);
+            return _handler.Handle(partenzaAvanzataQuery);
         }
 
-        [HttpGet("{filtro}")]
-        public ComposizioneSquadreResult GetMarkerSquadreFromId(FiltriComposizionePartenza filtro)
-        {
-            var squadreQuery = new ComposizioneSquadreQuery()
-            {
-                Filtro = filtro
-            };
-
-            return _squadreHandler.Handle(squadreQuery);
-        }
     }
 }

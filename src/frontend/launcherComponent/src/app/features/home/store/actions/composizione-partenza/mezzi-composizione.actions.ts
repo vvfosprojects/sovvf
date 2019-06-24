@@ -79,6 +79,13 @@ export class AddBookMezzoComposizione {
     }
 }
 
+export class AddBookingMezzoComposizione {
+    static readonly type = '[MezziComposizione] Booking Mezzo Composizione';
+
+    constructor(public mezzoComp: MezzoComposizione) {
+    }
+}
+
 export class RequestRemoveBookMezzoComposizione {
     static readonly type = '[MezziComposizione] Request Remove Book Mezzo Composizione';
 
@@ -88,6 +95,14 @@ export class RequestRemoveBookMezzoComposizione {
 
 export class RemoveBookMezzoComposizione {
     static readonly type = '[MezziComposizione] Remove Book Mezzo Composizione';
+
+    constructor(public mezzoComp: MezzoComposizione) {
+    }
+}
+
+
+export class RemoveBookingMezzoComposizione {
+    static readonly type = '[MezziComposizione] Remove Booking Mezzo Composizione';
 
     constructor(public mezzoComp: MezzoComposizione) {
     }

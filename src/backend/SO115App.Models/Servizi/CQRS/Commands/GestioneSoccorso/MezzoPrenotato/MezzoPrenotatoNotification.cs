@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="MezzoPrenotato.cs" company="CNVVF">
+// <copyright file="AddPrenotazioneMezzoAuthorization.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
+using CQRS.Commands.Notifiers;
+using Microsoft.AspNetCore.SignalR;
+using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
 
-namespace SO115App.API.Models.Classi.Composizione
+namespace DomainModel.CQRS.Commands.MezzoPrenotato
 {
-    public class MezzoPrenotato
+    public class MezzoPrenotatoNotification : ICommandNotifier<MezzoPrenotatoCommand>
     {
-        //[JsonRequired]
-        //public string IdRichiesta { get; set; }
+        private readonly INotificationAddPrenotazioneMezzo _sender;
 
-        //[JsonRequired]
-        //public string IdMezzoComposizione { get; set; }
+        public MezzoPrenotatoNotification(INotificationAddPrenotazioneMezzo sender)
+        {
+            _sender = sender;
+        }
 
-        public ComposizioneMezzi mezzoComposizione { get; set; }
-
-        public string codiceSede { get; set; }
-
-        //[JsonRequired]
-        //public string IdMezzo { get; set; }
-
+        public void Notify(MezzoPrenotatoCommand command)
+        {
+            _sender.SendNotification(command);
+        }
     }
 }
