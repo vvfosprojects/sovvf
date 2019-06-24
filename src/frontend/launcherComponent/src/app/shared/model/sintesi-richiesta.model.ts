@@ -13,6 +13,7 @@ import { EnteIntervenuto } from './ente-intervenuto';
 import { TurnoInserimentoChiamata } from './turno-inserimento-chiamata';
 import { TurnoIntervento } from './turno-intervento';
 import { ObiettivoSensibile } from './obiettivo-sensibile';
+import { AttivitaUtente } from './attivita-utente.model';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -141,7 +142,7 @@ export class SintesiRichiesta {
          */
         public listaEntiPresaInCarico?: EnteIntervenuto[],
         /**
-         * codice obiettivo rilevante
+         * obiettivo sensibile
          */
         public obiettivoSensibile?: ObiettivoSensibile,
         /**
@@ -151,7 +152,15 @@ export class SintesiRichiesta {
         /**
          * motivazione della chiusura
          */
-        public motivazione?: string
+        public motivazione?: string,
+        /**
+         * lista di lavorazioni utente
+         */
+        public listaUtentiInLavorazione?: AttivitaUtente[],
+        /**
+         * lista di prese in carico utente
+         */
+        public listaUtentiPresaInCarico?: AttivitaUtente[]
     ) {
     }
 }
