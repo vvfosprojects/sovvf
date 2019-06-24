@@ -47,8 +47,8 @@ export class ComposizioneAvanzataState {
             filtri['CodiceStatoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceStatoMezzo.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
             filtri['CodiceTipoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
         }
-        filtri['CodiceMezzo'] = this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato) ? [this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato)] : [''];
-        filtri['CodiceSquadra'] = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate).length > 0 ? this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate) : [''];
+        filtri['CodiceMezzo'] = [''];
+        filtri['CodiceSquadra'] = [''];
         filtri['idRichiesta'] = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
 
         console.log(filtri);

@@ -11,8 +11,6 @@ import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ComposizionePartenzaState } from './composizione-partenza-state';
-import { MezziComposizioneState } from './mezzi-composizione.state';
-import { SquadreComposizioneState } from './squadre-composizione.state';
 import { ComposizioneAvanzataStateModel } from './composizione-avanzata.state';
 
 export interface PreAccoppiatiStateModel {
@@ -51,8 +49,8 @@ export class ComposizioneVeloceState {
             filtri['CodiceStatoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceStatoMezzo.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
             filtri['CodiceTipoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
         }
-        filtri['CodiceMezzo'] = this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato) ? [this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato)] : [''];
-        filtri['CodiceSquadra'] = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate).length > 0 ? this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate) : [''];
+        filtri['CodiceMezzo'] = [''];
+        filtri['CodiceSquadra'] = [''];
         filtri['idRichiesta'] = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
 
         console.log(filtri);
