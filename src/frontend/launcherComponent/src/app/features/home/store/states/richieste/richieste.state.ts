@@ -75,6 +75,13 @@ export class RichiesteState {
     @Action(UpdateRichiesta)
     updateRichiesta({ setState }: StateContext<RichiesteStateModel>, { richiesta }: UpdateRichiesta) {
         console.log(richiesta);
+
+        // Controllo se la richiesta aggiornata è anche la richiesta attualmente in composzione
+        const richiestaComposzione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id;
+        if (richiestaComposzione && richiestaComposzione === richiesta.id) {
+            this.store.dispatch(new UpdateRichiestaComposizione(richiesta));
+        }
+
         setState(
             patch({
                 richieste: updateItem<SintesiRichiesta>(r => r.id === richiesta.id, richiesta)

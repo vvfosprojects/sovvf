@@ -10,7 +10,7 @@ import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
-import { GetFiltriComposizione } from '../../store/actions/composizione-partenza/filterbar-composizione.actions';
+import { GetFiltriComposizione } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizioneVeloceState } from '../../store/states/composizione-partenza/composizione-veloce.state';
 import { makeCopy } from '../../../../shared/helper/function';
 

@@ -1,4 +1,5 @@
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
+import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 
 export class GetFiltriComposizione {
     static readonly type = '[FiltriComposizione] Get Filtri';
@@ -40,6 +41,20 @@ export class SetComposizioneMode {
     static readonly type = '[FilterBarComposizione] Set Composizione Mode';
 
     constructor(public compMode: Composizione) {
+    }
+}
+
+export class UpdateRichiestaComposizione {
+    static readonly type = '[FilterBarComposizione] Update Richiesta Composizione';
+
+    constructor(public richiesta: SintesiRichiesta) {
+    }
+}
+
+export class ConfirmPartenze {
+    static readonly type = '[FilterBarComposizione] Confirm Partenze';
+
+    constructor(public partenze: any) {
     }
 }
 

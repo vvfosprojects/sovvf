@@ -32,7 +32,6 @@ import {
     AddSquadraBoxPartenza, ClearBoxPartenze,
     RemoveBoxPartenza,
     RemoveMezzoBoxPartenzaSelezionato, RemoveSquadraBoxPartenza, RequestAddBoxPartenza, RequestSelectBoxPartenza,
-    SelectBoxPartenza
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
     HoverInSquadraComposizione,
@@ -41,8 +40,8 @@ import {
     UnselectSquadraComposizione
 } from '../../store/actions/composizione-partenza/squadre-composizione.actions';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
-import { ConfirmPartenze, GetFiltriComposizione } from '../../store/actions/composizione-partenza/filterbar-composizione.actions';
-import { GetListeCoposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
+import { ConfirmPartenze, GetFiltriComposizione } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import { TurnoState } from '../../../navbar/store/states/turno/turno.state';
 
 @Component({
     selector: 'app-composizione-avanzata',

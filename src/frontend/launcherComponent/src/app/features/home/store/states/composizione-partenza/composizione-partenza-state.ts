@@ -1,14 +1,14 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import {
-    AddFiltroSelezionatoComposizione,
+    AddFiltroSelezionatoComposizione, ConfirmPartenze,
     GetFiltriComposizione,
     RemoveFiltriSelezionatiComposizione,
     RemoveFiltroSelezionatoComposizione, SetComposizioneMode,
     SetFiltriComposizione,
     ToggleComposizioneMode,
-    UpdateListe
-} from '../../actions/composizione-partenza/filterbar-composizione.actions';
+    UpdateListe, UpdateRichiestaComposizione
+} from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ComposizionePartenzaStateModel } from './composizione-partenza-state';
@@ -21,6 +21,7 @@ import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { GetListeCoposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
 
 export interface ComposizionePartenzaStateModel {
     filtri: any;
@@ -82,7 +83,8 @@ export class ComposizionePartenzaState {
         return composizioneMarkers;
     }
 
-    constructor(private filterbar: FilterbarService) {
+    constructor(private filterbar: FilterbarService,
+                private compPartenzaSevice: CompPartenzaService) {
     }
 
     @Action(GetFiltriComposizione)
@@ -244,6 +246,20 @@ export class ComposizionePartenzaState {
     setComposizioneMode({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: SetComposizioneMode) {
         patchState({
             composizioneMode: action.compMode
+        });
+    }
+
+    @Action(UpdateRichiestaComposizione)
+    updateRichiestaComposizione({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: UpdateRichiestaComposizione) {
+        patchState({
+            richiesta: action.richiesta
+        });
+    }
+
+    @Action(ConfirmPartenze)
+    confirmPartenze({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze) {
+        console.log('Richiesta aggiornata con le partenze', action.partenze);
+        this.compPartenzaSevice.confermaPartenze(action.partenze).subscribe(() => {
         });
     }
 

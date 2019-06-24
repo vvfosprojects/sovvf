@@ -12,9 +12,8 @@ import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/cent
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ResetChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
-import { ClearChiamateMarkers } from '../../actions/maps/chiamate-markers.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza-state';
-import { ToggleComposizioneMode } from '../../actions/composizione-partenza/filterbar-composizione.actions';
+import { ToggleComposizioneMode } from '../../actions/composizione-partenza/composizione-partenza.actions';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {

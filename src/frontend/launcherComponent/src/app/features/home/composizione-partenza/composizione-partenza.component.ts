@@ -22,7 +22,7 @@ import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ClearListaComposizioneVeloce } from '../store/actions/composizione-partenza/composizione-veloce.actions';
 import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione } from '../store/actions/composizione-partenza/squadre-composizione.actions';
-import { SetComposizioneMode } from '../store/actions/composizione-partenza/filterbar-composizione.actions';
+import { SetComposizioneMode } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
