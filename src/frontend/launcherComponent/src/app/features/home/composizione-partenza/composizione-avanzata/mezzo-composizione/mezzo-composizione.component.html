@@ -23,12 +23,13 @@
         <div class="col-2 text-right">
             <i *ngIf="itemBloccato" class="fa fa-lg fa-lock" (click)="onClickLucchetto()"
                ngbTooltip="Richiedi sblocco mezzo"></i>
-            <i *ngIf="itemPrenotato" class="fa fa-lg fa-clock-o" ngbTooltip="Richiedi reset timer" (click)="onResetTimeout($event)"></i>
+            <i *ngIf="itemPrenotato" class="fa fa-lg fa-clock-o" ngbTooltip="Richiedi reset timer"
+               (click)="onResetTimeout($event)"></i>
         </div>
     </div>
     <div *ngIf="itemPrenotato && mezzoComp.istanteScadenzaSelezione" class="px-2 pt-2 pb-1"
          style="width:100%; margin-bottom: 1px">
-        <ngb-progressbar type="secondary" [max]="option.timeout" [value]="currentTimeout"
-                         height="7px"></ngb-progressbar>
+        <app-prenotazione-progress-bar [mezzoComp]="mezzoComp"
+                                       [itemPrenotato]="itemPrenotato"></app-prenotazione-progress-bar>
     </div>
 </li>

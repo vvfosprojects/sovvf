@@ -135,7 +135,7 @@ export class MezziComposizioneState {
         );
         dispatch(new UpdateMezzoBoxPartenza(action.mezzoComp));
         // dispatch(new AddBookMezzoComposizione(action.mezzoComp));
-        console.log('Update mezzo composizione', action.mezzoComp);
+        // console.log('Update mezzo composizione', action.mezzoComp);
     }
 
     @Action(SelectMezzoComposizione)
