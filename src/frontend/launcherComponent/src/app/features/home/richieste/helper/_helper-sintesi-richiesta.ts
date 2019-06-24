@@ -225,5 +225,6 @@ export class HelperSintesiRichiesta {
 }
 
 export function round1decimal(value: number) {
-    return Math.round(value * 100) / 100;
+    const decimal = value < 0.01 ? 1000 : 100;
+    return Math.round(value * decimal) / decimal;
 }

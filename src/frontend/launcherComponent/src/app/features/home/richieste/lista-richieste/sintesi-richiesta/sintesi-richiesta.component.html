@@ -100,7 +100,7 @@
                                 <span *ngIf="richiesta.richiedente.ragioneSociale"><a
                                         ngbTooltip="{{ richiesta.richiedente.ragioneSociale }}"
                                         placement="right"
-                                        [disableTooltip]="richiesta.richiedente.ragioneSociale <= 20">{{
+                                        [disableTooltip]="richiesta.richiedente.ragioneSociale.length <= 20">{{
                                     richiesta.richiedente.ragioneSociale | truncate:20 }}</a></span>
                                 <span class="ml-1">(<i class="guida fa fa-phone fa-fw mr-1"
                                                        ngbTooltip="Numero richiedente"></i><a>{{
