@@ -28,7 +28,7 @@ export const environment = {
             }
         },
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
-        updateRichiesta: '/api/Chiamata/Update',
+        updateRichiesta: '/api/Chiamata/UpdateIntervento',
         eventiRichieste: '/api/ListaEventi',
         turno: '',  // Todo: controller mancante
         composizione: {
