@@ -18,6 +18,7 @@ import { ToastrType } from '../../../../../shared/enum/toastr';
 import { SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza-state';
 import { UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { AddBoxPartenza, ClearBoxPartenze } from '../../actions/composizione-partenza/box-partenza.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -77,12 +78,13 @@ export class RichiesteState {
 
     @Action(UpdateRichiesta)
     updateRichiesta({ setState, dispatch }: StateContext<RichiesteStateModel>, { richiesta }: UpdateRichiesta) {
-        console.log(richiesta);
-
         // Controllo se la richiesta aggiornata è anche la richiesta attualmente in composzione
-        const richiestaComposzione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id;
-        if (richiestaComposzione && richiestaComposzione === richiesta.id) {
+        const richiestaComposzione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+        if (richiestaComposzione && richiestaComposzione.id === richiesta.id) {
+            // console.log('richiesta', richiesta);
             dispatch(new UpdateRichiestaComposizione(richiesta));
+            dispatch(new ClearBoxPartenze());
+            dispatch(new AddBoxPartenza());
         }
 
         setState(
