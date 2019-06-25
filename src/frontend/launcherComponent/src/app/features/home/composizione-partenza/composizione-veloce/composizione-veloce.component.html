@@ -19,10 +19,15 @@
         </div>
     </div>
     <div class="row">
-        <div *ngIf="preAccoppiati?.length <= 0" class="col-12 my-3">
+        <div *ngIf="!preAccoppiati" class="col-12 my-3">
             <div class="text-center">
                 <i class="fa fa-spinner fa-3x fa-spin"></i>
                 <h6 class="m-0 mt-2">Caricamento...</h6>
+            </div>
+        </div>
+        <div *ngIf="preAccoppiati && preAccoppiati?.length <= 0" class="col-12 my-3">
+            <div class="text-center">
+                <h6 class="m-0 mt-2">Nessun Pre-Accoppiato trovato con i filtri selezionati</h6>
             </div>
         </div>
     </div>

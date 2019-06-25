@@ -86,7 +86,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         }
         // Reimposto la composizioneMode su Avanzata
         this.store.dispatch(new SetComposizioneMode(Composizione.Avanzata));
-        console.log('Composizione Mode', compMode);
+        // console.log('Composizione Mode', compMode);
         this.centraMappa();
         this.turnOffComposizione();
     }

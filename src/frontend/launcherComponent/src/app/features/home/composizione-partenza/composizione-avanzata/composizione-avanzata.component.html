@@ -20,10 +20,15 @@
                                         (mezzoCoordinate)="mezzoCoordinate($event)"></app-mezzo-composizione>
             </ul>
             <div class="row">
-                <div *ngIf="mezziComposizione?.length <= 0" class="col-12 my-3">
+                <div *ngIf="!mezziComposizione" class="col-12 my-3">
                     <div class="text-center">
                         <i class="fa fa-spinner fa-3x fa-spin"></i>
                         <h6 class="m-0 mt-2">Caricamento...</h6>
+                    </div>
+                </div>
+                <div *ngIf="mezziComposizione && mezziComposizione?.length <= 0" class="col-12 my-3">
+                    <div class=" px-2 text-center">
+                        <h6 class="m-0 mt-2">Nessun mezzo trovato con i filtri selezionati</h6>
                     </div>
                 </div>
             </div>
@@ -46,10 +51,15 @@
                                           (hoverOut)="squadraHoverOut($event)"></app-squadra-composizione>
             </ul>
             <div class="row">
-                <div *ngIf="squadreComposizione?.length <= 0" class="col-12 my-3">
+                <div *ngIf="!squadreComposizione" class="col-12 my-3">
                     <div class="text-center">
                         <i class="fa fa-spinner fa-3x fa-spin"></i>
                         <h6 class="m-0 mt-2">Caricamento...</h6>
+                    </div>
+                </div>
+                <div *ngIf="squadreComposizione && squadreComposizione?.length <= 0" class="col-12 my-3">
+                    <div class="px-2 text-center">
+                    <h6 class="m-0 mt-2">Nessuna squadra trovata con i filtri selezionati</h6>
                     </div>
                 </div>
             </div>
