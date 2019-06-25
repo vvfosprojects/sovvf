@@ -258,8 +258,9 @@ export class ComposizionePartenzaState {
 
     @Action(ConfirmPartenze)
     confirmPartenze({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze) {
-        console.log('Richiesta aggiornata con le partenze', action.partenze);
+        console.log('Request confirm partenze', action.partenze);
         this.compPartenzaSevice.confermaPartenze(action.partenze).subscribe(() => {
+            console.log('Richiesta aggiornata con le partenze', action.partenze);
         });
     }
 

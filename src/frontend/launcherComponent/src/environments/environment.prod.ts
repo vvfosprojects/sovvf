@@ -37,7 +37,8 @@ export const environment = {
             filtri: '/api/Filtri',
             addPrenotazioneMezzo: '/api/AddPrenotazioneMezzo',
             removePrenotazioneMezzo: '/api/RemovePrenotazioneMezzo',
-            resetPrenotazioneMezzo: '/api/ResetPrenotazioneMezzo'
+            resetPrenotazioneMezzo: '/api/ResetPrenotazioneMezzo',
+            confermaPartenze: '/api/ConfermaPartenze'
         },
         chiamata: {
             marker: '/api/ChiamataInCorso',

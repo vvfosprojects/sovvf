@@ -16,7 +16,14 @@ import * as moment from 'moment';
 import { makeCopy } from '../../../shared/helper/function';
 import { OFFSET_SYNC_TIME } from '../../settings/referral-time';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza-state';
-import { RemoveBoxPartenzaByMezzoId } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
+import { AddBoxPartenza, ClearBoxPartenze, RemoveBoxPartenza, RemoveBoxPartenzaByMezzoId } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
+import { catchError } from 'rxjs/operators';
+import { handleError } from '../../../shared/helper/handleError';
+import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
+import { UpdateRichiesta } from '../../../features/home/store/actions/richieste/richieste.actions';
+import { Partenza } from '../../../shared/model/partenza.model';
+import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../shared/enum/toastr';
 
 @Injectable()
 export class CompPartenzaServiceFake {
@@ -683,6 +690,30 @@ export class CompPartenzaServiceFake {
             this.store.dispatch(new RemoveBookMezzoComposizione(response.mezzoComposizione));
             this.store.dispatch(new UpdateMezzoComposizione(response.mezzoComposizione));
             this.store.dispatch(new RemoveBoxPartenzaByMezzoId(response.mezzoComposizione.mezzo.codice));
+        }, 1000);
+
+        return of(null);
+    }
+
+    confermaPartenze(partenzeObj: any) {
+        setTimeout(() => {
+            const richieste = makeCopy(this.store.selectSnapshot(RichiesteState.richieste));
+            const richiesta = richieste.filter(x => x.id === partenzeObj.idRichiesta)[0];
+            partenzeObj.partenze.forEach(partenza => {
+                const partenze = [];
+                partenze.push(
+                    new Partenza(
+                        partenza.squadre,
+                        partenza.mezzo,
+                        partenza.turno
+                    )
+                );
+                richiesta.partenze = [...partenze];
+            });
+            this.store.dispatch(new UpdateRichiesta(richiesta));
+            this.store.dispatch(new ClearBoxPartenze());
+            this.store.dispatch(new AddBoxPartenza());
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3));
         }, 1000);
 
         return of(null);

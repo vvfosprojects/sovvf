@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 
 // Model
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
@@ -16,6 +16,8 @@ import { RichiestaSelezionataState } from './richiesta-selezionata.state';
 import { RichiestaModificaState } from './richiesta-modifica.state';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
+import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza-state';
+import { UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -43,7 +45,8 @@ export class RichiesteState {
         return (id: string) => state.richieste.find(x => x.codiceRichiesta === id);
     }
 
-    constructor(private richiesteService: SintesiRichiesteService) {
+    constructor(private richiesteService: SintesiRichiesteService,
+                private store: Store) {
     }
 
     @Action(GetRichieste, { cancelUncompleted: true })
@@ -73,13 +76,13 @@ export class RichiesteState {
     }
 
     @Action(UpdateRichiesta)
-    updateRichiesta({ setState }: StateContext<RichiesteStateModel>, { richiesta }: UpdateRichiesta) {
+    updateRichiesta({ setState, dispatch }: StateContext<RichiesteStateModel>, { richiesta }: UpdateRichiesta) {
         console.log(richiesta);
 
         // Controllo se la richiesta aggiornata è anche la richiesta attualmente in composzione
         const richiestaComposzione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id;
         if (richiestaComposzione && richiestaComposzione === richiesta.id) {
-            this.store.dispatch(new UpdateRichiestaComposizione(richiesta));
+            dispatch(new UpdateRichiestaComposizione(richiesta));
         }
 
         setState(

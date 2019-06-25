@@ -83,7 +83,8 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-success btn-block card-shadow mt-2" [disabled]="!boxPartenzaList <= 0">
+        <button class="btn btn-success btn-block card-shadow mt-2" (click)="confermaPartenze()"
+                [disabled]="boxPartenzaList <= 0">
             <span class="mr-1">Conferma partenze</span>
             <span class="badge badge-light">{{boxPartenzaList.length}}</span>
         </button>

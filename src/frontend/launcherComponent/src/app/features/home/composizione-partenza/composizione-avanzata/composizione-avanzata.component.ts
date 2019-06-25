@@ -329,6 +329,33 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         }
     }
 
+    confermaPartenze() {
+        const partenze = this.boxPartenzaList;
+        const partenzeMappedArray = partenze.map(obj => {
+            const rObj = {};
+            if (obj.mezzoComposizione) {
+                rObj['mezzo'] = obj.mezzoComposizione.mezzo;
+            } else {
+                rObj['mezzo'] = null;
+            }
+            if (obj.squadraComposizione.length > 0) {
+                rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+                    return squadraComp.squadra;
+                });
+            } else {
+                rObj['squadre'] = [];
+            }
+            return rObj;
+        });
+        const partenzeObj = {
+            'partenze': partenzeMappedArray,
+            'idRichiesta': this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
+            'turno': this.store.selectSnapshot(TurnoState.turno).corrente
+        };
+        this.store.dispatch(new ConfirmPartenze(partenzeObj));
+        // console.log('mappedArray', partenzeMappedArray);
+    }
+
     annullaPartenza(event: boolean): void {
         if (event) {
             this.clearDirection.emit();

@@ -13,7 +13,8 @@ const PROXY_CONFIG = [
             "/api/ListaEventi",
             "/api/AddPrenotazioneMezzo",
             "/api/RemovePrenotazioneMezzo",
-            "/api/ResetPrenotazioneMezzo"
+            "/api/ResetPrenotazioneMezzo",
+            "/api/ConfermaPartenze"
         ],
         target: "http://so115.api2.test/",
         secure: false,

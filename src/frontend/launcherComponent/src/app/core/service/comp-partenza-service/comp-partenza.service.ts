@@ -47,4 +47,11 @@ export class CompPartenzaService {
             catchError(handleError)
         );
     }
+
+    confermaPartenze(partenze: any) {
+        return this.http.post(API_URL_COMPOSIZIONE.confermaPartenze, partenze).pipe(
+            // retry(3),
+            catchError(handleError)
+        );
+    }
 }

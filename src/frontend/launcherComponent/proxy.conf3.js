@@ -13,7 +13,8 @@ const PROXY_CONFIG = [
             "/api/ListaEventi",
             "/api/AddPrenotazioneMezzo",
             "/api/RemovePrenotazioneMezzo",
-            "/api/ResetPrenotazioneMezzo"
+            "/api/ResetPrenotazioneMezzo",
+            "/api/ConfermaPartenze"
         ],
         target: "http://172.16.16.13:5000/",
         secure: false,
