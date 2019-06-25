@@ -698,7 +698,10 @@ export class CompPartenzaServiceFake {
     confermaPartenze(partenzeObj: any) {
         setTimeout(() => {
             const richieste = makeCopy(this.store.selectSnapshot(RichiesteState.richieste));
-            const richiesta = richieste.filter(x => x.id === partenzeObj.idRichiesta)[0];
+            const richiesta = richieste.filter(x => x.codice === partenzeObj.idRichiesta)[0];
+            if (!partenzeObj.partenze) {
+                partenzeObj.partenze = [];
+            }
             partenzeObj.partenze.forEach(partenza => {
                 const partenze = [];
                 partenze.push(
