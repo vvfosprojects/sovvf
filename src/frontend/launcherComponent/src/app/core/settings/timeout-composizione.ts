@@ -1,5 +1,5 @@
 export const COMPOSIZONEOPTIONS = {
-    timeout: 180,
-    alertTimeAgo: 90
+    timeout: 15,
+    alertTimeAgo: 8
 };
 

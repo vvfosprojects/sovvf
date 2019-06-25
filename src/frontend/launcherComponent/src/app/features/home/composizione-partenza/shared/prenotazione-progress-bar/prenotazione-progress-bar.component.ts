@@ -16,6 +16,7 @@ import { Store } from '@ngxs/store';
 export class PrenotazioneProgressBarComponent implements OnInit, OnChanges, OnDestroy {
     @Input() mezzoComp: MezzoComposizione;
     @Input() itemPrenotato: boolean;
+    @Input() graphic: boolean;
     option = COMPOSIZONEOPTIONS;
     currentTimeout: number;
     _interval: any;
@@ -68,7 +69,7 @@ export class PrenotazioneProgressBarComponent implements OnInit, OnChanges, OnDe
 
                 if (this.currentTimeout < this.option.alertTimeAgo) {
                     if (!alert) {
-                        console.log('Prenotazione in scadenza');
+                        // console.log('Prenotazione in scadenza');
                         alert = true;
                         this.store.dispatch(new ShowToastr(
                             ToastrType.Warning, 'Prenotazione in scadenza',
@@ -78,10 +79,12 @@ export class PrenotazioneProgressBarComponent implements OnInit, OnChanges, OnDe
                 }
 
                 if (this.currentTimeout <= 0) {
-                    this.store.dispatch(new RequestRemoveBookMezzoComposizione(this.mezzoComp));
+                    if (!this.graphic) {
+                        this.store.dispatch(new RequestRemoveBookMezzoComposizione(this.mezzoComp));
+                    }
                     this.scadenza = null;
                     clearInterval(this._interval);
-                    console.log('Mezzo non più prenotato');
+                    // console.log('Mezzo non più prenotato');
                 }
             }, 500);
         }

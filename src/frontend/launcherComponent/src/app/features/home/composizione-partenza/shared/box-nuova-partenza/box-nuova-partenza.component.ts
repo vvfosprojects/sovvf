@@ -2,6 +2,8 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
+import { RequestResetBookMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
+import { Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-box-nuova-partenza',
@@ -21,6 +23,9 @@ export class BoxNuovaPartenzaComponent {
     @Output() selezionato = new EventEmitter<BoxPartenza>();
     @Output() deselezionato = new EventEmitter<BoxPartenza>();
     @Output() eliminato = new EventEmitter<BoxPartenza>();
+
+    constructor(private store: Store) {
+    }
 
     onClick() {
         if (!this.itemSelezionato) {
@@ -120,5 +125,10 @@ export class BoxNuovaPartenzaComponent {
         }
 
         return { result: result + ' ' + prefix + icon, tooltip: tooltip };
+    }
+
+    onResetTimeout(e: MouseEvent) {
+        e.stopPropagation();
+        this.store.dispatch(new RequestResetBookMezzoComposizione(this.partenza.mezzoComposizione));
     }
 }

@@ -35,7 +35,7 @@ export class MezzoComposizioneComponent implements OnInit {
     @Output() stopTimeout = new EventEmitter<MezzoComposizione>();
 
     // Mappa
-    @Output() mezzoCoordinate = new EventEmitter<Coordinate>();
+    @Output() mezzoCoordinate = new EventEmitter<any>();
 
     constructor(private store: Store) {
     }
@@ -111,9 +111,6 @@ export class MezzoComposizioneComponent implements OnInit {
             }
         }
 
-        if (this.itemPrenotato) {
-            returnClass += ' pb-0';
-        }
         if (this.itemInPrenotazione) {
             returnClass += ' diagonal-stripes bg-lightgrey';
         }
@@ -149,11 +146,6 @@ export class MezzoComposizioneComponent implements OnInit {
 
     // Mappa
     mezzoDirection(mezzoComp: MezzoComposizione): void {
-        this.mezzoCoordinate.emit(mezzoComp.coordinate);
-    }
-
-    onResetTimeout(e: MouseEvent) {
-        e.stopPropagation();
-        this.store.dispatch(new RequestResetBookMezzoComposizione(this.mezzoComp));
+        this.mezzoCoordinate.emit({'idMezzo': mezzoComp.id, 'coordinate': mezzoComp.coordinate});
     }
 }

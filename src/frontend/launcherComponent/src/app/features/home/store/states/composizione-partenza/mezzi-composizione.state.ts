@@ -205,7 +205,7 @@ export class MezziComposizioneState {
     @Action(AddBookMezzoComposizione)
     addBookMezzoComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: AddBookMezzoComposizione) {
         const state = getState();
-        const mezzoComp = state.mezziComposizione.filter(x => x.mezzo.codice === action.mezzoComp.mezzo.codice)[0];
+        const mezzoComp = state.mezziComposizione.length > 0 ? state.mezziComposizione.filter(x => x.mezzo.codice === action.mezzoComp.mezzo.codice)[0] : null;
         const idMezzoComp = mezzoComp ? mezzoComp.id : null;
         if (idMezzoComp) {
             if (state.idMezziPrenotati.indexOf(idMezzoComp) === -1) {
@@ -239,8 +239,8 @@ export class MezziComposizioneState {
     @Action(RemoveBookMezzoComposizione)
     removeBookMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: RemoveBookMezzoComposizione) {
         const state = getState();
-        const mezzoComp = state.mezziComposizione.filter(x => x.mezzo.codice === action.mezzoComp.mezzo.codice)[0];
-        const idMezzoComp = mezzoComp ? mezzoComp.id : null;
+        const mezzoComp = state.mezziComposizione.filter(x => x.mezzo.codice === action.mezzoComp.mezzo.codice);
+        const idMezzoComp = mezzoComp && mezzoComp.length > 0 ? mezzoComp[0].id : null;
         if (idMezzoComp && state.idMezziPrenotati.indexOf(idMezzoComp) > -1) {
             setState(
                 patch({

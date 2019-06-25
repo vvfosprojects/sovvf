@@ -302,30 +302,27 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         }
     }
 
-    // Id Maker
-    generateUniqueId(): string {
-        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    }
-
     // Interazione con Mappa
-    mezzoCoordinate(event: Coordinate): void {
-        if (event && this.richiesta.localita.coordinate) {
-            const direction: DirectionInterface = {
-                origin: {
-                    lat: event.latitudine,
-                    lng: event.longitudine
-                },
-                destination: {
-                    lat: this.richiesta.localita.coordinate.latitudine,
-                    lng: this.richiesta.localita.coordinate.longitudine
-                },
-                isVisible: true
-            };
+    mezzoCoordinate(obj: any): void {
+        if (obj.coordinate && this.richiesta.localita.coordinate) {
+            if (this.idMezziPrenotati.indexOf(obj.idMezzo) <= -1) {
+                const direction: DirectionInterface = {
+                    origin: {
+                        lat: obj.coordinate.latitudine,
+                        lng: obj.coordinate.longitudine
+                    },
+                    destination: {
+                        lat: this.richiesta.localita.coordinate.latitudine,
+                        lng: this.richiesta.localita.coordinate.longitudine
+                    },
+                    isVisible: true
+                };
 
-            this.sendDirection.emit(direction);
+                this.sendDirection.emit(direction);
+            }
         } else {
-            console.error('coordinate mezzo / coordinate richiesta non presenti');
             this.clearDirection.emit();
+            console.error('coordinate mezzo / coordinate richiesta non presenti');
         }
     }
 

@@ -652,7 +652,7 @@ export class CompPartenzaServiceFake {
     setMezzoPrenotato(mezzoComp: MezzoComposizione) {
         setTimeout(() => {
             const obj = makeCopy(mezzoComp);
-            obj.mezzoComposizione.istanteScadenzaSelezione = moment(new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime()).add(3, 'minutes').toDate();
+            obj.mezzoComposizione.istanteScadenzaSelezione = moment(new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime()).add(15, 'seconds').toDate();
             const response = {
                 'mezzoComposizione': obj.mezzoComposizione
             };
@@ -668,7 +668,7 @@ export class CompPartenzaServiceFake {
         setTimeout(() => {
             const obj = makeCopy(mezzoComp);
             // mezzo.istanteScadenzaSelezione = moment(new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime()).add(3, 'minutes').toDate();
-            obj.mezzoComposizione.istanteScadenzaSelezione = moment(new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime()).add(3, 'minutes').toDate();
+            obj.mezzoComposizione.istanteScadenzaSelezione = moment(new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime()).add(15, 'seconds').toDate();
             const response = {
                 'mezzoComposizione': obj.mezzoComposizione
             };
