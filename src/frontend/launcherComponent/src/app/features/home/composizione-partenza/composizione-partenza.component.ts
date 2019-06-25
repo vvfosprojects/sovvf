@@ -23,6 +23,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ClearListaComposizioneVeloce } from '../store/actions/composizione-partenza/composizione-veloce.actions';
 import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione } from '../store/actions/composizione-partenza/squadre-composizione.actions';
 import { SetComposizioneMode } from '../store/actions/composizione-partenza/composizione-partenza.actions';
+import { HelperSintesiRichiesta } from '../richieste/helper/_helper-sintesi-richiesta';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -46,6 +47,8 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     preAccoppiati: BoxPartenza[];
 
     prevStateBoxClick: BoxClickStateModel;
+
+    methods = new HelperSintesiRichiesta;
 
     constructor(private modalService: NgbModal, private store: Store) {
         this.subscription.add(this.nuovaPartenza$.subscribe(r => this.richiesta = r));
@@ -92,13 +95,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     cardClasses(r: SintesiRichiesta) {
-        return {
-            'status_chiamata': r.stato === StatoRichiesta.Chiamata,
-            'status_presidiato': r.stato === StatoRichiesta.Presidiata,
-            'status_assegnato': r.stato === StatoRichiesta.Assegnata,
-            'status_sospeso': r.stato === StatoRichiesta.Sospesa,
-            'status_chiuso': r.stato === StatoRichiesta.Chiusa,
-        };
+        return this.methods.cardBorder(r);
     }
 
     onSendDirection(direction: DirectionInterface) {

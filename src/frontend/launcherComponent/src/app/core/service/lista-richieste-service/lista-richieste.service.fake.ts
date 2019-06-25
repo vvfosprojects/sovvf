@@ -26,6 +26,7 @@ import { TurnoIntervento } from '../../../shared/model/turno-intervento';
 import { TipoTerreno } from '../../../shared/model/tipo-terreno';
 import { TipoTerrenoEnum } from '../../../shared/enum/tipo-terreno.enum';
 import { EnteIntervenuto } from '../../../shared/model/ente-intervenuto';
+import { AttivitaUtente } from '../../../shared/model/attivita-utente.model';
 
 
 @Injectable()
@@ -797,6 +798,8 @@ export class SintesiRichiesteServiceFake {
         this.richieste[3].listaEntiPresaInCarico = [new EnteIntervenuto('1', 'Polizia di Stato')];
         this.richieste[4].listaEntiPresaInCarico = [new EnteIntervenuto('1', 'Polizia di Stato'), new EnteIntervenuto('2' , 'Carabinieri')];
         this.richieste[4].listaEntiIntervenuti = [new EnteIntervenuto('3', 'Protezione Civile')];
+        this.richieste[0].listaUtentiInLavorazione = [new AttivitaUtente('Mario Rossi', new Date())];
+        this.richieste[0].listaUtentiPresaInCarico = [new AttivitaUtente('Luigi Bianchi', moment().subtract(42, 'minutes').toDate())];
 
         return of(this.richieste);
     }

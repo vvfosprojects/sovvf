@@ -123,7 +123,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(MarkerChiamata)
-    MarkerChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata) {
+    markerChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata) {
         const state = getState();
 
         if (state.idChiamataMarker) {

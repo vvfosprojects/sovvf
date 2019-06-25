@@ -6,23 +6,25 @@
         </div>
     </div>
     <!-- Lista di singole Richieste -->
-    <div class="col-12 px-0 border-bottom" [ngClass]="HeightControl()">
+    <div class="col-12 px-0 border-bottom" [ngClass]="heightControl()">
         <cdk-virtual-scroll-viewport [itemSize]="itemSize" style="min-height:300px; height:100%">
             <div class="pt-1">
                 <div *cdkVirtualFor="let r of richieste | filterBy: ricerca; templateCacheSize: 0"
                      [ngClass]="{'col-double': !_split, 'col-12': _split}">
-                    <div *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="CardClasses(r)">
-                        <app-sintesi-richiesta [richiesta]="r" [fissata]="false" [fissabile]="true" [espanso]="false"
+                    <div *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="cardClasses(r)">
+                        <app-sintesi-richiesta [richiesta]="r" [fissata]="false" [fissabile]="true"
+                                               [espanso]="false"
                                                [espandibile]="true"
                                                [listaEventi]="true" (mouseover)="richiestaHoverIn(r)"
-                                               (mouseout)="richiestaHoverOut(r)" (fissaInAlto)="onFissaInAlto($event)"
+                                               (mouseout)="richiestaHoverOut(r)"
+                                               (fissaInAlto)="onFissaInAlto($event)"
                                                (clickRichiesta)="richiestaClick($event)"
                                                (doubleClickRichiesta)="richiestaDoubleClick($event)"
                                                (nuovaPartenza)="nuovaPartenza($event)"
                                                (eventiRichiesta)="visualizzaEventiRichiesta($event)"
                                                (modificaRichiesta)="onModificaRichiesta($event)"></app-sintesi-richiesta>
                     </div>
-                    <div *ngIf="r === richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="CardClasses(r)">
+                    <div *ngIf="r === richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="cardClasses(r)">
                         <app-sintesi-richiesta-sm [richiesta]="r" (mouseover)="richiestaHoverIn(r)"
                                                   (mouseout)="richiestaHoverOut(r)"></app-sintesi-richiesta-sm>
                     </div>

@@ -223,6 +223,17 @@ a:hover {
   border-left: 10px solid #868e96;
 }
 
+.status_in_lavorazione {
+  border-width: 0 0 0 10px;
+  border-style: solid;
+  border-image: linear-gradient(
+                  to bottom,
+                  rgb(220, 53, 69),
+                  rgb(23, 162, 184)
+  ) 1 100%;
+}
+
+
 /* Status Mezzo */
 .status_inSede {
   border-top: 5px solid #868e96;
@@ -352,8 +363,14 @@ a:hover {
   animation: blink 0.8s linear infinite;
 }
 
-@keyframes blink{
-  0%{opacity: .2;}
-  50%{opacity: .5;}
-  100%{opacity: 1;}
+@keyframes blink {
+  0% {
+    opacity: .2;
+  }
+  50% {
+    opacity: .5;
+  }
+  100% {
+    opacity: 1;
+  }
 }

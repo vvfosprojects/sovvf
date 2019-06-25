@@ -6,6 +6,7 @@ import { ColoriStatoMezzo } from '../../../../shared/helper/_colori';
 import { TipoTerrenoEnum } from '../../../../shared/enum/tipo-terreno.enum';
 import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
 import { TipoTerrenoMqHa } from '../../../../shared/interface/tipo-terreno-mq-ha';
+import { AttivitaUtente } from '../../../../shared/model/attivita-utente.model';
 
 export class HelperSintesiRichiesta {
 
@@ -116,8 +117,8 @@ export class HelperSintesiRichiesta {
     }
 
     /* NgClass Card Status */
-    CardClasses(r: any, richiestaSelezionata: any, richiestaHover: any) {
-        return {
+    cardClasses(r: SintesiRichiesta, richiestaSelezionata: any, richiestaHover: any) {
+        const classes = {
             // Hover (stato)
             'card-shadow-info': (r === richiestaHover || r === richiestaSelezionata) && r.stato === StatoRichiesta.Assegnata,
             'card-shadow-success': (r === richiestaHover || r === richiestaSelezionata) && r.stato === StatoRichiesta.Presidiata,
@@ -126,33 +127,41 @@ export class HelperSintesiRichiesta {
             'card-shadow-secondary': (r === richiestaHover || r === richiestaSelezionata) && r.stato === StatoRichiesta.Chiusa,
             'bg-light': (r === richiestaSelezionata || r === richiestaHover) && r.stato !== StatoRichiesta.Chiusa,
             'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
-
-            // Bordo sinistro (stato)
-            'status_chiamata': r.stato === StatoRichiesta.Chiamata,
-            'status_presidiato': r.stato === StatoRichiesta.Presidiata,
-            'status_assegnato': r.stato === StatoRichiesta.Assegnata,
-            'status_sospeso': r.stato === StatoRichiesta.Sospesa,
-            'status_chiuso': r.stato === StatoRichiesta.Chiusa,
         };
+        const cardBorder = this.cardBorder(r);
+        return {...classes, ...cardBorder};
     }
 
     /* NgClass Card Fissata Status */
     cardFissataClasses(r: SintesiRichiesta) {
         if (r) {
-            return {
+            const classes = {
                 'card-shadow-info': r.stato === StatoRichiesta.Assegnata,
-                'card-shadow-success': r.stato === StatoRichiesta.Presidiata,
-                'card-shadow-danger': r.stato === StatoRichiesta.Chiamata,
-                'card-shadow-warning': r.stato === StatoRichiesta.Sospesa,
-                'card-shadow-secondary': r.stato === StatoRichiesta.Chiusa,
-                'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
-                // Bordo sinistro (stato)
-                'status_chiamata': r.stato === StatoRichiesta.Chiamata,
-                'status_presidiato': r.stato === StatoRichiesta.Presidiata,
-                'status_assegnato': r.stato === StatoRichiesta.Assegnata,
-                'status_sospeso': r.stato === StatoRichiesta.Sospesa,
-                'status_chiuso': r.stato === StatoRichiesta.Chiusa,
+                    'card-shadow-success': r.stato === StatoRichiesta.Presidiata,
+                    'card-shadow-danger': r.stato === StatoRichiesta.Chiamata,
+                    'card-shadow-warning': r.stato === StatoRichiesta.Sospesa,
+                    'card-shadow-secondary': r.stato === StatoRichiesta.Chiusa,
+                    'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
             };
+            const cardBorder = this.cardBorder(r);
+            return {...classes, ...cardBorder};
+        }
+    }
+
+    cardBorder(r: SintesiRichiesta) {
+        if (r) {
+            if (!this._isInLavorazione(r.listaUtentiInLavorazione)) {
+                return {
+                    // Bordo sinistro (stato)
+                    'status_chiamata': r.stato === StatoRichiesta.Chiamata,
+                    'status_presidiato': r.stato === StatoRichiesta.Presidiata,
+                    'status_assegnato': r.stato === StatoRichiesta.Assegnata,
+                    'status_sospeso': r.stato === StatoRichiesta.Sospesa,
+                    'status_chiuso': r.stato === StatoRichiesta.Chiusa,
+                };
+            } else {
+                return { 'status_in_lavorazione': true };
+            }
         }
     }
 
@@ -202,7 +211,7 @@ export class HelperSintesiRichiesta {
                     value = terreno.mq;
                 }
             });
-            return tipoTerreno.filter( terreno => terreno.mq !== value);
+            return tipoTerreno.filter(terreno => terreno.mq !== value);
         } else {
             return null;
         }
@@ -221,6 +230,20 @@ export class HelperSintesiRichiesta {
         } else {
             return null;
         }
+    }
+
+    _isInLavorazione(attivita: AttivitaUtente[]): boolean {
+        if (attivita) {
+            for (const _attivita in attivita) {
+                /**
+                 * eventuale logica di controllo
+                 */
+                if (_attivita) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
 

@@ -26,6 +26,7 @@ export class SintesiRichiesteService {
     // }
 
     public patchRichiesta(richiesta: SintesiRichiesta): Observable<any> {
+        console.log(richiesta);
         return this.http.post<any>(API_URL_MODIFICA, richiesta).pipe(
             retry(3),
             catchError(handleError));

@@ -125,7 +125,7 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     /* NgClass List Height */
-    HeightControl() {
+    heightControl() {
         if (this.richieste.length > 0) {
             return this.listHeightClass;
         } else {
@@ -134,7 +134,8 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     /* NgClass Card Status */
-    CardClasses(r: any) {
-        return this.methods.CardClasses(r, this.richiestaSelezionata, this.richiestaHover);
+    cardClasses(r: SintesiRichiesta) {
+        return this.methods.cardClasses(r, this.richiestaSelezionata, this.richiestaHover);
     }
+
 }
