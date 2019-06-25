@@ -13,7 +13,5 @@ namespace DomainModel.CQRS.Commands.ConfermaPartenze
     public class ConfermaPartenzeCommand
     {
         public SO115App.API.Models.Classi.Composizione.ConfermaPartenze ConfermaPartenze { get; set; }
-
-        public string codiceSede { get; set; }
     }
 }

@@ -50,7 +50,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
             mezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(json);
             mezzo = mezzi.Where(x => x.Mezzo.Codice.Equals(command.MezzoPrenotato.mezzoComposizione.Mezzo.Codice)).FirstOrDefault();
                 mezzi.Remove(mezzo);
-                mezzo.IstanteScadenzaSelezione = DateTime.Now.AddMinutes(3);
+                mezzo.IstanteScadenzaSelezione = DateTime.Now.AddSeconds(15);
                 mezzi.Add(mezzo);
             mezzi.Sort(delegate (ComposizioneMezzi x, ComposizioneMezzi y)
             {

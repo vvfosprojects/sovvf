@@ -24,6 +24,7 @@ using DomainModel.CQRS.Commands.ConfermaPartenze;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.ListaEventi;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 
 namespace SO115App.FakePersistenceJSon.Composizione
@@ -34,23 +35,47 @@ namespace SO115App.FakePersistenceJSon.Composizione
         {
             string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
+            var id = "0";
+            var stato = "";
+            List<Partenza> partenzeEsistenti = new List<Partenza>();
             using (StreamReader r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
             SintesiRichieste richiesta = new SintesiRichieste();
+            List<Eventi> eventiPrecedenti = new List<Eventi>();
             ConfermaPartenze conferma = new ConfermaPartenze();
             List<SintesiRichieste> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichieste>>(json);
-                richiesta = ListaRichieste.Where(x => x.Codice == command.ConfermaPartenze.IdRichiesta).FirstOrDefault();
+                richiesta = ListaRichieste.Where(x => x.Codice == command.ConfermaPartenze.Chiamata.Codice).FirstOrDefault();
+                id = richiesta.Id;
+                stato = richiesta.Stato;
+                partenzeEsistenti = richiesta.Partenze;
                 ListaRichieste.Remove(richiesta);
+            if (richiesta.Partenze.Count > 0)
+            {
+                if (stato =="Chiamata")
+                {
+                    richiesta.Stato = "Assegnata";
+                }
+                partenzeEsistenti.AddRange(command.ConfermaPartenze.Partenze);
+                richiesta.Partenze = partenzeEsistenti;
+            }
+            else
+            {
                 richiesta.Partenze = command.ConfermaPartenze.Partenze;
+                if (stato == "Chiamata")
+                {
+                    richiesta.Stato = "Assegnata";
+                }
+            }
                 ListaRichieste.Add(richiesta);
                 string fileText = System.IO.File.ReadAllText(@"Fake/ListaRichiesteAssistenza.json");
                 string jsonNew = JsonConvert.SerializeObject(ListaRichieste);
                 System.IO.File.WriteAllText(@"Fake/ListaRichiesteAssistenza.json", jsonNew);
-                conferma.CodiceSede = command.codiceSede;
+                conferma.CodiceSede = command.ConfermaPartenze.CodiceSede;
                 conferma.IdRichiesta = command.ConfermaPartenze.IdRichiesta;
                 conferma.Chiamata = richiesta;
+                conferma.Chiamata.Id = id;
                 return conferma;
         }
     }

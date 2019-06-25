@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Eccezioni;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 
@@ -52,6 +53,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             string codiceFonte,
             bool fuoriSede) : base(richiesta, istante, codiceFonte)
         {
+            this.ComponentiSquadra = new List<Squadra>();
             this.Componenti = new HashSet<ComponentePartenza>();
             this.FuoriSede = fuoriSede;
         }
@@ -97,6 +99,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         /// <summary>
         ///   E' la lista dei componenti della partenza
         /// </summary>
+        public List<Squadra> ComponentiSquadra { get; set; }
+
         public ISet<ComponentePartenza> Componenti { get; set; }
 
         /// <summary>
@@ -125,10 +129,12 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         {
             get
             {
-                return new HashSet<string>(this.Componenti
-                    .Select(c => c.CodiceMezzo)
-                    .Where(cm => cm != null)
-                    .Distinct());
+     
+                    return new HashSet<string>(this.Componenti
+                        .Select(c => c.CodiceMezzo)
+                        .Where(cm => cm != null)
+                        .Distinct());
+                
             }
         }
 

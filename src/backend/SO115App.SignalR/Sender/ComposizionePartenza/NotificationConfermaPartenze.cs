@@ -34,10 +34,10 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             _notificationHubContext = NotificationHubContext;
         }
 
-        public async Task SendNotification(ConfermaPartenzeCommand command)
+        public async Task SendNotification(ConfermaPartenzeCommand conferma)
         {
 
-            await _notificationHubContext.Clients.Group(command.codiceSede).SendAsync("ModifyAndNotifySuccess", command);
+            await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
         }
     }
 }

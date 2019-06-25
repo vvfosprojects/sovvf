@@ -1,1 +1,850 @@
-[{"Id":null,"Codice":"RM.1000-19-0","CodiceRichiesta":null,"Operatore":{"Id":"3","Nome":"Mario","Cognome":"Rossi","CodiceFiscale":"YZSPMD89M07M185L","Sede":{"Codice":"RM.1000","Descrizione":"Comando VV.F. ROMA","Coordinate":{"Latitudine":41.89996,"Longitudine":12.49104},"Indirizzo":"Via Genova, 3/a","Tipo":"Comando","Regione":"Lazio","Provincia":"ROMA","Label":null,"Icona":null},"Username":"test","Password":null,"Ruoli":null,"Token":null,"ValidoDa":null,"ValidoFinoA":null,"Attivo":true,"Qualifica":null},"IstanteRicezioneRichiesta":"2019-06-18T10:06:45.042Z","Stato":"Chiuso","PrioritaRichiesta":3,"Tipologie":[{"Codice":"5","Descrizione":"Incendio normale (generico)","TipoLuogoEvento":null,"Icona":null,"Categoria":"Incendi ed Esplosioni","Star":true}],"Descrizione":"motivazione","Richiedente":{"Telefono":"454654564","Nome":"Pippo","Cognome":"Franco","RagioneSociale":""},"Localita":{"Coordinate":{"Latitudine":41.896578,"Longitudine":12.495185699999979},"Indirizzo":"Via Cavour, Roma RM, Italia","Note":null},"Competenze":null,"Complessita":null,"IstantePresaInCarico":null,"IstantePrimaAssegnazione":null,"Rilevanza":false,"CodiceSchedaNue":null,"ZoneEmergenza":null,"Fonogramma":null,"Partenze":[{"Squadre":[{"Id":"1","Nome":null,"Stato":0,"Componenti":null,"Distaccamento":null,"IstanteTermineImpegno":null}],"Mezzo":{"Codice":"1","Descrizione":"A1","Genere":"ABP","Stato":"inSede","Appartenenza":0,"Distaccamento":{"Codice":"1","Descrizione":"Tuscolano II","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 2","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"DescrizioneAppartenenza":null,"DescrizioneStato":null,"StatoEfficenza":0,"DescrizioneStatoEfficenza":null,"LivelloCarburante":0,"DescrizioneLivelloCarburante":null,"LivelloEstinguente":0,"DescrizioneLivelloEstinguente":null,"Notifiche":null}}],"Etichette":[],"NotePubbliche":null,"NotePrivate":null,"Chiusa":false,"Aperta":true,"Sospesa":false,"Presidiato":false},{"Id":null,"Codice":"RM.1000-19-19","CodiceRichiesta":null,"Operatore":{"Id":"3","Nome":"Mario","Cognome":"Rossi","CodiceFiscale":"YZSPMD89M07M185L","Sede":{"Codice":"RM.1000","Descrizione":"Comando VV.F. ROMA","Coordinate":{"Latitudine":41.89996,"Longitudine":12.49104},"Indirizzo":"Via Genova, 3/a","Tipo":"Comando","Regione":"Lazio","Provincia":"ROMA","Label":null,"Icona":null},"Username":"test","Password":null,"Ruoli":null,"Token":null,"ValidoDa":null,"ValidoFinoA":null,"Attivo":true,"Qualifica":null},"IstanteRicezioneRichiesta":"2019-06-18T10:27:35.082Z","Stato":null,"PrioritaRichiesta":3,"Tipologie":[{"Codice":"5","Descrizione":"Incendio normale (generico)","TipoLuogoEvento":null,"Icona":null,"Categoria":"Incendi ed Esplosioni","Star":true},{"Codice":"8","Descrizione":"Esplosione (escluso esplosione da sostanza esplodente)","TipoLuogoEvento":null,"Icona":null,"Categoria":"Incendi ed Esplosioni","Star":false}],"Descrizione":"motivazione","Richiedente":{"Telefono":"34223903290","Nome":"Carlo","Cognome":"Maresca","RagioneSociale":""},"Localita":{"Coordinate":{"Latitudine":41.860060900000008,"Longitudine":12.494048799999973},"Indirizzo":"Via delle Sette Chiese, Roma RM, Italia","Note":null},"Competenze":null,"Complessita":null,"IstantePresaInCarico":null,"IstantePrimaAssegnazione":null,"Rilevanza":false,"CodiceSchedaNue":null,"ZoneEmergenza":null,"Fonogramma":null,"Partenze":[{"Squadre":[{"Id":"1","Nome":"Rossa","Stato":3,"Componenti":[{"DescrizioneQualifica":"CP","Nominativo":"Mario Verdi","Tooltip":"","CapoPartenza":true,"Autista":false,"Rimpiazzo":false},{"DescrizioneQualifica":"CP","Nominativo":"Francesco Rossi","Tooltip":"","CapoPartenza":false,"Autista":true,"Rimpiazzo":false},{"DescrizioneQualifica":"CP","Nominativo":"Mario Verna","Tooltip":"","CapoPartenza":false,"Autista":false,"Rimpiazzo":true}],"Distaccamento":{"Codice":"2","Descrizione":"Tuscolana II","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 1","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"IstanteTermineImpegno":null}],"Mezzo":{"Codice":"1","Descrizione":"A1","Genere":"ABP","Stato":"inSede","Appartenenza":0,"Distaccamento":{"Codice":"1","Descrizione":"Tuscolano II","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 2","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"DescrizioneAppartenenza":null,"DescrizioneStato":null,"StatoEfficenza":0,"DescrizioneStatoEfficenza":null,"LivelloCarburante":0,"DescrizioneLivelloCarburante":null,"LivelloEstinguente":0,"DescrizioneLivelloEstinguente":null,"Notifiche":null}}],"Etichette":[],"NotePubbliche":null,"NotePrivate":null,"Chiusa":false,"Aperta":true,"Sospesa":false,"Presidiato":false},{"Id":null,"Codice":"RM.1000-19-19","CodiceRichiesta":null,"Operatore":{"Id":"3","Nome":"Mario","Cognome":"Rossi","CodiceFiscale":"YZSPMD89M07M185L","Sede":{"Codice":"RM.1000","Descrizione":"Comando VV.F. ROMA","Coordinate":{"Latitudine":41.89996,"Longitudine":12.49104},"Indirizzo":"Via Genova, 3/a","Tipo":"Comando","Regione":"Lazio","Provincia":"ROMA","Label":null,"Icona":null},"Username":"test","Password":null,"Ruoli":null,"Token":null,"ValidoDa":null,"ValidoFinoA":null,"Attivo":true,"Qualifica":null},"IstanteRicezioneRichiesta":"2019-06-18T10:10:13.439Z","Stato":null,"PrioritaRichiesta":3,"Tipologie":[{"Codice":"5","Descrizione":"Incendio normale (generico)","TipoLuogoEvento":null,"Icona":null,"Categoria":"Incendi ed Esplosioni","Star":true}],"Descrizione":"Incendio","Richiedente":{"Telefono":"45646545","Nome":"Mario","Cognome":"Bertolucci","RagioneSociale":""},"Localita":{"Coordinate":{"Latitudine":41.920946599999994,"Longitudine":12.54692840000007},"Indirizzo":"Via di Pietralata, Roma RM, Italia","Note":null},"Competenze":null,"Complessita":null,"IstantePresaInCarico":null,"IstantePrimaAssegnazione":null,"Rilevanza":false,"CodiceSchedaNue":null,"ZoneEmergenza":null,"Fonogramma":null,"Partenze":[{"Squadre":[{"Id":"1","Nome":"Rossa","Stato":3,"Componenti":[{"DescrizioneQualifica":"CP","Nominativo":"Mario Verdi","Tooltip":"","CapoPartenza":true,"Autista":false,"Rimpiazzo":false},{"DescrizioneQualifica":"CP","Nominativo":"Francesco Rossi","Tooltip":"","CapoPartenza":false,"Autista":true,"Rimpiazzo":false},{"DescrizioneQualifica":"CP","Nominativo":"Mario Verna","Tooltip":"","CapoPartenza":false,"Autista":false,"Rimpiazzo":true}],"Distaccamento":{"Codice":"2","Descrizione":"Tuscolana II","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 1","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"IstanteTermineImpegno":null}],"Mezzo":{"Codice":"1","Descrizione":"A1","Genere":"ABP","Stato":"inSede","Appartenenza":0,"Distaccamento":{"Codice":"1","Descrizione":"Tuscolano II","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 2","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"DescrizioneAppartenenza":null,"DescrizioneStato":null,"StatoEfficenza":0,"DescrizioneStatoEfficenza":null,"LivelloCarburante":0,"DescrizioneLivelloCarburante":null,"LivelloEstinguente":0,"DescrizioneLivelloEstinguente":null,"Notifiche":null}}],"Etichette":[],"NotePubbliche":null,"NotePrivate":null,"Chiusa":false,"Aperta":true,"Sospesa":false,"Presidiato":false}]
+[
+  {
+    "Id": "3",
+    "Codice": "RM.1000-19-18",
+    "CodiceRichiesta": null,
+    "Operatore": {
+      "Id": "3",
+      "Nome": "Mario",
+      "Cognome": "Rossi",
+      "CodiceFiscale": "YZSPMD89M07M185L",
+      "Sede": {
+        "Codice": "RM.1000",
+        "Descrizione": "Comando VV.F. ROMA",
+        "Coordinate": {
+          "Latitudine": 41.89996,
+          "Longitudine": 12.49104
+        },
+        "Indirizzo": "Via Genova, 3/a",
+        "Tipo": "Comando",
+        "Regione": "Lazio",
+        "Provincia": "ROMA",
+        "Label": null,
+        "Icona": null
+      },
+      "Username": "test",
+      "Password": null,
+      "Ruoli": null,
+      "Token": null,
+      "ValidoDa": null,
+      "ValidoFinoA": null,
+      "Attivo": true,
+      "Qualifica": null
+    },
+    "IstanteRicezioneRichiesta": "2019-06-18T10:10:13.439Z",
+    "Stato": null,
+    "PrioritaRichiesta": 3,
+    "Tipologie": [
+      {
+        "Codice": "5",
+        "Descrizione": "Incendio normale (generico)",
+        "TipoLuogoEvento": null,
+        "Icona": null,
+        "Categoria": "Incendi ed Esplosioni",
+        "Star": true
+      }
+    ],
+    "Descrizione": "Incendio",
+    "Richiedente": {
+      "Telefono": "45646545",
+      "Nome": "Mario",
+      "Cognome": "Bertolucci",
+      "RagioneSociale": ""
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.920946599999994,
+        "Longitudine": 12.54692840000007
+      },
+      "Indirizzo": "Via di Pietralata, Roma RM, Italia",
+      "Note": null
+    },
+    "Competenze": null,
+    "Complessita": null,
+    "IstantePresaInCarico": null,
+    "IstantePrimaAssegnazione": null,
+    "Rilevanza": false,
+    "CodiceSchedaNue": null,
+    "ZoneEmergenza": null,
+    "Fonogramma": null,
+    "Partenze": [
+      {
+        "Squadre": [
+          {
+            "Id": "1",
+            "Nome": "Rossa",
+            "Stato": 3,
+            "Componenti": [
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Mario Verdi",
+                "Tooltip": "",
+                "CapoPartenza": true,
+                "Autista": false,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Francesco Rossi",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": true,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Mario Verna",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": false,
+                "Rimpiazzo": true
+              }
+            ],
+            "Distaccamento": {
+              "Codice": "2",
+              "Descrizione": "Tuscolana II",
+              "Coordinate": {
+                "Latitudine": 1.0,
+                "Longitudine": 1.0
+              },
+              "Indirizzo": "Via Prova, 1",
+              "Tipo": "Distaccamento",
+              "Regione": "Lazio",
+              "Provincia": "Roma",
+              "Label": null,
+              "Icona": null
+            },
+            "IstanteTermineImpegno": null
+          }
+        ],
+        "Mezzo": {
+          "Codice": "1",
+          "Descrizione": "A1",
+          "Genere": "ABP",
+          "Stato": "inSede",
+          "Appartenenza": 0,
+          "Distaccamento": {
+            "Codice": "1",
+            "Descrizione": "Tuscolano II",
+            "Coordinate": {
+              "Latitudine": 1.0,
+              "Longitudine": 1.0
+            },
+            "Indirizzo": "Via Prova, 2",
+            "Tipo": "Distaccamento",
+            "Regione": "Lazio",
+            "Provincia": "Roma",
+            "Label": null,
+            "Icona": null
+          },
+          "DescrizioneAppartenenza": null,
+          "DescrizioneStato": null,
+          "StatoEfficenza": 0,
+          "DescrizioneStatoEfficenza": null,
+          "LivelloCarburante": 0,
+          "DescrizioneLivelloCarburante": null,
+          "LivelloEstinguente": 0,
+          "DescrizioneLivelloEstinguente": null,
+          "Notifiche": null
+        }
+      }
+    ],
+    "Etichette": [],
+    "NotePubbliche": null,
+    "NotePrivate": null,
+    "Chiusa": false,
+    "Aperta": true,
+    "Sospesa": false,
+    "Presidiato": false
+  },
+  {
+    "Id": "1",
+    "Codice": "RM.1000-19-0",
+    "CodiceRichiesta": null,
+    "Operatore": {
+      "Id": "3",
+      "Nome": "Mario",
+      "Cognome": "Rossi",
+      "CodiceFiscale": "YZSPMD89M07M185L",
+      "Sede": {
+        "Codice": "RM.1000",
+        "Descrizione": "Comando VV.F. ROMA",
+        "Coordinate": {
+          "Latitudine": 41.89996,
+          "Longitudine": 12.49104
+        },
+        "Indirizzo": "Via Genova, 3/a",
+        "Tipo": "Comando",
+        "Regione": "Lazio",
+        "Provincia": "ROMA",
+        "Label": null,
+        "Icona": null
+      },
+      "Username": "test",
+      "Password": null,
+      "Ruoli": null,
+      "Token": null,
+      "ValidoDa": null,
+      "ValidoFinoA": null,
+      "Attivo": true,
+      "Qualifica": null
+    },
+    "IstanteRicezioneRichiesta": "2019-06-18T10:06:45.042Z",
+    "Stato": "Chiuso",
+    "PrioritaRichiesta": 3,
+    "Tipologie": [
+      {
+        "Codice": "5",
+        "Descrizione": "Incendio normale (generico)",
+        "TipoLuogoEvento": null,
+        "Icona": null,
+        "Categoria": "Incendi ed Esplosioni",
+        "Star": true
+      }
+    ],
+    "Descrizione": "motivazione",
+    "Richiedente": {
+      "Telefono": "454654564",
+      "Nome": "Pippo",
+      "Cognome": "Franco",
+      "RagioneSociale": ""
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.896578,
+        "Longitudine": 12.495185699999979
+      },
+      "Indirizzo": "Via Cavour, Roma RM, Italia",
+      "Note": null
+    },
+    "Competenze": null,
+    "Complessita": null,
+    "IstantePresaInCarico": null,
+    "IstantePrimaAssegnazione": null,
+    "Rilevanza": false,
+    "CodiceSchedaNue": null,
+    "ZoneEmergenza": null,
+    "Fonogramma": null,
+    "Partenze": [
+      {
+        "Squadre": [
+          {
+            "Id": "2",
+            "Nome": "Verde",
+            "Stato": 3,
+            "Componenti": [
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Paolo Marchio",
+                "Tooltip": "",
+                "CapoPartenza": true,
+                "Autista": false,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Francesca Ventura",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": true,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Federico Calu",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": false,
+                "Rimpiazzo": true
+              }
+            ],
+            "Distaccamento": {
+              "Codice": "3",
+              "Descrizione": "Tuscolana II",
+              "Coordinate": {
+                "Latitudine": 1.0,
+                "Longitudine": 1.0
+              },
+              "Indirizzo": "Via Prova, 1",
+              "Tipo": "Distaccamento",
+              "Regione": "Lazio",
+              "Provincia": "Roma",
+              "Label": null,
+              "Icona": null
+            },
+            "IstanteTermineImpegno": null
+          },
+          {
+            "Id": "3",
+            "Nome": "Arancione",
+            "Stato": 3,
+            "Componenti": [
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Paolo Marchio",
+                "Tooltip": "",
+                "CapoPartenza": true,
+                "Autista": false,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Francesca Ventura",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": true,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Federico Calu",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": false,
+                "Rimpiazzo": true
+              }
+            ],
+            "Distaccamento": {
+              "Codice": "1",
+              "Descrizione": "Tuscolana II",
+              "Coordinate": {
+                "Latitudine": 1.0,
+                "Longitudine": 1.0
+              },
+              "Indirizzo": "Via Prova, 1",
+              "Tipo": "Distaccamento",
+              "Regione": "Lazio",
+              "Provincia": "Roma",
+              "Label": null,
+              "Icona": null
+            },
+            "IstanteTermineImpegno": null
+          }
+        ],
+        "Mezzo": {
+          "Codice": "9",
+          "Descrizione": "A3",
+          "Genere": "APS",
+          "Stato": "inSede",
+          "Appartenenza": 0,
+          "Distaccamento": {
+            "Codice": "2",
+            "Descrizione": "Tuscolano II",
+            "Coordinate": {
+              "Latitudine": 1.0,
+              "Longitudine": 1.0
+            },
+            "Indirizzo": "Via Prova, 2",
+            "Tipo": "Distaccamento",
+            "Regione": "Lazio",
+            "Provincia": "Roma",
+            "Label": null,
+            "Icona": null
+          },
+          "DescrizioneAppartenenza": null,
+          "DescrizioneStato": null,
+          "StatoEfficenza": 0,
+          "DescrizioneStatoEfficenza": null,
+          "LivelloCarburante": 0,
+          "DescrizioneLivelloCarburante": null,
+          "LivelloEstinguente": 0,
+          "DescrizioneLivelloEstinguente": null,
+          "Notifiche": null
+        }
+      },
+      {
+        "Squadre": [
+          {
+            "Id": "1",
+            "Nome": "Rossa",
+            "Stato": 3,
+            "Componenti": [
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Mario Verdi",
+                "Tooltip": "",
+                "CapoPartenza": true,
+                "Autista": false,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Francesco Rossi",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": true,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Mario Verna",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": false,
+                "Rimpiazzo": true
+              }
+            ],
+            "Distaccamento": {
+              "Codice": "2",
+              "Descrizione": "Tuscolana II",
+              "Coordinate": {
+                "Latitudine": 1.0,
+                "Longitudine": 1.0
+              },
+              "Indirizzo": "Via Prova, 1",
+              "Tipo": "Distaccamento",
+              "Regione": "Lazio",
+              "Provincia": "Roma",
+              "Label": null,
+              "Icona": null
+            },
+            "IstanteTermineImpegno": null
+          }
+        ],
+        "Mezzo": {
+          "Codice": "18",
+          "Descrizione": "A5",
+          "Genere": "AS",
+          "Stato": "inRientro",
+          "Appartenenza": 0,
+          "Distaccamento": {
+            "Codice": "1",
+            "Descrizione": "Ostiense",
+            "Coordinate": {
+              "Latitudine": 1.0,
+              "Longitudine": 1.0
+            },
+            "Indirizzo": "Via Prova, 2",
+            "Tipo": "Distaccamento",
+            "Regione": "Lazio",
+            "Provincia": "Roma",
+            "Label": null,
+            "Icona": null
+          },
+          "DescrizioneAppartenenza": null,
+          "DescrizioneStato": null,
+          "StatoEfficenza": 0,
+          "DescrizioneStatoEfficenza": null,
+          "LivelloCarburante": 0,
+          "DescrizioneLivelloCarburante": null,
+          "LivelloEstinguente": 0,
+          "DescrizioneLivelloEstinguente": null,
+          "Notifiche": null
+        }
+      },
+      {
+        "Squadre": [
+          {
+            "Id": "2",
+            "Nome": "Verde",
+            "Stato": 3,
+            "Componenti": [
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Paolo Marchio",
+                "Tooltip": "",
+                "CapoPartenza": true,
+                "Autista": false,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Francesca Ventura",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": true,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Federico Calu",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": false,
+                "Rimpiazzo": true
+              }
+            ],
+            "Distaccamento": {
+              "Codice": "3",
+              "Descrizione": "Tuscolana II",
+              "Coordinate": {
+                "Latitudine": 1.0,
+                "Longitudine": 1.0
+              },
+              "Indirizzo": "Via Prova, 1",
+              "Tipo": "Distaccamento",
+              "Regione": "Lazio",
+              "Provincia": "Roma",
+              "Label": null,
+              "Icona": null
+            },
+            "IstanteTermineImpegno": null
+          }
+        ],
+        "Mezzo": {
+          "Codice": "20",
+          "Descrizione": "A7",
+          "Genere": "APS",
+          "Stato": "sulPosto",
+          "Appartenenza": 0,
+          "Distaccamento": {
+            "Codice": "2",
+            "Descrizione": "Ostiense",
+            "Coordinate": {
+              "Latitudine": 1.0,
+              "Longitudine": 1.0
+            },
+            "Indirizzo": "Via Prova, 2",
+            "Tipo": "Distaccamento",
+            "Regione": "Lazio",
+            "Provincia": "Roma",
+            "Label": null,
+            "Icona": null
+          },
+          "DescrizioneAppartenenza": null,
+          "DescrizioneStato": null,
+          "StatoEfficenza": 0,
+          "DescrizioneStatoEfficenza": null,
+          "LivelloCarburante": 0,
+          "DescrizioneLivelloCarburante": null,
+          "LivelloEstinguente": 0,
+          "DescrizioneLivelloEstinguente": null,
+          "Notifiche": null
+        }
+      }
+    ],
+    "Etichette": [],
+    "NotePubbliche": null,
+    "NotePrivate": null,
+    "Chiusa": false,
+    "Aperta": true,
+    "Sospesa": false,
+    "Presidiato": false
+  },
+  {
+    "Id": "2",
+    "Codice": "RM.1000-19-19",
+    "CodiceRichiesta": null,
+    "Operatore": {
+      "Id": "3",
+      "Nome": "Mario",
+      "Cognome": "Rossi",
+      "CodiceFiscale": "YZSPMD89M07M185L",
+      "Sede": {
+        "Codice": "RM.1000",
+        "Descrizione": "Comando VV.F. ROMA",
+        "Coordinate": {
+          "Latitudine": 41.89996,
+          "Longitudine": 12.49104
+        },
+        "Indirizzo": "Via Genova, 3/a",
+        "Tipo": "Comando",
+        "Regione": "Lazio",
+        "Provincia": "ROMA",
+        "Label": null,
+        "Icona": null
+      },
+      "Username": "test",
+      "Password": null,
+      "Ruoli": null,
+      "Token": null,
+      "ValidoDa": null,
+      "ValidoFinoA": null,
+      "Attivo": true,
+      "Qualifica": null
+    },
+    "IstanteRicezioneRichiesta": "2019-06-18T10:27:35.082Z",
+    "Stato": null,
+    "PrioritaRichiesta": 3,
+    "Tipologie": [
+      {
+        "Codice": "5",
+        "Descrizione": "Incendio normale (generico)",
+        "TipoLuogoEvento": null,
+        "Icona": null,
+        "Categoria": "Incendi ed Esplosioni",
+        "Star": true
+      },
+      {
+        "Codice": "8",
+        "Descrizione": "Esplosione (escluso esplosione da sostanza esplodente)",
+        "TipoLuogoEvento": null,
+        "Icona": null,
+        "Categoria": "Incendi ed Esplosioni",
+        "Star": false
+      }
+    ],
+    "Descrizione": "motivazione",
+    "Richiedente": {
+      "Telefono": "34223903290",
+      "Nome": "Carlo",
+      "Cognome": "Maresca",
+      "RagioneSociale": ""
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.860060900000008,
+        "Longitudine": 12.494048799999973
+      },
+      "Indirizzo": "Via delle Sette Chiese, Roma RM, Italia",
+      "Note": null
+    },
+    "Competenze": null,
+    "Complessita": null,
+    "IstantePresaInCarico": null,
+    "IstantePrimaAssegnazione": null,
+    "Rilevanza": false,
+    "CodiceSchedaNue": null,
+    "ZoneEmergenza": null,
+    "Fonogramma": null,
+    "Partenze": [
+      {
+        "Squadre": [
+          {
+            "Id": "2",
+            "Nome": "Verde",
+            "Stato": 3,
+            "Componenti": [
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Mario Verdi",
+                "Tooltip": "",
+                "CapoPartenza": true,
+                "Autista": false,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Francesco Rossi",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": true,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Mario Verna",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": false,
+                "Rimpiazzo": true
+              }
+            ],
+            "Distaccamento": {
+              "Codice": "2",
+              "Descrizione": "Tuscolana II",
+              "Coordinate": {
+                "Latitudine": 1.0,
+                "Longitudine": 1.0
+              },
+              "Indirizzo": "Via Prova, 1",
+              "Tipo": "Distaccamento",
+              "Regione": "Lazio",
+              "Provincia": "Roma",
+              "Label": null,
+              "Icona": null
+            },
+            "IstanteTermineImpegno": null
+          }
+        ],
+        "Mezzo": {
+          "Codice": "2",
+          "Descrizione": "A1",
+          "Genere": "ABP",
+          "Stato": "inSede",
+          "Appartenenza": 0,
+          "Distaccamento": {
+            "Codice": "1",
+            "Descrizione": "Tuscolano II",
+            "Coordinate": {
+              "Latitudine": 1.0,
+              "Longitudine": 1.0
+            },
+            "Indirizzo": "Via Prova, 2",
+            "Tipo": "Distaccamento",
+            "Regione": "Lazio",
+            "Provincia": "Roma",
+            "Label": null,
+            "Icona": null
+          },
+          "DescrizioneAppartenenza": null,
+          "DescrizioneStato": null,
+          "StatoEfficenza": 0,
+          "DescrizioneStatoEfficenza": null,
+          "LivelloCarburante": 0,
+          "DescrizioneLivelloCarburante": null,
+          "LivelloEstinguente": 0,
+          "DescrizioneLivelloEstinguente": null,
+          "Notifiche": null
+        }
+      },
+      {
+        "Squadre": [
+          {
+            "Id": "2",
+            "Nome": "Verde",
+            "Stato": 3,
+            "Componenti": [
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Paolo Marchio",
+                "Tooltip": "",
+                "CapoPartenza": true,
+                "Autista": false,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Francesca Ventura",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": true,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Federico Calu",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": false,
+                "Rimpiazzo": true
+              }
+            ],
+            "Distaccamento": {
+              "Codice": "3",
+              "Descrizione": "Tuscolana II",
+              "Coordinate": {
+                "Latitudine": 1.0,
+                "Longitudine": 1.0
+              },
+              "Indirizzo": "Via Prova, 1",
+              "Tipo": "Distaccamento",
+              "Regione": "Lazio",
+              "Provincia": "Roma",
+              "Label": null,
+              "Icona": null
+            },
+            "IstanteTermineImpegno": null
+          }
+        ],
+        "Mezzo": {
+          "Codice": "1",
+          "Descrizione": "A1",
+          "Genere": "ABP",
+          "Stato": "inSede",
+          "Appartenenza": 0,
+          "Distaccamento": {
+            "Codice": "1",
+            "Descrizione": "Tuscolano II",
+            "Coordinate": {
+              "Latitudine": 1.0,
+              "Longitudine": 1.0
+            },
+            "Indirizzo": "Via Prova, 2",
+            "Tipo": "Distaccamento",
+            "Regione": "Lazio",
+            "Provincia": "Roma",
+            "Label": null,
+            "Icona": null
+          },
+          "DescrizioneAppartenenza": null,
+          "DescrizioneStato": null,
+          "StatoEfficenza": 0,
+          "DescrizioneStatoEfficenza": null,
+          "LivelloCarburante": 0,
+          "DescrizioneLivelloCarburante": null,
+          "LivelloEstinguente": 0,
+          "DescrizioneLivelloEstinguente": null,
+          "Notifiche": null
+        }
+      },
+      {
+        "Squadre": [
+          {
+            "Id": "2",
+            "Nome": "Verde",
+            "Stato": 3,
+            "Componenti": [
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Mario Verdi",
+                "Tooltip": "",
+                "CapoPartenza": true,
+                "Autista": false,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Francesco Rossi",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": true,
+                "Rimpiazzo": false
+              },
+              {
+                "DescrizioneQualifica": "CP",
+                "Nominativo": "Mario Verna",
+                "Tooltip": "",
+                "CapoPartenza": false,
+                "Autista": false,
+                "Rimpiazzo": true
+              }
+            ],
+            "Distaccamento": {
+              "Codice": "2",
+              "Descrizione": "Tuscolana II",
+              "Coordinate": {
+                "Latitudine": 1.0,
+                "Longitudine": 1.0
+              },
+              "Indirizzo": "Via Prova, 1",
+              "Tipo": "Distaccamento",
+              "Regione": "Lazio",
+              "Provincia": "Roma",
+              "Label": null,
+              "Icona": null
+            },
+            "IstanteTermineImpegno": null
+          }
+        ],
+        "Mezzo": {
+          "Codice": "2",
+          "Descrizione": "A1",
+          "Genere": "ABP",
+          "Stato": "inSede",
+          "Appartenenza": 0,
+          "Distaccamento": {
+            "Codice": "1",
+            "Descrizione": "Tuscolano II",
+            "Coordinate": {
+              "Latitudine": 1.0,
+              "Longitudine": 1.0
+            },
+            "Indirizzo": "Via Prova, 2",
+            "Tipo": "Distaccamento",
+            "Regione": "Lazio",
+            "Provincia": "Roma",
+            "Label": null,
+            "Icona": null
+          },
+          "DescrizioneAppartenenza": null,
+          "DescrizioneStato": null,
+          "StatoEfficenza": 0,
+          "DescrizioneStatoEfficenza": null,
+          "LivelloCarburante": 0,
+          "DescrizioneLivelloCarburante": null,
+          "LivelloEstinguente": 0,
+          "DescrizioneLivelloEstinguente": null,
+          "Notifiche": null
+        }
+      }
+    ],
+    "Etichette": [],
+    "NotePubbliche": null,
+    "NotePrivate": null,
+    "Chiusa": false,
+    "Aperta": true,
+    "Sospesa": false,
+    "Presidiato": false
+  }
+]

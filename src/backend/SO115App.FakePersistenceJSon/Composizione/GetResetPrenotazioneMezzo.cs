@@ -57,7 +57,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
             mezzo = mezzi.Where(x => x.Mezzo.Codice.Equals(command.MezzoPrenotato.mezzoComposizione.Mezzo.Codice)).FirstOrDefault();
             //istanteScadenzaPrecedente = mezzo.IstanteScadenzaSelezione;
             mezzi.Remove(mezzo);
-            mezzo.IstanteScadenzaSelezione = DateTime.Now.AddMinutes(3);
+            mezzo.IstanteScadenzaSelezione = DateTime.Now.AddSeconds(15);
            // tempoMancante = istanteScadenzaPrecedente.Value.Subtract(DateTime.Now);
             //tempoPassato = new TimeSpan(0, 3, 0) - istanteScadenzaPrecedente.Value.Subtract(DateTime.Now);
            //  mezzo.IstanteScadenzaSelezione = DateTime.Now.Add(tempoPassato);

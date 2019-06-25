@@ -21,8 +21,17 @@ using CQRS.Commands;
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using DomainModel.CQRS.Commands.MezzoPrenotato;
+using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.Models.Classi.ListaEventi;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ConfermaPartenze
 {
@@ -32,10 +41,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     public class ConfermaPartenzeCommandHandler : ICommandHandler<ConfermaPartenzeCommand>
     {
         private readonly IUpdateConfermaPartenze _IUpdateConfermaPartenze;
+        private readonly IGetRichiestaById _getRichiestaById;
 
-        public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze iUpdateConfermaPartenze)
+
+        public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze iUpdateConfermaPartenze, IGetRichiestaById GetRichiestaById)
         {
             this._IUpdateConfermaPartenze = iUpdateConfermaPartenze;
+            this._getRichiestaById = GetRichiestaById;
+
         }
 
         /// <summary>
@@ -45,10 +58,41 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <returns>Elenco dei mezzi disponibili</returns>
         public void Handle(ConfermaPartenzeCommand command)
         {
+            SintesiRichieste sintesi = new SintesiRichieste();
             // preparazione del DTO
+            RichiestaAssistenza richiesta = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiesta);
+            //richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.Chiamata.Operatore.Id, richiesta.Motivazione);
+            foreach (Partenza partenza in command.ConfermaPartenze.Partenze)
+            {
+                new ComposizionePartenze(richiesta, DateTime.Now, richiesta.Operatore.Id, false)
+                {
+                    ComponentiSquadra = partenza.Squadre                
+                };
+            }
+            sintesi.CodiceRichiesta = richiesta.Codice;
+            sintesi.Id = richiesta.Id;
+            sintesi.Operatore = new Utente(richiesta.Operatore.Username, richiesta.Operatore.Nome, richiesta.Operatore.Cognome, richiesta.Operatore.CodiceFiscale);
+            sintesi.Tipologie = richiesta.Tipologie;
+            sintesi.ZoneEmergenza = richiesta.ZoneEmergenza;
+            sintesi.Partenze = command.ConfermaPartenze.Partenze;
+            sintesi.Localita = richiesta.Localita;
+            sintesi.Aperta = richiesta.Aperta;
+            sintesi.Chiusa = richiesta.Chiusa;
+            sintesi.Codice = richiesta.Codice;
+            sintesi.CodiceSchedaNue = richiesta.CodiceSchedaNue;
+            sintesi.Competenze = richiesta.Competenze;
+            sintesi.Descrizione = richiesta.Descrizione;
+            sintesi.IstantePresaInCarico = richiesta.IstantePresaInCarico;
+            sintesi.IstantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione;
+            sintesi.Presidiato = richiesta.Presidiato;
+            sintesi.PrioritaRichiesta = richiesta.PrioritaRichiesta;
+            sintesi.Richiedente = richiesta.Richiedente;
+            sintesi.Sospesa = richiesta.Sospesa;
+            command.ConfermaPartenze.Chiamata = sintesi;
             Classi.Composizione.ConfermaPartenze confermaPartenze = _IUpdateConfermaPartenze.Update(command);
+
             command.ConfermaPartenze.Chiamata = confermaPartenze.Chiamata;
-            command.codiceSede = confermaPartenze.CodiceSede;
+            command.ConfermaPartenze.CodiceSede = confermaPartenze.CodiceSede;
         }
     }
 }
