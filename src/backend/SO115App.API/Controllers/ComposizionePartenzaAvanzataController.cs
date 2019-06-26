@@ -66,7 +66,7 @@ namespace SO115App.API.Controllers
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpPost]
         public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
-        {
+         {
             var partenzaAvanzataQuery = new ComposizionePartenzaAvanzataQuery()
             {
                 Filtro = filtri

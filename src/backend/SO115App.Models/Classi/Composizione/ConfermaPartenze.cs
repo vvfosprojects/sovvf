@@ -1,4 +1,5 @@
 ﻿using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Soccorso;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,5 +17,7 @@ namespace SO115App.API.Models.Classi.Composizione
         public SintesiRichieste Chiamata { get; set; }
 
         public string CodiceSede { get; set; }
+
+        public RichiestaAssistenza richiesta { get; set; }
     }
 }

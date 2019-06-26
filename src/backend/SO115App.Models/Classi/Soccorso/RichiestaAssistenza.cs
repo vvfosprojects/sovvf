@@ -108,6 +108,10 @@ namespace SO115App.API.Models.Classi.Soccorso
             {
                 new RiaperturaRichiesta(this, DateTime.UtcNow, id);
             }
+            else if (stato != "Chiusa" && (statoRichiesta is Assegnata))
+            {
+                new AssegnataRichiesta(this, DateTime.UtcNow, id);
+            }
         }
 
         /// <summary>
@@ -219,6 +223,17 @@ namespace SO115App.API.Models.Classi.Soccorso
                 return this.eventi
                     .Where(e => e is Telefonata)
                     .Select(e => e as Telefonata)
+                    .ToList();
+            }
+        }
+
+        public IList<ComposizionePartenze> Partenze
+        {
+            get
+            {
+                return this.eventi
+                    .Where(e => e is ComposizionePartenze)
+                    .Select(e => e as ComposizionePartenze)
                     .ToList();
             }
         }

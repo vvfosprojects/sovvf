@@ -36,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.FakePersistence.In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.SignalR", "SO115App.SignalR\SO115App.SignalR.csproj", "{378DBC3E-B058-4EC4-8B25-7C073BA9989C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115App.FakePersistence.InMemory.Test", "SO115App.FakePersistence.InMemory.Test\SO115App.FakePersistence.InMemory.Test.csproj", "{584FC0AA-A32B-491B-BDCF-1DD6191BBCA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.FakePersistence.InMemory.Test", "SO115App.FakePersistence.InMemory.Test\SO115App.FakePersistence.InMemory.Test.csproj", "{584FC0AA-A32B-491B-BDCF-1DD6191BBCA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

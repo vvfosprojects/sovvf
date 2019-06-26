@@ -69,7 +69,7 @@ namespace SO115App.API.Controllers
         {
             var codiceSede = Request.Headers["codicesede"];
             conferma.CodiceSede = codiceSede;
-
+            
 
             var command = new ConfermaPartenzeCommand()
             {

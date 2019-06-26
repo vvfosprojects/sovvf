@@ -25,6 +25,8 @@ using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
+using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.Models.Classi.ListaEventi;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -61,38 +63,20 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             SintesiRichieste sintesi = new SintesiRichieste();
             // preparazione del DTO
             RichiestaAssistenza richiesta = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiesta);
-            //richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.Chiamata.Operatore.Id, richiesta.Motivazione);
             foreach (Partenza partenza in command.ConfermaPartenze.Partenze)
             {
                 new ComposizionePartenze(richiesta, DateTime.Now, richiesta.Operatore.Id, false)
                 {
-                    ComponentiSquadra = partenza.Squadre                
+                    Partenza = partenza
                 };
             }
-            sintesi.CodiceRichiesta = richiesta.Codice;
-            sintesi.Id = richiesta.Id;
-            sintesi.Operatore = new Utente(richiesta.Operatore.Username, richiesta.Operatore.Nome, richiesta.Operatore.Cognome, richiesta.Operatore.CodiceFiscale);
-            sintesi.Tipologie = richiesta.Tipologie;
-            sintesi.ZoneEmergenza = richiesta.ZoneEmergenza;
-            sintesi.Partenze = command.ConfermaPartenze.Partenze;
-            sintesi.Localita = richiesta.Localita;
-            sintesi.Aperta = richiesta.Aperta;
-            sintesi.Chiusa = richiesta.Chiusa;
-            sintesi.Codice = richiesta.Codice;
-            sintesi.CodiceSchedaNue = richiesta.CodiceSchedaNue;
-            sintesi.Competenze = richiesta.Competenze;
-            sintesi.Descrizione = richiesta.Descrizione;
-            sintesi.IstantePresaInCarico = richiesta.IstantePresaInCarico;
-            sintesi.IstantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione;
-            sintesi.Presidiato = richiesta.Presidiato;
-            sintesi.PrioritaRichiesta = richiesta.PrioritaRichiesta;
-            sintesi.Richiedente = richiesta.Richiedente;
-            sintesi.Sospesa = richiesta.Sospesa;
-            command.ConfermaPartenze.Chiamata = sintesi;
+            richiesta.SincronizzaStatoRichiesta("", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
+
+            command.ConfermaPartenze.richiesta = richiesta;
             Classi.Composizione.ConfermaPartenze confermaPartenze = _IUpdateConfermaPartenze.Update(command);
 
-            command.ConfermaPartenze.Chiamata = confermaPartenze.Chiamata;
             command.ConfermaPartenze.CodiceSede = confermaPartenze.CodiceSede;
         }
+
     }
 }

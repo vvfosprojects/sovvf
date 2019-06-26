@@ -26,7 +26,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRi
 
 namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
 {
-    internal class MapperListaRichieste
+   internal class MapperListaRichieste
     {
         public List<SintesiRichiesta> MapRichiesteSuSintesi(List<RichiestaAssistenza> ListaRichieste)
         {
