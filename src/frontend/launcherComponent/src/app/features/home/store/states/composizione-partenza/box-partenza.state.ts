@@ -15,7 +15,7 @@ import { makeID } from '../../../../../shared/helper/function';
 import produce from 'immer';
 import {
     ClearSelectedMezziComposizione,
-    RemoveBookMezzoComposizione, RequestBookMezzoComposizione, SelectMezzoComposizione, UnselectMezzoComposizione
+    RequestBookMezzoComposizione, RequestRemoveBookMezzoComposizione, SelectMezzoComposizione, UnselectMezzoComposizione
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
 import { ClearSelectedSquadreComposizione, SelectSquadraComposizione, UnselectSquadraComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
@@ -241,8 +241,14 @@ export class BoxPartenzaState {
         const state = getState();
         if (state.boxPartenzaList.length > 0) {
             state.boxPartenzaList.forEach((box: BoxPartenza) => {
-                if (box.id === state.idBoxPartenzaSelezionato && box.mezzoComposizione) {
-                    dispatch(new RemoveBookMezzoComposizione(box.mezzoComposizione));
+                if (box.id === state.idBoxPartenzaSelezionato && box.mezzoComposizione && box.mezzoComposizione.istanteScadenzaSelezione) {
+                    dispatch(new RequestRemoveBookMezzoComposizione(box.mezzoComposizione));
+                    if (box.squadraComposizione && box.squadraComposizione.length > 0) {
+                        box.squadraComposizione.forEach((squadra: SquadraComposizione) => {
+                            dispatch(new RemoveSquadraBoxPartenza(squadra.id));
+                            dispatch(new UnselectSquadraComposizione(squadra));
+                        });
+                    }
                 }
             });
         }
