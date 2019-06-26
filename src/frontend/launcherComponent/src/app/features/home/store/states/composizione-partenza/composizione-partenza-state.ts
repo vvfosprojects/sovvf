@@ -75,7 +75,7 @@ export class ComposizionePartenzaState {
         if (state.richiesta !== ComposizioneStateDefaults.richiesta) {
             const composizioneMarker = new ComposizioneMarker(
                 state.richiesta.id, state.richiesta.localita, state.richiesta.tipologie, null,
-                state.richiesta.priorita, state.richiesta.stato, true, false);
+                state.richiesta.prioritaRichiesta, state.richiesta.stato, true, false);
             composizioneMarkers.push(composizioneMarker);
         } else {
             composizioneMarkers = [];

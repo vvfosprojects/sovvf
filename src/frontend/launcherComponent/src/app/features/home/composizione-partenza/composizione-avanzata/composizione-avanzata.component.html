@@ -93,10 +93,7 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-success btn-block card-shadow mt-2" (click)="confermaPartenze()"
-                [disabled]="boxPartenzaList <= 0">
-            <span class="mr-1">Conferma partenze</span>
-            <span class="badge badge-light">{{boxPartenzaList.length}}</span>
-        </button>
+        <app-composizione-buttons (confirmPartenza)="confermaPartenze()" [boxPartenzaLenght]="boxPartenzaList.length"
+                                  [disableConfirmPartenza]="boxPartenzaList <= 0"></app-composizione-buttons>
     </div>
 </div>

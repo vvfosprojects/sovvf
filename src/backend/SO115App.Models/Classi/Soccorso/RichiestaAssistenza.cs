@@ -33,6 +33,7 @@ using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Classi.Utenti;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Soccorso;
 
 namespace SO115App.API.Models.Classi.Soccorso
 {
@@ -469,6 +470,20 @@ namespace SO115App.API.Models.Classi.Soccorso
                 }
             }
         }
+
+        ///<summary>
+        ///
+        /// Restituisce la lista di Utenti che hanno in lavorazione la richiesta
+        ///
+        /// </summary>
+        public List<AttivitaUtente> ListaUtentiInLavorazione { get; set; }
+
+        ///<summary>
+        ///
+        /// Restituisce la lista di Utenti che hanno preso in carico la richiesta
+        ///
+        /// </summary>
+        public List<AttivitaUtente> ListaUtentiPresaInCarico { get; set; }
 
         /// <summary>
         ///   Restituisce l'istante della prima assegnazione di una risorsa squadra/mezzo alla <see cref="RichiestaAssistenza" />.

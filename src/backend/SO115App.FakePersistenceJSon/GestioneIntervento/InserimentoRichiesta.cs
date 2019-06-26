@@ -22,6 +22,8 @@ using System.IO;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.FakePersistenceJSon.Classi;
+using SO115App.FakePersistenceJSon.Utility;
 
 namespace SO115App.FakePersistenceJSon.GestioneIntervento
 {

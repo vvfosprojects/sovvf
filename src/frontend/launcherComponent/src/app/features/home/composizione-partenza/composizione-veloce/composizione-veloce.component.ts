@@ -138,4 +138,8 @@ export class FasterComponent implements OnInit, OnDestroy {
             this.clearDirection.emit();
         }
     }
+
+    confermaPartenze(): void {
+        //
+    }
 }

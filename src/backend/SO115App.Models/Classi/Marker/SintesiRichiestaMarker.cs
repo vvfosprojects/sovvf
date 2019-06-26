@@ -17,9 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 
 namespace SO115App.API.Models.Classi.Marker
 {
@@ -32,21 +34,8 @@ namespace SO115App.API.Models.Classi.Marker
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public SintesiRichiestaMarker(string id, string codice, string codiceRichiesta, Localita localita,
-                                      List<Tipologia> Tipologie, string Descrizione, RichiestaAssistenza.Priorita PrioritaRichiesta,
-                                      bool Rilevante, string stato)
+        public SintesiRichiestaMarker()
         {
-            Id = id;
-            Codice = codice;
-            CodiceRichiesta = codiceRichiesta;
-            Localita = localita;
-            Tipologia = Tipologie;
-            Label = Descrizione;
-            Priorita = PrioritaRichiesta;
-            Stato = stato;
-
-            if (Rilevante != null)
-                Rilevanza = Rilevante;
         }
 
         /// <summary>
@@ -82,15 +71,48 @@ namespace SO115App.API.Models.Classi.Marker
         /// <summary>
         ///   Priorita della richiesta
         /// </summary>
-        public RichiestaAssistenza.Priorita Priorita
+        public virtual RichiestaAssistenza.Priorita PrioritaRichiesta
         {
             get; set;
         }
 
+        public bool InAttesa { get; set; }
+        public bool Aperta { get; set; }
+
+        public bool Presidiato { get; set; }
+
+        public bool Sospesa { get; set; }
+
+        public bool Chiusa { get; set; }
+
+        public virtual DateTime? IstantePrimaAssegnazione { get; set; }
+
         /// <summary>
         ///   Stato della richiesta
         /// </summary>
-        public string Stato { get; set; }
+        public string Stato
+        {
+            get
+            {
+                string stato = "Chiamata";
+
+                if (this.Chiusa)
+                    stato = "Chiusa";
+
+                if (this.Sospesa)
+                    stato = "Sospesa";
+
+                if (this.Aperta)
+                {
+                    if (this.Presidiato)
+                        stato = "Presidiata";
+                    else if (this.IstantePrimaAssegnazione != null)
+                        stato = "Assegnata";
+                }
+
+                return stato;
+            }
+        }
 
         /// <summary>
         ///   Indica la data in cui è stato marcato RILEVANTE l'ultima volta

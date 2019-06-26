@@ -23,6 +23,8 @@ using System.IO;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using SO115App.FakePersistence.JSon.Classi;
+using SO115App.FakePersistenceJSon.Classi;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 
 namespace SO115App.FakePersistenceJSon.Box
@@ -39,22 +41,26 @@ namespace SO115App.FakePersistenceJSon.Box
                 json = r.ReadToEnd();
             }
 
-            List<SintesiRichiesta> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichiesta>>(json);
-
-            if (ListaRichieste != null)
+            try
             {
-                interventi.AnnoCorrente = DateTime.Now.Year;
-                interventi.Assegnati = ListaRichieste.FindAll(x => x.Stato == "Assegnata").Count;
-                interventi.Chiamate = ListaRichieste.FindAll(x => x.Stato == "Chiamata").Count;
-                interventi.NomeTurnoCorrente = "B";
-                interventi.NomeTurnoPrecedente = "A";
-                interventi.Presidiati = ListaRichieste.FindAll(x => x.Stato == "Presidiata").Count;
-                interventi.Sospesi = ListaRichieste.FindAll(x => x.Stato == "Sospesa").Count;
-                interventi.TotAnnoCorrente = ListaRichieste.FindAll(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year).Count;
-                interventi.TotTurnoCorrente = ListaRichieste.FindAll(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year).Count;
-                interventi.TotTurnoPrecedente = 0;
-                interventi.Totale = ListaRichieste.Count;
+                List<BoxRichiesteDTO> ListaRichieste = JsonConvert.DeserializeObject<List<BoxRichiesteDTO>>(json);
+
+                if (ListaRichieste != null)
+                {
+                    interventi.AnnoCorrente = DateTime.Now.Year;
+                    interventi.Assegnati = ListaRichieste.FindAll(x => x.Aperta && !x.InAttesa && !x.Presidiato).Count;
+                    interventi.Chiamate = ListaRichieste.FindAll(x => x.InAttesa).Count;
+                    interventi.NomeTurnoCorrente = "B";
+                    interventi.NomeTurnoPrecedente = "A";
+                    interventi.Presidiati = ListaRichieste.FindAll(x => x.Presidiato).Count;
+                    interventi.Sospesi = ListaRichieste.FindAll(x => x.Sospesa).Count;
+                    interventi.TotAnnoCorrente = ListaRichieste.FindAll(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year).Count;
+                    interventi.TotTurnoCorrente = ListaRichieste.FindAll(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year).Count;
+                    interventi.TotTurnoPrecedente = 0;
+                    interventi.Totale = ListaRichieste.Count;
+                }
             }
+            catch (Exception ex) { }
 
             return interventi;
         }

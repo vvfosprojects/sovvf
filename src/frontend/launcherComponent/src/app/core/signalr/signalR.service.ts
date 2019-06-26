@@ -21,6 +21,7 @@ import {
     UpdateMezzoComposizione
 } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { SetListaSquadreComposizione } from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
+import { TurnOffComposizione } from '../../features/home/store/actions/view/view.actions';
 import { RemoveBoxPartenzaByMezzoId } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
 
@@ -96,6 +97,7 @@ export class SignalRService {
         this.hubNotification.on('ModifyAndNotifySuccess', (data: any) => {
             console.log('ModifyAndNotifySuccess', data.chiamata);
             this.store.dispatch(new UpdateRichiesta(data.chiamata));
+            this.store.dispatch(new TurnOffComposizione());
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3));
         });
 

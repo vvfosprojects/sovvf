@@ -18,10 +18,14 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
+using AutoMapper;
 using CQRS.Queries;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Servizi.CustomMapper;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
@@ -58,6 +62,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         private readonly ICercaRichiesteAssistenza cercaRichiesteAssistenza;
 
         private readonly IGetListaSintesi iGetListaSintesi;
+        private readonly IMapper _mapper;
 
         /// <summary>
         ///   Costruttore della classe
@@ -67,10 +72,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         ///   Interfaccia che restituisce l'elenco delle Sintesi delle Richieste
         /// </param>
 
-        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza, IGetListaSintesi iGetListaSintesi)
+        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza, IGetListaSintesi iGetListaSintesi, IMapper mapper)
         {
             this.cercaRichiesteAssistenza = cercaRichiesteAssistenza;
             this.iGetListaSintesi = iGetListaSintesi;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -80,12 +86,21 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
         {
+            MapperSintesiSuIntervento MapperSuIntervento = new MapperSintesiSuIntervento(_mapper);
+
             var sintesiRichiesta = new List<SintesiRichieste>();
             sintesiRichiesta = iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
 
+            var ListaInterventi = new List<Intervento>();
+
+            foreach (SintesiRichieste sintesi in sintesiRichiesta)
+            {
+                ListaInterventi.Add(MapperSuIntervento.Map(sintesi));
+            }
+
             return new SintesiRichiesteAssistenzaResult()
             {
-                SintesiRichiesta = sintesiRichiesta
+                SintesiRichiesta = ListaInterventi
             };
         }
     }

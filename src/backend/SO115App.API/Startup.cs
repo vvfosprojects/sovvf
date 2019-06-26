@@ -17,9 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Text;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +38,7 @@ using SimpleInjector.Lifestyles;
 using SO115App.API.Models.Servizi.Infrastruttura;
 using SO115App.CompositionRoot;
 using SO115App.Logging;
+using SO115App.Models.Servizi.CustomMapper;
 using SO115App.SignalR;
 
 namespace SO115App.API
@@ -55,6 +58,17 @@ namespace SO115App.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            ///<summary>
+            ///Registrazione dei servizi AutoMapper
+            /// </summary>
+            services.AddAutoMapper(typeof(Startup));
+            var config = new MapperConfigure().Configure();
+            services.AddSingleton<IMapper>(sp => config.CreateMapper());
+
+            ///<summary>
+            ///Registrazione dei servizi Cors
+            /// </summary>
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsSo115",

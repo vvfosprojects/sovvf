@@ -30,7 +30,7 @@ namespace SO115App.FakePersistenceJSon.Marker
     {
         public List<SintesiRichiestaMarker> GetListaRichiesteMarker()
         {
-            List<SintesiRichieste> ListaSintesiRichieste = new List<SintesiRichieste>();
+            List<SintesiRichiestaMarker> ListaSintesiRichieste = new List<SintesiRichiestaMarker>();
 
             string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
@@ -40,44 +40,17 @@ namespace SO115App.FakePersistenceJSon.Marker
                 json = r.ReadToEnd();
             }
 
-            ListaSintesiRichieste = JsonConvert.DeserializeObject<List<SintesiRichieste>>(json);
+            ListaSintesiRichieste = JsonConvert.DeserializeObject<List<SintesiRichiestaMarker>>(json);
 
             if (ListaSintesiRichieste != null)
             {
-                List<SintesiRichiestaMarker> ListaRichiesteMarker = new List<SintesiRichiestaMarker>();
-
-                int id = 1;
-                foreach (SintesiRichieste sintesi in ListaSintesiRichieste)
-                {
-                    sintesi.Id = id.ToString();
-                    sintesi.Stato = MapStatoRichiesta(sintesi);
-                    id++;
-                }
-
-                ListaRichiesteMarker = MapSintesiSuMarker(ListaSintesiRichieste);
-
-                return ListaRichiesteMarker;
+                return ListaSintesiRichieste;
             }
             else
             {
                 List<SintesiRichiestaMarker> ListaRichiesteVuota = new List<SintesiRichiestaMarker>();
                 return ListaRichiesteVuota;
             }
-        }
-
-        private List<SintesiRichiestaMarker> MapSintesiSuMarker(List<SintesiRichieste> listaSintesiRichieste)
-        {
-            List<SintesiRichiestaMarker> ListaMarker = new List<SintesiRichiestaMarker>();
-
-            foreach (SintesiRichieste sintesi in listaSintesiRichieste)
-            {
-                SintesiRichiestaMarker marker = new SintesiRichiestaMarker(sintesi.Id, sintesi.Codice, sintesi.CodiceRichiesta, sintesi.Localita, sintesi.Tipologie,
-                                                                           sintesi.Descrizione, sintesi.PrioritaRichiesta, sintesi.Rilevanza, sintesi.Stato);
-
-                ListaMarker.Add(marker);
-            }
-
-            return ListaMarker;
         }
 
         private string MapStatoRichiesta(SintesiRichieste sintesi)

@@ -12,10 +12,8 @@
                                     (deselezionato)="preAccoppiatoDeselezionato($event)"></app-box-nuova-partenza>
         </div>
         <div class="col-12 text-right">
-            <button class="btn btn-success mt-2 w-25" [disabled]="preAccoppiatiSelezionati.length <= 0">
-                <span class="mr-1">Conferma partenze</span>
-                <span class="badge badge-light">{{preAccoppiatiSelezionati.length}}</span>
-            </button>
+            <app-composizione-buttons (confirmPartenza)="confermaPartenze()" [boxPartenzaLenght]="preAccoppiatiSelezionati.length"
+                                      [disableConfirmPartenza]="preAccoppiatiSelezionati.length <= 0"></app-composizione-buttons>
         </div>
     </div>
     <div class="row">

@@ -25,6 +25,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestrioneIntervento.Shared.AddIntervento;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Soccorso;
 
 namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
 {
@@ -48,6 +49,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         ///   Identifica il codice della Chiamata
         /// </summary>
         public string Codice { get; set; }
+
+        /// <summary>
+        ///   E' il codice della Richiesta di Assistenza
+        /// </summary>
+        public string CodiceRichiesta { get; set; }
 
         /// <summary>
         ///   Utente che ha generato la segnalazione
@@ -125,6 +131,25 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         /// </summary>
         [DataType(DataType.DateTime)]
         public DateTime? IstantePresaInCarico { get; set; }
+
+        ///<summary>
+        ///
+        /// Restituisce la lista di Utenti che hanno in lavorazione la richiesta
+        ///
+        /// </summary>
+        public List<AttivitaUtente> ListaUtentiInLavorazione { get; set; }
+
+        ///<summary>
+        ///
+        /// Restituisce la lista di Utenti che hanno preso in carico la richiesta
+        ///
+        /// </summary>
+        public List<AttivitaUtente> ListaUtentiPresaInCarico { get; set; }
+
+        /// <summary>
+        ///   Priorita della richiesta
+        /// </summary>
+        public int PrioritaRichiesta { get; set; }
 
         /// <summary>
         ///   Indica se la richiesta è stata marcata RILEVANTE
