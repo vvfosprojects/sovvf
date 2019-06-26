@@ -61,12 +61,12 @@ namespace SO115App.API.Models.Classi.Marker
         /// <summary>
         ///   Tipologia della richiesta
         /// </summary>
-        public List<Tipologia> Tipologia { get; set; }
+        public List<Tipologia> Tipologie { get; set; }
 
         /// <summary>
-        ///   Label della richiesta
+        ///   Descrizione della richiesta
         /// </summary>
-        public string Label { get; set; }
+        public string Descrizione { get; set; }
 
         /// <summary>
         ///   Priorita della richiesta

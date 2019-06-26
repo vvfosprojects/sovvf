@@ -32,6 +32,11 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
         public List<SintesiRichieste> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
             List<SintesiRichieste> ListaSintesiRichieste = new List<SintesiRichieste>();
+            List<SintesiRichieste> ListaSintesiRichiesteChiamata = new List<SintesiRichieste>();
+            List<SintesiRichieste> ListaSintesiRichiesteAssociate = new List<SintesiRichieste>();
+            List<SintesiRichieste> ListaSintesiRichiestePresidiate = new List<SintesiRichieste>();
+            List<SintesiRichieste> ListaSintesiRichiesteSospese = new List<SintesiRichieste>();
+            List<SintesiRichieste> ListaSintesiRichiesteChiuse = new List<SintesiRichieste>();
 
             string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
