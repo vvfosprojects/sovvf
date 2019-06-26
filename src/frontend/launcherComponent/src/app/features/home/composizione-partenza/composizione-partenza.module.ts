@@ -38,6 +38,7 @@ import { MezziComposizioneState } from '../store/states/composizione-partenza/me
 import { SquadreComposizioneState } from '../store/states/composizione-partenza/squadre-composizione.state';
 import { BoxPartenzaState } from '../store/states/composizione-partenza/box-partenza.state';
 import { PrenotazioneProgressBarComponent } from './shared/prenotazione-progress-bar/prenotazione-progress-bar.component';
+import { ComposizioneButtonsComponent } from './shared/composizione-buttons/composizione-buttons.component';
 
 @NgModule({
     declarations: [
@@ -48,7 +49,8 @@ import { PrenotazioneProgressBarComponent } from './shared/prenotazione-progress
         MezzoComposizioneComponent,
         SquadraComposizioneComponent,
         ComposizioneFilterbarComponent,
-        PrenotazioneProgressBarComponent
+        PrenotazioneProgressBarComponent,
+        ComposizioneButtonsComponent
     ],
     imports: [
         CommonModule,
