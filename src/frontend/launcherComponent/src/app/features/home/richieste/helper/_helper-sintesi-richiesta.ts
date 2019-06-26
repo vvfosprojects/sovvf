@@ -166,12 +166,12 @@ export class HelperSintesiRichiesta {
     }
 
     vettorePallini(richiesta) {
-        return new Array(richiesta.prioritaRichiesta);
+        return new Array(richiesta.priorita);
     }
 
     vettoreBuchini(richiesta) {
         const MAX_PRIORITA = 5;
-        return new Array(MAX_PRIORITA - richiesta.prioritaRichiesta);
+        return new Array(MAX_PRIORITA - richiesta.priorita);
     }
 
     dettagliMezzo(stato, tipostato, classe) {

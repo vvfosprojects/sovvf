@@ -133,7 +133,7 @@ export class IconMappe {
         if (marker) {
             switch (modello) {
                 case 'richiesta': {
-                    this.iconaStatoCorrenteSize = this.mapIconeSize.get(marker.prioritaRichiesta);
+                    this.iconaStatoCorrenteSize = this.mapIconeSize.get(marker.priorita);
                     const _wipeStatoRichiesta = wipeStatoRichiesta(marker.stato);
                     const statoRichiesta = this.mapIconeUrl.get(_wipeStatoRichiesta.substring(0, 5).toLowerCase());
                     this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize + statoRichiesta;

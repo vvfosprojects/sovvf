@@ -11,7 +11,7 @@ export class RichiesteMarkerAdapterService {
         item.localita,
         item.tipologia,
         item.label,
-        item.prioritaRichiesta,
+        item.priorita,
         item.stato,
         item.rilevanza,
         item.rilevanzaStArCu
