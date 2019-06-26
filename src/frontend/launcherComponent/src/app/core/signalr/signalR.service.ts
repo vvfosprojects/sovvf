@@ -15,15 +15,14 @@ import { ToastrType } from '../../shared/enum/toastr';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
 import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import {
-    AddBookingMezzoComposizione,
     AddBookMezzoComposizione, RemoveBookingMezzoComposizione,
     RemoveBookMezzoComposizione,
     SetListaMezziComposizione,
     UpdateMezzoComposizione
 } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { SetListaSquadreComposizione } from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
-import { RemoveBoxPartenzaByMezzoId, UpdateMezzoBoxPartenza } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
-import { UpdateRichiestaComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
+import { RemoveBoxPartenzaByMezzoId } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
+import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -101,6 +100,20 @@ export class SignalRService {
         });
 
         /**
+         * Markers Mappa --------------
+         */
+        this.hubNotification.on('NotifyGetRichiestaMarker', (data: any) => {
+            console.log('NotifyGetRichiestaMarker', data);
+            this.store.dispatch(new InsertRichiestaMarker(data));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetRichiestaUpdateMarker', (data: any) => {
+            console.log('NotifyGetRichiestaUpdateMarker', data);
+            this.store.dispatch(new UpdateRichiestaMarker(data));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
+        });
+
+        /**
          * Box
          */
         this.hubNotification.on('NotifyGetBoxPersonale', (data: any) => {
@@ -142,8 +155,8 @@ export class SignalRService {
          * Inserimento Chiamata
          */
         this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: any) => {
-            console.log('SaveAndNotifySuccessChiamata', data.chiamata);
-            this.store.dispatch(new InsertChiamataSuccess(data.chiamata));
+            console.log('SaveAndNotifySuccessChiamata', data);
+            this.store.dispatch(new InsertChiamataSuccess(data));
         });
 
         /**
