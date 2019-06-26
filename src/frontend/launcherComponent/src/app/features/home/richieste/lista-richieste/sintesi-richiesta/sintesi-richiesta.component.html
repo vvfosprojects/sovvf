@@ -65,7 +65,7 @@
                         <div class="col-3 pr-3 text-right">
                             <div class="h6 mb-1 nowrap default-cursor">
                                 <i class="guida fa fa-thermometer-half fa-fw" ngbTooltip="Priorità della richiesta"></i>
-                                <ngb-rating [(rate)]="richiesta.priorita" [max]="5" [readonly]="true">
+                                <ngb-rating [(rate)]="richiesta.prioritaRichiesta" [max]="5" [readonly]="true">
                                     <ng-template let-fill="fill" let-index="index">
                                     <span class="cirlce" [class.filled]="fill === 100">
                                         <i class="fa fa-circle mr-1"></i>
@@ -273,7 +273,7 @@
                             <!-- in lavorazione -->
                             <div class="h6">
                                 <!--da modificare-->
-                                <i class="guida fa fa-calendar-check-o fa-fw mr-1" ngbTooltip="Presa in carico"
+                                <i class="guida fa fa-eye  fa-fw mr-1" ngbTooltip="In Lavorazione"
                                    placement="right"></i>
                                 <a *ngIf="richiesta.istantePresaInCarico; else nonInLavorazione"
                                    ngbTooltip="{{ richiesta.istantePresaInCarico | friendlyDateTooltip }}">

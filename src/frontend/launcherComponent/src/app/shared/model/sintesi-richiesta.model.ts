@@ -48,10 +48,10 @@ export class SintesiRichiesta {
          */
         public stato: StatoRichiesta,
         /**
-         * priorita della richiesta (da 0 a 4). 0 = Altissima, 1 = Alta, 2 = Media,
+         * prioritaRichiesta della richiesta (da 0 a 4). 0 = Altissima, 1 = Alta, 2 = Media,
          * 3 = Bassa, 4 = Bassissima.
          */
-        public priorita: Priorita,
+        public prioritaRichiesta: Priorita,
         /**
          * descrizione delle tipologie
          */
