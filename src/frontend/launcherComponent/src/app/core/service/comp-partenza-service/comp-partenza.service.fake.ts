@@ -16,14 +16,13 @@ import * as moment from 'moment';
 import { makeCopy } from '../../../shared/helper/function';
 import { OFFSET_SYNC_TIME } from '../../settings/referral-time';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza-state';
-import { AddBoxPartenza, ClearBoxPartenze, RemoveBoxPartenza, RemoveBoxPartenzaByMezzoId } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
-import { catchError } from 'rxjs/operators';
-import { handleError } from '../../../shared/helper/handleError';
+import { ClearBoxPartenze, RemoveBoxPartenzaByMezzoId } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
 import { UpdateRichiesta } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { Partenza } from '../../../shared/model/partenza.model';
 import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../shared/enum/toastr';
+import { TurnOffComposizione } from '../../../features/home/store/actions/view/view.actions';
 
 @Injectable()
 export class CompPartenzaServiceFake {
@@ -714,8 +713,8 @@ export class CompPartenzaServiceFake {
                 richiesta.partenze = [...partenze];
             });
             this.store.dispatch(new UpdateRichiesta(richiesta));
+            this.store.dispatch(new TurnOffComposizione());
             this.store.dispatch(new ClearBoxPartenze());
-            this.store.dispatch(new AddBoxPartenza());
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3));
         }, 1000);
 
