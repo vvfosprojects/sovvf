@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
@@ -30,7 +31,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <summary>
         ///   La sintesi delle richieste di assistenza
         /// </summary>
-        public IEnumerable<SintesiRichieste> SintesiRichiesta
+        public IEnumerable<Intervento> SintesiRichiesta
         { get; set; }
     }
 }

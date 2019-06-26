@@ -29,6 +29,7 @@ using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Soccorso;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
@@ -177,6 +178,20 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         [DataType(DataType.DateTime)]
         public DateTime? IstantePresaInCarico { get; set; }
 
+        ///<summary>
+        ///
+        /// Restituisce la lista di Utenti che hanno in lavorazione la richiesta
+        ///
+        /// </summary>
+        public List<AttivitaUtente> ListaUtentiInLavorazione { get; set; }
+
+        ///<summary>
+        ///
+        /// Restituisce la lista di Utenti che hanno preso in carico la richiesta
+        ///
+        /// </summary>
+        public List<AttivitaUtente> ListaUtentiPresaInCarico { get; set; }
+
         /// <summary>
         ///   Eventuale istante di prima assegnazione di risorse alla richiesta
         /// </summary>
@@ -260,5 +275,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             throw new NotImplementedException();
         }
+
+        public string Motivazione { get; set; }
     }
 }

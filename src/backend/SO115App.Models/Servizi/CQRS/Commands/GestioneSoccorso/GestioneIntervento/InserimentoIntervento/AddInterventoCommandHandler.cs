@@ -55,7 +55,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 TurnoInserimentoChiamata = command.Chiamata.TurnoInserimentoChiamata,
                 TipoTerreno = command.Chiamata.TipoTerreno,
                 ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti,
-                ObiettivoSensibile = command.Chiamata.ObiettivoSensibile
+                ObiettivoSensibile = command.Chiamata.ObiettivoSensibile,
+                ListaUtentiInLavorazione = command.Chiamata.ListaUtentiInLavorazione,
+                ListaUtentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico
             };
 
             richiesta.SincronizzaRilevanza(command.Chiamata.RilevanzaGrave, command.Chiamata.RilevanzaStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione, command.Chiamata.IstanteRicezioneRichiesta);
@@ -84,6 +86,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 NumeroTelefono = command.Chiamata.Richiedente.Telefono,
                 Esito = command.Chiamata.Azione.ToString(),
             };
+
+            command.Chiamata.Codice = codiceRichiesta;
 
             this._saveRichiestaAssistenza.Save(richiesta);
         }
