@@ -9,9 +9,9 @@ export class RichiesteMarkerAdapterService {
         item.codice,
         item.codiceRichiesta,
         item.localita,
-        item.tipologia,
-        item.label,
-        item.priorita,
+        item.tipologie ? item.tipologie : item.tipologia,
+        item.descrizione ? item.descrizione : item.label,
+        item.prioritaRichiesta ? item.prioritaRichiesta : item.priorita,
         item.stato,
         item.rilevanza,
         item.rilevanzaStArCu

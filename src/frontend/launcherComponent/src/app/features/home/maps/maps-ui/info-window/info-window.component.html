@@ -71,10 +71,10 @@
             <tbody>
             <tr>
                 <th scope="row" class="py-1 s-info-window">
-                    <span class="fa-fw mr-1 {{ methods.coloraIcona(richiestaMarker.tipologia[0].icona) }}"
-                          ngbTooltip="{{ richiestaMarker.tipologia[0].descrizione }}">
+                    <span *ngIf="richiestaMarker.tipologia[0] as tipologia" class="fa-fw mr-1 {{ methods.coloraIcona(tipologia?.icona) }}"
+                          ngbTooltip="{{ tipologia?.descrizione }}">
                     </span>
-                    <span ngbTooltip="{{ richiestaMarker.label }}"
+                    <span *ngIf="richiestaMarker.label" ngbTooltip="{{ richiestaMarker.label }}"
                           [disableTooltip]="richiestaMarker.label.length <= 30">
                         {{richiestaMarker.label | truncate:30 }}
                     </span>

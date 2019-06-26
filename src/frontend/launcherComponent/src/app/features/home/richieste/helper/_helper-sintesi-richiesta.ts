@@ -60,28 +60,32 @@ export class HelperSintesiRichiesta {
 
     /* Permette di colorare l'icona della tipologia */
     coloraIcona(nome: any): any {
-        const colori = [
-            {
-                icon: 'fa fa-fire',
-                color: 'text-danger'
-            },
-            {
-                icon: 'fa fa-exclamation-triangle',
-                color: 'text-warning'
-            },
-            {
-                icon: 'fa fa-medkit',
-                color: 'text-primary'
-            }
-        ];
+        if (nome) {
+            const colori = [
+                {
+                    icon: 'fa fa-fire',
+                    color: 'text-danger'
+                },
+                {
+                    icon: 'fa fa-exclamation-triangle',
+                    color: 'text-warning'
+                },
+                {
+                    icon: 'fa fa-medkit',
+                    color: 'text-primary'
+                }
+            ];
 
-        const colore = nome ? colori.find(x => x.icon === nome) : undefined;
-        if (!nome || nome === '') {
-            return 'fa fa-exclamation-triangle text-warning';
-        } else if (colore !== undefined) {
-            return nome + ' ' + colore.color;
+            const colore = nome ? colori.find(x => x.icon === nome) : undefined;
+            if (!nome || nome === '') {
+                return 'fa fa-exclamation-triangle text-warning';
+            } else if (colore !== undefined) {
+                return nome + ' ' + colore.color;
+            } else {
+                return nome + ' guida';
+            }
         } else {
-            return nome + ' guida';
+            return 'fa fa-exclamation-triangle text-warning';
         }
     }
 
@@ -129,7 +133,7 @@ export class HelperSintesiRichiesta {
             'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
         };
         const cardBorder = this.cardBorder(r);
-        return {...classes, ...cardBorder};
+        return { ...classes, ...cardBorder };
     }
 
     /* NgClass Card Fissata Status */
@@ -137,14 +141,14 @@ export class HelperSintesiRichiesta {
         if (r) {
             const classes = {
                 'card-shadow-info': r.stato === StatoRichiesta.Assegnata,
-                    'card-shadow-success': r.stato === StatoRichiesta.Presidiata,
-                    'card-shadow-danger': r.stato === StatoRichiesta.Chiamata,
-                    'card-shadow-warning': r.stato === StatoRichiesta.Sospesa,
-                    'card-shadow-secondary': r.stato === StatoRichiesta.Chiusa,
-                    'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
+                'card-shadow-success': r.stato === StatoRichiesta.Presidiata,
+                'card-shadow-danger': r.stato === StatoRichiesta.Chiamata,
+                'card-shadow-warning': r.stato === StatoRichiesta.Sospesa,
+                'card-shadow-secondary': r.stato === StatoRichiesta.Chiusa,
+                'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
             };
             const cardBorder = this.cardBorder(r);
-            return {...classes, ...cardBorder};
+            return { ...classes, ...cardBorder };
         }
     }
 
