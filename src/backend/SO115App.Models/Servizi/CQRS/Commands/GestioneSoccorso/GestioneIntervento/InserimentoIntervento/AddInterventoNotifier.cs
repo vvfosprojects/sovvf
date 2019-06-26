@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
-using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
 
 namespace DomainModel.CQRS.Commands.AddIntervento

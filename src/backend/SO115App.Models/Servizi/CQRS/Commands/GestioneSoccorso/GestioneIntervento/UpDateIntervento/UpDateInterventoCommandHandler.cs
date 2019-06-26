@@ -59,6 +59,8 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.TipoTerreno = command.Chiamata.TipoTerreno;
             richiesta.ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti;
             richiesta.ObiettivoSensibile = command.Chiamata.ObiettivoSensibile;
+            richiesta.ListaUtentiInLavorazione = command.Chiamata.ListaUtentiInLavorazione;
+            richiesta.ListaUtentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico;
 
             if (command.Chiamata.Etichette != null)
             {

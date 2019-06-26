@@ -54,7 +54,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                 ListaRichiesteNew.Add(richiestaAssistenza);
 
                 string jsonListaPresente = JsonConvert.SerializeObject(ListaRichiesteNew);
-                System.IO.File.WriteAllText(@"Fake/ListaRichiesteAssistenza.json", "[" + jsonListaPresente + "]");
+                System.IO.File.WriteAllText(@"Fake/ListaRichiesteAssistenza.json", jsonListaPresente);
             }
             else
             {

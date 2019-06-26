@@ -21,14 +21,7 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class TipologiaTerreno
     {
-        public enum DescrizioneTerreno
-        {
-            Boschi,
-            Campi,
-            Sterpaglie
-        }
-
-        public TipologiaTerreno(DescrizioneTerreno Descrizione, string mq)
+        public TipologiaTerreno(string Descrizione, string mq)
         {
             this.Descrizione = Descrizione;
             this.Mq = mq;
@@ -37,7 +30,7 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         ///   Descrizione TipologiaTerreno ( BOSCHI/CAMPI/STERPAGLIE )
         /// </summary>
-        public DescrizioneTerreno Descrizione { get; set; }
+        public string Descrizione { get; set; }
 
         /// <summary>
         ///   Metri quadri che hanno interessato l'intervento

@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.FakePersistenceJSon.Classi;
 
 namespace SO115App.FakePersistenceJSon.Utility
@@ -44,12 +45,22 @@ namespace SO115App.FakePersistenceJSon.Utility
                 TurnoInserimentoChiamata = richiesta.TurnoInserimentoChiamata,
                 TipoTerreno = richiesta.TipoTerreno,
                 ListaEntiIntervenuti = richiesta.ListaEntiIntervenuti,
-                ObiettivoSensibile = richiesta.ObiettivoSensibile
+                ObiettivoSensibile = richiesta.ObiettivoSensibile,
+                ListaUtentiInLavorazione = richiesta.ListaUtentiInLavorazione,
+                ListaUtentiPresaInCarico = richiesta.ListaUtentiPresaInCarico
             };
 
             foreach (Evento evento in richiesta.Eventi)
             {
                 richiestaMap.AddEvento(evento);
+            }
+
+            if (richiesta.Telefonate.Count > 0)
+            {
+                foreach (Telefonata tel in richiesta.Telefonate)
+                {
+                    richiesta.Telefonate.Add(tel);
+                }
             }
 
             return richiestaMap;

@@ -72,7 +72,7 @@ namespace SO115App.FakePersistenceJSon.Marker
             foreach (SintesiRichieste sintesi in listaSintesiRichieste)
             {
                 SintesiRichiestaMarker marker = new SintesiRichiestaMarker(sintesi.Id, sintesi.Codice, sintesi.CodiceRichiesta, sintesi.Localita, sintesi.Tipologie,
-                                                                           sintesi.Descrizione, sintesi.PrioritaRichiesta, sintesi.Rilevanza, sintesi.Stato);
+                                                                           sintesi.Descrizione, sintesi.PrioritaRichiesta, sintesi.RilevanzaGrave, sintesi.Stato);
 
                 ListaMarker.Add(marker);
             }

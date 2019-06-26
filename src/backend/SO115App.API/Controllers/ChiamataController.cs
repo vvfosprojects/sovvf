@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Threading.Tasks;
 using CQRS.Commands;
 using DomainModel.CQRS.Commands.AddIntervento;
@@ -52,7 +53,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> InserimentoChiamata([FromBody]Intervento chiamata)
+        public async Task<IActionResult> Add([FromBody]Intervento chiamata)
         {
             var command = new AddInterventoCommand()
             {
@@ -64,14 +65,14 @@ namespace SO115App.API.Controllers
                 this._Addhandler.Handle(command);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
                 return BadRequest();
             }
         }
 
-        [HttpPost("Update")]
-        public async Task<IActionResult> UpdateChiamata([FromBody]Intervento chiamata)
+        [HttpPost("UpdateIntervento")]
+        public async Task<IActionResult> UpdateIntervento([FromBody]Intervento chiamata)
         {
             var command = new UpDateInterventoCommand()
             {
