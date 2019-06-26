@@ -20,7 +20,12 @@
 
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using Microsoft.AspNetCore.SignalR;
+using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.ComposizionePartenza
@@ -36,7 +41,42 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
         public async Task SendNotification(ConfermaPartenzeCommand conferma)
         {
+            SintesiRichieste sintesi = new SintesiRichieste();
+            RichiestaAssistenza richiesta = conferma.ConfermaPartenze.richiesta;
+            List<Partenza> partenze = new List<Partenza>();
+            Partenza partenza = new Partenza();
 
+            var eventi = richiesta.Partenze;
+
+            foreach ( var evento in eventi )
+            {
+                partenza = new Partenza
+                {
+                    Mezzo = evento.Partenza.Mezzo,
+                    Squadre = evento.Partenza.Squadre
+                };
+                partenze.Add(partenza);
+            }
+            sintesi.CodiceRichiesta = richiesta.Codice;
+            sintesi.Id = richiesta.Id;
+            sintesi.Operatore = new Utente(richiesta.Operatore.Username, richiesta.Operatore.Nome, richiesta.Operatore.Cognome, richiesta.Operatore.CodiceFiscale);
+            sintesi.Tipologie = richiesta.Tipologie;
+            sintesi.ZoneEmergenza = richiesta.ZoneEmergenza;
+            sintesi.Localita = richiesta.Localita;
+            sintesi.Aperta = richiesta.Aperta;
+            sintesi.Chiusa = richiesta.Chiusa;
+            sintesi.Codice = richiesta.Codice;
+            sintesi.CodiceSchedaNue = richiesta.CodiceSchedaNue;
+            sintesi.Competenze = richiesta.Competenze;
+            sintesi.Descrizione = richiesta.Descrizione;
+            sintesi.IstantePresaInCarico = richiesta.IstantePresaInCarico;
+            sintesi.IstantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione;
+            sintesi.Presidiato = richiesta.Presidiato;
+            sintesi.PrioritaRichiesta = richiesta.PrioritaRichiesta;
+            sintesi.Richiedente = richiesta.Richiedente;
+            sintesi.Sospesa = richiesta.Sospesa;
+            sintesi.Partenze = partenze;
+            conferma.ConfermaPartenze.Chiamata = sintesi;
             await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
         }
     }

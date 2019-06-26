@@ -25,6 +25,8 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.ListaEventi;
+using SO115App.API.Models.Classi.Soccorso;
+using SO115App.FakePersistenceJSon.Classi;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 
 namespace SO115App.FakePersistenceJSon.Composizione
@@ -35,47 +37,45 @@ namespace SO115App.FakePersistenceJSon.Composizione
         {
             string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
-            var id = "0";
-            var stato = "";
-            List<Partenza> partenzeEsistenti = new List<Partenza>();
             using (StreamReader r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
-            SintesiRichieste richiesta = new SintesiRichieste();
-            List<Eventi> eventiPrecedenti = new List<Eventi>();
+            RichiestaAssistenzaDTO richiestaDTO = new RichiestaAssistenzaDTO();
             ConfermaPartenze conferma = new ConfermaPartenze();
-            List<SintesiRichieste> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiRichieste>>(json);
-                richiesta = ListaRichieste.Where(x => x.Codice == command.ConfermaPartenze.Chiamata.Codice).FirstOrDefault();
-                id = richiesta.Id;
-                stato = richiesta.Stato;
-                partenzeEsistenti = richiesta.Partenze;
-                ListaRichieste.Remove(richiesta);
-            if (richiesta.Partenze.Count > 0)
+            RichiestaAssistenzaDTO richiestaNew = new RichiestaAssistenzaDTO();
+            List<RichiestaAssistenzaDTO> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
+            richiestaDTO = ListaRichieste.Where(x => x.Codice == command.ConfermaPartenze.richiesta.Codice).FirstOrDefault();
+                ListaRichieste.Remove(richiestaDTO);
+            richiestaNew = new RichiestaAssistenzaDTO
             {
-                if (stato =="Chiamata")
-                {
-                    richiesta.Stato = "Assegnata";
-                }
-                partenzeEsistenti.AddRange(command.ConfermaPartenze.Partenze);
-                richiesta.Partenze = partenzeEsistenti;
-            }
-            else
-            {
-                richiesta.Partenze = command.ConfermaPartenze.Partenze;
-                if (stato == "Chiamata")
-                {
-                    richiesta.Stato = "Assegnata";
-                }
-            }
-                ListaRichieste.Add(richiesta);
+                Codice = command.ConfermaPartenze.richiesta.Codice,
+                CodiceUnitaOperativaCompetente = command.ConfermaPartenze.richiesta.CodiceUnitaOperativaCompetente,
+                CodiciUOCompetenza = command.ConfermaPartenze.richiesta.CodiciUOCompetenza,
+                CodiciUnitaOperativeAllertate = command.ConfermaPartenze.richiesta.CodiciUnitaOperativeAllertate,
+                Competenze = command.ConfermaPartenze.richiesta.Competenze,
+                Descrizione = command.ConfermaPartenze.richiesta.Descrizione,
+                IstanteChiusura = command.ConfermaPartenze.richiesta.IstanteChiusura,
+                ListaEntiIntervenuti = command.ConfermaPartenze.richiesta.ListaEntiIntervenuti,
+                Localita = command.ConfermaPartenze.richiesta.Localita,
+                ObiettivoSensibile = command.ConfermaPartenze.richiesta.ObiettivoSensibile,
+                Operatore = command.ConfermaPartenze.richiesta.Operatore,
+                Richiedente = command.ConfermaPartenze.richiesta.Richiedente,
+                RilevanzaStArCu = command.ConfermaPartenze.richiesta.RilevanteStArCu,
+                Tags = command.ConfermaPartenze.richiesta.Tags,
+                Tipologie = command.ConfermaPartenze.richiesta.Tipologie,
+                TipoTerreno = command.ConfermaPartenze.richiesta.TipoTerreno,
+                TurnoInserimentoChiamata = command.ConfermaPartenze.richiesta.TurnoInserimentoChiamata,
+                TurnoIntervento = command.ConfermaPartenze.richiesta.TurnoIntervento,
+                ZoneEmergenza = command.ConfermaPartenze.richiesta.ZoneEmergenza
+            };
+            ListaRichieste.Add(richiestaNew);
                 string fileText = System.IO.File.ReadAllText(@"Fake/ListaRichiesteAssistenza.json");
                 string jsonNew = JsonConvert.SerializeObject(ListaRichieste);
                 System.IO.File.WriteAllText(@"Fake/ListaRichiesteAssistenza.json", jsonNew);
                 conferma.CodiceSede = command.ConfermaPartenze.CodiceSede;
                 conferma.IdRichiesta = command.ConfermaPartenze.IdRichiesta;
-                conferma.Chiamata = richiesta;
-                conferma.Chiamata.Id = id;
+                conferma.richiesta = command.ConfermaPartenze.richiesta;
                 return conferma;
         }
     }
