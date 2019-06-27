@@ -46,6 +46,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         }
 
         /// <summary>
+        ///   L'id della richiesta
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
         ///   Identifica il codice della Chiamata
         /// </summary>
         public string Codice { get; set; }
