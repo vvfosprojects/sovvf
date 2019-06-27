@@ -47,11 +47,25 @@ export class ComposizioneAvanzataState {
             filtri['CodiceStatoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceStatoMezzo.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
             filtri['CodiceTipoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
         }
-        filtri['CodiceMezzo'] = [''];
-        filtri['CodiceSquadra'] = [''];
         filtri['idRichiesta'] = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
 
-        console.log(filtri);
+        // imposto il codice del mezzo selezionato se presente
+        const codiceMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoComposizioneSelezionato);
+        if (action.onlyMezziComposizione && codiceMezzo && codiceMezzo.length > 0) {
+            filtri['CodiceMezzo'] = [codiceMezzo];
+        } else {
+            filtri['CodiceMezzo'] = [''];
+        }
+
+        // imposto il codice delle squadre selezionate se presenti
+        const codiceSquadre = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
+        if (action.onlySquadreComposizione && codiceSquadre && codiceSquadre.length > 0) {
+            filtri['CodiceSquadra'] = codiceSquadre;
+        } else {
+            filtri['CodiceSquadra'] = [''];
+        }
+
+        // console.log(filtri);
         this.squadreService.getListeComposizioneAvanzata(filtri).subscribe((listeCompAvanzata: any) => {
             if (listeCompAvanzata) {
                 if (listeCompAvanzata.composizioneMezzi) {

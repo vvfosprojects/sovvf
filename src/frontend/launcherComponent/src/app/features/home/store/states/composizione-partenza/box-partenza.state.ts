@@ -21,6 +21,7 @@ import { SquadraComposizione } from '../../../composizione-partenza/interface/sq
 import { ClearSelectedSquadreComposizione, SelectSquadraComposizione, UnselectSquadraComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
+import { GetListeCoposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 
 
 export interface BoxPartenzaStateModel {
@@ -49,13 +50,23 @@ export class BoxPartenzaState {
         return state.idBoxPartenzaSelezionato;
     }
 
+    @Selector()
+    static disableConfirmPartenza(state: BoxPartenzaStateModel) {
+        return _disableConfirmPartenza(state.boxPartenzaList);
+    }
+
+    @Selector()
+    static disableNuovaPartenza(state: BoxPartenzaStateModel) {
+        return _disableConfirmPartenza(state.boxPartenzaList, true);
+    }
+
     constructor() {
     }
 
     @Action(RequestAddBoxPartenza)
     requestAddBoxPartenza({ getState, dispatch }: StateContext<BoxPartenzaStateModel>) {
         const state = getState();
-        if (validateBoxPartenza(state.idBoxPartenzaSelezionato, state.boxPartenzaList)) {
+        if (validateBoxPartenza(state.boxPartenzaList)) {
             if (state.boxPartenzaList.length <= 0) {
                 dispatch(new AddBoxPartenza());
             } else {
@@ -68,6 +79,7 @@ export class BoxPartenzaState {
                 } else if (boxPartenzaSelezionato) {
                     dispatch(new AddBoxPartenza());
                 }
+                dispatch(new GetListeCoposizioneAvanzata());
             }
         } else {
             // se il box partenza attualmente selezionato non è valido mostro un messaggio di errore
@@ -81,7 +93,7 @@ export class BoxPartenzaState {
         // credo un ID logico random da asseganre al box-partenza
         const _id = makeID();
         // controllo se tutti i box-partenza sono validi
-        if (validateBoxPartenza(state.idBoxPartenzaSelezionato, state.boxPartenzaList)) {
+        if (validateBoxPartenza(state.boxPartenzaList)) {
             // controllo se ho raggiunto il numero massimo di box-partenza (3 MAX)
             if (state.boxPartenzaList.length <= 2) {
                 // creo il nuovo box partenza
@@ -164,7 +176,7 @@ export class BoxPartenzaState {
     @Action(RequestSelectBoxPartenza)
     requestSelectBoxPartenza({ getState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RequestSelectBoxPartenza) {
         const state = getState();
-        if (validateBoxPartenza(state.idBoxPartenzaSelezionato, state.boxPartenzaList)) {
+        if (validateBoxPartenza(state.boxPartenzaList)) {
             // prendo il box partenza selezionato tramite l'id
             const boxPartenzaSelezionato = state.boxPartenzaList.filter(x => x.id === state.idBoxPartenzaSelezionato)[0];
             // se il box partenza attualmente selezionato ha un mezzo lo prenoto
@@ -299,7 +311,7 @@ export class BoxPartenzaState {
     }
 }
 
-export function validateBoxPartenza(idBoxPartenzaSelezionato: string, boxPartenzaList: BoxPartenza[]) {
+export function validateBoxPartenza(boxPartenzaList: BoxPartenza[]) {
     let _return = false;
     let boxValidiCount = 0;
     if (boxPartenzaList.length > 0) {
@@ -314,4 +326,25 @@ export function validateBoxPartenza(idBoxPartenzaSelezionato: string, boxPartenz
         _return = true;
     }
     return _return;
+}
+
+export function _disableConfirmPartenza(boxPartenzaList: BoxPartenza[], nuovaPartenza?: boolean) {
+    if (nuovaPartenza) {
+        if (boxPartenzaList && boxPartenzaList.length === 0) {
+            return false;
+        }
+    }
+    if (boxPartenzaList && boxPartenzaList.length > 0) {
+        let boxValidiCount = 0;
+        for (const boxPartenza of boxPartenzaList) {
+            if (boxPartenza.squadraComposizione && boxPartenza.squadraComposizione.length > 0) {
+                boxValidiCount++;
+            }
+        }
+        // console.log(`Box partenza: ${boxPartenzaList.length} di cui validi ${boxValidiCount}`);
+        if (boxPartenzaList.length === boxValidiCount) {
+            return false;
+        }
+    }
+    return true;
 }

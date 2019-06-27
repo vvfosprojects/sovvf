@@ -249,6 +249,27 @@ export class HelperSintesiRichiesta {
         }
         return false;
     }
+
+    _primoUtente(attivita: AttivitaUtente[]): AttivitaUtente {
+        if (attivita) {
+            return attivita[0];
+        }
+        return null;
+    }
+
+    _altriUtenti(attivita: AttivitaUtente[]): AttivitaUtente[] {
+        if (attivita) {
+            return attivita.slice(1);
+        }
+        return null;
+    }
+
+    _utenteTooltip(attivita: AttivitaUtente): string {
+        if (attivita) {
+            return `${attivita.nominativo} - ${attivita.dataInizioAttivita}`;
+        }
+        return null;
+    }
 }
 
 export function round1decimal(value: number) {

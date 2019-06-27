@@ -91,7 +91,7 @@ export class RichiesteMarkersState {
     insertRichiestaMarker({ setState }: StateContext<RichiesteMarkersStateModel>, { payload, before }: InsertRichiestaMarker) {
         setState(
             patch({
-                richiesteMarkers: insertItem(payload, before)
+                richiesteMarkers: insertItem(RichiesteMarkerAdapterService.adapt(payload), before)
             })
         );
     }
@@ -100,7 +100,7 @@ export class RichiesteMarkersState {
     updateRichiestaMarker({ setState }: StateContext<RichiesteMarkersStateModel>, { payload }: UpdateRichiestaMarker) {
         setState(
             patch({
-                richiesteMarkers: updateItem<RichiestaMarker>(richiesta => richiesta.id === payload.id, payload)
+                richiesteMarkers: updateItem<RichiestaMarker>(richiesta => richiesta.id === payload.id, RichiesteMarkerAdapterService.adapt(payload))
             })
         );
     }

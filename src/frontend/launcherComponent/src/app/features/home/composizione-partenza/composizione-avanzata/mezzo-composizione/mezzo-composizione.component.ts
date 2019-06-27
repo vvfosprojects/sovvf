@@ -4,10 +4,7 @@ import { MezzoComposizione } from '../../interface/mezzo-composizione-interface'
 import { BoxPartenza } from '../../interface/box-partenza-interface';
 // Model
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import { Coordinate } from 'src/app/shared/model/coordinate.model';
-// Ngxs
-import { Store } from '@ngxs/store';
-import { RequestResetBookMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
+import { HelperComposizione } from '../../shared/helper/_helper-composizione';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -37,7 +34,9 @@ export class MezzoComposizioneComponent implements OnInit {
     // Mappa
     @Output() mezzoCoordinate = new EventEmitter<any>();
 
-    constructor(private store: Store) {
+    methods = new HelperComposizione();
+
+    constructor() {
     }
 
     ngOnInit() {
@@ -116,15 +115,6 @@ export class MezzoComposizioneComponent implements OnInit {
         }
 
         return returnClass;
-    }
-
-    statoMezzoClass() {
-        return {
-            'text-secondary': this.mezzoComp.mezzo.stato === 'inSede',
-            'text-primary': this.mezzoComp.mezzo.stato === 'inRientro',
-            'text-info': this.mezzoComp.mezzo.stato === 'inViaggio',
-            'text-success': this.mezzoComp.mezzo.stato === 'sulPosto'
-        };
     }
 
     badgeDistaccamentoClass() {

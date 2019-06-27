@@ -4,6 +4,7 @@ import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { RequestResetBookMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { Store } from '@ngxs/store';
+import { HelperComposizione } from '../helper/_helper-composizione';
 
 @Component({
     selector: 'app-box-nuova-partenza',
@@ -23,6 +24,8 @@ export class BoxNuovaPartenzaComponent {
     @Output() selezionato = new EventEmitter<BoxPartenza>();
     @Output() deselezionato = new EventEmitter<BoxPartenza>();
     @Output() eliminato = new EventEmitter<BoxPartenza>();
+
+    methods = new HelperComposizione();
 
     constructor(private store: Store) {
     }
@@ -131,4 +134,5 @@ export class BoxNuovaPartenzaComponent {
         e.stopPropagation();
         this.store.dispatch(new RequestResetBookMezzoComposizione(this.partenza.mezzoComposizione));
     }
+
 }

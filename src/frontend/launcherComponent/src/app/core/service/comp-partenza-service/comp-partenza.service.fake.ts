@@ -46,7 +46,7 @@ export class CompPartenzaServiceFake {
                         codice: '1',
                         descrizione: 'A1',
                         genere: 'APS',
-                        stato: 'inSede',
+                        stato: 'In Sede',
                         appartenenza: 0,
                         distaccamento: {
                             codice: '1',
@@ -100,7 +100,7 @@ export class CompPartenzaServiceFake {
                         codice: '2',
                         descrizione: 'A2',
                         genere: 'APS',
-                        stato: 'inSede',
+                        stato: 'In Sede',
                         appartenenza: 0,
                         distaccamento: {
                             codice: '1',
@@ -176,7 +176,7 @@ export class CompPartenzaServiceFake {
                         codice: '3',
                         descrizione: 'A3',
                         genere: 'APS',
-                        stato: 'inSede',
+                        stato: 'In Sede',
                         appartenenza: 0,
                         distaccamento: {
                             codice: '1',
@@ -252,7 +252,7 @@ export class CompPartenzaServiceFake {
                         codice: '1',
                         descrizione: 'A1',
                         genere: 'APS',
-                        stato: 'inSede',
+                        stato: 'In Rientro',
                         appartenenza: 0,
                         distaccamento: {
                             codice: '1',
@@ -306,7 +306,7 @@ export class CompPartenzaServiceFake {
                         codice: '2',
                         descrizione: 'A2',
                         genere: 'APS',
-                        stato: 'inSede',
+                        stato: 'In Viaggio',
                         appartenenza: 0,
                         distaccamento: {
                             codice: '1',
@@ -388,7 +388,7 @@ export class CompPartenzaServiceFake {
                     codice: '1',
                     descrizione: 'A1',
                     genere: 'APS',
-                    stato: 'inSede',
+                    stato: 'In Sede',
                     appartenenza: 0,
                     distaccamento: {
                         codice: '1',
@@ -415,7 +415,7 @@ export class CompPartenzaServiceFake {
                     codice: '2',
                     descrizione: 'A2',
                     genere: 'APS',
-                    stato: 'inSede',
+                    stato: 'In Sede',
                     appartenenza: 0,
                     distaccamento: {
                         codice: '1',
@@ -442,7 +442,7 @@ export class CompPartenzaServiceFake {
                     codice: '3',
                     descrizione: 'A3',
                     genere: 'APS',
-                    stato: 'inSede',
+                    stato: 'In Sede',
                     appartenenza: 0,
                     distaccamento: {
                         codice: '1',
@@ -469,7 +469,7 @@ export class CompPartenzaServiceFake {
                     codice: '4',
                     descrizione: 'A4',
                     genere: 'APS',
-                    stato: 'inRientro',
+                    stato: 'In Rientro',
                     appartenenza: 0,
                     distaccamento: {
                         codice: '1',
@@ -496,7 +496,7 @@ export class CompPartenzaServiceFake {
                     codice: '5',
                     descrizione: 'A5',
                     genere: 'APS',
-                    stato: 'inRientro',
+                    stato: 'In Rientro',
                     appartenenza: 0,
                     distaccamento: {
                         codice: '1',
@@ -523,7 +523,7 @@ export class CompPartenzaServiceFake {
                     codice: '6',
                     descrizione: 'A6',
                     genere: 'APS',
-                    stato: 'inViaggio',
+                    stato: 'In Viaggio',
                     appartenenza: 0,
                     distaccamento: {
                         codice: '1',
@@ -550,7 +550,7 @@ export class CompPartenzaServiceFake {
                     codice: '7',
                     descrizione: 'A7',
                     genere: 'APS',
-                    stato: 'sulPosto',
+                    stato: 'Sul Posto',
                     appartenenza: 0,
                     distaccamento: {
                         codice: '1',

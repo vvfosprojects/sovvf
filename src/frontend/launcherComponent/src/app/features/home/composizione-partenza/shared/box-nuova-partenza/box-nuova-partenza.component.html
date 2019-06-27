@@ -9,7 +9,7 @@
         </div>
         <div *ngIf="partenza.mezzoComposizione" class="col">
             <div class="nowrap">
-                <i class="guida fa fa-truck mr-1"></i>
+                <i class="guida fa fa-truck mr-1" [ngClass]="methods.iconaStatiClass(partenza.mezzoComposizione.mezzo.stato)"></i>
                 <span class="font-weight-bold mr-1">{{partenza.mezzoComposizione.mezzo.descrizione}}</span>
                 <span class="font-weight-normal">{{partenza.mezzoComposizione.mezzo.genere}}</span>
             </div>
@@ -65,19 +65,18 @@
             <i class="fa fa-map-marker mr-2 ml-1"></i>
             <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
         </div>
-        <div *ngIf="alert && boxValidationClass().tooltip && boxValidationClass().result" class="col text-right">
+        <div *ngIf="alert && boxValidationClass().tooltip && boxValidationClass().result" class="col">
             <i class="mt-1" [ngbTooltip]="boxValidationClass().tooltip" [ngClass]="boxValidationClass().result"></i>
         </div>
     </div>
-    <div class="text-right">
-        <i *ngIf="partenza.mezzoComposizione?.istanteScadenzaSelezione" class="fa fa-lg fa-clock-o"
-           ngbTooltip="Richiedi reset timer"
-           (click)="onResetTimeout($event)"></i>
-    </div>
-    <div *ngIf="partenza.mezzoComposizione?.istanteScadenzaSelezione" class="px-2 pt-2 pb-1"
-         style="width:100%; margin-bottom: 1px">
-        <app-prenotazione-progress-bar [mezzoComp]="partenza.mezzoComposizione"
-                                       [itemPrenotato]="!!partenza.mezzoComposizione?.istanteScadenzaSelezione"
-                                       [graphic]="true"></app-prenotazione-progress-bar>
+    <div class="row">
+        <div *ngIf="partenza.mezzoComposizione?.istanteScadenzaSelezione" class="pt-2 col-10">
+            <app-prenotazione-progress-bar [mezzoComp]="partenza.mezzoComposizione"
+                                           [itemPrenotato]="!!partenza.mezzoComposizione?.istanteScadenzaSelezione"
+                                           [graphic]="true"></app-prenotazione-progress-bar>
+        </div>
+        <div *ngIf="partenza.mezzoComposizione?.istanteScadenzaSelezione" class="text-center col-2 pl-0">
+            <i class="fa fa-lg fa-clock-o" ngbTooltip="Richiedi reset timer" (click)="onResetTimeout($event)"></i>
+        </div>
     </div>
 </div>
