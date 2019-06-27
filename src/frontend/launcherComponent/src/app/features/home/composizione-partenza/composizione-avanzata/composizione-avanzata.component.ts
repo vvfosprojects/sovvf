@@ -86,6 +86,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     idBoxPartenzaSelezionato: string;
 
     @Select(BoxPartenzaState.disableConfirmPartenza) disableConfirmPartenza$: Observable<boolean>;
+    @Select(BoxPartenzaState.disableNuovaPartenza) disableNuovaPartenza$: Observable<boolean>;
 
     Composizione = Composizione;
     subscription = new Subscription();
@@ -193,6 +194,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                 // console.log(idBoxPartenza);
             })
         );
+
     }
 
     ngOnInit() {

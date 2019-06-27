@@ -55,6 +55,11 @@ export class BoxPartenzaState {
         return _disableConfirmPartenza(state.boxPartenzaList);
     }
 
+    @Selector()
+    static disableNuovaPartenza(state: BoxPartenzaStateModel) {
+        return _disableConfirmPartenza(state.boxPartenzaList, true);
+    }
+
     constructor() {
     }
 
@@ -323,7 +328,12 @@ export function validateBoxPartenza(boxPartenzaList: BoxPartenza[]) {
     return _return;
 }
 
-export function _disableConfirmPartenza(boxPartenzaList: BoxPartenza[]) {
+export function _disableConfirmPartenza(boxPartenzaList: BoxPartenza[], nuovaPartenza?: boolean) {
+    if (nuovaPartenza) {
+        if (boxPartenzaList && boxPartenzaList.length === 0) {
+            return false;
+        }
+    }
     if (boxPartenzaList && boxPartenzaList.length > 0) {
         let boxValidiCount = 0;
         for (const boxPartenza of boxPartenzaList) {
