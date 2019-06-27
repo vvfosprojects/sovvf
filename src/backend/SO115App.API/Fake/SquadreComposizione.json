@@ -3,7 +3,7 @@
     "id": 1,
     "squadra": {
       "id": "1",
-      "nome": "Rossa",
+      "nome": "1A",
       "stato": 3,
       "componenti": [
         {
@@ -32,14 +32,14 @@
         }
       ],
       "distaccamento": {
-        "codice": "2",
-        "descrizione": "Tuscolana II",
+        "codice": "1",
+        "descrizione": "Centrale",
         "coordinate": {
           "latitudine": 1,
           "longitudine": 1
         },
         "indirizzo": "Via Prova, 1",
-        "tipo": "Distaccamento",
+        "tipo": "Comando",
         "regione": "Lazio",
         "provincia": "Roma"
       }
@@ -49,53 +49,7 @@
     "id": 2,
     "squadra": {
       "id": "2",
-      "nome": "Verde",
-      "stato": 3,
-      "componenti": [
-        {
-          "descrizioneQualifica": "CP",
-          "nominativo": "Paolo Marchio",
-          "tooltip": "",
-          "capoPartenza": true,
-          "autista": false,
-          "rimpiazzo": false
-        },
-        {
-          "descrizioneQualifica": "CP",
-          "nominativo": "Francesca Ventura",
-          "tooltip": "",
-          "capoPartenza": false,
-          "autista": true,
-          "rimpiazzo": false
-        },
-        {
-          "descrizioneQualifica": "CP",
-          "nominativo": "Federico Calu",
-          "tooltip": "",
-          "capoPartenza": false,
-          "autista": false,
-          "rimpiazzo": true
-        }
-      ],
-      "distaccamento": {
-        "codice": "3",
-        "descrizione": "Tuscolana II",
-        "coordinate": {
-          "latitudine": 1,
-          "longitudine": 1
-        },
-        "indirizzo": "Via Prova, 1",
-        "tipo": "Distaccamento",
-        "regione": "Lazio",
-        "provincia": "Roma"
-      }
-    }
-  },
-  {
-    "id": 3,
-    "squadra": {
-      "id": "3",
-      "nome": "Arancione",
+      "nome": "1ABP",
       "stato": 3,
       "componenti": [
         {
@@ -125,7 +79,191 @@
       ],
       "distaccamento": {
         "codice": "1",
-        "descrizione": "Tuscolana II",
+        "descrizione": "Centrale",
+        "coordinate": {
+          "latitudine": 1,
+          "longitudine": 1
+        },
+        "indirizzo": "Via Prova, 1",
+        "tipo": "Comando",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    }
+  },
+  {
+    "id": 3,
+    "squadra": {
+      "id": "3",
+      "nome": "2A",
+      "stato": 3,
+      "componenti": [
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Paolo Marchio",
+          "tooltip": "",
+          "capoPartenza": true,
+          "autista": false,
+          "rimpiazzo": false
+        },
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Francesca Ventura",
+          "tooltip": "",
+          "capoPartenza": false,
+          "autista": true,
+          "rimpiazzo": false
+        },
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Federico Calu",
+          "tooltip": "",
+          "capoPartenza": false,
+          "autista": false,
+          "rimpiazzo": true
+        }
+      ],
+      "distaccamento": {
+        "codice": "2",
+        "descrizione": "Eur",
+        "coordinate": {
+          "latitudine": 1,
+          "longitudine": 1
+        },
+        "indirizzo": "Via Prova, 1",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    }
+  },
+    {
+    "id": 1,
+    "squadra": {
+      "id": "1",
+      "nome": "3A",
+      "stato": 3,
+      "componenti": [
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Mario Verdi",
+          "tooltip": "",
+          "capoPartenza": true,
+          "autista": false,
+          "rimpiazzo": false
+        },
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Francesco Rossi",
+          "tooltip": "",
+          "capoPartenza": false,
+          "autista": true,
+          "rimpiazzo": false
+        },
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Mario Verna",
+          "tooltip": "",
+          "capoPartenza": false,
+          "autista": false,
+          "rimpiazzo": true
+        }
+      ],
+      "distaccamento": {
+        "codice": "3",
+        "descrizione": "La Rustica",
+        "coordinate": {
+          "latitudine": 1,
+          "longitudine": 1
+        },
+        "indirizzo": "Via Prova, 1",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    }
+  },
+  {
+    "id": 2,
+    "squadra": {
+      "id": "2",
+      "nome": "4A",
+      "stato": 3,
+      "componenti": [
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Paolo Marchio",
+          "tooltip": "",
+          "capoPartenza": true,
+          "autista": false,
+          "rimpiazzo": false
+        },
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Francesca Ventura",
+          "tooltip": "",
+          "capoPartenza": false,
+          "autista": true,
+          "rimpiazzo": false
+        },
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Federico Calu",
+          "tooltip": "",
+          "capoPartenza": false,
+          "autista": false,
+          "rimpiazzo": true
+        }
+      ],
+      "distaccamento": {
+        "codice": "4",
+        "descrizione": "Ostiense",
+        "coordinate": {
+          "latitudine": 1,
+          "longitudine": 1
+        },
+        "indirizzo": "Via Prova, 1",
+        "tipo": "Distaccamento",
+        "regione": "Lazio",
+        "provincia": "Roma"
+      }
+    }
+  },
+  {
+    "id": 3,
+    "squadra": {
+      "id": "3",
+      "nome": "4APS",
+      "stato": 3,
+      "componenti": [
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Paolo Marchio",
+          "tooltip": "",
+          "capoPartenza": true,
+          "autista": false,
+          "rimpiazzo": false
+        },
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Francesca Ventura",
+          "tooltip": "",
+          "capoPartenza": false,
+          "autista": true,
+          "rimpiazzo": false
+        },
+        {
+          "descrizioneQualifica": "CP",
+          "nominativo": "Federico Calu",
+          "tooltip": "",
+          "capoPartenza": false,
+          "autista": false,
+          "rimpiazzo": true
+        }
+      ],
+      "distaccamento": {
+        "codice": "4",
+        "descrizione": "Ostiense",
         "coordinate": {
           "latitudine": 1,
           "longitudine": 1

@@ -2,19 +2,19 @@
   "distaccamenti": [
     {
       "id": "1",
-      "descrizione": "Roma"
+      "descrizione": "Centrale"
     },
     {
       "id": "2",
-      "descrizione": "Frosinone"
+      "descrizione": "Eur"
     },
     {
       "id": "3",
-      "descrizione": "Latina"
+      "descrizione": "La Rustica"
     },
     {
       "id": "4",
-      "descrizione": "Rieti"
+      "descrizione": "Ostiense"
     }
   ],
   "generiMezzi": [
