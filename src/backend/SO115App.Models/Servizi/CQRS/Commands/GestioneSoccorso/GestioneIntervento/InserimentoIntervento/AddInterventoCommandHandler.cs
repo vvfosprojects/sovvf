@@ -57,7 +57,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti,
                 ObiettivoSensibile = command.Chiamata.ObiettivoSensibile,
                 ListaUtentiInLavorazione = command.Chiamata.ListaUtentiInLavorazione,
-                ListaUtentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico
+                ListaUtentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico,
+                Id = codiceRichiesta // TODO DA TOGLIERE QUANDO AVREMO UN DB
             };
 
             richiesta.SincronizzaRilevanza(command.Chiamata.RilevanzaGrave, command.Chiamata.RilevanzaStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione, command.Chiamata.IstanteRicezioneRichiesta);
