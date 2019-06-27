@@ -42,6 +42,7 @@ import {
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 import { ConfirmPartenze, GetFiltriComposizione } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno/turno.state';
+import { GetListeCoposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -194,7 +195,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     ngOnInit() {
         // Aggiungo il primo box partenza vuoto
-        this.store.dispatch(new AddBoxPartenza());
+        // this.store.dispatch(new AddBoxPartenza());
         this.store.dispatch(new GetFiltriComposizione());
         this.subscription.add(this.dismissEvents.subscribe(
             events => this.annullaPartenza(events)
@@ -215,7 +216,11 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         }
         if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) === -1 && this.idMezziInPrenotazione.indexOf(mezzoComposizione.id) === -1) {
             this.store.dispatch(new SelectMezzoComposizione(mezzoComposizione));
-            // this.store.dispatch(new GetListeCoposizioneAvanzata());
+            const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
+            // TODO: testare
+            if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
+                this.store.dispatch(new GetListeCoposizioneAvanzata(null, null, true));
+            }
             this.store.dispatch(new AddMezzoBoxPartenzaSelezionato(mezzoComposizione));
         } else if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) !== -1) {
             this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza'));
@@ -227,6 +232,11 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     mezzoDeselezionato(mezzoComposizione: MezzoComposizione) {
         this.store.dispatch(new UnselectMezzoComposizione(mezzoComposizione));
+        const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
+        // TODO: testare
+        if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
+            this.store.dispatch(new GetListeCoposizioneAvanzata(null, null, true));
+        }
         this.store.dispatch(new RemoveMezzoBoxPartenzaSelezionato(mezzoComposizione));
         this.clearDirection.emit();
         // console.log('Mezzo deselezionato', mezzoComposizione);
@@ -245,12 +255,22 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             this.store.dispatch(new AddBoxPartenza());
         }
         this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
+        const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
+        // TODO: testare
+        if (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione) {
+            this.store.dispatch(new GetListeCoposizioneAvanzata(null, true, null));
+        }
         this.store.dispatch(new AddSquadraBoxPartenza(squadraComposizione));
         // console.log('Squadra selezionata', squadraComposizione);
     }
 
     squadraDeselezionata(squadraComposizione: SquadraComposizione) {
         this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
+        const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
+        // TODO: testare
+        if (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione) {
+            this.store.dispatch(new GetListeCoposizioneAvanzata(null, true, null));
+        }
         this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
         this.clearDirection.emit();
         // console.log('Squadra deselezionata', squadraComposizione);

@@ -21,6 +21,7 @@ import { SquadraComposizione } from '../../../composizione-partenza/interface/sq
 import { ClearSelectedSquadreComposizione, SelectSquadraComposizione, UnselectSquadraComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
+import { GetListeCoposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 
 
 export interface BoxPartenzaStateModel {
@@ -68,6 +69,7 @@ export class BoxPartenzaState {
                 } else if (boxPartenzaSelezionato) {
                     dispatch(new AddBoxPartenza());
                 }
+                dispatch(new GetListeCoposizioneAvanzata());
             }
         } else {
             // se il box partenza attualmente selezionato non è valido mostro un messaggio di errore
