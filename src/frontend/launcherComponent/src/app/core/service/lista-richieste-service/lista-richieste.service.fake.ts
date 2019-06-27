@@ -796,10 +796,13 @@ export class SintesiRichiesteServiceFake {
         this.richieste[3].tipoTerreno = [new TipoTerreno(TipoTerrenoEnum.Boschi, 200000), new TipoTerreno(TipoTerrenoEnum.Campi, 100000)];
         this.richieste[4].tipoTerreno = [new TipoTerreno(TipoTerrenoEnum.Sterpaglie, 200000)];
         this.richieste[3].listaEntiPresaInCarico = [new EnteIntervenuto('1', 'Polizia di Stato')];
-        this.richieste[4].listaEntiPresaInCarico = [new EnteIntervenuto('1', 'Polizia di Stato'), new EnteIntervenuto('2' , 'Carabinieri')];
+        this.richieste[4].listaEntiPresaInCarico = [new EnteIntervenuto('1', 'Polizia di Stato'), new EnteIntervenuto('2', 'Carabinieri')];
         this.richieste[4].listaEntiIntervenuti = [new EnteIntervenuto('3', 'Protezione Civile')];
-        this.richieste[0].listaUtentiInLavorazione = [new AttivitaUtente('Mario Rossi', new Date())];
-        this.richieste[0].listaUtentiPresaInCarico = [new AttivitaUtente('Luigi Bianchi', moment().subtract(42, 'minutes').toDate())];
+        this.richieste[0].listaUtentiPresaInCarico = [new AttivitaUtente('Stefano Vinci', moment().subtract(42, 'minutes').toDate()),
+            new AttivitaUtente('Diletta Pallotta', moment().subtract(48, 'minutes').toDate()),
+            new AttivitaUtente('Luigi Bardolin', moment().subtract(52, 'minutes').toDate())];
+        this.richieste[0].listaUtentiInLavorazione = [new AttivitaUtente('Mario Rossi', moment().subtract(2, 'minutes').toDate()),
+            new AttivitaUtente('Filippo Verdi', moment().subtract(3, 'minutes').toDate())];
 
         return of(this.richieste);
     }
