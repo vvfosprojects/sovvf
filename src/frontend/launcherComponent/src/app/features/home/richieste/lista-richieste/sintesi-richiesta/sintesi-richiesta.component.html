@@ -292,9 +292,9 @@
                                 <i class="guida fa fa-eye fa-fw mr-1" ngbTooltip="In Lavorazione"
                                    placement="right"></i>
                                 <span *ngIf="methods._primoUtente(richiesta.listaUtentiInLavorazione) as utentiInLavorazioneValue; else nonInLavorazione"
-                                      class="h6 m-0" [ngbTooltip]="utentePresaInCarico">
+                                      class="h6 m-0" [ngbTooltip]="utenteInLavorazione">
                                     {{ utentiInLavorazioneValue.nominativo }}
-                                    <ng-template #utentePresaInCarico>
+                                    <ng-template #utenteInLavorazione>
                                         <span>
                                             {{utentiInLavorazioneValue.dataInizioAttivita | friendlyDate}}
                                             {{utentiInLavorazioneValue.dataInizioAttivita | friendlyHour: true}}
