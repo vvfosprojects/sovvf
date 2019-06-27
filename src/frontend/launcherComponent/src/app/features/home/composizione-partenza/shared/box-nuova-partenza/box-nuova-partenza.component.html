@@ -9,7 +9,7 @@
         </div>
         <div *ngIf="partenza.mezzoComposizione" class="col">
             <div class="nowrap">
-                <i class="guida fa fa-truck mr-1"></i>
+                <i class="guida fa fa-truck mr-1" [ngClass]="methods.iconaStatiClass(partenza.mezzoComposizione.mezzo.stato)"></i>
                 <span class="font-weight-bold mr-1">{{partenza.mezzoComposizione.mezzo.descrizione}}</span>
                 <span class="font-weight-normal">{{partenza.mezzoComposizione.mezzo.genere}}</span>
             </div>

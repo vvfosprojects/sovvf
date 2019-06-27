@@ -8,6 +8,7 @@ import {
 import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza-state';
 import { MezziComposizioneState } from '../../../store/states/composizione-partenza/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../../store/states/composizione-partenza/squadre-composizione.state';
+import { HelperComposizione } from '../helper/_helper-composizione';
 
 @Component({
     selector: 'app-composizione-filterbar',
@@ -18,31 +19,9 @@ export class ComposizioneFilterbarComponent {
 
     @Input() filtri: any;
 
+    methods = new HelperComposizione();
+
     constructor(private store: Store) {
-    }
-
-    iconaStatiClass(stato: string) {
-        let returnClass = '';
-
-        switch (stato) {
-            case 'In Sede':
-                returnClass = 'text-secondary';
-                break;
-            case 'In Viaggio':
-                returnClass = 'text-info';
-                break;
-            case 'In Rientro':
-                returnClass = 'text-primary';
-                break;
-            case 'Sul Posto':
-                returnClass = 'text-success';
-                break;
-
-            default:
-                break;
-        }
-
-        return returnClass;
     }
 
     getFiltri() {
