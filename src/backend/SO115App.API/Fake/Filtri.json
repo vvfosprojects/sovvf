@@ -38,19 +38,19 @@
   "stati": [
     {
       "id": "1",
-      "descrizione": "inSede"
+      "descrizione": "In Sede"
     },
     {
       "id": "2",
-      "descrizione": "inRientro"
+      "descrizione": "In Rientro"
     },
     {
       "id": "3",
-      "descrizione": "inViaggio"
+      "descrizione": "In Viaggio"
     },
     {
       "id": "4",
-      "descrizione": "sulPosto"
+      "descrizione": "Sul Posto"
     }
   ]
 }

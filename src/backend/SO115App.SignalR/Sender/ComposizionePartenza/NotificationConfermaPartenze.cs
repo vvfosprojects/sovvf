@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,8 +77,30 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             sintesi.Richiedente = richiesta.Richiedente;
             sintesi.Sospesa = richiesta.Sospesa;
             sintesi.Partenze = partenze;
+            sintesi.Stato = DecodifcaStatoRichiesta(richiesta.StatoRichiesta);
             conferma.ConfermaPartenze.Chiamata = sintesi;
             await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
+        }
+
+        private string DecodifcaStatoRichiesta(IStatoRichiesta statoRichiesta)
+        {
+            switch (statoRichiesta.ToString())
+            {
+                case "SO115App.API.Models.Classi.Soccorso.StatiRichiesta.InAttesa":
+                    return "Chiamata";
+
+                case "SO115App.API.Models.Classi.Soccorso.StatiRichiesta.Assegnata":
+                    return "Assegnata";
+
+                case "SO115App.API.Models.Classi.Soccorso.StatiRichiesta.Chiusa":
+                    return "Chiusa";
+
+                case "SO115App.API.Models.Classi.Soccorso.StatiRichiesta.Sospesa":
+                    return "Sospesa";
+
+                default:
+                    return "Chiusa";
+            }
         }
     }
 }

@@ -3,7 +3,7 @@
     "id": 1,
     "squadra": {
       "id": "1",
-      "nome": "1A",
+      "nome": "Rossa",
       "stato": 3,
       "componenti": [
         {
@@ -25,98 +25,6 @@
         {
           "descrizioneQualifica": "CP",
           "nominativo": "Mario Verna",
-          "tooltip": "",
-          "capoPartenza": false,
-          "autista": false,
-          "rimpiazzo": true
-        }
-      ],
-      "distaccamento": {
-        "codice": "1",
-        "descrizione": "Centrale",
-        "coordinate": {
-          "latitudine": 1,
-          "longitudine": 1
-        },
-        "indirizzo": "Via Prova, 1",
-        "tipo": "Comando",
-        "regione": "Lazio",
-        "provincia": "Roma"
-      }
-    }
-  },
-  {
-    "id": 2,
-    "squadra": {
-      "id": "2",
-      "nome": "1ABP",
-      "stato": 3,
-      "componenti": [
-        {
-          "descrizioneQualifica": "CP",
-          "nominativo": "Paolo Marchio",
-          "tooltip": "",
-          "capoPartenza": true,
-          "autista": false,
-          "rimpiazzo": false
-        },
-        {
-          "descrizioneQualifica": "CP",
-          "nominativo": "Francesca Ventura",
-          "tooltip": "",
-          "capoPartenza": false,
-          "autista": true,
-          "rimpiazzo": false
-        },
-        {
-          "descrizioneQualifica": "CP",
-          "nominativo": "Federico Calu",
-          "tooltip": "",
-          "capoPartenza": false,
-          "autista": false,
-          "rimpiazzo": true
-        }
-      ],
-      "distaccamento": {
-        "codice": "1",
-        "descrizione": "Centrale",
-        "coordinate": {
-          "latitudine": 1,
-          "longitudine": 1
-        },
-        "indirizzo": "Via Prova, 1",
-        "tipo": "Comando",
-        "regione": "Lazio",
-        "provincia": "Roma"
-      }
-    }
-  },
-  {
-    "id": 3,
-    "squadra": {
-      "id": "3",
-      "nome": "2A",
-      "stato": 3,
-      "componenti": [
-        {
-          "descrizioneQualifica": "CP",
-          "nominativo": "Paolo Marchio",
-          "tooltip": "",
-          "capoPartenza": true,
-          "autista": false,
-          "rimpiazzo": false
-        },
-        {
-          "descrizioneQualifica": "CP",
-          "nominativo": "Francesca Ventura",
-          "tooltip": "",
-          "capoPartenza": false,
-          "autista": true,
-          "rimpiazzo": false
-        },
-        {
-          "descrizioneQualifica": "CP",
-          "nominativo": "Federico Calu",
           "tooltip": "",
           "capoPartenza": false,
           "autista": false,
@@ -125,53 +33,7 @@
       ],
       "distaccamento": {
         "codice": "2",
-        "descrizione": "Eur",
-        "coordinate": {
-          "latitudine": 1,
-          "longitudine": 1
-        },
-        "indirizzo": "Via Prova, 1",
-        "tipo": "Distaccamento",
-        "regione": "Lazio",
-        "provincia": "Roma"
-      }
-    }
-  },
-    {
-    "id": 1,
-    "squadra": {
-      "id": "1",
-      "nome": "3A",
-      "stato": 3,
-      "componenti": [
-        {
-          "descrizioneQualifica": "CP",
-          "nominativo": "Mario Verdi",
-          "tooltip": "",
-          "capoPartenza": true,
-          "autista": false,
-          "rimpiazzo": false
-        },
-        {
-          "descrizioneQualifica": "CP",
-          "nominativo": "Francesco Rossi",
-          "tooltip": "",
-          "capoPartenza": false,
-          "autista": true,
-          "rimpiazzo": false
-        },
-        {
-          "descrizioneQualifica": "CP",
-          "nominativo": "Mario Verna",
-          "tooltip": "",
-          "capoPartenza": false,
-          "autista": false,
-          "rimpiazzo": true
-        }
-      ],
-      "distaccamento": {
-        "codice": "3",
-        "descrizione": "La Rustica",
+        "descrizione": "Tuscolana II",
         "coordinate": {
           "latitudine": 1,
           "longitudine": 1
@@ -187,7 +49,7 @@
     "id": 2,
     "squadra": {
       "id": "2",
-      "nome": "4A",
+      "nome": "Verde",
       "stato": 3,
       "componenti": [
         {
@@ -216,8 +78,8 @@
         }
       ],
       "distaccamento": {
-        "codice": "4",
-        "descrizione": "Ostiense",
+        "codice": "3",
+        "descrizione": "Tuscolana II",
         "coordinate": {
           "latitudine": 1,
           "longitudine": 1
@@ -233,7 +95,7 @@
     "id": 3,
     "squadra": {
       "id": "3",
-      "nome": "4APS",
+      "nome": "Arancione",
       "stato": 3,
       "componenti": [
         {
@@ -262,8 +124,8 @@
         }
       ],
       "distaccamento": {
-        "codice": "4",
-        "descrizione": "Ostiense",
+        "codice": "1",
+        "descrizione": "Tuscolana II",
         "coordinate": {
           "latitudine": 1,
           "longitudine": 1
