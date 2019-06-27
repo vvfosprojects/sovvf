@@ -344,7 +344,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 bg-red pr-1">
+                        <div class="col-md-6 bg-red pr-1 scroll-y" style="max-height: 137px">
                             <h5 class="my-0"><b>Partenze</b></h5>
                             <div *ngIf="!richiesta.partenze" class="text-center">
                                 <hr class="mt-0 mb-2">
@@ -356,13 +356,13 @@
                                         <div class="col-2 my-1 pr-0">
                                             <b class="ml-1">#{{i + 1}}</b>
                                         </div>
-                                        <div class="col-7 my-1 pr-1">
+                                        <div class="col-5 my-1 pr-1">
                                             <app-mezzo [mezzo]="p.mezzo"></app-mezzo>
                                             <span *ngIf="!p.mezzo" class="p-2">
                                                 Nessun mezzo
                                             </span>
                                         </div>
-                                        <div class="col-3 my-1">
+                                        <div class="col-5 my-1">
                                                 <span *ngFor="let s of p.squadre">
                                                     <span class="mr-2">
                                                         <i class="guida fa fa-fire-extinguisher fa-fw"
