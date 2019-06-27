@@ -60,7 +60,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <returns>Elenco dei mezzi disponibili</returns>
         public void Handle(ConfermaPartenzeCommand command)
         {
-            SintesiRichieste sintesi = new SintesiRichieste();
             // preparazione del DTO
             RichiestaAssistenza richiesta = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiesta);
             foreach (Partenza partenza in command.ConfermaPartenze.Partenze)

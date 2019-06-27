@@ -55,7 +55,7 @@ namespace SO115App.FakePersistenceJSon.Utility
                 richiestaMap.AddEvento(evento);
             }
 
-            if (richiesta.Telefonate.Count > 0)
+            if (richiesta.Telefonate != null && richiesta.Telefonate.Count > 0)
             {
                 foreach (Telefonata tel in richiesta.Telefonate)
                 {
