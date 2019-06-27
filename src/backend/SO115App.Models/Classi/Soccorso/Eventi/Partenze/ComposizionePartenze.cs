@@ -53,7 +53,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             string codiceFonte,
             bool fuoriSede) : base(richiesta, istante, codiceFonte)
         {
-            this.ComponentiSquadra = new List<Squadra>();
+            this.Partenza = new Partenza();
             this.Componenti = new HashSet<ComponentePartenza>();
             this.FuoriSede = fuoriSede;
         }
@@ -99,7 +99,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         /// <summary>
         ///   E' la lista dei componenti della partenza
         /// </summary>
-        public List<Squadra> ComponentiSquadra { get; set; }
+        public Partenza Partenza { get; set; }
 
         public ISet<ComponentePartenza> Componenti { get; set; }
 
