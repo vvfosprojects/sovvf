@@ -85,6 +85,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Select(BoxPartenzaState.idBoxPartenzaSelezionato) idBoxPartenzaSelezionato$: Observable<string>;
     idBoxPartenzaSelezionato: string;
 
+    @Select(BoxPartenzaState.disableConfirmPartenza) disableConfirmPartenza$: Observable<boolean>;
+
     Composizione = Composizione;
     subscription = new Subscription();
 
