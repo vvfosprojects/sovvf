@@ -38,14 +38,4 @@ namespace SO115App.API.Models.Classi.ListaEventi
         public object NotePrivate { get; set; }
         public string Esito { get; set; }
     }
-
-    public class EventiMapper
-    {
-        public string Id { get; set; }
-        public string NomeClasseEvento { get; set; }
-        public string IstanteEvento { get; set; }
-        public string Targa { get; set; }
-        public string Note { get; set; }
-        public object HTMLLinkElement { get; set; }
-    }
 }

@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Newtonsoft.Json;
 using System;
 
 namespace SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni
@@ -43,6 +44,14 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni
             string codice,
             DateTime istante,
             string codiceFonte) : base(richiesta, codice, istante, codiceFonte)
+        {
+        }
+
+        [JsonConstructor]
+        public Telefonata(
+            string codice,
+            DateTime istante,
+            string codiceFonte) : base(codice, istante, codiceFonte)
         {
         }
 

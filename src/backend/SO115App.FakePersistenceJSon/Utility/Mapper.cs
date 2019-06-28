@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.FakePersistenceJSon.Classi;
 
@@ -50,16 +51,28 @@ namespace SO115App.FakePersistenceJSon.Utility
                 ListaUtentiPresaInCarico = richiesta.ListaUtentiPresaInCarico
             };
 
-            foreach (Evento evento in richiesta.Eventi)
-            {
-                richiestaMap.AddEvento(evento);
-            }
-
             if (richiesta.Telefonate != null && richiesta.Telefonate.Count > 0)
             {
                 foreach (Telefonata tel in richiesta.Telefonate)
                 {
-                    richiesta.Telefonate.Add(tel);
+                    new Telefonata(richiestaMap, richiesta.Codice, richiesta.IstanteRicezioneRichiesta.Value, richiesta.Operatore.Id)
+                    {
+                        CognomeChiamante = tel.CognomeChiamante,
+                        NomeChiamante = tel.NomeChiamante,
+                        RagioneSociale = tel.RagioneSociale,
+                        Motivazione = tel.Motivazione,
+                        NotePrivate = tel.NotePrivate,
+                        NotePubbliche = tel.NotePubbliche,
+                        NumeroTelefono = tel.NumeroTelefono,
+                        Esito = tel.Esito
+                    };
+                }
+            }
+
+            if (richiesta.Partenze != null && richiesta.Partenze.Count > 0)
+            {
+                foreach (ComposizionePartenze partenza in richiesta.Partenze)
+                {
                 }
             }
 

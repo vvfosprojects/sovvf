@@ -61,6 +61,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.ObiettivoSensibile = command.Chiamata.ObiettivoSensibile;
             richiesta.ListaUtentiInLavorazione = command.Chiamata.ListaUtentiInLavorazione;
             richiesta.ListaUtentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico;
+            richiesta.Id = command.Chiamata.Codice;
 
             if (command.Chiamata.Etichette != null)
             {

@@ -26,6 +26,8 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Persistenza;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
@@ -46,19 +48,22 @@ namespace SO115App.FakePersistenceJSon.Classi
     /// </summary>
     public class RichiestaAssistenzaDTO
     {
+        private List<Evento> eventi;
+
         /// <summary>
         ///   Costruisce una nuova istanza di <see cref="RichiestaAssistenza" />
         /// </summary>
         [JsonConstructor]
         public RichiestaAssistenzaDTO()
         {
-            this.Eventi = new List<Evento>();
+            this.eventi = new List<Evento>();
             this.Tipologie = new List<Tipologia>();
             this.Telefonate = new List<Telefonata>();
             this.Tags = new HashSet<string>();
             this.Competenze = new List<Sede>();
         }
 
+        public string Id { get; set; }
         public string Codice { get; set; }
 
         public string CodiceUnitaOperativaCompetente { get; set; }
@@ -67,8 +72,10 @@ namespace SO115App.FakePersistenceJSon.Classi
 
         public List<Evento> Eventi
         {
-            get;
-            set;
+            get
+            {
+                return this.eventi;
+            }
         }
 
         public Coordinate Geolocalizzazione { get; set; }
@@ -77,6 +84,11 @@ namespace SO115App.FakePersistenceJSon.Classi
         {
             get;
             set;
+        }
+
+        public List<ComposizionePartenze> Partenze
+        {
+            get; set;
         }
 
         public Utente Operatore { get; set; }
@@ -158,8 +170,33 @@ namespace SO115App.FakePersistenceJSon.Classi
 
         public IStatoRichiesta StatoRichiesta
         {
-            get;
-            set;
+            get
+            {
+                var eventoChiusura = this.eventi
+                    .Where(e => e is ChiusuraRichiesta);
+
+                if (this.Chiusa)
+                {
+                    return new Chiusa();
+                }
+
+                var elencoMezziCoinvolti = this.MezziCoinvolti;
+                if (!elencoMezziCoinvolti.Any())
+                {
+                    return new InAttesa();
+                }
+                else
+                {
+                    if (elencoMezziCoinvolti.Values.Any(e => e.AssegnatoARichiesta))
+                    {
+                        return new Assegnata();
+                    }
+                    else
+                    {
+                        return new Sospesa();
+                    }
+                }
+            }
         }
 
         public virtual bool Presidiato
@@ -182,14 +219,42 @@ namespace SO115App.FakePersistenceJSon.Classi
 
         public virtual API.Models.Classi.Soccorso.Fonogramma.IStatoFonogramma StatoInvioFonogramma
         {
-            get;
-            set;
+            get
+            {
+                var ultimoEventoFonogramma = this.eventi
+                    .Where(e => e is IFonogramma)
+                    .LastOrDefault();
+
+                if (ultimoEventoFonogramma is FonogrammaInviato)
+                {
+                    return new API.Models.Classi.Soccorso.Fonogramma.Inviato();
+                }
+
+                if (ultimoEventoFonogramma is InviareFonogramma)
+                {
+                    return new API.Models.Classi.Soccorso.Fonogramma.DaInviare();
+                }
+
+                return new API.Models.Classi.Soccorso.Fonogramma.NonNecessario();
+            }
         }
 
-        public virtual API.Models.Classi.Soccorso.Complessita.IComplessita Complessita
+        public virtual SO115App.API.Models.Classi.Soccorso.Complessita.IComplessita Complessita
         {
-            get;
-            set;
+            get
+            {
+                if (this.eventi.Count <= 20)
+                {
+                    return new SO115App.API.Models.Classi.Soccorso.Complessita.Bassa();
+                }
+
+                if (this.eventi.Count <= 60)
+                {
+                    return new SO115App.API.Models.Classi.Soccorso.Complessita.Media();
+                }
+
+                return new SO115App.API.Models.Classi.Soccorso.Complessita.Alta();
+            }
         }
     }
 }
