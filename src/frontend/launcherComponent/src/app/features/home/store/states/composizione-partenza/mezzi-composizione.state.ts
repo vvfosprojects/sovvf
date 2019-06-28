@@ -159,11 +159,10 @@ export class MezziComposizioneState {
     }
 
     @Action(ClearSelectedMezziComposizione)
-    clearSelectedMezziComposizione({ getState, patchState }: StateContext<MezziComposizioneStateStateModel>) {
-        const state = getState();
+    clearSelectedMezziComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>) {
         patchState({
-            ...state,
-            idMezzoComposizioneSelezionato: null
+            idMezzoComposizioneSelezionato: null,
+            idMezzoSelezionato: null
         });
     }
 

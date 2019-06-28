@@ -13,6 +13,7 @@ import { Select, Store } from '@ngxs/store';
 import { GetFiltriComposizione } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizioneVeloceState } from '../../store/states/composizione-partenza/composizione-veloce.state';
 import { makeCopy } from '../../../../shared/helper/function';
+import { SelectPreAccoppiatoComposizione, UnselectPreAccoppiatoComposizione } from '../../store/actions/composizione-partenza/composizione-veloce.actions';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -24,11 +25,14 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
     @Input() dismissEvents: Observable<boolean>;
 
-    idPreAccoppiatiSelezionati: string[] = [];
-    preAccoppiatiSelezionati: BoxPartenza[] = [];
-
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     preAccoppiati: BoxPartenza[];
+
+    @Select(ComposizioneVeloceState.idPreAccoppiatoSelezionato) idPreAccoppiatoSelezionato$: Observable<string>;
+    idPreAccoppiatoSelezionato: string;
+
+    @Select(ComposizioneVeloceState.idPreAccoppiatiSelezionati) idPreAccoppiatiSelezionati$: Observable<string[]>;
+    idPreAccoppiatiSelezionati: string[];
 
     Composizione = Composizione;
 
@@ -42,8 +46,22 @@ export class FasterComponent implements OnInit, OnDestroy {
         // Prendo i preaccoppiati da visualizzare nella lista
         this.subscription.add(
             this.preAccoppiati$.subscribe((preAcc: BoxPartenza[]) => {
-                this.preAccoppiati = makeCopy(preAcc);
-                // console.log(this.preAccoppiati);
+                this.preAccoppiati = preAcc;
+                console.log('preAccoppiati', this.preAccoppiati);
+            })
+        );
+        // Prendo gli id dei preAccoppiati selezionati
+        this.subscription.add(
+            this.idPreAccoppiatiSelezionati$.subscribe((idPreAccoppiatiSelezionati: string[]) => {
+                this.idPreAccoppiatiSelezionati = idPreAccoppiatiSelezionati;
+                // console.log(this.idPreAccoppiatiSelezionati);
+            })
+        );
+        // Prendo l'id del preAccoppiato selezionato
+        this.subscription.add(
+            this.idPreAccoppiatoSelezionato$.subscribe((idPreAccoppiatoSelezionato: string) => {
+                this.idPreAccoppiatoSelezionato = idPreAccoppiatoSelezionato;
+                // console.log(this.idPreAccoppiatoSelezionato);
             })
         );
     }
@@ -52,7 +70,6 @@ export class FasterComponent implements OnInit, OnDestroy {
         this.subscription.add(this.dismissEvents.subscribe(
             events => this.annullaPartenza(events)
         ));
-        this.deselezionaPreaccoppiati();
         this.store.dispatch(new GetFiltriComposizione());
     }
 
@@ -60,78 +77,53 @@ export class FasterComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    preAccoppiatoSelezionato(preAcc: BoxPartenza) {
-        if (this.preAccoppiati) {
-            this.selezionaPreaccoppiato(preAcc);
-            if (preAcc.mezzoComposizione && preAcc.mezzoComposizione.coordinate) {
-                this.mezzoCoordinate(preAcc.mezzoComposizione.coordinate);
-            }
-        }
-    }
+    // preAccoppiatoSelezionato(preAcc: BoxPartenza) {
+    //     if (this.preAccoppiati) {
+    //         this.selezionaPreaccoppiato(preAcc);
+    //         if (preAcc.mezzoComposizione && preAcc.mezzoComposizione.coordinate) {
+    //             this.mezzoCoordinate(preAcc.mezzoComposizione.coordinate);
+    //         }
+    //     }
+    // }
 
-    preAccoppiatoDeselezionato(preAcc: BoxPartenza) {
-        if (this.preAccoppiati) {
-            this.deselezionaPreaccoppiato(preAcc);
-            this.annullaPartenza(true);
-            this.centraMappa.emit();
-        }
-    }
+    // preAccoppiatoDeselezionato(preAcc: BoxPartenza) {
+    //     if (this.preAccoppiati) {
+    //         this.deselezionaPreaccoppiato(preAcc);
+    //         this.annullaPartenza(true);
+    //         this.centraMappa.emit();
+    //     }
+    // }
 
     selezionaPreaccoppiato(preAcc: BoxPartenza) {
-        if (this.preAccoppiati) {
-            // preAcc.selezionato = true;
-            this.idPreAccoppiatiSelezionati.push(preAcc.id);
-            this.preAccoppiatiSelezionati.push(preAcc);
-        }
+        this.store.dispatch(new SelectPreAccoppiatoComposizione(preAcc));
     }
 
     deselezionaPreaccoppiato(preAcc: BoxPartenza) {
-        if (this.preAccoppiati) {
-            this.idPreAccoppiatiSelezionati.forEach((pA, index) => {
-                if (preAcc.id === pA) {
-                    // preAcc.selezionato = false;
-                    this.idPreAccoppiatiSelezionati.splice(index, 1);
-                }
-            });
-            this.preAccoppiatiSelezionati.forEach((pA, index) => {
-                if (preAcc === pA) {
-                    // preAcc.selezionato = false;
-                    this.preAccoppiatiSelezionati.splice(index, 1);
-                }
-            });
-        }
+        this.store.dispatch(new UnselectPreAccoppiatoComposizione(preAcc));
     }
 
-    deselezionaPreaccoppiati() {
-        if (this.preAccoppiati) {
-            this.preAccoppiati.forEach(pA => {
-                // pA.selezionato = false;
-            });
-        }
-    }
-
-    mezzoCoordinate(event: Coordinate): void {
-        if (this.richiesta) {
-            if (event && this.richiesta.localita.coordinate) {
-                const direction: DirectionInterface = {
-                    origin: {
-                        lat: event.latitudine,
-                        lng: event.longitudine
-                    },
-                    destination: {
-                        lat: this.richiesta.localita.coordinate.latitudine,
-                        lng: this.richiesta.localita.coordinate.longitudine
-                    },
-                    isVisible: true
-                };
-
-                this.sendDirection.emit(direction);
-            } else {
-                console.error('coordinate mezzo / coordinate richiesta non presenti');
-                this.clearDirection.emit();
-            }
-        }
-    }
+    // mezzoCoordinate(event: Coordinate): void {
+    //     if (this.richiesta) {
+    //         if (event && this.richiesta.localita.coordinate) {
+    //             const direction: DirectionInterface = {
+    //                 origin: {
+    //                     lat: event.latitudine,
+    //                     lng: event.longitudine
+    //                 },
+    //                 destination: {
+    //                     lat: this.richiesta.localita.coordinate.latitudine,
+    //                     lng: this.richiesta.localita.coordinate.longitudine
+    //                 },
+    //                 isVisible: true
+    //             };
+    //
+    //             this.sendDirection.emit(direction);
+    //         } else {
+    //             console.error('coordinate mezzo / coordinate richiesta non presenti');
+    //             this.clearDirection.emit();
+    //         }
+    //     }
+    // }
 
     annullaPartenza(event: boolean): void {
         if (event) {
@@ -140,6 +132,5 @@ export class FasterComponent implements OnInit, OnDestroy {
     }
 
     confermaPartenze(): void {
-        //
     }
 }

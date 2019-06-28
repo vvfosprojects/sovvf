@@ -1,13 +1,13 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
-import { GetListeCoposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
+import { GetListeCoposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { MezziComposizioneState } from './mezzi-composizione.state';
 import { SquadreComposizioneState } from './squadre-composizione.state';
 import { ComposizionePartenzaState } from './composizione-partenza-state';
-import { SetListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import { SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import { ClearSelectedMezziComposizione, SetListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
+import { ClearSelectedSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: Array<any>;
@@ -47,25 +47,27 @@ export class ComposizioneAvanzataState {
             filtri['CodiceStatoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceStatoMezzo.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
             filtri['CodiceTipoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
         }
-        filtri['idRichiesta'] = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
+        // filtri['idRichiesta'] = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
+        filtri['idRichiesta'] = '1';
 
         // imposto il codice del mezzo selezionato se presente
         const codiceMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoComposizioneSelezionato);
+
         if (action.onlyMezziComposizione && codiceMezzo && codiceMezzo.length > 0) {
             filtri['CodiceMezzo'] = [codiceMezzo];
         } else {
             filtri['CodiceMezzo'] = [''];
         }
-
         // imposto il codice delle squadre selezionate se presenti
         const codiceSquadre = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
+
         if (action.onlySquadreComposizione && codiceSquadre && codiceSquadre.length > 0) {
             filtri['CodiceSquadra'] = codiceSquadre;
         } else {
             filtri['CodiceSquadra'] = [''];
         }
 
-        // console.log(filtri);
+        console.log(filtri);
         this.squadreService.getListeComposizioneAvanzata(filtri).subscribe((listeCompAvanzata: any) => {
             if (listeCompAvanzata) {
                 if (listeCompAvanzata.composizioneMezzi) {
@@ -78,5 +80,11 @@ export class ComposizioneAvanzataState {
             }
             // console.log('Composizione Partenza Avanzata Service');
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+    }
+
+    @Action(UnselectMezziAndSquadreComposizioneAvanzata)
+    unselectMezziAndSquadreComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>) {
+        dispatch(new ClearSelectedMezziComposizione());
+        dispatch(new ClearSelectedSquadreComposizione());
     }
 }

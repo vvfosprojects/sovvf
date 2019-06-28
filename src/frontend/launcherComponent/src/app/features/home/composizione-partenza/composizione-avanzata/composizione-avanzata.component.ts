@@ -111,7 +111,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.subscription.add(
             this.mezziComposizione$.subscribe((mezziComp: MezzoComposizione[]) => {
                 this.mezziComposizione = mezziComp;
-                // console.log(this.mezziComposizione);
+                console.log('mezziComposizione', this.mezziComposizione);
             })
         );
         // Prendo il mezzo selezionato

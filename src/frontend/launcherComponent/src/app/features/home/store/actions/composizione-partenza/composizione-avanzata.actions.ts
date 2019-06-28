@@ -6,3 +6,8 @@ export class GetListeCoposizioneAvanzata {
                 public onlyMezziComposizione?: boolean) {
     }
 }
+
+export class UnselectMezziAndSquadreComposizioneAvanzata {
+    static readonly type = '[ComposizioneAvanzata] Unselect Mezzi and Squadre Composizione Avanzata';
+}
+

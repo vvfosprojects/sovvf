@@ -53,6 +53,10 @@ export class BoxNuovaPartenzaComponent {
                 'bg-light border-success card-shadow-success': this.itemSelezionato
             };
 
+            if (this.partenza.mezzoComposizione.istanteScadenzaSelezione) {
+                returnClass += ' diagonal-stripes bg-lightgrey';
+            }
+
         } else if (this.compPartenzaMode === Composizione.Avanzata) {
             /* Se è attiva la modalità avanzata */
             if (this.itemSelezionato) {
@@ -89,7 +93,7 @@ export class BoxNuovaPartenzaComponent {
         if (this.richiesta && this.partenza.mezzoComposizione) {
             const distaccamentoMezzo = this.partenza.mezzoComposizione.mezzo.distaccamento.descrizione;
 
-            if (this.richiesta.competenze) {
+            if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
                 if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
                     result = 'badge-primary';
                 } else if (this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {

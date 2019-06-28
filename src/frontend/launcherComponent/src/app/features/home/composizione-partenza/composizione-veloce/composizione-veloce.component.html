@@ -2,18 +2,18 @@
     <div class="card-header">
         <i class="fa fa-truck mr-2"></i><span class="h6">Pre-Accoppiati</span>
     </div>
-    <div *ngIf="preAccoppiati?.length > 0" class="row p-2 scroll-y">
+    <div *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="row p-2 scroll-y">
         <div class="col-3" *ngFor="let preAcc of preAccoppiati">
             <app-box-nuova-partenza [partenza]="preAcc"
                                     [richiesta]="richiesta"
                                     [itemSelezionato]="idPreAccoppiatiSelezionati.indexOf(preAcc.id) > -1"
                                     [compPartenzaMode]="Composizione.Veloce"
-                                    (selezionato)="preAccoppiatoSelezionato($event)"
-                                    (deselezionato)="preAccoppiatoDeselezionato($event)"></app-box-nuova-partenza>
+                                    (selezionato)="selezionaPreaccoppiato($event)"
+                                    (deselezionato)="deselezionaPreaccoppiato($event)"></app-box-nuova-partenza>
         </div>
         <div class="col-12 text-right">
-            <app-composizione-buttons (confirmPartenza)="confermaPartenze()" [boxPartenzaLenght]="preAccoppiatiSelezionati.length"
-                                      [disableConfirmPartenza]="preAccoppiatiSelezionati.length <= 0"></app-composizione-buttons>
+            <app-composizione-buttons (confirmPartenza)="confermaPartenze()" [boxPartenzaLenght]="idPreAccoppiatiSelezionati?.length"
+                                      [disableConfirmPartenza]="idPreAccoppiatiSelezionati?.length <= 0"></app-composizione-buttons>
         </div>
     </div>
     <div class="row">

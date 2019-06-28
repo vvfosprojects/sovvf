@@ -7,6 +7,8 @@ import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.ac
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { RequestRemoveBookMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { Store } from '@ngxs/store';
+import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza-state';
+import { Composizione } from '../../../../../shared/enum/composizione.enum';
 
 @Component({
     selector: 'app-prenotazione-progress-bar',
@@ -79,7 +81,8 @@ export class PrenotazioneProgressBarComponent implements OnInit, OnChanges, OnDe
                 }
 
                 if (this.currentTimeout <= 0) {
-                    if (!this.graphic) {
+                    const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
+                    if (!this.graphic || compMode === Composizione.Veloce) {
                         this.store.dispatch(new RequestRemoveBookMezzoComposizione(this.mezzoComp));
                     }
                     this.scadenza = null;

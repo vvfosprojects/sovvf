@@ -18,7 +18,7 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
 import { ClearListaComposizioneVeloce, GetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import { GetListeCoposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
+import { GetListeCoposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
@@ -231,6 +231,7 @@ export class ComposizionePartenzaState {
         if (state.composizioneMode === Composizione.Avanzata) {
             dispatch(new ClearListaMezziComposizione());
             dispatch(new ClearListaSquadreComposizione());
+            dispatch(new UnselectMezziAndSquadreComposizioneAvanzata());
             patchState({
                 composizioneMode: Composizione.Veloce
             });

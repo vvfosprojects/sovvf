@@ -15,7 +15,8 @@ import { ToastrType } from '../../shared/enum/toastr';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
 import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import {
-    AddBookMezzoComposizione, RemoveBookingMezzoComposizione,
+    AddBookMezzoComposizione,
+    RemoveBookingMezzoComposizione,
     RemoveBookMezzoComposizione,
     SetListaMezziComposizione,
     UpdateMezzoComposizione
@@ -24,6 +25,9 @@ import { SetListaSquadreComposizione } from '../../features/home/store/actions/c
 import { TurnOffComposizione } from '../../features/home/store/actions/view/view.actions';
 import { RemoveBoxPartenzaByMezzoId } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
+import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza-state';
+import { Composizione } from '../../shared/enum/composizione.enum';
+import { UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -179,9 +183,14 @@ export class SignalRService {
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyAddPrenotazioneMezzo', (data: any) => {
-            this.store.dispatch(new AddBookMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
-            this.store.dispatch(new RemoveBookingMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
-            this.store.dispatch(new UpdateMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
+            const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
+            if (compMode === Composizione.Avanzata) {
+                this.store.dispatch(new AddBookMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
+                this.store.dispatch(new RemoveBookingMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
+                this.store.dispatch(new UpdateMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
+            } else if (compMode === Composizione.Veloce) {
+                this.store.dispatch(new UpdateMezzoPreAccoppiatoComposizione(data.mezzoPrenotato.mezzoComposizione));
+            }
             const mezzoComp = data.mezzoPrenotato.mezzoComposizione;
             let dataScadenzaSelezione = new Date(mezzoComp.istanteScadenzaSelezione).getHours() + ':';
             dataScadenzaSelezione += new Date(mezzoComp.istanteScadenzaSelezione).getMinutes() + ':';
@@ -197,14 +206,24 @@ export class SignalRService {
         });
 
         this.hubNotification.on('NotifyRemovePrenotazioneMezzo', (data: any) => {
-            this.store.dispatch(new RemoveBookMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
-            this.store.dispatch(new UpdateMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
-            this.store.dispatch(new RemoveBoxPartenzaByMezzoId(data.mezzoPrenotato.mezzoComposizione.mezzo.codice));
+            const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
+            if (compMode === Composizione.Avanzata) {
+                this.store.dispatch(new RemoveBookMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
+                this.store.dispatch(new UpdateMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
+                this.store.dispatch(new RemoveBoxPartenzaByMezzoId(data.mezzoPrenotato.mezzoComposizione.mezzo.codice));
+            } else if (compMode === Composizione.Veloce) {
+                this.store.dispatch(new UpdateMezzoPreAccoppiatoComposizione(data.mezzoPrenotato.mezzoComposizione));
+            }
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Prenotazione Scaduta', 'La prenotazione del mezzo ' + data.mezzoPrenotato.mezzoComposizione.mezzo.codice + ' è scaduta.', 5));
             console.log('Mezzo remove prenotato signalr', data.mezzoPrenotato.mezzoComposizione);
         });
         this.hubNotification.on('NotifyResetPrenotazioneMezzo', (data: any) => {
-            this.store.dispatch(new UpdateMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
+            const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
+            if (compMode === Composizione.Avanzata) {
+                this.store.dispatch(new UpdateMezzoComposizione(data.mezzoPrenotato.mezzoComposizione));
+            } else if (compMode === Composizione.Veloce) {
+                this.store.dispatch(new UpdateMezzoPreAccoppiatoComposizione(data.mezzoPrenotato.mezzoComposizione));
+            }
             console.log('[SignalR] Reset Prenotazione Mezzo', data.mezzoPrenotato.mezzoComposizione);
         });
         /**
