@@ -20,7 +20,7 @@ export class ClearListaComposizioneVeloce {
 }
 
 export class SelectPreAccoppiatoComposizione {
-    static readonly type = '[PreAccoppiati] Select PreAccoppiato Composizion';
+    static readonly type = '[PreAccoppiati] Select PreAccoppiato Composizione';
 
     constructor(public preAcc: BoxPartenza) {
     }

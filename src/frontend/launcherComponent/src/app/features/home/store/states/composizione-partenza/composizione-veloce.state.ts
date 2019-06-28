@@ -16,12 +16,7 @@ import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.ac
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { ComposizioneAvanzataStateModel } from './composizione-avanzata.state';
-import { ClearSelectedMezziComposizione, SelectMezzoComposizione, UnselectMezzoComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import { ClearSelectedSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
-import { MezziComposizioneStateStateModel } from './mezzi-composizione.state';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
-import produce from 'immer';
 import { makeCopy } from '../../../../../shared/helper/function';
 
 export interface PreAccoppiatiStateModel {
@@ -87,9 +82,11 @@ export class ComposizioneVeloceState {
 
     @Action(SetListaComposizioneVeloce)
     setPreAccoppiati({ patchState }: StateContext<PreAccoppiatiStateModel>, action: SetListaComposizioneVeloce) {
-        patchState({
-            preAccoppiati: action.boxPartenza
-        });
+        if (action.boxPartenza) {
+            patchState({
+                preAccoppiati: action.boxPartenza
+            });
+        }
     }
 
     @Action(ClearListaComposizioneVeloce)
@@ -101,13 +98,18 @@ export class ComposizioneVeloceState {
 
 
     @Action(SelectPreAccoppiatoComposizione)
-    selectPreAccoppiatoComposizione({ setState, getState, patchState, }: StateContext<PreAccoppiatiStateModel>, action: SelectPreAccoppiatoComposizione) {
-        setState(
-            patch({
-                idPreAccoppiatiSelezionati: insertItem(action.preAcc.id),
-                idPreAccoppiatoSelezionato: action.preAcc.id
-            })
-        );
+    selectPreAccoppiatoComposizione({ setState, getState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: SelectPreAccoppiatoComposizione) {
+        // controlle se il mezzo che è all'interno del preAccoppiato non è prenotato
+        if (!action.preAcc.mezzoComposizione.istanteScadenzaSelezione) {
+            setState(
+                patch({
+                    idPreAccoppiatiSelezionati: insertItem(action.preAcc.id),
+                    idPreAccoppiatoSelezionato: action.preAcc.id
+                })
+            );
+        } else {
+            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile selezionare il Pre-Accoppiato', 'Il mezzo è già presente in un\'altra partenza'));
+        }
         // console.log(action.preAcc);
     }
 

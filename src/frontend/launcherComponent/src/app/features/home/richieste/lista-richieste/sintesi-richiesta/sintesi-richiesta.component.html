@@ -30,7 +30,7 @@
                         <div class="col-6">
                             <!-- descrizione intervento -->
                             <div class="h6 mb-1 nowrap default-cursor">
-                                <div *ngIf="richiesta.tipologie.length === 1; then thenBlock else elseBlock"></div>
+                                <div *ngIf="richiesta?.tipologie && richiesta?.tipologie.length === 1; then thenBlock else elseBlock"></div>
                                 <ng-template #thenBlock>
                                     <span>
                                         <i class="fa-fw mr-1 {{ methods.coloraIcona(richiesta.tipologie[0].icona) }}"
@@ -55,7 +55,7 @@
                                         t.descrizione }}
                                     </div>
                                 </ng-template>
-                                <span><a *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0"
+                                <span><a *ngIf="!!richiesta.tipologie && richiesta?.tipologie.length > 0"
                                          class="h6 font-weight-bold descrizione-int"
                                          ngbTooltip="{{ richiesta.descrizione }}"
                                          [disableTooltip]="richiesta.descrizione.length <= 45">{{
