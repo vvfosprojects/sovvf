@@ -30,6 +30,7 @@ export const environment = {
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
         updateRichiesta: '/api/Chiamata/UpdateIntervento',
         eventiRichieste: '/api/ListaEventi',
+        attivitaUtente: '/api/AttivitaUtente',
         turno: '',  // Todo: controller mancante
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',

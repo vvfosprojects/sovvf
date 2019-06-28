@@ -5,7 +5,7 @@ import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.ac
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { MezziComposizioneState } from './mezzi-composizione.state';
 import { SquadreComposizioneState } from './squadre-composizione.state';
-import { ComposizionePartenzaState } from './composizione-partenza-state';
+import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { ClearSelectedMezziComposizione, SetListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearSelectedSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 

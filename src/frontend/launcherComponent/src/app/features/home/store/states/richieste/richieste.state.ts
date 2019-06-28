@@ -16,7 +16,7 @@ import { RichiestaSelezionataState } from './richiesta-selezionata.state';
 import { RichiestaModificaState } from './richiesta-modifica.state';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
-import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza-state';
+import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { AddBoxPartenza, ClearBoxPartenze } from '../../actions/composizione-partenza/box-partenza.actions';
 

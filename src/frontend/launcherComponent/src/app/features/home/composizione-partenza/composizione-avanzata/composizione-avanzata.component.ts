@@ -14,7 +14,7 @@ import { ToastrType } from '../../../../shared/enum/toastr';
 // Ngxs
 import { Select, Store } from '@ngxs/store';
 import { makeCopy } from '../../../../shared/helper/function';
-import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza-state';
+import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
 import { MezziComposizioneState } from '../../store/states/composizione-partenza/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../store/states/composizione-partenza/squadre-composizione.state';
 import {

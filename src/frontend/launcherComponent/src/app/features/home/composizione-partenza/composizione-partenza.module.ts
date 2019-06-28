@@ -33,7 +33,7 @@ import { environment } from '../../../../environments/environment';
 import { FilterbarService } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
 import { FilterbarServiceFake } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service.fake';
 import { ComposizioneAvanzataState } from '../store/states/composizione-partenza/composizione-avanzata.state';
-import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza-state';
+import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
 import { MezziComposizioneState } from '../store/states/composizione-partenza/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../store/states/composizione-partenza/squadre-composizione.state';
 import { BoxPartenzaState } from '../store/states/composizione-partenza/box-partenza.state';

@@ -19,12 +19,11 @@ import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.s
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
 import { ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
-import { RichiestaComposizione } from '../store/actions/composizione-partenza/richiesta-composizione.actions';
 import { ClearMarkerRichiestaHover, ClearMarkerRichiestaSelezionato, SetMarkerRichiestaHover, SetMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
 import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
-import { ModificaRichiestaComponent } from './modifica-richiesta/modifica-richiesta.component';
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
 import { SetRichiestaModifica } from '../store/actions/richieste/richiesta-modifica.actions';
+import { RichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 
 @Component({
     selector: 'app-richieste',

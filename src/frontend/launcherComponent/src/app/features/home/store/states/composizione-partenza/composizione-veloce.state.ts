@@ -14,7 +14,7 @@ import {
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import { ComposizionePartenzaState } from './composizione-partenza-state';
+import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { ComposizioneAvanzataStateModel } from './composizione-avanzata.state';
 import { ClearSelectedMezziComposizione, SelectMezzoComposizione, UnselectMezzoComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearSelectedSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';

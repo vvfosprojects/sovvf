@@ -4,16 +4,15 @@ import {
     AddFiltroSelezionatoComposizione, ConfirmPartenze,
     GetFiltriComposizione,
     RemoveFiltriSelezionatiComposizione,
-    RemoveFiltroSelezionatoComposizione, SetComposizioneMode,
-    SetFiltriComposizione,
+    RemoveFiltroSelezionatoComposizione, RichiestaComposizione, SetComposizioneMode,
+    SetFiltriComposizione, TerminaComposizione,
     ToggleComposizioneMode,
     UpdateListe, UpdateRichiestaComposizione
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import { ComposizionePartenzaStateModel } from './composizione-partenza-state';
+import { ComposizionePartenzaStateModel } from './composizione-partenza.state';
 import { FilterbarService } from '../../../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
-import { RichiestaComposizione, TerminaComposizione } from '../../actions/composizione-partenza/richiesta-composizione.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
 import { ClearListaComposizioneVeloce, GetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
