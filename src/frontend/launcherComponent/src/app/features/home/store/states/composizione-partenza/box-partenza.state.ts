@@ -187,8 +187,10 @@ export class BoxPartenzaState {
                 dispatch(new SelectBoxPartenza(action.idBoxPartenza));
             }
         } else {
+            // se il box partenza attualmente selezionato non è valido lo elimino prima di selezionare il box voluto
+            dispatch(new RemoveBoxPartenza(state.boxPartenzaList[state.boxPartenzaList.length - 1]));
             // se il box partenza attualmente selezionato non è valido mostro un messaggio di errore
-            dispatch(new ShowToastr(ToastrType.Error, 'Errore Aggiungi Partenza', 'La partenza attuale non è valida, impossibile selezionare una nuova partenza.', 5));
+            // dispatch(new ShowToastr(ToastrType.Error, 'Errore Selezione Partenza', 'La partenza attuale non è valida, impossibile selezionare una nuova partenza.', 5));
         }
     }
 
