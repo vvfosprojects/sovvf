@@ -181,13 +181,13 @@ namespace SO115App.FakePersistenceJSon.Classi
                 }
 
                 var elencoMezziCoinvolti = this.MezziCoinvolti;
-                if (!elencoMezziCoinvolti.Any())
+                if (elencoMezziCoinvolti != null && !elencoMezziCoinvolti.Any())
                 {
                     return new InAttesa();
                 }
                 else
                 {
-                    if (elencoMezziCoinvolti.Values.Any(e => e.AssegnatoARichiesta))
+                    if (elencoMezziCoinvolti != null  && elencoMezziCoinvolti.Values.Any(e => e.AssegnatoARichiesta))
                     {
                         return new Assegnata();
                     }
