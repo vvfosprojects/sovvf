@@ -20,16 +20,32 @@
 using System;
 using System.Collections.Generic;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.ListaEventi;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
 
 namespace SO115App.Models.Classi.ListaEventi
 {
     public class RichiesteAssistenza
     {
+        /// <summary>
+        ///   Contiene la lista degli eventi considerati di interesse per la richiesta.
+        /// </summary>
+        private List<Evento> eventi;
+
+        public RichiesteAssistenza()
+        {
+            this.eventi = new List<Evento>();
+        }
+
         public string Codice { get; set; }
         public object CodiceUnitaOperativaCompetente { get; set; }
         public object CodiciUnitaOperativeAllertate { get; set; }
-        public List<Eventi> Eventi { get; set; }
+
+        public List<Evento> Eventi
+        {
+            get { return this.eventi; }
+            set { }
+        }
+
         public object Geolocalizzazione { get; set; }
         public List<Telefonate> Telefonate { get; set; }
         public Operatore Operatore { get; set; }

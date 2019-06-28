@@ -48,15 +48,11 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 
             ListaSintesiRichieste = JsonConvert.DeserializeObject<List<SintesiRichieste>>(json);
 
-            int id = 1;
-
             if (ListaSintesiRichieste != null)
             {
                 foreach (SintesiRichieste sintesi in ListaSintesiRichieste)
                 {
-                    sintesi.Id = id.ToString();
                     sintesi.Stato = MapStatoRichiesta(sintesi);
-                    id++;
                 }
 
                 ListaSintesiRichieste = ListaSintesiRichieste.OrderByDescending(x => x.IstanteRicezioneRichiesta).OrderBy(x => x.Stato).ToList();

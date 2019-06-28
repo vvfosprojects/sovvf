@@ -18,7 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
-using SO115App.API.Models.Classi.ListaEventi;
+using SO115App.Models.Servizi.CustomMapper;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 {
@@ -30,7 +30,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
         /// <summary>
         ///   La sintesi delle richieste di assistenza
         /// </summary>
-        public List<EventiMapper> Eventi
+        public List<MapperEventoSuEventoGui> Eventi
         { get; set; }
     }
 }

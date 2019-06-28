@@ -21,8 +21,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using SO115App.API.Models.Classi.ListaEventi;
+using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi;
+using SO115App.FakePersistenceJSon.Classi;
+using SO115App.FakePersistenceJSon.Utility;
 using SO115App.Models.Classi.ListaEventi;
 using SO115App.Models.Servizi.Infrastruttura.GetListaEventi;
 
@@ -30,9 +33,9 @@ namespace SO115App.FakePersistenceJSon.ListaEventi
 {
     public class GetListaEventi : IGetListaEventi
     {
-        public List<Eventi> Get(ListaEventiQuery query)
+        public List<Evento> Get(ListaEventiQuery query)
         {
-            List<Eventi> eventi = new List<Eventi>();
+            List<Evento> eventi = new List<Evento>();
             string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
             using (StreamReader r = new StreamReader(filepath))
@@ -40,9 +43,17 @@ namespace SO115App.FakePersistenceJSon.ListaEventi
                 json = r.ReadToEnd();
             }
 
-            List<RichiesteAssistenza> richieste = JsonConvert.DeserializeObject<List<RichiesteAssistenza>>(json);
-            richieste = richieste.Where(x => x.Id == query.Id).ToList();
-            eventi = richieste.Select(x => x.Eventi).FirstOrDefault();
+            List<RichiestaAssistenza> ListaRichieste = new List<RichiestaAssistenza>();
+            List<RichiestaAssistenzaDTO> richieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
+            var richiestaAss = new RichiestaAssistenza();
+
+            foreach (RichiestaAssistenzaDTO richiesta in richieste)
+            {
+                if (richiesta.Id == query.Id)
+                    richiestaAss = MapperDTO.MapRichiestaDTOtoRichiesta(richiesta);
+            }
+
+            eventi = richiestaAss.Eventi.ToList();
 
             return eventi;
         }

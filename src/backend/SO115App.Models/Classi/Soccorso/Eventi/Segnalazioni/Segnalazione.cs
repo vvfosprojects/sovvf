@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Newtonsoft.Json;
 using System;
 
 namespace SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni
@@ -48,6 +49,12 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni
                 throw new ArgumentException("Cannot be null or whitespace", nameof(codice));
             }
 
+            this.Codice = codice;
+        }
+
+        [JsonConstructor]
+        protected Segnalazione(string codice, DateTime istante, string codiceFonte) : base(istante, codiceFonte, codice)
+        {
             this.Codice = codice;
         }
 

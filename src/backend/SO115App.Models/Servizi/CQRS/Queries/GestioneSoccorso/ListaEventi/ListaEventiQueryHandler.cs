@@ -17,9 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using CQRS.Queries;
 using SO115App.API.Models.Classi.ListaEventi;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GetListaEventi;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
@@ -68,16 +73,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
         /// <returns>Il DTO di uscita della query</returns>
         public ListaEventiResult Handle(ListaEventiQuery query)
         {
-            List<Eventi> eventi = _iEventi.Get(query);
-            List<EventiMapper> eventiMapper = new List<EventiMapper>();
+            List<Evento> eventi = _iEventi.Get(query);
+            List<MapperEventoSuEventoGui> eventiMapper = new List<MapperEventoSuEventoGui>();
             foreach (var evento in eventi)
             {
-                EventiMapper eventoMapper = new EventiMapper
+                MapperEventoSuEventoGui eventoMapper = new MapperEventoSuEventoGui
                 {
-                    NomeClasseEvento = evento.Esito ?? "",
-                    IstanteEvento = evento.Istante != null ? evento.Istante.ToString() : "",
+                    NomeClasseEvento = MapEvento(evento),
+                    IstanteEvento = evento.Istante,
                     Targa = "",
-                    Note = evento.NotePubbliche != null ? evento.NotePubbliche.ToString() : "",
+                    Note = "",
                     HTMLLinkElement = ""
                 };
                 eventiMapper.Add(eventoMapper);
@@ -86,6 +91,38 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
             {
                 Eventi = eventiMapper
             };
+        }
+
+        private string MapEvento(Evento evento)
+        {
+            string RisEvento = "Evento Generico";
+
+            if (evento is Telefonata)
+            {
+                RisEvento = "Telefonata";
+            }
+
+            if (evento is InizioPresaInCarico)
+            {
+                RisEvento = "Presa in carico";
+            }
+
+            if (evento is ComposizionePartenze)
+            {
+                RisEvento = "Composizione Partenza";
+            }
+
+            if (evento is ChiusuraRichiesta)
+            {
+                RisEvento = "Chiusura Partenza";
+            }
+
+            if (evento is RiaperturaRichiesta)
+            {
+                RisEvento = "Riapertura Partenza";
+            }
+
+            return RisEvento;
         }
     }
 }

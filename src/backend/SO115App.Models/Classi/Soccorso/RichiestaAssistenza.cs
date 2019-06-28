@@ -109,7 +109,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             {
                 new RiaperturaRichiesta(this, DateTime.UtcNow, id);
             }
-            else if (stato.Equals("Chiamata") && !(statoRichiesta is Assegnata))
+            else if (stato.Equals("Assegnata") && !(statoRichiesta is Assegnata))
             {
                 new AssegnataRichiesta(this, DateTime.UtcNow, id);
             }
