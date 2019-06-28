@@ -15,7 +15,7 @@ import {
 import * as moment from 'moment';
 import { makeCopy } from '../../../shared/helper/function';
 import { OFFSET_SYNC_TIME } from '../../settings/referral-time';
-import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza-state';
+import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { ClearBoxPartenze, RemoveBoxPartenzaByMezzoId } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
 import { UpdateRichiesta } from '../../../features/home/store/actions/richieste/richieste.actions';

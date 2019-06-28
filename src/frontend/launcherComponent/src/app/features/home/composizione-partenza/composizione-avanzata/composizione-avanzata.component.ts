@@ -14,7 +14,7 @@ import { ToastrType } from '../../../../shared/enum/toastr';
 // Ngxs
 import { Select, Store } from '@ngxs/store';
 import { makeCopy } from '../../../../shared/helper/function';
-import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza-state';
+import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
 import { MezziComposizioneState } from '../../store/states/composizione-partenza/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../store/states/composizione-partenza/squadre-composizione.state';
 import {
@@ -215,10 +215,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
-        if (this.boxPartenzaList.length <= 0) {
-            this.store.dispatch(new AddBoxPartenza());
-        }
         if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) === -1 && this.idMezziInPrenotazione.indexOf(mezzoComposizione.id) === -1) {
+            if (this.boxPartenzaList.length <= 0) {
+                this.store.dispatch(new AddBoxPartenza());
+            }
             this.store.dispatch(new SelectMezzoComposizione(mezzoComposizione));
             const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
             // TODO: testare

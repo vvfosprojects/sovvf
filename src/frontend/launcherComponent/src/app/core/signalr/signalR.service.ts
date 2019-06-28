@@ -25,7 +25,7 @@ import { SetListaSquadreComposizione } from '../../features/home/store/actions/c
 import { TurnOffComposizione } from '../../features/home/store/actions/view/view.actions';
 import { RemoveBoxPartenzaByMezzoId } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
-import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza-state';
+import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
 import { UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 
@@ -101,7 +101,6 @@ export class SignalRService {
         this.hubNotification.on('ModifyAndNotifySuccess', (data: any) => {
             console.log('ModifyAndNotifySuccess', data.chiamata);
             this.store.dispatch(new UpdateRichiesta(data.chiamata));
-            this.store.dispatch(new TurnOffComposizione());
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3));
         });
 

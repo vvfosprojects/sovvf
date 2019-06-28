@@ -4,16 +4,15 @@ import {
     AddFiltroSelezionatoComposizione, ConfirmPartenze,
     GetFiltriComposizione,
     RemoveFiltriSelezionatiComposizione,
-    RemoveFiltroSelezionatoComposizione, SetComposizioneMode,
-    SetFiltriComposizione,
+    RemoveFiltroSelezionatoComposizione, RichiestaComposizione, SetComposizioneMode,
+    SetFiltriComposizione, TerminaComposizione,
     ToggleComposizioneMode,
     UpdateListe, UpdateRichiestaComposizione
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import { ComposizionePartenzaStateModel } from './composizione-partenza-state';
+import { ComposizionePartenzaStateModel } from './composizione-partenza.state';
 import { FilterbarService } from '../../../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
-import { RichiestaComposizione, TerminaComposizione } from '../../actions/composizione-partenza/richiesta-composizione.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
 import { ClearListaComposizioneVeloce, GetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
@@ -22,6 +21,7 @@ import { GetListeCoposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzat
 import { ClearListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
+import { TurnOffComposizione } from '../../actions/view/view.actions';
 
 export interface ComposizionePartenzaStateModel {
     filtri: any;
@@ -258,10 +258,11 @@ export class ComposizionePartenzaState {
     }
 
     @Action(ConfirmPartenze)
-    confirmPartenze({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze) {
-        console.log('Request confirm partenze', action.partenze);
+    confirmPartenze({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze) {
+        // console.log('Request confirm partenze', action.partenze);
         this.compPartenzaSevice.confermaPartenze(action.partenze).subscribe(() => {
-            console.log('Richiesta aggiornata con le partenze', action.partenze);
+            // console.log('Richiesta aggiornata con le partenze', action.partenze);
+            dispatch(new TurnOffComposizione());
         });
     }
 

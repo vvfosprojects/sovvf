@@ -7,13 +7,12 @@ import { ChangeView, SaveView, SwitchComposizione, ToggleChiamata, ToggleComposi
 import { BackupViewComponentState } from './save-view.state';
 import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../../../../shared/interface/view.interface';
 import { activeChiamata, activeComposizione, activeModifica, colorButton, switchComposizione, turnOffComposizione, turnOffModifica, updateView, viewStateMaps } from '../../helper/view-state-function';
-import { TerminaComposizione } from '../../actions/composizione-partenza/richiesta-composizione.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ResetChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
-import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza-state';
-import { ToggleComposizioneMode } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
+import { TerminaComposizione, ToggleComposizioneMode } from '../../actions/composizione-partenza/composizione-partenza.actions';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {

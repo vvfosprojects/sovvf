@@ -7,7 +7,7 @@ import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.ac
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { RequestRemoveBookMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { Store } from '@ngxs/store';
-import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza-state';
+import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza.state';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 
 @Component({

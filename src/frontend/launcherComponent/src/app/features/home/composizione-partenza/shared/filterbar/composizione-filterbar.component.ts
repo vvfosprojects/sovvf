@@ -5,7 +5,7 @@ import {
     RemoveFiltriSelezionatiComposizione,
     RemoveFiltroSelezionatoComposizione, UpdateListe
 } from '../../../store/actions/composizione-partenza/composizione-partenza.actions';
-import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza-state';
+import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza.state';
 import { MezziComposizioneState } from '../../../store/states/composizione-partenza/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../../store/states/composizione-partenza/squadre-composizione.state';
 import { HelperComposizione } from '../helper/_helper-composizione';
