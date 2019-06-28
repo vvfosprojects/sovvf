@@ -18,12 +18,15 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using CQRS.Queries;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,10 +37,19 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
     public class NotificationConfermaPartenze : INotificationConfermaPartenze
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
+        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _BoxRichiestehandler;
+        private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _BoxMezzihandler;
 
-        public NotificationConfermaPartenze(IHubContext<NotificationHub> NotificationHubContext)
+
+
+        public NotificationConfermaPartenze(IHubContext<NotificationHub> NotificationHubContext, IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> BoxRichiestehandler,
+            IQueryHandler<BoxMezziQuery, BoxMezziResult> BoxMezzihandler)
         {
             _notificationHubContext = NotificationHubContext;
+            _BoxRichiestehandler = BoxRichiestehandler;
+            _BoxMezzihandler = BoxMezzihandler;
+
+
         }
 
         public async Task SendNotification(ConfermaPartenzeCommand conferma)
@@ -79,7 +91,20 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             sintesi.Partenze = partenze;
             sintesi.Stato = DecodifcaStatoRichiesta(richiesta.StatoRichiesta);
             conferma.ConfermaPartenze.Chiamata = sintesi;
+
+            var BoxRichiestequery = new BoxRichiesteQuery();
+            var BoxMezziquery = new BoxMezziQuery();
+            BoxInterventi boxInterventi = new BoxInterventi();
+            BoxMezzi boxMezzi = new BoxMezzi();
+            boxInterventi = (BoxInterventi)this._BoxRichiestehandler.Handle(BoxRichiestequery).BoxRichieste;
+            boxMezzi = (BoxMezzi)this._BoxMezzihandler.Handle(BoxMezziquery).BoxMezzi;
+
+
             await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
+            await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+            await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
+
+
         }
 
         private string DecodifcaStatoRichiesta(IStatoRichiesta statoRichiesta)

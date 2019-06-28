@@ -20,21 +20,23 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 using CQRS.Authorization;
+using CQRS.Commands.Authorizers;
 using CQRS.Queries.Authorizers;
+using DomainModel.CQRS.Commands.PreAccoppiati;
 using SO115App.API.Models.Classi.Autenticazione;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati
+namespace DomainModel.CQRS.Commands.PreAccoppiati
 {
-    public class PreAccoppiatiAuthorizationQueryHandlerDecorator : IQueryAuthorizer<PreAccoppiatiQuery, PreAccoppiatiResult>
+    public class PreAccoppiatiAuthorization : ICommandAuthorizer<PreAccoppiatiCommand>
     {
         private readonly IPrincipal currentUser;
 
-        public PreAccoppiatiAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
+        public PreAccoppiatiAuthorization(IPrincipal currentUser)
         {
             this.currentUser = currentUser;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(PreAccoppiatiQuery query)
+        public IEnumerable<AuthorizationResult> Authorize(PreAccoppiatiCommand command)
         {
             string username = this.currentUser.Identity.Name;
 
@@ -46,6 +48,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             }
             else
                 yield return new AuthorizationResult("Utente non autorizzato");
+
         }
     }
 }

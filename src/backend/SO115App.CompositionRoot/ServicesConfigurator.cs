@@ -134,6 +134,9 @@ namespace SO115App.CompositionRoot
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.INotificationConfermaPartenze,
             SO115App.SignalR.Sender.ComposizionePartenza.NotificationConfermaPartenze>();
+            container.Register<
+           SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.INotificationGetPreAccoppiati,
+           SO115App.SignalR.Sender.ComposizionePartenza.NotificationGetPreaccoppiati>();
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,

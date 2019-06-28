@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="PreAccoppiatiResult.cs" company="CNVVF">
+// <copyright file="AddPrenotazioneMezzoAuthorization.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,19 +17,26 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
+using CQRS.Commands.Notifiers;
+using Microsoft.AspNetCore.SignalR;
+using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
+using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati
+namespace DomainModel.CQRS.Commands.PreAccoppiati
 {
-    /// <summary>
-    ///   DTO di output
-    /// </summary>
-    public class PreAccoppiatiResult
+    public class PreAccoppiatiNotification : ICommandNotifier<PreAccoppiatiCommand>
     {
-        /// <summary>
-        ///   Json PreAccoppiati Richieste
-        /// </summary>
-        public List<Classi.Composizione.PreAccoppiati> PreAccoppiati
-        { get; set; }
+        private readonly INotificationGetPreAccoppiati _sender;
+
+        public PreAccoppiatiNotification(INotificationGetPreAccoppiati sender)
+        {
+            _sender = sender;
+        }
+
+        public void Notify(PreAccoppiatiCommand command)
+        {
+            _sender.SendNotification(command);
+        }
     }
 }

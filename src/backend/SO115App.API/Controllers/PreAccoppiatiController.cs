@@ -21,7 +21,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using CQRS.Commands;
 using CQRS.Queries;
+using DomainModel.CQRS.Commands.PreAccoppiati;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -46,7 +48,7 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly IQueryHandler<PreAccoppiatiQuery, PreAccoppiatiResult> _handler;
+        private readonly ICommandHandler<PreAccoppiatiCommand>handler;
 
         private readonly IPrincipal _currentUser;
 
@@ -55,9 +57,9 @@ namespace SO115App.API.Controllers
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
         public PreAccoppiatiController( IPrincipal currentUser,
-            IQueryHandler<PreAccoppiatiQuery, PreAccoppiatiResult> handler)
+            ICommandHandler<PreAccoppiatiCommand> handler)
         {
-            _handler = handler;
+            this.handler = handler;
             _currentUser = currentUser;
         }
 
@@ -69,30 +71,22 @@ namespace SO115App.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
         {
-            var query = new PreAccoppiatiQuery()
+            var codiceSede = Request.Headers["codicesede"];
+            var command = new PreAccoppiatiCommand()
             {
-                Filtro = filtri
+                Filtro = filtri,
+                codiceSede = codiceSede
             };
 
             try
             {
-                 return Ok(this._handler.Handle(query).PreAccoppiati);
+                handler.Handle(command);
+                return Ok();
             }
             catch
             {
                 return BadRequest();
             }
-        }
-
-        [HttpGet("{filtro}")]
-        public PreAccoppiatiResult GetMarkerFromId(FiltriComposizionePartenza filtro)
-        {
-            var query = new PreAccoppiatiQuery()
-            {
-                Filtro = filtro
-            };
-
-            return _handler.Handle(query);
         }
     }
 }

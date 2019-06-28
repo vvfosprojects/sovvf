@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="PreAccoppiatiQuery.cs" company="CNVVF">
+// <copyright file="INotificationAddPrenotazioneMezzo.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,20 +17,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Queries;
-using SO115App.Models.Classi.Composizione;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati
+using DomainModel.CQRS.Commands.ConfermaPartenze;
+using DomainModel.CQRS.Commands.PreAccoppiati;
+using System.Threading.Tasks;
+
+namespace SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza
 {
-    /// <summary>
-    ///   DTO che alimenta il Navbar presente in Home Page
-    /// </summary>
-    public class PreAccoppiatiQuery : IQuery<PreAccoppiatiResult>
+    public interface INotificationGetPreAccoppiati
     {
-        /// <summary>
-        ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
-        /// </summary>
-        /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
-        public FiltriComposizionePartenza Filtro { get; set; }
+        Task SendNotification(PreAccoppiatiCommand command);
     }
 }

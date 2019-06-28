@@ -75,7 +75,7 @@ namespace SO115App.API.Controllers
             {
                 MezzoPrenotato = mezzoPrenotato,
                 codiceSede = codiceSede
-                
+
             };
 
             try

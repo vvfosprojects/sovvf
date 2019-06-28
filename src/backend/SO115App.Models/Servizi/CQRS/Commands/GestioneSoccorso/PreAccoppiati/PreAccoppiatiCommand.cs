@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FiltriComposizionePartenza.cs" company="CNVVF">
+// <copyright file="PreAccoppiatiQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,33 +17,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Composizione;
-using System.Collections.Generic;
+using CQRS.Queries;
+using SO115App.Models.Classi.Composizione;
 
-namespace SO115App.Models.Classi.Composizione
+namespace DomainModel.CQRS.Commands.PreAccoppiati
 {
-    public class FiltriComposizionePartenza
+    /// <summary>
+    ///   DTO che alimenta il Navbar presente in Home Page
+    /// </summary>
+    public class PreAccoppiatiCommand
     {
-        [JsonRequired]
-        public string[] CodiceDistaccamento { get; set; }
+        /// <summary>
+        ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
+        /// </summary>
+        /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
+        public FiltriComposizionePartenza Filtro { get; set; }
 
-        [JsonRequired]
-        public string[] CodiceTipoMezzo { get; set; }
-
-        [JsonRequired]
-        public string[] CodiceStatoMezzo { get; set; }
-
-        [JsonRequired]
-        public string[] CodiceMezzo { get; set; }
-
-        [JsonRequired]
-        public string[] CodiceSquadra { get; set; }
-
-        [JsonRequired]
-        public string IdRichiesta { get; set; }
-
-        public List<PreAccoppiati> preAccoppiati { get; set; }
-
+        public string codiceSede { get; set; }
     }
 }
