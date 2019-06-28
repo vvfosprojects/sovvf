@@ -212,6 +212,7 @@ export class BoxPartenzaState {
                 }
             }
         });
+        dispatch(new GetListeCoposizioneAvanzata());
     }
 
     @Action(AddSquadraBoxPartenza)
