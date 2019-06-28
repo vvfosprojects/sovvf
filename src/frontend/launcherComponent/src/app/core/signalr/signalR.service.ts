@@ -101,7 +101,6 @@ export class SignalRService {
         this.hubNotification.on('ModifyAndNotifySuccess', (data: any) => {
             console.log('ModifyAndNotifySuccess', data.chiamata);
             this.store.dispatch(new UpdateRichiesta(data.chiamata));
-            this.store.dispatch(new TurnOffComposizione());
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3));
         });
 

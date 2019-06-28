@@ -21,6 +21,7 @@ import { GetListeCoposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzat
 import { ClearListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
+import { TurnOffComposizione } from '../../actions/view/view.actions';
 
 export interface ComposizionePartenzaStateModel {
     filtri: any;
@@ -257,10 +258,11 @@ export class ComposizionePartenzaState {
     }
 
     @Action(ConfirmPartenze)
-    confirmPartenze({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze) {
-        console.log('Request confirm partenze', action.partenze);
+    confirmPartenze({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze) {
+        // console.log('Request confirm partenze', action.partenze);
         this.compPartenzaSevice.confermaPartenze(action.partenze).subscribe(() => {
-            console.log('Richiesta aggiornata con le partenze', action.partenze);
+            // console.log('Richiesta aggiornata con le partenze', action.partenze);
+            dispatch(new TurnOffComposizione());
         });
     }
 
