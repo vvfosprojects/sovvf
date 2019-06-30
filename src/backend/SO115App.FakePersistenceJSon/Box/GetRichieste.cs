@@ -48,8 +48,9 @@ namespace SO115App.FakePersistenceJSon.Box
                 if (ListaRichieste != null)
                 {
                     interventi.AnnoCorrente = DateTime.Now.Year;
-                    interventi.Assegnati = ListaRichieste.FindAll(x => x.Aperta && !x.InAttesa && !x.Presidiato).Count;
-                    interventi.Chiamate = ListaRichieste.FindAll(x => x.InAttesa).Count;
+
+                    interventi.Assegnati = ListaRichieste.FindAll(x => x.IstantePrimaAssegnazione.HasValue).FindAll(x => x.IstantePrimaAssegnazione.Value.Year == DateTime.Now.Year).Count;
+                    interventi.Chiamate = ListaRichieste.FindAll(x => x.InAttesa && x.IstantePrimaAssegnazione == null).Count;
                     interventi.NomeTurnoCorrente = "B";
                     interventi.NomeTurnoPrecedente = "A";
                     interventi.Presidiati = ListaRichieste.FindAll(x => x.Presidiato).Count;

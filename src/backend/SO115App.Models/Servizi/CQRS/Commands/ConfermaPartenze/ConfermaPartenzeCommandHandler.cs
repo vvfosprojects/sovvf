@@ -45,12 +45,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IUpdateConfermaPartenze _IUpdateConfermaPartenze;
         private readonly IGetRichiestaById _getRichiestaById;
 
-
         public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze iUpdateConfermaPartenze, IGetRichiestaById GetRichiestaById)
         {
             this._IUpdateConfermaPartenze = iUpdateConfermaPartenze;
             this._getRichiestaById = GetRichiestaById;
-
         }
 
         /// <summary>
@@ -64,18 +62,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             RichiestaAssistenza richiesta = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiesta);
             foreach (Partenza partenza in command.ConfermaPartenze.Partenze)
             {
-                new ComposizionePartenze(richiesta, DateTime.Now, richiesta.Operatore.Id, false)
+                new ComposizionePartenze(richiesta, DateTime.UtcNow, richiesta.Operatore.Id, false)
                 {
                     Partenza = partenza
                 };
             }
-            richiesta.SincronizzaStatoRichiesta("", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
+            richiesta.SincronizzaStatoRichiesta("Assegnata", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
 
+            richiesta.Id = command.ConfermaPartenze.IdRichiesta;
             command.ConfermaPartenze.richiesta = richiesta;
             Classi.Composizione.ConfermaPartenze confermaPartenze = _IUpdateConfermaPartenze.Update(command);
 
             command.ConfermaPartenze.CodiceSede = confermaPartenze.CodiceSede;
         }
-
     }
 }

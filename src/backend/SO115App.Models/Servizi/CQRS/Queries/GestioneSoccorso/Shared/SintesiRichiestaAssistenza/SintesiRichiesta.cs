@@ -25,6 +25,7 @@ using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
@@ -255,7 +256,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Lista eventi associato alla richiesta
         /// </summary>
-        public List<Partenza> Partenze { get; set; }
+        public List<ComposizionePartenze> Partenze
+        {
+            get
+            {
+                if (this.Eventi != null)
+                {
+                    var ListaComposizioni = this.Eventi
+                        .Where(e => e is Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
+                        .Select(e => e as Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
+                        .ToList();
+
+                    return ListaComposizioni;
+                }
+                else { return null; }
+            }
+        }
 
         /// <summary>
         ///   Etichette associate all'intervento (per es. aPagamento, imp, ecc.)

@@ -88,7 +88,19 @@ namespace SO115App.FakePersistenceJSon.Classi
 
         public List<ComposizionePartenze> Partenze
         {
-            get; set;
+            get
+            {
+                if (this.Eventi != null)
+                {
+                    var ListaComposizioni = this.Eventi
+                        .Where(e => e is ComposizionePartenze)
+                        .Select(e => e as ComposizionePartenze)
+                        .ToList();
+
+                    return ListaComposizioni;
+                }
+                else { return null; }
+            }
         }
 
         public Utente Operatore { get; set; }
@@ -187,7 +199,7 @@ namespace SO115App.FakePersistenceJSon.Classi
                 }
                 else
                 {
-                    if (elencoMezziCoinvolti != null  && elencoMezziCoinvolti.Values.Any(e => e.AssegnatoARichiesta))
+                    if (elencoMezziCoinvolti != null && elencoMezziCoinvolti.Values.Any(e => e.AssegnatoARichiesta))
                     {
                         return new Assegnata();
                     }

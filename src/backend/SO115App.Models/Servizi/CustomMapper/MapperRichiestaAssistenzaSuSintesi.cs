@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using System;
 
 namespace SO115App.Models.Servizi.CustomMapper
 {
-    internal class MapperRichiestaAssistenzaSuSintesi
+    public class MapperRichiestaAssistenzaSuSintesi
     {
         private readonly IMapper _mapper;
 
@@ -15,7 +16,14 @@ namespace SO115App.Models.Servizi.CustomMapper
 
         public SintesiRichiesta Map(RichiestaAssistenza richiesta)
         {
-            return _mapper.Map<SintesiRichiesta>(richiesta);
+            try
+            {
+                return _mapper.Map<SintesiRichiesta>(richiesta);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }

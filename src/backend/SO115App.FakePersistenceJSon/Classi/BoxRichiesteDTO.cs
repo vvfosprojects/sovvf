@@ -12,5 +12,7 @@ namespace SO115App.FakePersistence.JSon.Classi
         public bool Sospesa { get; set; }
 
         public DateTime IstanteRicezioneRichiesta { get; set; }
+
+        public DateTime? IstantePrimaAssegnazione { get; set; }
     }
 }
