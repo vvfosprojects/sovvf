@@ -23,6 +23,8 @@ import { ClearListaSquadreComposizione } from '../../actions/composizione-parten
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { TurnOffComposizione } from '../../actions/view/view.actions';
 import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/richiesta-attivita-utente.actions';
+import { ClearDirection } from '../../actions/maps/maps-direction.actions';
+import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 
 export interface ComposizionePartenzaStateModel {
     filtri: any;
@@ -271,9 +273,12 @@ export class ComposizionePartenzaState {
     @Action(TerminaComposizione)
     terminaComposizione({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>) {
         const state = getState();
-        dispatch(new DeleteInLavorazione(state.richiesta));
+        dispatch([
+            new DeleteInLavorazione(state.richiesta),
+            new ClearDirection(),
+            new GetInitCentroMappa()
+        ]);
         patchState({
-            ...state,
             richiesta: ComposizioneStateDefaults.richiesta
         });
     }
