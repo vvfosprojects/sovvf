@@ -6,6 +6,8 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCod
 {
     public interface IGeneraCodiceRichiesta
     {
+        string GeneraCodiceChiamata(string codiceProvincia, int anno);
+
         string Genera(string codiceProvincia, int anno);
     }
 }

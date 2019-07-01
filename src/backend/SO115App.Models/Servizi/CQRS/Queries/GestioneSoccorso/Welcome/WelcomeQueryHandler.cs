@@ -23,6 +23,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiMezziMarker;
@@ -90,7 +91,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 BoxListaPersonale = this._BoxPersonalehandler.Handle(BoxPersonalequery).BoxPersonale,
                 ListaChiamateInCorso = (List<ChiamateInCorso>)this._listaChiamateInCorsoMarkerhandler.Handle(Listaquery).ListaChiamateInCorsoMarker,
                 ListaMezziMarker = (List<SintesiMezzoMarker>)this._SintesiMezziMarkerhandler.Handle(SintesiMezziMarkerquery).SintesiMezziMarker,
-                ListaSintesi = (List<Intervento>)this._SintesiRichiesteAssistenzahandler.Handle(SintesiRichiesteAssistenzaquery).SintesiRichiesta,
+                ListaSintesi = (List<SintesiRichiesta>)this._SintesiRichiesteAssistenzahandler.Handle(SintesiRichiesteAssistenzaquery).SintesiRichiesta,
                 ListaSediMarker = (List<SintesiSedeMarker>)this._SintesiSediMarkerhandler.Handle(SintesiSediMarkerquery).SintesiSediMarker,
                 ListaRichiesteMarker = (List<SintesiRichiestaMarker>)this._SintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker
             };

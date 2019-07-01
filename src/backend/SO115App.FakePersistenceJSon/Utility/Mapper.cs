@@ -33,6 +33,7 @@ namespace SO115App.FakePersistenceJSon.Utility
             var richiestaMap = new RichiestaAssistenza()
             {
                 Codice = richiesta.Codice,
+                CodiceRichiesta = richiesta.CodiceRichiesta,
                 CodiceUnitaOperativaCompetente = richiesta.CodiceUnitaOperativaCompetente,
                 CodiciUnitaOperativeAllertate = richiesta.CodiciUnitaOperativeAllertate,
                 CodiciUOCompetenza = richiesta.CodiciUOCompetenza,
@@ -49,14 +50,15 @@ namespace SO115App.FakePersistenceJSon.Utility
                 ListaEntiIntervenuti = richiesta.ListaEntiIntervenuti,
                 ObiettivoSensibile = richiesta.ObiettivoSensibile,
                 ListaUtentiInLavorazione = richiesta.ListaUtentiInLavorazione,
-                ListaUtentiPresaInCarico = richiesta.ListaUtentiPresaInCarico
+                ListaUtentiPresaInCarico = richiesta.ListaUtentiPresaInCarico,
+                Id = richiesta.Id
             };
 
             if (richiesta.Telefonate != null && richiesta.Telefonate.Count > 0)
             {
                 foreach (Telefonata tel in richiesta.Telefonate)
                 {
-                    new Telefonata(richiestaMap, richiesta.Codice, richiesta.IstanteRicezioneRichiesta.Value, richiesta.Operatore.Id)
+                    new Telefonata(richiestaMap, richiesta.Codice, tel.Istante, richiesta.Operatore.Id)
                     {
                         CognomeChiamante = tel.CognomeChiamante,
                         NomeChiamante = tel.NomeChiamante,
@@ -70,11 +72,16 @@ namespace SO115App.FakePersistenceJSon.Utility
                 }
             }
 
+            if (richiesta.IstantePresaInCarico != null)
+            {
+                new InizioPresaInCarico(richiestaMap, richiesta.IstantePresaInCarico.Value, richiesta.Operatore.Id);
+            }
+
             if (richiesta.Partenze != null && richiesta.Partenze.Count > 0)
             {
                 foreach (ComposizionePartenze composizione in richiesta.Partenze)
                 {
-                    new ComposizionePartenze(richiestaMap, richiesta.IstanteRicezioneRichiesta.Value, richiesta.Operatore.Id, false)
+                    new ComposizionePartenze(richiestaMap, composizione.Istante, richiesta.Operatore.Id, false)
                     {
                         Partenza = composizione.Partenza
                     };

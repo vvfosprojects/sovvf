@@ -21,16 +21,19 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Soccorso;
+using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
@@ -80,15 +83,61 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         public DateTime IstanteRicezioneRichiesta { get; set; }
 
         /// <summary>
-        ///   Stato della richiesta
+        ///   Indica l'istante di chiusura della richiesta, impostato dall'evento <see cref="ChiusuraRichiesta" />
         /// </summary>
-        [Required(ErrorMessage = "Stato obbligatorio.")]
-        public string Stato { get; set; }
+        public DateTime? IstanteChiusura { get; internal set; }
+
+        /// <summary>
+        ///   Indica se la richiesta è sospesa
+        /// </summary>
+        /// <remarks>
+        ///   La richiesta è sospesa se, prima del termine della sua evasione, tutte le risorse le
+        ///   sono state sottratte e dirottate presso altro intervento
+        /// </remarks>
+        public bool Sospesa
+        {
+            get
+            {
+                return false; // DA GESTIRE
+            }
+        }
+
+        /// <summary>
+        ///   Indica se la richiesta è aperta
+        /// </summary>
+        public bool Chiusa
+        {
+            get
+            {
+                return this.IstanteChiusura.HasValue;
+            }
+        }
+
+        /// <summary>
+        ///   Indica se la richiesta è chiusa
+        /// </summary>
+        public bool Aperta
+        {
+            get
+            {
+                return !this.Chiusa;
+            }
+        }
 
         /// <summary>
         ///   Priorita della richiesta
         /// </summary>
-        public RichiestaAssistenza.Priorita Priorita { get; set; }
+        public Priorita PrioritaRichiesta
+        {
+            get
+            {
+                var eventoAssegnazionePriorita = this.Eventi
+                    .Where(e => e is AssegnazionePriorita)
+                    .LastOrDefault() as AssegnazionePriorita;
+
+                return eventoAssegnazionePriorita != null ? eventoAssegnazionePriorita.Priorita : RichiestaAssistenza.Priorita.Media;
+            }
+        }
 
         [Required(ErrorMessage = "Tipologia obbligatoria.")]
         public List<Tipologia> Tipologie { get; set; }
@@ -253,21 +302,29 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
             }
         }
 
-        /// <summary>
-        ///   Lista eventi associato alla richiesta
-        /// </summary>
-        public List<ComposizionePartenze> Partenze
+        public IList<ComposizionePartenze> Partenze
         {
             get
             {
-                if (this.Eventi != null)
-                {
-                    var ListaComposizioni = this.Eventi
-                        .Where(e => e is Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
-                        .Select(e => e as Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
-                        .ToList();
+                var ListaComposizioni = this.Eventi
+                    .Where(e => e is Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
+                    .Select(e => e as Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
+                    .ToList();
 
-                    return ListaComposizioni;
+                return ListaComposizioni;
+            }
+        }
+
+        /// <summary>
+        ///   Lista eventi associato alla richiesta
+        /// </summary>
+        public List<Partenza> PartenzeRichiesta
+        {
+            get
+            {
+                if (this.Partenze != null && this.Partenze.Count > 0)
+                {
+                    return Partenze.Select(x => x.Partenza).ToList();
                 }
                 else { return null; }
             }
@@ -286,6 +343,39 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   Lista eventi associato alla richiesta
         /// </summary>
         public List<Evento> Eventi { get; set; }
+
+        /// <summary>
+        ///   Stato della richiesta
+        /// </summary>
+        [Required(ErrorMessage = "Stato obbligatorio.")]
+        /// <summary>
+        ///   Restituisce lo stato della Richiesta
+        /// </summary>
+        public string Stato
+        {
+            get
+            {
+                var eventoChiusura = this.Eventi
+                    .Where(e => e is ChiusuraRichiesta);
+
+                if (this.Chiusa)
+                {
+                    return "Chiusa";
+                }
+                else if (Partenze.Count > 0)
+                {
+                    return "Assegnata";
+                }
+                else if (Sospesa)
+                {
+                    return "Sospesa";
+                }
+                else
+                {
+                    return "Chiamata";
+                }
+            }
+        }
 
         public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {

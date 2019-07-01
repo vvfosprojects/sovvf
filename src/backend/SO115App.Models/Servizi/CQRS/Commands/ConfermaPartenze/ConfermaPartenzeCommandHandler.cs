@@ -24,12 +24,14 @@ using DomainModel.CQRS.Commands.MezzoPrenotato;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.Models.Classi.ListaEventi;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato;
 using System;
 using System.Collections.Generic;
@@ -44,11 +46,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     {
         private readonly IUpdateConfermaPartenze _IUpdateConfermaPartenze;
         private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
 
-        public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze iUpdateConfermaPartenze, IGetRichiestaById GetRichiestaById)
+        public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze iUpdateConfermaPartenze, IGetRichiestaById GetRichiestaById, IGeneraCodiceRichiesta generaCodiceRichiesta)
         {
             this._IUpdateConfermaPartenze = iUpdateConfermaPartenze;
             this._getRichiestaById = GetRichiestaById;
+            this._generaCodiceRichiesta = generaCodiceRichiesta;
         }
 
         /// <summary>
@@ -60,6 +64,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             // preparazione del DTO
             RichiestaAssistenza richiesta = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiesta);
+
+            new InizioPresaInCarico(richiesta, DateTime.UtcNow, richiesta.Operatore.Id);
+
             foreach (Partenza partenza in command.ConfermaPartenze.Partenze)
             {
                 new ComposizionePartenze(richiesta, DateTime.UtcNow, richiesta.Operatore.Id, false)
@@ -67,10 +74,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     Partenza = partenza
                 };
             }
+
             richiesta.SincronizzaStatoRichiesta("Assegnata", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
 
             richiesta.Id = command.ConfermaPartenze.IdRichiesta;
             command.ConfermaPartenze.richiesta = richiesta;
+
+            var sedeRichiesta = command.ConfermaPartenze.richiesta.Operatore.Sede.Codice;
+            var codiceRichiesta = _generaCodiceRichiesta.Genera(sedeRichiesta, DateTime.UtcNow.Year);
+            richiesta.CodiceRichiesta = codiceRichiesta;
+
             Classi.Composizione.ConfermaPartenze confermaPartenze = _IUpdateConfermaPartenze.Update(command);
 
             command.ConfermaPartenze.CodiceSede = confermaPartenze.CodiceSede;

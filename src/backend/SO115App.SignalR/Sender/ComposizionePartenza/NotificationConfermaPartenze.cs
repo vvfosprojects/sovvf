@@ -64,8 +64,8 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             sintesi = Mapper.Map(richiesta);
 
             sintesi.Motivazione = sintesi.Descrizione;
-            sintesi.Stato = "Assegnata";
-            sintesi.Priorita = richiesta.PrioritaRichiesta;
+            //sintesi.Stato = "Assegnata";
+            //sintesi.Priorita = richiesta.PrioritaRichiesta;
 
             var BoxRichiestequery = new BoxRichiesteQuery();
             var BoxMezziquery = new BoxMezziQuery();

@@ -20,24 +20,33 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AutoMapper;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.FakePersistenceJSon.Classi;
+using SO115App.FakePersistenceJSon.Utility;
+using SO115App.Models.Servizi.CustomMapper;
 
 namespace SO115App.FakePersistenceJSon.GestioneIntervento
 {
     public class GetListaSintesi : IGetListaSintesi
     {
-        public List<SintesiRichieste> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
-        {
-            List<SintesiRichieste> ListaSintesiRichieste = new List<SintesiRichieste>();
-            List<SintesiRichieste> ListaSintesiRichiesteChiamata = new List<SintesiRichieste>();
-            List<SintesiRichieste> ListaSintesiRichiesteAssociate = new List<SintesiRichieste>();
-            List<SintesiRichieste> ListaSintesiRichiestePresidiate = new List<SintesiRichieste>();
-            List<SintesiRichieste> ListaSintesiRichiesteSospese = new List<SintesiRichieste>();
-            List<SintesiRichieste> ListaSintesiRichiesteChiuse = new List<SintesiRichieste>();
+        private readonly IMapper _mapper;
 
+        public GetListaSintesi(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
+        public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
+        {
+            MapperRichiestaAssistenzaSuSintesi Mapper = new MapperRichiestaAssistenzaSuSintesi(_mapper);
+            List<SintesiRichiesta> ListaSintesiRichieste = new List<SintesiRichiesta>();
+            List<RichiestaAssistenza> ListaRichiesteAssistenza = new List<RichiestaAssistenza>();
             string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
 
@@ -46,22 +55,27 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                 json = r.ReadToEnd();
             }
 
-            ListaSintesiRichieste = JsonConvert.DeserializeObject<List<SintesiRichieste>>(json);
+            var ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
 
-            if (ListaSintesiRichieste != null)
+            if (ListaRichieste != null)
             {
-                foreach (SintesiRichieste sintesi in ListaSintesiRichieste)
+                foreach (RichiestaAssistenzaDTO richiesta in ListaRichieste)
                 {
-                    sintesi.Stato = MapStatoRichiesta(sintesi);
+                    richiesta.Id = richiesta.CodiceRichiesta != null ? richiesta.CodiceRichiesta : richiesta.Codice;
+                    ListaRichiesteAssistenza.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
+                }
+
+                foreach (RichiestaAssistenza richiesta in ListaRichiesteAssistenza)
+                {
+                    ListaSintesiRichieste.Add(Mapper.Map(richiesta));
                 }
 
                 ListaSintesiRichieste = ListaSintesiRichieste.OrderByDescending(x => x.IstanteRicezioneRichiesta).OrderBy(x => x.Stato).ToList();
-
                 return ListaSintesiRichieste;
             }
             else
             {
-                List<SintesiRichieste> ListaSintesiRichiesteVuota = new List<SintesiRichieste>();
+                List<SintesiRichiesta> ListaSintesiRichiesteVuota = new List<SintesiRichiesta>();
                 return ListaSintesiRichiesteVuota;
             }
         }

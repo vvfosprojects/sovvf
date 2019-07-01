@@ -19,12 +19,13 @@
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
 namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso
 {
     public interface IGetListaSintesi
     {
-        List<SintesiRichieste> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro);
+        List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro);
     }
 }

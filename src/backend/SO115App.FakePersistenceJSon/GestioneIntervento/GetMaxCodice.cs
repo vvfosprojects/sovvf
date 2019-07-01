@@ -43,6 +43,31 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
             List<RichiestaAssistenzaRead> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaRead>>(json);
 
             if (ListaRichieste != null)
+            {
+                var idPRov = ListaRichieste.FindAll(x => x.CodiceRichiesta != null).OrderByDescending(x => x.CodiceRichiesta).FirstOrDefault() != null ? ListaRichieste.FindAll(x => x.CodiceRichiesta != null).OrderByDescending(x => x.CodiceRichiesta).FirstOrDefault().CodiceRichiesta.Split('-')[2] : "0";
+
+                MaxIdSintesi = Convert.ToInt16(idPRov) + 1;
+            }
+            else
+                MaxIdSintesi = 0;
+
+            return MaxIdSintesi;
+        }
+
+        public static int GetMaxCodiceChiamata()
+        {
+            int MaxIdSintesi;
+
+            string filepath = "Fake/ListaRichiesteAssistenza.json";
+            string json;
+            using (StreamReader r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();
+            }
+
+            List<RichiestaAssistenzaRead> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaRead>>(json);
+
+            if (ListaRichieste != null)
                 MaxIdSintesi = Convert.ToInt16(ListaRichieste.OrderByDescending(x => x.Codice).FirstOrDefault().Codice.Split('-')[2]) + 1;
             else
                 MaxIdSintesi = 0;

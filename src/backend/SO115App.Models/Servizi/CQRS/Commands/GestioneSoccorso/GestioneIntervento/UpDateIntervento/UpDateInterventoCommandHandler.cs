@@ -47,8 +47,6 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
         {
             RichiestaAssistenza richiesta = _getRichiestaById.Get(command.Chiamata.Codice);
 
-            string idRichiesta = _getGetIdRichiestaByCodice.Get(command.Chiamata.Codice);
-
             richiesta.Tipologie = command.Chiamata.Tipologie;
             richiesta.ZoneEmergenza = command.Chiamata.ZoneEmergenza;
             richiesta.Operatore = command.Chiamata.Operatore;

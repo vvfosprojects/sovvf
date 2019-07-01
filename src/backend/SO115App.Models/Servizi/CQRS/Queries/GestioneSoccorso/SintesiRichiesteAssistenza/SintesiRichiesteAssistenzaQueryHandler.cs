@@ -88,19 +88,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         {
             MapperSintesiSuIntervento MapperSuIntervento = new MapperSintesiSuIntervento(_mapper);
 
-            var sintesiRichiesta = new List<SintesiRichieste>();
-            sintesiRichiesta = iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
-
-            var ListaInterventi = new List<Intervento>();
-
-            foreach (SintesiRichieste sintesi in sintesiRichiesta)
-            {
-                ListaInterventi.Add(MapperSuIntervento.Map(sintesi));
-            }
+            var ListaSintesi = iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
 
             return new SintesiRichiesteAssistenzaResult()
             {
-                SintesiRichiesta = ListaInterventi
+                SintesiRichiesta = ListaSintesi
             };
         }
     }

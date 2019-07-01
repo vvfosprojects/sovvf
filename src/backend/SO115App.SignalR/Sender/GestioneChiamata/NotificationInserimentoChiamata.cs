@@ -26,6 +26,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
@@ -57,7 +58,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
         public async Task SendNotification(AddInterventoCommand intervento)
         {
             var SintesiRichiesteAssistenzaquery = new SintesiRichiesteAssistenzaQuery();
-            var ListaSintesi = (List<Intervento>)this.sintesiRichiesteAssistenzahandler.Handle(SintesiRichiesteAssistenzaquery).SintesiRichiesta;
+            var ListaSintesi = (List<SintesiRichiesta>)this.sintesiRichiesteAssistenzahandler.Handle(SintesiRichiesteAssistenzaquery).SintesiRichiesta;
 
             var BoxRichiestequery = new BoxRichiesteQuery();
             BoxInterventi boxInterventi = new BoxInterventi();
@@ -67,7 +68,10 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             List<SintesiRichiestaMarker> listaSintesiMarker = new List<SintesiRichiestaMarker>();
             listaSintesiMarker = (List<SintesiRichiestaMarker>)this._SintesiRichiesteAssistenzaMarkerhandler.Handle(query).SintesiRichiestaMarker;
 
-            await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("SaveAndNotifySuccessChiamata", ListaSintesi.LastOrDefault(richiesta => richiesta.Codice == intervento.Chiamata.Codice));
+            SintesiRichiesta sintesi = ListaSintesi.LastOrDefault(richiesta => richiesta.Codice == intervento.Chiamata.Codice);
+            sintesi.Motivazione = sintesi.Descrizione;
+
+            await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("SaveAndNotifySuccessChiamata", sintesi);
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxInterventi", boxInterventi);
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
         }

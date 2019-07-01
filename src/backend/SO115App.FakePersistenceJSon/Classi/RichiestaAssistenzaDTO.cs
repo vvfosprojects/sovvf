@@ -66,6 +66,8 @@ namespace SO115App.FakePersistenceJSon.Classi
         public string Id { get; set; }
         public string Codice { get; set; }
 
+        public string CodiceRichiesta { get; set; }
+
         public string CodiceUnitaOperativaCompetente { get; set; }
 
         public ISet<string> CodiciUnitaOperativeAllertate { get; set; }
@@ -88,19 +90,7 @@ namespace SO115App.FakePersistenceJSon.Classi
 
         public List<ComposizionePartenze> Partenze
         {
-            get
-            {
-                if (this.Eventi != null)
-                {
-                    var ListaComposizioni = this.Eventi
-                        .Where(e => e is ComposizionePartenze)
-                        .Select(e => e as ComposizionePartenze)
-                        .ToList();
-
-                    return ListaComposizioni;
-                }
-                else { return null; }
-            }
+            get; set;
         }
 
         public Utente Operatore { get; set; }

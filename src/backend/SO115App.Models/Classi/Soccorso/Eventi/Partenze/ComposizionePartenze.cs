@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Eccezioni;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
@@ -38,6 +39,14 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
     /// </remarks>
     public class ComposizionePartenze : Evento, IPartenza
     {
+        [JsonConstructor]
+        public ComposizionePartenze(DateTime istante, string codiceFonte, string codice, bool fuoriSede) : base(istante, codiceFonte, codice)
+        {
+            this.Partenza = new Partenza();
+            this.Componenti = new HashSet<ComponentePartenza>();
+            this.FuoriSede = fuoriSede;
+        }
+
         /// <summary>
         ///   Costruttore che inizializza l'attributo Componenti.
         /// </summary>
@@ -129,12 +138,10 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         {
             get
             {
-     
-                    return new HashSet<string>(this.Componenti
-                        .Select(c => c.CodiceMezzo)
-                        .Where(cm => cm != null)
-                        .Distinct());
-                
+                return new HashSet<string>(this.Componenti
+                    .Select(c => c.CodiceMezzo)
+                    .Where(cm => cm != null)
+                    .Distinct());
             }
         }
 

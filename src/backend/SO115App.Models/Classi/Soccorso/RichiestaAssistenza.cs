@@ -23,6 +23,7 @@ using System.Diagnostics;
 using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Persistenza;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
@@ -184,6 +185,15 @@ namespace SO115App.API.Models.Classi.Soccorso
         public string Codice { get; set; }
 
         /// <summary>
+        ///   E' il codice generato nel momento in cui una chiamata viene gestita
+        /// </summary>
+        /// <remarks>
+        ///   A differenza del codice questo campo non è giornaliero ma annuale, per questo nel
+        ///   codice non sono presenti il giorno il mese e l'anno
+        /// </remarks>
+        public string CodiceRichiesta { get; set; }
+
+        /// <summary>
         ///   E' il codice dell'unità operativa competente per l'intervento
         /// </summary>
         /// <remarks>
@@ -210,32 +220,6 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 return this.eventi;
-            }
-        }
-
-        /// <summary>
-        ///   Restituisce le sole istanze della classe Telefonata presenti all'interno della lista
-        ///   degli eventi.
-        /// </summary>
-        public IList<Telefonata> Telefonate
-        {
-            get
-            {
-                return this.eventi
-                    .Where(e => e is Telefonata)
-                    .Select(e => e as Telefonata)
-                    .ToList();
-            }
-        }
-
-        public IList<ComposizionePartenze> Partenze
-        {
-            get
-            {
-                return this.eventi
-                    .Where(e => e is ComposizionePartenze)
-                    .Select(e => e as ComposizionePartenze)
-                    .ToList();
             }
         }
 
@@ -278,6 +262,21 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
+                var ListaComposizioni = this.Eventi
+                    .Where(e => e is Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
+                    .Select(e => e as Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
+                    .ToList();
+
+                //return ListaComposizioni.Select(x => x.Partenza).ToList();
+
+                var d = new Dictionary<string, IStatoMezzo>();
+
+                var ListaPartenze = ListaComposizioni.Select(x => x.Partenza).ToList();
+
+                foreach (Partenza partenza in ListaPartenze)
+                {
+                }
+
                 var eventiPartenza = this.eventi
                     .Where(e => e is IPartenza)
                     .Select(e => (IPartenza)e);
@@ -290,8 +289,6 @@ namespace SO115App.API.Models.Classi.Soccorso
                         Evento = evento
                     })
                     .GroupBy(el => el.Codice, el => el.Evento);
-
-                var d = new Dictionary<string, IStatoMezzo>();
 
                 foreach (var gruppoEventiPartenza in eventiPartenzaRaggruppatiPerMezzo)
                 {
@@ -592,6 +589,34 @@ namespace SO115App.API.Models.Classi.Soccorso
                         return new Sospesa();
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        ///   Restituisce le sole istanze della classe Telefonata presenti all'interno della lista
+        ///   degli eventi.
+        /// </summary>
+        public IList<Telefonata> Telefonate
+        {
+            get
+            {
+                return this.eventi
+                    .Where(e => e is Telefonata)
+                    .Select(e => e as Telefonata)
+                    .ToList();
+            }
+        }
+
+        public IList<ComposizionePartenze> Partenze
+        {
+            get
+            {
+                var ListaComposizioni = this.Eventi
+                    .Where(e => e is Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
+                    .Select(e => e as Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
+                    .ToList();
+
+                return ListaComposizioni;
             }
         }
 

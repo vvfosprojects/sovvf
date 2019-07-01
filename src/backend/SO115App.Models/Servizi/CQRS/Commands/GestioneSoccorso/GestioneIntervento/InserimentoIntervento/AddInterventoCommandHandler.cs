@@ -41,7 +41,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         public void Handle(AddInterventoCommand command)
         {
             var sedeRichiesta = command.Chiamata.Operatore.Sede.Codice;
-            var codiceRichiesta = _generaCodiceRichiesta.Genera(sedeRichiesta, DateTime.UtcNow.Year);
+            var codiceChiamata = _generaCodiceRichiesta.GeneraCodiceChiamata(sedeRichiesta, DateTime.UtcNow.Year);
 
             var richiesta = new RichiestaAssistenza()
             {
@@ -51,14 +51,14 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Richiedente = command.Chiamata.Richiedente,
                 Localita = command.Chiamata.Localita,
                 Descrizione = command.Chiamata.Descrizione,
-                Codice = codiceRichiesta,
+                Codice = codiceChiamata,
                 TurnoInserimentoChiamata = command.Chiamata.TurnoInserimentoChiamata,
                 TipoTerreno = command.Chiamata.TipoTerreno,
                 ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti,
                 ObiettivoSensibile = command.Chiamata.ObiettivoSensibile,
                 ListaUtentiInLavorazione = command.Chiamata.ListaUtentiInLavorazione,
                 ListaUtentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico,
-                Id = codiceRichiesta // TODO DA TOGLIERE QUANDO AVREMO UN DB
+                Id = codiceChiamata // TODO DA TOGLIERE QUANDO AVREMO UN DB
             };
 
             richiesta.SincronizzaRilevanza(command.Chiamata.RilevanzaGrave, command.Chiamata.RilevanzaStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione, command.Chiamata.IstanteRicezioneRichiesta);
@@ -88,7 +88,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Esito = command.Chiamata.Azione.ToString(),
             };
 
-            command.Chiamata.Codice = codiceRichiesta;
+            command.Chiamata.Codice = codiceChiamata;
 
             this._saveRichiestaAssistenza.Save(richiesta);
         }

@@ -20,6 +20,7 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("SO115App.FakePersistence.InMemory")]
+[assembly: InternalsVisibleTo("SO115App.FakePersistence.Json")]
 
 namespace SO115App.API.Models.Classi.Persistenza
 {

@@ -21,6 +21,7 @@ using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.Models.Classi.Marker;
 using System.Collections.Generic;
 
@@ -31,7 +32,7 @@ namespace SO115App.Models.Classi.Condivise
         public BoxMezzi BoxListaMezzi { get; set; }
         public BoxPersonale BoxListaPersonale { get; set; }
         public BoxInterventi BoxListaInterventi { get; set; }
-        public List<Intervento> ListaSintesi { get; set; }
+        public List<SintesiRichiesta> ListaSintesi { get; set; }
         public List<ChiamateInCorso> ListaChiamateInCorso { get; set; }
         public List<SintesiRichiestaMarker> ListaRichiesteMarker { get; set; }
         public List<SintesiSedeMarker> ListaSediMarker { get; set; }
