@@ -24,14 +24,16 @@ import { ComposizioneFilterbarComponent } from './shared/filterbar/composizione-
  */
 import { CompPartenzaService } from '../../../core/service/comp-partenza-service/comp-partenza.service';
 import { CompPartenzaServiceFake } from '../../../core/service/comp-partenza-service/comp-partenza.service.fake';
+import { AttivitaUtenteService } from '../../../core/service/attivita-utente-service/attivita-utente.service';
+import { AttivitaUtenteServiceFake } from '../../../core/service/attivita-utente-service/attivita-utente-fake.service';
+import { FilterbarService } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
+import { FilterbarServiceFake } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service.fake';
 /**
  * Ngxs
  */
 import { NgxsModule } from '@ngxs/store';
 import { ComposizioneVeloceState } from '../store/states/composizione-partenza/composizione-veloce.state';
 import { environment } from '../../../../environments/environment';
-import { FilterbarService } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
-import { FilterbarServiceFake } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service.fake';
 import { ComposizioneAvanzataState } from '../store/states/composizione-partenza/composizione-avanzata.state';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
 import { MezziComposizioneState } from '../store/states/composizione-partenza/mezzi-composizione.state';
@@ -80,6 +82,7 @@ import { ComposizioneButtonsComponent } from './shared/composizione-buttons/comp
         ComposizionePartenzaComponent
     ],
     providers: [
+        { provide: AttivitaUtenteService, useClass: environment.fakeProvider ? AttivitaUtenteServiceFake : AttivitaUtenteService },
         { provide: FilterbarService, useClass: environment.fakeProvider ? FilterbarServiceFake : FilterbarService },
         { provide: CompPartenzaService, useClass: environment.fakeProvider ? CompPartenzaServiceFake : CompPartenzaService }
     ]

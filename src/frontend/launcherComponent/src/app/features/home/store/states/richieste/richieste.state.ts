@@ -83,8 +83,8 @@ export class RichiesteState {
         if (richiestaComposzione && richiestaComposzione.id === richiesta.id) {
             // console.log('richiesta', richiesta);
             dispatch(new UpdateRichiestaComposizione(richiesta));
-            dispatch(new ClearBoxPartenze());
-            dispatch(new AddBoxPartenza());
+            // dispatch(new ClearBoxPartenze());
+            // dispatch(new AddBoxPartenza());
         }
 
         setState(

@@ -20,48 +20,48 @@ export class UpdateListe {
 }
 
 export class AddFiltroSelezionatoComposizione {
-    static readonly type = '[FilterBarComposizione] Add Filtro Selezionato';
+    static readonly type = '[FiltriComposizione] Add Filtro Selezionato';
 
     constructor(public filtro: any, public tipo: string) {
     }
 }
 
 export class RemoveFiltroSelezionatoComposizione {
-    static readonly type = '[FilterBarComposizione] Remove Filtro Selezionato';
+    static readonly type = '[FiltriComposizione] Remove Filtro Selezionato';
 
     constructor(public filtro: any, public tipo: string) {
     }
 }
 
+export class RemoveFiltriSelezionatiComposizione {
+    static readonly type = '[FiltriComposizione] Remove Filtri Selezionati';
+
+    constructor(public tipo: string) {
+    }
+}
+
 export class ToggleComposizioneMode {
-    static readonly type = '[FilterBarComposizione] Toggle Composizione Mode';
+    static readonly type = '[ComposizionePartenza] Toggle Composizione Mode';
 }
 
 export class SetComposizioneMode {
-    static readonly type = '[FilterBarComposizione] Set Composizione Mode';
+    static readonly type = '[ComposizionePartenza] Set Composizione Mode';
 
     constructor(public compMode: Composizione) {
     }
 }
 
 export class UpdateRichiestaComposizione {
-    static readonly type = '[FilterBarComposizione] Update Richiesta Composizione';
+    static readonly type = '[ComposizionePartenza] Update Richiesta Composizione';
 
     constructor(public richiesta: SintesiRichiesta) {
     }
 }
 
 export class ConfirmPartenze {
-    static readonly type = '[FilterBarComposizione] Confirm Partenze';
+    static readonly type = '[ComposizionePartenza] Conferma Partenze';
 
     constructor(public partenze: any) {
-    }
-}
-
-export class RemoveFiltriSelezionatiComposizione {
-    static readonly type = '[FilterBarComposizione] Remove Filtri Selezionati';
-
-    constructor(public tipo: string) {
     }
 }
 

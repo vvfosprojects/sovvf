@@ -346,12 +346,12 @@
 
                         <div class="col-md-6 bg-red pr-1 scroll-y" style="max-height: 137px">
                             <h5 class="my-0"><b>Partenze</b></h5>
-                            <div *ngIf="!richiesta.partenze" class="text-center">
+                            <div *ngIf="!richiesta.partenzeRichiesta" class="text-center">
                                 <hr class="mt-0 mb-2">
                                 <h6>Non ci sono partenze su questa richiesta di intervento</h6>
                             </div>
-                            <ul *ngIf="richiesta.partenze" class="list-unstyled">
-                                <li *ngFor="let p of richiesta.partenze; index as i" class="border-bottom">
+                            <ul *ngIf="richiesta.partenzeRichiesta" class="list-unstyled">
+                                <li *ngFor="let p of richiesta.partenzeRichiesta; index as i" class="border-bottom">
                                     <div class="row">
                                         <div class="col-2 my-1 pr-0">
                                             <b class="ml-1">#{{i + 1}}</b>

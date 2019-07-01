@@ -52,6 +52,9 @@ import { GetListeCoposizioneAvanzata } from '../../store/actions/composizione-pa
 export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() richiesta: SintesiRichiesta;
+    @Input() disablePrenota: boolean;
+    @Input() prenotato: boolean;
+
 
     // Mezzi Composizione
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
@@ -95,6 +98,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() centraMappa = new EventEmitter();
     @Output() sendDirection: EventEmitter<DirectionInterface> = new EventEmitter();
     @Output() clearDirection: EventEmitter<any> = new EventEmitter();
+    @Output() prenota = new EventEmitter<boolean>();
 
     constructor(private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,

@@ -104,7 +104,7 @@ export class SintesiRichiesta {
         /**
          * lista delle partenze
          */
-        public partenze?: Partenza[],
+        public partenzeRichiesta?: Partenza[],
         /**
          * etichette associate all'intervento (per es. aPagamento, imp, ecc.)
          */

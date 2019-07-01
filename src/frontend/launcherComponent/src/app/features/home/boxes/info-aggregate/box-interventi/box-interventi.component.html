@@ -2,7 +2,8 @@
     <div class="col-12">
         <div class="row">
             <div class="col-8 pr-0">
-                <i class="fa fa-medkit mb-2 mr-1"></i><span class="font-weight-bold cursor-pointer" (click)="clickRichieste.emit('tutti')">Richieste: {{interventi.totale}}</span>
+                <i class="fa fa-medkit mb-2 mr-1"></i><span class="font-weight-bold cursor-pointer"
+                                                            (click)="clickRichieste.emit('tutti')">Richieste: {{interventi.totale}}</span>
                 <small>
                     <span class="ml-2 mr-1">Turno {{interventi.nomeTurnoPrecedente}}:</span>
                     <span class="font-weight-bold">{{interventi.totTurnoPrecedente}}</span>
@@ -34,10 +35,20 @@
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
-                            <li [ngClass]="checkDiff('chiamate')"><span class="position-relative badge h6 w-75 cursor-pointer"
-                                      [ngClass]="{'badge-secondary': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0, 'border-click-checked': boxClick?.richieste.chiamate, 'border-info-aggregate': !boxClick?.richieste.chiamate}" (click)="clickRichieste.emit('chiamate')"><i *ngIf="interventiDiff" class="blink-i-aggregate fa" [ngClass]="realDiff('chiamate')"></i>{{interventi.chiamate}}</span>
+                            <li [ngClass]="checkDiff('chiamate')"><span
+                                    class="position-relative badge h6 w-75 cursor-pointer"
+                                    [ngClass]="{'badge-secondary': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0, 'border-click-checked': boxClick?.richieste.chiamate, 'border-info-aggregate': !boxClick?.richieste.chiamate}"
+                                    (click)="clickRichieste.emit('chiamate')"><i *ngIf="interventiDiff"
+                                                                                 class="blink-i-aggregate fa"
+                                                                                 [ngClass]="realDiff('chiamate')"></i>{{interventi.chiamate}}</span>
                             </li>
-                            <li [ngClass]="checkDiff('sospesi')"><span class="position-relative badge badge-warning h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick?.richieste.sospesi, 'border-info-aggregate': !boxClick?.richieste.sospesi}" (click)="clickRichieste.emit('sospesi')"><i *ngIf="interventiDiff" class="blink-i-aggregate fa" [ngClass]="realDiff('sospesi')"></i>{{interventi.sospesi}}</span></li>
+                            <li [ngClass]="checkDiff('sospesi')"><span
+                                    class="position-relative badge badge-warning h6 w-75 cursor-pointer"
+                                    [ngClass]="{'border-click-checked': boxClick?.richieste.sospesi, 'border-info-aggregate': !boxClick?.richieste.sospesi}"
+                                    (click)="clickRichieste.emit('sospesi')"><i *ngIf="interventiDiff"
+                                                                                class="blink-i-aggregate fa"
+                                                                                [ngClass]="realDiff('sospesi')"></i>{{interventi.sospesi}}</span>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -57,8 +68,18 @@
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
-                            <li [ngClass]="checkDiff('assegnati')"><span class="badge badge-info h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick?.richieste.assegnati, 'border-info-aggregate': !boxClick?.richieste.assegnati}" (click)="clickRichieste.emit('assegnati')"><i *ngIf="interventiDiff" class="blink-i-aggregate fa" [ngClass]="realDiff('assegnati')"></i>{{interventi.assegnati}}</span></li>
-                            <li [ngClass]="checkDiff('presidiati')"><span class="badge badge-success h6 w-75 cursor-pointer" [ngClass]="{'border-click-checked': boxClick?.richieste.presidiati, 'border-info-aggregate': !boxClick?.richieste.presidiati}" (click)="clickRichieste.emit('presidiati')"><i *ngIf="interventiDiff" class="blink-i-aggregate fa" [ngClass]="realDiff('presidiati')"></i>{{interventi.presidiati}}</span></li>
+                            <li [ngClass]="checkDiff('assegnati')"><span class="position-relative badge badge-info h6 w-75 cursor-pointer"
+                                                                         [ngClass]="{'border-click-checked': boxClick?.richieste.assegnati, 'border-info-aggregate': !boxClick?.richieste.assegnati}"
+                                                                         (click)="clickRichieste.emit('assegnati')"><i
+                                    *ngIf="interventiDiff" class="blink-i-aggregate fa"
+                                    [ngClass]="realDiff('assegnati')"></i>{{interventi.assegnati}}</span></li>
+                            <li [ngClass]="checkDiff('presidiati')"><span
+                                    class="position-relative badge badge-success h6 w-75 cursor-pointer"
+                                    [ngClass]="{'border-click-checked': boxClick?.richieste.presidiati, 'border-info-aggregate': !boxClick?.richieste.presidiati}"
+                                    (click)="clickRichieste.emit('presidiati')"><i *ngIf="interventiDiff"
+                                                                                   class="blink-i-aggregate fa"
+                                                                                   [ngClass]="realDiff('presidiati')"></i>{{interventi.presidiati}}</span>
+                            </li>
                         </ul>
                     </div>
                 </div>

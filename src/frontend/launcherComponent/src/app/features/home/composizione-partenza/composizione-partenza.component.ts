@@ -24,6 +24,9 @@ import { ClearListaComposizioneVeloce } from '../store/actions/composizione-part
 import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione } from '../store/actions/composizione-partenza/squadre-composizione.actions';
 import { SetComposizioneMode } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 import { HelperSintesiRichiesta } from '../richieste/helper/_helper-sintesi-richiesta';
+import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
+import { AttivitaUtente } from '../../../shared/model/attivita-utente.model';
+import { AddPresaInCarico, DeletePresaInCarico } from '../store/actions/richieste/richiesta-attivita-utente.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -44,22 +47,29 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Select(ComposizionePartenzaState.richiestaComposizione) nuovaPartenza$: Observable<SintesiRichiesta>;
     richiesta: SintesiRichiesta;
 
-    preAccoppiati: BoxPartenza[];
-
     prevStateBoxClick: BoxClickStateModel;
 
     methods = new HelperSintesiRichiesta;
 
+    disablePrenota: boolean;
+    prenotato: boolean;
+
     constructor(private modalService: NgbModal, private store: Store) {
-        this.subscription.add(this.nuovaPartenza$.subscribe(r => this.richiesta = r));
+        this.subscription.add(this.nuovaPartenza$.subscribe(r => {
+            this.richiesta = r;
+            this.disablePrenota = !(r && r.stato !== StatoRichiesta.Chiusa);
+            this.prenotato = this._checkPrenotato(r);
+        }));
     }
 
     ngOnInit() {
         this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState);
         if (this.richiesta) {
-            this.store.dispatch(new AllFalseBoxRichieste());
-            this.store.dispatch(new AllTrueBoxMezzi());
-            this.store.dispatch(new ReducerBoxClick('richieste', wipeStatoRichiesta(this.richiesta.stato)));
+            this.store.dispatch([
+                new AllFalseBoxRichieste(),
+                new AllTrueBoxMezzi(),
+                new ReducerBoxClick('richieste', wipeStatoRichiesta(this.richiesta.stato))
+            ]);
             // this.store.dispatch(new GetFiltriComposizione());
         } else {
             this.dismissPartenza();
@@ -74,16 +84,20 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     dismissPartenza(): void {
         this.dismissPartenzaSubject.next(true);
-        this.store.dispatch(new ClearMarkerRichiestaSelezionato());
-        this.store.dispatch(new GetInitCentroMappa());
+        this.store.dispatch([
+            new ClearMarkerRichiestaSelezionato(),
+            new GetInitCentroMappa()
+        ]);
         // Pulisco le liste
         const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
         if (compMode === Composizione.Avanzata) {
-            this.store.dispatch(new ClearSelectedMezziComposizione());
-            this.store.dispatch(new ClearSelectedSquadreComposizione());
-            this.store.dispatch(new ClearListaSquadreComposizione());
-            this.store.dispatch(new ClearListaMezziComposizione());
-            this.store.dispatch(new ClearBoxPartenze());
+            this.store.dispatch([
+                new ClearSelectedMezziComposizione(),
+                new ClearSelectedSquadreComposizione(),
+                new ClearListaSquadreComposizione(),
+                new ClearListaMezziComposizione(),
+                new ClearBoxPartenze()
+            ]);
         } else if (compMode === Composizione.Veloce) {
             this.store.dispatch(new ClearListaComposizioneVeloce());
         }
@@ -120,6 +134,21 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         modal.result.then(() => {
             },
             () => this.store.dispatch(new ClearEventiRichiesta()));
+    }
+
+    _checkPrenotato(sintesi: SintesiRichiesta): boolean {
+        if (sintesi) {
+            if (sintesi.listaUtentiPresaInCarico && sintesi.listaUtentiPresaInCarico.length > 0) {
+                const currentUserId = this.store.selectSnapshot(UtenteState.utente).id;
+                return !!(sintesi.listaUtentiPresaInCarico.filter((attivita: AttivitaUtente) => attivita.idUtente === currentUserId).length > 0);
+            } else {
+                return false;
+            }
+        }
+    }
+
+    onPrenota($event) {
+        $event ? this.store.dispatch(new AddPresaInCarico(this.richiesta)) : this.store.dispatch(new DeletePresaInCarico(this.richiesta));
     }
 
 }

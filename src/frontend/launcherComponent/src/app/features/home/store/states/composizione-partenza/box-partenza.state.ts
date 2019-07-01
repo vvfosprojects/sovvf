@@ -22,6 +22,7 @@ import { ClearSelectedSquadreComposizione, SelectSquadraComposizione, UnselectSq
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { GetListeCoposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
+import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 
 
 export interface BoxPartenzaStateModel {
@@ -149,6 +150,7 @@ export class BoxPartenzaState {
                 }
             });
         }
+        dispatch(new ClearDirection());
         // rimuovo il box dalla lista
         setState(
             patch({
@@ -307,7 +309,8 @@ export class BoxPartenzaState {
     }
 
     @Action(ClearBoxPartenze)
-    clearBoxPartenze({ patchState }: StateContext<BoxPartenzaStateModel>) {
+    clearBoxPartenze({ patchState, dispatch }: StateContext<BoxPartenzaStateModel>) {
+        dispatch(new ClearDirection());
         patchState({
             boxPartenzaList: BoxPartenzaStateDefaults.boxPartenzaList
         });

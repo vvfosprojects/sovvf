@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { handleError } from '../../../shared/helper/handleError';
 import { environment } from '../../../../environments/environment';
+import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
 const API_URL = environment.apiUrl.attivitaUtente;
 
@@ -15,29 +16,29 @@ export class AttivitaUtenteService {
     constructor(private http: HttpClient) {
     }
 
-    public addInLavorazione(idRichiesta: string): Observable<any> {
-        return this.http.post<string>(API_URL + '/AddInLavorazione', idRichiesta).pipe(
+    public addInLavorazione(sintesiRichiesta: SintesiRichiesta): Observable<any> {
+        return this.http.post<string>(API_URL + '/AddInLavorazione', sintesiRichiesta.id).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
-    public deleteInLavorazione(idRichiesta: string): Observable<any> {
-        return this.http.post<string>(API_URL + '/DeleteInLavorazione', idRichiesta).pipe(
+    public deleteInLavorazione(sintesiRichiesta: SintesiRichiesta): Observable<any> {
+        return this.http.post<string>(API_URL + '/DeleteInLavorazione', sintesiRichiesta.id).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
-    public addPresaInCarico(idRichiesta: string): Observable<any> {
-        return this.http.post<string>(API_URL + '/AddPresaInCarico', idRichiesta).pipe(
+    public addPresaInCarico(sintesiRichiesta: SintesiRichiesta): Observable<any> {
+        return this.http.post<string>(API_URL + '/AddPresaInCarico', sintesiRichiesta.id).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
-    public deletePresaInCarico(idRichiesta: string): Observable<any> {
-        return this.http.post<string>(API_URL + '/DeletePresaInCarico', idRichiesta).pipe(
+    public deletePresaInCarico(sintesiRichiesta: SintesiRichiesta): Observable<any> {
+        return this.http.post<string>(API_URL + '/DeletePresaInCarico', sintesiRichiesta.id).pipe(
             retry(3),
             catchError(handleError)
         );
