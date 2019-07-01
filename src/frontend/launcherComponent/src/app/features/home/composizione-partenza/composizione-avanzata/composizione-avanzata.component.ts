@@ -53,6 +53,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     @Input() richiesta: SintesiRichiesta;
     @Input() disablePrenota: boolean;
+    @Input() prenotato: boolean;
 
 
     // Mezzi Composizione
@@ -97,6 +98,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() centraMappa = new EventEmitter();
     @Output() sendDirection: EventEmitter<DirectionInterface> = new EventEmitter();
     @Output() clearDirection: EventEmitter<any> = new EventEmitter();
+    @Output() prenota = new EventEmitter<boolean>();
 
     constructor(private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,

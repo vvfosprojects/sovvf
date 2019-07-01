@@ -12,8 +12,10 @@
                                     (deselezionato)="deselezionaPreaccoppiato($event)"></app-box-nuova-partenza>
         </div>
         <div class="col-12 text-right">
-            <app-composizione-buttons (confirmPartenza)="confermaPartenze()" [boxPartenzaLenght]="idPreAccoppiatiSelezionati?.length"
+            <app-composizione-buttons (confirmPartenza)="confermaPartenze()" (confirmPrenota)="prenota.emit($event)"
+                                      [boxPartenzaLenght]="idPreAccoppiatiSelezionati?.length"
                                       [disableConfirmPrenota]="disablePrenota"
+                                      [prenotato]="prenotato"
                                       [disableConfirmPartenza]="idPreAccoppiatiSelezionati?.length <= 0"></app-composizione-buttons>
         </div>
     </div>

@@ -95,6 +95,8 @@
         </div>
         <app-composizione-buttons (confirmPartenza)="confermaPartenze()" [boxPartenzaLenght]="boxPartenzaList.length"
                                   [disableConfirmPrenota]="disablePrenota"
+                                  (confirmPrenota)="prenota.emit($event)"
+                                  [prenotato]="prenotato"
                                   [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"></app-composizione-buttons>
     </div>
 </div>

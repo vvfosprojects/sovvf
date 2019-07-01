@@ -24,6 +24,8 @@ import { ClearListaComposizioneVeloce } from '../store/actions/composizione-part
 import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione } from '../store/actions/composizione-partenza/squadre-composizione.actions';
 import { SetComposizioneMode } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 import { HelperSintesiRichiesta } from '../richieste/helper/_helper-sintesi-richiesta';
+import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
+import { AttivitaUtente } from '../../../shared/model/attivita-utente.model';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -44,18 +46,18 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Select(ComposizionePartenzaState.richiestaComposizione) nuovaPartenza$: Observable<SintesiRichiesta>;
     richiesta: SintesiRichiesta;
 
-    preAccoppiati: BoxPartenza[];
-
     prevStateBoxClick: BoxClickStateModel;
 
     methods = new HelperSintesiRichiesta;
 
     disablePrenota: boolean;
+    prenotato: boolean;
 
     constructor(private modalService: NgbModal, private store: Store) {
         this.subscription.add(this.nuovaPartenza$.subscribe(r => {
             this.richiesta = r;
-            this.disablePrenota = !!(this.richiesta.stato === StatoRichiesta.Chiusa);
+            this.disablePrenota = !(r && r.stato !== StatoRichiesta.Chiusa);
+            this.prenotato = this._checkPrenotato(r);
         }));
     }
 
@@ -125,6 +127,21 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         modal.result.then(() => {
             },
             () => this.store.dispatch(new ClearEventiRichiesta()));
+    }
+
+    _checkPrenotato(sintesi: SintesiRichiesta): boolean {
+        if (sintesi) {
+            if (sintesi.listaUtentiPresaInCarico && sintesi.listaUtentiPresaInCarico.length > 0) {
+                const currentUserId = this.store.selectSnapshot(UtenteState.utente).id;
+                return !!sintesi.listaUtentiPresaInCarico.filter( (attivita: AttivitaUtente) => attivita.idUtente === currentUserId);
+            } else {
+                return false;
+            }
+        }
+    }
+
+    onPrenota($event) {
+        console.log($event);
     }
 
 }

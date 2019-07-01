@@ -798,11 +798,10 @@ export class SintesiRichiesteServiceFake {
         this.richieste[3].listaEntiPresaInCarico = [new EnteIntervenuto('1', 'Polizia di Stato')];
         this.richieste[4].listaEntiPresaInCarico = [new EnteIntervenuto('1', 'Polizia di Stato'), new EnteIntervenuto('2', 'Carabinieri')];
         this.richieste[4].listaEntiIntervenuti = [new EnteIntervenuto('3', 'Protezione Civile')];
-        this.richieste[0].listaUtentiPresaInCarico = [new AttivitaUtente('Stefano Vinci', moment().subtract(42, 'minutes').toDate()),
-            new AttivitaUtente('Diletta Pallotta', moment().subtract(48, 'minutes').toDate()),
-            new AttivitaUtente('Luigi Bardolin', moment().subtract(52, 'minutes').toDate())];
-        this.richieste[0].listaUtentiInLavorazione = [new AttivitaUtente('Mario Rossi', moment().subtract(2, 'minutes').toDate()),
-            new AttivitaUtente('Filippo Verdi', moment().subtract(3, 'minutes').toDate())];
+        this.richieste[0].listaUtentiPresaInCarico = [new AttivitaUtente('3', 'Mario Rossi', moment().subtract(42, 'minutes').toDate()),
+            new AttivitaUtente('50', 'Luigi Bardolin', moment().subtract(52, 'minutes').toDate())];
+        this.richieste[0].listaUtentiInLavorazione = [new AttivitaUtente('35', 'Diletta Pallotta', moment().subtract(2, 'minutes').toDate()),
+            new AttivitaUtente('45', 'Filippo Verdi', moment().subtract(3, 'minutes').toDate())];
 
         return of(this.richieste);
     }

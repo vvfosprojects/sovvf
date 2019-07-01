@@ -25,6 +25,7 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
     @Input() dismissEvents: Observable<boolean>;
     @Input() disablePrenota: boolean;
+    @Input() prenotato: boolean;
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     preAccoppiati: BoxPartenza[];
@@ -42,6 +43,7 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Output() sendDirection: EventEmitter<DirectionInterface> = new EventEmitter();
     @Output() clearDirection: EventEmitter<any> = new EventEmitter();
     @Output() centraMappa = new EventEmitter();
+    @Output() prenota = new EventEmitter<boolean>();
 
     constructor(private store: Store) {
         // Prendo i preaccoppiati da visualizzare nella lista
