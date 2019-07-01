@@ -140,7 +140,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         if (sintesi) {
             if (sintesi.listaUtentiPresaInCarico && sintesi.listaUtentiPresaInCarico.length > 0) {
                 const currentUserId = this.store.selectSnapshot(UtenteState.utente).id;
-                return !!sintesi.listaUtentiPresaInCarico.filter((attivita: AttivitaUtente) => attivita.idUtente === currentUserId);
+                return !!(sintesi.listaUtentiPresaInCarico.filter((attivita: AttivitaUtente) => attivita.idUtente === currentUserId).length > 0);
             } else {
                 return false;
             }
