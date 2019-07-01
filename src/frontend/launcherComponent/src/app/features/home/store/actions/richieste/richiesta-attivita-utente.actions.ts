@@ -13,3 +13,17 @@ export class DeleteInLavorazione {
     constructor(public sintesiRichiesta: SintesiRichiesta) {
     }
 }
+
+export class AddPresaInCarico {
+    static readonly type = '[Attivita Utente] Add Presa In Carico';
+
+    constructor(public sintesiRichiesta: SintesiRichiesta) {
+    }
+}
+
+export class DeletePresaInCarico {
+    static readonly type = '[Attivita Utente] Delete Presa In Carico';
+
+    constructor(public sintesiRichiesta: SintesiRichiesta) {
+    }
+}

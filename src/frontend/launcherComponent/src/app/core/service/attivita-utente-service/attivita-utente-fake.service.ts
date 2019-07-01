@@ -23,7 +23,7 @@ export class AttivitaUtenteServiceFake {
             }
             this.dispatchModify(newSintesiRichiesta);
         }
-        return of();
+        return of(null);
     }
 
     public deleteInLavorazione(sintesiRichiesta: SintesiRichiesta): Observable<any> {
@@ -33,21 +33,30 @@ export class AttivitaUtenteServiceFake {
             newSintesiRichiesta.listaUtentiInLavorazione = listaUtentiInLavorazione;
             this.dispatchModify(newSintesiRichiesta);
         }
-        return of();
+        return of(null);
     }
 
     public addPresaInCarico(sintesiRichiesta: SintesiRichiesta): Observable<any> {
-        /**
-         * da fare
-         */
-        return of();
+        if (sintesiRichiesta) {
+            const newSintesiRichiesta = makeCopy(sintesiRichiesta);
+            if (newSintesiRichiesta.listaUtentiPresaInCarico && newSintesiRichiesta.listaUtentiPresaInCarico.length > 0) {
+                newSintesiRichiesta.listaUtentiPresaInCarico.push(this.makeAttivitaUtente());
+            } else {
+                newSintesiRichiesta.listaUtentiPresaInCarico = [(this.makeAttivitaUtente())];
+            }
+            this.dispatchModify(newSintesiRichiesta);
+        }
+        return of(null);
     }
 
     public deletePresaInCarico(sintesiRichiesta: SintesiRichiesta): Observable<any> {
-        /**
-         * da fare
-         */
-        return of();
+        if (sintesiRichiesta && sintesiRichiesta.listaUtentiPresaInCarico && sintesiRichiesta.listaUtentiPresaInCarico.length > 0) {
+            const newSintesiRichiesta = makeCopy(sintesiRichiesta);
+            const listaUtentiPresaInCarico = newSintesiRichiesta.listaUtentiPresaInCarico.filter( (attivita: AttivitaUtente) => attivita.idUtente !== this.makeAttivitaUtente().idUtente);
+            newSintesiRichiesta.listaUtentiPresaInCarico = listaUtentiPresaInCarico;
+            this.dispatchModify(newSintesiRichiesta);
+        }
+        return of(null);
     }
 
     private dispatchModify(richiesta: SintesiRichiesta): void {

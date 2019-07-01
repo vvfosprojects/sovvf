@@ -26,6 +26,7 @@ import { SetComposizioneMode } from '../store/actions/composizione-partenza/comp
 import { HelperSintesiRichiesta } from '../richieste/helper/_helper-sintesi-richiesta';
 import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
 import { AttivitaUtente } from '../../../shared/model/attivita-utente.model';
+import { AddPresaInCarico, DeletePresaInCarico } from '../store/actions/richieste/richiesta-attivita-utente.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -64,9 +65,11 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState);
         if (this.richiesta) {
-            this.store.dispatch(new AllFalseBoxRichieste());
-            this.store.dispatch(new AllTrueBoxMezzi());
-            this.store.dispatch(new ReducerBoxClick('richieste', wipeStatoRichiesta(this.richiesta.stato)));
+            this.store.dispatch([
+                new AllFalseBoxRichieste(),
+                new AllTrueBoxMezzi(),
+                new ReducerBoxClick('richieste', wipeStatoRichiesta(this.richiesta.stato))
+            ]);
             // this.store.dispatch(new GetFiltriComposizione());
         } else {
             this.dismissPartenza();
@@ -81,16 +84,20 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     dismissPartenza(): void {
         this.dismissPartenzaSubject.next(true);
-        this.store.dispatch(new ClearMarkerRichiestaSelezionato());
-        this.store.dispatch(new GetInitCentroMappa());
+        this.store.dispatch([
+            new ClearMarkerRichiestaSelezionato(),
+            new GetInitCentroMappa()
+        ]);
         // Pulisco le liste
         const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
         if (compMode === Composizione.Avanzata) {
-            this.store.dispatch(new ClearSelectedMezziComposizione());
-            this.store.dispatch(new ClearSelectedSquadreComposizione());
-            this.store.dispatch(new ClearListaSquadreComposizione());
-            this.store.dispatch(new ClearListaMezziComposizione());
-            this.store.dispatch(new ClearBoxPartenze());
+            this.store.dispatch([
+                new ClearSelectedMezziComposizione(),
+                new ClearSelectedSquadreComposizione(),
+                new ClearListaSquadreComposizione(),
+                new ClearListaMezziComposizione(),
+                new ClearBoxPartenze()
+            ]);
         } else if (compMode === Composizione.Veloce) {
             this.store.dispatch(new ClearListaComposizioneVeloce());
         }
@@ -133,7 +140,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         if (sintesi) {
             if (sintesi.listaUtentiPresaInCarico && sintesi.listaUtentiPresaInCarico.length > 0) {
                 const currentUserId = this.store.selectSnapshot(UtenteState.utente).id;
-                return !!sintesi.listaUtentiPresaInCarico.filter( (attivita: AttivitaUtente) => attivita.idUtente === currentUserId);
+                return !!sintesi.listaUtentiPresaInCarico.filter((attivita: AttivitaUtente) => attivita.idUtente === currentUserId);
             } else {
                 return false;
             }
@@ -141,7 +148,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     onPrenota($event) {
-        console.log($event);
+        $event ? this.store.dispatch(new AddPresaInCarico(this.richiesta)) : this.store.dispatch(new DeletePresaInCarico(this.richiesta));
     }
 
 }
