@@ -19,8 +19,9 @@ namespace SO115App.FakePersistence.JSon.Utility
             int ultimeDueCifreAnno = anno % 100;
             int giorno = DateTime.UtcNow.Day;
             int mese = DateTime.UtcNow.Month;
-            string nuovoNumero = GetMaxCodice.GetMaxCodiceChiamata().ToString();
-            return string.Format("{0}-{1}-{2}-{3}_{2:D5}", codiceProvincia, giorno, mese, ultimeDueCifreAnno, nuovoNumero);
+            int nuovoNumero = GetMaxCodice.GetMaxCodiceChiamata();
+            string returnString = string.Format("{0}-{1}-{2}-{3}_{4:D5}", codiceProvincia, giorno, mese, ultimeDueCifreAnno, nuovoNumero);
+            return returnString;
         }
     }
 }
