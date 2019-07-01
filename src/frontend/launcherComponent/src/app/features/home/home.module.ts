@@ -30,6 +30,7 @@ import { RichiestaModificaState } from './store/states/richieste/richiesta-modif
 import { environment } from '../../../environments/environment';
 import { HomeService } from '../../core/service/home-service/home.service';
 import { HomeServiceFake } from '../../core/service/home-service/home.service.fake';
+import { RichiestaAttivitaUtenteState } from './store/states/richieste/richiesta-attivita-utente.state';
 
 @NgModule({
     declarations: [
@@ -67,7 +68,8 @@ import { HomeServiceFake } from '../../core/service/home-service/home.service.fa
                 FiltriRichiesteState,
                 RicercaRichiesteState,
                 MarkerMeteoState,
-                RichiestaModificaState
+                RichiestaModificaState,
+                RichiestaAttivitaUtenteState
             ]
         ),
     ],
