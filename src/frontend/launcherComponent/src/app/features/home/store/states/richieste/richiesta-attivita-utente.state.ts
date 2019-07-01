@@ -20,7 +20,7 @@ export class RichiestaAttivitaUtenteState {
     }
 
     @Action(DeleteInLavorazione)
-    DeleteInLavorazione({ dispatch }, action: DeleteInLavorazione) {
+    deleteInLavorazione({ dispatch }, action: DeleteInLavorazione) {
         this.attivitaUtenteService.deleteInLavorazione(action.sintesiRichiesta).subscribe(() => {
             console.log('deleteInLavorazione');
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
