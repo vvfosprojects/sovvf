@@ -15,8 +15,8 @@ export class HelperSintesiRichiesta {
     /* Restituisce i nomi delle squadre  */
     nomiSquadre(richiesta: SintesiRichiesta): string[] {
         let nomiSquadre: string[] = [];
-        if (richiesta.partenze) {
-            richiesta.partenze.forEach((partenza: Partenza) => {
+        if (richiesta.partenzeRichiesta) {
+            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
                 nomiSquadre = partenza.squadre.map((s: Squadra) => s.nome);
             });
         }
@@ -26,8 +26,8 @@ export class HelperSintesiRichiesta {
     /* Restituisce il numero delle squadre */
     numeroSquadre(richiesta: SintesiRichiesta): number {
         let numeroSquadre = 0;
-        if (richiesta.partenze) {
-            richiesta.partenze.forEach((partenza: Partenza) => {
+        if (richiesta.partenzeRichiesta) {
+            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
                 numeroSquadre += partenza.squadre.length;
             });
         }
@@ -37,8 +37,8 @@ export class HelperSintesiRichiesta {
     /* Restituisce i nomi dei mezzi  */
     nomiMezzi(richiesta: SintesiRichiesta): string[] {
         const nomiMezzi = [];
-        if (richiesta.partenze) {
-            richiesta.partenze.forEach((partenza: Partenza) => {
+        if (richiesta.partenzeRichiesta) {
+            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
                 nomiMezzi.push(partenza.mezzo.codice);
             });
         }
@@ -48,8 +48,8 @@ export class HelperSintesiRichiesta {
     /* Restituisce il numero dei mezzi */
     numeroMezzi(richiesta: SintesiRichiesta): number {
         let numeroMezzi = 0;
-        if (richiesta.partenze) {
-            richiesta.partenze.forEach((partenza: Partenza) => {
+        if (richiesta.partenzeRichiesta) {
+            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
                 if (partenza.mezzo) {
                     numeroMezzi++;
                 }
