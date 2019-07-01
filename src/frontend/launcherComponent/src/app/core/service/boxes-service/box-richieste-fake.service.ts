@@ -10,8 +10,8 @@ export class BoxRichiesteFakeService {
     count = 0;
     interventiFake = [
         new BoxInterventi(3, 3, 1, 2, 9, 20, 'B', 30, 'A', 2018, 12.842),
-        new BoxInterventi(4, 3, 1, 2, 9, 21, 'B', 30, 'A', 2018, 12.843)
-
+        new BoxInterventi(4, 3, 1, 2, 9, 21, 'B', 30, 'A', 2018, 12.843),
+        new BoxInterventi(3, 4, 1, 2, 9, 21, 'B', 30, 'A', 2018, 12.843)
     ];
 
     constructor(private store: Store) {
