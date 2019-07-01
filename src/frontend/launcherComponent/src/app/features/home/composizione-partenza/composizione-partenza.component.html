@@ -14,7 +14,7 @@
         <div *ngIf="richiesta && compPartenzaMode === Composizione.Veloce" class="px-3">
             <app-composizione-veloce [richiesta]="richiesta" [dismissEvents]="dismissPartenzaSubject.asObservable()"
                                      (sendDirection)="onSendDirection($event)" (clearDirection)="onClearDirection()"
-                                     (centraMappa)="centraMappa()">
+                                     (centraMappa)="centraMappa()" [disablePrenota]="disablePrenota">
             </app-composizione-veloce>
         </div>
         <div *ngIf="richiesta && compPartenzaMode === Composizione.Avanzata"
@@ -23,7 +23,8 @@
                                        [dismissEvents]="dismissPartenzaSubject.asObservable()"
                                        (sendDirection)="onSendDirection($event)"
                                        (clearDirection)="onClearDirection()"
-                                       (centraMappa)="centraMappa()"></app-composizione-avanzata>
+                                       (centraMappa)="centraMappa()"
+                                       [disablePrenota]="disablePrenota"></app-composizione-avanzata>
         </div>
     </div>
 </div>

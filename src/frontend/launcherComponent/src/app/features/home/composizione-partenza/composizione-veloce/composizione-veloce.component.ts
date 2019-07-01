@@ -24,6 +24,7 @@ export class FasterComponent implements OnInit, OnDestroy {
 
     @Input() richiesta: SintesiRichiesta;
     @Input() dismissEvents: Observable<boolean>;
+    @Input() disablePrenota: boolean;
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     preAccoppiati: BoxPartenza[];

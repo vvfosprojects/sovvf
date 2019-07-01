@@ -50,8 +50,13 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     methods = new HelperSintesiRichiesta;
 
+    disablePrenota: boolean;
+
     constructor(private modalService: NgbModal, private store: Store) {
-        this.subscription.add(this.nuovaPartenza$.subscribe(r => this.richiesta = r));
+        this.subscription.add(this.nuovaPartenza$.subscribe(r => {
+            this.richiesta = r;
+            this.disablePrenota = !!(this.richiesta.stato === StatoRichiesta.Chiusa);
+        }));
     }
 
     ngOnInit() {

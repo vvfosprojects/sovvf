@@ -13,6 +13,7 @@
         </div>
         <div class="col-12 text-right">
             <app-composizione-buttons (confirmPartenza)="confermaPartenze()" [boxPartenzaLenght]="idPreAccoppiatiSelezionati?.length"
+                                      [disableConfirmPrenota]="disablePrenota"
                                       [disableConfirmPartenza]="idPreAccoppiatiSelezionati?.length <= 0"></app-composizione-buttons>
         </div>
     </div>

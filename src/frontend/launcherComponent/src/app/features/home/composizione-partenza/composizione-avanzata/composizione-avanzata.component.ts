@@ -52,6 +52,8 @@ import { GetListeCoposizioneAvanzata } from '../../store/actions/composizione-pa
 export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() richiesta: SintesiRichiesta;
+    @Input() disablePrenota: boolean;
+
 
     // Mezzi Composizione
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
