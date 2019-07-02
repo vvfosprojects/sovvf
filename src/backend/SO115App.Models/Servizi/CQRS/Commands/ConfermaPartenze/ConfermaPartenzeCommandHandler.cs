@@ -18,24 +18,15 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using CQRS.Queries;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
-using DomainModel.CQRS.Commands.MezzoPrenotato;
-using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
-using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
-using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
-using SO115App.Models.Classi.ListaEventi;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
-using SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ConfermaPartenze
 {

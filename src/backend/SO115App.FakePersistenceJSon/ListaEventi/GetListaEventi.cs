@@ -26,7 +26,6 @@ using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi;
 using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;
-using SO115App.Models.Classi.ListaEventi;
 using SO115App.Models.Servizi.Infrastruttura.GetListaEventi;
 
 namespace SO115App.FakePersistenceJSon.ListaEventi

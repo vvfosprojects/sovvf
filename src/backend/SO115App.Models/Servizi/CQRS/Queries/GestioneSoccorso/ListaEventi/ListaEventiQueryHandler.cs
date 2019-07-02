@@ -20,7 +20,6 @@
 using System;
 using System.Collections.Generic;
 using CQRS.Queries;
-using SO115App.API.Models.Classi.ListaEventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
@@ -81,7 +80,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 {
                     NomeClasseEvento = MapEvento(evento),
                     IstanteEvento = evento.Istante,
-                    Targa = "",
+                    Targa = MapTarghe(evento),
                     Note = "",
                     HTMLLinkElement = ""
                 };
@@ -91,6 +90,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
             {
                 Eventi = eventiMapper
             };
+        }
+
+        private string MapTarghe(Evento evento)
+        {
+            string Targa = "";
+
+            if (evento is ComposizionePartenze)
+            {
+                Targa = ((ComposizionePartenze)evento).Partenza.Mezzo.Descrizione;
+            }
+
+            return Targa;
         }
 
         private string MapEvento(Evento evento)
@@ -104,22 +115,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
             if (evento is InizioPresaInCarico)
             {
-                RisEvento = "Presa in carico";
+                RisEvento = "InizioPresaInCarico";
             }
 
             if (evento is ComposizionePartenze)
             {
-                RisEvento = "Composizione Partenza";
+                RisEvento = "ComposizionePartenza";
             }
 
             if (evento is ChiusuraRichiesta)
             {
-                RisEvento = "Chiusura Partenza";
+                RisEvento = "ChiusuraPartenza";
             }
 
             if (evento is RiaperturaRichiesta)
             {
-                RisEvento = "Riapertura Partenza";
+                RisEvento = "RiaperturaRichiesta";
             }
 
             return RisEvento;

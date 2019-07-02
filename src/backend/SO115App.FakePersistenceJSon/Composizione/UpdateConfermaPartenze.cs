@@ -23,8 +23,6 @@ using System.Linq;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.ListaEventi;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;

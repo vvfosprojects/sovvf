@@ -61,7 +61,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
             {
                 foreach (RichiestaAssistenzaDTO richiesta in ListaRichieste)
                 {
-                    richiesta.Id = richiesta.CodiceRichiesta != null ? richiesta.CodiceRichiesta : richiesta.Codice;
+                    richiesta.Id = richiesta.Codice;
                     ListaRichiesteAssistenza.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
                 }
 
