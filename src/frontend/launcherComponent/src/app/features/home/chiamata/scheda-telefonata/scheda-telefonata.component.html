@@ -235,12 +235,15 @@
                     <button class="btn btn-outline-secondary ml-2" type="button" (click)="onResetChiamata()">
                         <i class="fa fa-recycle mr-1"></i>Reset
                     </button>
-                    <button type="button" class="btn btn-outline-primary ml-2" (click)="isCollapsed = !isCollapsed"
-                            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
-                        Informazioni Aggiuntive
-                        <i *ngIf="isCollapsed" class="fa fa-arrow-down ml-1"></i>
-                        <i *ngIf="!isCollapsed" class="fa fa-arrow-up ml-1"></i>
-                    </button>
+                    <span ngbTooltip="Inserire il resto dei campi obbligatori" [disableTooltip]="checkCollapsed()" placement="bottom">
+                        <button type="button" class="btn btn-outline-primary ml-2" (click)="toggleCollapsed()"
+                                [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample"
+                                [disabled]="checkCollapsed()">
+                            Informazioni Aggiuntive
+                            <i *ngIf="isCollapsed" class="fa fa-arrow-down ml-1"></i>
+                            <i *ngIf="!isCollapsed" class="fa fa-arrow-up ml-1"></i>
+                        </button>
+                    </span>
                 </div>
                 <div class="col-5 text-right">
                     <div class="btn-group" ngbDropdown autoClose="outside" placement="top" role="group">

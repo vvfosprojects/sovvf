@@ -133,7 +133,6 @@ export class SchedaTelefonataComponent implements OnInit {
             this.f.cognome.reset();
         }
         this.cdRef.detectChanges();
-        // console.log(this.f);
     }
 
     setRilevanza() {
@@ -153,7 +152,6 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     getChiamataForm() {
-        // console.log(this.f.descrizione.value);
         // Set form data
         const f = this.f;
         if (this.tipologiaRichiedente === 'Nome-Cognome') {
@@ -179,7 +177,6 @@ export class SchedaTelefonataComponent implements OnInit {
             }
         }
 
-        // this.nuovaRichiesta.tipoTerreno = this.validateChechBoxTerreni();
     }
 
     onAddTipologia(tipologia: any) {
@@ -256,6 +253,7 @@ export class SchedaTelefonataComponent implements OnInit {
                         this.store.dispatch(new ClearClipboard());
                         this._statoChiamata('reset');
                         this.store.dispatch(new DelChiamataMarker(this.idChiamata));
+                        this.isCollapsed = true;
                         break;
                     case 'ko':
                         console.log('Azione annullata');
@@ -280,15 +278,14 @@ export class SchedaTelefonataComponent implements OnInit {
         this._statoChiamata('cerca');
     }
 
-    formIsValid(): boolean {
-        let error = '';
-        error += this.f.cognome.errors ? 'Cognome;' : '';
-        error += this.f.nome.errors ? 'Nome;' : '';
-        error += this.f.ragioneSociale.errors ? 'Ragione Sociale;' : '';
-        error += this.f.telefono.errors ? 'Telefono;' : '';
-        error += this.f.indirizzo.errors ? 'Indirizzo;' : '';
+    toggleCollapsed(): void {
+        if (this.checkSubmit()) {
+            this.isCollapsed = !this.isCollapsed;
+        }
+    }
 
-        const messageArr: string[] = error.split(/\s*(?:;|$)\s*/);
+    formIsValid(): boolean {
+        const messageArr: string[] = this.countErrorForm();
         let message = messageArr.join(', ');
         const title = messageArr.length > 1 ? 'Campi obbligatori:' : 'Campo obbligatorio:';
         if (messageArr.length > 0) {
@@ -302,6 +299,23 @@ export class SchedaTelefonataComponent implements OnInit {
         return !!this.chiamataForm.invalid;
     }
 
+    countErrorForm(): string[] {
+        let error = '';
+        error += this.f.selectedTipologie.errors ? 'Tipologia;' : '';
+        error += this.f.cognome.errors ? 'Cognome;' : '';
+        error += this.f.nome.errors ? 'Nome;' : '';
+        error += this.f.ragioneSociale.errors ? 'Ragione Sociale;' : '';
+        error += this.f.telefono.errors ? 'Telefono;' : '';
+        error += this.f.indirizzo.errors ? 'Indirizzo;' : '';
+        error += this.f.descrizione.errors ? 'Motivazione;' : '';
+        const errors: string[] = error.split(/\s*(?:;|$)\s*/);
+        return errors;
+    }
+
+    checkCollapsed(): boolean {
+        return !(this.chiamataForm.valid && !!this.coordinate);
+    }
+
     impostaAzioneChiamata($event: AzioneChiamataEnum) {
         if ($event === AzioneChiamataEnum.InviaPartenza || $event === AzioneChiamataEnum.MettiInCoda) {
             this.nuovaRichiesta.azione = AzioneChiamataEnum.MettiInCoda;
@@ -312,14 +326,16 @@ export class SchedaTelefonataComponent implements OnInit {
         this.onSubmit($event);
     }
 
+    checkSubmit(): boolean {
+        return (!this.formIsValid() && !!this.coordinate);
+    }
+
     onSubmit(azione?: AzioneChiamataEnum) {
         this.submitted = true;
-        if (this.formIsValid() || !this.coordinate) {
-            console.error('Il form non è valido');
-            return;
+        if (this.checkSubmit()) {
+            this.getChiamataForm();
+            this._statoChiamata('inserita', azione);
         }
-        this.getChiamataForm();
-        this._statoChiamata('inserita', azione);
     }
 
     _statoChiamata(tipo: string, azione?: AzioneChiamataEnum) {
