@@ -32,7 +32,7 @@
         }
       ],
       "distaccamento": {
-        "codice": "2",
+        "codice": "1",
         "descrizione": "Tuscolana II",
         "coordinate": {
           "latitudine": 1,
@@ -78,7 +78,7 @@
         }
       ],
       "distaccamento": {
-        "codice": "3",
+        "codice": "1",
         "descrizione": "Tuscolana II",
         "coordinate": {
           "latitudine": 1,
@@ -124,8 +124,8 @@
         }
       ],
       "distaccamento": {
-        "codice": "1",
-        "descrizione": "Tuscolana II",
+        "codice": "3",
+        "descrizione": "Ostiense",
         "coordinate": {
           "latitudine": 1,
           "longitudine": 1

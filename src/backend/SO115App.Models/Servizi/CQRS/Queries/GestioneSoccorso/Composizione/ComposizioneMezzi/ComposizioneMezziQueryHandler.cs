@@ -46,7 +46,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             // preparazione del DTO
             List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = _iGetComposizioneMezzi.Get(query);
-           
 
             if ((composizioneMezzi != null && composizioneMezzi.Count > 0))
             {
@@ -61,17 +60,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     {
                         mezzo.IstanteScadenzaSelezione = null;
                     }
-                    mezzo.Id = count++.ToString();
+                    mezzo.Id = mezzo.Mezzo.Codice; //count++.ToString();
                     mezzo.IdRichiesta = query.Filtro.IdRichiesta;
                 }
             }
-            
+
             return new ComposizioneMezziResult()
             {
                 ComposizioneMezzi = composizioneMezzi
             };
         }
-
- 
     }
 }

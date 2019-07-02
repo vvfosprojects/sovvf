@@ -62,6 +62,8 @@ namespace SO115App.API.Models.Classi.Soccorso
             this.eventi = new List<Evento>();
             this.Tipologie = new List<Tipologia>();
             this.Tags = new HashSet<string>();
+            this.ListaUtentiInLavorazione = new List<AttivitaUtente>();
+            this.ListaUtentiPresaInCarico = new List<AttivitaUtente>();
             //this.ListaPartenze = new List<Partenza>();
         }
 

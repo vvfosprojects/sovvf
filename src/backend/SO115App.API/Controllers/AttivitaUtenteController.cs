@@ -1,28 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using CQRS.Commands;
+using DomainModel.CQRS.Commands.MessaInLavorazione;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SO115App.Models.Classi.Soccorso;
 
 namespace SO115App.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AttivitaUtenteController : ControllerBase
     {
-        [HttpPost("AddInLavorazione")]
-        public async Task<IActionResult> AddInLavorazione([FromBody]AttivitaUtente azione)
+        private readonly ICommandHandler<MessaInLavorazioneCommand> _addhandler;
+
+        public AttivitaUtenteController(ICommandHandler<MessaInLavorazioneCommand> Addhandler)
         {
-            //var command = new AddInLavorazioneCommand()
-            //{
-            //    AddInLavorazione = azione
-            //};
+            _addhandler = Addhandler;
+        }
+
+        [HttpPost("AddInLavorazione")]
+        public async Task<IActionResult> AddInLavorazione(string idRichiesta)
+        {
+            var headerValues = Request.Headers["IdUtente"];
+            string IdUtente = headerValues.FirstOrDefault();
+
+            var command = new MessaInLavorazioneCommand()
+            {
+                IdRichiesta = idRichiesta
+            };
 
             try
             {
-                //this._Addhandler.Handle(command);
+                this._addhandler.Handle(command);
                 return Ok();
             }
             catch
@@ -32,8 +42,11 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("DeleteInLavorazione")]
-        public async Task<IActionResult> DeleteInLavorazione([FromBody]AttivitaUtente azione)
+        public async Task<IActionResult> DeleteInLavorazione(string idRichiesta)
         {
+            var headerValues = Request.Headers["IdUtente"];
+            string IdUtente = headerValues.FirstOrDefault();
+
             //var command = new DeleteInLavorazioneCommand()
             //{
             //    DeleteInLavorazione = azione
@@ -51,8 +64,11 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("AddPresaInCarico")]
-        public async Task<IActionResult> AddPresaInCarico([FromBody]AttivitaUtente azione)
+        public async Task<IActionResult> AddPresaInCarico(string idRichiesta)
         {
+            var headerValues = Request.Headers["IdUtente"];
+            string IdUtente = headerValues.FirstOrDefault();
+
             //var command = new AddPresaInCaricoCommand()
             //{
             //    AddPresaInCarico = azione
@@ -70,8 +86,11 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("DeletePresaInCarico")]
-        public async Task<IActionResult> DeletePresaInCarico([FromBody]AttivitaUtente azione)
+        public async Task<IActionResult> DeletePresaInCarico(string idRichiesta)
         {
+            var headerValues = Request.Headers["IdUtente"];
+            string IdUtente = headerValues.FirstOrDefault();
+
             //var command = new DeletePresaInCaricoCommand()
             //{
             //    DeletePresaInCarico = azione
