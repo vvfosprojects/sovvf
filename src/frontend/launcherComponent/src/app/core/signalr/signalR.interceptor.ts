@@ -15,9 +15,13 @@ export class SignalRInterceptor implements HttpInterceptor {
     @Select(SignalRState.codiceSedeSignalR) codiceSede$: Observable<string>;
     private codiceSede: string;
 
+    @Select(SignalRState.idUtenteSignalR) idUtente$: Observable<string>;
+    private idUtente: string;
+
     constructor() {
         this.subscription.add(this.connectionId$.subscribe(result => this.connectionId = result));
         this.subscription.add(this.codiceSede$.subscribe(result => this.codiceSede = result));
+        this.subscription.add(this.idUtente$.subscribe(result => this.idUtente = result));
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -26,7 +30,8 @@ export class SignalRInterceptor implements HttpInterceptor {
             request = request.clone({
                 setHeaders: {
                     HubConnectionId: `${this.connectionId}`,
-                    codiceSede: `${this.codiceSede}`
+                    CodiceSede: `${this.codiceSede}`,
+                    IdUtente: `${this.codiceSede}`
                 }
             });
         }

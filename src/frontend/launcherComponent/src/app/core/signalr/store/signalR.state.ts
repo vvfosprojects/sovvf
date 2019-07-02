@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { SetCodiceSede, SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './signalR.actions';
+import { SetCodiceSede, SetConnectionId, SetIdUtente, SignalRHubConnesso, SignalRHubDisconnesso } from './signalR.actions';
 import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../shared/enum/toastr';
 
@@ -9,6 +9,7 @@ export interface SignalRStateModel {
     disconnected: boolean;
     connectionId: string;
     codiceSede: string;
+    idUtente: string;
 }
 
 export const SignalRStateDefaults: SignalRStateModel = {
@@ -16,7 +17,8 @@ export const SignalRStateDefaults: SignalRStateModel = {
     reconnected: null,
     disconnected: null,
     connectionId: null,
-    codiceSede: null
+    codiceSede: null,
+    idUtente: null
 };
 
 @State<SignalRStateModel>({
@@ -39,6 +41,11 @@ export class SignalRState {
     @Selector()
     static codiceSedeSignalR(state: SignalRStateModel): string {
         return state.codiceSede;
+    }
+
+    @Selector()
+    static idUtenteSignalR(state: SignalRStateModel): string {
+        return state.idUtente;
     }
 
     @Action(SignalRHubConnesso)
@@ -82,6 +89,13 @@ export class SignalRState {
     setCodiceSede({ patchState }: StateContext<SignalRStateModel>, action: SetCodiceSede) {
         patchState({
             codiceSede: action.codiceSede
+        });
+    }
+
+    @Action(SetIdUtente)
+    setIdUtente({ patchState }: StateContext<SignalRStateModel>, action: SetIdUtente) {
+        patchState({
+            idUtente: action.idUtente
         });
     }
 }

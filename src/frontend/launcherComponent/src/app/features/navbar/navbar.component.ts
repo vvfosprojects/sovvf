@@ -12,7 +12,7 @@ import { calcolaTurno } from '../../shared/helper/calcola-turno';
 import { TurnoExtra } from './turno/turno-extra.model';
 import { ClearDataNavbar, GetDataNavbar } from './store/actions/navbar.actions';
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
-import { SetCodiceSede } from '../../core/signalr/store/signalR.actions';
+import { SetCodiceSede, SetIdUtente } from '../../core/signalr/store/signalR.actions';
 
 @Component({
     selector: 'app-navbar',
@@ -74,6 +74,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     setUtente() {
         this.store.dispatch(new SetUtente(this.authService.currentUserValue));
         this.store.dispatch(new SetCodiceSede(this.authService.currentUserValue.sede.codice));
+        this.store.dispatch(new SetIdUtente(this.authService.currentUserValue.id));
     }
 
     checkTurno(): void {

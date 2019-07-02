@@ -19,3 +19,10 @@ export class SetCodiceSede {
     constructor(public codiceSede: string) {
     }
 }
+
+export class SetIdUtente {
+    static readonly type = '[signalR] Set ID Utente';
+
+    constructor(public idUtente: string) {
+    }
+}
