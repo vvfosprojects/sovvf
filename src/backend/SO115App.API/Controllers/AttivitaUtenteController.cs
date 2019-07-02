@@ -2,6 +2,9 @@
 using System.Threading.Tasks;
 using CQRS.Commands;
 using DomainModel.CQRS.Commands.MessaInLavorazione;
+using DomainModel.CQRS.Commands.PresaInCarico;
+using DomainModel.CQRS.Commands.RimozioneInLavorazione;
+using DomainModel.CQRS.Commands.RimozionePresaInCarico;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,21 +16,32 @@ namespace SO115App.API.Controllers
     public class AttivitaUtenteController : ControllerBase
     {
         private readonly ICommandHandler<MessaInLavorazioneCommand> _addhandler;
+        private readonly ICommandHandler<RimozioneInLavorazioneCommand> _deleteInLavorazionehandler;
+        private readonly ICommandHandler<PresaInCaricoCommand> _presaInCaricohandler;
+        private readonly ICommandHandler<RimozionePresaInCaricoCommand> _rimozionePresaInCaricohandler;
 
-        public AttivitaUtenteController(ICommandHandler<MessaInLavorazioneCommand> Addhandler)
+        public AttivitaUtenteController(
+            ICommandHandler<MessaInLavorazioneCommand> Addhandler,
+            ICommandHandler<RimozioneInLavorazioneCommand> DeleteInLavorazionehandler,
+            ICommandHandler<PresaInCaricoCommand> PresaInCaricohandler,
+            ICommandHandler<RimozionePresaInCaricoCommand> RimozionePresaInCaricohandler)
         {
             _addhandler = Addhandler;
+            _deleteInLavorazionehandler = DeleteInLavorazionehandler;
+            _presaInCaricohandler = PresaInCaricohandler;
+            _rimozionePresaInCaricohandler = RimozionePresaInCaricohandler;
         }
 
         [HttpPost("AddInLavorazione")]
-        public async Task<IActionResult> AddInLavorazione(string idRichiesta)
+        public async Task<IActionResult> AddInLavorazione(string id)
         {
             var headerValues = Request.Headers["IdUtente"];
             string IdUtente = headerValues.FirstOrDefault();
 
             var command = new MessaInLavorazioneCommand()
             {
-                IdRichiesta = idRichiesta
+                IdRichiesta = id,
+                IdUtente = IdUtente
             };
 
             try
@@ -42,19 +56,20 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("DeleteInLavorazione")]
-        public async Task<IActionResult> DeleteInLavorazione(string idRichiesta)
+        public async Task<IActionResult> DeleteInLavorazione(string id)
         {
             var headerValues = Request.Headers["IdUtente"];
             string IdUtente = headerValues.FirstOrDefault();
 
-            //var command = new DeleteInLavorazioneCommand()
-            //{
-            //    DeleteInLavorazione = azione
-            //};
+            var command = new RimozioneInLavorazioneCommand()
+            {
+                IdRichiesta = id,
+                IdUtente = IdUtente
+            };
 
             try
             {
-                //this._Addhandler.Handle(command);
+                this._deleteInLavorazionehandler.Handle(command);
                 return Ok();
             }
             catch
@@ -64,19 +79,20 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("AddPresaInCarico")]
-        public async Task<IActionResult> AddPresaInCarico(string idRichiesta)
+        public async Task<IActionResult> AddPresaInCarico(string id)
         {
             var headerValues = Request.Headers["IdUtente"];
             string IdUtente = headerValues.FirstOrDefault();
 
-            //var command = new AddPresaInCaricoCommand()
-            //{
-            //    AddPresaInCarico = azione
-            //};
+            var command = new PresaInCaricoCommand()
+            {
+                IdRichiesta = id,
+                IdUtente = IdUtente
+            };
 
             try
             {
-                //this._Addhandler.Handle(command);
+                this._presaInCaricohandler.Handle(command);
                 return Ok();
             }
             catch
@@ -86,19 +102,20 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("DeletePresaInCarico")]
-        public async Task<IActionResult> DeletePresaInCarico(string idRichiesta)
+        public async Task<IActionResult> DeletePresaInCarico(string id)
         {
             var headerValues = Request.Headers["IdUtente"];
             string IdUtente = headerValues.FirstOrDefault();
 
-            //var command = new DeletePresaInCaricoCommand()
-            //{
-            //    DeletePresaInCarico = azione
-            //};
+            var command = new RimozionePresaInCaricoCommand()
+            {
+                IdRichiesta = id,
+                IdUtente = IdUtente
+            };
 
             try
             {
-                //this._Addhandler.Handle(command);
+                this._rimozionePresaInCaricohandler.Handle(command);
                 return Ok();
             }
             catch

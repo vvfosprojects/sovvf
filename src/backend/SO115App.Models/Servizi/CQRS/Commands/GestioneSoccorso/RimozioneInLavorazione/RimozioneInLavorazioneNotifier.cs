@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AddInterventoValidator.cs" company="CNVVF">
+// <copyright file="AddInterventoNotifier.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,23 +17,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Web.Http.ModelBinding;
-using CQRS.Commands.Validators;
-using ValidationResult = CQRS.Validation.ValidationResult;
+using CQRS.Commands.Notifiers;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
 
-namespace DomainModel.CQRS.Commands.MessaInLavorazione
+namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
 {
-    public class MessaInLavorazioneValidator : ICommandValidator<MessaInLavorazioneCommand>
+    public class RimozioneInLavorazioneNotifier : ICommandNotifier<RimozioneInLavorazioneCommand>
     {
-        public IEnumerable<ValidationResult> Validate(MessaInLavorazioneCommand command)
-        {
-            // Controlli sul richiedente
+        private readonly INotifyInserimentoChiamata _sender;
 
-            if (command.IdRichiesta.Length == 0)
-            {
-                yield return new ValidationResult("Id Richiesta non valido");
-            }
+        public RimozioneInLavorazioneNotifier(INotifyInserimentoChiamata sender)
+        {
+            _sender = sender;
+        }
+
+        public void Notify(RimozioneInLavorazioneCommand command)
+        {
+            //_sender.SendNotification(command);
         }
     }
 }

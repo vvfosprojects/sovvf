@@ -22,11 +22,11 @@ using System.Web.Http.ModelBinding;
 using CQRS.Commands.Validators;
 using ValidationResult = CQRS.Validation.ValidationResult;
 
-namespace DomainModel.CQRS.Commands.MessaInLavorazione
+namespace DomainModel.CQRS.Commands.PresaInCarico
 {
-    public class MessaInLavorazioneValidator : ICommandValidator<MessaInLavorazioneCommand>
+    public class PresaInCaricoValidator : ICommandValidator<PresaInCaricoCommand>
     {
-        public IEnumerable<ValidationResult> Validate(MessaInLavorazioneCommand command)
+        public IEnumerable<ValidationResult> Validate(PresaInCaricoCommand command)
         {
             // Controlli sul richiedente
 

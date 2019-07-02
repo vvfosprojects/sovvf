@@ -18,15 +18,14 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
-using System.Web.Http.ModelBinding;
 using CQRS.Commands.Validators;
 using ValidationResult = CQRS.Validation.ValidationResult;
 
-namespace DomainModel.CQRS.Commands.MessaInLavorazione
+namespace DomainModel.CQRS.Commands.RimozionePresaInCarico
 {
-    public class MessaInLavorazioneValidator : ICommandValidator<MessaInLavorazioneCommand>
+    public class RimozionePresaInCaricoValidator : ICommandValidator<RimozionePresaInCaricoCommand>
     {
-        public IEnumerable<ValidationResult> Validate(MessaInLavorazioneCommand command)
+        public IEnumerable<ValidationResult> Validate(RimozionePresaInCaricoCommand command)
         {
             // Controlli sul richiedente
 

@@ -18,28 +18,24 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
-using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using System;
 using System.Collections.Generic;
 
-namespace DomainModel.CQRS.Commands.MessaInLavorazione
+namespace DomainModel.CQRS.Commands.PresaInCarico
 {
-    public class MessaInLavorazioneCommandHandler : ICommandHandler<MessaInLavorazioneCommand>
+    public class PresaInCaricoCommandHandler : ICommandHandler<PresaInCaricoCommand>
     {
         private readonly IGetRichiestaById _getRichiestaById;
 
         // private readonly IGetUtenteById _getUtenteById;
         private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
 
-        public MessaInLavorazioneCommandHandler(
+        public PresaInCaricoCommandHandler(
             IGetRichiestaById GetRichiestaById,
             //IGetUtenteById GetUtenteById,
             IUpDateRichiestaAssistenza UpDateRichiestaAssistenza
@@ -50,7 +46,7 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
             _upDateRichiestaAssistenza = UpDateRichiestaAssistenza;
         }
 
-        public void Handle(MessaInLavorazioneCommand command)
+        public void Handle(PresaInCaricoCommand command)
         {
             RichiestaAssistenza richiesta = _getRichiestaById.Get(command.IdRichiesta);
             //Utente utente = _getUtenteById.GetUtenteById(command.IdUtente);
@@ -60,15 +56,18 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
             attivita.Nominativo = "Test Test"; //utente.Nome + " " + utente.Cognome;
             attivita.DataInizioAttivita = DateTime.UtcNow;
 
-            if (richiesta.ListaUtentiInLavorazione != null)
-                richiesta.ListaUtentiInLavorazione.Add(attivita);
+            richiesta.Id = richiesta.Codice;
+            if (richiesta.ListaUtentiPresaInCarico != null)
+            {
+                new InizioPresaInCarico(richiesta, DateTime.UtcNow, richiesta.Operatore.Id);
+
+                richiesta.ListaUtentiPresaInCarico.Add(attivita);
+            }
             else
             {
-                richiesta.ListaUtentiInLavorazione = new List<AttivitaUtente>();
-                richiesta.ListaUtentiInLavorazione.Add(attivita);
+                richiesta.ListaUtentiPresaInCarico = new List<AttivitaUtente>();
+                richiesta.ListaUtentiPresaInCarico.Add(attivita);
             }
-
-            richiesta.Id = richiesta.Codice;
 
             this._upDateRichiestaAssistenza.UpDate(richiesta);
         }
