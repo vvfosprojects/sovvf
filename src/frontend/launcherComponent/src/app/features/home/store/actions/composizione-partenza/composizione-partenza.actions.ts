@@ -76,3 +76,6 @@ export class TerminaComposizione {
     static readonly type = '[ComposizionePartenza] Termina Composizione Partenza';
 }
 
+export class ClearPartenza {
+    static readonly type = '[ComposizionePartenza] Clear Composizione Partenza';
+}

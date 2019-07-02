@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import {
-    AddFiltroSelezionatoComposizione, ConfirmPartenze,
+    AddFiltroSelezionatoComposizione, ClearPartenza, ConfirmPartenze,
     GetFiltriComposizione,
     RemoveFiltriSelezionatiComposizione,
     RemoveFiltroSelezionatoComposizione, RichiestaComposizione, SetComposizioneMode,
@@ -15,9 +15,9 @@ import { ComposizionePartenzaStateModel } from './composizione-partenza.state';
 import { FilterbarService } from '../../../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
-import { ClearListaComposizioneVeloce, GetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
+import { ClearComposizioneVeloce, ClearListaComposizioneVeloce, GetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import { GetListeCoposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
+import { ClearComposizioneAvanzata, GetListeCoposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
@@ -276,10 +276,18 @@ export class ComposizionePartenzaState {
         dispatch([
             new DeleteInLavorazione(state.richiesta),
             new ClearDirection(),
-            new GetInitCentroMappa()
+            new GetInitCentroMappa(),
+            new ClearComposizioneVeloce(),
+            new ClearComposizioneAvanzata(),
+            new ClearPartenza()
         ]);
         patchState({
             richiesta: ComposizioneStateDefaults.richiesta
         });
+    }
+
+    @Action(ClearPartenza)
+    clearPartenza({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+        patchState(ComposizioneStateDefaults);
     }
 }

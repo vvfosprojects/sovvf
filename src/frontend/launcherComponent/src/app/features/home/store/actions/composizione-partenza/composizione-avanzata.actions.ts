@@ -11,3 +11,6 @@ export class UnselectMezziAndSquadreComposizioneAvanzata {
     static readonly type = '[ComposizioneAvanzata] Unselect Mezzi and Squadre Composizione Avanzata';
 }
 
+export class ClearComposizioneAvanzata {
+    static readonly type = '[ComposizioneAvanzata] Clear Composizione Partenza Avanzata';
+}

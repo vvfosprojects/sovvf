@@ -5,6 +5,7 @@ import { BoxPartenza } from '../../../composizione-partenza/interface/box-parten
 
 // Action
 import {
+    ClearComposizioneVeloce,
     ClearListaComposizioneVeloce,
     GetListaComposizioneVeloce, SelectPreAccoppiatoComposizione,
     SetListaComposizioneVeloce, UnselectPreAccoppiatoComposizione, UpdateMezzoPreAccoppiatoComposizione
@@ -140,5 +141,10 @@ export class ComposizioneVeloceState {
             })
         );
         // console.log(action.preAcc);
+    }
+
+    @Action(ClearComposizioneVeloce)
+    clearComposizioneVeloce({ patchState }: StateContext<PreAccoppiatiStateModel>) {
+        patchState(PreAccoppiatiStateModelStateDefaults);
     }
 }

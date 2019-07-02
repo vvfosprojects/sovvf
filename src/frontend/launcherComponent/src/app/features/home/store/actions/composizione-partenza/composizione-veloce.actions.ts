@@ -39,3 +39,7 @@ export class UpdateMezzoPreAccoppiatoComposizione {
     constructor(public mezzoComp: MezzoComposizione) {
     }
 }
+
+export class ClearComposizioneVeloce {
+    static readonly type = '[PreAccoppiati] Clear PreAccoppiati';
+}
