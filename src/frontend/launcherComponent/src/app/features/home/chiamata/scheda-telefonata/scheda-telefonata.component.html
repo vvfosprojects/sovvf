@@ -235,7 +235,7 @@
                     <button class="btn btn-outline-secondary ml-2" type="button" (click)="onResetChiamata()">
                         <i class="fa fa-recycle mr-1"></i>Reset
                     </button>
-                    <span ngbTooltip="Inserire il resto dei campi obbligatori" [disableTooltip]="checkCollapsed()" placement="bottom">
+                    <span ngbTooltip="Inserire il resto dei campi obbligatori" [disableTooltip]="!checkCollapsed()" placement="bottom">
                         <button type="button" class="btn btn-outline-primary ml-2" (click)="toggleCollapsed()"
                                 [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample"
                                 [disabled]="checkCollapsed()">
