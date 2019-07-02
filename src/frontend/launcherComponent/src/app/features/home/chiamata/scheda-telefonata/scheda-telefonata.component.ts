@@ -278,6 +278,20 @@ export class SchedaTelefonataComponent implements OnInit {
         this._statoChiamata('cerca');
     }
 
+    onMsgIndirizzo(): string {
+        let msg = '';
+        if (this.f.indirizzo.errors && !this.coordinate) {
+            msg = 'L\'indirizzo è richiesto';
+        } else if (this.f.indirizzo.errors) {
+            msg = 'L\'indirizzo è richiesto';
+        } else if (!this.coordinate) {
+            msg = 'È necessario selezionare almeno un indirizzo dall\'elenco';
+        } else {
+            return null;
+        }
+        return msg;
+    }
+
     toggleCollapsed(): void {
         if (this.checkSubmit()) {
             this.isCollapsed = !this.isCollapsed;

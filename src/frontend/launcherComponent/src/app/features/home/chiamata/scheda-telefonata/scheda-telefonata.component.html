@@ -124,11 +124,11 @@
                     <div class="form-group mb-3">
                         <label for="indirizzo">Indirizzo</label>
                         <input id="indirizzo" ngx-google-places-autocomplete type="text" formControlName="indirizzo"
-                               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.indirizzo.errors }"
+                               class="form-control" [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
                                placeholder="Ricerca indirizzo" [options]="options"
                                (onAddressChange)="onCercaIndirizzo($event)" autocomplete="new-password">
-                        <div *ngIf="submitted && f.indirizzo.errors" class="invalid-feedback">
-                            <div *ngIf="f.indirizzo.errors.required">L'indirizzo è richiesto</div>
+                        <div *ngIf="submitted && (f.indirizzo.errors || !coordinate)" class="invalid-feedback">
+                            <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
                         </div>
                     </div>
                 </div>
