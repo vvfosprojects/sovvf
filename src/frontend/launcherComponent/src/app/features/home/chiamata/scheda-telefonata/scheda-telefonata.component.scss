@@ -46,3 +46,9 @@ ngb-accordion {
 .dropdown-menu {
   min-width: 200px !important;
 }
+
+.ng-select.errore {
+  .ng-select-container {
+    border-color: #dc3545 !important;
+  }
+}

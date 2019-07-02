@@ -41,12 +41,16 @@
             <hr class="mt-1 mb-3">
             <div class="form-group mb-3">
                 <label class="d-none">Tipologia intervento</label>
-                <ng-select class="border" bindLabel="descrizione" bindValue="codice" [items]="tipologie"
+                <ng-select class="border" [ngClass]="{'errore': submitted && checkTipologie()}" bindLabel="descrizione"
+                           bindValue="codice" [items]="tipologie"
                            [multiple]="true" [closeOnSelect]="true" [hideSelected]="true" clearAllText="Clear"
                            (add)="onAddTipologia($event)"
                            (remove)="onRemoveTipologia($event)" placeholder="Seleziona Tipologia Intervento"
                            formControlName="selectedTipologie">
                 </ng-select>
+                <div *ngIf="submitted && checkTipologie()" class="text-danger">
+                    <small>Almeno una tipologia è richiesta</small>
+                </div>
             </div>
             <div class="row">
                 <div class="col">
@@ -201,7 +205,8 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <app-selezione-tipi-terreno (tipiTerrenoSelezionati)="onTerreniSelezionati($event)"></app-selezione-tipi-terreno>
+                        <app-selezione-tipi-terreno
+                                (tipiTerrenoSelezionati)="onTerreniSelezionati($event)"></app-selezione-tipi-terreno>
                     </div>
                 </div>
             </div>

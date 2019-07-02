@@ -77,7 +77,7 @@ export class SchedaTelefonataComponent implements OnInit {
 
     createForm(): FormGroup {
         return this.formBuilder.group({
-            selectedTipologie: [],
+            selectedTipologie: [null, Validators.required],
             nome: [null],
             cognome: [null],
             ragioneSociale: [null],
@@ -193,6 +193,10 @@ export class SchedaTelefonataComponent implements OnInit {
 
     onRemoveTipologia(tipologia: any) {
         this.nuovaRichiesta.tipologie.splice(this.nuovaRichiesta.tipologie.indexOf(tipologia.codice), 1);
+    }
+
+    checkTipologie(): boolean {
+        return !!!(this.nuovaRichiesta.tipologie && (this.nuovaRichiesta.tipologie.length > 0));
     }
 
     clearTipologieSelezionate() {
