@@ -4,7 +4,7 @@ import {
     AddBookingMezzoComposizione,
     AddBookMezzoComposizione,
     AddMezzoComposizione,
-    ClearListaMezziComposizione,
+    ClearListaMezziComposizione, ClearMezzoComposizione,
     ClearSelectedMezziComposizione,
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
@@ -297,5 +297,10 @@ export class MezziComposizioneState {
     requestUnlockMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>, action: RequestUnlockMezzoComposizione) {
         // TODO: inserire chiamata a controller che richiederà lo sblocco del mezzo rispondendo nel service di SignalR.
         console.log(action.idMezzoComp);
+    }
+
+    @Action(ClearMezzoComposizione)
+    clearMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>) {
+        patchState(MezziComposizioneStateDefaults);
     }
 }

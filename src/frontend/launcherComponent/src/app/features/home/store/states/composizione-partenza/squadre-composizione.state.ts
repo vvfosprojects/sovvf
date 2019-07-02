@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
 import {
-    AddSquadraComposizione, ClearListaSquadreComposizione, ClearSelectedSquadreComposizione, HoverInSquadraComposizione, HoverOutSquadraComposizione,
+    AddSquadraComposizione, ClearListaSquadreComposizione, ClearSelectedSquadreComposizione, ClearSquadraComposizione, HoverInSquadraComposizione, HoverOutSquadraComposizione,
     RemoveSquadraComposizione, SelectSquadra,
     SelectSquadraComposizione,
     SetListaSquadreComposizione, UnselectSquadra, UnselectSquadraComposizione,
@@ -148,4 +148,10 @@ export class SquadreComposizioneState {
         });
         // console.log(action.mezzoComp);
     }
+
+    @Action(ClearSquadraComposizione)
+    clearSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>) {
+        patchState(SquadreComposizioneStateDefaults);
+    }
+
 }

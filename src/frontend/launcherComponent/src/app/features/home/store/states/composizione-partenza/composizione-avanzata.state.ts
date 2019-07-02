@@ -50,8 +50,8 @@ export class ComposizioneAvanzataState {
             filtri['CodiceTipoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo.length > 0 ?
                 this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
         }
-        // filtri['idRichiesta'] = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
-        filtri['idRichiesta'] = '1';
+        filtri['idRichiesta'] = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
+        // filtri['idRichiesta'] = '1';
 
         // imposto il codice del mezzo selezionato se presente
         const codiceMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoComposizioneSelezionato);
@@ -79,7 +79,7 @@ export class ComposizioneAvanzataState {
                 if (listeCompAvanzata.composizioneSquadre) {
                     this.store.dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadre));
                 }
-                // console.log('listeCompAvanzata', listeCompAvanzata);
+                console.log('listeCompAvanzata', listeCompAvanzata);
             }
             // console.log('Composizione Partenza Avanzata Service');
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));

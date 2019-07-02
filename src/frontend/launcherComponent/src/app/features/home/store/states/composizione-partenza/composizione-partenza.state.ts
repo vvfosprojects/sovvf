@@ -18,8 +18,8 @@ import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker
 import { ClearComposizioneVeloce, ClearListaComposizioneVeloce, GetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { ClearComposizioneAvanzata, GetListeCoposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
-import { ClearListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import { ClearListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import { ClearListaMezziComposizione, ClearMezzoComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
+import { ClearListaSquadreComposizione, ClearSquadraComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { TurnOffComposizione } from '../../actions/view/view.actions';
 import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/richiesta-attivita-utente.actions';
@@ -279,6 +279,8 @@ export class ComposizionePartenzaState {
             new GetInitCentroMappa(),
             new ClearComposizioneVeloce(),
             new ClearComposizioneAvanzata(),
+            new ClearMezzoComposizione(),
+            new ClearSquadraComposizione(),
             new ClearPartenza()
         ]);
         patchState({

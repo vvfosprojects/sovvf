@@ -77,3 +77,7 @@ export class HoverOutSquadraComposizione {
     constructor(public idSquadraComp: string) {
     }
 }
+
+export class ClearSquadraComposizione {
+    static readonly type = '[SquadreComposizione] Clear Squadra Composizione';
+}
