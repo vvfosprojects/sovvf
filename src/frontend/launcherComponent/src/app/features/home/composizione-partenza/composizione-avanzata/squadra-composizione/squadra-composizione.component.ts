@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 // Model
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
+import { StatoSquadra } from '../../../../../shared/enum/stato-squadra.enum';
 
 @Component({
     selector: 'app-squadra-composizione',
@@ -60,6 +60,15 @@ export class SquadraComposizioneComponent implements OnInit {
                 break;
             case 'hover-si|selezionato-si':
                 returnClass += 'border-danger diagonal-stripes bg-lightgrey';
+                break;
+        }
+
+        switch (this.squadraComp.squadra.stato) {
+            case StatoSquadra.InViaggio:
+                returnClass += ' diagonal-stripes bg-lightinfo';
+                break;
+            case StatoSquadra.SulPosto:
+                returnClass += ' diagonal-stripes bg-lightsuccess';
                 break;
         }
 

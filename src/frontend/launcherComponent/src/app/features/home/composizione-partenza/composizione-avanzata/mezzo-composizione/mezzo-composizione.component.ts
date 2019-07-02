@@ -98,17 +98,17 @@ export class MezzoComposizioneComponent implements OnInit {
                 returnClass += 'border-danger diagonal-stripes bg-lightgrey';
                 break;
         }
-
-        if (this.itemBloccato) {
-            switch (this.mezzoComp.mezzo.stato) {
-                case 'inViaggio':
-                    returnClass += ' diagonal-stripes bg-lightinfo';
-                    break;
-                case 'sulPosto':
-                    returnClass += ' diagonal-stripes bg-lightsuccess';
-                    break;
-            }
+        //
+        // if (this.itemBloccato) {
+        switch (this.mezzoComp.mezzo.stato) {
+            case 'In Viaggio':
+                returnClass += ' diagonal-stripes bg-lightinfo';
+                break;
+            case 'Sul Posto':
+                returnClass += ' diagonal-stripes bg-lightsuccess';
+                break;
         }
+        // }
 
         if (this.itemInPrenotazione) {
             returnClass += ' diagonal-stripes bg-lightgrey';
@@ -136,6 +136,6 @@ export class MezzoComposizioneComponent implements OnInit {
 
     // Mappa
     mezzoDirection(mezzoComp: MezzoComposizione): void {
-        this.mezzoCoordinate.emit({'idMezzo': mezzoComp.id, 'coordinate': mezzoComp.coordinate});
+        this.mezzoCoordinate.emit({ 'idMezzo': mezzoComp.id, 'coordinate': mezzoComp.coordinate });
     }
 }
