@@ -17,28 +17,28 @@ export class AttivitaUtenteService {
     }
 
     public addInLavorazione(sintesiRichiesta: SintesiRichiesta): Observable<any> {
-        return this.http.post<string>(API_URL + '/AddInLavorazione', { id: sintesiRichiesta.id }).pipe(
+        return this.http.post<string>(API_URL + '/AddInLavorazione', sintesiRichiesta).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
     public deleteInLavorazione(sintesiRichiesta: SintesiRichiesta): Observable<any> {
-        return this.http.post<string>(API_URL + '/DeleteInLavorazione', { id: sintesiRichiesta.id }).pipe(
+        return this.http.post<string>(API_URL + '/DeleteInLavorazione', sintesiRichiesta).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
     public addPresaInCarico(sintesiRichiesta: SintesiRichiesta): Observable<any> {
-        return this.http.post<string>(API_URL + '/AddPresaInCarico', { id: sintesiRichiesta.id }).pipe(
+        return this.http.post<string>(API_URL + '/AddPresaInCarico', sintesiRichiesta).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
     public deletePresaInCarico(sintesiRichiesta: SintesiRichiesta): Observable<any> {
-        return this.http.post<string>(API_URL + '/DeletePresaInCarico', { id: sintesiRichiesta.id }).pipe(
+        return this.http.post<string>(API_URL + '/DeletePresaInCarico', sintesiRichiesta).pipe(
             retry(3),
             catchError(handleError)
         );
