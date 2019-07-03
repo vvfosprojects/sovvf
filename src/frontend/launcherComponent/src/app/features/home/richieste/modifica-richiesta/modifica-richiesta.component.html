@@ -42,6 +42,7 @@
             <div class="form-group mb-2">
                 <label>Tipologia intervento</label>
                 <ng-select class="border"
+                           [ngClass]="{'errore': submitted && checkTipologie()}"
                            bindLabel="descrizione"
                            [items]="(tipologie$ | async)"
                            [multiple]="true"
@@ -50,6 +51,9 @@
                            formControlName="tipoIntervento"
                            placeholder="Seleziona Tipologia Intervento">
                 </ng-select>
+                <div *ngIf="submitted && checkTipologie()" class="text-danger">
+                    <small>Almeno una tipologia è richiesta</small>
+                </div>
             </div>
             <div class="row">
                 <div class="col">
@@ -83,7 +87,6 @@
                                [ngClass]="{ 'is-invalid': submitted && f.nome.errors }"/>
                         <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
                             <div *ngIf="f.nome.errors.required">Il Nome è richiesto</div>
-                            <div *ngIf="f.nome.errors.troppiDati">La ragione sociale deve essere vuota</div>
                         </div>
                     </div>
                 </div>
@@ -95,7 +98,6 @@
                                [ngClass]="{ 'is-invalid': submitted && f.cognome.errors }"/>
                         <div *ngIf="submitted && f.cognome.errors" class="invalid-feedback">
                             <div *ngIf="f.cognome.errors.required">Il Cognome è richiesto</div>
-                            <div *ngIf="f.cognome.errors.troppiDati">La ragione sociale deve essere vuota</div>
                         </div>
                     </div>
                 </div>
@@ -108,7 +110,6 @@
                                [ngClass]="{ 'is-invalid': submitted && f.ragioneSociale.errors }"/>
                         <div *ngIf="submitted && f.ragioneSociale.errors" class="invalid-feedback">
                             <div *ngIf="f.ragioneSociale.errors.required">La ragione sociale è richiesta</div>
-                            <div *ngIf="f.ragioneSociale.errors.troppiDati">Nome e Cognome devono essere vuoti</div>
                         </div>
                     </div>
                 </div>
@@ -130,12 +131,12 @@
                         <label for="indirizzo">Indirizzo</label>
                         <input id="indirizzo" ngx-google-places-autocomplete type="text" formControlName="indirizzo"
                                class="form-control"
-                               [ngClass]="{ 'is-invalid': submitted && f.indirizzo.errors }"
+                               [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
                                placeholder="Ricerca indirizzo"
-                               [options]="options" (onAddressChange)="onCercaIndirizzo($event)"
+                               [options]="options" (onAddressChange)="onCercaIndirizzo($event)" (keyup)="modificaIndirizzo()"
                                autocomplete="new-password">
-                        <div *ngIf="submitted && f.indirizzo.errors" class="invalid-feedback">
-                            <div *ngIf="f.indirizzo.errors.required">L'indirizzo è richiesto</div>
+                        <div *ngIf="submitted && (f.indirizzo.errors || !coordinate)" class="invalid-feedback">
+                            <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
                         </div>
                     </div>
                 </div>

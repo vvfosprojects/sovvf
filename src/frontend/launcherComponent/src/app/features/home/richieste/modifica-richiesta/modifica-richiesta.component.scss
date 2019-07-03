@@ -1,0 +1,19 @@
+.dropdownTipologiaRichiedente {
+  border-color: #007bff !important;
+}
+
+.dropdownTipologiaRichiedente button:hover {
+  background-color: #007bff !important;
+  color: white;
+}
+
+.dropdown-menu {
+  min-width: 200px !important;
+}
+
+
+.ng-select.errore {
+  .ng-select-container {
+    border-color: #dc3545 !important;
+  }
+}

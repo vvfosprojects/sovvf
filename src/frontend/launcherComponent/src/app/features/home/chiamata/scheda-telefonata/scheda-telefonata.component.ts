@@ -285,7 +285,7 @@ export class SchedaTelefonataComponent implements OnInit {
         } else if (this.f.indirizzo.errors) {
             msg = 'L\'indirizzo è richiesto';
         } else if (!this.coordinate) {
-            msg = 'È necessario selezionare almeno un indirizzo dall\'elenco';
+            msg = 'È necessario selezionare un indirizzo dall\'elenco';
         } else {
             return null;
         }

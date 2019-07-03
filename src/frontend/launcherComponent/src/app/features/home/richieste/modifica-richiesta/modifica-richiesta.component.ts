@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, isDevMode, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RichiestaModificaState } from '../../store/states/richieste/richiesta-modifica.state';
@@ -20,7 +20,8 @@ import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
 @Component({
     selector: 'app-modifica-richiesta',
     templateUrl: './modifica-richiesta.component.html',
-    styleUrls: ['./modifica-richiesta.component.css']
+    styleUrls: ['./modifica-richiesta.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class ModificaRichiestaComponent implements OnInit, OnDestroy {
 
@@ -39,9 +40,16 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     modificaRichiestaForm: FormGroup;
     submitted = false;
 
+    coordinate: Coordinate;
+
     constructor(private formBuilder: FormBuilder,
                 private store: Store) {
-        this.subscription.add(this.richiestaModifica$.subscribe((richiesta: SintesiRichiesta) => this.richiestaModifica = makeCopy(richiesta)));
+        this.subscription.add(this.richiestaModifica$.subscribe((richiesta: SintesiRichiesta) => {
+            if (richiesta) {
+                this.richiestaModifica = makeCopy(richiesta);
+                this.coordinate = makeCopy(richiesta.localita.coordinate);
+            }
+        }));
     }
 
     ngOnInit() {
@@ -126,11 +134,26 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
 
     onCercaIndirizzo(result: Address): void {
         const coordinate = new Coordinate(result.geometry.location.lat(), result.geometry.location.lng());
+        this.coordinate = coordinate;
         this.f.latitudine.patchValue(coordinate.latitudine);
         this.f.longitudine.patchValue(coordinate.longitudine);
         this.f.indirizzo.patchValue(result.formatted_address);
         const nuovoIndirizzo = new Localita(coordinate ? coordinate : null, result.formatted_address);
         this.store.dispatch(new ModificaIndirizzo(nuovoIndirizzo));
+    }
+
+    onMsgIndirizzo(): string {
+        let msg = '';
+        if (this.f.indirizzo.errors && !this.coordinate) {
+            msg = 'L\'indirizzo è richiesto';
+        } else if (this.f.indirizzo.errors) {
+            msg = 'L\'indirizzo è richiesto';
+        } else if (!this.coordinate) {
+            msg = 'È necessario selezionare un indirizzo dall\'elenco';
+        } else {
+            return null;
+        }
+        return msg;
     }
 
     onCopiaIndirizzo() {
@@ -173,7 +196,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
 
     onConfermaModifica() {
         this.submitted = true;
-        if (this.modificaRichiestaForm.invalid) {
+        if (!(this.modificaRichiestaForm.valid && !!this.coordinate)) {
             return;
         }
 
@@ -185,6 +208,18 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
 
     onTerreniSelezionati($event: TipoTerreno[]): void {
         this.richiestaModifica.tipoTerreno = $event;
+    }
+
+    checkTipologie(): boolean {
+        return !!!(this.f.tipoIntervento.value && (this.f.tipoIntervento.value.length > 0));
+    }
+
+    modificaIndirizzo() {
+        const address = this.f.indirizzo;
+        if (address.touched || address.dirty) {
+            this.coordinate = null;
+        }
+        console.log('coordinate', this.coordinate);
     }
 
 }
