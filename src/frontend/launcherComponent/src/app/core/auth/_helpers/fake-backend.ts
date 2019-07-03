@@ -596,7 +596,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 }
 
                 return ok({
-                    _user: {
+                    // _user: {
                         id: user.id,
                         username: user.username,
                         nome: user.nome,
@@ -604,7 +604,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                         ruoli: user.ruoli,
                         sede: user.sede,
                         token: `fake-so115-jwt-token.${user.ruoli[0].descrizione}`
-                    }
+                    // }
                 });
             }
 
