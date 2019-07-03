@@ -31,7 +31,7 @@ export class SignalRInterceptor implements HttpInterceptor {
                 setHeaders: {
                     HubConnectionId: `${this.connectionId}`,
                     CodiceSede: `${this.codiceSede}`,
-                    IdUtente: `${this.codiceSede}`
+                    IdUtente: `${this.idUtente}`
                 }
             });
         }
