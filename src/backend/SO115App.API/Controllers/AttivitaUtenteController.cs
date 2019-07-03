@@ -7,6 +7,8 @@ using DomainModel.CQRS.Commands.RimozioneInLavorazione;
 using DomainModel.CQRS.Commands.RimozionePresaInCarico;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 
 namespace SO115App.API.Controllers
 {
@@ -33,15 +35,16 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("AddInLavorazione")]
-        public async Task<IActionResult> AddInLavorazione(string id)
+        public async Task<IActionResult> AddInLavorazione([FromBody]Intervento intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
             string IdUtente = headerValues.FirstOrDefault();
 
             var command = new MessaInLavorazioneCommand()
             {
-                IdRichiesta = id,
-                IdUtente = IdUtente
+                IdRichiesta = intervento.Id,
+                IdUtente = IdUtente,
+                Chiamata = intervento
             };
 
             try
@@ -56,15 +59,16 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("DeleteInLavorazione")]
-        public async Task<IActionResult> DeleteInLavorazione(string id)
+        public async Task<IActionResult> DeleteInLavorazione([FromBody]Intervento intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
             string IdUtente = headerValues.FirstOrDefault();
 
             var command = new RimozioneInLavorazioneCommand()
             {
-                IdRichiesta = id,
-                IdUtente = IdUtente
+                IdRichiesta = intervento.Id,
+                IdUtente = IdUtente,
+                Chiamata = intervento
             };
 
             try
@@ -79,15 +83,16 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("AddPresaInCarico")]
-        public async Task<IActionResult> AddPresaInCarico(string id)
+        public async Task<IActionResult> AddPresaInCarico([FromBody]Intervento intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
             string IdUtente = headerValues.FirstOrDefault();
 
             var command = new PresaInCaricoCommand()
             {
-                IdRichiesta = id,
-                IdUtente = IdUtente
+                IdRichiesta = intervento.Id,
+                IdUtente = IdUtente,
+                Chiamata = intervento
             };
 
             try
@@ -102,15 +107,16 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("DeletePresaInCarico")]
-        public async Task<IActionResult> DeletePresaInCarico(string id)
+        public async Task<IActionResult> DeletePresaInCarico([FromBody]Intervento intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
             string IdUtente = headerValues.FirstOrDefault();
 
             var command = new RimozionePresaInCaricoCommand()
             {
-                IdRichiesta = id,
-                IdUtente = IdUtente
+                IdRichiesta = intervento.Id,
+                IdUtente = IdUtente,
+                Chiamata = intervento
             };
 
             try

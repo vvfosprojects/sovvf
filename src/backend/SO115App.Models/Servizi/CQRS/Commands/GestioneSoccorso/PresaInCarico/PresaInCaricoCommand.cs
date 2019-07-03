@@ -25,5 +25,6 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
     {
         public string IdRichiesta { get; set; }
         public string IdUtente { get; set; }
+        public Intervento Chiamata { get; set; }
     }
 }

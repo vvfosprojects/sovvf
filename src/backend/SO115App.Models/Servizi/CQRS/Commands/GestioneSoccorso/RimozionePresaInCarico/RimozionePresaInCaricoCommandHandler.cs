@@ -25,40 +25,42 @@ using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DomainModel.CQRS.Commands.RimozionePresaInCarico
 {
     public class RimozionePresaInCaricoCommandHandler : ICommandHandler<RimozionePresaInCaricoCommand>
     {
         private readonly IGetRichiestaById _getRichiestaById;
-
-        // private readonly IGetUtenteById _getUtenteById;
         private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
 
         public RimozionePresaInCaricoCommandHandler(
             IGetRichiestaById GetRichiestaById,
-            //IGetUtenteById GetUtenteById,
             IUpDateRichiestaAssistenza UpDateRichiestaAssistenza
             )
         {
             _getRichiestaById = GetRichiestaById;
-            //_getUtenteById = GetUtenteById;
             _upDateRichiestaAssistenza = UpDateRichiestaAssistenza;
         }
 
         public void Handle(RimozionePresaInCaricoCommand command)
         {
             RichiestaAssistenza richiesta = _getRichiestaById.Get(command.IdRichiesta);
-            //Utente utente = _getUtenteById.GetUtenteById(command.IdUtente);
-            AttivitaUtente attivita = new AttivitaUtente();
-
-            attivita.IdUtente = "1"; //utente.Id;
-            attivita.Nominativo = "Test Test"; //utente.Nome + " " + utente.Cognome;
-            attivita.DataInizioAttivita = DateTime.UtcNow;
 
             richiesta.Id = richiesta.Codice;
 
-            richiesta.ListaUtentiPresaInCarico.Remove(attivita);
+            richiesta.ListaUtentiPresaInCarico.RemoveAll(x => x.IdUtente == command.IdUtente);
+
+            if (command.Chiamata.ListaUtentiPresaInCarico != null)
+                command.Chiamata.ListaUtentiPresaInCarico = richiesta.ListaUtentiPresaInCarico;
+            else
+            {
+                if (richiesta.ListaUtentiPresaInCarico.Count > 0)
+                {
+                    command.Chiamata.ListaUtentiPresaInCarico = new List<AttivitaUtente>();
+                    command.Chiamata.ListaUtentiPresaInCarico = richiesta.ListaUtentiPresaInCarico;
+                }
+            }
 
             this._upDateRichiestaAssistenza.UpDate(richiesta);
         }

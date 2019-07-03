@@ -23,10 +23,12 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using System;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ConfermaPartenze
 {
@@ -55,6 +57,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             // preparazione del DTO
             RichiestaAssistenza richiesta = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiesta);
+            AttivitaUtente attivita = new AttivitaUtente();
 
             new InizioPresaInCarico(richiesta, DateTime.UtcNow, richiesta.Operatore.Id);
 
@@ -74,6 +77,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var sedeRichiesta = command.ConfermaPartenze.richiesta.Operatore.Sede.Codice;
             var codiceRichiesta = _generaCodiceRichiesta.Genera(sedeRichiesta, DateTime.UtcNow.Year);
             richiesta.CodiceRichiesta = codiceRichiesta;
+
+            attivita.IdUtente = command.ConfermaPartenze.richiesta.Operatore.Id;
+            attivita.Nominativo = command.ConfermaPartenze.richiesta.Operatore.Nome + " " + command.ConfermaPartenze.richiesta.Operatore.Cognome;
+            attivita.DataInizioAttivita = DateTime.UtcNow;
+
+            if (richiesta.ListaUtentiPresaInCarico != null)
+            {
+                new InizioPresaInCarico(richiesta, DateTime.UtcNow, richiesta.Operatore.Id);
+
+                richiesta.ListaUtentiPresaInCarico.Add(attivita);
+            }
+            else
+            {
+                richiesta.ListaUtentiPresaInCarico = new List<AttivitaUtente>();
+                richiesta.ListaUtentiPresaInCarico.Add(attivita);
+            }
 
             Classi.Composizione.ConfermaPartenze confermaPartenze = _IUpdateConfermaPartenze.Update(command);
 

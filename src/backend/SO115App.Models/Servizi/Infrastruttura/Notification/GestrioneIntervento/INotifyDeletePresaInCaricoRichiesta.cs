@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AddInterventoCommand.cs" company="CNVVF">
+// <copyright file="INotifyUpDateChiamata.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,15 +17,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
+using DomainModel.CQRS.Commands.RimozionePresaInCarico;
+using System.Threading.Tasks;
 
-namespace DomainModel.CQRS.Commands.MessaInLavorazione
+namespace SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento
 {
-    public class MessaInLavorazioneCommand
+    public interface INotifyDeletePresaInCaricoRichiesta
     {
-        public string IdRichiesta { get; set; }
-        public string IdUtente { get; set; }
-
-        public Intervento Chiamata { get; set; }
+        Task SendNotification(RimozionePresaInCaricoCommand chiamata);
     }
 }
