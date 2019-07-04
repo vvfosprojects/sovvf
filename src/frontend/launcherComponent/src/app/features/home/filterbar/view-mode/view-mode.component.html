@@ -1,8 +1,11 @@
 <div class="text-center" style="padding-right: 25px">
     <div class="btn-group app-shadow" role="group">
-        <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Richieste)" [ngClass]="colorButtonView[0]"><i class="fa fa-list-ul "></i></button>
-        <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Default)" [ngClass]="colorButtonView[1]"><i class="fa fa-columns"></i></button>
-        <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Mappa)" [ngClass]="colorButtonView[2]"><i class="fa fa-globe"></i>
+        <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Richieste)" [ngClass]="colorButtonView[0]"
+                ngbTooltip="Visualizzazione solo Richieste" [disableTooltip]="colorButtonView[0] === 'btn-secondary'"><i class="fa fa-list-ul"></i></button>
+        <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Default)" [ngClass]="colorButtonView[1]"
+                ngbTooltip="Visualizzazione normale" [disableTooltip]="colorButtonView[1] === 'btn-secondary'"><i class="fa fa-columns"></i></button>
+        <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Mappa)" [ngClass]="colorButtonView[2]"
+                ngbTooltip="Visualizzazione solo Mappa" [disableTooltip]="colorButtonView[2] === 'btn-secondary'"><i class="fa fa-globe"></i>
         </button>
     </div>
 </div>
