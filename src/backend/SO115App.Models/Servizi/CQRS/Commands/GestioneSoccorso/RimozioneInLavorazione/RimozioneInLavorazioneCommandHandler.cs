@@ -24,40 +24,43 @@ using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
 {
     public class RimozioneInLavorazioneCommandHandler : ICommandHandler<RimozioneInLavorazioneCommand>
     {
         private readonly IGetRichiestaById _getRichiestaById;
-
-        // private readonly IGetUtenteById _getUtenteById;
         private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
 
         public RimozioneInLavorazioneCommandHandler(
             IGetRichiestaById GetRichiestaById,
-            //IGetUtenteById GetUtenteById,
             IUpDateRichiestaAssistenza UpDateRichiestaAssistenza
             )
         {
             _getRichiestaById = GetRichiestaById;
-            //_getUtenteById = GetUtenteById;
             _upDateRichiestaAssistenza = UpDateRichiestaAssistenza;
         }
 
         public void Handle(RimozioneInLavorazioneCommand command)
         {
             RichiestaAssistenza richiesta = _getRichiestaById.Get(command.IdRichiesta);
-            //Utente utente = _getUtenteById.GetUtenteById(command.IdUtente);
             AttivitaUtente attivita = new AttivitaUtente();
 
-            attivita.IdUtente = "1"; //utente.Id;
-            attivita.Nominativo = "Test Test"; //utente.Nome + " " + utente.Cognome;
-            attivita.DataInizioAttivita = DateTime.UtcNow;
-
-            richiesta.ListaUtentiInLavorazione.Remove(attivita);
+            richiesta.ListaUtentiInLavorazione.RemoveAll(x => x.IdUtente == command.IdUtente);
 
             richiesta.Id = richiesta.Codice;
+
+            if (command.Chiamata.ListaUtentiInLavorazione != null)
+                command.Chiamata.ListaUtentiInLavorazione = richiesta.ListaUtentiInLavorazione;
+            else
+            {
+                if (richiesta.ListaUtentiInLavorazione.Count > 0)
+                {
+                    command.Chiamata.ListaUtentiInLavorazione = new List<AttivitaUtente>();
+                    command.Chiamata.ListaUtentiInLavorazione = richiesta.ListaUtentiInLavorazione;
+                }
+            }
 
             this._upDateRichiestaAssistenza.UpDate(richiesta);
         }

@@ -18,22 +18,22 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
-using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento;
 
 namespace DomainModel.CQRS.Commands.MessaInLavorazione
 {
     public class MessaInLavorazioneNotifier : ICommandNotifier<MessaInLavorazioneCommand>
     {
-        private readonly INotifyInserimentoChiamata _sender;
+        private readonly INotifyMessaInLavorazioneRichiesta _sender;
 
-        public MessaInLavorazioneNotifier(INotifyInserimentoChiamata sender)
+        public MessaInLavorazioneNotifier(INotifyMessaInLavorazioneRichiesta sender)
         {
             _sender = sender;
         }
 
         public void Notify(MessaInLavorazioneCommand command)
         {
-            //_sender.SendNotification(command);
+            _sender.SendNotification(command);
         }
     }
 }

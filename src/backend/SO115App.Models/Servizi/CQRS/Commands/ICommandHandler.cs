@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AddInterventoCommand.cs" company="CNVVF">
+// <copyright file="ICommandHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,15 +17,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
-
-namespace DomainModel.CQRS.Commands.MessaInLavorazione
+namespace SO115App.API.Models.Servizi.CQRS.Commands
 {
-    public class MessaInLavorazioneCommand
+    /// <summary>
+    ///   link https://cuttingedge.it/blogs/steven/pivot/entry.php?id=91
+    /// </summary>
+    /// <typeparam name="TCommand">Il tipo del DTO che alimenta il comando</typeparam>
+    public interface ICommandHandler<TCommand>
     {
-        public string IdRichiesta { get; set; }
-        public string IdUtente { get; set; }
-
-        public Intervento Chiamata { get; set; }
+        /// <summary>
+        ///   Interfaccia per la gestione dei Comandi afferente al paradigma CQRS
+        /// </summary>
+        /// <param name="command">
+        ///   Oggetto contenente i parametri necessari all'esecuzione del comando.
+        /// </param>
+        void Handle(TCommand command);
     }
 }

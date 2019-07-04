@@ -108,6 +108,10 @@ namespace SO115App.CompositionRoot
                 SO115App.FakePersistence.JSon.Utility.GeneraCodiceRichiesta>();
 
             container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.IGetUtenteById,
+                SO115App.FakePersistence.JSon.GestioneUtenti.GetUtenteById>();
+
+            container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata.INotifyInserimentoChiamata,
             SO115App.SignalR.Sender.GestioneChiamata.NotificationInserimentoChiamata>();
             container.Register<
@@ -137,6 +141,18 @@ namespace SO115App.CompositionRoot
             container.Register<
            SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.INotificationGetPreAccoppiati,
            SO115App.SignalR.Sender.ComposizionePartenza.NotificationGetPreaccoppiati>();
+            container.Register<
+           SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyMessaInLavorazioneRichiesta,
+           SO115App.SignalR.Sender.GestioneIntervento.NotificationInserInLavorazione>();
+            container.Register<
+           SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyDeleteInLavorazioneRichiesta,
+           SO115App.SignalR.Sender.GestioneIntervento.NotificationDeleteInLavorazione>();
+            container.Register<
+           SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyDeletePresaInCaricoRichiesta,
+           SO115App.SignalR.Sender.GestioneIntervento.NotificationDeletePresaInCarico>();
+            container.Register<
+           SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyPresaInCaricoRichiesta,
+           SO115App.SignalR.Sender.GestioneIntervento.NotificationPresaInCarico>();
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,

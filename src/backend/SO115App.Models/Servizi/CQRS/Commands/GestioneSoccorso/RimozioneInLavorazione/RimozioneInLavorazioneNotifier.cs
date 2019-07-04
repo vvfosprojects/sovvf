@@ -19,21 +19,22 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento;
 
 namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
 {
     public class RimozioneInLavorazioneNotifier : ICommandNotifier<RimozioneInLavorazioneCommand>
     {
-        private readonly INotifyInserimentoChiamata _sender;
+        private readonly INotifyDeleteInLavorazioneRichiesta _sender;
 
-        public RimozioneInLavorazioneNotifier(INotifyInserimentoChiamata sender)
+        public RimozioneInLavorazioneNotifier(INotifyDeleteInLavorazioneRichiesta sender)
         {
             _sender = sender;
         }
 
         public void Notify(RimozioneInLavorazioneCommand command)
         {
-            //_sender.SendNotification(command);
+            _sender.SendNotification(command);
         }
     }
 }

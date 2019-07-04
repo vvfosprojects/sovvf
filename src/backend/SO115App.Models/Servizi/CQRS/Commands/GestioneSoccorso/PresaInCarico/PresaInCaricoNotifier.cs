@@ -18,22 +18,22 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
-using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento;
 
 namespace DomainModel.CQRS.Commands.PresaInCarico
 {
     public class PresaInCaricoNotifier : ICommandNotifier<PresaInCaricoCommand>
     {
-        private readonly INotifyInserimentoChiamata _sender;
+        private readonly INotifyPresaInCaricoRichiesta _sender;
 
-        public PresaInCaricoNotifier(INotifyInserimentoChiamata sender)
+        public PresaInCaricoNotifier(INotifyPresaInCaricoRichiesta sender)
         {
             _sender = sender;
         }
 
         public void Notify(PresaInCaricoCommand command)
         {
-            //_sender.SendNotification(command);
+            _sender.SendNotification(command);
         }
     }
 }

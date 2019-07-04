@@ -36,28 +36,28 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
     {
         private readonly IGetRichiestaById _getRichiestaById;
 
-        // private readonly IGetUtenteById _getUtenteById;
+        private readonly IGetUtenteById _getUtenteById;
         private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
 
         public MessaInLavorazioneCommandHandler(
             IGetRichiestaById GetRichiestaById,
-            //IGetUtenteById GetUtenteById,
+            IGetUtenteById GetUtenteById,
             IUpDateRichiestaAssistenza UpDateRichiestaAssistenza
             )
         {
             _getRichiestaById = GetRichiestaById;
-            //_getUtenteById = GetUtenteById;
+            _getUtenteById = GetUtenteById;
             _upDateRichiestaAssistenza = UpDateRichiestaAssistenza;
         }
 
         public void Handle(MessaInLavorazioneCommand command)
         {
             RichiestaAssistenza richiesta = _getRichiestaById.Get(command.IdRichiesta);
-            //Utente utente = _getUtenteById.GetUtenteById(command.IdUtente);
+            Utente utente = _getUtenteById.GetUtenteById(command.IdUtente);
             AttivitaUtente attivita = new AttivitaUtente();
 
-            attivita.IdUtente = "1"; //utente.Id;
-            attivita.Nominativo = "Test Test"; //utente.Nome + " " + utente.Cognome;
+            attivita.IdUtente = utente.Id;
+            attivita.Nominativo = utente.Nome + " " + utente.Cognome;
             attivita.DataInizioAttivita = DateTime.UtcNow;
 
             if (richiesta.ListaUtentiInLavorazione != null)
@@ -66,6 +66,14 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
             {
                 richiesta.ListaUtentiInLavorazione = new List<AttivitaUtente>();
                 richiesta.ListaUtentiInLavorazione.Add(attivita);
+            }
+
+            if (command.Chiamata.ListaUtentiInLavorazione != null)
+                command.Chiamata.ListaUtentiInLavorazione.Add(attivita);
+            else
+            {
+                richiesta.ListaUtentiInLavorazione = new List<AttivitaUtente>();
+                command.Chiamata.ListaUtentiInLavorazione.Add(attivita);
             }
 
             richiesta.Id = richiesta.Codice;
