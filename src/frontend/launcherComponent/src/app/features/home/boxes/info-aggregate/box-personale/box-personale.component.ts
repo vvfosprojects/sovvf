@@ -2,6 +2,7 @@ import { Component, Input, EventEmitter, Output, OnChanges, SimpleChanges } from
 import { objectDiff } from '../../../../../shared/helper/function';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
 import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
+import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-box-personale',
@@ -25,6 +26,12 @@ export class BoxPersonaleComponent implements OnChanges {
             }, 5000);
         }
 
+    }
+
+    constructor(config: NgbTooltipConfig) {
+        config.container = 'body';
+        // config.openDelay = 200;
+        // config.closeDelay = 100;
     }
 
     checkDiff(key: string) {

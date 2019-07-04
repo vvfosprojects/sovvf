@@ -3,6 +3,7 @@ import { BoxInterventi } from '../../boxes-model/box-interventi.model';
 import { BoxClickInterface } from '../../box-interface/box-click-interface';
 import { objectDiff } from '../../../../../shared/helper/function';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
+import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-box-interventi',
@@ -34,6 +35,12 @@ export class BoxInterventiComponent implements OnChanges {
                 this.interventiDiff = null;
             }, 5000);
         }
+    }
+
+    constructor(config: NgbTooltipConfig) {
+        config.container = 'body';
+        // config.openDelay = 200;
+        // config.closeDelay = 100;
     }
 
     checkDiff(key: string) {

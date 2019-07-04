@@ -4,8 +4,8 @@
         <div class="row">
             <div class="col-7">
                 <i class="fa fa-users mb-2 mr-1"></i>
-                <span class="font-weight-bold">Personale in servizio: <a href="javascript:void(0)"
-                                                                         (click)="clickServizi.emit('openModal')">{{personaleQty?.totale}}</a></span>
+                <span class="font-weight-bold" ngbTooltip="Personale attualmente in servizio">Personale in servizio: </span>
+                <a class="font-weight-bold" href="javascript:void(0)" (click)="clickServizi.emit('openModal')">{{personaleQty?.totale}}</a>
             </div>
             <div class="col-5 ml-auto text-right text-secondary">
                 <ng-template #funzionariGuardia>
@@ -71,8 +71,8 @@
                 <div class="row">
                     <div class="col-7 pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6">Squadre in servizio</span></li>
-                            <li><span class="d-inline-block h6">di cui impegnate</span></li>
+                            <li><span class="d-inline-block h6" ngbTooltip="Squadre attualmente in servizio">Squadre in servizio</span></li>
+                            <li><span class="d-inline-block h6" ngbTooltip="Squadre impegnate sugli interventi">di cui impegnate</span></li>
                         </ul>
                     </div>
                     <div class="col-5 px-0 text-secondary text-center">
@@ -101,9 +101,9 @@
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
                             <li><span
-                                    class="d-inline-block h6">{{personaleQty?.funzionari | personale:'funzionari'}}</span>
+                                    class="d-inline-block h6" ngbTooltip="Funzionari di guardia">{{personaleQty?.funzionari | personale:'funzionari'}}</span>
                             </li>
-                            <li><span class="d-inline-block h6">{{personaleQty?.tecnici | personale:'tecnici'}}</span>
+                            <li><span class="d-inline-block h6" ngbTooltip="Tecnici di guardia">{{personaleQty?.tecnici | personale:'tecnici'}}</span>
                             </li>
                         </ul>
                     </div>

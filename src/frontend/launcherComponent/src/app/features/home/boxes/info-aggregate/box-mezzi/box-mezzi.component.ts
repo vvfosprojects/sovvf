@@ -3,6 +3,7 @@ import { BoxMezzi } from '../../boxes-model/box-mezzi.model';
 import { BoxClickInterface } from '../../box-interface/box-click-interface';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
 import { objectDiff } from '../../../../../shared/helper/function';
+import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-box-mezzi',
@@ -25,6 +26,12 @@ export class BoxMezziComponent implements OnChanges {
                 this.mezziDiff = null;
             }, 5000);
         }
+    }
+
+    constructor(config: NgbTooltipConfig) {
+        config.container = 'body';
+        // config.openDelay = 200;
+        // config.closeDelay = 100;
     }
 
     checkDiff(key: string) {
