@@ -12,23 +12,13 @@
                     <h3 class="mb-0">Chiamata in corso...
                         <span *ngIf="f.rilevanza?.value || f.rilevanzaStArCu?.value"
                               class="d-inline-block mr-1 text-danger"
-                              [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f.rilevanzaStArCu?.value"
-                                                                             class="fa fa-university mr-2"></i><i
-                                *ngIf="f.rilevanza?.value" class="fa fa-exclamation"></i></span>
+                              [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f.rilevanza?.value"
+                                                                             class="fa fa-exclamation mr-2"></i><i
+                                *ngIf="f.rilevanzaStArCu?.value" class="fa fa-university"></i></span>
                     </h3>
                 </div>
-                <div class="col-4 pl-0">
+                <div class="col-3 pl-0">
                     <div class="form-group m-0 float-right">
-                                <span class="d-inline-block mt-1 mr-2">
-                                    <ui-switch size="small" color="#dc3545"
-                                               [checked]="f.rilevanzaStArCu?.value === true"
-                                               (change)="setRilevanzaStArCu()"></ui-switch>
-                                </span>
-                        <span class="d-inline-block mb-1">Storico Artistico e Culturale</span>
-                    </div>
-                </div>
-                <div class="col-3 pr-0">
-                    <div class="form-group m-0 float-left">
                                 <span class="d-inline-block mt-1 mr-2">
                                     <ui-switch size="small" color="#dc3545"
                                                [checked]="f.rilevanza?.value === true"
@@ -37,11 +27,22 @@
                         <span class="d-inline-block mb-1">Rilevante</span>
                     </div>
                 </div>
+                <div class="col-4 pr-0">
+                    <div class="form-group m-0 float-left">
+                                <span class="d-inline-block mt-1 mr-2">
+                                    <ui-switch size="small" color="#dc3545"
+                                               [checked]="f.rilevanzaStArCu?.value === true"
+                                               (change)="setRilevanzaStArCu()"></ui-switch>
+                                </span>
+                        <span class="d-inline-block mb-1">Storico Artistico e Culturale</span>
+                    </div>
+                </div>
             </div>
             <hr class="mt-1 mb-3">
             <div class="form-group mb-3">
                 <label class="d-none">Tipologia intervento</label>
-                <ng-select class="border" [ngClass]="{'errore': submitted && checkTipologie()}" bindLabel="codiceDescrizione"
+                <ng-select class="border" [ngClass]="{'errore': submitted && checkTipologie()}"
+                           bindLabel="codiceDescrizione"
                            bindValue="codice" [items]="tipologie"
                            [multiple]="true" [closeOnSelect]="true" [hideSelected]="true" clearAllText="Clear"
                            (add)="onAddTipologia($event)"
@@ -124,7 +125,8 @@
                     <div class="form-group mb-3">
                         <label for="indirizzo">Indirizzo</label>
                         <input id="indirizzo" ngx-google-places-autocomplete type="text" formControlName="indirizzo"
-                               class="form-control" [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
+                               class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
                                placeholder="Ricerca indirizzo" [options]="options"
                                (onAddressChange)="onCercaIndirizzo($event)" autocomplete="new-password">
                         <div *ngIf="submitted && (f.indirizzo.errors || !coordinate)" class="invalid-feedback">
@@ -204,10 +206,10 @@
                     </div>
                 </div>
                 <!--<div class="row">-->
-                    <!--<div class="col-12">-->
-                        <!--<app-selezione-tipi-terreno-->
-                                <!--(tipiTerrenoSelezionati)="onTerreniSelezionati($event)"></app-selezione-tipi-terreno>-->
-                    <!--</div>-->
+                <!--<div class="col-12">-->
+                <!--<app-selezione-tipi-terreno-->
+                <!--(tipiTerrenoSelezionati)="onTerreniSelezionati($event)"></app-selezione-tipi-terreno>-->
+                <!--</div>-->
                 <!--</div>-->
             </div>
             <div class="row mt-1">
@@ -235,7 +237,8 @@
                     <button class="btn btn-outline-secondary ml-2" type="button" (click)="onResetChiamata()">
                         <i class="fa fa-recycle mr-1"></i>Reset
                     </button>
-                    <span ngbTooltip="Inserire il resto dei campi obbligatori" [disableTooltip]="!checkCollapsed()" placement="bottom">
+                    <span ngbTooltip="Inserire il resto dei campi obbligatori" [disableTooltip]="!checkCollapsed()"
+                          placement="bottom">
                         <button type="button" class="btn btn-outline-primary ml-2" (click)="toggleCollapsed()"
                                 [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample"
                                 [disabled]="checkCollapsed()">
