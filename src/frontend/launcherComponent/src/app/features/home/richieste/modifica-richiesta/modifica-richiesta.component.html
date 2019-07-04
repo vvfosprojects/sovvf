@@ -12,29 +12,29 @@
                     <h3 class="mb-0">Modifica #{{richiestaModifica?.codice}}
                         <span *ngIf="f.rilevanza?.value || f.rilevanzaStArCu?.value"
                               class="d-inline-block mr-1 text-danger"
-                              [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f.rilevanzaStArCu?.value"
-                                                                             class="fa fa-university mr-2"></i><i
-                                *ngIf="f.rilevanza?.value" class="fa fa-exclamation"></i></span>
+                              [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f.rilevanza?.value"
+                                                                             class="fa fa-exclamation mr-2"></i><i
+                                *ngIf="f.rilevanzaStArCu?.value" class="fa fa-university"></i></span>
                     </h3>
                 </div>
-                <div class="col-4 pl-0">
+                <div class="col-3 pl-0">
                     <div class="form-group m-0 float-right">
-                                <span class="d-inline-block mt-1 mr-2">
-                                    <ui-switch size="small" color="#dc3545"
-                                               [checked]="f.rilevanzaStArCu?.value === true"
-                                               (change)="setRilevanzaStArCu()"></ui-switch>
-                                </span>
-                        <span class="d-inline-block mb-1">Storico Artistico e Culturale</span>
-                    </div>
-                </div>
-                <div class="col-3 pr-0">
-                    <div class="form-group m-0 float-left">
                                 <span class="d-inline-block mt-1 mr-2">
                                     <ui-switch size="small" color="#dc3545"
                                                [checked]="f.rilevanza?.value === true"
                                                (change)="setRilevanza()"></ui-switch>
                                 </span>
                         <span class="d-inline-block mb-1">Rilevante</span>
+                    </div>
+                </div>
+                <div class="col-4 pr-0">
+                    <div class="form-group m-0 float-left">
+                                <span class="d-inline-block mt-1 mr-2">
+                                    <ui-switch size="small" color="#dc3545"
+                                               [checked]="f.rilevanzaStArCu?.value === true"
+                                               (change)="setRilevanzaStArCu()"></ui-switch>
+                                </span>
+                        <span class="d-inline-block mb-1">Storico Artistico e Culturale</span>
                     </div>
                 </div>
             </div>
