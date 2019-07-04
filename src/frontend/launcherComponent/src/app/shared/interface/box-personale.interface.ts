@@ -16,4 +16,5 @@ export interface BoxPersonalePresenze {
 export interface BoxPersonalePersona {
     descrizione: string;
     qualifica: string;
+    telefono?: string;
 }

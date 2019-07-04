@@ -21,7 +21,8 @@ export class BoxPersonaleFakeService {
                     true,
                     false,
                     false,
-                    false),
+                    false,
+                    '335/3565789'),
                 new BoxFunzionariSo(
                     'BNCMRC80A01H501C',
                     'VCSC',

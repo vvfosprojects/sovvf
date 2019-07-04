@@ -1,7 +1,6 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { BoxInterventi } from '../boxes-model/box-interventi.model';
 import { BoxMezzi } from '../boxes-model/box-mezzi.model';
-import { BoxPersonale } from '../boxes-model/box-personale.model';
 import { BoxClickInterface } from '../box-interface/box-click-interface';
 import { Subscription, Observable } from 'rxjs';
 import { ModalServiziComponent } from './modal-servizi/modal-servizi.component';

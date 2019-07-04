@@ -4,7 +4,7 @@ import { BoxPersonale } from '../../../boxes/boxes-model/box-personale.model';
 import { ClearBoxPersonale, GetBoxPersonale, SetBoxPersonale, SetBoxPersonalePresenze, SetBoxPersonaleQty } from '../../actions/boxes/box-personale.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
+import { BoxPersonalePersona, BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
 import { BoxFunzionariSo } from '../../../boxes/boxes-model/box-funzionari-so.model';
 
 export interface BoxPersonaleStateModel {
@@ -103,27 +103,25 @@ export function getPresenze(state: BoxPersonale): BoxPersonalePresenze {
     if (state) {
         state.funzionari.forEach((result: BoxFunzionariSo) => {
             if (result.funzGuardia) {
-                personalePresenze.funzGuardia = {
-                    descrizione: result.descrizione,
-                    qualifica: result.qualifica
-                };
+                personalePresenze.funzGuardia = makeBoxPersonalePersona(result);
             } else if (result.capoTurno) {
-                personalePresenze.capoTurno = {
-                    descrizione: result.descrizione,
-                    qualifica: result.qualifica
-                };
+                personalePresenze.capoTurno = makeBoxPersonalePersona(result);
             } else if (result.tecnicoGuardia1) {
-                personalePresenze.tecnicoGuardia1 = {
-                    descrizione: result.descrizione,
-                    qualifica: result.qualifica
-                };
+                personalePresenze.tecnicoGuardia1 = makeBoxPersonalePersona(result);
             } else if (result.tecnicoGuardia2) {
-                personalePresenze.tecnicoGuardia2 = {
-                    descrizione: result.descrizione,
-                    qualifica: result.qualifica
-                };
+                personalePresenze.tecnicoGuardia2 = makeBoxPersonalePersona(result);
             }
         });
     }
     return personalePresenze;
+}
+
+export function makeBoxPersonalePersona(boxFunzionarioSo: BoxFunzionariSo): BoxPersonalePersona {
+    if (boxFunzionarioSo) {
+        return {
+            descrizione: boxFunzionarioSo.descrizione,
+            qualifica: boxFunzionarioSo.qualifica,
+            telefono: boxFunzionarioSo.telefono
+        } as BoxPersonalePersona;
+    }
 }

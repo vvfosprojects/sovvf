@@ -17,6 +17,11 @@
                                 <small title="Qualifica"
                                        class="text-secondary">{{personalePresenze.funzGuardia?.qualifica}}</small>
                                 <span class="ml-1">{{personalePresenze.funzGuardia?.descrizione}}</span>
+                                <div *ngIf="personalePresenze.funzGuardia.telefono">
+                                    <i class="fa fa-mobile pr-2"></i>
+                                    <span title="Telefono"
+                                           class="text-secondary">{{personalePresenze.funzGuardia?.telefono}}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -33,6 +38,11 @@
                                 <small title="Qualifica"
                                        class="text-secondary">{{personalePresenze.capoTurno?.qualifica}}</small>
                                 <span class="ml-1">{{personalePresenze.capoTurno?.descrizione}}</span>
+                                <div *ngIf="personalePresenze.capoTurno.telefono">
+                                    <i class="fa fa-mobile pr-2"></i>
+                                    <span title="Telefono"
+                                          class="text-secondary">{{personalePresenze.capoTurno?.telefono}}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -48,11 +58,21 @@
                                 <small title="Qualifica"
                                        class="text-secondary">{{personalePresenze.tecnicoGuardia1?.qualifica}}</small>
                                 <span class="ml-1">{{personalePresenze.tecnicoGuardia1?.descrizione}}</span>
+                                <div *ngIf="personalePresenze.tecnicoGuardia1.telefono">
+                                    <i class="fa fa-mobile pr-2"></i>
+                                    <span title="Telefono"
+                                          class="text-secondary">{{personalePresenze.tecnicoGuardia1?.telefono}}</span>
+                                </div>
                             </div>
                             <div *ngIf="personalePresenze.tecnicoGuardia2" class="mt-1">
                                 <small title="Qualifica"
                                        class="text-secondary">{{personalePresenze.tecnicoGuardia2?.qualifica}}</small>
                                 <span class="ml-1">{{personalePresenze.tecnicoGuardia2?.descrizione}}</span>
+                                <div *ngIf="personalePresenze.tecnicoGuardia2.telefono">
+                                    <i class="fa fa-mobile pr-2"></i>
+                                    <span title="Telefono"
+                                          class="text-secondary">{{personalePresenze.tecnicoGuardia2?.telefono}}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
