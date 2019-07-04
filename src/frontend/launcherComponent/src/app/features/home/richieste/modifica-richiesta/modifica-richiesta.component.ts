@@ -29,6 +29,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
 
     tipologiaRichiedente: string;
     @Select(NavbarState.tipologie) tipologie$: Observable<Tipologia[]>;
+    tipologie: Tipologia[];
 
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
     richiestaModifica: SintesiRichiesta;
@@ -50,6 +51,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
                 this.coordinate = makeCopy(richiesta.localita.coordinate);
             }
         }));
+        this.subscription.add(this.tipologie$.subscribe( (tipologie: Tipologia[]) => this.tipologie = tipologie));
     }
 
     ngOnInit() {
@@ -185,7 +187,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
         nuovaRichiesta.descrizione = f.motivazione.value;
         nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value;
-
+        this.setDescrizione();
         console.log('Richiesta Modificata', nuovaRichiesta);
         return nuovaRichiesta;
     }
@@ -220,6 +222,17 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             this.coordinate = null;
         }
         console.log('coordinate', this.coordinate);
+    }
+
+    setDescrizione(): void {
+        const form = this.f;
+        if (!form.motivazione.value) {
+            // console.log(form.selectedTipologie.value);
+            const nuovaDescrizione = this.tipologie.filter( tipologia => tipologia.codice === form.tipoIntervento.value[0]);
+            if (nuovaDescrizione) {
+                this.richiestaModifica.descrizione = nuovaDescrizione[0].descrizione;
+            }
+        }
     }
 
 }

@@ -43,8 +43,9 @@
                 <label>Tipologia intervento</label>
                 <ng-select class="border"
                            [ngClass]="{'errore': submitted && checkTipologie()}"
-                           bindLabel="descrizione"
-                           [items]="(tipologie$ | async)"
+                           bindLabel="codiceDescrizione"
+                           bindValue="codice"
+                           [items]="tipologie"
                            [multiple]="true"
                            [closeOnSelect]="true"
                            [hideSelected]="true"
