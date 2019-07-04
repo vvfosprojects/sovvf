@@ -775,8 +775,6 @@ export class NavbarServiceFake {
             tipologia.codiceDescrizione = `${tipologia.descrizione} (${tipologia.codice})`;
         });
 
-        console.log(this.navbar.tipologie);
-
         return of(this.navbar);
     }
 }

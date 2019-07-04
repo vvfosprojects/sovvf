@@ -354,9 +354,12 @@ export class SchedaTelefonataComponent implements OnInit, OnChanges {
 
     setDescrizione(): void {
         const form = this.f;
-        this.nuovaRichiesta.descrizione = 'test';
         if (!form.descrizione.value) {
             console.log(form.selectedTipologie.value);
+            const nuovaDescrizione = this.tipologie.filter( tipologia => tipologia.codice === form.selectedTipologie.value[0]);
+            if (nuovaDescrizione) {
+                this.nuovaRichiesta.descrizione = nuovaDescrizione[0].descrizione;
+            }
         }
     }
 
