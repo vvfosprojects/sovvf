@@ -24,7 +24,7 @@ import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefo
 import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
-import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
+// import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -390,8 +390,8 @@ export class SchedaTelefonataComponent implements OnInit, OnChanges {
         return `${this.operatore.sede.codice}-${this.operatore.id}-${makeID(8)}`;
     }
 
-    onTerreniSelezionati($event: TipoTerreno[]): void {
-        this.nuovaRichiesta.tipoTerreno = $event;
-    }
+    // onTerreniSelezionati($event: TipoTerreno[]): void {
+    //     this.nuovaRichiesta.tipoTerreno = $event;
+    // }
 
 }
