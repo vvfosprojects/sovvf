@@ -18,17 +18,21 @@ export class Tipologia {
          */
         public icona?: string,
         /**
-         *
+         * categoria
          */
         public categoria?: string,
         /**
-         *
+         * star preferito
          */
         public star?: boolean,
         /**
-         *
+         * tipoLuogoEvento
          */
-        public tipoLuogoEvento?: TipoLuogoEvento
+        public tipoLuogoEvento?: TipoLuogoEvento,
+        /**
+         * codiceDescrizione
+         */
+        public codiceDescrizione?: string
     ) {
     }
 }

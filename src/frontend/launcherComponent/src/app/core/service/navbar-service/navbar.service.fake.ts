@@ -771,6 +771,12 @@ export class NavbarServiceFake {
             ]
         };
 
+        this.navbar.tipologie.map(tipologia => {
+            tipologia.codiceDescrizione = `${tipologia.descrizione} (${tipologia.codice})`;
+        });
+
+        console.log(this.navbar.tipologie);
+
         return of(this.navbar);
     }
 }

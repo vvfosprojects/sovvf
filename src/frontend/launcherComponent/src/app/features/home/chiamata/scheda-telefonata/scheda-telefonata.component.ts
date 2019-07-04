@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -32,7 +32,7 @@ import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
     styleUrls: ['./scheda-telefonata.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class SchedaTelefonataComponent implements OnInit {
+export class SchedaTelefonataComponent implements OnInit, OnChanges {
 
     options = GOOGLEPLACESOPTIONS;
 
@@ -75,6 +75,12 @@ export class SchedaTelefonataComponent implements OnInit {
         this.idChiamata = this.makeIdChiamata();
     }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.tipologie && changes.tipologie.currentValue) {
+            console.log(changes.tipologie.currentValue);
+        }
+    }
+
     createForm(): FormGroup {
         return this.formBuilder.group({
             selectedTipologie: [null, Validators.required],
@@ -89,7 +95,7 @@ export class SchedaTelefonataComponent implements OnInit {
             rilevanzaStArCu: [false],
             notePrivate: [null],
             notePubbliche: [null],
-            descrizione: [null, Validators.required],
+            descrizione: [null],
             zoneEmergenza: [null],
         });
     }
@@ -176,6 +182,8 @@ export class SchedaTelefonataComponent implements OnInit {
                 marker.localita.note = f.noteIndirizzo.value;
             }
         }
+
+        this.setDescrizione();
 
     }
 
@@ -321,7 +329,7 @@ export class SchedaTelefonataComponent implements OnInit {
         error += this.f.ragioneSociale.errors ? 'Ragione Sociale;' : '';
         error += this.f.telefono.errors ? 'Telefono;' : '';
         error += this.f.indirizzo.errors ? 'Indirizzo;' : '';
-        error += this.f.descrizione.errors ? 'Motivazione;' : '';
+        // error += this.f.descrizione.errors ? 'Motivazione;' : '';
         const errors: string[] = error.split(/\s*(?:;|$)\s*/);
         return errors;
     }
@@ -344,6 +352,14 @@ export class SchedaTelefonataComponent implements OnInit {
         return (!this.formIsValid() && !!this.coordinate);
     }
 
+    setDescrizione(): void {
+        const form = this.f;
+        this.nuovaRichiesta.descrizione = 'test';
+        if (!form.descrizione.value) {
+            console.log(form.selectedTipologie.value);
+        }
+    }
+
     onSubmit(azione?: AzioneChiamataEnum) {
         this.submitted = true;
         if (this.checkSubmit()) {
@@ -353,16 +369,17 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     _statoChiamata(tipo: string, azione?: AzioneChiamataEnum) {
+
         const schedaTelefonata: SchedaTelefonataInterface = {
             tipo: tipo,
             nuovaRichiesta: this.nuovaRichiesta,
             markerChiamata: this.chiamataMarker
         };
+
         if (azione) {
             schedaTelefonata.azioneChiamata = azione;
         }
 
-        console.log('Scheda Telefonata', schedaTelefonata);
         this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata));
     }
 
