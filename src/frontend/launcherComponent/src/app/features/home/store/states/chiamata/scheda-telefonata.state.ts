@@ -6,9 +6,10 @@ import {
     ClearMarkerChiamata,
     InsertChiamata,
     InsertChiamataSuccess,
+    MarkerChiamata,
     ReducerSchedaTelefonata,
     ResetChiamata,
-    MarkerChiamata, StartChiamata
+    StartChiamata
 } from '../../actions/chiamata/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
 import { ToggleChiamata } from '../../actions/view/view.actions';
@@ -90,7 +91,10 @@ export class SchedaTelefonataState {
             azioneChiamata: action.azioneChiamata
         });
 
-        this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe(() => {
+        this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((data: string) => {
+            if (data && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
+                console.log(`Invia partenza idRichiesta: ${data}`);
+            }
             dispatch(new CestinaChiamata());
         }, () => {
             dispatch(new ShowToastr(ToastrType.Error, 'Inserimento della chiamata fallito', 'Si è verificato un errore, riprova.', 5));
