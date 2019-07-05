@@ -91,16 +91,17 @@ import { AppLoadModule } from './core/app-load/app-load.module';
             [AppState, UtenteState, SignalRState, ToastrState, SediTreeviewState],
             { developmentMode: !environment.production }
         ),
-        NgxsStoragePluginModule.forRoot({
-            key: []
-        }),
+        // NgxsStoragePluginModule.forRoot({
+        //     key: []
+        // }),
         NgxsRouterPluginModule.forRoot(),
         NgxsReduxDevtoolsPluginModule.forRoot({
             name: 'SO115 - NGXS',
+            disabled: environment.production,
         }),
-        NgxsLoggerPluginModule.forRoot({
-            disabled: !environment.production,
-        }),
+        // NgxsLoggerPluginModule.forRoot({
+        //     disabled: environment.production,
+        // }),
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

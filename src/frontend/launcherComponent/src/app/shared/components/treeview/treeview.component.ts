@@ -2,7 +2,7 @@ import {
     Component,
     EventEmitter,
     HostListener,
-    Input,
+    Input, isDevMode,
     OnChanges, OnDestroy, OnInit,
     Output,
     SimpleChanges,
@@ -67,7 +67,11 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
     }
 
     ngOnInit(): void {
-        console.log(`Componente Shared Treeview creato`);
+        isDevMode() && console.log('Componente Shared Treeview creato');
+    }
+
+    ngOnDestroy(): void {
+        isDevMode() && console.log('Componente Shared Treeview distrutto');
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -75,17 +79,13 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
         const testoSedeSelezionata = changes.testoSedeSelezionata;
         const tastoConferma$ = changes.tastoConferma$;
         if (testoSedeSelezionata$) {
-            testoSedeSelezionata$.currentValue.subscribe( result => this.testoSedeSelezionata = sedeString(result));
+            testoSedeSelezionata$.currentValue.subscribe(result => this.testoSedeSelezionata = sedeString(result));
         } else if (testoSedeSelezionata) {
             this.testoSedeSelezionata = sedeString(testoSedeSelezionata.currentValue);
         }
         if (tastoConferma$) {
-            tastoConferma$.currentValue.subscribe( result => this.tastoConferma = result);
+            tastoConferma$.currentValue.subscribe(result => this.tastoConferma = result);
         }
-    }
-
-    ngOnDestroy(): void {
-        console.log(`Componente Shared Treeview distrutto`);
     }
 
     openDropDown(value: any): void {
