@@ -5,6 +5,8 @@ import { InsertChiamataSuccess } from '../../../features/home/store/actions/chia
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { makeIDChiamata } from '../../../shared/helper/function';
 import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
+import { InsertRichiestaMarker } from '../../../features/home/store/actions/maps/richieste-markers.actions';
+import { RichiestaMarker } from '../../../features/home/maps/maps-model/richiesta-marker.model';
 
 @Injectable()
 export class ChiamataServiceFake {
@@ -13,7 +15,6 @@ export class ChiamataServiceFake {
     }
 
     insertChiamata(chiamata: SintesiRichiesta): Observable<any> {
-        const insert = chiamata;
         const idRichieste: string[] = [];
         this.store.selectSnapshot(RichiesteState.richieste).forEach(
             richiesta => {
@@ -26,11 +27,22 @@ export class ChiamataServiceFake {
             id = makeIDChiamata();
         }
         console.log(`Generato nuovo id: ${id}`);
-        insert.codice = id;
-        insert.id = id;
+        chiamata.prioritaRichiesta = 3;
+        chiamata.codice = id;
+        chiamata.id = id;
+        const chiamataMarker = new RichiestaMarker(id,
+            chiamata.codice,
+            chiamata.codiceRichiesta,
+            chiamata.localita, chiamata.tipologie,
+            chiamata.localita.indirizzo,
+            chiamata.prioritaRichiesta,
+            chiamata.stato);
         setTimeout( () => {
-            this.store.dispatch(new InsertChiamataSuccess(insert));
-        }, 2000);
+            this.store.dispatch([
+                new InsertChiamataSuccess(chiamata),
+                new InsertRichiestaMarker(chiamataMarker)
+            ]);
+        }, 1000);
         return of(id);
     }
 
