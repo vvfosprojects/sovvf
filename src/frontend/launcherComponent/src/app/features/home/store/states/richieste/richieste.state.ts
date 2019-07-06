@@ -118,7 +118,9 @@ export class RichiesteState {
         );
         if (state.chiamataInviaPartenza) {
             if (richiesta && richiesta.id === state.chiamataInviaPartenza) {
-                dispatch(new StartInviaPartenzaFromChiamata(richiesta));
+                setTimeout( () => {
+                    dispatch(new StartInviaPartenzaFromChiamata(richiesta));
+                } );
             }
         }
     }

@@ -72,7 +72,8 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
             ]);
             // this.store.dispatch(new GetFiltriComposizione());
         } else {
-            this.dismissPartenza();
+            // Todo: A cosa serve?
+            // this.dismissPartenza();
         }
         isDevMode() && console.log('Componente Composizione creato');
     }
