@@ -5,11 +5,11 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  background-color: rgb(52,58,64);
+  background-color: #ffffff;
 }
 .app-loading .spinner {
-  height: 200px;
-  width: 200px;
+  height: 260px;
+  width: 260px;
   animation: rotate 2s linear infinite;
   transform-origin: center center;
   position: absolute;
@@ -24,7 +24,7 @@
   stroke-dashoffset: 0;
   animation: dash 1.5s ease-in-out infinite;
   stroke-linecap: round;
-  stroke: #ddd;
+  stroke: #d62530;
 }
 @keyframes rotate {
   100% {
@@ -48,10 +48,10 @@
 
 .app-loading {
   .app-preload-logo {
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
 
     // this way asset gets processed by webpack
-    background: url(./assets/img/app-preloader.png) center center no-repeat;
+    background: url(./assets/img/logo_vvf_200x.png) center center no-repeat;
   }
 }
