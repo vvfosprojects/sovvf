@@ -38,3 +38,22 @@ export class AddRichiesta {
     constructor(public richiesta: SintesiRichiesta) {
     }
 }
+
+export class SetIdChiamataInviaPartenza {
+    static readonly type = '[Richieste] Set ID Chiamata Invia Partenza';
+
+    constructor(public chiamataInviaPartenza: string) {
+    }
+}
+
+export class ClearIdChiamataInviaPartenza {
+    static readonly type = '[Richieste] Clear ID Chiamata Invia Partenza';
+
+}
+
+export class StartInviaPartenzaFromChiamata {
+    static readonly type = '[Richieste] Start Invia Partenza From Chiamata';
+
+    constructor(public richiesta: SintesiRichiesta) {
+    }
+}

@@ -22,7 +22,7 @@ import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.e
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ChiamataService } from '../../../../../core/service/chiamata-service/chiamata.service';
-import { AddRichiesta } from '../../actions/richieste/richieste.actions';
+import { AddRichiesta, SetIdChiamataInviaPartenza } from '../../actions/richieste/richieste.actions';
 
 export interface SchedaTelefonataStateModel {
     coordinate: Coordinate;
@@ -94,6 +94,7 @@ export class SchedaTelefonataState {
         this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((data: string) => {
             if (data && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
                 console.log(`Invia partenza idRichiesta: ${data}`);
+                dispatch(new SetIdChiamataInviaPartenza(data));
             }
             dispatch(new CestinaChiamata());
         }, () => {
@@ -108,6 +109,7 @@ export class SchedaTelefonataState {
 
     @Action(InsertChiamataSuccess)
     insertChiamataSuccess({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamataSuccess) {
+        console.log('InsertChiamataSuccess', action.nuovaRichiesta.id);
         dispatch(new AddRichiesta(action.nuovaRichiesta));
         dispatch(new ShowToastr(ToastrType.Success, 'Inserimento della chiamata effettuato', action.nuovaRichiesta.descrizione, 5));
     }

@@ -4,7 +4,16 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Action
-import { AddRichiesta, ClearRichieste, GetRichieste, PatchRichiesta, SetRichieste, UpdateRichiesta } from '../../actions/richieste/richieste.actions';
+import {
+    AddRichiesta, ClearIdChiamataInviaPartenza,
+    ClearRichieste,
+    GetRichieste,
+    PatchRichiesta,
+    SetIdChiamataInviaPartenza,
+    SetRichieste,
+    StartInviaPartenzaFromChiamata,
+    UpdateRichiesta
+} from '../../actions/richieste/richieste.actions';
 
 // Service
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
@@ -16,16 +25,20 @@ import { RichiestaSelezionataState } from './richiesta-selezionata.state';
 import { RichiestaModificaState } from './richiesta-modifica.state';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
+import { RichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { ToggleComposizione } from '../../actions/view/view.actions';
+import { Composizione } from '../../../../../shared/enum/composizione.enum';
+import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
-import { UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
-import { AddBoxPartenza, ClearBoxPartenze } from '../../actions/composizione-partenza/box-partenza.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
+    chiamataInviaPartenza: string;
 }
 
 export const RichiesteStateDefaults: RichiesteStateModel = {
-    richieste: []
+    richieste: [],
+    chiamataInviaPartenza: null
 };
 
 @State<RichiesteStateModel>({
@@ -79,8 +92,8 @@ export class RichiesteState {
     @Action(UpdateRichiesta)
     updateRichiesta({ setState, dispatch }: StateContext<RichiesteStateModel>, { richiesta }: UpdateRichiesta) {
         // Controllo se la richiesta aggiornata è anche la richiesta attualmente in composzione
-        const richiestaComposzione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
-        if (richiestaComposzione && richiestaComposzione.id === richiesta.id) {
+        const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+        if (richiestaComposizione && richiestaComposizione.id === richiesta.id) {
             // console.log('richiesta', richiesta);
             dispatch(new UpdateRichiestaComposizione(richiesta));
             // dispatch(new ClearBoxPartenze());
@@ -95,7 +108,7 @@ export class RichiesteState {
     }
 
     @Action(AddRichiesta)
-    addRichiesta({ getState, setState }: StateContext<RichiesteStateModel>, { richiesta }: AddRichiesta) {
+    addRichiesta({ getState, setState, dispatch }: StateContext<RichiesteStateModel>, { richiesta }: AddRichiesta) {
         const state = getState();
         const beforePosition = state.richieste.length > 0 ? 0 : null;
         setState(
@@ -103,5 +116,34 @@ export class RichiesteState {
                 richieste: insertItem(richiesta, beforePosition)
             })
         );
+        if (state.chiamataInviaPartenza) {
+            if (richiesta && richiesta.id === state.chiamataInviaPartenza) {
+                dispatch(new StartInviaPartenzaFromChiamata(richiesta));
+            }
+        }
+    }
+
+    @Action(SetIdChiamataInviaPartenza)
+    setIdChiamataInviaPartenza({ patchState }: StateContext<RichiesteStateModel>, action: SetIdChiamataInviaPartenza) {
+        patchState({
+            chiamataInviaPartenza: action.chiamataInviaPartenza
+        });
+    }
+
+    @Action(ClearIdChiamataInviaPartenza)
+    clearIdChiamataInviaPartenza({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            chiamataInviaPartenza: RichiesteStateDefaults.chiamataInviaPartenza
+        });
+    }
+
+    @Action(StartInviaPartenzaFromChiamata)
+    startInviaPartenzaFromChiamata({ dispatch, patchState }: StateContext<RichiesteStateModel>, action: StartInviaPartenzaFromChiamata) {
+        dispatch([
+            new ToggleComposizione(Composizione.Avanzata),
+            new SetMarkerRichiestaSelezionato(action.richiesta.id),
+            new RichiestaComposizione(action.richiesta),
+            new ClearIdChiamataInviaPartenza()
+        ]);
     }
 }

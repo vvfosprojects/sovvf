@@ -26,8 +26,11 @@ export class ChiamataServiceFake {
             id = makeIDChiamata();
         }
         console.log(`Generato nuovo id: ${id}`);
-        chiamata.codice = id;
-        this.store.dispatch(new InsertChiamataSuccess(insert));
+        insert.codice = id;
+        insert.id = id;
+        setTimeout( () => {
+            this.store.dispatch(new InsertChiamataSuccess(insert));
+        }, 2000);
         return of(id);
     }
 

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -32,7 +32,7 @@ import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-opt
     styleUrls: ['./scheda-telefonata.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class SchedaTelefonataComponent implements OnInit, OnChanges {
+export class SchedaTelefonataComponent implements OnInit {
 
     options = GOOGLEPLACESOPTIONS;
 
@@ -73,12 +73,6 @@ export class SchedaTelefonataComponent implements OnInit, OnChanges {
             }
         });
         this.idChiamata = this.makeIdChiamata();
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.tipologie && changes.tipologie.currentValue) {
-            console.log(changes.tipologie.currentValue);
-        }
     }
 
     createForm(): FormGroup {
