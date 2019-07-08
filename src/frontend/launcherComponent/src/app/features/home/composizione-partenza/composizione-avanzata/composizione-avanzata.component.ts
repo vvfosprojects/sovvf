@@ -218,21 +218,26 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
-        if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) === -1 && this.idMezziInPrenotazione.indexOf(mezzoComposizione.id) === -1) {
-            if (this.boxPartenzaList.length <= 0) {
-                this.store.dispatch(new AddBoxPartenza());
+        // controllo se lo stato del mezzo è diverso da "In Viaggio" o "Sul Posto"
+        if (mezzoComposizione.mezzo.stato !== 'In Viaggio' && mezzoComposizione.mezzo.stato !== 'Sul Posto') {
+            // controllo se è un mezzo prenotato oppure se è in prenotazione
+            if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) === -1 && this.idMezziInPrenotazione.indexOf(mezzoComposizione.id) === -1) {
+                if (this.boxPartenzaList.length <= 0) {
+                    this.store.dispatch(new AddBoxPartenza());
+                }
+                this.store.dispatch(new SelectMezzoComposizione(mezzoComposizione));
+                const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
+                if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
+                    this.store.dispatch(new GetListeCoposizioneAvanzata(null, null, true));
+                }
+                this.store.dispatch(new AddMezzoBoxPartenzaSelezionato(mezzoComposizione));
+            } else if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) !== -1) {
+                this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza'));
+            } else if (this.idMezziInPrenotazione.indexOf(mezzoComposizione.id) !== -1) {
+                this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente'));
             }
-            this.store.dispatch(new SelectMezzoComposizione(mezzoComposizione));
-            const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
-            // TODO: testare
-            if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
-                this.store.dispatch(new GetListeCoposizioneAvanzata(null, null, true));
-            }
-            this.store.dispatch(new AddMezzoBoxPartenzaSelezionato(mezzoComposizione));
-        } else if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) !== -1) {
-            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza'));
-        } else if (this.idMezziInPrenotazione.indexOf(mezzoComposizione.id) !== -1) {
-            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente'));
+        } else {
+            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + mezzoComposizione.mezzo.stato + ' ed è impegnato in un\'altra partenza'));
         }
         // console.log('Mezzo selezionato', mezzoComposizione);
     }
