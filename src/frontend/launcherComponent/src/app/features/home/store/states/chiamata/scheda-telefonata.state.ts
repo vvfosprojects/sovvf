@@ -22,7 +22,8 @@ import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.e
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ChiamataService } from '../../../../../core/service/chiamata-service/chiamata.service';
-import { AddRichiesta, SetIdChiamataInviaPartenza } from '../../actions/richieste/richieste.actions';
+import { AddRichiesta, SetIdChiamataInviaPartenza, StartInviaPartenzaFromChiamata } from '../../actions/richieste/richieste.actions';
+import { environment } from '../../../../../../environments/environment';
 
 export interface SchedaTelefonataStateModel {
     coordinate: Coordinate;
@@ -91,12 +92,20 @@ export class SchedaTelefonataState {
             azioneChiamata: action.azioneChiamata
         });
 
-        this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((data: string) => {
+        this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((data: SintesiRichiesta) => {
             if (data && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
                 console.log(`Invia partenza idRichiesta: ${data}`);
-                dispatch(new SetIdChiamataInviaPartenza(data));
+                if (!environment.fakeProvider) {
+                    dispatch([
+                        new CestinaChiamata(),
+                        new StartInviaPartenzaFromChiamata(data)
+                    ]);
+                } else {
+                    dispatch(new SetIdChiamataInviaPartenza(data.id));
+                }
+            } else {
+                dispatch(new CestinaChiamata());
             }
-            dispatch(new CestinaChiamata());
         }, () => {
             dispatch(new ShowToastr(ToastrType.Error, 'Inserimento della chiamata fallito', 'Si è verificato un errore, riprova.', 5));
             patchState({
