@@ -1,0 +1,21 @@
+<div class="p-2 pt-3 text-center">
+    <h4>Squadre presenti nella partenza #{{numeroPartenza}}</h4>
+</div>
+<table class="table table-striped table-bordered mb-0">
+    <thead class="thead-light">
+    <tr>
+        <th scope="col">Nome</th>
+        <th scope="col">Componenti</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let s of squadre">
+        <td>{{s.nome}}</td>
+        <td>
+            <div *ngFor="let c of s.componenti">
+                <span class="badge badge-secondary">{{c.descrizioneQualifica}}</span> {{c.nominativo}}
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

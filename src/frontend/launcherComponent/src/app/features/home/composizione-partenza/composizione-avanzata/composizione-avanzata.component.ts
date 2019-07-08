@@ -7,7 +7,6 @@ import { MezzoComposizione } from '../interface/mezzo-composizione-interface';
 import { SquadraComposizione } from '../interface/squadra-composizione-interface';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
-import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { ToastrType } from '../../../../shared/enum/toastr';
 

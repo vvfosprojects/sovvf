@@ -6,3 +6,4 @@ export * from './components/competenza/competenza.component';
 export * from './components/loader/loader.component';
 export * from  './components/treeview/treeview.component';
 export * from  './components/lista-enti/lista-enti.component';
+export * from  './components/lista-squadre-partenza/lista-squadre-partenza.component';
