@@ -4,6 +4,7 @@ import { BoxClickInterface } from '../../box-interface/box-click-interface';
 import { objectDiff } from '../../../../../shared/helper/function';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Turno } from '../../../../navbar/turno/turno.model';
 
 @Component({
     selector: 'app-box-interventi',
@@ -14,6 +15,7 @@ export class BoxInterventiComponent implements OnChanges {
 
     interventiDiff: any;
     @Input() interventi: BoxInterventi;
+    @Input() turno: Turno;
     @Input() boxClick: BoxClickInterface;
     @Output() clickRichieste = new EventEmitter<string>();
 

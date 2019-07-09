@@ -16,6 +16,8 @@ import { BoxPersonaleState } from '../../store/states/boxes/box-personale.state'
 import { ReducerBoxClick } from '../../store/actions/boxes/box-click.actions';
 import { UtenteState } from '../../../navbar/store/states/operatore/utente.state';
 import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../shared/interface/box-personale.interface';
+import { TurnoState } from '../../../navbar/store/states/turno/turno.state';
+import { Turno } from '../../../navbar/turno/turno.model';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -27,6 +29,7 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
     @Select(BoxPersonaleState.personaleQty) personaleQty$: Observable<BoxPersonaleQty>;
     @Select(BoxPersonaleState.presenze) presenze$: Observable<BoxPersonalePresenze>;
+    @Select(TurnoState.turno) turno$: Observable<Turno>;
 
     datimeteo: Meteo;
 

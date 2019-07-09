@@ -6,12 +6,12 @@
                                                             (click)="clickRichieste.emit('tutti')">Richieste: {{interventi.totale}}</span>
                 <small>
                     <span ngbTooltip="Interventi aperti nel turno precedente">
-                        <span class="ml-2 mr-1">Turno {{interventi.nomeTurnoPrecedente}}:</span>
+                        <span class="ml-2 mr-1">Turno {{turno.precedente}}:</span>
                         <span class="font-weight-bold">{{interventi.totTurnoPrecedente}}</span>
                     </span>
                     <span class="mx-1 fa fa-arrow-right fa-fw"></span>
                     <span ngbTooltip="Interventi aperti nel turno corrente">
-                        <span class="mr-1">Turno {{interventi.nomeTurnoCorrente}}:</span>
+                        <span class="mr-1">Turno {{turno.corrente}}:</span>
                         <span class="font-weight-bold">{{interventi.totTurnoCorrente}}</span>
                     </span>
                 </small>
