@@ -17,6 +17,7 @@ const COMPONENTS = [
     Shared.LoaderComponent,
     Shared.TreeviewComponent,
     Shared.ListaEntiComponent,
+    Shared.ListaSquadrePartenzaComponent,
     ConfirmModalComponent,
     SelezioneTipiTerrenoComponent
 ];

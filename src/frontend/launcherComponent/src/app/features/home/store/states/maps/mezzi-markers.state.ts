@@ -71,10 +71,12 @@ export class MezziMarkersState {
         const filteredId: string[] = [];
         if (action.stato) {
             if (state.mezziMarkers) {
-                state.mezziMarkers.forEach(r => {
-                    action.stato.forEach(c => {
-                        if (r.mezzo.stato.substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
-                            filteredId.push(r.mezzo.codice);
+                state.mezziMarkers.forEach(mezzoMarker => {
+                    action.stato.forEach(statoMezzo => {
+                        const _statoMezzo = statoMezzo.split(' ').join('');
+                        const _mezzoMarker = mezzoMarker.mezzo.stato.split(' ').join('');
+                        if (_mezzoMarker.substring(0, 5).toLowerCase() === _statoMezzo.substring(0, 5).toLowerCase()) {
+                            filteredId.push(mezzoMarker.mezzo.codice);
                         }
                     });
                 });

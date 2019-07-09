@@ -2,15 +2,15 @@
     <div class="col-12">
         <div class="row">
             <div class="col-8 pr-0">
-                <i class="fa fa-medkit mb-2 mr-1"></i><span class="font-weight-bold cursor-pointer" ngbTooltip="Richieste in corso totali"
+                <i class="fa fa-medkit mb-2 mr-1"></i><span class="font-weight-bold cursor-pointer" ngbTooltip="Interventi aperti"
                                                             (click)="clickRichieste.emit('tutti')">Richieste: {{interventi.totale}}</span>
                 <small>
-                    <span ngbTooltip="Richieste in corso del turno precedente">
+                    <span ngbTooltip="Interventi aperti nel turno precedente">
                         <span class="ml-2 mr-1">Turno {{interventi.nomeTurnoPrecedente}}:</span>
                         <span class="font-weight-bold">{{interventi.totTurnoPrecedente}}</span>
                     </span>
                     <span class="mx-1 fa fa-arrow-right fa-fw"></span>
-                    <span ngbTooltip="Richieste in corso del turno corrente">
+                    <span ngbTooltip="Interventi aperti nel turno corrente">
                         <span class="mr-1">Turno {{interventi.nomeTurnoCorrente}}:</span>
                         <span class="font-weight-bold">{{interventi.totTurnoCorrente}}</span>
                     </span>

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ColoriStatoMezzo } from '../../helper/_colori';
 import { Mezzo } from '../../model/mezzo.model';
+import { HelperComposizione } from '../../../features/home/composizione-partenza/shared/helper/_helper-composizione';
 
 @Component({
     selector: 'app-mezzo',
@@ -11,6 +12,7 @@ export class MezzoComponent implements OnInit {
 
     @Input() mezzo: Mezzo;
     stato = new ColoriStatoMezzo();
+    methods = new HelperComposizione();
 
     constructor() {
     }

@@ -19,14 +19,14 @@ export class MezziMarkerServiceFake {
         this.mezziMarkers = [
             new MezzoMarker(
                 new Coordinate(41.8311007, 12.4686518),
-                new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 1,
+                new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                     new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                     3, 'carburante', 2, 'estinguente'),
                 'RM-12842', [new Tipologia('360', 'Persona che minaccia di buttarsi da un tetto', '')], 'Mezzo in soccorso'
             ),
             new MezzoMarker(
                 new Coordinate(41.82699, 12.4879854),
-                new Mezzo('2', 'Autobotte2', 'ABP', 'InRientro', 1,
+                new Mezzo('2', 'Autobotte2', 'ABP', 'In Rientro', 1,
                     new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                     3, 'carburante', 2, 'estinguente'),
                 'RM-12840', [new Tipologia('2', 'Incendio ed esplosione', 'fa fa-fire')],
@@ -34,7 +34,7 @@ export class MezziMarkerServiceFake {
             ),
             new MezzoMarker(
                 new Coordinate(41.8531486, 12.5418702),
-                new Mezzo('3', 'Autobotte3', 'ABP', 'InViaggio'
+                new Mezzo('3', 'Autobotte3', 'ABP', 'In Viaggio'
                     , 5,
                     new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                     3, 'carburante', 2, 'estinguente'),
@@ -43,7 +43,7 @@ export class MezziMarkerServiceFake {
             ),
             new MezzoMarker(
                 new Coordinate(41.8935662, 12.5417044),
-                new Mezzo('4', 'Autobotte3', 'ABP', 'SulPosto', 5,
+                new Mezzo('4', 'Autobotte3', 'ABP', 'Sul Posto', 5,
                     new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                     3, 'carburante', 2, 'estinguente'),
                 'RM-12839', [new Tipologia('360', 'Cedimento sede stradale con rimozione veicolo', '')],

@@ -17,10 +17,12 @@ export class NavbarService {
 
     getNavbar(): Observable<any> {
         return this.http.get<AppSettings>(API_URL_NAVBAR).pipe(
-            map( data => {
-                data.tipologie.map( tipologia => {
+            map((data: AppSettings) => {
+                const result = data;
+                result.tipologie.map(tipologia => {
                     tipologia.codiceDescrizione = `${tipologia.descrizione} (${tipologia.codice})`;
                 });
+                return result;
             }),
             retry(3),
             catchError(handleError)

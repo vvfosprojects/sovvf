@@ -1,20 +1,15 @@
-<div class="row">
+<span>
   <span class="d-inline-block">
-    <i class="guida fa fa-truck fa-fw mr-1" aria-hidden="true" title="Mezzo"></i>
+    <i class="guida fa fa-truck fa-fw mr-1" [ngClass]="methods.iconaStatiClass(mezzo.stato)" ngbTooltip="Mezzo {{mezzo.stato}}" placement="top"></i>
     <span *ngIf="mezzo.descrizione"><b>{{ mezzo.descrizione }}</b></span>
     <span *ngIf="mezzo.genere" class="badge badge-default m-0">{{ mezzo.genere }}</span>
-    <span *ngIf="mezzo.descrizioneStato" class="badge text-white m-0 ml-1"
-          [ngClass]="{'badge-secondary': mezzo.stato == 'InSede' || mezzo.stato == 'Istituto', 'badge-info': mezzo.stato == 'InViaggio', 'badge-success': mezzo.stato == 'SulPosto', 'badge-primary': mezzo.stato == 'InRientro'}">
-      {{ mezzo.descrizioneStato }}
-    </span>
   </span>
 
     <!-- indicatori -->
     <span class="d-inline-block pl-2 mr-1">
-    <button class="btn btn-light border py-0 px-0" [ngbPopover]="indMez" title="Indicatori mezzo" placement="top"
-            popoverTitle="Indicatori" triggers="click"
+    <button class="btn btn-light border py-0 px-0" [ngbPopover]="indMez" placement="top" triggers="click"
             tabindex="0" (click)="$event.stopPropagation()">
-      <i class="fa fa-briefcase fa-fw text-secondary" title="Condizione del Mezzo"></i>
+      <i class="fa fa-briefcase fa-fw text-secondary" ngbTooltip="Indicatori"></i>
     </button>
 
     <ng-template #indMez>
@@ -50,7 +45,7 @@
     <span class="d-inline-block mr-1">
     <button class="btn btn-light border py-0 px-0" [ngbPopover]="notMez" placement="top" triggers="click"
             popoverTitle="Notifiche mezzo" tabindex="0" (click)="$event.stopPropagation()">
-      <i class="fa fa-bell fa-fw text-secondary"></i>
+      <i class="fa fa-bell fa-fw text-secondary" ngbTooltip="Elenco notifiche"></i>
     </button>
 
     <ng-template #notMez>
@@ -63,8 +58,8 @@
     </ng-template>
   </span>
 
-    <button *ngIf="mezzo.stato === 'InViaggio'" class="btn btn-sm btn-outline-success py-0"
+    <button *ngIf="mezzo.stato === 'In Viaggio'" class="btn btn-sm btn-outline-success py-0"
             ngbTooltip="Mezzo arrivato sul posto" (click)="arrivatoSulPosto(); $event.stopPropagation()">
-        <i class="fa fa-check"></i>
+        <i class="fa fa-crosshairs"></i>
     </button>
-</div>
+</span>

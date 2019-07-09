@@ -38,6 +38,7 @@ import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissa
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 import { ListaEntiComponent } from '../../../shared';
+import { ListaSquadrePartenzaComponent } from '../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
 
 @NgModule({
     imports: [
@@ -77,7 +78,8 @@ import { ListaEntiComponent } from '../../../shared';
         ModificaRichiestaComponent,
     ],
     entryComponents: [
-        ListaEntiComponent
+        ListaEntiComponent,
+        ListaSquadrePartenzaComponent
     ],
     providers: [
         { provide: SintesiRichiesteService, useClass: environment.fakeProvider ? SintesiRichiesteServiceFake : SintesiRichiesteService}

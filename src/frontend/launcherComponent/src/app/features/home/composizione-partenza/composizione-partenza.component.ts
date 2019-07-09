@@ -71,9 +71,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                 new ReducerBoxClick('richieste', wipeStatoRichiesta(this.richiesta.stato))
             ]);
             // this.store.dispatch(new GetFiltriComposizione());
-        } else {
-            // Todo: A cosa serve?
-            // this.dismissPartenza();
         }
         isDevMode() && console.log('Componente Composizione creato');
     }

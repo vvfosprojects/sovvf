@@ -353,46 +353,31 @@
                             <ul *ngIf="richiesta.partenzeRichiesta" class="list-unstyled">
                                 <li *ngFor="let p of richiesta.partenzeRichiesta; index as i" class="border-bottom">
                                     <div class="row">
-                                        <div class="col-2 my-1 pr-0">
-                                            <b class="ml-1">#{{i + 1}}</b>
-                                        </div>
-                                        <div class="col-5 my-1 pr-1">
+                                        <div class="col-7 my-1 pr-1">
+                                            <span class="ml-1 mr-2 mb-0 d-inline-block font-weight-bold h6">#{{i + 1}}</span>
                                             <app-mezzo [mezzo]="p.mezzo"></app-mezzo>
                                             <span *ngIf="!p.mezzo" class="p-2">
                                                 Nessun mezzo
                                             </span>
                                         </div>
                                         <div class="col-5 my-1">
-                                                <span *ngFor="let s of p.squadre">
-                                                    <span class="mr-2">
-                                                        <i class="guida fa fa-fire-extinguisher fa-fw"
-                                                           title="Squadra"></i>
-                                                        <span><b>{{ s.nome }}</b></span>
+                                            <div *ngIf="p.squadre && p.squadre.length > 0"
+                                                 class="h6 text-right mb-0 font-weight-bold">
+                                                <i class="fa fa-group mr-2"></i>
+                                                <span>{{p.squadre[0].nome}}</span>
+                                                <button class="btn btn-sm btn-light border ml-2 p-1" ngbTooltip="Elenco squadre"
+                                                        (click)="onListaSquadrePartenza(p); $event.stopPropagation()">
+                                                    <span *ngIf="p.squadre.length === 1">
+                                                        <i class="fa fa-search"></i>
                                                     </span>
-                                                    <span class="text-right">
-                                                        <button class="btn btn-light border py-0 px-1"
-                                                                title="Componenti squadra" [ngbPopover]="popComponenti"
-                                                                placement="top"
-                                                                popoverTitle="Componenti" triggers="click" tabindex="0"
-                                                                (click)="$event.stopPropagation()">
-                                                            <i class="fa fa-address-book text-secondary"
-                                                               title="Componenti squadra"></i>
-                                                        </button>
-
-                                                        <ng-template #popComponenti>
-                                                            <div class="h6">
-                                                                <div *ngFor="let c of s.componenti">
-                                                                    <app-componente [componente]="c">
-                                                                    </app-componente>
-                                                                </div>
-                                                                <span *ngIf="!s.componenti">Nessun Componente</span>
-                                                            </div>
-                                                        </ng-template>
+                                                    <span *ngIf="p.squadre.length > 1">
+                                                        +{{p.squadre.length - 1}}
                                                     </span>
-                                                </span>
-                                            <span *ngIf="!p.squadre" class="p-2">
-                                                    Nessun squadra
-                                                </span>
+                                                </button>
+                                            </div>
+                                            <span *ngIf="!p.squadre || p.squadre.length === 0" class="p-2">
+                                                Nessun squadra
+                                            </span>
                                         </div>
                                     </div>
                                 </li>

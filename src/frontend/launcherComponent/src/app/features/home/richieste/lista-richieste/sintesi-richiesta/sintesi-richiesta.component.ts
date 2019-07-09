@@ -9,7 +9,8 @@ import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
 
 // Helper Methods
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
-import { ListaEntiComponent } from '../../../../../shared';
+import { ListaEntiComponent, ListaSquadrePartenzaComponent } from '../../../../../shared';
+import { Partenza } from '../../../../../shared/model/partenza.model';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -126,6 +127,15 @@ export class SintesiRichiestaComponent implements OnInit {
         modal.componentInstance.listaEntiPresaInCarico = this.richiesta.listaEntiPresaInCarico ? this.richiesta.listaEntiPresaInCarico : null;
         modal.result.then(() => console.log('Lista Enti Aperta'),
             () => console.log('Lista Enti Chiusa'));
+    }
+
+    onListaSquadrePartenza(partenza: Partenza) {
+        const modal = this.modalService.open(ListaSquadrePartenzaComponent, { windowClass: 'squadrePartenza', backdropClass: 'light-blue-backdrop', centered: true });
+        const numeroPartenza = this.richiesta.partenzeRichiesta.indexOf(partenza) + 1;
+        modal.componentInstance.numeroPartenza = numeroPartenza;
+        modal.componentInstance.squadre = partenza.squadre;
+        modal.result.then(() => console.log('Lista Squadre Partenza ' + numeroPartenza + ' Aperta'),
+            () => console.log('Lista Squadre Partenza Chiusa'));
     }
 
 }

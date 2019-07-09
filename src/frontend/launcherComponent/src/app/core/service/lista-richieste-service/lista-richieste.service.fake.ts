@@ -184,7 +184,8 @@ export class SintesiRichiesteServiceFake {
                 null,
                 new Fonogramma('0', 'Non necessario'),
                 [
-                    new Partenza([
+                    new Partenza(
+                        [
                             new Squadra(
                                 '3',
                                 '3A',
@@ -222,7 +223,208 @@ export class SintesiRichiesteServiceFake {
                                 new Sede(null, null, null, null, null, null, null),
                             )
                         ],
-                        new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 1,
+                        new Mezzo('1', 'Autobotte', 'ABP', 'Sul Posto', 1,
+                            new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
+                            3, 'carburante', 2, 'estinguente')
+                    ),
+                    new Partenza(
+                        [
+                            new Squadra(
+                                '3',
+                                '3A',
+                                StatoSquadra.InRientro,
+                                [
+                                    new Componente(
+                                        'CS',
+                                        'Paolo Di Tonno',
+                                        'Paolo Di Tonno - RSSTZN56T56R454E',
+                                        true,
+                                        false,
+                                        false),
+                                    new Componente(
+                                        'VIG',
+                                        'Antonio Marsalà',
+                                        'Antonio Marsalà - MRCMRC66T66R454F',
+                                        false,
+                                        true,
+                                        false),
+                                    new Componente(
+                                        'VIG',
+                                        'Bernardo Belli',
+                                        'Bernardo Belli - CNTRFL66T45R343E',
+                                        false,
+                                        false,
+                                        false),
+                                    new Componente(
+                                        'VIG',
+                                        'Maurizio Cutolo',
+                                        'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                        false,
+                                        false,
+                                        false)
+                                ],
+                                new Sede(null, null, null, null, null, null, null),
+                            )
+                        ],
+                        new Mezzo('2', 'Autobotte', 'ABP', 'In Viaggio', 1,
+                            new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
+                            3, 'carburante', 2, 'estinguente')
+                    ),
+                    new Partenza(
+                        [
+                            new Squadra(
+                                '3',
+                                '3A',
+                                StatoSquadra.InRientro,
+                                [
+                                    new Componente(
+                                        'CS',
+                                        'Paolo Di Tonno',
+                                        'Paolo Di Tonno - RSSTZN56T56R454E',
+                                        true,
+                                        false,
+                                        false),
+                                    new Componente(
+                                        'VIG',
+                                        'Antonio Marsalà',
+                                        'Antonio Marsalà - MRCMRC66T66R454F',
+                                        false,
+                                        true,
+                                        false),
+                                    new Componente(
+                                        'VIG',
+                                        'Bernardo Belli',
+                                        'Bernardo Belli - CNTRFL66T45R343E',
+                                        false,
+                                        false,
+                                        false),
+                                    new Componente(
+                                        'VIG',
+                                        'Maurizio Cutolo',
+                                        'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                        false,
+                                        false,
+                                        false)
+                                ],
+                                new Sede(null, null, null, null, null, null, null),
+                            ),
+                            new Squadra(
+                                '3',
+                                '3A',
+                                StatoSquadra.InRientro,
+                                [
+                                    new Componente(
+                                        'CS',
+                                        'Paolo Di Tonno',
+                                        'Paolo Di Tonno - RSSTZN56T56R454E',
+                                        true,
+                                        false,
+                                        false),
+                                    new Componente(
+                                        'VIG',
+                                        'Antonio Marsalà',
+                                        'Antonio Marsalà - MRCMRC66T66R454F',
+                                        false,
+                                        true,
+                                        false),
+                                    new Componente(
+                                        'VIG',
+                                        'Bernardo Belli',
+                                        'Bernardo Belli - CNTRFL66T45R343E',
+                                        false,
+                                        false,
+                                        false),
+                                    new Componente(
+                                        'VIG',
+                                        'Maurizio Cutolo',
+                                        'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                        false,
+                                        false,
+                                        false)
+                                ],
+                                new Sede(null, null, null, null, null, null, null),
+                            ),
+                            new Squadra(
+                                '3',
+                                '3A',
+                                StatoSquadra.InRientro,
+                                [
+                                    new Componente(
+                                        'CS',
+                                        'Paolo Di Tonno',
+                                        'Paolo Di Tonno - RSSTZN56T56R454E',
+                                        true,
+                                        false,
+                                        false),
+                                    new Componente(
+                                        'VIG',
+                                        'Antonio Marsalà',
+                                        'Antonio Marsalà - MRCMRC66T66R454F',
+                                        false,
+                                        true,
+                                        false),
+                                    new Componente(
+                                        'VIG',
+                                        'Bernardo Belli',
+                                        'Bernardo Belli - CNTRFL66T45R343E',
+                                        false,
+                                        false,
+                                        false),
+                                    new Componente(
+                                        'VIG',
+                                        'Maurizio Cutolo',
+                                        'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                        false,
+                                        false,
+                                        false)
+                                ],
+                                new Sede(null, null, null, null, null, null, null),
+                            )
+                        ],
+                        new Mezzo('3', 'Autobotte', 'ABP', 'In Viaggio', 1,
+                            new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
+                            3, 'carburante', 2, 'estinguente')
+                    ),
+                    new Partenza(
+                        [
+                            new Squadra(
+                                '3',
+                                '3A',
+                                StatoSquadra.InRientro,
+                                [
+                                    new Componente(
+                                        'CS',
+                                        'Paolo Di Tonno',
+                                        'Paolo Di Tonno - RSSTZN56T56R454E',
+                                        true,
+                                        false,
+                                        false),
+                                    new Componente(
+                                        'VIG',
+                                        'Antonio Marsalà',
+                                        'Antonio Marsalà - MRCMRC66T66R454F',
+                                        false,
+                                        true,
+                                        false),
+                                    new Componente(
+                                        'VIG',
+                                        'Bernardo Belli',
+                                        'Bernardo Belli - CNTRFL66T45R343E',
+                                        false,
+                                        false,
+                                        false),
+                                    new Componente(
+                                        'VIG',
+                                        'Maurizio Cutolo',
+                                        'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                        false,
+                                        false,
+                                        false)
+                                ],
+                                new Sede(null, null, null, null, null, null, null),
+                            )
+                        ],
+                        new Mezzo('4', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
                     )
@@ -302,7 +504,7 @@ export class SintesiRichiesteServiceFake {
                                 new Sede(null, null, null, null, null, null, null),
                             )
                         ],
-                        new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 1,
+                        new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
                     )
@@ -382,7 +584,7 @@ export class SintesiRichiesteServiceFake {
                                 new Sede(null, null, null, null, null, null, null),
                             )
                         ],
-                        new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 1,
+                        new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
                     )
@@ -462,7 +664,7 @@ export class SintesiRichiesteServiceFake {
                                 new Sede(null, null, null, null, null, null, null),
                             )
                         ],
-                        new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 1,
+                        new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
                     )
@@ -541,7 +743,7 @@ export class SintesiRichiesteServiceFake {
                                 new Sede(null, null, null, null, null, null, null),
                             )
                         ],
-                        new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 1,
+                        new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
                     )
@@ -620,7 +822,7 @@ export class SintesiRichiesteServiceFake {
                                 new Sede(null, null, null, null, null, null, null),
                             )
                         ],
-                        new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 1,
+                        new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
                     )
@@ -699,7 +901,7 @@ export class SintesiRichiesteServiceFake {
                                 new Sede(null, null, null, null, null, null, null),
                             )
                         ],
-                        new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 1,
+                        new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
                     )
@@ -778,7 +980,7 @@ export class SintesiRichiesteServiceFake {
                                 new Sede(null, null, null, null, null, null, null),
                             )
                         ],
-                        new Mezzo('1', 'Autobotte', 'ABP', 'InViaggio', 1,
+                        new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
                     )

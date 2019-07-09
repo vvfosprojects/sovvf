@@ -122,55 +122,6 @@ export class IconMappe {
         return this.pathUrl + this.mapIconeSpeciali.get(tipo);
     }
 
-    tipoIcona(marker: any, modello: string, markerS: boolean): string {
-        /**
-         * metodo che mi ritorna il tipo di icona da utilizzare
-         */
-        const pathModello = this.mapIconeModelloPath.get(modello);
-        const path = this.pathUrl + pathModello;
-        const check = !(markerS);
-        const dir = check ? path + 'ns/' : path + 's/';
-        if (marker) {
-            switch (modello) {
-                case 'richiesta': {
-                    this.iconaStatoCorrenteSize = this.mapIconeSize.get(marker.priorita);
-                    const _wipeStatoRichiesta = wipeStatoRichiesta(marker.stato);
-                    const statoRichiesta = this.mapIconeUrl.get(_wipeStatoRichiesta.substring(0, 5).toLowerCase());
-                    this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize + statoRichiesta;
-                    if (!this.iconaStatoCorrenteSize || !statoRichiesta) {
-                        return undefined;
-                    }
-                    break;
-                }
-                case 'mezzo': {
-                    const tipoMezzo = this.mapIconeMezzi.get(marker.mezzo.stato.substring(0, 5).toLowerCase());
-                    this.iconaStatoCorrenteUrl = dir + tipoMezzo;
-                    if (!this.iconaStatoCorrenteUrl || !tipoMezzo) {
-                        return undefined;
-                    }
-                    break;
-                }
-                case 'sede': {
-                    const sede = this.mapIconeSedi.get(marker.tipo.toLowerCase());
-                    this.iconaStatoCorrenteUrl = dir + sede;
-                    if (!this.iconaStatoCorrenteUrl || !sede) {
-                        return undefined;
-                    }
-                    break;
-                }
-                case 'tipo-sede': {
-                    const tipoSede = this.mapIconeTipoSedi.get(marker.tipo.toLowerCase());
-                    this.iconaStatoCorrenteUrl = dir + tipoSede;
-                    if (!this.iconaStatoCorrenteUrl || !tipoSede) {
-                        return undefined;
-                    }
-                    break;
-                }
-            }
-            return this.iconaStatoCorrenteUrl;
-        }
-    }
-
     /**
      * metodo che ritorna un array di stringhe con tutti i path di tutte le icone
      * l'array in oggetto sarà utilizzato per mettere in cache tutte le icone su agm
@@ -238,7 +189,7 @@ export class IconMappe {
         return this.iconaStatoCorrenteUrl;
     }
 
-    iconaMezzo(stato: any, selezionato: boolean): string {
+    iconaMezzo(stato: string, selezionato: boolean): string {
         /**
          * metodo che mi ritorna l'url del' icona mezzoMarker da utilizzare
          */
@@ -246,7 +197,8 @@ export class IconMappe {
         const path = this.pathUrl + pathModello;
         const check = !(selezionato);
         const dir = check ? path + 'ns/' : path + 's/';
-        const tipoMezzo = this.mapIconeMezzi.get(stato.substring(0, 5).toLowerCase());
+        const statoMezzo = stato.split(' ').join('');
+        const tipoMezzo = this.mapIconeMezzi.get(statoMezzo.substring(0, 5).toLowerCase());
         this.iconaStatoCorrenteUrl = dir + tipoMezzo;
         if (!this.iconaStatoCorrenteUrl || !tipoMezzo) {
             return undefined;

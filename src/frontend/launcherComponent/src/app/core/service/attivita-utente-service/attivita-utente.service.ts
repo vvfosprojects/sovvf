@@ -16,29 +16,29 @@ export class AttivitaUtenteService {
     constructor(private http: HttpClient) {
     }
 
-    public addInLavorazione(sintesiRichiesta: SintesiRichiesta): Observable<any> {
-        return this.http.post<string>(API_URL + '/AddInLavorazione', sintesiRichiesta).pipe(
+    public addInLavorazione(sintesiRichiesta: SintesiRichiesta): Observable<SintesiRichiesta> {
+        return this.http.post<SintesiRichiesta>(API_URL + '/AddInLavorazione', sintesiRichiesta).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
-    public deleteInLavorazione(sintesiRichiesta: SintesiRichiesta): Observable<any> {
-        return this.http.post<string>(API_URL + '/DeleteInLavorazione', sintesiRichiesta).pipe(
+    public deleteInLavorazione(sintesiRichiesta: SintesiRichiesta): Observable<SintesiRichiesta> {
+        return this.http.post<SintesiRichiesta>(API_URL + '/DeleteInLavorazione', sintesiRichiesta).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
-    public addPresaInCarico(sintesiRichiesta: SintesiRichiesta): Observable<any> {
-        return this.http.post<string>(API_URL + '/AddPresaInCarico', sintesiRichiesta).pipe(
+    public addPresaInCarico(sintesiRichiesta: SintesiRichiesta): Observable<SintesiRichiesta> {
+        return this.http.post<SintesiRichiesta>(API_URL + '/AddPresaInCarico', sintesiRichiesta).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
-    public deletePresaInCarico(sintesiRichiesta: SintesiRichiesta): Observable<any> {
-        return this.http.post<string>(API_URL + '/DeletePresaInCarico', sintesiRichiesta).pipe(
+    public deletePresaInCarico(sintesiRichiesta: SintesiRichiesta): Observable<SintesiRichiesta> {
+        return this.http.post<SintesiRichiesta>(API_URL + '/DeletePresaInCarico', sintesiRichiesta).pipe(
             retry(3),
             catchError(handleError)
         );

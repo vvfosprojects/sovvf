@@ -9,13 +9,15 @@
                             Culturale
                         </div>
                     </ng-template>
-                    <h3 class="mb-0">Modifica #{{richiestaModifica?.codice}}
+                    <h4 class="mb-0">Modifica #
+                        <span *ngIf="richiestaModifica.codiceRichiesta">{{ richiestaModifica.codiceRichiesta }} </span>
+                        <span *ngIf="!richiestaModifica.codiceRichiesta">{{ richiestaModifica.codice }} </span>
                         <span *ngIf="f.rilevanza?.value || f.rilevanzaStArCu?.value"
                               class="d-inline-block mr-1 text-danger"
                               [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f.rilevanza?.value"
                                                                              class="fa fa-exclamation mr-2"></i><i
                                 *ngIf="f.rilevanzaStArCu?.value" class="fa fa-university"></i></span>
-                    </h3>
+                    </h4>
                 </div>
                 <div class="col-3 pl-0">
                     <div class="form-group m-0 float-right">
@@ -38,8 +40,8 @@
                     </div>
                 </div>
             </div>
-            <hr class="mt-1">
-            <div class="form-group mb-2">
+            <hr class="m-0">
+            <div class="form-group mt-2 mb-2">
                 <label>Tipologia intervento</label>
                 <ng-select class="border"
                            [ngClass]="{'errore': submitted && checkTipologie()}"
@@ -82,7 +84,7 @@
                     </div>
                 </div>
                 <div *ngIf="tipologiaRichiedente === 'Nome-Cognome'" class="col">
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label for="nome">Nome</label>
                         <input id="nome" type="text" placeholder="nome" formControlName="nome" class="form-control"
                                [ngClass]="{ 'is-invalid': submitted && f.nome.errors }"/>
@@ -92,7 +94,7 @@
                     </div>
                 </div>
                 <div *ngIf="tipologiaRichiedente === 'Nome-Cognome'" class="col">
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label for="cognome">Cognome</label>
                         <input id="cognome" type="text" placeholder="cognome" formControlName="cognome"
                                class="form-control"
@@ -103,7 +105,7 @@
                     </div>
                 </div>
                 <div *ngIf="tipologiaRichiedente === 'RagioneSociale'" class="col-6">
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label for="ragioneSociale">Ragione Sociale</label>
                         <input id="ragioneSociale" type="text" placeholder="ragione sociale"
                                formControlName="ragioneSociale"
@@ -115,7 +117,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label for="telefono">Telefono</label>
                         <input id="telefono" type="text" placeholder="telefono" formControlName="telefono"
                                class="form-control"
@@ -128,13 +130,14 @@
             </div>
             <div class="row">
                 <div class="col-7">
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label for="indirizzo">Indirizzo</label>
                         <input id="indirizzo" ngx-google-places-autocomplete type="text" formControlName="indirizzo"
                                class="form-control"
                                [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
                                placeholder="Ricerca indirizzo"
-                               [options]="options" (onAddressChange)="onCercaIndirizzo($event)" (keyup)="modificaIndirizzo()"
+                               [options]="options" (onAddressChange)="onCercaIndirizzo($event)"
+                               (keyup)="modificaIndirizzo()"
                                autocomplete="new-password">
                         <div *ngIf="submitted && (f.indirizzo.errors || !coordinate)" class="invalid-feedback">
                             <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
@@ -142,7 +145,7 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label for="latitudine">Latitudine</label>
                         <input id="latitudine" type="text" placeholder="Latitudine" formControlName="latitudine"
                                class="form-control"
@@ -153,7 +156,7 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label for="longitudine">Longitudine</label>
                         <input id="longitudine" type="text" placeholder="Longitudine" formControlName="longitudine"
                                class="form-control"
@@ -179,7 +182,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label for="motivazione">Motivazione</label>
                         <textarea id="motivazione" placeholder="Motivazione" formControlName="motivazione"
                                   class="form-control"
@@ -187,7 +190,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label for="noteIndirizzo">Note Indirizzo</label>
                         <textarea id="noteIndirizzo" placeholder="Note" formControlName="noteIndirizzo"
                                   class="form-control"
@@ -197,7 +200,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label for="notePubbliche">Note Pubbliche</label>
                         <textarea id="notePubbliche" placeholder="Note Pubbliche" formControlName="notePubbliche"
                                   class="form-control"
@@ -205,7 +208,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label for="notePrivate">Note Private</label>
                         <textarea id="notePrivate" type="text" placeholder="Note Private"
                                   formControlName="notePrivate"
@@ -216,7 +219,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label for="etichette">Tag</label>
                         <input id="etichette" type="text" placeholder="Tag" formControlName="etichette"
                                class="form-control"
@@ -224,7 +227,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label for="zoneEmergenza">Codice emergenza</label>
                         <input id="zoneEmergenza" type="text" placeholder="Codice Emergenza"
                                formControlName="zoneEmergenza"
@@ -235,11 +238,14 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <app-selezione-tipi-terreno [tipiTerreno]="richiestaModifica.tipoTerreno" (tipiTerrenoSelezionati)="onTerreniSelezionati($event)"></app-selezione-tipi-terreno>
+                    <div class="form-group mb-3">
+                        <app-selezione-tipi-terreno [tipiTerreno]="richiestaModifica.tipoTerreno"
+                                                    (tipiTerrenoSelezionati)="onTerreniSelezionati($event)"></app-selezione-tipi-terreno>
+                    </div>
                 </div>
             </div>
         </form>
-        <div class="form-group">
+        <div class="form-group mb-2">
             <button type="button" class="btn btn-primary float-right" (click)="onConfermaModifica()">Conferma
                 Modifica
             </button>
