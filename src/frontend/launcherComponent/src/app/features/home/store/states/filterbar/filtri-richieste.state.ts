@@ -14,6 +14,7 @@ import { Tipologia } from '../../../../../shared/model/tipologia.model';
 
 export interface FiltriRichiesteStateModel {
     filtriRichieste: VoceFiltro[];
+    categoriaFiltriRichieste: string[];
 }
 
 export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
@@ -22,7 +23,8 @@ export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
         { codice: '2', categoria: 'Presidiato', descrizione: 'Non Presidiato', star: true, selezionato: false },
         { codice: '3', categoria: 'Rilevante', descrizione: 'Rilevante', star: true, selezionato: false },
         { codice: '4', categoria: 'Rilevante', descrizione: 'Non Rilevante', star: true, selezionato: false },
-    ]
+    ],
+    categoriaFiltriRichieste: []
 };
 
 @State<FiltriRichiesteStateModel>({
@@ -38,6 +40,11 @@ export class FiltriRichiesteState {
     @Selector()
     static filtriTipologie(state: FiltriRichiesteStateModel) {
         return state.filtriRichieste;
+    }
+
+    @Selector()
+    static categoriaFiltriTipologie(state: FiltriRichiesteStateModel) {
+        return state.categoriaFiltriRichieste;
     }
 
     @Selector()
@@ -62,10 +69,17 @@ export class FiltriRichiesteState {
         tipologie.forEach(tipologia => {
             filtriRichieste.push(new VoceFiltro('' + tipologia.codice, tipologia.categoria, tipologia.descrizione, tipologia.star));
         });
+        const categorie: string[] = [];
+        filtriRichieste.forEach(filtro => {
+            if (categorie.indexOf(filtro.categoria) < 0) {
+                categorie.push(filtro.categoria);
+            }
+        });
 
         patchState({
             ...state,
-            filtriRichieste: filtriRichieste
+            filtriRichieste: filtriRichieste,
+            categoriaFiltriRichieste: categorie
         });
     }
 
@@ -118,7 +132,5 @@ export function resetFiltriSelezionati(filtriRichieste: VoceFiltro[]) {
     filtriRichieste.forEach((fR: VoceFiltro) => {
         fR.selezionato = false;
     });
-    const newFiltriRichieste = filtriRichieste;
-
-    return newFiltriRichieste;
+    return filtriRichieste;
 }

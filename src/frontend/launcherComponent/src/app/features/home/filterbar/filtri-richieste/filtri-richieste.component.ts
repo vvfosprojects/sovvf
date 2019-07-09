@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { VoceFiltro } from './voce-filtro.model';
 import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -7,47 +7,31 @@ import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
     templateUrl: './filtri-richieste.component.html',
     styleUrls: ['./filtri-richieste.component.css']
 })
-export class FiltriRichiesteComponent implements OnInit {
+export class FiltriRichiesteComponent {
     @Input() filtri: VoceFiltro[];
     @Input() filtriSelezionati: VoceFiltro[];
+    @Input() categorie: string[];
 
-    // Events
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtriReset: EventEmitter<any> = new EventEmitter();
 
-    categorie: Array<String> = [];
     categoriaSelezionata = 'Presidiato';
-    filtersSearch = {descrizione: ''};
+    filtersSearch = { descrizione: '' };
 
     constructor(private modalService: NgbModal,
                 dropdownOpts: NgbDropdownConfig) {
         dropdownOpts.placement = 'bottom-left';
     }
 
-    ngOnInit() {
-        this.setCategorie(this.filtri);
-    }
-
-    setCategorie(filtri: VoceFiltro[]) {
-        let count = -1;
-        filtri.forEach(filtro => {
-            if (this.categorie) {
-                count = this.categorie.indexOf(filtro.categoria);
-            }
-            if (count <= -1) {
-                this.categorie.push(filtro.categoria);
-            }
-        });
-    }
 
     onSelezioneCategoria(categoria: any) {
         this.categoriaSelezionata = categoria;
     }
 
     openFiltersModal(content: any) {
-        this.filtersSearch = {descrizione: ''};
-        this.modalService.open(content, {windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true});
+        this.filtersSearch = { descrizione: '' };
+        this.modalService.open(content, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
     }
 
     onSelezioneFiltro(filtro: VoceFiltro) {

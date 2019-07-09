@@ -7,6 +7,7 @@
             </div>
             <div *ngIf="!(composizioneStatus$ | async)" class="col-2 px-0 text-left">
                 <app-filtri-richieste [filtri]="(filtri$ | async)" [filtriSelezionati]="(filtriSelezionati$ | async)"
+                                      [categorie]="(categoriaFiltri$| async)"
                                       (filtroSelezionato)="onSelezioneFiltro($event)"
                                       (filtroDeselezionato)="onDeselezioneFiltro($event)"
                                       (filtriReset)="eliminaFiltriAttivi()">

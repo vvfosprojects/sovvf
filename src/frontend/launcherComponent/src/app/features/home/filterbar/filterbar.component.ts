@@ -31,6 +31,7 @@ export class FilterbarComponent implements OnInit {
     // Filtri Richieste
     @Select(FiltriRichiesteState.filtriTipologie) filtri$: Observable<VoceFiltro[]>;
     @Select(FiltriRichiesteState.filtriSelezionati) filtriSelezionati$: Observable<VoceFiltro[]>;
+    @Select(FiltriRichiesteState.categoriaFiltriTipologie) categoriaFiltri$: Observable<string[]>;
 
     // Ricerca Richieste
     @Select(RicercaRichiesteState.ricerca) ricerca$: Observable<any>;
