@@ -13,7 +13,6 @@ namespace SO115App.Models.Servizi.CustomMapper
         {
             CreateMap<RichiestaAssistenza, SintesiRichiesta>().ReverseMap();
             CreateMap<SintesiRichiesta, Intervento>().ReverseMap();
-            CreateMap<SintesiRichieste, Intervento>().ReverseMap();
         }
     }
 }

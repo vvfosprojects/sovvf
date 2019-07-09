@@ -47,5 +47,7 @@ namespace SO115App.API.Models.Classi.Boxes
         public bool TecnicoGuardia2 { get; set; }
 
         public bool CapoTurno { get; set; }
+
+        public string Telefono { get; set; }
     }
 }

@@ -72,7 +72,7 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
                 command.Chiamata.ListaUtentiInLavorazione.Add(attivita);
             else
             {
-                richiesta.ListaUtentiInLavorazione = new List<AttivitaUtente>();
+                command.Chiamata.ListaUtentiInLavorazione = new List<AttivitaUtente>();
                 command.Chiamata.ListaUtentiInLavorazione.Add(attivita);
             }
 

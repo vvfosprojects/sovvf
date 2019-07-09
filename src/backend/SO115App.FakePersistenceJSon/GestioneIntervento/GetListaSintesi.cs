@@ -70,7 +70,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                     ListaSintesiRichieste.Add(Mapper.Map(richiesta));
                 }
 
-                ListaSintesiRichieste = ListaSintesiRichieste.OrderByDescending(x => x.IstanteRicezioneRichiesta).OrderBy(x => x.Stato).ToList();
+                ListaSintesiRichieste = ListaSintesiRichieste.OrderByDescending(x => x.IstanteRicezioneRichiesta).ThenByDescending(x => x.Stato == "Chiamata").ToList();
                 return ListaSintesiRichieste;
             }
             else

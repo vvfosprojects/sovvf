@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento;
@@ -55,6 +56,7 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
         public async Task SendNotification(PresaInCaricoCommand intervento)
         {
             var SintesiRichiesteAssistenzaquery = new SintesiRichiesteAssistenzaQuery();
+            var ListaSintesi = (List<SintesiRichiesta>)this.sintesiRichiesteAssistenzahandler.Handle(SintesiRichiesteAssistenzaquery).SintesiRichiesta;
 
             var BoxRichiestequery = new BoxRichiesteQuery();
             BoxInterventi boxInterventi = new BoxInterventi();
@@ -63,6 +65,9 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             var query = new SintesiRichiesteAssistenzaMarkerQuery();
             List<SintesiRichiestaMarker> listaSintesiMarker = new List<SintesiRichiestaMarker>();
             listaSintesiMarker = (List<SintesiRichiestaMarker>)this._SintesiRichiesteAssistenzaMarkerhandler.Handle(query).SintesiRichiestaMarker;
+
+            intervento.Chiamata = ListaSintesi.LastOrDefault(richiesta => richiesta.Id == intervento.Chiamata.Id);
+
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", intervento);
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxInterventi", boxInterventi);
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));

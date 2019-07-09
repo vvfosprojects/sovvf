@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 
 namespace SO115App.API.Controllers
 {
@@ -35,7 +36,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("AddInLavorazione")]
-        public async Task<IActionResult> AddInLavorazione([FromBody]Intervento intervento)
+        public async Task<IActionResult> AddInLavorazione([FromBody]SintesiRichiesta intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
             string IdUtente = headerValues.FirstOrDefault();
@@ -59,7 +60,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("DeleteInLavorazione")]
-        public async Task<IActionResult> DeleteInLavorazione([FromBody]Intervento intervento)
+        public async Task<IActionResult> DeleteInLavorazione([FromBody]SintesiRichiesta intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
             string IdUtente = headerValues.FirstOrDefault();
@@ -83,7 +84,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("AddPresaInCarico")]
-        public async Task<IActionResult> AddPresaInCarico([FromBody]Intervento intervento)
+        public async Task<IActionResult> AddPresaInCarico([FromBody]SintesiRichiesta intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
             string IdUtente = headerValues.FirstOrDefault();
@@ -107,7 +108,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("DeletePresaInCarico")]
-        public async Task<IActionResult> DeletePresaInCarico([FromBody]Intervento intervento)
+        public async Task<IActionResult> DeletePresaInCarico([FromBody]SintesiRichiesta intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
             string IdUtente = headerValues.FirstOrDefault();

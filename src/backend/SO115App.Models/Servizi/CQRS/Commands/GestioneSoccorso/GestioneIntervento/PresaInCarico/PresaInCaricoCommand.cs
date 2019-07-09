@@ -18,14 +18,14 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 
-namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
+namespace DomainModel.CQRS.Commands.PresaInCarico
 {
-    public class RimozioneInLavorazioneCommand
+    public class PresaInCaricoCommand
     {
         public string IdRichiesta { get; set; }
         public string IdUtente { get; set; }
-
-        public Intervento Chiamata { get; set; }
+        public SintesiRichiesta Chiamata { get; set; }
     }
 }

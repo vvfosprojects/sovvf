@@ -52,7 +52,7 @@ namespace SO115App.FakePersistenceJSon.ListaEventi
                     richiestaAss = MapperDTO.MapRichiestaDTOtoRichiesta(richiesta);
             }
 
-            eventi = richiestaAss.Eventi.ToList();
+            eventi = richiestaAss.Eventi.OrderByDescending(x => x.Istante).ToList();
 
             return eventi;
         }

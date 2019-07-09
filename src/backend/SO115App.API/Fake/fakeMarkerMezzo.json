@@ -8,7 +8,7 @@
       "codice": "1",
       "descrizione": "Autobotte",
       "genere": "ABP",
-      "stato": "InViaggio",
+      "stato": "In Viaggio",
       "appartenenza": 1,
       "distaccamento": {
         "codice": "1",
@@ -47,7 +47,7 @@
       "codice": "2",
       "descrizione": "Autobotte2",
       "genere": "ABP",
-      "stato": "InRientro",
+      "stato": "In Rientro",
       "appartenenza": 1,
       "distaccamento": {
         "codice": "1",
@@ -86,7 +86,7 @@
       "codice": "3",
       "descrizione": "Autobotte3",
       "genere": "ABP",
-      "stato": "InViaggio",
+      "stato": "In Viaggio",
       "appartenenza": 5,
       "distaccamento": {
         "codice": "1",
@@ -125,7 +125,7 @@
       "codice": "4",
       "descrizione": "Autobotte3",
       "genere": "ABP",
-      "stato": "SulPosto",
+      "stato": "Sul Posto",
       "appartenenza": 5,
       "distaccamento": {
         "codice": "1",

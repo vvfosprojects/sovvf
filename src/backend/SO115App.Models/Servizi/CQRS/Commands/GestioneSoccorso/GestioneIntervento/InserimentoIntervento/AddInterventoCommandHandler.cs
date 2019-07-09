@@ -42,6 +42,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         {
             var sedeRichiesta = command.Chiamata.Operatore.Sede.Codice;
             var codiceChiamata = _generaCodiceRichiesta.GeneraCodiceChiamata(sedeRichiesta, DateTime.UtcNow.Year);
+            command.Chiamata.Codice = codiceChiamata;
+            command.Chiamata.Id = codiceChiamata;
 
             var richiesta = new RichiestaAssistenza()
             {
@@ -87,8 +89,6 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 NumeroTelefono = command.Chiamata.Richiedente.Telefono,
                 Esito = command.Chiamata.Azione.ToString(),
             };
-
-            command.Chiamata.Codice = codiceChiamata;
 
             this._saveRichiestaAssistenza.Save(richiesta);
         }
