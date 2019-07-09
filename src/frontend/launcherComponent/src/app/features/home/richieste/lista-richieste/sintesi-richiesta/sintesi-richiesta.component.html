@@ -353,14 +353,14 @@
                             <ul *ngIf="richiesta.partenzeRichiesta" class="list-unstyled">
                                 <li *ngFor="let p of richiesta.partenzeRichiesta; index as i" class="border-bottom">
                                     <div class="row">
-                                        <div class="col-8 my-1 pr-1">
+                                        <div class="col-7 my-1 pr-1">
                                             <span class="ml-1 mr-2 mb-0 d-inline-block font-weight-bold h6">#{{i + 1}}</span>
                                             <app-mezzo [mezzo]="p.mezzo"></app-mezzo>
                                             <span *ngIf="!p.mezzo" class="p-2">
                                                 Nessun mezzo
                                             </span>
                                         </div>
-                                        <div class="col-4 my-1">
+                                        <div class="col-5 my-1">
                                             <div *ngIf="p.squadre && p.squadre.length > 0"
                                                  class="h6 text-right mb-0 font-weight-bold">
                                                 <i class="fa fa-group mr-2"></i>
