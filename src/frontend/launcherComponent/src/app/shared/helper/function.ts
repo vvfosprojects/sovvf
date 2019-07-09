@@ -100,3 +100,13 @@ export function objectDiff(current: object, previous: object) {
     });
     return !hasError ? newObj : null;
 }
+
+export function round1decimal(value: number) {
+    const decimal = value < 0.01 ? 1000 : 100;
+    return Math.round(value * decimal) / decimal;
+}
+
+export function roundTodecimal(value: number, exp) {
+    const number = exp ? Math.pow(10, exp) : 10;
+    return Math.round(value * number) / number;
+}

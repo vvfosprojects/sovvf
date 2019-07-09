@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RichiestaModificaState } from '../../store/states/richieste/richiesta-modifica.state';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { makeCopy } from '../../../../shared/helper/function';
+import { makeCopy, roundTodecimal } from '../../../../shared/helper/function';
 import { PatchRichiesta } from '../../store/actions/richieste/richieste.actions';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
@@ -135,7 +135,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     }
 
     onCercaIndirizzo(result: Address): void {
-        const coordinate = new Coordinate(result.geometry.location.lat(), result.geometry.location.lng());
+        const coordinate = new Coordinate(roundTodecimal(result.geometry.location.lat(), 6), roundTodecimal(result.geometry.location.lng(), 6));
         this.coordinate = coordinate;
         this.f.latitudine.patchValue(coordinate.latitudine);
         this.f.longitudine.patchValue(coordinate.longitudine);

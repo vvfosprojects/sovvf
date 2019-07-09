@@ -7,6 +7,7 @@ import { TipoTerrenoEnum } from '../../../../shared/enum/tipo-terreno.enum';
 import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
 import { TipoTerrenoMqHa } from '../../../../shared/interface/tipo-terreno-mq-ha';
 import { AttivitaUtente } from '../../../../shared/model/attivita-utente.model';
+import { round1decimal } from '../../../../shared/helper/function';
 
 export class HelperSintesiRichiesta {
 
@@ -270,9 +271,4 @@ export class HelperSintesiRichiesta {
         }
         return null;
     }
-}
-
-export function round1decimal(value: number) {
-    const decimal = value < 0.01 ? 1000 : 100;
-    return Math.round(value * decimal) / decimal;
 }

@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { SchedaTelefonataInterface } from '../../../../shared/interface/scheda-telefonata.interface';
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
-import { makeCopy, makeID } from '../../../../shared/helper/function';
+import { makeCopy, makeID, roundTodecimal } from '../../../../shared/helper/function';
 import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
 import { Select, Store } from '@ngxs/store';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
@@ -83,6 +83,8 @@ export class SchedaTelefonataComponent implements OnInit {
             ragioneSociale: [null],
             telefono: [null, Validators.required],
             indirizzo: [null, Validators.required],
+            latitudine: [null, Validators.required],
+            longitudine: [null, Validators.required],
             etichette: [null],
             noteIndirizzo: [null],
             rilevanza: [false],
@@ -161,6 +163,8 @@ export class SchedaTelefonataComponent implements OnInit {
         }
         // this.nuovaRichiesta.localita = new Localita(this.coordinate ? this.coordinate : null, f.indirizzo.value, f.noteIndirizzo.value);
         this.nuovaRichiesta.localita.note = f.noteIndirizzo.value;
+        this.nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
+        this.nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
         this.nuovaRichiesta.etichette = f.etichette.value ? f.etichette.value.split(' ') : null;
         this.nuovaRichiesta.rilevanza = f.rilevanza.value;
         this.nuovaRichiesta.rilevanzaStArCu = f.rilevanzaStArCu.value;
@@ -169,13 +173,13 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.notePrivate = f.notePrivate.value;
         this.nuovaRichiesta.notePubbliche = f.notePubbliche.value;
         // this.nuovaRichiesta.istantePresaInCarico = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
-
-        if (this.coordinate) {
-            const marker: ChiamataMarker = makeCopy(this.chiamataMarker);
-            if (marker.localita) {
-                marker.localita.note = f.noteIndirizzo.value;
-            }
-        }
+        //
+        // if (this.coordinate) {
+        //     const marker: ChiamataMarker = makeCopy(this.chiamataMarker);
+        //     if (marker.localita) {
+        //         marker.localita.note = f.noteIndirizzo.value;
+        //     }
+        // }
 
         this.setDescrizione();
 
@@ -272,11 +276,15 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     onCercaIndirizzo(result: Address): void {
-        this.coordinate = new Coordinate(result.geometry.location.lat(), result.geometry.location.lng());
+        const lat = roundTodecimal(result.geometry.location.lat(), 6);
+        const lng = roundTodecimal(result.geometry.location.lng(), 6);
+        this.coordinate = new Coordinate(lat, lng);
         this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
             new Localita(this.coordinate ? this.coordinate : null, result.formatted_address), null
         );
         this.nuovaRichiesta.localita = new Localita(this.coordinate ? this.coordinate : null, result.formatted_address, null);
+        this.f.latitudine.patchValue(lat);
+        this.f.longitudine.patchValue(lng);
         this._statoChiamata('cerca');
     }
 

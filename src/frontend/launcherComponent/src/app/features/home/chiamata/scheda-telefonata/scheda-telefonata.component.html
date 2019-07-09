@@ -121,7 +121,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-10">
+                <div class="col-7">
                     <div class="form-group mb-3">
                         <label for="indirizzo">Indirizzo</label>
                         <input id="indirizzo" ngx-google-places-autocomplete type="text" formControlName="indirizzo"
@@ -134,11 +134,33 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-2 text-center">
-                    <label>Coordinate</label>
+                <div class="col-2">
+                    <div class="form-group mb-2">
+                        <label for="latitudine">Latitudine</label>
+                        <input id="latitudine" type="text" placeholder="Latitudine" formControlName="latitudine"
+                               class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && f.latitudine.errors }"/>
+                        <div *ngIf="submitted && f.latitudine.errors" class="invalid-feedback">
+                            <div *ngIf="f.latitudine.errors.required">La latitudine è richiesta</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group mb-2">
+                        <label for="longitudine">Longitudine</label>
+                        <input id="longitudine" type="text" placeholder="Longitudine" formControlName="longitudine"
+                               class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && f.longitudine.errors }"/>
+                        <div *ngIf="submitted && f.longitudine.errors" class="invalid-feedback">
+                            <div *ngIf="f.longitudine.errors.required">La longitudine è richiesta</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1">
+                    <label>Copia</label>
                     <button type="button" class="btn btn-block btn-secondary" [ngbTooltip]="coordsTooltip"
                             placement="bottom" (click)="onCopiaIndirizzo()" [disabled]="!coordinate">
-                        <i class="fa fa-clipboard"></i> Copia
+                        <i class="fa fa-clipboard"></i>
                     </button>
 
                     <ng-template #coordsTooltip>
