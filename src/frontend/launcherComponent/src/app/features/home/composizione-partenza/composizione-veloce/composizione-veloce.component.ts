@@ -141,12 +141,13 @@ export class FasterComponent implements OnInit, OnDestroy {
         const boxPartenzaList: BoxPartenza[] = [];
         this.preAccoppiati.forEach( result => {
             if (this.idPreAccoppiatiSelezionati.includes(result.id)) {
-                boxPartenzaList.push(result);
+                boxPartenzaList.push(makeCopy(result));
             }
         });
         const partenzeMappedArray = boxPartenzaList.map(obj => {
             const rObj = {};
             if (obj.mezzoComposizione) {
+                obj.mezzoComposizione.mezzo.stato = 'In Viaggio';
                 rObj['mezzo'] = obj.mezzoComposizione.mezzo;
             } else {
                 rObj['mezzo'] = null;
@@ -165,7 +166,7 @@ export class FasterComponent implements OnInit, OnDestroy {
             'idRichiesta': this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
             'turno': this.store.selectSnapshot(TurnoState.turno).corrente
         };
-        // console.log(partenzeObj);
+        // console.log('mappedArray', partenzeMappedArray);
         this.store.dispatch(new ConfirmPartenze(partenzeObj));
     }
 }

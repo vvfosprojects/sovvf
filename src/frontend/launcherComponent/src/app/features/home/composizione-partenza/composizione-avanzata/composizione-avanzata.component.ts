@@ -359,10 +359,11 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     confermaPartenze() {
-        const partenze = this.boxPartenzaList;
+        const partenze = makeCopy(this.boxPartenzaList);
         const partenzeMappedArray = partenze.map(obj => {
             const rObj = {};
             if (obj.mezzoComposizione) {
+                obj.mezzoComposizione.mezzo.stato = 'In Viaggio';
                 rObj['mezzo'] = obj.mezzoComposizione.mezzo;
             } else {
                 rObj['mezzo'] = null;
