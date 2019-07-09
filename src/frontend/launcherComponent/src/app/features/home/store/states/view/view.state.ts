@@ -91,6 +91,16 @@ export class ViewComponentState {
         return viewStateMaps(state);
     }
 
+    @Selector()
+    static mapsIsActive(state: ViewComponentStateModel): boolean {
+        return state.view.mappa.active;
+    }
+
+    @Selector()
+    static richiesteIsActive(state: ViewComponentStateModel): boolean {
+        return state.view.richieste.active;
+    }
+
     @Action(ChangeView)
     changeView({ getState, patchState }: StateContext<ViewComponentStateModel>, action: ChangeView) {
         const state = getState();

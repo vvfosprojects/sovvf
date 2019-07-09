@@ -5,7 +5,7 @@
                 <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata" (startChiamata)="toggleChiamata()">
                 </app-tasto-chiamata>
             </div>
-            <div *ngIf="!(composizioneStatus$ | async)" class="col-2 px-0 text-left">
+            <div *ngIf="(richiesteStatus$ | async)" class="col-2 px-0 text-left">
                 <app-filtri-richieste [filtri]="(filtri$ | async)" [filtriSelezionati]="(filtriSelezionati$ | async)"
                                       [categorie]="(categoriaFiltri$| async)"
                                       (filtroSelezionato)="onSelezioneFiltro($event)"
@@ -13,7 +13,7 @@
                                       (filtriReset)="eliminaFiltriAttivi()">
                 </app-filtri-richieste>
             </div>
-            <div *ngIf="!(composizioneStatus$ | async)" class="col-7 px-0">
+            <div *ngIf="(richiesteStatus$ | async)" class="col-7 px-0">
                 <app-ricerca-richieste (search)="onSearch($event)">
                 </app-ricerca-richieste>
             </div>
@@ -38,11 +38,11 @@
             <div class="col-2">
                 <!--spazio disponibile-->
             </div>
-            <div class="col-4 pr-0">
+            <div *ngIf="(mapsStatus$ | async)" class="col-4 pr-0">
                 <app-marker-meteo-switch [stateSwitch]="(stateSwitch$ | async)" (change)="onChange($event)">
                 </app-marker-meteo-switch>
             </div>
-            <div class="col-6">
+            <div *ngIf="(mapsStatus$ | async)" class="col-6">
                 <app-filtri-mappa></app-filtri-mappa>
             </div>
         </div>

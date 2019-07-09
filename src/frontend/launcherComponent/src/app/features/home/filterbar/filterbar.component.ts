@@ -44,6 +44,14 @@ export class FilterbarComponent implements OnInit {
     @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
     @Select(ViewComponentState.filterBarCol) filterBarCol$: Observable<Grid>;
 
+    /**
+     * aggiunti viewState per verificare se è attivo richieste o mappa
+     * @param store
+     */
+    @Select(ViewComponentState.mapsIsActive) mapsStatus$: Observable<boolean>;
+    @Select(ViewComponentState.richiesteIsActive) richiesteStatus$: Observable<boolean>;
+
+
     constructor(private store: Store) {
     }
 
