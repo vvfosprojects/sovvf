@@ -31,7 +31,7 @@ export class ToastrState {
 
     @Action(ShowToastr)
     showToastr({ getState, dispatch }: StateContext<ToastrStateModel>, action: ShowToastr) {
-        dispatch(new SetToastr(action.type, action.title, action.message, action.duration, action.tapToDismiss));
+        // dispatch(new SetToastr(action.type, action.title, action.message, action.duration, action.tapToDismiss));
     }
 
     @Action(SetToastr)
