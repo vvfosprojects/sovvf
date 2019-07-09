@@ -48,7 +48,9 @@ export class MezzoComposizioneComponent implements OnInit {
             this.selezionato.emit(this.mezzoComp);
 
             // mappa
-            this.mezzoDirection(this.mezzoComp);
+            if (this.mezzoComp.mezzo.stato !== 'In Viaggio' && this.mezzoComp.mezzo.stato !== 'Sul Posto') {
+                this.mezzoDirection(this.mezzoComp);
+            }
         } else if (this.selezionato) {
             this.deselezionato.emit(this.mezzoComp);
         }
