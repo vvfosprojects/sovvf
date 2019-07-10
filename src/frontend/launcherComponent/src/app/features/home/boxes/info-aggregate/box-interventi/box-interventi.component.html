@@ -1,18 +1,18 @@
-<div *ngIf="interventi" class="row p-2">
+<div *ngIf="interventi && turno" class="row p-2">
     <div class="col-12">
         <div class="row">
             <div class="col-8 pr-0">
                 <i class="fa fa-medkit mb-2 mr-1"></i><span class="font-weight-bold cursor-pointer" ngbTooltip="Interventi aperti"
-                                                            (click)="clickRichieste.emit('tutti')">Richieste: {{interventi.totale}}</span>
+                                                            (click)="clickRichieste.emit('tutti')">Richieste: {{interventi?.totale}}</span>
                 <small>
                     <span ngbTooltip="Interventi aperti nel turno precedente">
-                        <span class="ml-2 mr-1">Turno {{turno.precedente}}:</span>
-                        <span class="font-weight-bold">{{interventi.totTurnoPrecedente}}</span>
+                        <span class="ml-2 mr-1">Turno {{turno?.precedente}}:</span>
+                        <span class="font-weight-bold">{{interventi?.totTurnoPrecedente}}</span>
                     </span>
                     <span class="mx-1 fa fa-arrow-right fa-fw"></span>
                     <span ngbTooltip="Interventi aperti nel turno corrente">
-                        <span class="mr-1">Turno {{turno.corrente}}:</span>
-                        <span class="font-weight-bold">{{interventi.totTurnoCorrente}}</span>
+                        <span class="mr-1">Turno {{turno?.corrente}}:</span>
+                        <span class="font-weight-bold">{{interventi?.totTurnoCorrente}}</span>
                     </span>
                 </small>
             </div>
@@ -20,8 +20,8 @@
                 <i class="fa fa-calendar-plus-o mb-2 mr-1"></i>
                 <small>
                     <span ngbTooltip="Totale interventi chiusi dell'anno corrente">
-                        <span class="mr-1">{{interventi.annoCorrente}}:</span>
-                        <span class="font-weight-bold">{{interventi.totAnnoCorrente}}</span>
+                        <span class="mr-1">{{interventi?.annoCorrente}}:</span>
+                        <span class="font-weight-bold">{{interventi?.totAnnoCorrente}}</span>
                     </span>
                 </small>
             </div>
