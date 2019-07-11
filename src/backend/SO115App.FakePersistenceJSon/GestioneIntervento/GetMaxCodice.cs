@@ -68,7 +68,10 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
             List<RichiestaAssistenzaRead> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaRead>>(json);
 
             if (ListaRichieste != null)
-                MaxIdSintesi = Convert.ToInt16(ListaRichieste.OrderByDescending(x => x.Codice).FirstOrDefault().Codice.Split('_')[1]) + 1;
+            {
+                string codice = ListaRichieste.OrderByDescending(x => x.Codice).FirstOrDefault().Codice;
+                MaxIdSintesi = Convert.ToInt16(codice.Substring(codice.Length - 5)) + 1;
+            }
             else
                 MaxIdSintesi = 0;
 

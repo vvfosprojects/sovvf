@@ -116,6 +116,10 @@ namespace SO115App.API.Models.Classi.Soccorso
             {
                 new AssegnataRichiesta(this, DateTime.UtcNow, id);
             }
+            else if (stato.Equals("Presidiata") && !(statoRichiesta is Presidiata))
+            {
+                new RichiestaPresidiata(this, DateTime.UtcNow, id);
+            }
         }
 
         /// <summary>
@@ -264,20 +268,14 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var ListaComposizioni = this.Eventi
-                    .Where(e => e is Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
-                    .Select(e => e as Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
-                    .ToList();
+                //var ListaComposizioni = this.Eventi
+                //    .Where(e => e is Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
+                //    .Select(e => e as Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
+                //    .ToList();
 
                 //return ListaComposizioni.Select(x => x.Partenza).ToList();
 
                 var d = new Dictionary<string, IStatoMezzo>();
-
-                var ListaPartenze = ListaComposizioni.Select(x => x.Partenza).ToList();
-
-                foreach (Partenza partenza in ListaPartenze)
-                {
-                }
 
                 var eventiPartenza = this.eventi
                     .Where(e => e is IPartenza)
@@ -575,6 +573,9 @@ namespace SO115App.API.Models.Classi.Soccorso
                     return new Chiusa();
                 }
 
+                if (this.Presidiato)
+                    return new Presidiata();
+
                 var elencoMezziCoinvolti = this.MezziCoinvolti;
                 if (!elencoMezziCoinvolti.Any())
                 {
@@ -629,7 +630,15 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                return this.MezziCoinvolti.Values.Any(statoMezzo => statoMezzo is SulPosto);
+                var ElencoPresidiate = this.Eventi
+                    .Where(e => e is Classi.Soccorso.Eventi.RichiestaPresidiata)
+                    .Select(e => e as Classi.Soccorso.Eventi.RichiestaPresidiata)
+                    .ToList();
+
+                if (ElencoPresidiate.Count > 0)
+                    return true;
+
+                return false;
             }
         }
 

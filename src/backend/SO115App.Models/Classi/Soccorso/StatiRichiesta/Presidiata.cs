@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="RiaperturaRichiesta.cs" company="CNVVF">
+// <copyright file="Presidiata.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,27 +17,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-
-namespace SO115App.API.Models.Classi.Soccorso.Eventi
+namespace SO115App.API.Models.Classi.Soccorso.StatiRichiesta
 {
     /// <summary>
-    ///   Questo evento indica che è la richiesta assistenza è stata assegnata
+    ///   Richiesta presidiata da almeno 1 mezzo
     /// </summary>
-    public class AssegnataRichiesta : Evento
+    public class Presidiata : IStatoRichiesta
     {
         /// <summary>
-        ///   Costruttore della classe. A seguito della chiamata, la richiesta risulta aperta.
+        ///   Indica se la Richiesta è evasa
         /// </summary>
-        /// <param name="richiesta">La richiesta alla quale l'evento deve essere aggiunto</param>
-        /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
-        /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public AssegnataRichiesta(
-            RichiestaAssistenza richiesta,
-            DateTime istante,
-            string codiceFonte) : base(richiesta, istante, codiceFonte)
+        public bool Evasa
         {
-            richiesta.IstanteChiusura = null;
+            get
+            {
+                return true;
+            }
         }
     }
 }
