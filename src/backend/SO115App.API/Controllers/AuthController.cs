@@ -38,12 +38,12 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody]AuthLogIn crenenziali)
+        public async Task<IActionResult> Login([FromBody]AuthLogIn credenziali)
         {
             var query = new LogInQuery()
             {
-                Username = crenenziali.username,
-                Password = crenenziali.password
+                Username = credenziali.username,
+                Password = credenziali.password
             };
 
             try
