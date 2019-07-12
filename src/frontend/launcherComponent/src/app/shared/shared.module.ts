@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PipeModule } from './pipes/pipe.module';
-import * as Shared from './index';
 import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
 import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treeview-i18n';
-import { ConfirmModalComponent } from './modal/confirm-modal/confirm-modal.component';
-import { SelezioneTipiTerrenoComponent } from './components/selezione-tipi-terreno/selezione-tipi-terreno.component';
+import * as Shared from './index';
+import { PartenzaComponent } from './components/partenza/partenza.component';
+import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -18,8 +18,9 @@ const COMPONENTS = [
     Shared.TreeviewComponent,
     Shared.ListaEntiComponent,
     Shared.ListaSquadrePartenzaComponent,
-    ConfirmModalComponent,
-    SelezioneTipiTerrenoComponent
+    Shared.ConfirmModalComponent,
+    Shared.SelezioneTipiTerrenoComponent,
+    ListaPartenzeComponent
 ];
 
 @NgModule({
@@ -27,10 +28,11 @@ const COMPONENTS = [
         CommonModule,
         NgbModule,
         PipeModule,
-        TreeviewModule.forRoot(),
+        TreeviewModule.forRoot()
     ],
     declarations: [
         ...COMPONENTS,
+        PartenzaComponent
     ],
     exports: [
         ...COMPONENTS

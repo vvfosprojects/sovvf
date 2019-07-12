@@ -343,45 +343,11 @@
                                     presente</span>
                             </div>
                         </div>
-
-                        <div class="col-md-6 bg-red pr-1 scroll-y" style="max-height: 137px">
+                        <div class="col-md-6 bg-red pr-1">
                             <h5 class="my-0"><b>Partenze</b></h5>
-                            <div *ngIf="!richiesta.partenzeRichiesta" class="text-center">
-                                <hr class="mt-0 mb-2">
-                                <h6>Non ci sono partenze su questa richiesta di intervento</h6>
+                            <div class=" scroll-y" style="max-height: 90px">
+                                <app-lista-partenze [partenze]="richiesta.partenzeRichiesta"></app-lista-partenze>
                             </div>
-                            <ul *ngIf="richiesta.partenzeRichiesta" class="list-unstyled">
-                                <li *ngFor="let p of richiesta.partenzeRichiesta; index as i" class="border-bottom">
-                                    <div class="row">
-                                        <div class="col-7 my-1 pr-1">
-                                            <span class="ml-1 mr-2 mb-0 d-inline-block font-weight-bold h6">#{{i + 1}}</span>
-                                            <app-mezzo [mezzo]="p.mezzo"></app-mezzo>
-                                            <span *ngIf="!p.mezzo" class="p-2">
-                                                Nessun mezzo
-                                            </span>
-                                        </div>
-                                        <div class="col-5 my-1">
-                                            <div *ngIf="p.squadre && p.squadre.length > 0"
-                                                 class="h6 text-right mb-0 font-weight-bold">
-                                                <i class="fa fa-group mr-2"></i>
-                                                <span>{{p.squadre[0].nome}}</span>
-                                                <button class="btn btn-sm btn-light border ml-2 p-1" ngbTooltip="Elenco squadre"
-                                                        (click)="onListaSquadrePartenza(p); $event.stopPropagation()">
-                                                    <span *ngIf="p.squadre.length === 1">
-                                                        <i class="fa fa-search"></i>
-                                                    </span>
-                                                    <span *ngIf="p.squadre.length > 1">
-                                                        +{{p.squadre.length - 1}}
-                                                    </span>
-                                                </button>
-                                            </div>
-                                            <span *ngIf="!p.squadre || p.squadre.length === 0" class="p-2">
-                                                Nessun squadra
-                                            </span>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
                         </div>
                         <div class="col-md-3">
 
