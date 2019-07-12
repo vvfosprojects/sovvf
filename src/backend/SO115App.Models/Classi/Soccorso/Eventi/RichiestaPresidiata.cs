@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="RiaperturaRichiesta.cs" company="CNVVF">
+// <copyright file="RichiestaPresidiata.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -24,7 +24,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
     /// <summary>
     ///   Questo evento indica che è la richiesta assistenza è stata assegnata
     /// </summary>
-    public class AssegnataRichiesta : Evento
+    public class RichiestaPresidiata : Evento
     {
         /// <summary>
         ///   Costruttore della classe. A seguito della chiamata, la richiesta risulta aperta.
@@ -32,7 +32,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <param name="richiesta">La richiesta alla quale l'evento deve essere aggiunto</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public AssegnataRichiesta(
+        public RichiestaPresidiata(
             RichiestaAssistenza richiesta,
             DateTime istante,
             string codiceFonte) : base(richiesta, istante, codiceFonte)

@@ -23,6 +23,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.FakePersistenceJSon.Classi;
+using System;
 
 namespace SO115App.FakePersistenceJSon.Utility
 {

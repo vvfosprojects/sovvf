@@ -102,6 +102,9 @@ namespace SO115App.CompositionRoot
             container.Register<
          SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
          FakePersistenceJSon.Composizione.UpdateConfermaPartenze>();
+            container.Register<
+         SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateStatoPartenze,
+         FakePersistenceJSon.Composizione.UpdateStatoPartenza>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta.IGeneraCodiceRichiesta,
@@ -153,6 +156,9 @@ namespace SO115App.CompositionRoot
             container.Register<
            SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyPresaInCaricoRichiesta,
            SO115App.SignalR.Sender.GestioneIntervento.NotificationPresaInCarico>();
+            container.Register<
+           SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza.INotifyAggiornaStatoMezzo,
+           SO115App.SignalR.Sender.GestionePartenza.NotificationPresidiata>();
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
