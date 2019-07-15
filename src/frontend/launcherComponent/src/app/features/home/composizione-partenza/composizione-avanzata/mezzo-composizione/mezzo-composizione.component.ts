@@ -102,13 +102,8 @@ export class MezzoComposizioneComponent implements OnInit {
         }
         //
         // if (this.itemBloccato) {
-        switch (this.mezzoComp.mezzo.stato) {
-            case 'In Viaggio':
-                returnClass += ' diagonal-stripes bg-lightinfo';
-                break;
-            case 'Sul Posto':
-                returnClass += ' diagonal-stripes bg-lightsuccess';
-                break;
+        if (this.mezzoComp.mezzo.stato !== 'In Sede' && this.mezzoComp.mezzo.stato !== 'In Rientro') {
+            returnClass += ' diagonal-stripes bg-lightdanger';
         }
         // }
 
