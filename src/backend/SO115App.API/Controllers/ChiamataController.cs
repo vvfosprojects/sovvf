@@ -25,6 +25,7 @@ using DomainModel.CQRS.Commands.UpDateIntervento;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 
 namespace SO115App.API.Controllers
 {
@@ -72,7 +73,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("UpdateIntervento")]
-        public async Task<IActionResult> UpdateIntervento([FromBody]Intervento chiamata)
+        public async Task<IActionResult> UpdateIntervento([FromBody]SintesiRichiesta chiamata)
         {
             var command = new UpDateInterventoCommand()
             {
