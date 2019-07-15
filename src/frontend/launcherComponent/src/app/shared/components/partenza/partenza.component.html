@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-7 my-1 pr-1">
         <span class="ml-1 mr-2 mb-0 d-inline-block font-weight-bold h6">#{{index + 1}}</span>
-        <app-mezzo [mezzo]="partenza.mezzo"></app-mezzo>
+        <app-mezzo [mezzo]="partenza.mezzo" (mezzoArrivatoSulPosto)="onMezzoArrivatoSulPosto($event)"></app-mezzo>
         <span *ngIf="!partenza.mezzo" class="p-2"> Nessun mezzo</span>
     </div>
     <div class="col-5 my-1">

@@ -38,6 +38,7 @@ export class ListaRichiesteComponent implements OnInit {
     @Output() deselezione = new EventEmitter<boolean>();
     @Output() eventiRichiesta: EventEmitter<string> = new EventEmitter();
     @Output() modificaRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
+    @Output() gestioneRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
 
     methods = new HelperSintesiRichiesta;
 
@@ -112,6 +113,10 @@ export class ListaRichiesteComponent implements OnInit {
 
     onModificaRichiesta(richiesta: SintesiRichiesta) {
         this.modificaRichiesta.emit(richiesta);
+    }
+
+    onGestioneRichiesta(richiesta: SintesiRichiesta) {
+        this.gestioneRichiesta.emit(richiesta);
     }
 
     /* Ritorna true se le parole matchano almeno in parte */

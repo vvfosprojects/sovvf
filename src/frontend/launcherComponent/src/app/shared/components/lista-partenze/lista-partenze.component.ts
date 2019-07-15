@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { ListaSquadrePartenzaComponent } from '../..';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Partenza } from '../../model/partenza.model';
+import { Mezzo } from '../../model/mezzo.model';
 
 @Component({
     selector: 'app-lista-partenze',
@@ -12,6 +13,7 @@ import { Partenza } from '../../model/partenza.model';
 export class ListaPartenzeComponent {
 
     @Input() partenze: Partenza[];
+    @Output() mezzoArrivatoSulPosto: EventEmitter<any> = new EventEmitter();
 
     constructor(private modalService: NgbModal) {
     }
@@ -24,4 +26,7 @@ export class ListaPartenzeComponent {
             () => console.log('Lista Squadre Partenza Chiusa'));
     }
 
+    onMezzoArrivatoSulPosto(mezzo: Mezzo) {
+        this.mezzoArrivatoSulPosto.emit(mezzo);
+    }
 }

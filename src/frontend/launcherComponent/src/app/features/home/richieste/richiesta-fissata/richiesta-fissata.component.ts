@@ -29,6 +29,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Output() composizionePartenza: EventEmitter<SintesiRichiesta> = new EventEmitter<SintesiRichiesta>();
     @Output() defissa: EventEmitter<any> = new EventEmitter<any>();
     @Output() modificaRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter<SintesiRichiesta>();
+    @Output() gestioneRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter<SintesiRichiesta>();
 
     @ViewChild('richiestaContainer') private richiestaContainer: ElementRef;
     @ViewChild('richiesta') private richiesta: ElementRef;
@@ -142,6 +143,10 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
 
     onModificaRichiesta(richiesta: SintesiRichiesta) {
         this.modificaRichiesta.emit(richiesta);
+    }
+
+    onGestioneRichiesta(richiesta: SintesiRichiesta) {
+        this.gestioneRichiesta.emit(richiesta);
     }
 
     setEspanso(espanso: boolean) {

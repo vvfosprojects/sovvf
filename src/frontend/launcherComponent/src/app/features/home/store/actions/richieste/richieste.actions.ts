@@ -57,3 +57,10 @@ export class StartInviaPartenzaFromChiamata {
     constructor(public richiesta: SintesiRichiesta) {
     }
 }
+
+export class SetMezzoArrivatoSulPosto {
+    static readonly type = '[Richieste] Set Mezzo Arrivato Sul Posto';
+
+    constructor(public obj: any) {
+    }
+}

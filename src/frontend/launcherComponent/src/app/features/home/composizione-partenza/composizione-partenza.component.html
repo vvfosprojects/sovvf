@@ -3,7 +3,7 @@
         <div *ngIf="richiesta" class="px-3 mb-2">
             <div class="w-100 rounded card-shadow" [ngClass]="cardClasses(richiesta)">
                 <app-sintesi-richiesta [richiesta]="richiesta" [fissata]="false" [espanso]="true" [partenza]="true"
-                                       [listaEventi]="true" [modificabile]="false"
+                                       [listaEventi]="true" [modificabile]="false" [gestibile]="false"
                                        (eventiRichiesta)="onVisualizzaEventiRichiesta($event)"
                                        (dismissNuovaPartenza)="dismissPartenza()"></app-sintesi-richiesta>
             </div>

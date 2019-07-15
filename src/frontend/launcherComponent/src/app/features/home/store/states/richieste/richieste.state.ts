@@ -9,7 +9,7 @@ import {
     ClearRichieste,
     GetRichieste,
     PatchRichiesta,
-    SetIdChiamataInviaPartenza,
+    SetIdChiamataInviaPartenza, SetMezzoArrivatoSulPosto,
     SetRichieste,
     StartInviaPartenzaFromChiamata,
     UpdateRichiesta
@@ -118,9 +118,9 @@ export class RichiesteState {
         );
         if (state.chiamataInviaPartenza) {
             if (richiesta && richiesta.id === state.chiamataInviaPartenza) {
-                setTimeout( () => {
+                setTimeout(() => {
                     dispatch(new StartInviaPartenzaFromChiamata(richiesta));
-                } );
+                });
             }
         }
     }
@@ -147,5 +147,13 @@ export class RichiesteState {
             new RichiestaComposizione(action.richiesta),
             new ClearIdChiamataInviaPartenza()
         ]);
+    }
+
+    @Action(SetMezzoArrivatoSulPosto)
+    setMezzoArrivatoSulPosto({ dispatch, patchState }: StateContext<RichiesteStateModel>, action: SetMezzoArrivatoSulPosto) {
+        console.log('Mezzo Arrivato sul posto - OBJECT', action.obj);
+        this.richiesteService.setMezzoArrivatoSulPosto(action.obj).subscribe((data: any) => {
+            console.log('Mezzo Arrivato sul posto - CONTROLLER RESPONSE', data);
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 }

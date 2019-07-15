@@ -1,7 +1,8 @@
 <!-- Singola Richiesta Fissata  -->
 <app-richiesta-fissata *ngIf="richiestaFissata" [_split]="split" [richiestaFissata]="richiestaFissata"
                        (statoPartenza)="toggleComposizione()" (composizionePartenza)="nuovaPartenza($event)"
-                       (defissa)="onDefissa()" (modificaRichiesta)="onModificaRichiesta($event)">
+                       (defissa)="onDefissa()" (modificaRichiesta)="onModificaRichiesta($event)"
+                       (gestioneRichiesta)="onGestioneRichiesta($event)">
 </app-richiesta-fissata>
 
 <app-lista-richieste [_split]="split" [richieste]="richieste" [ricerca]="ricerca" [richiestaFissata]="richiestaFissata"
@@ -13,5 +14,6 @@
                      (fissaInAlto)="onFissaInAlto($event)" (eventiRichiesta)="onVisualizzaEventiRichiesta($event)"
                      (hoverIn)="onHoverIn($event)" (hoverOut)="onHoverOut()"
                      (selezione)="onSelezione($event)" (deselezione)="onDeselezione()"
-                     (nuoveRichieste)="onNuoveRichieste()" (modificaRichiesta)="onModificaRichiesta($event)">
+                     (nuoveRichieste)="onNuoveRichieste()" (modificaRichiesta)="onModificaRichiesta($event)"
+                     (gestioneRichiesta)="onGestioneRichiesta($event)">
 </app-lista-richieste>

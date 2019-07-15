@@ -15,7 +15,8 @@ const PROXY_CONFIG = [
             "/api/RemovePrenotazioneMezzo",
             "/api/ResetPrenotazioneMezzo",
             "/api/ConfermaPartenze",
-            "/api/AttivitaUtente"
+            "/api/AttivitaUtente",
+            '/api/GestionePartenza'
         ],
         target: "http://DESKTOP-RC0RAUA:5000/",
         secure: false,

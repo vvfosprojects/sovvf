@@ -203,6 +203,11 @@
                                         (click)="onModificaRichiesta(); $event.stopPropagation()">
                                     <i class="fa fa-fw fa-pencil-square-o text-secondary"></i>
                                 </button>
+                                <button *ngIf="gestibile" class="btn btn-light border py-0 px-0 mr-1"
+                                        ngbTooltip="Gestisci"
+                                        (click)="onGestioneRichiesta(); $event.stopPropagation()">
+                                    <i class="fa fa-fw fa-gear text-secondary"></i>
+                                </button>
                                 <button *ngIf="listaEventi" class="btn btn-light border py-0 px-1 mr-1"
                                         ngbTooltip="Elenco eventi"
                                         (click)="visualizzaEventiRichiesta(richiesta.id); $event.stopPropagation()">
@@ -348,8 +353,9 @@
                         </div>
                         <div class="col-md-6 bg-red pr-1">
                             <h5 class="my-0"><b>Partenze</b></h5>
-                            <div class=" scroll-y" style="max-height: 90px">
-                                <app-lista-partenze [partenze]="richiesta.partenzeRichiesta"></app-lista-partenze>
+                            <div class="scroll-y" style="max-height: 90px">
+                                <app-lista-partenze [partenze]="richiesta.partenzeRichiesta"
+                                                    (mezzoArrivatoSulPosto)="onMezzoArrivatoSulPosto($event)"></app-lista-partenze>
                             </div>
                         </div>
                         <div class="col-md-3">

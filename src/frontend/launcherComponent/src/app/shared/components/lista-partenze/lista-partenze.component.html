@@ -4,6 +4,6 @@
 </div>
 <ul *ngIf="partenze" class="list-unstyled">
   <li *ngFor="let p of partenze; index as i" class="border-bottom">
-    <app-partenza [index]="i" [partenza]="p" (listaSquadre)="onListaSquadrePartenza($event)"></app-partenza>
+    <app-partenza [index]="i" [partenza]="p" (listaSquadre)="onListaSquadrePartenza($event)" (mezzoArrivatoSulPosto)="onMezzoArrivatoSulPosto($event)"></app-partenza>
   </li>
 </ul>

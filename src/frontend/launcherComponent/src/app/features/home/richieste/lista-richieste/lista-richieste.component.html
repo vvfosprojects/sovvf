@@ -23,7 +23,8 @@
                                                (doubleClickRichiesta)="richiestaDoubleClick($event)"
                                                (nuovaPartenza)="nuovaPartenza($event)"
                                                (eventiRichiesta)="visualizzaEventiRichiesta($event)"
-                                               (modificaRichiesta)="onModificaRichiesta($event)"></app-sintesi-richiesta>
+                                               (modificaRichiesta)="onModificaRichiesta($event)"
+                                               (gestioneRichiesta)="onGestioneRichiesta($event)"></app-sintesi-richiesta>
                     </div>
                     <div *ngIf="r === richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="cardClasses(r)">
                         <app-sintesi-richiesta-sm [richiesta]="r" (mouseover)="richiestaHoverIn(r)"

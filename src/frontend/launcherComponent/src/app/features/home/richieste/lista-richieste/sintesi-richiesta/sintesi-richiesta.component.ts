@@ -11,7 +11,9 @@ import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
 import { ListaEntiComponent, ListaSquadrePartenzaComponent } from '../../../../../shared';
 import { Partenza } from '../../../../../shared/model/partenza.model';
-import { ListaSquadre } from '../../../../../shared/interface/lista-squadre';
+import { Mezzo } from '../../../../../shared/model/mezzo.model';
+import { Store } from '@ngxs/store';
+import { SetMezzoArrivatoSulPosto } from '../../../store/actions/richieste/richieste.actions';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -33,6 +35,7 @@ export class SintesiRichiestaComponent implements OnInit {
     @Input() partenza: boolean;
     @Input() composizionePartenza = true;
     @Input() modificabile = true;
+    @Input() gestibile = true;
 
     @Output() clickRichiesta: EventEmitter<any> = new EventEmitter();
     @Output() doubleClickRichiesta: EventEmitter<any> = new EventEmitter();
@@ -41,10 +44,12 @@ export class SintesiRichiestaComponent implements OnInit {
     @Output() nuovaPartenza: EventEmitter<any> = new EventEmitter();
     @Output() dismissNuovaPartenza: EventEmitter<any> = new EventEmitter();
     @Output() modificaRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
+    @Output() gestioneRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
     // tslint:disable-next-line:no-output-on-prefix
     @Output() onEspanso: EventEmitter<boolean> = new EventEmitter();
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter<string>();
+    @Output() mezzoArrivatoSulPosto: EventEmitter<any> = new EventEmitter();
 
     methods = new HelperSintesiRichiesta;
     isSingleClick = true;
@@ -54,6 +59,7 @@ export class SintesiRichiestaComponent implements OnInit {
     StatoRichiesta = StatoRichiesta;
 
     constructor(private modalService: NgbModal,
+                private store: Store,
                 popoverConfig: NgbPopoverConfig,
                 tooltipConfig: NgbTooltipConfig,
                 intl: TimeagoIntl) {
@@ -136,6 +142,10 @@ export class SintesiRichiestaComponent implements OnInit {
         this.modificaRichiesta.emit(this.richiesta);
     }
 
+    onGestioneRichiesta() {
+        this.gestioneRichiesta.emit(this.richiesta);
+    }
+
     onListaEnti() {
         const modal = this.modalService.open(ListaEntiComponent, { windowClass: 'enti', backdropClass: 'light-blue-backdrop', centered: true });
         modal.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
@@ -144,4 +154,22 @@ export class SintesiRichiestaComponent implements OnInit {
             () => console.log('Lista Enti Chiusa'));
     }
 
+    onListaSquadrePartenza(partenza: Partenza) {
+        const modal = this.modalService.open(ListaSquadrePartenzaComponent, { windowClass: 'squadrePartenza', backdropClass: 'light-blue-backdrop', centered: true });
+        const numeroPartenza = this.richiesta.partenzeRichiesta.indexOf(partenza) + 1;
+        modal.componentInstance.numeroPartenza = numeroPartenza;
+        modal.componentInstance.squadre = partenza.squadre;
+        modal.result.then(() => console.log('Lista Squadre Partenza ' + numeroPartenza + ' Aperta'),
+            () => console.log('Lista Squadre Partenza Chiusa'));
+    }
+
+    onMezzoArrivatoSulPosto(mezzo: Mezzo) {
+        const obj = {
+            'chiamata': this.richiesta,
+            'idMezzo': mezzo.codice,
+            'statoMezzo': 'Sul Posto'
+        };
+        // console.log('Obj', obj);
+        this.store.dispatch(new SetMezzoArrivatoSulPosto(obj));
+    }
 }
