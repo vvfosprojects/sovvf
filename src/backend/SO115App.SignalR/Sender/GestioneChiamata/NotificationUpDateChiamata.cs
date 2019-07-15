@@ -73,7 +73,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             var query = new SintesiRichiesteAssistenzaMarkerQuery();
             List<SintesiRichiestaMarker> listaSintesiMarker = new List<SintesiRichiestaMarker>();
             listaSintesiMarker = (List<SintesiRichiestaMarker>)this._SintesiRichiesteAssistenzaMarkerhandler.Handle(query).SintesiRichiestaMarker;
-            intervento.Chiamata = Mapper.Map(ListaSintesi.LastOrDefault(richiesta => richiesta.Codice == intervento.Chiamata.Codice));
+            intervento.Chiamata = ListaSintesi.LastOrDefault(richiesta => richiesta.Codice == intervento.Chiamata.Codice);
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", intervento);
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxInterventi", boxInterventi);
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
