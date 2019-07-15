@@ -33,6 +33,8 @@ export class HelperSintesiRichiesta {
                     squadre.push({ id: squadra.id, nome: squadra.nome });
                 });
             });
+        } else {
+            return [];
         }
 
         function getUnique(arr, comp): any[] {
