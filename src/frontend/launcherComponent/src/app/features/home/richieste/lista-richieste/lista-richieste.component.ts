@@ -92,15 +92,15 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     /* Gestisce l'hover in */
-    richiestaHoverIn(richiesta: SintesiRichiesta) {
-        if (richiesta) {
-            this.hoverIn.emit(richiesta.id);
+    richiestaHoverIn(id: string) {
+        if (id) {
+            this.hoverIn.emit(id);
         }
     }
 
     /* Gestisce l'hover out */
-    richiestaHoverOut(richiesta: SintesiRichiesta) {
-        if (richiesta) {
+    richiestaHoverOut(id: string) {
+        if (id) {
             this.hoverOut.emit(true);
         }
     }

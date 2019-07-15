@@ -43,6 +43,8 @@ export class SintesiRichiestaComponent implements OnInit {
     @Output() modificaRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
     // tslint:disable-next-line:no-output-on-prefix
     @Output() onEspanso: EventEmitter<boolean> = new EventEmitter();
+    @Output() hoverIn = new EventEmitter<string>();
+    @Output() hoverOut = new EventEmitter<string>();
 
     methods = new HelperSintesiRichiesta;
     isSingleClick = true;
@@ -91,6 +93,18 @@ export class SintesiRichiestaComponent implements OnInit {
     fissaClick(richiesta: any) {
         if (richiesta) {
             this.fissaInAlto.emit(richiesta);
+        }
+    }
+
+    richiestaHoverIn(richiesta: SintesiRichiesta) {
+        if (richiesta) {
+            this.hoverIn.emit(richiesta.id);
+        }
+    }
+
+    richiestaHoverOut(richiesta: SintesiRichiesta) {
+        if (richiesta) {
+            this.hoverOut.emit(richiesta.id);
         }
     }
 
