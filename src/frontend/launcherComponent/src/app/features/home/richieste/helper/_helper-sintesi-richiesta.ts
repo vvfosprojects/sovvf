@@ -13,26 +13,35 @@ export class HelperSintesiRichiesta {
 
     stato = new ColoriStatoMezzo();
 
-    /* Restituisce i nomi delle squadre  */
-    nomiSquadre(richiesta: SintesiRichiesta): string[] {
-        let nomiSquadre: string[] = [];
-        if (richiesta.partenzeRichiesta) {
-            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                nomiSquadre = partenza.squadre.map((s: Squadra) => s.nome);
-            });
-        }
-        return nomiSquadre;
-    }
+    /**
+     * restituisce le squadre realmente impegnate in una partenza
+     * @param richiesta
+     */
+    getSquadre(richiesta: SintesiRichiesta): string[] {
 
-    /* Restituisce il numero delle squadre */
-    numeroSquadre(richiesta: SintesiRichiesta): number {
-        let numeroSquadre = 0;
+        interface SquadraPartenza {
+            id: string;
+            nome: string;
+        }
+
+        const nomiSquadre: string[] = [];
+        const squadre: SquadraPartenza[] = [];
+
         if (richiesta.partenzeRichiesta) {
             richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                numeroSquadre += partenza.squadre.length;
+                partenza.squadre.forEach((squadra: Squadra) => {
+                    squadre.push({ id: squadra.id, nome: squadra.nome });
+                });
             });
         }
-        return numeroSquadre;
+
+        function getUnique(arr, comp): any[] {
+            return arr.map(e => e[comp]).map((e, i, final) => final.indexOf(e) === i && i).filter(e => arr[e]).map(e => arr[e]);
+        }
+
+        nomiSquadre.push(...getUnique(squadre, 'id').map((squadra: SquadraPartenza) => squadra.nome));
+
+        return nomiSquadre;
     }
 
     /* Restituisce i nomi dei mezzi  */

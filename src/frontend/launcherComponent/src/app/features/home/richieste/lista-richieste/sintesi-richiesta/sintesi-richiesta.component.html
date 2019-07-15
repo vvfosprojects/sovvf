@@ -114,22 +114,21 @@
                             <div class="h6 mb-0">
                                 <!-- squadre -->
                                 <span class="nowrap">
-                                    <button class="btn btn-light border pl-0 py-0 big_numbers mr-1"
-                                            [ngbPopover]="popSquadre" container="body" popoverTitle="Squadre"
-                                            triggers="click" tabindex="0" style="cursor:pointer"
-                                            (click)="$event.stopPropagation()">
-                                        <i class="guida fa fa-users fa-fw ml-2" ngbTooltip="Numero Squadre"></i>
-                                        <span>{{
-                                            methods.numeroSquadre(richiesta) }}</span>
-                                    </button>
-
-                                    <ng-template #popSquadre>
-                                        <div class="h6" *ngFor="let s of methods.nomiSquadre(richiesta)">
-                                            <span>{{ s }}</span>
-                                        </div>
-                                        <h6 class="mb-0" *ngIf="methods.numeroSquadre(richiesta) === 0">Nessuna squadra
-                                        </h6>
-                                    </ng-template>
+                                    <ng-container *ngIf="methods.getSquadre(richiesta) as squadre">
+                                        <button class="btn btn-light border pl-0 py-0 big_numbers mr-1"
+                                                [ngbPopover]="popSquadre" container="body" popoverTitle="Squadre"
+                                                triggers="click" tabindex="0" style="cursor:pointer"
+                                                (click)="$event.stopPropagation()">
+                                            <i class="guida fa fa-users fa-fw ml-2" ngbTooltip="Numero Squadre"></i>
+                                            <span>{{ squadre.length }}</span>
+                                        </button>
+                                        <ng-template #popSquadre>
+                                            <div class="h6" *ngFor="let s of squadre">
+                                                <span>{{ s }}</span>
+                                            </div>
+                                            <h6 class="mb-0" *ngIf="!squadre">Nessuna squadra</h6>
+                                        </ng-template>
+                                    </ng-container>
                                 </span>
 
                                 <!-- mezzi -->
@@ -422,7 +421,7 @@
                                     {{ tipoTerrenoValue.terrenoHa }}
                                 </span>
                                 <button *ngIf="richiesta.tipoTerreno && richiesta.tipoTerreno.length > 1"
-                                        class="btn btn-light border big_font py-0 px-1" [ngbTooltip]="terreni"
+                                        class="btn btn-light border big_font py-0 px-1" [ngbPopover]="terreni"
                                         (click)="$event.stopPropagation()">
                                     +{{ richiesta.tipoTerreno.length - 1 }}</button>
                                 <ng-template #terreni>
