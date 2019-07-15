@@ -140,7 +140,9 @@ export class ListaRichiesteComponent implements OnInit {
 
     /* NgClass Card Status */
     cardClasses(r: SintesiRichiesta) {
-        return this.methods.cardClasses(r, this.richiestaSelezionata, this.richiestaHover);
+        const richiestaSelezionataId = this.richiestaSelezionata ? this.richiestaSelezionata.id : null;
+        const richiestaHoverId = this.richiestaHover ? this.richiestaHover.id : null;
+        return this.methods.cardClasses(r, richiestaSelezionataId, richiestaHoverId);
     }
 
 }

@@ -122,19 +122,21 @@ export class HelperSintesiRichiesta {
     }
 
     /* NgClass Card Status */
-    cardClasses(r: SintesiRichiesta, richiestaSelezionata: any, richiestaHover: any) {
-        const classes = {
-            // Hover (stato)
-            'card-shadow-info': (r === richiestaHover || r === richiestaSelezionata) && r.stato === StatoRichiesta.Assegnata,
-            'card-shadow-success': (r === richiestaHover || r === richiestaSelezionata) && r.stato === StatoRichiesta.Presidiata,
-            'card-shadow-danger': (r === richiestaHover || r === richiestaSelezionata) && r.stato === StatoRichiesta.Chiamata,
-            'card-shadow-warning': (r === richiestaHover || r === richiestaSelezionata) && r.stato === StatoRichiesta.Sospesa,
-            'card-shadow-secondary': (r === richiestaHover || r === richiestaSelezionata) && r.stato === StatoRichiesta.Chiusa,
-            'bg-light': (r === richiestaSelezionata || r === richiestaHover) && r.stato !== StatoRichiesta.Chiusa,
-            'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
-        };
-        const cardBorder = this.cardBorder(r);
-        return { ...classes, ...cardBorder };
+    cardClasses(r: SintesiRichiesta, richiestaSelezionata: string, richiestaHover: string) {
+        if (r && r.id) {
+            const classes = {
+                // Hover (stato)
+                'card-shadow-info': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Assegnata,
+                'card-shadow-success': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Presidiata,
+                'card-shadow-danger': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Chiamata,
+                'card-shadow-warning': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Sospesa,
+                'card-shadow-secondary': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Chiusa,
+                'bg-light': (r.id === richiestaSelezionata || r.id === richiestaHover) && r.stato !== StatoRichiesta.Chiusa,
+                'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
+            };
+            const cardBorder = this.cardBorder(r);
+            return { ...classes, ...cardBorder };
+        }
     }
 
     /* NgClass Card Fissata Status */
