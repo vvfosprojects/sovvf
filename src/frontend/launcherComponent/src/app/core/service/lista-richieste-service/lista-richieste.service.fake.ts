@@ -184,7 +184,7 @@ export class SintesiRichiesteServiceFake {
                 null,
                 new Fonogramma('0', 'Non necessario'),
                 [
-                    new Partenza(
+                    new Partenza('1',
                         [
                             new Squadra(
                                 '3',
@@ -227,7 +227,7 @@ export class SintesiRichiesteServiceFake {
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
                     ),
-                    new Partenza(
+                    new Partenza('2',
                         [
                             new Squadra(
                                 '3',
@@ -270,7 +270,7 @@ export class SintesiRichiesteServiceFake {
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
                     ),
-                    new Partenza(
+                    new Partenza('3',
                         [
                             new Squadra(
                                 '3',
@@ -385,7 +385,7 @@ export class SintesiRichiesteServiceFake {
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
                     ),
-                    new Partenza(
+                    new Partenza('4',
                         [
                             new Squadra(
                                 '3',
@@ -466,7 +466,7 @@ export class SintesiRichiesteServiceFake {
                 null,
                 new Fonogramma('0', 'Non necessario'),
                 [
-                    new Partenza([
+                    new Partenza('1', [
                             new Squadra(
                                 '3',
                                 '3A',
@@ -546,7 +546,7 @@ export class SintesiRichiesteServiceFake {
                 null,
                 new Fonogramma('0', 'Non necessario'),
                 [
-                    new Partenza([
+                    new Partenza('1', [
                             new Squadra(
                                 '3',
                                 '3A',
@@ -626,7 +626,7 @@ export class SintesiRichiesteServiceFake {
                 null,
                 new Fonogramma('0', 'Non necessario'),
                 [
-                    new Partenza([
+                    new Partenza('1', [
                             new Squadra(
                                 '3',
                                 '3A',
@@ -705,7 +705,7 @@ export class SintesiRichiesteServiceFake {
                 null,
                 new Fonogramma('0', 'Non necessario'),
                 [
-                    new Partenza([
+                    new Partenza('1', [
                             new Squadra(
                                 '3',
                                 '3A',
@@ -784,7 +784,7 @@ export class SintesiRichiesteServiceFake {
                 null,
                 new Fonogramma('0', 'Non necessario'),
                 [
-                    new Partenza([
+                    new Partenza('1', [
                             new Squadra(
                                 '3',
                                 '3A',
@@ -863,7 +863,7 @@ export class SintesiRichiesteServiceFake {
                 null,
                 new Fonogramma('0', 'Non necessario'),
                 [
-                    new Partenza([
+                    new Partenza('1', [
                             new Squadra(
                                 '3',
                                 '3A',
@@ -942,7 +942,7 @@ export class SintesiRichiesteServiceFake {
                 null,
                 new Fonogramma('0', 'Non necessario'),
                 [
-                    new Partenza([
+                    new Partenza('1', [
                             new Squadra(
                                 '3',
                                 '3A',

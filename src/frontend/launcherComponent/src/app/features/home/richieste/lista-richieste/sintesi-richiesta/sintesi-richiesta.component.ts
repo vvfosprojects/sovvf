@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
 
@@ -25,7 +25,7 @@ import { SetMezzoArrivatoSulPosto } from '../../../store/actions/richieste/richi
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SintesiRichiestaComponent implements OnInit, OnDestroy {
+export class SintesiRichiestaComponent {
     @Input() richiesta: SintesiRichiesta;
     @Input() fissata: boolean;
     @Input() fissabile: boolean;
@@ -71,14 +71,6 @@ export class SintesiRichiestaComponent implements OnInit, OnDestroy {
         popoverConfig.placement = 'bottom';
         tooltipConfig.container = 'body';
         tooltipConfig.placement = 'bottom';
-    }
-
-    ngOnInit() {
-        console.log(`Componente Sintesi Creato: ${this.richiesta.id}`);
-    }
-
-    ngOnDestroy(): void {
-        console.log(`Componente Sintesi Distrutto: ${this.richiesta.id}`);
     }
 
     /* Eventi */
