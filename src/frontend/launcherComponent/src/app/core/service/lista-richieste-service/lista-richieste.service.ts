@@ -8,6 +8,7 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
 
 const API_URL_RICHIESTE = environment.apiUrl.rigaElencoRichieste;
 const API_URL_MODIFICA = environment.apiUrl.updateRichiesta;
+const API_URL_AGGIORNA_STATO_MEZZO = environment.apiUrl.gestionePartenza.aggiornaStatoMezzo;
 
 @Injectable()
 export class SintesiRichiesteService {
@@ -26,10 +27,14 @@ export class SintesiRichiesteService {
     // }
 
     public patchRichiesta(richiesta: SintesiRichiesta): Observable<any> {
-        console.log(richiesta);
         return this.http.post<any>(API_URL_MODIFICA, richiesta).pipe(
             retry(3),
             catchError(handleError));
     }
 
+    public setMezzoArrivatoSulPosto(obj: any): Observable<any> {
+        return this.http.post<any>(API_URL_AGGIORNA_STATO_MEZZO, obj).pipe(
+            retry(3),
+            catchError(handleError));
+    }
 }

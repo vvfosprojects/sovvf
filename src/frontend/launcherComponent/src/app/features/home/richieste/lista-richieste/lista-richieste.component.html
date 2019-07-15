@@ -15,14 +15,16 @@
                         <app-sintesi-richiesta [richiesta]="r" [fissata]="false" [fissabile]="true"
                                                [espanso]="false"
                                                [espandibile]="true"
-                                               [listaEventi]="true" (mouseover)="richiestaHoverIn(r)"
-                                               (mouseout)="richiestaHoverOut(r)"
+                                               [listaEventi]="true"
+                                               (hoverIn)="richiestaHoverIn($event)"
+                                               (hoverOut)="richiestaHoverOut($event)"
                                                (fissaInAlto)="onFissaInAlto($event)"
                                                (clickRichiesta)="richiestaClick($event)"
                                                (doubleClickRichiesta)="richiestaDoubleClick($event)"
                                                (nuovaPartenza)="nuovaPartenza($event)"
                                                (eventiRichiesta)="visualizzaEventiRichiesta($event)"
-                                               (modificaRichiesta)="onModificaRichiesta($event)"></app-sintesi-richiesta>
+                                               (modificaRichiesta)="onModificaRichiesta($event)"
+                                               (gestioneRichiesta)="onGestioneRichiesta($event)"></app-sintesi-richiesta>
                     </div>
                     <div *ngIf="r === richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="cardClasses(r)">
                         <app-sintesi-richiesta-sm [richiesta]="r" (mouseover)="richiestaHoverIn(r)"

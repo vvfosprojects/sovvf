@@ -24,6 +24,7 @@ import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actio
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
 import { SetRichiestaModifica } from '../store/actions/richieste/richiesta-modifica.actions';
 import { RichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
+import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -237,6 +238,12 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetRichiestaModifica(richiesta));
         this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
         this.store.dispatch(new ToggleModifica());
+    }
+
+    onGestioneRichiesta(richiesta: SintesiRichiesta) {
+        this.store.dispatch(new SetRichiestaGestione(richiesta));
+        // this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
+        console.log('Gestione Richiesta', richiesta);
     }
 
     toggleComposizione() {

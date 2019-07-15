@@ -38,6 +38,7 @@ export class ListaRichiesteComponent implements OnInit {
     @Output() deselezione = new EventEmitter<boolean>();
     @Output() eventiRichiesta: EventEmitter<string> = new EventEmitter();
     @Output() modificaRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
+    @Output() gestioneRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
 
     methods = new HelperSintesiRichiesta;
 
@@ -92,15 +93,15 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     /* Gestisce l'hover in */
-    richiestaHoverIn(richiesta: SintesiRichiesta) {
-        if (richiesta) {
-            this.hoverIn.emit(richiesta.id);
+    richiestaHoverIn(id: string) {
+        if (id) {
+            this.hoverIn.emit(id);
         }
     }
 
     /* Gestisce l'hover out */
-    richiestaHoverOut(richiesta: SintesiRichiesta) {
-        if (richiesta) {
+    richiestaHoverOut(id: string) {
+        if (id) {
             this.hoverOut.emit(true);
         }
     }
@@ -112,6 +113,10 @@ export class ListaRichiesteComponent implements OnInit {
 
     onModificaRichiesta(richiesta: SintesiRichiesta) {
         this.modificaRichiesta.emit(richiesta);
+    }
+
+    onGestioneRichiesta(richiesta: SintesiRichiesta) {
+        this.gestioneRichiesta.emit(richiesta);
     }
 
     /* Ritorna true se le parole matchano almeno in parte */
@@ -135,7 +140,9 @@ export class ListaRichiesteComponent implements OnInit {
 
     /* NgClass Card Status */
     cardClasses(r: SintesiRichiesta) {
-        return this.methods.cardClasses(r, this.richiestaSelezionata, this.richiestaHover);
+        const richiestaSelezionataId = this.richiestaSelezionata ? this.richiestaSelezionata.id : null;
+        const richiestaHoverId = this.richiestaHover ? this.richiestaHover.id : null;
+        return this.methods.cardClasses(r, richiestaSelezionataId, richiestaHoverId);
     }
 
 }

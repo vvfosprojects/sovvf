@@ -63,15 +63,9 @@ export class SquadraComposizioneComponent implements OnInit {
                 break;
         }
 
-        switch (this.squadraComp.squadra.stato) {
-            case StatoSquadra.InViaggio:
-                returnClass += ' diagonal-stripes bg-lightinfo';
-                break;
-            case StatoSquadra.SulPosto:
-                returnClass += ' diagonal-stripes bg-lightsuccess';
-                break;
+        if (this.squadraComp.squadra.stato === StatoSquadra.InViaggio || this.squadraComp.squadra.stato === StatoSquadra.SulPosto) {
+            returnClass += ' diagonal-stripes bg-lightdanger';
         }
-
         return returnClass;
     }
 

@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ColoriStatoMezzo } from '../../helper/_colori';
 import { Mezzo } from '../../model/mezzo.model';
 import { HelperComposizione } from '../../../features/home/composizione-partenza/shared/helper/_helper-composizione';
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-mezzo',
@@ -11,10 +12,13 @@ import { HelperComposizione } from '../../../features/home/composizione-partenza
 export class MezzoComponent implements OnInit {
 
     @Input() mezzo: Mezzo;
+    @Output() mezzoArrivatoSulPosto: EventEmitter<any> = new EventEmitter();
     stato = new ColoriStatoMezzo();
     methods = new HelperComposizione();
 
-    constructor() {
+    constructor(popoverConfig: NgbPopoverConfig) {
+        popoverConfig.container = 'body';
+        popoverConfig.placement = 'bottom';
     }
 
     ngOnInit() {
@@ -35,7 +39,8 @@ export class MezzoComponent implements OnInit {
         return this.stato.getColor(stato, tipostato, classe);
     }
 
-    arrivatoSulPosto() {
-        console.log('Mezzo ' + this.mezzo.descrizione + ' arrivato sul posto.');
+    onArrivatoSulPosto() {
+        this.mezzoArrivatoSulPosto.emit(this.mezzo);
+        // console.log('Mezzo ' + this.mezzo.descrizione + ' arrivato sul posto.');
     }
 }

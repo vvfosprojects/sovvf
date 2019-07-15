@@ -1,5 +1,5 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
-import { Squadra } from '../../model/squadra.model';
+import { ListaSquadre } from '../../interface/lista-squadre';
 
 @Component({
     selector: 'app-lista-squadre-partenza',
@@ -8,8 +8,7 @@ import { Squadra } from '../../model/squadra.model';
 })
 export class ListaSquadrePartenzaComponent implements OnInit, OnDestroy {
 
-    numeroPartenza: number;
-    squadre: Squadra[];
+    listaSquadre: ListaSquadre;
 
     ngOnInit(): void {
         isDevMode() && console.log('Componente Lista Squadre Partenza creato');

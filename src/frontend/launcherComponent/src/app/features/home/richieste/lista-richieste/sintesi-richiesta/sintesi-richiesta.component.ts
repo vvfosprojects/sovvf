@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
 
@@ -11,6 +11,9 @@ import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
 import { ListaEntiComponent, ListaSquadrePartenzaComponent } from '../../../../../shared';
 import { Partenza } from '../../../../../shared/model/partenza.model';
+import { Mezzo } from '../../../../../shared/model/mezzo.model';
+import { Store } from '@ngxs/store';
+import { SetMezzoArrivatoSulPosto } from '../../../store/actions/richieste/richieste.actions';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -22,7 +25,7 @@ import { Partenza } from '../../../../../shared/model/partenza.model';
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SintesiRichiestaComponent implements OnInit {
+export class SintesiRichiestaComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
     @Input() fissata: boolean;
     @Input() fissabile: boolean;
@@ -32,6 +35,7 @@ export class SintesiRichiestaComponent implements OnInit {
     @Input() partenza: boolean;
     @Input() composizionePartenza = true;
     @Input() modificabile = true;
+    @Input() gestibile = true;
 
     @Output() clickRichiesta: EventEmitter<any> = new EventEmitter();
     @Output() doubleClickRichiesta: EventEmitter<any> = new EventEmitter();
@@ -40,8 +44,12 @@ export class SintesiRichiestaComponent implements OnInit {
     @Output() nuovaPartenza: EventEmitter<any> = new EventEmitter();
     @Output() dismissNuovaPartenza: EventEmitter<any> = new EventEmitter();
     @Output() modificaRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
+    @Output() gestioneRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
     // tslint:disable-next-line:no-output-on-prefix
     @Output() onEspanso: EventEmitter<boolean> = new EventEmitter();
+    @Output() hoverIn = new EventEmitter<string>();
+    @Output() hoverOut = new EventEmitter<string>();
+    @Output() mezzoArrivatoSulPosto: EventEmitter<any> = new EventEmitter();
 
     methods = new HelperSintesiRichiesta;
     isSingleClick = true;
@@ -51,6 +59,7 @@ export class SintesiRichiestaComponent implements OnInit {
     StatoRichiesta = StatoRichiesta;
 
     constructor(private modalService: NgbModal,
+                private store: Store,
                 popoverConfig: NgbPopoverConfig,
                 tooltipConfig: NgbTooltipConfig,
                 intl: TimeagoIntl) {
@@ -65,6 +74,11 @@ export class SintesiRichiestaComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log(`Componente Sintesi Creato: ${this.richiesta.id}`);
+    }
+
+    ngOnDestroy(): void {
+        console.log(`Componente Sintesi Distrutto: ${this.richiesta.id}`);
     }
 
     /* Eventi */
@@ -90,6 +104,18 @@ export class SintesiRichiestaComponent implements OnInit {
     fissaClick(richiesta: any) {
         if (richiesta) {
             this.fissaInAlto.emit(richiesta);
+        }
+    }
+
+    richiestaHoverIn(richiesta: SintesiRichiesta) {
+        if (richiesta) {
+            this.hoverIn.emit(richiesta.id);
+        }
+    }
+
+    richiestaHoverOut(richiesta: SintesiRichiesta) {
+        if (richiesta) {
+            this.hoverOut.emit(richiesta.id);
         }
     }
 
@@ -121,6 +147,10 @@ export class SintesiRichiestaComponent implements OnInit {
         this.modificaRichiesta.emit(this.richiesta);
     }
 
+    onGestioneRichiesta() {
+        this.gestioneRichiesta.emit(this.richiesta);
+    }
+
     onListaEnti() {
         const modal = this.modalService.open(ListaEntiComponent, { windowClass: 'enti', backdropClass: 'light-blue-backdrop', centered: true });
         modal.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
@@ -138,4 +168,13 @@ export class SintesiRichiestaComponent implements OnInit {
             () => console.log('Lista Squadre Partenza Chiusa'));
     }
 
+    onMezzoArrivatoSulPosto(mezzo: Mezzo) {
+        const obj = {
+            'chiamata': this.richiesta,
+            'idMezzo': mezzo.codice,
+            'statoMezzo': 'Sul Posto'
+        };
+        // console.log('Obj', obj);
+        this.store.dispatch(new SetMezzoArrivatoSulPosto(obj));
+    }
 }
