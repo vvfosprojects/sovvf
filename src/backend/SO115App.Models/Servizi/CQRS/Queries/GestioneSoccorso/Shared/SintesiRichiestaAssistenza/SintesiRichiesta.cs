@@ -17,22 +17,21 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
-using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Soccorso;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
@@ -132,8 +131,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
             get
             {
                 var eventoAssegnazionePriorita = this.Eventi
-                    .Where(e => e is AssegnazionePriorita)
-                    .LastOrDefault() as AssegnazionePriorita;
+                    .LastOrDefault(e => e is AssegnazionePriorita) as AssegnazionePriorita;
 
                 return eventoAssegnazionePriorita != null ? eventoAssegnazionePriorita.Priorita : RichiestaAssistenza.Priorita.Media;
             }
@@ -198,27 +196,27 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                int CountEventi;
+                int countEventi;
                 if (this.Eventi == null)
                 {
-                    CountEventi = 0;
+                    countEventi = 0;
                 }
                 else
                 {
-                    CountEventi = this.Eventi.Count;
+                    countEventi = this.Eventi.Count;
                 }
 
-                if (CountEventi <= 20)
+                if (countEventi <= 20)
                 {
-                    return new Complessita("0", "Basso", CountEventi.ToString());
+                    return new Complessita("0", "Basso", countEventi.ToString());
                 }
 
-                if (CountEventi <= 60)
+                if (countEventi <= 60)
                 {
-                    return new Complessita("1", "Media", CountEventi.ToString());
+                    return new Complessita("1", "Media", countEventi.ToString());
                 }
 
-                return new Complessita("2", "Alta", CountEventi.ToString());
+                return new Complessita("2", "Alta", countEventi.ToString());
             }
         }
 
@@ -284,8 +282,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
                 if (this.Eventi != null)
                 {
                     var ultimoEventoFonogramma = this.Eventi
-                        .Where(e => e is Classi.Soccorso.Eventi.Fonogramma.IFonogramma)
-                        .LastOrDefault();
+                        .LastOrDefault(e => e is IFonogramma);
 
                     if (ultimoEventoFonogramma is Classi.Soccorso.Eventi.Fonogramma.FonogrammaInviato)
                     {
@@ -306,12 +303,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                var ListaComposizioni = this.Eventi
-                    .Where(e => e is Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
-                    .Select(e => e as Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
+                var listaComposizioni = this.Eventi
+                    .OfType<ComposizionePartenze>()
                     .ToList();
 
-                return ListaComposizioni;
+                return listaComposizioni;
             }
         }
 
