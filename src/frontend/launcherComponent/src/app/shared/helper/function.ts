@@ -93,7 +93,7 @@ export function objectDiff(current: object, previous: object) {
     const newObj: object = {};
     const previousKeys = Object.keys(previous);
     let hasError = false;
-    Object.keys(current).forEach( (key, index) => {
+    Object.keys(current).forEach((key, index) => {
         if (previousKeys[index] === key && !hasError) {
             newObj[key] = current[key] - previous[key];
         } else {
@@ -130,4 +130,14 @@ export function calcolaActionSuggeritaMezzo(mezzo: Mezzo) {
             break;
     }
     return actionSuggerita;
+}
+
+export function statoMezzoEnumToStringArray() {
+    const stringArray = [];
+    for (const val in StatoMezzo) {
+        if (typeof StatoMezzo[val] === 'string') {
+            stringArray.push(StatoMezzo[val]);
+        }
+    }
+    return stringArray;
 }

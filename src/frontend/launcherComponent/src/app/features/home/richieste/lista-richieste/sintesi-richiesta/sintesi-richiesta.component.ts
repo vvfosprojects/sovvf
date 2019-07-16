@@ -1,21 +1,19 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ListaEntiComponent, ListaSquadrePartenzaComponent } from '../../../../../shared';
 import { TimeagoIntl } from 'ngx-timeago';
+import { Store } from '@ngxs/store';
+import { ActionMezzo } from '../../../store/actions/richieste/richieste.actions';
 
 // Model
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
 import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
+import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-action.interface';
+import { Partenza } from '../../../../../shared/model/partenza.model';
 
 // Helper Methods
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
-import { ListaEntiComponent, ListaSquadrePartenzaComponent } from '../../../../../shared';
-import { Partenza } from '../../../../../shared/model/partenza.model';
-import { Mezzo } from '../../../../../shared/model/mezzo.model';
-import { Store } from '@ngxs/store';
-import { SetMezzoArrivatoSulPosto } from '../../../store/actions/richieste/richieste.actions';
-import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-action.interface';
-import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function';
 
 @Component({
@@ -170,7 +168,7 @@ export class SintesiRichiestaComponent {
             'idMezzo': mezzoAction.mezzo.codice,
             'statoMezzo': mezzoAction.action ? mezzoAction.action : calcolaActionSuggeritaMezzo(mezzoAction.mezzo)
         };
-        console.log('Action Mezzo', obj);
-        // this.store.dispatch(new SetMezzoArrivatoSulPosto(obj));
+        // console.log('Action Mezzo', obj);
+        this.store.dispatch(new ActionMezzo(obj));
     }
 }

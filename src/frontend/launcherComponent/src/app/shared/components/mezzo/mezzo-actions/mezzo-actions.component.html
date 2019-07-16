@@ -4,7 +4,7 @@
     <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
         <button class="btn btn-sm btn-success p-1 dropdown-toggle-split" ngbDropdownToggle></button>
         <div class="dropdown-menu" ngbDropdownMenu>
-            <button ngbDropdownItem (click)="onClick(statoMezzo.InSede)">In Sede</button>
+            <button *ngFor="let stato of statoMezzoString" ngbDropdownItem (click)="onClick(stato)">{{stato}}</button>
         </div>
     </div>
 </div>

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbDropdownConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { StatoMezzo } from '../../../enum/stato-mezzo.enum';
 import { Mezzo } from '../../../model/mezzo.model';
-import { calcolaActionSuggeritaMezzo } from '../../../helper/function';
+import { calcolaActionSuggeritaMezzo, statoMezzoEnumToStringArray } from '../../../helper/function';
 
 @Component({
     selector: 'app-mezzo-actions',
@@ -12,7 +12,8 @@ import { calcolaActionSuggeritaMezzo } from '../../../helper/function';
 export class MezzoActionsComponent implements OnInit {
 
     @Input() mezzo: Mezzo;
-    statoMezzo = StatoMezzo;
+    statoMezzo: StatoMezzo;
+    statoMezzoString: Array<string>;
 
     @Output() actionMezzo: EventEmitter<StatoMezzo> = new EventEmitter();
 
@@ -25,10 +26,18 @@ export class MezzoActionsComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.statoMezzoString = statoMezzoEnumToStringArray();
     }
 
-    onClick(action?: StatoMezzo) {
-        this.actionMezzo.emit(action);
+    onClick(action?: string) {
+        if (action) {
+            this.statoMezzo = StatoMezzo[action.replace(' ', '')];
+            // console.log(this.statoMezzo);
+            this.actionMezzo.emit(this.statoMezzo);
+        } else {
+            console.log('b');
+            this.actionMezzo.emit();
+        }
     }
 
     calcolaActionSuggeritaMezzo(mezzo: Mezzo) {

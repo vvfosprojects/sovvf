@@ -32,7 +32,7 @@ export class SintesiRichiesteService {
             catchError(handleError));
     }
 
-    public setMezzoArrivatoSulPosto(obj: any): Observable<any> {
+    public aggiornaStatoMezzo(obj: any): Observable<any> {
         return this.http.post<any>(API_URL_AGGIORNA_STATO_MEZZO, obj).pipe(
             retry(3),
             catchError(handleError));

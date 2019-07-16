@@ -5,11 +5,12 @@ import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Action
 import {
+    ActionMezzo,
     AddRichiesta, ClearIdChiamataInviaPartenza,
     ClearRichieste,
     GetRichieste,
     PatchRichiesta,
-    SetIdChiamataInviaPartenza, SetMezzoArrivatoSulPosto,
+    SetIdChiamataInviaPartenza,
     SetRichieste,
     StartInviaPartenzaFromChiamata,
     UpdateRichiesta
@@ -149,11 +150,11 @@ export class RichiesteState {
         ]);
     }
 
-    @Action(SetMezzoArrivatoSulPosto)
-    setMezzoArrivatoSulPosto({ dispatch, patchState }: StateContext<RichiesteStateModel>, action: SetMezzoArrivatoSulPosto) {
-        console.log('Mezzo Arrivato sul posto - OBJECT', action.obj);
-        this.richiesteService.setMezzoArrivatoSulPosto(action.obj).subscribe((data: any) => {
-            console.log('Mezzo Arrivato sul posto - CONTROLLER RESPONSE', data);
+    @Action(ActionMezzo)
+    actionMezzo({ dispatch, patchState }: StateContext<RichiesteStateModel>, action: ActionMezzo) {
+        console.log('Action Mezzo - OBJECT', action.obj);
+        this.richiesteService.aggiornaStatoMezzo(action.obj).subscribe((data: any) => {
+            console.log('Action Mezzo - CONTROLLER RESPONSE', data);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 }

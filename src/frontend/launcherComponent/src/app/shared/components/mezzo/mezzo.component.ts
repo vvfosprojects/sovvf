@@ -43,7 +43,7 @@ export class MezzoComponent implements OnInit {
         return this.stato.getColor(stato, tipostato, classe);
     }
 
-    onActionMezzo(action: StatoMezzo) {
+    onActionMezzo(action?: StatoMezzo) {
         let actionMezzo = {} as MezzoActionInterface;
         if (action) {
             actionMezzo = { 'mezzo': this.mezzo, 'action': action };

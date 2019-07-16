@@ -58,8 +58,8 @@ export class StartInviaPartenzaFromChiamata {
     }
 }
 
-export class SetMezzoArrivatoSulPosto {
-    static readonly type = '[Richieste] Set Mezzo Arrivato Sul Posto';
+export class ActionMezzo {
+    static readonly type = '[Richieste] Action Mezzo';
 
     constructor(public obj: any) {
     }
