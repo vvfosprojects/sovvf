@@ -18,7 +18,7 @@
                             <div class="h6 mb-1 nowrap">
                                 <i class="guida fa fa-hashtag fa-fw mr-1"
                                    ngbTooltip="Identificativo richiesta assistenza" placement="right"></i>
-                                <a class="h6 cod-int" (click)="toggleEspanso()">
+                                <a class="h6 cod-int" (click)="toggleEspanso(richiesta.id)">
                                     <span *ngIf="richiesta.codiceRichiesta">{{ richiesta.codiceRichiesta }} </span>
                                     <span *ngIf="!richiesta.codiceRichiesta">{{ richiesta.codice }} </span>
                                 </a>
@@ -193,7 +193,7 @@
                                 </button>
                                 <button *ngIf="espandibile" class="btn btn-light border py-0 px-0 mr-1"
                                         ngbTooltip="Espandi"
-                                        (click)="toggleEspanso(); $event.stopPropagation()">
+                                        (click)="toggleEspanso(richiesta.id); $event.stopPropagation()">
                                     <i class="fa fa-fw text-secondary"
                                        [ngClass]="methods.toggleEspansoClass(espanso)"></i>
                                 </button>

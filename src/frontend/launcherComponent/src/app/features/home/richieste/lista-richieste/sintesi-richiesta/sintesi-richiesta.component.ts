@@ -1,20 +1,16 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ListaEntiComponent, ListaSquadrePartenzaComponent } from '../../../../../shared';
+import { ListaEntiComponent } from '../../../../../shared';
 import { TimeagoIntl } from 'ngx-timeago';
-import { Store } from '@ngxs/store';
-import { ActionMezzo } from '../../../store/actions/richieste/richieste.actions';
 
 // Model
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
 import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
 import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-action.interface';
-import { Partenza } from '../../../../../shared/model/partenza.model';
 
 // Helper Methods
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
-import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -39,19 +35,20 @@ export class SintesiRichiestaComponent {
     @Input() gestibile = true;
     @Input() inGestione = true;
 
-    @Output() clickRichiesta: EventEmitter<any> = new EventEmitter();
-    @Output() doubleClickRichiesta: EventEmitter<any> = new EventEmitter();
-    @Output() fissaInAlto: EventEmitter<any> = new EventEmitter();
-    @Output() eventiRichiesta: EventEmitter<string> = new EventEmitter();
-    @Output() nuovaPartenza: EventEmitter<any> = new EventEmitter();
-    @Output() dismissNuovaPartenza: EventEmitter<any> = new EventEmitter();
-    @Output() modificaRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
-    @Output() gestioneRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
+    @Output() clickRichiesta = new EventEmitter<any>();
+    @Output() doubleClickRichiesta = new EventEmitter<any>();
+    @Output() fissaInAlto = new EventEmitter<any>();
+    @Output() eventiRichiesta = new EventEmitter<string>();
+    @Output() nuovaPartenza = new EventEmitter<any>();
+    @Output() dismissNuovaPartenza = new EventEmitter<any>();
+    @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
+    @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
     // tslint:disable-next-line:no-output-on-prefix
-    @Output() onEspanso: EventEmitter<boolean> = new EventEmitter();
+    @Output() onEspanso = new EventEmitter();
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter<string>();
-    @Output() mezzoArrivatoSulPosto: EventEmitter<any> = new EventEmitter();
+    @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
+    @Output() outEspansoId = new EventEmitter<string>();
 
     methods = new HelperSintesiRichiesta;
     isSingleClick = true;
@@ -61,7 +58,6 @@ export class SintesiRichiestaComponent {
     StatoRichiesta = StatoRichiesta;
 
     constructor(private modalService: NgbModal,
-                private store: Store,
                 popoverConfig: NgbPopoverConfig,
                 tooltipConfig: NgbTooltipConfig,
                 intl: TimeagoIntl) {
@@ -76,7 +72,7 @@ export class SintesiRichiestaComponent {
     }
 
     /* Eventi */
-    richiestaClick(richiesta: any) {
+    richiestaClick(richiesta: SintesiRichiesta) {
         if (richiesta) {
             this.isSingleClick = true;
             setTimeout(() => {
@@ -87,15 +83,15 @@ export class SintesiRichiestaComponent {
         }
     }
 
-    richiestaDoubleClick(richiesta: any) {
+    richiestaDoubleClick(richiesta: SintesiRichiesta) {
         if (richiesta && this.espandibile) {
             this.isSingleClick = false;
-            this.toggleEspanso();
+            this.toggleEspanso(richiesta.id);
             this.doubleClickRichiesta.emit(richiesta);
         }
     }
 
-    fissaClick(richiesta: any) {
+    fissaClick(richiesta: SintesiRichiesta) {
         if (richiesta) {
             this.fissaInAlto.emit(richiesta);
         }
@@ -117,7 +113,7 @@ export class SintesiRichiestaComponent {
         this.eventiRichiesta.emit(idRichiesta);
     }
 
-    invioPartenza(richiesta: any) {
+    invioPartenza(richiesta: SintesiRichiesta) {
         if (this.partenza) {
             this.dismissNuovaPartenza.emit();
         } else {
@@ -125,15 +121,14 @@ export class SintesiRichiestaComponent {
         }
     }
 
-    /* Layout Methods */
-    toggleEspanso(): void {
+    toggleEspanso(id: string): void {
         if (this.espandibile) {
-            this.espanso = !this.espanso;
-            this.onEspanso.emit(this.espanso);
+            this.onEspanso.emit();
+            this.outEspansoId.emit(id);
         }
     }
 
-    complessitaClass(richiesta: any) {
+    complessitaClass(richiesta: SintesiRichiesta) {
         return this.methods.complessitaClass(richiesta);
     }
 
@@ -153,22 +148,10 @@ export class SintesiRichiestaComponent {
             () => console.log('Lista Enti Chiusa'));
     }
 
-    onListaSquadrePartenza(partenza: Partenza) {
-        const modal = this.modalService.open(ListaSquadrePartenzaComponent, { windowClass: 'squadrePartenza', backdropClass: 'light-blue-backdrop', centered: true });
-        const numeroPartenza = this.richiesta.partenzeRichiesta.indexOf(partenza) + 1;
-        modal.componentInstance.numeroPartenza = numeroPartenza;
-        modal.componentInstance.squadre = partenza.squadre;
-        modal.result.then(() => console.log('Lista Squadre Partenza ' + numeroPartenza + ' Aperta'),
-            () => console.log('Lista Squadre Partenza Chiusa'));
+    onActionMezzo(mezzoAction: MezzoActionInterface) {
+        const _mezzoAction = mezzoAction;
+        _mezzoAction.richiesta = this.richiesta;
+        this.actionMezzo.emit(_mezzoAction);
     }
 
-    onActionMezzo(mezzoAction: MezzoActionInterface) {
-        const obj = {
-            'chiamata': this.richiesta,
-            'idMezzo': mezzoAction.mezzo.codice,
-            'statoMezzo': mezzoAction.action ? mezzoAction.action : calcolaActionSuggeritaMezzo(mezzoAction.mezzo)
-        };
-        // console.log('Action Mezzo', obj);
-        this.store.dispatch(new ActionMezzo(obj));
-    }
 }

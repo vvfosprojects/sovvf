@@ -2,14 +2,11 @@ import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from 'ngx-filter-pipe';
-// Model
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-// Component
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
-// Ngxs
 import { Select, Store } from '@ngxs/store';
 import { RicercaRichiesteState } from '../store/states/filterbar/ricerca-richieste.state';
-import { ClearRichiestaFissata, SetRichiestaFissata } from '../store/actions/richieste/richiesta-fissata.actions';
+import { ClearRichiestaFissata, SetEspanso, SetRichiestaFissata } from '../store/actions/richieste/richiesta-fissata.actions';
 import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
 import { ClearRichiestaHover, SetRichiestaHover } from '../store/actions/richieste/richiesta-hover.actions';
 import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from '../store/actions/richieste/richiesta-selezionata.actions';
@@ -24,8 +21,12 @@ import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actio
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
 import { SetRichiestaModifica } from '../store/actions/richieste/richiesta-modifica.actions';
 import { RichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
-import { ClearRichiestaGestione, SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
+import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
+import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
+import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
+import { ActionMezzo } from '../store/actions/richieste/richieste.actions';
+import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -55,6 +56,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Select(RichiestaSelezionataState.idRichiestaSelezionata) idRichiestaSelezionata$: Observable<string>;
     richiestaSelezionata: SintesiRichiesta;
+
+    @Select(RichiesteEspanseState.richiesteEspanse) idRichiesteEspanse$: Observable<string[]>;
 
     loaderRichieste = true;
     loaderNuoveRichieste = false;
@@ -271,5 +274,17 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     nuovaPartenza($event: SintesiRichiesta) {
         this.store.dispatch(new SetMarkerRichiestaSelezionato($event.id));
         this.store.dispatch(new RichiestaComposizione($event));
+    }
+
+    onActionMezzo(actionMezzo: MezzoActionInterface) {
+        this.store.dispatch(new ActionMezzo(actionMezzo));
+    }
+
+    toggleEspanso(id: string): void {
+        this.store.dispatch(new ReducerRichiesteEspanse(id));
+    }
+
+    onSetEspanso(result?: boolean): void {
+        this.store.dispatch(new SetEspanso(result));
     }
 }

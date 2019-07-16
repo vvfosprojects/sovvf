@@ -1,18 +1,12 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, OnChanges, OnDestroy, isDevMode } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, OnDestroy, isDevMode } from '@angular/core';
 import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/animations';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 // Model
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 
-// Component
-import { EventiRichiestaComponent } from '../../eventi/eventi-richiesta.component';
-
 // Helper Methods
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
-import { Store } from '@ngxs/store';
-import { SetEspanso } from '../../store/actions/richieste/richiesta-fissata.actions';
-import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../../store/actions/eventi/eventi-richiesta.actions';
+import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
 
 
 @Component({
@@ -23,13 +17,17 @@ import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../../store/actions/
 export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Input() _split: boolean;
     @Input() richiestaFissata: SintesiRichiesta;
+    @Input() idRichiesteEspanse: string[] = [];
 
-    @Output() eventiRichiesta: EventEmitter<any> = new EventEmitter();
-    @Output() statoPartenza: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output() composizionePartenza: EventEmitter<SintesiRichiesta> = new EventEmitter<SintesiRichiesta>();
-    @Output() defissa: EventEmitter<any> = new EventEmitter<any>();
-    @Output() modificaRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter<SintesiRichiesta>();
-    @Output() gestioneRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter<SintesiRichiesta>();
+    @Output() eventiRichiesta = new EventEmitter<string>();
+    @Output() statoPartenza = new EventEmitter<boolean>();
+    @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
+    @Output() defissa = new EventEmitter<any>();
+    @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
+    @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
+    @Output() outEspansoId = new EventEmitter<string>();
+    @Output() outEspanso = new EventEmitter<boolean>();
+    @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
 
     @ViewChild('richiestaContainer') private richiestaContainer: ElementRef;
     @ViewChild('richiesta') private richiesta: ElementRef;
@@ -39,24 +37,20 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     private playerContainer: AnimationPlayer;
     private playerRichiesta: AnimationPlayer;
 
-    constructor(private animationBuilder: AnimationBuilder,
-                private modalService: NgbModal,
-                private store: Store) {
+    constructor(private animationBuilder: AnimationBuilder) {
     }
 
     ngOnInit(): void {
+        isDevMode() && console.log('Componente RichiestaFissata creato');
         if (this.richiestaFissata) {
             this.animazioneIn();
-            if (isDevMode()) {
-                console.log('Componente RichiestaFissata creato');
-            }
+            const result = !!this.idRichiesteEspanse.includes(this.richiestaFissata.id);
+            setTimeout(() => this.outEspanso.emit(result));
         }
     }
 
     ngOnDestroy(): void {
-        if (isDevMode()) {
-            console.log('Componente RichiestaFissata distrutto');
-        }
+        isDevMode() && console.log('Componente RichiestaFissata distrutto');
     }
 
     // Ritorna la richiesta nella lista, defissandola
@@ -124,20 +118,14 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
         this.playerRichiesta.play();
     }
 
-    /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     visualizzaEventiRichiesta(idRichiesta: string) {
-        this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
-        const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
-        modal.result.then(() => {
-            },
-            () => this.store.dispatch(new ClearEventiRichiesta()));
+        this.eventiRichiesta.emit(idRichiesta);
     }
 
     /* Apre il componente per la creazione della partenza */
-    nuovaPartenza(richiesta: any) {
+    nuovaPartenza(richiesta: SintesiRichiesta) {
         this.composizionePartenza.emit(richiesta);
         this.statoPartenza.emit(true);
-
         console.log(richiesta);
     }
 
@@ -149,13 +137,19 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
         this.gestioneRichiesta.emit(richiesta);
     }
 
-    setEspanso(espanso: boolean) {
-        this.store.dispatch(new SetEspanso(espanso));
-        console.log('Stato espanso:', espanso);
+    setEspanso() {
+        this.outEspanso.emit();
     }
 
     /* NgClass Template */
     cardFissataClasses(r: any) {
         return this.methods.cardFissataClasses(r);
     }
+
+    isEspanso(id: string) {
+        if (this.idRichiesteEspanse && id) {
+            return this.idRichiesteEspanse.includes(id);
+        }
+    }
+
 }

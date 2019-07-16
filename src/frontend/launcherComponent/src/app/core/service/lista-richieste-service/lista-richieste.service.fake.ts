@@ -1030,4 +1030,8 @@ export class SintesiRichiesteServiceFake {
 
         return of(null);
     }
+
+    aggiornaStatoMezzo(obj: any) {
+        return of(null);
+    }
 }

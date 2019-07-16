@@ -1,4 +1,4 @@
-import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, isDevMode, OnDestroy, OnInit, Output } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
@@ -27,6 +27,8 @@ import { HelperSintesiRichiesta } from '../richieste/helper/_helper-sintesi-rich
 import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
 import { AttivitaUtente } from '../../../shared/model/attivita-utente.model';
 import { AddPresaInCarico, DeletePresaInCarico } from '../store/actions/richieste/richiesta-attivita-utente.actions';
+import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
+import { ActionMezzo } from '../store/actions/richieste/richieste.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -147,6 +149,10 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     onPrenota($event) {
         $event ? this.store.dispatch(new AddPresaInCarico(this.richiesta)) : this.store.dispatch(new DeletePresaInCarico(this.richiesta));
+    }
+
+    onActionMezzo(actionMezzo: MezzoActionInterface) {
+        this.store.dispatch(new ActionMezzo(actionMezzo));
     }
 
 }

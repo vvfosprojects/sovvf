@@ -12,5 +12,6 @@ export class ClearRichiestaFissata {
 export class SetEspanso {
     static readonly type = '[RichiestaFissata] Set Espanso';
 
-    constructor(public espanso: boolean) {}
+    constructor(public espanso?: boolean) {
+    }
 }

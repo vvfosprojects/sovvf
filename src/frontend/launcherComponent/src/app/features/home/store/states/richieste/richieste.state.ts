@@ -31,6 +31,9 @@ import { ToggleComposizione } from '../../actions/view/view.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
+import { ClearRichiesteEspanse } from '../../actions/richieste/richieste-espanse.actions';
+import { RichiesteEspanseState } from './richieste-espanse.state';
+import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -45,7 +48,7 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
 @State<RichiesteStateModel>({
     name: 'richieste',
     defaults: RichiesteStateDefaults,
-    children: [RichiestaFissataState, RichiestaHoverState, RichiestaSelezionataState, RichiestaModificaState]
+    children: [RichiestaFissataState, RichiestaHoverState, RichiestaSelezionataState, RichiestaModificaState, RichiesteEspanseState]
 })
 export class RichiesteState {
 
@@ -86,7 +89,8 @@ export class RichiesteState {
     }
 
     @Action(ClearRichieste)
-    clearRichieste({ patchState }: StateContext<RichiesteStateModel>) {
+    clearRichieste({ patchState, dispatch }: StateContext<RichiesteStateModel>) {
+        dispatch(new ClearRichiesteEspanse());
         patchState(RichiesteStateDefaults);
     }
 
@@ -151,9 +155,13 @@ export class RichiesteState {
     }
 
     @Action(ActionMezzo)
-    actionMezzo({ dispatch, patchState }: StateContext<RichiesteStateModel>, action: ActionMezzo) {
-        console.log('Action Mezzo - OBJECT', action.obj);
-        this.richiesteService.aggiornaStatoMezzo(action.obj).subscribe((data: any) => {
+    actionMezzo({ dispatch }: StateContext<RichiesteStateModel>, action: ActionMezzo) {
+        const obj = {
+            'chiamata': action.mezzoAction.richiesta,
+            'idMezzo': action.mezzoAction.mezzo.codice,
+            'statoMezzo': action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo)
+        };
+        this.richiesteService.aggiornaStatoMezzo(obj).subscribe((data: any) => {
             console.log('Action Mezzo - CONTROLLER RESPONSE', data);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }

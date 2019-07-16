@@ -34,11 +34,8 @@ export class RichiestaFissataState {
     }
 
     @Action(SetRichiestaFissata)
-    setRichiestaFissata({ getState, patchState }: StateContext<RichiestaFissataStateModel>, action: SetRichiestaFissata) {
-        const state = getState();
-
+    setRichiestaFissata({ patchState }: StateContext<RichiestaFissataStateModel>, action: SetRichiestaFissata) {
         patchState({
-            ...state,
             idRichiestaFissata: action.idRichiesta
         });
     }
@@ -49,9 +46,10 @@ export class RichiestaFissataState {
     }
 
     @Action(SetEspanso)
-    setEspanso({ patchState }: StateContext<RichiestaFissataStateModel>, action: SetEspanso) {
+    setEspanso({ getState, patchState }: StateContext<RichiestaFissataStateModel>, action: SetEspanso) {
+        const state = getState();
         patchState({
-            espanso: action.espanso
+            espanso: action.espanso === undefined ? !state.espanso : action.espanso
         });
     }
 }

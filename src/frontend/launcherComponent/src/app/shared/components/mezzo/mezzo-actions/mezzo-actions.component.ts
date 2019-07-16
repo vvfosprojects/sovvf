@@ -32,10 +32,8 @@ export class MezzoActionsComponent implements OnInit {
     onClick(action?: string) {
         if (action) {
             this.statoMezzo = StatoMezzo[action.replace(' ', '')];
-            // console.log(this.statoMezzo);
             this.actionMezzo.emit(this.statoMezzo);
         } else {
-            console.log('b');
             this.actionMezzo.emit();
         }
     }
