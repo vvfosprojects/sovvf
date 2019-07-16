@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Partenza } from '../../model/partenza.model';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { Mezzo } from '../../model/mezzo.model';
+import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 
 @Component({
     selector: 'app-partenza',
@@ -11,8 +12,10 @@ import { Mezzo } from '../../model/mezzo.model';
 export class PartenzaComponent {
 
     @Input() partenza: Partenza;
+    @Input() inGestione: boolean;
+
     @Output() listaSquadre = new EventEmitter<ListaSquadre>();
-    @Output() mezzoArrivatoSulPosto: EventEmitter<any> = new EventEmitter();
+    @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
 
     onListaSquadrePartenza() {
         const listaSquadre = {} as ListaSquadre;
@@ -21,7 +24,7 @@ export class PartenzaComponent {
         this.listaSquadre.emit(listaSquadre);
     }
 
-    onMezzoArrivatoSulPosto(mezzo: Mezzo) {
-        this.mezzoArrivatoSulPosto.emit(mezzo);
+    onActionMezzo(mezzoAction: MezzoActionInterface) {
+        this.actionMezzo.emit(mezzoAction);
     }
 }

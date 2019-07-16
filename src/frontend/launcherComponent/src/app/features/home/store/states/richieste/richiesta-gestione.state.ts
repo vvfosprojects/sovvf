@@ -29,10 +29,15 @@ export class RichiestaGestioneState {
     }
 
     @Action(SetRichiestaGestione)
-    setRichiestaGestione({ patchState }: StateContext<RichiestaGestioneStateModel>, action: SetRichiestaGestione) {
-        patchState({
-            richiestaGestione: action.richiesta
-        });
+    setRichiestaGestione({ getState, patchState, dispatch }: StateContext<RichiestaGestioneStateModel>, action: SetRichiestaGestione) {
+        const state = getState();
+        if (state.richiestaGestione && state.richiestaGestione.id === action.richiesta.id) {
+            dispatch(new ClearRichiestaGestione());
+        } else {
+            patchState({
+                richiestaGestione: action.richiesta
+            });
+        }
     }
 
     @Action(ClearRichiestaGestione)

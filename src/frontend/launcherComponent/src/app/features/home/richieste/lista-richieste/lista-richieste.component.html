@@ -16,6 +16,7 @@
                                                [espanso]="false"
                                                [espandibile]="true"
                                                [listaEventi]="true"
+                                               [inGestione]="richiestaGestione?.id === r.id"
                                                (hoverIn)="richiestaHoverIn($event)"
                                                (hoverOut)="richiestaHoverOut($event)"
                                                (fissaInAlto)="onFissaInAlto($event)"

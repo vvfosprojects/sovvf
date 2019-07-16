@@ -24,7 +24,8 @@ import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actio
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
 import { SetRichiestaModifica } from '../store/actions/richieste/richiesta-modifica.actions';
 import { RichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
-import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
+import { ClearRichiestaGestione, SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
+import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 
 @Component({
     selector: 'app-richieste',
@@ -43,6 +44,9 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Select(RichiestaFissataState.idRichiestaFissata) idRichiestaFissata$: Observable<string>;
     richiestaFissata: SintesiRichiesta;
+
+    @Select(RichiestaGestioneState.richiestaGestione) richiestaGestione$: Observable<SintesiRichiesta>;
+    richiestaGestione: SintesiRichiesta;
 
     @Select(RichiestaFissataState.espanso) richiestaFissataEspanso$: Observable<boolean>;
 
@@ -71,6 +75,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.getRichiestaFissataEspanso();
         this.getRichiestaHover();
         this.getRichiestaSelezionata();
+        this.getRichiestaGestione();
         this.getRicerca();
         isDevMode() && console.log('Componente Richieste creato');
     }
@@ -165,6 +170,19 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                     this.richiestaSelezionata = richiestaSelezionataArray[0];
                 } else {
                     this.richiestaSelezionata = null;
+                }
+            })
+        );
+    }
+
+    getRichiestaGestione() {
+        this.subscription.add(
+            this.richiestaGestione$.subscribe((richiestaGestione: SintesiRichiesta) => {
+                if (richiestaGestione) {
+                    const richiestaGestioneArray = this.richieste.filter(r => r.id === richiestaGestione.id);
+                    this.richiestaGestione = richiestaGestioneArray[0];
+                } else {
+                    this.richiestaGestione = null;
                 }
             })
         );

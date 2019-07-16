@@ -2,6 +2,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 
 // Action
 import { SetRichiestaSelezionata, ClearRichiestaSelezionata } from '../../actions/richieste/richiesta-selezionata.actions';
+import { ClearRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
 
 export interface RichiestaSelezionataStateModel {
     idRichiestaSelezionata: string;
@@ -17,7 +18,8 @@ export const RichiestaSelezionataStateDefaults: RichiestaSelezionataStateModel =
 })
 export class RichiestaSelezionataState {
 
-    constructor() { }
+    constructor() {
+    }
 
     // SELECTORS
     @Selector()
@@ -27,7 +29,7 @@ export class RichiestaSelezionataState {
 
     // SET
     @Action(SetRichiestaSelezionata)
-    setRichiestaSelezionata({ getState, patchState }: StateContext<RichiestaSelezionataStateModel>, action: SetRichiestaSelezionata) {
+    setRichiestaSelezionata({ getState, patchState, dispatch }: StateContext<RichiestaSelezionataStateModel>, action: SetRichiestaSelezionata) {
         const state = getState();
 
         patchState({
@@ -38,12 +40,13 @@ export class RichiestaSelezionataState {
 
     // CLEAR
     @Action(ClearRichiestaSelezionata)
-    clearRichiestaSelezionata({ getState, patchState }: StateContext<RichiestaSelezionataStateModel>) {
+    clearRichiestaSelezionata({ getState, patchState, dispatch }: StateContext<RichiestaSelezionataStateModel>) {
         const state = getState();
-
         patchState({
             ...state,
             idRichiestaSelezionata: null
         });
+
+        dispatch(new ClearRichiestaGestione());
     }
 }

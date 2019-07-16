@@ -14,6 +14,9 @@ import { Partenza } from '../../../../../shared/model/partenza.model';
 import { Mezzo } from '../../../../../shared/model/mezzo.model';
 import { Store } from '@ngxs/store';
 import { SetMezzoArrivatoSulPosto } from '../../../store/actions/richieste/richieste.actions';
+import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-action.interface';
+import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -36,6 +39,7 @@ export class SintesiRichiestaComponent {
     @Input() composizionePartenza = true;
     @Input() modificabile = true;
     @Input() gestibile = true;
+    @Input() inGestione = true;
 
     @Output() clickRichiesta: EventEmitter<any> = new EventEmitter();
     @Output() doubleClickRichiesta: EventEmitter<any> = new EventEmitter();
@@ -160,13 +164,13 @@ export class SintesiRichiestaComponent {
             () => console.log('Lista Squadre Partenza Chiusa'));
     }
 
-    onMezzoArrivatoSulPosto(mezzo: Mezzo) {
+    onActionMezzo(mezzoAction: MezzoActionInterface) {
         const obj = {
             'chiamata': this.richiesta,
-            'idMezzo': mezzo.codice,
-            'statoMezzo': 'Sul Posto'
+            'idMezzo': mezzoAction.mezzo.codice,
+            'statoMezzo': mezzoAction.action ? mezzoAction.action : calcolaActionSuggeritaMezzo(mezzoAction.mezzo)
         };
-        // console.log('Obj', obj);
-        this.store.dispatch(new SetMezzoArrivatoSulPosto(obj));
+        console.log('Action Mezzo', obj);
+        // this.store.dispatch(new SetMezzoArrivatoSulPosto(obj));
     }
 }

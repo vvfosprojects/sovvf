@@ -1,6 +1,8 @@
 import { StatoRichiesta } from '../enum/stato-richiesta.enum';
 import { Coordinate } from '../model/coordinate.model';
 import { CentroMappa } from '../../features/home/maps/maps-model/centro-mappa.model';
+import { Mezzo } from '../model/mezzo.model';
+import { StatoMezzo } from '../enum/stato-mezzo.enum';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
@@ -109,4 +111,23 @@ export function round1decimal(value: number) {
 export function roundTodecimal(value: number, exp) {
     const number = exp ? Math.pow(10, exp) : 10;
     return Math.round(value * number) / number;
+}
+
+export function calcolaActionSuggeritaMezzo(mezzo: Mezzo) {
+    let actionSuggerita = '';
+    switch (mezzo.stato) {
+        case StatoMezzo.InSede:
+            actionSuggerita = StatoMezzo.InViaggio;
+            break;
+        case StatoMezzo.InViaggio:
+            actionSuggerita = StatoMezzo.SulPosto;
+            break;
+        case StatoMezzo.SulPosto:
+            actionSuggerita = StatoMezzo.InRientro;
+            break;
+        case StatoMezzo.InRientro:
+            actionSuggerita = StatoMezzo.InSede;
+            break;
+    }
+    return actionSuggerita;
 }

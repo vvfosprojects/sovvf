@@ -1,0 +1,10 @@
+<div class="btn-group btn-group-sm mr-3" (click)="$event.stopPropagation()">
+    <button type="button" class="btn btn-sm btn-success px-2 py-0" (click)="onClick()"
+            ngbTooltip="{{calcolaActionSuggeritaMezzo(mezzo)}}"><i class="fa fa-crosshairs"></i></button>
+    <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+        <button class="btn btn-sm btn-success p-1 dropdown-toggle-split" ngbDropdownToggle></button>
+        <div class="dropdown-menu" ngbDropdownMenu>
+            <button ngbDropdownItem (click)="onClick(statoMezzo.InSede)">In Sede</button>
+        </div>
+    </div>
+</div>

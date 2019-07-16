@@ -75,8 +75,10 @@ import { RichiestaGestioneState } from './store/states/richieste/richiesta-gesti
             ]
         ),
     ],
+    exports: [
+    ],
     providers: [
-        { provide: HomeService, useClass: environment.fakeProvider ? HomeServiceFake : HomeService},
+        { provide: HomeService, useClass: environment.fakeProvider ? HomeServiceFake : HomeService },
     ]
 })
 export class HomeModule {

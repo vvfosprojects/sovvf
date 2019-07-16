@@ -21,6 +21,7 @@ export class ListaRichiesteComponent implements OnInit {
     @Input() richiestaHover: SintesiRichiesta;
     @Input() richiestaSelezionata: SintesiRichiesta;
     @Input() richiestaFissata: SintesiRichiesta;
+    @Input() richiestaGestione: SintesiRichiesta;
     @Input() loaderRichieste = true;
     @Input() loaderNuoveRichieste: boolean;
     @Input() contatoreNuoveRichieste;
