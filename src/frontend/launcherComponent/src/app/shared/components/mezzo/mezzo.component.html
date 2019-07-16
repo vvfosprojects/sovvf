@@ -59,9 +59,5 @@
     </ng-template>
   </span>
 
-    <!--    <button *ngIf="inGestione" class="btn btn-sm btn-outline-success py-0"-->
-    <!--            ngbTooltip="Mezzo arrivato sul posto" (click)="onArrivatoSulPosto(); $event.stopPropagation()">-->
-    <!--        <i class="fa fa-crosshairs"></i>-->
-    <!--    </button>-->
-  <app-mezzo-actions [mezzo]="mezzo" (actionMezzo)="onActionMezzo($event)"></app-mezzo-actions>
+  <app-mezzo-actions *ngIf="inGestione" [mezzo]="mezzo" (actionMezzo)="onActionMezzo($event)"></app-mezzo-actions>
 </span>

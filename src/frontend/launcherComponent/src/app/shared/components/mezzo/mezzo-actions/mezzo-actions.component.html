@@ -1,8 +1,13 @@
 <div class="btn-group btn-group-sm mr-3" (click)="$event.stopPropagation()">
-    <button type="button" class="btn btn-sm btn-success px-2 py-0" (click)="onClick()"
-            ngbTooltip="{{calcolaActionSuggeritaMezzo(mezzo)}}"><i class="fa fa-crosshairs"></i></button>
+    <button type="button" class="btn btn-sm btn-{{statoMezzoColor(mezzo)}} px-2 py-0" (click)="onClick()"
+            ngbTooltip="{{calcolaActionSuggeritaMezzo(mezzo)}}">
+        <small>{{calcolaActionSuggeritaMezzo(mezzo)}}</small>
+    </button>
     <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-        <button class="btn btn-sm btn-success p-1 dropdown-toggle-split" ngbDropdownToggle></button>
+        <button class="btn btn-sm btn-{{statoMezzoColor(mezzo)}} text-light p-1 dropdown-toggle-split"
+                ngbTooltip="Altro" ngbDropdownToggle>
+            <small><i class="fa fa-fw fa-arrow-up"></i></small>
+        </button>
         <div class="dropdown-menu" ngbDropdownMenu>
             <button *ngFor="let stato of statoMezzoString" ngbDropdownItem (click)="onClick(stato)">{{stato}}</button>
         </div>

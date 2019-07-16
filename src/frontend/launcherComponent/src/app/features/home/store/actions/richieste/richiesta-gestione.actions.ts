@@ -3,7 +3,7 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 export class SetRichiestaGestione {
     static readonly type = '[RichiestaGestione] Set Richiesta Gestione';
 
-    constructor(public richiesta: SintesiRichiesta) {
+    constructor(public richiesta: SintesiRichiesta, public toggle?: boolean) {
     }
 }
 

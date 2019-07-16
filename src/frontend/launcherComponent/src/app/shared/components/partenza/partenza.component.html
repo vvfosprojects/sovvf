@@ -9,7 +9,7 @@
         <div *ngIf="partenza.squadre && partenza.squadre.length > 0"
              class="h6 text-right mb-0 font-weight-bold">
             <i class="fa fa-group mr-2"></i>
-            <span>{{partenza.squadre[0].nome}}</span>
+            <span>{{partenza.squadre[0].nome | truncate: 6}}</span>
             <button class="btn btn-sm btn-light border ml-2 p-1" ngbTooltip="Elenco squadre"
                     (click)="onListaSquadrePartenza(); $event.stopPropagation()">
                 <span *ngIf="partenza.squadre.length === 1"><i class="fa fa-search"></i></span>

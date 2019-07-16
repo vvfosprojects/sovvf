@@ -132,12 +132,35 @@ export function calcolaActionSuggeritaMezzo(mezzo: Mezzo) {
     return actionSuggerita;
 }
 
-export function statoMezzoEnumToStringArray() {
-    const stringArray = [];
+export function statoMezzoEnumToStringArray(exceptStato?: string) {
+    let stringArray = [];
     for (const val in StatoMezzo) {
         if (typeof StatoMezzo[val] === 'string') {
             stringArray.push(StatoMezzo[val]);
         }
     }
+    // se c'è un'eccezione filtro l'array eliminando lo stato
+    if (exceptStato) {
+        stringArray = stringArray.filter((stato: string) => stato !== exceptStato);
+    }
     return stringArray;
+}
+
+export function statoMezzoColor(stato: string) {
+    let _returnColor = '';
+    switch (stato) {
+        case StatoMezzo.InSede:
+            _returnColor = 'secondary';
+            break;
+        case StatoMezzo.InViaggio:
+            _returnColor = 'info';
+            break;
+        case StatoMezzo.SulPosto:
+            _returnColor = 'success';
+            break;
+        case StatoMezzo.InRientro:
+            _returnColor = 'primary';
+            break;
+    }
+    return _returnColor;
 }

@@ -238,7 +238,8 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="h6 mb-0 pt-2 pb-1">
-                                            {{ richiesta.localita.note }}
+                                            <span *ngIf="richiesta.localita?.note">{{ richiesta.localita.note }}</span>
+                                            <span *ngIf="!richiesta.localita?.note">Note località non presenti</span>
                                         </div>
                                         <div class="h5 mb-0 pull-right">
                                             <span *ngFor="let ze of richiesta.zoneEmergenza"
@@ -251,7 +252,7 @@
                                         <span *ngFor="let etichetta of richiesta.etichette"
                                               class="badge badge-secondary text-right py-2 m-1"><i
                                                 class="fa fa-hashtag fa-fw text-left"></i>{{etichetta}}</span>
-                                        <span *ngIf="!richiesta.etichette">
+                                        <span *ngIf="!richiesta.etichette || (richiesta.etichette && richiesta.etichette.length <= 0)">
                                             Non ci sono tags
                                         </span>
                                     </div>
@@ -352,7 +353,8 @@
                                     presente</span>
                             </div>
                         </div>
-                        <div class="col-md-6 bg-red pr-1">
+                        <div class="col-md-6 bg-red border p-2 mb-1"
+                             [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">
                             <h5 class="my-0"><b>Partenze</b></h5>
                             <div class="scroll-y" style="max-height: 90px">
                                 <app-lista-partenze [partenze]="richiesta.partenzeRichiesta" [inGestione]="inGestione"
