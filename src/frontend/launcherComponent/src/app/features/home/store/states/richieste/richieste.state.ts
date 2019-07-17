@@ -34,6 +34,8 @@ import { ComposizionePartenzaState } from '../composizione-partenza/composizione
 import { ClearRichiesteEspanse } from '../../actions/richieste/richieste-espanse.actions';
 import { RichiesteEspanseState } from './richieste-espanse.state';
 import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function';
+import { RichiestaGestioneState } from './richiesta-gestione.state';
+import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -48,7 +50,13 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
 @State<RichiesteStateModel>({
     name: 'richieste',
     defaults: RichiesteStateDefaults,
-    children: [RichiestaFissataState, RichiestaHoverState, RichiestaSelezionataState, RichiestaModificaState, RichiesteEspanseState]
+    children: [RichiestaFissataState,
+        RichiestaHoverState,
+        RichiestaSelezionataState,
+        RichiestaModificaState,
+        RichiesteEspanseState,
+        RichiestaGestioneState,
+        RichiestaAttivitaUtenteState]
 })
 export class RichiesteState {
 

@@ -40,6 +40,8 @@ import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-s
 import { ListaEntiComponent } from '../../../shared';
 import { ListaSquadrePartenzaComponent } from '../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
 import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
+import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
+import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiesta-attivita-utente.state';
 
 @NgModule({
     imports: [
@@ -65,7 +67,9 @@ import { RichiesteEspanseState } from '../store/states/richieste/richieste-espan
             RichiestaFissataState,
             RichiestaHoverState,
             RichiestaSelezionataState,
-            RichiesteEspanseState
+            RichiesteEspanseState,
+            RichiestaGestioneState,
+            RichiestaAttivitaUtenteState
         ])
     ],
     declarations: [
