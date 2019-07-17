@@ -11,7 +11,8 @@ namespace SO115App.FakePersistence.JSon.Utility
         {
             int ultimeDueCifreAnno = anno % 100;
             string nuovoNumero = GetMaxCodice.GetMax().ToString();
-            return string.Format("{0}{1}{2:D5}", codiceProvincia.Split('.')[0], ultimeDueCifreAnno, nuovoNumero);
+            string returnFormatString = string.Format("{0}{1}{2:D5}", codiceProvincia.Split('.')[0], ultimeDueCifreAnno, nuovoNumero);
+            return returnFormatString;
         }
 
         public string GeneraCodiceChiamata(string codiceProvincia, int anno)

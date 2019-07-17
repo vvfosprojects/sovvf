@@ -50,12 +50,21 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni
             }
 
             this.Codice = codice;
+            TipoEvento = "Segnalazione";
         }
 
         [JsonConstructor]
         protected Segnalazione(string codice, DateTime istante, string codiceFonte) : base(istante, codiceFonte, codice)
         {
             this.Codice = codice;
+        }
+
+        /// <summary>
+        ///   Identifica il tipo di Evento
+        /// </summary>
+        public string TipoEvento
+        {
+            get; set;
         }
 
         /// <summary>

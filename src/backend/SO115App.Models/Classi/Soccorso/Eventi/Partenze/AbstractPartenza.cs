@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
@@ -29,6 +30,12 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
     /// </summary>
     public abstract class AbstractPartenza : Evento, IPartenza
     {
+        [JsonConstructor]
+        public AbstractPartenza(DateTime istante, string codiceFonte, string codice, string codiceMezzo) : base(istante, codiceFonte, codice)
+        {
+            this.CodiceMezzo = codiceMezzo;
+        }
+
         /// <summary>
         ///   Costruttore della classe
         /// </summary>

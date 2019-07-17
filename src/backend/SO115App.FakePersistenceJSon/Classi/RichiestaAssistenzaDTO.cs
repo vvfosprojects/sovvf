@@ -48,7 +48,7 @@ namespace SO115App.FakePersistenceJSon.Classi
     /// </summary>
     public class RichiestaAssistenzaDTO
     {
-        private List<Evento> eventi;
+        private List<Object> eventi;
 
         /// <summary>
         ///   Costruisce una nuova istanza di <see cref="RichiestaAssistenza" />
@@ -56,7 +56,7 @@ namespace SO115App.FakePersistenceJSon.Classi
         [JsonConstructor]
         public RichiestaAssistenzaDTO()
         {
-            this.eventi = new List<Evento>();
+            this.eventi = new List<Object>();
             this.Tipologie = new List<Tipologia>();
             this.Telefonate = new List<Telefonata>();
             this.Tags = new HashSet<string>();
@@ -72,7 +72,7 @@ namespace SO115App.FakePersistenceJSon.Classi
 
         public ISet<string> CodiciUnitaOperativeAllertate { get; set; }
 
-        public List<Evento> Eventi
+        public List<Object> Eventi
         {
             get
             {
@@ -106,12 +106,6 @@ namespace SO115App.FakePersistenceJSon.Classi
 
         public bool RilevanzaStArCu { get; set; }
 
-        public IDictionary<string, IStatoMezzo> MezziCoinvolti
-        {
-            get;
-            set;
-        }
-
         public IEnumerable<SquadraCoinvolta> SquadreCoinvolte
         {
             get;
@@ -140,6 +134,22 @@ namespace SO115App.FakePersistenceJSon.Classi
         {
             get;
             set;
+        }
+
+        public virtual bool Presidiata
+        {
+            get
+            {
+                var ElencoPresidiate = this.Eventi
+                    .Where(e => e is RichiestaPresidiata)
+                    .Select(e => e as RichiestaPresidiata)
+                    .ToList();
+
+                if (ElencoPresidiate.Count > 0)
+                    return true;
+
+                return false;
+            }
         }
 
         public virtual Priorita PrioritaRichiesta
@@ -174,37 +184,27 @@ namespace SO115App.FakePersistenceJSon.Classi
         {
             get
             {
-                var eventoChiusura = this.eventi
-                    .Where(e => e is ChiusuraRichiesta);
-
                 if (this.Chiusa)
                 {
                     return new Chiusa();
                 }
-
-                var elencoMezziCoinvolti = this.MezziCoinvolti;
-                if (elencoMezziCoinvolti != null && !elencoMezziCoinvolti.Any())
+                else if (this.Presidiata)
+                {
+                    return new Presidiata();
+                }
+                else if (this.Aperta && this.Partenze == null)
                 {
                     return new InAttesa();
                 }
-                else
+                else if (this.Partenze != null && !this.Presidiata)
                 {
-                    if (elencoMezziCoinvolti != null && elencoMezziCoinvolti.Values.Any(e => e.AssegnatoARichiesta))
-                    {
-                        return new Assegnata();
-                    }
-                    else
-                    {
-                        return new Sospesa();
-                    }
+                    return new Assegnata();
                 }
+                else if (this.Sospesa)
+                    return new Sospesa();
+                else
+                    return new InAttesa();
             }
-        }
-
-        public virtual bool Presidiato
-        {
-            get;
-            set;
         }
 
         public virtual Richiedente Richiedente { get; set; }

@@ -344,6 +344,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// </summary>
         public List<Evento> Eventi { get; set; }
 
+        public virtual bool Presidiata
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         ///   Stato della richiesta
         /// </summary>
@@ -358,17 +364,23 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
                 var eventoChiusura = this.Eventi
                     .Where(e => e is ChiusuraRichiesta);
 
+                var eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == "In Viaggio").ToList();
+
                 if (this.Chiusa)
                 {
                     return "Chiusa";
                 }
-                else if (Partenze.Count > 0)
+                else if (eventoAssegnata.Count > 0)
                 {
                     return "Assegnata";
                 }
                 else if (Sospesa)
                 {
                     return "Sospesa";
+                }
+                else if (Presidiata)
+                {
+                    return "Presidiata";
                 }
                 else
                 {

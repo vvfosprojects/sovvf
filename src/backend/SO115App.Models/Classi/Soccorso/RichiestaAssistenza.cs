@@ -268,26 +268,28 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                //var ListaComposizioni = this.Eventi
-                //    .Where(e => e is Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
-                //    .Select(e => e as Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
-                //    .ToList();
+                var ListaComposizioni = this.Eventi
+                    .Where(e => e is Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
+                    .Select(e => e as Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
+                    .ToList();
 
                 //return ListaComposizioni.Select(x => x.Partenza).ToList();
 
                 var d = new Dictionary<string, IStatoMezzo>();
 
-                var eventiPartenza = this.eventi
-                    .Where(e => e is IPartenza)
-                    .Select(e => (IPartenza)e);
+                //var eventiPartenza = this.eventi
+                //    .Where(e => e is IPartenza)
+                //    .Select(e => (IPartenza)e);
 
-                var eventiPartenzaRaggruppatiPerMezzo = eventiPartenza.SelectMany(
-                    e => e.CodiciMezzo,
-                    (evento, codiceMezzo) => new
-                    {
-                        Codice = codiceMezzo,
-                        Evento = evento
-                    })
+                var eventiPartenzaRaggruppatiPerMezzo = ListaComposizioni.SelectMany
+                    (
+                        e => e.Partenza.Mezzo.Codice,
+                        (evento, codiceMezzo) => new
+                        {
+                            Codice = codiceMezzo,
+                            Evento = evento
+                        }
+                    )
                     .GroupBy(el => el.Codice, el => el.Evento);
 
                 foreach (var gruppoEventiPartenza in eventiPartenzaRaggruppatiPerMezzo)
@@ -298,7 +300,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                     processoreStato.ProcessaEventi(eventi);
                     var stato = processoreStato.Stato;
 
-                    d[codice] = stato;
+                    d[codice.ToString()] = stato;
                 }
 
                 // Se la richiesta è chiusa, i mezzi devono essere stati tutti liberati.
@@ -403,6 +405,25 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 return !this.Chiusa;
+            }
+        }
+
+        /// <summary>
+        ///   Indica se il luogo del sinistro è presidiato
+        /// </summary>
+        public virtual bool Presidiata
+        {
+            get
+            {
+                var ElencoPresidiate = this.Eventi
+                    .Where(e => e is Classi.Soccorso.Eventi.RichiestaPresidiata)
+                    .Select(e => e as Classi.Soccorso.Eventi.RichiestaPresidiata)
+                    .ToList();
+
+                if (ElencoPresidiate.Count > 0)
+                    return true;
+
+                return false;
             }
         }
 
@@ -573,17 +594,18 @@ namespace SO115App.API.Models.Classi.Soccorso
                     return new Chiusa();
                 }
 
-                if (this.Presidiato)
+                if (this.Presidiata)
                     return new Presidiata();
 
-                var elencoMezziCoinvolti = this.MezziCoinvolti;
-                if (!elencoMezziCoinvolti.Any())
+                var composizionePartenza = this.Partenze;
+                //var elencoMezziCoinvolti = this.MezziCoinvolti;
+                if (!composizionePartenza.Any())
                 {
                     return new InAttesa();
                 }
                 else
                 {
-                    if (elencoMezziCoinvolti.Values.Any(e => e.AssegnatoARichiesta))
+                    if (composizionePartenza.Any(e => e.Partenza.Mezzo.Stato == "In Viaggio"))
                     {
                         return new Assegnata();
                     }
@@ -620,25 +642,6 @@ namespace SO115App.API.Models.Classi.Soccorso
                     .ToList();
 
                 return ListaComposizioni;
-            }
-        }
-
-        /// <summary>
-        ///   Indica se il luogo del sinistro è presidiato
-        /// </summary>
-        public virtual bool Presidiato
-        {
-            get
-            {
-                var ElencoPresidiate = this.Eventi
-                    .Where(e => e is Classi.Soccorso.Eventi.RichiestaPresidiata)
-                    .Select(e => e as Classi.Soccorso.Eventi.RichiestaPresidiata)
-                    .ToList();
-
-                if (ElencoPresidiate.Count > 0)
-                    return true;
-
-                return false;
             }
         }
 

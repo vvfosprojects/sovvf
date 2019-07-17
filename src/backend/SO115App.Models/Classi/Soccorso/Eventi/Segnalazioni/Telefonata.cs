@@ -45,6 +45,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni
             DateTime istante,
             string codiceFonte) : base(richiesta, codice, istante, codiceFonte)
         {
+            TipoEvento = "Telefonata";
         }
 
         [JsonConstructor]
@@ -53,6 +54,14 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni
             DateTime istante,
             string codiceFonte) : base(codice, istante, codiceFonte)
         {
+        }
+
+        /// <summary>
+        ///   Identifica il tipo di Evento
+        /// </summary>
+        public string TipoEvento
+        {
+            get; set;
         }
 
         /// <summary>

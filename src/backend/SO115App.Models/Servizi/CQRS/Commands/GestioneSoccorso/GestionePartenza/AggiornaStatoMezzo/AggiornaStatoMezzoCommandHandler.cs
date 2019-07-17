@@ -42,13 +42,13 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 
         public void Handle(AggiornaStatoMezzoCommand command)
         {
-            RichiestaAssistenza richiesta = _getRichiestaById.Get(command.IdRichiesta);
+            RichiestaAssistenza richiesta = _getRichiestaById.Get(command.Chiamata.Id);
 
-            if (command.StatoMezzo == "SulPosto")
+            if (command.StatoMezzo == "Sul Posto")
             {
-                richiesta.SincronizzaStatoRichiesta("Presidiata", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
-
                 new ArrivoSulPosto(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
+
+                richiesta.SincronizzaStatoRichiesta("Presidiata", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
 
                 foreach (ComposizionePartenze composizione in richiesta.Partenze)
                 {
@@ -58,7 +58,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                     }
                 }
             }
-            else if (command.StatoMezzo == "InRientro")
+            else if (command.StatoMezzo == "In Rientro")
             {
                 new PartenzaInRientro(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
 

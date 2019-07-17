@@ -221,7 +221,7 @@ namespace Modello.Test.Classi.Soccorso
             new UscitaPartenza(richiesta, "M2", now.AddSeconds(20), "fonte");
             new ArrivoSulPosto(richiesta, "M2", now.AddSeconds(25), "fonte");
 
-            var presidiato = richiesta.Presidiato;
+            var presidiato = richiesta.Presidiata;
 
             Assert.That(presidiato, Is.True);
         }
@@ -250,7 +250,7 @@ namespace Modello.Test.Classi.Soccorso
             new ArrivoSulPosto(richiesta, "M2", now.AddSeconds(25), "fonte");
             new PartenzaInRientro(richiesta, "M2", now.AddSeconds(25), "fonte");
 
-            var presidiato = richiesta.Presidiato;
+            var presidiato = richiesta.Presidiata;
 
             Assert.That(presidiato, Is.False);
         }
@@ -279,7 +279,7 @@ namespace Modello.Test.Classi.Soccorso
             new ArrivoSulPosto(richiesta, "M1", now.AddSeconds(25), "fonte");
             new ArrivoSulPosto(richiesta, "M2", now.AddSeconds(25), "fonte");
 
-            var presidiato = richiesta.Presidiato;
+            var presidiato = richiesta.Presidiata;
 
             Assert.That(presidiato, Is.True);
         }
@@ -306,7 +306,7 @@ namespace Modello.Test.Classi.Soccorso
             new UscitaPartenza(richiesta, "M1", now.AddSeconds(15), "fonte");
             new UscitaPartenza(richiesta, "M2", now.AddSeconds(20), "fonte");
 
-            var presidiato = richiesta.Presidiato;
+            var presidiato = richiesta.Presidiata;
 
             Assert.That(presidiato, Is.False);
         }
@@ -337,7 +337,7 @@ namespace Modello.Test.Classi.Soccorso
             new PartenzaInRientro(richiesta, "M1", now.AddSeconds(35), "fonte");
             new PartenzaInRientro(richiesta, "M2", now.AddSeconds(40), "fonte");
 
-            var presidiato = richiesta.Presidiato;
+            var presidiato = richiesta.Presidiata;
 
             Assert.That(presidiato, Is.False);
         }

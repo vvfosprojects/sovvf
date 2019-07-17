@@ -29,7 +29,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
         {
             // Controlli sul richiedente
 
-            if (command.IdRichiesta.Length == 0)
+            if (command.Chiamata.Id.Length == 0)
             {
                 yield return new ValidationResult("Id Richiesta non valido");
             }

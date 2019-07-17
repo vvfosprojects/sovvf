@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Newtonsoft.Json;
 using System;
 
 namespace SO115App.API.Models.Classi.Soccorso.Eventi
@@ -48,6 +49,24 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
             this.Motivazione = motivazione ?? throw new ArgumentNullException(nameof(motivazione));
             this.perGravita = perGravita;
             this.perEdificioStArCu = perEdificioStArCu;
+            TipoEvento = "MarcaRilevante";
+        }
+
+        [JsonConstructor]
+        public MarcaRilevante(
+            string codice,
+            DateTime istante,
+            string codiceFonte) : base(istante, codiceFonte, codice)
+        {
+            TipoEvento = "MarcaRilevante";
+        }
+
+        /// <summary>
+        ///   Identifica il tipo di Evento
+        /// </summary>
+        public string TipoEvento
+        {
+            get; set;
         }
 
         /// <summary>

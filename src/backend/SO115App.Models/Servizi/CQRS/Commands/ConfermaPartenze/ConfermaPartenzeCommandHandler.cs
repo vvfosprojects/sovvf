@@ -83,11 +83,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             attivita.DataInizioAttivita = DateTime.UtcNow;
 
             if (richiesta.ListaUtentiPresaInCarico != null)
-            {
-                new InizioPresaInCarico(richiesta, DateTime.UtcNow, richiesta.Operatore.Id);
-
                 richiesta.ListaUtentiPresaInCarico.Add(attivita);
-            }
             else
             {
                 richiesta.ListaUtentiPresaInCarico = new List<AttivitaUtente>();

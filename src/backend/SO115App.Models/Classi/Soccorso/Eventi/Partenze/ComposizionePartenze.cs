@@ -65,6 +65,15 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             this.Partenza = new Partenza();
             this.Componenti = new HashSet<ComponentePartenza>();
             this.FuoriSede = fuoriSede;
+            TipoEvento = "ComposizionePartenze";
+        }
+
+        /// <summary>
+        ///   Identifica il tipo di Evento
+        /// </summary>
+        public string TipoEvento
+        {
+            get; set;
         }
 
         /// <summary>

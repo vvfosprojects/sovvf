@@ -33,7 +33,7 @@ namespace SO115App.API.Controllers
 
             var command = new AggiornaStatoMezzoCommand()
             {
-                IdRichiesta = intervento.IdRichiesta,
+                //IdRichiesta = intervento.IdRichiesta,
                 IdUtente = IdUtente,
                 Chiamata = intervento.Chiamata,
                 IdMezzo = intervento.IdMezzo,

@@ -42,11 +42,11 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 
             List<RichiestaAssistenzaRead> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaRead>>(json);
 
-            if (ListaRichieste != null)
+            if (ListaRichieste.FindAll(x => x.CodiceRichiesta != null).Count > 0)
             {
-                var idPRov = ListaRichieste.FindAll(x => x.CodiceRichiesta != null).OrderByDescending(x => x.CodiceRichiesta).FirstOrDefault() != null ? ListaRichieste.FindAll(x => x.CodiceRichiesta != null).OrderByDescending(x => x.CodiceRichiesta).FirstOrDefault().CodiceRichiesta.Split('-')[2] : "0";
+                var idPRov = ListaRichieste.FindAll(x => x.CodiceRichiesta != null).OrderByDescending(x => x.CodiceRichiesta).FirstOrDefault().CodiceRichiesta;
 
-                MaxIdSintesi = Convert.ToInt16(idPRov) + 1;
+                MaxIdSintesi = Convert.ToInt16(idPRov.Substring(idPRov.Length - 5)) + 1;
             }
             else
                 MaxIdSintesi = 0;

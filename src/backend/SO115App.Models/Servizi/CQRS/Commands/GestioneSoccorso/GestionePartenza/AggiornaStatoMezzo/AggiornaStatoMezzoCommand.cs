@@ -24,7 +24,6 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 {
     public class AggiornaStatoMezzoCommand
     {
-        public string IdRichiesta { get; set; }
         public string IdUtente { get; set; }
 
         public string IdMezzo { get; set; }

@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
@@ -43,6 +44,25 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             DateTime istante,
             string codiceFonte) : base(richiesta, codiceMezzo, istante, codiceFonte)
         {
+            TipoEvento = "PartenzaRientrata";
+        }
+
+        [JsonConstructor]
+        public PartenzaRientrata(
+            string codiceMezzo,
+            string codice,
+            DateTime istante,
+            string codiceFonte) : base(istante, codiceFonte, codice, codiceMezzo)
+        {
+            TipoEvento = "PartenzaRientrata";
+        }
+
+        /// <summary>
+        ///   Identifica il tipo di Evento
+        /// </summary>
+        public string TipoEvento
+        {
+            get; set;
         }
 
         /// <summary>

@@ -79,7 +79,7 @@ namespace SO115App.API.Models.Classi.Marker
         public bool InAttesa { get; set; }
         public bool Aperta { get; set; }
 
-        public bool Presidiato { get; set; }
+        public bool Presidiata { get; set; }
 
         public bool Sospesa { get; set; }
 
@@ -104,7 +104,7 @@ namespace SO115App.API.Models.Classi.Marker
 
                 if (this.Aperta)
                 {
-                    if (this.Presidiato)
+                    if (this.Presidiata)
                         stato = "Presidiata";
                     else if (this.IstantePrimaAssegnazione != null)
                         stato = "Assegnata";

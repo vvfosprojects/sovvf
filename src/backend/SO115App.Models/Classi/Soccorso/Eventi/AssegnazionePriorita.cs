@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Newtonsoft.Json;
 using System;
 
 namespace SO115App.API.Models.Classi.Soccorso.Eventi
@@ -45,6 +46,24 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
             string codiceFonte) : base(richiesta, istante, codiceFonte)
         {
             this.Priorita = priorita;
+            TipoEvento = "AssegnataPriorita";
+        }
+
+        [JsonConstructor]
+        public AssegnazionePriorita(
+            string codice,
+            DateTime istante,
+            string codiceFonte) : base(istante, codiceFonte, codice)
+        {
+            TipoEvento = "AssegnataPriorita";
+        }
+
+        /// <summary>
+        ///   Identifica il tipo di Evento
+        /// </summary>
+        public string TipoEvento
+        {
+            get; set;
         }
 
         /// <summary>
