@@ -5,7 +5,7 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 
 // Action
 import { ClearRichiestaGestione, SetRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
-import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from '../../actions/richieste/richiesta-selezionata.actions';
+import { ClearRichiestaSelezionata } from '../../actions/richieste/richiesta-selezionata.actions';
 import { AddRichiestaEspansa } from '../../actions/richieste/richieste-espanse.actions';
 
 export interface RichiestaGestioneStateModel {
