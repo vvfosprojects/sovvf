@@ -264,7 +264,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     onGestioneRichiesta(richiesta: SintesiRichiesta) {
         this.store.dispatch(new SetRichiestaGestione(richiesta));
         // this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
-        console.log('Gestione Richiesta', richiesta);
+        // console.log('Gestione Richiesta', richiesta);
     }
 
     toggleComposizione() {

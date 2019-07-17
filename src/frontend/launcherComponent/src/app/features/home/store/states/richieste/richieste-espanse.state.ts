@@ -1,6 +1,8 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { AddRichiestaEspansa, ClearRichiesteEspanse, ReducerRichiesteEspanse, RemoveRichiestaEspansa } from '../../actions/richieste/richieste-espanse.actions';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
+import { RichiestaGestioneState } from './richiesta-gestione.state';
+import { ClearRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
 
 export interface RichiesteEspanseStateModel {
     richiesteEspanse: string[];
@@ -19,6 +21,9 @@ export class RichiesteEspanseState {
     @Selector()
     static richiesteEspanse(state: RichiesteEspanseStateModel) {
         return state.richiesteEspanse;
+    }
+
+    constructor(private store: Store) {
     }
 
     @Action(ClearRichiesteEspanse)
@@ -47,7 +52,7 @@ export class RichiesteEspanseState {
     }
 
     @Action(RemoveRichiestaEspansa)
-    removeRichiestaEspansa({ getState, setState }: StateContext<RichiesteEspanseStateModel>, action: RemoveRichiestaEspansa) {
+    removeRichiestaEspansa({ getState, setState, dispatch }: StateContext<RichiesteEspanseStateModel>, action: RemoveRichiestaEspansa) {
         const state = getState();
         if (state.richiesteEspanse.includes(action.idRichiesta)) {
             setState(
@@ -55,6 +60,12 @@ export class RichiesteEspanseState {
                     richiesteEspanse: removeItem<string>(idRichiesta => idRichiesta === action.idRichiesta)
                 })
             );
+        }
+
+        // cotrollo se la richiesta che si sta rimuovendo dalle espanse era in gestione, se si pulisco la richiesta gestione
+        const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione) ? this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione).id : null;
+        if (action.idRichiesta === idRichiestaGestione) {
+            dispatch(new ClearRichiestaGestione());
         }
     }
 

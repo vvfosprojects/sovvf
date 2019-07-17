@@ -28,7 +28,8 @@
         <div class="row">
             <div class="col-12">
                 <app-view-mode [colorButtonView]="colorButton.buttonView"
-                               (buttonView)="switchView($event)">
+                               (buttonView)="switchView($event)"
+                               (optionRichieste)="onOptionsRichieste($event)">
                 </app-view-mode>
             </div>
         </div>

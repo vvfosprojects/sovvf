@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AppFeatures } from '../../../../shared/enum/app-features.enum';
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { OptionsRichieste } from '../../../../shared/enum/options-richieste';
 
 @Component({
     selector: 'app-view-mode',
@@ -11,8 +12,10 @@ export class ViewModeComponent {
 
     @Input() colorButtonView = ['btn-outline-secondary', 'btn-secondary', 'btn-outline-secondary'];
     @Output() buttonView = new EventEmitter<AppFeatures>();
-    AppFeature = AppFeatures;
+    @Output() optionRichieste = new EventEmitter<OptionsRichieste>();
 
+    AppFeature = AppFeatures;
+    OptionsRichieste = OptionsRichieste;
 
     constructor(config: NgbTooltipConfig) {
         config.container = 'body';
@@ -20,6 +23,10 @@ export class ViewModeComponent {
 
     buttonViewMode($event) {
         this.buttonView.emit($event);
+    }
+
+    buttonOptionRichieste($event) {
+        this.optionRichieste.emit($event);
     }
 
 }
