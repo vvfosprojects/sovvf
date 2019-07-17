@@ -10,7 +10,7 @@ namespace SO115App.FakePersistence.JSon.Utility
         public string Genera(string codiceProvincia, int anno)
         {
             int ultimeDueCifreAnno = anno % 100;
-            string nuovoNumero = GetMaxCodice.GetMax().ToString();
+            int nuovoNumero = GetMaxCodice.GetMax();
             string returnFormatString = string.Format("{0}{1}{2:D5}", codiceProvincia.Split('.')[0], ultimeDueCifreAnno, nuovoNumero);
             return returnFormatString;
         }

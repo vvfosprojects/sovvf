@@ -95,7 +95,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 {
                     if (composizioneMezzo.Mezzo.Codice == composizione.Partenza.Mezzo.Codice)
                     {
-                        composizioneMezzo.Mezzo.Stato = "Sul Posto";
+                        composizioneMezzo.Mezzo.Stato = composizione.Partenza.Mezzo.Stato;
                     }
                 }
 
@@ -105,7 +105,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
                     {
                         if (composizioneSquadra.Squadra.Id == squadra.Id)
                         {
-                            composizioneSquadra.Squadra.Stato = Squadra.StatoSquadra.SulPosto;
+                            composizioneSquadra.Squadra.Stato = squadra.Stato;
                         }
                     }
                 }

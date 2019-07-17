@@ -118,6 +118,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 RisEvento = "InizioPresaInCarico";
             }
 
+            if (evento is RiaperturaRichiesta)
+            {
+                RisEvento = "RiaperturaRichiesta";
+            }
+
             if (evento is ComposizionePartenze)
             {
                 RisEvento = "ComposizionePartenza";
@@ -128,9 +133,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 RisEvento = "ChiusuraPartenza";
             }
 
-            if (evento is RiaperturaRichiesta)
+            if (evento is ArrivoSulPosto)
             {
-                RisEvento = "RiaperturaRichiesta";
+                RisEvento = "ArrivoSulPosto";
+            }
+
+            if (evento is RichiestaPresidiata)
+            {
+                RisEvento = "RichiestaPresidiata";
             }
 
             return RisEvento;

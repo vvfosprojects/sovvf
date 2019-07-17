@@ -30,6 +30,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
     {
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly IUpdateStatoPartenze _upDateStatoPartenze;
+        private bool MezziTuttiInSede = true;
 
         public AggiornaStatoMezzoCommandHandler(
             IGetRichiestaById GetRichiestaById,
@@ -70,7 +71,6 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                     }
                 }
 
-                var MezziTuttiInSede = true;
                 foreach (ComposizionePartenze composizione in richiesta.Partenze)
                 {
                     if (composizione.Partenza.Mezzo.Stato != "In Sede" && composizione.Partenza.Mezzo.Stato != "In Rientro")
@@ -79,8 +79,8 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                     }
                 }
 
-                if (MezziTuttiInSede)
-                    richiesta.SincronizzaStatoRichiesta("Chiusa", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
+                //if (MezziTuttiInSede)
+                //    richiesta.SincronizzaStatoRichiesta("Chiusa", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
             }
             else if (command.StatoMezzo == "Rientrato")
             {
@@ -94,7 +94,6 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                     }
                 }
 
-                var MezziTuttiInSede = true;
                 foreach (ComposizionePartenze composizione in richiesta.Partenze)
                 {
                     if (composizione.Partenza.Mezzo.Stato != "In Sede" && composizione.Partenza.Mezzo.Stato != "In Rientro")
@@ -103,8 +102,8 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                     }
                 }
 
-                if (MezziTuttiInSede)
-                    richiesta.SincronizzaStatoRichiesta("Chiusa", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
+                //if (MezziTuttiInSede)
+                //    richiesta.SincronizzaStatoRichiesta("Chiusa", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
             }
 
             command.richiesta = richiesta;
