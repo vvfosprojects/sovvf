@@ -35,21 +35,27 @@ export class RichiesteEspanseState {
     }
 
     @Action(AddRichiestaEspansa)
-    addRichiestaEspansa({ setState }: StateContext<RichiesteEspanseStateModel>, action: AddRichiestaEspansa) {
-        setState(
-            patch({
-                richiesteEspanse: insertItem(action.idRichiesta)
-            })
-        );
+    addRichiestaEspansa({ getState, setState }: StateContext<RichiesteEspanseStateModel>, action: AddRichiestaEspansa) {
+        const state = getState();
+        if (!state.richiesteEspanse.includes(action.idRichiesta)) {
+            setState(
+                patch({
+                    richiesteEspanse: insertItem(action.idRichiesta)
+                })
+            );
+        }
     }
 
     @Action(RemoveRichiestaEspansa)
-    removeRichiestaEspansa({ setState }: StateContext<RichiesteEspanseStateModel>, action: RemoveRichiestaEspansa) {
-        setState(
-            patch({
-                richiesteEspanse: removeItem<string>(idRichiesta => idRichiesta === action.idRichiesta)
-            })
-        );
+    removeRichiestaEspansa({ getState, setState }: StateContext<RichiesteEspanseStateModel>, action: RemoveRichiestaEspansa) {
+        const state = getState();
+        if (state.richiesteEspanse.includes(action.idRichiesta)) {
+            setState(
+                patch({
+                    richiesteEspanse: removeItem<string>(idRichiesta => idRichiesta === action.idRichiesta)
+                })
+            );
+        }
     }
 
 }
