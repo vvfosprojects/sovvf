@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, isDevMode, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';

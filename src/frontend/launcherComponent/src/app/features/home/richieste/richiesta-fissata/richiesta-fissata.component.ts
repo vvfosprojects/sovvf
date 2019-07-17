@@ -18,6 +18,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Input() _split: boolean;
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() idRichiesteEspanse: string[] = [];
+    @Input() richiestaGestione: SintesiRichiesta;
 
     @Output() eventiRichiesta = new EventEmitter<string>();
     @Output() statoPartenza = new EventEmitter<boolean>();

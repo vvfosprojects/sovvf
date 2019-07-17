@@ -5,6 +5,7 @@
                 <app-sintesi-richiesta *ngIf="richiestaFissata" [richiesta]="richiestaFissata" [fissata]="true"
                                        [fissabile]="true" [espandibile]="true" [listaEventi]="true"
                                        [espanso]="isEspanso(richiestaFissata.id)"
+                                       [inGestione]="richiestaGestione?.id === richiestaFissata.id"
                                        (fissaInAlto)="onDefissa()"
                                        (eventiRichiesta)="visualizzaEventiRichiesta($event)"
                                        (nuovaPartenza)="nuovaPartenza($event)"

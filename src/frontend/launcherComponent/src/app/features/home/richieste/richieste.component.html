@@ -1,6 +1,6 @@
 <!-- Singola Richiesta Fissata  -->
 <app-richiesta-fissata *ngIf="richiestaFissata" [_split]="split" [richiestaFissata]="richiestaFissata"
-                       [idRichiesteEspanse]="(idRichiesteEspanse$ | async)"
+                       [richiestaGestione]="richiestaGestione" [idRichiesteEspanse]="(idRichiesteEspanse$ | async)"
                        (statoPartenza)="toggleComposizione()" (composizionePartenza)="nuovaPartenza($event)"
                        (defissa)="onDefissa()" (modificaRichiesta)="onModificaRichiesta($event)"
                        (gestioneRichiesta)="onGestioneRichiesta($event)"
