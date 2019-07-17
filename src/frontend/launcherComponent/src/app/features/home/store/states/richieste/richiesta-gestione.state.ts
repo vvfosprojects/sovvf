@@ -36,12 +36,10 @@ export class RichiestaGestioneState {
         if (state.richiestaGestione && state.richiestaGestione.id === action.richiesta.id && !action.toggle) {
             dispatch(new ClearRichiestaGestione());
             dispatch(new ClearRichiestaSelezionata());
-            console.log('test');
         } else {
             patchState({
                 richiestaGestione: action.richiesta
             });
-            dispatch(new SetRichiestaSelezionata(action.richiesta.id));
             dispatch(new AddRichiestaEspansa(action.richiesta.id));
         }
     }
