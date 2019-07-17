@@ -18,6 +18,8 @@ import { ChangeView, SwitchComposizione, ToggleChiamata } from '../store/actions
 import { ViewComponentState } from '../store/states/view/view.state';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { Grid } from '../../../shared/enum/layout.enum';
+import { OptionsRichieste } from '../../../shared/enum/options-richieste';
+import { ClearRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 
 @Component({
     selector: 'app-filterbar',
@@ -98,6 +100,14 @@ export class FilterbarComponent implements OnInit {
 
     switchView(event: AppFeatures) {
         this.store.dispatch(new ChangeView(event));
+    }
+
+    onOptionsRichieste(event: OptionsRichieste) {
+        switch (event) {
+            case OptionsRichieste.Restringi:
+                this.store.dispatch(new ClearRichiesteEspanse());
+                break;
+        }
     }
 
 }
