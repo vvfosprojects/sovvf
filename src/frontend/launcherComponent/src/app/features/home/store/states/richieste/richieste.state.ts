@@ -5,11 +5,12 @@ import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Action
 import {
+    ActionMezzo,
     AddRichiesta, ClearIdChiamataInviaPartenza,
     ClearRichieste,
     GetRichieste,
     PatchRichiesta,
-    SetIdChiamataInviaPartenza, SetMezzoArrivatoSulPosto,
+    SetIdChiamataInviaPartenza,
     SetRichieste,
     StartInviaPartenzaFromChiamata,
     UpdateRichiesta
@@ -30,6 +31,11 @@ import { ToggleComposizione } from '../../actions/view/view.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
+import { ClearRichiesteEspanse } from '../../actions/richieste/richieste-espanse.actions';
+import { RichiesteEspanseState } from './richieste-espanse.state';
+import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function';
+import { RichiestaGestioneState } from './richiesta-gestione.state';
+import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -44,7 +50,13 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
 @State<RichiesteStateModel>({
     name: 'richieste',
     defaults: RichiesteStateDefaults,
-    children: [RichiestaFissataState, RichiestaHoverState, RichiestaSelezionataState, RichiestaModificaState]
+    children: [RichiestaFissataState,
+        RichiestaHoverState,
+        RichiestaSelezionataState,
+        RichiestaModificaState,
+        RichiesteEspanseState,
+        RichiestaGestioneState,
+        RichiestaAttivitaUtenteState]
 })
 export class RichiesteState {
 
@@ -85,7 +97,8 @@ export class RichiesteState {
     }
 
     @Action(ClearRichieste)
-    clearRichieste({ patchState }: StateContext<RichiesteStateModel>) {
+    clearRichieste({ patchState, dispatch }: StateContext<RichiesteStateModel>) {
+        dispatch(new ClearRichiesteEspanse());
         patchState(RichiesteStateDefaults);
     }
 
@@ -149,11 +162,15 @@ export class RichiesteState {
         ]);
     }
 
-    @Action(SetMezzoArrivatoSulPosto)
-    setMezzoArrivatoSulPosto({ dispatch, patchState }: StateContext<RichiesteStateModel>, action: SetMezzoArrivatoSulPosto) {
-        console.log('Mezzo Arrivato sul posto - OBJECT', action.obj);
-        this.richiesteService.setMezzoArrivatoSulPosto(action.obj).subscribe((data: any) => {
-            console.log('Mezzo Arrivato sul posto - CONTROLLER RESPONSE', data);
+    @Action(ActionMezzo)
+    actionMezzo({ dispatch }: StateContext<RichiesteStateModel>, action: ActionMezzo) {
+        const obj = {
+            'chiamata': action.mezzoAction.richiesta,
+            'idMezzo': action.mezzoAction.mezzo.codice,
+            'statoMezzo': action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo)
+        };
+        this.richiesteService.aggiornaStatoMezzo(obj).subscribe((data: any) => {
+            console.log('Action Mezzo - CONTROLLER RESPONSE', data);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 }

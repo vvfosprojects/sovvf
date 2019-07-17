@@ -701,10 +701,11 @@ export class CompPartenzaServiceFake {
             if (!partenzeObj.partenze) {
                 partenzeObj.partenze = [];
             }
-            partenzeObj.partenze.forEach(partenza => {
+            partenzeObj.partenze.forEach((partenza: Partenza) => {
                 const partenze = [];
                 partenze.push(
                     new Partenza(
+                        partenza.id,
                         partenza.squadre,
                         partenza.mezzo,
                         partenza.turno

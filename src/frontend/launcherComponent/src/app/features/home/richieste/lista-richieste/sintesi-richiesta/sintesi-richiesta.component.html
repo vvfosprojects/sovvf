@@ -18,7 +18,7 @@
                             <div class="h6 mb-1 nowrap">
                                 <i class="guida fa fa-hashtag fa-fw mr-1"
                                    ngbTooltip="Identificativo richiesta assistenza" placement="right"></i>
-                                <a class="h6 cod-int" (click)="toggleEspanso()">
+                                <a class="h6 cod-int" (click)="toggleEspanso(richiesta.id)">
                                     <span *ngIf="richiesta.codiceRichiesta">{{ richiesta.codiceRichiesta }} </span>
                                     <span *ngIf="!richiesta.codiceRichiesta">{{ richiesta.codice }} </span>
                                 </a>
@@ -114,22 +114,21 @@
                             <div class="h6 mb-0">
                                 <!-- squadre -->
                                 <span class="nowrap">
-                                    <button class="btn btn-light border pl-0 py-0 big_numbers mr-1"
-                                            [ngbPopover]="popSquadre" container="body" popoverTitle="Squadre"
-                                            triggers="click" tabindex="0" style="cursor:pointer"
-                                            (click)="$event.stopPropagation()">
-                                        <i class="guida fa fa-users fa-fw ml-2" ngbTooltip="Numero Squadre"></i>
-                                        <span>{{
-                                            methods.numeroSquadre(richiesta) }}</span>
-                                    </button>
-
-                                    <ng-template #popSquadre>
-                                        <div class="h6" *ngFor="let s of methods.nomiSquadre(richiesta)">
-                                            <span>{{ s }}</span>
-                                        </div>
-                                        <h6 class="mb-0" *ngIf="methods.numeroSquadre(richiesta) === 0">Nessuna squadra
-                                        </h6>
-                                    </ng-template>
+                                    <ng-container *ngIf="methods.getSquadre(richiesta) as squadre">
+                                        <button class="btn btn-light border pl-0 py-0 big_numbers mr-1"
+                                                [ngbPopover]="popSquadre" container="body" popoverTitle="Squadre"
+                                                triggers="click" tabindex="0" style="cursor:pointer"
+                                                (click)="$event.stopPropagation()">
+                                            <i class="guida fa fa-users fa-fw ml-2" ngbTooltip="Numero Squadre"></i>
+                                            <span>{{ squadre.length }}</span>
+                                        </button>
+                                        <ng-template #popSquadre>
+                                            <div class="h6" *ngFor="let s of squadre">
+                                                <span>{{ s }}</span>
+                                            </div>
+                                            <h6 class="mb-0" *ngIf="squadre.length === 0">Nessuna squadra</h6>
+                                        </ng-template>
+                                    </ng-container>
                                 </span>
 
                                 <!-- mezzi -->
@@ -194,7 +193,7 @@
                                 </button>
                                 <button *ngIf="espandibile" class="btn btn-light border py-0 px-0 mr-1"
                                         ngbTooltip="Espandi"
-                                        (click)="toggleEspanso(); $event.stopPropagation()">
+                                        (click)="toggleEspanso(richiesta.id); $event.stopPropagation()">
                                     <i class="fa fa-fw text-secondary"
                                        [ngClass]="methods.toggleEspansoClass(espanso)"></i>
                                 </button>
@@ -203,10 +202,12 @@
                                         (click)="onModificaRichiesta(); $event.stopPropagation()">
                                     <i class="fa fa-fw fa-pencil-square-o text-secondary"></i>
                                 </button>
-                                <button *ngIf="gestibile" class="btn btn-light border py-0 px-0 mr-1"
+                                <button *ngIf="gestibile" class="btn border py-0 px-0 mr-1"
                                         ngbTooltip="Gestisci"
+                                        [ngClass]="{'btn-light': !inGestione, 'btn-danger': inGestione}"
                                         (click)="onGestioneRichiesta(); $event.stopPropagation()">
-                                    <i class="fa fa-fw fa-gear text-secondary"></i>
+                                    <i class="fa fa-fw fa-gear"
+                                       [ngClass]="{'text-secondary': !inGestione, 'text-light': inGestione}"></i>
                                 </button>
                                 <button *ngIf="listaEventi" class="btn btn-light border py-0 px-1 mr-1"
                                         ngbTooltip="Elenco eventi"
@@ -237,7 +238,8 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="h6 mb-0 pt-2 pb-1">
-                                            {{ richiesta.localita.note }}
+                                            <span *ngIf="richiesta.localita?.note">{{ richiesta.localita.note }}</span>
+                                            <span *ngIf="!richiesta.localita?.note">Note località non presenti</span>
                                         </div>
                                         <div class="h5 mb-0 pull-right">
                                             <span *ngFor="let ze of richiesta.zoneEmergenza"
@@ -250,7 +252,7 @@
                                         <span *ngFor="let etichetta of richiesta.etichette"
                                               class="badge badge-secondary text-right py-2 m-1"><i
                                                 class="fa fa-hashtag fa-fw text-left"></i>{{etichetta}}</span>
-                                        <span *ngIf="!richiesta.etichette">
+                                        <span *ngIf="!richiesta.etichette || (richiesta.etichette && richiesta.etichette.length <= 0)">
                                             Non ci sono tags
                                         </span>
                                     </div>
@@ -351,11 +353,12 @@
                                     presente</span>
                             </div>
                         </div>
-                        <div class="col-md-6 bg-red pr-1">
+                        <div class="col-md-6 bg-red border p-2 mb-1"
+                             [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">
                             <h5 class="my-0"><b>Partenze</b></h5>
                             <div class="scroll-y" style="max-height: 90px">
-                                <app-lista-partenze [partenze]="richiesta.partenzeRichiesta"
-                                                    (mezzoArrivatoSulPosto)="onMezzoArrivatoSulPosto($event)"></app-lista-partenze>
+                                <app-lista-partenze [partenze]="richiesta.partenzeRichiesta" [inGestione]="inGestione"
+                                                    (actionMezzo)="onActionMezzo($event)"></app-lista-partenze>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -422,7 +425,7 @@
                                     {{ tipoTerrenoValue.terrenoHa }}
                                 </span>
                                 <button *ngIf="richiesta.tipoTerreno && richiesta.tipoTerreno.length > 1"
-                                        class="btn btn-light border big_font py-0 px-1" [ngbTooltip]="terreni"
+                                        class="btn btn-light border big_font py-0 px-1" [ngbPopover]="terreni"
                                         (click)="$event.stopPropagation()">
                                     +{{ richiesta.tipoTerreno.length - 1 }}</button>
                                 <ng-template #terreni>

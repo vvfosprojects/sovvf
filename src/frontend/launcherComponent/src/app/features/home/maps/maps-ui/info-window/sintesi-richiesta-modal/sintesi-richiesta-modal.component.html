@@ -8,5 +8,6 @@
     <app-sintesi-richiesta class="bg-white rounded" [richiesta]="richiesta" [fissata]="false" [fissabile]="false"
                            [espanso]="true"
                            [espandibile]="false"
-                           [listaEventi]="false" [composizionePartenza]="false"></app-sintesi-richiesta>
+                           [listaEventi]="false" [composizionePartenza]="false"
+                           (actionMezzo)="onActionMezzo($event)"></app-sintesi-richiesta>
 </div>

@@ -5,6 +5,7 @@ import { BoxPartenza } from '../../interface/box-partenza-interface';
 // Model
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { HelperComposizione } from '../../shared/helper/_helper-composizione';
+import { MezzoDirection } from '../../../../../shared/interface/mezzo-direction';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -32,7 +33,7 @@ export class MezzoComposizioneComponent implements OnInit {
     @Output() stopTimeout = new EventEmitter<MezzoComposizione>();
 
     // Mappa
-    @Output() mezzoCoordinate = new EventEmitter<any>();
+    @Output() mezzoCoordinate = new EventEmitter<MezzoDirection>();
 
     methods = new HelperComposizione();
 
@@ -133,6 +134,10 @@ export class MezzoComposizioneComponent implements OnInit {
 
     // Mappa
     mezzoDirection(mezzoComp: MezzoComposizione): void {
-        this.mezzoCoordinate.emit({ 'idMezzo': mezzoComp.id, 'coordinate': mezzoComp.coordinate });
+        const mezzoDirection = {
+            idMezzo: mezzoComp.id,
+            coordinateMezzo: mezzoComp.coordinate
+        } as MezzoDirection;
+        this.mezzoCoordinate.emit(mezzoDirection);
     }
 }

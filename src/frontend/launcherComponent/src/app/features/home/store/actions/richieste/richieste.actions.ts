@@ -1,4 +1,5 @@
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
+import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-action.interface';
 
 export class GetRichieste {
     static readonly type = '[Richieste] Get Lista Richieste API';
@@ -58,9 +59,9 @@ export class StartInviaPartenzaFromChiamata {
     }
 }
 
-export class SetMezzoArrivatoSulPosto {
-    static readonly type = '[Richieste] Set Mezzo Arrivato Sul Posto';
+export class ActionMezzo {
+    static readonly type = '[Richieste] Action Mezzo';
 
-    constructor(public obj: any) {
+    constructor(public mezzoAction: MezzoActionInterface) {
     }
 }

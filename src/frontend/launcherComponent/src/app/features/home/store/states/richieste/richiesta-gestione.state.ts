@@ -5,6 +5,8 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 
 // Action
 import { ClearRichiestaGestione, SetRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
+import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from '../../actions/richieste/richiesta-selezionata.actions';
+import { AddRichiestaEspansa } from '../../actions/richieste/richieste-espanse.actions';
 
 export interface RichiestaGestioneStateModel {
     richiestaGestione: SintesiRichiesta;
@@ -29,10 +31,19 @@ export class RichiestaGestioneState {
     }
 
     @Action(SetRichiestaGestione)
-    setRichiestaGestione({ patchState }: StateContext<RichiestaGestioneStateModel>, action: SetRichiestaGestione) {
-        patchState({
-            richiestaGestione: action.richiesta
-        });
+    setRichiestaGestione({ getState, patchState, dispatch }: StateContext<RichiestaGestioneStateModel>, action: SetRichiestaGestione) {
+        const state = getState();
+        if (state.richiestaGestione && state.richiestaGestione.id === action.richiesta.id && !action.toggle) {
+            dispatch(new ClearRichiestaGestione());
+            dispatch(new ClearRichiestaSelezionata());
+            console.log('test');
+        } else {
+            patchState({
+                richiestaGestione: action.richiesta
+            });
+            dispatch(new SetRichiestaSelezionata(action.richiesta.id));
+            dispatch(new AddRichiestaEspansa(action.richiesta.id));
+        }
     }
 
     @Action(ClearRichiestaGestione)

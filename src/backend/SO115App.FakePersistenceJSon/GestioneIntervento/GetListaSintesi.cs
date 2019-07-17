@@ -44,9 +44,10 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 
         public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
-            MapperRichiestaAssistenzaSuSintesi Mapper = new MapperRichiestaAssistenzaSuSintesi(_mapper);
-            List<SintesiRichiesta> ListaSintesiRichieste = new List<SintesiRichiesta>();
-            List<RichiestaAssistenza> ListaRichiesteAssistenza = new List<RichiestaAssistenza>();
+            var mapper = new MapperRichiestaAssistenzaSuSintesi(_mapper);
+            var listaSintesiRichieste = new List<SintesiRichiesta>();
+            var listaSintesiRichiesteVuota = new List<SintesiRichiesta>();
+            var listaRichiesteAssistenza = new List<RichiestaAssistenza>();
             string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
 
@@ -62,21 +63,24 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                 foreach (RichiestaAssistenzaDTO richiesta in ListaRichieste)
                 {
                     richiesta.Id = richiesta.Codice;
-                    ListaRichiesteAssistenza.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
+                    listaRichiesteAssistenza.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
                 }
 
-                foreach (RichiestaAssistenza richiesta in ListaRichiesteAssistenza)
+                foreach (RichiestaAssistenza richiesta in listaRichiesteAssistenza)
                 {
-                    ListaSintesiRichieste.Add(Mapper.Map(richiesta));
+                    listaSintesiRichieste.Add(mapper.Map(richiesta));
                 }
 
-                ListaSintesiRichieste = ListaSintesiRichieste.OrderByDescending(x => x.IstanteRicezioneRichiesta).ThenByDescending(x => x.Stato == "Chiamata").ToList();
-                return ListaSintesiRichieste;
+                listaSintesiRichieste = listaSintesiRichieste.OrderByDescending(x => x.Stato == "Chiamata")
+                    .ThenByDescending(x => x.PrioritaRichiesta)
+                    .ThenBy(x => x.IstanteRicezioneRichiesta)
+                    .ToList();
+                
+                return listaSintesiRichieste;
             }
             else
             {
-                List<SintesiRichiesta> ListaSintesiRichiesteVuota = new List<SintesiRichiesta>();
-                return ListaSintesiRichiesteVuota;
+                return listaSintesiRichiesteVuota;
             }
         }
 

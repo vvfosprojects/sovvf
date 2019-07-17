@@ -39,6 +39,9 @@ import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.s
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 import { ListaEntiComponent } from '../../../shared';
 import { ListaSquadrePartenzaComponent } from '../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
+import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
+import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
+import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiesta-attivita-utente.state';
 
 @NgModule({
     imports: [
@@ -63,7 +66,10 @@ import { ListaSquadrePartenzaComponent } from '../../../shared/components/lista-
             RichiesteState,
             RichiestaFissataState,
             RichiestaHoverState,
-            RichiestaSelezionataState
+            RichiestaSelezionataState,
+            RichiesteEspanseState,
+            RichiestaGestioneState,
+            RichiestaAttivitaUtenteState
         ])
     ],
     declarations: [

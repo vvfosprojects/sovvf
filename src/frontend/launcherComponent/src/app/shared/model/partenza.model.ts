@@ -4,6 +4,7 @@ import { TurnoPartenza } from './turno-partenza';
 
 export class Partenza {
     constructor(
+        public id: string,
         public squadre: Squadra[],
         public mezzo?: Mezzo,
         public turno?: TurnoPartenza

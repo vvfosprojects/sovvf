@@ -6,6 +6,7 @@ import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.mod
 // Helper methods
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
 
 export const scrolledItems = 11;
 
@@ -21,24 +22,28 @@ export class ListaRichiesteComponent implements OnInit {
     @Input() richiestaHover: SintesiRichiesta;
     @Input() richiestaSelezionata: SintesiRichiesta;
     @Input() richiestaFissata: SintesiRichiesta;
+    @Input() richiestaGestione: SintesiRichiesta;
     @Input() loaderRichieste = true;
     @Input() loaderNuoveRichieste: boolean;
     @Input() contatoreNuoveRichieste;
     @Input() richiesteTerminate: boolean;
     @Input() itemSize = 10;
     @Input() listHeightClass: string;
+    @Input() idRichiesteEspanse: string[] = [];
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
     @Output() nuoveRichieste = new EventEmitter();
-    @Output() fissaInAlto = new EventEmitter<any>();
+    @Output() fissaInAlto = new EventEmitter<string>();
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter<boolean>();
     @Output() selezione = new EventEmitter<string>();
     @Output() deselezione = new EventEmitter<boolean>();
-    @Output() eventiRichiesta: EventEmitter<string> = new EventEmitter();
-    @Output() modificaRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
-    @Output() gestioneRichiesta: EventEmitter<SintesiRichiesta> = new EventEmitter();
+    @Output() eventiRichiesta = new EventEmitter<string>();
+    @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
+    @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
+    @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
+    @Output() outEspansoId = new EventEmitter<string>();
 
     methods = new HelperSintesiRichiesta;
 
@@ -119,16 +124,6 @@ export class ListaRichiesteComponent implements OnInit {
         this.gestioneRichiesta.emit(richiesta);
     }
 
-    /* Ritorna true se le parole matchano almeno in parte */
-    match(word1: string, word2: string) {
-        const word1San = word1.toLowerCase().substr(0, word1.length - 1);
-        const word2San = word2.toLowerCase().substr(0, word2.length - 1);
-        if (word1San === word2San) {
-            return true;
-        }
-        return false;
-    }
-
     /* NgClass List Height */
     heightControl() {
         if (this.richieste.length > 0) {
@@ -143,6 +138,12 @@ export class ListaRichiesteComponent implements OnInit {
         const richiestaSelezionataId = this.richiestaSelezionata ? this.richiestaSelezionata.id : null;
         const richiestaHoverId = this.richiestaHover ? this.richiestaHover.id : null;
         return this.methods.cardClasses(r, richiestaSelezionataId, richiestaHoverId);
+    }
+
+    isEspanso(id: string) {
+        if (this.idRichiesteEspanse && id) {
+            return this.idRichiesteEspanse.includes(id);
+        }
     }
 
 }

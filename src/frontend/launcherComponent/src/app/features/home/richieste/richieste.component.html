@@ -1,19 +1,27 @@
 <!-- Singola Richiesta Fissata  -->
 <app-richiesta-fissata *ngIf="richiestaFissata" [_split]="split" [richiestaFissata]="richiestaFissata"
+                       [richiestaGestione]="richiestaGestione" [idRichiesteEspanse]="(idRichiesteEspanse$ | async)"
                        (statoPartenza)="toggleComposizione()" (composizionePartenza)="nuovaPartenza($event)"
                        (defissa)="onDefissa()" (modificaRichiesta)="onModificaRichiesta($event)"
-                       (gestioneRichiesta)="onGestioneRichiesta($event)">
+                       (gestioneRichiesta)="onGestioneRichiesta($event)"
+                       (eventiRichiesta)="onVisualizzaEventiRichiesta($event)"
+                       (outEspanso)="onSetEspanso($event)"
+                       (outEspansoId)="toggleEspanso($event)"
+                       (actionMezzo)="onActionMezzo($event)">
 </app-richiesta-fissata>
 
 <app-lista-richieste [_split]="split" [richieste]="richieste" [ricerca]="ricerca" [richiestaFissata]="richiestaFissata"
                      [richiestaSelezionata]="richiestaSelezionata" [richiestaHover]="richiestaHover"
-                     [loaderRichieste]="loaderRichieste"
+                     [richiestaGestione]="richiestaGestione" [loaderRichieste]="loaderRichieste"
                      [loaderNuoveRichieste]="loaderNuoveRichieste" [contatoreNuoveRichieste]="contatoreNuoveRichieste"
                      [richiesteTerminate]="richiesteTerminate" [listHeightClass]="listHeightClass"
+                     [idRichiesteEspanse]="(idRichiesteEspanse$ | async)"
                      (statoPartenza)="toggleComposizione()" (composizionePartenza)="nuovaPartenza($event)"
                      (fissaInAlto)="onFissaInAlto($event)" (eventiRichiesta)="onVisualizzaEventiRichiesta($event)"
                      (hoverIn)="onHoverIn($event)" (hoverOut)="onHoverOut()"
                      (selezione)="onSelezione($event)" (deselezione)="onDeselezione()"
                      (nuoveRichieste)="onNuoveRichieste()" (modificaRichiesta)="onModificaRichiesta($event)"
-                     (gestioneRichiesta)="onGestioneRichiesta($event)">
+                     (gestioneRichiesta)="onGestioneRichiesta($event)"
+                     (actionMezzo)="onActionMezzo($event)"
+                     (outEspansoId)="toggleEspanso($event)">
 </app-lista-richieste>

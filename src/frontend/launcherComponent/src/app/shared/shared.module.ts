@@ -7,6 +7,7 @@ import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treevi
 import * as Shared from './index';
 import { PartenzaComponent } from './components/partenza/partenza.component';
 import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
+import { MezzoActionsComponent } from './components/mezzo/mezzo-actions/mezzo-actions.component';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -32,7 +33,8 @@ const COMPONENTS = [
     ],
     declarations: [
         ...COMPONENTS,
-        PartenzaComponent
+        PartenzaComponent,
+        MezzoActionsComponent
     ],
     exports: [
         ...COMPONENTS

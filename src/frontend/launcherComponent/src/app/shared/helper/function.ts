@@ -1,6 +1,8 @@
 import { StatoRichiesta } from '../enum/stato-richiesta.enum';
 import { Coordinate } from '../model/coordinate.model';
 import { CentroMappa } from '../../features/home/maps/maps-model/centro-mappa.model';
+import { Mezzo } from '../model/mezzo.model';
+import { StatoMezzo } from '../enum/stato-mezzo.enum';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
@@ -91,7 +93,7 @@ export function objectDiff(current: object, previous: object) {
     const newObj: object = {};
     const previousKeys = Object.keys(previous);
     let hasError = false;
-    Object.keys(current).forEach( (key, index) => {
+    Object.keys(current).forEach((key, index) => {
         if (previousKeys[index] === key && !hasError) {
             newObj[key] = current[key] - previous[key];
         } else {
@@ -109,4 +111,56 @@ export function round1decimal(value: number) {
 export function roundTodecimal(value: number, exp) {
     const number = exp ? Math.pow(10, exp) : 10;
     return Math.round(value * number) / number;
+}
+
+export function calcolaActionSuggeritaMezzo(mezzo: Mezzo) {
+    let actionSuggerita = '';
+    switch (mezzo.stato) {
+        case StatoMezzo.InSede:
+            actionSuggerita = StatoMezzo.InViaggio;
+            break;
+        case StatoMezzo.InViaggio:
+            actionSuggerita = StatoMezzo.SulPosto;
+            break;
+        case StatoMezzo.SulPosto:
+            actionSuggerita = StatoMezzo.InRientro;
+            break;
+        case StatoMezzo.InRientro:
+            actionSuggerita = StatoMezzo.InSede;
+            break;
+    }
+    return actionSuggerita;
+}
+
+export function statoMezzoEnumToStringArray(exceptStato?: string) {
+    let stringArray = [];
+    for (const val in StatoMezzo) {
+        if (typeof StatoMezzo[val] === 'string') {
+            stringArray.push(StatoMezzo[val]);
+        }
+    }
+    // se c'è un'eccezione filtro l'array eliminando lo stato
+    if (exceptStato) {
+        stringArray = stringArray.filter((stato: string) => stato !== exceptStato);
+    }
+    return stringArray;
+}
+
+export function statoMezzoColor(stato: string) {
+    let _returnColor = '';
+    switch (stato) {
+        case StatoMezzo.InSede:
+            _returnColor = 'secondary';
+            break;
+        case StatoMezzo.InViaggio:
+            _returnColor = 'info';
+            break;
+        case StatoMezzo.SulPosto:
+            _returnColor = 'success';
+            break;
+        case StatoMezzo.InRientro:
+            _returnColor = 'primary';
+            break;
+    }
+    return _returnColor;
 }
