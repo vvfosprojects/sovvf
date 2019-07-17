@@ -26,7 +26,7 @@ export class MezzoActionsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.statoMezzoString = statoMezzoEnumToStringArray(this.mezzo.stato);
+        this.statoMezzoString = statoMezzoEnumToStringArray([this.mezzo.stato, calcolaActionSuggeritaMezzo(this.mezzo)]);
     }
 
     onClick(action?: string) {

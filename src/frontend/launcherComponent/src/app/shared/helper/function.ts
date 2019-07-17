@@ -132,7 +132,7 @@ export function calcolaActionSuggeritaMezzo(mezzo: Mezzo) {
     return actionSuggerita;
 }
 
-export function statoMezzoEnumToStringArray(exceptStato?: string) {
+export function statoMezzoEnumToStringArray(exceptStato?: string[]) {
     let stringArray = [];
     for (const val in StatoMezzo) {
         if (typeof StatoMezzo[val] === 'string') {
@@ -140,8 +140,10 @@ export function statoMezzoEnumToStringArray(exceptStato?: string) {
         }
     }
     // se c'è un'eccezione filtro l'array eliminando lo stato
-    if (exceptStato) {
-        stringArray = stringArray.filter((stato: string) => stato !== exceptStato);
+    if (exceptStato && exceptStato.length > 0) {
+        exceptStato.forEach((stato: string) => {
+            stringArray = stringArray.filter((s: string) => s !== stato);
+        });
     }
     return stringArray;
 }
