@@ -3,6 +3,7 @@ import { NgbDropdownConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap'
 import { StatoMezzo } from '../../../enum/stato-mezzo.enum';
 import { Mezzo } from '../../../model/mezzo.model';
 import { calcolaActionSuggeritaMezzo, statoMezzoColor, statoMezzoEnumToStringArray } from '../../../helper/function';
+import { StatoMezzoActions } from '../../../enum/stato-mezzo-actions.enum';
 
 @Component({
     selector: 'app-mezzo-actions',
@@ -15,7 +16,7 @@ export class MezzoActionsComponent implements OnInit {
     statoMezzo: StatoMezzo;
     statoMezzoString: Array<string>;
 
-    @Output() actionMezzo: EventEmitter<StatoMezzo> = new EventEmitter();
+    @Output() actionMezzo: EventEmitter<StatoMezzoActions> = new EventEmitter();
 
     constructor(dropdownConfig: NgbDropdownConfig,
                 tooltipConfig: NgbTooltipConfig) {
@@ -31,7 +32,7 @@ export class MezzoActionsComponent implements OnInit {
 
     onClick(action?: string) {
         if (action) {
-            this.statoMezzo = StatoMezzo[action.replace(' ', '')];
+            this.statoMezzo = StatoMezzoActions[action.replace(' ', '')];
             this.actionMezzo.emit(this.statoMezzo);
         } else {
             this.actionMezzo.emit();

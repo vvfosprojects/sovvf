@@ -3,6 +3,7 @@ import { Coordinate } from '../model/coordinate.model';
 import { CentroMappa } from '../../features/home/maps/maps-model/centro-mappa.model';
 import { Mezzo } from '../model/mezzo.model';
 import { StatoMezzo } from '../enum/stato-mezzo.enum';
+import { StatoMezzoActions } from '../enum/stato-mezzo-actions.enum';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
@@ -116,16 +117,16 @@ export function roundTodecimal(value: number, exp) {
 export function calcolaActionSuggeritaMezzo(mezzo: Mezzo) {
     let actionSuggerita = '';
     switch (mezzo.stato) {
-        case StatoMezzo.InSede:
+        case StatoMezzoActions.Rientrato:
             actionSuggerita = StatoMezzo.InViaggio;
             break;
-        case StatoMezzo.InViaggio:
+        case StatoMezzoActions.InViaggio:
             actionSuggerita = StatoMezzo.SulPosto;
             break;
-        case StatoMezzo.SulPosto:
+        case StatoMezzoActions.SulPosto:
             actionSuggerita = StatoMezzo.InRientro;
             break;
-        case StatoMezzo.InRientro:
+        case StatoMezzoActions.InRientro:
             actionSuggerita = StatoMezzo.InSede;
             break;
     }
@@ -134,9 +135,9 @@ export function calcolaActionSuggeritaMezzo(mezzo: Mezzo) {
 
 export function statoMezzoEnumToStringArray(exceptStato?: string[]) {
     let stringArray = [];
-    for (const val in StatoMezzo) {
-        if (typeof StatoMezzo[val] === 'string') {
-            stringArray.push(StatoMezzo[val]);
+    for (const val in StatoMezzoActions) {
+        if (typeof StatoMezzoActions[val] === 'string') {
+            stringArray.push(StatoMezzoActions[val]);
         }
     }
     // se c'è un'eccezione filtro l'array eliminando lo stato

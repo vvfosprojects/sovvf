@@ -5,6 +5,7 @@ import { HelperComposizione } from '../../../features/home/composizione-partenza
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
+import { StatoMezzoActions } from '../../enum/stato-mezzo-actions.enum';
 
 @Component({
     selector: 'app-mezzo',
@@ -46,7 +47,7 @@ export class MezzoComponent implements OnInit {
         return this.stato.getColor(stato, tipostato, classe);
     }
 
-    onActionMezzo(action?: StatoMezzo) {
+    onActionMezzo(action?: StatoMezzoActions) {
         let actionMezzo = {} as MezzoActionInterface;
         if (action) {
             actionMezzo = { 'mezzo': this.mezzo, 'action': action };
