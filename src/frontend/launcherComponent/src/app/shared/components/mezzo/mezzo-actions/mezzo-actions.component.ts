@@ -13,7 +13,7 @@ import { StatoMezzoActions } from '../../../enum/stato-mezzo-actions.enum';
 export class MezzoActionsComponent implements OnInit {
 
     @Input() mezzo: Mezzo;
-    statoMezzo: StatoMezzo;
+    statoMezzo: StatoMezzoActions;
     statoMezzoString: Array<string>;
 
     @Output() actionMezzo: EventEmitter<StatoMezzoActions> = new EventEmitter();
