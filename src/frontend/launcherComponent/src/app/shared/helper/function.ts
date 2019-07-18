@@ -117,17 +117,17 @@ export function roundTodecimal(value: number, exp) {
 export function calcolaActionSuggeritaMezzo(mezzo: Mezzo) {
     let actionSuggerita = '';
     switch (mezzo.stato) {
-        case StatoMezzoActions.Rientrato:
-            actionSuggerita = StatoMezzo.InViaggio;
-            break;
         case StatoMezzoActions.InViaggio:
-            actionSuggerita = StatoMezzo.SulPosto;
+            actionSuggerita = StatoMezzoActions.SulPosto;
             break;
         case StatoMezzoActions.SulPosto:
-            actionSuggerita = StatoMezzo.InRientro;
+            actionSuggerita = StatoMezzoActions.InRientro;
             break;
         case StatoMezzoActions.InRientro:
-            actionSuggerita = StatoMezzo.InSede;
+            actionSuggerita = StatoMezzoActions.Rientrato;
+            break;
+        case StatoMezzoActions.Rientrato:
+            actionSuggerita = StatoMezzoActions.InViaggio;
             break;
     }
     return actionSuggerita;
