@@ -126,7 +126,7 @@ export function calcolaActionSuggeritaMezzo(mezzo: Mezzo) {
         case StatoMezzoActions.InRientro:
             actionSuggerita = StatoMezzoActions.Rientrato;
             break;
-        case StatoMezzoActions.Rientrato:
+        case StatoMezzoActions.InSede:
             actionSuggerita = StatoMezzoActions.InViaggio;
             break;
     }
