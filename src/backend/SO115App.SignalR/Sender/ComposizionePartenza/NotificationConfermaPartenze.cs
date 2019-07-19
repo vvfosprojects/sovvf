@@ -65,28 +65,27 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
         public async Task SendNotification(ConfermaPartenzeCommand conferma)
         {
-            MapperRichiestaAssistenzaSuSintesi Mapper = new MapperRichiestaAssistenzaSuSintesi(_mapper);
+            var mapper = new MapperRichiestaAssistenzaSuSintesi(_mapper);
 
-            SintesiRichiesta sintesi = new SintesiRichiesta();
-            RichiestaAssistenza richiesta = conferma.ConfermaPartenze.richiesta;
-            sintesi = Mapper.Map(richiesta);
+            var sintesi = new SintesiRichiesta();
+            var richiesta = conferma.ConfermaPartenze.richiesta;
+            sintesi = mapper.Map(richiesta);
 
             sintesi.Motivazione = sintesi.Descrizione;
             //sintesi.Stato = "Assegnata";
             //sintesi.Priorita = richiesta.PrioritaRichiesta;
 
-            var BoxRichiestequery = new BoxRichiesteQuery();
-            var BoxMezziquery = new BoxMezziQuery();
-            var BoxPersonaleQuery = new BoxPersonaleQuery();
-            BoxInterventi boxInterventi = new BoxInterventi();
-            BoxMezzi boxMezzi = new BoxMezzi();
-            BoxPersonale boxPersonale = new BoxPersonale();
-            boxInterventi = (BoxInterventi)this._BoxRichiestehandler.Handle(BoxRichiestequery).BoxRichieste;
-            boxMezzi = (BoxMezzi)this._BoxMezzihandler.Handle(BoxMezziquery).BoxMezzi;
-            boxPersonale = (BoxPersonale)this._boxPersonalehandler.Handle(BoxPersonaleQuery).BoxPersonale;
+            var boxRichiesteQuery = new BoxRichiesteQuery();
+            var boxMezziQuery = new BoxMezziQuery();
+            var boxPersonaleQuery = new BoxPersonaleQuery();
+            var boxInterventi = new BoxInterventi();
+            var boxMezzi = new BoxMezzi();
+            var boxPersonale = new BoxPersonale();
 
-            boxMezzi.InViaggio = boxMezzi.InViaggio + sintesi.Partenze.Select(x => x.Partenza.Mezzo).Count();
-            boxMezzi.InSede = boxMezzi.InSede - sintesi.Partenze.Select(x => x.Partenza.Mezzo).Count();
+            boxInterventi = (BoxInterventi)this._BoxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
+            boxMezzi = (BoxMezzi)this._BoxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
+            boxPersonale = (BoxPersonale)this._boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
+
 
             boxPersonale.SquadreAssegnate = boxPersonale.SquadreAssegnate + sintesi.Partenze.Select(x => x.Partenza.Squadre).Count();
 
