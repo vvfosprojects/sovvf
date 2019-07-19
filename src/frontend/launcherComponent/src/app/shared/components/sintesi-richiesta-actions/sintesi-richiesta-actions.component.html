@@ -1,0 +1,14 @@
+<div class="btn-group btn-group-sm w-100 mr-3" (click)="$event.stopPropagation()">
+    <button type="button" class="btn btn-sm btn-warning px-2 py-0" (click)="onClick(statoRichiesta.Sospesa)"
+            ngbTooltip="Sospesa">
+        Sospesa
+    </button>
+    <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+        <button class="btn btn-sm btn-warning p-1 dropdown-toggle-split"
+                ngbTooltip="Altro" ngbDropdownToggle>
+        </button>
+        <div class="dropdown-menu" ngbDropdownMenu>
+            <button ngbDropdownItem (click)="onClick(statoRichiesta.Chiusa)">Chiusa</button>
+        </div>
+    </div>
+</div>

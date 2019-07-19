@@ -11,6 +11,7 @@ import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-acti
 
 // Helper Methods
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
+import { RichiestaActionInterface } from '../../../../../shared/interface/richiesta-action.interface';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -48,6 +49,7 @@ export class SintesiRichiestaComponent {
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter<string>();
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
+    @Output() actionRichiesta = new EventEmitter<RichiestaActionInterface>();
     @Output() outEspansoId = new EventEmitter<string>();
 
     methods = new HelperSintesiRichiesta;
@@ -154,4 +156,10 @@ export class SintesiRichiestaComponent {
         this.actionMezzo.emit(_mezzoAction);
     }
 
+    onActionRichiesta(stato: StatoRichiesta) {
+        const _richiestaAction = {} as RichiestaActionInterface;
+        _richiestaAction.idRichiesta = this.richiesta.id;
+        _richiestaAction.stato = stato;
+        this.actionRichiesta.emit(_richiestaAction);
+    }
 }

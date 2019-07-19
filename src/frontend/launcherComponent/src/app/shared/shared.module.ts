@@ -8,6 +8,7 @@ import * as Shared from './index';
 import { PartenzaComponent } from './components/partenza/partenza.component';
 import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
 import { MezzoActionsComponent } from './components/mezzo/mezzo-actions/mezzo-actions.component';
+import { SintesiRichiestaActionsComponent } from './components/sintesi-richiesta-actions/sintesi-richiesta-actions.component';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -34,10 +35,12 @@ const COMPONENTS = [
     declarations: [
         ...COMPONENTS,
         PartenzaComponent,
-        MezzoActionsComponent
+        MezzoActionsComponent,
+        SintesiRichiestaActionsComponent
     ],
     exports: [
-        ...COMPONENTS
+        ...COMPONENTS,
+        SintesiRichiestaActionsComponent
     ]
 })
 export class SharedModule {

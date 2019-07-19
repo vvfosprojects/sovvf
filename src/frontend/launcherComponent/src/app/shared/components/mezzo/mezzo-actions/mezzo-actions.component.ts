@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbDropdownConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
-import { StatoMezzo } from '../../../enum/stato-mezzo.enum';
 import { Mezzo } from '../../../model/mezzo.model';
 import { calcolaActionSuggeritaMezzo, statoMezzoColor, statoMezzoEnumToStringArray } from '../../../helper/function';
 import { StatoMezzoActions } from '../../../enum/stato-mezzo-actions.enum';

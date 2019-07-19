@@ -7,6 +7,8 @@ import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.mod
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
+import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
+import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
 
 export const scrolledItems = 11;
 
@@ -43,6 +45,7 @@ export class ListaRichiesteComponent implements OnInit {
     @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
+    @Output() actionRichiesta = new EventEmitter<RichiestaActionInterface>();
     @Output() outEspansoId = new EventEmitter<string>();
 
     methods = new HelperSintesiRichiesta;
@@ -145,5 +148,4 @@ export class ListaRichiesteComponent implements OnInit {
             return this.idRichiesteEspanse.includes(id);
         }
     }
-
 }

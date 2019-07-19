@@ -25,8 +25,10 @@ import { RichiesteEspanseState } from '../store/states/richieste/richieste-espan
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
-import { ActionMezzo } from '../store/actions/richieste/richieste.actions';
+import { ActionMezzo, ActionRichiesta } from '../store/actions/richieste/richieste.actions';
 import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
+import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
+import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 
 @Component({
     selector: 'app-richieste',
@@ -278,6 +280,12 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onActionMezzo(actionMezzo: MezzoActionInterface) {
         this.store.dispatch(new ActionMezzo(actionMezzo));
+        // console.log('actionMezzo', actionMezzo);
+    }
+
+    onActionRichiesta(actionRichiesta: RichiestaActionInterface) {
+        this.store.dispatch(new ActionRichiesta(actionRichiesta));
+        // console.log('actionRichiesta', actionRichiesta);
     }
 
     toggleEspanso(id: string): void {

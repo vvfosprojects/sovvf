@@ -5,8 +5,8 @@ import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Action
 import {
-    ActionMezzo,
-    AddRichiesta, ClearIdChiamataInviaPartenza,
+    ActionMezzo, ActionRichiesta,
+    AddRichiesta, CambiaStatoRichiesta, ClearIdChiamataInviaPartenza,
     ClearRichieste,
     GetRichieste,
     PatchRichiesta,
@@ -138,6 +138,16 @@ export class RichiesteState {
         }
     }
 
+    @Action(CambiaStatoRichiesta)
+    cambiaStatoRichiesta({ patchState, dispatch }: StateContext<RichiesteStateModel>, action: CambiaStatoRichiesta) {
+        const obj = {
+            'idRichiesta': action.idRichiesta,
+            'stato': action.stato
+        };
+        this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Aggiornamento Stato Richiesta', 'Il server web non risponde', 5)));
+    }
+
     @Action(SetIdChiamataInviaPartenza)
     setIdChiamataInviaPartenza({ patchState }: StateContext<RichiesteStateModel>, action: SetIdChiamataInviaPartenza) {
         patchState({
@@ -169,8 +179,16 @@ export class RichiesteState {
             'idMezzo': action.mezzoAction.mezzo.codice,
             'statoMezzo': action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo)
         };
-        this.richiesteService.aggiornaStatoMezzo(obj).subscribe((data: any) => {
-            console.log('Action Mezzo - CONTROLLER RESPONSE', data);
+        // console.log('Obj', obj);
+        this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+    }
+
+    @Action(ActionRichiesta)
+    actionRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: ActionRichiesta) {
+        const obj = action.richiestaAction;
+        console.log('Obj', obj);
+        this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 }

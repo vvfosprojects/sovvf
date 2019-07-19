@@ -16,7 +16,9 @@ const PROXY_CONFIG = [
             "/api/ResetPrenotazioneMezzo",
             "/api/ConfermaPartenze",
             "/api/AttivitaUtente",
-            '/api/GestionePartenza'
+            '/api/GestionePartenza',
+            '/api/AggiornaStatoRichiesta',
+            '/api/GestionePartenza/AggiornaPartenza'
         ],
         target: "http://so115.api2.test/",
         secure: false,

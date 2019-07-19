@@ -7,6 +7,7 @@ import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.mod
 // Helper Methods
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
+import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Output() outEspansoId = new EventEmitter<string>();
     @Output() outEspanso = new EventEmitter<boolean>();
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
+    @Output() actionRichiesta = new EventEmitter<RichiestaActionInterface>();
 
     @ViewChild('richiestaContainer') private richiestaContainer: ElementRef;
     @ViewChild('richiesta') private richiesta: ElementRef;
