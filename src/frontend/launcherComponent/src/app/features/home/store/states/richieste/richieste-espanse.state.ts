@@ -27,7 +27,16 @@ export class RichiesteEspanseState {
     }
 
     @Action(ClearRichiesteEspanse)
-    clearRichiesteEspanse({ patchState }: StateContext<RichiesteEspanseStateModel>) {
+    clearRichiesteEspanse({ getState, patchState, dispatch }: StateContext<RichiesteEspanseStateModel>) {
+        const state = getState();
+        const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione) ? this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione).id : null;
+
+        // cotrollo se ci sono richieste in gestione, se si la richiesta diventa "non in gestione"
+        state.richiesteEspanse.forEach((idRichiesta: string) => {
+            if (idRichiesta === idRichiestaGestione) {
+                dispatch(new ClearRichiestaGestione(idRichiesta));
+            }
+        });
         patchState(RichiesteEspanseStateDefaults);
     }
 
@@ -62,10 +71,10 @@ export class RichiesteEspanseState {
             );
         }
 
-        // cotrollo se la richiesta che si sta rimuovendo dalle espanse era in gestione, se si pulisco la richiesta gestione
+        // cotrollo se la richiesta che si sta rimuovendo dalle espanse era in gestione, se si la richiesta diventa "non in gestione"
         const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione) ? this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione).id : null;
         if (action.idRichiesta === idRichiestaGestione) {
-            dispatch(new ClearRichiestaGestione());
+            dispatch(new ClearRichiestaGestione(action.idRichiesta));
         }
     }
 
