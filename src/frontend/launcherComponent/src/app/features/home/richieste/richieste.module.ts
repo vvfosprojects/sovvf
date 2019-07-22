@@ -37,7 +37,7 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
-import { ListaEntiComponent } from '../../../shared';
+import { ListaEntiComponent, ActionRichiestaModalComponent } from '../../../shared';
 import { ListaSquadrePartenzaComponent } from '../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
 import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
@@ -85,10 +85,11 @@ import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiest
     ],
     entryComponents: [
         ListaEntiComponent,
-        ListaSquadrePartenzaComponent
+        ListaSquadrePartenzaComponent,
+        ActionRichiestaModalComponent
     ],
     providers: [
-        { provide: SintesiRichiesteService, useClass: environment.fakeProvider ? SintesiRichiesteServiceFake : SintesiRichiesteService}
+        { provide: SintesiRichiesteService, useClass: environment.fakeProvider ? SintesiRichiesteServiceFake : SintesiRichiesteService }
     ]
 })
 export class RichiesteModule {

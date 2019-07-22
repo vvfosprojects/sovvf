@@ -9,3 +9,7 @@ export * from './components/treeview/treeview.component';
 export * from './components/lista-enti/lista-enti.component';
 export * from './components/lista-squadre-partenza/lista-squadre-partenza.component';
 export * from './components/selezione-tipi-terreno/selezione-tipi-terreno.component';
+export * from './modal/action-richiesta-modal/action-richiesta-modal.component';
+export * from './components/partenza/partenza.component';
+export * from './components/mezzo/mezzo-actions/mezzo-actions.component';
+export * from './components/sintesi-richiesta-actions/sintesi-richiesta-actions.component';

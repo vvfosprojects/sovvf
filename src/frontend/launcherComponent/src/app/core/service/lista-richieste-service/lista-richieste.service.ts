@@ -9,7 +9,7 @@ import { RichiestaActionInterface } from '../../../shared/interface/richiesta-ac
 
 const API_URL_RICHIESTE = environment.apiUrl.rigaElencoRichieste;
 const API_URL_MODIFICA = environment.apiUrl.updateRichiesta;
-const API_URL_AGGIORNA_STATO_RICHIESTA = environment.apiUrl.aggiornaStatoRichiesta;
+const API_URL_AGGIORNA_STATO_RICHIESTA = environment.apiUrl.gestioneRichiesta.aggiornaStato;
 const API_URL_AGGIORNA_STATO_MEZZO = environment.apiUrl.gestionePartenza.aggiornaStatoMezzo;
 
 @Injectable()

@@ -30,8 +30,10 @@ export const environment = {
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
         updateRichiesta: '/api/Chiamata/UpdateIntervento',
         eventiRichieste: '/api/ListaEventi',
-        aggiornaStatoRichiesta: '/api/AggiornaStatoRichiesta',
         attivitaUtente: '/api/AttivitaUtente',
+        gestioneRichiesta: {
+            aggiornaStato: '/api/GestioneRichiesta/AggiornaStato'
+        },
         gestionePartenza: {
             aggiornaStatoMezzo: '/api/GestionePartenza/AggiornaPartenza'
         },

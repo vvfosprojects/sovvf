@@ -1,29 +1,27 @@
-const PROXY_CONFIG = [
-    {
-        context: [
-            "/NotificationHub",
-            "/api/auth/Login",
-            "/api/Welcome",
-            "/api/Navbar",
-            "/api/Filtri",
-            "/api/Chiamata",
-            "/api/ComposizionePartenzaAvanzata",
-            "/api/PreAccoppiati",
-            "/api/ChiamataInCorso",
-            "/api/ListaEventi",
-            "/api/AddPrenotazioneMezzo",
-            "/api/RemovePrenotazioneMezzo",
-            "/api/ResetPrenotazioneMezzo",
-            "/api/ConfermaPartenze",
-            "/api/AttivitaUtente",
-            '/api/GestionePartenza',
-            '/api/AggiornaStatoRichiesta',
-            '/api/GestionePartenza/AggiornaPartenza'
-        ],
-        target: "http://so115.api2.test/",
-        secure: false,
-        "changeOrigin": true,
-        ws: true
-    }
-];
+const PROXY_CONFIG = [{
+  context: [
+    "/NotificationHub",
+    "/api/auth/Login",
+    "/api/Welcome",
+    "/api/Navbar",
+    "/api/Filtri",
+    "/api/Chiamata",
+    "/api/ComposizionePartenzaAvanzata",
+    "/api/PreAccoppiati",
+    "/api/ChiamataInCorso",
+    "/api/ListaEventi",
+    "/api/AddPrenotazioneMezzo",
+    "/api/RemovePrenotazioneMezzo",
+    "/api/ResetPrenotazioneMezzo",
+    "/api/ConfermaPartenze",
+    "/api/AttivitaUtente",
+    '/api/GestionePartenza',
+    '/api/GestioneRichiesta/AggiornaStato',
+    '/api/GestionePartenza/AggiornaPartenza'
+  ],
+  target: "http://so115.api2.test/",
+  secure: false,
+  "changeOrigin": true,
+  ws: true
+}];
 module.exports = PROXY_CONFIG;

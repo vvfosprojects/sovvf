@@ -4,11 +4,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PipeModule } from './pipes/pipe.module';
 import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
 import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treeview-i18n';
-import * as Shared from './index';
-import { PartenzaComponent } from './components/partenza/partenza.component';
 import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
-import { MezzoActionsComponent } from './components/mezzo/mezzo-actions/mezzo-actions.component';
-import { SintesiRichiestaActionsComponent } from './components/sintesi-richiesta-actions/sintesi-richiesta-actions.component';
+import * as Shared from './index';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -22,25 +20,26 @@ const COMPONENTS = [
     Shared.ListaSquadrePartenzaComponent,
     Shared.ConfirmModalComponent,
     Shared.SelezioneTipiTerrenoComponent,
+    Shared.PartenzaComponent,
+    Shared.MezzoActionsComponent,
+    Shared.SintesiRichiestaActionsComponent,
+    Shared.ActionRichiestaModalComponent,
     ListaPartenzeComponent
 ];
 
 @NgModule({
     imports: [
         CommonModule,
+        ReactiveFormsModule,
         NgbModule,
         PipeModule,
         TreeviewModule.forRoot()
     ],
     declarations: [
         ...COMPONENTS,
-        PartenzaComponent,
-        MezzoActionsComponent,
-        SintesiRichiestaActionsComponent
     ],
     exports: [
-        ...COMPONENTS,
-        SintesiRichiestaActionsComponent
+        ...COMPONENTS
     ]
 })
 export class SharedModule {
