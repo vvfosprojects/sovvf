@@ -51,14 +51,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssist
     /// </summary>
     public class SintesiRichiesteAssistenzaMarkerQueryHandler : IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult>
     {
-        private readonly IGetRichiesteMarker iGetListaRichieste;
+        private readonly IGetRichiesteMarker _iGetListaRichieste;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         public SintesiRichiesteAssistenzaMarkerQueryHandler(IGetRichiesteMarker iGetListaRichieste)
         {
-            this.iGetListaRichieste = iGetListaRichieste;
+            this._iGetListaRichieste = iGetListaRichieste;
         }
 
         /// <summary>
@@ -68,9 +68,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssist
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaMarkerResult Handle(SintesiRichiesteAssistenzaMarkerQuery query)
         {
-            var sintesiRichiestaMarker = new List<SintesiRichiestaMarker>();
-
-            sintesiRichiestaMarker = iGetListaRichieste.GetListaRichiesteMarker();
+            var sintesiRichiestaMarker = _iGetListaRichieste.GetListaRichiesteMarker();
 
             return new SintesiRichiesteAssistenzaMarkerResult()
             {

@@ -17,14 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
 using CQRS.Queries;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GetListaEventi;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 {
@@ -56,6 +56,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
     public class ListaEventiQueryHandler : IQueryHandler<ListaEventiQuery, ListaEventiResult>
     {
         private readonly IGetListaEventi _iEventi;
+        private readonly Costanti _costanti;
 
         /// <summary>
         ///   Costruttore della classe
@@ -72,11 +73,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
         /// <returns>Il DTO di uscita della query</returns>
         public ListaEventiResult Handle(ListaEventiQuery query)
         {
-            List<Evento> eventi = _iEventi.Get(query);
-            List<MapperEventoSuEventoGui> eventiMapper = new List<MapperEventoSuEventoGui>();
+            var eventi = _iEventi.Get(query);
+            var eventiMapper = new List<MapperEventoSuEventoGui>();
             foreach (var evento in eventi)
             {
-                MapperEventoSuEventoGui eventoMapper = new MapperEventoSuEventoGui
+                var eventoMapper = new MapperEventoSuEventoGui
                 {
                     NomeClasseEvento = MapEvento(evento),
                     IstanteEvento = evento.Istante,
@@ -94,56 +95,46 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
         private string MapTarghe(Evento evento)
         {
-            string Targa = "";
+            var targa = "";
 
             if (evento is ComposizionePartenze)
             {
-                Targa = ((ComposizionePartenze)evento).Partenza.Mezzo.Descrizione;
+                targa = ((ComposizionePartenze)evento).Partenza.Mezzo.Descrizione;
             }
 
-            return Targa;
+            return targa;
         }
 
         private string MapEvento(Evento evento)
         {
-            string RisEvento = "Evento Generico";
+            var risEvento = _costanti.EventoGenerico;
 
-            if (evento is Telefonata)
+            switch (evento)
             {
-                RisEvento = "Telefonata";
+                case Telefonata _:
+                    risEvento = _costanti.Telefonata;
+                    break;
+                case InizioPresaInCarico _:
+                    risEvento = _costanti.InizioPresaInCarico;
+                    break;
+                case RiaperturaRichiesta _:
+                    risEvento = _costanti.RiaperturaRichiesta;
+                    break;
+                case ComposizionePartenze _:
+                    risEvento = _costanti.ComposizionePartenza;
+                    break;
+                case ChiusuraRichiesta _:
+                    risEvento = _costanti.ChiusuraRichiesta;
+                    break;
+                case ArrivoSulPosto _:
+                    risEvento = _costanti.ArrivoSulPosto;
+                    break;
+                case RichiestaPresidiata _:
+                    risEvento = _costanti.RichiestaPresidiata;
+                    break;
             }
 
-            if (evento is InizioPresaInCarico)
-            {
-                RisEvento = "InizioPresaInCarico";
-            }
-
-            if (evento is RiaperturaRichiesta)
-            {
-                RisEvento = "RiaperturaRichiesta";
-            }
-
-            if (evento is ComposizionePartenze)
-            {
-                RisEvento = "ComposizionePartenza";
-            }
-
-            if (evento is ChiusuraRichiesta)
-            {
-                RisEvento = "ChiusuraPartenza";
-            }
-
-            if (evento is ArrivoSulPosto)
-            {
-                RisEvento = "ArrivoSulPosto";
-            }
-
-            if (evento is RichiestaPresidiata)
-            {
-                RisEvento = "RichiestaPresidiata";
-            }
-
-            return RisEvento;
+            return risEvento;
         }
     }
 }

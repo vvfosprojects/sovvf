@@ -45,7 +45,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         public ComposizioneMezziResult Handle(ComposizioneMezziQuery query)
         {
             // preparazione del DTO
-            List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = _iGetComposizioneMezzi.Get(query);
+            var composizioneMezzi = _iGetComposizioneMezzi.Get(query);
 
             if ((composizioneMezzi != null && composizioneMezzi.Count > 0))
             {

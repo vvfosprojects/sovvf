@@ -24,6 +24,7 @@ using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Utility;
 
 namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 {
@@ -32,6 +33,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
         private bool _mezziTuttiInSede = true;
+        private readonly Costanti _costanti;
 
         public AggiornaStatoMezzoCommandHandler(
             IGetRichiestaById getRichiestaById,
@@ -46,21 +48,21 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
         {
             RichiestaAssistenza richiesta = _getRichiestaById.Get(command.Chiamata.Id);
 
-            if (command.StatoMezzo == "Sul Posto")
+            if (command.StatoMezzo == _costanti.MezzoSulPosto)
             {
                 new ArrivoSulPosto(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
 
-                richiesta.SincronizzaStatoRichiesta("Presidiata", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
+                richiesta.SincronizzaStatoRichiesta(_costanti.RichiestaPresidiata, richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
 
                 foreach (var composizione in richiesta.Partenze)
                 {
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
                     {
-                        composizione.Partenza.Mezzo.Stato = "Sul Posto";
+                        composizione.Partenza.Mezzo.Stato = _costanti.MezzoSulPosto;
                     }
                 }
             }
-            else if (command.StatoMezzo == "In Rientro")
+            else if (command.StatoMezzo == _costanti.MezzoInRientro)
             {
                 new PartenzaInRientro(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
 
@@ -68,13 +70,13 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                 {
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
                     {
-                        composizione.Partenza.Mezzo.Stato = "In Rientro";
+                        composizione.Partenza.Mezzo.Stato = _costanti.MezzoInRientro;
                     }
                 }
 
                 foreach (var composizione in richiesta.Partenze)
                 {
-                    if (composizione.Partenza.Mezzo.Stato != "In Sede" && composizione.Partenza.Mezzo.Stato != "In Rientro")
+                    if (composizione.Partenza.Mezzo.Stato != _costanti.MezzoInSede && composizione.Partenza.Mezzo.Stato != _costanti.MezzoInRientro)
                     {
                         _mezziTuttiInSede = false;
                     }
@@ -83,7 +85,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                 //if (_mezziTuttiInSede)
                 //    richiesta.SincronizzaStatoRichiesta("Chiusa", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
             }
-            else if (command.StatoMezzo == "Rientrato")
+            else if (command.StatoMezzo == _costanti.MezzoRientrato)
             {
                 new PartenzaRientrata(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
 
@@ -91,13 +93,13 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                 {
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
                     {
-                        composizione.Partenza.Mezzo.Stato = "In Sede";
+                        composizione.Partenza.Mezzo.Stato = _costanti.MezzoInSede;
                     }
                 }
 
                 foreach (var composizione in richiesta.Partenze)
                 {
-                    if (composizione.Partenza.Mezzo.Stato != "In Sede" && composizione.Partenza.Mezzo.Stato != "In Rientro")
+                    if (composizione.Partenza.Mezzo.Stato != _costanti.MezzoInSede && composizione.Partenza.Mezzo.Stato != _costanti.MezzoInRientro)
                     {
                         _mezziTuttiInSede = false;
                     }
@@ -106,14 +108,14 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                 //if (_mezziTuttiInSede)
                 //    richiesta.SincronizzaStatoRichiesta("Chiusa", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
             }
-            else if (command.StatoMezzo == "In Viaggio")
+            else if (command.StatoMezzo == _costanti.MezzoInViaggio)
             {
 
                 foreach (var composizione in richiesta.Partenze)
                 {
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
                     {
-                        composizione.Partenza.Mezzo.Stato = "In Viaggio";
+                        composizione.Partenza.Mezzo.Stato = _costanti.MezzoInViaggio;
                     }
                     
                 }

@@ -74,7 +74,7 @@ namespace SO115App.API.Controllers
             var command = new ResetPrenotazioneMezzoCommand()
             {
                 MezzoPrenotato = mezzoPrenotato,
-                codiceSede = codiceSede
+                CodiceSede = codiceSede
             };
 
          

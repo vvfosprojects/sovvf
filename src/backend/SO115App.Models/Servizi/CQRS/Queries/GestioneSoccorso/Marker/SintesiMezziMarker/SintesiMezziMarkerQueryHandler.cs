@@ -51,14 +51,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiMezziMarker
     /// </summary>
     public class SintesiMezziMarkerQueryHandler : IQueryHandler<SintesiMezziMarkerQuery, SintesiMezziMarkerResult>
     {
-        private readonly IGetMezziMarker iGetMezziMarker;
+        private readonly IGetMezziMarker _iGetMezziMarker;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         public SintesiMezziMarkerQueryHandler(IGetMezziMarker iGetMezziMarker)
         {
-            this.iGetMezziMarker = iGetMezziMarker;
+            this._iGetMezziMarker = iGetMezziMarker;
         }
 
         /// <summary>
@@ -68,9 +68,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiMezziMarker
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiMezziMarkerResult Handle(SintesiMezziMarkerQuery query)
         {
-            var sintesiMezziMarker = new List<SintesiMezzoMarker>();
-
-            sintesiMezziMarker = iGetMezziMarker.GetListaMezziMarker();
+            var sintesiMezziMarker = _iGetMezziMarker.GetListaMezziMarker();
 
             return new SintesiMezziMarkerResult()
             {

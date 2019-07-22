@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CQRS.Commands.Validators;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato;
 using ValidationResult = CQRS.Validation.ValidationResult;
 
@@ -7,18 +8,19 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
 {
     public class MezzoPrenotatoValidator : ICommandValidator<MezzoPrenotatoCommand>
     {
-        private readonly IGetMezzoPrenotato mezzo;
+        private readonly IGetMezzoPrenotato _mezzo;
+        private readonly Costanti _costanti;
 
         public MezzoPrenotatoValidator(IGetMezzoPrenotato iGetMezzoPrenotato)
         {
-            this.mezzo = iGetMezzoPrenotato;
+            this._mezzo = iGetMezzoPrenotato;
         }
         public IEnumerable<ValidationResult> Validate(MezzoPrenotatoCommand command)
         {
 
-            if (mezzo.GetMezzo(command) == null)
+            if (_mezzo.GetMezzo(command) == null)
 
-                yield return new ValidationResult("Il mezzo non è presente");
+                yield return new ValidationResult(_costanti.MezzoNonPresente);
         }
     }
 }

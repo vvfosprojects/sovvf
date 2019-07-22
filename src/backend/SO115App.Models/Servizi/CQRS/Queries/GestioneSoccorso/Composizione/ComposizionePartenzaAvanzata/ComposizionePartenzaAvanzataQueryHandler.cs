@@ -30,15 +30,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     /// </summary>
     public class ComposizionePartenzaAvanzataQueryHandler : IQueryHandler<ComposizionePartenzaAvanzataQuery, ComposizionePartenzaAvanzataResult>
     {
-        private readonly IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> _ComposizioneMezzihandler;
-        private readonly IQueryHandler<ComposizioneSquadreQuery, ComposizioneSquadreResult> _ComposizioneSquadrehandler;
+        private readonly IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> _composizioneMezzihandler;
+        private readonly IQueryHandler<ComposizioneSquadreQuery, ComposizioneSquadreResult> _composizioneSquadrehandler;
 
-        public ComposizionePartenzaAvanzataQueryHandler(IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> ComposizioneMezzihandler,
-            IQueryHandler<ComposizioneSquadreQuery, ComposizioneSquadreResult> ComposizioneSquadrehandler
+        public ComposizionePartenzaAvanzataQueryHandler(IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> composizioneMezzihandler,
+            IQueryHandler<ComposizioneSquadreQuery, ComposizioneSquadreResult> composizioneSquadrehandler
             )
         {
-            this._ComposizioneMezzihandler = ComposizioneMezzihandler;
-            this._ComposizioneSquadrehandler = ComposizioneSquadrehandler;
+            this._composizioneMezzihandler = composizioneMezzihandler;
+            this._composizioneSquadrehandler = composizioneSquadrehandler;
         }
 
         /// <summary>
@@ -48,19 +48,19 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <returns>Elenco dei mezzi disponibili</returns>
         public ComposizionePartenzaAvanzataResult Handle(ComposizionePartenzaAvanzataQuery query)
         {
-            var ComposizioneMezziquery = new ComposizioneMezziQuery
+            var composizioneMezziquery = new ComposizioneMezziQuery
             {
                 Filtro = query.Filtro
             };
-            var ComposizioneSquadrequery = new ComposizioneSquadreQuery
+            var composizioneSquadreQuery = new ComposizioneSquadreQuery
             {
                 Filtro = query.Filtro
             };
 
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
             {
-                ComposizioneMezzi = this._ComposizioneMezzihandler.Handle(ComposizioneMezziquery).ComposizioneMezzi,
-                ComposizioneSquadre = this._ComposizioneSquadrehandler.Handle(ComposizioneSquadrequery).ComposizioneSquadre,
+                ComposizioneMezzi = this._composizioneMezzihandler.Handle(composizioneMezziquery).ComposizioneMezzi,
+                ComposizioneSquadre = this._composizioneSquadrehandler.Handle(composizioneSquadreQuery).ComposizioneSquadre,
 
             };
 

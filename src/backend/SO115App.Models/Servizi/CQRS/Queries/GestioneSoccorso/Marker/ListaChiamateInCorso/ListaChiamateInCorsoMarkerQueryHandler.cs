@@ -43,13 +43,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMa
         /// <returns>Il DTO di uscita della query</returns>
         public ListaChiamateInCorsoMarkerResult Handle(ListaChiamateInCorsoMarkerQuery query)
         {
-            var ListaMarker = new List<ChiamateInCorso>();
-
-            ListaMarker = _iGetChiamateInCorso.Get();
+            var listaMarker = _iGetChiamateInCorso.Get();
 
             return new ListaChiamateInCorsoMarkerResult()
             {
-                ListaChiamateInCorsoMarker = ListaMarker
+                ListaChiamateInCorsoMarker = listaMarker
             };
         }
     }

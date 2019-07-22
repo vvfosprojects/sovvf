@@ -34,7 +34,6 @@ namespace SO115App.FakePersistenceJSon.Box
     {
         public BoxMezzi Get()
         {
-            var listaComposizioneMezzi = new List<ComposizioneMezzi>();
             var mezzi = new BoxMezzi();
 
 
@@ -45,7 +44,7 @@ namespace SO115App.FakePersistenceJSon.Box
                 json = r.ReadToEnd();
             }
 
-            listaComposizioneMezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(json);
+            var listaComposizioneMezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(json);
 
             mezzi.InSede = listaComposizioneMezzi.Where(x => x.Mezzo.Stato == "In Sede")
                 .Select(x => x.Mezzo.Stato)

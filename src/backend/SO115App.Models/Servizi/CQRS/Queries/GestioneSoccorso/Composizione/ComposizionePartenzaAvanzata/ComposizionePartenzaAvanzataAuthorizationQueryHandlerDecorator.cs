@@ -22,30 +22,32 @@ using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Queries.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.Models.Classi.Utility;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata
 {
     public class ComposizionePartenzaAvanzataAuthorizationQueryHandlerDecorator : IQueryAuthorizer<ComposizionePartenzaAvanzataQuery, ComposizionePartenzaAvanzataResult>
     {
-        private readonly IPrincipal currentUser;
+        private readonly IPrincipal _currentUser;
+        private readonly Costanti _costanti;
 
         public ComposizionePartenzaAvanzataAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {
-            this.currentUser = currentUser;
+            this._currentUser = currentUser;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(ComposizionePartenzaAvanzataQuery query)
         {
-            string username = this.currentUser.Identity.Name;
+            string username = this._currentUser.Identity.Name;
 
-            if (this.currentUser.Identity.IsAuthenticated)
+            if (this._currentUser.Identity.IsAuthenticated)
             {
                 Utente user = Utente.FindUserByUsername(username);
                 if (user == null)
-                    yield return new AuthorizationResult("Utente non autorizzato");
+                    yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
             }
             else
-                yield return new AuthorizationResult("Utente non autorizzato");
+                yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
         }
     }
 }

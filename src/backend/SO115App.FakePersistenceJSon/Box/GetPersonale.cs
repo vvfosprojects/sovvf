@@ -17,27 +17,59 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.IO;
+
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
+using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.Box;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace SO115App.FakePersistenceJSon.Box
 {
     public class GetPersonale : IGetBoxPersonale
     {
+        private const string Filepath = "Fake/SquadreComposizione.json";
+
         public BoxPersonale Get()
         {
-            BoxPersonale personale = new BoxPersonale();
+            var personale = new BoxPersonale();
+            var numeroComponenti = 0;
+            var listaFunzionari = new List<Componente>();
 
-            string filepath = "Fake/ListaPersonale.json";
             string json;
-            using (StreamReader r = new StreamReader(filepath))
+            using (var r = new StreamReader(Filepath))
             {
                 json = r.ReadToEnd();
             }
 
-            personale = JsonConvert.DeserializeObject<BoxPersonale>(json);
+            var listaSquadreComposizione = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(json);
+            personale.SquadreAssegnate =
+                listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InViaggio) +
+                listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.SulPosto) +
+                listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InRientro);
+            personale.SquadreServizio =
+                listaSquadreComposizione.Count();
+
+            foreach (var partenza in listaSquadreComposizione)
+            {
+                numeroComponenti += partenza.Squadra.Componenti.Count();
+                foreach (var componente in partenza.Squadra.Componenti)
+                {
+                    if (componente.TecnicoGuardia1 || componente.TecnicoGuardia2 || componente.CapoTurno ||
+                        componente.FunGuardia)
+                    {
+                        listaFunzionari.Add(componente);
+                    }
+
+                }
+
+            }
+
+            personale.PersonaleTotale = numeroComponenti;
+            personale.Funzionari = listaFunzionari;
 
             return personale;
         }

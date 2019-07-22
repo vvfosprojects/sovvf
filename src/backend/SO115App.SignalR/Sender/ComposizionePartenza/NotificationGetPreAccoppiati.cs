@@ -40,7 +40,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         public async Task SendNotification(PreAccoppiatiCommand command)
         {
 
-            await _notificationHubContext.Clients.Group(command.codiceSede).SendAsync("NotifyGetPreAccoppiati", command.Filtro.preAccoppiati);
+            await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyGetPreAccoppiati", command.Filtro.preAccoppiati);
         }
     }
 }
