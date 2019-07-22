@@ -108,7 +108,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             {
                 new ChiusuraRichiesta(motivazione, this, DateTime.UtcNow, id);
             }
-            else if (stato != "Chiusa" && (statoRichiesta is Chiusa))
+            else if (stato.Equals("Riaperta") && !(statoRichiesta is Riaperta))
             {
                 new RiaperturaRichiesta(this, DateTime.UtcNow, id);
             }
