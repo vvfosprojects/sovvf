@@ -51,14 +51,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiSediMarker
     /// </summary>
     public class SintesiSediMarkerQueryHandler : IQueryHandler<SintesiSediMarkerQuery, SintesiSediMarkerResult>
     {
-        private readonly IGetSediMarker iGetSediMarker;
+        private readonly IGetSediMarker _iGetSediMarker;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         public SintesiSediMarkerQueryHandler(IGetSediMarker iGetSediMarker)
         {
-            this.iGetSediMarker = iGetSediMarker;
+            this._iGetSediMarker = iGetSediMarker;
         }
 
         /// <summary>
@@ -68,10 +68,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiSediMarker
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiSediMarkerResult Handle(SintesiSediMarkerQuery query)
         {
-            var sintesiSediMarker = new List<SintesiSedeMarker>();
-
-            sintesiSediMarker = iGetSediMarker.GetListaSediMarker();
-
+            var sintesiSediMarker = _iGetSediMarker.GetListaSediMarker();
+            
             return new SintesiSediMarkerResult()
             {
                 SintesiSediMarker = sintesiSediMarker

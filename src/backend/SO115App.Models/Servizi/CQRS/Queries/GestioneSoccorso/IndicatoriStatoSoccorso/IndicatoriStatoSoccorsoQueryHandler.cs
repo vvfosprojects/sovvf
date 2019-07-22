@@ -37,22 +37,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriSt
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice;
+        private readonly IGetUnitaOperativaPerCodice _getUnitaOperativaPerCodice;
 
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly ICercaRichiesteAssistenza cercaRichiesteAssistenza;
+        private readonly ICercaRichiesteAssistenza _cercaRichiesteAssistenza;
 
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly IGetNumeroMezziSoccorsoOraInServizio getNumeroMezziSoccorsoOraInServizio;
+        private readonly IGetNumeroMezziSoccorsoOraInServizio _getNumeroMezziSoccorsoOraInServizio;
 
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly IGetNumeroSquadreSoccorsoOraInServizio getNumeroSquadreSoccorsoOraInServizio;
+        private readonly IGetNumeroSquadreSoccorsoOraInServizio _getNumeroSquadreSoccorsoOraInServizio;
 
         /// <summary>
         ///   Costruttore del servizio
@@ -67,10 +67,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriSt
                 IGetNumeroMezziSoccorsoOraInServizio getNumeroMezziSoccorsoOraInServizio,
                 IGetNumeroSquadreSoccorsoOraInServizio getNumeroSquadreSoccorsoOraInServizio)
         {
-            this.getUnitaOperativaPerCodice = getUnitaOperativaPerCodice;
-            this.cercaRichiesteAssistenza = cercaRichiesteAssistenza;
-            this.getNumeroMezziSoccorsoOraInServizio = getNumeroMezziSoccorsoOraInServizio;
-            this.getNumeroSquadreSoccorsoOraInServizio = getNumeroSquadreSoccorsoOraInServizio;
+            this._getUnitaOperativaPerCodice = getUnitaOperativaPerCodice;
+            this._cercaRichiesteAssistenza = cercaRichiesteAssistenza;
+            this._getNumeroMezziSoccorsoOraInServizio = getNumeroMezziSoccorsoOraInServizio;
+            this._getNumeroSquadreSoccorsoOraInServizio = getNumeroSquadreSoccorsoOraInServizio;
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriSt
             };
 
             // estrarre le richieste di assistenza in corso relative alle Unità Operative interessate
-            var richiesteAssistenza = this.cercaRichiesteAssistenza.Get(filtro).ToArray();
+            var richiesteAssistenza = this._cercaRichiesteAssistenza.Get(filtro).ToArray();
 
             // estrae una lista che include una lista di eventi per ogni richiesta
             var eventi = richiesteAssistenza.Select(r => r.Eventi);
@@ -105,8 +105,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriSt
             };
 
 #warning Va realizzata una classe SelettoreOrganigramma che consenta di individuare un sottoinsieme di nodi dell'organigramma
-            result.NumeroTotaleMezziSoccorso = this.getNumeroMezziSoccorsoOraInServizio.Get(null);
-            result.NumeroTotaleSquadreSoccorso = this.getNumeroSquadreSoccorsoOraInServizio.Get(null);
+            result.NumeroTotaleMezziSoccorso = this._getNumeroMezziSoccorsoOraInServizio.Get(null);
+            result.NumeroTotaleSquadreSoccorso = this._getNumeroSquadreSoccorsoOraInServizio.Get(null);
             return result;
         }
     }

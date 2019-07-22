@@ -71,13 +71,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
         public void Handle(PreAccoppiatiCommand command)
         {
-            var preAccoppiati = new List<Classi.Composizione.PreAccoppiati>();
-            preAccoppiati = _iGetPreAccoppiati.Get(command);
+            var preAccoppiati = _iGetPreAccoppiati.Get(command);
 
-            List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = new List<Classi.Composizione.ComposizioneMezzi>();
-            List<Classi.Composizione.ComposizioneMezzi> composizioneMezziPrenotati = new List<Classi.Composizione.ComposizioneMezzi>();
-            Classi.Composizione.PreAccoppiati preAccoppiatoDaPrenotare = new Classi.Composizione.PreAccoppiati();
-            List<Classi.Composizione.PreAccoppiati> preAccoppiatiDaPrenotareToAdd = new List<Classi.Composizione.PreAccoppiati>();
+            var composizioneMezzi = new List<Classi.Composizione.ComposizioneMezzi>();
+            var composizioneMezziPrenotati = new List<Classi.Composizione.ComposizioneMezzi>();
+            var preAccoppiatoDaPrenotare = new Classi.Composizione.PreAccoppiati();
+            var preAccoppiatiDaPrenotareToAdd = new List<Classi.Composizione.PreAccoppiati>();
             //TODO PARTE CHIAMATA DB
 
             //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
@@ -107,7 +106,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 {
                     if (composizioneMezziPrenotati.Where(x => x.Mezzo.Codice == preAccoppiato.MezzoComposizione.Mezzo.Codice).ToList().Count > 0)
                     {
-                        preAccoppiatoDaPrenotare = preAccoppiati.Where(x => x.MezzoComposizione.Mezzo.Codice == preAccoppiato.MezzoComposizione.Mezzo.Codice).FirstOrDefault();
+                        preAccoppiatoDaPrenotare = preAccoppiati.FirstOrDefault(x => x.MezzoComposizione.Mezzo.Codice == preAccoppiato.MezzoComposizione.Mezzo.Codice);
                         if (preAccoppiatoDaPrenotare != null)
                         {
                             preAccoppiatiDaPrenotareToAdd.Add(preAccoppiatoDaPrenotare);

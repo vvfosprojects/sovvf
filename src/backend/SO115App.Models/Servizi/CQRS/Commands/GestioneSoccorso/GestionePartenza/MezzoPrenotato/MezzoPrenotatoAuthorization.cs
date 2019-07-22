@@ -4,6 +4,7 @@ using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using DomainModel.CQRS.Commands.MezzoPrenotato;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.Models.Classi.Utility;
 
 namespace DomainModel.CQRS.Commands.MezzoPrenotato
 {
@@ -11,6 +12,7 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
     {
 
         private readonly IPrincipal currentUser;
+        private readonly Costanti _costanti;
 
         public MezzoPrenotatoAuthorization(IPrincipal currentUser)
         {
@@ -19,16 +21,16 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
 
         public IEnumerable<AuthorizationResult> Authorize(MezzoPrenotatoCommand command)
         {
-            string username = this.currentUser.Identity.Name;
+            var username = this.currentUser.Identity.Name;
 
             if (this.currentUser.Identity.IsAuthenticated)
             {
-                Utente user = Utente.FindUserByUsername(username);
+                var user = Utente.FindUserByUsername(username);
                 if (user == null)
-                    yield return new AuthorizationResult("Utente non autorizzato");
+                    yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
             }
             else
-                yield return new AuthorizationResult("Utente non autorizzato");
+                yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
 
         }
     }

@@ -22,12 +22,14 @@ using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.Models.Classi.Utility;
 
 namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 {
     public class AggiornaStatoMezzoAuthorization : ICommandAuthorizer<AggiornaStatoMezzoCommand>
     {
         private readonly IPrincipal currentUser;
+        private readonly Costanti costanti;
 
         public AggiornaStatoMezzoAuthorization(IPrincipal currentUser)
         {
@@ -42,10 +44,10 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
             {
                 Utente user = Utente.FindUserByUsername(username);
                 if (user == null)
-                    yield return new AuthorizationResult("Utente non autorizzato");
+                    yield return new AuthorizationResult(costanti.UtenteNonAutorizzato);
             }
             else
-                yield return new AuthorizationResult("Utente non autorizzato");
+                yield return new AuthorizationResult(costanti.UtenteNonAutorizzato);
         }
     }
 }

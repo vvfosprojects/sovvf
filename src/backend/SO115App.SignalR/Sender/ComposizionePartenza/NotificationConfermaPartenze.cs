@@ -22,18 +22,10 @@ using AutoMapper;
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Models.Classi.Autenticazione;
-using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Marker;
-using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,24 +34,24 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
     public class NotificationConfermaPartenze : INotificationConfermaPartenze
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
-        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _BoxRichiestehandler;
-        private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _BoxMezzihandler;
+        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiestehandler;
+        private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezzihandler;
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonalehandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerhandler;
         private readonly IMapper _mapper;
 
-        public NotificationConfermaPartenze(IHubContext<NotificationHub> NotificationHubContext,
-            IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> BoxRichiestehandler,
-            IQueryHandler<BoxMezziQuery, BoxMezziResult> BoxMezzihandler,
-            IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> BoxPersonalehandler,
-            IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> SintesiRichiesteAssistenzaMarkerhandler,
+        public NotificationConfermaPartenze(IHubContext<NotificationHub> notificationHubContext,
+            IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiestehandler,
+            IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezzihandler,
+            IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonalehandler,
+            IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
             IMapper mapper)
         {
-            _notificationHubContext = NotificationHubContext;
-            _BoxRichiestehandler = BoxRichiestehandler;
-            _BoxMezzihandler = BoxMezzihandler;
-            _boxPersonalehandler = BoxPersonalehandler;
-            _sintesiRichiesteAssistenzaMarkerhandler = SintesiRichiesteAssistenzaMarkerhandler;
+            _notificationHubContext = notificationHubContext;
+            _boxRichiestehandler = boxRichiestehandler;
+            _boxMezzihandler = boxMezzihandler;
+            _boxPersonalehandler = boxPersonalehandler;
+            _sintesiRichiesteAssistenzaMarkerhandler = sintesiRichiesteAssistenzaMarkerhandler;
             _mapper = mapper;
         }
 
@@ -67,27 +59,17 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         {
             var mapper = new MapperRichiestaAssistenzaSuSintesi(_mapper);
 
-            var sintesi = new SintesiRichiesta();
             var richiesta = conferma.ConfermaPartenze.richiesta;
-            sintesi = mapper.Map(richiesta);
+            var sintesi = mapper.Map(richiesta);
 
             sintesi.Motivazione = sintesi.Descrizione;
-            //sintesi.Stato = "Assegnata";
-            //sintesi.Priorita = richiesta.PrioritaRichiesta;
 
             var boxRichiesteQuery = new BoxRichiesteQuery();
             var boxMezziQuery = new BoxMezziQuery();
             var boxPersonaleQuery = new BoxPersonaleQuery();
-            var boxInterventi = new BoxInterventi();
-            var boxMezzi = new BoxMezzi();
-            var boxPersonale = new BoxPersonale();
-
-            boxInterventi = (BoxInterventi)this._BoxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
-            boxMezzi = (BoxMezzi)this._BoxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
-            boxPersonale = (BoxPersonale)this._boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
-
-
-            boxPersonale.SquadreAssegnate = boxPersonale.SquadreAssegnate + sintesi.Partenze.Select(x => x.Partenza.Squadre).Count();
+            var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
+            var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
+            var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
 
             conferma.ConfermaPartenze.Chiamata = sintesi;
 
@@ -97,8 +79,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
 
             var query = new SintesiRichiesteAssistenzaMarkerQuery();
-            List<SintesiRichiestaMarker> listaSintesiMarker = new List<SintesiRichiestaMarker>();
-            listaSintesiMarker = (List<SintesiRichiestaMarker>)this._sintesiRichiesteAssistenzaMarkerhandler.Handle(query).SintesiRichiestaMarker;
+            var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(query).SintesiRichiestaMarker;
             await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.CodiceRichiesta == sintesi.CodiceRichiesta));
         }
     }

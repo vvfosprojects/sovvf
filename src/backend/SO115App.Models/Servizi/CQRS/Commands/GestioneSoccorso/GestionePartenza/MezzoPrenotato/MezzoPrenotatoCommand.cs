@@ -12,6 +12,6 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
     {
         public SO115App.API.Models.Classi.Composizione.MezzoPrenotato MezzoPrenotato { get; set; }
 
-        public string codiceSede { get; set; }
+        public string CodiceSede { get; set; }
     }
 }

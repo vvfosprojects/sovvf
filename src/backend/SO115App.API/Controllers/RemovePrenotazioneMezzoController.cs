@@ -72,7 +72,7 @@ namespace SO115App.API.Controllers
             var command = new SbloccaMezzoPrenotatoCommand()
             {
                 MezzoPrenotato = mezzoPrenotato,
-                codiceSede = codiceSede
+                CodiceSede = codiceSede
 
             };
 

@@ -75,7 +75,7 @@ namespace SO115App.API.Controllers
             var command = new PreAccoppiatiCommand()
             {
                 Filtro = filtri,
-                codiceSede = codiceSede
+                CodiceSede = codiceSede
             };
 
             try

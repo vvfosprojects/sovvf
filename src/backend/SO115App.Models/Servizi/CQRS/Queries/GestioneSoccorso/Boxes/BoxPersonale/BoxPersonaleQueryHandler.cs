@@ -28,11 +28,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
     /// </summary>
     public class BoxPersonaleQueryHandler : IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult>
     {
-        private readonly IGetBoxPersonale iGetBox;
+        private readonly IGetBoxPersonale _iGetBox;
 
         public BoxPersonaleQueryHandler(IGetBoxPersonale iGetBox)
         {
-            this.iGetBox = iGetBox;
+            this._iGetBox = iGetBox;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
         public BoxPersonaleResult Handle(BoxPersonaleQuery query)
         {
             // preparazione del DTO
-            var boxes = iGetBox.Get();
+            var boxes = _iGetBox.Get();
 
             return new BoxPersonaleResult()
             {

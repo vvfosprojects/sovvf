@@ -33,6 +33,6 @@ namespace DomainModel.CQRS.Commands.PreAccoppiati
         /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
         public FiltriComposizionePartenza Filtro { get; set; }
 
-        public string codiceSede { get; set; }
+        public string CodiceSede { get; set; }
     }
 }
