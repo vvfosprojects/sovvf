@@ -1,5 +1,7 @@
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-action.interface';
+import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
+import { RichiestaActionInterface } from '../../../../../shared/interface/richiesta-action.interface';
 
 export class GetRichieste {
     static readonly type = '[Richieste] Get Lista Richieste API';
@@ -40,6 +42,13 @@ export class AddRichiesta {
     }
 }
 
+export class CambiaStatoRichiesta {
+    static readonly type = '[Richieste] Cambia Stato Richiesta';
+
+    constructor(public idRichiesta: string, public stato: StatoRichiesta) {
+    }
+}
+
 export class SetIdChiamataInviaPartenza {
     static readonly type = '[Richieste] Set ID Chiamata Invia Partenza';
 
@@ -63,5 +72,12 @@ export class ActionMezzo {
     static readonly type = '[Richieste] Action Mezzo';
 
     constructor(public mezzoAction: MezzoActionInterface) {
+    }
+}
+
+export class ActionRichiesta {
+    static readonly type = '[Richieste] Action Richiesta';
+
+    constructor(public richiestaAction: RichiestaActionInterface) {
     }
 }

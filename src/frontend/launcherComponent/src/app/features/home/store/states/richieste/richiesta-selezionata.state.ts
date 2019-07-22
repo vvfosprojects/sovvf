@@ -36,7 +36,7 @@ export class RichiestaSelezionataState {
         // controlli per rimuovere, se presente, la richiesta in gestione
         const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
         if (state.idRichiestaSelezionata && richiestaGestione && state.idRichiestaSelezionata === richiestaGestione.id) {
-            dispatch(new ClearRichiestaGestione());
+            dispatch(new ClearRichiestaGestione(state.idRichiestaSelezionata));
         }
 
         // imposto la richiesta selezionata

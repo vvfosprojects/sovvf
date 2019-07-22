@@ -30,9 +30,10 @@ export const environment = {
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
         updateRichiesta: '/api/Chiamata/UpdateIntervento',
         eventiRichieste: '/api/ListaEventi',
+        aggiornaStatoRichiesta: '/api/AggiornaStatoRichiesta',
         attivitaUtente: '/api/AttivitaUtente',
         gestionePartenza: {
-            aggiornaStatoMezzo: 'api/GestionePartenza/AggiornaPartenza'
+            aggiornaStatoMezzo: '/api/GestionePartenza/AggiornaPartenza'
         },
         turno: '',  // Todo: controller mancante
         composizione: {

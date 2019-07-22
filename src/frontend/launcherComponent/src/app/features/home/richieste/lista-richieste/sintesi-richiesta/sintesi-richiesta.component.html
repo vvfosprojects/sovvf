@@ -261,10 +261,10 @@
                         </div>
                     </div>
 
-                    <!-- prima colonna II livello di dettaglio -->
+                    <!-- II livello di dettaglio -->
                     <div class="row mt-3">
+                        <!-- I colonna -->
                         <div class="col-md-3">
-
                             <!-- presa in carico -->
                             <div class="h6">
                                 <i class="guida fa fa-calendar-check-o fa-fw mr-1" ngbTooltip="Presa in carico"
@@ -353,16 +353,19 @@
                                     presente</span>
                             </div>
                         </div>
-                        <div class="col-md-6 bg-red border p-2 mb-1"
+
+                        <!-- II colonna -->
+                        <div class="col-md-6 bg-red border p-2"
                              [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">
                             <h5 class="my-0"><b>Partenze</b></h5>
-                            <div class="scroll-y" style="max-height: 90px">
+                            <div class="scroll-y" style="max-height: 115px">
                                 <app-lista-partenze [partenze]="richiesta.partenzeRichiesta" [inGestione]="inGestione"
                                                     (actionMezzo)="onActionMezzo($event)"></app-lista-partenze>
                             </div>
                         </div>
-                        <div class="col-md-3">
 
+                        <!-- III colonna-->
+                        <div class="col-md-3">
                             <!-- turno intervento -->
                             <div class="h6 text-right">
                                 <span *ngIf="richiesta?.turnoInserimentoChiamata || richiesta?.turnoIntervento; else nessunTurno">
@@ -449,8 +452,21 @@
                                 <span class="h6 badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">{{
                                     richiesta.complessita?.descrizione }}</span>
                             </div>
+
+                            <!-- Cambio Stato Richiesta (Gestione) -->
+                            <div *ngIf="inGestione"  class="border p-2 mt-2"
+                                 [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">
+                                <app-sintesi-richiesta-actions (actionRichiesta)="onActionRichiesta($event)"></app-sintesi-richiesta-actions>
+                            </div>
                         </div>
                     </div>
+
+<!--                    <div *ngIf="inGestione" class="row">-->
+<!--                        <div class="col-11 mx-auto border p-2 mt-2"-->
+<!--                             [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">-->
+<!--                            <app-sintesi-richiesta-actions></app-sintesi-richiesta-actions>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>

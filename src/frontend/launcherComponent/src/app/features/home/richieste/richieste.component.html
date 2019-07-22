@@ -7,7 +7,8 @@
                        (eventiRichiesta)="onVisualizzaEventiRichiesta($event)"
                        (outEspanso)="onSetEspanso($event)"
                        (outEspansoId)="toggleEspanso($event)"
-                       (actionMezzo)="onActionMezzo($event)">
+                       (actionMezzo)="onActionMezzo($event)"
+                       (actionRichiesta)="onActionRichiesta($event)">
 </app-richiesta-fissata>
 
 <app-lista-richieste [_split]="split" [richieste]="richieste" [ricerca]="ricerca" [richiestaFissata]="richiestaFissata"
@@ -23,5 +24,6 @@
                      (nuoveRichieste)="onNuoveRichieste()" (modificaRichiesta)="onModificaRichiesta($event)"
                      (gestioneRichiesta)="onGestioneRichiesta($event)"
                      (actionMezzo)="onActionMezzo($event)"
+                     (actionRichiesta)="onActionRichiesta($event)"
                      (outEspansoId)="toggleEspanso($event)">
 </app-lista-richieste>

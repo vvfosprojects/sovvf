@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 // Model
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Tipologia } from '../../../shared/model/tipologia.model';
@@ -27,6 +27,8 @@ import { TipoTerreno } from '../../../shared/model/tipo-terreno';
 import { TipoTerrenoEnum } from '../../../shared/enum/tipo-terreno.enum';
 import { EnteIntervenuto } from '../../../shared/model/ente-intervenuto';
 import { AttivitaUtente } from '../../../shared/model/attivita-utente.model';
+import { catchError, retry } from 'rxjs/operators';
+import { handleError } from '../../../shared/helper/handleError';
 
 
 @Injectable()
@@ -1029,6 +1031,10 @@ export class SintesiRichiesteServiceFake {
         this.store.dispatch(new UpdateRichiesta(richiesta));
 
         return of(null);
+    }
+
+    aggiornaStatoRichiesta(obj: any): Observable<any> {
+        return;
     }
 
     aggiornaStatoMezzo(obj: any) {

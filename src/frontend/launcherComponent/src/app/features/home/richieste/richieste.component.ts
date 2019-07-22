@@ -17,7 +17,7 @@ import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eve
 import { ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { ClearMarkerRichiestaHover, ClearMarkerRichiestaSelezionato, SetMarkerRichiestaHover, SetMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
-import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
+import { GetInitCentroMappa, GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
 import { SetRichiestaModifica } from '../store/actions/richieste/richiesta-modifica.actions';
 import { RichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
@@ -25,8 +25,9 @@ import { RichiesteEspanseState } from '../store/states/richieste/richieste-espan
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
-import { ActionMezzo } from '../store/actions/richieste/richieste.actions';
+import { ActionMezzo, ActionRichiesta } from '../store/actions/richieste/richieste.actions';
 import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
+import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 
 @Component({
     selector: 'app-richieste',
@@ -263,7 +264,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onGestioneRichiesta(richiesta: SintesiRichiesta) {
         this.store.dispatch(new SetRichiestaGestione(richiesta));
-        // this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
         // console.log('Gestione Richiesta', richiesta);
     }
 
@@ -278,6 +278,12 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onActionMezzo(actionMezzo: MezzoActionInterface) {
         this.store.dispatch(new ActionMezzo(actionMezzo));
+        // console.log('actionMezzo', actionMezzo);
+    }
+
+    onActionRichiesta(actionRichiesta: RichiestaActionInterface) {
+        this.store.dispatch(new ActionRichiesta(actionRichiesta));
+        // console.log('actionRichiesta', actionRichiesta);
     }
 
     toggleEspanso(id: string): void {

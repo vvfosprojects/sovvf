@@ -27,6 +27,7 @@
                                                (modificaRichiesta)="onModificaRichiesta($event)"
                                                (gestioneRichiesta)="onGestioneRichiesta($event)"
                                                (actionMezzo)="actionMezzo.emit($event)"
+                                               (actionRichiesta)="actionRichiesta.emit($event)"
                                                (outEspansoId)="outEspansoId.emit($event)"></app-sintesi-richiesta>
                     </div>
                     <div *ngIf="r === richiestaFissata" class="w-100 rounded card-shadow" [ngClass]="cardClasses(r)">
