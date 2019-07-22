@@ -26,7 +26,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 {
     public class UpDateStatoRichiestaValidator : ICommandValidator<UpDateStatoRichiestaCommand>
     {
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
         public IEnumerable<ValidationResult> Validate(UpDateStatoRichiestaCommand command)
         {
             /*
