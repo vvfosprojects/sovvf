@@ -26,7 +26,11 @@ export class Componente {
         /**
          * Indicazione del ruolo di rimpiazzo
          */
-        public rimpiazzo: boolean
+        public rimpiazzo: boolean,
+        /**
+         * Codice Fiscale del componente
+         */
+        public codiceFiscale?: string
     ) {
     }
 }
