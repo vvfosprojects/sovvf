@@ -29,7 +29,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
     public class BoxRichiesteAuthorizationQueryHandlerDecorator : IQueryAuthorizer<BoxRichiesteQuery, BoxRichiesteResult>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public BoxRichiesteAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {

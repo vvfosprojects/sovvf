@@ -30,7 +30,7 @@ namespace SO115App.API.Models.AOP.Authorization
     public class SintesiRichiesteAssistenzaMarkerAuthorizationQueryHandlerDecorator : IQueryAuthorizer<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public SintesiRichiesteAssistenzaMarkerAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {

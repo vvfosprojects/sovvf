@@ -29,7 +29,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
     public class UpDateStatoRichiestaAuthorization : ICommandAuthorizer<UpDateStatoRichiestaCommand>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public UpDateStatoRichiestaAuthorization(IPrincipal currentUser)
         {

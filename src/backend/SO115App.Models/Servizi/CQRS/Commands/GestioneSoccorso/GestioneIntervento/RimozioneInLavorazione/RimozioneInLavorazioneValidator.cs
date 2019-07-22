@@ -27,7 +27,7 @@ namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
 {
     public class RimozioneInLavorazioneValidator : ICommandValidator<RimozioneInLavorazioneCommand>
     {
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
         public IEnumerable<ValidationResult> Validate(RimozioneInLavorazioneCommand command)
         {
             // Controlli sul richiedente

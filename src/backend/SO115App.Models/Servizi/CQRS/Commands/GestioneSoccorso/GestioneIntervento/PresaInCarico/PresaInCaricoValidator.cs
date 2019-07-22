@@ -27,7 +27,7 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
 {
     public class PresaInCaricoValidator : ICommandValidator<PresaInCaricoCommand>
     {
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
         public IEnumerable<ValidationResult> Validate(PresaInCaricoCommand command)
         {
             // Controlli sul richiedente

@@ -26,7 +26,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 {
     public class AggiornaStatoMezzoValidator : ICommandValidator<AggiornaStatoMezzoCommand>
     {
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
         public IEnumerable<ValidationResult> Validate(AggiornaStatoMezzoCommand command)
         {
             // Controlli sul richiedente

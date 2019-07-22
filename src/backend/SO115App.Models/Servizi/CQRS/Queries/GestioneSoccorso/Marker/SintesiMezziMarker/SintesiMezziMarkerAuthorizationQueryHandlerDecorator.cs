@@ -29,7 +29,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiMezziMarker
     public class SintesiMezziMarkerAuthorizationQueryHandlerDecorator : IQueryAuthorizer<SintesiMezziMarkerQuery, SintesiMezziMarkerResult>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public SintesiMezziMarkerAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {

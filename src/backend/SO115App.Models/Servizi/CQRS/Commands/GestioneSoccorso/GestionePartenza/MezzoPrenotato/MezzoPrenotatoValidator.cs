@@ -9,7 +9,7 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
     public class MezzoPrenotatoValidator : ICommandValidator<MezzoPrenotatoCommand>
     {
         private readonly IGetMezzoPrenotato _mezzo;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public MezzoPrenotatoValidator(IGetMezzoPrenotato iGetMezzoPrenotato)
         {

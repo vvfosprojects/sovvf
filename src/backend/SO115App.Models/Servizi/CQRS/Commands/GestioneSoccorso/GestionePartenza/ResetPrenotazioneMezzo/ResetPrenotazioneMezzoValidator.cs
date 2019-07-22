@@ -10,7 +10,7 @@ namespace DomainModel.CQRS.Commands.ResetPrenotazioneMezzo
     public class ResetPrenotazioneMezzoValidator : ICommandValidator<ResetPrenotazioneMezzoCommand>
     {
         private readonly IGetResetPrenotazioneMezzo _mezzo;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public ResetPrenotazioneMezzoValidator(IGetResetPrenotazioneMezzo iGetMezzoPrenotato)
         {

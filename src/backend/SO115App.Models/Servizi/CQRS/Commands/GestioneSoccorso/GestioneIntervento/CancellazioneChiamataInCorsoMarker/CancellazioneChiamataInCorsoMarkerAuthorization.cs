@@ -29,7 +29,7 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
     public class CancellazioneChiamataInCorsoMarkerAuthorization : ICommandAuthorizer<CancellazioneChiamataInCorsoMarkerCommand>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public CancellazioneChiamataInCorsoMarkerAuthorization(IPrincipal currentUser)
         {

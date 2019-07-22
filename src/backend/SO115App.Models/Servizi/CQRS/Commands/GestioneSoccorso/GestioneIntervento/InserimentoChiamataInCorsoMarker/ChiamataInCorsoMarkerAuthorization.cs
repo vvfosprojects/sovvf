@@ -29,11 +29,11 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
     public class ChiamataInCorsoMarkerAuthorization : ICommandAuthorizer<ChiamataInCorsoMarkerCommand>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public ChiamataInCorsoMarkerAuthorization(IPrincipal currentUser)
         {
-            this._currentUser = currentUser;
+            _currentUser = currentUser;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(ChiamataInCorsoMarkerCommand command)

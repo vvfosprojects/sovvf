@@ -29,7 +29,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
     public class NavbarAuthorizationQueryHandlerDecorator : IQueryAuthorizer<NavbarQuery, NavbarResult>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public NavbarAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {

@@ -29,7 +29,7 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
     public class PresaInCaricoAuthorization : ICommandAuthorizer<PresaInCaricoCommand>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public PresaInCaricoAuthorization(IPrincipal currentUser)
         {

@@ -30,7 +30,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     public class ComposizioneSquadreAuthorizationQueryHandlerDecorator : IQueryAuthorizer<ComposizioneSquadreQuery, ComposizioneSquadreResult>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public ComposizioneSquadreAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {

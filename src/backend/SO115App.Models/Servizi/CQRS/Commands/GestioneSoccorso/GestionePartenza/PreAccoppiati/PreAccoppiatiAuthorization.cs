@@ -31,7 +31,7 @@ namespace DomainModel.CQRS.Commands.PreAccoppiati
     public class PreAccoppiatiAuthorization : ICommandAuthorizer<PreAccoppiatiCommand>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public PreAccoppiatiAuthorization(IPrincipal currentUser)
         {

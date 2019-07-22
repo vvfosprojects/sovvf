@@ -29,7 +29,7 @@ namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
     public class RimozioneInLavorazioneAuthorization : ICommandAuthorizer<RimozioneInLavorazioneCommand>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public RimozioneInLavorazioneAuthorization(IPrincipal currentUser)
         {

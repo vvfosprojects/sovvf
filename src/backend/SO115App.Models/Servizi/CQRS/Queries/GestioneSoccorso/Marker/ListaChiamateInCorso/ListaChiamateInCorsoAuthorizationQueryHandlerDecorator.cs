@@ -29,7 +29,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMa
     public class ListaChiamateInCorsoAuthorizationQueryHandlerDecorator : IQueryAuthorizer<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public ListaChiamateInCorsoAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {

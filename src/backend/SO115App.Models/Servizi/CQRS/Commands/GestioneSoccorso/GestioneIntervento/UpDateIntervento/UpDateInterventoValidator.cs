@@ -26,7 +26,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 {
     public class UpDateInterventoValidator : ICommandValidator<UpDateInterventoCommand>
     {
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public IEnumerable<ValidationResult> Validate(UpDateInterventoCommand command)
         {

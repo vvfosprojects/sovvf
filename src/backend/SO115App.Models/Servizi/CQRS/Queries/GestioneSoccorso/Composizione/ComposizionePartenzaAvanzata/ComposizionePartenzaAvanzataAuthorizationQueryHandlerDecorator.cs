@@ -29,7 +29,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     public class ComposizionePartenzaAvanzataAuthorizationQueryHandlerDecorator : IQueryAuthorizer<ComposizionePartenzaAvanzataQuery, ComposizionePartenzaAvanzataResult>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public ComposizionePartenzaAvanzataAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {

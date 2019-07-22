@@ -26,7 +26,7 @@ namespace DomainModel.CQRS.Commands.RimozionePresaInCarico
 {
     public class RimozionePresaInCaricoValidator : ICommandValidator<RimozionePresaInCaricoCommand>
     {
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
         public IEnumerable<ValidationResult> Validate(RimozionePresaInCaricoCommand command)
         {
             // Controlli sul richiedente

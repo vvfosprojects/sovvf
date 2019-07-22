@@ -13,7 +13,7 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
     {
 
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public ConfermaPartenzeAuthorization(IPrincipal currentUser)
         {

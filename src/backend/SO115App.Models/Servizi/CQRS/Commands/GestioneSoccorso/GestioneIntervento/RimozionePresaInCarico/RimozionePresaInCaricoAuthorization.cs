@@ -29,7 +29,7 @@ namespace DomainModel.CQRS.Commands.RimozionePresaInCarico
     public class RimozionePresaInCaricoAuthorization : ICommandAuthorizer<RimozionePresaInCaricoCommand>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public RimozionePresaInCaricoAuthorization(IPrincipal currentUser)
         {

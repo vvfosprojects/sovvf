@@ -29,7 +29,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
     {
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
         private readonly IGetRichiestaById _getRichiestaById;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public UpDateStatoRichiestaCommandHandler(
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,

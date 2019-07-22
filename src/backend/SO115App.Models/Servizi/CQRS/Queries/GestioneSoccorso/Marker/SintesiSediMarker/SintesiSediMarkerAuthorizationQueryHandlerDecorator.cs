@@ -30,7 +30,7 @@ namespace SO115App.API.Models.AOP.Authorization
     public class SintesiSediMarkerAuthorizationQueryHandlerDecorator : IQueryAuthorizer<SintesiSediMarkerQuery, SintesiSediMarkerResult>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public SintesiSediMarkerAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {

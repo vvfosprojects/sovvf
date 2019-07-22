@@ -12,7 +12,7 @@ namespace DomainModel.CQRS.Commands.ResetPrenotazioneMezzo
     {
 
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public ResetPrenotazioneMezzoAuthorization(IPrincipal currentUser)
         {

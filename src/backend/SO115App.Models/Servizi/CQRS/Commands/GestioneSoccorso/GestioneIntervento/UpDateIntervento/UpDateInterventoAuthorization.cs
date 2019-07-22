@@ -29,7 +29,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
     public class UpDateInterventoAuthorization : ICommandAuthorizer<UpDateInterventoCommand>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public UpDateInterventoAuthorization(IPrincipal currentUser)
         {

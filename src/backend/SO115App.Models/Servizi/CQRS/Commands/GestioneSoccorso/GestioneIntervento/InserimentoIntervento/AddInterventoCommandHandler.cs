@@ -32,7 +32,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
     {
         private readonly ISaveRichiestaAssistenza _saveRichiestaAssistenza;
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza, IGeneraCodiceRichiesta generaCodiceRichiesta)
         {

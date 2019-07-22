@@ -12,7 +12,7 @@ namespace DomainModel.CQRS.Commands.SbloccaMezzoPrenotato
     {
 
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public SbloccaMezzoPrenotatoAuthorization(IPrincipal currentUser)
         {

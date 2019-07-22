@@ -26,7 +26,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 {
     public class AddInterventoValidator : ICommandValidator<AddInterventoCommand>
     {
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
         public IEnumerable<ValidationResult> Validate(AddInterventoCommand command)
         {
             // Controlli sul richiedente

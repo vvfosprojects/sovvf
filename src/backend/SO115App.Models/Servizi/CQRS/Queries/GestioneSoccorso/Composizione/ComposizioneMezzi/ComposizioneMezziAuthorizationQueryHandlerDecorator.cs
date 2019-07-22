@@ -29,7 +29,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     public class ComposizioneMezziAuthorizationQueryHandlerDecorator : IQueryAuthorizer<ComposizioneMezziQuery, ComposizioneMezziResult>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public ComposizioneMezziAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {

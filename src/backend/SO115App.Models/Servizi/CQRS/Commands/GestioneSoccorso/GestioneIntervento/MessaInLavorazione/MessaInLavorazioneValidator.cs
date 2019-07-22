@@ -26,7 +26,7 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
 {
     public class MessaInLavorazioneValidator : ICommandValidator<MessaInLavorazioneCommand>
     {
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
         public IEnumerable<ValidationResult> Validate(MessaInLavorazioneCommand command)
         {
             // Controlli sul richiedente

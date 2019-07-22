@@ -33,7 +33,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
         private bool _mezziTuttiInSede = true;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         public AggiornaStatoMezzoCommandHandler(
             IGetRichiestaById getRichiestaById,

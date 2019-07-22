@@ -29,7 +29,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
     public class ListaEventiAuthorizationQueryHandlerDecorator : IQueryAuthorizer<ListaEventiQuery, ListaEventiResult>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
 
         public ListaEventiAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
