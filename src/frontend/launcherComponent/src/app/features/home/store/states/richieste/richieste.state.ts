@@ -72,7 +72,7 @@ export class RichiesteState {
     }
 
     constructor(private richiesteService: SintesiRichiesteService,
-                private store: Store) {
+        private store: Store) {
     }
 
     @Action(GetRichieste, { cancelUncompleted: true })
@@ -187,7 +187,7 @@ export class RichiesteState {
     @Action(ActionRichiesta)
     actionRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: ActionRichiesta) {
         const obj = action.richiestaAction;
-        console.log('Obj', obj);
+        // console.log('Obj', obj);
         this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }

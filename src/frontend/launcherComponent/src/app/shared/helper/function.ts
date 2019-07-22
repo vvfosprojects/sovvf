@@ -4,6 +4,8 @@ import { CentroMappa } from '../../features/home/maps/maps-model/centro-mappa.mo
 import { Mezzo } from '../model/mezzo.model';
 import { StatoMezzo } from '../enum/stato-mezzo.enum';
 import { StatoMezzoActions } from '../enum/stato-mezzo-actions.enum';
+import { SintesiRichiesta } from '../model/sintesi-richiesta.model';
+import { StatoRichiestaActions } from '../enum/stato-richiesta-actions.enum';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
@@ -117,23 +119,23 @@ export function roundTodecimal(value: number, exp) {
 export function calcolaActionSuggeritaMezzo(mezzo: Mezzo) {
     let actionSuggerita = '';
     switch (mezzo.stato) {
-        case StatoMezzoActions.InViaggio:
+        case StatoMezzo.InViaggio:
             actionSuggerita = StatoMezzoActions.SulPosto;
             break;
-        case StatoMezzoActions.SulPosto:
+        case StatoMezzo.SulPosto:
             actionSuggerita = StatoMezzoActions.InRientro;
             break;
-        case StatoMezzoActions.InRientro:
+        case StatoMezzo.InRientro:
             actionSuggerita = StatoMezzoActions.Rientrato;
             break;
-        case StatoMezzoActions.InSede:
+        case StatoMezzo.InSede:
             actionSuggerita = StatoMezzoActions.InViaggio;
             break;
     }
     return actionSuggerita;
 }
 
-export function statoMezzoEnumToStringArray(exceptStato?: string[]) {
+export function statoMezzoActionsEnumToStringArray(exceptStato?: string[]) {
     let stringArray = [];
     for (const val in StatoMezzoActions) {
         if (typeof StatoMezzoActions[val] === 'string') {
@@ -163,6 +165,67 @@ export function statoMezzoColor(stato: string) {
             break;
         case StatoMezzo.InRientro:
             _returnColor = 'primary';
+            break;
+    }
+    return _returnColor;
+}
+
+export function calcolaActionSuggeritaRichiesta(richiesta: SintesiRichiesta) {
+    let actionSuggerita = '';
+    switch (richiesta.stato) {
+        case StatoRichiesta.Chiusa:
+            actionSuggerita = 'Riaperta';
+            break;
+        case StatoRichiesta.Sospesa:
+            actionSuggerita = StatoRichiesta.Chiusa;
+            break;
+        case StatoRichiesta.Assegnata:
+            actionSuggerita = StatoRichiesta.Chiusa;
+            break;
+        case StatoRichiesta.Presidiata:
+            actionSuggerita = StatoRichiesta.Chiusa;
+            break;
+        case StatoRichiesta.Chiamata:
+            actionSuggerita = StatoRichiesta.Chiusa;
+            break;
+    }
+    return actionSuggerita;
+}
+
+
+export function statoRichiestaActionsEnumToStringArray(exceptStato?: string[]) {
+    let stringArray = [];
+    for (const val in StatoRichiestaActions) {
+        if (typeof StatoRichiestaActions[val] === 'string') {
+            stringArray.push(StatoRichiestaActions[val]);
+        }
+    }
+    // se c'è un'eccezione filtro l'array eliminando lo stato
+    if (exceptStato && exceptStato.length > 0) {
+        exceptStato.forEach((stato: string) => {
+            stringArray = stringArray.filter((s: string) => s !== stato);
+        });
+    }
+    return stringArray;
+}
+
+export function statoRichiestaColor(stato: string) {
+    let _returnColor = '';
+    switch (stato) {
+        case StatoRichiesta.Chiusa:
+            _returnColor = 'secondary';
+            break;
+        case StatoRichiesta.Assegnata:
+            _returnColor = 'info';
+            break;
+        case StatoRichiesta.Presidiata:
+            _returnColor = 'success';
+            break;
+        case StatoRichiesta.Sospesa:
+            _returnColor = 'warning';
+            break;
+        case StatoRichiesta.Chiamata:
+            _returnColor = 'danger';
             break;
     }
     return _returnColor;

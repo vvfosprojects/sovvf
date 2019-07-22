@@ -1,6 +1,7 @@
-import { StatoRichiesta } from '../enum/stato-richiesta.enum';
+import { StatoRichiestaActions } from '../enum/stato-richiesta-actions.enum';
 
 export interface RichiestaActionInterface {
     idRichiesta: string;
-    stato: StatoRichiesta;
+    stato: StatoRichiestaActions;
+    note?: string;
 }

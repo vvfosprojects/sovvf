@@ -60,9 +60,9 @@ export class SintesiRichiestaComponent {
     StatoRichiesta = StatoRichiesta;
 
     constructor(private modalService: NgbModal,
-                popoverConfig: NgbPopoverConfig,
-                tooltipConfig: NgbTooltipConfig,
-                intl: TimeagoIntl) {
+        popoverConfig: NgbPopoverConfig,
+        tooltipConfig: NgbTooltipConfig,
+        intl: TimeagoIntl) {
 
         intl.strings = italianStrings;
         intl.changes.next();
@@ -156,10 +156,8 @@ export class SintesiRichiestaComponent {
         this.actionMezzo.emit(_mezzoAction);
     }
 
-    onActionRichiesta(stato: StatoRichiesta) {
-        const _richiestaAction = {} as RichiestaActionInterface;
-        _richiestaAction.idRichiesta = this.richiesta.id;
-        _richiestaAction.stato = stato;
-        this.actionRichiesta.emit(_richiestaAction);
+    onActionRichiesta(richiestaAction: RichiestaActionInterface) {
+        richiestaAction.idRichiesta = this.richiesta.id;
+        this.actionRichiesta.emit(richiestaAction);
     }
 }

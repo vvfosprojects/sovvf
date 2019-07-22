@@ -456,7 +456,7 @@
                             <!-- Cambio Stato Richiesta (Gestione) -->
                             <div *ngIf="inGestione"  class="border p-2 mt-2"
                                  [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">
-                                <app-sintesi-richiesta-actions (actionRichiesta)="onActionRichiesta($event)"></app-sintesi-richiesta-actions>
+                                <app-sintesi-richiesta-actions [richiesta]="richiesta" (actionRichiesta)="onActionRichiesta($event)"></app-sintesi-richiesta-actions>
                             </div>
                         </div>
                     </div>
