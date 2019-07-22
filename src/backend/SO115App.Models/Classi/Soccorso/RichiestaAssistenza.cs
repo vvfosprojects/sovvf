@@ -54,7 +54,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         private List<Evento> eventi;
 
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         /// <summary>
         ///   Costruisce una nuova istanza di <see cref="RichiestaAssistenza" />

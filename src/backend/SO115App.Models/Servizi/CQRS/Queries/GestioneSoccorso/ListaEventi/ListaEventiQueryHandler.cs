@@ -56,7 +56,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
     public class ListaEventiQueryHandler : IQueryHandler<ListaEventiQuery, ListaEventiResult>
     {
         private readonly IGetListaEventi _iEventi;
-        private readonly Costanti _costanti;
+        private readonly Costanti _costanti = new Costanti();
 
         /// <summary>
         ///   Costruttore della classe
@@ -114,21 +114,27 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case Telefonata _:
                     risEvento = _costanti.Telefonata;
                     break;
+
                 case InizioPresaInCarico _:
                     risEvento = _costanti.InizioPresaInCarico;
                     break;
+
                 case RiaperturaRichiesta _:
                     risEvento = _costanti.RiaperturaRichiesta;
                     break;
+
                 case ComposizionePartenze _:
                     risEvento = _costanti.ComposizionePartenza;
                     break;
+
                 case ChiusuraRichiesta _:
                     risEvento = _costanti.ChiusuraRichiesta;
                     break;
+
                 case ArrivoSulPosto _:
                     risEvento = _costanti.ArrivoSulPosto;
                     break;
+
                 case RichiestaPresidiata _:
                     risEvento = _costanti.RichiestaPresidiata;
                     break;
