@@ -415,8 +415,10 @@ namespace Modello.Test.Classi.Soccorso
         [Test]
         public void Un_evento_con_richiesta_null_non_puo_essere_creato()
         {
+            var richiesta = new RichiestaAssistenza();
+            richiesta = null;
             Assert.That(
-                () => new UscitaPartenza(null, "ABC123", DateTime.Now, "Fonte"),
+                () => new UscitaPartenza(richiesta, "ABC123", DateTime.Now, "Fonte"),
                 Throws.ArgumentNullException);
         }
 

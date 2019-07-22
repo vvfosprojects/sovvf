@@ -62,7 +62,6 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
         public async Task SendNotification(UpDateInterventoCommand intervento)
         {
-            MapperSintesiSuIntervento Mapper = new MapperSintesiSuIntervento(_mapper);
             var SintesiRichiesteAssistenzaquery = new SintesiRichiesteAssistenzaQuery();
             var ListaSintesi = (List<SintesiRichiesta>)this.sintesiRichiesteAssistenzahandler.Handle(SintesiRichiesteAssistenzaquery).SintesiRichiesta;
 
