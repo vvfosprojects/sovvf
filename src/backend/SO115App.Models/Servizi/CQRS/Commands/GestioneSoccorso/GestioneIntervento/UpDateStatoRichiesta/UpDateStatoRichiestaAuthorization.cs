@@ -17,35 +17,38 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.Models.Classi.Utility;
+using System.Collections.Generic;
+using System.Security.Principal;
 
 namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 {
     public class UpDateStatoRichiestaAuthorization : ICommandAuthorizer<UpDateStatoRichiestaCommand>
     {
-        private readonly IPrincipal currentUser;
+        private readonly IPrincipal _currentUser;
+        private readonly Costanti _costanti;
 
         public UpDateStatoRichiestaAuthorization(IPrincipal currentUser)
         {
-            this.currentUser = currentUser;
+            this._currentUser = currentUser;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(UpDateStatoRichiestaCommand command)
         {
-            string username = this.currentUser.Identity.Name;
+            var username = this._currentUser.Identity.Name;
+            var user = Utente.FindUserByUsername(username);
 
-            if (this.currentUser.Identity.IsAuthenticated)
+            if (_currentUser.Identity.IsAuthenticated)
             {
-                Utente user = Utente.FindUserByUsername(username);
+
                 if (user == null)
-                    yield return new AuthorizationResult("Utente non autorizzato");
+                    yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
             }
             else
-                yield return new AuthorizationResult("Utente non autorizzato");
+                yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
         }
     }
 }

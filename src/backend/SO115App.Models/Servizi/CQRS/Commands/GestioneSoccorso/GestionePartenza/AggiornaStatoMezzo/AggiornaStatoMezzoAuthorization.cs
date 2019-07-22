@@ -28,26 +28,27 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 {
     public class AggiornaStatoMezzoAuthorization : ICommandAuthorizer<AggiornaStatoMezzoCommand>
     {
-        private readonly IPrincipal currentUser;
-        private readonly Costanti costanti;
+        private readonly IPrincipal _currentUser;
+        private readonly Costanti _costanti;
 
         public AggiornaStatoMezzoAuthorization(IPrincipal currentUser)
         {
-            this.currentUser = currentUser;
+            _currentUser = currentUser;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(AggiornaStatoMezzoCommand command)
         {
-            string username = this.currentUser.Identity.Name;
+            var username = this._currentUser.Identity.Name;
+            var user = Utente.FindUserByUsername(username);
 
-            if (this.currentUser.Identity.IsAuthenticated)
+            if (_currentUser.Identity.IsAuthenticated)
             {
-                Utente user = Utente.FindUserByUsername(username);
+
                 if (user == null)
-                    yield return new AuthorizationResult(costanti.UtenteNonAutorizzato);
+                    yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
             }
             else
-                yield return new AuthorizationResult(costanti.UtenteNonAutorizzato);
+                yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
         }
     }
 }

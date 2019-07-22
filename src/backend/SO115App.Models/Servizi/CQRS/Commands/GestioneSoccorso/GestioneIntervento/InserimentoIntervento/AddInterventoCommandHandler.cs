@@ -24,6 +24,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using System;
+using SO115App.Models.Classi.Utility;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
 {
@@ -31,6 +32,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
     {
         private readonly ISaveRichiestaAssistenza _saveRichiestaAssistenza;
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
+        private readonly Costanti _costanti;
 
         public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza, IGeneraCodiceRichiesta generaCodiceRichiesta)
         {
@@ -65,7 +67,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
             richiesta.SincronizzaRilevanza(command.Chiamata.RilevanzaGrave, command.Chiamata.RilevanzaStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione, command.Chiamata.IstanteRicezioneRichiesta);
 
-            if (command.Chiamata.Stato == "Chiusa")
+            if (command.Chiamata.Stato == _costanti.RichiestaChiusa)
             {
                 new ChiusuraRichiesta("", richiesta, command.Chiamata.IstanteRicezioneRichiesta, command.Chiamata.Operatore.Id);
             }

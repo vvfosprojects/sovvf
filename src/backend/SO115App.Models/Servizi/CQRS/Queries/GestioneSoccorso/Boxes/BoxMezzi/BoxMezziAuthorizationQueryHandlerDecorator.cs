@@ -41,7 +41,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
             var username = this._currentUser.Identity.Name;
             var user = Utente.FindUserByUsername(username);
 
-            if (this._currentUser.Identity.IsAuthenticated)
+            if (_currentUser.Identity.IsAuthenticated)
             {
                 
                 if (user == null)

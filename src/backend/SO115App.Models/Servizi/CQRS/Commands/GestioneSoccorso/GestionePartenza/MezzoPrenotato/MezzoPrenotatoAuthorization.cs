@@ -21,11 +21,11 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
 
         public IEnumerable<AuthorizationResult> Authorize(MezzoPrenotatoCommand command)
         {
-            var username = this.currentUser.Identity.Name;
+            var username = currentUser.Identity.Name;
+            var user = Utente.FindUserByUsername(username);
 
-            if (this.currentUser.Identity.IsAuthenticated)
+            if (currentUser.Identity.IsAuthenticated)
             {
-                var user = Utente.FindUserByUsername(username);
                 if (user == null)
                     yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
             }

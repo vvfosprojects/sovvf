@@ -33,7 +33,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly IGetRichiestaAssistenzaById getRichiestaAssistenzaById;
+        private readonly IGetRichiestaAssistenzaById _getRichiestaAssistenzaById;
 
         /// <summary>
         ///   Costruttore del servizio
@@ -42,7 +42,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         public SintesiRichiestaAssistenzaQueryHandler(
                 IGetRichiestaAssistenzaById getRichiestaAssistenzaById)
         {
-            this.getRichiestaAssistenzaById = getRichiestaAssistenzaById;
+            this._getRichiestaAssistenzaById = getRichiestaAssistenzaById;
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         public SintesiRichiestaAssistenzaResult Handle(SintesiRichiestaAssistenzaQuery query)
         {
             // estrae la richieste di assistenza indicata
-            var richiesteAssistenza = this.getRichiestaAssistenzaById.Get(query.IdRichiesta);
+            var richiesteAssistenza = this._getRichiestaAssistenzaById.Get(query.IdRichiesta);
 
             var result = new SintesiRichiestaAssistenzaResult()
             {

@@ -33,13 +33,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.Deseleziona
         /// <summary>
         ///   Dipendenza che restituisce l'operatore correntemente autenticato.
         /// </summary>
-        private readonly IGetOperatoreAutenticato getOperatoreAutenticato;
+        private readonly IGetOperatoreAutenticato _getOperatoreAutenticato;
 
         /// <summary>
         ///   Servizio che imposta la deselezione di una DisponibilitaSquadra per la risoluzione
         ///   delle contese.
         /// </summary>
-        private readonly ITestAndSetDeselezioneDisponibilitaSquadra testAndSetDeselezioneDisponibilitaSquadra;
+        private readonly ITestAndSetDeselezioneDisponibilitaSquadra _testAndSetDeselezioneDisponibilitaSquadra;
 
         /// <summary>
         ///   Costruttore del servizio
@@ -50,8 +50,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.Deseleziona
             IGetOperatoreAutenticato getOperatoreAutenticato,
             ITestAndSetDeselezioneDisponibilitaSquadra testAndSetDeselezioneDisponibilitaSquadra)
         {
-            this.getOperatoreAutenticato = getOperatoreAutenticato;
-            this.testAndSetDeselezioneDisponibilitaSquadra = testAndSetDeselezioneDisponibilitaSquadra;
+            _getOperatoreAutenticato = getOperatoreAutenticato;
+            _testAndSetDeselezioneDisponibilitaSquadra = testAndSetDeselezioneDisponibilitaSquadra;
         }
 
         /// <summary>
@@ -61,10 +61,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.Deseleziona
         /// <remarks>Nel caso che la deselezione non vada a buon fine, il Command solleva un'eccezione</remarks>
         public void Handle(DeselezionaSquadraCommand command)
         {
-            var operatore = this.getOperatoreAutenticato.Get();
+            var operatore = _getOperatoreAutenticato.Get();
 
             // Test And Set DeselezioneRisorsa su DisponibilitaSquadra
-            this.testAndSetDeselezioneDisponibilitaSquadra.Esegui(operatore, command.Ticket);
+            _testAndSetDeselezioneDisponibilitaSquadra.Esegui(operatore, command.Ticket);
         }
     }
 }

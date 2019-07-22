@@ -27,21 +27,21 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 {
     public class UpDateStatoRichiestaCommandHandler : ICommandHandler<UpDateStatoRichiestaCommand>
     {
-        private readonly IUpDateRichiestaAssistenza _UpDateRichiestaAssistenza;
+        private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly Costanti _costanti;
 
         public UpDateStatoRichiestaCommandHandler(
-            IUpDateRichiestaAssistenza UpDateRichiestaAssistenza,
-            IGetRichiestaById GetRichiestaById)
+            IUpDateRichiestaAssistenza updateRichiestaAssistenza,
+            IGetRichiestaById getRichiestaById)
         {
-            this._UpDateRichiestaAssistenza = UpDateRichiestaAssistenza;
-            this._getRichiestaById = GetRichiestaById;
+            _updateRichiestaAssistenza = updateRichiestaAssistenza;
+            _getRichiestaById = getRichiestaById;
         }
 
         public void Handle(UpDateStatoRichiestaCommand command)
         {
-            RichiestaAssistenza richiesta = _getRichiestaById.Get(command.IdRichiesta);
+            var richiesta = _getRichiestaById.Get(command.IdRichiesta);
 
             if (command.StatoRichiesta.Equals(_costanti.RichiestaChiusa) || command.StatoRichiesta.Equals(_costanti.RichiestaSospesa))
             {
@@ -56,7 +56,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 
             richiesta.SincronizzaStatoRichiesta(command.StatoRichiesta, richiesta.StatoRichiesta, command.IdOperatore, command.Note);
 
-            this._UpDateRichiestaAssistenza.UpDate(richiesta);
+            _updateRichiestaAssistenza.UpDate(richiesta);
         }
     }
 }

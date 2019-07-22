@@ -72,8 +72,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         public void Handle(PreAccoppiatiCommand command)
         {
             var preAccoppiati = _iGetPreAccoppiati.Get(command);
-
-            var composizioneMezzi = new List<Classi.Composizione.ComposizioneMezzi>();
             var composizioneMezziPrenotati = new List<Classi.Composizione.ComposizioneMezzi>();
             var preAccoppiatoDaPrenotare = new Classi.Composizione.PreAccoppiati();
             var preAccoppiatiDaPrenotareToAdd = new List<Classi.Composizione.PreAccoppiati>();
@@ -87,9 +85,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 json = r.ReadToEnd();
             }
-            composizioneMezzi = JsonConvert.DeserializeObject<List<Classi.Composizione.ComposizioneMezzi>>(json);
+            var composizioneMezzi = JsonConvert.DeserializeObject<List<Classi.Composizione.ComposizioneMezzi>>(json);
 
-            foreach (Classi.Composizione.ComposizioneMezzi mezzo in composizioneMezzi)
+            foreach (var mezzo in composizioneMezzi)
             {
                 if (mezzo.IstanteScadenzaSelezione != null && mezzo.IstanteScadenzaSelezione >= DateTime.Now)
                 {

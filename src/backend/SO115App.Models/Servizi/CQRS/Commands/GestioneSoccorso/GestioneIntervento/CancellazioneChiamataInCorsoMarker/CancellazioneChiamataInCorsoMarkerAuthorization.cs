@@ -22,30 +22,32 @@ using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.Models.Classi.Utility;
 
 namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
 {
     public class CancellazioneChiamataInCorsoMarkerAuthorization : ICommandAuthorizer<CancellazioneChiamataInCorsoMarkerCommand>
     {
-        private readonly IPrincipal currentUser;
+        private readonly IPrincipal _currentUser;
+        private readonly Costanti _costanti;
 
         public CancellazioneChiamataInCorsoMarkerAuthorization(IPrincipal currentUser)
         {
-            this.currentUser = currentUser;
+            this._currentUser = currentUser;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(CancellazioneChiamataInCorsoMarkerCommand command)
         {
-            string username = this.currentUser.Identity.Name;
+            var username = _currentUser.Identity.Name;
+            var user = Utente.FindUserByUsername(username);
 
-            if (this.currentUser.Identity.IsAuthenticated)
+            if (_currentUser.Identity.IsAuthenticated)
             {
-                Utente user = Utente.FindUserByUsername(username);
                 if (user == null)
-                    yield return new AuthorizationResult("Utente non autorizzato");
+                    yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
             }
             else
-                yield return new AuthorizationResult("Utente non autorizzato");
+                yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
         }
     }
 }

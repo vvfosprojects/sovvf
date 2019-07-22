@@ -35,28 +35,29 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
         private readonly IGetRichiestaById _getRichiestaById;
 
         private readonly IGetUtenteById _getUtenteById;
-        private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
+        private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
 
         public PresaInCaricoCommandHandler(
-            IGetRichiestaById GetRichiestaById,
-            IGetUtenteById GetUtenteById,
-            IUpDateRichiestaAssistenza UpDateRichiestaAssistenza
+            IGetRichiestaById getRichiestaById,
+            IGetUtenteById getUtenteById,
+            IUpDateRichiestaAssistenza updateRichiestaAssistenza
             )
         {
-            _getRichiestaById = GetRichiestaById;
-            _getUtenteById = GetUtenteById;
-            _upDateRichiestaAssistenza = UpDateRichiestaAssistenza;
+            _getRichiestaById = getRichiestaById;
+            _getUtenteById = getUtenteById;
+            _updateRichiestaAssistenza = updateRichiestaAssistenza;
         }
 
         public void Handle(PresaInCaricoCommand command)
         {
-            RichiestaAssistenza richiesta = _getRichiestaById.Get(command.IdRichiesta);
-            Utente utente = _getUtenteById.GetUtenteById(command.IdUtente);
-            AttivitaUtente attivita = new AttivitaUtente();
-
-            attivita.IdUtente = utente.Id;
-            attivita.Nominativo = utente.Nome + " " + utente.Cognome;
-            attivita.DataInizioAttivita = DateTime.UtcNow;
+            var richiesta = _getRichiestaById.Get(command.IdRichiesta);
+            var utente = _getUtenteById.GetUtenteById(command.IdUtente);
+            var attivita = new AttivitaUtente
+            {
+                IdUtente = utente.Id,
+                Nominativo = utente.Nome + " " + utente.Cognome,
+                DataInizioAttivita = DateTime.UtcNow
+            };
 
             richiesta.Id = richiesta.Codice;
             if (richiesta.ListaUtentiPresaInCarico != null)
@@ -67,8 +68,10 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
             }
             else
             {
-                richiesta.ListaUtentiPresaInCarico = new List<AttivitaUtente>();
-                richiesta.ListaUtentiPresaInCarico.Add(attivita);
+                richiesta.ListaUtentiPresaInCarico = new List<AttivitaUtente>
+                {
+                    attivita
+                };
             }
 
             if (command.Chiamata.ListaUtentiPresaInCarico != null)
@@ -79,7 +82,7 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
                 command.Chiamata.ListaUtentiPresaInCarico.Add(attivita);
             }
 
-            this._upDateRichiestaAssistenza.UpDate(richiesta);
+            _updateRichiestaAssistenza.UpDate(richiesta);
         }
     }
 }

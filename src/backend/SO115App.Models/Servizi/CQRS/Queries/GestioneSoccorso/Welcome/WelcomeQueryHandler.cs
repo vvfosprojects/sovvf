@@ -36,33 +36,33 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
     /// </summary>
     public class WelcomeQueryHandler : IQueryHandler<WelcomeQuery, WelcomeResult>
     {
-        private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _BoxMezzihandler;
-        private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _BoxPersonalehandler;
-        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _BoxRichiestehandler;
-        private readonly IQueryHandler<SintesiMezziMarkerQuery, SintesiMezziMarkerResult> _SintesiMezziMarkerhandler;
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _SintesiRichiesteAssistenzahandler;
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _SintesiRichiesteAssistenzaMarkerhandler;
-        private readonly IQueryHandler<SintesiSediMarkerQuery, SintesiSediMarkerResult> _SintesiSediMarkerhandler;
-        private readonly IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> _listaChiamateInCorsoMarkerhandler;
+        private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezziHandler;
+        private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
+        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
+        private readonly IQueryHandler<SintesiMezziMarkerQuery, SintesiMezziMarkerResult> _sintesiMezziMarkerHandler;
+        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
+        private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
+        private readonly IQueryHandler<SintesiSediMarkerQuery, SintesiSediMarkerResult> _sintesiSediMarkerHandler;
+        private readonly IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> _listaChiamateInCorsoMarkerHandler;
 
-        public WelcomeQueryHandler(IQueryHandler<BoxMezziQuery, BoxMezziResult> BoxMezzihandler,
-            IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> BoxPersonalehandler,
-            IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> BoxRichiestehandler,
-            IQueryHandler<SintesiMezziMarkerQuery, SintesiMezziMarkerResult> SintesiMezziMarkerhandler,
-            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> SintesiRichiesteAssistenzahandler,
-            IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> SintesiRichiesteAssistenzaMarkerhandler,
-            IQueryHandler<SintesiSediMarkerQuery, SintesiSediMarkerResult> SintesiSediMarkerhandler,
-            IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> ListaChiamateInCorsoMarkerhandler
+        public WelcomeQueryHandler(IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
+            IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
+            IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
+            IQueryHandler<SintesiMezziMarkerQuery, SintesiMezziMarkerResult> sintesiMezziMarkerHandler,
+            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
+            IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
+            IQueryHandler<SintesiSediMarkerQuery, SintesiSediMarkerResult> sintesiSediMarkerHandler,
+            IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> listaChiamateInCorsoMarkerHandler
             )
         {
-            this._BoxMezzihandler = BoxMezzihandler;
-            this._BoxPersonalehandler = BoxPersonalehandler;
-            this._BoxRichiestehandler = BoxRichiestehandler;
-            this._SintesiMezziMarkerhandler = SintesiMezziMarkerhandler;
-            this._SintesiRichiesteAssistenzahandler = SintesiRichiesteAssistenzahandler;
-            this._SintesiRichiesteAssistenzaMarkerhandler = SintesiRichiesteAssistenzaMarkerhandler;
-            this._SintesiSediMarkerhandler = SintesiSediMarkerhandler;
-            this._listaChiamateInCorsoMarkerhandler = ListaChiamateInCorsoMarkerhandler;
+            this._boxMezziHandler = boxMezziHandler;
+            this._boxPersonaleHandler = boxPersonaleHandler;
+            this._boxRichiesteHandler = boxRichiesteHandler;
+            this._sintesiMezziMarkerHandler = sintesiMezziMarkerHandler;
+            this._sintesiRichiesteAssistenzaHandler = sintesiRichiesteAssistenzaHandler;
+            this._sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
+            this._sintesiSediMarkerHandler = sintesiSediMarkerHandler;
+            this._listaChiamateInCorsoMarkerHandler = listaChiamateInCorsoMarkerHandler;
         }
 
         /// <summary>
@@ -72,25 +72,25 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         /// <returns>Elenco dei mezzi disponibili</returns>
         public WelcomeResult Handle(WelcomeQuery query)
         {
-            var BoxMezziquery = new BoxMezziQuery();
-            var BoxPersonalequery = new BoxPersonaleQuery();
-            var BoxRichiestequery = new BoxRichiesteQuery();
-            var SintesiMezziMarkerquery = new SintesiMezziMarkerQuery();
-            var SintesiRichiesteAssistenzaquery = new SintesiRichiesteAssistenzaQuery();
+            var boxMezziQuery = new BoxMezziQuery();
+            var boxPersonaleQuery = new BoxPersonaleQuery();
+            var boxRichiesteQuery = new BoxRichiesteQuery();
+            var sintesiMezziMarkerQuery = new SintesiMezziMarkerQuery();
+            var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery();
             var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery();
-            var SintesiSediMarkerquery = new SintesiSediMarkerQuery();
-            var Listaquery = new ListaChiamateInCorsoMarkerQuery();
+            var sintesiSediMarkerQuery = new SintesiSediMarkerQuery();
+            var listaQuery = new ListaChiamateInCorsoMarkerQuery();
 
             var welcome = new SO115App.Models.Classi.Condivise.Welcome()
             {
-                BoxListaInterventi = this._BoxRichiestehandler.Handle(BoxRichiestequery).BoxRichieste,
-                BoxListaMezzi = this._BoxMezzihandler.Handle(BoxMezziquery).BoxMezzi,
-                BoxListaPersonale = this._BoxPersonalehandler.Handle(BoxPersonalequery).BoxPersonale,
-                ListaChiamateInCorso = (List<ChiamateInCorso>)this._listaChiamateInCorsoMarkerhandler.Handle(Listaquery).ListaChiamateInCorsoMarker,
-                ListaMezziMarker = (List<SintesiMezzoMarker>)this._SintesiMezziMarkerhandler.Handle(SintesiMezziMarkerquery).SintesiMezziMarker,
-                ListaSintesi = (List<SintesiRichiesta>)this._SintesiRichiesteAssistenzahandler.Handle(SintesiRichiesteAssistenzaquery).SintesiRichiesta,
-                ListaSediMarker = (List<SintesiSedeMarker>)this._SintesiSediMarkerhandler.Handle(SintesiSediMarkerquery).SintesiSediMarker,
-                ListaRichiesteMarker = (List<SintesiRichiestaMarker>)this._SintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker
+                BoxListaInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste,
+                BoxListaMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi,
+                BoxListaPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale,
+                ListaChiamateInCorso = (List<ChiamateInCorso>)_listaChiamateInCorsoMarkerHandler.Handle(listaQuery).ListaChiamateInCorsoMarker,
+                ListaMezziMarker = (List<SintesiMezzoMarker>)_sintesiMezziMarkerHandler.Handle(sintesiMezziMarkerQuery).SintesiMezziMarker,
+                ListaSintesi = (List<SintesiRichiesta>)_sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta,
+                ListaSediMarker = (List<SintesiSedeMarker>)_sintesiSediMarkerHandler.Handle(sintesiSediMarkerQuery).SintesiSediMarker,
+                ListaRichiesteMarker = (List<SintesiRichiestaMarker>)_sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker
             };
 
             return new WelcomeResult()

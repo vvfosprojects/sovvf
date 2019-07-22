@@ -24,7 +24,7 @@ namespace DomainModel.CQRS.Commands.SbloccaMezzoPrenotato
             var username = this._currentUser.Identity.Name;
             var user = Utente.FindUserByUsername(username);
 
-            if (this._currentUser.Identity.IsAuthenticated)
+            if (_currentUser.Identity.IsAuthenticated)
             {
                 
                 if (user == null)

@@ -20,19 +20,21 @@
 using System.Collections.Generic;
 using System.Web.Http.ModelBinding;
 using CQRS.Commands.Validators;
+using SO115App.Models.Classi.Utility;
 using ValidationResult = CQRS.Validation.ValidationResult;
 
 namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
 {
     public class RimozioneInLavorazioneValidator : ICommandValidator<RimozioneInLavorazioneCommand>
     {
+        private readonly Costanti _costanti;
         public IEnumerable<ValidationResult> Validate(RimozioneInLavorazioneCommand command)
         {
             // Controlli sul richiedente
 
             if (command.IdRichiesta.Length == 0)
             {
-                yield return new ValidationResult("Id Richiesta non valido");
+                yield return new ValidationResult(_costanti.IdRichiestaNonValida);
             }
         }
     }

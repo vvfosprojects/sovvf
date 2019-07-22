@@ -33,12 +33,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.Deseleziona
         /// <summary>
         ///   Dipendenza che restituisce l'operatore correntemente autenticato.
         /// </summary>
-        private readonly IGetOperatoreAutenticato getOperatoreAutenticato;
+        private readonly IGetOperatoreAutenticato _getOperatoreAutenticato;
 
         /// <summary>
         ///   Servizio che imposta la deselezione di una DisponibilitaMezzo per la risoluzione delle contese.
         /// </summary>
-        private readonly ITestAndSetDeselezioneDisponibilitaMezzo testAndSetDeselezioneDisponibilitaMezzo;
+        private readonly ITestAndSetDeselezioneDisponibilitaMezzo _testAndSetDeselezioneDisponibilitaMezzo;
 
         /// <summary>
         ///   Costruttore del servizio
@@ -49,8 +49,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.Deseleziona
             IGetOperatoreAutenticato getOperatoreAutenticato,
             ITestAndSetDeselezioneDisponibilitaMezzo testAndSetDeselezioneDisponibilitaMezzo)
         {
-            this.getOperatoreAutenticato = getOperatoreAutenticato;
-            this.testAndSetDeselezioneDisponibilitaMezzo = testAndSetDeselezioneDisponibilitaMezzo;
+            _getOperatoreAutenticato = getOperatoreAutenticato;
+            _testAndSetDeselezioneDisponibilitaMezzo = testAndSetDeselezioneDisponibilitaMezzo;
         }
 
         /// <summary>
@@ -60,10 +60,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.Deseleziona
         /// <remarks>Nel caso che la deselezione non vada a buon fine, il Command solleva un'eccezione</remarks>
         public void Handle(DeselezionaMezzoCommand command)
         {
-            var operatore = this.getOperatoreAutenticato.Get();
+            var operatore = this._getOperatoreAutenticato.Get();
 
             // Test And Set DeselezioneRisorsa su DisponibilitaMezzo
-            this.testAndSetDeselezioneDisponibilitaMezzo.Esegui(operatore, command.CodiceMezzo);
+            _testAndSetDeselezioneDisponibilitaMezzo.Esegui(operatore, command.CodiceMezzo);
         }
     }
 }
