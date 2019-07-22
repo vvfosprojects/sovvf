@@ -19,8 +19,8 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
 namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
@@ -29,6 +29,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
     {
         private readonly IUpDateRichiestaAssistenza _UpDateRichiestaAssistenza;
         private readonly IGetRichiestaById _getRichiestaById;
+        private readonly Costanti _costanti;
 
         public UpDateStatoRichiestaCommandHandler(
             IUpDateRichiestaAssistenza UpDateRichiestaAssistenza,
@@ -42,13 +43,13 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
         {
             RichiestaAssistenza richiesta = _getRichiestaById.Get(command.IdRichiesta);
 
-            if (command.StatoRichiesta.Equals("Chiusa") || command.StatoRichiesta.Equals("Sospesa"))
+            if (command.StatoRichiesta.Equals(_costanti.RichiestaChiusa) || command.StatoRichiesta.Equals(_costanti.RichiestaSospesa))
             {
                 foreach (var composizione in richiesta.Partenze)
                 {
-                    if (!composizione.Partenza.Mezzo.Stato.Equals("In Rientro") && !composizione.Partenza.Mezzo.Stato.Equals("In Sede"))
+                    if (!composizione.Partenza.Mezzo.Stato.Equals(_costanti.MezzoInRientro) && !composizione.Partenza.Mezzo.Stato.Equals(_costanti.MezzoInSede))
                     {
-                        composizione.Partenza.Mezzo.Stato = "In Rientro";
+                        composizione.Partenza.Mezzo.Stato = _costanti.MezzoInRientro;
                     }
                 }
             }

@@ -35,6 +35,7 @@ using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Classi.Utenti;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Soccorso;
+using SO115App.Models.Classi.Utility;
 
 namespace SO115App.API.Models.Classi.Soccorso
 {
@@ -52,6 +53,8 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   Contiene la lista degli eventi considerati di interesse per la richiesta.
         /// </summary>
         private List<Evento> eventi;
+
+        private readonly Costanti _costanti;
 
         /// <summary>
         ///   Costruisce una nuova istanza di <see cref="RichiestaAssistenza" />
@@ -104,19 +107,19 @@ namespace SO115App.API.Models.Classi.Soccorso
 
         internal void SincronizzaStatoRichiesta(string stato, IStatoRichiesta statoRichiesta, string id, string motivazione)
         {
-            if (stato == "Chiusa" && !(statoRichiesta is Chiusa))
+            if (stato == _costanti.RichiestaChiusa && !(statoRichiesta is Chiusa))
             {
                 new ChiusuraRichiesta(motivazione, this, DateTime.UtcNow, id);
             }
-            else if (stato.Equals("Riaperta") && !(statoRichiesta is Riaperta))
+            else if (stato.Equals(_costanti.RichiestaRiaperta) && !(statoRichiesta is Riaperta))
             {
                 new RiaperturaRichiesta(this, DateTime.UtcNow, id);
             }
-            else if (stato.Equals("Assegnata") && !(statoRichiesta is Assegnata))
+            else if (stato.Equals(_costanti.RichiestaAssegnata) && !(statoRichiesta is Assegnata))
             {
                 new AssegnataRichiesta(this, DateTime.UtcNow, id);
             }
-            else if (stato.Equals("Presidiata") && !(statoRichiesta is Presidiata))
+            else if (stato.Equals(_costanti.RichiestaPresidiata) && !(statoRichiesta is Presidiata))
             {
                 new RichiestaPresidiata(this, DateTime.UtcNow, id);
             }
