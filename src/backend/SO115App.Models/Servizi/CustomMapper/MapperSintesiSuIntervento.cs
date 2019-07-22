@@ -10,7 +10,7 @@ namespace SO115App.Models.Servizi.CustomMapper
 
         public MapperSintesiSuIntervento(IMapper mapper)
         {
-            this._mapper = mapper;
+            _mapper = mapper;
         }
 
         public Intervento Map(SintesiRichiesta richiesta)

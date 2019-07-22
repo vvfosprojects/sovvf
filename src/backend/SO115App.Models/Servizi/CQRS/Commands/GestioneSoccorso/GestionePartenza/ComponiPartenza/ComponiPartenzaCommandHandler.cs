@@ -33,24 +33,24 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.ComponiPart
         /// <summary>
         ///   Servizio che eroga il contenuto di una Richiesta di Assistenza
         /// </summary>
-        private readonly IGetRichiestaAssistenzaById getRichiestaAssistenzaById;
+        private readonly IGetRichiestaAssistenzaById _getRichiestaAssistenzaById;
 
         /// <summary>
         ///   Servizio che salva una Richiesta di Assistenza
         /// </summary>
-        private readonly ISaveRichiestaAssistenza saveRichiestaAssistenza;
+        private readonly ISaveRichiestaAssistenza _saveRichiestaAssistenza;
 
         /// <summary>
         ///   Costruttore del servizio
         /// </summary>
-        /// <param name="getRichiestaAssistenzaById">Istanza del servizio <see cref="getRichiestaAssistenzaById" />.</param>
-        /// <param name="saveRichiestaAssistenza">Istanza del servizio <see cref="saveRichiestaAssistenza" /></param>
+        /// <param name="getRichiestaAssistenzaById">Istanza del servizio <see cref="_getRichiestaAssistenzaById" />.</param>
+        /// <param name="saveRichiestaAssistenza">Istanza del servizio <see cref="_saveRichiestaAssistenza" /></param>
         public ComponiPartenzaCommandHandler(
             IGetRichiestaAssistenzaById getRichiestaAssistenzaById,
             ISaveRichiestaAssistenza saveRichiestaAssistenza)
         {
-            this.getRichiestaAssistenzaById = getRichiestaAssistenzaById;
-            this.saveRichiestaAssistenza = saveRichiestaAssistenza;
+            _getRichiestaAssistenzaById = getRichiestaAssistenzaById;
+            _saveRichiestaAssistenza = saveRichiestaAssistenza;
         }
 
         /// <summary>
@@ -59,14 +59,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.ComponiPart
         /// <param name="command">Il DTO del command.</param>
         public void Handle(ComponiPartenzaCommand command)
         {
-            var richiestaAssistenza = this.getRichiestaAssistenzaById.Get(command.IdRichiestaAssistenza);
+            var richiestaAssistenza = this._getRichiestaAssistenzaById.Get(command.IdRichiestaAssistenza);
 
             foreach (var cp in command.ComposizioniPartenza)
             {
                 richiestaAssistenza.AddEvento(cp);
             }
 
-            this.saveRichiestaAssistenza.Save(richiestaAssistenza);
+            _saveRichiestaAssistenza.Save(richiestaAssistenza);
         }
     }
 }

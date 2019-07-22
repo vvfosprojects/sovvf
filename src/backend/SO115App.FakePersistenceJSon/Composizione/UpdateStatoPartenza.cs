@@ -67,7 +67,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
             if (ListaRichieste != null)
             {
                 List<RichiestaAssistenza> ListaRichiesteNew = new List<RichiestaAssistenza>();
-                richiestaDTO = ListaRichieste.Where(x => x.Codice == command.richiesta.Codice).FirstOrDefault();
+                richiestaDTO = ListaRichieste.Where(x => x.Codice == command.Richiesta.Codice).FirstOrDefault();
                 ListaRichieste.Remove(richiestaDTO);
 
                 foreach (RichiestaAssistenzaDTO richiesta in ListaRichieste)
@@ -75,7 +75,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
                     ListaRichiesteNew.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
                 }
 
-                ListaRichiesteNew.Add(command.richiesta);
+                ListaRichiesteNew.Add(command.Richiesta);
 
                 string jsonListaPresente = JsonConvert.SerializeObject(ListaRichiesteNew);
                 System.IO.File.WriteAllText(@"Fake/ListaRichiesteAssistenza.json", jsonListaPresente);
@@ -83,13 +83,13 @@ namespace SO115App.FakePersistenceJSon.Composizione
             else
             {
                 List<RichiestaAssistenza> ListaRichiesteNew = new List<RichiestaAssistenza>();
-                ListaRichiesteNew.Add(command.richiesta);
+                ListaRichiesteNew.Add(command.Richiesta);
 
                 string jsonNew = JsonConvert.SerializeObject(ListaRichiesteNew);
                 System.IO.File.WriteAllText(@"Fake/ListaRichiesteAssistenza.json", jsonNew);
             }
 
-            foreach (ComposizionePartenze composizione in command.richiesta.Partenze)
+            foreach (ComposizionePartenze composizione in command.Richiesta.Partenze)
             {
                 foreach (ComposizioneMezzi composizioneMezzo in ListaMezzi)
                 {

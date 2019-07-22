@@ -32,20 +32,20 @@ namespace DomainModel.CQRS.Commands.RimozionePresaInCarico
     public class RimozionePresaInCaricoCommandHandler : ICommandHandler<RimozionePresaInCaricoCommand>
     {
         private readonly IGetRichiestaById _getRichiestaById;
-        private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
+        private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
 
         public RimozionePresaInCaricoCommandHandler(
-            IGetRichiestaById GetRichiestaById,
-            IUpDateRichiestaAssistenza UpDateRichiestaAssistenza
+            IGetRichiestaById getRichiestaById,
+            IUpDateRichiestaAssistenza updateRichiestaAssistenza
             )
         {
-            _getRichiestaById = GetRichiestaById;
-            _upDateRichiestaAssistenza = UpDateRichiestaAssistenza;
+            _getRichiestaById = getRichiestaById;
+            _updateRichiestaAssistenza = updateRichiestaAssistenza;
         }
 
         public void Handle(RimozionePresaInCaricoCommand command)
         {
-            RichiestaAssistenza richiesta = _getRichiestaById.Get(command.IdRichiesta);
+            var richiesta = _getRichiestaById.Get(command.IdRichiesta);
 
             richiesta.Id = richiesta.Codice;
 
@@ -62,7 +62,7 @@ namespace DomainModel.CQRS.Commands.RimozionePresaInCarico
                 }
             }
 
-            this._upDateRichiestaAssistenza.UpDate(richiesta);
+            _updateRichiestaAssistenza.UpDate(richiesta);
         }
     }
 }

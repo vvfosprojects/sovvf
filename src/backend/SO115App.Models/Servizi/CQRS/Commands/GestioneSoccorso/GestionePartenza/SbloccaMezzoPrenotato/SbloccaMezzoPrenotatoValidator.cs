@@ -14,7 +14,7 @@ namespace DomainModel.CQRS.Commands.SbloccaMezzoPrenotato
 
         public SbloccaMezzoPrenotatoValidator(IGetSbloccaMezzoPrenotato iGetMezzoPrenotato)
         {
-            this._mezzo = iGetMezzoPrenotato;
+            _mezzo = iGetMezzoPrenotato;
         }
         public IEnumerable<ValidationResult> Validate(SbloccaMezzoPrenotatoCommand command)
         {

@@ -11,7 +11,7 @@ namespace SO115App.Models.Servizi.CustomMapper
 
         public MapperRichiestaAssistenzaSuSintesi(IMapper mapper)
         {
-            this._mapper = mapper;
+            _mapper = mapper;
         }
 
         public SintesiRichiesta Map(RichiestaAssistenza richiesta)

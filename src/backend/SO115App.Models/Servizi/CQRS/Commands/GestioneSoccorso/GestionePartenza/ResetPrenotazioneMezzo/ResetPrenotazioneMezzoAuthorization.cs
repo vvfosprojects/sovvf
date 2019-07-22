@@ -21,11 +21,12 @@ namespace DomainModel.CQRS.Commands.ResetPrenotazioneMezzo
 
         public IEnumerable<AuthorizationResult> Authorize(ResetPrenotazioneMezzoCommand command)
         {
-            string username = this._currentUser.Identity.Name;
+            var username = this._currentUser.Identity.Name;
+            var user = Utente.FindUserByUsername(username);
 
-            if (this._currentUser.Identity.IsAuthenticated)
+            if (_currentUser.Identity.IsAuthenticated)
             {
-                Utente user = Utente.FindUserByUsername(username);
+
                 if (user == null)
                     yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
             }

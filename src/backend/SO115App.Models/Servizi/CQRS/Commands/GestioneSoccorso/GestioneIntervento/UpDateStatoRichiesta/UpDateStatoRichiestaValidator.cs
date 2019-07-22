@@ -19,12 +19,14 @@
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
 using CQRS.Commands.Validators;
+using SO115App.Models.Classi.Utility;
 using ValidationResult = CQRS.Validation.ValidationResult;
 
 namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 {
     public class UpDateStatoRichiestaValidator : ICommandValidator<UpDateStatoRichiestaCommand>
     {
+        private readonly Costanti _costanti;
         public IEnumerable<ValidationResult> Validate(UpDateStatoRichiestaCommand command)
         {
             /*
@@ -41,7 +43,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
             {
                 if (string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome))
                 {
-                    yield return new ValidationResult("E' presente il nome del richiedente ma non il suo cognome");
+                    yield return new ValidationResult(_costanti.PresenteNomeNonCognome);
                 }
             }
 
@@ -49,7 +51,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
             {
                 if (!string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome) && !string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Nome))
                 {
-                    yield return new ValidationResult("Se è presente un nominativo per una persona fisica non può essere presente una ragione sociale");
+                    yield return new ValidationResult(_costanti.SelezionataPersonaFisica);
                 }
             }
         }

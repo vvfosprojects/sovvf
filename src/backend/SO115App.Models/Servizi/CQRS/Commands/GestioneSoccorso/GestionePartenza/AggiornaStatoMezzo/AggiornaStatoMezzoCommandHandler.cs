@@ -122,7 +122,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 
             }
 
-            command.richiesta = richiesta;
+            command.Richiesta = richiesta;
 
             _updateStatoPartenze.Update(command);
         }

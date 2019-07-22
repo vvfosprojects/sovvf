@@ -19,9 +19,6 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
-using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
@@ -29,23 +26,23 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 {
     public class UpDateInterventoCommandHandler : ICommandHandler<UpDateInterventoCommand>
     {
-        private readonly IUpDateRichiestaAssistenza _UpDateRichiestaAssistenza;
+        private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly IGetIdByCodice _getGetIdRichiestaByCodice;
 
         public UpDateInterventoCommandHandler(
-            IUpDateRichiestaAssistenza UpDateRichiestaAssistenza,
-            IGetRichiestaById GetRichiestaById,
-            IGetIdByCodice GetIdRichiestaByCodice)
+            IUpDateRichiestaAssistenza updateRichiestaAssistenza,
+            IGetRichiestaById getRichiestaById,
+            IGetIdByCodice getIdRichiestaByCodice)
         {
-            this._UpDateRichiestaAssistenza = UpDateRichiestaAssistenza;
-            this._getRichiestaById = GetRichiestaById;
-            this._getGetIdRichiestaByCodice = GetIdRichiestaByCodice;
+            _updateRichiestaAssistenza = updateRichiestaAssistenza;
+            _getRichiestaById = getRichiestaById;
+            _getGetIdRichiestaByCodice = getIdRichiestaByCodice;
         }
 
         public void Handle(UpDateInterventoCommand command)
         {
-            RichiestaAssistenza richiesta = _getRichiestaById.Get(command.Chiamata.Codice);
+            var richiesta = _getRichiestaById.Get(command.Chiamata.Codice);
 
             richiesta.Tipologie = command.Chiamata.Tipologie;
             richiesta.ZoneEmergenza = command.Chiamata.ZoneEmergenza;
@@ -73,7 +70,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
             richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.Chiamata.Operatore.Id, command.Chiamata.Motivazione);
 
-            this._UpDateRichiestaAssistenza.UpDate(richiesta);
+            _updateRichiestaAssistenza.UpDate(richiesta);
         }
     }
 }

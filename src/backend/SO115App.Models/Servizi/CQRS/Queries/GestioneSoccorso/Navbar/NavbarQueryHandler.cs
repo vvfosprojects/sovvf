@@ -41,8 +41,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         /// <returns>Elenco dei mezzi disponibili</returns>
         public NavbarResult Handle(NavbarQuery query)
         {
-            var navbars = new Classi.Navbar.Navbar();
-            navbars = _iGetNavbar.Get();
+            var navbars = _iGetNavbar.Get();
             return new NavbarResult()
             {
                 Navbar = navbars

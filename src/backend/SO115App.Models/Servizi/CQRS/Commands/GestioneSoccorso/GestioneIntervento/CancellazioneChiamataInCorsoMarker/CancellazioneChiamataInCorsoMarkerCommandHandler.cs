@@ -28,7 +28,7 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
 
         public CancellazioneChiamataInCorsoCommandHandler(IDeleteChiamataInCorso iDelChiamataInCorso)
         {
-            this._iDelChiamataInCorso = iDelChiamataInCorso;
+            _iDelChiamataInCorso = iDelChiamataInCorso;
         }
 
         public void Handle(CancellazioneChiamataInCorsoMarkerCommand command)

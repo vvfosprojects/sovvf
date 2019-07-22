@@ -31,6 +31,6 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 
         public SintesiRichiesta Chiamata { get; set; }
 
-        public RichiestaAssistenza richiesta { get; set; }
+        public RichiestaAssistenza Richiesta { get; set; }
     }
 }

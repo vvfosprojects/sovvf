@@ -59,9 +59,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <summary>
         ///   Istanza del servizio
         /// </summary>
-        private readonly ICercaRichiesteAssistenza cercaRichiesteAssistenza;
-
-        private readonly IGetListaSintesi iGetListaSintesi;
+        private readonly ICercaRichiesteAssistenza _cercaRichiesteAssistenza;
+        private readonly IGetListaSintesi _iGetListaSintesi;
         private readonly IMapper _mapper;
 
         /// <summary>
@@ -74,8 +73,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
 
         public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza, IGetListaSintesi iGetListaSintesi, IMapper mapper)
         {
-            this.cercaRichiesteAssistenza = cercaRichiesteAssistenza;
-            this.iGetListaSintesi = iGetListaSintesi;
+            this._cercaRichiesteAssistenza = cercaRichiesteAssistenza;
+            this._iGetListaSintesi = iGetListaSintesi;
             _mapper = mapper;
         }
 
@@ -86,13 +85,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
         {
-            MapperSintesiSuIntervento MapperSuIntervento = new MapperSintesiSuIntervento(_mapper);
+            var mapperSuIntervento = new MapperSintesiSuIntervento(_mapper);
 
-            var ListaSintesi = iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
+            var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
 
             return new SintesiRichiesteAssistenzaResult()
             {
-                SintesiRichiesta = ListaSintesi
+                SintesiRichiesta = listaSintesi
             };
         }
     }

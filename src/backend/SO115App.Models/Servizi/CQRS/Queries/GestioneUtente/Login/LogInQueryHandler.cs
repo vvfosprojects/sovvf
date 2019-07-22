@@ -60,7 +60,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-            var TokenDescriptor = new SecurityTokenDescriptor
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claim),
                 Expires = DateTime.UtcNow.AddDays(1),
@@ -69,7 +69,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var token = tokenHandler.CreateToken(TokenDescriptor);
+            var token = tokenHandler.CreateToken(tokenDescriptor);
 
             utente.Token = tokenHandler.WriteToken(token);
 

@@ -17,15 +17,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Web.Http.ModelBinding;
 using CQRS.Commands.Validators;
+using SO115App.Models.Classi.Utility;
+using System.Collections.Generic;
 using ValidationResult = CQRS.Validation.ValidationResult;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
 {
     public class AddInterventoValidator : ICommandValidator<AddInterventoCommand>
     {
+        private readonly Costanti _costanti;
         public IEnumerable<ValidationResult> Validate(AddInterventoCommand command)
         {
             // Controlli sul richiedente
@@ -33,7 +34,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             {
                 if (string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome))
                 {
-                    yield return new ValidationResult("E' presente il nome del richiedente ma non il suo cognome");
+                    yield return new ValidationResult(_costanti.PresenteNomeNonCognome);
                 }
             }
 
@@ -41,7 +42,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             {
                 if (!string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome) && !string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Nome))
                 {
-                    yield return new ValidationResult("Se è presente un nominativo per una persona fisica non può essere presente una ragione sociale");
+                    yield return new ValidationResult(_costanti.SelezionataPersonaFisica);
                 }
             }
         }

@@ -17,22 +17,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Web.Http.ModelBinding;
 using CQRS.Commands.Validators;
+using SO115App.Models.Classi.Utility;
+using System.Collections.Generic;
 using ValidationResult = CQRS.Validation.ValidationResult;
 
 namespace DomainModel.CQRS.Commands.MessaInLavorazione
 {
     public class MessaInLavorazioneValidator : ICommandValidator<MessaInLavorazioneCommand>
     {
+        private readonly Costanti _costanti;
         public IEnumerable<ValidationResult> Validate(MessaInLavorazioneCommand command)
         {
             // Controlli sul richiedente
 
             if (command.IdRichiesta.Length == 0)
             {
-                yield return new ValidationResult("Id Richiesta non valido");
+                yield return new ValidationResult(_costanti.IdRichiestaNonValida);
             }
         }
     }

@@ -32,7 +32,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMe
         /// <summary>
         ///   Istanza del servizio
         /// </summary>
-        private readonly IGetSituazioneMezzi getSituazioneMezzi;
+        private readonly IGetSituazioneMezzi _getSituazioneMezzi;
 
         /// <summary>
         ///   Costruttore della classe
@@ -40,7 +40,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMe
         /// <param name="getSituazioneMezzi">Istanza del servizio <see cref="IGetSituazioneMezzi" /></param>
         public SituazioneMezziQueryHandler(IGetSituazioneMezzi getSituazioneMezzi)
         {
-            this.getSituazioneMezzi = getSituazioneMezzi;
+            this._getSituazioneMezzi = getSituazioneMezzi;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SituazioneMe
         /// <returns>La situazione mezzi</returns>
         public SituazioneMezziResult Handle(SituazioneMezziQuery query)
         {
-            var situazioneMezzi = this.getSituazioneMezzi.Get(query.UnitaOperative);
+            var situazioneMezzi = _getSituazioneMezzi.Get(query.UnitaOperative);
 
             return new SituazioneMezziResult()
             {

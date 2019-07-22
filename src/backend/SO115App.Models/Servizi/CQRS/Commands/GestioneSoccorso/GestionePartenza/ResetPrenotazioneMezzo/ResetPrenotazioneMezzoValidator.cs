@@ -14,7 +14,7 @@ namespace DomainModel.CQRS.Commands.ResetPrenotazioneMezzo
 
         public ResetPrenotazioneMezzoValidator(IGetResetPrenotazioneMezzo iGetMezzoPrenotato)
         {
-            this._mezzo = iGetMezzoPrenotato;
+            _mezzo = iGetMezzoPrenotato;
         }
         public IEnumerable<ValidationResult> Validate(ResetPrenotazioneMezzoCommand command)
         {
