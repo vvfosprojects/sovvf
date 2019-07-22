@@ -1,1 +1,462 @@
-[{"Codice":"RM1171900000","CodiceRichiesta":"RM191","CodiceUnitaOperativaCompetente":null,"CodiciUnitaOperativeAllertate":null,"Eventi":[{"CodiceOrigine":"4343424342","CognomeChiamante":"Tri","NomeChiamante":"Ric","NumeroTelefono":"4343424342","RagioneSociale":"","CodiceSchedaContatto":null,"Codice":"RM1171900000","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-07-11T14:53:23.348Z","CodiceFonte":"3","CodiceRichiesta":"RM1171900000"},{"Istante":"2019-07-11T14:56:21.8027654Z","CodiceFonte":"3","CodiceRichiesta":"RM1171900000"},{"CodiceFiscaleCapopartenza":null,"CodiciFiscaliComponenti":[],"Partenza":{"Squadre":[{"Id":"1","Nome":"Rossa","Stato":2,"Componenti":[{"DescrizioneQualifica":"CP","Nominativo":"Mario Verdi","Tooltip":"","CapoPartenza":true,"Autista":false,"Rimpiazzo":false},{"DescrizioneQualifica":"CP","Nominativo":"Francesco Rossi","Tooltip":"","CapoPartenza":false,"Autista":true,"Rimpiazzo":false},{"DescrizioneQualifica":"CP","Nominativo":"Mario Verna","Tooltip":"","CapoPartenza":false,"Autista":false,"Rimpiazzo":true}],"Distaccamento":{"Codice":"1","Descrizione":"Tuscolana II","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 1","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"IstanteTermineImpegno":null}],"Mezzo":{"Codice":"1","Descrizione":"A1","Genere":"ABP","Stato":"In Viaggio","Appartenenza":0,"Distaccamento":{"Codice":"1","Descrizione":"Tuscolano II","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 2","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"DescrizioneAppartenenza":null,"DescrizioneStato":null,"StatoEfficenza":0,"DescrizioneStatoEfficenza":null,"LivelloCarburante":0,"DescrizioneLivelloCarburante":null,"LivelloEstinguente":0,"DescrizioneLivelloEstinguente":null,"Notifiche":null}},"Componenti":[],"FuoriSede":false,"NumeroComponenti":0,"Istante":"2019-07-11T14:56:21.8030425Z","CodiceFonte":"3","CodiceRichiesta":"RM1171900000"}],"Operatore":{"Id":"3","Nome":"Mario","Cognome":"Rossi","CodiceFiscale":"YZSPMD89M07M185L","Sede":{"Codice":"RM.1000","Descrizione":"Comando VV.F. ROMA","Coordinate":{"Latitudine":41.89996,"Longitudine":12.49104},"Indirizzo":"Via Genova, 3/a","Tipo":"Comando","Regione":"Lazio","Provincia":"ROMA","Label":null,"Icona":null},"Username":"test","Password":null,"Ruoli":null,"Token":null,"ValidoDa":null,"ValidoFinoA":null,"Attivo":true,"Qualifica":null},"Sospesa":false,"InAttesa":true,"MezziCoinvolti":{},"SquadreCoinvolte":null,"IstanteChiusura":null,"Tipologie":[{"Codice":"5","Descrizione":"Incendio normale (generico)","TipoLuogoEvento":null,"Icona":null,"Categoria":"Incendi ed Esplosioni","Star":true}],"Localita":{"Coordinate":{"Latitudine":41.896578,"Longitudine":12.495186},"Indirizzo":"Via Cavour, Roma RM, Italia","Note":null},"TurnoInserimentoChiamata":null,"TurnoIntervento":null,"TipoTerreno":null,"ListaEntiIntervenuti":null,"ListaEntiPresaInCarico":null,"ObiettivoSensibile":null,"Descrizione":"Incendio normale (generico)","ZoneEmergenza":null,"Tags":[],"Chiusa":false,"Aperta":true,"PrioritaRichiesta":3,"IstanteRicezioneRichiesta":"2019-07-11T14:53:23.348Z","IstantePresaInCarico":"2019-07-11T14:56:21.8027654Z","ListaUtentiInLavorazione":[],"ListaUtentiPresaInCarico":[{"IdUtente":"3","Nominativo":"Mario Rossi","DataInizioAttivita":"2019-07-11T14:56:23.2163476Z"}],"IstantePrimaAssegnazione":"2019-07-11T14:56:21.8030425Z","Rilevante":false,"RilevanteGrave":false,"RilevanteStArCu":false,"StatoRichiesta":{"Evasa":false},"Telefonate":[{"CodiceOrigine":"4343424342","CognomeChiamante":"Tri","NomeChiamante":"Ric","NumeroTelefono":"4343424342","RagioneSociale":"","CodiceSchedaContatto":null,"Codice":"RM1171900000","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-07-11T14:53:23.348Z","CodiceFonte":"3","CodiceRichiesta":"RM1171900000"}],"Partenze":[{"CodiceFiscaleCapopartenza":null,"CodiciFiscaliComponenti":[],"Partenza":{"Squadre":[{"Id":"1","Nome":"Rossa","Stato":2,"Componenti":[{"DescrizioneQualifica":"CP","Nominativo":"Mario Verdi","Tooltip":"","CapoPartenza":true,"Autista":false,"Rimpiazzo":false},{"DescrizioneQualifica":"CP","Nominativo":"Francesco Rossi","Tooltip":"","CapoPartenza":false,"Autista":true,"Rimpiazzo":false},{"DescrizioneQualifica":"CP","Nominativo":"Mario Verna","Tooltip":"","CapoPartenza":false,"Autista":false,"Rimpiazzo":true}],"Distaccamento":{"Codice":"1","Descrizione":"Tuscolana II","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 1","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"IstanteTermineImpegno":null}],"Mezzo":{"Codice":"1","Descrizione":"A1","Genere":"ABP","Stato":"In Viaggio","Appartenenza":0,"Distaccamento":{"Codice":"1","Descrizione":"Tuscolano II","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 2","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"DescrizioneAppartenenza":null,"DescrizioneStato":null,"StatoEfficenza":0,"DescrizioneStatoEfficenza":null,"LivelloCarburante":0,"DescrizioneLivelloCarburante":null,"LivelloEstinguente":0,"DescrizioneLivelloEstinguente":null,"Notifiche":null}},"Componenti":[],"FuoriSede":false,"NumeroComponenti":0,"Istante":"2019-07-11T14:56:21.8030425Z","CodiceFonte":"3","CodiceRichiesta":"RM1171900000"}],"Presidiato":false,"Richiedente":{"Telefono":"4343424342","Nome":"Ric","Cognome":"Tri","RagioneSociale":""},"CodiciUOCompetenza":null,"Competenze":null,"CodiceSchedaNue":null,"StatoInvioFonogramma":{"Codice":"0","Descrizione":"Non necessario"},"Complessita":{"Codice":"2","Descrizione":"Bassa"},"Id":"RM1171900000"},{"Codice":"RM1171900001","CodiceRichiesta":null,"CodiceUnitaOperativaCompetente":null,"CodiciUnitaOperativeAllertate":null,"Eventi":[{"CodiceOrigine":"434324324342","CognomeChiamante":"rererrewr","NomeChiamante":"Ric","NumeroTelefono":"434324324342","RagioneSociale":"","CodiceSchedaContatto":null,"Codice":"RM1171900001","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-07-11T16:09:43.319Z","CodiceFonte":"3","CodiceRichiesta":"RM1171900001"}],"Operatore":{"Id":"3","Nome":"Mario","Cognome":"Rossi","CodiceFiscale":"YZSPMD89M07M185L","Sede":{"Codice":"RM.1000","Descrizione":"Comando VV.F. ROMA","Coordinate":{"Latitudine":41.89996,"Longitudine":12.49104},"Indirizzo":"Via Genova, 3/a","Tipo":"Comando","Regione":"Lazio","Provincia":"ROMA","Label":null,"Icona":null},"Username":"test","Password":null,"Ruoli":null,"Token":null,"ValidoDa":null,"ValidoFinoA":null,"Attivo":true,"Qualifica":null},"Sospesa":false,"InAttesa":true,"MezziCoinvolti":{},"SquadreCoinvolte":null,"IstanteChiusura":null,"Tipologie":[{"Codice":"5","Descrizione":"Incendio normale (generico)","TipoLuogoEvento":null,"Icona":null,"Categoria":"Incendi ed Esplosioni","Star":true}],"Localita":{"Coordinate":{"Latitudine":41.839641,"Longitudine":12.592281},"Indirizzo":"Via Tuscolana, Roma RM, Italia","Note":null},"TurnoInserimentoChiamata":null,"TurnoIntervento":null,"TipoTerreno":null,"ListaEntiIntervenuti":null,"ListaEntiPresaInCarico":null,"ObiettivoSensibile":null,"Descrizione":"Incendio normale (generico)","ZoneEmergenza":null,"Tags":[],"Chiusa":false,"Aperta":true,"PrioritaRichiesta":3,"IstanteRicezioneRichiesta":"2019-07-11T16:09:43.319Z","IstantePresaInCarico":null,"ListaUtentiInLavorazione":[],"ListaUtentiPresaInCarico":null,"IstantePrimaAssegnazione":null,"Rilevante":false,"RilevanteGrave":false,"RilevanteStArCu":false,"StatoRichiesta":{"Evasa":false},"Telefonate":[{"CodiceOrigine":"434324324342","CognomeChiamante":"rererrewr","NomeChiamante":"Ric","NumeroTelefono":"434324324342","RagioneSociale":"","CodiceSchedaContatto":null,"Codice":"RM1171900001","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-07-11T16:09:43.319Z","CodiceFonte":"3","CodiceRichiesta":"RM1171900001"}],"Partenze":[],"Presidiato":false,"Richiedente":{"Telefono":"434324324342","Nome":"Ric","Cognome":"rererrewr","RagioneSociale":""},"CodiciUOCompetenza":null,"Competenze":null,"CodiceSchedaNue":null,"StatoInvioFonogramma":{"Codice":"0","Descrizione":"Non necessario"},"Complessita":{"Codice":"2","Descrizione":"Bassa"},"Id":"RM1171900001"}]
+[
+  {
+    "Codice": "RM1171900000",
+    "CodiceRichiesta": "RM1900001",
+    "CodiceUnitaOperativaCompetente": null,
+    "CodiciUnitaOperativeAllertate": null,
+    "Eventi": [
+      {
+        "CodiceOrigine": "4343424342",
+        "CognomeChiamante": "Tri",
+        "NomeChiamante": "Ric",
+        "NumeroTelefono": "4343424342",
+        "RagioneSociale": "",
+        "CodiceSchedaContatto": null,
+        "Codice": "RM1171900000",
+        "Motivazione": null,
+        "NotePubbliche": null,
+        "NotePrivate": null,
+        "Esito": "MettiInCoda",
+        "Istante": "2019-07-11T14:53:23.348Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM1171900000"
+      },
+      {
+        "Istante": "2019-07-11T14:56:21.8027654Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM1171900000"
+      },
+      {
+        "CodiceFiscaleCapopartenza": null,
+        "CodiciFiscaliComponenti": [],
+        "Partenza": {
+          "Squadre": [
+            {
+              "Id": "1",
+              "Nome": "Rossa",
+              "Stato": 2,
+              "Componenti": [
+                {
+                  "DescrizioneQualifica": "CP",
+                  "Nominativo": "Mario Verdi",
+                  "Tooltip": "",
+                  "CapoPartenza": true,
+                  "Autista": false,
+                  "Rimpiazzo": false
+                },
+                {
+                  "DescrizioneQualifica": "CP",
+                  "Nominativo": "Francesco Rossi",
+                  "Tooltip": "",
+                  "CapoPartenza": false,
+                  "Autista": true,
+                  "Rimpiazzo": false
+                },
+                {
+                  "DescrizioneQualifica": "CP",
+                  "Nominativo": "Mario Verna",
+                  "Tooltip": "",
+                  "CapoPartenza": false,
+                  "Autista": false,
+                  "Rimpiazzo": true
+                }
+              ],
+              "Distaccamento": {
+                "Codice": "1",
+                "Descrizione": "Tuscolana II",
+                "Coordinate": {
+                  "Latitudine": 1.0,
+                  "Longitudine": 1.0
+                },
+                "Indirizzo": "Via Prova, 1",
+                "Tipo": "Distaccamento",
+                "Regione": "Lazio",
+                "Provincia": "Roma",
+                "Label": null,
+                "Icona": null
+              },
+              "IstanteTermineImpegno": null
+            }
+          ],
+          "Mezzo": {
+            "Codice": "1",
+            "Descrizione": "A1",
+            "Genere": "ABP",
+            "Stato": "In Viaggio",
+            "Appartenenza": 0,
+            "Distaccamento": {
+              "Codice": "1",
+              "Descrizione": "Tuscolano II",
+              "Coordinate": {
+                "Latitudine": 1.0,
+                "Longitudine": 1.0
+              },
+              "Indirizzo": "Via Prova, 2",
+              "Tipo": "Distaccamento",
+              "Regione": "Lazio",
+              "Provincia": "Roma",
+              "Label": null,
+              "Icona": null
+            },
+            "DescrizioneAppartenenza": null,
+            "DescrizioneStato": null,
+            "StatoEfficenza": 0,
+            "DescrizioneStatoEfficenza": null,
+            "LivelloCarburante": 0,
+            "DescrizioneLivelloCarburante": null,
+            "LivelloEstinguente": 0,
+            "DescrizioneLivelloEstinguente": null,
+            "Notifiche": null
+          }
+        },
+        "Componenti": [],
+        "FuoriSede": false,
+        "NumeroComponenti": 0,
+        "Istante": "2019-07-11T14:56:21.8030425Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM1171900000"
+      }
+    ],
+    "Operatore": {
+      "Id": "3",
+      "Nome": "Mario",
+      "Cognome": "Rossi",
+      "CodiceFiscale": "YZSPMD89M07M185L",
+      "Sede": {
+        "Codice": "RM.1000",
+        "Descrizione": "Comando VV.F. ROMA",
+        "Coordinate": {
+          "Latitudine": 41.89996,
+          "Longitudine": 12.49104
+        },
+        "Indirizzo": "Via Genova, 3/a",
+        "Tipo": "Comando",
+        "Regione": "Lazio",
+        "Provincia": "ROMA",
+        "Label": null,
+        "Icona": null
+      },
+      "Username": "test",
+      "Password": null,
+      "Ruoli": null,
+      "Token": null,
+      "ValidoDa": null,
+      "ValidoFinoA": null,
+      "Attivo": true,
+      "Qualifica": null
+    },
+    "Sospesa": false,
+    "InAttesa": true,
+    "MezziCoinvolti": {},
+    "SquadreCoinvolte": null,
+    "IstanteChiusura": null,
+    "Tipologie": [
+      {
+        "Codice": "5",
+        "Descrizione": "Incendio normale (generico)",
+        "TipoLuogoEvento": null,
+        "Icona": null,
+        "Categoria": "Incendi ed Esplosioni",
+        "Star": true
+      }
+    ],
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.896578,
+        "Longitudine": 12.495186
+      },
+      "Indirizzo": "Via Cavour, Roma RM, Italia",
+      "Note": null
+    },
+    "TurnoInserimentoChiamata": null,
+    "TurnoIntervento": null,
+    "TipoTerreno": null,
+    "ListaEntiIntervenuti": null,
+    "ListaEntiPresaInCarico": null,
+    "ObiettivoSensibile": null,
+    "Descrizione": "Incendio normale (generico)",
+    "ZoneEmergenza": null,
+    "Tags": [],
+    "Chiusa": false,
+    "Aperta": true,
+    "PrioritaRichiesta": 3,
+    "IstanteRicezioneRichiesta": "2019-07-11T14:53:23.348Z",
+    "IstantePresaInCarico": "2019-07-11T14:56:21.8027654Z",
+    "ListaUtentiInLavorazione": [],
+    "ListaUtentiPresaInCarico": [
+      {
+        "IdUtente": "3",
+        "Nominativo": "Mario Rossi",
+        "DataInizioAttivita": "2019-07-11T14:56:23.2163476Z"
+      }
+    ],
+    "IstantePrimaAssegnazione": "2019-07-11T14:56:21.8030425Z",
+    "Rilevante": false,
+    "RilevanteGrave": false,
+    "RilevanteStArCu": false,
+    "StatoRichiesta": { "Evasa": false },
+    "Telefonate": [
+      {
+        "CodiceOrigine": "4343424342",
+        "CognomeChiamante": "Tri",
+        "NomeChiamante": "Ric",
+        "NumeroTelefono": "4343424342",
+        "RagioneSociale": "",
+        "CodiceSchedaContatto": null,
+        "Codice": "RM1171900000",
+        "Motivazione": null,
+        "NotePubbliche": null,
+        "NotePrivate": null,
+        "Esito": "MettiInCoda",
+        "Istante": "2019-07-11T14:53:23.348Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM1171900000"
+      }
+    ],
+    "Partenze": [
+      {
+        "CodiceFiscaleCapopartenza": null,
+        "CodiciFiscaliComponenti": [],
+        "Partenza": {
+          "Squadre": [
+            {
+              "Id": "1",
+              "Nome": "Rossa",
+              "Stato": 2,
+              "Componenti": [
+                {
+                  "DescrizioneQualifica": "CP",
+                  "Nominativo": "Mario Verdi",
+                  "Tooltip": "",
+                  "CapoPartenza": true,
+                  "Autista": false,
+                  "Rimpiazzo": false
+                },
+                {
+                  "DescrizioneQualifica": "CP",
+                  "Nominativo": "Francesco Rossi",
+                  "Tooltip": "",
+                  "CapoPartenza": false,
+                  "Autista": true,
+                  "Rimpiazzo": false
+                },
+                {
+                  "DescrizioneQualifica": "CP",
+                  "Nominativo": "Mario Verna",
+                  "Tooltip": "",
+                  "CapoPartenza": false,
+                  "Autista": false,
+                  "Rimpiazzo": true
+                }
+              ],
+              "Distaccamento": {
+                "Codice": "1",
+                "Descrizione": "Tuscolana II",
+                "Coordinate": {
+                  "Latitudine": 1.0,
+                  "Longitudine": 1.0
+                },
+                "Indirizzo": "Via Prova, 1",
+                "Tipo": "Distaccamento",
+                "Regione": "Lazio",
+                "Provincia": "Roma",
+                "Label": null,
+                "Icona": null
+              },
+              "IstanteTermineImpegno": null
+            }
+          ],
+          "Mezzo": {
+            "Codice": "1",
+            "Descrizione": "A1",
+            "Genere": "ABP",
+            "Stato": "In Viaggio",
+            "Appartenenza": 0,
+            "Distaccamento": {
+              "Codice": "1",
+              "Descrizione": "Tuscolano II",
+              "Coordinate": {
+                "Latitudine": 1.0,
+                "Longitudine": 1.0
+              },
+              "Indirizzo": "Via Prova, 2",
+              "Tipo": "Distaccamento",
+              "Regione": "Lazio",
+              "Provincia": "Roma",
+              "Label": null,
+              "Icona": null
+            },
+            "DescrizioneAppartenenza": null,
+            "DescrizioneStato": null,
+            "StatoEfficenza": 0,
+            "DescrizioneStatoEfficenza": null,
+            "LivelloCarburante": 0,
+            "DescrizioneLivelloCarburante": null,
+            "LivelloEstinguente": 0,
+            "DescrizioneLivelloEstinguente": null,
+            "Notifiche": null
+          }
+        },
+        "Componenti": [],
+        "FuoriSede": false,
+        "NumeroComponenti": 0,
+        "Istante": "2019-07-11T14:56:21.8030425Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM1171900000"
+      }
+    ],
+    "Presidiato": false,
+    "Richiedente": {
+      "Telefono": "4343424342",
+      "Nome": "Ric",
+      "Cognome": "Tri",
+      "RagioneSociale": ""
+    },
+    "CodiciUOCompetenza": null,
+    "Competenze": null,
+    "CodiceSchedaNue": null,
+    "StatoInvioFonogramma": {
+      "Codice": "0",
+      "Descrizione": "Non necessario"
+    },
+    "Complessita": {
+      "Codice": "2",
+      "Descrizione": "Bassa"
+    },
+    "Id": "RM1171900000"
+  },
+  {
+    "Codice": "RM1171900001",
+    "CodiceRichiesta": null,
+    "CodiceUnitaOperativaCompetente": null,
+    "CodiciUnitaOperativeAllertate": null,
+    "Eventi": [
+      {
+        "CodiceOrigine": "434324324342",
+        "CognomeChiamante": "rererrewr",
+        "NomeChiamante": "Ric",
+        "NumeroTelefono": "434324324342",
+        "RagioneSociale": "",
+        "CodiceSchedaContatto": null,
+        "Codice": "RM1171900001",
+        "Motivazione": null,
+        "NotePubbliche": null,
+        "NotePrivate": null,
+        "Esito": "MettiInCoda",
+        "Istante": "2019-07-11T16:09:43.319Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM1171900001"
+      }
+    ],
+    "Operatore": {
+      "Id": "3",
+      "Nome": "Mario",
+      "Cognome": "Rossi",
+      "CodiceFiscale": "YZSPMD89M07M185L",
+      "Sede": {
+        "Codice": "RM.1000",
+        "Descrizione": "Comando VV.F. ROMA",
+        "Coordinate": {
+          "Latitudine": 41.89996,
+          "Longitudine": 12.49104
+        },
+        "Indirizzo": "Via Genova, 3/a",
+        "Tipo": "Comando",
+        "Regione": "Lazio",
+        "Provincia": "ROMA",
+        "Label": null,
+        "Icona": null
+      },
+      "Username": "test",
+      "Password": null,
+      "Ruoli": null,
+      "Token": null,
+      "ValidoDa": null,
+      "ValidoFinoA": null,
+      "Attivo": true,
+      "Qualifica": null
+    },
+    "Sospesa": false,
+    "InAttesa": true,
+    "MezziCoinvolti": {},
+    "SquadreCoinvolte": null,
+    "IstanteChiusura": null,
+    "Tipologie": [
+      {
+        "Codice": "5",
+        "Descrizione": "Incendio normale (generico)",
+        "TipoLuogoEvento": null,
+        "Icona": null,
+        "Categoria": "Incendi ed Esplosioni",
+        "Star": true
+      }
+    ],
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.839641,
+        "Longitudine": 12.592281
+      },
+      "Indirizzo": "Via Tuscolana, Roma RM, Italia",
+      "Note": null
+    },
+    "TurnoInserimentoChiamata": null,
+    "TurnoIntervento": null,
+    "TipoTerreno": null,
+    "ListaEntiIntervenuti": null,
+    "ListaEntiPresaInCarico": null,
+    "ObiettivoSensibile": null,
+    "Descrizione": "Incendio normale (generico)",
+    "ZoneEmergenza": null,
+    "Tags": [],
+    "Chiusa": false,
+    "Aperta": true,
+    "PrioritaRichiesta": 3,
+    "IstanteRicezioneRichiesta": "2019-07-11T16:09:43.319Z",
+    "IstantePresaInCarico": null,
+    "ListaUtentiInLavorazione": [],
+    "ListaUtentiPresaInCarico": null,
+    "IstantePrimaAssegnazione": null,
+    "Rilevante": false,
+    "RilevanteGrave": false,
+    "RilevanteStArCu": false,
+    "StatoRichiesta": { "Evasa": false },
+    "Telefonate": [
+      {
+        "CodiceOrigine": "434324324342",
+        "CognomeChiamante": "rererrewr",
+        "NomeChiamante": "Ric",
+        "NumeroTelefono": "434324324342",
+        "RagioneSociale": "",
+        "CodiceSchedaContatto": null,
+        "Codice": "RM1171900001",
+        "Motivazione": null,
+        "NotePubbliche": null,
+        "NotePrivate": null,
+        "Esito": "MettiInCoda",
+        "Istante": "2019-07-11T16:09:43.319Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM1171900001"
+      }
+    ],
+    "Partenze": [],
+    "Presidiato": false,
+    "Richiedente": {
+      "Telefono": "434324324342",
+      "Nome": "Ric",
+      "Cognome": "rererrewr",
+      "RagioneSociale": ""
+    },
+    "CodiciUOCompetenza": null,
+    "Competenze": null,
+    "CodiceSchedaNue": null,
+    "StatoInvioFonogramma": {
+      "Codice": "0",
+      "Descrizione": "Non necessario"
+    },
+    "Complessita": {
+      "Codice": "2",
+      "Descrizione": "Bassa"
+    },
+    "Id": "RM1171900001"
+  }
+]
