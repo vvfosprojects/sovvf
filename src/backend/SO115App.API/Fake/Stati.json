@@ -1,18 +1,18 @@
 [
   {
-    "id": "1",
+    "id": "0",
     "descrizione": "In Sede"
   },
   {
-    "id": "2",
+    "id": "1",
     "descrizione": "In Rientro"
   },
   {
-    "id": "3",
+    "id": "2",
     "descrizione": "In Viaggio"
   },
   {
-    "id": "4",
+    "id": "3",
     "descrizione": "Sul Posto"
   }
 ]
