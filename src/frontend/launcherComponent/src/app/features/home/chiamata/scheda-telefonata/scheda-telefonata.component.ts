@@ -169,9 +169,10 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.rilevanza = f.rilevanza.value;
         this.nuovaRichiesta.rilevanzaStArCu = f.rilevanzaStArCu.value;
         this.nuovaRichiesta.descrizione = f.descrizione.value;
-        this.nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value;
+        this.nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : null;
         this.nuovaRichiesta.notePrivate = f.notePrivate.value;
         this.nuovaRichiesta.notePubbliche = f.notePubbliche.value;
+        // console.log('Nuova Richiesta', this.nuovaRichiesta);
         // this.nuovaRichiesta.istantePresaInCarico = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
         //
         // if (this.coordinate) {
