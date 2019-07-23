@@ -20,21 +20,22 @@
 using CQRS.Commands.Notifiers;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento;
 
 namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 {
     public class UpDateStatoRichiestaNotifier : ICommandNotifier<UpDateStatoRichiestaCommand>
     {
-        private readonly INotifyUpDateChiamata _sender;
+        private readonly INotifyUpDateStatoRichiesta _sender;
 
-        public UpDateStatoRichiestaNotifier(INotifyUpDateChiamata sender)
+        public UpDateStatoRichiestaNotifier(INotifyUpDateStatoRichiesta sender)
         {
             _sender = sender;
         }
 
         public void Notify(UpDateStatoRichiestaCommand command)
         {
-            //_sender.SendNotification(command);
+            _sender.SendNotification(command);
         }
     }
 }

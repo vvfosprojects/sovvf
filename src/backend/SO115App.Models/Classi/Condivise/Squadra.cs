@@ -32,22 +32,22 @@ namespace SO115App.API.Models.Classi.Condivise
             /// <summary>
             ///   In viaggio verso il luogo del sinistro.
             /// </summary>
-            InViaggio,
+            InSede,
 
             /// <summary>
             ///   Giunta sul luogo del sinistro
             /// </summary>
-            SulPosto,
+            InRientro,
 
             /// <summary>
             ///   In viaggio verso la sede di servizio
             /// </summary>
-            InRientro,
+            InViaggio,
 
             /// <summary>
             ///   Presso la sede di servizio
             /// </summary>
-            InSede,
+            SulPosto,
 
             /// <summary>
             ///   Fuori per ragioni di istituto

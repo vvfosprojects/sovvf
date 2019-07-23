@@ -29,6 +29,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ConfermaPartenze
 {
@@ -59,7 +60,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var richiesta = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiesta);
             var attivita = new AttivitaUtente();
 
-            new InizioPresaInCarico(richiesta, DateTime.UtcNow, richiesta.Operatore.Id);
+            if(richiesta.Eventi.Where(x => x is InizioPresaInCarico).ToList().Count == 0)
+                new InizioPresaInCarico(richiesta, DateTime.UtcNow, richiesta.Operatore.Id);
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {

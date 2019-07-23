@@ -159,6 +159,9 @@ namespace SO115App.CompositionRoot
             container.Register<
            SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza.INotifyAggiornaStatoMezzo,
            SO115App.SignalR.Sender.GestionePartenza.NotificationPresidiata>();
+            container.Register<
+            SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyUpDateStatoRichiesta,
+            SO115App.SignalR.Sender.GestioneIntervento.NotificationUpDateStato>();
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,

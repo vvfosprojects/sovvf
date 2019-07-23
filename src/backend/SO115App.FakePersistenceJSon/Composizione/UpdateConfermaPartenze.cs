@@ -28,6 +28,7 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 
 namespace SO115App.FakePersistenceJSon.Composizione
@@ -95,7 +96,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 {
                     if (composizioneMezzo.Mezzo.Codice == composizione.Partenza.Mezzo.Codice)
                     {
-                        composizioneMezzo.Mezzo.Stato = "In Viaggio";
+                        composizioneMezzo.Mezzo.Stato = Costanti.MezzoInViaggio;
                     }
                 }
 

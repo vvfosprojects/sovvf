@@ -20,11 +20,11 @@
 using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
-using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.Models.Classi.Utility;
+using SO115App.API.Models.Classi.Condivise;
 
 namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 {
@@ -45,7 +45,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 
         public void Handle(AggiornaStatoMezzoCommand command)
         {
-            RichiestaAssistenza richiesta = _getRichiestaById.Get(command.Chiamata.Id);
+            var richiesta = _getRichiestaById.Get(command.Chiamata.Id);
 
             if (command.StatoMezzo == Costanti.MezzoSulPosto)
             {
@@ -80,9 +80,6 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                         _mezziTuttiInSede = false;
                     }
                 }
-
-                //if (_mezziTuttiInSede)
-                //    richiesta.SincronizzaStatoRichiesta("Chiusa", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
             }
             else if (command.StatoMezzo == Costanti.MezzoRientrato)
             {
@@ -103,9 +100,6 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                         _mezziTuttiInSede = false;
                     }
                 }
-
-                //if (_mezziTuttiInSede)
-                //    richiesta.SincronizzaStatoRichiesta("Chiusa", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
             }
             else if (command.StatoMezzo == Costanti.MezzoInViaggio)
             {
@@ -120,10 +114,45 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                 }
 
             }
+            foreach (var composizione in richiesta.Partenze)
+            {
+                if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
+                {
+                    foreach (var squadra in composizione.Partenza.Squadre)
+                    {
+                        {
+                            squadra.Stato = MappaStato(command.StatoMezzo);
+                        }
+                    }
+                }
+                
+            }
 
             command.Richiesta = richiesta;
 
+
             _updateStatoPartenze.Update(command);
+        }
+
+        private static Squadra.StatoSquadra MappaStato(string statoMezzo)
+        {
+
+            if (statoMezzo == Costanti.MezzoInRientro)
+            {
+                return Squadra.StatoSquadra.InRientro;
+            }
+            else if (statoMezzo == Costanti.MezzoInViaggio)
+            {
+                return Squadra.StatoSquadra.InViaggio;
+            }
+            else if (statoMezzo == Costanti.MezzoSulPosto)
+            {
+                return Squadra.StatoSquadra.SulPosto;
+            }
+            else
+            {
+                return Squadra.StatoSquadra.InSede;
+            }
         }
     }
 }

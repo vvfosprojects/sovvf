@@ -26,12 +26,13 @@ using SO115App.Models.Servizi.Infrastruttura.Box;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SO115App.FakePersistence.JSon.Utility;
 
 namespace SO115App.FakePersistenceJSon.Box
 {
     public class GetPersonale : IGetBoxPersonale
     {
-        private const string Filepath = "Fake/SquadreComposizione.json";
+        private readonly string _filepath = CostantiJson.SquadreComposizione;
 
         public BoxPersonale Get()
         {
@@ -40,7 +41,7 @@ namespace SO115App.FakePersistenceJSon.Box
             var listaFunzionari = new List<Componente>();
 
             string json;
-            using (var r = new StreamReader(Filepath))
+            using (var r = new StreamReader(_filepath))
             {
                 json = r.ReadToEnd();
             }

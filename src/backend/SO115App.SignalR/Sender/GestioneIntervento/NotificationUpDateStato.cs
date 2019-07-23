@@ -35,7 +35,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SO115App.SignalR.Sender.GestioneChiamata
+namespace SO115App.SignalR.Sender.GestioneIntervento
 {
     public class NotificationUpDateStato : INotifyUpDateStatoRichiesta
     {
@@ -71,7 +71,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             var query = new SintesiRichiesteAssistenzaMarkerQuery();
             List<SintesiRichiestaMarker> listaSintesiMarker = new List<SintesiRichiestaMarker>();
             listaSintesiMarker = (List<SintesiRichiestaMarker>)this._SintesiRichiesteAssistenzaMarkerhandler.Handle(query).SintesiRichiestaMarker;
-            richiesta.Chiamata = ListaSintesi.LastOrDefault(sintesi => sintesi.Codice == richiesta.Chiamata.Codice);
+            richiesta.Chiamata = ListaSintesi.LastOrDefault(sintesi => sintesi.Id == richiesta.IdRichiesta);
 
             await _notificationHubContext.Clients.Group(richiesta.Chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", richiesta);
             await _notificationHubContext.Clients.Group(richiesta.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxInterventi", boxInterventi);

@@ -24,12 +24,12 @@ namespace SO115App.API.Controllers
         public async Task<IActionResult> AggiornaPartenza([FromBody]AggiornaStatoMezzoCommand intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
-            string IdUtente = headerValues.FirstOrDefault();
+            string idUtente = headerValues.FirstOrDefault();
 
             var command = new AggiornaStatoMezzoCommand()
             {
                 //IdRichiesta = intervento.IdRichiesta,
-                IdUtente = IdUtente,
+                IdUtente = idUtente,
                 Chiamata = intervento.Chiamata,
                 IdMezzo = intervento.IdMezzo,
                 StatoMezzo = intervento.StatoMezzo
