@@ -61,6 +61,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 ObiettivoSensibile = command.Chiamata.ObiettivoSensibile,
                 ListaUtentiInLavorazione = command.Chiamata.ListaUtentiInLavorazione,
                 ListaUtentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico,
+                NotePubbliche = command.Chiamata.NotePubbliche,
+                NotePrivate = command.Chiamata.NotePrivate,
                 Id = codiceChiamata // TODO DA TOGLIERE QUANDO AVREMO UN DB
             };
 
@@ -71,9 +73,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 new ChiusuraRichiesta("", richiesta, command.Chiamata.IstanteRicezioneRichiesta, command.Chiamata.Operatore.Id);
             }
 
-            if (command.Chiamata.Etichette != null)
+            if (command.Chiamata.Tags != null)
             {
-                foreach (var t in command.Chiamata.Etichette)
+                foreach (var t in command.Chiamata.Tags)
                 {
                     richiesta.Tags.Add(t);
                 }

@@ -54,7 +54,9 @@ namespace SO115App.FakePersistenceJSon.Utility
                 ObiettivoSensibile = richiesta.ObiettivoSensibile,
                 ListaUtentiInLavorazione = richiesta.ListaUtentiInLavorazione,
                 ListaUtentiPresaInCarico = richiesta.ListaUtentiPresaInCarico,
-                Id = richiesta.Id
+                Id = richiesta.Id,
+                NotePubbliche = richiesta.NotePubbliche,
+                NotePrivate = richiesta.NotePrivate
             };
 
             if (richiesta.Eventi.Count > 0)

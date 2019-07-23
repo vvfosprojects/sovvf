@@ -44,7 +44,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 sintesi.Competenze = elemento.Competenze;
                 //sintesi.complessita = elemento.Richiesta.Complessita;
                 sintesi.Descrizione = elemento.Descrizione;
-                sintesi.Etichette = elemento.Tags.ToArray();
+                sintesi.Tags = elemento.Tags;
                 sintesi.Eventi = elemento.Eventi.ToList();
                 //sintesi.fonogramma = elemento.Richiesta.StatoInvioFonogramma;
                 sintesi.Id = elemento.Id;

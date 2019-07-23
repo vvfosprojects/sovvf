@@ -41,7 +41,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         public Intervento()
         {
             this.ZoneEmergenza = new string[0];
-            this.Etichette = new string[0];
+            this.Tags = new string[0];
             this.Competenze = new List<Sede>();
         }
 
@@ -184,7 +184,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         /// <summary>
         ///   Etichette associate all'intervento (per es. aPagamento, imp, ecc.)
         /// </summary>
-        public string[] Etichette { get; set; }
+        public string[] Tags { get; set; }
 
         public string NotePubbliche { get; set; }
 

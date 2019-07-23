@@ -728,6 +728,10 @@ namespace SO115App.API.Models.Classi.Soccorso
             }
         }
 
+        public string NotePubbliche { get; set; }
+
+        public string NotePrivate { get; set; }
+
         /// <summary>
         ///   Aggiunge un evento alla lista degli eventi. L'evento deve essersi verificato in un
         ///   istante superiore a quello dell'ultimo evento in lista. In caso contrario il metodo

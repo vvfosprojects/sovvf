@@ -56,11 +56,13 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.ObiettivoSensibile = command.Chiamata.ObiettivoSensibile;
             richiesta.ListaUtentiInLavorazione = command.Chiamata.ListaUtentiInLavorazione;
             richiesta.ListaUtentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico;
+            richiesta.NotePrivate = command.Chiamata.NotePrivate;
+            richiesta.NotePubbliche = command.Chiamata.NotePubbliche;
             richiesta.Id = command.Chiamata.Codice;
 
-            if (command.Chiamata.Etichette != null)
+            if (command.Chiamata.Tags != null)
             {
-                foreach (var t in command.Chiamata.Etichette)
+                foreach (var t in command.Chiamata.Tags)
                 {
                     richiesta.Tags.Add(t);
                 }

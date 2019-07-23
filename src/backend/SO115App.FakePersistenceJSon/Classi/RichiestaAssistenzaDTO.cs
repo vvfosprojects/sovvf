@@ -258,5 +258,9 @@ namespace SO115App.FakePersistenceJSon.Classi
                 return new SO115App.API.Models.Classi.Soccorso.Complessita.Alta();
             }
         }
+
+        public string NotePubbliche { get; set; }
+
+        public string NotePrivate { get; set; }
     }
 }

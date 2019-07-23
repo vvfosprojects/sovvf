@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
@@ -48,7 +49,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         public SintesiRichiesta()
         {
             this.ZoneEmergenza = new string[0];
-            this.Etichette = new string[0];
+            this.Tags = new HashSet<string>();
             this.Eventi = new List<Evento>();
             this.Competenze = new List<Sede>();
         }
@@ -329,7 +330,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Etichette associate all'intervento (per es. aPagamento, imp, ecc.)
         /// </summary>
-        public string[] Etichette { get; set; }
+        public ISet<string> Tags { get; set; }
 
         public string NotePubbliche { get; set; }
 
