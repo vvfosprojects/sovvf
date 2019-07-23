@@ -44,14 +44,14 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     coordinate: Coordinate;
 
     constructor(private formBuilder: FormBuilder,
-                private store: Store) {
+        private store: Store) {
         this.subscription.add(this.richiestaModifica$.subscribe((richiesta: SintesiRichiesta) => {
             if (richiesta) {
                 this.richiestaModifica = makeCopy(richiesta);
                 this.coordinate = makeCopy(richiesta.localita.coordinate);
             }
         }));
-        this.subscription.add(this.tipologie$.subscribe( (tipologie: Tipologia[]) => this.tipologie = tipologie));
+        this.subscription.add(this.tipologie$.subscribe((tipologie: Tipologia[]) => this.tipologie = tipologie));
     }
 
     ngOnInit() {
@@ -228,8 +228,8 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         const form = this.f;
         if (!form.motivazione.value) {
             // console.log(form.selectedTipologie.value);
-            const nuovaDescrizione = this.tipologie.filter( tipologia => tipologia.codice === form.tipoIntervento.value[0]);
-            if (nuovaDescrizione) {
+            const nuovaDescrizione = this.tipologie.filter(tipologia => tipologia.codice === form.tipoIntervento.value[0].codice);
+            if (nuovaDescrizione && nuovaDescrizione.length > 0) {
                 this.richiestaModifica.descrizione = nuovaDescrizione[0].descrizione;
             }
         }
