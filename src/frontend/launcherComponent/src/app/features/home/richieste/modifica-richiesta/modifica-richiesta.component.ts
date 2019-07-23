@@ -1,6 +1,6 @@
 import { Component, isDevMode, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { RichiestaModificaState } from '../../store/states/richieste/richiesta-modifica.state';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
@@ -45,6 +45,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
 
     constructor(private formBuilder: FormBuilder,
         private store: Store) {
+        this.initForm();
         this.subscription.add(this.richiestaModifica$.subscribe((richiesta: SintesiRichiesta) => {
             if (richiesta) {
                 this.richiestaModifica = makeCopy(richiesta);
@@ -65,6 +66,27 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         isDevMode() && console.log('Componente Modifica Richiesta Distrutto');
     }
 
+    initForm() {
+        this.modificaRichiestaForm = this.formBuilder.group({
+            tipoIntervento: new FormControl(),
+            nome: new FormControl(),
+            cognome: new FormControl(),
+            ragioneSociale: new FormControl(),
+            telefono: new FormControl(),
+            indirizzo: new FormControl(),
+            etichette: new FormControl(),
+            noteIndirizzo: new FormControl(),
+            rilevanza: new FormControl(),
+            rilevanzaStArCu: new FormControl(),
+            latitudine: new FormControl(),
+            longitudine: new FormControl(),
+            notePrivate: new FormControl(),
+            notePubbliche: new FormControl(),
+            motivazione: new FormControl(),
+            zoneEmergenza: new FormControl()
+        });
+    }
+
     get f() {
         return this.modificaRichiestaForm.controls;
     }
@@ -76,6 +98,8 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             this.tipologiaRichiedente = 'Nome-Cognome';
         }
 
+        const zoneEmergenza = this.richiestaModifica.zoneEmergenza ? this.richiestaModifica.zoneEmergenza.join(' ') : null;
+        const etichette = this.richiestaModifica.etichette ? this.richiestaModifica.etichette.join(' ') : null;
         this.modificaRichiestaForm = this.formBuilder.group({
             tipoIntervento: [this.richiestaModifica.tipologie, Validators.required],
             nome: [this.richiestaModifica.richiedente.nome, Validators.required],
@@ -83,7 +107,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             ragioneSociale: [this.richiestaModifica.richiedente.ragioneSociale, Validators.required],
             telefono: [this.richiestaModifica.richiedente.telefono, Validators.required],
             indirizzo: [this.richiestaModifica.localita.indirizzo, Validators.required],
-            etichette: [this.richiestaModifica.etichette],
+            etichette: [etichette],
             noteIndirizzo: [this.richiestaModifica.localita.note],
             rilevanza: [this.richiestaModifica.rilevanza],
             rilevanzaStArCu: [this.richiestaModifica.rilevanzaStArCu],
@@ -92,7 +116,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             notePrivate: [this.richiestaModifica.notePrivate],
             notePubbliche: [this.richiestaModifica.notePubbliche],
             motivazione: [this.richiestaModifica.descrizione],
-            zoneEmergenza: [this.richiestaModifica.zoneEmergenza]
+            zoneEmergenza: [zoneEmergenza]
         });
 
         this.setValidatorsRichiesta(this.tipologiaRichiedente);
@@ -179,16 +203,18 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         }
         nuovaRichiesta.richiedente.telefono = f.telefono.value;
         nuovaRichiesta.localita.indirizzo = f.indirizzo.value;
-        nuovaRichiesta.etichette = f.etichette.value;
+        nuovaRichiesta.etichette = f.etichette.value ? f.etichette.value.split(' ') : null;
         nuovaRichiesta.localita.note = f.noteIndirizzo.value;
         nuovaRichiesta.rilevanza = f.rilevanza.value;
         nuovaRichiesta.rilevanzaStArCu = f.rilevanzaStArCu.value;
         nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
         nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
         nuovaRichiesta.descrizione = f.motivazione.value;
-        nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value;
+        nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : null;
+        nuovaRichiesta.notePrivate = f.notePrivate.value;
+        nuovaRichiesta.notePubbliche = f.notePubbliche.value;
+        // console.log('Richiesta Modificata', nuovaRichiesta);
         this.setDescrizione();
-        console.log('Richiesta Modificata', nuovaRichiesta);
         return nuovaRichiesta;
     }
 
