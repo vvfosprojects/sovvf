@@ -165,7 +165,7 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.localita.note = f.noteIndirizzo.value;
         this.nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
         this.nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
-        this.nuovaRichiesta.etichette = f.etichette.value ? f.etichette.value.split(' ') : null;
+        this.nuovaRichiesta.tags = f.etichette.value ? f.etichette.value.split(' ') : null;
         this.nuovaRichiesta.rilevanza = f.rilevanza.value;
         this.nuovaRichiesta.rilevanzaStArCu = f.rilevanzaStArCu.value;
         this.nuovaRichiesta.descrizione = f.descrizione.value;

@@ -108,7 +108,7 @@ export class SintesiRichiesta {
         /**
          * etichette associate all'intervento (per es. aPagamento, imp, ecc.)
          */
-        public etichette?: string[],
+        public tags?: string[],
         /**
          * note pubbliche
          */

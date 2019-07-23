@@ -99,7 +99,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         }
 
         const zoneEmergenza = this.richiestaModifica.zoneEmergenza ? this.richiestaModifica.zoneEmergenza.join(' ') : null;
-        const etichette = this.richiestaModifica.etichette ? this.richiestaModifica.etichette.join(' ') : null;
+        const etichette = this.richiestaModifica.tags ? this.richiestaModifica.tags.join(' ') : null;
         this.modificaRichiestaForm = this.formBuilder.group({
             tipoIntervento: [this.richiestaModifica.tipologie, Validators.required],
             nome: [this.richiestaModifica.richiedente.nome, Validators.required],
@@ -203,7 +203,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         }
         nuovaRichiesta.richiedente.telefono = f.telefono.value;
         nuovaRichiesta.localita.indirizzo = f.indirizzo.value;
-        nuovaRichiesta.etichette = f.etichette.value ? f.etichette.value.split(' ') : null;
+        nuovaRichiesta.tags = f.etichette.value ? f.etichette.value.split(' ') : null;
         nuovaRichiesta.localita.note = f.noteIndirizzo.value;
         nuovaRichiesta.rilevanza = f.rilevanza.value;
         nuovaRichiesta.rilevanzaStArCu = f.rilevanzaStArCu.value;
