@@ -26,14 +26,13 @@ namespace DomainModel.CQRS.Commands.RimozionePresaInCarico
 {
     public class RimozionePresaInCaricoValidator : ICommandValidator<RimozionePresaInCaricoCommand>
     {
-        private readonly Costanti _costanti = new Costanti();
         public IEnumerable<ValidationResult> Validate(RimozionePresaInCaricoCommand command)
         {
             // Controlli sul richiedente
 
             if (command.IdRichiesta.Length == 0)
             {
-                yield return new ValidationResult(_costanti.IdRichiestaNonValida);
+                yield return new ValidationResult(Costanti.IdRichiestaNonValida);
             }
         }
     }

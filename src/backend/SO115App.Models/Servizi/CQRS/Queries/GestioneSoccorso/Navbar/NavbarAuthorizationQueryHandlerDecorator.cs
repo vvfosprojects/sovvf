@@ -29,7 +29,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
     public class NavbarAuthorizationQueryHandlerDecorator : IQueryAuthorizer<NavbarQuery, NavbarResult>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti = new Costanti();
 
         public NavbarAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {
@@ -45,10 +44,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
             {
 
                 if (user == null)
-                    yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                    yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }
             else
-                yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
         }
     }
 }

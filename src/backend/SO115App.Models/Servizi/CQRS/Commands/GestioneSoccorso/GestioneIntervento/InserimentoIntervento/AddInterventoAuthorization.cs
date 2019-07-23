@@ -29,7 +29,6 @@ namespace DomainModel.CQRS.Commands.AddIntervento
     public class AddInterventoAuthorization : ICommandAuthorizer<AddInterventoCommand>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti = new Costanti();
 
         public AddInterventoAuthorization(IPrincipal currentUser)
         {
@@ -45,10 +44,10 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
-                    yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                    yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }
             else
-                yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
         }
     }
 }

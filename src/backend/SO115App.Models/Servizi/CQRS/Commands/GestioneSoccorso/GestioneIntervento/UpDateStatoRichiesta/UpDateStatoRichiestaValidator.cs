@@ -26,7 +26,6 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 {
     public class UpDateStatoRichiestaValidator : ICommandValidator<UpDateStatoRichiestaCommand>
     {
-        private readonly Costanti _costanti = new Costanti();
         public IEnumerable<ValidationResult> Validate(UpDateStatoRichiestaCommand command)
         {
             /*
@@ -43,7 +42,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
             {
                 if (string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome))
                 {
-                    yield return new ValidationResult(_costanti.PresenteNomeNonCognome);
+                    yield return new ValidationResult(Costanti.PresenteNomeNonCognome);
                 }
             }
 
@@ -51,7 +50,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
             {
                 if (!string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome) && !string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Nome))
                 {
-                    yield return new ValidationResult(_costanti.SelezionataPersonaFisica);
+                    yield return new ValidationResult(Costanti.SelezionataPersonaFisica);
                 }
             }
         }

@@ -10,7 +10,6 @@ namespace DomainModel.CQRS.Commands.SbloccaMezzoPrenotato
     public class SbloccaMezzoPrenotatoValidator : ICommandValidator<SbloccaMezzoPrenotatoCommand>
     {
         private readonly IGetSbloccaMezzoPrenotato _mezzo;
-        private readonly Costanti _costanti = new Costanti();
 
         public SbloccaMezzoPrenotatoValidator(IGetSbloccaMezzoPrenotato iGetMezzoPrenotato)
         {
@@ -21,7 +20,7 @@ namespace DomainModel.CQRS.Commands.SbloccaMezzoPrenotato
 
             if (_mezzo.GetMezzo(command) == null)
 
-                yield return new ValidationResult(_costanti.MezzoNonPresente);
+                yield return new ValidationResult(Costanti.MezzoNonPresente);
         }
     }
 }

@@ -4,56 +4,56 @@ using System.Text;
 
 namespace SO115App.Models.Classi.Utility
 {
-    public class Costanti
+    public static class Costanti
     {
         #region CondivisaAuthorization
 
-        public string UtenteNonAutorizzato = "Utente non autorizzato";
+        public static string UtenteNonAutorizzato = "Utente non autorizzato";
 
         #endregion CondivisaAuthorization
 
         #region CondivisaValidator
 
-        public string PresenteNomeNonCognome = "E' presente il nome del richiedente ma non il suo cognome";
+        public static string PresenteNomeNonCognome = "E' presente il nome del richiedente ma non il suo cognome";
 
-        public string SelezionataPersonaFisica =
+        public static string SelezionataPersonaFisica =
             "Se è presente un nominativo per una persona fisica non può essere presente una ragione sociale";
 
-        public string IdRichiestaNonValida = "Id Richiesta non valido";
-        public string MezzoNonPresente = "Il mezzo non è presente";
+        public static string IdRichiestaNonValida = "Id Richiesta non valido";
+        public static string MezzoNonPresente = "Il mezzo non è presente";
 
         #endregion CondivisaValidator
 
         #region StatiRichiesta
 
-        public string RichiestaAssegnata = "Assegnata";
-        public string RichiestaPresidiata = "Presidiata";
-        public string RichiestaChiusa = "Chiusa";
-        public string RichiestaSospesa = "Sospesa";
-        public string RichiestaRiaperta = "Riaperta";
+        public static string RichiestaAssegnata = "Assegnata";
+        public static string RichiestaPresidiata = "Presidiata";
+        public static string RichiestaChiusa = "Chiusa";
+        public static string RichiestaSospesa = "Sospesa";
+        public static string RichiestaRiaperta = "Riaperta";
 
         #endregion StatiRichiesta
 
         #region StatiMezzi
 
-        public string MezzoSulPosto = "Sul Posto";
-        public string MezzoInRientro = "In Rientro";
-        public string MezzoInSede = "In Sede";
-        public string MezzoRientrato = "Rientrato";
-        public string MezzoInViaggio = "In Viaggio";
+        public static string MezzoSulPosto = "Sul Posto";
+        public static string MezzoInRientro = "In Rientro";
+        public static string MezzoInSede = "In Sede";
+        public static string MezzoRientrato = "Rientrato";
+        public static string MezzoInViaggio = "In Viaggio";
 
         #endregion StatiMezzi
 
         #region Eventi
 
-        public string EventoGenerico = "Evento Generico";
-        public string Telefonata = "Telefonata";
-        public string InizioPresaInCarico = "InizioPresaInCarico";
-        public string RiaperturaRichiesta = "RiaperturaRichiesta";
-        public string ChiusuraRichiesta = "ChiusuraRichiesta";
-        public string ComposizionePartenza = "ComposizionePartenza";
-        public string ChiusuraPartenza = "ChiusuraPartenza";
-        public string ArrivoSulPosto = "ArrivoSulPosto";
+        public static string EventoGenerico = "Evento Generico";
+        public static string Telefonata = "Telefonata";
+        public static string InizioPresaInCarico = "InizioPresaInCarico";
+        public static string RiaperturaRichiesta = "RiaperturaRichiesta";
+        public static string ChiusuraRichiesta = "ChiusuraRichiesta";
+        public static string ComposizionePartenza = "ComposizionePartenza";
+        public static string ChiusuraPartenza = "ChiusuraPartenza";
+        public static string ArrivoSulPosto = "ArrivoSulPosto";
 
         #endregion Eventi
     }

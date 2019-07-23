@@ -29,7 +29,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     public class ComposizionePartenzaAvanzataAuthorizationQueryHandlerDecorator : IQueryAuthorizer<ComposizionePartenzaAvanzataQuery, ComposizionePartenzaAvanzataResult>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti = new Costanti();
 
         public ComposizionePartenzaAvanzataAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {
@@ -44,10 +43,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 Utente user = Utente.FindUserByUsername(username);
                 if (user == null)
-                    yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                    yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }
             else
-                yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
         }
     }
 }

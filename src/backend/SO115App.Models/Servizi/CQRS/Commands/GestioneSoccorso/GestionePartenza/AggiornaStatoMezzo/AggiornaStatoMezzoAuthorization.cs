@@ -29,7 +29,6 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
     public class AggiornaStatoMezzoAuthorization : ICommandAuthorizer<AggiornaStatoMezzoCommand>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti = new Costanti();
 
         public AggiornaStatoMezzoAuthorization(IPrincipal currentUser)
         {
@@ -45,10 +44,10 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
             {
 
                 if (user == null)
-                    yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                    yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }
             else
-                yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
         }
     }
 }

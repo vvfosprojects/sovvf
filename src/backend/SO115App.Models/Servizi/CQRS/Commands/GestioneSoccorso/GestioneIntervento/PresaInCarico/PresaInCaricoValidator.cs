@@ -27,14 +27,13 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
 {
     public class PresaInCaricoValidator : ICommandValidator<PresaInCaricoCommand>
     {
-        private readonly Costanti _costanti = new Costanti();
         public IEnumerable<ValidationResult> Validate(PresaInCaricoCommand command)
         {
             // Controlli sul richiedente
 
             if (command.IdRichiesta.Length == 0)
             {
-                yield return new ValidationResult(_costanti.IdRichiestaNonValida);
+                yield return new ValidationResult(Costanti.IdRichiestaNonValida);
             }
         }
     }

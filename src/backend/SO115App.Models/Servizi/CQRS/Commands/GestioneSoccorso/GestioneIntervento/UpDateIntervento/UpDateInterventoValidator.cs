@@ -26,8 +26,6 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 {
     public class UpDateInterventoValidator : ICommandValidator<UpDateInterventoCommand>
     {
-        private readonly Costanti _costanti = new Costanti();
-
         public IEnumerable<ValidationResult> Validate(UpDateInterventoCommand command)
         {
             /*
@@ -44,14 +42,14 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             {
                 if (string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome))
                 {
-                    yield return new ValidationResult(_costanti.PresenteNomeNonCognome);
+                    yield return new ValidationResult(Costanti.PresenteNomeNonCognome);
                 }
             }
 
             if (string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.RagioneSociale)) yield break;
             if (!string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome) && !string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Nome))
             {
-                yield return new ValidationResult(_costanti.SelezionataPersonaFisica);
+                yield return new ValidationResult(Costanti.SelezionataPersonaFisica);
             }
         }
     }

@@ -30,7 +30,6 @@ namespace SO115App.API.Models.AOP.Authorization
     public class SintesiRichiesteAssistenzaMarkerAuthorizationQueryHandlerDecorator : IQueryAuthorizer<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti = new Costanti();
 
         public SintesiRichiesteAssistenzaMarkerAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {
@@ -45,10 +44,10 @@ namespace SO115App.API.Models.AOP.Authorization
             {
                 Utente user = Utente.FindUserByUsername(username);
                 if (user == null)
-                    yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                    yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }
             else
-                yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
         }
     }
 }

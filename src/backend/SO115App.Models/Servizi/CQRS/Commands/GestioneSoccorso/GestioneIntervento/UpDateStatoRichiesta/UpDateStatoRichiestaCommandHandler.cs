@@ -29,7 +29,6 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
     {
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
         private readonly IGetRichiestaById _getRichiestaById;
-        private readonly Costanti _costanti = new Costanti();
 
         public UpDateStatoRichiestaCommandHandler(
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
@@ -43,13 +42,13 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
         {
             var richiesta = _getRichiestaById.Get(command.IdRichiesta);
 
-            if (command.StatoRichiesta.Equals(_costanti.RichiestaChiusa) || command.StatoRichiesta.Equals(_costanti.RichiestaSospesa))
+            if (command.StatoRichiesta.Equals(Costanti.RichiestaChiusa) || command.StatoRichiesta.Equals(Costanti.RichiestaSospesa))
             {
                 foreach (var composizione in richiesta.Partenze)
                 {
-                    if (!composizione.Partenza.Mezzo.Stato.Equals(_costanti.MezzoInRientro) && !composizione.Partenza.Mezzo.Stato.Equals(_costanti.MezzoInSede))
+                    if (!composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInRientro) && !composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede))
                     {
-                        composizione.Partenza.Mezzo.Stato = _costanti.MezzoInRientro;
+                        composizione.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
                     }
                 }
             }
