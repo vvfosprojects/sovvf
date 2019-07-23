@@ -72,7 +72,6 @@ export class ComposizionePartenzaState {
     }
 
     @Selector()
-    // Todo: verificare se serve
     static richiestaComposizioneMarker(state: ComposizionePartenzaStateModel): ComposizioneMarker[] {
         let composizioneMarkers: ComposizioneMarker[] = [];
         if (state.richiesta !== ComposizioneStateDefaults.richiesta) {
@@ -87,7 +86,7 @@ export class ComposizionePartenzaState {
     }
 
     constructor(private filterbar: FilterbarService,
-                private compPartenzaSevice: CompPartenzaService) {
+        private compPartenzaSevice: CompPartenzaService) {
     }
 
     @Action(GetFiltriComposizione)

@@ -1,7 +1,7 @@
 export enum StatoSquadra {
+    InSede,
+    InRientro,
     InViaggio,
     SulPosto,
-    InRientro,
-    InSede,
     Istituto
 }

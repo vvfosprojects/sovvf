@@ -17,7 +17,7 @@ import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eve
 import { ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { ClearMarkerRichiestaHover, ClearMarkerRichiestaSelezionato, SetMarkerRichiestaHover, SetMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
-import { GetInitCentroMappa, GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
+import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
 import { SetRichiestaModifica } from '../store/actions/richieste/richiesta-modifica.actions';
 import { RichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
@@ -69,8 +69,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
 
     constructor(private modalService: NgbModal,
-                private filter: FilterPipe,
-                private store: Store) {
+        private filter: FilterPipe,
+        private store: Store) {
         this.getRichieste();
     }
 
@@ -252,7 +252,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
         const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
         modal.result.then(() => {
-            },
+        },
             () => this.store.dispatch(new ClearEventiRichiesta()));
     }
 

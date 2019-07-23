@@ -231,7 +231,7 @@
 
                 <!-- box note localita e zone emergenza -->
                 <div *ngIf="espanso" class="col-md-12 default-cursor">
-                    <div *ngIf="richiesta.localita.note || richiesta.zoneEmergenza || richiesta.etichette"
+                    <div *ngIf="richiesta.localita.note || richiesta.zoneEmergenza || richiesta.tags"
                          class="col-md-12">
                         <div class="row card bt-0 note-localita mt-1">
                             <div class="col-md-12 bg_diagonal_grey">
@@ -249,10 +249,10 @@
                                     </div>
                                     <div class="col-12 text-right">
                                         <i class="guida fa fa-tags fa-fw text-left mr-1" title="Etichette"></i>
-                                        <span *ngFor="let etichetta of richiesta.etichette"
+                                        <span *ngFor="let tag of richiesta.tags"
                                               class="badge badge-secondary text-right py-2 m-1"><i
-                                                class="fa fa-hashtag fa-fw text-left"></i>{{etichetta}}</span>
-                                        <span *ngIf="!richiesta.etichette || (richiesta.etichette && richiesta.etichette.length <= 0)">
+                                                class="fa fa-hashtag fa-fw text-left"></i>{{tag}}</span>
+                                        <span *ngIf="!richiesta.tags || (richiesta.tags && richiesta.tags.length <= 0)">
                                             Non ci sono tags
                                         </span>
                                     </div>
