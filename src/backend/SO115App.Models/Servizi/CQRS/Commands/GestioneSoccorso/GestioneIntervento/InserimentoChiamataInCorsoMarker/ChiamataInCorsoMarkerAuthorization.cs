@@ -29,7 +29,6 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
     public class ChiamataInCorsoMarkerAuthorization : ICommandAuthorizer<ChiamataInCorsoMarkerCommand>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti = new Costanti();
 
         public ChiamataInCorsoMarkerAuthorization(IPrincipal currentUser)
         {
@@ -44,10 +43,10 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
             if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
-                    yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                    yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }
             else
-                yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
         }
     }
 }

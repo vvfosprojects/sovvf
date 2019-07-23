@@ -12,7 +12,6 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
     {
 
         private readonly IPrincipal currentUser;
-        private readonly Costanti _costanti = new Costanti();
 
         public MezzoPrenotatoAuthorization(IPrincipal currentUser)
         {
@@ -27,10 +26,10 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
             if (currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
-                    yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                    yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }
             else
-                yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
 
         }
     }

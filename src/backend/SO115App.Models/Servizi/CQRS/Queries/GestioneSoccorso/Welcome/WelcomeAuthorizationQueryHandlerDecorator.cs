@@ -29,7 +29,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
     public class WelcomeAuthorizationQueryHandlerDecorator : IQueryAuthorizer<WelcomeQuery, WelcomeResult>
     {
         private readonly IPrincipal _currentUser;
-        private readonly Costanti _costanti = new Costanti();
 
         public WelcomeAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {
@@ -44,10 +43,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             if (this._currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
-                    yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                    yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }
             else
-                yield return new AuthorizationResult(_costanti.UtenteNonAutorizzato);
+                yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
         }
     }
 }

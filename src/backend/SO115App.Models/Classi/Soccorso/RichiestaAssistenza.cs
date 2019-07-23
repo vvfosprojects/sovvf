@@ -52,9 +52,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   Contiene la lista degli eventi considerati di interesse per la richiesta.
         /// </summary>
-        private List<Evento> eventi;
-
-        private readonly Costanti _costanti = new Costanti();
+        private readonly List<Evento> _eventi;
 
         /// <summary>
         ///   Costruisce una nuova istanza di <see cref="RichiestaAssistenza" />
@@ -62,7 +60,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         [JsonConstructor]
         public RichiestaAssistenza()
         {
-            this.eventi = new List<Evento>();
+            this._eventi = new List<Evento>();
             this.Tipologie = new List<Tipologia>();
             this.Tags = new HashSet<string>();
             this.ListaUtentiInLavorazione = new List<AttivitaUtente>();
@@ -107,19 +105,19 @@ namespace SO115App.API.Models.Classi.Soccorso
 
         internal void SincronizzaStatoRichiesta(string stato, IStatoRichiesta statoRichiesta, string id, string motivazione)
         {
-            if (stato == _costanti.RichiestaChiusa && !(statoRichiesta is Chiusa))
+            if (stato == Costanti.RichiestaChiusa && !(statoRichiesta is Chiusa))
             {
                 new ChiusuraRichiesta(motivazione, this, DateTime.UtcNow, id);
             }
-            else if (stato.Equals(_costanti.RichiestaRiaperta) && !(statoRichiesta is Riaperta))
+            else if (stato.Equals(Costanti.RichiestaRiaperta) && !(statoRichiesta is Riaperta))
             {
                 new RiaperturaRichiesta(this, DateTime.UtcNow, id);
             }
-            else if (stato.Equals(_costanti.RichiestaAssegnata) && !(statoRichiesta is Assegnata))
+            else if (stato.Equals(Costanti.RichiestaAssegnata) && !(statoRichiesta is Assegnata))
             {
                 new AssegnataRichiesta(this, DateTime.UtcNow, id);
             }
-            else if (stato.Equals(_costanti.RichiestaPresidiata) && !(statoRichiesta is Presidiata))
+            else if (stato.Equals(Costanti.RichiestaPresidiata) && !(statoRichiesta is Presidiata))
             {
                 new RichiestaPresidiata(this, DateTime.UtcNow, id);
             }
@@ -228,7 +226,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                return this.eventi;
+                return this._eventi;
             }
         }
 
@@ -439,7 +437,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var eventoAssegnazionePriorita = this.eventi
+                var eventoAssegnazionePriorita = this._eventi
                     .Where(e => e is AssegnazionePriorita)
                     .LastOrDefault() as AssegnazionePriorita;
 
@@ -454,7 +452,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var eventoSegnalazione = this.eventi
+                var eventoSegnalazione = this._eventi
                     .Where(e => e is Segnalazione)
                     .FirstOrDefault() as Segnalazione;
 
@@ -477,7 +475,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var eventoPresaInCarico = this.eventi
+                var eventoPresaInCarico = this._eventi
                     .Where(e => e is InizioPresaInCarico)
                     .FirstOrDefault() as InizioPresaInCarico;
 
@@ -513,7 +511,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var eventoAssegnazione = this.eventi
+                var eventoAssegnazione = this._eventi
                     .Where(e => e is ComposizionePartenze)
                     .FirstOrDefault() as ComposizionePartenze;
 
@@ -535,7 +533,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var ultimoEventoRilevanza = (MarcaRilevante)this.eventi
+                var ultimoEventoRilevanza = (MarcaRilevante)this._eventi
                     .Where(e => e is MarcaRilevante)
                     .LastOrDefault();
 
@@ -553,7 +551,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var ultimoEventoRilevanza = (MarcaRilevante)this.eventi
+                var ultimoEventoRilevanza = (MarcaRilevante)this._eventi
                     .Where(e => e is MarcaRilevante)
                     .LastOrDefault();
 
@@ -571,7 +569,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var ultimoEventoRilevanza = (MarcaRilevante)this.eventi
+                var ultimoEventoRilevanza = (MarcaRilevante)this._eventi
                     .Where(e => e is MarcaRilevante)
                     .LastOrDefault();
 
@@ -589,7 +587,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var eventoChiusura = this.eventi
+                var eventoChiusura = this._eventi
                     .Where(e => e is ChiusuraRichiesta);
 
                 if (this.Chiusa)
@@ -628,7 +626,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                return this.eventi
+                return this._eventi
                     .Where(e => e is Telefonata)
                     .Select(e => e as Telefonata)
                     .ToList();
@@ -671,7 +669,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var primoCodiceNue = this.eventi
+                var primoCodiceNue = this._eventi
                     .Where(e => e is Telefonata)
                     .Select(e => e as Telefonata)
                     .Select(e => e.CodiceSchedaContatto)
@@ -690,7 +688,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var ultimoEventoFonogramma = this.eventi
+                var ultimoEventoFonogramma = this._eventi
                     .Where(e => e is IFonogramma)
                     .LastOrDefault();
 
@@ -716,12 +714,12 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                if (this.eventi.Count <= 20)
+                if (this._eventi.Count <= 20)
                 {
                     return new Complessita.Bassa();
                 }
 
-                if (this.eventi.Count <= 60)
+                if (this._eventi.Count <= 60)
                 {
                     return new Complessita.Media();
                 }
@@ -738,12 +736,12 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="evento">L'evento da aggiungere</param>
         public void AddEvento(Evento evento)
         {
-            if (this.eventi.Any() && this.eventi.Last().Istante > evento.Istante)
+            if (this._eventi.Any() && this._eventi.Last().Istante > evento.Istante)
             {
                 throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
             }
 
-            this.eventi.Add(evento);
+            this._eventi.Add(evento);
         }
     }
 }

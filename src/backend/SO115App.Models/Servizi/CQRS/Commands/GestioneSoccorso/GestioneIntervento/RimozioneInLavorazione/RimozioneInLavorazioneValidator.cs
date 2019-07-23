@@ -27,14 +27,13 @@ namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
 {
     public class RimozioneInLavorazioneValidator : ICommandValidator<RimozioneInLavorazioneCommand>
     {
-        private readonly Costanti _costanti = new Costanti();
         public IEnumerable<ValidationResult> Validate(RimozioneInLavorazioneCommand command)
         {
             // Controlli sul richiedente
 
             if (command.IdRichiesta.Length == 0)
             {
-                yield return new ValidationResult(_costanti.IdRichiestaNonValida);
+                yield return new ValidationResult(Costanti.IdRichiestaNonValida);
             }
         }
     }

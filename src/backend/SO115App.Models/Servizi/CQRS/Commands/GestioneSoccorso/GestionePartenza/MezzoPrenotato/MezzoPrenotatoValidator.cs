@@ -9,7 +9,6 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
     public class MezzoPrenotatoValidator : ICommandValidator<MezzoPrenotatoCommand>
     {
         private readonly IGetMezzoPrenotato _mezzo;
-        private readonly Costanti _costanti = new Costanti();
 
         public MezzoPrenotatoValidator(IGetMezzoPrenotato iGetMezzoPrenotato)
         {
@@ -20,7 +19,7 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
 
             if (_mezzo.GetMezzo(command) == null)
 
-                yield return new ValidationResult(_costanti.MezzoNonPresente);
+                yield return new ValidationResult(Costanti.MezzoNonPresente);
         }
     }
 }

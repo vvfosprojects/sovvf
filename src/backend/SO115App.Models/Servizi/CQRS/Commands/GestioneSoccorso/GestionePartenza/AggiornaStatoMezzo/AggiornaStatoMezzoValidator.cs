@@ -26,13 +26,12 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 {
     public class AggiornaStatoMezzoValidator : ICommandValidator<AggiornaStatoMezzoCommand>
     {
-        private readonly Costanti _costanti = new Costanti();
         public IEnumerable<ValidationResult> Validate(AggiornaStatoMezzoCommand command)
         {
             // Controlli sul richiedente
             if (command.Chiamata.Id.Length == 0)
             {
-                yield return new ValidationResult(_costanti.IdRichiestaNonValida);
+                yield return new ValidationResult(Costanti.IdRichiestaNonValida);
             }
         }
     }
