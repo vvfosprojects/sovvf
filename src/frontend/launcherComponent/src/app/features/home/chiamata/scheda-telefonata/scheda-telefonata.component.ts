@@ -55,9 +55,9 @@ export class SchedaTelefonataComponent implements OnInit {
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
 
     constructor(private formBuilder: FormBuilder,
-                private cdRef: ChangeDetectorRef,
-                private store: Store,
-                private modalService: NgbModal) {
+        private cdRef: ChangeDetectorRef,
+        private store: Store,
+        private modalService: NgbModal) {
         this.store.dispatch(new StartChiamata());
     }
 
@@ -358,7 +358,7 @@ export class SchedaTelefonataComponent implements OnInit {
         const form = this.f;
         if (!form.descrizione.value) {
             // console.log(form.selectedTipologie.value);
-            const nuovaDescrizione = this.tipologie.filter( tipologia => tipologia.codice === form.selectedTipologie.value[0]);
+            const nuovaDescrizione = this.tipologie.filter(tipologia => tipologia.codice === form.selectedTipologie.value[0]);
             if (nuovaDescrizione) {
                 this.nuovaRichiesta.descrizione = nuovaDescrizione[0].descrizione;
             }
