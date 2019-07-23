@@ -31,7 +31,7 @@ namespace SO115App.API.Controllers
                 IdOperatore = idOperatore,
                 IdRichiesta = richiesta.IdRichiesta,
                 Note = richiesta.Note == null ? "" : richiesta.Note,
-                StatoRichiesta = richiesta.StatoRichiesta
+                Stato = richiesta.Stato
             };
 
             try
