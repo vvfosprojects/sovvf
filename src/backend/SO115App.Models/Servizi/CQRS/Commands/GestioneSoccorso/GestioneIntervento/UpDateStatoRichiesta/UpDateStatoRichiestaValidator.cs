@@ -38,20 +38,19 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
             */
 
             // Controlli sul richiedente
-            if (command.Chiamata.Richiedente.Nome.Length > 0)
+            if (command.IdRichiesta.Length == 0)
             {
-                if (string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome))
-                {
-                    yield return new ValidationResult(Costanti.PresenteNomeNonCognome);
-                }
+                yield return new ValidationResult(Costanti.IdRichiestaNonValida);
             }
 
-            if (!string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.RagioneSociale))
+            if (command.Stato.Length == 0)
             {
-                if (!string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome) && !string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Nome))
-                {
-                    yield return new ValidationResult(Costanti.SelezionataPersonaFisica);
-                }
+                yield return new ValidationResult(Costanti.StatoNonValido);
+            }
+
+            if (command.IdOperatore.Length == 0)
+            {
+                yield return new ValidationResult(Costanti.IdOperatoreNonValido);
             }
         }
     }

@@ -19,8 +19,10 @@ namespace SO115App.Models.Classi.Utility
         public static string SelezionataPersonaFisica =
             "Se è presente un nominativo per una persona fisica non può essere presente una ragione sociale";
 
+        public static string IdOperatoreNonValido = "Id Operatore non valido";
         public static string IdRichiestaNonValida = "Id Richiesta non valido";
         public static string MezzoNonPresente = "Il mezzo non è presente";
+        public static string StatoNonValido = "Lo stato della richiesta non è valido";
 
         #endregion CondivisaValidator
 

@@ -42,7 +42,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
         {
             var richiesta = _getRichiestaById.Get(command.IdRichiesta);
 
-            if (command.StatoRichiesta.Equals(Costanti.RichiestaChiusa) || command.StatoRichiesta.Equals(Costanti.RichiestaSospesa))
+            if (command.Stato.Equals(Costanti.RichiestaChiusa) || command.Stato.Equals(Costanti.RichiestaSospesa))
             {
                 foreach (var composizione in richiesta.Partenze)
                 {
@@ -53,7 +53,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                 }
             }
 
-            richiesta.SincronizzaStatoRichiesta(command.StatoRichiesta, richiesta.StatoRichiesta, command.IdOperatore, command.Note);
+            richiesta.SincronizzaStatoRichiesta(command.Stato, richiesta.StatoRichiesta, command.IdOperatore, command.Note);
 
             _updateRichiestaAssistenza.UpDate(richiesta);
         }

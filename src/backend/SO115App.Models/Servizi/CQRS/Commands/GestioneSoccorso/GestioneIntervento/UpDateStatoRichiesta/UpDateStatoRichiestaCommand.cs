@@ -24,7 +24,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
     public class UpDateStatoRichiestaCommand
     {
         public string IdRichiesta { get; set; }
-        public string StatoRichiesta { get; set; }
+        public string Stato { get; set; }
         public string Note { get; set; }
         public string IdOperatore { get; set; }
         public SintesiRichiesta Chiamata { get; set; }
