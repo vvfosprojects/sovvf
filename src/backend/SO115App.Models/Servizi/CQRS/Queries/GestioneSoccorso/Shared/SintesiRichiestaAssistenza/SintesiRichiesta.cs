@@ -96,10 +96,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// </remarks>
         public bool Sospesa
         {
-            get
-            {
-                return false; // DA GESTIRE
-            }
+            get; set;
         }
 
         /// <summary>

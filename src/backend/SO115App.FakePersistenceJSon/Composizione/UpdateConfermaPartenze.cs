@@ -97,6 +97,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
                     if (composizioneMezzo.Mezzo.Codice == composizione.Partenza.Mezzo.Codice)
                     {
                         composizioneMezzo.Mezzo.Stato = Costanti.MezzoInViaggio;
+                        composizioneMezzo.Mezzo.IdRichiesta = command.ConfermaPartenze.IdRichiesta;
                     }
                 }
 

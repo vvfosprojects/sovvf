@@ -137,6 +137,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case RichiestaPresidiata _:
                     risEvento = Costanti.RichiestaPresidiata;
                     break;
+
+                case RichiestaSospesa _:
+                    risEvento = Costanti.RichiestaSospesa;
+                    break;
             }
 
             return risEvento;

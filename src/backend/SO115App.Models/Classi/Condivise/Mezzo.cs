@@ -38,6 +38,11 @@ namespace SO115App.API.Models.Classi.Condivise
         public string Codice { get; set; }
 
         /// <summary>
+        ///   Codice del mezzo
+        /// </summary>
+        public string IdRichiesta { get; set; }
+
+        /// <summary>
         ///   Descrizione del mezzo
         /// </summary>
         public string Descrizione { get; set; }
