@@ -134,6 +134,11 @@ namespace SO115App.FakePersistenceJSon.Utility
                         var presidiata = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<RichiestaPresidiata>());
                         new RichiestaPresidiata(richiestaMap, presidiata.Istante, richiesta.Operatore.Sede.Codice);
                     }
+                    if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains("RichiestaSospesa"))
+                    {
+                        var presidiata = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<RichiestaSospesa>());
+                        new RichiestaSospesa(richiestaMap, presidiata.Istante, richiesta.Operatore.Sede.Codice);
+                    }
                 }
             }
 

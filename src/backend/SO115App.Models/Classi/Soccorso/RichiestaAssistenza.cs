@@ -121,6 +121,10 @@ namespace SO115App.API.Models.Classi.Soccorso
             {
                 new RichiestaPresidiata(this, DateTime.UtcNow, id);
             }
+            else if (stato.Equals(Costanti.RichiestaSospesa) && !(statoRichiesta is Sospesa))
+            {
+                new RichiestaSospesa(this, DateTime.UtcNow, id);
+            }
         }
 
         /// <summary>
@@ -588,33 +592,54 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 var eventoChiusura = this._eventi
-                    .Where(e => e is ChiusuraRichiesta);
+                    .Where(e => e is ChiusuraRichiesta)
+                    .LastOrDefault() as ChiusuraRichiesta;
 
-                if (this.Chiusa)
+                if (eventoChiusura != null)
                 {
                     return new Chiusa();
                 }
 
-                if (this.Presidiata)
+                var eventoPresidiata = this._eventi
+                    .Where(e => e is RichiestaPresidiata)
+                    .LastOrDefault() as RichiestaPresidiata;
+
+                if (eventoPresidiata != null)
                     return new Presidiata();
 
-                var composizionePartenza = this.Partenze;
-                //var elencoMezziCoinvolti = this.MezziCoinvolti;
-                if (!composizionePartenza.Any())
-                {
-                    return new InAttesa();
-                }
-                else
-                {
-                    if (composizionePartenza.Any(e => e.Partenza.Mezzo.Stato == "In Viaggio"))
-                    {
-                        return new Assegnata();
-                    }
-                    else
-                    {
-                        return new Sospesa();
-                    }
-                }
+                var eventoAssegnata = this._eventi
+                    .Where(e => e is AssegnataRichiesta)
+                    .LastOrDefault() as AssegnataRichiesta;
+
+                if (eventoAssegnata != null)
+                    return new Assegnata();
+
+                var eventoSospesa = this._eventi
+                    .Where(e => e is RichiestaSospesa)
+                    .LastOrDefault() as RichiestaSospesa;
+
+                if (eventoSospesa != null)
+                    return new Sospesa();
+
+                return new InAttesa();
+
+                //var composizionePartenza = this.Partenze;
+                ////var elencoMezziCoinvolti = this.MezziCoinvolti;
+                //if (!composizionePartenza.Any())
+                //{
+                //    return new InAttesa();
+                //}
+                //else
+                //{
+                //    if (composizionePartenza.Any(e => e.Partenza.Mezzo.Stato == "In Viaggio"))
+                //    {
+                //        return new Assegnata();
+                //    }
+                //    else
+                //    {
+                //        return new Sospesa();
+                //    }
+                //}
             }
         }
 
