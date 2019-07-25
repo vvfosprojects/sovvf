@@ -1,8 +1,8 @@
 export const environment = {
     production: false,
-    fakeProvider: false,
+    fakeProvider: true,
     signalRHub: '/NotificationHub',
-    signalR: true,
+    signalR: false,
     apiUrl: {
         home: '/api/Welcome',
         boxes: {
