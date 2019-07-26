@@ -17,7 +17,8 @@ const PROXY_CONFIG = [{
     "/api/AttivitaUtente",
     '/api/GestionePartenza',
     '/api/GestioneRichiesta/AggiornaStato',
-    '/api/GestionePartenza/AggiornaPartenza'
+    '/api/GestionePartenza/AggiornaPartenza',
+    '/api/GestioneMezziInServizio/GetListaMezzi'
   ],
   target: "http://so115.api2.test/",
   secure: false,

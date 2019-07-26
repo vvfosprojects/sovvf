@@ -15,6 +15,10 @@ import { StatoMezzoActions } from '../../enum/stato-mezzo-actions.enum';
 export class MezzoComponent implements OnInit {
 
     @Input() mezzo: Mezzo;
+
+    @Input() mostraIndicatori: boolean;
+    @Input() mostraNotifiche: boolean;
+    @Input() mostraRichiestaAssociata: boolean;
     @Input() inGestione: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
@@ -22,7 +26,7 @@ export class MezzoComponent implements OnInit {
     methods = new HelperComposizione();
 
     constructor(popoverConfig: NgbPopoverConfig,
-                tooltipConfig: NgbTooltipConfig) {
+        tooltipConfig: NgbTooltipConfig) {
         popoverConfig.container = 'body';
         popoverConfig.placement = 'bottom';
         tooltipConfig.container = 'body';

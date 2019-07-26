@@ -104,6 +104,13 @@ export class SignalRService {
         });
 
         /**
+         * Mezzi In Servizio
+         */
+        this.hubNotification.on('NotifyGetListaMezziInServizio', (data: any) => {
+            console.log('NotifyGetListaMezziInServizio', data);
+        });
+
+        /**
          * Markers Mappa --------------
          */
         this.hubNotification.on('NotifyGetRichiestaMarker', (data: any) => {

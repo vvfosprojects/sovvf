@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {EventoRichiesta} from '../../../../shared/model/evento-richiesta.model';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model';
 
 @Component({
     selector: '[app-evento-richiesta]',
@@ -25,6 +25,7 @@ export class EventoRichiestaComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log('Eventi Richiesta', this.eventoRichiesta);
 
         this.iconeClassiEvento = [
             ['Telefonata', ['fa-phone-square']]
@@ -45,6 +46,10 @@ export class EventoRichiestaComponent implements OnInit {
             , ['RevocaPerFuoriServizio', ['fa-truck', 'fa-close', 'fa-wrench']]
             , ['RevocaPerAltraMotivazione', ['fa-truck', 'fa-close', 'fa-question-circle-o']]
             , ['VaInFuoriServizio', ['fa-truck', 'fa-wrench']]
+            , ['InizioPresaInCarico', ['fa-user', 'fa-wrench']]
+            , ['Presidiata', ['fa-bullseye']]
+            , ['Evento Generico', ['fa-truck', 'fa-question-circle']]
+            , ['Sospesa', ['fa-question-circle']]
         ];
 
         this.myMap = new Map(this.iconeClassiEvento);

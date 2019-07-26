@@ -30,10 +30,11 @@ import { RichiestaModificaState } from './store/states/richieste/richiesta-modif
 import { environment } from '../../../environments/environment';
 import { HomeService } from '../../core/service/home-service/home.service';
 import { HomeServiceFake } from '../../core/service/home-service/home.service.fake';
+import { MezziInServizioModule } from './mezzi-in-servizio/mezzi-in-servizio.module';
 
 @NgModule({
     declarations: [
-        HomeComponent,
+        HomeComponent
     ],
     imports: [
         CommonModule,
@@ -45,6 +46,7 @@ import { HomeServiceFake } from '../../core/service/home-service/home.service.fa
         MapsModule,
         RichiesteModule,
         ComposizionePartenzaModule,
+        MezziInServizioModule,
         NgxPaginationModule,
         NgSelectModule,
         ScrollingModule,

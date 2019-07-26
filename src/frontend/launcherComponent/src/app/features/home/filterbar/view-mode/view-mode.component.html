@@ -1,42 +1,47 @@
 <div class="text-center" style="padding-right: 25px">
-    <div class="btn-group app-shadow" role="group">
-        <div class="btn-group" ngbDropdown #dropdownRichieste="ngbDropdown" autoClose="outside" placement="bottom" role="group">
-            <button class="btn dropdown-toggle-split" [ngClass]="colorButtonView[0]" ngbDropdownToggle
-                    [disabled]="colorButtonView[2] === 'btn-secondary'">
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-menu" ngbDropdownMenu>
-                <button class="dropdown-item" ngbTooltip="Restringi tutte le richieste espanse"
-                        (click)="buttonOptionRichieste(OptionsRichieste.Restringi); dropdownRichieste.close()">
-                    Restringi richieste
-                </button>
-            </div>
-        </div>
-        <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Richieste)" [ngClass]="colorButtonView[0]"
-                ngbTooltip="Visualizzazione solo Richieste" [disableTooltip]="colorButtonView[0] === 'btn-secondary'"><i
-                class="fa fa-list-ul"></i></button>
-        <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Default)" [ngClass]="colorButtonView[1]"
-                ngbTooltip="Visualizzazione normale" [disableTooltip]="colorButtonView[1] === 'btn-secondary'"><i
-                class="fa fa-columns"></i></button>
-        <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Mappa)" [ngClass]="colorButtonView[2]"
-                ngbTooltip="Visualizzazione solo Mappa" [disableTooltip]="colorButtonView[2] === 'btn-secondary'"><i
-                class="fa fa-globe"></i>
+  <div class="btn-group app-shadow" role="group">
+    <div class="btn-group" ngbDropdown #dropdownRichieste="ngbDropdown" autoClose="outside" placement="bottom"
+      role="group">
+      <button class="btn dropdown-toggle-split" [ngClass]="colorButtonView[0]" ngbDropdownToggle
+        [disabled]="colorButtonView[2] === 'btn-secondary'">
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-menu" ngbDropdownMenu>
+        <button class="dropdown-item" ngbTooltip="Vai ai mezzi in servizio"
+          (click)="buttonOptionRichieste(OptionsRichieste.MezziInServizio); dropdownRichieste.close()">
+          Mezzi In Servizio
         </button>
-        <div class="btn-group" ngbDropdown autoClose="outside" placement="bottom" role="group">
-            <button class="btn dropdown-toggle-split" [ngClass]="colorButtonView[2]" ngbDropdownToggle
-                    [disabled]="colorButtonView[0] === 'btn-secondary'">
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-menu" ngbDropdownMenu>
-                <button class="dropdown-item" ngbTooltip="Filtro esempio 1">Filtro 1
-                </button>
-                <button class="dropdown-item" ngbTooltip="Filtro esempio 2">Filtro 2
-                </button>
-                <button class="dropdown-item" ngbTooltip="Filtro esempio 3">Filtro 3
-                </button>
-                <button class="dropdown-item" ngbTooltip="Filtro esempio 4">Filtro 4
-                </button>
-            </div>
-        </div>
+        <button class="dropdown-item" ngbTooltip="Restringi tutte le richieste espanse"
+          (click)="buttonOptionRichieste(OptionsRichieste.Restringi); dropdownRichieste.close()">
+          Restringi richieste
+        </button>
+      </div>
     </div>
+    <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Richieste)" [ngClass]="colorButtonView[0]"
+      ngbTooltip="Visualizzazione solo Richieste" [disableTooltip]="colorButtonView[0] === 'btn-secondary'"><i
+        class="fa fa-list-ul"></i></button>
+    <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Default)" [ngClass]="colorButtonView[1]"
+      ngbTooltip="Visualizzazione normale" [disableTooltip]="colorButtonView[1] === 'btn-secondary'"><i
+        class="fa fa-columns"></i></button>
+    <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Mappa)" [ngClass]="colorButtonView[2]"
+      ngbTooltip="Visualizzazione solo Mappa" [disableTooltip]="colorButtonView[2] === 'btn-secondary'"><i
+        class="fa fa-globe"></i>
+    </button>
+    <div class="btn-group" ngbDropdown autoClose="outside" placement="bottom" role="group">
+      <button class="btn dropdown-toggle-split" [ngClass]="colorButtonView[2]" ngbDropdownToggle
+        [disabled]="colorButtonView[0] === 'btn-secondary'">
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-menu" ngbDropdownMenu>
+        <button class="dropdown-item" ngbTooltip="Filtro esempio 1">Filtro 1
+        </button>
+        <button class="dropdown-item" ngbTooltip="Filtro esempio 2">Filtro 2
+        </button>
+        <button class="dropdown-item" ngbTooltip="Filtro esempio 3">Filtro 3
+        </button>
+        <button class="dropdown-item" ngbTooltip="Filtro esempio 4">Filtro 4
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

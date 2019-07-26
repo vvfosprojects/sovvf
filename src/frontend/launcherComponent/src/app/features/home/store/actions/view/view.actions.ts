@@ -47,3 +47,7 @@ export class ToggleModifica {
     constructor(public toggle?: boolean) {
     }
 }
+
+export class ToggleMezziInServizio {
+    static readonly type = '[MezziInServizio] Toggle mezzi in servizio';
+}

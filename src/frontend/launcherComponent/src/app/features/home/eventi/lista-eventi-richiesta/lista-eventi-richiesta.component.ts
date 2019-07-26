@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {EventoRichiesta} from '../../../../shared/model/evento-richiesta.model';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model';
 import * as moment from 'moment';
 
 @Component({

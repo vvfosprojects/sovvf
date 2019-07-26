@@ -3,10 +3,10 @@ import { makeCopy } from '../../../../../shared/helper/function';
 import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
 import { Grid } from '../../../../../shared/enum/layout.enum';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import { ChangeView, SaveView, SwitchComposizione, ToggleChiamata, ToggleComposizione, ToggleModifica, TurnOffComposizione } from '../../actions/view/view.actions';
+import { ChangeView, SaveView, SwitchComposizione, ToggleChiamata, ToggleComposizione, ToggleModifica, TurnOffComposizione, ToggleMezziInServizio } from '../../actions/view/view.actions';
 import { BackupViewComponentState } from './save-view.state';
 import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../../../../shared/interface/view.interface';
-import { activeChiamata, activeComposizione, activeModifica, colorButton, switchComposizione, turnOffComposizione, turnOffModifica, updateView, viewStateMaps } from '../../helper/view-state-function';
+import { activeChiamata, activeComposizione, activeModifica, colorButton, switchComposizione, turnOffComposizione, turnOffModifica, updateView, viewStateMaps, activeMezziInServizio } from '../../helper/view-state-function';
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
@@ -36,6 +36,9 @@ export const ViewComponentStateDefault: ViewComponentStateModel = {
             options: [Grid.Col5]
         },
         modifica: {
+            active: false
+        },
+        mezziInServizio: {
             active: false
         }
     },
@@ -219,4 +222,31 @@ export class ViewComponentState {
         });
     }
 
+    @Action(ToggleMezziInServizio)
+    toggleGestioneRisorse({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>) {
+        const state = getState();
+        const stateDefault = makeCopy(ViewComponentStateDefault);
+        /**
+         * se lo stato dei mezzi in servizio non è attivo creo uno snapshot, altrimenti ritorno allo stato precedente
+         */
+        if (!state.view.mezziInServizio.active) {
+            dispatch(new ClearDirection());
+            dispatch(new ClearMarkerRichiestaSelezionato());
+            dispatch(new GetInitCentroMappa());
+            dispatch(new SaveView(makeCopy(state)));
+            const newState = activeMezziInServizio(stateDefault);
+            patchState({
+                ...state,
+                view: newState.view,
+                column: newState.column
+            });
+        } else {
+            const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
+            patchState({
+                ...state,
+                view: lastState.view,
+                column: lastState.column
+            });
+        }
+    }
 }

@@ -37,6 +37,9 @@ export const environment = {
         gestionePartenza: {
             aggiornaStatoMezzo: '/api/GestionePartenza/AggiornaPartenza'
         },
+        mezziInServizio: {
+            listaMezzi: '/api/GestioneMezziInServizio/GetListaMezzi'
+        },
         turno: '',  // Todo: controller mancante
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',

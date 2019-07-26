@@ -17,7 +17,8 @@ const PROXY_CONFIG = [{
     "/api/AttivitaUtente",
     '/api/GestionePartenza',
     '/api/GestioneRichiesta/AggiornaStato',
-    '/api/GestionePartenza/AggiornaPartenza'
+    '/api/GestionePartenza/AggiornaPartenza',
+    '/api/GestioneMezziInServizio/GetListaMezzi'
   ],
   target: "http://localhost:31497/",
   secure: false,

@@ -14,7 +14,7 @@ import { MarkerMeteoState } from '../store/states/filterbar/marker-meteo-switch.
 import { SetMarkerMeteoSwitch } from '../store/actions/filterbar/marker-meteo-switch.actions';
 import { SetRicerca } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
-import { ChangeView, SwitchComposizione, ToggleChiamata } from '../store/actions/view/view.actions';
+import { ChangeView, SwitchComposizione, ToggleChiamata, ToggleMezziInServizio } from '../store/actions/view/view.actions';
 import { ViewComponentState } from '../store/states/view/view.state';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { Grid } from '../../../shared/enum/layout.enum';
@@ -106,6 +106,9 @@ export class FilterbarComponent implements OnInit {
         switch (event) {
             case OptionsRichieste.Restringi:
                 this.store.dispatch(new ClearRichiesteEspanse());
+                break;
+            case OptionsRichieste.MezziInServizio:
+                this.store.dispatch(new ToggleMezziInServizio());
                 break;
         }
     }

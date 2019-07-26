@@ -5,4 +5,5 @@ export interface MezzoActionInterface {
     mezzo: Mezzo;
     action?: string;
     richiesta?: SintesiRichiesta;
+    listaMezzi?: boolean;
 }

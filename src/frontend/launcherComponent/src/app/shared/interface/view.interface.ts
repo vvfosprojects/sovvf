@@ -14,6 +14,7 @@ export interface ViewLayouts {
     composizione: ViewLayout;
     filterbar: ViewLayout;
     modifica: ViewLayout;
+    mezziInServizio: ViewLayout;
 }
 
 export interface Grids {

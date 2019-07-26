@@ -4,5 +4,6 @@ export enum AppFeatures {
     Modifica,
     Chiamata,
     ComposizionePartenza,
+    MezziInServizio,
     Default
 }

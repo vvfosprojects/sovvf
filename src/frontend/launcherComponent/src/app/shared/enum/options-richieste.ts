@@ -1,3 +1,4 @@
 export enum OptionsRichieste {
-    Restringi
+    Restringi,
+    MezziInServizio
 }

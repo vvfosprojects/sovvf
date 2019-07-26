@@ -17,7 +17,8 @@ const PROXY_CONFIG = [{
     "/api/AttivitaUtente",
     '/api/GestionePartenza',
     '/api/GestioneRichiesta/AggiornaStato',
-    '/api/GestionePartenza/AggiornaPartenza'
+    '/api/GestionePartenza/AggiornaPartenza',
+    '/api/GestioneMezziInServizio/GetListaMezzi'
   ],
   target: "http://172.16.16.13:5000/",
   secure: false,

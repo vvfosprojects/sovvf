@@ -158,3 +158,14 @@ export function activeModifica(stateDefault: ViewComponentStateModel): ViewCompo
     stateDefault.view.mappa.options = [AppFeatures.Modifica];
     return stateDefault;
 }
+
+/**
+ * partendo dallo stato di default, cambia lo stato di visualizzazione di composizionePartenza
+ * @param stateDefault
+ */
+export function activeMezziInServizio(stateDefault: ViewComponentStateModel): ViewComponentStateModel {
+    stateDefault.view.richieste.active = false;
+    stateDefault.view.mezziInServizio.active = true;
+    stateDefault.view.mappa.options = [AppFeatures.MezziInServizio];
+    return stateDefault;
+}

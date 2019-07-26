@@ -31,6 +31,15 @@ export const environment = {
         updateRichiesta: '/api/Chiamata/UpdateIntervento',
         eventiRichieste: '/api/ListaEventi',
         attivitaUtente: '/api/AttivitaUtente',
+        gestioneRichiesta: {
+            aggiornaStato: '/api/GestioneRichiesta/AggiornaStato'
+        },
+        gestionePartenza: {
+            aggiornaStatoMezzo: '/api/GestionePartenza/AggiornaPartenza'
+        },
+        mezziInServizio: {
+            listaMezzi: '/api/GestioneMezziInServizio/GetListaMezzi'
+        },
         turno: '',  // Todo: controller mancante
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',

@@ -1,0 +1,13 @@
+<div class="row mt-3">
+  <div class="col-10 mx-auto">
+  <h5>Mezzi in servizio</h5>
+  <div *ngIf="mezziInServizio" class="mt-2">
+    <div *ngFor="let mezzo of mezziInServizio">
+      <app-mezzo [mezzo]="mezzo" [mostraRichiestaAssociata]="mezzo.stato !== 'In Sede' ? true : false" [inGestione]="mezzo.stato !== 'In Sede' ? true : false"
+        (actionMezzo)="onActionMezzo(mezzo, $event)"></app-mezzo>
+      <hr class="my-1">
+    </div>
+  </div>
+  <!-- <button class="btn btn-primary" (click)="tornaIndietro()">Torna Indietro</button> -->
+  </div>
+</div>

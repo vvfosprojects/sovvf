@@ -69,7 +69,11 @@ export class Mezzo {
         /**
          * Elenco delle notifiche legate al mezzo
          */
-        public notifiche?: string[]
+        public notifiche?: string[],
+        /**
+         * Richiesta sul quale è collocato il mezzo
+         */
+        public idRichiesta?: string
     ) {
     }
 }
