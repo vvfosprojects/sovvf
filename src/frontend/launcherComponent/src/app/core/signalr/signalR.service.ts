@@ -27,6 +27,7 @@ import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/hom
 import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
 import { SetListaComposizioneVeloce, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
+import { SetMezziInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -108,6 +109,7 @@ export class SignalRService {
          */
         this.hubNotification.on('NotifyGetListaMezziInServizio', (data: any) => {
             console.log('NotifyGetListaMezziInServizio', data);
+            this.store.dispatch(new SetMezziInServizio(data));
         });
 
         /**
