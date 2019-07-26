@@ -115,6 +115,10 @@ namespace SO115App.CompositionRoot
                 SO115App.FakePersistence.JSon.GestioneUtenti.GetUtenteById>();
 
             container.Register<
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
+                SO115App.FakePersistenceJSon.GestioneMezzi.GetListaMezzi>();
+
+            container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata.INotifyInserimentoChiamata,
             SO115App.SignalR.Sender.GestioneChiamata.NotificationInserimentoChiamata>();
             container.Register<

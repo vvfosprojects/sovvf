@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AddInterventoCommandHandler.cs" company="CNVVF">
+// <copyright file="AggiornaStatoMezzoCommandHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -63,8 +63,6 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
             }
             else if (command.StatoMezzo == Costanti.MezzoInRientro)
             {
-                new PartenzaInRientro(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
-
                 foreach (var composizione in richiesta.Partenze)
                 {
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
@@ -75,16 +73,17 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 
                 foreach (var composizione in richiesta.Partenze)
                 {
-                    if (composizione.Partenza.Mezzo.Stato != Costanti.MezzoInSede && composizione.Partenza.Mezzo.Stato != Costanti.MezzoInRientro)
+                    if (composizione.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto || composizione.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio)
                     {
                         _mezziTuttiInSede = false;
                     }
                 }
+
+                if (_mezziTuttiInSede)
+                    new PartenzaInRientro(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
             }
             else if (command.StatoMezzo == Costanti.MezzoRientrato)
             {
-                new PartenzaRientrata(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
-
                 foreach (var composizione in richiesta.Partenze)
                 {
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
@@ -95,24 +94,24 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 
                 foreach (var composizione in richiesta.Partenze)
                 {
-                    if (composizione.Partenza.Mezzo.Stato != Costanti.MezzoInSede && composizione.Partenza.Mezzo.Stato != Costanti.MezzoInRientro)
+                    if (composizione.Partenza.Mezzo.Stato != Costanti.MezzoInSede && composizione.Partenza.Mezzo.Stato != Costanti.MezzoInRientro && composizione.Partenza.Mezzo.Stato != Costanti.MezzoRientrato)
                     {
                         _mezziTuttiInSede = false;
                     }
                 }
+
+                if (_mezziTuttiInSede)
+                    new PartenzaRientrata(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
             }
             else if (command.StatoMezzo == Costanti.MezzoInViaggio)
             {
-
                 foreach (var composizione in richiesta.Partenze)
                 {
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
                     {
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
                     }
-                    
                 }
-
             }
             foreach (var composizione in richiesta.Partenze)
             {
@@ -125,18 +124,15 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                         }
                     }
                 }
-                
             }
 
             command.Richiesta = richiesta;
-
 
             _updateStatoPartenze.Update(command);
         }
 
         private static Squadra.StatoSquadra MappaStato(string statoMezzo)
         {
-
             if (statoMezzo == Costanti.MezzoInRientro)
             {
                 return Squadra.StatoSquadra.InRientro;
