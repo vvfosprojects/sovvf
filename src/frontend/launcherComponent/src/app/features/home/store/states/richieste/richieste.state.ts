@@ -178,7 +178,7 @@ export class RichiesteState {
             'chiamata': action.mezzoAction.richiesta,
             'idMezzo': action.mezzoAction.mezzo.codice,
             'statoMezzo': action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo),
-            'listaMezzi': action.mezzoAction.listaMezzi ? true : false
+            // 'listaMezzi': action.mezzoAction.listaMezzi ? true : false
         };
         console.log('Obj', obj);
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {

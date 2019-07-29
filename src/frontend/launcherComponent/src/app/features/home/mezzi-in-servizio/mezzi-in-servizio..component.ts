@@ -9,6 +9,8 @@ import { MezzoActionInterface } from 'src/app/shared/interface/mezzo-action.inte
 import { ActionMezzo } from '../store/actions/richieste/richieste.actions';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
+import { statoMezzoBorderClass } from 'src/app/shared/helper/function';
+import { StatoMezzo } from 'src/app/shared/enum/stato-mezzo.enum';
 
 @Component({
   selector: 'app-mezzi-in-servizio',
@@ -42,6 +44,10 @@ export class MezziInServizioComponent implements OnInit {
     mezzoAction.richiesta = richiesta ? richiesta : null;
     mezzoAction.listaMezzi = true;
     this.store.dispatch(new ActionMezzo(mezzoAction));
+  }
+
+  statoMezzoBorderClass(stato: StatoMezzo) {
+    return statoMezzoBorderClass(stato);
   }
 
   tornaIndietro() {

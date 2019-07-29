@@ -137,10 +137,11 @@ export class HelperSintesiRichiesta {
         if (r && r.id) {
             const classes = {
                 // Hover (stato)
-                'card-shadow-info': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Assegnata,
+                // 'card-shadow-info': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Assegnata,
                 'card-shadow-success': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Presidiata,
                 'card-shadow-danger': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Chiamata,
-                'card-shadow-warning': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Sospesa,
+                'card-shadow-orange': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Sospesa,
+                'card-shadow-warning': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Assegnata,
                 'card-shadow-secondary': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Chiusa,
                 'bg-light': (r.id === richiestaSelezionata || r.id === richiestaHover) && r.stato !== StatoRichiesta.Chiusa,
                 'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
@@ -154,10 +155,10 @@ export class HelperSintesiRichiesta {
     cardFissataClasses(r: SintesiRichiesta) {
         if (r) {
             const classes = {
-                'card-shadow-info': r.stato === StatoRichiesta.Assegnata,
+                'card-shadow-warning': r.stato === StatoRichiesta.Assegnata,
                 'card-shadow-success': r.stato === StatoRichiesta.Presidiata,
                 'card-shadow-danger': r.stato === StatoRichiesta.Chiamata,
-                'card-shadow-warning': r.stato === StatoRichiesta.Sospesa,
+                'card-shadow-orange': r.stato === StatoRichiesta.Sospesa,
                 'card-shadow-secondary': r.stato === StatoRichiesta.Chiusa,
                 'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
             };

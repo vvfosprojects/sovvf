@@ -1,8 +1,8 @@
 export function markerColor(stato: string): string {
     const mapColorStato = new Map([
         ['chiam', '#dc3545'],
-        ['asseg', '#17a2b8'],
-        ['sospe', '#ffc107'],
+        ['asseg', '#ffc107'],
+        ['sospe', '#ff8800'],
         ['presi', '#28a745'],
         ['insed', '#6c757d'],
         ['invia', '#17a2b8'],

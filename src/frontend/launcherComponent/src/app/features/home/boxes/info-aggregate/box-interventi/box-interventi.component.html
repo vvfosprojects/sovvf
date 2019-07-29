@@ -1,100 +1,100 @@
 <div *ngIf="interventi && turno" class="row p-2">
-    <div class="col-12">
-        <div class="row">
-            <div class="col-8 pr-0">
-                <i class="fa fa-medkit mb-2 mr-1"></i><span class="font-weight-bold cursor-pointer" ngbTooltip="Interventi aperti"
-                                                            (click)="clickRichieste.emit('tutti')">Richieste: {{interventi?.totale}}</span>
-                <small>
-                    <span ngbTooltip="Interventi aperti nel turno precedente">
-                        <span class="ml-2 mr-1">Turno {{turno?.precedente}}:</span>
-                        <span class="font-weight-bold">{{interventi?.totTurnoPrecedente}}</span>
-                    </span>
-                    <span class="mx-1 fa fa-arrow-right fa-fw"></span>
-                    <span ngbTooltip="Interventi aperti nel turno corrente">
-                        <span class="mr-1">Turno {{turno?.corrente}}:</span>
-                        <span class="font-weight-bold">{{interventi?.totTurnoCorrente}}</span>
-                    </span>
-                </small>
-            </div>
-            <div class="col-4 ml-auto pl-0 text-right text-secondary">
-                <i class="fa fa-calendar-plus-o mb-2 mr-1"></i>
-                <small>
-                    <span ngbTooltip="Totale interventi chiusi dell'anno corrente">
-                        <span class="mr-1">{{interventi?.annoCorrente}}:</span>
-                        <span class="font-weight-bold">{{interventi?.totAnnoCorrente}}</span>
-                    </span>
-                </small>
-            </div>
-        </div>
-        <hr class="m-0 mb-2">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-8 pr-0">
+        <i class="fa fa-medkit mb-2 mr-1"></i><span class="font-weight-bold cursor-pointer"
+          ngbTooltip="Interventi aperti" (click)="clickRichieste.emit('tutti')">Richieste: {{interventi?.totale}}</span>
+        <small>
+          <span ngbTooltip="Interventi aperti nel turno precedente">
+            <span class="ml-2 mr-1">Turno {{turno?.precedente}}:</span>
+            <span class="font-weight-bold">{{interventi?.totTurnoPrecedente}}</span>
+          </span>
+          <span class="mx-1 fa fa-arrow-right fa-fw"></span>
+          <span ngbTooltip="Interventi aperti nel turno corrente">
+            <span class="mr-1">Turno {{turno?.corrente}}:</span>
+            <span class="font-weight-bold">{{interventi?.totTurnoCorrente}}</span>
+          </span>
+        </small>
+      </div>
+      <div class="col-4 ml-auto pl-0 text-right text-secondary">
+        <i class="fa fa-calendar-plus-o mb-2 mr-1"></i>
+        <small>
+          <span ngbTooltip="Totale interventi chiusi dell'anno corrente">
+            <span class="mr-1">{{interventi?.annoCorrente}}:</span>
+            <span class="font-weight-bold">{{interventi?.totAnnoCorrente}}</span>
+          </span>
+        </small>
+      </div>
     </div>
-    <!-- sinistra -->
-    <div class="col-6">
+    <hr class="m-0 mb-2">
+  </div>
+  <!-- sinistra -->
+  <div class="col-6">
+    <div class="row">
+      <div class="col-10 mx-auto">
         <div class="row">
-            <div class="col-10 mx-auto">
-                <div class="row">
-                    <div class="col pr-0 text-secondary">
-                        <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" ngbTooltip="Chiamate in corso">Chiamate</span></li>
-                            <li><span class="d-inline-block h6" ngbTooltip="Richieste sospese">Sospesi</span></li>
-                        </ul>
-                    </div>
-                    <div class="col px-0 text-secondary text-center">
-                        <ul class="list-unstyled m-0">
-                            <li [ngClass]="checkDiff('chiamate')"><span
-                                    class="position-relative badge h6 w-75 cursor-pointer" ngbTooltip="Evidenzia chiamate sulla mappa"
-                                    [ngClass]="{'badge-secondary': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0, 'border-click-checked': boxClick?.richieste.chiamate, 'border-info-aggregate': !boxClick?.richieste.chiamate}"
-                                    (click)="clickRichieste.emit('chiamate')"><i *ngIf="interventiDiff"
-                                                                                 class="blink-i-aggregate fa"
-                                                                                 [ngClass]="realDiff('chiamate')"></i>{{interventi.chiamate}}</span>
-                            </li>
-                            <li [ngClass]="checkDiff('sospesi')"><span
-                                    class="position-relative badge badge-warning h6 w-75 cursor-pointer" ngbTooltip="Evidenzia richieste sospese sulla mappa"
-                                    [ngClass]="{'border-click-checked': boxClick?.richieste.sospesi, 'border-info-aggregate': !boxClick?.richieste.sospesi}"
-                                    (click)="clickRichieste.emit('sospesi')"><i *ngIf="interventiDiff"
-                                                                                class="blink-i-aggregate fa"
-                                                                                [ngClass]="realDiff('sospesi')"></i>{{interventi.sospesi}}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+          <div class="col pr-0 text-secondary">
+            <ul class="list-unstyled m-0">
+              <li><span class="d-inline-block h6" ngbTooltip="Chiamate in corso">Chiamate</span></li>
+              <li><span class="d-inline-block h6" ngbTooltip="Richieste sospese">Sospesi</span></li>
+            </ul>
+          </div>
+          <div class="col px-0 text-secondary text-center">
+            <ul class="list-unstyled m-0">
+              <li [ngClass]="checkDiff('chiamate')"><span class="position-relative badge h6 w-75 cursor-pointer"
+                  ngbTooltip="Evidenzia chiamate sulla mappa"
+                  [ngClass]="{'badge-secondary': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0, 'border-click-checked': boxClick?.richieste.chiamate, 'border-info-aggregate': !boxClick?.richieste.chiamate}"
+                  (click)="clickRichieste.emit('chiamate')"><i *ngIf="interventiDiff" class="blink-i-aggregate fa"
+                    [ngClass]="realDiff('chiamate')"></i>{{interventi.chiamate}}</span>
+              </li>
+              <li [ngClass]="checkDiff('sospesi')"><span
+                  class="position-relative badge bg-orange text-light h6 w-75 cursor-pointer"
+                  ngbTooltip="Evidenzia richieste sospese sulla mappa"
+                  [ngClass]="{'border-click-checked': boxClick?.richieste.sospesi, 'border-info-aggregate': !boxClick?.richieste.sospesi}"
+                  (click)="clickRichieste.emit('sospesi')"><i *ngIf="interventiDiff" class="blink-i-aggregate fa"
+                    [ngClass]="realDiff('sospesi')"></i>{{interventi.sospesi}}</span>
+              </li>
+            </ul>
+          </div>
         </div>
+      </div>
     </div>
-    <!-- destra -->
-    <div class="col-6">
+  </div>
+  <!-- destra -->
+  <div class="col-6">
+    <div class="row">
+      <div class="col-10 mx-auto">
         <div class="row">
-            <div class="col-10 mx-auto">
-                <div class="row">
-                    <div class="col pr-0 text-secondary">
-                        <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" ngbTooltip="Richieste assegnate">Assegnati</span></li>
-                            <li><span class="d-inline-block h6" ngbTooltip="Richieste presidiate">Presidiati</span></li>
-                        </ul>
-                    </div>
-                    <div class="col px-0 text-secondary text-center">
-                        <ul class="list-unstyled m-0">
-                            <li [ngClass]="checkDiff('assegnati')"><span class="position-relative badge badge-info h6 w-75 cursor-pointer" ngbTooltip="Evidenzia richieste assegnate sulla mappa"
-                                                                         [ngClass]="{'border-click-checked': boxClick?.richieste.assegnati, 'border-info-aggregate': !boxClick?.richieste.assegnati}"
-                                                                         (click)="clickRichieste.emit('assegnati')"><i
-                                    *ngIf="interventiDiff" class="blink-i-aggregate fa"
-                                    [ngClass]="realDiff('assegnati')"></i>{{interventi.assegnati}}</span></li>
-                            <li [ngClass]="checkDiff('presidiati')"><span
-                                    class="position-relative badge badge-success h6 w-75 cursor-pointer" ngbTooltip="Evidenzia richieste presidiate sulla mappa"
-                                    [ngClass]="{'border-click-checked': boxClick?.richieste.presidiati, 'border-info-aggregate': !boxClick?.richieste.presidiati}"
-                                    (click)="clickRichieste.emit('presidiati')"><i *ngIf="interventiDiff"
-                                                                                   class="blink-i-aggregate fa"
-                                                                                   [ngClass]="realDiff('presidiati')"></i>{{interventi.presidiati}}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+          <div class="col pr-0 text-secondary">
+            <ul class="list-unstyled m-0">
+              <li><span class="d-inline-block h6" ngbTooltip="Richieste assegnate">Assegnati</span></li>
+              <li><span class="d-inline-block h6" ngbTooltip="Richieste presidiate">Presidiati</span></li>
+            </ul>
+          </div>
+          <div class="col px-0 text-secondary text-center">
+            <ul class="list-unstyled m-0">
+              <li [ngClass]="checkDiff('assegnati')"><span
+                  class="position-relative badge badge-warning h6 w-75 cursor-pointer"
+                  ngbTooltip="Evidenzia richieste assegnate sulla mappa"
+                  [ngClass]="{'border-click-checked': boxClick?.richieste.assegnati, 'border-info-aggregate': !boxClick?.richieste.assegnati}"
+                  (click)="clickRichieste.emit('assegnati')"><i *ngIf="interventiDiff" class="blink-i-aggregate fa"
+                    [ngClass]="realDiff('assegnati')"></i>{{interventi.assegnati}}</span></li>
+              <li [ngClass]="checkDiff('presidiati')"><span
+                  class="position-relative badge badge-success h6 w-75 cursor-pointer"
+                  ngbTooltip="Evidenzia richieste presidiate sulla mappa"
+                  [ngClass]="{'border-click-checked': boxClick?.richieste.presidiati, 'border-info-aggregate': !boxClick?.richieste.presidiati}"
+                  (click)="clickRichieste.emit('presidiati')"><i *ngIf="interventiDiff" class="blink-i-aggregate fa"
+                    [ngClass]="realDiff('presidiati')"></i>{{interventi.presidiati}}</span>
+              </li>
+            </ul>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 <div *ngIf="!interventi" class="row" style="min-height: 113px">
-    <div class="w-100 text-center">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw my-4"></i>
-    </div>
+  <div class="w-100 text-center">
+    <i class="fa fa-spinner fa-pulse fa-3x fa-fw my-4"></i>
+  </div>
 </div>

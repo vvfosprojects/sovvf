@@ -52,9 +52,9 @@ export class IconMappe {
 
         this.iconeStati = [
             ['chiam', 'danger.png'],
-            ['asseg', 'info.png'],
+            ['asseg', 'warning.png'],
             ['presi', 'success.png'],
-            ['sospe', 'warning.png'],
+            ['sospe', 'orange.png'],
             ['chius', 'secondary.png']
         ];
         this.mapIconeUrl = new Map(this.iconeStati);

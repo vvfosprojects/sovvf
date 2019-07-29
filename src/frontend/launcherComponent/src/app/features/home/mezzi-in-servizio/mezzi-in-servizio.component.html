@@ -1,12 +1,17 @@
 <div class="row mt-3">
   <div class="col-10 mx-auto scroll-y" style="height:695px">
     <h5>Mezzi in servizio</h5>
-    <div *ngIf="mezziInServizio" class="mt-3">
-      <div *ngFor="let mezzo of mezziInServizio">
-        <app-mezzo [mezzo]="mezzo" [mostraRichiestaAssociata]="mezzo.stato !== 'In Sede' ? true : false"
-          [inGestione]="mezzo.stato !== 'In Sede' ? true : false" (actionMezzo)="onActionMezzo(mezzo, $event)">
-        </app-mezzo>
-        <hr class="my-1">
+    <div *ngIf="mezziInServizio" class="mt-2">
+      <div *ngFor="let mezzo of mezziInServizio" class="row border rounded p-2"
+        [ngClass]="statoMezzoBorderClass(mezzo.stato)">
+        <div class="col-9">
+          <app-mezzo [mezzo]="mezzo" [mostraIndicatori]="true" [mostraNotifiche]="true"
+            [inGestione]="mezzo.stato !== 'In Sede' ? true : false" (actionMezzo)="onActionMezzo(mezzo, $event)">
+          </app-mezzo>
+        </div>
+        <div *ngIf="mezzo?.idRichiesta" class="col-3 text-right">
+          Richiesta <b>{{mezzo.idRichiesta}}</b>
+        </div>
       </div>
     </div>
   </div>

@@ -151,7 +151,7 @@ export function statoMezzoActionsEnumToStringArray(exceptStato?: string[]) {
     return stringArray;
 }
 
-export function statoMezzoColor(stato: string) {
+export function statoMezzoColor(stato: StatoMezzo) {
     let _returnColor = '';
     switch (stato) {
         case StatoMezzo.InSede:
@@ -168,6 +168,25 @@ export function statoMezzoColor(stato: string) {
             break;
     }
     return _returnColor;
+}
+
+export function statoMezzoBorderClass(stato: StatoMezzo) {
+    let _returnClass = '';
+    switch (stato) {
+        case StatoMezzo.InSede:
+            _returnClass = 'status_border_inSede';
+            break;
+        case StatoMezzo.InViaggio:
+            _returnClass = 'status_border_inViaggio';
+            break;
+        case StatoMezzo.SulPosto:
+            _returnClass = 'status_border_sulPosto';
+            break;
+        case StatoMezzo.InRientro:
+            _returnClass = 'status_border_inRientro';
+            break;
+    }
+    return _returnClass;
 }
 
 export function calcolaActionSuggeritaRichiesta(richiesta: SintesiRichiesta) {
