@@ -24,14 +24,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
 {
     public class ListaMezziInServizioQueryHandler : IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult>
     {
-        private readonly IGetListaMezzi _GetListaMezzi;
+        private readonly IGetListaMezzi _getListaMezzi;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public ListaMezziInServizioQueryHandler(IGetListaMezzi GetListaMezzi)
+        public ListaMezziInServizioQueryHandler(IGetListaMezzi getListaMezzi)
         {
-            this._GetListaMezzi = GetListaMezzi;
+            this._getListaMezzi = getListaMezzi;
         }
 
         /// <summary>
@@ -41,11 +41,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
         /// <returns>Il DTO di uscita della query</returns>
         public ListaMezziInServizioResult Handle(ListaMezziInServizioQuery query)
         {
-            var ListaMezzi = _GetListaMezzi.Get(query.IdSede);
+            var listaMezzi = _getListaMezzi.Get(query.IdSede);
 
             return new ListaMezziInServizioResult()
             {
-                ListaMezzi = ListaMezzi
+                ListaMezzi = listaMezzi
             };
         }
     }

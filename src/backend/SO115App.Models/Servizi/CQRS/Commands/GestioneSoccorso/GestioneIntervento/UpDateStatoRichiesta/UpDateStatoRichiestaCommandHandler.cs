@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -54,6 +53,8 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
             }
 
             richiesta.SincronizzaStatoRichiesta(command.Stato, richiesta.StatoRichiesta, command.IdOperatore, command.Note);
+            if (command.Stato == Costanti.RichiestaRiaperta)
+                richiesta.IstanteChiusura = null;
 
             _updateRichiestaAssistenza.UpDate(richiesta);
         }

@@ -60,7 +60,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var richiesta = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiesta);
             var attivita = new AttivitaUtente();
 
-            if(richiesta.Eventi.Where(x => x is InizioPresaInCarico).ToList().Count == 0)
+            if (richiesta.Eventi.Where(x => x is InizioPresaInCarico).ToList().Count == 0)
                 new InizioPresaInCarico(richiesta, DateTime.UtcNow, richiesta.Operatore.Id);
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
@@ -77,8 +77,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             command.ConfermaPartenze.richiesta = richiesta;
 
             var sedeRichiesta = command.ConfermaPartenze.richiesta.Operatore.Sede.Codice;
-            var codiceRichiesta = _generaCodiceRichiesta.Genera(sedeRichiesta, DateTime.UtcNow.Year);
-            richiesta.CodiceRichiesta = codiceRichiesta;
+            richiesta.CodiceRichiesta = _generaCodiceRichiesta.Genera(sedeRichiesta, DateTime.UtcNow.Year);
 
             attivita.IdUtente = command.ConfermaPartenze.richiesta.Operatore.Id;
             attivita.Nominativo = command.ConfermaPartenze.richiesta.Operatore.Nome + " " + command.ConfermaPartenze.richiesta.Operatore.Cognome;
@@ -88,11 +87,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 richiesta.ListaUtentiPresaInCarico.Add(attivita);
             else
             {
-                richiesta.ListaUtentiPresaInCarico = new List<AttivitaUtente>();
-                richiesta.ListaUtentiPresaInCarico.Add(attivita);
+                richiesta.ListaUtentiPresaInCarico = new List<AttivitaUtente>
+                {
+                    attivita
+                };
             }
 
-            Classi.Composizione.ConfermaPartenze confermaPartenze = _updateConfermaPartenze.Update(command);
+            var confermaPartenze = _updateConfermaPartenze.Update(command);
 
             command.ConfermaPartenze.CodiceSede = confermaPartenze.CodiceSede;
         }

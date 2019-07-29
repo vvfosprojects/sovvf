@@ -25,31 +25,31 @@ using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
+using SO115App.FakePersistence.JSon.Utility;
 
 namespace SO115App.FakePersistenceJSon.GestioneMezzi
 {
     public class GetListaMezzi : IGetListaMezzi
     {
-        public List<Mezzo> Get(string CodiceSede)
+        public List<Mezzo> Get(string codiceSede)
         {
-            List<ComposizioneMezzi> composizioneMezzi = new List<ComposizioneMezzi>();
-            string filepath = "Fake/MezziComposizione.json";
+            var filepath = CostantiJson.MezziComposizione;
             string json;
-            using (StreamReader r = new StreamReader(filepath))
+            using (var r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
 
-            composizioneMezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(json);
+            var composizioneMezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(json);
 
-            List<Mezzo> ListaMezzi = new List<Mezzo>();
+            var listaMezzi = new List<Mezzo>();
 
-            foreach (ComposizioneMezzi composizione in composizioneMezzi.Where(x => x.Mezzo.Distaccamento.Codice == CodiceSede).ToList())
+            foreach (var composizione in composizioneMezzi.Where(x => x.Mezzo.Distaccamento.Codice == codiceSede).ToList())
             {
-                ListaMezzi.Add(composizione.Mezzo);
+                listaMezzi.Add(composizione.Mezzo);
             }
 
-            return ListaMezzi;
+            return listaMezzi;
         }
     }
 }

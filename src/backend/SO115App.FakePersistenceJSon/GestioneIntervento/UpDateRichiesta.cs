@@ -21,8 +21,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.FakePersistence.JSon.Utility;
 using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;
 
@@ -32,38 +34,82 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
     {
         public void UpDate(RichiestaAssistenza richiestaAssistenza)
         {
-            string filepath = "Fake/ListaRichiesteAssistenza.json";
+            var filepath = CostantiJson.ListaRichiesteAssistenza;
+            var filePathMezzi = CostantiJson.MezziComposizione;
+            var filePathSquadre = CostantiJson.SquadreComposizione;
+
+            var listaRichiesteNew = new List<RichiestaAssistenza>();
+
             string json;
+            string jsonMezzi;
+            string jsonSquadre;
+
             using (StreamReader r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
-
-            List<RichiestaAssistenzaDTO> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
-
-            if (ListaRichieste != null)
+            using (StreamReader r = new StreamReader(filePathMezzi))
             {
-                List<RichiestaAssistenza> ListaRichiesteNew = new List<RichiestaAssistenza>();
+                jsonMezzi = r.ReadToEnd();
+            }
 
-                foreach (RichiestaAssistenzaDTO richiesta in ListaRichieste)
+            using (StreamReader r = new StreamReader(filePathSquadre))
+            {
+                jsonSquadre = r.ReadToEnd();
+            }
+
+            var listaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
+            var listaMezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(jsonMezzi);
+            var listaSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
+
+            if (listaRichieste != null)
+            {
+                foreach (var richiesta in listaRichieste)
                 {
                     if (richiesta.Codice != richiestaAssistenza.Codice)
-                        ListaRichiesteNew.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
+                        listaRichiesteNew.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
                 }
 
-                ListaRichiesteNew.Add(richiestaAssistenza);
+                listaRichiesteNew.Add(richiestaAssistenza);
 
-                string jsonListaPresente = JsonConvert.SerializeObject(ListaRichiesteNew);
-                System.IO.File.WriteAllText(@"Fake/ListaRichiesteAssistenza.json", jsonListaPresente);
+                var jsonListaPresente = JsonConvert.SerializeObject(listaRichiesteNew);
+                System.IO.File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonListaPresente);
             }
             else
             {
-                List<RichiestaAssistenza> ListaRichiesteNew = new List<RichiestaAssistenza>();
-                ListaRichiesteNew.Add(richiestaAssistenza);
+                listaRichiesteNew.Add(richiestaAssistenza);
 
-                string jsonNew = JsonConvert.SerializeObject(ListaRichiesteNew);
-                System.IO.File.WriteAllText(@"Fake/ListaRichiesteAssistenza.json", jsonNew);
+                var jsonNew = JsonConvert.SerializeObject(listaRichiesteNew);
+                System.IO.File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonNew);
             }
+
+            foreach (var composizione in richiestaAssistenza.Partenze)
+            {
+                foreach (var composizioneMezzo in listaMezzi)
+                {
+                    if (composizioneMezzo.Mezzo.Codice == composizione.Partenza.Mezzo.Codice)
+                    {
+                        composizioneMezzo.Mezzo.Stato = composizione.Partenza.Mezzo.Stato;
+                    }
+                }
+
+                foreach (var composizioneSquadra in listaSquadre)
+                {
+                    foreach (var squadra in composizione.Partenza.Squadre)
+                    {
+                        if (composizioneSquadra.Squadra.Id == squadra.Id)
+                        {
+                            composizioneSquadra.Squadra.Stato = squadra.Stato;
+                        }
+                    }
+                }
+            }
+
+            var jsonListaMezzi = JsonConvert.SerializeObject(listaMezzi);
+            System.IO.File.WriteAllText(CostantiJson.MezziComposizione, jsonListaMezzi);
+
+            var jsonListaSquadre = JsonConvert.SerializeObject(listaSquadre);
+            System.IO.File.WriteAllText(CostantiJson.SquadreComposizione, jsonListaSquadre);
         }
     }
 }

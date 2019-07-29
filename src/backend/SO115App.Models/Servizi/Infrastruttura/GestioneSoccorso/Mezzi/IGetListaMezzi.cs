@@ -31,8 +31,8 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi
         /// <summary>
         ///   Restituisce l'anagrafica del mezzo a partire dal suo codice
         /// </summary>
-        /// <param name="CodiceSede">Codice della sede di appartenenza</param>
+        /// <param name="codiceSede">Codice della sede di appartenenza</param>
         /// <returns>L'anagrafica del mezzo</returns>
-        List<Mezzo> Get(string CodiceSede);
+        List<Mezzo> Get(string codiceSede);
     }
 }

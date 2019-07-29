@@ -50,7 +50,7 @@
         }
       ],
       "Distaccamento": {
-        "Codice": "1",
+        "Codice": "RM.1000",
         "Descrizione": "Tuscolana II",
         "Coordinate": {
           "Latitudine": 1.0,
@@ -119,7 +119,7 @@
         }
       ],
       "Distaccamento": {
-        "Codice": "1",
+        "Codice": "RM.1000",
         "Descrizione": "Tuscolana II",
         "Coordinate": {
           "Latitudine": 1.0,
@@ -188,7 +188,7 @@
         }
       ],
       "Distaccamento": {
-        "Codice": "3",
+        "Codice": "RM.1000",
         "Descrizione": "Ostiense",
         "Coordinate": {
           "Latitudine": 1.0,

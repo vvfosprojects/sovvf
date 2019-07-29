@@ -12,28 +12,28 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class GestioneMezziInServizioController : ControllerBase
     {
-        private readonly IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> _addhandler;
+        private readonly IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> _addHandler;
 
         public GestioneMezziInServizioController(
-            IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> Addhandler)
+            IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> addHandler)
         {
-            _addhandler = Addhandler;
+            _addHandler = addHandler;
         }
 
-        [HttpPost("GetListaMezzi")]
-        public async Task<IActionResult> GetListaMezzi([FromBody]ListaMezziInServizioQuery filtro)
+        [HttpGet("GetListaMezzi")]
+        public async Task<IActionResult> GetListaMezzi()
         {
             var headerValues = Request.Headers["IdUtente"];
-            string idUtente = headerValues.FirstOrDefault();
+            var codiceSede = Request.Headers["CodiceSede"];
 
             var query = new ListaMezziInServizioQuery()
             {
-                IdSede = filtro.IdSede
+                IdSede = codiceSede
             };
 
             try
             {
-                return Ok(this._addhandler.Handle(query));
+                return Ok(this._addHandler.Handle(query));
             }
             catch
             {
