@@ -3,6 +3,7 @@ import { NgbDropdownConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap'
 import { Mezzo } from '../../../model/mezzo.model';
 import { calcolaActionSuggeritaMezzo, statoMezzoColor, statoMezzoActionsEnumToStringArray } from '../../../helper/function';
 import { StatoMezzoActions } from '../../../enum/stato-mezzo-actions.enum';
+import { StatoMezzo } from 'src/app/shared/enum/stato-mezzo.enum';
 
 @Component({
     selector: 'app-mezzo-actions',
@@ -42,7 +43,7 @@ export class MezzoActionsComponent implements OnInit {
         return calcolaActionSuggeritaMezzo(mezzo);
     }
 
-    statoMezzoColor(mezzo: Mezzo) {
-        return statoMezzoColor(mezzo.stato);
+    statoMezzoColor(stato: StatoMezzo) {
+        return statoMezzoColor(stato);
     }
 }

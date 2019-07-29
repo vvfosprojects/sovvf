@@ -155,16 +155,19 @@ export function statoMezzoColor(stato: StatoMezzo) {
     let _returnColor = '';
     switch (stato) {
         case StatoMezzo.InSede:
-            _returnColor = 'secondary';
-            break;
-        case StatoMezzo.InViaggio:
-            _returnColor = 'info';
-            break;
-        case StatoMezzo.SulPosto:
             _returnColor = 'success';
             break;
+        case StatoMezzo.InViaggio:
+            _returnColor = 'warning';
+            break;
+        case StatoMezzo.SulPosto:
+            _returnColor = 'danger';
+            break;
         case StatoMezzo.InRientro:
-            _returnColor = 'primary';
+            _returnColor = 'success';
+            break;
+        case StatoMezzo.Istituto:
+            _returnColor = 'secondary';
             break;
     }
     return _returnColor;
@@ -184,6 +187,9 @@ export function statoMezzoBorderClass(stato: StatoMezzo) {
             break;
         case StatoMezzo.InRientro:
             _returnClass = 'status_border_inRientro';
+            break;
+        case StatoMezzo.Istituto:
+            _returnClass = 'status_border_istituto';
             break;
     }
     return _returnClass;

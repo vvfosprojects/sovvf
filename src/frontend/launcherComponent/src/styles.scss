@@ -244,36 +244,44 @@ a:hover {
 
 /* Status Mezzo */
 .status_inSede {
-  border-top: 5px solid #868e96;
+  border-top: 5px solid #28a745;
 }
 
 .status_inRientro {
-  border-top: 5px solid #007bff;
+  border-top: 5px solid #28a745;
 }
 
 .status_inViaggio {
-  border-top: 5px solid #17a2b8;
+  border-top: 5px solid #ffc107;
 }
 
 .status_sulPosto {
-  border-top: 5px solid #28a745;
+  border-top: 5px solid #dc3545;
+}
+
+.status_istituto {
+  border-top: 5px solid #868e96;
 }
 
 /* Status Border Mezzo */
 .status_border_inSede {
-  border-left: 10px solid #868e96 !important;
+  border-left: 10px solid #28a745 !important;
 }
 
 .status_border_inRientro {
-  border-left: 10px solid #007bff !important;
+  border-left: 10px solid #28a745 !important;
 }
 
 .status_border_inViaggio {
-  border-left: 10px solid #17a2b8 !important;
+  border-left: 10px solid #ffc107 !important;
 }
 
 .status_border_sulPosto {
-  border-left: 10px solid #28a745 !important;
+  border-left: 10px solid #dc3545 !important;
+}
+
+.status_border_istituto {
+  border-left: 10px solid #868e96 !important;
 }
 
 .bg-pattern-chiuso {

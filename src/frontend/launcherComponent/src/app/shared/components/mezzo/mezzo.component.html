@@ -1,6 +1,6 @@
 <span>
   <span class="d-inline-block">
-    <i class="guida fa fa-truck fa-fw mr-1" [ngClass]="methods.iconaStatiClass(mezzo.stato)"
+    <i class="guida fa fa-truck fa-fw mr-1 text-{{statoMezzoColor(mezzo.stato)}}"
       ngbTooltip="Mezzo {{mezzo.stato}}"></i>
     <span *ngIf="mezzo.descrizione" ngbTooltip="{{mezzo.descrizione}}"
       [disableTooltip]="mezzo.descrizione.length <= 2"><b>{{ mezzo.descrizione | truncate: 2 }}</b></span>

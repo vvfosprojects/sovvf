@@ -13,7 +13,8 @@
         </button>
       </div>
     </div>
-    <button type="button" class="btn btn-outline-secondary" ngbTooltip="Vai ai mezzi in servizio" [disabled]="colorButtonView[2] === 'btn-secondary'"
+    <button type="button" class="btn btn-outline-secondary" ngbTooltip="Vai ai mezzi in servizio"
+      [disabled]="colorButtonView[2] === 'btn-secondary'"
       (click)="buttonOptionRichieste(OptionsRichieste.MezziInServizio)">
       <i class="fa fa-truck"></i>
     </button>
@@ -27,7 +28,7 @@
       ngbTooltip="Visualizzazione solo Mappa" [disableTooltip]="colorButtonView[2] === 'btn-secondary'"><i
         class="fa fa-globe"></i>
     </button>
-    <button type="button" class="btn btn-outline-secondary" ngbTooltip="Vai ai mezzi in servizio"
+    <button type="button" class="btn btn-outline-secondary" ngbTooltip="Attiva meteo sulla mappa"
       [disabled]="colorButtonView[0] === 'btn-secondary'">
       <i class="fa fa-sun-o"></i>
     </button>

@@ -4,11 +4,11 @@ export function markerColor(stato: string): string {
         ['asseg', '#ffc107'],
         ['sospe', '#ff8800'],
         ['presi', '#28a745'],
-        ['insed', '#6c757d'],
-        ['invia', '#17a2b8'],
-        ['inrie', '#007bff'],
-        ['sulpo', '#28a745'],
-        ['istit', '#ffc107'],
+        ['insed', '#28a745'],
+        ['invia', '#ffc107'],
+        ['inrie', '#28a745'],
+        ['sulpo', '#dc3545'],
+        ['istit', '#868e96'],
     ]);
     const _stato = stato.split(' ').join('');
     const statoMarker = _stato.toLowerCase().substring(0, 5);
