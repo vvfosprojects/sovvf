@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,6 +28,7 @@ using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.FakePersistence.JSon.Utility;
 using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;
 using SO115App.Models.Classi.Utility;
@@ -37,9 +40,9 @@ namespace SO115App.FakePersistenceJSon.Composizione
     {
         public ConfermaPartenze Update(ConfermaPartenzeCommand command)
         {
-            string filepath = "Fake/ListaRichiesteAssistenza.json";
-            string filePathMezzi = "Fake/MezziComposizione.json";
-            string filePathSquadre = "Fake/SquadreComposizione.json";
+            var filepath = CostantiJson.ListaRichiesteAssistenza;
+            var filePathMezzi = CostantiJson.MezziComposizione;
+            var filePathSquadre = CostantiJson.SquadreComposizione;
             string json;
             string jsonMezzi;
             string jsonSquadre;
@@ -58,52 +61,52 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 jsonSquadre = r.ReadToEnd();
             }
 
-            RichiestaAssistenzaDTO richiestaDTO = new RichiestaAssistenzaDTO();
-            ConfermaPartenze conferma = new ConfermaPartenze();
-            RichiestaAssistenzaDTO richiestaNew = new RichiestaAssistenzaDTO();
-            List<RichiestaAssistenzaDTO> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
-            List<ComposizioneMezzi> ListaMezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(jsonMezzi);
-            List<ComposizioneSquadre> ListaSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
+            var richiestaDTO = new RichiestaAssistenzaDTO();
+            var conferma = new ConfermaPartenze();
+            var richiestaNew = new RichiestaAssistenzaDTO();
+            var listaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
+            var listaMezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(jsonMezzi);
+            var listaSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
+            var listaRichiesteNew = new List<RichiestaAssistenza>();
 
-            if (ListaRichieste != null)
+            if (listaRichieste != null)
             {
-                List<RichiestaAssistenza> ListaRichiesteNew = new List<RichiestaAssistenza>();
-                richiestaDTO = ListaRichieste.Where(x => x.Codice == command.ConfermaPartenze.richiesta.Codice).FirstOrDefault();
-                ListaRichieste.Remove(richiestaDTO);
+                richiestaDTO = listaRichieste.Find(x => x.Codice == command.ConfermaPartenze.richiesta.Codice);
+                listaRichieste.Remove(richiestaDTO);
 
-                foreach (RichiestaAssistenzaDTO richiesta in ListaRichieste)
+                foreach (var richiesta in listaRichieste)
                 {
-                    ListaRichiesteNew.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
+                    listaRichiesteNew.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
                 }
 
-                ListaRichiesteNew.Add(command.ConfermaPartenze.richiesta);
+                listaRichiesteNew.Add(command.ConfermaPartenze.richiesta);
 
-                string jsonListaPresente = JsonConvert.SerializeObject(ListaRichiesteNew);
-                System.IO.File.WriteAllText(@"Fake/ListaRichiesteAssistenza.json", jsonListaPresente);
+                var jsonListaPresente = JsonConvert.SerializeObject(listaRichiesteNew);
+                System.IO.File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonListaPresente);
             }
             else
             {
-                List<RichiestaAssistenza> ListaRichiesteNew = new List<RichiestaAssistenza>();
-                ListaRichiesteNew.Add(command.ConfermaPartenze.richiesta);
+                listaRichiesteNew = new List<RichiestaAssistenza>
+                {
+                    command.ConfermaPartenze.richiesta
+                };
 
-                string jsonNew = JsonConvert.SerializeObject(ListaRichiesteNew);
-                System.IO.File.WriteAllText(@"Fake/ListaRichiesteAssistenza.json", jsonNew);
+                var jsonNew = JsonConvert.SerializeObject(listaRichiesteNew);
+                System.IO.File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonNew);
             }
 
-            foreach (ComposizionePartenze composizione in command.ConfermaPartenze.richiesta.Partenze)
+            foreach (var composizione in command.ConfermaPartenze.richiesta.Partenze)
             {
-                foreach (ComposizioneMezzi composizioneMezzo in ListaMezzi)
+                foreach (var composizioneMezzo in listaMezzi)
                 {
-                    if (composizioneMezzo.Mezzo.Codice == composizione.Partenza.Mezzo.Codice)
-                    {
-                        composizioneMezzo.Mezzo.Stato = Costanti.MezzoInViaggio;
-                        composizioneMezzo.Mezzo.IdRichiesta = command.ConfermaPartenze.IdRichiesta;
-                    }
+                    if (composizioneMezzo.Mezzo.Codice != composizione.Partenza.Mezzo.Codice) continue;
+                    composizioneMezzo.Mezzo.Stato = Costanti.MezzoInViaggio;
+                    composizioneMezzo.Mezzo.IdRichiesta = command.ConfermaPartenze.IdRichiesta;
                 }
 
-                foreach (ComposizioneSquadre composizioneSquadra in ListaSquadre)
+                foreach (var composizioneSquadra in listaSquadre)
                 {
-                    foreach (Squadra squadra in composizione.Partenza.Squadre)
+                    foreach (var squadra in composizione.Partenza.Squadre)
                     {
                         if (composizioneSquadra.Squadra.Id == squadra.Id)
                         {
@@ -113,11 +116,11 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 }
             }
 
-            string jsonListaMezzi = JsonConvert.SerializeObject(ListaMezzi);
-            System.IO.File.WriteAllText(@"Fake/MezziComposizione.json", jsonListaMezzi);
+            var jsonListaMezzi = JsonConvert.SerializeObject(listaMezzi);
+            System.IO.File.WriteAllText(CostantiJson.MezziComposizione, jsonListaMezzi);
 
-            string jsonListaSquadre = JsonConvert.SerializeObject(ListaSquadre);
-            System.IO.File.WriteAllText(@"Fake/SquadreComposizione.json", jsonListaSquadre);
+            var jsonListaSquadre = JsonConvert.SerializeObject(listaSquadre);
+            System.IO.File.WriteAllText(CostantiJson.SquadreComposizione, jsonListaSquadre);
 
             conferma.CodiceSede = command.ConfermaPartenze.CodiceSede;
             conferma.IdRichiesta = command.ConfermaPartenze.IdRichiesta;
