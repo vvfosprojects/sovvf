@@ -592,33 +592,29 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 var eventoChiusura = this._eventi
-                    .Where(e => e is ChiusuraRichiesta)
-                    .LastOrDefault() as ChiusuraRichiesta;
+                    .LastOrDefault() is ChiusuraRichiesta;
 
-                if (eventoChiusura != null)
+                if (eventoChiusura)
                 {
                     return new Chiusa();
                 }
 
                 var eventoPresidiata = this._eventi
-                    .Where(e => e is RichiestaPresidiata)
-                    .LastOrDefault() as RichiestaPresidiata;
+                    .LastOrDefault() is RichiestaPresidiata;
 
-                if (eventoPresidiata != null)
+                if (eventoPresidiata)
                     return new Presidiata();
 
                 var eventoAssegnata = this._eventi
-                    .Where(e => e is AssegnataRichiesta)
-                    .LastOrDefault() as AssegnataRichiesta;
+                    .LastOrDefault() is AssegnataRichiesta;
 
-                if (eventoAssegnata != null)
+                if (eventoAssegnata)
                     return new Assegnata();
 
                 var eventoSospesa = this._eventi
-                    .Where(e => e is RichiestaSospesa)
-                    .LastOrDefault() as RichiestaSospesa;
+                    .LastOrDefault() is RichiestaSospesa;
 
-                if (eventoSospesa != null)
+                if (eventoSospesa)
                     return new Sospesa();
 
                 return new InAttesa();
