@@ -4,12 +4,12 @@
     <div *ngIf="mezziInServizio" class="mt-2">
       <div *ngFor="let mezzo of mezziInServizio" class="row border rounded p-2"
         [ngClass]="statoMezzoBorderClass(mezzo.stato)">
-        <div class="col-9">
+        <div class="col-8">
           <app-mezzo [mezzo]="mezzo" [mostraIndicatori]="true" [mostraNotifiche]="true"
             [inGestione]="mezzo.stato !== 'In Sede' ? true : false" (actionMezzo)="onActionMezzo(mezzo, $event)">
           </app-mezzo>
         </div>
-        <div *ngIf="mezzo?.idRichiesta" class="col-3 text-right">
+        <div *ngIf="mezzo?.idRichiesta" class="col-4 text-right">
           Richiesta <b>{{mezzo.idRichiesta}}</b>
         </div>
       </div>
