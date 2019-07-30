@@ -6,6 +6,7 @@ export class Partenza {
     constructor(
         public id: string,
         public squadre: Squadra[],
+        public sganciata?: boolean,
         public mezzo?: Mezzo,
         public turno?: TurnoPartenza
     ) { }
