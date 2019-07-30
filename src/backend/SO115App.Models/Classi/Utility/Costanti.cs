@@ -28,6 +28,7 @@ namespace SO115App.Models.Classi.Utility
 
         #region StatiRichiesta
 
+        public static string Chiamata = "Chiamata";
         public static string RichiestaAssegnata = "Assegnata";
         public static string RichiestaPresidiata = "Presidiata";
         public static string RichiestaChiusa = "Chiusa";

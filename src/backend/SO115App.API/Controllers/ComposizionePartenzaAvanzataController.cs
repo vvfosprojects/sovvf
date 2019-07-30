@@ -17,15 +17,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata;
 using SO115App.Models.Classi.Composizione;
+using System.Security.Principal;
+using System.Threading.Tasks;
 
 /* using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste; */
 
@@ -44,7 +42,6 @@ namespace SO115App.API.Controllers
         ///   Handler del servizio
         /// </summary>
         private readonly IQueryHandler<ComposizionePartenzaAvanzataQuery, ComposizionePartenzaAvanzataResult> _handler;
-
 
         private readonly IPrincipal _currentUser;
 
@@ -66,12 +63,11 @@ namespace SO115App.API.Controllers
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpPost]
         public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
-         {
+        {
             var partenzaAvanzataQuery = new ComposizionePartenzaAvanzataQuery()
             {
                 Filtro = filtri
             };
-
 
             if (ModelState.IsValid)
             {
@@ -100,6 +96,5 @@ namespace SO115App.API.Controllers
 
             return _handler.Handle(partenzaAvanzataQuery);
         }
-
     }
 }
