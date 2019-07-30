@@ -1,0 +1,19 @@
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"><i
+        class="fa fa-fw fa-{{icona.descrizione}} text-{{icona.colore}}"></i> {{titolo}}</h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+      (click)="modal.dismiss('cross')">
+      <span class="text-danger"><i class="fa fa-times"></i></span>
+    </button>
+  </div>
+  <div *ngIf="richiestaDa" class="modal-body pr-0">
+    <app-sintesi-richiesta [richiesta]="richiestaDa" [fissata]="false" [fissabile]="false" [espanso]="true"
+      [gestibile]="false" [modificabile]="false" [espandibile]="false" [listaEventi]="false"
+      [composizionePartenza]="false"></app-sintesi-richiesta>
+  </div>
+  <div class="modal-footer">
+    <button *ngFor="let bottone of bottoni" type="button" class="btn btn-outline-{{bottone.colore}}"
+      (click)="modal.close(bottone.type)">{{bottone.descrizione}}</button>
+  </div>
+</div>

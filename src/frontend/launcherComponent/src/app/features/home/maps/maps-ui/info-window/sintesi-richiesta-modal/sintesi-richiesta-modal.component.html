@@ -1,13 +1,12 @@
 <div class="modal-header bg-primary">
-    <h4 class="modal-title text-light" id="modal-basic-title">Dettaglio Richiesta di Intervento</h4>
-    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px" (click)="modal.dismiss('Cross click')">
-        <span class="text-white-50"><i class="fa fa-times"></i></span>
-    </button>
+  <h4 class="modal-title text-light" id="modal-basic-title">Dettaglio Richiesta di Intervento</h4>
+  <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+    (click)="modal.dismiss('Cross click')">
+    <span class="text-white-50"><i class="fa fa-times"></i></span>
+  </button>
 </div>
 <div class="modal-content bg-lightinfo p-0">
-    <app-sintesi-richiesta class="bg-white rounded" [richiesta]="richiesta" [fissata]="false" [fissabile]="false"
-                           [espanso]="true"
-                           [espandibile]="false"
-                           [listaEventi]="false" [composizionePartenza]="false"
-                           (actionMezzo)="onActionMezzo($event)"></app-sintesi-richiesta>
+  <app-sintesi-richiesta class="bg-white rounded" [richiesta]="richiesta" [fissata]="false" [fissabile]="false"
+    [espanso]="true" [gestibile]="false" [modificabile]="false" [espandibile]="false" [listaEventi]="false"
+    [composizionePartenza]="false" (actionMezzo)="onActionMezzo($event)"></app-sintesi-richiesta>
 </div>

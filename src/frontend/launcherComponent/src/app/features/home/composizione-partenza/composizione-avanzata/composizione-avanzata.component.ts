@@ -42,6 +42,7 @@ import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actio
 import { ConfirmPartenze, GetFiltriComposizione } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno/turno.state';
 import { GetListeCoposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
+import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -53,7 +54,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Input() richiesta: SintesiRichiesta;
     @Input() disablePrenota: boolean;
     @Input() prenotato: boolean;
-
 
     // Mezzi Composizione
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
@@ -98,10 +98,11 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() sendDirection: EventEmitter<DirectionInterface> = new EventEmitter();
     @Output() clearDirection: EventEmitter<any> = new EventEmitter();
     @Output() prenota = new EventEmitter<boolean>();
+    @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
 
     constructor(private popoverConfig: NgbPopoverConfig,
-                private tooltipConfig: NgbTooltipConfig,
-                private store: Store) {
+        private tooltipConfig: NgbTooltipConfig,
+        private store: Store) {
 
         // Popover options
         this.popoverConfig.container = 'body';
@@ -237,7 +238,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                 this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente'));
             }
         } else {
-            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + mezzoComposizione.mezzo.stato + ' ed è impegnato in un\'altra partenza'));
+            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + mezzoComposizione.mezzo.stato + ' ed è impegnato in un\'altra richiesta'));
         }
         // console.log('Mezzo selezionato', mezzoComposizione);
     }

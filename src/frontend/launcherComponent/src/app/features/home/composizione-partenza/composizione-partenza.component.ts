@@ -19,16 +19,22 @@ import { ClearBoxPartenze } from '../store/actions/composizione-partenza/box-par
 import { ClearListaMezziComposizione, ClearSelectedMezziComposizione } from '../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ClearListaComposizioneVeloce } from '../store/actions/composizione-partenza/composizione-veloce.actions';
 import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione } from '../store/actions/composizione-partenza/squadre-composizione.actions';
-import { SetComposizioneMode } from '../store/actions/composizione-partenza/composizione-partenza.actions';
+import { SetComposizioneMode, ConfirmPartenze } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 import { HelperSintesiRichiesta } from '../richieste/helper/_helper-sintesi-richiesta';
 import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
 import { AttivitaUtente } from '../../../shared/model/attivita-utente.model';
 import { AddPresaInCarico, DeletePresaInCarico } from '../store/actions/richieste/richiesta-attivita-utente.actions';
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
 import { ActionMezzo } from '../store/actions/richieste/richieste.actions';
+import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
+import { SganciamentoMezzoModalComponent } from './shared/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
+import { RichiesteState } from '../store/states/richieste/richieste.state';
+import { map } from 'rxjs/operators';
+import { Partenza } from 'src/app/shared/model/partenza.model';
+import { TurnoState } from '../../navbar/store/states/turno/turno.state';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -46,7 +52,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Select(ComposizionePartenzaState.filtri) filtri$: Observable<any>;
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
-    @Select(ComposizionePartenzaState.richiestaComposizione) nuovaPartenza$: Observable<SintesiRichiesta>;
+    @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
     richiesta: SintesiRichiesta;
 
     prevStateBoxClick: BoxClickStateModel;
@@ -57,11 +63,13 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     prenotato: boolean;
 
     constructor(private modalService: NgbModal, private store: Store) {
-        this.subscription.add(this.nuovaPartenza$.subscribe(r => {
-            this.richiesta = r;
-            this.disablePrenota = !(r && r.stato !== StatoRichiesta.Chiusa);
-            this.prenotato = this._checkPrenotato(r);
-        }));
+        this.subscription.add(
+            this.richiestaComposizione$.subscribe((r: SintesiRichiesta) => {
+                this.richiesta = r;
+                this.disablePrenota = !(r && r.stato !== StatoRichiesta.Chiusa);
+                this.prenotato = this._checkPrenotato(r);
+            })
+        );
     }
 
     ngOnInit() {
@@ -79,6 +87,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.store.dispatch(new UndoAllBoxes(this.prevStateBoxClick));
+        this.subscription.unsubscribe();
         isDevMode() && console.log('Componente Composizione distrutto');
     }
 
@@ -132,7 +141,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
         const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
         modal.result.then(() => {
-            },
+        },
             () => this.store.dispatch(new ClearEventiRichiesta()));
     }
 
@@ -155,5 +164,56 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ActionMezzo(actionMezzo));
     }
 
+    onSganciamento(sganciamentoObj: SganciamentoInterface) {
+        let richiestaDa = {} as SintesiRichiesta;
+        let partenzaDaSganciare = {} as Partenza;
+        const richiestaById$ = this.store.select(RichiesteState.richiestaById).pipe(map(fn => fn(sganciamentoObj.idRichiestaDa)));
+        this.subscription.add(
+            richiestaById$.subscribe(r => {
+                richiestaDa = r;
+                partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === sganciamentoObj.idMezzo)[0] : null;
+                console.log('richiestaDa', richiestaDa);
+            })
+        );
+
+        if (richiestaDa && partenzaDaSganciare) {
+            const modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+            modalSganciamento.componentInstance.icona = { descrizione: 'truck', colore: 'danger' };
+            modalSganciamento.componentInstance.titolo = 'Sganciamento Mezzo';
+            modalSganciamento.componentInstance.richiestaDa = richiestaDa;
+            modalSganciamento.componentInstance.bottoni = [
+                { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+                { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+            ];
+
+            modalSganciamento.result.then(
+                (val) => {
+                    switch (val) {
+                        case 'ok':
+                            // TODO: ricavare la partenza tramite id del mezzo e idRichiesta del mezzo
+                            const partenzaObj = {
+                                'partenze': [partenzaDaSganciare],
+                                'idRichiesta': this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
+                                'turno': this.store.selectSnapshot(TurnoState.turno).corrente,
+                                'idRichiestaDaSganciare': sganciamentoObj.idRichiestaDa,
+                                'idMezzoDaSganciare': sganciamentoObj.idMezzo
+                            };
+                            // this.store.dispatch(new ConfirmPartenze(partenzaObj));
+                            console.log('Partenza sganciata', partenzaObj);
+                            break;
+                        case 'ko':
+                            console.log('Azione annullata');
+                            break;
+                    }
+                    console.log('Modal chiusa con val ->', val);
+                },
+                (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+            );
+            console.log('sganciamentoObj', sganciamentoObj);
+        } else {
+            console.error('[SganciamentoMezzo] Errore! richiestaDa / partenzaDaSganciare non presente');
+        }
+
+    }
 }
 

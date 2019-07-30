@@ -15,7 +15,6 @@ import {
 import * as moment from 'moment';
 import { makeCopy } from '../../../shared/helper/function';
 import { OFFSET_SYNC_TIME } from '../../settings/referral-time';
-import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { ClearBoxPartenze, RemoveBoxPartenzaByMezzoId } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
 import { UpdateRichiesta } from '../../../features/home/store/actions/richieste/richieste.actions';
@@ -36,7 +35,6 @@ export class CompPartenzaServiceFake {
     }
 
     getPreAccoppiati(signalRConnectionId?: string): Observable<any> {
-        const idRichiestaAttuale = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id;
         this.preAccoppiati = [
             {
                 id: '1',
@@ -64,7 +62,7 @@ export class CompPartenzaServiceFake {
                         latitudine: 41.8311007,
                         longitudine: 12.4686518
                     },
-                    idRichiesta: idRichiestaAttuale,
+                    idRichiesta: '2',
                     istanteScadenzaSelezione: null
                 },
                 squadraComposizione: [
@@ -118,7 +116,7 @@ export class CompPartenzaServiceFake {
                         latitudine: 41.82699,
                         longitudine: 12.4879854,
                     },
-                    idRichiesta: idRichiestaAttuale,
+                    idRichiesta: '4',
                     istanteScadenzaSelezione: null
                 },
                 squadraComposizione: [
@@ -194,7 +192,7 @@ export class CompPartenzaServiceFake {
                         latitudine: 41.8311007,
                         longitudine: 12.4686518
                     },
-                    idRichiesta: idRichiestaAttuale,
+                    idRichiesta: '4',
                     istanteScadenzaSelezione: null
                 },
                 squadraComposizione: [
@@ -270,7 +268,7 @@ export class CompPartenzaServiceFake {
                         latitudine: 41.8311007,
                         longitudine: 12.4686518
                     },
-                    idRichiesta: idRichiestaAttuale,
+                    idRichiesta: '1',
                     istanteScadenzaSelezione: null
                 },
                 squadraComposizione: [
@@ -324,7 +322,7 @@ export class CompPartenzaServiceFake {
                         latitudine: 41.82699,
                         longitudine: 12.4879854,
                     },
-                    idRichiesta: idRichiestaAttuale,
+                    idRichiesta: '2',
                     istanteScadenzaSelezione: null
                 },
                 squadraComposizione: [
@@ -380,7 +378,6 @@ export class CompPartenzaServiceFake {
     }
 
     getListeComposizioneAvanzata(signalRConnectionId?: string): Observable<any> {
-        const idRichiestaAttuale = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id;
         this.mezzi = [
             {
                 id: '1',
@@ -406,7 +403,7 @@ export class CompPartenzaServiceFake {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
                 },
-                idRichiesta: idRichiestaAttuale,
+                idRichiesta: '2',
                 istanteScadenzaSelezione: null
             },
             {
@@ -433,7 +430,7 @@ export class CompPartenzaServiceFake {
                     latitudine: 41.82699,
                     longitudine: 12.4879854,
                 },
-                idRichiesta: idRichiestaAttuale,
+                idRichiesta: '3',
                 istanteScadenzaSelezione: null
             },
             {
@@ -460,7 +457,7 @@ export class CompPartenzaServiceFake {
                     latitudine: 41.8531486,
                     longitudine: 12.5418702
                 },
-                idRichiesta: idRichiestaAttuale,
+                idRichiesta: '4',
                 istanteScadenzaSelezione: null
             },
             {
@@ -487,7 +484,7 @@ export class CompPartenzaServiceFake {
                     latitudine: 41.8935662,
                     longitudine: 12.5417044
                 },
-                idRichiesta: idRichiestaAttuale,
+                idRichiesta: '4',
                 istanteScadenzaSelezione: null
             },
             {
@@ -514,7 +511,7 @@ export class CompPartenzaServiceFake {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
                 },
-                idRichiesta: idRichiestaAttuale,
+                idRichiesta: '1',
                 istanteScadenzaSelezione: null
             },
             {
@@ -541,7 +538,7 @@ export class CompPartenzaServiceFake {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
                 },
-                idRichiesta: idRichiestaAttuale,
+                idRichiesta: '2',
                 istanteScadenzaSelezione: null
             },
             {
@@ -568,7 +565,7 @@ export class CompPartenzaServiceFake {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
                 },
-                idRichiesta: idRichiestaAttuale,
+                idRichiesta: '7',
                 istanteScadenzaSelezione: null
             },
         ];

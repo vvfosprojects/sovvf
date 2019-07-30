@@ -5,6 +5,8 @@ import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { RequestResetBookMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { Store } from '@ngxs/store';
 import { HelperComposizione } from '../helper/_helper-composizione';
+import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from 'src/app/shared/enum/toastr';
 
 @Component({
     selector: 'app-box-nuova-partenza',
@@ -26,15 +28,20 @@ export class BoxNuovaPartenzaComponent {
     @Output() eliminato = new EventEmitter<BoxPartenza>();
 
     methods = new HelperComposizione();
+    itemBloccato: boolean;
 
     constructor(private store: Store) {
     }
 
     onClick() {
-        if (!this.itemSelezionato) {
-            this.selezionato.emit(this.partenza);
+        if (this.partenza.mezzoComposizione.mezzo.stato !== 'In Viaggio' && this.partenza.mezzoComposizione.mezzo.stato !== 'Sul Posto') {
+            if (!this.itemSelezionato) {
+                this.selezionato.emit(this.partenza);
+            } else {
+                this.deselezionato.emit(this.partenza);
+            }
         } else {
-            this.deselezionato.emit(this.partenza);
+            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + this.partenza.mezzoComposizione.mezzo.stato + ' ed è impegnato in un\'altra richiesta'));
         }
     }
 
@@ -52,6 +59,11 @@ export class BoxNuovaPartenzaComponent {
                 'card-shadow': !this.itemSelezionato,
                 'bg-light border-success card-shadow-success': this.itemSelezionato
             };
+
+            if (this.partenza.mezzoComposizione.mezzo.stato !== 'In Sede' && this.partenza.mezzoComposizione.mezzo.stato !== 'In Rientro') {
+                returnClass += ' diagonal-stripes bg-lightdanger';
+                this.itemBloccato = true;
+            }
 
             if (this.partenza.mezzoComposizione.istanteScadenzaSelezione) {
                 returnClass += ' diagonal-stripes bg-lightgrey';

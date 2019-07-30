@@ -31,10 +31,10 @@ export class SintesiRichiestaComponent {
     @Input() espandibile: boolean;
     @Input() listaEventi: boolean;
     @Input() partenza: boolean;
+    @Input() inGestione: boolean;
     @Input() composizionePartenza = true;
     @Input() modificabile = true;
     @Input() gestibile = true;
-    @Input() inGestione = true;
 
     @Output() clickRichiesta = new EventEmitter<any>();
     @Output() doubleClickRichiesta = new EventEmitter<any>();

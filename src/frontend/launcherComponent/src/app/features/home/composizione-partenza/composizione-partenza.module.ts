@@ -41,6 +41,7 @@ import { SquadreComposizioneState } from '../store/states/composizione-partenza/
 import { BoxPartenzaState } from '../store/states/composizione-partenza/box-partenza.state';
 import { PrenotazioneProgressBarComponent } from './shared/prenotazione-progress-bar/prenotazione-progress-bar.component';
 import { ComposizioneButtonsComponent } from './shared/composizione-buttons/composizione-buttons.component';
+import { SganciamentoMezzoModalComponent } from './shared/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 
 @NgModule({
     declarations: [
@@ -52,7 +53,8 @@ import { ComposizioneButtonsComponent } from './shared/composizione-buttons/comp
         SquadraComposizioneComponent,
         ComposizioneFilterbarComponent,
         PrenotazioneProgressBarComponent,
-        ComposizioneButtonsComponent
+        ComposizioneButtonsComponent,
+        SganciamentoMezzoModalComponent
     ],
     imports: [
         CommonModule,
@@ -77,6 +79,9 @@ import { ComposizioneButtonsComponent } from './shared/composizione-buttons/comp
                 SquadreComposizioneState
             ]
         ),
+    ],
+    entryComponents: [
+        SganciamentoMezzoModalComponent
     ],
     exports: [
         ComposizionePartenzaComponent

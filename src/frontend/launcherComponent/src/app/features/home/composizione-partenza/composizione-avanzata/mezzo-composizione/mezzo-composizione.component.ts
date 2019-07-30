@@ -6,6 +6,7 @@ import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { HelperComposizione } from '../../shared/helper/_helper-composizione';
 import { MezzoDirection } from '../../../../../shared/interface/mezzo-direction';
+import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -34,6 +35,9 @@ export class MezzoComposizioneComponent implements OnInit {
 
     // Mappa
     @Output() mezzoCoordinate = new EventEmitter<MezzoDirection>();
+
+    // Sganciamento
+    @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
 
     methods = new HelperComposizione();
 
@@ -66,7 +70,16 @@ export class MezzoComposizioneComponent implements OnInit {
     }
 
     // Lucchetto
-    onClickLucchetto() {
+    onSganciamento() {
+        if (this.mezzoComp.idRichiesta) {
+            const sganciamentoObj = {
+                'idMezzo': this.mezzoComp.mezzo.codice,
+                'idRichiestaDa': this.mezzoComp.idRichiesta
+            };
+            this.sganciamento.emit(sganciamentoObj);
+        } else {
+            console.error('[SganciamentoMezzo] IdRichiesta non presente nel Mezzo');
+        }
         // prevedere sblocco mezzo
     }
 
@@ -105,6 +118,7 @@ export class MezzoComposizioneComponent implements OnInit {
         // if (this.itemBloccato) {
         if (this.mezzoComp.mezzo.stato !== 'In Sede' && this.mezzoComp.mezzo.stato !== 'In Rientro') {
             returnClass += ' diagonal-stripes bg-lightdanger';
+            this.itemBloccato = true;
         }
         // }
 

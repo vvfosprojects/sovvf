@@ -71,6 +71,11 @@ export class RichiesteState {
         return (id: string) => state.richieste.find(x => x.codiceRichiesta === id);
     }
 
+    @Selector()
+    static richiestaById(state: RichiesteStateModel) {
+        return (id: string) => state.richieste.find(x => x.id === id);
+    }
+
     constructor(private richiesteService: SintesiRichiesteService,
         private store: Store) {
     }

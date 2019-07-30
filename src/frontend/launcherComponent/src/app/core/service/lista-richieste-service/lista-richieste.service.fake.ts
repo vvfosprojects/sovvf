@@ -469,43 +469,43 @@ export class SintesiRichiesteServiceFake {
                 new Fonogramma('0', 'Non necessario'),
                 [
                     new Partenza('1', [
-                            new Squadra(
-                                '3',
-                                '3A',
-                                StatoSquadra.InRientro,
-                                [
-                                    new Componente(
-                                        'CS',
-                                        'Paolo Di Tonno',
-                                        'Paolo Di Tonno - RSSTZN56T56R454E',
-                                        true,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Antonio Marsalà',
-                                        'Antonio Marsalà - MRCMRC66T66R454F',
-                                        false,
-                                        true,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Bernardo Belli',
-                                        'Bernardo Belli - CNTRFL66T45R343E',
-                                        false,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Maurizio Cutolo',
-                                        'Maurizio Cutolo - VRTGVN56T74H565Y',
-                                        false,
-                                        false,
-                                        false)
-                                ],
-                                new Sede(null, null, null, null, null, null, null),
-                            )
-                        ],
+                        new Squadra(
+                            '3',
+                            '3A',
+                            StatoSquadra.InRientro,
+                            [
+                                new Componente(
+                                    'CS',
+                                    'Paolo Di Tonno',
+                                    'Paolo Di Tonno - RSSTZN56T56R454E',
+                                    true,
+                                    false,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Antonio Marsalà',
+                                    'Antonio Marsalà - MRCMRC66T66R454F',
+                                    false,
+                                    true,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Bernardo Belli',
+                                    'Bernardo Belli - CNTRFL66T45R343E',
+                                    false,
+                                    false,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Maurizio Cutolo',
+                                    'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                    false,
+                                    false,
+                                    false)
+                            ],
+                            new Sede(null, null, null, null, null, null, null),
+                        )
+                    ],
                         new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -549,43 +549,43 @@ export class SintesiRichiesteServiceFake {
                 new Fonogramma('0', 'Non necessario'),
                 [
                     new Partenza('1', [
-                            new Squadra(
-                                '3',
-                                '3A',
-                                StatoSquadra.InRientro,
-                                [
-                                    new Componente(
-                                        'CS',
-                                        'Paolo Di Tonno',
-                                        'Paolo Di Tonno - RSSTZN56T56R454E',
-                                        true,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Antonio Marsalà',
-                                        'Antonio Marsalà - MRCMRC66T66R454F',
-                                        false,
-                                        true,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Bernardo Belli',
-                                        'Bernardo Belli - CNTRFL66T45R343E',
-                                        false,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Maurizio Cutolo',
-                                        'Maurizio Cutolo - VRTGVN56T74H565Y',
-                                        false,
-                                        false,
-                                        false)
-                                ],
-                                new Sede(null, null, null, null, null, null, null),
-                            )
-                        ],
+                        new Squadra(
+                            '3',
+                            '3A',
+                            StatoSquadra.InRientro,
+                            [
+                                new Componente(
+                                    'CS',
+                                    'Paolo Di Tonno',
+                                    'Paolo Di Tonno - RSSTZN56T56R454E',
+                                    true,
+                                    false,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Antonio Marsalà',
+                                    'Antonio Marsalà - MRCMRC66T66R454F',
+                                    false,
+                                    true,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Bernardo Belli',
+                                    'Bernardo Belli - CNTRFL66T45R343E',
+                                    false,
+                                    false,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Maurizio Cutolo',
+                                    'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                    false,
+                                    false,
+                                    false)
+                            ],
+                            new Sede(null, null, null, null, null, null, null),
+                        )
+                    ],
                         new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -629,44 +629,44 @@ export class SintesiRichiesteServiceFake {
                 new Fonogramma('0', 'Non necessario'),
                 [
                     new Partenza('1', [
-                            new Squadra(
-                                '3',
-                                '3A',
-                                StatoSquadra.InRientro,
-                                [
-                                    new Componente(
-                                        'CS',
-                                        'Paolo Di Tonno',
-                                        'Paolo Di Tonno - RSSTZN56T56R454E',
-                                        true,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Antonio Marsalà',
-                                        'Antonio Marsalà - MRCMRC66T66R454F',
-                                        false,
-                                        true,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Bernardo Belli',
-                                        'Bernardo Belli - CNTRFL66T45R343E',
-                                        false,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Maurizio Cutolo',
-                                        'Maurizio Cutolo - VRTGVN56T74H565Y',
-                                        false,
-                                        false,
-                                        false)
-                                ],
-                                new Sede(null, null, null, null, null, null, null),
-                            )
-                        ],
-                        new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
+                        new Squadra(
+                            '3',
+                            '3A',
+                            StatoSquadra.InRientro,
+                            [
+                                new Componente(
+                                    'CS',
+                                    'Paolo Di Tonno',
+                                    'Paolo Di Tonno - RSSTZN56T56R454E',
+                                    true,
+                                    false,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Antonio Marsalà',
+                                    'Antonio Marsalà - MRCMRC66T66R454F',
+                                    false,
+                                    true,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Bernardo Belli',
+                                    'Bernardo Belli - CNTRFL66T45R343E',
+                                    false,
+                                    false,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Maurizio Cutolo',
+                                    'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                    false,
+                                    false,
+                                    false)
+                            ],
+                            new Sede(null, null, null, null, null, null, null),
+                        )
+                    ],
+                        new Mezzo('7', 'A7', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
                     )
@@ -708,43 +708,43 @@ export class SintesiRichiesteServiceFake {
                 new Fonogramma('0', 'Non necessario'),
                 [
                     new Partenza('1', [
-                            new Squadra(
-                                '3',
-                                '3A',
-                                StatoSquadra.InRientro,
-                                [
-                                    new Componente(
-                                        'CS',
-                                        'Paolo Di Tonno',
-                                        'Paolo Di Tonno - RSSTZN56T56R454E',
-                                        true,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Antonio Marsalà',
-                                        'Antonio Marsalà - MRCMRC66T66R454F',
-                                        false,
-                                        true,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Bernardo Belli',
-                                        'Bernardo Belli - CNTRFL66T45R343E',
-                                        false,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Maurizio Cutolo',
-                                        'Maurizio Cutolo - VRTGVN56T74H565Y',
-                                        false,
-                                        false,
-                                        false)
-                                ],
-                                new Sede(null, null, null, null, null, null, null),
-                            )
-                        ],
+                        new Squadra(
+                            '3',
+                            '3A',
+                            StatoSquadra.InRientro,
+                            [
+                                new Componente(
+                                    'CS',
+                                    'Paolo Di Tonno',
+                                    'Paolo Di Tonno - RSSTZN56T56R454E',
+                                    true,
+                                    false,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Antonio Marsalà',
+                                    'Antonio Marsalà - MRCMRC66T66R454F',
+                                    false,
+                                    true,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Bernardo Belli',
+                                    'Bernardo Belli - CNTRFL66T45R343E',
+                                    false,
+                                    false,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Maurizio Cutolo',
+                                    'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                    false,
+                                    false,
+                                    false)
+                            ],
+                            new Sede(null, null, null, null, null, null, null),
+                        )
+                    ],
                         new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -787,43 +787,43 @@ export class SintesiRichiesteServiceFake {
                 new Fonogramma('0', 'Non necessario'),
                 [
                     new Partenza('1', [
-                            new Squadra(
-                                '3',
-                                '3A',
-                                StatoSquadra.InRientro,
-                                [
-                                    new Componente(
-                                        'CS',
-                                        'Paolo Di Tonno',
-                                        'Paolo Di Tonno - RSSTZN56T56R454E',
-                                        true,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Antonio Marsalà',
-                                        'Antonio Marsalà - MRCMRC66T66R454F',
-                                        false,
-                                        true,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Bernardo Belli',
-                                        'Bernardo Belli - CNTRFL66T45R343E',
-                                        false,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Maurizio Cutolo',
-                                        'Maurizio Cutolo - VRTGVN56T74H565Y',
-                                        false,
-                                        false,
-                                        false)
-                                ],
-                                new Sede(null, null, null, null, null, null, null),
-                            )
-                        ],
+                        new Squadra(
+                            '3',
+                            '3A',
+                            StatoSquadra.InRientro,
+                            [
+                                new Componente(
+                                    'CS',
+                                    'Paolo Di Tonno',
+                                    'Paolo Di Tonno - RSSTZN56T56R454E',
+                                    true,
+                                    false,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Antonio Marsalà',
+                                    'Antonio Marsalà - MRCMRC66T66R454F',
+                                    false,
+                                    true,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Bernardo Belli',
+                                    'Bernardo Belli - CNTRFL66T45R343E',
+                                    false,
+                                    false,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Maurizio Cutolo',
+                                    'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                    false,
+                                    false,
+                                    false)
+                            ],
+                            new Sede(null, null, null, null, null, null, null),
+                        )
+                    ],
                         new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -866,43 +866,43 @@ export class SintesiRichiesteServiceFake {
                 new Fonogramma('0', 'Non necessario'),
                 [
                     new Partenza('1', [
-                            new Squadra(
-                                '3',
-                                '3A',
-                                StatoSquadra.InRientro,
-                                [
-                                    new Componente(
-                                        'CS',
-                                        'Paolo Di Tonno',
-                                        'Paolo Di Tonno - RSSTZN56T56R454E',
-                                        true,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Antonio Marsalà',
-                                        'Antonio Marsalà - MRCMRC66T66R454F',
-                                        false,
-                                        true,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Bernardo Belli',
-                                        'Bernardo Belli - CNTRFL66T45R343E',
-                                        false,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Maurizio Cutolo',
-                                        'Maurizio Cutolo - VRTGVN56T74H565Y',
-                                        false,
-                                        false,
-                                        false)
-                                ],
-                                new Sede(null, null, null, null, null, null, null),
-                            )
-                        ],
+                        new Squadra(
+                            '3',
+                            '3A',
+                            StatoSquadra.InRientro,
+                            [
+                                new Componente(
+                                    'CS',
+                                    'Paolo Di Tonno',
+                                    'Paolo Di Tonno - RSSTZN56T56R454E',
+                                    true,
+                                    false,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Antonio Marsalà',
+                                    'Antonio Marsalà - MRCMRC66T66R454F',
+                                    false,
+                                    true,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Bernardo Belli',
+                                    'Bernardo Belli - CNTRFL66T45R343E',
+                                    false,
+                                    false,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Maurizio Cutolo',
+                                    'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                    false,
+                                    false,
+                                    false)
+                            ],
+                            new Sede(null, null, null, null, null, null, null),
+                        )
+                    ],
                         new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -945,43 +945,43 @@ export class SintesiRichiesteServiceFake {
                 new Fonogramma('0', 'Non necessario'),
                 [
                     new Partenza('1', [
-                            new Squadra(
-                                '3',
-                                '3A',
-                                StatoSquadra.InRientro,
-                                [
-                                    new Componente(
-                                        'CS',
-                                        'Paolo Di Tonno',
-                                        'Paolo Di Tonno - RSSTZN56T56R454E',
-                                        true,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Antonio Marsalà',
-                                        'Antonio Marsalà - MRCMRC66T66R454F',
-                                        false,
-                                        true,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Bernardo Belli',
-                                        'Bernardo Belli - CNTRFL66T45R343E',
-                                        false,
-                                        false,
-                                        false),
-                                    new Componente(
-                                        'VIG',
-                                        'Maurizio Cutolo',
-                                        'Maurizio Cutolo - VRTGVN56T74H565Y',
-                                        false,
-                                        false,
-                                        false)
-                                ],
-                                new Sede(null, null, null, null, null, null, null),
-                            )
-                        ],
+                        new Squadra(
+                            '3',
+                            '3A',
+                            StatoSquadra.InRientro,
+                            [
+                                new Componente(
+                                    'CS',
+                                    'Paolo Di Tonno',
+                                    'Paolo Di Tonno - RSSTZN56T56R454E',
+                                    true,
+                                    false,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Antonio Marsalà',
+                                    'Antonio Marsalà - MRCMRC66T66R454F',
+                                    false,
+                                    true,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Bernardo Belli',
+                                    'Bernardo Belli - CNTRFL66T45R343E',
+                                    false,
+                                    false,
+                                    false),
+                                new Componente(
+                                    'VIG',
+                                    'Maurizio Cutolo',
+                                    'Maurizio Cutolo - VRTGVN56T74H565Y',
+                                    false,
+                                    false,
+                                    false)
+                            ],
+                            new Sede(null, null, null, null, null, null, null),
+                        )
+                    ],
                         new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -1003,9 +1003,9 @@ export class SintesiRichiesteServiceFake {
         this.richieste[4].listaEntiPresaInCarico = [new EnteIntervenuto('1', 'Polizia di Stato'), new EnteIntervenuto('2', 'Carabinieri')];
         this.richieste[4].listaEntiIntervenuti = [new EnteIntervenuto('3', 'Protezione Civile')];
         this.richieste[0].listaUtentiPresaInCarico = [new AttivitaUtente('3', 'Mario Rossi', moment().subtract(42, 'minutes').toDate()),
-            new AttivitaUtente('50', 'Luigi Bardolin', moment().subtract(52, 'minutes').toDate())];
+        new AttivitaUtente('50', 'Luigi Bardolin', moment().subtract(52, 'minutes').toDate())];
         this.richieste[0].listaUtentiInLavorazione = [new AttivitaUtente('35', 'Diletta Pallotta', moment().subtract(2, 'minutes').toDate()),
-            new AttivitaUtente('45', 'Filippo Verdi', moment().subtract(3, 'minutes').toDate())];
+        new AttivitaUtente('45', 'Filippo Verdi', moment().subtract(3, 'minutes').toDate())];
 
         return of(this.richieste);
     }
