@@ -225,6 +225,7 @@ export class SintesiRichiesteServiceFake {
                                 new Sede(null, null, null, null, null, null, null),
                             )
                         ],
+                        false,
                         new Mezzo('1', 'Autobotte', 'ABP', 'Sul Posto', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -268,6 +269,7 @@ export class SintesiRichiesteServiceFake {
                                 new Sede(null, null, null, null, null, null, null),
                             )
                         ],
+                        false,
                         new Mezzo('2', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -383,6 +385,7 @@ export class SintesiRichiesteServiceFake {
                                 new Sede(null, null, null, null, null, null, null),
                             )
                         ],
+                        false,
                         new Mezzo('3', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -426,6 +429,7 @@ export class SintesiRichiesteServiceFake {
                                 new Sede(null, null, null, null, null, null, null),
                             )
                         ],
+                        false,
                         new Mezzo('4', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -506,6 +510,7 @@ export class SintesiRichiesteServiceFake {
                             new Sede(null, null, null, null, null, null, null),
                         )
                     ],
+                    false,
                         new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -586,6 +591,7 @@ export class SintesiRichiesteServiceFake {
                             new Sede(null, null, null, null, null, null, null),
                         )
                     ],
+                    false,
                         new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -666,6 +672,7 @@ export class SintesiRichiesteServiceFake {
                             new Sede(null, null, null, null, null, null, null),
                         )
                     ],
+                    false,
                         new Mezzo('7', 'A7', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -745,6 +752,7 @@ export class SintesiRichiesteServiceFake {
                             new Sede(null, null, null, null, null, null, null),
                         )
                     ],
+                    false,
                         new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -824,6 +832,7 @@ export class SintesiRichiesteServiceFake {
                             new Sede(null, null, null, null, null, null, null),
                         )
                     ],
+                    false,
                         new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -903,6 +912,7 @@ export class SintesiRichiesteServiceFake {
                             new Sede(null, null, null, null, null, null, null),
                         )
                     ],
+                    false,
                         new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
@@ -982,6 +992,7 @@ export class SintesiRichiesteServiceFake {
                             new Sede(null, null, null, null, null, null, null),
                         )
                     ],
+                    false,
                         new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                             new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                             3, 'carburante', 2, 'estinguente')
