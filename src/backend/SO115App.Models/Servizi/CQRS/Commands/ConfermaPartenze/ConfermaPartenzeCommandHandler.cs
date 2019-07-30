@@ -60,7 +60,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <returns>Elenco dei mezzi disponibili</returns>
         public void Handle(ConfermaPartenzeCommand command)
         {
-            // preparazione del DTO
+            /// preparazione del DTO
             var richiesta = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiesta);
             var richiestaDaSganciare = new RichiestaAssistenza();
 
@@ -71,22 +71,25 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             if (command.ConfermaPartenze.IdRichiestaDaSganciare != null)
             {
                 richiestaDaSganciare = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiestaDaSganciare);
-            }
 
-            foreach (var composizione in richiestaDaSganciare.Eventi.Where(x => x is ComposizionePartenze).ToList())
-            {
-                if (((ComposizionePartenze)composizione).Partenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
-                    ((ComposizionePartenze)composizione).Partenza.Sganciata = true;
+                foreach (var composizione in richiestaDaSganciare.Eventi.Where(x => x is ComposizionePartenze).ToList())
+                {
+                    if (((ComposizionePartenze)composizione).Partenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
+                        ((ComposizionePartenze)composizione).Partenza.Sganciata = true;
 
-                idComposizioneDaSganciare++;
-            }
+                    idComposizioneDaSganciare++;
+                }
 
-            if (command.ConfermaPartenze.IdRichiestaDaSganciare != null)
-            {
+                foreach (var composizione in richiestaDaSganciare.Partenze)
+                {
+                    if (composizione.Partenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
+                        composizione.Partenza.Sganciata = true;
+                }
+
                 if (idComposizioneDaSganciare == 1)
-                    richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaSospesa, richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
+                    richiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaSospesa, richiestaDaSganciare.StatoRichiesta, richiestaDaSganciare.Operatore.Id, "");
 
-                new RevocaPerRiassegnazione(richiesta, richiestaDaSganciare, command.ConfermaPartenze.IdMezzoDaSganciare, DateTime.UtcNow, richiesta.Operatore.Id);
+                //new RevocaPerRiassegnazione(richiesta, richiestaDaSganciare, command.ConfermaPartenze.IdMezzoDaSganciare, DateTime.UtcNow, richiesta.Operatore.Id);
                 _updateRichiestaAssistenza.UpDate(richiestaDaSganciare);
             }
 
