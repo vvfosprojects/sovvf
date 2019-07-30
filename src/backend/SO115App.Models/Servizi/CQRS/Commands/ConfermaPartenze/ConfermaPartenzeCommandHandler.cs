@@ -23,6 +23,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -39,14 +40,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     public class ConfermaPartenzeCommandHandler : ICommandHandler<ConfermaPartenzeCommand>
     {
         private readonly IUpdateConfermaPartenze _updateConfermaPartenze;
+        private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
 
-        public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiestaById getRichiestaById, IGeneraCodiceRichiesta generaCodiceRichiesta)
+        public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiestaById getRichiestaById,
+            IGeneraCodiceRichiesta generaCodiceRichiesta, IUpDateRichiestaAssistenza updateRichiestaAssistenza)
         {
             _updateConfermaPartenze = updateConfermaPartenze;
             _getRichiestaById = getRichiestaById;
             _generaCodiceRichiesta = generaCodiceRichiesta;
+            _updateRichiestaAssistenza = updateRichiestaAssistenza;
         }
 
         /// <summary>
@@ -59,6 +63,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             // preparazione del DTO
             var richiesta = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiesta);
             var attivita = new AttivitaUtente();
+
+            ///Gestione Sganciamento
+            if (command.IdRichiestaDaSganciare != null)
+            {
+                var richiestaDaSganciare = _getRichiestaById.Get(command.IdRichiestaDaSganciare);
+
+                foreach (var composizione in richiestaDaSganciare.Partenze)
+                {
+                    if (composizione.Partenza.Mezzo.Codice.Equals(command.IdMezzoDaSganciare))
+                    {
+                        composizione.Partenza.Sganciata = true;
+                        new RevocaPerRiassegnazione(richiesta, richiestaDaSganciare, command.IdMezzoDaSganciare, DateTime.UtcNow, richiesta.Operatore.Id);
+                        _updateRichiestaAssistenza.UpDate(richiestaDaSganciare);
+                    }
+                }
+            }
 
             if (richiesta.Eventi.Where(x => x is InizioPresaInCarico).ToList().Count == 0)
                 new InizioPresaInCarico(richiesta, DateTime.UtcNow, richiesta.Operatore.Id);

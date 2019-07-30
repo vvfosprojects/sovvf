@@ -32,5 +32,10 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Mezzo usato nella partenza
         /// </summary>
         public Mezzo Mezzo { get; set; }
+
+        /// <summary>
+        ///   Mezzo usato nella partenza
+        /// </summary>
+        public bool Sganciata { get; set; }
     }
 }

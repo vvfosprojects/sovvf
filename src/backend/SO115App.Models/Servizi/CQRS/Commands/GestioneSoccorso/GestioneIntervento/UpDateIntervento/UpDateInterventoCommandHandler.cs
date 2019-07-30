@@ -28,16 +28,13 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
     {
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
         private readonly IGetRichiestaById _getRichiestaById;
-        private readonly IGetIdByCodice _getGetIdRichiestaByCodice;
 
         public UpDateInterventoCommandHandler(
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
-            IGetRichiestaById getRichiestaById,
-            IGetIdByCodice getIdRichiestaByCodice)
+            IGetRichiestaById getRichiestaById)
         {
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
             _getRichiestaById = getRichiestaById;
-            _getGetIdRichiestaByCodice = getIdRichiestaByCodice;
         }
 
         public void Handle(UpDateInterventoCommand command)
