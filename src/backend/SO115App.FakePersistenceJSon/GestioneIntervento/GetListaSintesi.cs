@@ -27,8 +27,10 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.FakePersistence.JSon.Utility;
 using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CustomMapper;
 
 namespace SO115App.FakePersistenceJSon.GestioneIntervento
@@ -48,7 +50,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
             var listaSintesiRichieste = new List<SintesiRichiesta>();
             var listaSintesiRichiesteVuota = new List<SintesiRichiesta>();
             var listaRichiesteAssistenza = new List<RichiestaAssistenza>();
-            string filepath = "Fake/ListaRichiesteAssistenza.json";
+            string filepath = CostantiJson.ListaRichiesteAssistenza;
             string json;
 
             using (StreamReader r = new StreamReader(filepath))
@@ -56,11 +58,11 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                 json = r.ReadToEnd();
             }
 
-            var ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
+            var listaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
 
-            if (ListaRichieste != null)
+            if (listaRichieste != null)
             {
-                foreach (RichiestaAssistenzaDTO richiesta in ListaRichieste)
+                foreach (RichiestaAssistenzaDTO richiesta in listaRichieste)
                 {
                     richiesta.Id = richiesta.Codice;
                     listaRichiesteAssistenza.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
@@ -71,11 +73,11 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                     listaSintesiRichieste.Add(mapper.Map(richiesta));
                 }
 
-                listaSintesiRichieste = listaSintesiRichieste.OrderByDescending(x => x.Stato == "Chiamata")
+                listaSintesiRichieste = listaSintesiRichieste.OrderByDescending(x => x.Stato == Costanti.Chiamata)
                     .ThenByDescending(x => x.PrioritaRichiesta)
                     .ThenBy(x => x.IstanteRicezioneRichiesta)
                     .ToList();
-                
+
                 return listaSintesiRichieste;
             }
             else
@@ -86,20 +88,20 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 
         private string MapStatoRichiesta(SintesiRichieste sintesi)
         {
-            string stato = "Chiamata";
+            var stato = Costanti.Chiamata;
 
             if (sintesi.Chiusa)
-                stato = "Chiusa";
+                stato = Costanti.RichiestaChiusa;
 
             if (sintesi.Sospesa)
-                stato = "Sospesa";
+                stato = Costanti.RichiestaSospesa;
 
             if (sintesi.Aperta)
             {
                 if (sintesi.Presidiato)
-                    stato = "Presidiata";
+                    stato = Costanti.RichiestaPresidiata;
                 else if (sintesi.IstantePrimaAssegnazione != null)
-                    stato = "Assegnata";
+                    stato = Costanti.RichiestaAssegnata;
             }
 
             return stato;

@@ -23,6 +23,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -30,6 +31,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciR
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SO115App.Models.Classi.Utility;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ConfermaPartenze
 {
@@ -39,14 +41,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     public class ConfermaPartenzeCommandHandler : ICommandHandler<ConfermaPartenzeCommand>
     {
         private readonly IUpdateConfermaPartenze _updateConfermaPartenze;
+        private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
 
-        public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiestaById getRichiestaById, IGeneraCodiceRichiesta generaCodiceRichiesta)
+        public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiestaById getRichiestaById,
+            IGeneraCodiceRichiesta generaCodiceRichiesta, IUpDateRichiestaAssistenza updateRichiestaAssistenza)
         {
             _updateConfermaPartenze = updateConfermaPartenze;
             _getRichiestaById = getRichiestaById;
             _generaCodiceRichiesta = generaCodiceRichiesta;
+            _updateRichiestaAssistenza = updateRichiestaAssistenza;
         }
 
         /// <summary>
@@ -60,6 +65,23 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var richiesta = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiesta);
             var attivita = new AttivitaUtente();
 
+            ///Gestione Sganciamento
+            if (command.ConfermaPartenze.IdRichiestaDaSganciare != null)
+            {
+                var richiestaDaSganciare = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiestaDaSganciare);
+
+                foreach (var composizione in richiestaDaSganciare.Partenze)
+                {
+                    if (composizione.Partenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
+                    {
+                        //composizione.Partenza.Sganciata = true;
+                        composizione.Partenza = null;
+                        new RevocaPerRiassegnazione(richiesta, richiestaDaSganciare, command.ConfermaPartenze.IdMezzoDaSganciare, DateTime.UtcNow, richiesta.Operatore.Id);
+                        _updateRichiestaAssistenza.UpDate(richiestaDaSganciare);
+                    }
+                }
+            }
+
             if (richiesta.Eventi.Where(x => x is InizioPresaInCarico).ToList().Count == 0)
                 new InizioPresaInCarico(richiesta, DateTime.UtcNow, richiesta.Operatore.Id);
 
@@ -71,7 +93,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 };
             }
 
-            richiesta.SincronizzaStatoRichiesta("Assegnata", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
+            richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
 
             richiesta.Id = command.ConfermaPartenze.IdRichiesta;
             command.ConfermaPartenze.richiesta = richiesta;
