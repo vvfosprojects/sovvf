@@ -53,7 +53,6 @@ export class FilterbarComponent implements OnInit {
     @Select(ViewComponentState.mapsIsActive) mapsStatus$: Observable<boolean>;
     @Select(ViewComponentState.richiesteIsActive) richiesteStatus$: Observable<boolean>;
 
-
     constructor(private store: Store) {
     }
 

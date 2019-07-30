@@ -12,7 +12,7 @@
         </app-filtri-richieste>
       </div>
       <div *ngIf="(richiesteStatus$ | async)" class="col-7 px-0">
-        <app-ricerca-richieste (search)="onSearch($event)">
+        <app-ricerca-richieste [ricerca]="(ricerca$ | async)" (search)="onSearch($event)">
         </app-ricerca-richieste>
       </div>
       <div *ngIf="(composizioneStatus$ | async)" class="col-4 ml-auto">

@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { makeCopy } from '../../../../shared/helper/function';
 
 @Component({
@@ -7,7 +7,8 @@ import { makeCopy } from '../../../../shared/helper/function';
     styleUrls: ['./ricerca-richieste.component.scss']
 })
 export class RicercaRichiesteComponent {
-    ricerca = { descrizione: '' };
+
+    @Input() ricerca = { descrizione: '' };
 
     // Events
     @Output() search: EventEmitter<any> = new EventEmitter();

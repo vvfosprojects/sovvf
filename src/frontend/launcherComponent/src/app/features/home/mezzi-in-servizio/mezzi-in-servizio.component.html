@@ -1,16 +1,18 @@
 <div class="row mt-3">
-  <div class="col-10 mx-auto scroll-y" style="height:695px">
+  <div class="col-12 scroll-y" style="height:695px">
     <h5>Mezzi in servizio</h5>
-    <div *ngIf="mezziInServizio" class="mt-2">
-      <div *ngFor="let mezzo of mezziInServizio" class="row border rounded p-2"
-        [ngClass]="statoMezzoBorderClass(mezzo.stato)">
-        <div class="col-8">
-          <app-mezzo [mezzo]="mezzo" [mostraIndicatori]="true" [mostraNotifiche]="true"
-            [inGestione]="mezzo.stato !== 'In Sede' ? true : false" (actionMezzo)="onActionMezzo(mezzo, $event)">
-          </app-mezzo>
-        </div>
-        <div *ngIf="mezzo?.idRichiesta" class="col-4 text-right">
-          Richiesta <b>{{mezzo.idRichiesta}}</b>
+    <div *ngIf="mezziInServizio" class="row mt-2">
+      <div *ngFor="let mezzo of mezziInServizio" class="col-6 pl-4 mb-1">
+        <div class="row border rounded p-2" [ngClass]="statoMezzoBorderClass(mezzo.stato)">
+          <div class="col-8">
+            <app-mezzo [mezzo]="mezzo" [mostraIndicatori]="true" [mostraNotifiche]="true"
+              [inGestione]="mezzo.stato !== 'In Sede' ? true : false" (actionMezzo)="onActionMezzo(mezzo, $event)">
+            </app-mezzo>
+          </div>
+          <div *ngIf="mezzo?.idRichiesta" class="col-4 text-right" (click)="onDettaglioRichiesta(mezzo)">
+            <i class="fa fa-hashtag guida mr-2"></i>
+            <b>{{mezzo.idRichiesta}}</b>
+          </div>
         </div>
       </div>
     </div>

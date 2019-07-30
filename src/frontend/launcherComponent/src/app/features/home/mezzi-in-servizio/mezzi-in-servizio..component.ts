@@ -50,6 +50,11 @@ export class MezziInServizioComponent implements OnInit {
     return statoMezzoBorderClass(stato);
   }
 
+  onDettaglioRichiesta(mezzo: Mezzo) {
+    this.store.dispatch(new ToggleMezziInServizio());
+    // this.store.dispatch(new SetRicerca({ 'descrizione': mezzo.idRichiesta }));
+  }
+
   tornaIndietro() {
     this.store.dispatch(new ToggleMezziInServizio());
   }
