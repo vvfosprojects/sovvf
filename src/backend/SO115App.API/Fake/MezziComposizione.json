@@ -3,13 +3,13 @@
     "Id": null,
     "Mezzo": {
       "Codice": "1",
-      "IdRichiesta": null,
+      "IdRichiesta": "RM3071900000",
       "Descrizione": "A1",
       "Genere": "ABP",
       "Stato": "In Sede",
       "Appartenenza": 0,
       "Distaccamento": {
-        "Codice": "1",
+        "Codice": "RM.1000",
         "Descrizione": "Tuscolano II",
         "Coordinate": {
           "Latitudine": 1.0,
@@ -45,13 +45,13 @@
     "Id": null,
     "Mezzo": {
       "Codice": "9",
-      "IdRichiesta": null,
+      "IdRichiesta": "RM3071900000",
       "Descrizione": "A3",
       "Genere": "APS",
       "Stato": "In Sede",
       "Appartenenza": 0,
       "Distaccamento": {
-        "Codice": "1",
+        "Codice": "RM.1000",
         "Descrizione": "Tuscolano II",
         "Coordinate": {
           "Latitudine": 1.0,
@@ -93,7 +93,7 @@
       "Stato": "In Sede",
       "Appartenenza": 0,
       "Distaccamento": {
-        "Codice": "1",
+        "Codice": "RM.1000",
         "Descrizione": "Tuscolano II",
         "Coordinate": {
           "Latitudine": 1.0,
@@ -135,7 +135,7 @@
       "Stato": "In Sede",
       "Appartenenza": 0,
       "Distaccamento": {
-        "Codice": "3",
+        "Codice": "RM.1000",
         "Descrizione": "Ostiense",
         "Coordinate": {
           "Latitudine": 1.0,
@@ -171,13 +171,13 @@
     "Id": null,
     "Mezzo": {
       "Codice": "12",
-      "IdRichiesta": null,
+      "IdRichiesta": "RM3071900001",
       "Descrizione": "A6",
       "Genere": "APS",
       "Stato": "In Sede",
       "Appartenenza": 0,
       "Distaccamento": {
-        "Codice": "3",
+        "Codice": "RM.1000",
         "Descrizione": "Ostiense",
         "Coordinate": {
           "Latitudine": 1.0,
@@ -219,7 +219,7 @@
       "Stato": "In Sede",
       "Appartenenza": 0,
       "Distaccamento": {
-        "Codice": "3",
+        "Codice": "RM.1000",
         "Descrizione": "Ostiense",
         "Coordinate": {
           "Latitudine": 1.0,
@@ -261,7 +261,7 @@
       "Stato": "In Sede",
       "Appartenenza": 0,
       "Distaccamento": {
-        "Codice": "1",
+        "Codice": "RM.1000",
         "Descrizione": "Tuscolano II",
         "Coordinate": {
           "Latitudine": 1.0,
