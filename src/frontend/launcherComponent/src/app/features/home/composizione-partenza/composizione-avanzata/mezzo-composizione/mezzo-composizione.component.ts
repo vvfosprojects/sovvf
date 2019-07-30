@@ -74,13 +74,13 @@ export class MezzoComposizioneComponent implements OnInit {
         if (this.mezzoComp.idRichiesta) {
             const sganciamentoObj = {
                 'idMezzo': this.mezzoComp.mezzo.codice,
-                'idRichiestaDa': this.mezzoComp.idRichiesta
+                'idRichiestaDa': this.mezzoComp.mezzo.idRichiesta
             };
             this.sganciamento.emit(sganciamentoObj);
+            // console.log('mezzoComp', this.mezzoComp);
         } else {
             console.error('[SganciamentoMezzo] IdRichiesta non presente nel Mezzo');
         }
-        // prevedere sblocco mezzo
     }
 
     // NgClass

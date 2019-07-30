@@ -198,7 +198,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                                 'idRichiestaDaSganciare': sganciamentoObj.idRichiestaDa,
                                 'idMezzoDaSganciare': sganciamentoObj.idMezzo
                             };
-                            // this.store.dispatch(new ConfirmPartenze(partenzaObj));
+                            this.store.dispatch(new ConfirmPartenze(partenzaObj));
                             console.log('Partenza sganciata', partenzaObj);
                             break;
                         case 'ko':
