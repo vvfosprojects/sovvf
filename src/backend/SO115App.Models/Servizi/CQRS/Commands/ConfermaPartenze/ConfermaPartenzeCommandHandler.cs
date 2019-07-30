@@ -65,16 +65,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var attivita = new AttivitaUtente();
 
             ///Gestione Sganciamento
-            if (command.IdRichiestaDaSganciare != null)
+            if (command.ConfermaPartenze.IdRichiestaDaSganciare != null)
             {
-                var richiestaDaSganciare = _getRichiestaById.Get(command.IdRichiestaDaSganciare);
+                var richiestaDaSganciare = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiestaDaSganciare);
 
                 foreach (var composizione in richiestaDaSganciare.Partenze)
                 {
-                    if (composizione.Partenza.Mezzo.Codice.Equals(command.IdMezzoDaSganciare))
+                    if (composizione.Partenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
                     {
                         composizione.Partenza.Sganciata = true;
-                        new RevocaPerRiassegnazione(richiesta, richiestaDaSganciare, command.IdMezzoDaSganciare, DateTime.UtcNow, richiesta.Operatore.Id);
+                        new RevocaPerRiassegnazione(richiesta, richiestaDaSganciare, command.ConfermaPartenze.IdMezzoDaSganciare, DateTime.UtcNow, richiesta.Operatore.Id);
                         _updateRichiestaAssistenza.UpDate(richiestaDaSganciare);
                     }
                 }

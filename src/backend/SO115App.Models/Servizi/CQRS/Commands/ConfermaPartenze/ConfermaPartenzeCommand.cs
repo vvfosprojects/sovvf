@@ -9,7 +9,5 @@ namespace DomainModel.CQRS.Commands.ConfermaPartenze
     public class ConfermaPartenzeCommand
     {
         public SO115App.API.Models.Classi.Composizione.ConfermaPartenze ConfermaPartenze { get; set; }
-        public string IdRichiestaDaSganciare { get; set; }
-        public string IdMezzoDaSganciare { get; set; }
     }
 }
