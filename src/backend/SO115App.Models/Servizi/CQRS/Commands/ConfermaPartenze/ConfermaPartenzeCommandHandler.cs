@@ -31,6 +31,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciR
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SO115App.Models.Classi.Utility;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ConfermaPartenze
 {
@@ -65,16 +66,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var attivita = new AttivitaUtente();
 
             ///Gestione Sganciamento
-            if (command.ConfermaPartenze.IdRichiestaDaSganciare != null)
+            if (command.IdRichiestaDaSganciare != null)
             {
-                var richiestaDaSganciare = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiestaDaSganciare);
+                var richiestaDaSganciare = _getRichiestaById.Get(command.IdRichiestaDaSganciare);
 
                 foreach (var composizione in richiestaDaSganciare.Partenze)
                 {
-                    if (composizione.Partenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
+                    if (composizione.Partenza.Mezzo.Codice.Equals(command.IdMezzoDaSganciare))
                     {
-                        composizione.Partenza.Sganciata = true;
-                        new RevocaPerRiassegnazione(richiesta, richiestaDaSganciare, command.ConfermaPartenze.IdMezzoDaSganciare, DateTime.UtcNow, richiesta.Operatore.Id);
+                        //composizione.Partenza.Sganciata = true;
+                        composizione.Partenza = null;
+                        new RevocaPerRiassegnazione(richiesta, richiestaDaSganciare, command.IdMezzoDaSganciare, DateTime.UtcNow, richiesta.Operatore.Id);
                         _updateRichiestaAssistenza.UpDate(richiestaDaSganciare);
                     }
                 }
@@ -91,7 +93,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 };
             }
 
-            richiesta.SincronizzaStatoRichiesta("Assegnata", richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
+            richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
 
             richiesta.Id = command.ConfermaPartenze.IdRichiesta;
             command.ConfermaPartenze.richiesta = richiesta;
