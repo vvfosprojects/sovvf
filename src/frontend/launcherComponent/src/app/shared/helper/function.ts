@@ -164,7 +164,7 @@ export function statoMezzoColor(stato: StatoMezzo) {
             _returnColor = 'danger';
             break;
         case StatoMezzo.InRientro:
-            _returnColor = 'success';
+            _returnColor = 'verdemela';
             break;
         case StatoMezzo.Istituto:
             _returnColor = 'secondary';

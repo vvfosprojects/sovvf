@@ -32,7 +32,7 @@
                             <li [ngClass]="checkDiff('inSede')"><span class="position-relative badge badge-success h6 w-75 cursor-pointer" ngbTooltip="Evidenzia mezzi in sede sulla mappa"
                                       [ngClass]="{'border-click-checked': boxClick?.mezzi.inSede, 'border-info-aggregate': !boxClick?.mezzi.inSede}"
                                       (click)="clickMezzi.emit('inSede')"><i *ngIf="mezziDiff" class="blink-i-aggregate fa" [ngClass]="realDiff('inSede')"></i>{{mezzi.inSede}}</span></li>
-                            <li [ngClass]="checkDiff('inRientro')"><span class="position-relative d-inline-block badge badge-success h6 w-75 cursor-pointer" ngbTooltip="Evidenzia mezzi in rientro sulla mappa"
+                            <li [ngClass]="checkDiff('inRientro')"><span class="position-relative d-inline-block badge badge-verdemela h6 w-75 cursor-pointer" ngbTooltip="Evidenzia mezzi in rientro sulla mappa"
                                       [ngClass]="{'border-click-checked': boxClick?.mezzi.inRientro, 'border-info-aggregate': !boxClick?.mezzi.inRientro}"
                                       (click)="clickMezzi.emit('inRientro')"><i *ngIf="mezziDiff" class="blink-i-aggregate fa" [ngClass]="realDiff('inRientro')"></i>{{mezzi.inRientro}}</span></li>
                         </ul>

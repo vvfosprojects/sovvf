@@ -6,7 +6,7 @@ export function markerColor(stato: string): string {
         ['presi', '#28a745'],
         ['insed', '#28a745'],
         ['invia', '#ffc107'],
-        ['inrie', '#28a745'],
+        ['inrie', '#92b565'],
         ['sulpo', '#dc3545'],
         ['istit', '#868e96'],
     ]);

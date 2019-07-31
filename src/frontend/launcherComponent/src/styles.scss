@@ -248,7 +248,7 @@ a:hover {
 }
 
 .status_inRientro {
-  border-top: 5px solid #28a745;
+  border-top: 5px solid #92b565;
 }
 
 .status_inViaggio {
@@ -269,7 +269,7 @@ a:hover {
 }
 
 .status_border_inRientro {
-  border-left: 10px solid #28a745 !important;
+  border-left: 10px solid #92b565 !important;
 }
 
 .status_border_inViaggio {
@@ -282,6 +282,20 @@ a:hover {
 
 .status_border_istituto {
   border-left: 10px solid #868e96 !important;
+}
+
+.text-verdemela {
+  color: #92b565 !important;
+}
+
+.badge-verdemela {
+  background-color: #92b565 !important;
+  color: #fff !important;
+}
+
+.btn-verdemela {
+  background-color: #92b565 !important;
+  color: #fff !important;
 }
 
 .bg-pattern-chiuso {
