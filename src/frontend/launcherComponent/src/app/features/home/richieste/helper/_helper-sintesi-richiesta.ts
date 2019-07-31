@@ -29,9 +29,11 @@ export class HelperSintesiRichiesta {
 
         if (richiesta.partenzeRichiesta) {
             richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                partenza.squadre.forEach((squadra: Squadra) => {
-                    squadre.push({ id: squadra.id, nome: squadra.nome });
-                });
+                if (partenza.squadre && !partenza.sganciata) {
+                    partenza.squadre.forEach((squadra: Squadra) => {
+                        squadre.push({ id: squadra.id, nome: squadra.nome });
+                    });
+                }
             });
         } else {
             return [];
@@ -51,7 +53,9 @@ export class HelperSintesiRichiesta {
         const nomiMezzi = [];
         if (richiesta.partenzeRichiesta) {
             richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                nomiMezzi.push(partenza.mezzo.codice);
+                if (partenza.mezzo && !partenza.sganciata) {
+                    nomiMezzi.push(partenza.mezzo.codice);
+                }
             });
         }
         return nomiMezzi;
@@ -62,7 +66,7 @@ export class HelperSintesiRichiesta {
         let numeroMezzi = 0;
         if (richiesta.partenzeRichiesta) {
             richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                if (partenza.mezzo) {
+                if (partenza.mezzo && !partenza.sganciata) {
                     numeroMezzi++;
                 }
             });
