@@ -31,6 +31,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciR
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SO115App.API.Models.Classi.Condivise;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ConfermaPartenze
 {
@@ -126,6 +127,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 };
             }
 
+            foreach (var partenze in command.ConfermaPartenze.Partenze)
+            {
+                foreach (var squadra in partenze.Squadre)
+                {
+                    squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(partenze.Mezzo.Stato);
+                }
+            }
             var confermaPartenze = _updateConfermaPartenze.Update(command);
 
             command.ConfermaPartenze.CodiceSede = confermaPartenze.CodiceSede;

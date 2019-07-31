@@ -52,11 +52,11 @@ namespace SO115App.FakePersistenceJSon.Box
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.SulPosto) +
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InRientro);
             personale.SquadreServizio =
-                listaSquadreComposizione.Count();
+                listaSquadreComposizione.Count;
 
             foreach (var partenza in listaSquadreComposizione)
             {
-                numeroComponenti += partenza.Squadra.Componenti.Count();
+                numeroComponenti += partenza.Squadra.Componenti.Count;
                 foreach (var componente in partenza.Squadra.Componenti)
                 {
                     if (componente.TecnicoGuardia1 || componente.TecnicoGuardia2 || componente.CapoTurno ||
@@ -64,9 +64,7 @@ namespace SO115App.FakePersistenceJSon.Box
                     {
                         listaFunzionari.Add(componente);
                     }
-
                 }
-
             }
 
             personale.PersonaleTotale = numeroComponenti;
