@@ -28,6 +28,7 @@ using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using System.Linq;
 using System.Threading.Tasks;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 
 namespace SO115App.SignalR.Sender.ComposizionePartenza
 {
@@ -38,6 +39,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezzihandler;
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonalehandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerhandler;
+        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteHandler;
         private readonly IMapper _mapper;
 
         public NotificationConfermaPartenze(IHubContext<NotificationHub> notificationHubContext,
@@ -45,7 +47,8 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezzihandler,
             IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonalehandler,
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
-            IMapper mapper)
+            IMapper mapper,
+            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteHandler)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiestehandler = boxRichiestehandler;
@@ -53,6 +56,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             _boxPersonalehandler = boxPersonalehandler;
             _sintesiRichiesteAssistenzaMarkerhandler = sintesiRichiesteAssistenzaMarkerhandler;
             _mapper = mapper;
+            _sintesiRichiesteHandler = sintesiRichiesteHandler;
         }
 
         public async Task SendNotification(ConfermaPartenzeCommand conferma)
@@ -67,12 +71,18 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             var boxRichiesteQuery = new BoxRichiesteQuery();
             var boxMezziQuery = new BoxMezziQuery();
             var boxPersonaleQuery = new BoxPersonaleQuery();
+            var sintesiRichiesteQuery = new SintesiRichiesteAssistenzaQuery();
             var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
             var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
             var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
+            var sintesiRichieste = _sintesiRichiesteHandler.Handle(sintesiRichiesteQuery).SintesiRichiesta;
 
             conferma.ConfermaPartenze.Chiamata = sintesi;
 
+            await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
+            conferma.ConfermaPartenze.Chiamata = sintesiRichieste.LastOrDefault(x => x.Codice == conferma.ConfermaPartenze.IdRichiesta);
+            await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
+            conferma.ConfermaPartenze.Chiamata = sintesiRichieste.LastOrDefault(x => x.Codice == conferma.ConfermaPartenze.IdRichiestaDaSganciare);
             await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
             await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
             await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
