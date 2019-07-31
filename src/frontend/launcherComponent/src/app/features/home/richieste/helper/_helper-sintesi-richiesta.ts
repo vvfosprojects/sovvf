@@ -118,9 +118,9 @@ export class HelperSintesiRichiesta {
         let returnClass = '';
 
         if (!espanso) {
-            returnClass = 'fa-long-arrow-down';
+            returnClass = 'fa-long-arrow-down text-secondary';
         } else {
-            returnClass = 'fa-long-arrow-up';
+            returnClass = 'fa-long-arrow-up text-light';
         }
 
         return returnClass;
