@@ -11,6 +11,10 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { statoMezzoBorderClass } from 'src/app/shared/helper/function';
 import { StatoMezzo } from 'src/app/shared/enum/stato-mezzo.enum';
+import { SetIdRichiestaEventi, ClearEventiRichiesta } from '../store/actions/eventi/eventi-richiesta.actions';
+import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SetFiltroMarker } from '../store/actions/maps/maps-filtro.actions';
 
 @Component({
   selector: 'app-mezzi-in-servizio',
@@ -25,7 +29,8 @@ export class MezziInServizioComponent implements OnInit {
   @Select(RichiesteState.richieste) richieste$: Observable<SintesiRichiesta[]>;
   richieste: SintesiRichiesta[];
 
-  constructor(private store: Store) {
+  constructor(private store: Store,
+    private modalService: NgbModal) {
     this.store.dispatch(new GetMezziInServizio());
     this.mezziInServizio$.subscribe((mezzi: Mezzo[]) => {
       this.mezziInServizio = mezzi;
@@ -37,6 +42,8 @@ export class MezziInServizioComponent implements OnInit {
   }
 
   ngOnInit() {
+    // TODO: implementare
+    // this.store.dispatch(new SetFiltroMarker('mezzo'));
   }
 
   onActionMezzo(mezzo: Mezzo, mezzoAction: MezzoActionInterface) {
@@ -53,6 +60,15 @@ export class MezziInServizioComponent implements OnInit {
   onDettaglioRichiesta(mezzo: Mezzo) {
     this.store.dispatch(new ToggleMezziInServizio());
     // this.store.dispatch(new SetRicerca({ 'descrizione': mezzo.idRichiesta }));
+  }
+
+  /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
+  onVisualizzaEventiRichiesta(idRichiesta: string) {
+    this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
+    const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+    modal.result.then(() => {
+    },
+      () => this.store.dispatch(new ClearEventiRichiesta()));
   }
 
   tornaIndietro() {

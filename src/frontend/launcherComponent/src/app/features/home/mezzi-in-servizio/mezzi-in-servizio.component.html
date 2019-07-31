@@ -1,17 +1,45 @@
-<div class="row mt-3">
+<div class="row mt-2 px-0">
   <div class="col-12 scroll-y" style="height:695px">
-    <h5>Mezzi in servizio</h5>
-    <div *ngIf="mezziInServizio" class="row mt-2">
+    <div *ngIf="mezziInServizio" class="row">
       <div *ngFor="let mezzo of mezziInServizio" class="col-6 pl-4 mb-1">
-        <div class="row border rounded p-2" [ngClass]="statoMezzoBorderClass(mezzo.stato)">
-          <div class="col-8">
-            <app-mezzo [mezzo]="mezzo" [mostraIndicatori]="true" [mostraNotifiche]="true"
-              [inGestione]="mezzo.stato !== 'In Sede' ? true : false" (actionMezzo)="onActionMezzo(mezzo, $event)">
-            </app-mezzo>
+        <div class="row border rounded shadow-sm p-2 h-100" [ngClass]="statoMezzoBorderClass(mezzo.stato)">
+          <!-- Prima riga -->
+          <div class="col-12" style="height: 30px">
+            <div class="row">
+              <!-- Prima Colonna (Prima riga) -->
+              <div class="col-8">
+                <app-mezzo [mezzo]="mezzo" [mostraIndicatori]="true" [mostraNotifiche]="true"
+                  [inGestione]="mezzo.stato !== 'In Sede' ? true : false" (actionMezzo)="onActionMezzo(mezzo, $event)">
+                </app-mezzo>
+              </div>
+              <!-- Seconda Colonna (Prima riga) -->
+              <div class="col-4 text-right">
+                <div class="badge badge-success">{{mezzo.distaccamento.descrizione}}</div>
+              </div>
+            </div>
           </div>
-          <div *ngIf="mezzo?.idRichiesta" class="col-4 text-right" (click)="onDettaglioRichiesta(mezzo)">
-            <i class="fa fa-hashtag guida mr-2"></i>
-            <b>{{mezzo.idRichiesta}}</b>
+          <!-- Seconda riga -->
+          <div class="col-12">
+            <div class="row">
+              <!-- Prima Colonna (Seconda riga) -->
+              <div class="col-6 py-1">
+                <div *ngIf="mezzo?.idRichiesta">
+                  <i class="fa fa-hashtag guida mr-1"></i>
+                  <small class="cursor-pointer" (click)="onDettaglioRichiesta(mezzo)">{{mezzo.idRichiesta}}</small>
+                </div>
+                <div *ngIf="!mezzo?.idRichiesta">
+                  <i class="fa fa-check-circle guida mr-1"></i>
+                  <small>Non assegnato</small>
+                </div>
+              </div>
+              <!-- Seconda Colonna (Seconda riga) -->
+              <div class="col-6 text-right">
+                <button class="btn btn-light btn-sm" (click)="onVisualizzaEventiRichiesta(mezzo.idRichiesta)">
+                  <i class="fa fa-list mr-1"></i>
+                  Visualizza eventi
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

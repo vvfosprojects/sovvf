@@ -42,10 +42,10 @@
           <div class="col px-0 text-secondary text-center">
             <ul class="list-unstyled m-0">
               <li [ngClass]="checkDiff('chiamate')"><span class="position-relative badge h6 w-75 cursor-pointer"
-                  ngbTooltip="Evidenzia chiamate sulla mappa"
-                  [ngClass]="{'badge-secondary': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0, 'border-click-checked': boxClick?.richieste.chiamate, 'border-info-aggregate': !boxClick?.richieste.chiamate}"
-                  (click)="clickRichieste.emit('chiamate')"><i *ngIf="interventiDiff" class="blink-i-aggregate fa"
-                    [ngClass]="realDiff('chiamate')"></i>{{interventi.chiamate}}</span>
+                  ngbTooltip="Evidenzia chiamate sulla mappa" [ngClass]="{'badge-rosso-des': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0,
+                  'border-click-checked': boxClick?.richieste.chiamate, 'border-info-aggregate':
+                  !boxClick?.richieste.chiamate}" (click)="clickRichieste.emit('chiamate')"><i *ngIf="interventiDiff"
+                    class="blink-i-aggregate fa" [ngClass]="realDiff('chiamate')"></i>{{interventi.chiamate}}</span>
               </li>
               <li [ngClass]="checkDiff('sospesi')"><span
                   class="position-relative badge bg-orange text-light h6 w-75 cursor-pointer"
