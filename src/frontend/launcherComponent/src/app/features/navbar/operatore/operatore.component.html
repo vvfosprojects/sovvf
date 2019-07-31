@@ -9,7 +9,7 @@
         {{user.nome}} {{user.cognome}}
     </button>
 </div>
-<button *ngIf="user" class="btn btn-danger" ngbTooltip="Disconnettiti" placement="bottom" (click)="_logout.emit()"
+<button *ngIf="user" class="btn btn-secondary" ngbTooltip="Disconnettiti" placement="bottom" (click)="_logout.emit()"
         [routerLink]="['/login']"><i class="fa fa-sign-out"></i>
     Esci
 </button>
