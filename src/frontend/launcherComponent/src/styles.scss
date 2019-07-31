@@ -32,25 +32,25 @@ html {
 
 // End Dropdown Google Places
 
-.xlModal>.modal-dialog {
+.xlModal > .modal-dialog {
   max-width: 1490px !important;
   min-width: 650px !important;
   width: 65% !important;
 }
 
-.squadrePartenza>.modal-dialog {
+.squadrePartenza > .modal-dialog {
   max-width: 590px !important;
   min-width: 100px !important;
   width: 45% !important;
 }
 
-.enti>.modal-dialog {
+.enti > .modal-dialog {
   max-width: 590px !important;
   min-width: 100px !important;
   width: 45% !important;
 }
 
-.modalModificaRichiesta>.modal-dialog {
+.modalModificaRichiesta > .modal-dialog {
   max-width: 1490px !important;
   min-width: 650px !important;
   width: 50% !important;
@@ -293,6 +293,11 @@ a:hover {
   color: #fff !important;
 }
 
+.badge-rosso-des {
+  background-color: rgba(204, 64, 78, 0.45) !important;
+  color: #fff !important;
+}
+
 .btn-verdemela {
   background-color: #92b565 !important;
   color: #fff !important;
@@ -319,11 +324,13 @@ a:hover {
 
 .diagonal-stripes {
   background-color: gray;
-  background-image: repeating-linear-gradient(45deg,
-      transparent,
-      transparent 35px,
-      rgba(255, 255, 255, 0.5) 35px,
-      rgba(255, 255, 255, 0.5) 70px);
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 35px,
+    rgba(255, 255, 255, 0.5) 35px,
+    rgba(255, 255, 255, 0.5) 70px
+  );
 }
 
 .bg-grey {
