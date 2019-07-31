@@ -704,7 +704,6 @@ export class CompPartenzaServiceFake {
                     new Partenza(
                         partenza.id,
                         partenza.squadre,
-                        partenza.sganciata,
                         partenza.mezzo,
                         partenza.turno
                     )
