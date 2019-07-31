@@ -35,6 +35,11 @@ export class EventiRichiestaState {
         return state.eventi;
     }
 
+    @Selector()
+    static idRichiesta(state: EventiRichiestaStateModel) {
+        return state.idRichiesta;
+    }
+
     @Action(SetIdRichiestaEventi)
     setIdRichiesta({ patchState, dispatch }: StateContext<EventiRichiestaStateModel>, action: SetIdRichiestaEventi) {
 

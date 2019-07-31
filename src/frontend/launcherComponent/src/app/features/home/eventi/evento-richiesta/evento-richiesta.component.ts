@@ -25,8 +25,6 @@ export class EventoRichiestaComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('Eventi Richiesta', this.eventoRichiesta);
-
         this.iconeClassiEvento = [
             ['Telefonata', ['fa-phone-square']]
             , ['AssegnazionePriorita', ['fa-sort-numeric-asc']]

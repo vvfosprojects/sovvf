@@ -11,6 +11,7 @@ import { EventiRichiestaServiceFake } from '../../../core/service/eventi-richies
 import { NgxsModule } from '@ngxs/store';
 import { EventiRichiestaState } from '../store/states/eventi/eventi-richiesta.state';
 import { environment } from '../../../../environments/environment';
+import { FiltriEventiRichiestaComponent } from './filtri-eventi-richiesta/filtri-eventi-richiesta.component';
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import { environment } from '../../../../environments/environment';
     declarations: [
         EventiRichiestaComponent,
         EventoRichiestaComponent,
-        ListaEventiRichiestaComponent
+        ListaEventiRichiestaComponent,
+        FiltriEventiRichiestaComponent
     ],
     exports: [
         EventiRichiestaComponent
