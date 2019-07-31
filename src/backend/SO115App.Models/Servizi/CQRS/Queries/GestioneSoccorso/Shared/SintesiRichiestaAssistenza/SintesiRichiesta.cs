@@ -358,7 +358,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
                 var eventoChiusura = this.Eventi
                     .Where(e => e is ChiusuraRichiesta);
 
-                var eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == "In Viaggio").ToList();
+                var eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == "In Viaggio" && !x.Partenza.Sganciata).ToList();
 
                 if (this.Chiusa)
                 {
