@@ -14,7 +14,6 @@ import { StatoMezzo } from 'src/app/shared/enum/stato-mezzo.enum';
 import { SetIdRichiestaEventi, ClearEventiRichiesta, SetRicercaTargaMezzo } from '../store/actions/eventi/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SetFiltroMarker } from '../store/actions/maps/maps-filtro.actions';
 
 @Component({
   selector: 'app-mezzi-in-servizio',

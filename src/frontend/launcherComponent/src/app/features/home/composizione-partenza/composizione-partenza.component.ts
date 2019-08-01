@@ -178,12 +178,12 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
         if (richiestaDa && partenzaDaSganciare) {
             const modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
-            modalSganciamento.componentInstance.icona = { descrizione: 'truck', colore: 'danger' };
+            modalSganciamento.componentInstance.icona = { descrizione: 'truck', colore: 'secondary' };
             modalSganciamento.componentInstance.titolo = 'Sganciamento Mezzo';
             modalSganciamento.componentInstance.richiestaDa = richiestaDa;
             modalSganciamento.componentInstance.bottoni = [
                 { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-                { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+                { type: 'ok', descrizione: 'Sgancia', colore: 'success' },
             ];
 
             modalSganciamento.result.then(
