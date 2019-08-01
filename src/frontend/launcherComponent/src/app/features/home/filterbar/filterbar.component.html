@@ -25,7 +25,8 @@
   <div *ngIf="!(composizioneStatus$ | async)" class="col-2">
     <div class="row">
       <div class="col-12">
-        <app-view-mode [colorButtonView]="colorButton.buttonView" (buttonView)="switchView($event)"
+        <app-view-mode [colorButtonView]="colorButton.buttonView"
+          [mezziInServizioActive]="viewState?.mezziInServizio.active" (buttonView)="switchView($event)"
           (optionRichieste)="onOptionsRichieste($event)">
         </app-view-mode>
       </div>
