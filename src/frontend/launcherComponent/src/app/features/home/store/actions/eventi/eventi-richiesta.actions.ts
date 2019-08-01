@@ -24,3 +24,9 @@ export class SetEventiRichiesta {
 export class ClearEventiRichiesta {
     static readonly type = '[EventiRichiesta] Clear Eventi Richieste';
 }
+
+export class SetRicercaTargaMezzo {
+    static readonly type = '[EventiRichiesta] Set Ricerca Targa Mezzo';
+
+    constructor(public ricercaTargaMezzo: Object) { }
+}

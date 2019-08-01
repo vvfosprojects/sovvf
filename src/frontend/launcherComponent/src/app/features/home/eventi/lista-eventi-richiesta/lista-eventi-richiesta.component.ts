@@ -1,6 +1,10 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model';
 import * as moment from 'moment';
+import { EventiRichiestaState } from '../../store/states/eventi/eventi-richiesta.state';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { makeCopy } from 'src/app/shared/helper/function';
 
 @Component({
     selector: 'app-lista-eventi-richiesta',
@@ -9,6 +13,11 @@ import * as moment from 'moment';
 })
 export class ListaEventiRichiestaComponent implements OnInit, OnChanges {
     @Input() elencoEventi: EventoRichiesta[];
+
+    @Select(EventiRichiestaState.filtroTargaMezzo) filtroTargaMezzo$: Observable<any>;
+    filtroTargaMezzo: any;
+
+    subscription: Subscription = new Subscription();
 
     istanteEventoPrecedente: Date; // erano private implementare setter and getter
     istantePrimoEvento: Date; // erano private implementare setter and getter
@@ -21,6 +30,11 @@ export class ListaEventiRichiestaComponent implements OnInit, OnChanges {
             // this.setIstantePrimoEvento(this.elencoEventi[0].istanteEvento);
             this.setIstantePrimoEvento(moment().toDate());
         }
+        this.subscription.add(
+            this.filtroTargaMezzo$.subscribe((filtroTargaMezzo: any) => {
+                this.filtroTargaMezzo = makeCopy(filtroTargaMezzo);
+            })
+        );
     }
 
 

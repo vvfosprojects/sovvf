@@ -11,7 +11,7 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { statoMezzoBorderClass } from 'src/app/shared/helper/function';
 import { StatoMezzo } from 'src/app/shared/enum/stato-mezzo.enum';
-import { SetIdRichiestaEventi, ClearEventiRichiesta } from '../store/actions/eventi/eventi-richiesta.actions';
+import { SetIdRichiestaEventi, ClearEventiRichiesta, SetRicercaTargaMezzo } from '../store/actions/eventi/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SetFiltroMarker } from '../store/actions/maps/maps-filtro.actions';
@@ -63,8 +63,9 @@ export class MezziInServizioComponent implements OnInit {
   }
 
   /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
-  onVisualizzaEventiRichiesta(idRichiesta: string) {
+  onVisualizzaEventiRichiesta(mezzo: Mezzo, idRichiesta: string) {
     this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
+    this.store.dispatch(new SetRicercaTargaMezzo({ targa: mezzo.descrizione }));
     const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
     modal.result.then(() => {
     },

@@ -12,10 +12,14 @@ import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
 export class EventiRichiestaComponent implements OnInit, OnDestroy {
 
     @Select(EventiRichiestaState.eventi) eventiRichiesta$: Observable<EventoRichiesta[]>;
+
     @Select(EventiRichiestaState.idRichiesta) idRichiesta$: Observable<string>;
     idRichiesta: string;
 
     subscription: Subscription = new Subscription();
+
+    constructor() {
+    }
 
     ngOnInit(): void {
         this.subscription.add(
@@ -30,5 +34,4 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
         isDevMode() && console.log('Componente Eventi Richiesta Distrutto');
     }
-
 }

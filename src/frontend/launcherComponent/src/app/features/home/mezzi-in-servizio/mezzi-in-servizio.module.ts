@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { MezziInServizioFakeService } from 'src/app/core/service/mezzi-in-servizio-service/mezzi-in-servizio.service.fake';
 import { NgxsModule } from '@ngxs/store';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
+import { EventiRichiestaState } from '../store/states/eventi/eventi-richiesta.state';
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in
         SharedModule,
         NgxsModule.forFeature(
             [
-                MezziInServizioState
+                MezziInServizioState,
+                EventiRichiestaState
             ]
         ),
     ],
