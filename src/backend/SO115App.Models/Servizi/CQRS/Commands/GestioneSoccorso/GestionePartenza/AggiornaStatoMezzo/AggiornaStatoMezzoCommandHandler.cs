@@ -37,7 +37,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
         public AggiornaStatoMezzoCommandHandler(
             IGetRichiestaById getRichiestaById,
             IUpdateStatoPartenze updateStatoPartenze
-            )
+        )
         {
             _getRichiestaById = getRichiestaById;
             _updateStatoPartenze = updateStatoPartenze;
@@ -51,7 +51,8 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
             {
                 new ArrivoSulPosto(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
 
-                richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, richiesta.StatoRichiesta, richiesta.Operatore.Id, "");
+                richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, richiesta.StatoRichiesta,
+                    richiesta.Operatore.Id, "");
 
                 foreach (var composizione in richiesta.Partenze)
                 {
@@ -73,7 +74,8 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 
                 foreach (var composizione in richiesta.Partenze)
                 {
-                    if (composizione.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto || composizione.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio)
+                    if (composizione.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto ||
+                        composizione.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio)
                     {
                         _mezziTuttiInSede = false;
                     }
@@ -94,7 +96,9 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 
                 foreach (var composizione in richiesta.Partenze)
                 {
-                    if (composizione.Partenza.Mezzo.Stato != Costanti.MezzoInSede && composizione.Partenza.Mezzo.Stato != Costanti.MezzoInRientro && composizione.Partenza.Mezzo.Stato != Costanti.MezzoRientrato)
+                    if (composizione.Partenza.Mezzo.Stato != Costanti.MezzoInSede &&
+                        composizione.Partenza.Mezzo.Stato != Costanti.MezzoInRientro &&
+                        composizione.Partenza.Mezzo.Stato != Costanti.MezzoRientrato)
                     {
                         _mezziTuttiInSede = false;
                     }
@@ -113,6 +117,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                     }
                 }
             }
+
             foreach (var composizione in richiesta.Partenze)
             {
                 if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
@@ -120,34 +125,14 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                     foreach (var squadra in composizione.Partenza.Squadre)
                     {
                         {
-                            squadra.Stato = MappaStato(command.StatoMezzo);
+                            squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(command.StatoMezzo);
                         }
                     }
                 }
-            }
 
-            command.Richiesta = richiesta;
+                command.Richiesta = richiesta;
 
-            _updateStatoPartenze.Update(command);
-        }
-
-        private static Squadra.StatoSquadra MappaStato(string statoMezzo)
-        {
-            if (statoMezzo == Costanti.MezzoInRientro)
-            {
-                return Squadra.StatoSquadra.InRientro;
-            }
-            else if (statoMezzo == Costanti.MezzoInViaggio)
-            {
-                return Squadra.StatoSquadra.InViaggio;
-            }
-            else if (statoMezzo == Costanti.MezzoSulPosto)
-            {
-                return Squadra.StatoSquadra.SulPosto;
-            }
-            else
-            {
-                return Squadra.StatoSquadra.InSede;
+                _updateStatoPartenze.Update(command);
             }
         }
     }
