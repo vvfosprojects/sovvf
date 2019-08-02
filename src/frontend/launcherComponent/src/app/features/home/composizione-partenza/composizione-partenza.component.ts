@@ -172,7 +172,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
             richiestaById$.subscribe(r => {
                 richiestaDa = r;
                 partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === sganciamentoObj.idMezzo)[0] : null;
-                console.log('richiestaDa', richiestaDa);
+                // console.log('richiestaDa', richiestaDa);
             })
         );
 
@@ -199,7 +199,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                                 'idMezzoDaSganciare': sganciamentoObj.idMezzo
                             };
                             this.store.dispatch(new ConfirmPartenze(partenzaObj));
-                            console.log('Partenza sganciata', partenzaObj);
+                            // console.log('Partenza sganciata', partenzaObj);
                             break;
                         case 'ko':
                             console.log('Azione annullata');

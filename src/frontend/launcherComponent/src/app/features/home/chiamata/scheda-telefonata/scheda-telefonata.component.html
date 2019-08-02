@@ -17,7 +17,7 @@
                                 *ngIf="f['rilevanzaStArCu']?.value" class="fa fa-university"></i></span>
                     </h3>
                 </div>
-                <div class="col-3 pl-0">
+                <!-- <div class="col-3 pl-0">
                     <div class="form-group m-0 float-right">
                                 <span class="d-inline-block mt-1 mr-2">
                                     <ui-switch size="small" color="#dc3545"
@@ -36,7 +36,7 @@
                                 </span>
                         <span class="d-inline-block mb-1">Storico Artistico e Culturale</span>
                     </div>
-                </div>
+                </div> -->
             </div>
             <hr class="mt-1 mb-3">
             <div class="form-group mb-3">
@@ -210,7 +210,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col">
+                    <div class="col-3">
                         <div class="form-group mb-3">
                             <label for="etichette">Tag</label>
                             <input id="etichette" type="text" placeholder="Inserisci i tag (opzionale)"
@@ -218,7 +218,7 @@
                                    [ngClass]="{ 'is-invalid': submitted && f.etichette.errors}"/>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-3">
                         <div class="form-group mb-3">
                             <label for="zoneEmergenza">Codice emergenza</label>
                             <input id="zoneEmergenza" type="text"
@@ -226,6 +226,24 @@
                                    formControlName="zoneEmergenza" class="form-control"
                                    [ngClass]="{ 'is-invalid': submitted && f.zoneEmergenza.errors}"/>
                         </div>
+                    </div>
+                    <div class="col-2 pl-0" style="padding-top: 2rem !important">
+                      <div class="form-group m-0 float-right">
+                        <span class="d-inline-block mt-1 mr-2">
+                          <ui-switch size="small" color="#dc3545" [checked]="f['rilevanza']?.value === true"
+                            (change)="setRilevanza()"></ui-switch>
+                        </span>
+                        <span class="d-inline-block mb-1">Rilevante</span>
+                      </div>
+                    </div>
+                    <div class="col-4 pr-0" style="padding-top: 2rem !important">
+                      <div class="form-group m-0">
+                        <span class="d-inline-block mt-1 mr-2">
+                          <ui-switch size="small" color="#dc3545" [checked]="f['rilevanzaStArCu']?.value === true"
+                            (change)="setRilevanzaStArCu()"></ui-switch>
+                        </span>
+                        <span class="d-inline-block mb-1">Storico Artistico e Culturale</span>
+                      </div>
                     </div>
                 </div>
                 <!--<div class="row">-->
