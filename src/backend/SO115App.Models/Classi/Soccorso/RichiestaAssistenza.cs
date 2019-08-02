@@ -273,9 +273,8 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var ListaComposizioni = this.Eventi
-                    .Where(e => e is Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
-                    .Select(e => e as Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
+                var listaComposizioni = this.Eventi
+                    .OfType<ComposizionePartenze>()
                     .ToList();
 
                 //return ListaComposizioni.Select(x => x.Partenza).ToList();
@@ -286,7 +285,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 //    .Where(e => e is IPartenza)
                 //    .Select(e => (IPartenza)e);
 
-                var eventiPartenzaRaggruppatiPerMezzo = ListaComposizioni.SelectMany
+                var eventiPartenzaRaggruppatiPerMezzo = listaComposizioni.SelectMany
                     (
                         e => e.Partenza.Mezzo.Codice,
                         (evento, codiceMezzo) => new
@@ -420,15 +419,12 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var ElencoPresidiate = this.Eventi
-                    .Where(e => e is Classi.Soccorso.Eventi.RichiestaPresidiata)
-                    .Select(e => e as Classi.Soccorso.Eventi.RichiestaPresidiata)
+                var composizionePartenze = Partenze;
+                var elencoPresidiate = this.Eventi
+                    .OfType<RichiestaPresidiata>()
                     .ToList();
 
-                if (ElencoPresidiate.Count > 0)
-                    return true;
-
-                return false;
+                return elencoPresidiate.Count > 0 && composizionePartenze.Any(x => x.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto);
             }
         }
 
@@ -442,8 +438,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 var eventoAssegnazionePriorita = this._eventi
-                    .Where(e => e is AssegnazionePriorita)
-                    .LastOrDefault() as AssegnazionePriorita;
+                    .LastOrDefault(e => e is AssegnazionePriorita) as AssegnazionePriorita;
 
                 return eventoAssegnazionePriorita != null ? eventoAssegnazionePriorita.Priorita : RichiestaAssistenza.Priorita.Media;
             }
@@ -457,8 +452,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 var eventoSegnalazione = this._eventi
-                    .Where(e => e is Segnalazione)
-                    .FirstOrDefault() as Segnalazione;
+                    .FirstOrDefault(e => e is Segnalazione) as Segnalazione;
 
                 if (eventoSegnalazione == null)
                 {
@@ -480,8 +474,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 var eventoPresaInCarico = this._eventi
-                    .Where(e => e is InizioPresaInCarico)
-                    .FirstOrDefault() as InizioPresaInCarico;
+                    .FirstOrDefault(e => e is InizioPresaInCarico) as InizioPresaInCarico;
 
                 if (eventoPresaInCarico == null)
                 {
@@ -516,8 +509,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 var eventoAssegnazione = this._eventi
-                    .Where(e => e is ComposizionePartenze)
-                    .FirstOrDefault() as ComposizionePartenze;
+                    .FirstOrDefault(e => e is ComposizionePartenze) as ComposizionePartenze;
 
                 if (eventoAssegnazione == null)
                 {
@@ -538,8 +530,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 var ultimoEventoRilevanza = (MarcaRilevante)this._eventi
-                    .Where(e => e is MarcaRilevante)
-                    .LastOrDefault();
+                    .LastOrDefault(e => e is MarcaRilevante);
 
                 if (ultimoEventoRilevanza != null)
                     return ultimoEventoRilevanza.PerGravita || ultimoEventoRilevanza.PerEdificioStArCu;
@@ -556,8 +547,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 var ultimoEventoRilevanza = (MarcaRilevante)this._eventi
-                    .Where(e => e is MarcaRilevante)
-                    .LastOrDefault();
+                    .LastOrDefault(e => e is MarcaRilevante);
 
                 if (ultimoEventoRilevanza != null)
                     return ultimoEventoRilevanza.PerGravita;
@@ -574,8 +564,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 var ultimoEventoRilevanza = (MarcaRilevante)this._eventi
-                    .Where(e => e is MarcaRilevante)
-                    .LastOrDefault();
+                    .LastOrDefault(e => e is MarcaRilevante);
 
                 if (ultimoEventoRilevanza != null)
                     return ultimoEventoRilevanza.PerEdificioStArCu;
@@ -591,51 +580,41 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
+                var composizionePartenza = this.Partenze;
                 var eventoChiusura = this._eventi
                     .LastOrDefault() is ChiusuraRichiesta;
-
-                if (eventoChiusura)
-                {
-                    return new Chiusa();
-                }
-
+                var eventoSospesa = this._eventi
+                    .LastOrDefault() is RichiestaSospesa;
                 var eventoPresidiata = this._eventi
                     .LastOrDefault() is RichiestaPresidiata;
+                var eventoAssegnata = this._eventi
+                    .LastOrDefault() is AssegnataRichiesta;
+                var eventoRiaperta = this._eventi
+                    .LastOrDefault() is RiaperturaRichiesta;
+                var eventoRientrata = _eventi
+                    .LastOrDefault() is PartenzaRientrata;
+                var eventoInRientro = _eventi
+                    .LastOrDefault() is PartenzaInRientro;
+
+                if (eventoChiusura)
+                    return new Chiusa();
 
                 if (eventoPresidiata)
                     return new Presidiata();
 
-                var eventoAssegnata = this._eventi
-                    .LastOrDefault() is AssegnataRichiesta;
-
                 if (eventoAssegnata)
                     return new Assegnata();
-
-                var eventoSospesa = this._eventi
-                    .LastOrDefault() is RichiestaSospesa;
 
                 if (eventoSospesa)
                     return new Sospesa();
 
-                return new InAttesa();
+                if (!eventoRiaperta && !eventoRientrata && !eventoInRientro) return new InAttesa();
+                if (composizionePartenza.Any(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio))
+                    return new Assegnata();
+                if (composizionePartenza.All(x => x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato || x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro || x.Partenza.Mezzo.Stato == Costanti.MezzoInSede))
+                    return new Sospesa();
 
-                //var composizionePartenza = this.Partenze;
-                ////var elencoMezziCoinvolti = this.MezziCoinvolti;
-                //if (!composizionePartenza.Any())
-                //{
-                //    return new InAttesa();
-                //}
-                //else
-                //{
-                //    if (composizionePartenza.Any(e => e.Partenza.Mezzo.Stato == "In Viaggio"))
-                //    {
-                //        return new Assegnata();
-                //    }
-                //    else
-                //    {
-                //        return new Sospesa();
-                //    }
-                //}
+                return new InAttesa();
             }
         }
 
@@ -648,8 +627,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 return this._eventi
-                    .Where(e => e is Telefonata)
-                    .Select(e => e as Telefonata)
+                    .OfType<Telefonata>()
                     .ToList();
             }
         }
@@ -658,12 +636,11 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var ListaComposizioni = this.Eventi
-                    .Where(e => e is Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
-                    .Select(e => e as Classi.Soccorso.Eventi.Partenze.ComposizionePartenze)
+                var listaComposizioni = this.Eventi
+                    .OfType<ComposizionePartenze>()
                     .ToList();
 
-                return ListaComposizioni;
+                return listaComposizioni;
             }
         }
 
@@ -691,11 +668,9 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 var primoCodiceNue = this._eventi
-                    .Where(e => e is Telefonata)
-                    .Select(e => e as Telefonata)
+                    .OfType<Telefonata>()
                     .Select(e => e.CodiceSchedaContatto)
-                    .Where(cod => !string.IsNullOrWhiteSpace(cod))
-                    .FirstOrDefault();
+                    .FirstOrDefault(cod => !string.IsNullOrWhiteSpace(cod));
 
                 return primoCodiceNue;
             }
@@ -710,20 +685,19 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 var ultimoEventoFonogramma = this._eventi
-                    .Where(e => e is IFonogramma)
-                    .LastOrDefault();
+                    .LastOrDefault(e => e is IFonogramma);
 
-                if (ultimoEventoFonogramma is FonogrammaInviato)
+                switch (ultimoEventoFonogramma)
                 {
-                    return new Fonogramma.Inviato();
-                }
+                    case FonogrammaInviato _:
+                        return new Fonogramma.Inviato();
 
-                if (ultimoEventoFonogramma is InviareFonogramma)
-                {
-                    return new Fonogramma.DaInviare();
-                }
+                    case InviareFonogramma _:
+                        return new Fonogramma.DaInviare();
 
-                return new Fonogramma.NonNecessario();
+                    default:
+                        return new Fonogramma.NonNecessario();
+                }
             }
         }
 

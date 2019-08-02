@@ -27,8 +27,10 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.FakePersistence.JSon.Classi;
+using SO115App.FakePersistence.JSon.Utility;
 using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 
 namespace SO115App.FakePersistenceJSon.Box
@@ -37,9 +39,9 @@ namespace SO115App.FakePersistenceJSon.Box
     {
         public BoxInterventi Get()
         {
-            BoxInterventi interventi = new BoxInterventi();
-            List<RichiestaAssistenza> ListaRichiesteAssistenza = new List<RichiestaAssistenza>();
-            string filepath = "Fake/ListaRichiesteAssistenza.json";
+            var interventi = new BoxInterventi();
+            var listaRichiesteAssistenza = new List<RichiestaAssistenza>();
+            var filepath = CostantiJson.ListaRichiesteAssistenza;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
@@ -48,28 +50,28 @@ namespace SO115App.FakePersistenceJSon.Box
 
             try
             {
-                List<RichiestaAssistenzaDTO> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
+                List<RichiestaAssistenzaDTO> listaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
 
                 interventi.AnnoCorrente = DateTime.Now.Year;
 
-                if (ListaRichieste != null)
+                if (listaRichieste != null)
                 {
-                    foreach (RichiestaAssistenzaDTO richiesta in ListaRichieste)
+                    foreach (RichiestaAssistenzaDTO richiesta in listaRichieste)
                     {
                         richiesta.Id = richiesta.Codice;
-                        ListaRichiesteAssistenza.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
+                        listaRichiesteAssistenza.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
                     }
 
-                    interventi.Assegnati = ListaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is Assegnata).Count;
-                    interventi.Chiamate = ListaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is InAttesa).Count;
-                    interventi.NomeTurnoCorrente = "B";
-                    interventi.NomeTurnoPrecedente = "A";
-                    interventi.Presidiati = ListaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is Presidiata).Count;
-                    interventi.Sospesi = ListaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is Sospesa).Count;
-                    interventi.TotAnnoCorrente = ListaRichiesteAssistenza.FindAll(x => x.IstanteRicezioneRichiesta.Value.Year == DateTime.Now.Year).Count;
-                    interventi.TotTurnoCorrente = ListaRichiesteAssistenza.FindAll(x => x.IstanteRicezioneRichiesta.Value.Year == DateTime.Now.Year).Count;
+                    interventi.Assegnati = listaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is Assegnata).Count;
+                    interventi.Chiamate = listaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is InAttesa).Count;
+                    interventi.NomeTurnoCorrente = Costanti.B;
+                    interventi.NomeTurnoPrecedente = Costanti.A;
+                    interventi.Presidiati = listaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is Presidiata).Count;
+                    interventi.Sospesi = listaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is Sospesa).Count;
+                    interventi.TotAnnoCorrente = listaRichiesteAssistenza.FindAll(x => x.IstanteRicezioneRichiesta.Value.Year == DateTime.Now.Year).Count;
+                    interventi.TotTurnoCorrente = listaRichiesteAssistenza.FindAll(x => x.IstanteRicezioneRichiesta.Value.Year == DateTime.Now.Year).Count;
                     interventi.TotTurnoPrecedente = 0;
-                    interventi.Totale = ListaRichiesteAssistenza.Count;
+                    interventi.Totale = listaRichiesteAssistenza.Count;
                 }
             }
             catch (Exception ex) { }
