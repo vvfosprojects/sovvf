@@ -11,6 +11,8 @@ import { OptionsRichieste } from '../../../../shared/enum/options-richieste';
 export class ViewModeComponent {
 
     @Input() colorButtonView = ['btn-outline-secondary', 'btn-secondary', 'btn-outline-secondary'];
+    @Input() mezziInServizioActive: boolean;
+
     @Output() buttonView = new EventEmitter<AppFeatures>();
     @Output() optionRichieste = new EventEmitter<OptionsRichieste>();
 

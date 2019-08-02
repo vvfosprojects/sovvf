@@ -172,18 +172,18 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
             richiestaById$.subscribe(r => {
                 richiestaDa = r;
                 partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === sganciamentoObj.idMezzo)[0] : null;
-                console.log('richiestaDa', richiestaDa);
+                // console.log('richiestaDa', richiestaDa);
             })
         );
 
         if (richiestaDa && partenzaDaSganciare) {
             const modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
-            modalSganciamento.componentInstance.icona = { descrizione: 'truck', colore: 'danger' };
+            modalSganciamento.componentInstance.icona = { descrizione: 'truck', colore: 'secondary' };
             modalSganciamento.componentInstance.titolo = 'Sganciamento Mezzo';
             modalSganciamento.componentInstance.richiestaDa = richiestaDa;
             modalSganciamento.componentInstance.bottoni = [
                 { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-                { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+                { type: 'ok', descrizione: 'Sgancia', colore: 'success' },
             ];
 
             modalSganciamento.result.then(
@@ -199,7 +199,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                                 'idMezzoDaSganciare': sganciamentoObj.idMezzo
                             };
                             this.store.dispatch(new ConfirmPartenze(partenzaObj));
-                            console.log('Partenza sganciata', partenzaObj);
+                            // console.log('Partenza sganciata', partenzaObj);
                             break;
                         case 'ko':
                             console.log('Azione annullata');

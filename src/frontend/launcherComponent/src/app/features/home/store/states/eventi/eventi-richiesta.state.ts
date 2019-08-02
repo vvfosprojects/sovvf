@@ -7,18 +7,20 @@ import { EventiRichiestaService } from 'src/app/core/service/eventi-richiesta-se
 import { EventoRichiesta } from '../../../../../shared/model/evento-richiesta.model';
 
 // Action
-import { ClearEventiRichiesta, GetEventiRichiesta, SetEventiRichiesta, SetIdRichiestaEventi } from '../../actions/eventi/eventi-richiesta.actions';
+import { ClearEventiRichiesta, GetEventiRichiesta, SetEventiRichiesta, SetIdRichiestaEventi, SetRicercaTargaMezzo } from '../../actions/eventi/eventi-richiesta.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 
 export interface EventiRichiestaStateModel {
     idRichiesta: string;
     eventi: EventoRichiesta[];
+    filtroTargaMezzo: any;
 }
 
 export const eventiRichiestaStateDefaults: EventiRichiestaStateModel = {
     idRichiesta: null,
     eventi: null,
+    filtroTargaMezzo: { targa: '' }
 };
 
 @State<EventiRichiestaStateModel>({
@@ -40,6 +42,11 @@ export class EventiRichiestaState {
         return state.idRichiesta;
     }
 
+    @Selector()
+    static filtroTargaMezzo(state: EventiRichiestaStateModel) {
+        return state.filtroTargaMezzo;
+    }
+
     @Action(SetIdRichiestaEventi)
     setIdRichiesta({ patchState, dispatch }: StateContext<EventiRichiestaStateModel>, action: SetIdRichiestaEventi) {
 
@@ -51,7 +58,7 @@ export class EventiRichiestaState {
     }
 
     @Action(GetEventiRichiesta)
-    getEventiRichiesta({ getState, dispatch }: StateContext<EventiRichiestaStateModel>, action: GetEventiRichiesta) {
+    getEventiRichiesta({ dispatch }: StateContext<EventiRichiestaStateModel>, action: GetEventiRichiesta) {
 
         this._eventiRichiesta.getEventiRichiesta(action.idRichiesta).subscribe((data: EventoRichiesta[]) => {
             console.log(`Get Eventi Richiesta: ${action.idRichiesta}`);
@@ -73,4 +80,12 @@ export class EventiRichiestaState {
     }
 
 
+    @Action(SetRicercaTargaMezzo)
+    setRicerca({ getState, patchState }: StateContext<EventiRichiestaStateModel>, action: SetRicercaTargaMezzo) {
+        const state = getState();
+        patchState({
+            ...state,
+            filtroTargaMezzo: action.ricercaTargaMezzo
+        });
+    }
 }

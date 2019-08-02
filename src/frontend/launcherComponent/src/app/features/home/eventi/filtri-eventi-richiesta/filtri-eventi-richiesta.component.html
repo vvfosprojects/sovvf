@@ -6,7 +6,8 @@
   </div>
   <div class="col-4">
     <div class="input-group">
-      <input type="text" class="form-control" placeholder="Targa Mezzo">
+      <input [(ngModel)]="filtroTargaMezzo.targa" type="text" class="form-control" placeholder="Targa Mezzo"
+        (input)="onSearch()">
       <div class="input-group-append">
         <button class="btn btn-primary" type="button">
           <i class="fa fa-search"></i>

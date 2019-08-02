@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 // View
-import { ViewInterfaceButton } from '../../../shared/interface/view.interface';
+import { ViewInterfaceButton, ViewLayouts } from '../../../shared/interface/view.interface';
 // Filtri Richieste
 import { GetFiltriRichieste, ResetFiltriSelezionati, SetFiltroSelezionato } from '../store/actions/filterbar/filtri-richieste.actions';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
@@ -29,6 +29,7 @@ import { ClearRichiesteEspanse } from '../store/actions/richieste/richieste-espa
 export class FilterbarComponent implements OnInit {
 
     @Input() colorButton: ViewInterfaceButton;
+    @Input() viewState: ViewLayouts;
 
     // Filtri Richieste
     @Select(FiltriRichiesteState.filtriTipologie) filtri$: Observable<VoceFiltro[]>;

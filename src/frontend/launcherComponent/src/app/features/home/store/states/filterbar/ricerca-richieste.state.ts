@@ -37,7 +37,6 @@ export class RicercaRichiesteState {
     //     return {ricerca: ricerca, filtri: filtri};
     // }
 
-    // GET
     @Action(SetRicerca)
     setRicerca({ getState, patchState }: StateContext<RicercaRichiesteStateModel>, action: SetRicerca) {
         const state = getState();
