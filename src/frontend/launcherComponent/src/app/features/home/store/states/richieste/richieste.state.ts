@@ -193,7 +193,7 @@ export class RichiesteState {
     @Action(ActionRichiesta)
     actionRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: ActionRichiesta) {
         const obj = action.richiestaAction;
-        // console.log('Obj', obj);
+        console.log('Obj', obj);
         this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }

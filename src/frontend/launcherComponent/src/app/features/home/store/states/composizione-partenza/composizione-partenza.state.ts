@@ -17,7 +17,7 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
 import { ClearComposizioneVeloce, ClearListaComposizioneVeloce, GetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import { ClearComposizioneAvanzata, GetListeCoposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
+import { ClearComposizioneAvanzata, GetListeComposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearListaMezziComposizione, ClearMezzoComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearListaSquadreComposizione, ClearSquadraComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
@@ -110,7 +110,7 @@ export class ComposizionePartenzaState {
                 'CodiceTipoMezzo': state.codiceTipoMezzo,
                 'CodiceStatoMezzo': state.codiceStatoMezzo
             };
-            dispatch(new GetListeCoposizioneAvanzata(objFiltriSelezionati));
+            dispatch(new GetListeComposizioneAvanzata(objFiltriSelezionati));
         } else if (composizioneMode === Composizione.Veloce) {
             const objFiltriSelezionati = {
                 'CodiceDistaccamento': state.codiceDistaccamento,
@@ -127,7 +127,7 @@ export class ComposizionePartenzaState {
         const state = getState();
         const composizioneMode = state.composizioneMode;
         if (composizioneMode === Composizione.Avanzata) {
-            dispatch(new GetListeCoposizioneAvanzata(action.filtri));
+            dispatch(new GetListeComposizioneAvanzata(action.filtri));
         } else {
             dispatch(new GetListaComposizioneVeloce(action.filtri));
         }
