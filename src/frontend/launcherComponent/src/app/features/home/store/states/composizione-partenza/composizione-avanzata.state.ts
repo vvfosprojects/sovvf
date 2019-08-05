@@ -8,6 +8,7 @@ import { SquadreComposizioneState } from './squadre-composizione.state';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { ClearSelectedMezziComposizione, SetListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearSelectedSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: Array<any>;
@@ -71,7 +72,7 @@ export class ComposizioneAvanzataState {
         }
 
         console.log(filtri);
-        this.squadreService.getListeComposizioneAvanzata(filtri).subscribe((listeCompAvanzata: any) => {
+        this.squadreService.getListeComposizioneAvanzata(filtri).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
             if (listeCompAvanzata) {
                 if (listeCompAvanzata.composizioneMezzi) {
                     this.store.dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezzi));
