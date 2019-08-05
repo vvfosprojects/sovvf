@@ -6,7 +6,6 @@ import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 
 // Service
 import { Observable, Subscription } from 'rxjs';
-import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
