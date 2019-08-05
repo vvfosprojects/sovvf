@@ -207,7 +207,7 @@
           </div>
         </div>
       </div>
-      <div class="row">
+      <div *ngIf="visualizzaBoschiSterpaglie(richiestaModifica.tipologie)" class="row">
         <div class="col-12">
           <div class="form-group mb-3">
             <app-selezione-tipi-terreno [tipiTerreno]="richiestaModifica.tipoTerreno"

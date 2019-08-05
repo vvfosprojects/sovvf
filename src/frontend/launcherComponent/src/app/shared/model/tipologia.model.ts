@@ -32,7 +32,11 @@ export class Tipologia {
         /**
          * codiceDescrizione
          */
-        public codiceDescrizione?: string
+        public codiceDescrizione?: string,
+        /**
+         * flag per i campi campi / boschi / strepaglie
+         */
+        public boschivo?: boolean
     ) {
     }
 }

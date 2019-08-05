@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { RichiestaModificaState } from '../../store/states/richieste/richiesta-modifica.state';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { makeCopy, roundTodecimal } from '../../../../shared/helper/function';
+import { makeCopy, roundTodecimal, visualizzaBoschiSterpaglie } from '../../../../shared/helper/function';
 import { PatchRichiesta } from '../../store/actions/richieste/richieste.actions';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
@@ -259,6 +259,10 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
                 this.richiestaModifica.descrizione = nuovaDescrizione[0].descrizione;
             }
         }
+    }
+
+    visualizzaBoschiSterpaglie(tipologieRichiesta: Tipologia[]) {
+        return visualizzaBoschiSterpaglie(tipologieRichiesta);
     }
 
 }
