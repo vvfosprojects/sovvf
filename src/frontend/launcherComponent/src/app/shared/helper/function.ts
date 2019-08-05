@@ -6,6 +6,7 @@ import { StatoMezzo } from '../enum/stato-mezzo.enum';
 import { StatoMezzoActions } from '../enum/stato-mezzo-actions.enum';
 import { SintesiRichiesta } from '../model/sintesi-richiesta.model';
 import { StatoRichiestaActions } from '../enum/stato-richiesta-actions.enum';
+import { Tipologia } from '../model/tipologia.model';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
@@ -254,4 +255,18 @@ export function statoRichiestaColor(stato: string) {
             break;
     }
     return _returnColor;
+}
+
+export function visualizzaBoschiSterpaglie(tipologieRichiesta: Tipologia[]) {
+    let count = 0;
+    let _return = false;
+    if (tipologieRichiesta) {
+        tipologieRichiesta.forEach((tipologia: Tipologia) => {
+            if (tipologia.boschivo) {
+                count++;
+            }
+        });
+    }
+    count <= 0 ? _return = false : _return = true;
+    return _return;
 }
