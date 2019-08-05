@@ -94,7 +94,7 @@ namespace SO115App.API.Models.Classi.Marker
         {
             get
             {
-                string stato = "Chiamata";
+                var stato = "Chiamata";
 
                 if (this.Chiusa)
                     stato = "Chiusa";
@@ -109,6 +109,9 @@ namespace SO115App.API.Models.Classi.Marker
                     else if (this.IstantePrimaAssegnazione != null)
                         stato = "Assegnata";
                 }
+
+                if (InAttesa && IstantePrimaAssegnazione != null)
+                    stato = "Sospesa";
 
                 return stato;
             }

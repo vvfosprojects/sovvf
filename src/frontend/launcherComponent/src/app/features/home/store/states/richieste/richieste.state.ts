@@ -26,7 +26,10 @@ import { RichiestaSelezionataState } from './richiesta-selezionata.state';
 import { RichiestaModificaState } from './richiesta-modifica.state';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
-import { RichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import {
+    RichiestaComposizione,
+    UpdateRichiestaComposizione
+} from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ToggleComposizione } from '../../actions/view/view.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
@@ -77,7 +80,7 @@ export class RichiesteState {
     }
 
     constructor(private richiesteService: SintesiRichiesteService,
-        private store: Store) {
+                private store: Store) {
     }
 
     @Action(GetRichieste, { cancelUncompleted: true })
@@ -117,12 +120,13 @@ export class RichiesteState {
             // dispatch(new ClearBoxPartenze());
             // dispatch(new AddBoxPartenza());
         }
-
-        setState(
-            patch({
-                richieste: updateItem<SintesiRichiesta>(r => r.id === richiesta.id, richiesta)
-            })
-        );
+        if (richiesta) {
+            setState(
+                patch({
+                    richieste: updateItem<SintesiRichiesta>(r => r.id === richiesta.id, richiesta)
+                })
+            );
+        }
     }
 
     @Action(AddRichiesta)
@@ -193,7 +197,7 @@ export class RichiesteState {
     @Action(ActionRichiesta)
     actionRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: ActionRichiesta) {
         const obj = action.richiestaAction;
-        // console.log('Obj', obj);
+        console.log('Obj', obj);
         this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }

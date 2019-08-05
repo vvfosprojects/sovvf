@@ -24,6 +24,9 @@ namespace SO115App.Models.Classi.Utility
         public static string MezzoNonPresente = "Il mezzo non è presente";
         public static string StatoNonValido = "Lo stato della richiesta non è valido";
 
+        public static string AggiuntoUnEventoPrecedenteAlPiuRecente =
+            "Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.";
+
         #endregion CondivisaValidator
 
         #region StatiRichiesta
@@ -55,9 +58,23 @@ namespace SO115App.Models.Classi.Utility
         public static string RiaperturaRichiesta = "RiaperturaRichiesta";
         public static string ChiusuraRichiesta = "ChiusuraRichiesta";
         public static string ComposizionePartenza = "ComposizionePartenza";
+        public static string ComposizionePartenze = "ComposizionePartenze";
         public static string ChiusuraPartenza = "ChiusuraPartenza";
         public static string ArrivoSulPosto = "ArrivoSulPosto";
+        public static string PartenzaRientrata = "PartenzaRientrata";
+        public static string PartenzaInRientro = "PartenzaInRientro";
+        public static string AssegnataRichiesta = "AssegnataRichiesta";
+        public static string EventoRichiestaPresidiata = "RichiestaPresidiata";
+        public static string EventoRichiestaSospesa = "RichiestaSospesa";
 
         #endregion Eventi
+
+        #region Turni
+
+        public static string A = "A";
+        public static string B = "C";
+        public static string D = "D";
+
+        #endregion Turni
     }
 }

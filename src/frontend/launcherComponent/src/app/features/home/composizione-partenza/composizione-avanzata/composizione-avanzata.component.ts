@@ -41,7 +41,7 @@ import {
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 import { ConfirmPartenze, GetFiltriComposizione } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno/turno.state';
-import { GetListeCoposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
+import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 
 @Component({
@@ -229,7 +229,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                 this.store.dispatch(new SelectMezzoComposizione(mezzoComposizione));
                 const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
                 if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
-                    this.store.dispatch(new GetListeCoposizioneAvanzata(null, null, true));
+                    this.store.dispatch(new GetListeComposizioneAvanzata(null, null, true));
                 }
                 this.store.dispatch(new AddMezzoBoxPartenzaSelezionato(mezzoComposizione));
             } else if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) !== -1) {
@@ -248,7 +248,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
         // TODO: testare
         if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
-            this.store.dispatch(new GetListeCoposizioneAvanzata(null, null, true));
+            this.store.dispatch(new GetListeComposizioneAvanzata(null, null, true));
         }
         this.store.dispatch(new RemoveMezzoBoxPartenzaSelezionato(mezzoComposizione));
         this.clearDirection.emit();
@@ -271,7 +271,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
         // TODO: testare
         if (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione) {
-            this.store.dispatch(new GetListeCoposizioneAvanzata(null, true, null));
+            this.store.dispatch(new GetListeComposizioneAvanzata(null, true, null));
         }
         this.store.dispatch(new AddSquadraBoxPartenza(squadraComposizione));
         // console.log('Squadra selezionata', squadraComposizione);
@@ -282,7 +282,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
         // TODO: testare
         if (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione) {
-            this.store.dispatch(new GetListeCoposizioneAvanzata(null, true, null));
+            this.store.dispatch(new GetListeComposizioneAvanzata(null, true, null));
         }
         this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
         this.clearDirection.emit();

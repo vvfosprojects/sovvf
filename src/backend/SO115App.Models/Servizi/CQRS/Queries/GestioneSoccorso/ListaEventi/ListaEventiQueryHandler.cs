@@ -123,7 +123,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                     break;
 
                 case ComposizionePartenze _:
-                    risEvento = Costanti.ComposizionePartenza;
+                    risEvento = Costanti.ComposizionePartenze;
                     break;
 
                 case ChiusuraRichiesta _:
@@ -140,6 +140,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case RichiestaSospesa _:
                     risEvento = Costanti.RichiestaSospesa;
+                    break;
+
+                case PartenzaRientrata _:
+                    risEvento = Costanti.PartenzaRientrata;
+                    break;
+
+                case PartenzaInRientro _:
+                    risEvento = Costanti.PartenzaInRientro;
+                    break;
+
+                case AssegnataRichiesta _:
+                    risEvento = Costanti.AssegnataRichiesta;
                     break;
             }
 
