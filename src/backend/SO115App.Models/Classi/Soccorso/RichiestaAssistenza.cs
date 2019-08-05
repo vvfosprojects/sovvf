@@ -440,7 +440,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 var eventoAssegnazionePriorita = this._eventi
                     .LastOrDefault(e => e is AssegnazionePriorita) as AssegnazionePriorita;
 
-                return eventoAssegnazionePriorita != null ? eventoAssegnazionePriorita.Priorita : RichiestaAssistenza.Priorita.Media;
+                return eventoAssegnazionePriorita?.Priorita ?? RichiestaAssistenza.Priorita.Media;
             }
         }
 
@@ -454,14 +454,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 var eventoSegnalazione = this._eventi
                     .FirstOrDefault(e => e is Segnalazione) as Segnalazione;
 
-                if (eventoSegnalazione == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return eventoSegnalazione.Istante;
-                }
+                return eventoSegnalazione?.Istante;
             }
         }
 
