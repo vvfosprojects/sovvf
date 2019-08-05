@@ -17,8 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+
+using System;
 using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
@@ -40,6 +43,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
         public void Handle(UpDateInterventoCommand command)
         {
             var richiesta = _getRichiestaById.Get(command.Chiamata.Codice);
+            var priorita = command.Chiamata.PrioritaRichiesta;
 
             richiesta.Tipologie = command.Chiamata.Tipologie;
             richiesta.ZoneEmergenza = command.Chiamata.ZoneEmergenza;
@@ -68,6 +72,11 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.SincronizzaRilevanza(command.Chiamata.RilevanzaGrave, command.Chiamata.RilevanzaStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione, command.Chiamata.IstanteRicezioneRichiesta);
 
             richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.Chiamata.Operatore.Id, command.Chiamata.Motivazione);
+
+            if (richiesta.PrioritaRichiesta != command.Chiamata.PrioritaRichiesta)
+            {
+                new AssegnazionePriorita(richiesta, priorita, DateTime.UtcNow, command.Chiamata.Operatore.Id);
+            }
 
             _updateRichiestaAssistenza.UpDate(richiesta);
         }
