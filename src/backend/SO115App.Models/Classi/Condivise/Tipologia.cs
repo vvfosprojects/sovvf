@@ -21,11 +21,11 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Tipologia
     {
-        public Tipologia(string Codice, string Descrizione, string Icona)
+        public Tipologia(string codice, string descrizione, string icona)
         {
-            this.Codice = Codice;
-            this.Descrizione = Descrizione;
-            this.Icona = Icona;
+            this.Codice = codice;
+            this.Descrizione = descrizione;
+            this.Icona = icona;
         }
 
         /// <summary>
@@ -57,5 +57,10 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Indica se questa tipologia sarà presente nei "preferiti" nella sezione Filtri
         /// </summary>
         public bool Star { get; set; }
+
+        /// <summary>
+        ///   Indica l'incendio è boschivo
+        /// </summary>
+        public bool Boschivo { get; set; }
     }
 }
