@@ -32,5 +32,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
         public SintesiRichiesta Chiamata { get; set; }
 
         public RichiestaAssistenza Richiesta { get; set; }
+
+        public string CodiceSede { get; set; }
     }
 }
