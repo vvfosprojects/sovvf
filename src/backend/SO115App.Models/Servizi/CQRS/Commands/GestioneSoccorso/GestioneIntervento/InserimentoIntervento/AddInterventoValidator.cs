@@ -29,19 +29,11 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         public IEnumerable<ValidationResult> Validate(AddInterventoCommand command)
         {
             // Controlli sul richiedente
-            if (command.Chiamata.Richiedente.Nome.Length > 0)
+            if (command.Chiamata.Richiedente.Nominativo.Length > 0)
             {
-                if (string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome))
+                if (string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Nominativo))
                 {
-                    yield return new ValidationResult(Costanti.PresenteNomeNonCognome);
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.RagioneSociale))
-            {
-                if (!string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome) && !string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Nome))
-                {
-                    yield return new ValidationResult(Costanti.SelezionataPersonaFisica);
+                    yield return new ValidationResult(Costanti.NominativoNonPresente);
                 }
             }
         }

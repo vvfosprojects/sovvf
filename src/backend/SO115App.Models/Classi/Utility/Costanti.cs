@@ -15,6 +15,7 @@ namespace SO115App.Models.Classi.Utility
         #region CondivisaValidator
 
         public static string PresenteNomeNonCognome = "E' presente il nome del richiedente ma non il suo cognome";
+        public static string NominativoNonPresente = "Il nominativo del richiedente non è presente";
 
         public static string SelezionataPersonaFisica =
             "Se è presente un nominativo per una persona fisica non può essere presente una ragione sociale";

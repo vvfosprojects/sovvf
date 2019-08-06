@@ -78,22 +78,12 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni
         /// <summary>
         ///   E' il cognome del chiamante.
         /// </summary>
-        public string CognomeChiamante { get; set; }
-
-        /// <summary>
-        ///   E' il nome del chiamante
-        /// </summary>
-        public string NomeChiamante { get; set; }
+        public string NominativoChiamante { get; set; }
 
         /// <summary>
         ///   E' il numero di telefono del chiamante
         /// </summary>
         public string NumeroTelefono { get; set; }
-
-        /// <summary>
-        ///   E' la ragione sociale del chiamante. Ad es.: Carabinieri, CC, Polizia Municipale, 118, ecc.
-        /// </summary>
-        public string RagioneSociale { get; set; }
 
         /// <summary>
         ///   E' il codice della scheda contatto legata alla telefonata. In linea di principio, una

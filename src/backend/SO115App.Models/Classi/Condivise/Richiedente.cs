@@ -23,22 +23,16 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Richiedente
     {
-        public Richiedente(string Nome, string Cognome, string RagineSociale, string Telefono)
+        public Richiedente(string nominativo, string cognome, string ragioneSociale, string telefono)
         {
-            this.Nome = Nome;
-            this.Cognome = Cognome;
-            this.RagioneSociale = RagineSociale;
-            this.Telefono = Telefono;
+            this.Nominativo = nominativo;
+            this.Telefono = telefono;
         }
 
         [Required]
         [DataType(DataType.PhoneNumber)]
         public string Telefono { get; set; }
 
-        public string Nome { get; set; }
-
-        public string Cognome { get; set; }
-
-        public string RagioneSociale { get; set; }
+        public string Nominativo { get; set; }
     }
 }
