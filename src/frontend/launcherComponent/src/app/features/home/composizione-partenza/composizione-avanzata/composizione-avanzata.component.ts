@@ -47,6 +47,7 @@ import { TurnoState } from '../../../navbar/store/states/turno/turno.state';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { squadraComposizioneBusy } from '../shared/functions/squadra-composizione-functions';
+import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -342,13 +343,13 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     // Interazione con Mappa
-    mezzoCoordinate(obj: any): void {
-        if (obj.coordinate && this.richiesta.localita.coordinate) {
+    mezzoCoordinate(obj: MezzoDirection): void {
+        if (obj.coordinateMezzo && this.richiesta.localita.coordinate) {
             if (this.idMezziPrenotati.indexOf(obj.idMezzo) <= -1) {
                 const direction: DirectionInterface = {
                     origin: {
-                        lat: obj.coordinate.latitudine,
-                        lng: obj.coordinate.longitudine
+                        lat: obj.coordinateMezzo.latitudine,
+                        lng: obj.coordinateMezzo.longitudine
                     },
                     destination: {
                         lat: this.richiesta.localita.coordinate.latitudine,

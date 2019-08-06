@@ -40,7 +40,7 @@
         <!-- Km da percorrere -->
         <div *ngIf="partenza.mezzoComposizione?.km" class="col nowrap">
             <i class="guida fa fa-road mr-1"></i>
-            <span>{{partenza.mezzoComposizione.km}}</span>
+            <span>{{partenza.mezzoComposizione.km}} km</span>
         </div>
         <div *ngIf="!partenza.mezzoComposizione?.km" class="col nowrap text-danger">
             <i class="fa fa-road mr-1 text-danger"></i>
@@ -49,7 +49,7 @@
         <!-- Tempo di percorrenza -->
         <div *ngIf="partenza.mezzoComposizione?.tempoPercorrenza" class="col">
             <i class="guida fa fa-clock-o mr-1"></i>
-            <span>{{partenza.mezzoComposizione.tempoPercorrenza}}</span>
+            <span>{{partenza.mezzoComposizione.tempoPercorrenza}} min</span>
         </div>
         <div *ngIf="!partenza.mezzoComposizione?.tempoPercorrenza" class="col text-danger">
             <i class="fa fa-clock-o mr-1 text-danger"></i>
