@@ -102,6 +102,7 @@ export class SchedaTelefonataComponent implements OnInit {
             indirizzo: [null, Validators.required],
             latitudine: [null, Validators.required],
             longitudine: [null, Validators.required],
+            piano: [null],
             etichette: [null],
             noteIndirizzo: [null],
             rilevanza: [false],
@@ -191,6 +192,7 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.notePrivate = f.notePrivate.value;
         this.nuovaRichiesta.notePubbliche = f.notePubbliche.value;
         this.nuovaRichiesta.prioritaRichiesta = f.prioritaRichiesta.value;
+        this.nuovaRichiesta.localita.piano = f.piano.value;
         // console.log('Nuova Richiesta', this.nuovaRichiesta);
         // this.nuovaRichiesta.istantePresaInCarico = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
         //

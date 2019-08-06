@@ -80,6 +80,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             rilevanzaStArCu: new FormControl(),
             latitudine: new FormControl(),
             longitudine: new FormControl(),
+            piano: new FormControl(),
             notePrivate: new FormControl(),
             notePubbliche: new FormControl(),
             motivazione: new FormControl(),
@@ -114,6 +115,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             rilevanzaStArCu: [this.richiestaModifica.rilevanzaStArCu],
             latitudine: [this.richiestaModifica.localita.coordinate.latitudine, Validators.required],
             longitudine: [this.richiestaModifica.localita.coordinate.longitudine, Validators.required],
+            piano: [this.richiestaModifica.localita.piano],
             notePrivate: [this.richiestaModifica.notePrivate],
             notePubbliche: [this.richiestaModifica.notePubbliche],
             motivazione: [this.richiestaModifica.descrizione],
@@ -211,6 +213,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         nuovaRichiesta.rilevanzaStArCu = f.rilevanzaStArCu.value;
         nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
         nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
+        nuovaRichiesta.localita.piano = f.piano.value;
         nuovaRichiesta.descrizione = f.motivazione.value;
         nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : null;
         nuovaRichiesta.notePrivate = f.notePrivate.value;
