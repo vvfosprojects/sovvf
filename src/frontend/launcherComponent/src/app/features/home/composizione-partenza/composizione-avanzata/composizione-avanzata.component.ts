@@ -39,10 +39,14 @@ import {
     UnselectSquadraComposizione
 } from '../../store/actions/composizione-partenza/squadre-composizione.actions';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
-import { ConfirmPartenze, GetFiltriComposizione } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import {
+    ConfirmPartenze,
+    GetFiltriComposizione
+} from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno/turno.state';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
+import { squadraComposizioneBusy } from '../shared/functions/squadra-composizione-functions';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -101,8 +105,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
 
     constructor(private popoverConfig: NgbPopoverConfig,
-        private tooltipConfig: NgbTooltipConfig,
-        private store: Store) {
+                private tooltipConfig: NgbTooltipConfig,
+                private store: Store) {
 
         // Popover options
         this.popoverConfig.container = 'body';
@@ -264,17 +268,19 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     squadraSelezionata(squadraComposizione: SquadraComposizione) {
-        if (this.boxPartenzaList.length <= 0) {
-            this.store.dispatch(new AddBoxPartenza());
+        if (squadraComposizione && !squadraComposizioneBusy(squadraComposizione.squadra.stato)) {
+            if (this.boxPartenzaList.length <= 0) {
+                this.store.dispatch(new AddBoxPartenza());
+            }
+            this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
+            const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
+            // TODO: testare
+            if (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione) {
+                this.store.dispatch(new GetListeComposizioneAvanzata(null, true, null));
+            }
+            this.store.dispatch(new AddSquadraBoxPartenza(squadraComposizione));
+            // console.log('Squadra selezionata', squadraComposizione);
         }
-        this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
-        const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
-        // TODO: testare
-        if (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione) {
-            this.store.dispatch(new GetListeComposizioneAvanzata(null, true, null));
-        }
-        this.store.dispatch(new AddSquadraBoxPartenza(squadraComposizione));
-        // console.log('Squadra selezionata', squadraComposizione);
     }
 
     squadraDeselezionata(squadraComposizione: SquadraComposizione) {
