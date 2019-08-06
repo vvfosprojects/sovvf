@@ -83,7 +83,8 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             notePrivate: new FormControl(),
             notePubbliche: new FormControl(),
             motivazione: new FormControl(),
-            zoneEmergenza: new FormControl()
+            zoneEmergenza: new FormControl(),
+            prioritaRichiesta: new FormControl()
         });
     }
 
@@ -116,7 +117,8 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             notePrivate: [this.richiestaModifica.notePrivate],
             notePubbliche: [this.richiestaModifica.notePubbliche],
             motivazione: [this.richiestaModifica.descrizione],
-            zoneEmergenza: [zoneEmergenza]
+            zoneEmergenza: [zoneEmergenza],
+            prioritaRichiesta: [this.richiestaModifica.prioritaRichiesta]
         });
 
         this.setValidatorsRichiesta(this.tipologiaRichiedente);
@@ -213,6 +215,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : null;
         nuovaRichiesta.notePrivate = f.notePrivate.value;
         nuovaRichiesta.notePubbliche = f.notePubbliche.value;
+        nuovaRichiesta.prioritaRichiesta = f.prioritaRichiesta.value;
         // console.log('Richiesta Modificata', nuovaRichiesta);
         this.setDescrizione();
         return nuovaRichiesta;

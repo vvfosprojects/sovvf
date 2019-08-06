@@ -18,23 +18,20 @@
                 class="fa fa-university"></i></span>
           </h4>
         </div>
-        <div class="col-3 pl-0">
-          <div class="form-group m-0 float-right">
-            <span class="d-inline-block mt-1 mr-2">
-              <ui-switch size="small" color="#dc3545" [checked]="f.rilevanza?.value === true" (change)="setRilevanza()">
-              </ui-switch>
-            </span>
-            <span class="d-inline-block mb-1">Rilevante</span>
-          </div>
+        <div class="col-4">
+          <!-- Spazio libero -->
         </div>
-        <div class="col-4 pr-0">
-          <div class="form-group m-0 float-left">
-            <span class="d-inline-block mt-1 mr-2">
-              <ui-switch size="small" color="#dc3545" [checked]="f.rilevanzaStArCu?.value === true"
-                (change)="setRilevanzaStArCu()"></ui-switch>
+        <div class="col-3 float-right text-right">
+          <span class="mr-2 h5 font-weight-normal">Priorità</span>
+          <ngb-rating [formControl]="f.prioritaRichiesta" [starTemplate]="t" [max]="5"></ngb-rating>
+          <ng-template #t let-fill="fill" let-index="index">
+            <span class="cirlce" [class.filled]="fill === 100" [class.bad]="index > 2 && fill === 100">
+              <i class="fa fa-circle mr-1"></i>
             </span>
-            <span class="d-inline-block mb-1">Storico Artistico e Culturale</span>
-          </div>
+          </ng-template>
+          <span *ngIf="submitted && f.prioritaRichiesta.errors" class="form-text small">
+            <div *ngIf="f.prioritaRichiesta.errors.required" class="text-danger">La priorità è richiesta</div>
+          </span>
         </div>
       </div>
       <hr class="m-0">
@@ -192,18 +189,36 @@
         </div>
       </div>
       <div class="row">
-        <div class="col">
+        <div class="col-3">
           <div class="form-group mb-2">
             <label for="etichette">Tag</label>
             <input id="etichette" type="text" placeholder="Tag" formControlName="etichette" class="form-control"
               [ngClass]="{ 'is-invalid': submitted && f.etichette.errors }" />
           </div>
         </div>
-        <div class="col">
+        <div class="col-3">
           <div class="form-group mb-2">
             <label for="zoneEmergenza">Codice emergenza</label>
             <input id="zoneEmergenza" type="text" placeholder="Codice Emergenza" formControlName="zoneEmergenza"
               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.zoneEmergenza.errors }" />
+          </div>
+        </div>
+        <div class="col-2 pl-0" style="padding-top: 2rem !important">
+          <div class="form-group m-0 float-right">
+            <span class="d-inline-block mt-1 mr-2">
+              <ui-switch size="small" color="#dc3545" [checked]="f.rilevanza?.value === true" (change)="setRilevanza()">
+              </ui-switch>
+            </span>
+            <span class="d-inline-block mb-1">Rilevante</span>
+          </div>
+        </div>
+        <div class="col-4 pr-0" style="padding-top: 2rem !important">
+          <div class="form-group m-0 float-left">
+            <span class="d-inline-block mt-1 mr-2">
+              <ui-switch size="small" color="#dc3545" [checked]="f.rilevanzaStArCu?.value === true"
+                (change)="setRilevanzaStArCu()"></ui-switch>
+            </span>
+            <span class="d-inline-block mb-1">Storico Artistico e Culturale</span>
           </div>
         </div>
       </div>
