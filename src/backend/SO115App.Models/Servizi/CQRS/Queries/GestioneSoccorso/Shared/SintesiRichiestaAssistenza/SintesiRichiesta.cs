@@ -124,16 +124,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Priorita della richiesta
         /// </summary>
-        public Priorita PrioritaRichiesta
-        {
-            get
-            {
-                var eventoAssegnazionePriorita = this.Eventi
-                    .LastOrDefault(e => e is AssegnazionePriorita) as AssegnazionePriorita;
-
-                return eventoAssegnazionePriorita != null ? eventoAssegnazionePriorita.Priorita : RichiestaAssistenza.Priorita.Media;
-            }
-        }
+        public Priorita PrioritaRichiesta { get; set; }
 
         [Required(ErrorMessage = "Tipologia obbligatoria.")]
         public List<Tipologia> Tipologie { get; set; }
