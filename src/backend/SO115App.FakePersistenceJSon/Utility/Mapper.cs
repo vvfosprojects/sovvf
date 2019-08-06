@@ -70,9 +70,7 @@ namespace SO115App.FakePersistenceJSon.Utility
 
                         new Telefonata(richiestaMap, richiesta.Codice, tel.Istante, richiesta.Operatore.Id)
                         {
-                            CognomeChiamante = tel.CognomeChiamante,
-                            NomeChiamante = tel.NomeChiamante,
-                            RagioneSociale = tel.RagioneSociale,
+                            NominativoChiamante = tel.NominativoChiamante,
                             Motivazione = tel.Motivazione,
                             NotePrivate = tel.NotePrivate,
                             NotePubbliche = tel.NotePubbliche,

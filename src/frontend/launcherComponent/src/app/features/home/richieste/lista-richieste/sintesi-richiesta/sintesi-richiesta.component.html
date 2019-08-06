@@ -95,7 +95,7 @@
                             <div class="h6 mt-1 mb-2 nowrap default-cursor">
                                 <i class="guida fa fa-address-book-o fa-fw mr-1" ngbTooltip="Richiedente"
                                    container="body"></i>
-                                <span *ngIf="richiesta.richiedente.nome && richiesta.richiedente.cognome"><a
+                                <!-- <span *ngIf="richiesta.richiedente.nome && richiesta.richiedente.cognome"><a
                                         ngbTooltip="{{ richiesta.richiedente.nome + ' ' + richiesta.richiedente.cognome }}"
                                         placement="right"
                                         [disableTooltip]="richiesta.richiedente.nome.length + richiesta.richiedente.cognome.length <= 20">{{
@@ -104,7 +104,11 @@
                                         ngbTooltip="{{ richiesta.richiedente.ragioneSociale }}"
                                         placement="right"
                                         [disableTooltip]="richiesta.richiedente.ragioneSociale.length <= 20">{{
-                                    richiesta.richiedente.ragioneSociale | truncate:20 }}</a></span>
+                                    richiesta.richiedente.ragioneSociale | truncate:20 }}</a></span> -->
+                                    <span *ngIf="richiesta.richiedente.nominativo"><a
+                                        ngbTooltip="{{ richiesta.richiedente.nominativo }}"
+                                        placement="right"
+                                        [disableTooltip]="richiesta.richiedente.nominativo.length <= 20">{{ richiesta.richiedente.nominativo | truncate:20 }}</a></span>
                                 <span class="ml-1">(<i class="guida fa fa-phone fa-fw mr-1"
                                                        ngbTooltip="Numero richiedente"></i><a>{{
                                     richiesta.richiedente.telefono}}</a>)</span>

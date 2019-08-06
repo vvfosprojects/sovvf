@@ -46,56 +46,42 @@
         </div>
       </div>
       <div class="row">
-        <div class="col">
+        <!-- <div class="col">
           <div class="form-group mb-2">
             <label>Tipologia Richiedente</label>
             <div ngbDropdown class="d-block" autoClose="true" placement="bottom-left">
               <button type="button" class="btn btn-block btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
-                <span *ngIf="tipologiaRichiedente === 'Nome-Cognome'">Nome - Cognome</span>
-                <span *ngIf="tipologiaRichiedente === 'RagioneSociale'">Ragione Sociale</span>
+                <span *ngIf="tipologiaRichiedente === 'Privato'">Privato</span>
+                <span *ngIf="tipologiaRichiedente === 'Carabinieri'">Carabinieri</span>
+                <span *ngIf="tipologiaRichiedente === 'Polizia'">Polizia</span>
               </button>
               <div class="dropdown-menu dropdownTipologiaRichiedente" ngbDropdownMenu>
                 <button type="button" class="dropdown-item"
                   [ngClass]="{'bg-primary text-light': tipologiaRichiedente === 'Nome-Cognome'}"
-                  (click)="cambiaTipologiaRichiedente('Nome-Cognome')" ngbDropdownItem>
-                  Nome - Cognome
+                  (click)="cambiaTipologiaRichiedente('Privato')" ngbDropdownItem>
+                  Privato
                 </button>
                 <button type="button" class="dropdown-item"
-                  [ngClass]="{'bg-primary text-light': tipologiaRichiedente === 'RagioneSociale'}"
-                  (click)="cambiaTipologiaRichiedente('RagioneSociale')" ngbDropdownItem>
-                  Ragione Sociale
+                  [ngClass]="{'bg-primary text-light': tipologiaRichiedente === 'Carabinieri'}"
+                  (click)="cambiaTipologiaRichiedente('Carabinieri')" ngbDropdownItem>
+                  Carabinieri
+                </button>
+                <button type="button" class="dropdown-item"
+                  [ngClass]="{'bg-primary text-light': tipologiaRichiedente === 'Polizia'}"
+                  (click)="cambiaTipologiaRichiedente('Polizia')" ngbDropdownItem>
+                  Polizia
                 </button>
               </div>
             </div>
           </div>
-        </div>
-        <div *ngIf="tipologiaRichiedente === 'Nome-Cognome'" class="col">
+        </div> -->
+        <div class="col-8">
           <div class="form-group mb-2">
-            <label for="nome">Nome</label>
-            <input id="nome" type="text" placeholder="nome" formControlName="nome" class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && f.nome.errors }" />
-            <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
-              <div *ngIf="f.nome.errors.required">Il Nome è richiesto</div>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="tipologiaRichiedente === 'Nome-Cognome'" class="col">
-          <div class="form-group mb-2">
-            <label for="cognome">Cognome</label>
-            <input id="cognome" type="text" placeholder="cognome" formControlName="cognome" class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && f.cognome.errors }" />
-            <div *ngIf="submitted && f.cognome.errors" class="invalid-feedback">
-              <div *ngIf="f.cognome.errors.required">Il Cognome è richiesto</div>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="tipologiaRichiedente === 'RagioneSociale'" class="col-6">
-          <div class="form-group mb-2">
-            <label for="ragioneSociale">Ragione Sociale</label>
-            <input id="ragioneSociale" type="text" placeholder="ragione sociale" formControlName="ragioneSociale"
-              class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ragioneSociale.errors }" />
-            <div *ngIf="submitted && f.ragioneSociale.errors" class="invalid-feedback">
-              <div *ngIf="f.ragioneSociale.errors.required">La ragione sociale è richiesta</div>
+            <label for="nominativo">Nominativo</label>
+            <input id="nominativo" type="text" placeholder="Nominativo" formControlName="nominativo"
+              class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }" />
+            <div *ngIf="submitted && f.nominativo.errors" class="invalid-feedback">
+              <div *ngIf="f.nominativo.errors.required">Il Nominativo è richiesto</div>
             </div>
           </div>
         </div>

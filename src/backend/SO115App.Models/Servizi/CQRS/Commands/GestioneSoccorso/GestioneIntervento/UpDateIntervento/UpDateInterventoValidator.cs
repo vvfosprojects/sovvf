@@ -38,18 +38,12 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             */
 
             // Controlli sul richiedente
-            if (command.Chiamata.Richiedente.Nome.Length > 0)
+            if (command.Chiamata.Richiedente.Nominativo.Length > 0)
             {
-                if (string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome))
+                if (string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Nominativo))
                 {
-                    yield return new ValidationResult(Costanti.PresenteNomeNonCognome);
+                    yield return new ValidationResult(Costanti.NominativoNonPresente);
                 }
-            }
-
-            if (string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.RagioneSociale)) yield break;
-            if (!string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Cognome) && !string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Nome))
-            {
-                yield return new ValidationResult(Costanti.SelezionataPersonaFisica);
             }
         }
     }

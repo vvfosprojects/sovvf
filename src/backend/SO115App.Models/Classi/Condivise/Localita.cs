@@ -35,5 +35,7 @@ namespace SO115App.API.Models.Classi.Condivise
 
         public string Indirizzo { get; set; }
         public string Note { get; set; }
+
+        public string Piano { get; set; }
     }
 }

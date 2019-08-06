@@ -24,6 +24,7 @@ namespace SO115App.API.Controllers
         public async Task<IActionResult> AggiornaPartenza([FromBody]AggiornaStatoMezzoCommand intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
+            var codiceSede = Request.Headers["CodiceSede"];
             string idUtente = headerValues.FirstOrDefault();
 
             var command = new AggiornaStatoMezzoCommand()
@@ -32,7 +33,8 @@ namespace SO115App.API.Controllers
                 IdUtente = idUtente,
                 Chiamata = intervento.Chiamata,
                 IdMezzo = intervento.IdMezzo,
-                StatoMezzo = intervento.StatoMezzo
+                StatoMezzo = intervento.StatoMezzo,
+                CodiceSede = codiceSede,
             };
 
             try
