@@ -24,8 +24,10 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi;
+using SO115App.FakePersistence.JSon.Utility;
 using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GetListaEventi;
 
 namespace SO115App.FakePersistenceJSon.ListaEventi
@@ -34,16 +36,14 @@ namespace SO115App.FakePersistenceJSon.ListaEventi
     {
         public List<Evento> Get(ListaEventiQuery query)
         {
-            List<Evento> eventi = new List<Evento>();
-            string filepath = "Fake/ListaRichiesteAssistenza.json";
+            var filepath = CostantiJson.ListaRichiesteAssistenza;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
 
-            List<RichiestaAssistenza> ListaRichieste = new List<RichiestaAssistenza>();
-            List<RichiestaAssistenzaDTO> richieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
+            var richieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
             var richiestaAss = new RichiestaAssistenza();
 
             foreach (RichiestaAssistenzaDTO richiesta in richieste)
@@ -52,9 +52,7 @@ namespace SO115App.FakePersistenceJSon.ListaEventi
                     richiestaAss = MapperDTO.MapRichiestaDTOtoRichiesta(richiesta);
             }
 
-            eventi = richiestaAss.Eventi.OrderByDescending(x => x.Istante).ToList();
-
-            return eventi;
+            return richiestaAss.Eventi.OrderByDescending(x => x.Istante).ToList();
         }
     }
 }
