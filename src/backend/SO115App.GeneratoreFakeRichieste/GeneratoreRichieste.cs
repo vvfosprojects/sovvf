@@ -206,14 +206,13 @@ namespace SO115App.GeneratoreRichiesteFake
             var fakerTelefonata = new Faker<Telefonata>()
                 .StrictMode(true)
                 .RuleFor(t => t.CodiceSchedaContatto, f => f.Random.Replace("??###"))
-                .RuleFor(t => t.CognomeChiamante, f => f.Name.LastName())
+                .RuleFor(t => t.NominativoChiamante, f => f.Name.LastName())
                 .RuleFor(t => t.Esito, f => "Avente seguito")
                 .RuleFor(t => t.Motivazione, f => f.Lorem.Text())
-                .RuleFor(t => t.NomeChiamante, f => f.Name.FirstName())
+                .RuleFor(t => t.NominativoChiamante, f => f.Name.FirstName())
                 .RuleFor(t => t.NotePrivate, f => f.Lorem.Sentence(10))
                 .RuleFor(t => t.NotePubbliche, f => f.Lorem.Sentence(10))
-                .RuleFor(t => t.NumeroTelefono, f => f.Phone.PhoneNumber())
-                .RuleFor(t => t.RagioneSociale, f => f.Company.CompanyName());
+                .RuleFor(t => t.NumeroTelefono, f => f.Phone.PhoneNumber());
 
             var numeroInterventi = (int)(this.dataMax.Subtract(this.dataMin).TotalDays * this.richiesteMedieAlGiorno);
             var richiesteConParametri =
@@ -346,9 +345,7 @@ namespace SO115App.GeneratoreRichiesteFake
         {
             var fakerRichiedente = new Faker<Richiedente>()
                 .StrictMode(true)
-                .RuleFor(t => t.Nome, f => f.Name.FirstName())
-                .RuleFor(t => t.Cognome, f => f.Name.LastName())
-                .RuleFor(t => t.RagioneSociale, f => f.Company.CompanyName())
+                .RuleFor(t => t.Nominativo, f => f.Name.FirstName())
                 .RuleFor(t => t.Telefono, f => f.Phone.PhoneNumber());
 
             return fakerRichiedente;

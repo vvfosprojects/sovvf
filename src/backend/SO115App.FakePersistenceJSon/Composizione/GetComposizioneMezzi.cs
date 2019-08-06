@@ -112,6 +112,18 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 foreach (ComposizioneMezzi composizione in composizioneMezzi)
                 {
                     composizione.IndiceOrdinamento = ordinamento.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
+                    composizione.IdRichiesta = composizione.Mezzo.IdRichiesta;
+                    composizione.Id = composizione.Mezzo.Codice;
+
+                    if (composizione.IstanteScadenzaSelezione < DateTime.Now)
+                    {
+                        composizione.IstanteScadenzaSelezione = null;
+                    }
+
+                    if (composizione.Coordinate == null)
+                    {
+                        composizione.Coordinate = composizione.Mezzo.Distaccamento.Coordinate;
+                    }
                 }
 
                 return composizioneMezzi.OrderByDescending(x => x.IndiceOrdinamento).ToList();
@@ -128,6 +140,11 @@ namespace SO115App.FakePersistenceJSon.Composizione
                     if (composizione.IstanteScadenzaSelezione < DateTime.Now)
                     {
                         composizione.IstanteScadenzaSelezione = null;
+                    }
+
+                    if (composizione.Coordinate == null)
+                    {
+                        composizione.Coordinate = composizione.Mezzo.Distaccamento.Coordinate;
                     }
                 }
 

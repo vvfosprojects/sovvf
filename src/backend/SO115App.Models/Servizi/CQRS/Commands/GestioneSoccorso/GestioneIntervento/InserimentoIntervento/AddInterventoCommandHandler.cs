@@ -85,9 +85,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
             new Telefonata(richiesta, command.Chiamata.Richiedente.Telefono, DateTime.UtcNow, command.Chiamata.Operatore.Id)
             {
-                CognomeChiamante = command.Chiamata.Richiedente.Cognome,
-                NomeChiamante = command.Chiamata.Richiedente.Nome,
-                RagioneSociale = command.Chiamata.Richiedente.RagioneSociale,
+                NominativoChiamante = command.Chiamata.Richiedente.Nominativo,
                 Motivazione = command.Chiamata.Motivazione,
                 NotePrivate = command.Chiamata.NotePrivate,
                 NotePubbliche = command.Chiamata.NotePubbliche,
