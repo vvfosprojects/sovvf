@@ -271,18 +271,14 @@
           </span>
         </div>
         <div class="col-5 text-right">
-          <div class="btn-group" ngbDropdown autoClose="outside" placement="top" role="group">
-            <button class="btn btn-outline-success dropdown-toggle-split" ngbDropdownToggle>Conferma
-            </button>
-            <div class="dropdown-menu dropdownConferma" ngbDropdownMenu>
-              <button class="dropdown-item" (click)="impostaAzioneChiamata(AzioneChiamataEnum.MettiInCoda)">
-                Metti in coda
-              </button>
-              <button class="dropdown-item" (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)">
-                Invia partenza
-              </button>
-            </div>
-          </div>
+          <button class="btn btn-primary mr-2" style="min-width: 100px"
+            (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)" ngbTooltip="Invia Partenza">
+            <i class="fa fa-truck"></i>
+          </button>
+          <button class="btn btn-success" style="min-width: 100px"
+            (click)="impostaAzioneChiamata(AzioneChiamataEnum.MettiInCoda)" ngbTooltip="Metti In Coda">
+            <i class="fa fa-check"></i>
+          </button>
         </div>
       </div>
     </form>
