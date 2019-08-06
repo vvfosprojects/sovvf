@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -18,13 +18,12 @@ import { Richiedente } from '../../../../shared/model/richiedente.model';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
 import { ToastrType } from '../../../../shared/enum/toastr';
-import { SintesiRichiesta, Priorita } from '../../../../shared/model/sintesi-richiesta.model';
+import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Observable } from 'rxjs';
 import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefonata.state';
 import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
-// import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -72,7 +71,6 @@ export class SchedaTelefonataComponent implements OnInit {
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
 
     constructor(private formBuilder: FormBuilder,
-        private cdRef: ChangeDetectorRef,
         private store: Store,
         private modalService: NgbModal) {
         this.store.dispatch(new StartChiamata());
@@ -81,7 +79,6 @@ export class SchedaTelefonataComponent implements OnInit {
     ngOnInit() {
         this.chiamataForm = this.createForm();
         this.initNuovaRichiesta();
-        this.cambiaTipologiaRichiedente('Nome-Cognome');
         this.nuovaRichiesta.istanteRicezioneRichiesta = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
 
         this.resetChiamata$.subscribe((reset: boolean) => {
@@ -95,9 +92,7 @@ export class SchedaTelefonataComponent implements OnInit {
     createForm(): FormGroup {
         return this.formBuilder.group({
             selectedTipologie: [null, Validators.required],
-            nome: [null],
-            cognome: [null],
-            ragioneSociale: [null],
+            nominativo: [null, Validators.required],
             telefono: [null, Validators.required],
             indirizzo: [null, Validators.required],
             latitudine: [null, Validators.required],
@@ -139,23 +134,6 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.rilevanza = false;
     }
 
-    cambiaTipologiaRichiedente(tipologia: string) {
-        this.tipologiaRichiedente = tipologia;
-        if (tipologia === 'Nome-Cognome') {
-            this.f.nome.setValidators(Validators.required);
-            this.f.cognome.setValidators(Validators.required);
-            this.f.ragioneSociale.clearValidators();
-            this.f.ragioneSociale.reset();
-        } else if (tipologia === 'RagioneSociale') {
-            this.f.ragioneSociale.setValidators(Validators.required);
-            this.f.nome.clearValidators();
-            this.f.cognome.clearValidators();
-            this.f.nome.reset();
-            this.f.cognome.reset();
-        }
-        this.cdRef.detectChanges();
-    }
-
     setRilevanza() {
         if (this.f.rilevanza.value === true) {
             this.f.rilevanza.setValue(false);
@@ -173,14 +151,8 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     getChiamataForm() {
-        // Set form data
         const f = this.f;
-        if (this.tipologiaRichiedente === 'Nome-Cognome') {
-            this.nuovaRichiesta.richiedente = new Richiedente(f.telefono.value, f.nome.value, f.cognome.value, '');
-        } else if (this.tipologiaRichiedente === 'RagioneSociale') {
-            this.nuovaRichiesta.richiedente = new Richiedente(f.telefono.value, '', '', f.ragioneSociale.value);
-        }
-        // this.nuovaRichiesta.localita = new Localita(this.coordinate ? this.coordinate : null, f.indirizzo.value, f.noteIndirizzo.value);
+        this.nuovaRichiesta.richiedente = new Richiedente(f.telefono.value, f.nominativo.value);
         this.nuovaRichiesta.localita.note = f.noteIndirizzo.value;
         this.nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
         this.nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
@@ -194,6 +166,7 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.prioritaRichiesta = f.prioritaRichiesta.value;
         this.nuovaRichiesta.localita.piano = f.piano.value;
         // console.log('Nuova Richiesta', this.nuovaRichiesta);
+
         // this.nuovaRichiesta.istantePresaInCarico = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
         //
         // if (this.coordinate) {
@@ -348,9 +321,10 @@ export class SchedaTelefonataComponent implements OnInit {
     countErrorForm(): string[] {
         let error = '';
         error += this.f.selectedTipologie.errors ? 'Tipologia;' : '';
-        error += this.f.cognome.errors ? 'Cognome;' : '';
-        error += this.f.nome.errors ? 'Nome;' : '';
-        error += this.f.ragioneSociale.errors ? 'Ragione Sociale;' : '';
+        error += this.f.nominativo.errors ? 'Nominativo;' : '';
+        // error += this.f.cognome.errors ? 'Cognome;' : '';
+        // error += this.f.nome.errors ? 'Nome;' : '';
+        // error += this.f.ragioneSociale.errors ? 'Ragione Sociale;' : '';
         error += this.f.telefono.errors ? 'Telefono;' : '';
         error += this.f.indirizzo.errors ? 'Indirizzo;' : '';
         // error += this.f.descrizione.errors ? 'Motivazione;' : '';

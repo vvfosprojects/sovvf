@@ -61,7 +61,6 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        // this.onChiudiModifica();
         this.subscription.unsubscribe();
         isDevMode() && console.log('Componente Modifica Richiesta Distrutto');
     }
@@ -69,9 +68,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     initForm() {
         this.modificaRichiestaForm = this.formBuilder.group({
             tipoIntervento: new FormControl(),
-            nome: new FormControl(),
-            cognome: new FormControl(),
-            ragioneSociale: new FormControl(),
+            nominativo: new FormControl(),
             telefono: new FormControl(),
             indirizzo: new FormControl(),
             etichette: new FormControl(),
@@ -94,19 +91,11 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     }
 
     creaForm(): void {
-        if (this.richiestaModifica.richiedente.ragioneSociale) {
-            this.tipologiaRichiedente = 'RagioneSociale';
-        } else {
-            this.tipologiaRichiedente = 'Nome-Cognome';
-        }
-
         const zoneEmergenza = this.richiestaModifica.zoneEmergenza ? this.richiestaModifica.zoneEmergenza.join(' ') : null;
         const etichette = this.richiestaModifica.tags ? this.richiestaModifica.tags.join(' ') : null;
         this.modificaRichiestaForm = this.formBuilder.group({
             tipoIntervento: [this.richiestaModifica.tipologie, Validators.required],
-            nome: [this.richiestaModifica.richiedente.nome, Validators.required],
-            cognome: [this.richiestaModifica.richiedente.cognome, Validators.required],
-            ragioneSociale: [this.richiestaModifica.richiedente.ragioneSociale, Validators.required],
+            nominativo: [this.richiestaModifica.richiedente.nominativo, Validators.required],
             telefono: [this.richiestaModifica.richiedente.telefono, Validators.required],
             indirizzo: [this.richiestaModifica.localita.indirizzo, Validators.required],
             etichette: [etichette],
@@ -123,12 +112,10 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             prioritaRichiesta: [this.richiestaModifica.prioritaRichiesta]
         });
 
-        this.setValidatorsRichiesta(this.tipologiaRichiedente);
     }
 
     cambiaTipologiaRichiedente(tipologia: string) {
         this.tipologiaRichiedente = tipologia;
-        this.setValidatorsRichiesta(tipologia);
     }
 
     setRilevanza() {
@@ -144,21 +131,6 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             this.f.rilevanzaStArCu.setValue(false);
         } else {
             this.f.rilevanzaStArCu.setValue(true);
-        }
-    }
-
-    setValidatorsRichiesta(tipologia: string) {
-        switch (tipologia) {
-            case 'RagioneSociale':
-                this.modificaRichiestaForm.get('nome').setValidators(null);
-                this.modificaRichiestaForm.get('cognome').setValidators(null);
-                this.modificaRichiestaForm.get('ragioneSociale').setValidators(Validators.required);
-                break;
-            case 'Nome-Cognome':
-                this.modificaRichiestaForm.get('ragioneSociale').setValidators(null);
-                this.modificaRichiestaForm.get('nome').setValidators(Validators.required);
-                this.modificaRichiestaForm.get('cognome').setValidators(Validators.required);
-                break;
         }
     }
 
@@ -193,19 +165,10 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     getNuovaRichiesta() {
         const nuovaRichiesta = this.richiestaModifica;
 
-        // Set form data
         const f = this.f;
         nuovaRichiesta.tipologie = f.tipoIntervento.value;
-        if (this.tipologiaRichiedente === 'Nome-Cognome') {
-            nuovaRichiesta.richiedente.nome = f.nome.value;
-            nuovaRichiesta.richiedente.cognome = f.cognome.value;
-            nuovaRichiesta.richiedente.ragioneSociale = '';
-        } else if (this.tipologiaRichiedente === 'RagioneSociale') {
-            nuovaRichiesta.richiedente.ragioneSociale = f.ragioneSociale.value;
-            nuovaRichiesta.richiedente.nome = '';
-            nuovaRichiesta.richiedente.cognome = '';
-        }
         nuovaRichiesta.richiedente.telefono = f.telefono.value;
+        nuovaRichiesta.richiedente.nominativo = f.nominativo.value;
         nuovaRichiesta.localita.indirizzo = f.indirizzo.value;
         nuovaRichiesta.tags = f.etichette.value ? f.etichette.value.split(' ') : null;
         nuovaRichiesta.localita.note = f.noteIndirizzo.value;
@@ -235,7 +198,6 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         }
 
         const nuovaRichiesta = this.getNuovaRichiesta();
-
         this.store.dispatch(new PatchRichiesta(nuovaRichiesta));
     }
 
