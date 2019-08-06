@@ -1,4 +1,4 @@
-import {Coordinate} from './coordinate.model';
+import { Coordinate } from './coordinate.model';
 
 export class Localita {
     constructor(
@@ -10,7 +10,11 @@ export class Localita {
          * note sulla località della richiesta (per es. "accanto a ingresso
          * carico/scarico del supermercato Spendibene")
          */
-        public note?: string
+        public note?: string,
+        /**
+         * piano del condominio / palazzo
+         */
+        public piano?: string
     ) {
     }
 }

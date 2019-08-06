@@ -111,7 +111,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-7">
+        <div class="col-6">
           <div class="form-group mb-3">
             <label for="indirizzo">Indirizzo</label>
             <input id="indirizzo" ngx-google-places-autocomplete type="text" formControlName="indirizzo"
@@ -123,8 +123,8 @@
             </div>
           </div>
         </div>
-        <div class="col-2">
-          <div class="form-group mb-2">
+        <div class="col-3">
+          <div class="form-group d-inline-block mb-2" style="width:48%; margin-right: 2%">
             <label for="latitudine">Latitudine</label>
             <input id="latitudine" type="text" placeholder="Latitudine" formControlName="latitudine"
               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.latitudine.errors }" />
@@ -132,9 +132,7 @@
               <div *ngIf="f.latitudine.errors.required">La latitudine è richiesta</div>
             </div>
           </div>
-        </div>
-        <div class="col-2">
-          <div class="form-group mb-2">
+          <div class="form-group d-inline-block mb-2" style="width:48%">
             <label for="longitudine">Longitudine</label>
             <input id="longitudine" type="text" placeholder="Longitudine" formControlName="longitudine"
               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.longitudine.errors }" />
@@ -155,12 +153,20 @@
             - {{coordinate.longitudine}}
           </ng-template>
         </div>
+        <div class="col-2">
+          <label for="piano">Piano</label>
+          <input id="piano" type="text" placeholder="Piano (opzionale)" formControlName="piano" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.piano.errors }" />
+          <div *ngIf="submitted && f.piano.errors" class="invalid-feedback">
+            <div *ngIf="f.piano.errors.required">Il Piano è richiesto</div>
+          </div>
+        </div>
       </div>
       <div class="row">
         <div class="col">
           <div class="form-group mb-3">
             <label for="descrizione">Motivazione</label>
-            <textarea id="descrizione" placeholder="Inserisci la Motivazione" formControlName="descrizione"
+            <textarea id="descrizione" placeholder="Inserisci la Motivazione (opzionale)" formControlName="descrizione"
               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.descrizione.errors}"></textarea>
             <!--                        <div *ngIf="submitted && f['descrizione.errors']" class="invalid-feedback">-->
             <!--                            <div *ngIf="f['descrizione.errors.required']">La Motivazione è richiesta</div>-->
