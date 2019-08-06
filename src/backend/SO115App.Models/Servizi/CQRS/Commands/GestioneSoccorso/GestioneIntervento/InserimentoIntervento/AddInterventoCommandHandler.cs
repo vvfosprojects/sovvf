@@ -24,6 +24,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using System;
+using System.Data;
 using SO115App.Models.Classi.Utility;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
@@ -94,7 +95,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Esito = command.Chiamata.Azione.ToString(),
             };
 
-            new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow, command.Chiamata.Operatore.Id);
+            new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow.AddMilliseconds(1.0), command.Chiamata.Operatore.Id);
 
             this._saveRichiestaAssistenza.Save(richiesta);
         }
