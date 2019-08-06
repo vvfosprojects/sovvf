@@ -262,7 +262,11 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                return this.StatoRichiesta is InAttesa;
+                var composizionePartenza = Partenze;
+
+                return composizionePartenza.All(x =>
+                           x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro
+                           || x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato) && StatoRichiesta is InAttesa;
             }
         }
 

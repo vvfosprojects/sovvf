@@ -32,5 +32,11 @@ namespace SO115App.API.Models.Classi.Composizione
         public DateTime? IstanteScadenzaSelezione { get; set; }
 
         public string IdRichiesta { get; set; }
+
+        /// <summary>
+        ///   Incide generato dinamicamente, cambia da richiesta a richiesta. Serve ad ordinare i
+        ///   mezzi, dal più opportuno al meno opportuno nella composizione partenza
+        /// </summary>
+        public decimal IndiceOrdinamento { get; set; }
     }
 }
