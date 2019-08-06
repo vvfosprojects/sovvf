@@ -52,9 +52,11 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         [JsonConstructor]
         public AssegnazionePriorita(
             string codice,
+            int priorita,
             DateTime istante,
             string codiceFonte) : base(istante, codiceFonte, codice)
         {
+            this.Priorita = (RichiestaAssistenza.Priorita)priorita;
             TipoEvento = "AssegnataPriorita";
         }
 

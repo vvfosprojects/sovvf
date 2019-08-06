@@ -1,4 +1,4 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment';
 
 @Pipe({
@@ -6,15 +6,15 @@ import * as moment from 'moment';
 })
 export class DistanzaTemporalePipe implements PipeTransform {
 
-    transform(dataDa: Date, dataA: Date, formatoSintetico: string = 'S'): string {
+    transform(dataDa: Date, dataA: Date, formatoSintetico: string): string {
         let ritorno = '';
         let dataIniziale, dataFinale: Date;
-        let ore, minuti, secondi = 0;
+        let ore, minuti, secondi, millisecondi: number;
         if ((!dataDa) || (!dataA)) {
             return '';
         }
 
-        if (dataDa === dataA) {
+        if (new Date(dataDa).getTime() === new Date(dataA).getTime()) {
             return '';
         }
         moment.locale('it');
@@ -27,23 +27,29 @@ export class DistanzaTemporalePipe implements PipeTransform {
             } else {
                 dataIniziale = dataA;
                 dataFinale = dataDa;
-                ritorno = '(-';
+                ritorno = `(-`;
             }
 
             // ritorno = ritorno + moment(dataDa).diff(dataA, 'hours', true);
             ore = moment(dataIniziale).diff(dataFinale, 'hours');
-            if (ore !== 0) {
-                ritorno = ritorno + ore + 'h';
+            if (ore) {
+                ritorno += ore + 'h';
                 dataIniziale = moment(dataIniziale).subtract(ore, 'hours').toDate();
             }
             minuti = moment(dataIniziale).diff(dataFinale, 'minutes');
-            if (minuti !== 0) {
-                ritorno = ritorno + minuti + 'm';
+            if (minuti) {
+                ritorno += minuti + 'm';
                 dataIniziale = moment(dataIniziale).subtract(minuti, 'minutes').toDate();
             }
             secondi = moment(dataIniziale).diff(dataFinale, 'seconds');
-            if (secondi !== 0) {
-                ritorno = ritorno + secondi + 's';
+            if (secondi) {
+                ritorno += secondi + 's';
+            }
+            millisecondi = moment(dataIniziale).diff(dataFinale, 'milliseconds');
+            if ((!ore || !minuti) && !secondi && millisecondi > 100) {
+                ritorno += millisecondi + 'ms';
+            } else if (!ore && !minuti && !secondi) {
+                return '';
             }
             // ritorno = ritorno + moment(dataDa).diff(dataA);
             // ritorno = ritorno + ore +"h" +  minuti +"m" + secondi +"s" ;
@@ -52,6 +58,6 @@ export class DistanzaTemporalePipe implements PipeTransform {
             ritorno = moment(dataDa).from(dataA);
         }
         // return moment(dataDa).format("HH:mm:ss");
-        return ritorno;
+        return ' ' + ritorno;
     }
 }

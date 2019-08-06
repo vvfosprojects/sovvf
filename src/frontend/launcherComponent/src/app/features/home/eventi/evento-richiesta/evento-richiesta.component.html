@@ -14,8 +14,8 @@
   <!--<div class="h5">{{eventoRichiesta.istanteEvento.toLocaleDateString()}} {{eventoRichiesta.istanteEvento.toLocaleTimeString()}}</div>-->
   <!--<div class="h5">{{eventoRichiesta.istanteEvento | distanzaTemporale : istanteEventoPrecedente }}</div>-->
   <!--<span>(+26s) {{istanteEventoPrecedente}} </span>-->
-  <span>{{eventoRichiesta.istanteEvento | distanzaTemporale : istanteEventoPrecedente }} </span>
-  <span>{{eventoRichiesta.istanteEvento | distanzaTemporale : istantePrimoEvento : "N" }}</span>
+  <span>{{eventoRichiesta.istanteEvento | distanzaTemporale : istanteEventoPrecedente : 'S' }}</span>
+  <span>{{eventoRichiesta.istanteEvento | distanzaTemporale : istantePrimoEvento : 'S' }}</span>
 </td>
 <td>
   <small *ngIf="eventoRichiesta.targa">

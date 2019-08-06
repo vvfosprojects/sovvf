@@ -26,28 +26,30 @@ export class EventoRichiestaComponent implements OnInit {
 
     ngOnInit() {
         this.iconeClassiEvento = [
-            ['Telefonata', ['fa-phone-square']]
-            , ['AssegnazionePriorita', ['fa-sort-numeric-asc']]
-            , ['MarcaRilevante', ['fa-warning', 'fa-check']]
-            , ['MarcaNonRilevante', ['fa-warning', 'fa-close']]
-            , ['RiaperturaRichiesta', ['fa-refresh']]
-            , ['InizioPresaInCarico', ['fa-eye']]
-            , ['ChiusuraRichiesta', ['fa-flag-checkered']]
-            , ['InviareFonogramma', ['fa-fax']]
-            , ['ComposizionePartenza', ['fa-truck', 'fa-pencil-square-o']]
-            , ['UscitaPartenza', ['fa-truck', 'fa-hand-o-right']]
-            , ['ArrivoSulPosto', ['fa-truck', 'fa-check-square-o']]
-            , ['PartenzaInRientro', ['fa-truck', 'fa-handshake-o']]
-            , ['PartenzaRientrata', ['fa-truck', 'fa-hand-o-left']]
-            , ['RevocaPerRiassegnazione', ['fa-truck', 'fa-close', 'fa-share-square-o']]
-            , ['RevocaPerInterventoNonPiuNecessario', ['fa-truck', 'fa-close', 'fa-flag-checkered']]
-            , ['RevocaPerFuoriServizio', ['fa-truck', 'fa-close', 'fa-wrench']]
-            , ['RevocaPerAltraMotivazione', ['fa-truck', 'fa-close', 'fa-question-circle-o']]
-            , ['VaInFuoriServizio', ['fa-truck', 'fa-wrench']]
-            , ['InizioPresaInCarico', ['fa-user', 'fa-wrench']]
-            , ['Presidiata', ['fa-bullseye']]
-            , ['Evento Generico', ['fa-truck', 'fa-question-circle']]
-            , ['Sospesa', ['fa-question-circle']]
+            ['Telefonata', ['fa-phone-square']],
+            ['AssegnazionePriorita', ['fa-sort-numeric-asc']],
+            ['MarcaRilevante', ['fa-warning', 'fa-check']],
+            ['MarcaNonRilevante', ['fa-warning', 'fa-close']],
+            ['RiaperturaRichiesta', ['fa-refresh']],
+            ['InizioPresaInCarico', ['fa-eye']],
+            ['ChiusuraRichiesta', ['fa-flag-checkered']],
+            ['InviareFonogramma', ['fa-fax']],
+            ['ComposizionePartenze', ['fa-truck', 'fa-pencil-square-o']],
+            ['UscitaPartenza', ['fa-truck', 'fa-hand-o-right']],
+            ['ArrivoSulPosto', ['fa-truck', 'fa-check-square-o']],
+            ['PartenzaInRientro', ['fa-truck', 'fa-handshake-o']],
+            ['PartenzaRientrata', ['fa-truck', 'fa-hand-o-left']],
+            ['RevocaPerRiassegnazione', ['fa-truck', 'fa-close', 'fa-share-square-o']],
+            ['RevocaPerInterventoNonPiuNecessario', ['fa-truck', 'fa-close', 'fa-flag-checkered']],
+            ['RevocaPerFuoriServizio', ['fa-truck', 'fa-close', 'fa-wrench']],
+            ['RevocaPerAltraMotivazione', ['fa-truck', 'fa-close', 'fa-question-circle-o']],
+            ['VaInFuoriServizio', ['fa-truck', 'fa-wrench']],
+            ['InizioPresaInCarico', ['fa-user', 'fa-wrench']],
+            ['Presidiata', ['fa-bullseye']],
+            ['Evento Generico', ['fa-truck', 'fa-question-circle']],
+            ['Sospesa', ['fa-question-circle']],
+            ['AssegnataPriorita', ['fa-thermometer-half']],
+            ['AssegnataRichiesta', ['fa-phone-square', 'fa-check']]
         ];
 
         this.myMap = new Map(this.iconeClassiEvento);

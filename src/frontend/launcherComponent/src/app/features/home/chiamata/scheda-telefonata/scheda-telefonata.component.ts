@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { SchedaTelefonataInterface } from '../../../../shared/interface/scheda-telefonata.interface';
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
-import { makeCopy, makeID, roundTodecimal } from '../../../../shared/helper/function';
+import { makeID, roundTodecimal } from '../../../../shared/helper/function';
 import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
 import { Select, Store } from '@ngxs/store';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
@@ -18,7 +18,7 @@ import { Richiedente } from '../../../../shared/model/richiedente.model';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
 import { ToastrType } from '../../../../shared/enum/toastr';
-import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
+import { SintesiRichiesta, Priorita } from '../../../../shared/model/sintesi-richiesta.model';
 import { Observable } from 'rxjs';
 import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefonata.state';
 import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
@@ -30,6 +30,23 @@ import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-opt
     selector: 'app-scheda-telefonata',
     templateUrl: './scheda-telefonata.component.html',
     styleUrls: ['./scheda-telefonata.component.scss'],
+    styles: [`
+    .star {
+      position: relative;
+      display: inline-block;
+      font-size: 3rem;
+      color: #d3d3d3;
+    }
+    .full {
+      color: red;
+    }
+    .half {
+      position: absolute;
+      display: inline-block;
+      overflow: hidden;
+      color: red;
+    }
+  `],
     encapsulation: ViewEncapsulation.None
 })
 export class SchedaTelefonataComponent implements OnInit {
@@ -93,6 +110,7 @@ export class SchedaTelefonataComponent implements OnInit {
             notePubbliche: [null],
             descrizione: [null],
             zoneEmergenza: [null],
+            prioritaRichiesta: [null, Validators.required]
         });
     }
 
@@ -172,6 +190,7 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : null;
         this.nuovaRichiesta.notePrivate = f.notePrivate.value;
         this.nuovaRichiesta.notePubbliche = f.notePubbliche.value;
+        this.nuovaRichiesta.prioritaRichiesta = f.prioritaRichiesta.value;
         // console.log('Nuova Richiesta', this.nuovaRichiesta);
         // this.nuovaRichiesta.istantePresaInCarico = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
         //
@@ -183,7 +202,7 @@ export class SchedaTelefonataComponent implements OnInit {
         // }
 
         this.setDescrizione();
-
+        console.log('Nuova Richiesta', this.nuovaRichiesta);
     }
 
     onAddTipologia(tipologia: any) {

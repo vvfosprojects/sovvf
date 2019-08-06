@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { StatoSquadra } from '../../../../../shared/enum/stato-squadra.enum';
+import { squadraComposizioneBusy } from '../../shared/functions/squadra-composizione-functions';
 
 @Component({
     selector: 'app-squadra-composizione',
@@ -63,10 +64,18 @@ export class SquadraComposizioneComponent implements OnInit {
                 break;
         }
 
-        if (this.squadraComp.squadra.stato === StatoSquadra.InViaggio || this.squadraComp.squadra.stato === StatoSquadra.SulPosto) {
+        if (this.squadraComposizioneBusy()) {
             returnClass += ' diagonal-stripes bg-lightdanger';
         }
         return returnClass;
+    }
+
+    squadraComposizioneBusy() {
+        if (this.squadraComp && this.squadraComp.squadra) {
+            return squadraComposizioneBusy(this.squadraComp.squadra.stato);
+        } else {
+            return true;
+        }
     }
 
     badgeDistaccamentoClass() {

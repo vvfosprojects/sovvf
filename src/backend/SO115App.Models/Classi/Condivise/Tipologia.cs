@@ -17,17 +17,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.Models.Classi.Condivise;
-
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Tipologia
     {
-        public Tipologia(string Codice, string Descrizione, string Icona)
+        public Tipologia(string codice, string descrizione, string icona)
         {
-            this.Codice = Codice;
-            this.Descrizione = Descrizione;
-            this.Icona = Icona;
+            this.Codice = codice;
+            this.Descrizione = descrizione;
+            this.Icona = icona;
         }
 
         /// <summary>
@@ -60,8 +58,9 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         public bool Star { get; set; }
 
-        public MatriceAdeguatezzaMezzo AdeguatezzaMezzo { get; set; }
-
-        public int OpportunitaSganciamento { get; set; }
+        /// <summary>
+        ///   Indica l'incendio è boschivo
+        /// </summary>
+        public bool Boschivo { get; set; }
     }
 }

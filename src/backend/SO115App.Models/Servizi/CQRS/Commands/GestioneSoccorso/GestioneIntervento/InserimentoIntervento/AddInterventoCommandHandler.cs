@@ -24,6 +24,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using System;
+using System.Data;
 using SO115App.Models.Classi.Utility;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
@@ -42,6 +43,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         public void Handle(AddInterventoCommand command)
         {
             var sedeRichiesta = command.Chiamata.Operatore.Sede.Codice;
+            var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
             var codiceChiamata = _generaCodiceRichiesta.GeneraCodiceChiamata(sedeRichiesta, DateTime.UtcNow.Year);
             command.Chiamata.Codice = codiceChiamata;
             command.Chiamata.Id = codiceChiamata;
@@ -70,7 +72,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
             if (command.Chiamata.Stato == Costanti.RichiestaChiusa)
             {
-                new ChiusuraRichiesta("", richiesta, command.Chiamata.IstanteRicezioneRichiesta, command.Chiamata.Operatore.Id);
+                new ChiusuraRichiesta("", richiesta, DateTime.UtcNow, command.Chiamata.Operatore.Id);
             }
 
             if (command.Chiamata.Tags != null)
@@ -81,7 +83,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 }
             }
 
-            new Telefonata(richiesta, command.Chiamata.Richiedente.Telefono, command.Chiamata.IstanteRicezioneRichiesta, command.Chiamata.Operatore.Id)
+            new Telefonata(richiesta, command.Chiamata.Richiedente.Telefono, DateTime.UtcNow, command.Chiamata.Operatore.Id)
             {
                 CognomeChiamante = command.Chiamata.Richiedente.Cognome,
                 NomeChiamante = command.Chiamata.Richiedente.Nome,
@@ -92,6 +94,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 NumeroTelefono = command.Chiamata.Richiedente.Telefono,
                 Esito = command.Chiamata.Azione.ToString(),
             };
+
+            new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow.AddMilliseconds(1.0), command.Chiamata.Operatore.Id);
 
             this._saveRichiestaAssistenza.Save(richiesta);
         }

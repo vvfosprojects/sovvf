@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
+using SO115App.Models.Classi.Utility;
 
 namespace SO115App.API.Models.Classi.Marker
 {
@@ -94,26 +95,24 @@ namespace SO115App.API.Models.Classi.Marker
         {
             get
             {
-                var stato = "Chiamata";
+                if (Chiusa)
+                    return Costanti.RichiestaChiusa;
 
-                if (this.Chiusa)
-                    stato = "Chiusa";
+                if (Sospesa)
+                    return Costanti.RichiestaSospesa;
 
-                if (this.Sospesa)
-                    stato = "Sospesa";
-
-                if (this.Aperta)
+                if (Aperta)
                 {
-                    if (this.Presidiata)
-                        stato = "Presidiata";
-                    else if (this.IstantePrimaAssegnazione != null)
-                        stato = "Assegnata";
+                    if (Presidiata)
+                        return Costanti.RichiestaPresidiata;
+                    else if (IstantePrimaAssegnazione != null)
+                        return Costanti.RichiestaAssegnata;
                 }
 
                 if (InAttesa && IstantePrimaAssegnazione != null)
-                    stato = "Sospesa";
+                    return Costanti.RichiestaSospesa;
 
-                return stato;
+                return Costanti.Chiamata;
             }
         }
 
