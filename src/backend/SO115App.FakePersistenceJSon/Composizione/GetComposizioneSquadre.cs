@@ -22,7 +22,10 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
+using SO115App.FakePersistenceJSon.GestioneIntervento;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 
 namespace SO115App.FakePersistenceJSon.Composizione
@@ -100,17 +103,24 @@ namespace SO115App.FakePersistenceJSon.Composizione
                                 composizioneSquadre = null;
                             }
                         }
-                    }
-                    if (mezzo != null)
-                    {
                         codiceDistaccamento = mezzo.Mezzo.Distaccamento.Codice;
-                        composizioneSquadre = composizioneSquadre.Where(x => x.Squadra.Distaccamento.Codice == codiceDistaccamento).ToList();
+
+                        if (mezzo.IdRichiesta != null)
+                        {
+                            GetRichiestaById getRichiesta = new GetRichiestaById();
+                            RichiestaAssistenza richiesta = getRichiesta.Get(mezzo.IdRichiesta);
+                            var ListaSquadre = richiesta.Partenze.Where(x => x.Partenza.Mezzo.Codice.Equals(mezzo.Id)).Select(x => x.Partenza.Squadre);
+                            composizioneSquadre = composizioneSquadre.Where(x => ListaSquadre.Any(x.Squadra.Equals)).ToList();
+                        }
+                        else
+                            composizioneSquadre = composizioneSquadre.Where(x => x.Squadra.Distaccamento.Codice == codiceDistaccamento).ToList();
                     }
                 }
                 if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
                     composizioneSquadre = composizioneSquadre.Where(x => (query.Filtro.CodiceDistaccamento.Any(x.Squadra.Distaccamento.Codice.Equals))).ToList();
                 if (query.Filtro.CodiceSquadra != null && query.Filtro.CodiceSquadra.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0]))
                     composizioneSquadre = composizioneSquadre.Where(x => (query.Filtro.CodiceSquadra.Any(x.Squadra.Id.Equals))).ToList();
+
                 return composizioneSquadre;
             }
             else

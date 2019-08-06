@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.Models.Classi.Condivise;
+
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Tipologia
@@ -57,5 +59,9 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Indica se questa tipologia sarà presente nei "preferiti" nella sezione Filtri
         /// </summary>
         public bool Star { get; set; }
+
+        public MatriceAdeguatezzaMezzo AdeguatezzaMezzo { get; set; }
+
+        public int OpportunitaSganciamento { get; set; }
     }
 }
