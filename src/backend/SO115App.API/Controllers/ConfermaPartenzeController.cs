@@ -27,6 +27,7 @@ using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.Models.Classi.Composizione;
+using System;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
@@ -69,7 +70,6 @@ namespace SO115App.API.Controllers
         {
             var codiceSede = Request.Headers["codicesede"];
             conferma.CodiceSede = codiceSede;
-            
 
             var command = new ConfermaPartenzeCommand()
             {
@@ -78,16 +78,14 @@ namespace SO115App.API.Controllers
 
             try
             {
-
                 handler.Handle(command);
 
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
                 return BadRequest();
             }
         }
     }
 }
-
