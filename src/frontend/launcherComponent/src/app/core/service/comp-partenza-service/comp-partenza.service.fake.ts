@@ -56,8 +56,8 @@ export class CompPartenzaServiceFake {
                             provincia: 'Roma'
                         }
                     },
-                    km: '20.2 km',
-                    tempoPercorrenza: '20 min',
+                    km: '20.2',
+                    tempoPercorrenza: '20',
                     coordinate: {
                         latitudine: 41.8311007,
                         longitudine: 12.4686518
@@ -110,8 +110,8 @@ export class CompPartenzaServiceFake {
                             provincia: 'Roma'
                         }
                     },
-                    km: '25.6 km',
-                    tempoPercorrenza: '26 min',
+                    km: '25.6',
+                    tempoPercorrenza: '26',
                     coordinate: {
                         latitudine: 41.82699,
                         longitudine: 12.4879854,
@@ -186,8 +186,8 @@ export class CompPartenzaServiceFake {
                             provincia: 'Roma'
                         }
                     },
-                    km: '20.2 km',
-                    tempoPercorrenza: '20 min',
+                    km: '20.2',
+                    tempoPercorrenza: '20',
                     coordinate: {
                         latitudine: 41.8311007,
                         longitudine: 12.4686518
@@ -262,8 +262,8 @@ export class CompPartenzaServiceFake {
                             provincia: 'Roma'
                         }
                     },
-                    km: '20.2 km',
-                    tempoPercorrenza: '20 min',
+                    km: '20.2',
+                    tempoPercorrenza: '20',
                     coordinate: {
                         latitudine: 41.8311007,
                         longitudine: 12.4686518
@@ -316,8 +316,8 @@ export class CompPartenzaServiceFake {
                             provincia: 'Roma'
                         }
                     },
-                    km: '25.6 km',
-                    tempoPercorrenza: '26 min',
+                    km: '25.6',
+                    tempoPercorrenza: '26',
                     coordinate: {
                         latitudine: 41.82699,
                         longitudine: 12.4879854,
@@ -397,8 +397,8 @@ export class CompPartenzaServiceFake {
                         provincia: 'Roma'
                     }
                 },
-                km: '20.2 km',
-                tempoPercorrenza: '20 min',
+                km: '20.2',
+                tempoPercorrenza: '20',
                 coordinate: {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
@@ -424,8 +424,8 @@ export class CompPartenzaServiceFake {
                         provincia: 'Roma'
                     }
                 },
-                km: '25.6 km',
-                tempoPercorrenza: '26 min',
+                km: '25.6',
+                tempoPercorrenza: '26',
                 coordinate: {
                     latitudine: 41.82699,
                     longitudine: 12.4879854,
@@ -451,8 +451,8 @@ export class CompPartenzaServiceFake {
                         provincia: 'Roma'
                     }
                 },
-                km: '27.4 km',
-                tempoPercorrenza: '28 min',
+                km: '27.4',
+                tempoPercorrenza: '28',
                 coordinate: {
                     latitudine: 41.8531486,
                     longitudine: 12.5418702
@@ -478,8 +478,8 @@ export class CompPartenzaServiceFake {
                         provincia: 'Roma'
                     }
                 },
-                km: '30.1 km',
-                tempoPercorrenza: '31.5 min',
+                km: '30.1',
+                tempoPercorrenza: '31.5',
                 coordinate: {
                     latitudine: 41.8935662,
                     longitudine: 12.5417044
@@ -505,8 +505,8 @@ export class CompPartenzaServiceFake {
                         provincia: 'Roma'
                     }
                 },
-                km: '32.1 km',
-                tempoPercorrenza: '33 min',
+                km: '32.1',
+                tempoPercorrenza: '33',
                 coordinate: {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
@@ -532,8 +532,8 @@ export class CompPartenzaServiceFake {
                         provincia: 'Roma'
                     }
                 },
-                km: '34.7 km',
-                tempoPercorrenza: '35 min',
+                km: '34.7',
+                tempoPercorrenza: '35',
                 coordinate: {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
@@ -559,8 +559,8 @@ export class CompPartenzaServiceFake {
                         provincia: 'Roma'
                     }
                 },
-                km: '34.9 km',
-                tempoPercorrenza: '35.5 min',
+                km: '34.9',
+                tempoPercorrenza: '35.5',
                 coordinate: {
                     latitudine: 41.8311007,
                     longitudine: 12.4686518
