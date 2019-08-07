@@ -146,4 +146,3 @@ export class RequestUnlockMezzoComposizione {
 export class ClearMezzoComposizione {
     static readonly type = '[MezziComposizione] Clear Mezzo Composizione';
 }
-

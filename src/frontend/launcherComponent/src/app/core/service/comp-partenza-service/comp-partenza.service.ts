@@ -14,7 +14,7 @@ export class CompPartenzaService {
     }
 
     getPreAccoppiati(filtri: any): Observable<any> {
-        return this.http.post(API_URL_COMPOSIZIONE.preaccoppiati, filtri).pipe(
+        return this.http.get(API_URL_COMPOSIZIONE.preaccoppiati).pipe(
             retry(3),
             catchError(handleError)
         );

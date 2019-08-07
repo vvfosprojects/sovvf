@@ -1,10 +1,18 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
 import {
-    AddSquadraComposizione, ClearListaSquadreComposizione, ClearSelectedSquadreComposizione, ClearSquadraComposizione, HoverInSquadraComposizione, HoverOutSquadraComposizione,
-    RemoveSquadraComposizione, SelectSquadra,
+    AddSquadraComposizione,
+    ClearListaSquadreComposizione,
+    ClearSelectedSquadreComposizione,
+    ClearSquadraComposizione,
+    HoverInSquadraComposizione,
+    HoverOutSquadraComposizione,
+    RemoveSquadraComposizione,
+    SelectSquadra,
     SelectSquadraComposizione,
-    SetListaSquadreComposizione, UnselectSquadra, UnselectSquadraComposizione,
+    SetListaSquadreComposizione,
+    UnselectSquadra,
+    UnselectSquadraComposizione,
     UpdateSquadraComposizione
 } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';

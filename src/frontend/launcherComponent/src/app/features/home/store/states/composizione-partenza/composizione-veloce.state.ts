@@ -65,9 +65,11 @@ export class ComposizioneVeloceState {
             filtri['CodiceStatoMezzo'] = action.filtri.CodiceStatoMezzo.length > 0 ? action.filtri.CodiceStatoMezzo : [''];
             filtri['CodiceTipoMezzo'] = action.filtri.CodiceTipoMezzo.length > 0 ? action.filtri.CodiceTipoMezzo : [''];
         } else {
+            // tslint:disable:max-line-length
             filtri['CodiceDistaccamento'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
             filtri['CodiceStatoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceStatoMezzo.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
             filtri['CodiceTipoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
+            // tslint:enable:max-line-length
         }
         filtri['CodiceMezzo'] = [''];
         filtri['CodiceSquadra'] = [''];
@@ -76,6 +78,7 @@ export class ComposizioneVeloceState {
 
         console.log(filtri);
         this.preAccoppiatiService.getPreAccoppiati(filtri).subscribe((preAccoppiati: BoxPartenza[]) => {
+            console.log(preAccoppiati);
             this.store.dispatch(new SetListaComposizioneVeloce(preAccoppiati));
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
@@ -100,7 +103,7 @@ export class ComposizioneVeloceState {
 
     @Action(SelectPreAccoppiatoComposizione)
     selectPreAccoppiatoComposizione({ setState, getState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: SelectPreAccoppiatoComposizione) {
-        // controlle se il mezzo che è all'interno del preAccoppiato non è prenotato
+        // controllo se il mezzo che è all'interno del preAccoppiato non è prenotato
         if (!action.preAcc.mezzoComposizione.istanteScadenzaSelezione) {
             setState(
                 patch({
