@@ -4,15 +4,15 @@
       <div class="row">
         <div class="col-5">
           <ng-template #rilevante>
-            <div *ngIf="f['rilevanza']?.value">Intervento Rilevante</div>
-            <div *ngIf="f['rilevanzaStArCu']?.value">Intervento Rilevante Storico Artistico
+            <div *ngIf="f.rilevanzaGrave?.value">Intervento Rilevante</div>
+            <div *ngIf="f.rilevanzaStArCu?.value">Intervento Rilevante Storico Artistico
               Culturale
             </div>
           </ng-template>
           <h3 class="mb-0">Chiamata in corso...
-            <span *ngIf="f['rilevanza']?.value || f['rilevanzaStArCu']?.value" class="d-inline-block mr-1 text-danger"
-              [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f['rilevanza']?.value"
-                class="fa fa-exclamation mr-2"></i><i *ngIf="f['rilevanzaStArCu']?.value"
+            <span *ngIf="f.rilevanzaGrave?.value || f.rilevanzaStArCu?.value" class="d-inline-block mr-1 text-danger"
+              [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f.rilevanzaGrave?.value"
+                class="fa fa-exclamation mr-2"></i><i *ngIf="f.rilevanzaStArCu?.value"
                 class="fa fa-university"></i></span>
           </h3>
         </div>
@@ -90,6 +90,17 @@
         </div>
       </div>
       <div class="row">
+        <div class="col-4">
+          <button class="btn btn-outline-secondary">Polizia</button>
+        </div>
+        <div class="col-4">
+          <button class="btn btn-outline-secondary">Carabinieri</button>
+        </div>
+        <div class="col-4">
+          <button class="btn btn-outline-secondary">Polizia</button>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-6">
           <div class="form-group mb-3">
             <label for="indirizzo">Indirizzo</label>
@@ -147,8 +158,8 @@
             <label for="descrizione">Motivazione</label>
             <textarea id="descrizione" placeholder="Inserisci la Motivazione (opzionale)" formControlName="descrizione"
               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.descrizione.errors}"></textarea>
-            <!--                        <div *ngIf="submitted && f['descrizione.errors']" class="invalid-feedback">-->
-            <!--                            <div *ngIf="f['descrizione.errors.required']">La Motivazione è richiesta</div>-->
+            <!--                        <div *ngIf="submitted && f.descrizione.errors" class="invalid-feedback">-->
+            <!--                            <div *ngIf="f.descrizione.errors.required">La Motivazione è richiesta</div>-->
             <!--                        </div>-->
           </div>
         </div>
@@ -198,7 +209,7 @@
           <div class="col-2 pl-0" style="padding-top: 2rem !important">
             <div class="form-group m-0 float-right">
               <span class="d-inline-block mt-1 mr-2">
-                <ui-switch size="small" color="#dc3545" [checked]="f['rilevanza']?.value === true"
+                <ui-switch size="small" color="#dc3545" [checked]="f.rilevanzaGrave?.value === true"
                   (change)="setRilevanza()"></ui-switch>
               </span>
               <span class="d-inline-block mb-1">Rilevante</span>
@@ -207,7 +218,7 @@
           <div class="col-4 pr-0" style="padding-top: 2rem !important">
             <div class="form-group m-0">
               <span class="d-inline-block mt-1 mr-2">
-                <ui-switch size="small" color="#dc3545" [checked]="f['rilevanzaStArCu']?.value === true"
+                <ui-switch size="small" color="#dc3545" [checked]="f.rilevanzaStArCu?.value === true"
                   (change)="setRilevanzaStArCu()"></ui-switch>
               </span>
               <span class="d-inline-block mb-1">Storico Artistico e Culturale</span>

@@ -76,11 +76,11 @@ export class RichiestaModificaState {
         setState(
             produce(getState(), draft => {
                 const richiesta = makeCopy(draft.richiestaModifica);
-                if (draft.richiestaModifica.rilevanza === true) {
-                    richiesta.rilevanza = false;
+                if (draft.richiestaModifica.rilevanzaGrave === true) {
+                    richiesta.rilevanzaGrave = false;
                     draft.richiestaModifica = richiesta;
                 } else {
-                    richiesta.rilevanza = true;
+                    richiesta.rilevanzaGrave = true;
                     draft.richiestaModifica = richiesta;
                 }
             })

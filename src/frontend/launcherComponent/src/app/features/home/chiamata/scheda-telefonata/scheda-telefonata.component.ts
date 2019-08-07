@@ -100,13 +100,13 @@ export class SchedaTelefonataComponent implements OnInit {
             piano: [null],
             etichette: [null],
             noteIndirizzo: [null],
-            rilevanza: [false],
+            rilevanzaGrave: [false],
             rilevanzaStArCu: [false],
             notePrivate: [null],
             notePubbliche: [null],
             descrizione: [null],
             zoneEmergenza: [null],
-            prioritaRichiesta: [null, Validators.required]
+            prioritaRichiesta: ['3', Validators.required]
         });
     }
 
@@ -131,14 +131,14 @@ export class SchedaTelefonataComponent implements OnInit {
             null
         );
         this.nuovaRichiesta.rilevanzaStArCu = false;
-        this.nuovaRichiesta.rilevanza = false;
+        this.nuovaRichiesta.rilevanzaGrave = false;
     }
 
     setRilevanza() {
-        if (this.f.rilevanza.value === true) {
-            this.f.rilevanza.setValue(false);
+        if (this.f.rilevanzaGrave.value === true) {
+            this.f.rilevanzaGrave.setValue(false);
         } else {
-            this.f.rilevanza.setValue(true);
+            this.f.rilevanzaGrave.setValue(true);
         }
     }
 
@@ -157,7 +157,7 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
         this.nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
         this.nuovaRichiesta.tags = f.etichette.value ? f.etichette.value.split(' ') : null;
-        this.nuovaRichiesta.rilevanza = f.rilevanza.value;
+        this.nuovaRichiesta.rilevanzaGrave = f.rilevanzaGrave.value;
         this.nuovaRichiesta.rilevanzaStArCu = f.rilevanzaStArCu.value;
         this.nuovaRichiesta.descrizione = f.descrizione.value;
         this.nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : null;
@@ -165,7 +165,6 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.notePubbliche = f.notePubbliche.value;
         this.nuovaRichiesta.prioritaRichiesta = f.prioritaRichiesta.value;
         this.nuovaRichiesta.localita.piano = f.piano.value;
-        // console.log('Nuova Richiesta', this.nuovaRichiesta);
 
         // this.nuovaRichiesta.istantePresaInCarico = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
         //
