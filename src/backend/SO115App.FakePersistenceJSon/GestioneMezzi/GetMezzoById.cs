@@ -10,7 +10,7 @@ using System.Text;
 
 namespace SO115App.FakePersistence.JSon.GestioneMezzi
 {
-    internal class GetMezzoById : IGetMezzoByCodice
+    public class GetMezzoById : IGetMezzoByCodice
     {
         public Mezzo Get(String CodiceMezzo)
         {
