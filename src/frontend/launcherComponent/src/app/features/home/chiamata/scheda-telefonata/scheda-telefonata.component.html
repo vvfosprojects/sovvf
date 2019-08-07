@@ -32,8 +32,8 @@
           </span>
         </div>
       </div>
-      <hr class="mt-1 mb-3">
-      <div class="form-group mb-3">
+      <hr class="mt-1 mb-2">
+      <div class="form-group mb-2">
         <label class="d-none">Tipologia intervento</label>
         <ng-select class="border" [ngClass]="{'errore': submitted && checkTipologie()}" bindLabel="codiceDescrizione"
           bindValue="codice" [items]="tipologie" [multiple]="true" [closeOnSelect]="true" [hideSelected]="true"
@@ -45,31 +45,8 @@
         </div>
       </div>
       <div class="row">
-        <!-- <div class="col">
-          <div class="form-group mb-3">
-            <label>Tipologia Richiedente</label>
-            <div ngbDropdown class="d-block" autoClose="true" placement="bottom-left">
-              <button type="button" class="btn btn-block btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
-                <span *ngIf="tipologiaRichiedente === 'Nome-Cognome'">Nome - Cognome</span>
-                <span *ngIf="tipologiaRichiedente === 'RagioneSociale'">Ragione Sociale</span>
-              </button>
-              <div class="dropdown-menu dropdownTipologiaRichiedente" ngbDropdownMenu>
-                <button type="button" class="dropdown-item"
-                  [ngClass]="{'bg-primary text-light': tipologiaRichiedente === 'Nome-Cognome'}"
-                  (click)="cambiaTipologiaRichiedente('Nome-Cognome')" ngbDropdownItem>
-                  Nome - Cognome
-                </button>
-                <button type="button" class="dropdown-item"
-                  [ngClass]="{'bg-primary text-light': tipologiaRichiedente === 'RagioneSociale'}"
-                  (click)="cambiaTipologiaRichiedente('RagioneSociale')" ngbDropdownItem>
-                  Ragione Sociale
-                </button>
-              </div>
-            </div>
-          </div>
-        </div> -->
         <div class="col-8">
-          <div class="form-group mb-2">
+          <div class="form-group mb-1">
             <label for="nominativo">Nominativo</label>
             <input id="nominativo" type="text" placeholder="Inserisci il Nominativo" formControlName="nominativo"
               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }" />
@@ -79,30 +56,30 @@
           </div>
         </div>
         <div class="col pl-0">
-          <div class="form-group mb-3">
+          <div class="form-group mb-1">
             <label for="telefono">Telefono</label>
-            <input id="telefono" type="text" placeholder="Inserisci il Telefono" formControlName="telefono"
-              class="form-control" [ngClass]="{ 'is-invalid': submitted && f.telefono.errors}" />
-            <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
-              <div *ngIf="f.telefono.errors.required">Il Telefono è richiesto</div>
-            </div>
+            <input id="telefono" type="text" placeholder="Inserisci il Telefono (opzionale)" formControlName="telefono"
+              class="form-control" />
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-4">
-          <button class="btn btn-outline-secondary">Polizia</button>
+      <div class="row mb-2">
+        <div class="col-3">
+          <button class="btn btn-block btn-outline-secondary" (click)="setNominativo('112')">112</button>
         </div>
-        <div class="col-4">
-          <button class="btn btn-outline-secondary">Carabinieri</button>
+        <div class="col-3">
+          <button class="btn btn-block btn-outline-secondary" (click)="setNominativo('113')">113</button>
         </div>
-        <div class="col-4">
-          <button class="btn btn-outline-secondary">Polizia</button>
+        <div class="col-3">
+          <button class="btn btn-block btn-outline-secondary" (click)="setNominativo('118')">118</button>
+        </div>
+        <div class="col-3">
+          <button class="btn btn-block btn-outline-secondary" (click)="setNominativo('VV.UU.')">VV.UU.</button>
         </div>
       </div>
       <div class="row">
         <div class="col-6">
-          <div class="form-group mb-3">
+          <div class="form-group mb-2">
             <label for="indirizzo">Indirizzo</label>
             <input id="indirizzo" ngx-google-places-autocomplete type="text" formControlName="indirizzo"
               class="form-control" [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
@@ -154,7 +131,7 @@
       </div>
       <div class="row">
         <div class="col">
-          <div class="form-group mb-3">
+          <div class="form-group mb-2">
             <label for="descrizione">Motivazione</label>
             <textarea id="descrizione" placeholder="Inserisci la Motivazione (opzionale)" formControlName="descrizione"
               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.descrizione.errors}"></textarea>
@@ -164,7 +141,7 @@
           </div>
         </div>
         <div class="col">
-          <div class="form-group mb-3">
+          <div class="form-group mb-2">
             <label for="noteIndirizzo">Note Indirizzo</label>
             <textarea id="noteIndirizzo" placeholder="Inserisci le Note (opzionale)" formControlName="noteIndirizzo"
               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors}"></textarea>
@@ -174,7 +151,7 @@
       <div id="collapseExample" [ngbCollapse]="isCollapsed">
         <div class="row">
           <div class="col">
-            <div class="form-group mb-3">
+            <div class="form-group mb-2">
               <label for="notePubbliche">Note Pubbliche</label>
               <textarea id="notePubbliche" placeholder="Inserisci le Note Pubbliche (opzionale)"
                 formControlName="notePubbliche" class="form-control"
@@ -182,7 +159,7 @@
             </div>
           </div>
           <div class="col">
-            <div class="form-group mb-3">
+            <div class="form-group mb-2">
               <label for="notePrivate">Note Private</label>
               <textarea id="notePrivate" type="text" placeholder="Inserisci le Note Private (opzionale)"
                 formControlName="notePrivate" class="form-control"
@@ -192,14 +169,14 @@
         </div>
         <div class="row">
           <div class="col-3">
-            <div class="form-group mb-3">
+            <div class="form-group mb-2">
               <label for="etichette">Tag</label>
               <input id="etichette" type="text" placeholder="Inserisci i tag (opzionale)" formControlName="etichette"
                 class="form-control" [ngClass]="{ 'is-invalid': submitted && f.etichette.errors}" />
             </div>
           </div>
           <div class="col-3">
-            <div class="form-group mb-3">
+            <div class="form-group mb-2">
               <label for="zoneEmergenza">Codice emergenza</label>
               <input id="zoneEmergenza" type="text" placeholder="Inserisci il Codice Emergenza (opzionale)"
                 formControlName="zoneEmergenza" class="form-control"

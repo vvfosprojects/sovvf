@@ -29,23 +29,6 @@ import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-opt
     selector: 'app-scheda-telefonata',
     templateUrl: './scheda-telefonata.component.html',
     styleUrls: ['./scheda-telefonata.component.scss'],
-    styles: [`
-    .star {
-      position: relative;
-      display: inline-block;
-      font-size: 3rem;
-      color: #d3d3d3;
-    }
-    .full {
-      color: red;
-    }
-    .half {
-      position: absolute;
-      display: inline-block;
-      overflow: hidden;
-      color: red;
-    }
-  `],
     encapsulation: ViewEncapsulation.None
 })
 export class SchedaTelefonataComponent implements OnInit {
@@ -65,7 +48,6 @@ export class SchedaTelefonataComponent implements OnInit {
     @Input() operatore: Utente;
 
     nuovaRichiesta: SintesiRichiesta;
-    tipologiaRichiedente: string;
     isCollapsed = true;
 
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
@@ -93,7 +75,7 @@ export class SchedaTelefonataComponent implements OnInit {
         return this.formBuilder.group({
             selectedTipologie: [null, Validators.required],
             nominativo: [null, Validators.required],
-            telefono: [null, Validators.required],
+            telefono: [null],
             indirizzo: [null, Validators.required],
             latitudine: [null, Validators.required],
             longitudine: [null, Validators.required],
@@ -165,15 +147,6 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.notePubbliche = f.notePubbliche.value;
         this.nuovaRichiesta.prioritaRichiesta = f.prioritaRichiesta.value;
         this.nuovaRichiesta.localita.piano = f.piano.value;
-
-        // this.nuovaRichiesta.istantePresaInCarico = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
-        //
-        // if (this.coordinate) {
-        //     const marker: ChiamataMarker = makeCopy(this.chiamataMarker);
-        //     if (marker.localita) {
-        //         marker.localita.note = f.noteIndirizzo.value;
-        //     }
-        // }
 
         this.setDescrizione();
         console.log('Nuova Richiesta', this.nuovaRichiesta);
@@ -263,6 +236,10 @@ export class SchedaTelefonataComponent implements OnInit {
             },
             (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
         );
+    }
+
+    setNominativo(nominativo: string) {
+        this.f.nominativo.patchValue(nominativo);
     }
 
     onCopiaIndirizzo(): void {
