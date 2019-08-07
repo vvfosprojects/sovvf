@@ -48,7 +48,7 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly ICommandHandler<PreAccoppiatiCommand>handler;
+        private readonly ICommandHandler<PreAccoppiatiCommand> handler;
 
         private readonly IPrincipal _currentUser;
 
@@ -56,7 +56,7 @@ namespace SO115App.API.Controllers
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public PreAccoppiatiController( IPrincipal currentUser,
+        public PreAccoppiatiController(IPrincipal currentUser,
             ICommandHandler<PreAccoppiatiCommand> handler)
         {
             this.handler = handler;
@@ -68,13 +68,12 @@ namespace SO115App.API.Controllers
         /// </summary>
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
-        [HttpPost]
-        public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
+        [HttpGet]
+        public async Task<IActionResult> Get()
         {
             var codiceSede = Request.Headers["codicesede"];
             var command = new PreAccoppiatiCommand()
             {
-                Filtro = filtri,
                 CodiceSede = codiceSede
             };
 

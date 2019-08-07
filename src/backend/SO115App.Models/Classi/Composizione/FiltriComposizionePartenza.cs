@@ -42,8 +42,5 @@ namespace SO115App.Models.Classi.Composizione
 
         [JsonRequired]
         public string IdRichiesta { get; set; }
-
-        public List<PreAccoppiati> preAccoppiati { get; set; }
-
     }
 }
