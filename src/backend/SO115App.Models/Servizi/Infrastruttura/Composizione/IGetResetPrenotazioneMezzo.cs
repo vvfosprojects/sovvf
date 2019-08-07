@@ -8,7 +8,5 @@ namespace SO115App.Models.Servizi.Infrastruttura.GetResetPrenotazioneMezzo
     public interface IGetResetPrenotazioneMezzo
     {
         MezzoPrenotato Get(ResetPrenotazioneMezzoCommand query);
-
-        ComposizioneMezzi GetMezzo(ResetPrenotazioneMezzoCommand query);
     }
 }

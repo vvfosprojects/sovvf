@@ -7,7 +7,5 @@ namespace SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato
     public interface IGetMezzoPrenotato
     {
         MezzoPrenotato Get(MezzoPrenotatoCommand query);
-
-        ComposizioneMezzi GetMezzo(MezzoPrenotatoCommand query);
     }
 }

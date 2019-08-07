@@ -1,25 +1,23 @@
 ﻿using System.Collections.Generic;
 using CQRS.Commands.Validators;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Classi.Utility;
-using SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato;
-using SO115App.Models.Servizi.Infrastruttura.GetResetPrenotazioneMezzo;
 using ValidationResult = CQRS.Validation.ValidationResult;
 
 namespace DomainModel.CQRS.Commands.ResetPrenotazioneMezzo
 {
     public class ResetPrenotazioneMezzoValidator : ICommandValidator<ResetPrenotazioneMezzoCommand>
     {
-        private readonly IGetResetPrenotazioneMezzo _mezzo;
+        private readonly IGetMezzoByCodice _iGetMezzoPrenotato;
 
-        public ResetPrenotazioneMezzoValidator(IGetResetPrenotazioneMezzo iGetMezzoPrenotato)
+        public ResetPrenotazioneMezzoValidator(IGetMezzoByCodice iGetMezzoPrenotato)
         {
-            _mezzo = iGetMezzoPrenotato;
+            _iGetMezzoPrenotato = iGetMezzoPrenotato;
         }
+
         public IEnumerable<ValidationResult> Validate(ResetPrenotazioneMezzoCommand command)
         {
-
-            if (_mezzo.GetMezzo(command) == null)
-
+            if (_iGetMezzoPrenotato.Get(command.MezzoPrenotato.mezzoComposizione.Mezzo.Codice) == null)
                 yield return new ValidationResult(Costanti.MezzoNonPresente);
         }
     }
