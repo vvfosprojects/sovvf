@@ -73,7 +73,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             indirizzo: new FormControl(),
             etichette: new FormControl(),
             noteIndirizzo: new FormControl(),
-            rilevanza: new FormControl(),
+            rilevanzaGrave: new FormControl(),
             rilevanzaStArCu: new FormControl(),
             latitudine: new FormControl(),
             longitudine: new FormControl(),
@@ -100,7 +100,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             indirizzo: [this.richiestaModifica.localita.indirizzo, Validators.required],
             etichette: [etichette],
             noteIndirizzo: [this.richiestaModifica.localita.note],
-            rilevanza: [this.richiestaModifica.rilevanza],
+            rilevanzaGrave: [this.richiestaModifica.rilevanzaGrave],
             rilevanzaStArCu: [this.richiestaModifica.rilevanzaStArCu],
             latitudine: [this.richiestaModifica.localita.coordinate.latitudine, Validators.required],
             longitudine: [this.richiestaModifica.localita.coordinate.longitudine, Validators.required],
@@ -119,10 +119,10 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     }
 
     setRilevanza() {
-        if (this.f.rilevanza.value === true) {
-            this.f.rilevanza.setValue(false);
+        if (this.f.rilevanzaGrave.value === true) {
+            this.f.rilevanzaGrave.setValue(false);
         } else {
-            this.f.rilevanza.setValue(true);
+            this.f.rilevanzaGrave.setValue(true);
         }
     }
 
@@ -172,7 +172,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         nuovaRichiesta.localita.indirizzo = f.indirizzo.value;
         nuovaRichiesta.tags = f.etichette.value ? f.etichette.value.split(' ') : null;
         nuovaRichiesta.localita.note = f.noteIndirizzo.value;
-        nuovaRichiesta.rilevanza = f.rilevanza.value;
+        nuovaRichiesta.rilevanzaGrave = f.rilevanzaGrave.value;
         nuovaRichiesta.rilevanzaStArCu = f.rilevanzaStArCu.value;
         nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
         nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;

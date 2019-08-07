@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-5">
           <ng-template #rilevante>
-            <div *ngIf="f.rilevanza?.value">Intervento Rilevante</div>
+            <div *ngIf="f.rilevanzaGrave?.value">Intervento Rilevante</div>
             <div *ngIf="f.rilevanzaStArCu?.value">Intervento Rilevante Storico Artistico
               Culturale
             </div>
@@ -12,8 +12,8 @@
           <h4 class="mb-0">Modifica #
             <span *ngIf="richiestaModifica.codiceRichiesta">{{ richiestaModifica.codiceRichiesta }} </span>
             <span *ngIf="!richiestaModifica.codiceRichiesta">{{ richiestaModifica.codice }} </span>
-            <span *ngIf="f.rilevanza?.value || f.rilevanzaStArCu?.value" class="d-inline-block mr-1 text-danger"
-              [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f.rilevanza?.value"
+            <span *ngIf="f.rilevanzaGrave?.value || f.rilevanzaStArCu?.value" class="d-inline-block mr-1 text-danger"
+              [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f.rilevanzaGrave?.value"
                 class="fa fa-exclamation mr-2"></i><i *ngIf="f.rilevanzaStArCu?.value"
                 class="fa fa-university"></i></span>
           </h4>
@@ -198,7 +198,8 @@
         <div class="col-2 pl-0" style="padding-top: 2rem !important">
           <div class="form-group m-0 float-right">
             <span class="d-inline-block mt-1 mr-2">
-              <ui-switch size="small" color="#dc3545" [checked]="f.rilevanza?.value === true" (change)="setRilevanza()">
+              <ui-switch size="small" color="#dc3545" [checked]="f.rilevanzaGrave?.value === true"
+                (change)="setRilevanza()">
               </ui-switch>
             </span>
             <span class="d-inline-block mb-1">Rilevante</span>
