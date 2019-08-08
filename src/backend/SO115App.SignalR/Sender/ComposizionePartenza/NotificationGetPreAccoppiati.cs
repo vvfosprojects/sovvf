@@ -18,17 +18,14 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using DomainModel.CQRS.Commands.MezzoPrenotato;
 using DomainModel.CQRS.Commands.PreAccoppiati;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
-using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato;
-using System;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.ComposizionePartenza
 {
-    public class NotificationGetPreaccoppiati: INotificationGetPreAccoppiati
+    public class NotificationGetPreaccoppiati : INotificationGetPreAccoppiati
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
 
@@ -39,8 +36,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
         public async Task SendNotification(PreAccoppiatiCommand command)
         {
-
-            await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyGetPreAccoppiati", command.Filtro.preAccoppiati);
+            await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyGetPreAccoppiati", command.preAccoppiati);
         }
     }
 }

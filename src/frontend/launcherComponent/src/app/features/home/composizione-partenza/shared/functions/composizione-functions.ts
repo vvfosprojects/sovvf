@@ -10,3 +10,16 @@ export function squadraComposizioneBusy(stato: StatoSquadra) {
             return false;
     }
 }
+
+export function mezzoComposizioneBusy(stato: string) {
+    switch (stato) {
+        case 'Sul Posto':
+            return true;
+        case 'In Viaggio':
+            return true;
+        case 'Istituto':
+            return true;
+        default:
+            return false;
+    }
+}

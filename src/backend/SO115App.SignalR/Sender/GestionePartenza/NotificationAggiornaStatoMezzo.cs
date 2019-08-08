@@ -62,6 +62,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
         public async Task SendNotification(AggiornaStatoMezzoCommand intervento)
         {
+            bool NotificaChangeState = true;
             var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery();
             var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
 
@@ -86,6 +87,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == intervento.Chiamata.Id);
 
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", intervento);
+            await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("ChangeStateSuccess", NotificaChangeState);
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxInterventi", boxInterventi);
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxMezzi", boxMezzi);
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxPersonale", boxPersonale);

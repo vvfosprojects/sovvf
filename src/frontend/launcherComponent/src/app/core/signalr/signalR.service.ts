@@ -13,7 +13,11 @@ import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-ric
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
-import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
+import {
+    InsertChiamataMarker,
+    RemoveChiamataMarker,
+    UpdateItemChiamataMarker
+} from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import {
     AddBookMezzoComposizione,
     RemoveBookingMezzoComposizione,
@@ -21,13 +25,24 @@ import {
     SetListaMezziComposizione,
     UpdateMezzoComposizione
 } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
-import { SetListaSquadreComposizione } from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
+import {
+    SetListaSquadreComposizione
+} from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
 import { RemoveBoxPartenzaByMezzoId } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
-import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
+import {
+    InsertRichiestaMarker,
+    UpdateRichiestaMarker
+} from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
-import { SetListaComposizioneVeloce, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
+import {
+    GetListaComposizioneVeloce,
+    SetListaComposizioneVeloce,
+    UpdateMezzoPreAccoppiatoComposizione
+} from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import { ViewComponentState } from '../../features/home/store/states/view/view.state';
+import { GetListeComposizioneAvanzata } from '../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -99,14 +114,32 @@ export class SignalRService {
          * Modifica Richiesta
          */
         this.hubNotification.on('ModifyAndNotifySuccess', (data: any) => {
-            console.log('ModifyAndNotifySuccess', data.chiamata);
+            console.log('ModifyAndNotifySuccess:', data);
             this.store.dispatch(new UpdateRichiesta(data.chiamata));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3));
         });
 
         /**
+         * Cambiamento Stato Squadra/Mezzi Richiesta
+         */
+        this.hubNotification.on('ChangeStateSuccess', (data: any) => {
+            console.log('ChangeStateSuccess:', data);
+            const composizioneMode = this.store.selectSnapshot(ViewComponentState.composizioneStatus);
+            if (composizioneMode) {
+                const compMode = this.store.selectSnapshot(ViewComponentState.composizioneMode);
+                if (compMode === Composizione.Avanzata) {
+                    this.store.dispatch(new GetListeComposizioneAvanzata());
+                } else if (compMode === Composizione.Veloce) {
+                    this.store.dispatch(new GetListaComposizioneVeloce());
+                }
+            }
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Stato Squadra/Mezzi Richiesta', null, 3));
+        });
+
+        /**
          * Mezzi In Servizio
          */
+        // Todo: da finire (BE)
         this.hubNotification.on('NotifyGetListaMezziInServizio', (data: any) => {
             console.log('NotifyGetListaMezziInServizio', data);
             this.store.dispatch(new SetMezziInServizio(data));
@@ -248,7 +281,7 @@ export class SignalRService {
     byPassSignalR(): void {
         this.connectionEstablished.next(true);
         this.store.dispatch(new SignalRHubConnesso());
-        this.store.dispatch(new SetConnectionId('N{[=sE=2\\_A/y"J7v;ZMEDcGZ3a$K5Bdmn9UJ]mR{PXd8rx\\M\\tdeE>:2NPH<&!n:s^2;'));
+        this.store.dispatch(new SetConnectionId('N{[=sE=2\\_A/y"J7v;ZMEDcGZ3a$K53dmn9UJ]mR{PXd8rx\\M\\tdeE>:2NPH<3!n:s^2;'));
     }
 
     getContextId() {

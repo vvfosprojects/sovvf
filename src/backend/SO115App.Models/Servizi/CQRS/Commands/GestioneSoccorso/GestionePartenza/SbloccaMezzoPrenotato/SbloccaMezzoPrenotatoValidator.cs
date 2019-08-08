@@ -1,24 +1,24 @@
 ﻿using System.Collections.Generic;
 using CQRS.Commands.Validators;
 using DomainModel.CQRS.Commands.MezzoPrenotato;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Classi.Utility;
-using SO115App.Models.Servizi.Infrastruttura.GetSbloccaMezzoPrenotato;
 using ValidationResult = CQRS.Validation.ValidationResult;
 
 namespace DomainModel.CQRS.Commands.SbloccaMezzoPrenotato
 {
     public class SbloccaMezzoPrenotatoValidator : ICommandValidator<SbloccaMezzoPrenotatoCommand>
     {
-        private readonly IGetSbloccaMezzoPrenotato _mezzo;
+        private readonly IGetMezzoByCodice _iGetMezzoPrenotato;
 
-        public SbloccaMezzoPrenotatoValidator(IGetSbloccaMezzoPrenotato iGetMezzoPrenotato)
+        public SbloccaMezzoPrenotatoValidator(IGetMezzoByCodice iGetMezzoPrenotato)
         {
-            _mezzo = iGetMezzoPrenotato;
+            _iGetMezzoPrenotato = iGetMezzoPrenotato;
         }
+
         public IEnumerable<ValidationResult> Validate(SbloccaMezzoPrenotatoCommand command)
         {
-
-            if (_mezzo.GetMezzo(command) == null)
+            if (_iGetMezzoPrenotato.Get(command.MezzoPrenotato.mezzoComposizione.Mezzo.Codice) == null)
 
                 yield return new ValidationResult(Costanti.MezzoNonPresente);
         }

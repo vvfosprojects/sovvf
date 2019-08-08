@@ -33,10 +33,6 @@ namespace SO115App.FakePersistenceJSon.Composizione
         public List<PreAccoppiati> Get(PreAccoppiatiCommand command)
         {
             List<PreAccoppiati> preAccoppiati = new List<PreAccoppiati>();
-            //TODO PARTE CHIAMATA DB
-
-            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
-            //DATI FAKE - ORA LI LEGGO DA FILE
             string filepath = "Fake/PreAccoppiatiComposizione.json";
             string json;
             using (StreamReader r = new StreamReader(filepath))
@@ -45,61 +41,8 @@ namespace SO115App.FakePersistenceJSon.Composizione
             }
 
             preAccoppiati = JsonConvert.DeserializeObject<List<PreAccoppiati>>(json);
-            List<ComposizioneSquadre> composizioneSquadre = new List<ComposizioneSquadre>();
-            var squadra = new ComposizioneSquadre();
-            var codiceDistaccamento = "";
 
-            string[] generiMezzi = new string[50];
-            string[] statiMezzi = new string[50];
-            API.Models.Classi.Filtri.Filtri filtri = new API.Models.Classi.Filtri.Filtri();
-            string pathFiltri = "Fake/Filtri.json";
-            string jsonFiltri;
-            using (StreamReader r = new StreamReader(pathFiltri))
-            {
-                jsonFiltri = r.ReadToEnd();
-            }
-            filtri = JsonConvert.DeserializeObject<API.Models.Classi.Filtri.Filtri>(jsonFiltri);
-
-            if ((command.Filtro.CodiceDistaccamento != null && command.Filtro.CodiceDistaccamento.Length > 0 && !string.IsNullOrEmpty(command.Filtro.CodiceDistaccamento[0])) || (command.Filtro.CodiceMezzo != null && command.Filtro.CodiceMezzo.Length > 0 && !string.IsNullOrEmpty(command.Filtro.CodiceMezzo[0]))
-                || (command.Filtro.CodiceSquadra != null && command.Filtro.CodiceSquadra.Length > 0) && !string.IsNullOrEmpty(command.Filtro.CodiceSquadra[0]) || (command.Filtro.CodiceStatoMezzo != null && command.Filtro.CodiceStatoMezzo.Length > 0 && string.IsNullOrEmpty(command.Filtro.CodiceStatoMezzo[0])) || (command.Filtro.CodiceTipoMezzo != null && command.Filtro.CodiceTipoMezzo.Length > 0 && string.IsNullOrEmpty(command.Filtro.CodiceTipoMezzo[0])))
-            {
-                if (command.Filtro.CodiceSquadra != null && command.Filtro.CodiceSquadra.Length > 0 && !string.IsNullOrEmpty(command.Filtro.CodiceSquadra[0]))
-                {
-                    string path = "Fake/SquadreComposizione.json";
-                    string jsonSquadre;
-                    using (StreamReader r = new StreamReader(path))
-                    {
-                        jsonSquadre = r.ReadToEnd();
-                    }
-
-                    composizioneSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
-                    squadra = composizioneSquadre.Where(x => command.Filtro.CodiceSquadra.Any(x.Squadra.Id.Equals)).FirstOrDefault();
-                    if (squadra != null)
-                    {
-                        codiceDistaccamento = squadra.Squadra.Distaccamento.Codice;
-                        preAccoppiati = preAccoppiati.Where(x => (x.MezzoComposizione.Mezzo.Distaccamento.Codice == codiceDistaccamento)).ToList();
-                    }
-                }
-                if (command.Filtro.CodiceDistaccamento != null && command.Filtro.CodiceDistaccamento.Length > 0 && !string.IsNullOrEmpty(command.Filtro.CodiceDistaccamento[0]))
-                    preAccoppiati = preAccoppiati.Where(x => command.Filtro.CodiceDistaccamento.Any(x.MezzoComposizione.Mezzo.Distaccamento.Codice.Equals)).ToList();
-                if (command.Filtro.CodiceMezzo != null && command.Filtro.CodiceMezzo.Length > 0 && !string.IsNullOrEmpty(command.Filtro.CodiceMezzo[0]))
-                    preAccoppiati = preAccoppiati.Where(x => command.Filtro.CodiceMezzo.Any(x.MezzoComposizione.Mezzo.Codice.Equals)).ToList();
-                if (command.Filtro.CodiceStatoMezzo != null && command.Filtro.CodiceStatoMezzo.Length > 0 && !string.IsNullOrEmpty(command.Filtro.CodiceStatoMezzo[0]))
-                {
-                    statiMezzi = filtri.Stati.Where(x => command.Filtro.CodiceStatoMezzo.Any(x.Id.Equals)).Select(x => x.Descrizione).ToArray();
-                    preAccoppiati = preAccoppiati.Where(x => statiMezzi.Any(x.MezzoComposizione.Mezzo.Stato.Equals)).ToList();
-                }
-                if (command.Filtro.CodiceTipoMezzo != null && command.Filtro.CodiceTipoMezzo.Length > 0 && !string.IsNullOrEmpty(command.Filtro.CodiceTipoMezzo[0]))
-                {
-                    generiMezzi = filtri.GeneriMezzi.Where(x => command.Filtro.CodiceTipoMezzo.Any(x.Id.Equals)).Select(x => x.Descrizione).ToArray();
-                    preAccoppiati = preAccoppiati.Where(x => generiMezzi.Any(x.MezzoComposizione.Mezzo.Genere.Equals)).ToList();
-                }
-                return preAccoppiati;
-            }
-            else
-            {
-                return preAccoppiati;
-            }
+            return preAccoppiati.Where(x => x.CodiceSede == command.CodiceSede).ToList();
         }
     }
 }

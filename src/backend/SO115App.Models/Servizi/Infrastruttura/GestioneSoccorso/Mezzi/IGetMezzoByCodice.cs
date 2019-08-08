@@ -17,7 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Soccorso.Mezzi;
+
+using SO115App.API.Models.Classi.Condivise;
 
 namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi
 {

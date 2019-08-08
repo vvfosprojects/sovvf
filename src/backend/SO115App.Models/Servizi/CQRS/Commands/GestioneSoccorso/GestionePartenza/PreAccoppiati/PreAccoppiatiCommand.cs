@@ -19,6 +19,8 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using SO115App.Models.Classi.Composizione;
+using System.Collections.Generic;
+using SO115App.API.Models.Classi.Composizione;
 
 namespace DomainModel.CQRS.Commands.PreAccoppiati
 {
@@ -34,5 +36,7 @@ namespace DomainModel.CQRS.Commands.PreAccoppiati
         public FiltriComposizionePartenza Filtro { get; set; }
 
         public string CodiceSede { get; set; }
+
+        public List<SO115App.API.Models.Classi.Composizione.PreAccoppiati> preAccoppiati { get; set; }
     }
 }

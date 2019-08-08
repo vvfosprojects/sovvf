@@ -58,13 +58,13 @@ namespace SO115App.FakePersistenceJSon.Composizione
             //istanteScadenzaPrecedente = mezzo.IstanteScadenzaSelezione;
             mezzi.Remove(mezzo);
             mezzo.IstanteScadenzaSelezione = DateTime.Now.AddSeconds(15);
-           // tempoMancante = istanteScadenzaPrecedente.Value.Subtract(DateTime.Now);
+            // tempoMancante = istanteScadenzaPrecedente.Value.Subtract(DateTime.Now);
             //tempoPassato = new TimeSpan(0, 3, 0) - istanteScadenzaPrecedente.Value.Subtract(DateTime.Now);
-           //  mezzo.IstanteScadenzaSelezione = DateTime.Now.Add(tempoPassato);
+            //  mezzo.IstanteScadenzaSelezione = DateTime.Now.Add(tempoPassato);
             mezzi.Add(mezzo);
             mezzi.Sort(delegate (ComposizioneMezzi x, ComposizioneMezzi y)
             {
-                return Convert.ToInt32(x.TempoPercorrenza.Substring(0, x.TempoPercorrenza.Length - 4)).CompareTo(Convert.ToInt32(y.TempoPercorrenza.Substring(0, y.TempoPercorrenza.Length - 4)));
+                return Convert.ToInt32(x.TempoPercorrenza).CompareTo(Convert.ToInt32(y.TempoPercorrenza));
             });
             string fileText = System.IO.File.ReadAllText(@"Fake/MezziComposizione.json");
             string jsonNew = JsonConvert.SerializeObject(mezzi);
@@ -75,23 +75,5 @@ namespace SO115App.FakePersistenceJSon.Composizione
             mezzoPrenotato.codiceSede = command.CodiceSede;
             return mezzoPrenotato;
         }
-
-        public ComposizioneMezzi GetMezzo(ResetPrenotazioneMezzoCommand command)
-        {
-            ComposizioneMezzi mezzo = new ComposizioneMezzi();
-            List<ComposizioneMezzi> mezzi = new List<ComposizioneMezzi>();
-            MezzoPrenotato mezzoPrenotato = new MezzoPrenotato();
-            string filepath = "Fake/MezziComposizione.json";
-            string json;
-            using (StreamReader r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            mezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(json);
-            mezzo = mezzi.Where(x => x.Mezzo.Codice.Equals(command.MezzoPrenotato.mezzoComposizione.Mezzo.Codice)).FirstOrDefault();
-            return mezzo;
-        }
     }
 }
-

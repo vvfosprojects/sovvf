@@ -1,14 +1,30 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
-import { ClearComposizioneAvanzata, GetListeComposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
+import {
+    ClearComposizioneAvanzata,
+    GetListeComposizioneAvanzata,
+    UnselectMezziAndSquadreComposizioneAvanzata
+} from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { MezziComposizioneState } from './mezzi-composizione.state';
 import { SquadreComposizioneState } from './squadre-composizione.state';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
-import { ClearSelectedMezziComposizione, SetListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import { ClearSelectedSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import {
+    ClearSelectedMezziComposizione,
+    SetListaMezziComposizione
+} from '../../actions/composizione-partenza/mezzi-composizione.actions';
+import {
+    ClearSelectedSquadreComposizione,
+    SetListaSquadreComposizione
+} from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
+import { BoxPartenzaState } from './box-partenza.state';
+import {
+    mezzoComposizioneBusy,
+    squadraComposizioneBusy
+} from '../../../composizione-partenza/shared/functions/composizione-functions';
+import { RemoveBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: Array<any>;
@@ -74,6 +90,7 @@ export class ComposizioneAvanzataState {
         console.log(filtri);
         this.squadreService.getListeComposizioneAvanzata(filtri).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
             if (listeCompAvanzata) {
+                const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
                 if (listeCompAvanzata.composizioneMezzi) {
                     this.store.dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezzi));
                 }
@@ -81,6 +98,24 @@ export class ComposizioneAvanzataState {
                     this.store.dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadre));
                 }
                 console.log('listeCompAvanzata', listeCompAvanzata);
+                if (listaBoxPartenza.length > 0) {
+                    const listaBoxMezzi = listaBoxPartenza.filter( box => box.mezzoComposizione !== null);
+                    if (listaBoxMezzi.length > 0) {
+                        const mezziOccupati = [];
+                        listeCompAvanzata.composizioneMezzi.forEach(mezzo => {
+                            if (mezzoComposizioneBusy(mezzo.mezzo.stato)) {
+                                mezziOccupati.push(mezzo.id);
+                            }
+                        });
+                        if (mezziOccupati.length > 0) {
+                            listaBoxPartenza.forEach(box => {
+                                if (mezziOccupati.includes(box.mezzoComposizione.id)) {
+                                    this.store.dispatch(new RemoveBoxPartenza(box));
+                                }
+                            });
+                        }
+                    }
+                }
             }
             // console.log('Composizione Partenza Avanzata Service');
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));

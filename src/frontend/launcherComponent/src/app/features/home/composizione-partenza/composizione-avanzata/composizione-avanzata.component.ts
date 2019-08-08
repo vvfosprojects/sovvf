@@ -46,8 +46,8 @@ import {
 import { TurnoState } from '../../../navbar/store/states/turno/turno.state';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
-import { squadraComposizioneBusy } from '../shared/functions/squadra-composizione-functions';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
+import { squadraComposizioneBusy } from '../shared/functions/composizione-functions';
 
 @Component({
     selector: 'app-composizione-avanzata',

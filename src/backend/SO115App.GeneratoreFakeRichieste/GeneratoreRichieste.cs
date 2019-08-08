@@ -188,7 +188,7 @@ namespace SO115App.GeneratoreRichiesteFake
                 .RuleFor(ra => ra.IstanteChiusura, f => null)
                 .RuleFor(ra => ra.ZoneEmergenza, f => f.Random.Float() < 0.001 ? new[] { f.Random.ListItem(zoneEmergenza) } : new string[0])
                 .RuleFor(ra => ra.Descrizione, f => f.Lorem.Sentence())
-                .RuleFor(ra => ra.Richiedente, f => new Richiedente(f.Name.FirstName(), f.Name.LastName(), f.Company.CompanyName(), f.Phone.Locale))
+                .RuleFor(ra => ra.Richiedente, f => new Richiedente(f.Name.FirstName(), f.Phone.Locale))
                 .RuleFor(ra => ra.CodiciUOCompetenza, f => new[] { f.Address.StateAbbr(), f.Address.StateAbbr(), f.Address.StateAbbr() })
                 .RuleFor(ra => ra.Localita, f => new Localita(
                     this.generatoreCoordinateInterventoPerUO.Genera(codiceUnitaOperativa),

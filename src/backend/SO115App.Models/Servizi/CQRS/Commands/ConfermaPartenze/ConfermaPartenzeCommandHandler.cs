@@ -113,12 +113,19 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var sedeRichiesta = command.ConfermaPartenze.richiesta.Operatore.Sede.Codice;
             richiesta.CodiceRichiesta = _generaCodiceRichiesta.Genera(sedeRichiesta, DateTime.UtcNow.Year);
 
+            foreach (var partenza in command.ConfermaPartenze.Partenze)
+            {
+                partenza.Mezzo.IdRichiesta = richiesta.CodiceRichiesta;
+            }
+
             attivita.IdUtente = command.ConfermaPartenze.richiesta.Operatore.Id;
             attivita.Nominativo = command.ConfermaPartenze.richiesta.Operatore.Nome + " " + command.ConfermaPartenze.richiesta.Operatore.Cognome;
             attivita.DataInizioAttivita = DateTime.UtcNow;
 
             if (richiesta.ListaUtentiPresaInCarico != null)
+            {
                 richiesta.ListaUtentiPresaInCarico.Add(attivita);
+            }
             else
             {
                 richiesta.ListaUtentiPresaInCarico = new List<AttivitaUtente>

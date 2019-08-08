@@ -27,7 +27,11 @@ import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
-import { AddBoxPartenza, SelectBoxPartenza, UpdateMezzoBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
+import {
+    AddBoxPartenza,
+    SelectBoxPartenza,
+    UpdateMezzoBoxPartenza
+} from '../../actions/composizione-partenza/box-partenza.actions';
 
 export interface MezziComposizioneStateStateModel {
     mezziComposizione: MezzoComposizione[];
@@ -303,4 +307,5 @@ export class MezziComposizioneState {
     clearMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>) {
         patchState(MezziComposizioneStateDefaults);
     }
+
 }

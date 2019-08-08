@@ -59,6 +59,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
                     {
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoSulPosto;
+                        composizione.Partenza.Mezzo.IdRichiesta = richiesta.CodiceRichiesta;
                     }
                 }
             }
@@ -69,13 +70,14 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
                     {
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
+                        composizione.Partenza.Mezzo.IdRichiesta = null;
                     }
                 }
 
                 foreach (var composizione in richiesta.Partenze)
                 {
-                    if (composizione.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto ||
-                        composizione.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio)
+                    if (composizione.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto
+                        || composizione.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio)
                     {
                         _mezziTuttiInSede = false;
                     }
@@ -91,14 +93,15 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
                     {
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoInSede;
+                        composizione.Partenza.Mezzo.IdRichiesta = null;
                     }
                 }
 
                 foreach (var composizione in richiesta.Partenze)
                 {
-                    if (composizione.Partenza.Mezzo.Stato != Costanti.MezzoInSede &&
-                        composizione.Partenza.Mezzo.Stato != Costanti.MezzoInRientro &&
-                        composizione.Partenza.Mezzo.Stato != Costanti.MezzoRientrato)
+                    if (composizione.Partenza.Mezzo.Stato != Costanti.MezzoInSede
+                        && composizione.Partenza.Mezzo.Stato != Costanti.MezzoInRientro
+                        && composizione.Partenza.Mezzo.Stato != Costanti.MezzoRientrato)
                     {
                         _mezziTuttiInSede = false;
                     }
@@ -114,6 +117,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
                     {
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
+                        composizione.Partenza.Mezzo.IdRichiesta = richiesta.CodiceRichiesta;
                     }
                 }
             }
