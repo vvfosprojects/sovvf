@@ -146,15 +146,15 @@ namespace SO115App.API.Models.Classi.Soccorso
 
             var rilevanzaGraveCorrente =
                 ultimoEventoRilevanza != null &&
-                (ultimoEventoRilevanza as MarcaRilevante).PerGravita;
+                ultimoEventoRilevanza.PerGravita;
 
             var rilevanzaStArCuCorrente =
                 ultimoEventoRilevanza != null &&
-                (ultimoEventoRilevanza as MarcaRilevante).PerEdificioStArCu;
+                ultimoEventoRilevanza.PerEdificioStArCu;
 
             if ((rilevanzaGraveCorrente ^ rilevanzaGrave) || (rilevanzaStArCuCorrente ^ rilevanzaStArCu))
             {
-                this.AddEvento(new MarcaRilevante(this, istateRichiesta, fonte, motivazione, rilevanzaGrave, rilevanzaStArCu));
+                new MarcaRilevante(this, istateRichiesta, fonte, motivazione, rilevanzaGrave, rilevanzaStArCu);
             }
         }
 
