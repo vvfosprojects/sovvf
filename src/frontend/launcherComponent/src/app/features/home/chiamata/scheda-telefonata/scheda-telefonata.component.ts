@@ -112,8 +112,8 @@ export class SchedaTelefonataComponent implements OnInit {
             null,
             null
         );
-        this.nuovaRichiesta.rilevanzaStArCu = false;
-        this.nuovaRichiesta.rilevanzaGrave = false;
+        this.nuovaRichiesta.rilevanteStArCu = false;
+        this.nuovaRichiesta.rilevanteGrave = false;
     }
 
     setRilevanza() {
@@ -139,8 +139,8 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
         this.nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
         this.nuovaRichiesta.tags = f.etichette.value ? f.etichette.value.split(' ') : null;
-        this.nuovaRichiesta.rilevanzaGrave = f.rilevanzaGrave.value;
-        this.nuovaRichiesta.rilevanzaStArCu = f.rilevanzaStArCu.value;
+        this.nuovaRichiesta.rilevanteGrave = f.rilevanzaGrave.value;
+        this.nuovaRichiesta.rilevanteStArCu = f.rilevanzaStArCu.value;
         this.nuovaRichiesta.descrizione = f.descrizione.value;
         this.nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : null;
         this.nuovaRichiesta.notePrivate = f.notePrivate.value;

@@ -10,8 +10,8 @@
                     <div class="row">
                         <div class="col-3">
                             <ng-template #rilevante>
-                                <div *ngIf="richiesta?.rilevanzaGrave">Intervento Rilevante</div>
-                                <div *ngIf="richiesta?.rilevanzaStArCu">Intervento Rilevante Storico Artistico
+                                <div *ngIf="richiesta?.rilevanteGrave">Intervento Rilevante</div>
+                                <div *ngIf="richiesta?.rilevanteStArCu">Intervento Rilevante Storico Artistico
                                     Culturale
                                 </div>
                             </ng-template>
@@ -22,11 +22,11 @@
                                     <span *ngIf="richiesta.codiceRichiesta">{{ richiesta.codiceRichiesta }} </span>
                                     <span *ngIf="!richiesta.codiceRichiesta">{{ richiesta.codice }} </span>
                                 </a>
-                                <span *ngIf="richiesta?.rilevanzaGrave || richiesta?.rilevanzaStArCu"
+                                <span *ngIf="richiesta?.rilevanteGrave || richiesta?.rilevanteStArCu"
                                       class="d-inline-block mr-1 text-danger"
                                       [ngbTooltip]="rilevante" placement="bottom">
-                                    <i *ngIf="richiesta?.rilevanzaStArCu" class="fa fa-university mr-2"></i>
-                                    <i *ngIf="richiesta?.rilevanzaGrave" class="fa fa-exclamation"></i>
+                                    <i *ngIf="richiesta?.rilevanteStArCu" class="fa fa-university mr-2"></i>
+                                    <i *ngIf="richiesta?.rilevanteGrave" class="fa fa-exclamation"></i>
                                 </span>
                             </div>
                         </div>

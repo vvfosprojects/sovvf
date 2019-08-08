@@ -76,11 +76,11 @@ export class RichiestaModificaState {
         setState(
             produce(getState(), draft => {
                 const richiesta = makeCopy(draft.richiestaModifica);
-                if (draft.richiestaModifica.rilevanzaGrave === true) {
-                    richiesta.rilevanzaGrave = false;
+                if (draft.richiestaModifica.rilevanteGrave === true) {
+                    richiesta.rilevanteGrave = false;
                     draft.richiestaModifica = richiesta;
                 } else {
-                    richiesta.rilevanzaGrave = true;
+                    richiesta.rilevanteGrave = true;
                     draft.richiestaModifica = richiesta;
                 }
             })
@@ -92,11 +92,11 @@ export class RichiestaModificaState {
         setState(
             produce(getState(), draft => {
                 const richiesta = makeCopy(draft.richiestaModifica);
-                if (draft.richiestaModifica.rilevanzaStArCu === true) {
-                    richiesta.rilevanzaStArCu = false;
+                if (draft.richiestaModifica.rilevanteStArCu === true) {
+                    richiesta.rilevanteStArCu = false;
                     draft.richiestaModifica = richiesta;
                 } else {
-                    richiesta.rilevanzaStArCu = true;
+                    richiesta.rilevanteStArCu = true;
                     draft.richiestaModifica = richiesta;
                 }
             })

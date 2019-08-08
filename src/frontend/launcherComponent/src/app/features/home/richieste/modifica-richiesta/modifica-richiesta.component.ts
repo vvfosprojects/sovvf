@@ -100,8 +100,8 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             indirizzo: [this.richiestaModifica.localita.indirizzo, Validators.required],
             etichette: [etichette],
             noteIndirizzo: [this.richiestaModifica.localita.note],
-            rilevanzaGrave: [this.richiestaModifica.rilevanzaGrave],
-            rilevanzaStArCu: [this.richiestaModifica.rilevanzaStArCu],
+            rilevanzaGrave: [this.richiestaModifica.rilevanteGrave],
+            rilevanzaStArCu: [this.richiestaModifica.rilevanteStArCu],
             latitudine: [this.richiestaModifica.localita.coordinate.latitudine, Validators.required],
             longitudine: [this.richiestaModifica.localita.coordinate.longitudine, Validators.required],
             piano: [this.richiestaModifica.localita.piano],
@@ -172,8 +172,8 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         nuovaRichiesta.localita.indirizzo = f.indirizzo.value;
         nuovaRichiesta.tags = f.etichette.value ? f.etichette.value.split(' ') : null;
         nuovaRichiesta.localita.note = f.noteIndirizzo.value;
-        nuovaRichiesta.rilevanzaGrave = f.rilevanzaGrave.value;
-        nuovaRichiesta.rilevanzaStArCu = f.rilevanzaStArCu.value;
+        nuovaRichiesta.rilevanteGrave = f.rilevanzaGrave.value;
+        nuovaRichiesta.rilevanteStArCu = f.rilevanzaStArCu.value;
         nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
         nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
         nuovaRichiesta.localita.piano = f.piano.value;
