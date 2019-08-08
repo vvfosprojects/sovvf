@@ -48,6 +48,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                     if (!composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInRientro) && !composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede))
                     {
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
+                        composizione.Partenza.Mezzo.IdRichiesta = null;
                     }
                 }
             }
