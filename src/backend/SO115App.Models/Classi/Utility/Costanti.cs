@@ -68,6 +68,7 @@ namespace SO115App.Models.Classi.Utility
         public static string EventoRichiestaPresidiata = "RichiestaPresidiata";
         public static string EventoRichiestaSospesa = "RichiestaSospesa";
         public static string AssegnataPriorita = "AssegnataPriorita";
+        public static string MarcaRilevante = "MarcaRilevante";
 
         #endregion Eventi
 

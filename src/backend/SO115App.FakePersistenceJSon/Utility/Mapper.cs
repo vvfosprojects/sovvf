@@ -145,6 +145,13 @@ namespace SO115App.FakePersistenceJSon.Utility
                         new AssegnazionePriorita(richiestaMap, assegnataPriorita.Priorita, assegnataPriorita.Istante,
                             richiesta.Operatore.Sede.Codice);
                     }
+
+                    if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.MarcaRilevante))
+                    {
+                        var marcaRilevante = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<MarcaRilevante>());
+                        new MarcaRilevante(richiestaMap, marcaRilevante.Istante, richiesta.Operatore.Sede.Codice, "",
+                            richiesta.RilevanteGrave, richiesta.RilevanteStArCu);
+                    }
                 }
             }
 

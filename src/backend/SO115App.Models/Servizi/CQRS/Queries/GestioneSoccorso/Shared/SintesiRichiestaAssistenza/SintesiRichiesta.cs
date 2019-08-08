@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using SO115App.Models.Classi.Utility;
 using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
@@ -138,7 +139,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Descrizione del richiedente
         /// </summary>
-        [Required(ErrorMessage = "Richiedtente obbligatorio.")]
+        [Required(ErrorMessage = "Richiedente obbligatorio.")]
         public Richiedente Richiedente { get; set; }
 
         /// <summary>
@@ -185,27 +186,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                int countEventi;
-                if (this.Eventi == null)
-                {
-                    countEventi = 0;
-                }
-                else
-                {
-                    countEventi = this.Eventi.Count;
-                }
+                var countEventi = Eventi?.Count ?? 0;
 
                 if (countEventi <= 20)
                 {
                     return new Complessita("0", "Basso", countEventi.ToString());
                 }
 
-                if (countEventi <= 60)
-                {
-                    return new Complessita("1", "Media", countEventi.ToString());
-                }
-
-                return new Complessita("2", "Alta", countEventi.ToString());
+                return countEventi <= 60 ? new Complessita("1", "Media", countEventi.ToString()) : new Complessita("2", "Alta", countEventi.ToString());
             }
         }
 
@@ -243,12 +231,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   base ad un insieme di regole automatiche deterministiche o basate su algoritmi di
         ///   machine learning.
         /// </remarks>
-        public bool RilevanzaGrave { get; set; }
+        public bool RilevanteGrave { get; set; }
 
         /// <summary>
         ///   Indica se la rilevanza è di tipo Storico/Artistico/Culturale
         /// </summary>
-        public bool RilevanzaStArCu { get; set; }
+        public bool RilevanteStArCu { get; set; }
 
         /// <summary>
         ///   Codice della scheda Nue
@@ -268,20 +256,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                if (this.Eventi != null)
+                if (this.Eventi == null) return new Classi.Soccorso.Fonogramma.NonNecessario();
+                var ultimoEventoFonogramma = this.Eventi
+                    .LastOrDefault(e => e is IFonogramma);
+
+                switch (ultimoEventoFonogramma)
                 {
-                    var ultimoEventoFonogramma = this.Eventi
-                        .LastOrDefault(e => e is IFonogramma);
-
-                    if (ultimoEventoFonogramma is Classi.Soccorso.Eventi.Fonogramma.FonogrammaInviato)
-                    {
+                    case FonogrammaInviato _:
                         return new Classi.Soccorso.Fonogramma.Inviato();
-                    }
 
-                    if (ultimoEventoFonogramma is Classi.Soccorso.Eventi.Fonogramma.InviareFonogramma)
-                    {
+                    case InviareFonogramma _:
                         return new Classi.Soccorso.Fonogramma.DaInviare();
-                    }
                 }
 
                 return new Classi.Soccorso.Fonogramma.NonNecessario();
@@ -346,31 +331,21 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                var eventoChiusura = this.Eventi
-                    .Where(e => e is ChiusuraRichiesta);
-
-                var eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == "In Viaggio" && !x.Partenza.Sganciata).ToList();
+                var eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio && !x.Partenza.Sganciata).ToList();
 
                 if (this.Chiusa)
                 {
-                    return "Chiusa";
+                    return Costanti.RichiestaChiusa;
                 }
-                else if (eventoAssegnata.Count > 0)
+                if (eventoAssegnata.Count > 0)
                 {
-                    return "Assegnata";
+                    return Costanti.RichiestaAssegnata;
                 }
-                else if (Sospesa)
+                if (Sospesa)
                 {
-                    return "Sospesa";
+                    return Costanti.RichiestaSospesa;
                 }
-                else if (Presidiata)
-                {
-                    return "Presidiata";
-                }
-                else
-                {
-                    return "Chiamata";
-                }
+                return Presidiata ? Costanti.RichiestaPresidiata : Costanti.Chiamata;
             }
         }
 

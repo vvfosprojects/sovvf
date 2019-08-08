@@ -104,7 +104,9 @@ namespace SO115App.FakePersistenceJSon.Classi
             set;
         }
 
-        public bool RilevanzaStArCu { get; set; }
+        public bool RilevanteGrave { get; set; }
+
+        public bool RilevanteStArCu { get; set; }
 
         public IEnumerable<SquadraCoinvolta> SquadreCoinvolte
         {

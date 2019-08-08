@@ -68,8 +68,6 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Id = codiceChiamata // TODO DA TOGLIERE QUANDO AVREMO UN DB
             };
 
-            richiesta.SincronizzaRilevanza(command.Chiamata.RilevanzaGrave, command.Chiamata.RilevanzaStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione, command.Chiamata.IstanteRicezioneRichiesta);
-
             if (command.Chiamata.Stato == Costanti.RichiestaChiusa)
             {
                 new ChiusuraRichiesta("", richiesta, DateTime.UtcNow, command.Chiamata.Operatore.Id);
@@ -94,6 +92,10 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             };
 
             new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow.AddMilliseconds(1.0), command.Chiamata.Operatore.Id);
+
+            if (command.Chiamata.RilevanteGrave || command.Chiamata.RilevanteStArCu)
+                new MarcaRilevante(richiesta, DateTime.UtcNow.AddMilliseconds(1.5), command.Chiamata.Operatore.Id, "", command.Chiamata.RilevanteGrave,
+            command.Chiamata.RilevanteStArCu);
 
             this._saveRichiestaAssistenza.Save(richiesta);
         }

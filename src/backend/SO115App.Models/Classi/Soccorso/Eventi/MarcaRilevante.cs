@@ -27,9 +27,6 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
     /// </summary>
     public class MarcaRilevante : Evento
     {
-        private readonly bool perGravita;
-        private readonly bool perEdificioStArCu;
-
         /// <summary>
         ///   Costruttore dell'evento
         /// </summary>
@@ -39,7 +36,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <param name="motivazione">La motivazione percui la richiesta è marcata come rilevante</param>
         /// <param name="perGravita">Indica se la rilevanza è per gravità</param>
         /// <param name="perEdificioStArCu">Indica se la rilevanza è per edificio Storico/Artistico/Culturale</param>
-        public MarcaRilevante(RichiestaAssistenza richiesta,
+        public MarcaRilevante(
+            RichiestaAssistenza richiesta,
             DateTime istante,
             string codiceFonte,
             string motivazione,
@@ -47,8 +45,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
             bool perEdificioStArCu) : base(richiesta, istante, codiceFonte)
         {
             this.Motivazione = motivazione ?? throw new ArgumentNullException(nameof(motivazione));
-            this.perGravita = perGravita;
-            this.perEdificioStArCu = perEdificioStArCu;
+            this.PerGravita = perGravita;
+            this.PerEdificioStArCu = perEdificioStArCu;
             TipoEvento = "MarcaRilevante";
         }
 
@@ -77,17 +75,11 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <summary>
         ///   Indica che la rilevanza è per gravità
         /// </summary>
-        public bool PerGravita
-        {
-            get { return this.perGravita; }
-        }
+        public bool PerGravita { get; }
 
         /// <summary>
         ///   Indica che la rilevanza è per edificio Storico/Artistico/Culturale
         /// </summary>
-        public bool PerEdificioStArCu
-        {
-            get { return this.perEdificioStArCu; }
-        }
+        public bool PerEdificioStArCu { get; }
     }
 }

@@ -157,6 +157,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case AssegnazionePriorita _:
                     risEvento = Costanti.AssegnataPriorita;
                     break;
+
+                case MarcaRilevante _:
+                    risEvento = Costanti.MarcaRilevante;
+                    break;
             }
 
             return risEvento;
