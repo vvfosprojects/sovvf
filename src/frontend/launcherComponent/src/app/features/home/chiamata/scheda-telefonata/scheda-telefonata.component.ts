@@ -75,7 +75,7 @@ export class SchedaTelefonataComponent implements OnInit {
         return this.formBuilder.group({
             selectedTipologie: [null, Validators.required],
             nominativo: [null, Validators.required],
-            telefono: [null],
+            telefono: [null, Validators.required],
             indirizzo: [null, Validators.required],
             latitudine: [null, Validators.required],
             longitudine: [null, Validators.required],
@@ -238,8 +238,27 @@ export class SchedaTelefonataComponent implements OnInit {
         );
     }
 
-    setNominativo(nominativo: string) {
-        this.f.nominativo.patchValue(nominativo);
+    toggleNominativo(nominativo: string) {
+        switch (nominativo) {
+            case 'Carabinieri':
+                this.f.nominativo.patchValue('Carabinieri');
+                this.f.telefono.patchValue('112');
+                break;
+            case 'Polizia':
+                this.f.nominativo.patchValue('Polizia');
+                this.f.telefono.patchValue('113');
+                break;
+            case 'Ambulanza':
+                this.f.nominativo.patchValue('Ambulanza');
+                this.f.telefono.patchValue('118');
+                break;
+            case 'VV.UU.':
+                this.f.nominativo.patchValue('VV.UU.');
+                this.f.telefono.patchValue('');
+                break;
+            default:
+                break;
+        }
     }
 
     onCopiaIndirizzo(): void {

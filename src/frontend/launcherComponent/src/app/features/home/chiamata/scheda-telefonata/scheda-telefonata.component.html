@@ -58,23 +58,27 @@
         <div class="col pl-0">
           <div class="form-group mb-1">
             <label for="telefono">Telefono</label>
-            <input id="telefono" type="text" placeholder="Inserisci il Telefono (opzionale)" formControlName="telefono"
-              class="form-control" />
+            <input id="telefono" type="text" placeholder="Inserisci il Telefono" formControlName="telefono"
+              class="form-control" [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }" />
+            <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
+              <div *ngIf="f.telefono.errors.required">Il Telefono è richiesto</div>
+            </div>
           </div>
         </div>
       </div>
       <div class="row mb-2">
         <div class="col-3">
-          <button class="btn btn-block btn-outline-secondary" (click)="setNominativo('112')">112</button>
+          <button class="btn btn-block btn-outline-secondary"
+            (click)="toggleNominativo('Carabinieri')">Carabinieri</button>
         </div>
         <div class="col-3">
-          <button class="btn btn-block btn-outline-secondary" (click)="setNominativo('113')">113</button>
+          <button class="btn btn-block btn-outline-secondary" (click)="toggleNominativo('Polizia')">Polizia</button>
         </div>
         <div class="col-3">
-          <button class="btn btn-block btn-outline-secondary" (click)="setNominativo('118')">118</button>
+          <button class="btn btn-block btn-outline-secondary" (click)="toggleNominativo('Ambulanza')">Ambulanza</button>
         </div>
         <div class="col-3">
-          <button class="btn btn-block btn-outline-secondary" (click)="setNominativo('VV.UU.')">VV.UU.</button>
+          <button class="btn btn-block btn-outline-secondary" (click)="toggleNominativo('VV.UU.')">VV.UU.</button>
         </div>
       </div>
       <div class="row">
