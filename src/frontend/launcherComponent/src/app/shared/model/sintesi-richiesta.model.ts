@@ -87,7 +87,7 @@ export class SintesiRichiesta {
         /**
          * Indica se la richiesta è rilevante
          */
-        public rilevanzaGrave?: boolean,
+        public rilevanteGrave?: boolean,
         /**
          * codice della scheda NUE
          */
@@ -148,7 +148,7 @@ export class SintesiRichiesta {
         /**
          * rilevanza Storica Artistica e Culturale
          */
-        public rilevanzaStArCu?: boolean,
+        public rilevanteStArCu?: boolean,
         /**
          * motivazione della chiusura
          */

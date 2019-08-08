@@ -75,7 +75,7 @@ export class SchedaTelefonataComponent implements OnInit {
         return this.formBuilder.group({
             selectedTipologie: [null, Validators.required],
             nominativo: [null, Validators.required],
-            telefono: [null],
+            telefono: [null, Validators.required],
             indirizzo: [null, Validators.required],
             latitudine: [null, Validators.required],
             longitudine: [null, Validators.required],
@@ -112,8 +112,8 @@ export class SchedaTelefonataComponent implements OnInit {
             null,
             null
         );
-        this.nuovaRichiesta.rilevanzaStArCu = false;
-        this.nuovaRichiesta.rilevanzaGrave = false;
+        this.nuovaRichiesta.rilevanteStArCu = false;
+        this.nuovaRichiesta.rilevanteGrave = false;
     }
 
     setRilevanza() {
@@ -139,8 +139,8 @@ export class SchedaTelefonataComponent implements OnInit {
         this.nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
         this.nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
         this.nuovaRichiesta.tags = f.etichette.value ? f.etichette.value.split(' ') : null;
-        this.nuovaRichiesta.rilevanzaGrave = f.rilevanzaGrave.value;
-        this.nuovaRichiesta.rilevanzaStArCu = f.rilevanzaStArCu.value;
+        this.nuovaRichiesta.rilevanteGrave = f.rilevanzaGrave.value;
+        this.nuovaRichiesta.rilevanteStArCu = f.rilevanzaStArCu.value;
         this.nuovaRichiesta.descrizione = f.descrizione.value;
         this.nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : null;
         this.nuovaRichiesta.notePrivate = f.notePrivate.value;
@@ -238,8 +238,27 @@ export class SchedaTelefonataComponent implements OnInit {
         );
     }
 
-    setNominativo(nominativo: string) {
-        this.f.nominativo.patchValue(nominativo);
+    toggleNominativo(nominativo: string) {
+        switch (nominativo) {
+            case 'Carabinieri':
+                this.f.nominativo.patchValue('Carabinieri');
+                this.f.telefono.patchValue('112');
+                break;
+            case 'Polizia':
+                this.f.nominativo.patchValue('Polizia');
+                this.f.telefono.patchValue('113');
+                break;
+            case 'Ambulanza':
+                this.f.nominativo.patchValue('Ambulanza');
+                this.f.telefono.patchValue('118');
+                break;
+            case 'VV.UU.':
+                this.f.nominativo.patchValue('VV.UU.');
+                this.f.telefono.patchValue('');
+                break;
+            default:
+                break;
+        }
     }
 
     onCopiaIndirizzo(): void {
