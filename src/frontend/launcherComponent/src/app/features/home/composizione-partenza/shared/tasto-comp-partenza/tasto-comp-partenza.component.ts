@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Composizione } from '../../../../shared/enum/composizione.enum';
+import { Composizione } from 'src/app/shared/enum/composizione.enum';
 
 @Component({
     selector: 'app-tasto-comp-partenza',

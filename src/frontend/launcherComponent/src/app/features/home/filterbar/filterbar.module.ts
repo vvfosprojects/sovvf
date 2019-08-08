@@ -10,7 +10,6 @@ import { FilterbarComponent } from './filterbar.component';
 import { ViewModeComponent } from './view-mode/view-mode.component';
 import { FiltriMappaComponent } from './filtri-mappa/filtri-mappa.component';
 import { TastoChiamataComponent } from './tasto-chiamata/tasto-chiamata.component';
-import { TastoCompPartenzaComponent } from './tasto-comp-partenza/tasto-comp-partenza.component';
 import { MarkerMeteoSwitchComponent } from './marker-meteo-switch/marker-meteo-switch.component';
 import { RicercaRichiesteComponent } from './ricerca-richieste/ricerca-richieste.component';
 import { FiltriRichiesteComponent } from './filtri-richieste/filtri-richieste.component';
@@ -36,7 +35,6 @@ import { UiSwitchModule } from 'ngx-ui-switch';
         ViewModeComponent,
         FiltriMappaComponent,
         TastoChiamataComponent,
-        TastoCompPartenzaComponent,
         MarkerMeteoSwitchComponent,
     ],
     exports: [

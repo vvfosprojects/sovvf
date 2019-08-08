@@ -46,10 +46,9 @@ export class EventoRichiestaComponent implements OnInit {
             ['VaInFuoriServizio', ['fa-truck', 'fa-wrench']],
             ['InizioPresaInCarico', ['fa-user', 'fa-wrench']],
             ['Presidiata', ['fa-bullseye']],
-            ['Evento Generico', ['fa-truck', 'fa-question-circle']],
+            ['Evento Generico', ['fa-question-circle']],
             ['Sospesa', ['fa-question-circle']],
-            ['AssegnataPriorita', ['fa-thermometer-half']],
-            ['AssegnataRichiesta', ['fa-phone-square', 'fa-check']]
+            ['AssegnataPriorita', ['fa-thermometer-half']]
         ];
 
         this.myMap = new Map(this.iconeClassiEvento);

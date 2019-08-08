@@ -42,6 +42,7 @@ import { BoxPartenzaState } from '../store/states/composizione-partenza/box-part
 import { PrenotazioneProgressBarComponent } from './shared/prenotazione-progress-bar/prenotazione-progress-bar.component';
 import { ComposizioneButtonsComponent } from './shared/composizione-buttons/composizione-buttons.component';
 import { SganciamentoMezzoModalComponent } from './shared/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
+import { TastoCompPartenzaComponent } from './shared/tasto-comp-partenza/tasto-comp-partenza.component';
 
 @NgModule({
     declarations: [
@@ -54,7 +55,8 @@ import { SganciamentoMezzoModalComponent } from './shared/sganciamento-mezzo-mod
         ComposizioneFilterbarComponent,
         PrenotazioneProgressBarComponent,
         ComposizioneButtonsComponent,
-        SganciamentoMezzoModalComponent
+        SganciamentoMezzoModalComponent,
+        TastoCompPartenzaComponent
     ],
     imports: [
         CommonModule,

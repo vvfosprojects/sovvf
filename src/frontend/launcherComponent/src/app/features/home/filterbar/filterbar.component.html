@@ -15,11 +15,11 @@
         <app-ricerca-richieste [ricerca]="(ricerca$ | async)" (search)="onSearch($event)">
         </app-ricerca-richieste>
       </div>
-      <div *ngIf="(composizioneStatus$ | async)" class="col-4 ml-auto">
+      <!-- <div *ngIf="(composizioneStatus$ | async)" class="col-4 ml-auto">
         <app-tasto-comp-partenza (cambioModalita)="compPartenzaSwitch($event)"
           [compPartenzaMode]="(composizioneMode$ | async)">
         </app-tasto-comp-partenza>
-      </div>
+      </div> -->
     </div>
   </div>
   <div *ngIf="!(composizioneStatus$ | async)" class="col-2">
