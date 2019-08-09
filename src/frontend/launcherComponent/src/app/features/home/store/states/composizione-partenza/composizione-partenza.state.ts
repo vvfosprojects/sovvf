@@ -25,6 +25,7 @@ import { TurnOffComposizione } from '../../actions/view/view.actions';
 import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/richiesta-attivita-utente.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
+import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 
 export interface ComposizionePartenzaStateModel {
     filtri: any;
@@ -265,6 +266,7 @@ export class ComposizionePartenzaState {
         // console.log('Request confirm partenze', action.partenze);
         this.compPartenzaSevice.confermaPartenze(action.partenze).subscribe(() => {
             // console.log('Richiesta aggiornata con le partenze', action.partenze);
+            dispatch(new ClearMarkerRichiestaSelezionato());
             dispatch(new TurnOffComposizione());
         });
     }
