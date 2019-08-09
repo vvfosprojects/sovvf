@@ -267,7 +267,6 @@ export class ComposizionePartenzaState {
         this.compPartenzaSevice.confermaPartenze(action.partenze).subscribe(() => {
             // console.log('Richiesta aggiornata con le partenze', action.partenze);
             dispatch(new ClearMarkerRichiestaSelezionato());
-            dispatch(new TurnOffComposizione());
         });
     }
 
