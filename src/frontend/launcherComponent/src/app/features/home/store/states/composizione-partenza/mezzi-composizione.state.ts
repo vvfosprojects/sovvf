@@ -21,7 +21,8 @@ import {
     SetListaMezziComposizione,
     UnlockMezzoComposizione,
     UnselectMezzoComposizione,
-    UpdateMezzoComposizione
+    UpdateMezzoComposizione,
+    ReducerSelectMezzoComposizione
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
@@ -30,8 +31,11 @@ import { CompPartenzaService } from '../../../../../core/service/comp-partenza-s
 import {
     AddBoxPartenza,
     SelectBoxPartenza,
-    UpdateMezzoBoxPartenza
+    UpdateMezzoBoxPartenza,
+    AddMezzoBoxPartenzaSelezionato
 } from '../../actions/composizione-partenza/box-partenza.actions';
+import { BoxPartenzaState } from './box-partenza.state';
+import { GetListeComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 
 export interface MezziComposizioneStateStateModel {
     mezziComposizione: MezzoComposizione[];
@@ -95,7 +99,7 @@ export class MezziComposizioneState {
     }
 
     constructor(private store: Store,
-                private _compPartenzaService: CompPartenzaService) {
+        private _compPartenzaService: CompPartenzaService) {
     }
 
     @Action(SetListaMezziComposizione)
@@ -142,6 +146,49 @@ export class MezziComposizioneState {
         // console.log('Update mezzo composizione', action.mezzoComp);
     }
 
+    @Action(ReducerSelectMezzoComposizione)
+    reducerSelectMezzoComposizione({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione) {
+        const state = getState();
+        const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
+        const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
+
+        // controllo se lo stato del mezzo è diverso da "In Viaggio" o "Sul Posto"
+        if (action.mezzoComp.mezzo.stato !== 'In Viaggio' && action.mezzoComp.mezzo.stato !== 'Sul Posto') {
+            // controllo se è un mezzo prenotato oppure se è in prenotazione
+            if (state.idMezziPrenotati.indexOf(action.mezzoComp.id) === -1 && state.idMezziInPrenotazione.indexOf(action.mezzoComp.id) === -1) {
+                let addBoxPartenza = false;
+                if (boxPartenzaList.length <= 0) {
+                    addBoxPartenza = true;
+                    this.store.dispatch(new AddBoxPartenza());
+                }
+                setTimeout(() => {
+                    this.store.dispatch(new SelectMezzoComposizione(action.mezzoComp));
+                    const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
+                    if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
+                        this.store.dispatch(new GetListeComposizioneAvanzata(null, null, true));
+                    }
+                    this.store.dispatch(new AddMezzoBoxPartenzaSelezionato(action.mezzoComp));
+                }, calcolaTimeout(addBoxPartenza));
+            } else if (state.idMezziPrenotati.indexOf(action.mezzoComp.id) !== -1) {
+                this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza'));
+            } else if (state.idMezziInPrenotazione.indexOf(action.mezzoComp.id) !== -1) {
+                this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente'));
+            }
+        } else {
+            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + action.mezzoComp.mezzo.stato + ' ed è impegnato in un\'altra richiesta'));
+        }
+
+        function calcolaTimeout(addBoxPartenza: boolean) {
+            let _timeout = 0;
+            if (!addBoxPartenza) {
+                _timeout = 0;
+            } else {
+                _timeout = 10;
+            }
+            return _timeout;
+        }
+    }
+
     @Action(SelectMezzoComposizione)
     selectMezzoComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione) {
         patchState({
@@ -149,7 +196,7 @@ export class MezziComposizioneState {
             idMezzoSelezionato: action.mezzoComp.mezzo.codice
         });
         // dispatch(new SelectMezzo(action.mezzoComp.mezzo.codice));
-        // console.log(action.mezzo);
+        console.log('[SelectMezzoComposizione]', action.mezzoComp);
     }
 
     @Action(UnselectMezzoComposizione)

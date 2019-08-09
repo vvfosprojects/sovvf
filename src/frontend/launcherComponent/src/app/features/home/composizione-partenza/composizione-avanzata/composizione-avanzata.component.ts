@@ -8,7 +8,6 @@ import { SquadraComposizione } from '../interface/squadra-composizione-interface
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
-import { ToastrType } from '../../../../shared/enum/toastr';
 
 // Ngxs
 import { Select, Store } from '@ngxs/store';
@@ -20,14 +19,13 @@ import {
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
     RequestRemoveBookMezzoComposizione,
-    SelectMezzoComposizione,
-    UnselectMezzoComposizione
+    UnselectMezzoComposizione,
+    ReducerSelectMezzoComposizione
 } from '../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
 import {
     AddBoxPartenza,
-    AddMezzoBoxPartenzaSelezionato,
     AddSquadraBoxPartenza, ClearBoxPartenze,
     RemoveBoxPartenza,
     RemoveMezzoBoxPartenzaSelezionato, RemoveSquadraBoxPartenza, RequestAddBoxPartenza, RequestSelectBoxPartenza,
@@ -38,7 +36,6 @@ import {
     SelectSquadraComposizione,
     UnselectSquadraComposizione
 } from '../../store/actions/composizione-partenza/squadre-composizione.actions';
-import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 import {
     ConfirmPartenze,
     GetFiltriComposizione
@@ -106,8 +103,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
 
     constructor(private popoverConfig: NgbPopoverConfig,
-                private tooltipConfig: NgbTooltipConfig,
-                private store: Store) {
+        private tooltipConfig: NgbTooltipConfig,
+        private store: Store) {
 
         // Popover options
         this.popoverConfig.container = 'body';
@@ -224,27 +221,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
-        // controllo se lo stato del mezzo è diverso da "In Viaggio" o "Sul Posto"
-        if (mezzoComposizione.mezzo.stato !== 'In Viaggio' && mezzoComposizione.mezzo.stato !== 'Sul Posto') {
-            // controllo se è un mezzo prenotato oppure se è in prenotazione
-            if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) === -1 && this.idMezziInPrenotazione.indexOf(mezzoComposizione.id) === -1) {
-                if (this.boxPartenzaList.length <= 0) {
-                    this.store.dispatch(new AddBoxPartenza());
-                }
-                this.store.dispatch(new SelectMezzoComposizione(mezzoComposizione));
-                const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
-                if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
-                    this.store.dispatch(new GetListeComposizioneAvanzata(null, null, true));
-                }
-                this.store.dispatch(new AddMezzoBoxPartenzaSelezionato(mezzoComposizione));
-            } else if (this.idMezziPrenotati.indexOf(mezzoComposizione.id) !== -1) {
-                this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza'));
-            } else if (this.idMezziInPrenotazione.indexOf(mezzoComposizione.id) !== -1) {
-                this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente'));
-            }
-        } else {
-            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + mezzoComposizione.mezzo.stato + ' ed è impegnato in un\'altra richiesta'));
-        }
+        this.store.dispatch(new ReducerSelectMezzoComposizione(mezzoComposizione));
         // console.log('Mezzo selezionato', mezzoComposizione);
     }
 

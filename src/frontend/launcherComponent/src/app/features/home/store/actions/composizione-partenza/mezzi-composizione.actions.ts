@@ -33,6 +33,13 @@ export class UpdateMezzoComposizione {
     }
 }
 
+export class ReducerSelectMezzoComposizione {
+    static readonly type = '[MezziComposizione] Reducer Select Mezzo Composizione';
+
+    constructor(public mezzoComp: MezzoComposizione) {
+    }
+}
+
 export class SelectMezzoComposizione {
     static readonly type = '[MezziComposizione] Select Mezzo Composizione';
 
