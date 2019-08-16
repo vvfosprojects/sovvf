@@ -30,7 +30,7 @@ export class ClearMarkerRichiestaHover {
 export class SetMarkerMezzoSelezionato {
     static readonly type = '[Marker] Set Marker Mezzo Selezionato';
 
-    constructor(public markerMezzoSelezionato: string) {
+    constructor(public markerMezzoSelezionato: string, public composizione?: boolean) {
     }
 }
 

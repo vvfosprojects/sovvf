@@ -151,7 +151,9 @@ export class MarkerState {
             if (s && s.mezzo.codice === action.markerMezzoSelezionato) {
                 const uniqueId = 'mezzo-' + action.markerMezzoSelezionato;
                 dispatch(new GetMarkerDatiMeteo(uniqueId, s.coordinate));
-                dispatch(new SetCentroMappa(new CentroMappa(s.coordinate, 18)));
+                if (!action.composizione) {
+                    dispatch(new SetCentroMappa(new CentroMappa(s.coordinate, 18)));
+                }
             }
         });
         patchState({

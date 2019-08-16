@@ -45,6 +45,11 @@ import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-p
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
 import { squadraComposizioneBusy } from '../shared/functions/composizione-functions';
+import {
+    ClearMarkerMezzoHover, ClearMarkerMezzoSelezionato,
+    SetMarkerMezzoHover,
+    SetMarkerMezzoSelezionato
+} from '../../store/actions/maps/marker.actions';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -103,8 +108,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
 
     constructor(private popoverConfig: NgbPopoverConfig,
-        private tooltipConfig: NgbTooltipConfig,
-        private store: Store) {
+                private tooltipConfig: NgbTooltipConfig,
+                private store: Store) {
 
         // Popover options
         this.popoverConfig.container = 'body';
@@ -222,6 +227,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
         this.store.dispatch(new ReducerSelectMezzoComposizione(mezzoComposizione));
+        this.store.dispatch(new ClearMarkerMezzoSelezionato());
+        this.store.dispatch(new SetMarkerMezzoSelezionato(mezzoComposizione.id, true));
         // console.log('Mezzo selezionato', mezzoComposizione);
     }
 
@@ -233,16 +240,23 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             this.store.dispatch(new GetListeComposizioneAvanzata(null, null, true));
         }
         this.store.dispatch(new RemoveMezzoBoxPartenzaSelezionato(mezzoComposizione));
+        this.store.dispatch(new ClearMarkerMezzoSelezionato());
         this.clearDirection.emit();
         // console.log('Mezzo deselezionato', mezzoComposizione);
     }
 
     mezzoHoverIn(mezzoComposizione: MezzoComposizione) {
-        this.store.dispatch(new HoverInMezzoComposizione(mezzoComposizione.id));
+        this.store.dispatch([
+            new HoverInMezzoComposizione(mezzoComposizione.id),
+            new SetMarkerMezzoHover(mezzoComposizione.id)
+        ]);
     }
 
     mezzoHoverOut(mezzoComposizione: MezzoComposizione) {
-        this.store.dispatch(new HoverOutMezzoComposizione(mezzoComposizione.id));
+        this.store.dispatch([
+            new HoverOutMezzoComposizione(mezzoComposizione.id),
+            new ClearMarkerMezzoHover()
+        ]);
     }
 
     squadraSelezionata(squadraComposizione: SquadraComposizione) {
