@@ -164,7 +164,6 @@ export class MarkerState {
 
     @Action(ClearMarkerMezzoSelezionato)
     clearMarkerMezzoSelezionato({ patchState }: StateContext<MarkerStateModel>) {
-
         patchState({
             markerMezzoSelezionato: markerStateDefaults.markerMezzoSelezionato
         });

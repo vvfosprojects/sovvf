@@ -22,7 +22,7 @@ import {
     UnlockMezzoComposizione,
     UnselectMezzoComposizione,
     UpdateMezzoComposizione,
-    ReducerSelectMezzoComposizione
+    ReducerSelectMezzoComposizione, SelectMezzoComposizioneFromMappa
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
@@ -36,6 +36,7 @@ import {
 } from '../../actions/composizione-partenza/box-partenza.actions';
 import { BoxPartenzaState } from './box-partenza.state';
 import { GetListeComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
+import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
 
 export interface MezziComposizioneStateStateModel {
     mezziComposizione: MezzoComposizione[];
@@ -99,7 +100,7 @@ export class MezziComposizioneState {
     }
 
     constructor(private store: Store,
-        private _compPartenzaService: CompPartenzaService) {
+                private _compPartenzaService: CompPartenzaService) {
     }
 
     @Action(SetListaMezziComposizione)
@@ -153,7 +154,7 @@ export class MezziComposizioneState {
         const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
 
         // controllo se lo stato del mezzo è diverso da "In Viaggio" o "Sul Posto"
-        if (action.mezzoComp.mezzo.stato !== 'In Viaggio' && action.mezzoComp.mezzo.stato !== 'Sul Posto') {
+        if (!mezzoComposizioneBusy(action.mezzoComp.mezzo.stato)) {
             // controllo se è un mezzo prenotato oppure se è in prenotazione
             if (state.idMezziPrenotati.indexOf(action.mezzoComp.id) === -1 && state.idMezziInPrenotazione.indexOf(action.mezzoComp.id) === -1) {
                 let addBoxPartenza = false;
@@ -189,6 +190,25 @@ export class MezziComposizioneState {
         }
     }
 
+    @Action(SelectMezzoComposizioneFromMappa)
+    selectMezzoComposizioneFromMappa({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizioneFromMappa) {
+        if (action && action.mezzoId) {
+            // console.log('selectMezzoComposizioneFromMappa', action.mezzoId);
+            const mezzoComposizione = getState().mezziComposizione.filter(mezzo => mezzo.mezzo.codice === action.mezzoId);
+            if (mezzoComposizione && mezzoComposizione[0]) {
+                const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
+                if (boxPartenzaList.length === 0) {
+                    dispatch(new ReducerSelectMezzoComposizione(mezzoComposizione[0]));
+                } else {
+                    const mezzoInList = boxPartenzaList.filter( boxPartenza => boxPartenza.mezzoComposizione.mezzo.codice === action.mezzoId);
+                    mezzoInList && mezzoInList[0] ? console.log('Mezzo già selezionato') : dispatch(new ReducerSelectMezzoComposizione(mezzoComposizione[0]));
+                }
+            } else {
+                console.error('id mezzo non trovato');
+            }
+        }
+    }
+
     @Action(SelectMezzoComposizione)
     selectMezzoComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione) {
         patchState({
@@ -200,13 +220,11 @@ export class MezziComposizioneState {
     }
 
     @Action(UnselectMezzoComposizione)
-    unselectMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UnselectMezzoComposizione) {
+    unselectMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>) {
         patchState({
             idMezzoComposizioneSelezionato: null,
             idMezzoSelezionato: null
         });
-        // dispatch(new UnselectMezzo(action.mezzoComp.mezzo.codice));
-        // console.log(action.mezzo);
     }
 
     @Action(ClearSelectedMezziComposizione)

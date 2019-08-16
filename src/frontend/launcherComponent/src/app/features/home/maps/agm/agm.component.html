@@ -199,7 +199,9 @@
                                         [showCloseButton]="false">
                                     <ng-template>
                                         <app-info-window [mezzoMarker]="mezzoMarker"
-                                                         [datiMeteo]="findDatiMeteo('mezzo-'+mezzoMarker.mezzo.codice)">
+                                                         [datiMeteo]="findDatiMeteo('mezzo-'+mezzoMarker.mezzo.codice)"
+                                                         [inComposizione]="viewStateMappa.active === AppFeatures.ComposizionePartenza"
+                                                         (addMezzoComposizione)="onAddMezzoComposizione($event)">
                                         </app-info-window>
                                     </ng-template>
                                 </agm-snazzy-info-window>

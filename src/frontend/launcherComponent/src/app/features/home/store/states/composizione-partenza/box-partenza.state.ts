@@ -125,7 +125,7 @@ export class BoxPartenzaState {
         const state = getState();
         // Deseleziono il mezzo selezionato
         if (action.boxPartenza.mezzoComposizione) {
-            dispatch(new UnselectMezzoComposizione(action.boxPartenza.mezzoComposizione));
+            dispatch(new UnselectMezzoComposizione());
         }
         // Deseleziono le squadre selezionate
         if (action.boxPartenza.squadraComposizione) {
@@ -167,7 +167,7 @@ export class BoxPartenzaState {
             if (box.mezzoComposizione && box.mezzoComposizione.mezzo.codice === action.idMezzo) {
                 boxPartenza = box;
                 dispatch(new RemoveBoxPartenza(boxPartenza));
-                dispatch(new UnselectMezzoComposizione(boxPartenza.mezzoComposizione));
+                dispatch(new UnselectMezzoComposizione());
                 boxPartenza.squadraComposizione.forEach((squadraComp: SquadraComposizione) => {
                     dispatch(new UnselectSquadraComposizione(squadraComp));
                 });
@@ -295,7 +295,7 @@ export class BoxPartenzaState {
     }
 
     @Action(RemoveMezzoBoxPartenzaSelezionato)
-    removeMezzoBoxPartenzaSelezionato({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: RemoveMezzoBoxPartenzaSelezionato) {
+    removeMezzoBoxPartenzaSelezionato({ getState, setState }: StateContext<BoxPartenzaStateModel>) {
         const state = getState();
         setState(
             produce(state, draft => {

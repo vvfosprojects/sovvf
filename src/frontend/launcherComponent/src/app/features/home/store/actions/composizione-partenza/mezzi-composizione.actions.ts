@@ -40,6 +40,13 @@ export class ReducerSelectMezzoComposizione {
     }
 }
 
+export class SelectMezzoComposizioneFromMappa {
+    static readonly type = '[MezziComposizione] Select Mezzo Composizione From Mappa';
+
+    constructor(public mezzoId: string) {
+    }
+}
+
 export class SelectMezzoComposizione {
     static readonly type = '[MezziComposizione] Select Mezzo Composizione';
 
@@ -49,9 +56,6 @@ export class SelectMezzoComposizione {
 
 export class UnselectMezzoComposizione {
     static readonly type = '[MezziComposizione] Unselect Mezzo Composizione';
-
-    constructor(public mezzoComp: MezzoComposizione) {
-    }
 }
 
 export class ClearSelectedMezziComposizione {

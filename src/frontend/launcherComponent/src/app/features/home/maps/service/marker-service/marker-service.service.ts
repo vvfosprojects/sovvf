@@ -51,8 +51,13 @@ import { MarkerInfoWindowState } from '../../../store/states/maps/marker-info-wi
 import { MarkerDatiMeteo } from '../../maps-model/marker-dati-meteo.interface';
 import { MarkerOpachiState, MarkerOpachiStateModel } from '../../../store/states/maps/marker-opachi.state';
 import { CustomButtonsMaps } from '../../maps-interface/maps-custom-buttons';
-import { CentraMappaButton, ToggleAnimation, ToggleAnimationButton } from '../../../store/actions/maps/maps-buttons.actions';
+import {
+    CentraMappaButton,
+    ToggleAnimation,
+    ToggleAnimationButton
+} from '../../../store/actions/maps/maps-buttons.actions';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
+import { SelectMezzoComposizioneFromMappa } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
 
 
 @Injectable()
@@ -480,6 +485,10 @@ export class MarkerService implements OnDestroy {
                 this.store.dispatch(new ToggleAnimationButton());
                 break;
         }
+    }
+
+    onAddMezzoComposizione(idMezzo: string): void {
+        this.store.dispatch(new SelectMezzoComposizioneFromMappa(idMezzo));
     }
 
 }

@@ -286,4 +286,8 @@ export class AgmComponent implements OnDestroy {
         this.markerService.onCustomButtonClick($event);
     }
 
+    onAddMezzoComposizione(idMezzo: string): void {
+        this.markerService.onAddMezzoComposizione(idMezzo);
+    }
+
 }

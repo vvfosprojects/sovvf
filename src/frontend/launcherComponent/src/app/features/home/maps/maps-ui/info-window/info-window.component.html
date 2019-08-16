@@ -129,7 +129,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngIf="!compact">
+            <tr *ngIf="!compact && mezzoMarker.id_richiesta && mezzoMarker.tipologie_richiesta">
                 <th scope="row" class="py-1 s-info-window">
                     <span *ngIf="!!mezzoMarker.tipologie_richiesta[0]"
                           ngbTooltip="Tipologia Richiesta {{mezzoMarker.id_richiesta}}">
@@ -177,6 +177,13 @@
                             <i class='fa fa-flag fa-fw'
                                [ngClass]="methods.dettagliMezzo(mezzoMarker.mezzo.appartenenza, 'appartenenza', 'text')"></i>
                         </a>
+                    </div>
+                </th>
+            </tr>
+            <tr *ngIf="!compact && inComposizione">
+                <th scope="row" class="py-1 s-info-window">
+                    <div class="text-info font-weight-bold cursor-pointer" (click)="onAddMezzoComposizione(mezzoMarker)">
+                        Aggiungi in partenza
                     </div>
                 </th>
             </tr>

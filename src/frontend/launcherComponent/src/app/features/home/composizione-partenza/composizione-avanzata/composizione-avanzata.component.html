@@ -39,7 +39,7 @@
                                 [itemInPrenotazione]="idMezziInPrenotazione.indexOf(mC.id) !== -1"
                                 [itemPrenotato]="idMezziPrenotati.indexOf(mC.id) !== -1"
                                 [itemBloccato]="idMezziBloccati.indexOf(mC.id) !== -1" [richiesta]="richiesta"
-                                (selezionato)="mezzoSelezionato($event)" (deselezionato)="mezzoDeselezionato($event)"
+                                (selezionato)="mezzoSelezionato($event)" (deselezionato)="mezzoDeselezionato()"
                                 (hoverIn)="mezzoHoverIn($event)" (hoverOut)="mezzoHoverOut($event)"
                                 (mezzoCoordinate)="mezzoCoordinate($event)" (sganciamento)="sganciamento.emit($event)">
         </app-mezzo-composizione>

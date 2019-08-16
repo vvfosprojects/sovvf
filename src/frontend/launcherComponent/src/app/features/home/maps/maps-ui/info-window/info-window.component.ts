@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Meteo } from '../../../../../shared/model/meteo.model';
 import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
 import { SedeMarker } from '../../maps-model/sede-marker.model';
@@ -14,6 +14,7 @@ import { Observable, Subscription } from 'rxjs';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { Store } from '@ngxs/store';
 import { RichiesteState } from '../../../store/states/richieste/richieste.state';
+import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
 
 @Component({
     selector: 'app-info-window',
@@ -30,6 +31,8 @@ export class InfoWindowComponent implements OnInit {
     @Input() mezzoMarker: MezzoMarker;
     @Input() meteoMarker: MeteoMarker;
     @Input() tipoSedeIcona: string;
+    @Input() inComposizione: boolean;
+    @Output() addMezzoComposizione = new EventEmitter<string>();
 
     clickedPopover: NgbPopover;
     methods = new HelperSintesiRichiesta;
@@ -59,7 +62,11 @@ export class InfoWindowComponent implements OnInit {
                         richiesta = r;
 
                         if (richiesta) {
-                            const modal = this._modalService.open(SintesiRichiestaModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+                            const modal = this._modalService.open(SintesiRichiestaModalComponent, {
+                                windowClass: 'xlModal',
+                                backdropClass: 'light-blue-backdrop',
+                                centered: true
+                            });
                             modal.componentInstance.richiesta = richiesta;
                             this.subscriptionRichiestaById.unsubscribe();
                         }
@@ -79,4 +86,14 @@ export class InfoWindowComponent implements OnInit {
         popover.open();
         this.clickedPopover = popover;
     }
+
+    onAddMezzoComposizione(mezzoMarker: MezzoMarker) {
+        console.log(mezzoMarker);
+        if (!mezzoComposizioneBusy(mezzoMarker.mezzo.stato)) {
+            this.addMezzoComposizione.emit(mezzoMarker.mezzo.codice);
+        } else {
+            console.log('Apri modal component per lo sganciamento');
+        }
+    }
+
 }
