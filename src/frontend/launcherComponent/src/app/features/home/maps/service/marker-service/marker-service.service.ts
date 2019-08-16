@@ -57,7 +57,10 @@ import {
     ToggleAnimationButton
 } from '../../../store/actions/maps/maps-buttons.actions';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
-import { SelectMezzoComposizioneFromMappa } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
+import {
+    HoverInMezzoComposizione, HoverOutMezzoComposizione,
+    SelectMezzoComposizioneFromMappa
+} from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
 
 
 @Injectable()
@@ -410,16 +413,22 @@ export class MarkerService implements OnDestroy {
         }
     }
 
-    actionMezzoMarker(id: string, mouse: MouseE) {
+    actionMezzoMarker(id: string, mouse: MouseE, composizione: boolean) {
         switch (mouse) {
             case MouseE.HoverIn: {
                 this.store.dispatch(new SetMarkerMezzoHover(id));
                 this.selfHoveredMarker = `mezzo-${id}`;
+                if (composizione) {
+                    this.store.dispatch(new HoverInMezzoComposizione(id));
+                }
             }
                 break;
             case MouseE.HoverOut: {
                 this.store.dispatch(new ClearMarkerMezzoHover());
                 this.selfHoveredMarker = ``;
+                if (composizione) {
+                    this.store.dispatch(new HoverOutMezzoComposizione());
+                }
             }
                 break;
             case MouseE.Click: {
