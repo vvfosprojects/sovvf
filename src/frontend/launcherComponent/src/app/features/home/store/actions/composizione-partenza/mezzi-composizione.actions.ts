@@ -71,9 +71,6 @@ export class HoverInMezzoComposizione {
 
 export class HoverOutMezzoComposizione {
     static readonly type = '[MezziComposizione] Hover Out Mezzo Composizione';
-
-    constructor(public idMezzoComp: string) {
-    }
 }
 
 export class RequestBookMezzoComposizione {

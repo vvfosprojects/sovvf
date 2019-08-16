@@ -236,23 +236,17 @@ export class MezziComposizioneState {
     }
 
     @Action(HoverInMezzoComposizione)
-    hoverInMezzoComposizione({ getState, patchState }: StateContext<MezziComposizioneStateStateModel>, action: HoverInMezzoComposizione) {
-        const state = getState();
+    hoverInMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>, action: HoverInMezzoComposizione) {
         patchState({
-            ...state,
             idMezzoComposizioneHover: action.idMezzoComp
         });
-        // console.log(action.idMezzoComp);
     }
 
     @Action(HoverOutMezzoComposizione)
-    hoverOutMezzoComposizione({ getState, patchState }: StateContext<MezziComposizioneStateStateModel>, action: HoverOutMezzoComposizione) {
-        const state = getState();
+    hoverOutMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>) {
         patchState({
-            ...state,
             idMezzoComposizioneHover: null
         });
-        // console.log(action.mezzoComp);
     }
 
     @Action(RequestBookMezzoComposizione)

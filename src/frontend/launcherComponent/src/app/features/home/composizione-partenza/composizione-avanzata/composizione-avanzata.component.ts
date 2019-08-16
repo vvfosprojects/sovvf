@@ -256,9 +256,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         ]);
     }
 
-    mezzoHoverOut(mezzoComposizione: MezzoComposizione) {
+    mezzoHoverOut() {
         this.store.dispatch([
-            new HoverOutMezzoComposizione(mezzoComposizione.id),
+            new HoverOutMezzoComposizione(),
             new ClearMarkerMezzoHover()
         ]);
     }
