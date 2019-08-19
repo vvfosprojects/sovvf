@@ -22,12 +22,14 @@ import { makeCopy } from '../../../../../shared/helper/function';
 
 export interface PreAccoppiatiStateModel {
     preAccoppiati: BoxPartenza[];
+    idPreAccoppiati: string[];
     idPreAccoppiatoSelezionato: string;
     idPreAccoppiatiSelezionati: string[];
 }
 
 export const PreAccoppiatiStateModelStateDefaults: PreAccoppiatiStateModel = {
     preAccoppiati: [],
+    idPreAccoppiati: [],
     idPreAccoppiatoSelezionato: null,
     idPreAccoppiatiSelezionati: []
 };
