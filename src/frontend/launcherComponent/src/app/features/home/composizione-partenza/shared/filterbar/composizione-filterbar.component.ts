@@ -13,6 +13,7 @@ import { TurnOffComposizione, SwitchComposizione } from '../../../store/actions/
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
 import { ViewComponentState } from '../../../store/states/view/view.state';
 import { Observable } from 'rxjs';
+import { FiltriComposizione } from '../../interface/filtri/filtri-composizione-interface';
 
 @Component({
     selector: 'app-composizione-filterbar',
@@ -56,14 +57,13 @@ export class ComposizioneFilterbarComponent {
         const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
         const codiceMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato);
         const codiceSquadra = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
-        const idRichiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id;
-        const filtri = {
-            'CodiceDistaccamento': filtriSelezionati ? filtriSelezionati.CodiceDistaccamento : [],
-            'CodiceTipoMezzo': filtriSelezionati ? filtriSelezionati.CodiceTipoMezzo : [],
-            'CodiceStatoMezzo': filtriSelezionati ? filtriSelezionati.CodiceStatoMezzo : [],
-            'CodiceMezzo': codiceMezzo ? codiceMezzo : [],
-            'CodiceSquadra': codiceSquadra ? codiceSquadra : [],
-            'idRichiesta': idRichiesta
+        const filtri: FiltriComposizione = {
+            CodiceDistaccamento: filtriSelezionati ? filtriSelezionati.CodiceDistaccamento : [],
+            CodiceTipoMezzo: filtriSelezionati ? filtriSelezionati.CodiceTipoMezzo : [],
+            CodiceStatoMezzo: filtriSelezionati ? filtriSelezionati.CodiceStatoMezzo : [],
+            CodiceMezzo: codiceMezzo ? [codiceMezzo] : [],
+            CodiceSquadra: codiceSquadra ? codiceSquadra : [],
+            idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id
         };
         this.store.dispatch(new UpdateListe(filtri));
     }

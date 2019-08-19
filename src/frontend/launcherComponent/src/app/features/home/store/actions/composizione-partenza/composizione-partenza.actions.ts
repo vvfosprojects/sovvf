@@ -1,35 +1,39 @@
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
+import { ListaFiltriComposizione } from '../../../composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
+import {
+    FiltriComposizione
+} from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 
 export class GetFiltriComposizione {
-    static readonly type = '[FiltriComposizione] Get Filtri';
+    static readonly type = '[FiltriComposizione] Get Lista Filtri';
 }
 
 export class SetFiltriComposizione {
-    static readonly type = '[FiltriComposizione] Set Filtri';
+    static readonly type = '[FiltriComposizione] Set Lista Filtri';
 
-    constructor(public filtri: any) {
+    constructor(public filtri: ListaFiltriComposizione) {
     }
 }
 
 export class UpdateListe {
-    static readonly type = '[FiltriComposizione] Update Liste';
+    static readonly type = '[FiltriComposizione] Update Filtri Selezionati';
 
-    constructor(public filtri: any) {
+    constructor(public filtri: FiltriComposizione) {
     }
 }
 
 export class AddFiltroSelezionatoComposizione {
     static readonly type = '[FiltriComposizione] Add Filtro Selezionato';
 
-    constructor(public filtro: any, public tipo: string) {
+    constructor(public id: string, public tipo: string) {
     }
 }
 
 export class RemoveFiltroSelezionatoComposizione {
     static readonly type = '[FiltriComposizione] Remove Filtro Selezionato';
 
-    constructor(public filtro: any, public tipo: string) {
+    constructor(public id: string, public tipo: string) {
     }
 }
 

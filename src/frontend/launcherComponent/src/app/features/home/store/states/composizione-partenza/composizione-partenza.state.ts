@@ -15,20 +15,36 @@ import { ComposizionePartenzaStateModel } from './composizione-partenza.state';
 import { FilterbarService } from '../../../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
-import { ClearComposizioneVeloce, ClearListaComposizioneVeloce, GetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
+import {
+    ClearComposizioneVeloce,
+    ClearListaComposizioneVeloce,
+    GetListaComposizioneVeloce
+} from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import { ClearComposizioneAvanzata, GetListeComposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
-import { ClearListaMezziComposizione, ClearMezzoComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import { ClearListaSquadreComposizione, ClearSquadraComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import {
+    ClearComposizioneAvanzata,
+    GetListeComposizioneAvanzata,
+    UnselectMezziAndSquadreComposizioneAvanzata
+} from '../../actions/composizione-partenza/composizione-avanzata.actions';
+import {
+    ClearListaMezziComposizione,
+    ClearMezzoComposizione
+} from '../../actions/composizione-partenza/mezzi-composizione.actions';
+import {
+    ClearListaSquadreComposizione,
+    ClearSquadraComposizione
+} from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { TurnOffComposizione } from '../../actions/view/view.actions';
 import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/richiesta-attivita-utente.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
+import { ListaFiltriComposizione } from '../../../composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
+import { FiltriComposizioneFilterbar } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 
 export interface ComposizionePartenzaStateModel {
-    filtri: any;
+    filtri: ListaFiltriComposizione;
     codiceDistaccamento: any[];
     codiceTipoMezzo: any[];
     codiceStatoMezzo: any[];
@@ -59,11 +75,11 @@ export class ComposizionePartenzaState {
     }
 
     @Selector()
-    static filtriSelezionati(state: ComposizionePartenzaStateModel) {
+    static filtriSelezionati(state: ComposizionePartenzaStateModel): FiltriComposizioneFilterbar {
         return {
-            'CodiceDistaccamento': state.codiceDistaccamento,
-            'CodiceTipoMezzo': state.codiceTipoMezzo,
-            'CodiceStatoMezzo': state.codiceStatoMezzo
+            CodiceDistaccamento: state.codiceDistaccamento,
+            CodiceTipoMezzo: state.codiceTipoMezzo,
+            CodiceStatoMezzo: state.codiceStatoMezzo
         };
     }
 
@@ -87,12 +103,12 @@ export class ComposizionePartenzaState {
     }
 
     constructor(private filterbar: FilterbarService,
-        private compPartenzaSevice: CompPartenzaService) {
+                private compPartenzaSevice: CompPartenzaService) {
     }
 
     @Action(GetFiltriComposizione)
     getFiltriComposizione({ dispatch }: StateContext<ComposizionePartenzaStateModel>) {
-        this.filterbar.getFiltri().subscribe((filtri: any) => {
+        this.filterbar.getFiltri().subscribe((filtri: ListaFiltriComposizione) => {
             dispatch(new SetFiltriComposizione(filtri));
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore GetFiltriComposizione', 'Il server web non risponde', 5)));
     }
@@ -102,22 +118,19 @@ export class ComposizionePartenzaState {
         patchState({
             filtri: action.filtri
         });
-
+        console.log('setFiltriComposizione', action);
         const state = getState();
         const composizioneMode = state.composizioneMode;
+        const objFiltriSelezionati: FiltriComposizioneFilterbar = {
+            CodiceDistaccamento: state.codiceDistaccamento,
+            CodiceTipoMezzo: state.codiceTipoMezzo,
+            CodiceStatoMezzo: state.codiceStatoMezzo
+        };
+        // Todo: come fanno a essere già selezionati?
+        console.log('objFiltriSelezionati', objFiltriSelezionati);
         if (composizioneMode === Composizione.Avanzata) {
-            const objFiltriSelezionati = {
-                'CodiceDistaccamento': state.codiceDistaccamento,
-                'CodiceTipoMezzo': state.codiceTipoMezzo,
-                'CodiceStatoMezzo': state.codiceStatoMezzo
-            };
             dispatch(new GetListeComposizioneAvanzata(objFiltriSelezionati));
         } else if (composizioneMode === Composizione.Veloce) {
-            const objFiltriSelezionati = {
-                'CodiceDistaccamento': state.codiceDistaccamento,
-                'CodiceTipoMezzo': state.codiceTipoMezzo,
-                'CodiceStatoMezzo': state.codiceStatoMezzo
-            };
             dispatch(new GetListaComposizioneVeloce(objFiltriSelezionati));
         }
     }
@@ -136,27 +149,27 @@ export class ComposizionePartenzaState {
 
     @Action(AddFiltroSelezionatoComposizione)
     addFiltroSelezionatoComposizione(ctx: StateContext<ComposizionePartenzaStateModel>, action: AddFiltroSelezionatoComposizione) {
-        console.log('Filtro selezionato', action.filtro);
+        console.log('Filtro selezionato', action.id);
         // const state = ctx.getState();
         switch (action.tipo) {
             case 'codiceDistaccamento':
                 ctx.setState(
                     patch({
-                        codiceDistaccamento: insertItem(action.filtro)
+                        codiceDistaccamento: insertItem(action.id)
                     })
                 );
                 break;
             case 'codiceTipoMezzo':
                 ctx.setState(
                     patch({
-                        codiceTipoMezzo: insertItem(action.filtro)
+                        codiceTipoMezzo: insertItem(action.id)
                     })
                 );
                 break;
             case 'codiceStatoMezzo':
                 ctx.setState(
                     patch({
-                        codiceStatoMezzo: insertItem(action.filtro)
+                        codiceStatoMezzo: insertItem(action.id)
                     })
                 );
                 break;
@@ -165,26 +178,26 @@ export class ComposizionePartenzaState {
 
     @Action(RemoveFiltroSelezionatoComposizione)
     removeFiltroSelezionatoComposizione(ctx: StateContext<ComposizionePartenzaStateModel>, action: RemoveFiltroSelezionatoComposizione) {
-        console.log('Filtro deselezionato', action.filtro);
+        console.log('Filtro deselezionato', action.id);
         switch (action.tipo) {
             case 'codiceDistaccamento':
                 ctx.setState(
                     patch({
-                        codiceDistaccamento: removeItem(filtro => filtro === action.filtro)
+                        codiceDistaccamento: removeItem(filtro => filtro === action.id)
                     })
                 );
                 break;
             case 'codiceTipoMezzo':
                 ctx.setState(
                     patch({
-                        codiceTipoMezzo: removeItem(filtro => filtro === action.filtro)
+                        codiceTipoMezzo: removeItem(filtro => filtro === action.id)
                     })
                 );
                 break;
             case 'codiceStatoMezzo':
                 ctx.setState(
                     patch({
-                        codiceStatoMezzo: removeItem(filtro => filtro === action.filtro)
+                        codiceStatoMezzo: removeItem(filtro => filtro === action.id)
                     })
                 );
                 break;
@@ -193,7 +206,7 @@ export class ComposizionePartenzaState {
 
     @Action(RemoveFiltriSelezionatiComposizione)
     removeFiltriSelezionatiComposizione(ctx: StateContext<ComposizionePartenzaStateModel>, action: RemoveFiltriSelezionatiComposizione) {
-        console.log('Filtro deselezionati', action.tipo);
+        console.log('Filtri deselezionati', action.tipo);
         switch (action.tipo) {
             case 'codiceDistaccamento':
                 ctx.setState(
@@ -220,13 +233,11 @@ export class ComposizionePartenzaState {
     }
 
     @Action(RichiestaComposizione)
-    richiestaComposizione({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: RichiestaComposizione) {
-        const state = getState();
-        dispatch(new AddInLavorazione(action.richiesta));
+    richiestaComposizione({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: RichiestaComposizione) {
         patchState({
-            ...state,
             richiesta: action.richiesta
         });
+        dispatch(new AddInLavorazione(action.richiesta));
     }
 
     @Action(ToggleComposizioneMode)

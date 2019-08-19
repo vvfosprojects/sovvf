@@ -25,6 +25,7 @@ import {
     squadraComposizioneBusy
 } from '../../../composizione-partenza/shared/functions/composizione-functions';
 import { RemoveBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
+import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: Array<any>;
@@ -54,37 +55,37 @@ export class ComposizioneAvanzataState {
 
     @Action(GetListeComposizioneAvanzata)
     getListeComposizioneAvanzata({ getState, dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: GetListeComposizioneAvanzata) {
-        const filtri = {};
+        const filtri = {} as FiltriComposizione;
         if (action.filtri) {
-            filtri['CodiceDistaccamento'] = action.filtri.CodiceDistaccamento.length > 0 ? action.filtri.CodiceDistaccamento : [''];
-            filtri['CodiceStatoMezzo'] = action.filtri.CodiceStatoMezzo.length > 0 ? action.filtri.CodiceStatoMezzo : [''];
-            filtri['CodiceTipoMezzo'] = action.filtri.CodiceTipoMezzo.length > 0 ? action.filtri.CodiceTipoMezzo : [''];
+            filtri.CodiceDistaccamento = action.filtri.CodiceDistaccamento.length > 0 ? action.filtri.CodiceDistaccamento : [''];
+            filtri.CodiceStatoMezzo = action.filtri.CodiceStatoMezzo.length > 0 ? action.filtri.CodiceStatoMezzo : [''];
+            filtri.CodiceTipoMezzo = action.filtri.CodiceTipoMezzo.length > 0 ? action.filtri.CodiceTipoMezzo : [''];
         } else {
-            filtri['CodiceDistaccamento'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceDistaccamento.length > 0 ?
+            filtri.CodiceDistaccamento = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceDistaccamento.length > 0 ?
                 this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
-            filtri['CodiceStatoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceStatoMezzo.length > 0 ?
+            filtri.CodiceStatoMezzo = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceStatoMezzo.length > 0 ?
                 this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
-            filtri['CodiceTipoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo.length > 0 ?
+            filtri.CodiceTipoMezzo = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo.length > 0 ?
                 this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
         }
-        filtri['idRichiesta'] = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
+        filtri.idRichiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
         // filtri['idRichiesta'] = '1';
 
         // imposto il codice del mezzo selezionato se presente
         const codiceMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoComposizioneSelezionato);
 
         if (action.onlyMezziComposizione && codiceMezzo && codiceMezzo.length > 0) {
-            filtri['CodiceMezzo'] = [codiceMezzo];
+            filtri.CodiceMezzo = [codiceMezzo];
         } else {
-            filtri['CodiceMezzo'] = [''];
+            filtri.CodiceMezzo = [''];
         }
         // imposto il codice delle squadre selezionate se presenti
         const codiceSquadre = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
 
         if (action.onlySquadreComposizione && codiceSquadre && codiceSquadre.length > 0) {
-            filtri['CodiceSquadra'] = codiceSquadre;
+            filtri.CodiceSquadra = codiceSquadre;
         } else {
-            filtri['CodiceSquadra'] = [''];
+            filtri.CodiceSquadra = [''];
         }
 
         console.log(filtri);

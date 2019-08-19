@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError, retry, tap } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { handleError } from '../../../shared/helper/handleError';
+import { FiltriComposizione } from '../../../features/home/composizione-partenza/interface/filtri/filtri-composizione-interface';
+import { ListaComposizioneAvanzata } from '../../../features/home/composizione-partenza/interface/lista-composizione-avanzata-interface';
 
 const API_URL_COMPOSIZIONE = environment.apiUrl.composizione;
 
@@ -14,14 +16,15 @@ export class CompPartenzaService {
     }
 
     getPreAccoppiati(filtri: any): Observable<any> {
+        // Todo: modificare perchè i filtri non vengono passati, tutti i dati arrivano con il controller getListeComposizioneAvanzata
         return this.http.get(API_URL_COMPOSIZIONE.preaccoppiati).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
-    getListeComposizioneAvanzata(filtri: any): Observable<any> {
-        return this.http.post(API_URL_COMPOSIZIONE.avanzata, filtri).pipe(
+    getListeComposizioneAvanzata(filtri: FiltriComposizione): Observable<ListaComposizioneAvanzata> {
+        return this.http.post<ListaComposizioneAvanzata>(API_URL_COMPOSIZIONE.avanzata, filtri).pipe(
             retry(3),
             catchError(handleError)
         );
