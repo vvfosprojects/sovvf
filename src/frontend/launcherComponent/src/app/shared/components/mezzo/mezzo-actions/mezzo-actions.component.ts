@@ -43,7 +43,7 @@ export class MezzoActionsComponent implements OnInit {
         return calcolaActionSuggeritaMezzo(mezzo);
     }
 
-    statoMezzoColor(stato: StatoMezzo) {
+    statoMezzoColor(stato: string) {
         return statoMezzoColor(stato);
     }
 }

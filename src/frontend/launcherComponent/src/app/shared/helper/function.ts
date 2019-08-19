@@ -152,22 +152,22 @@ export function statoMezzoActionsEnumToStringArray(exceptStato?: string[]) {
     return stringArray;
 }
 
-export function statoMezzoColor(stato: StatoMezzo) {
+export function statoMezzoColor(stato: string) {
     let _returnColor = '';
     switch (stato) {
-        case StatoMezzo.InSede:
+        case 'In Sede':
             _returnColor = 'success';
             break;
-        case StatoMezzo.InViaggio:
+        case 'In Viaggio':
             _returnColor = 'warning';
             break;
-        case StatoMezzo.SulPosto:
+        case 'Sul Posto':
             _returnColor = 'danger';
             break;
-        case StatoMezzo.InRientro:
+        case 'In Rientro':
             _returnColor = 'verdemela';
             break;
-        case StatoMezzo.Istituto:
+        case 'Istituto':
             _returnColor = 'secondary';
             break;
     }
@@ -196,26 +196,13 @@ export function statoMezzoBorderClass(stato: StatoMezzo) {
     return _returnClass;
 }
 
-export function calcolaActionSuggeritaRichiesta(richiesta: SintesiRichiesta) {
-    let actionSuggerita = '';
+export function calcolaActionSuggeritaRichiesta(richiesta: SintesiRichiesta): StatoRichiestaActions {
     switch (richiesta.stato) {
         case StatoRichiesta.Chiusa:
-            actionSuggerita = 'Riaperta';
-            break;
-        case StatoRichiesta.Sospesa:
-            actionSuggerita = StatoRichiesta.Chiusa;
-            break;
-        case StatoRichiesta.Assegnata:
-            actionSuggerita = StatoRichiesta.Chiusa;
-            break;
-        case StatoRichiesta.Presidiata:
-            actionSuggerita = StatoRichiesta.Chiusa;
-            break;
-        case StatoRichiesta.Chiamata:
-            actionSuggerita = StatoRichiesta.Chiusa;
-            break;
+            return StatoRichiestaActions.Riaperta;
+        default:
+            return StatoRichiestaActions.Chiusa;
     }
-    return actionSuggerita;
 }
 
 

@@ -4,7 +4,6 @@ import { Mezzo } from '../../model/mezzo.model';
 import { HelperComposizione } from '../../../features/home/composizione-partenza/shared/helper/_helper-composizione';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
-import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { StatoMezzoActions } from '../../enum/stato-mezzo-actions.enum';
 import { statoMezzoColor } from '../../helper/function';
 
@@ -63,7 +62,7 @@ export class MezzoComponent implements OnInit {
         // console.log('Mezzo ' + this.mezzo.descrizione + ' arrivato sul posto.');
     }
 
-    statoMezzoColor(stato: StatoMezzo) {
+    statoMezzoColor(stato: string) {
         return statoMezzoColor(stato);
     }
 }
