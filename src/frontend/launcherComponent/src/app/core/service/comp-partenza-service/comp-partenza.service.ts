@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { handleError } from '../../../shared/helper/handleError';
 import { FiltriComposizione } from '../../../features/home/composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { ListaComposizioneAvanzata } from '../../../features/home/composizione-partenza/interface/lista-composizione-avanzata-interface';
+import { ConfermaPartenze } from '../../../features/home/composizione-partenza/interface/conferma-partenze-interface';
 
 const API_URL_COMPOSIZIONE = environment.apiUrl.composizione;
 
@@ -51,7 +52,7 @@ export class CompPartenzaService {
         );
     }
 
-    confermaPartenze(partenze: any) {
+    confermaPartenze(partenze: ConfermaPartenze) {
         return this.http.post(API_URL_COMPOSIZIONE.confermaPartenze, partenze).pipe(
             // retry(3),
             catchError(handleError)

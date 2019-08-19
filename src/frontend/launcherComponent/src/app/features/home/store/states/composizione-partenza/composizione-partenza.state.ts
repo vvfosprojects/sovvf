@@ -35,13 +35,12 @@ import {
     ClearSquadraComposizione
 } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
-import { TurnOffComposizione } from '../../actions/view/view.actions';
 import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/richiesta-attivita-utente.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ListaFiltriComposizione } from '../../../composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
-import { FiltriComposizioneFilterbar } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
+import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
 
 export interface ComposizionePartenzaStateModel {
     filtri: ListaFiltriComposizione;
@@ -75,7 +74,7 @@ export class ComposizionePartenzaState {
     }
 
     @Selector()
-    static filtriSelezionati(state: ComposizionePartenzaStateModel): FiltriComposizioneFilterbar {
+    static filtriSelezionati(state: ComposizionePartenzaStateModel): ComposizioneFilterbar {
         return {
             CodiceDistaccamento: state.codiceDistaccamento,
             CodiceTipoMezzo: state.codiceTipoMezzo,
@@ -121,7 +120,7 @@ export class ComposizionePartenzaState {
         console.log('setFiltriComposizione', action);
         const state = getState();
         const composizioneMode = state.composizioneMode;
-        const objFiltriSelezionati: FiltriComposizioneFilterbar = {
+        const objFiltriSelezionati: ComposizioneFilterbar = {
             CodiceDistaccamento: state.codiceDistaccamento,
             CodiceTipoMezzo: state.codiceTipoMezzo,
             CodiceStatoMezzo: state.codiceStatoMezzo
@@ -274,10 +273,11 @@ export class ComposizionePartenzaState {
 
     @Action(ConfirmPartenze)
     confirmPartenze({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze) {
-        // console.log('Request confirm partenze', action.partenze);
         this.compPartenzaSevice.confermaPartenze(action.partenze).subscribe(() => {
-            // console.log('Richiesta aggiornata con le partenze', action.partenze);
+            console.log('Richiesta aggiornata con le partenze', action.partenze);
             dispatch(new ClearMarkerRichiestaSelezionato());
+        }, () => {
+            console.error('Conferma Partenza: qualcosa è andato storto');
         });
     }
 

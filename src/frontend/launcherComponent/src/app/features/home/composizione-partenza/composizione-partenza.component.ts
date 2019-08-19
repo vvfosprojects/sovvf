@@ -19,7 +19,7 @@ import { ClearBoxPartenze } from '../store/actions/composizione-partenza/box-par
 import { ClearListaMezziComposizione, ClearSelectedMezziComposizione } from '../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ClearListaComposizioneVeloce } from '../store/actions/composizione-partenza/composizione-veloce.actions';
 import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione } from '../store/actions/composizione-partenza/squadre-composizione.actions';
 import { SetComposizioneMode, ConfirmPartenze } from '../store/actions/composizione-partenza/composizione-partenza.actions';
@@ -35,6 +35,7 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { map } from 'rxjs/operators';
 import { Partenza } from 'src/app/shared/model/partenza.model';
 import { TurnoState } from '../../navbar/store/states/turno/turno.state';
+import { ConfermaPartenze } from './interface/conferma-partenze-interface';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -171,6 +172,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.subscription.add(
             richiestaById$.subscribe(r => {
                 richiestaDa = r;
+                // tslint:disable-next-line:max-line-length
                 partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === sganciamentoObj.idMezzo)[0] : null;
                 // console.log('richiestaDa', richiestaDa);
             })
@@ -191,12 +193,12 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                     switch (val) {
                         case 'ok':
                             // TODO: ricavare la partenza tramite id del mezzo e idRichiesta del mezzo
-                            const partenzaObj = {
-                                'partenze': [partenzaDaSganciare],
-                                'idRichiesta': this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
-                                'turno': this.store.selectSnapshot(TurnoState.turno).corrente,
-                                'idRichiestaDaSganciare': sganciamentoObj.idRichiestaDa,
-                                'idMezzoDaSganciare': sganciamentoObj.idMezzo
+                            const partenzaObj: ConfermaPartenze = {
+                                partenze: [partenzaDaSganciare],
+                                idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
+                                turno: this.store.selectSnapshot(TurnoState.turno).corrente,
+                                idRichiestaDaSganciare: sganciamentoObj.idRichiestaDa,
+                                idMezzoDaSganciare: sganciamentoObj.idMezzo
                             };
                             this.store.dispatch(new ConfirmPartenze(partenzaObj));
                             // console.log('Partenza sganciata', partenzaObj);

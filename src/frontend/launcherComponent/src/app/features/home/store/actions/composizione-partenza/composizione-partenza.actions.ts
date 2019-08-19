@@ -4,6 +4,7 @@ import { ListaFiltriComposizione } from '../../../composizione-partenza/interfac
 import {
     FiltriComposizione
 } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
+import { ConfermaPartenze } from '../../../composizione-partenza/interface/conferma-partenze-interface';
 
 export class GetFiltriComposizione {
     static readonly type = '[FiltriComposizione] Get Lista Filtri';
@@ -65,7 +66,7 @@ export class UpdateRichiestaComposizione {
 export class ConfirmPartenze {
     static readonly type = '[ComposizionePartenza] Conferma Partenze';
 
-    constructor(public partenze: any) {
+    constructor(public partenze: ConfermaPartenze) {
     }
 }
 

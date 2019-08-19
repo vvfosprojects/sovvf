@@ -50,6 +50,7 @@ import {
     SetMarkerMezzoHover,
     SetMarkerMezzoSelezionato
 } from '../../store/actions/maps/marker.actions';
+import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -380,10 +381,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             }
             return rObj;
         });
-        const partenzeObj = {
-            'partenze': partenzeMappedArray,
-            'idRichiesta': this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
-            'turno': this.store.selectSnapshot(TurnoState.turno).corrente
+        const partenzeObj: ConfermaPartenze = {
+            partenze: partenzeMappedArray,
+            idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
+            turno: this.store.selectSnapshot(TurnoState.turno).corrente
         };
         // console.log('mappedArray', partenzeMappedArray);
         this.store.dispatch(new ConfirmPartenze(partenzeObj));

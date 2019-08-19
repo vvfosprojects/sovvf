@@ -1,20 +1,7 @@
-export interface FiltriComposizione extends FiltriComposizioneFilterbar, FiltriComposizioneCodiceMezzo, FiltriComposizioneCodiceSquadra, FiltriComposizioneIdRichiesta {
-}
+import { ComposizioneCodiceMezzo } from '../composizione/composizione-codice-mezzo-interface';
+import { ComposizioneCodiceSquadra } from '../composizione/composizione-codice-squadra-interface';
+import { ComposizioneIdRichiesta } from '../composizione/composizione-id-richiesta-interface';
+import { ComposizioneFilterbar } from '../composizione/composizione-filterbar-interface';
 
-export interface FiltriComposizioneFilterbar {
-    CodiceDistaccamento?: string[];
-    CodiceStatoMezzo?: string[];
-    CodiceTipoMezzo?: string[];
-}
-
-export interface FiltriComposizioneIdRichiesta {
-    idRichiesta: string;
-}
-
-export interface FiltriComposizioneCodiceMezzo {
-    CodiceMezzo: string[];
-}
-
-export interface FiltriComposizioneCodiceSquadra {
-    CodiceSquadra: string[];
+export interface FiltriComposizione extends ComposizioneFilterbar, ComposizioneCodiceMezzo, ComposizioneCodiceSquadra, ComposizioneIdRichiesta {
 }

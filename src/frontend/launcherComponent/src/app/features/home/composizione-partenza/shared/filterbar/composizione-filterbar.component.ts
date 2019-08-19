@@ -24,7 +24,7 @@ export class ComposizioneFilterbarComponent {
 
     @Input() filtri: any;
 
-    @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
+    @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<FiltriComposizione>;
 
     methods = new HelperComposizione();
 
