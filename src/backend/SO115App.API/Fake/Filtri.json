@@ -1,19 +1,19 @@
 {
   "distaccamenti": [
     {
-      "id": "1",
+      "id": "RM.1000",
       "descrizione": "Tuscolana"
     },
     {
-      "id": "2",
+      "id": "RM.1002",
       "descrizione": "Eur"
     },
     {
-      "id": "3",
+      "id": "RM.1001",
       "descrizione": "Ostiense"
     },
     {
-      "id": "4",
+      "id": "RM.1003",
       "descrizione": "La Rustica"
     }
   ],

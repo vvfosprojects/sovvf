@@ -2,14 +2,14 @@
   {
     "Id": "3",
     "CodiceSede": "RM.1000",
-    "Mezzo": "3",
+    "Mezzo": "1",
     "Squadre": [
       "1",
       "2"
     ]
   },
   {
-    "Id": "4",
+    "Id": "9",
     "CodiceSede": "RM.1000",
     "Mezzo": "1",
     "Squadre": [
@@ -18,28 +18,27 @@
   },
   {
     "Id": "2",
-    "CodiceSede": "RM.1000",
-    "Mezzo": "1",
+    "CodiceSede": "RM.1001",
+    "Mezzo": "18",
     "Squadre": [
-      "1",
-      "2"
+      "3",
+      "4"
     ]
   },
   {
     "Id": "5",
-    "CodiceSede": "RM.1000",
-    "Mezzo": "2",
+    "CodiceSede": "RM.1001",
+    "Mezzo": "12",
     "Squadre": [
-      "1",
-      "2"
+      "4"
     ]
   },
   {
     "Id": "1",
-    "CodiceSede": "RM.1000",
-    "Mezzo": "1",
+    "CodiceSede": "RM.1002",
+    "Mezzo": "7",
     "Squadre": [
-      "1"
+      "5"
     ]
   }
 ]
