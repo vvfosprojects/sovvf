@@ -1,6 +1,7 @@
 import {Localita} from '../../../../shared/model/localita.model';
 import {Tipologia} from '../../../../shared/model/tipologia.model';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
+import { IconUrl } from '../maps-interface/icon-url-interface';
 
 export class RichiestaMarker {
     constructor(
@@ -40,11 +41,15 @@ export class RichiestaMarker {
         /**
          * Determina se la richiesta è rilevante
          */
-        public rilevanza?: boolean,
+        public rilevanza: boolean,
         /**
          * Determina se la richiesta è rilevante Storica Artistica e Culturale
          */
-        public rilevanzaStArCu?: boolean
+        public rilevanzaStArCu: boolean,
+        /**
+         * l'url del marker richiesta
+         */
+        public iconUrl?: IconUrl
     ) {
     }
 

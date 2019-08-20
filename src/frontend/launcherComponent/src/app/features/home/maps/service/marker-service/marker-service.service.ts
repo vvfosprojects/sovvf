@@ -360,12 +360,12 @@ export class MarkerService implements OnDestroy {
         }
     }
 
-    iconaRichiestaMarker(id, stato, priorita): string {
-        let selezionato = false;
+    iconaRichiestaMarkerSelezionato(id: string): string {
+        const path = 'assets/img/icone-markers/richieste/';
         if (this.markerRichiestaSelezionato === id || this.markerRichiestaHover === id) {
-            selezionato = true;
+            return path + 's/';
         }
-        return this.icone.iconaRichiesta(stato, priorita, selezionato);
+        return path + 'ns/';
     }
 
     iconaMezzoMarker(id, stato): string {

@@ -19,7 +19,7 @@ import { MeteoMarkersState } from '../../store/states/maps/meteo-markers.state';
 import { AppFeatures } from '../../../../shared/enum/app-features.enum';
 import { MouseE } from '../../../../shared/enum/mouse-e.enum';
 import { MapsDirectionState } from '../../store/states/maps/maps-direction.state';
-import { markerColor } from '../../../../shared/helper/function-colori';
+import { markerColor, markerColorRichiesta } from '../../../../shared/helper/function-colori';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { wipeStatoRichiesta } from '../../../../shared/helper/function';
 import { MapsButtonsState } from '../../store/states/maps/maps-buttons.state';
@@ -218,11 +218,11 @@ export class AgmComponent implements OnDestroy {
         this.markerService.noAction();
     }
 
-    iconaRichiestaMarker(richiestaMarker: RichiestaMarker): string {
+    iconaRichiestaMarkerSelezionato(id: string): string {
         /**
-         * ritorno l'url dell'icona del marker selezionato
+         * ritorno un oggetto di tipo IconUrl con le info dell'icona da utilizzare
          */
-        return this.markerService.iconaRichiestaMarker(richiestaMarker.id, richiestaMarker.stato, richiestaMarker.priorita);
+        return this.markerService.iconaRichiestaMarkerSelezionato(id);
     }
 
     iconaMezzoMarker(mezzoMarker: MezzoMarker): string {
@@ -276,6 +276,10 @@ export class AgmComponent implements OnDestroy {
 
     colorWindow(stato: string): string {
         return markerColor(stato);
+    }
+
+    colorWindowRichiesta(stato: StatoRichiesta): string {
+        return markerColorRichiesta(stato);
     }
 
     wipeStatoRichiesta(statoEnum: StatoRichiesta): string {

@@ -30,7 +30,8 @@ export class RichiesteMarkerServiceFake {
                 'Esplosione nei pressi di un centro abitato',
                 5,
                 StatoRichiesta.Chiamata,
-                true
+                true,
+                false
             ),
             new RichiestaMarker(
                 '2',
@@ -43,7 +44,9 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Scintille da palo elettrico',
                 1,
-                StatoRichiesta.Chiamata
+                StatoRichiesta.Chiamata,
+                false,
+                false
             ),
             new RichiestaMarker(
                 '3',
@@ -55,7 +58,9 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Incendio a bordo strada',
                 1,
-                StatoRichiesta.Chiamata
+                StatoRichiesta.Chiamata,
+                false,
+                false
             ),
             new RichiestaMarker(
                 '4',
@@ -69,7 +74,8 @@ export class RichiesteMarkerServiceFake {
                 'Persona che minaccia di buttarsi da un tetto',
                 4,
                 StatoRichiesta.Assegnata,
-                true
+                true,
+                false
             ),
             new RichiestaMarker(
                 '5',
@@ -82,7 +88,9 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Allagamento garage con personale da soccorrere',
                 3,
-                StatoRichiesta.Assegnata
+                StatoRichiesta.Assegnata,
+                false,
+                false
             ),
             new RichiestaMarker(
                 '6',
@@ -95,7 +103,9 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Incidente d\'auto persona anziana',
                 3,
-                StatoRichiesta.Assegnata
+                StatoRichiesta.Assegnata,
+                false,
+                false
             ),
 
             new RichiestaMarker(
@@ -109,7 +119,9 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Cedimento sede stradale con rimozione veicolo',
                 2,
-                StatoRichiesta.Presidiata
+                StatoRichiesta.Presidiata,
+                false,
+                false
             ),
             new RichiestaMarker(
                 '8',
@@ -122,7 +134,9 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Recupero merci e beni da camion ribaltato',
                 2,
-                StatoRichiesta.Sospesa
+                StatoRichiesta.Sospesa,
+            false,
+            false
             ),
             new RichiestaMarker(
                 '9',
@@ -135,7 +149,9 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Scossa di terremoto a Roma',
                 3,
-                StatoRichiesta.Sospesa
+                StatoRichiesta.Sospesa,
+                false,
+                false
             ),
             new RichiestaMarker(
                 '10',
@@ -148,7 +164,9 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Incendio in appartamento',
                 3,
-                StatoRichiesta.Chiusa
+                StatoRichiesta.Chiusa,
+                false,
+                false
             ),
             new RichiestaMarker(
                 '11',
@@ -161,7 +179,9 @@ export class RichiesteMarkerServiceFake {
                 ],
                 'Incidente stradale',
                 3,
-                StatoRichiesta.Chiusa
+                StatoRichiesta.Chiusa,
+                false,
+                false
             ),
         ];
 

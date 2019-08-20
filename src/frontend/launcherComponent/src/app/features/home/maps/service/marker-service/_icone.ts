@@ -1,7 +1,6 @@
 /**
  *  classe che ritorna l'url del marker da visualizzare sulla mappa
  */
-import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
 
 export class IconMappe {
     /**
@@ -12,8 +11,6 @@ export class IconMappe {
     private mapIconeModelloPath: Map<string, string>;
     private iconeStati: [string, string][];
     private mapIconeUrl: Map<string, string>;
-    private iconeGrandezza: [number, string][];
-    private mapIconeSize: Map<number, string>;
     private iconeSedi: [string, string][];
     private mapIconeSedi: Map<string, string>;
     private iconeTipoSedi: [string, string][];
@@ -27,7 +24,6 @@ export class IconMappe {
      * proprietà per definire lo status dell'oggetto icona marker corrente nella mappa
      */
     private iconaStatoCorrenteUrl: string;
-    private iconaStatoCorrenteSize: string;
 
     constructor() {
         /**
@@ -51,22 +47,13 @@ export class IconMappe {
         this.mapIconeModelloPath = new Map(this.iconeModello);
 
         this.iconeStati = [
-            ['chiam', 'danger.png'],
-            ['asseg', 'warning.png'],
-            ['presi', 'success.png'],
-            ['sospe', 'orange.png'],
-            ['chius', 'secondary.png']
+            ['chiam', 'chiamata.png'],
+            ['asseg', 'assegnata.png'],
+            ['presi', 'presidiata.png'],
+            ['sospe', 'sospesa.png'],
+            ['chius', 'chiusa.png']
         ];
         this.mapIconeUrl = new Map(this.iconeStati);
-
-        this.iconeGrandezza = [
-            [1, '32/'],
-            [2, '40/'],
-            [3, '48/'],
-            [4, '56/'],
-            [5, '64/']
-        ];
-        this.mapIconeSize = new Map(this.iconeGrandezza);
 
         this.iconeTipoSedi = [
             ['aeroportuale', 'aeroportuale.gif'],
@@ -140,10 +127,8 @@ export class IconMappe {
             selezionato.forEach(tipo => {
                 switch (c) {
                     case 'richiesta': {
-                        this.mapIconeSize.forEach(size => {
-                            this.mapIconeUrl.forEach(stati => {
-                                result.push(pathComune + tipo + size + stati);
-                            });
+                        this.mapIconeUrl.forEach(stati => {
+                            result.push(pathComune + tipo + stati);
                         });
                         break;
                     }
@@ -169,24 +154,6 @@ export class IconMappe {
             result.push(path + speciali);
         });
         return result;
-    }
-
-    iconaRichiesta(stato: any, priorita: any, selezionato: boolean): string {
-        /**
-         * metodo che mi ritorna l'url del' icona richiestaMarker da utilizzare
-         */
-        const pathModello = this.mapIconeModelloPath.get('richiesta');
-        const path = this.pathUrl + pathModello;
-        const check = !(selezionato);
-        const dir = check ? path + 'ns/' : path + 's/';
-        this.iconaStatoCorrenteSize = this.mapIconeSize.get(priorita);
-        const _wipeStatoRichiesta = wipeStatoRichiesta(stato);
-        const statoRichiesta = this.mapIconeUrl.get(_wipeStatoRichiesta.substring(0, 5).toLowerCase());
-        this.iconaStatoCorrenteUrl = dir + this.iconaStatoCorrenteSize + statoRichiesta;
-        if (!this.iconaStatoCorrenteSize || !statoRichiesta) {
-            return undefined;
-        }
-        return this.iconaStatoCorrenteUrl;
     }
 
     iconaMezzo(stato: string, selezionato: boolean): string {
