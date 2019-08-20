@@ -36,7 +36,9 @@ export class ChiamataServiceFake {
             chiamata.localita, chiamata.tipologie,
             chiamata.localita.indirizzo,
             chiamata.prioritaRichiesta,
-            chiamata.stato);
+            chiamata.stato,
+            false,
+            false);
         setTimeout( () => {
             this.store.dispatch([
                 new InsertChiamataSuccess(chiamata),
