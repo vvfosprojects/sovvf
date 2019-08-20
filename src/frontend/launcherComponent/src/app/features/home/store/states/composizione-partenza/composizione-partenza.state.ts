@@ -292,7 +292,8 @@ export class ComposizionePartenzaState {
             new ClearComposizioneAvanzata(),
             new ClearMezzoComposizione(),
             new ClearSquadraComposizione(),
-            new ClearPartenza()
+            new ClearPartenza(),
+            new ClearMarkerRichiestaSelezionato()
         ]);
         patchState({
             richiesta: ComposizioneStateDefaults.richiesta
