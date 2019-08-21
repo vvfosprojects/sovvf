@@ -18,7 +18,7 @@ import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker
 import {
     ClearComposizioneVeloce,
     ClearListaComposizioneVeloce,
-    GetListaComposizioneVeloce
+    GetListaComposizioneVeloce, GetListaIdPreAccoppiati
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import {
@@ -130,7 +130,12 @@ export class ComposizionePartenzaState {
         if (composizioneMode === Composizione.Avanzata) {
             dispatch(new GetListeComposizioneAvanzata(objFiltriSelezionati));
         } else if (composizioneMode === Composizione.Veloce) {
-            dispatch(new GetListaComposizioneVeloce(objFiltriSelezionati));
+            // Todo: da vedere
+            dispatch([
+                new GetListeComposizioneAvanzata(objFiltriSelezionati),
+                new GetListaIdPreAccoppiati()
+            ]);
+            // dispatch(new GetListaComposizioneVeloce(objFiltriSelezionati));
         }
     }
 
@@ -142,7 +147,8 @@ export class ComposizionePartenzaState {
         if (composizioneMode === Composizione.Avanzata) {
             dispatch(new GetListeComposizioneAvanzata(action.filtri));
         } else {
-            dispatch(new GetListaComposizioneVeloce(action.filtri));
+            // Todo: scatta lo stesso metodo... non serve questo controllo
+            // dispatch(new GetListaComposizioneVeloce(action.filtri));
         }
     }
 

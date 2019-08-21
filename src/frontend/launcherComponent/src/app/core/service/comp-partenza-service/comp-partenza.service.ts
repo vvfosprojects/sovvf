@@ -16,14 +16,15 @@ export class CompPartenzaService {
     constructor(private http: HttpClient) {
     }
 
-    getPreAccoppiati(filtri: any): Observable<any> {
+    getPreAccoppiati(): Observable<null> {
         // Todo: modificare perchè i filtri non vengono passati, tutti i dati arrivano con il controller getListeComposizioneAvanzata
-        return this.http.get(API_URL_COMPOSIZIONE.preaccoppiati).pipe(
+        return this.http.get<null>(API_URL_COMPOSIZIONE.preaccoppiati).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
+    // Todo: modificare nome in getListeComposizione ?
     getListeComposizioneAvanzata(filtri: FiltriComposizione): Observable<ListaComposizioneAvanzata> {
         return this.http.post<ListaComposizioneAvanzata>(API_URL_COMPOSIZIONE.avanzata, filtri).pipe(
             retry(3),

@@ -37,12 +37,13 @@ import { ComposizionePartenzaState } from '../../features/home/store/states/comp
 import { Composizione } from '../../shared/enum/composizione.enum';
 import {
     GetListaComposizioneVeloce,
-    SetListaComposizioneVeloce,
+    SetListaComposizioneVeloce, SetListaIdPreAccoppiati,
     UpdateMezzoPreAccoppiatoComposizione
 } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { ViewComponentState } from '../../features/home/store/states/view/view.state';
 import { GetListeComposizioneAvanzata } from '../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
+import { IdPreaccoppiati } from '../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -130,7 +131,8 @@ export class SignalRService {
                 if (compMode === Composizione.Avanzata) {
                     this.store.dispatch(new GetListeComposizioneAvanzata());
                 } else if (compMode === Composizione.Veloce) {
-                    this.store.dispatch(new GetListaComposizioneVeloce());
+                    // Todo: scatta lo stesso metodo... non serve questo controllo
+                    // this.store.dispatch(new GetListaComposizioneVeloce());
                 }
             }
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Stato Squadra/Mezzi Richiesta', null, 3));
@@ -139,7 +141,7 @@ export class SignalRService {
         /**
          * Mezzi In Servizio
          */
-        // Todo: da finire (BE)
+        // TodoBackEnd: da finire
         this.hubNotification.on('NotifyGetListaMezziInServizio', (data: any) => {
             console.log('NotifyGetListaMezziInServizio', data);
             this.store.dispatch(new SetMezziInServizio(data));
@@ -218,9 +220,9 @@ export class SignalRService {
             this.store.dispatch(new SetListaSquadreComposizione(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Squadre Composizione ricevute da signalR', null, 5));
         });
-        this.hubNotification.on('NotifyGetPreaccoppiati', (data: any) => {
+        this.hubNotification.on('NotifyGetPreaccoppiati', (data: IdPreaccoppiati[]) => {
             console.log('NotifyGetPreaccoppiatiComposizione', data);
-            this.store.dispatch(new SetListaComposizioneVeloce(data));
+            this.store.dispatch(new SetListaIdPreAccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyAddPrenotazioneMezzo', (data: any) => {

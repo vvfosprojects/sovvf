@@ -7,8 +7,13 @@ import { BoxPartenza } from '../../../composizione-partenza/interface/box-parten
 import {
     ClearComposizioneVeloce,
     ClearListaComposizioneVeloce,
-    GetListaComposizioneVeloce, SelectPreAccoppiatoComposizione,
-    SetListaComposizioneVeloce, UnselectPreAccoppiatoComposizione, UpdateMezzoPreAccoppiatoComposizione
+    GetListaComposizioneVeloce,
+    GetListaIdPreAccoppiati,
+    SelectPreAccoppiatoComposizione,
+    SetListaComposizioneVeloce,
+    SetListaIdPreAccoppiati,
+    UnselectPreAccoppiatoComposizione,
+    UpdateMezzoPreAccoppiatoComposizione
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
 
 // Service
@@ -19,10 +24,11 @@ import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { ComposizioneAvanzataStateModel } from './composizione-avanzata.state';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { makeCopy } from '../../../../../shared/helper/function';
+import { IdPreaccoppiati } from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
 
 export interface PreAccoppiatiStateModel {
     preAccoppiati: BoxPartenza[];
-    idPreAccoppiati: string[];
+    idPreAccoppiati: IdPreaccoppiati[];
     idPreAccoppiatoSelezionato: string;
     idPreAccoppiatiSelezionati: string[];
 }
@@ -79,10 +85,10 @@ export class ComposizioneVeloceState {
         filtri['idRichiesta'] = '1';
 
         console.log(filtri);
-        this.preAccoppiatiService.getPreAccoppiati(filtri).subscribe((preAccoppiati: BoxPartenza[]) => {
-            console.log(preAccoppiati);
-            this.store.dispatch(new SetListaComposizioneVeloce(preAccoppiati));
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+        // this.preAccoppiatiService.getPreAccoppiati(filtri).subscribe((preAccoppiati: BoxPartenza[]) => {
+        //     console.log(preAccoppiati);
+        //     this.store.dispatch(new SetListaComposizioneVeloce(preAccoppiati));
+        // }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
 
@@ -152,4 +158,22 @@ export class ComposizioneVeloceState {
     clearComposizioneVeloce({ patchState }: StateContext<PreAccoppiatiStateModel>) {
         patchState(PreAccoppiatiStateModelStateDefaults);
     }
+
+    @Action(GetListaIdPreAccoppiati)
+    getListaIdPreAccoppiati({ dispatch }: StateContext<PreAccoppiatiStateModel>) {
+        this.preAccoppiatiService.getPreAccoppiati().subscribe(() => {
+            console.log('Richiesta id Preaccoppiati effettuata');
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+    }
+
+    @Action(SetListaIdPreAccoppiati)
+    setListaIdPreAccoppiati({ patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: SetListaIdPreAccoppiati) {
+        if (action && action.idPreaccoppiati) {
+            patchState({
+                idPreAccoppiati: action.idPreaccoppiati
+            });
+            // Todo da fare dispatch()
+        }
+    }
+
 }
