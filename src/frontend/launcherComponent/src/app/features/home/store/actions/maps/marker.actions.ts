@@ -74,3 +74,10 @@ export class SetMarkerSedeHover {
 export class ClearMarkerSedeHover {
     static readonly type = '[Marker] Clear Marker Sede Hover';
 }
+
+/**
+ * Action Clear marker State
+ */
+export class ClearMarkerState {
+    static readonly type = '[Marker] Clear Marker State';
+}

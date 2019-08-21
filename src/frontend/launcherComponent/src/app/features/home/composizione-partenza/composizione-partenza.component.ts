@@ -13,7 +13,7 @@ import { ClearDirection, SetDirection } from '../store/actions/maps/maps-directi
 import { wipeStatoRichiesta } from '../../../shared/helper/function';
 import { TurnOffComposizione } from '../store/actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
-import { ClearMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
+import { ClearMarkerState } from '../store/actions/maps/marker.actions';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
 import { ClearBoxPartenze } from '../store/actions/composizione-partenza/box-partenza.actions';
 import { ClearListaMezziComposizione, ClearSelectedMezziComposizione } from '../store/actions/composizione-partenza/mezzi-composizione.actions';
@@ -95,7 +95,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     dismissPartenza(): void {
         this.dismissPartenzaSubject.next(true);
         this.store.dispatch([
-            new ClearMarkerRichiestaSelezionato(),
+            new ClearMarkerState(),
             new GetInitCentroMappa()
         ]);
         // Pulisco le liste

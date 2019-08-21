@@ -10,7 +10,7 @@ import {
     SetMarkerMezzoHover,
     ClearMarkerMezzoHover,
     SetMarkerSedeSelezionato,
-    ClearMarkerSedeSelezionato, SetMarkerSedeHover, ClearMarkerSedeHover
+    ClearMarkerSedeSelezionato, SetMarkerSedeHover, ClearMarkerSedeHover, ClearMarkerState
 } from '../../actions/maps/marker.actions';
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
 import { Observable } from 'rxjs';
@@ -222,6 +222,11 @@ export class MarkerState {
         patchState({
             markerSedeHover: markerStateDefaults.markerSedeHover
         });
+    }
+
+    @Action(ClearMarkerState)
+    clearMarkerState({ patchState }: StateContext<MarkerStateModel>) {
+        patchState(markerStateDefaults);
     }
 
 }

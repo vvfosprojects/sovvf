@@ -38,7 +38,7 @@ import { CompPartenzaService } from '../../../../../core/service/comp-partenza-s
 import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/richiesta-attivita-utente.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
+import { ClearMarkerState } from '../../actions/maps/marker.actions';
 import { ListaFiltriComposizione } from '../../../composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
 
@@ -281,7 +281,7 @@ export class ComposizionePartenzaState {
     confirmPartenze({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze) {
         this.compPartenzaSevice.confermaPartenze(action.partenze).subscribe(() => {
             console.log('Richiesta aggiornata con le partenze', action.partenze);
-            dispatch(new ClearMarkerRichiestaSelezionato());
+            dispatch(new ClearMarkerState());
         }, () => {
             console.error('Conferma Partenza: qualcosa è andato storto');
         });
@@ -299,7 +299,7 @@ export class ComposizionePartenzaState {
             new ClearMezzoComposizione(),
             new ClearSquadraComposizione(),
             new ClearPartenza(),
-            new ClearMarkerRichiestaSelezionato()
+            new ClearMarkerState()
         ]);
         patchState({
             richiesta: ComposizioneStateDefaults.richiesta
