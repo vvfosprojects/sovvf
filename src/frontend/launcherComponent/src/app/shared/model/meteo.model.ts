@@ -11,11 +11,11 @@ export class Meteo {
         /* Velocità del vento */
         public vento: number,
         /* Direzione del vento */
-        public direzione: {
-            /* Direzione del vento in gradi*/
-            gradi: number,
-            /* Direzione del vento in cardinali*/
-            cardinali: string
-        }
+        public direzione: DirezioneVento
     ) { }
+}
+
+export interface DirezioneVento {
+    gradi: number;
+    cardinali: string;
 }
