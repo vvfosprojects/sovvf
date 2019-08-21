@@ -23,7 +23,7 @@
           <span class="mr-2 h5 font-weight-normal">Priorità</span>
           <ngb-rating [formControl]="f.prioritaRichiesta" [starTemplate]="t" [max]="5"></ngb-rating>
           <ng-template #t let-fill="fill" let-index="index">
-            <span class="cirlce" [class.filled]="fill === 100" [class.bad]="index > 2 && fill === 100">
+            <span class="circle" [class.filled]="fill === 100" [class.bad]="index > 2 && fill === 100">
               <i class="fa fa-circle mr-1"></i>
             </span>
           </ng-template>
