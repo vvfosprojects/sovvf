@@ -31,7 +31,8 @@ export class ToastrState {
 
     @Action(ShowToastr)
     showToastr({ getState, dispatch }: StateContext<ToastrStateModel>, action: ShowToastr) {
-        // dispatch(new SetToastr(action.type, action.title, action.message, action.duration, action.tapToDismiss));
+        // Todo: notifiche toastr riabilitate, effettuare cernita o implementare debugMode?
+        dispatch(new SetToastr(action.type, action.title, action.message, action.duration, action.tapToDismiss));
     }
 
     @Action(SetToastr)
