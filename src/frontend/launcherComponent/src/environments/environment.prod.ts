@@ -23,7 +23,7 @@ export const environment = {
                 richieste: '/api/SintesiRichiesteAssistenzaMarker',
                 sedi: '/api/SintesiSediMarker',
                 mezzi: '/api/SintesiMezziMarker',
-                centro: '',  // Todo: controller mancante
+                centro: '',  // TodoBackEnd: controller mancante
                 chiamate: '/api/ChiamataInCorso'
             }
         },
@@ -40,7 +40,7 @@ export const environment = {
         mezziInServizio: {
             listaMezzi: '/api/GestioneMezziInServizio/GetListaMezzi'
         },
-        turno: '',  // Todo: controller mancante
+        turno: '',  // TodoBackEnd: controller mancante
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',
             avanzata: '/api/ComposizionePartenzaAvanzata',

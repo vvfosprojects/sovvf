@@ -28,7 +28,6 @@ export class UtenteState {
 
     @Action(SetUtente)
     setUtente({ patchState }: StateContext<UtenteStateModel>, action: SetUtente) {
-        // Todo: da spostare su signalrState
         this.signalR.addToGroup(new SignalRNotification(
             action.utente.sede.codice,
             action.utente.id,
@@ -41,7 +40,6 @@ export class UtenteState {
 
     @Action(ClearUtente)
     clearUtente({ getState, patchState }: StateContext<UtenteStateModel>) {
-        // Todo: da spostare su signalrState
         const state = getState();
         this.signalR.removeToGroup(new SignalRNotification(
             state.utente.sede.codice,

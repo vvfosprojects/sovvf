@@ -70,7 +70,7 @@ export class HomeState {
             ]);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
         dispatch([
-            new GetCentroMappa(), // Todo: controller da fare
+            new GetCentroMappa(), // TodoBackEnd: controller da fare
         ]);
         patchState({
             loaded: true
