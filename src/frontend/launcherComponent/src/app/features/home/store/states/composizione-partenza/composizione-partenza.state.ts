@@ -17,8 +17,8 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
 import {
     ClearComposizioneVeloce,
-    ClearListaComposizioneVeloce,
-    GetListaComposizioneVeloce, GetListaIdPreAccoppiati
+    ClearPreaccoppiati,
+    GetListaIdPreAccoppiati
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import {
@@ -256,7 +256,7 @@ export class ComposizionePartenzaState {
                 composizioneMode: Composizione.Veloce
             });
         } else {
-            dispatch(new ClearListaComposizioneVeloce());
+            dispatch(new ClearPreaccoppiati());
             patchState({
                 composizioneMode: Composizione.Avanzata
             });

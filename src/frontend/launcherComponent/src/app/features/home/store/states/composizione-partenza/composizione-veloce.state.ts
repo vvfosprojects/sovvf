@@ -6,11 +6,11 @@ import { BoxPartenza } from '../../../composizione-partenza/interface/box-parten
 // Action
 import {
     ClearComposizioneVeloce,
-    ClearListaComposizioneVeloce,
-    GetListaComposizioneVeloce,
+    ClearPreaccoppiati,
+    GetPreAccoppiati,
     GetListaIdPreAccoppiati,
     SelectPreAccoppiatoComposizione,
-    SetListaComposizioneVeloce,
+    SetPreaccoppiati,
     SetListaIdPreAccoppiati,
     UnselectPreAccoppiatoComposizione,
     UpdateMezzoPreAccoppiatoComposizione
@@ -65,8 +65,8 @@ export class ComposizioneVeloceState {
                 private store: Store) {
     }
 
-    @Action(GetListaComposizioneVeloce)
-    getPreAccoppiati({ getState, dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: GetListaComposizioneVeloce) {
+    @Action(GetPreAccoppiati)
+    getPreAccoppiati({ getState, dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: GetPreAccoppiati) {
         const filtri = {};
         if (action.filtri) {
             filtri['CodiceDistaccamento'] = action.filtri.CodiceDistaccamento.length > 0 ? action.filtri.CodiceDistaccamento : [''];
@@ -92,8 +92,8 @@ export class ComposizioneVeloceState {
     }
 
 
-    @Action(SetListaComposizioneVeloce)
-    setPreAccoppiati({ patchState }: StateContext<PreAccoppiatiStateModel>, action: SetListaComposizioneVeloce) {
+    @Action(SetPreaccoppiati)
+    setPreaccoppiati({ patchState }: StateContext<PreAccoppiatiStateModel>, action: SetPreaccoppiati) {
         if (action.boxPartenza) {
             patchState({
                 preAccoppiati: action.boxPartenza
@@ -101,8 +101,8 @@ export class ComposizioneVeloceState {
         }
     }
 
-    @Action(ClearListaComposizioneVeloce)
-    clearListaComposizioneVeloce({ patchState }: StateContext<PreAccoppiatiStateModel>) {
+    @Action(ClearPreaccoppiati)
+    clearPreaccoppiati({ patchState }: StateContext<PreAccoppiatiStateModel>) {
         patchState({
             preAccoppiati: null
         });

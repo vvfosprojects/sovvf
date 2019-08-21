@@ -2,22 +2,22 @@ import { BoxPartenza } from '../../../composizione-partenza/interface/box-parten
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 import { IdPreaccoppiati } from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
 
-export class GetListaComposizioneVeloce {
-    static readonly type = '[ComposizioneVeloce] Get Lista PreAccoppiati';
+export class GetPreAccoppiati {
+    static readonly type = '[ComposizioneVeloce] Get PreAccoppiati';
 
     constructor(public filtri?: any) {
     }
 }
 
-export class SetListaComposizioneVeloce {
-    static readonly type = '[ComposizioneVeloce] Set Lista PreAccoppiati';
+export class SetPreaccoppiati {
+    static readonly type = '[ComposizioneVeloce] Set PreAccoppiati';
 
     constructor(public boxPartenza: BoxPartenza[]) {
     }
 }
 
-export class ClearListaComposizioneVeloce {
-    static readonly type = '[ComposizioneVeloce] Clear Lista PreAccoppiati';
+export class ClearPreaccoppiati {
+    static readonly type = '[ComposizioneVeloce] Clear PreAccoppiati';
 }
 
 export class SelectPreAccoppiatoComposizione {

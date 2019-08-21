@@ -20,7 +20,7 @@ import { ClearListaMezziComposizione, ClearSelectedMezziComposizione } from '../
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ClearListaComposizioneVeloce } from '../store/actions/composizione-partenza/composizione-veloce.actions';
+import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/composizione-veloce.actions';
 import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione } from '../store/actions/composizione-partenza/squadre-composizione.actions';
 import { SetComposizioneMode, ConfirmPartenze } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 import { HelperSintesiRichiesta } from '../richieste/helper/_helper-sintesi-richiesta';
@@ -109,7 +109,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                 new ClearBoxPartenze()
             ]);
         } else if (compMode === Composizione.Veloce) {
-            this.store.dispatch(new ClearListaComposizioneVeloce());
+            this.store.dispatch(new ClearPreaccoppiati());
         }
         // Reimposto la composizioneMode su Avanzata
         this.store.dispatch(new SetComposizioneMode(Composizione.Avanzata));
