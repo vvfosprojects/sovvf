@@ -57,12 +57,14 @@
                     <div class="col pl-0 pr-1 text-right">
                         <span>
                             <i class="guida fa fa-thermometer-half fa-fw" ngbTooltip="Priorità della richiesta"></i>
-                        </span>
-                        <span [ngClass]="{'text-success':richiestaMarker.priorita <= 2,
-                    'text-warning':richiestaMarker.priorita > 2 && richiestaMarker.priorita <= 4,
-                    'text-danger': richiestaMarker.priorita == 5}">
-                            <i *ngFor="let n of methods.vettorePallini(richiestaMarker)" class="fa fa-circle"></i>
-                            <i *ngFor="let n of methods.vettoreBuchini(richiestaMarker)" class="fa fa-circle-o"></i>
+                            <ng-template #t let-fill="fill" let-index="index">
+                                <span class="circle-font" [class.filled]="fill === 100"
+                                      [class.bad]="index > 2 && fill === 100">
+                                    <i class="fa fa-circle mr-0"></i>
+                                </span>
+                            </ng-template>
+                            <ngb-rating [(rate)]="richiestaMarker.priorita" [starTemplate]="t" [max]="5"
+                                        [readonly]="true"></ngb-rating>
                         </span>
                     </div>
                 </th>
@@ -71,7 +73,8 @@
             <tbody>
             <tr>
                 <th scope="row" class="py-1 s-info-window">
-                    <span *ngIf="richiestaMarker.tipologia[0] as tipologia" class="fa-fw mr-1 {{ methods.coloraIcona(tipologia?.icona) }}"
+                    <span *ngIf="richiestaMarker.tipologia[0] as tipologia"
+                          class="fa-fw mr-1 {{ methods.coloraIcona(tipologia?.icona) }}"
                           ngbTooltip="{{ tipologia?.descrizione }}">
                     </span>
                     <span *ngIf="richiestaMarker.label" ngbTooltip="{{ richiestaMarker.label }}"
@@ -182,7 +185,8 @@
             </tr>
             <tr *ngIf="!compact && inComposizione">
                 <th scope="row" class="py-1 s-info-window">
-                    <div class="text-info font-weight-bold cursor-pointer" (click)="onAddMezzoComposizione(mezzoMarker)">
+                    <div class="text-info font-weight-bold cursor-pointer"
+                         (click)="onAddMezzoComposizione(mezzoMarker)">
                         Aggiungi in partenza
                     </div>
                 </th>
