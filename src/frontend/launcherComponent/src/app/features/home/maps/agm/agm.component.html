@@ -86,7 +86,7 @@
                                     [closeOnMapClick]="false"
                                     [closeWhenOthersOpen]="false"
                                     [showCloseButton]="false"
-                                    wrapperClass="snazzy-margin-priorita-{{richiestaMarker.priorita}}">>
+                                    wrapperClass="snazzy-margin-priorita-{{richiestaMarker.priorita}}">
                                 <ng-template>
                                     <app-info-window [richiestaMarker]="richiestaMarker"
                                                      [datiMeteo]="findDatiMeteo('richiesta-'+richiestaMarker.id)"></app-info-window>
@@ -110,18 +110,19 @@
                             <ng-container>
                                 <agm-snazzy-info-window
                                         [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow('sede')}"
-                                        [pointer]="'10px'"
+                                        [pointer]="'5px'"
                                         [backgroundColor]="'#f5f5f0'"
                                         [border]="{width: '2px', color: colorWindow('sede')}"
                                         [borderRadius]="'10px 10px'"
                                         [maxHeight]="1000"
                                         [maxWidth]="1000"
-                                        [padding]="'10px'"
+                                        [padding]="'5px'"
                                         [isOpen]="isSelfHovered(sedeMarker.codice, 'sede')"
                                         [openOnMarkerClick]="false"
                                         [closeOnMapClick]="true"
                                         [closeWhenOthersOpen]="true"
-                                        [showCloseButton]="false">
+                                        [showCloseButton]="false"
+                                        wrapperClass="snazzy-margin-priorita-3">
                                     <ng-template>
                                         <app-info-window [sedeMarker]="sedeMarker" [compact]="true"></app-info-window>
                                     </ng-template>
@@ -130,18 +131,19 @@
                             <ng-container>
                                 <agm-snazzy-info-window
                                         [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow('sede')}"
-                                        [pointer]="'10px'"
+                                        [pointer]="'5px'"
                                         [backgroundColor]="'#f5f5f0'"
                                         [border]="{width: '2px', color: colorWindow('sede')}"
                                         [borderRadius]="'10px 10px'"
                                         [maxHeight]="1000"
                                         [maxWidth]="1000"
-                                        [padding]="'10px'"
+                                        [padding]="'5px'"
                                         [isOpen]="isSelfClicked(sedeMarker.codice, 'sede')"
                                         [openOnMarkerClick]="false"
                                         [closeOnMapClick]="false"
                                         [closeWhenOthersOpen]="false"
-                                        [showCloseButton]="false">
+                                        [showCloseButton]="false"
+                                        wrapperClass="snazzy-margin-priorita-3">
                                     <ng-template>
                                         <app-info-window [sedeMarker]="sedeMarker"
                                                          [tipoSedeIcona]="iconaSedeTipoWindow(sedeMarker.tipo)"
@@ -167,18 +169,19 @@
                             <ng-container>
                                 <agm-snazzy-info-window
                                         [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(mezzoMarker.mezzo.stato)}"
-                                        [pointer]="'10px'"
+                                        [pointer]="'5px'"
                                         [backgroundColor]="'#f5f5f0'"
                                         [border]="{width: '2px', color: colorWindow(mezzoMarker.mezzo.stato)}"
                                         [borderRadius]="'10px 10px'"
                                         [maxHeight]="1000"
                                         [maxWidth]="1000"
-                                        [padding]="'10px'"
+                                        [padding]="'5px'"
                                         [isOpen]="isSelfHovered(mezzoMarker.mezzo.codice, 'mezzo')"
                                         [openOnMarkerClick]="false"
                                         [closeOnMapClick]="true"
                                         [closeWhenOthersOpen]="true"
-                                        [showCloseButton]="false">
+                                        [showCloseButton]="false"
+                                        wrapperClass="snazzy-margin-priorita-4">
                                     <ng-template>
                                         <app-info-window [mezzoMarker]="mezzoMarker" [compact]="true"></app-info-window>
                                     </ng-template>
@@ -187,18 +190,19 @@
                             <ng-container>
                                 <agm-snazzy-info-window
                                         [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(mezzoMarker.mezzo.stato)}"
-                                        [pointer]="'10px'"
+                                        [pointer]="'5px'"
                                         [backgroundColor]="'#f5f5f0'"
                                         [border]="{width: '2px', color: colorWindow(mezzoMarker.mezzo.stato)}"
                                         [borderRadius]="'10px 10px'"
                                         [maxHeight]="1000"
                                         [maxWidth]="1000"
-                                        [padding]="'10px'"
+                                        [padding]="'5px'"
                                         [isOpen]="isSelfClicked(mezzoMarker.mezzo.codice, 'mezzo')"
                                         [openOnMarkerClick]="false"
                                         [closeOnMapClick]="false"
                                         [closeWhenOthersOpen]="false"
-                                        [showCloseButton]="false">
+                                        [showCloseButton]="false"
+                                        wrapperClass="snazzy-margin-priorita-4">
                                     <ng-template>
                                         <app-info-window [mezzoMarker]="mezzoMarker"
                                                          [datiMeteo]="findDatiMeteo('mezzo-'+mezzoMarker.mezzo.codice)"
@@ -220,13 +224,13 @@
                         <ng-container>
                             <agm-snazzy-info-window
                                     [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: '#dc3545'}"
-                                    [pointer]="'10px'"
+                                    [pointer]="'5px'"
                                     [backgroundColor]="'#f5f5f0'"
                                     [border]="{width: '2px', color: '#dc3545'}"
                                     [borderRadius]="'10px 10px'"
                                     [maxHeight]="1000"
                                     [maxWidth]="1000"
-                                    [padding]="'10px'"
+                                    [padding]="'5px'"
                                     [closeOnMapClick]="!chiamataMarker.mySelf"
                                     [closeWhenOthersOpen]="!chiamataMarker.mySelf"
                                     [isOpen]="chiamataMarker.mySelf"
@@ -256,7 +260,7 @@
                                     [borderRadius]="'10px 10px'"
                                     [maxHeight]="1000"
                                     [maxWidth]="1000"
-                                    [padding]="'10px'"
+                                    [padding]="'5px'"
                                     [isOpen]="true"
                                     [showCloseButton]="false">
                                 <ng-template>
