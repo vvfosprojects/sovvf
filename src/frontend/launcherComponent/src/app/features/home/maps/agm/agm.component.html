@@ -38,7 +38,7 @@
                             [opacity]="0">
                 </agm-marker>
                 <ng-container *ngFor="let richiestaMarker of richiesteMarkers;">
-                    <agm-marker
+                    <agm-marker *ngIf="colorWindowRichiesta(richiestaMarker.stato) as _colorWindow"
                             [latitude]="richiestaMarker.localita.coordinate.latitudine"
                             [longitude]="richiestaMarker.localita.coordinate.longitudine"
                             (markerClick)="actionRichiestaMarker(richiestaMarker.id, MouseE.Click)"
@@ -49,16 +49,16 @@
                             [opacity]="isOpaque(richiestaMarker.id, 'richiesta')"
                             [zIndex]="zIndex(richiestaMarker.id, 'richiesta', richiestaMarker?.rilevanza, richiestaMarker?.rilevanzaStArCu)"
                             [visible]="isVisible('richiesta')">
-                        <ng-container *ngIf="colorWindowRichiesta(richiestaMarker.stato) as _colorWindow">
+                        <ng-container>
                             <agm-snazzy-info-window
                                     [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: _colorWindow}"
-                                    [pointer]="'10px'"
+                                    [pointer]="'5px'"
                                     [backgroundColor]="'#f5f5f0'"
                                     [border]="{width: '2px', color: _colorWindow}"
                                     [borderRadius]="'10px 10px'"
                                     [maxHeight]="1000"
                                     [maxWidth]="1000"
-                                    [padding]="'10px'"
+                                    [padding]="'5px'"
                                     [isOpen]="isSelfHovered(richiestaMarker.id, 'richiesta')"
                                     [openOnMarkerClick]="false"
                                     [closeOnMapClick]="true"
@@ -71,16 +71,16 @@
                                 </ng-template>
                             </agm-snazzy-info-window>
                         </ng-container>
-                        <ng-container *ngIf="colorWindowRichiesta(richiestaMarker.stato) as _colorWindow">
+                        <ng-container>
                             <agm-snazzy-info-window
                                     [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: _colorWindow}"
-                                    [pointer]="'10px'"
+                                    [pointer]="'5px'"
                                     [backgroundColor]="'#f5f5f0'"
                                     [border]="{width: '2px', color: _colorWindow}"
                                     [borderRadius]="'10px 10px'"
                                     [maxHeight]="1000"
                                     [maxWidth]="1000"
-                                    [padding]="'10px'"
+                                    [padding]="'5px'"
                                     [isOpen]="isSelfClicked(richiestaMarker.id, 'richiesta')"
                                     [openOnMarkerClick]="false"
                                     [closeOnMapClick]="false"

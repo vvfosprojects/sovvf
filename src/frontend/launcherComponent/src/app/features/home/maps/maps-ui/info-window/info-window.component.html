@@ -13,7 +13,7 @@
         </ng-template>
         <table class="w-100" [ngbTooltip]="vento">
             <tr>
-                <td class="border-0 p-0" colspan="2">
+                <td class="border-0 p-0 text-left" colspan="2">
                     <div>
                         <img class="iconameteo w-25" src="http://openweathermap.org/img/w/{{datiMeteo.icona}}.png"
                              alt="icona meteo">
@@ -22,10 +22,10 @@
                 </td>
             </tr>
             <tr>
-                <td class="border-0 p-0">
+                <td class="border-0 text-center p-0">
                     <span class="fa fa-thermometer-empty">Temperatura: {{datiMeteo.temperatura}}°C</span>
                 </td>
-                <td class="border-0 p-0">
+                <td class="border-0 text-center p-0">
                     <span class="fa fa-shower">Umidità: {{datiMeteo.umidita}}%</span>
                 </td>
             </tr>
@@ -42,7 +42,7 @@
                             Culturale
                         </div>
                     </ng-template>
-                    <div class="col pr-0">
+                    <div class="col-8 pl-1 pr-0">
                         <span class="fa fa-hashtag guida"></span>
                         <span *ngIf="richiestaMarker.codiceRichiesta">{{ richiestaMarker.codiceRichiesta }}&nbsp;</span>
                         <span *ngIf="!richiestaMarker.codiceRichiesta">{{ richiestaMarker.codice }}&nbsp;</span>
@@ -54,7 +54,7 @@
                         </span>
 
                     </div>
-                    <div class="col text-right">
+                    <div class="col pl-0 pr-1 text-right">
                         <span>
                             <i class="guida fa fa-thermometer-half fa-fw" ngbTooltip="Priorità della richiesta"></i>
                         </span>
