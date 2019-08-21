@@ -31,62 +31,63 @@
                                [origin]="direction.origin"
                                [destination]="direction.destination"
                                [visible]="direction.isVisible"></agm-direction>
-                <agm-marker *ngFor="let cMarker of cachedMarkers;"
-                            [latitude]="cMarker.latitudine"
-                            [longitude]="cMarker.longitudine"
-                            [iconUrl]="cMarker.urlIcona"
-                            [opacity]="0">
-                </agm-marker>
-                <ng-container *ngFor="let richiestaMarker of richiesteMarkers;">
-                    <agm-marker *ngIf="colorWindowRichiesta(richiestaMarker.stato) as _colorWindow"
-                            [latitude]="richiestaMarker.localita.coordinate.latitudine"
-                            [longitude]="richiestaMarker.localita.coordinate.longitudine"
-                            (markerClick)="actionRichiestaMarker(richiestaMarker.id, MouseE.Click)"
-                            (mouseOver)="actionRichiestaMarker(richiestaMarker.id, MouseE.HoverIn)"
-                            (mouseOut)="actionRichiestaMarker(richiestaMarker.id, MouseE.HoverOut)"
-                            [iconUrl]="{ url: iconaRichiestaMarkerSelezionato(richiestaMarker.id) + richiestaMarker.iconUrl.url, scaledSize: {width: richiestaMarker.iconUrl.width, height: richiestaMarker.iconUrl.height}}"
-                            [animation]="isRilevante(richiestaMarker?.rilevanza, richiestaMarker?.rilevanzaStArCu)"
-                            [opacity]="isOpaque(richiestaMarker.id, 'richiesta')"
-                            [zIndex]="zIndex(richiestaMarker.id, 'richiesta', richiestaMarker?.rilevanza, richiestaMarker?.rilevanzaStArCu)"
-                            [visible]="isVisible('richiesta')">
-                        <ng-container>
-                            <agm-snazzy-info-window
-                                    [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: _colorWindow}"
-                                    [pointer]="'5px'"
-                                    [backgroundColor]="'#f5f5f0'"
-                                    [border]="{width: '2px', color: _colorWindow}"
-                                    [borderRadius]="'10px 10px'"
-                                    [maxHeight]="1000"
-                                    [maxWidth]="1000"
-                                    [padding]="'5px'"
-                                    [isOpen]="isSelfHovered(richiestaMarker.id, 'richiesta')"
-                                    [openOnMarkerClick]="false"
-                                    [closeOnMapClick]="true"
-                                    [closeWhenOthersOpen]="true"
-                                    [showCloseButton]="false"
-                                    wrapperClass="snazzy-margin-priorita-{{richiestaMarker.priorita}}">
+                <ng-container>
+                    <agm-marker *ngFor="let cMarker of cachedMarkers;"
+                                [latitude]="cMarker.latitudine"
+                                [longitude]="cMarker.longitudine"
+                                [iconUrl]="cMarker.urlIcona"
+                                [opacity]="0">
+                    </agm-marker>
+                </ng-container>
+                <ng-container *ngIf="isVisible('richiesta')">
+                    <agm-marker *ngFor="let richiestaMarker of richiesteMarkers;"
+                                [latitude]="richiestaMarker.localita.coordinate.latitudine"
+                                [longitude]="richiestaMarker.localita.coordinate.longitudine"
+                                (markerClick)="actionRichiestaMarker(richiestaMarker.id, MouseE.Click)"
+                                (mouseOver)="actionRichiestaMarker(richiestaMarker.id, MouseE.HoverIn)"
+                                (mouseOut)="actionRichiestaMarker(richiestaMarker.id, MouseE.HoverOut)"
+                                [iconUrl]="{ url: iconaRichiestaMarkerSelezionato(richiestaMarker.id) + richiestaMarker.iconUrl.url, scaledSize: {width: richiestaMarker.iconUrl.width, height: richiestaMarker.iconUrl.height}}"
+                                [animation]="isRilevante(richiestaMarker?.rilevanza, richiestaMarker?.rilevanzaStArCu)"
+                                [opacity]="isOpaque(richiestaMarker.id, 'richiesta')"
+                                [zIndex]="zIndex(richiestaMarker.id, 'richiesta', richiestaMarker?.rilevanza, richiestaMarker?.rilevanzaStArCu)">
+                        <ng-container *ngIf="isSelfHovered(richiestaMarker.id, 'richiesta')">
+                            <agm-snazzy-info-window *ngIf="colorWindowRichiesta(richiestaMarker.stato) as _colorWindow"
+                                                    [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: _colorWindow}"
+                                                    [pointer]="'5px'"
+                                                    [backgroundColor]="'#f5f5f0'"
+                                                    [border]="{width: '2px', color: _colorWindow}"
+                                                    [borderRadius]="'10px 10px'"
+                                                    [maxHeight]="1000"
+                                                    [maxWidth]="1000"
+                                                    [padding]="'5px'"
+                                                    [isOpen]="true"
+                                                    [openOnMarkerClick]="false"
+                                                    [closeOnMapClick]="true"
+                                                    [closeWhenOthersOpen]="true"
+                                                    [showCloseButton]="false"
+                                                    wrapperClass="snazzy-margin-priorita-{{richiestaMarker.priorita}}">
                                 <ng-template>
                                     <app-info-window [richiestaMarker]="richiestaMarker"
                                                      [compact]="true"></app-info-window>
                                 </ng-template>
                             </agm-snazzy-info-window>
                         </ng-container>
-                        <ng-container>
-                            <agm-snazzy-info-window
-                                    [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: _colorWindow}"
-                                    [pointer]="'5px'"
-                                    [backgroundColor]="'#f5f5f0'"
-                                    [border]="{width: '2px', color: _colorWindow}"
-                                    [borderRadius]="'10px 10px'"
-                                    [maxHeight]="1000"
-                                    [maxWidth]="1000"
-                                    [padding]="'5px'"
-                                    [isOpen]="isSelfClicked(richiestaMarker.id, 'richiesta')"
-                                    [openOnMarkerClick]="false"
-                                    [closeOnMapClick]="false"
-                                    [closeWhenOthersOpen]="false"
-                                    [showCloseButton]="false"
-                                    wrapperClass="snazzy-margin-priorita-{{richiestaMarker.priorita}}">
+                        <ng-container *ngIf="isSelfClicked(richiestaMarker.id, 'richiesta')">
+                            <agm-snazzy-info-window *ngIf="colorWindowRichiesta(richiestaMarker.stato) as _colorWindow"
+                                                    [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: _colorWindow}"
+                                                    [pointer]="'5px'"
+                                                    [backgroundColor]="'#f5f5f0'"
+                                                    [border]="{width: '2px', color: _colorWindow}"
+                                                    [borderRadius]="'10px 10px'"
+                                                    [maxHeight]="1000"
+                                                    [maxWidth]="1000"
+                                                    [padding]="'5px'"
+                                                    [isOpen]="true"
+                                                    [openOnMarkerClick]="false"
+                                                    [closeOnMapClick]="false"
+                                                    [closeWhenOthersOpen]="false"
+                                                    [showCloseButton]="false"
+                                                    wrapperClass="snazzy-margin-priorita-{{richiestaMarker.priorita}}">
                                 <ng-template>
                                     <app-info-window [richiestaMarker]="richiestaMarker"
                                                      [datiMeteo]="findDatiMeteo('richiesta-'+richiestaMarker.id)"></app-info-window>
@@ -94,130 +95,123 @@
                             </agm-snazzy-info-window>
                         </ng-container>
                     </agm-marker>
-                    <agm-marker-cluster
-                            imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
-                            [minimumClusterSize]="minMarkerCluster">
-                        <agm-marker *ngFor="let sedeMarker of sediMarkers;"
-                                    [latitude]="sedeMarker.coordinate.latitudine"
-                                    [longitude]="sedeMarker.coordinate.longitudine"
-                                    (markerClick)="actionSedeMarker(sedeMarker.codice, MouseE.Click)"
-                                    (mouseOver)="actionSedeMarker(sedeMarker.codice, MouseE.HoverIn)"
-                                    (mouseOut)="actionSedeMarker(sedeMarker.codice, MouseE.HoverOut)"
-                                    [iconUrl]="iconaSedeMarker(sedeMarker)"
-                                    [opacity]="isOpaque(sedeMarker.codice, 'sede')"
-                                    [zIndex]="zIndex(sedeMarker.codice, 'sede')"
-                                    [visible]="isVisible('sede')">
-                            <ng-container>
-                                <agm-snazzy-info-window
-                                        [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow('sede')}"
-                                        [pointer]="'5px'"
-                                        [backgroundColor]="'#f5f5f0'"
-                                        [border]="{width: '2px', color: colorWindow('sede')}"
-                                        [borderRadius]="'10px 10px'"
-                                        [maxHeight]="1000"
-                                        [maxWidth]="1000"
-                                        [padding]="'5px'"
-                                        [isOpen]="isSelfHovered(sedeMarker.codice, 'sede')"
-                                        [openOnMarkerClick]="false"
-                                        [closeOnMapClick]="true"
-                                        [closeWhenOthersOpen]="true"
-                                        [showCloseButton]="false"
-                                        wrapperClass="snazzy-margin-priorita-3">
-                                    <ng-template>
-                                        <app-info-window [sedeMarker]="sedeMarker" [compact]="true"></app-info-window>
-                                    </ng-template>
-                                </agm-snazzy-info-window>
-                            </ng-container>
-                            <ng-container>
-                                <agm-snazzy-info-window
-                                        [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow('sede')}"
-                                        [pointer]="'5px'"
-                                        [backgroundColor]="'#f5f5f0'"
-                                        [border]="{width: '2px', color: colorWindow('sede')}"
-                                        [borderRadius]="'10px 10px'"
-                                        [maxHeight]="1000"
-                                        [maxWidth]="1000"
-                                        [padding]="'5px'"
-                                        [isOpen]="isSelfClicked(sedeMarker.codice, 'sede')"
-                                        [openOnMarkerClick]="false"
-                                        [closeOnMapClick]="false"
-                                        [closeWhenOthersOpen]="false"
-                                        [showCloseButton]="false"
-                                        wrapperClass="snazzy-margin-priorita-3">
-                                    <ng-template>
-                                        <app-info-window [sedeMarker]="sedeMarker"
-                                                         [tipoSedeIcona]="iconaSedeTipoWindow(sedeMarker.tipo)"
-                                                         [datiMeteo]="findDatiMeteo('sede-'+sedeMarker.codice)"></app-info-window>
-                                    </ng-template>
-                                </agm-snazzy-info-window>
-                            </ng-container>
-                        </agm-marker>
-                    </agm-marker-cluster>
-                    <agm-marker-cluster
-                            imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
-                            [minimumClusterSize]="minMarkerCluster">
-                        <agm-marker *ngFor="let mezzoMarker of mezziMarkers;"
-                                    [latitude]="mezzoMarker.coordinate.latitudine"
-                                    [longitude]="mezzoMarker.coordinate.longitudine"
-                                    (markerClick)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.Click)"
-                                    (mouseOver)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.HoverIn)"
-                                    (mouseOut)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.HoverOut)"
-                                    [iconUrl]="iconaMezzoMarker(mezzoMarker)"
-                                    [opacity]="isOpaque(mezzoMarker.mezzo.codice, 'mezzo')"
-                                    [zIndex]="zIndex(mezzoMarker.mezzo.codice, 'mezzo')"
-                                    [visible]="isVisible('mezzo')">
-                            <ng-container>
-                                <agm-snazzy-info-window
-                                        [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(mezzoMarker.mezzo.stato)}"
-                                        [pointer]="'5px'"
-                                        [backgroundColor]="'#f5f5f0'"
-                                        [border]="{width: '2px', color: colorWindow(mezzoMarker.mezzo.stato)}"
-                                        [borderRadius]="'10px 10px'"
-                                        [maxHeight]="1000"
-                                        [maxWidth]="1000"
-                                        [padding]="'5px'"
-                                        [isOpen]="isSelfHovered(mezzoMarker.mezzo.codice, 'mezzo')"
-                                        [openOnMarkerClick]="false"
-                                        [closeOnMapClick]="true"
-                                        [closeWhenOthersOpen]="true"
-                                        [showCloseButton]="false"
-                                        wrapperClass="snazzy-margin-priorita-4">
-                                    <ng-template>
-                                        <app-info-window [mezzoMarker]="mezzoMarker" [compact]="true"></app-info-window>
-                                    </ng-template>
-                                </agm-snazzy-info-window>
-                            </ng-container>
-                            <ng-container>
-                                <agm-snazzy-info-window
-                                        [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(mezzoMarker.mezzo.stato)}"
-                                        [pointer]="'5px'"
-                                        [backgroundColor]="'#f5f5f0'"
-                                        [border]="{width: '2px', color: colorWindow(mezzoMarker.mezzo.stato)}"
-                                        [borderRadius]="'10px 10px'"
-                                        [maxHeight]="1000"
-                                        [maxWidth]="1000"
-                                        [padding]="'5px'"
-                                        [isOpen]="isSelfClicked(mezzoMarker.mezzo.codice, 'mezzo')"
-                                        [openOnMarkerClick]="false"
-                                        [closeOnMapClick]="false"
-                                        [closeWhenOthersOpen]="false"
-                                        [showCloseButton]="false"
-                                        wrapperClass="snazzy-margin-priorita-4">
-                                    <ng-template>
-                                        <app-info-window [mezzoMarker]="mezzoMarker"
-                                                         [datiMeteo]="findDatiMeteo('mezzo-'+mezzoMarker.mezzo.codice)"
-                                                         [inComposizione]="viewStateMappa.active === AppFeatures.ComposizionePartenza"
-                                                         (addMezzoComposizione)="onAddMezzoComposizione($event)">
-                                        </app-info-window>
-                                    </ng-template>
-                                </agm-snazzy-info-window>
-                            </ng-container>
-                        </agm-marker>
-                    </agm-marker-cluster>
                 </ng-container>
-                <ng-container>
-                    <agm-marker *ngFor="let chiamataMarker of chiamateMarkers;"
-                                [latitude]="chiamataMarker.localita.coordinate.latitudine"
+                <ng-container *ngIf="isVisible('sede')">
+                    <agm-marker  *ngFor="let sedeMarker of sediMarkers;"
+                                 [latitude]="sedeMarker.coordinate.latitudine"
+                                [longitude]="sedeMarker.coordinate.longitudine"
+                                (markerClick)="actionSedeMarker(sedeMarker.codice, MouseE.Click)"
+                                (mouseOver)="actionSedeMarker(sedeMarker.codice, MouseE.HoverIn)"
+                                (mouseOut)="actionSedeMarker(sedeMarker.codice, MouseE.HoverOut)"
+                                [iconUrl]="iconaSedeMarker(sedeMarker)"
+                                [opacity]="isOpaque(sedeMarker.codice, 'sede')"
+                                [zIndex]="zIndex(sedeMarker.codice, 'sede')">
+                        <ng-container *ngIf="isSelfHovered(sedeMarker.codice, 'sede')">
+                            <agm-snazzy-info-window
+                                    [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow('sede')}"
+                                    [pointer]="'5px'"
+                                    [backgroundColor]="'#f5f5f0'"
+                                    [border]="{width: '2px', color: colorWindow('sede')}"
+                                    [borderRadius]="'10px 10px'"
+                                    [maxHeight]="1000"
+                                    [maxWidth]="1000"
+                                    [padding]="'5px'"
+                                    [isOpen]="true"
+                                    [openOnMarkerClick]="false"
+                                    [closeOnMapClick]="true"
+                                    [closeWhenOthersOpen]="true"
+                                    [showCloseButton]="false"
+                                    wrapperClass="snazzy-margin-priorita-3">
+                                <ng-template>
+                                    <app-info-window [sedeMarker]="sedeMarker" [compact]="true"></app-info-window>
+                                </ng-template>
+                            </agm-snazzy-info-window>
+                        </ng-container>
+                        <ng-container *ngIf="isSelfClicked(sedeMarker.codice, 'sede')">
+                            <agm-snazzy-info-window
+                                    [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow('sede')}"
+                                    [pointer]="'5px'"
+                                    [backgroundColor]="'#f5f5f0'"
+                                    [border]="{width: '2px', color: colorWindow('sede')}"
+                                    [borderRadius]="'10px 10px'"
+                                    [maxHeight]="1000"
+                                    [maxWidth]="1000"
+                                    [padding]="'5px'"
+                                    [isOpen]="true"
+                                    [openOnMarkerClick]="false"
+                                    [closeOnMapClick]="false"
+                                    [closeWhenOthersOpen]="false"
+                                    [showCloseButton]="false"
+                                    wrapperClass="snazzy-margin-priorita-3">
+                                <ng-template>
+                                    <app-info-window [sedeMarker]="sedeMarker"
+                                                     [tipoSedeIcona]="iconaSedeTipoWindow(sedeMarker.tipo)"
+                                                     [datiMeteo]="findDatiMeteo('sede-'+sedeMarker.codice)"></app-info-window>
+                                </ng-template>
+                            </agm-snazzy-info-window>
+                        </ng-container>
+                    </agm-marker>
+                </ng-container>
+                <ng-container *ngIf="isVisible('mezzo')">
+                    <agm-marker *ngFor="let mezzoMarker of mezziMarkers;"
+                                [latitude]="mezzoMarker.coordinate.latitudine"
+                                [longitude]="mezzoMarker.coordinate.longitudine"
+                                (markerClick)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.Click)"
+                                (mouseOver)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.HoverIn)"
+                                (mouseOut)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.HoverOut)"
+                                [iconUrl]="iconaMezzoMarker(mezzoMarker)"
+                                [opacity]="isOpaque(mezzoMarker.mezzo.codice, 'mezzo')"
+                                [zIndex]="zIndex(mezzoMarker.mezzo.codice, 'mezzo')">
+                        <ng-container *ngIf="isSelfHovered(mezzoMarker.mezzo.codice, 'mezzo')">
+                            <agm-snazzy-info-window
+                                    [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(mezzoMarker.mezzo.stato)}"
+                                    [pointer]="'5px'"
+                                    [backgroundColor]="'#f5f5f0'"
+                                    [border]="{width: '2px', color: colorWindow(mezzoMarker.mezzo.stato)}"
+                                    [borderRadius]="'10px 10px'"
+                                    [maxHeight]="1000"
+                                    [maxWidth]="1000"
+                                    [padding]="'5px'"
+                                    [isOpen]="true"
+                                    [openOnMarkerClick]="false"
+                                    [closeOnMapClick]="true"
+                                    [closeWhenOthersOpen]="true"
+                                    [showCloseButton]="false"
+                                    wrapperClass="snazzy-margin-priorita-4">
+                                <ng-template>
+                                    <app-info-window [mezzoMarker]="mezzoMarker" [compact]="true"></app-info-window>
+                                </ng-template>
+                            </agm-snazzy-info-window>
+                        </ng-container>
+                        <ng-container *ngIf="isSelfClicked(mezzoMarker.mezzo.codice, 'mezzo')">
+                            <agm-snazzy-info-window
+                                    [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(mezzoMarker.mezzo.stato)}"
+                                    [pointer]="'5px'"
+                                    [backgroundColor]="'#f5f5f0'"
+                                    [border]="{width: '2px', color: colorWindow(mezzoMarker.mezzo.stato)}"
+                                    [borderRadius]="'10px 10px'"
+                                    [maxHeight]="1000"
+                                    [maxWidth]="1000"
+                                    [padding]="'5px'"
+                                    [isOpen]="true"
+                                    [openOnMarkerClick]="false"
+                                    [closeOnMapClick]="false"
+                                    [closeWhenOthersOpen]="false"
+                                    [showCloseButton]="false"
+                                    wrapperClass="snazzy-margin-priorita-4">
+                                <ng-template>
+                                    <app-info-window [mezzoMarker]="mezzoMarker"
+                                                     [datiMeteo]="findDatiMeteo('mezzo-'+mezzoMarker.mezzo.codice)"
+                                                     [inComposizione]="viewStateMappa.active === AppFeatures.ComposizionePartenza"
+                                                     (addMezzoComposizione)="onAddMezzoComposizione($event)">
+                                    </app-info-window>
+                                </ng-template>
+                            </agm-snazzy-info-window>
+                        </ng-container>
+                    </agm-marker>
+                </ng-container>
+                <ng-container *ngFor="let chiamataMarker of chiamateMarkers;">
+                    <agm-marker [latitude]="chiamataMarker.localita.coordinate.latitudine"
                                 [longitude]="chiamataMarker.localita.coordinate.longitudine"
                                 [iconUrl]="richiestaMarkerIconUrl"
                                 [animation]="animation(chiamataMarker?.mySelf)">
@@ -245,9 +239,8 @@
                         </ng-container>
                     </agm-marker>
                 </ng-container>
-                <ng-container>
-                    <agm-marker *ngFor="let mMarker of (meteoMarkers$ | async);"
-                                [latitude]="mMarker.localita.coordinate.latitudine"
+                <ng-container *ngFor="let mMarker of (meteoMarkers$ | async);">
+                    <agm-marker [latitude]="mMarker.localita.coordinate.latitudine"
                                 [longitude]="mMarker.localita.coordinate.longitudine"
                                 [iconUrl]="meteoMarkerIconUrl"
                                 [animation]="'DROP'">
