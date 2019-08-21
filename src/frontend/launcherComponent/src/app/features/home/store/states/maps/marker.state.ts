@@ -31,6 +31,7 @@ import { MeteoMarkersState } from './meteo-markers.state';
 import { ChiamateMarkersState } from './chiamate-markers.state';
 import { MapsButtonsState } from './maps-buttons.state';
 
+
 export interface MarkerStateModel {
     markerRichiestaSelezionato: string;
     markerRichiestaHover: string;
@@ -101,6 +102,11 @@ export class MarkerState {
     @Selector()
     static markerSedeHover(state: MarkerStateModel) {
         return state.markerSedeHover;
+    }
+
+    @Selector()
+    static markerStateNull(state: MarkerStateModel) {
+        return (!state.markerRichiestaSelezionato && !state.markerMezzoSelezionato && !state.markerSedeSelezionato);
     }
 
     @Action(SetMarkerRichiestaSelezionato)

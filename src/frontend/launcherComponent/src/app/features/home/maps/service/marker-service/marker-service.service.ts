@@ -106,6 +106,8 @@ export class MarkerService implements OnDestroy {
     @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
     private switchMeteo: boolean;
 
+    @Select(MarkerState.markerStateNull) markerStateNull$: Observable<boolean>;
+
     constructor(private agmService: AgmService,
                 private store: Store) {
         this.subscription.add(this.filtroMarkerAttivo$.subscribe((filtroAttivo: string[]) => {
@@ -121,6 +123,11 @@ export class MarkerService implements OnDestroy {
         this.subscription.add(this.markerSedeSelezionato$.subscribe((id: string) => this.markerSedeSelezionato = id));
         this.subscription.add(this.markerSedeHover$.subscribe((id: string) => this.markerSedeHover = id));
         this.subscription.add(this.datiMeteo$.subscribe((meteo: MarkerDatiMeteo[]) => this.datiMeteo = meteo));
+        this.subscription.add(this.markerStateNull$.subscribe( (isNull: boolean) => {
+            if (isNull && this.selfClickedMarker) {
+                this.selfClickedMarker = null;
+            }
+        }));
         /**
          * marker minimi per creare un cluster
          * @type {number}

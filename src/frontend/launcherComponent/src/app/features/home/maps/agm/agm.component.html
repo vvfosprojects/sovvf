@@ -50,7 +50,7 @@
                                 [animation]="isRilevante(richiestaMarker?.rilevanza, richiestaMarker?.rilevanzaStArCu)"
                                 [opacity]="isOpaque(richiestaMarker.id, 'richiesta')"
                                 [zIndex]="zIndex(richiestaMarker.id, 'richiesta', richiestaMarker?.rilevanza, richiestaMarker?.rilevanzaStArCu)">
-                        <ng-container *ngIf="isSelfHovered(richiestaMarker.id, 'richiesta')">
+                        <ng-container>
                             <agm-snazzy-info-window *ngIf="colorWindowRichiesta(richiestaMarker.stato) as _colorWindow"
                                                     [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: _colorWindow}"
                                                     [pointer]="'5px'"
@@ -60,7 +60,7 @@
                                                     [maxHeight]="1000"
                                                     [maxWidth]="1000"
                                                     [padding]="'5px'"
-                                                    [isOpen]="true"
+                                                    [isOpen]="isSelfHovered(richiestaMarker.id, 'richiesta')"
                                                     [openOnMarkerClick]="false"
                                                     [closeOnMapClick]="true"
                                                     [closeWhenOthersOpen]="true"
@@ -106,7 +106,7 @@
                                 [iconUrl]="iconaSedeMarker(sedeMarker)"
                                 [opacity]="isOpaque(sedeMarker.codice, 'sede')"
                                 [zIndex]="zIndex(sedeMarker.codice, 'sede')">
-                        <ng-container *ngIf="isSelfHovered(sedeMarker.codice, 'sede')">
+                        <ng-container>
                             <agm-snazzy-info-window
                                     [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow('sede')}"
                                     [pointer]="'5px'"
@@ -116,7 +116,7 @@
                                     [maxHeight]="1000"
                                     [maxWidth]="1000"
                                     [padding]="'5px'"
-                                    [isOpen]="true"
+                                    [isOpen]="isSelfHovered(sedeMarker.codice, 'sede')"
                                     [openOnMarkerClick]="false"
                                     [closeOnMapClick]="true"
                                     [closeWhenOthersOpen]="true"
@@ -162,7 +162,7 @@
                                 [iconUrl]="iconaMezzoMarker(mezzoMarker)"
                                 [opacity]="isOpaque(mezzoMarker.mezzo.codice, 'mezzo')"
                                 [zIndex]="zIndex(mezzoMarker.mezzo.codice, 'mezzo')">
-                        <ng-container *ngIf="isSelfHovered(mezzoMarker.mezzo.codice, 'mezzo')">
+                        <ng-container>
                             <agm-snazzy-info-window
                                     [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(mezzoMarker.mezzo.stato)}"
                                     [pointer]="'5px'"
@@ -172,7 +172,7 @@
                                     [maxHeight]="1000"
                                     [maxWidth]="1000"
                                     [padding]="'5px'"
-                                    [isOpen]="true"
+                                    [isOpen]="isSelfHovered(mezzoMarker.mezzo.codice, 'mezzo')"
                                     [openOnMarkerClick]="false"
                                     [closeOnMapClick]="true"
                                     [closeWhenOthersOpen]="true"
