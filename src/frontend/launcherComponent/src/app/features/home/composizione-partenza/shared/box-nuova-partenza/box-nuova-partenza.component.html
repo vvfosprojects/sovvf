@@ -22,12 +22,14 @@
         </div>
         <div *ngIf="partenza.squadraComposizione?.length === 1" class="col">
             <div class="nowrap">
-                <i class="guida fa fa-group mr-1" [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadraComposizione)}"></i><span>{{partenza.squadraComposizione[0].squadra.nome}}</span>
+                <i class="guida fa fa-group mr-1"
+                   [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadraComposizione)}"></i><span>{{partenza.squadraComposizione[0].squadra.nome}}</span>
             </div>
         </div>
         <div *ngIf="partenza.squadraComposizione?.length > 1" class="col">
-      <span [ngbPopover]="piusquadre" popoverTitle="Squadre" triggers="mouseenter:mouseleave"><i
-              class="guida fa fa-group mr-1"></i><small>{{partenza.squadraComposizione.length}}
+      <span [ngbPopover]="piusquadre" popoverTitle="Squadre" triggers="mouseenter:mouseleave">
+          <i class="guida fa fa-group mr-1"
+             [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadraComposizione)}"></i><small>{{partenza.squadraComposizione.length}}
           squadre</small></span>
             <ng-template #piusquadre>
                 <div *ngFor="let sC of partenza.squadraComposizione" class="text-center nowrap">
