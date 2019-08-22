@@ -1,4 +1,4 @@
-<li class="list-group-item cursor-pointer border" (mouseover)="onHoverIn()" (mouseout)="onHoverOut()" (click)="onClick()"
+<li class="list-group-item cursor-pointer border" (mouseenter)="onHoverIn()" (mouseleave)="onHoverOut()" (click)="onClick()"
   [ngClass]="liClass()">
   <div class="row" ngbTooltip="Squadra già impegnata" placement="bottom" [disableTooltip]="!squadraComposizioneBusy()">
     <div class="col-10 pl-0">
