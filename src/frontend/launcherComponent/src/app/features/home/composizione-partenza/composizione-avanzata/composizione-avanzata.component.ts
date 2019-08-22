@@ -45,11 +45,6 @@ import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-p
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
 import { squadraComposizioneBusy } from '../shared/functions/composizione-functions';
-import {
-    ClearMarkerMezzoHover,
-    SetMarkerMezzoHover,
-    SetMarkerMezzoSelezionato
-} from '../../store/actions/maps/marker.actions';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 
 @Component({
@@ -223,7 +218,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
         this.store.dispatch([
             new ReducerSelectMezzoComposizione(mezzoComposizione),
-            new SetMarkerMezzoSelezionato(mezzoComposizione.id, true)
         ]);
         // console.log('Mezzo selezionato', mezzoComposizione);
     }
@@ -245,14 +239,12 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     mezzoHoverIn(mezzoComposizione: MezzoComposizione) {
         this.store.dispatch([
             new HoverInMezzoComposizione(mezzoComposizione.id),
-            new SetMarkerMezzoHover(mezzoComposizione.id)
         ]);
     }
 
     mezzoHoverOut() {
         this.store.dispatch([
             new HoverOutMezzoComposizione(),
-            new ClearMarkerMezzoHover()
         ]);
     }
 

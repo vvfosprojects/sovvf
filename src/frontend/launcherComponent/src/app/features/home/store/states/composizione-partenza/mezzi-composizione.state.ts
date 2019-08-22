@@ -37,6 +37,11 @@ import {
 import { BoxPartenzaState } from './box-partenza.state';
 import { GetListeComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
+import {
+    ClearMarkerMezzoHover,
+    SetMarkerMezzoHover,
+    SetMarkerMezzoSelezionato
+} from '../../actions/maps/marker.actions';
 
 export interface MezziComposizioneStateStateModel {
     mezziComposizione: MezzoComposizione[];
@@ -155,28 +160,29 @@ export class MezziComposizioneState {
 
         // controllo se lo stato del mezzo è diverso da "In Viaggio" o "Sul Posto"
         if (!mezzoComposizioneBusy(action.mezzoComp.mezzo.stato)) {
+            dispatch(new SetMarkerMezzoSelezionato(action.mezzoComp.mezzo.codice, true));
             // controllo se è un mezzo prenotato oppure se è in prenotazione
             if (state.idMezziPrenotati.indexOf(action.mezzoComp.id) === -1 && state.idMezziInPrenotazione.indexOf(action.mezzoComp.id) === -1) {
                 let addBoxPartenza = false;
                 if (boxPartenzaList.length <= 0) {
                     addBoxPartenza = true;
-                    this.store.dispatch(new AddBoxPartenza());
+                    dispatch(new AddBoxPartenza());
                 }
                 setTimeout(() => {
-                    this.store.dispatch(new SelectMezzoComposizione(action.mezzoComp));
+                    dispatch(new SelectMezzoComposizione(action.mezzoComp));
                     const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
                     if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
-                        this.store.dispatch(new GetListeComposizioneAvanzata(null, null, true));
+                        dispatch(new GetListeComposizioneAvanzata(null, null, true));
                     }
-                    this.store.dispatch(new AddMezzoBoxPartenzaSelezionato(action.mezzoComp));
+                    dispatch(new AddMezzoBoxPartenzaSelezionato(action.mezzoComp));
                 }, calcolaTimeout(addBoxPartenza));
             } else if (state.idMezziPrenotati.indexOf(action.mezzoComp.id) !== -1) {
-                this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza'));
+                dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza'));
             } else if (state.idMezziInPrenotazione.indexOf(action.mezzoComp.id) !== -1) {
-                this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente'));
+                dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente'));
             }
         } else {
-            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + action.mezzoComp.mezzo.stato + ' ed è impegnato in un\'altra richiesta'));
+            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + action.mezzoComp.mezzo.stato + ' ed è impegnato in un\'altra richiesta'));
         }
 
         function calcolaTimeout(addBoxPartenza: boolean) {
@@ -200,7 +206,7 @@ export class MezziComposizioneState {
                 if (boxPartenzaList.length === 0) {
                     dispatch(new ReducerSelectMezzoComposizione(mezzoComposizione[0]));
                 } else {
-                    const mezzoInList = boxPartenzaList.filter( boxPartenza => boxPartenza.mezzoComposizione.mezzo.codice === action.mezzoId);
+                    const mezzoInList = boxPartenzaList.filter(boxPartenza => boxPartenza.mezzoComposizione.mezzo.codice === action.mezzoId);
                     mezzoInList && mezzoInList[0] ? console.log('Mezzo già selezionato') : dispatch(new ReducerSelectMezzoComposizione(mezzoComposizione[0]));
                 }
             } else {
@@ -236,17 +242,19 @@ export class MezziComposizioneState {
     }
 
     @Action(HoverInMezzoComposizione)
-    hoverInMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>, action: HoverInMezzoComposizione) {
+    hoverInMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: HoverInMezzoComposizione) {
         patchState({
             idMezzoComposizioneHover: action.idMezzoComp
         });
+        dispatch(new SetMarkerMezzoHover(action.idMezzoComp));
     }
 
     @Action(HoverOutMezzoComposizione)
-    hoverOutMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>) {
+    hoverOutMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>) {
         patchState({
             idMezzoComposizioneHover: null
         });
+        dispatch(new ClearMarkerMezzoHover());
     }
 
     @Action(RequestBookMezzoComposizione)
