@@ -18,7 +18,7 @@
   },
   {
     "Id": "2",
-    "CodiceSede": "RM.1001",
+    "CodiceSede": "RM.1000",
     "Mezzo": "18",
     "Squadre": [
       "3",
@@ -27,7 +27,7 @@
   },
   {
     "Id": "5",
-    "CodiceSede": "RM.1001",
+    "CodiceSede": "RM.1000",
     "Mezzo": "12",
     "Squadre": [
       "4"
@@ -35,7 +35,7 @@
   },
   {
     "Id": "1",
-    "CodiceSede": "RM.1002",
+    "CodiceSede": "RM.1000",
     "Mezzo": "7",
     "Squadre": [
       "5"
